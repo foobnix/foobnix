@@ -5,20 +5,15 @@ import gst
 import os
 
 class FoobNIX:
-
-
         def __init__(self):
                     
                 #Set the Glade file
                 self.gladefile = "foobnix.glade"  
                 self.wTree = gtk.glade.XML(self.gladefile, "mainWindow")
-                 
                     
                 #Create our dictionay and connect it
                 dic = {
-               "on_mainWindow_destroy" : gtk.main_quit,
-               "on_AddWine" : self.OnAddWine,
-               "on_filechooserbutton1_file_set": self.onFileSelect,
+               "on_mainWindow_destroy" : gtk.main_quit,             
                "on_button1_clicked":self.onPlayButton,
                "on_button2_clicked":self.onPauseButton,
                "on_button3_clicked":self.onStopButton,
@@ -86,21 +81,6 @@ class FoobNIX:
                 self.time_format = gst.Format(gst.FORMAT_TIME)
                 
 
-                 
-                #player = gst.Pipeline("player")   
-                #self.volume = gst.element_factory_make("volume", "volume")
-                #self.level = gst.element_factory_make("level", "volume-level")            
-
-                #Add all of the List Columns to the wineView
-                self.AddWineListColumn(self.sWine, self.cWine)
-                self.AddWineListColumn(self.sWinery, self.cWinery)
-                self.AddWineListColumn(self.sGrape, self.cGrape)
-                self.AddWineListColumn(self.sYear, self.cYear)
-    
-                #Create the listStore Model to use with the wineView
-                self.wineList = gtk.ListStore(str, str, str, str)
-                #Attache the model to the treeView
-                self.wineView.set_model(self.wineList)
                 
                 
                 self.play_thread_id = None
@@ -151,16 +131,7 @@ class FoobNIX:
                     print "file", file
                     
                 
-        def AddWineListColumn(self, title, columnId):
-                """This function adds a column to the list view.
-                First it create the gtk.TreeViewColumn and then set
-                some needed properties"""
-                                                
-                column = gtk.TreeViewColumn(title, gtk.CellRendererText()
-                    , text=columnId)
-                column.set_resizable(True)                
-                column.set_sort_column_id(columnId)
-                self.wineView.append_column(column)
+                     
                 
         def OnAddWine(self, widget):
                 """Called when the use wants to add a wine"""
