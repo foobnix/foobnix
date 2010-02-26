@@ -17,6 +17,7 @@ class FoobNIX:
                             
                 self.gladefile = "foobnix.glade"  
                 self.mainWindow = gtk.glade.XML(self.gladefile, "mainWindow")
+                self.mainWindow = gtk.glade.XML(self.gladefile, "foobnixWindow")
                     
                 dic = {
                "on_mainWindow_destroy" : gtk.main_quit,
@@ -51,7 +52,7 @@ class FoobNIX:
                 self.player = self.playerEngine.getPlaer()
                 
                 #Directory list panel
-                self.directoryList = DirectoryList("/home/ivan/Music/nightwish", self.directoryListWidget)
+                self.directoryList = DirectoryList("/home/ivan/Music/!DL", self.directoryListWidget)
                 self.playList = PlayList(self.playListWidget)                
                 
         
