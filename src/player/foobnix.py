@@ -81,6 +81,7 @@ class FoobNIX:
                 else:                        
                     songs = getAllSongsByDirectory(song.path)
                     self.playList.addSongs(songs)
+                    self.playerEngine.playList(songs)
         
         def onSelectPlayListRow(self, widget, event):
             if is_double_click(event):

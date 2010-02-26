@@ -26,6 +26,14 @@ class PlayerEngine():
         self.play_thread_id = None       
     
         self.stop()
+        self.playlist = []
+        self.currentSong = None
+        self.currentIndex = 0;
+        
+        bus = self.player.get_bus()
+        bus.add_signal_watch()
+        bus.connect("message", self.on_message)
+        
         
     def setTimeLabelWidget(self, timeLabelWidget):
         self.timeLabelWidget = timeLabelWidget
@@ -39,12 +47,22 @@ class PlayerEngine():
     def forcePlay(self,song):
         self.stop()
         self.play(song)
+        
+    def play(self, song):        
+        self.currentSong = song;
+        self.runPlaylist()
     
-    def play(self, song):
-        self.player.get_by_name("file-source").set_property("location", song.path)        
+    def playList(self, songs):
+        self.playlist = songs;        
+        self.currentSong = songs[0];
+        self.runPlaylist()    
+        
+    
+    def runPlaylist(self):
+        self.player.get_by_name("file-source").set_property("location", self.currentSong.path)        
         self.player.set_state(gst.STATE_PLAYING)        
         self.play_thread_id = thread.start_new_thread(self.play_thread, ())     
-           
+       
     def volume(self, volumeValue):  
         self.player.get_by_name("volumeValue").set_property('volumeValue', volumeValue)  
     
@@ -60,15 +78,13 @@ class PlayerEngine():
                     
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)
         
-        bus = self.player.get_bus()
-        bus.add_signal_watch()
-        bus.connect("message", self.on_message)
         
         
         
-    def stop(self):
-        self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
+        
+    def stop(self):        
         self.player.set_state(gst.STATE_NULL)
+        self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
         
     
     def pause(self):
@@ -116,14 +132,31 @@ class PlayerEngine():
     def on_message(self, bus, message):
             t = message.type
             if t == gst.MESSAGE_EOS:
+                print "MESSAGE_EOS"                
                 self.play_thread_id = None
                 self.player.set_state(gst.STATE_NULL)                
                 self.timeLabelWidget.set_text("00:00 / 00:00")
+                
+                
+                gtk.gdk.threads_enter() #@UndefinedVariable
+                self.currentIndex += 1;
+                
+                if self.currentIndex < len(self.playlist):
+                    self.currentSong = self.playlist[self.currentIndex]
+                    print self.currentSong                     
+                    self.forcePlay(self.currentSong)
+                    self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)                    
+                gtk.gdk.threads_leave() #@UndefinedVariable
+                
+                
             elif t == gst.MESSAGE_ERROR:
+                print "MESSAGE_ERROR"
                 err, debug = message.parse_error()
                 print "Error: %s" % err, debug
                 self.play_thread_id = None
                 self.player.set_state(gst.STATE_NULL)
                 self.button.set_label("Start")
                 self.timeLabelWidget.set_text("00:00 / 00:00")
+            elif t == gst.MESSAGE_SEGMENT_DONE:
+                print "MESSAGE_SEGMENT_DONE"
     
