@@ -87,7 +87,10 @@ class FoobNIX:
             if is_double_click(event):
                 self.playListWidget
                 song = getSongFromWidget(self.playListWidget,0,2)
-                self.songPathWidget.set_text(song.path)                    
+                self.songPathWidget.set_text(song.path)
+                
+                self.playList.setActive(song)                    
+                
                 self.playerEngine.forcePlay(song)
                                                        
 

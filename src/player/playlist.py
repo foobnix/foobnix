@@ -10,7 +10,7 @@ import gobject
 class PlayList:    
     def __init__(self, playListWidget):
         
-        self.playListModel = gtk.ListStore(str, str,str)
+        self.playListModel = gtk.ListStore(str, str, str)
         
         self.tvcolumn = gtk.TreeViewColumn('Icon')
         self.tvcolumn1 = gtk.TreeViewColumn('PlayList')
@@ -30,6 +30,7 @@ class PlayList:
                         
         playListWidget.set_model(self.playListModel)
         
+        self.songs = None;
         
 
     def get_icon(self, name):
@@ -41,16 +42,28 @@ class PlayList:
         
     def addSong(self, Song):
         self.clear()
-        self.playListModel.append([Song.name,gtk.STOCK_GO_FORWARD, Song.path])       
+        self.playListModel.append([Song.name, gtk.STOCK_GO_FORWARD, Song.path])       
     
-    def addSongs(self, songs, active = 0):
+    def setActive(self, song):
+        active_pos = 0
+        for i in range(len(self.songs)):
+            iSong = self.songs[i]            
+            if iSong.path == song.path:
+                active_pos = i
+                break               
+            
+        self.addSongs(self.songs, active_pos)
+    
+    def addSongs(self, songs, active=0):
         self.clear()
+        self.songs = songs;
+        
         for i in range(len(songs)):
             song = songs[i]
             if i == active:
-                self.playListModel.append([song.name,gtk.STOCK_GO_FORWARD, song.path])
+                self.playListModel.append([song.name, gtk.STOCK_GO_FORWARD, song.path])
             else:
-                self.playListModel.append([song.name,None, song.path])   
+                self.playListModel.append([song.name, None, song.path])   
    
 
      

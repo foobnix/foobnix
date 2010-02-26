@@ -47,6 +47,7 @@ class PlayerEngine():
     def forcePlay(self,song):
         self.stop()
         self.play(song)
+        self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
         
     def play(self, song):        
         self.currentSong = song;
