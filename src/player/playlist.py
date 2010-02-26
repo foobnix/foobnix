@@ -4,7 +4,7 @@ Created on Feb 26, 2010
 @author: ivan
 '''
 import gtk
-from player.song import Song
+from song import Song
 
 class PlayList:    
     def __init__(self, playListWidget):
@@ -19,9 +19,9 @@ class PlayList:
     def clear(self):
         self.playListModel.clear()
         
-    def add_song(self, Song):
+    def addSong(self, Song):
         self.clear()
         self.playListModel.append(None, [Song.name, Song.path])       
     
-    def add_list(self):
+    def addList(self):
         pass

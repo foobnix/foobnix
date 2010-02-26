@@ -3,13 +3,18 @@ import thread, time
 import gtk.glade
 import gst
 import os
-from player.mouse_utils import is_double_click
-from player.time_utils import convert_ns
-from player.playlist import PlayList
-from player.song import Song
+from mouse_utils import is_double_click
+from time_utils import convert_ns
+from playlist import PlayList
+from song import Song
+from dirlist import DirectoryList
+from player_engine import PlayerEngine
+import LOG
+
 
 class FoobNIX:
-        def __init__(self):                    
+        def __init__(self):    
+                            
                 self.gladefile = "foobnix.glade"  
                 self.mainWindow = gtk.glade.XML(self.gladefile, "mainWindow")
                     
@@ -32,75 +37,29 @@ class FoobNIX:
                 self.wineVolume = self.mainWindow.get_widget("hscale2")
                 self.wineSeek = self.mainWindow.get_widget("hscale1")
                 
-                self.musicTree = self.mainWindow.get_widget("treeview1")
+                self.directoryListWidget = self.mainWindow.get_widget("treeview1")
                 self.playListWidget = self.mainWindow.get_widget("treeview2")
                 
                 
                 self.wineText.set_text("/home/ivan/Music/CD1")
                 
-                self.player = gst.Pipeline("player")
-                source = gst.element_factory_make("filesrc", "file-source")
-                decoder = gst.element_factory_make("mad", "mp3-decoder")
-                conv = gst.element_factory_make("audioconvert", "converter")
-                sink = gst.element_factory_make("alsasink", "alsa-output")
+                self.playerEngine = PlayerEngine();
                 
-                
-                volume = gst.element_factory_make("volume", "volume")
-                
-                self.time_format = gst.Format(gst.FORMAT_TIME)
-        
-                self.player.add(source, decoder, conv, volume, sink)
-                gst.element_link_many(source, decoder, volume, conv, sink)
-                
-                self.time_format = gst.Format(gst.FORMAT_TIME)
                 
                 self.play_thread_id = None
-                self.player.set_state(gst.STATE_NULL)                
+                                
                 self.time_label.set_text("00:00 / 00:00")
                 
-                bus = self.player.get_bus()
+                bus = self.playerEngine.getPlaer().get_bus()
                 bus.add_signal_watch()
                 bus.connect("message", self.on_message)
+               
+                #Directory list panel
+                self.directoryList = DirectoryList("/home/ivan/Music/nightwish", self.directoryListWidget)
                 
-                #################
-                #ALL Music Directory
-                #################
-                
-                column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=0)
-                column.set_resizable(True)
-                self.musicTree.append_column(column)
-                                
-                self.musicTreeModel = gtk.TreeStore(str, str)                
-                
-                path = "/home/ivan/Music/nightwish"
-                level = None;
-                self.go_recursive(path, level)
-                
-                self.musicTree.set_model(self.musicTreeModel)
-                #################
-                #Playlists music directory
-                ################
+                               
                 self.playList = PlayList(self.playListWidget)
-                                                 
-        
-        print "some"    
-        
-        def go_recursive(self, path, level):
-            
-            dir = os.path.abspath(path)    
-            print "absolute", dir
-            list = os.listdir(dir)
-                    
-            for file in list:
-                
-                full_path = path + "/" + file        
-                sub = self.musicTreeModel.append(level, [file, full_path])              
-                
-                if os.path.isdir(full_path):            
-                    print "dir", file                    
-                    self.go_recursive(full_path, sub) 
-                else:
-                    print "file", file                  
+       
         
         
         def onFileSelect(self, widget):
@@ -110,14 +69,13 @@ class FoobNIX:
             self.wineText.set_text(file_name)
         
         def onPlayButton(self, widget):
-            print "Play" 
-            file_name = self.wineFile.get_filename()
-            if not file_name:
-                file_name = self.wineText.get_text()
-                print "set file name", file_name                                                    
-            #self.player.set_property("uri", "file://" + file_name)
-            self.player.get_by_name("file-source").set_property("location", file_name)
-            self.player.set_state(gst.STATE_PLAYING)
+            LOG.debug("Start Playing") 
+            song_path = self.wineFile.get_filename()
+            if not song_path:
+                song_path = self.wineText.get_text()
+                print "set file name", song_path                                                    
+            #self.player.set_property("uri", "file://" + song_path)
+            self.playerEngine.play(Song(None, song_path))
             self.play_thread_id = thread.start_new_thread(self.play_thread, ())
             
 
@@ -140,7 +98,7 @@ class FoobNIX:
             #left double click
      
             if is_double_click(event):
-                selection = self.musicTree.get_selection()
+                selection = self.directoryListWidget.get_selection()
                 model, selected = selection.get_selected()
                 if selected:
                     song_name = model.get_value(selected, 0)
@@ -148,7 +106,7 @@ class FoobNIX:
                     print song_path
                     self.wineText.set_text(song_path)
                     song = Song(song_name, song_path)
-                    self.playList.add_song(song)                
+                    self.playList.addSong(song)                
  
             
         def onSeekChange(self, widget, obj3, obj4):            
