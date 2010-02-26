@@ -4,18 +4,15 @@ import gtk.glade
 import gst
 import os
 from player.mouse_utils import is_double_click
-
-
-
+from player.time_utils import convert_ns
+from player.playlist import PlayList
+from player.song import Song
 
 class FoobNIX:
-        def __init__(self):
-                    
-                #Set the Glade file
+        def __init__(self):                    
                 self.gladefile = "foobnix.glade"  
-                self.wTree = gtk.glade.XML(self.gladefile, "mainWindow")
+                self.mainWindow = gtk.glade.XML(self.gladefile, "mainWindow")
                     
-                #Create our dictionay and connect it
                 dic = {
                "on_mainWindow_destroy" : gtk.main_quit,
                "on_button1_clicked":self.onPlayButton,
@@ -25,45 +22,21 @@ class FoobNIX:
                "on_hscale1_change_value": self.onSeekChange,
                "on_treeview1_button_press_event":self.onSlectRow
                }
-                self.wTree.signal_autoconnect(dic)
-                
-                self.dialog = gtk.FileChooserDialog(
-                                                    title=None,
-                                                    parent=None,
-                                                    action=gtk.FILE_CHOOSER_ACTION_OPEN,
-                                                    buttons=None,
-                                                    backend=None)
-                
-                self.dialog.set_default_response(gtk.RESPONSE_OK)
+                self.mainWindow.signal_autoconnect(dic)
+              
 
+                self.wineFile = self.mainWindow.get_widget("filechooserbutton1")                
+                self.wineText = self.mainWindow.get_widget("entry1")
+                self.time_label = self.mainWindow.get_widget("label7")                
                 
-                #Here are some variables that can be reused later
-                self.cWine = 0
-                self.cWinery = 1
-                self.cGrape = 2
-                self.cYear = 3
+                self.wineVolume = self.mainWindow.get_widget("hscale2")
+                self.wineSeek = self.mainWindow.get_widget("hscale1")
                 
-                self.sWine = "Wine"
-                self.sWinery = "Winery"
-                self.sGrape = "Grape"
-                self.sYear = "Year"                
-                                
-                #Get the treeView from the widget Tree
-                self.wineView = self.wTree.get_widget("wineView")
-                self.wineFile = self.wTree.get_widget("filechooserbutton1")                
-                self.wineText = self.wTree.get_widget("entry1")
-                self.time_label = self.wTree.get_widget("label7")                
-                
-                self.wineVolume = self.wTree.get_widget("hscale2")
-                self.wineSeek = self.wTree.get_widget("hscale1")
-                
-                self.musicTree = self.wTree.get_widget("treeview1")
-                self.treeview2 = self.wTree.get_widget("treeview2")
+                self.musicTree = self.mainWindow.get_widget("treeview1")
+                self.playListWidget = self.mainWindow.get_widget("treeview2")
                 
                 
                 self.wineText.set_text("/home/ivan/Music/CD1")
-                
-                #self.player = gst.element_factory_make("playbin2", "my-player")                
                 
                 self.player = gst.Pipeline("player")
                 source = gst.element_factory_make("filesrc", "file-source")
@@ -75,17 +48,11 @@ class FoobNIX:
                 volume = gst.element_factory_make("volume", "volume")
                 
                 self.time_format = gst.Format(gst.FORMAT_TIME)
-                
-                
         
                 self.player.add(source, decoder, conv, volume, sink)
                 gst.element_link_many(source, decoder, volume, conv, sink)
                 
-                
                 self.time_format = gst.Format(gst.FORMAT_TIME)
-                
-
-                
                 
                 self.play_thread_id = None
                 self.player.set_state(gst.STATE_NULL)                
@@ -96,47 +63,44 @@ class FoobNIX:
                 bus.connect("message", self.on_message)
                 
                 #################
-                #TABLE
+                #ALL Music Directory
                 #################
                 
-                self.column = gtk.TreeViewColumn("Title", gtk.CellRendererText()
-                    , text=0)
-                self.column.set_resizable(True)                
-                self.column.set_sort_column_id(0)
-                self.musicTree.append_column(self.column)
-                
-                
-                self.musicTreeModel = gtk.TreeStore(str,str)
-                
+                column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=0)
+                column.set_resizable(True)
+                self.musicTree.append_column(column)
+                                
+                self.musicTreeModel = gtk.TreeStore(str, str)                
                 
                 path = "/home/ivan/Music/nightwish"
                 level = None;
                 self.go_recursive(path, level)
                 
-                self.musicTree.set_model(self.musicTreeModel)                                 
+                self.musicTree.set_model(self.musicTreeModel)
+                #################
+                #Playlists music directory
+                ################
+                self.playList = PlayList(self.playListWidget)
+                                                 
         
         print "some"    
         
         def go_recursive(self, path, level):
             
             dir = os.path.abspath(path)    
-            print "absolut", dir
+            print "absolute", dir
             list = os.listdir(dir)
-        
+                    
             for file in list:
                 
                 full_path = path + "/" + file        
-                sub = self.musicTreeModel.append(level, [file, full_path])                
+                sub = self.musicTreeModel.append(level, [file, full_path])              
                 
                 if os.path.isdir(full_path):            
                     print "dir", file                    
                     self.go_recursive(full_path, sub) 
                 else:
-                    print "file", file
-                    
-               
-                     
-                
+                    print "file", file                  
         
         
         def onFileSelect(self, widget):
@@ -179,10 +143,12 @@ class FoobNIX:
                 selection = self.musicTree.get_selection()
                 model, selected = selection.get_selected()
                 if selected:
+                    song_name = model.get_value(selected, 0)
                     song_path = model.get_value(selected, 1)
                     print song_path
                     self.wineText.set_text(song_path)
-                
+                    song = Song(song_name, song_path)
+                    self.playList.add_song(song)                
  
             
         def onSeekChange(self, widget, obj3, obj4):            
@@ -210,7 +176,7 @@ class FoobNIX:
                 try:
                     time.sleep(0.2)
                     dur_int = self.player.query_duration(self.time_format, None)[0]
-                    dur_str = self.convert_ns(dur_int)
+                    dur_str = convert_ns(dur_int)
                     gtk.gdk.threads_enter() #@UndefinedVariable
                     self.time_label.set_text("00:00 / " + dur_str)
                     gtk.gdk.threads_leave() #@UndefinedVariable
@@ -221,7 +187,7 @@ class FoobNIX:
             time.sleep(0.2)
             while play_thread_id == self.play_thread_id:
                 pos_int = self.player.query_position(self.time_format, None)[0]
-                pos_str = self.convert_ns(pos_int)
+                pos_str = convert_ns(pos_int)
                 if play_thread_id == self.play_thread_id:
                     gtk.gdk.threads_enter() #@UndefinedVariable
                     self.time_label.set_text(pos_str + " / " + dur_str)
@@ -231,30 +197,7 @@ class FoobNIX:
                     gtk.gdk.threads_leave() #@UndefinedVariable
                 time.sleep(1)
 
-        def convert_ns(self, time_int):
-            time_int = time_int / 1000000000
-            time_str = ""
-            if time_int >= 3600:
-                _hours = time_int / 3600
-                time_int = time_int - (_hours * 3600)
-                time_str = str(_hours) + ":"
-            if time_int >= 600:
-                _mins = time_int / 60
-                time_int = time_int - (_mins * 60)
-                time_str = time_str + str(_mins) + ":"
-            elif time_int >= 60:
-                _mins = time_int / 60
-                time_int = time_int - (_mins * 60)
-                time_str = time_str + "0" + str(_mins) + ":"
-            else:
-                time_str = time_str + "00:"
-            if time_int > 9:
-                time_str = time_str + str(time_int)
-            else:
-                time_str = time_str + "0" + str(time_int)
-                
-            return time_str          
-    
+        
         def on_message(self, bus, message):
             t = message.type
             if t == gst.MESSAGE_EOS:
