@@ -72,7 +72,7 @@ class FoobNIX:
         def onSelectDirectoryRow(self, widget, event):                         
             #left double click     
             if is_double_click(event):                
-                song = getSongFromWidget(self.directoryListWidget)                 
+                song = getSongFromWidget(self.directoryListWidget,0,1)                 
                 self.songPathWidget.set_text(song.path)
                 
                 if not isDirectory(song.path):
@@ -86,7 +86,7 @@ class FoobNIX:
         def onSelectPlayListRow(self, widget, event):
             if is_double_click(event):
                 self.playListWidget
-                song = getSongFromWidget(self.playListWidget)
+                song = getSongFromWidget(self.playListWidget,0,2)
                 self.songPathWidget.set_text(song.path)                    
                 self.playerEngine.forcePlay(song)
                                                        

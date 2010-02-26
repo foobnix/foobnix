@@ -6,7 +6,7 @@ Created on Feb 26, 2010
 import gtk
 import os
 import LOG
-from file_utils import isDirectory
+from file_utils import isDirectory, getExtenstion
 
 class DirectoryList:
     def __init__(self, root_directory, directoryListWidget):
@@ -34,7 +34,11 @@ class DirectoryList:
                 
         for file in list:
             
-            full_path = path + "/" + file        
+            full_path = path + "/" + file
+            
+            if not isDirectory(full_path) and getExtenstion(file) not in ".mp3, .ogg":
+                continue
+                    
             sub = self.direcotryTreeModel.append(level, [file, full_path])              
             
             if isDirectory(full_path):
