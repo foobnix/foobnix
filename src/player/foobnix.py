@@ -3,6 +3,10 @@ import thread, time
 import gtk.glade
 import gst
 import os
+from player.mouse_utils import is_double_click
+
+
+
 
 class FoobNIX:
         def __init__(self):
@@ -13,7 +17,7 @@ class FoobNIX:
                     
                 #Create our dictionay and connect it
                 dic = {
-               "on_mainWindow_destroy" : gtk.main_quit,             
+               "on_mainWindow_destroy" : gtk.main_quit,
                "on_button1_clicked":self.onPlayButton,
                "on_button2_clicked":self.onPauseButton,
                "on_button3_clicked":self.onStopButton,
@@ -53,11 +57,11 @@ class FoobNIX:
                 self.wineVolume = self.wTree.get_widget("hscale2")
                 self.wineSeek = self.wTree.get_widget("hscale1")
                 
-                self.treeview1 = self.wTree.get_widget("treeview1")
+                self.musicTree = self.wTree.get_widget("treeview1")
                 self.treeview2 = self.wTree.get_widget("treeview2")
                 
                 
-                self.wineText.set_text("/home/ivan/Music/22.mp3")
+                self.wineText.set_text("/home/ivan/Music/CD1")
                 
                 #self.player = gst.element_factory_make("playbin2", "my-player")                
                 
@@ -91,25 +95,25 @@ class FoobNIX:
                 bus.add_signal_watch()
                 bus.connect("message", self.on_message)
                 
-                
+                #################
                 #TABLE
+                #################
                 
                 self.column = gtk.TreeViewColumn("Title", gtk.CellRendererText()
                     , text=0)
                 self.column.set_resizable(True)                
                 self.column.set_sort_column_id(0)
-                self.treeview1.append_column(self.column)
+                self.musicTree.append_column(self.column)
                 
-                #Create the listStore Model to use with the wineView
-                self.treeList = gtk.TreeStore(str)
-                #append1 = self.treeList.append(None, ["a"])
-                #self.treeList.append(append1, ["1a" ])
                 
-                path = "/home/ivan/Music/ELO"
+                self.musicTreeModel = gtk.TreeStore(str,str)
+                
+                
+                path = "/home/ivan/Music/nightwish"
                 level = None;
                 self.go_recursive(path, level)
                 
-                self.treeview1.set_model(self.treeList)                                 
+                self.musicTree.set_model(self.musicTreeModel)                                 
         
         print "some"    
         
@@ -121,28 +125,19 @@ class FoobNIX:
         
             for file in list:
                 
-                sub = self.treeList.append(level, [file])
+                full_path = path + "/" + file        
+                sub = self.musicTreeModel.append(level, [file, full_path])                
                 
-                full_path = path +"/"+ file        
                 if os.path.isdir(full_path):            
                     print "dir", file                    
-                    self.go_recursive(full_path,sub) 
+                    self.go_recursive(full_path, sub) 
                 else:
                     print "file", file
                     
-                
+               
                      
                 
-        def OnAddWine(self, widget):
-                """Called when the use wants to add a wine"""
-                #Cteate the dialog, show it, and store the results
-                wineDlg = wineDialog();                
-                result, newWine = wineDlg.run()
-                
-                if (result == gtk.RESPONSE_OK):
-                    """The user clicked Ok, so let's add this
-                    wine to the wine list"""
-                    self.wineList.append(newWine.getList())
+        
         
         def onFileSelect(self, widget):
             print "set file"
@@ -176,8 +171,19 @@ class FoobNIX:
             print val    
             self.player.get_by_name("volume").set_property('volume', val)
         
-        def onSlectRow(self,widget,event):
-            print "select"
+        def onSlectRow(self, widget, event):        
+                 
+            #left double click
+     
+            if is_double_click(event):
+                selection = self.musicTree.get_selection()
+                model, selected = selection.get_selected()
+                if selected:
+                    song_path = model.get_value(selected, 1)
+                    print song_path
+                    self.wineText.set_text(song_path)
+                
+ 
             
         def onSeekChange(self, widget, obj3, obj4):            
             time.sleep(0.2)          
@@ -262,69 +268,7 @@ class FoobNIX:
                 self.play_thread_id = None
                 self.player.set_state(gst.STATE_NULL)
                 self.button.set_label("Start")
-                self.time_label.set_text("00:00 / 00:00")
-                                               
-       
-    
-        
-                                
-class wineDialog:
-    """This class is used to show wineDlg"""
-    
-    def __init__(self, wine="", winery="", grape="", year=""):
-    
-                #setup the glade file
-                self.gladefile = "pywine.glade"
-                #setup the wine that we will return
-                self.wine = Wine(wine, winery, grape, year)
-                
-    def run(self):
-                """This function will show the wineDlg"""    
-                
-                #load the dialog from the glade file      
-                self.wTree = gtk.glade.XML(self.gladefile, "wineDlg") 
-                #Get the actual dialog widget
-                self.dlg = self.wTree.get_widget("wineDlg")
-                #Get all of the Entry Widgets and set their text
-                self.enWine = self.wTree.get_widget("enWine")
-                self.enWine.set_text(self.wine.wine)
-                self.enWinery = self.wTree.get_widget("enWinery")
-                self.enWinery.set_text(self.wine.winery)
-                self.enGrape = self.wTree.get_widget("enGrape")
-                self.enGrape.set_text(self.wine.grape)
-                self.enYear = self.wTree.get_widget("enYear")
-                self.enYear.set_text(self.wine.year)    
-    
-                #run the dialog and store the response                
-                self.result = self.dlg.run()
-                #get the value of the entry fields
-                self.wine.wine = self.enWine.get_text()
-                self.wine.winery = self.enWinery.get_text()
-                self.wine.grape = self.enGrape.get_text()
-                self.wine.year = self.enYear.get_text()
-                
-                #we are done with the dialog, destory it
-                self.dlg.destroy()
-                
-                #return the result and the wine
-                return self.result, self.wine
-                
-
-class Wine:
-    """This class represents all the wine information"""
-    
-    def __init__(self, wine="", winery="", grape="", year=""):
-                
-                self.wine = wine
-                self.winery = winery
-                self.grape = grape
-                self.year = year
-                
-    def getList(self):
-                """This function returns a list made up of the 
-                wine information.  It is used to add a wine to the 
-                wineList easily"""
-                return [self.wine, self.winery, self.grape, self.year]                
+                self.time_label.set_text("00:00 / 00:00")                                              
                 
 if __name__ == "__main__":
     
