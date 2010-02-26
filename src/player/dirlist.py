@@ -6,6 +6,7 @@ Created on Feb 26, 2010
 import gtk
 import os
 import LOG
+from file_utils import isDirectory
 
 class DirectoryList:
     def __init__(self, root_directory, directoryListWidget):
@@ -21,7 +22,10 @@ class DirectoryList:
     
     def addAll(self):
         level = None;
-        self.go_recursive(self.root_directory, level)    
+        self.go_recursive(self.root_directory, level) 
+    
+    def getSongsInCatalog(self, catalogPath):        
+        return []       
               
     def go_recursive(self, path, level):
             
@@ -33,7 +37,7 @@ class DirectoryList:
             full_path = path + "/" + file        
             sub = self.direcotryTreeModel.append(level, [file, full_path])              
             
-            if os.path.isdir(full_path):
+            if isDirectory(full_path):
                 LOG.debug("directory", file)                    
                 self.go_recursive(full_path, sub) 
             else:

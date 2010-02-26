@@ -23,5 +23,8 @@ class PlayList:
         self.clear()
         self.playListModel.append(None, [Song.name, Song.path])       
     
-    def addList(self):
-        pass
+    def addSongs(self, songs):
+        self.clear()
+        for song in songs:
+            self.playListModel.append(None, [song.name, song.path])
+        

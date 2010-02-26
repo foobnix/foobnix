@@ -1,18 +1,17 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--Generated with glade3 3.4.5 on Fri Feb 26 15:53:00 2010 -->
 <glade-interface>
-  <!-- interface-requires gtk+ 2.12 -->
-  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="mainWindow">
     <property name="visible">True</property>
     <property name="title" translatable="yes">PyWine</property>
-    <property name="window_position">center</property>
+    <property name="window_position">GTK_WIN_POS_CENTER</property>
     <property name="default_width">800</property>
     <property name="default_height">600</property>
     <signal name="destroy" handler="on_mainWindow_destroy"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <placeholder/>
         </child>
@@ -35,7 +34,6 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
-                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -49,10 +47,11 @@
             </child>
             <child>
               <widget class="GtkButton" id="button1">
-                <property name="label" translatable="yes">Play</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="label" translatable="yes">Play</property>
+                <property name="response_id">0</property>
                 <signal name="clicked" handler="on_button1_clicked"/>
               </widget>
               <packing>
@@ -63,10 +62,11 @@
             </child>
             <child>
               <widget class="GtkButton" id="button2">
-                <property name="label" translatable="yes">Pause</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="label" translatable="yes">Pause</property>
+                <property name="response_id">0</property>
                 <signal name="clicked" handler="on_button2_clicked"/>
               </widget>
               <packing>
@@ -77,10 +77,11 @@
             </child>
             <child>
               <widget class="GtkButton" id="button3">
-                <property name="label" translatable="yes">Stop</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="label" translatable="yes">Stop</property>
+                <property name="response_id">0</property>
                 <signal name="clicked" handler="on_button3_clicked"/>
               </widget>
               <packing>
@@ -108,14 +109,13 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">0</property>
               </packing>
             </child>
             <child>
               <widget class="GtkHScale" id="hscale1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="adjustment">47.100000000000001 0 100 1 10 10</property>
+                <property name="adjustment">0 0 100 1 10 10</property>
                 <signal name="change_value" handler="on_hscale1_change_value"/>
               </widget>
               <packing>
@@ -152,14 +152,13 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">0</property>
               </packing>
             </child>
             <child>
               <widget class="GtkHScale" id="hscale2">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="adjustment">55.700000000000003 0 100 1 10 10</property>
+                <property name="adjustment">23.5 0 100 1 10 10</property>
                 <signal name="change_value" handler="on_hscale2_change_value"/>
               </widget>
               <packing>
@@ -180,8 +179,8 @@
               <widget class="GtkScrolledWindow" id="scrolledwindow3">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
+                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                 <child>
                   <widget class="GtkTreeView" id="treeview1">
                     <property name="visible">True</property>
@@ -191,20 +190,18 @@
                   </widget>
                 </child>
               </widget>
-              <packing>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <widget class="GtkScrolledWindow" id="scrolledwindow2">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
+                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                 <child>
                   <widget class="GtkTreeView" id="treeview2">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <signal name="button_press_event" handler="on_treeview2_button_press_event"/>
                   </widget>
                 </child>
               </widget>

@@ -6,4 +6,6 @@ Created on Feb 26, 2010
 class Song:
     def __init__(self, name, path):
         self.name = name
-        self.path = path
+        self.path = path        
+    
+    
