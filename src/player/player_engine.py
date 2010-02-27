@@ -68,7 +68,6 @@ class PlayerEngine():
         self.player.get_by_name("volumeValue").set_property('volumeValue', volumeValue)  
     
     def seek(self, value):
-                        
         pos_current = self.player.query_position(self.time_format, None)[0]
         pos_max = self.player.query_duration(self.time_format, None)[0]           
         
@@ -122,10 +121,9 @@ class PlayerEngine():
                     gtk.gdk.threads_enter() #@UndefinedVariable                   
                     
                     self.timePlayingAsString = pos_str + " / " + dur_str
-                    self.timePlayingAsPersent = 100 * pos_int / dur_int
-                    
+                    self.timePlayingAsPersent = (pos_int+0.0) / dur_int                    
                     self.timeLabelWidget.set_text(self.timePlayingAsString)
-                    self.seekWiget.set_value(self.timePlayingAsPersent)
+                    self.seekWiget.set_fraction(self.timePlayingAsPersent)
                     
                     gtk.gdk.threads_leave() #@UndefinedVariable
                 time.sleep(1)

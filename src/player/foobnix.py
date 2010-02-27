@@ -16,34 +16,34 @@ class FoobNIX:
         def __init__(self):    
                             
                 self.gladefile = "foobnix.glade"  
-                self.mainWindow = gtk.glade.XML(self.gladefile, "mainWindow")
+                #self.mainWindow = gtk.glade.XML(self.gladefile, "mainWindow")
                 self.mainWindow = gtk.glade.XML(self.gladefile, "foobnixWindow")
                     
                 dic = {
-               "on_mainWindow_destroy" : gtk.main_quit,
-               "on_button1_clicked":self.onPlayButton,
-               "on_button2_clicked":self.onPauseButton,
-               "on_button3_clicked":self.onStopButton,
-               "on_hscale2_change_value": self.onVolumeChange,
-               "on_hscale1_change_value": self.onSeek,
-               "on_treeview1_button_press_event":self.onSelectDirectoryRow,
-               "on_treeview2_button_press_event":self.onSelectPlayListRow,
+               "on_foobnix_mainWindow_destroy" : gtk.main_quit,
+               "on_play_button_clicked":self.onPlayButton,
+               "on_pause_button_clicked":self.onPauseButton,
+               "on_stop_button_clicked":self.onStopButton,
+               "on_volume_hscale_change_value": self.onVolumeChange,
+               #"on_seek_progressbar_event": self.onSeek,
+               "on_directory_treeview_button_press_event":self.onSelectDirectoryRow,
+               "on_playlist_treeview_button_press_event":self.onSelectPlayListRow,
                }
                 
                 self.mainWindow.signal_autoconnect(dic)              
 
                                 
-                self.songPathWidget = self.mainWindow.get_widget("entry1")
-                self.timeLabelWidget = self.mainWindow.get_widget("label7")                
                 
-                self.volumeWidget = self.mainWindow.get_widget("hscale2")
-                self.seekWidget = self.mainWindow.get_widget("hscale1")
+                self.timeLabelWidget = self.mainWindow.get_widget("seek_progressbar")                
                 
-                self.directoryListWidget = self.mainWindow.get_widget("treeview1")
-                self.playListWidget = self.mainWindow.get_widget("treeview2")
+                self.volumeWidget = self.mainWindow.get_widget("volume_hscale")
+                self.seekWidget = self.mainWindow.get_widget("seek_progressbar")
+                
+                self.directoryListWidget = self.mainWindow.get_widget("direcotry_treeview")
+                self.playListWidget = self.mainWindow.get_widget("playlist_treeview")
                 
                 
-                self.songPathWidget.set_text("/home/ivan/Music/CD1")
+                
                 
                 self.playerEngine = PlayerEngine()
                 self.playerEngine.setTimeLabelWidget(self.timeLabelWidget)
@@ -58,7 +58,7 @@ class FoobNIX:
         
         def onPlayButton(self, event):
             LOG.debug("Start Playing")            
-            song_path = self.songPathWidget.get_text()                                                               
+                                                                           
             self.playerEngine.play(Song(None, song_path))
                         
         def onPauseButton(self, event):            
@@ -74,7 +74,7 @@ class FoobNIX:
             #left double click     
             if is_double_click(event):                
                 song = getSongFromWidget(self.directoryListWidget,0,1)                 
-                self.songPathWidget.set_text(song.path)
+                
                 
                 if not isDirectory(song.path):
                     self.playList.addSong(song)
@@ -88,14 +88,14 @@ class FoobNIX:
             if is_double_click(event):
                 self.playListWidget
                 song = getSongFromWidget(self.playListWidget,0,2)
-                self.songPathWidget.set_text(song.path)
+                
                 
                 self.playList.setActive(song)                    
                 
                 self.playerEngine.forcePlay(song)
                                                        
 
-        def onSeek(self, widget, obj3, value):            
+        def onSeek(self, widget, value):            
             self.playerEngine.seek(value);
             
 if __name__ == "__main__":
