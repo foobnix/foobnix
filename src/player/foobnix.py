@@ -10,6 +10,7 @@ from file_utils import getAllSongsByDirectory, isDirectory, getSongFromWidget
 from playlist import PlayList
 from song import Song
 from dirlist import DirectoryList
+from confguration import FNConfiguration
 
 
 class FoobNIX:
@@ -20,7 +21,7 @@ class FoobNIX:
                 self.mainWindow = gtk.glade.XML(self.gladefile, "foobnixWindow")
                 #self.mainWindow = gtk.glade.XML(self.gladefile)
                 dic = {
-               "on_foobnix_mainWindow_destroy" : gtk.main_quit,
+               "on_foobnix_mainWindow_destroy" : self.quitApp,
                "on_play_button_clicked":self.onPlayButton,
                "on_pause_button_clicked":self.onPauseButton,
                "on_stop_button_clicked":self.onStopButton,
@@ -53,6 +54,46 @@ class FoobNIX:
                 
                 self.directoryListWidget = self.mainWindow.get_widget("direcotry_treeview")
                 self.playListWidget = self.mainWindow.get_widget("playlist_treeview")
+                                              
+                
+                          
+                self.menuBar = self.mainWindow.get_widget("menubar3")
+                          
+                             
+                
+                bg_color =  self.window.get_style().bg[gtk.STATE_NORMAL]
+                self.menuBar.modify_bg(gtk.STATE_NORMAL,bg_color)
+                
+                
+                color = gtk.gdk.color_parse('BLACK')            
+                
+                items = self.menuBar.get_children()
+                
+                for item in items:
+                    current = item.get_children()[0]
+                    print current
+                    current.modify_fg(gtk.STATE_NORMAL, color)              
+                
+
+                
+                
+                
+
+                
+
+
+                
+
+
+                #print self.toolBar.get_style()
+                #print self.menuItem1.get_style()
+                
+                #self.menuBar.get_style().set_background(self.window1, gtk.STATE_NORMAL)
+
+                
+                
+                
+                
                 
                 
                 
@@ -60,7 +101,8 @@ class FoobNIX:
                 
                 
                 #Directory list panel
-                self.directoryList = DirectoryList("/home/ivan/Music/!DL", self.directoryListWidget)
+                
+                self.directoryList = DirectoryList("/home/ivan/Music/CD1", self.directoryListWidget)
                 self.playList = PlayList(self.playListWidget)     
                 
                 self.playerEngine = PlayerEngine(self.playList)
@@ -96,11 +138,16 @@ class FoobNIX:
             
             self.volumeWidget.set_value(volume * 100)    
             print volume
-                        
+                     
+        
+        def quitApp(self, *args):                
+            gtk.main_quit()
+            FNConfiguration.save()
+            LOG.debug("configuration save")
                             
         def iconPopup(self,*args):
             print "Icon PopUp"            
-            gtk.main_quit()
+            self.quitApp
                         
         def onPauseButton(self, event):            
             self.playerEngine.pause()

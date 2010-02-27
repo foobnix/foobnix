@@ -1,0 +1,15 @@
+(iconfguration
+FNConfiguration
+p0
+(dp1
+S'mediaLibraryPath'
+p2
+S'/home/ivan/Music'
+p3
+sS'currentSongIndex'
+p4
+NsS'currentPlayListSongs'
+p5
+NsS'currentSong'
+p6
+Nsb.

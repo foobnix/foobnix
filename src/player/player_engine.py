@@ -71,7 +71,7 @@ class PlayerEngine():
     def _playCurrentSong(self, song_index):        
         playListLenght = len(self.playlistSongs)
                 
-        if 0 <= song_index <= playListLenght:
+        if 0 <= song_index < playListLenght:
             self.currentSong = self.playlistSongs[self.currentIndex]
             print self.currentSong                     
             self.forcePlay(self.currentSong)
