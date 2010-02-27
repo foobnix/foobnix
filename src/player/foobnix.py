@@ -14,7 +14,16 @@ from confguration import FNConfiguration
 
 
 class FoobNIX:
-        def __init__(self):    
+        def __init__(self): 
+                rc_st =''' 
+                            style "menubar-style" { 
+                                GtkMenuBar::shadow_type = none
+                                GtkMenuBar::internal-padding = 0                                 
+                                }                         
+                             class "GtkMenuBar" style "menubar-style"
+                        '''
+                print rc_st
+                gtk.rc_parse_string(rc_st)   
                             
                 self.gladefile = "foobnix.glade"  
                 #self.mainWindow = gtk.glade.XML(self.gladefile, "mainWindow")
@@ -58,31 +67,21 @@ class FoobNIX:
                 
                           
                 self.menuBar = self.mainWindow.get_widget("menubar3")
-                          
-                             
+                self.labelColor = self.mainWindow.get_widget("label31")
                 
-                bg_color =  self.window.get_style().bg[gtk.STATE_NORMAL]
+                bg_color =  self.labelColor.get_style().bg[gtk.STATE_NORMAL]
+                txt_color = self.labelColor.get_style().fg[gtk.STATE_NORMAL]
+                
+                
                 self.menuBar.modify_bg(gtk.STATE_NORMAL,bg_color)
-                
-                
-                color = gtk.gdk.color_parse('BLACK')            
-                
                 
                 items = self.menuBar.get_children()
                 #print self.menuBar.shadow_type(gtk.SHADOW_NONE)
-                rc_st =''' 
-                            style "menubar-style" { 
-                                GtkMenuBar::shadow_type = none
-                                GtkMenuBar::internal-padding = 0                                 
-                                }                         
-                             class "GtkMenuBar" style "menubar-style"
-                        '''
-                print rc_st
-                gtk.rc_parse_string(rc_st)
+               
                 
                 for item in items:
                     current = item.get_children()[0]                
-                    current.modify_fg(gtk.STATE_NORMAL, color)              
+                    current.modify_fg(gtk.STATE_NORMAL, txt_color)              
                 
 
                 
