@@ -154,12 +154,12 @@ class FoobNIX:
         
         def quitApp(self, *args):                
             gtk.main_quit()
-            FNConfiguration.save()
+            #FNConfiguration.save()
             LOG.debug("configuration save")
                             
-        def iconPopup(self,*args):
+        def iconPopup(self, *args):
             print "Icon PopUp"            
-            self.quitApp
+            gtk.main_quit()
                         
         def onPauseButton(self, event):            
             self.playerEngine.pause()
