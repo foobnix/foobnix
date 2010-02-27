@@ -22,7 +22,7 @@ class FoobNIX:
                                 }                         
                              class "GtkMenuBar" style "menubar-style"
                         '''
-                print rc_st
+                #set custom stile for menubar
                 gtk.rc_parse_string(rc_st)   
                             
                 self.gladefile = "foobnix.glade"  
@@ -37,7 +37,8 @@ class FoobNIX:
                "on_next_button_clicked":self.onPlayNextButton,
                "on_prev_button_clicked":self.onPlayPrevButton,
                "on_volume_hscale_change_value": self.onVolumeChange,
-               #"on_seek_progressbar_event": self.onSeek,
+               "on_scroll_event": self.onScrollSeek,
+               "on_button_press_event": self.onMouseClickSeek,
                "on_directory_treeview_button_press_event":self.onSelectDirectoryRow,
                "on_playlist_treeview_button_press_event":self.onSelectPlayListRow,
                }
@@ -94,14 +95,6 @@ class FoobNIX:
                 
 
 
-                #print self.toolBar.get_style()
-                #print self.menuItem1.get_style()
-                
-                #self.menuBar.get_style().set_background(self.window1, gtk.STATE_NORMAL)
-
-                
-                
-                
                 
                 
                 
@@ -125,7 +118,17 @@ class FoobNIX:
             LOG.debug("Start Playing")            
                                                                            
             self.playerEngine.play()
-        
+            
+        def onScrollSeek(self, *events):
+            print "scroll"
+            
+        def onMouseClickSeek(self, widget, event):    
+            if event.button == 1:
+                width = self.seekWidget.allocation.width          
+                x =  event.x
+                self.playerEngine.seek((x+0.0) / width * 100);            
+
+            
         def hideWindow(self, *args):
             self.window.hide()
             
