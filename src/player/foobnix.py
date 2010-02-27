@@ -36,6 +36,7 @@ class FoobNIX:
                 self.icon.set_from_stock("gtk-media-play")
                 self.icon.connect("activate", self.iconClick)
                 self.icon.connect("popup-menu", self.iconPopup)
+                self.icon.connect("scroll-event", self.scrollChanged)
                 
                 self.isShow = True
                                 
@@ -70,6 +71,9 @@ class FoobNIX:
                                                                            
             self.playerEngine.play()
         
+        def hideWindow(self, *args):
+            self.window.hide()
+            
         def iconClick(self, *args):
             if self.isShow:
                 self.window.hide()                
@@ -79,6 +83,17 @@ class FoobNIX:
             self.isShow = not self.isShow
             print "Icon Click"
             
+        def scrollChanged(self, arg1, event):            
+            volume = self.player.get_by_name("volume").get_property('volume');            
+            if event.direction == gtk.gdk.SCROLL_UP: #@UndefinedVariable
+                self.player.get_by_name("volume").set_property('volume', volume + 0.05)                
+            else:
+                self.player.get_by_name("volume").set_property('volume', volume - 0.05)
+            
+            self.volumeWidget.set_value(volume * 100)    
+            print volume
+                        
+                            
         def iconPopup(self,*args):
             print "Icon PopUp"            
             gtk.main_quit()
