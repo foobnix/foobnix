@@ -67,11 +67,21 @@ class FoobNIX:
                 
                 color = gtk.gdk.color_parse('BLACK')            
                 
+                
                 items = self.menuBar.get_children()
+                #print self.menuBar.shadow_type(gtk.SHADOW_NONE)
+                rc_st =''' 
+                            style "menubar-style" { 
+                                GtkMenuBar::shadow_type = none
+                                GtkMenuBar::internal-padding = 0                                 
+                                }                         
+                             class "GtkMenuBar" style "menubar-style"
+                        '''
+                print rc_st
+                gtk.rc_parse_string(rc_st)
                 
                 for item in items:
-                    current = item.get_children()[0]
-                    print current
+                    current = item.get_children()[0]                
                     current.modify_fg(gtk.STATE_NORMAL, color)              
                 
 
