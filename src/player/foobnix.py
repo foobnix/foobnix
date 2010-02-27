@@ -30,11 +30,20 @@ class FoobNIX:
                "on_playlist_treeview_button_press_event":self.onSelectPlayListRow,
                }
                 
-                self.mainWindow.signal_autoconnect(dic)              
+                self.mainWindow.signal_autoconnect(dic)
+                
+                self.icon = gtk.StatusIcon()
+                self.icon.set_from_stock("gtk-media-play")
+                self.icon.connect("activate", self.iconClick)
+                self.icon.connect("popup-menu", self.iconPopup)
+                
 
                                 
                 
-                self.timeLabelWidget = self.mainWindow.get_widget("seek_progressbar")                
+                self.timeLabelWidget = self.mainWindow.get_widget("seek_progressbar")
+                self.windows = self.mainWindow.get_widget("foobnixWindow")    
+                print self.mainWindow
+                            
                 
                 self.volumeWidget = self.mainWindow.get_widget("volume_hscale")
                 self.seekWidget = self.mainWindow.get_widget("seek_progressbar")
@@ -59,7 +68,14 @@ class FoobNIX:
         def onPlayButton(self, event):
             LOG.debug("Start Playing")            
                                                                            
-            self.playerEngine.play(Song(None, song_path))
+            self.playerEngine.play()
+        
+        def iconClick(self, *args):
+            print "Icon Click"
+            
+        def iconPopup(self,*args):
+            print "Icon PopUp"
+            gtk.main_quit()
                         
         def onPauseButton(self, event):            
             self.playerEngine.pause()

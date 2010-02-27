@@ -225,7 +225,9 @@
     <property name="width_request">800</property>
     <property name="height_request">600</property>
     <property name="visible">True</property>
+    <property name="title" translatable="yes">Title</property>
     <property name="window_position">center</property>
+    <property name="icon_name">media-playback-start</property>
     <signal name="destroy" handler="on_foobnix_mainWindow_destroy"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
@@ -508,7 +510,7 @@
                 <property name="show_text">True</property>
                 <property name="text" translatable="yes">00:00 / 00:00</property>
                 <property name="ellipsize">start</property>
-                <property name="adjustment">1 0 100 100 100 1</property>
+                <property name="adjustment">0 0 100 100 100 1</property>
                 <property name="discrete_blocks">100</property>
               </widget>
               <packing>

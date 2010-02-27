@@ -49,9 +49,12 @@ class PlayerEngine():
         self.play(song)
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
         
-    def play(self, song):        
-        self.currentSong = song;
-        self.runPlaylist()
+    def play(self, song=None):
+        if song:        
+            self.currentSong = song;
+            self.runPlaylist()
+        else:
+            self.runPlaylist()
     
     def playList(self, songs):
         self.playlist = songs;        
