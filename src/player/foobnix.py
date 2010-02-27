@@ -24,6 +24,8 @@ class FoobNIX:
                "on_play_button_clicked":self.onPlayButton,
                "on_pause_button_clicked":self.onPauseButton,
                "on_stop_button_clicked":self.onStopButton,
+               "on_next_button_clicked":self.onPlayNextButton,
+               "on_prev_button_clicked":self.onPlayPrevButton,
                "on_volume_hscale_change_value": self.onVolumeChange,
                #"on_seek_progressbar_event": self.onSeek,
                "on_directory_treeview_button_press_event":self.onSelectDirectoryRow,
@@ -55,15 +57,17 @@ class FoobNIX:
                 
                 
                 
-                self.playerEngine = PlayerEngine()
-                self.playerEngine.setTimeLabelWidget(self.timeLabelWidget)
-                self.playerEngine.setSeekWidget(self.seekWidget)
                 
-                self.player = self.playerEngine.getPlaer()
                 
                 #Directory list panel
                 self.directoryList = DirectoryList("/home/ivan/Music/!DL", self.directoryListWidget)
-                self.playList = PlayList(self.playListWidget)                
+                self.playList = PlayList(self.playListWidget)     
+                
+                self.playerEngine = PlayerEngine(self.playList)
+                self.playerEngine.setTimeLabelWidget(self.timeLabelWidget)
+                self.playerEngine.setSeekWidget(self.seekWidget)
+                
+                self.player = self.playerEngine.getPlaer()           
                 
         
         def onPlayButton(self, event):
@@ -103,6 +107,12 @@ class FoobNIX:
                         
         def onStopButton(self, event):
             self.playerEngine.stop()            
+        
+        def onPlayNextButton(self, event):
+            self.playerEngine.next()
+        
+        def onPlayPrevButton(self, event):
+            self.playerEngine.prev()        
             
         def onVolumeChange(self, widget, obj3, volume):
             self.player.get_by_name("volume").set_property('volume', volume / 100)
@@ -127,7 +137,7 @@ class FoobNIX:
                 song = getSongFromWidget(self.playListWidget,0,2)
                 
                 
-                self.playList.setActive(song)                    
+                self.playList.setCursorToSong(song)                    
                 
                 self.playerEngine.forcePlay(song)
                                                        

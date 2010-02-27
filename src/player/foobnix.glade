@@ -214,6 +214,7 @@
                     <property name="label" translatable="yes">toolbutton10</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-media-previous</property>
+                    <signal name="clicked" handler="on_prev_button_clicked"/>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
@@ -226,6 +227,7 @@
                     <property name="label" translatable="yes">toolbutton11</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-media-next</property>
+                    <signal name="clicked" handler="on_next_button_clicked"/>
                   </widget>
                   <packing>
                     <property name="expand">False</property>

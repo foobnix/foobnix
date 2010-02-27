@@ -39,6 +39,11 @@ def getSongFromWidget(widget, name_pos, path_pos):
     
     return Song(song_name, song_path)                   
 
-
+def getSongPosition(song, songs):
+    for i in range(len(songs)):
+        tempSong = songs[i]
+        if tempSong.path == song.path:
+            return i                
+    return 0
 
 

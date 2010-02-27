@@ -10,9 +10,11 @@ import thread
 import LOG
 from time_utils import convert_ns
 import gtk
+from file_utils import getSongPosition
 
 class PlayerEngine():
-    def __init__(self):
+    def __init__(self, playListEngine):
+        self.playListEngine = playListEngine
         self.player = gst.Pipeline("player")
         source = gst.element_factory_make("filesrc", "file-source")
         decoder = gst.element_factory_make("mad", "mp3-decoder")
@@ -26,7 +28,7 @@ class PlayerEngine():
         self.play_thread_id = None       
     
         self.stop()
-        self.playlist = []
+        self.playlistSongs = []
         self.currentSong = None
         self.currentIndex = 0;
         
@@ -44,9 +46,11 @@ class PlayerEngine():
     def getPlaer(self):
         return self.player
     
-    def forcePlay(self,song):
+    def forcePlay(self, song):
         self.stop()
         self.play(song)
+        self.currentSong = song
+        self.currentIndex = getSongPosition(song,self.playlistSongs)
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
         
     def play(self, song=None):
@@ -56,8 +60,26 @@ class PlayerEngine():
         else:
             self.runPlaylist()
     
+    def next(self):
+        self.currentIndex += 1;
+        self._playCurrentSong(self.currentIndex)
+        
+    def prev(self):
+        self.currentIndex -= 1;
+        self._playCurrentSong(self.currentIndex)    
+        
+    def _playCurrentSong(self, song_index):        
+        playListLenght = len(self.playlistSongs)
+                
+        if 0 <= song_index <= playListLenght:
+            self.currentSong = self.playlistSongs[self.currentIndex]
+            print self.currentSong                     
+            self.forcePlay(self.currentSong)
+            self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
+            self.playListEngine.setCursorToSong(self.currentSong)                
+    
     def playList(self, songs):
-        self.playlist = songs;        
+        self.playlistSongs = songs;        
         self.currentSong = songs[0];
         self.runPlaylist()    
         
@@ -124,7 +146,7 @@ class PlayerEngine():
                     gtk.gdk.threads_enter() #@UndefinedVariable                   
                     
                     self.timePlayingAsString = pos_str + " / " + dur_str
-                    self.timePlayingAsPersent = (pos_int+0.0) / dur_int                    
+                    self.timePlayingAsPersent = (pos_int + 0.0) / dur_int                    
                     self.timeLabelWidget.set_text(self.timePlayingAsString)
                     self.seekWiget.set_fraction(self.timePlayingAsPersent)
                     
@@ -143,8 +165,8 @@ class PlayerEngine():
                 gtk.gdk.threads_enter() #@UndefinedVariable
                 self.currentIndex += 1;
                 
-                if self.currentIndex < len(self.playlist):
-                    self.currentSong = self.playlist[self.currentIndex]
+                if self.currentIndex < len(self.playlistSongs):
+                    self.currentSong = self.playlistSongs[self.currentIndex]
                     print self.currentSong                     
                     self.forcePlay(self.currentSong)
                     self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)                    

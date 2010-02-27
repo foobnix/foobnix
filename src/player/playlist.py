@@ -6,6 +6,8 @@ Created on Feb 26, 2010
 import gtk
 from song import Song
 import gobject
+import LOG
+from file_utils import getSongPosition
 
 class PlayList:    
     def __init__(self, playListWidget):
@@ -44,15 +46,10 @@ class PlayList:
         self.clear()
         self.playListModel.append([Song.name, gtk.STOCK_GO_FORWARD, Song.path])       
     
-    def setActive(self, song):
-        active_pos = 0
-        for i in range(len(self.songs)):
-            iSong = self.songs[i]            
-            if iSong.path == song.path:
-                active_pos = i
-                break               
-            
+    def setCursorToSong(self, song):
+        active_pos = getSongPosition(song, self.songs)                             
         self.addSongs(self.songs, active_pos)
+        print "active", song
     
     def addSongs(self, songs, active=0):
         self.clear()
