@@ -18,7 +18,7 @@ class FoobNIX:
                 self.gladefile = "foobnix.glade"  
                 #self.mainWindow = gtk.glade.XML(self.gladefile, "mainWindow")
                 self.mainWindow = gtk.glade.XML(self.gladefile, "foobnixWindow")
-                    
+                #self.mainWindow = gtk.glade.XML(self.gladefile)
                 dic = {
                "on_foobnix_mainWindow_destroy" : gtk.main_quit,
                "on_play_button_clicked":self.onPlayButton,
@@ -37,12 +37,12 @@ class FoobNIX:
                 self.icon.connect("activate", self.iconClick)
                 self.icon.connect("popup-menu", self.iconPopup)
                 
-
+                self.isShow = True
                                 
                 
                 self.timeLabelWidget = self.mainWindow.get_widget("seek_progressbar")
-                self.windows = self.mainWindow.get_widget("foobnixWindow")    
-                print self.mainWindow
+                self.window = self.mainWindow.get_widget("foobnixWindow")    
+                self.window.set_title("title")
                             
                 
                 self.volumeWidget = self.mainWindow.get_widget("volume_hscale")
@@ -71,10 +71,16 @@ class FoobNIX:
             self.playerEngine.play()
         
         def iconClick(self, *args):
+            if self.isShow:
+                self.window.hide()                
+            else:
+                self.window.show()
+            
+            self.isShow = not self.isShow
             print "Icon Click"
             
         def iconPopup(self,*args):
-            print "Icon PopUp"
+            print "Icon PopUp"            
             gtk.main_quit()
                         
         def onPauseButton(self, event):            
