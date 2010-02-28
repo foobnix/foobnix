@@ -11,6 +11,7 @@ from playlist import PlayList
 from song import Song
 from dirlist import DirectoryList
 from confguration import FoobNixConf
+from songtags_engine import SongTagsEngine
 
 
 class FoobNIX:
@@ -65,6 +66,8 @@ class FoobNIX:
                 
                 self.directoryListWidget = self.mainWindow.get_widget("direcotry_treeview")
                 self.playListWidget = self.mainWindow.get_widget("playlist_treeview")
+                self.tagsTreeView = self.mainWindow.get_widget("song_tags_treeview")
+                
                 self.musicLibraryFileChooser = self.mainWindow.get_widget("filechooserbutton1")
                 
              
@@ -98,6 +101,8 @@ class FoobNIX:
                 self.playerEngine.setTimeLabelWidget(self.timeLabelWidget)
                 self.playerEngine.setSeekWidget(self.seekWidget)
                 self.playerEngine.setWindow(self.window)
+                self.playerEngine.setTagsWidget(self.tagsTreeView)
+                               
                 
                 self.player = self.playerEngine.getPlaer()           
                 

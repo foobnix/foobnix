@@ -11,6 +11,7 @@ import LOG
 from time_utils import convert_ns
 import gtk
 from file_utils import getSongPosition
+from songtags_engine import SongTagsEngine
 
 class PlayerEngine():
     def __init__(self, playListEngine):
@@ -37,6 +38,8 @@ class PlayerEngine():
         bus.connect("message", self.on_message)
         
         
+        
+        
     def setTimeLabelWidget(self, timeLabelWidget):
         self.timeLabelWidget = timeLabelWidget
     
@@ -44,7 +47,10 @@ class PlayerEngine():
         self.seekWiget = seekWidget
     
     def setWindow(self, mainWindow):
-        self.mainWindow = mainWindow    
+        self.mainWindow = mainWindow   
+        
+    def setTagsWidget (self, tagsWidget):       
+        self.tagsEngine = SongTagsEngine(tagsWidget)      
     
     def getPlaer(self):
         return self.player
@@ -55,7 +61,9 @@ class PlayerEngine():
         self.currentSong = song
         self.currentIndex = getSongPosition(song,self.playlistSongs)
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
+        
         self.mainWindow.set_title(self.currentSong.getFullDescription())
+        self.tagsEngine.populate(song)
         
     def play(self, song=None):
         if song:        
@@ -81,7 +89,8 @@ class PlayerEngine():
             self.forcePlay(self.currentSong)
             self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
             self.playListEngine.setCursorToSong(self.currentSong)
-            self.mainWindow.set_title(self.currentSong.getFullDescription())                
+            self.mainWindow.set_title(self.currentSong.getFullDescription())
+            self.tagsEngine.populate(self.currentSong)                
     
     def playList(self, songs):
         self.playlistSongs = songs;        
@@ -93,7 +102,8 @@ class PlayerEngine():
         self.player.get_by_name("file-source").set_property("location", self.currentSong.path)        
         self.player.set_state(gst.STATE_PLAYING)        
         self.play_thread_id = thread.start_new_thread(self.play_thread, ()) 
-        self.mainWindow.set_title(self.currentSong.getFullDescription())    
+        self.mainWindow.set_title(self.currentSong.getFullDescription())
+        self.tagsEngine.populate(self.currentSong)    
        
     def volume(self, volumeValue):  
         self.player.get_by_name("volumeValue").set_property('volumeValue', volumeValue)  
