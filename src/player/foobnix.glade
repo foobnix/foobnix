@@ -263,7 +263,7 @@
               <widget class="GtkHScale" id="volume_hscale">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="adjustment">22.5 0 100 1 10 10</property>
+                <property name="adjustment">40 1 100 1 10 10</property>
                 <property name="draw_value">False</property>
                 <signal name="change_value" handler="on_volume_hscale_change_value"/>
               </widget>
@@ -413,11 +413,60 @@
                           </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <widget class="GtkVBox" id="vbox3">
+                            <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <widget class="GtkHBox" id="hbox1">
+                                <property name="visible">True</property>
+                                <child>
+                                  <widget class="GtkLabel" id="label2">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">Music dir:</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="GtkFileChooserButton" id="filechooserbutton1">
+                                    <property name="visible">True</property>
+                                    <property name="create_folders">False</property>
+                                    <property name="action">select-folder</property>
+                                    <signal name="file_set" handler="on_filechooserbutton1_file_set"/>
+                                    <signal name="current_folder_changed" handler="on_filechooserbutton1_current_folder_changed"/>
+                                  </widget>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </widget>
+                          <packing>
+                            <property name="position">2</property>
+                          </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <widget class="GtkLabel" id="label1">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Location</property>
+                          </widget>
                           <packing>
+                            <property name="position">2</property>
+                            <property name="tab_fill">False</property>
                             <property name="type">tab</property>
                           </packing>
                         </child>

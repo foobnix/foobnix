@@ -40,7 +40,8 @@ class FoobNIX:
                "on_scroll_event": self.onScrollSeek,
                "on_button_press_event": self.onMouseClickSeek,
                "on_directory_treeview_button_press_event":self.onSelectDirectoryRow,
-               "on_playlist_treeview_button_press_event":self.onSelectPlayListRow,
+               "on_playlist_treeview_button_press_event":self.onSelectPlayListRow,               
+               "on_filechooserbutton1_current_folder_changed":self.onChooseMusicDirectory
                }
                 
                 self.mainWindow.signal_autoconnect(dic)
@@ -64,6 +65,9 @@ class FoobNIX:
                 
                 self.directoryListWidget = self.mainWindow.get_widget("direcotry_treeview")
                 self.playListWidget = self.mainWindow.get_widget("playlist_treeview")
+                self.musicLibraryFileChooser = self.mainWindow.get_widget("filechooserbutton1")
+                
+             
                                               
                 
                           
@@ -83,23 +87,6 @@ class FoobNIX:
                 for item in items:
                     current = item.get_children()[0]                
                     current.modify_fg(gtk.STATE_NORMAL, txt_color)              
-                
-
-                
-                
-                
-
-                
-
-
-                
-
-
-                
-                
-                
-                
-                
                 
                 
                 #Directory list panel
@@ -150,7 +137,13 @@ class FoobNIX:
             
             self.volumeWidget.set_value(volume * 100)    
             print volume
-                     
+        
+        
+        def onChooseMusicDirectory(self, path):
+            root_direcotry =  self.musicLibraryFileChooser.get_filename()
+            LOG.debug(root_direcotry)
+            self.directoryList.updateDirctoryByPath(root_direcotry)
+
         
         def quitApp(self, *args):                
             gtk.main_quit()

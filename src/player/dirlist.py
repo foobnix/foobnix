@@ -19,6 +19,12 @@ class DirectoryList:
         directoryListWidget.set_model(self.direcotryTreeModel)
 
         self.addAll()
+        
+        
+    def updateDirctoryByPath(self, root_direcotry):
+        self.root_directory = root_direcotry
+        self.direcotryTreeModel.clear()
+        self.addAll()    
     
     def addAll(self):
         level = None;
