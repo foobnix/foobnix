@@ -163,13 +163,7 @@ class PlayerEngine():
                 
                 
                 gtk.gdk.threads_enter() #@UndefinedVariable
-                self.currentIndex += 1;
-                
-                if self.currentIndex < len(self.playlistSongs):
-                    self.currentSong = self.playlistSongs[self.currentIndex]
-                    print self.currentSong                     
-                    self.forcePlay(self.currentSong)
-                    self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)                    
+                self.next()               
                 gtk.gdk.threads_leave() #@UndefinedVariable
                 
                 

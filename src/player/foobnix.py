@@ -10,7 +10,7 @@ from file_utils import getAllSongsByDirectory, isDirectory, getSongFromWidget
 from playlist import PlayList
 from song import Song
 from dirlist import DirectoryList
-from confguration import FNConfiguration
+from confguration import FoobNixConf
 
 
 class FoobNIX:
@@ -90,8 +90,8 @@ class FoobNIX:
                 
                 
                 #Directory list panel
-                
-                self.directoryList = DirectoryList("/home/ivan/Music/CD1", self.directoryListWidget)
+                root_dir = FoobNixConf().mediaLibraryPath
+                self.directoryList = DirectoryList(root_dir, self.directoryListWidget)
                 self.playList = PlayList(self.playListWidget)     
                 
                 self.playerEngine = PlayerEngine(self.playList)
@@ -143,11 +143,13 @@ class FoobNIX:
             root_direcotry =  self.musicLibraryFileChooser.get_filename()
             LOG.debug(root_direcotry)
             self.directoryList.updateDirctoryByPath(root_direcotry)
+            FoobNixConf().mediaLibraryPath = root_direcotry
 
         
-        def quitApp(self, *args):                
+        def quitApp(self, *args):
+            FoobNixConf().save()               
             gtk.main_quit()
-            #FNConfiguration.save()
+            #FoobNixConf.save()
             LOG.debug("configuration save")
                             
         def iconPopup(self, *args):

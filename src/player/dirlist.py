@@ -18,8 +18,12 @@ class DirectoryList:
         self.direcotryTreeModel = gtk.TreeStore(str, str)                
         directoryListWidget.set_model(self.direcotryTreeModel)
 
-        self.addAll()
-        
+        try:
+            os.listdir(root_directory)
+            self.addAll()
+        except OSError:
+            print "No directory", root_directory
+            
         
     def updateDirctoryByPath(self, root_direcotry):
         self.root_directory = root_direcotry
