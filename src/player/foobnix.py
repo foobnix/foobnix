@@ -57,7 +57,7 @@ class FoobNIX:
                 
                 self.timeLabelWidget = self.mainWindow.get_widget("seek_progressbar")
                 self.window = self.mainWindow.get_widget("foobnixWindow")    
-                self.window.set_title("title")
+                
                             
                 
                 self.volumeWidget = self.mainWindow.get_widget("volume_hscale")
@@ -97,6 +97,7 @@ class FoobNIX:
                 self.playerEngine = PlayerEngine(self.playList)
                 self.playerEngine.setTimeLabelWidget(self.timeLabelWidget)
                 self.playerEngine.setSeekWidget(self.seekWidget)
+                self.playerEngine.setWindow(self.window)
                 
                 self.player = self.playerEngine.getPlaer()           
                 

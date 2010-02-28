@@ -42,9 +42,9 @@ class PlayList:
     def clear(self):
         self.playListModel.clear()
         
-    def addSong(self, Song):
+    def addSong(self, song):
         self.clear()
-        self.playListModel.append([Song.name, gtk.STOCK_GO_FORWARD, Song.path])       
+        self.playListModel.append([song.getShorDescription(), gtk.STOCK_GO_FORWARD, song.path])       
     
     def setCursorToSong(self, song):
         active_pos = getSongPosition(song, self.songs)                             
@@ -58,9 +58,9 @@ class PlayList:
         for i in range(len(songs)):
             song = songs[i]
             if i == active:
-                self.playListModel.append([song.name, gtk.STOCK_GO_FORWARD, song.path])
+                self.playListModel.append([song.getShorDescription(), gtk.STOCK_GO_FORWARD, song.path])
             else:
-                self.playListModel.append([song.name, None, song.path])   
+                self.playListModel.append([song.getShorDescription(), None, song.path])   
    
 
      

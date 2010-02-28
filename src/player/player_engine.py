@@ -43,6 +43,9 @@ class PlayerEngine():
     def setSeekWidget(self, seekWidget):
         self.seekWiget = seekWidget
     
+    def setWindow(self, mainWindow):
+        self.mainWindow = mainWindow    
+    
     def getPlaer(self):
         return self.player
     
@@ -52,6 +55,7 @@ class PlayerEngine():
         self.currentSong = song
         self.currentIndex = getSongPosition(song,self.playlistSongs)
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
+        self.mainWindow.set_title(self.currentSong.getFullDescription())
         
     def play(self, song=None):
         if song:        
@@ -76,7 +80,8 @@ class PlayerEngine():
             print self.currentSong                     
             self.forcePlay(self.currentSong)
             self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
-            self.playListEngine.setCursorToSong(self.currentSong)                
+            self.playListEngine.setCursorToSong(self.currentSong)
+            self.mainWindow.set_title(self.currentSong.getFullDescription())                
     
     def playList(self, songs):
         self.playlistSongs = songs;        
@@ -87,7 +92,8 @@ class PlayerEngine():
     def runPlaylist(self):
         self.player.get_by_name("file-source").set_property("location", self.currentSong.path)        
         self.player.set_state(gst.STATE_PLAYING)        
-        self.play_thread_id = thread.start_new_thread(self.play_thread, ())     
+        self.play_thread_id = thread.start_new_thread(self.play_thread, ()) 
+        self.mainWindow.set_title(self.currentSong.getFullDescription())    
        
     def volume(self, volumeValue):  
         self.player.get_by_name("volumeValue").set_property('volumeValue', volumeValue)  
