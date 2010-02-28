@@ -7,6 +7,7 @@ import gtk
 import os
 import LOG
 from file_utils import isDirectory, getExtenstion
+from confguration import FoobNixConf
 
 class DirectoryList:
     def __init__(self, root_directory, directoryListWidget):
@@ -46,7 +47,7 @@ class DirectoryList:
             
             full_path = path + "/" + file
             
-            if not isDirectory(full_path) and getExtenstion(file) not in ".mp3, .ogg":
+            if not isDirectory(full_path) and getExtenstion(file) not in FoobNixConf().supportTypes:
                 continue
                     
             sub = self.direcotryTreeModel.append(level, [file, full_path])              

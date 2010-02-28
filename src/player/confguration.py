@@ -22,6 +22,7 @@ class FoobNixConf:
     
     def __init__(self):
         self.mediaLibraryPath = "/home/ivan/Music"
+        self.supportTypes = [".mp3",".ogg",".ape",".cue", "flac"]
         self.currentSong = None
         self.currentSongIndex = None
         self.currentPlayListSongs = None

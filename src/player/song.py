@@ -7,17 +7,18 @@ from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3
 
 import os
+import LOG
 class Song:
     def __init__(self, name, path):
         self.name = name
         self.path = path
         
-        self.album = None
-        self.artist = None
-        self.title = None
-        self.date = None
-        self.genre = None
-        self.tracknumber = None
+        self.album = ""
+        self.artist = ""
+        self.title = ""
+        self.date = ""
+        self.genre = ""
+        self.tracknumber = ""
         if os.path.isfile(self.path):
             self._getMp3Tags()
     
@@ -29,11 +30,13 @@ class Song:
                             
                
     def _getMp3Tags(self):
-        audio = MP3(self.path, ID3=EasyID3)
-        self.album = audio["album"][0]
-        self.artist = audio["artist"][0]
-        self.title = audio["title"][0]
-        self.date = audio["date"][0]
-        self.genre = audio["genre"][0]
-        self.tracknumber = audio["tracknumber"][0]
-        return self
+        if self.path[-4:].lower() == ".mp3":
+            audio = MP3(self.path, ID3=EasyID3)
+            LOG.debug(EasyID3.valid_keys.keys())
+            if audio.has_key('album'): self.album = audio["album"][0]
+            if audio.has_key('artist'): self.artist = audio["artist"][0]
+            if audio.has_key('title'): self.title = audio["title"][0]
+            if audio.has_key('date'): self.date = audio["date"][0]
+            if audio.has_key('genre'): self.genre = audio["genre"][0]
+            if audio.has_key('tracknumber'): self.tracknumber = audio["tracknumber"][0]
+        

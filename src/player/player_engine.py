@@ -189,7 +189,7 @@ class PlayerEngine():
                 print "Error: %s" % err, debug
                 self.play_thread_id = None
                 self.player.set_state(gst.STATE_NULL)
-                self.button.set_label("Start")
+                
                 self.timeLabelWidget.set_text("00:00 / 00:00")
             elif t == gst.MESSAGE_SEGMENT_DONE:
                 print "MESSAGE_SEGMENT_DONE"
