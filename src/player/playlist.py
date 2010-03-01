@@ -8,6 +8,7 @@ from song import Song
 import gobject
 import LOG
 from file_utils import getSongPosition
+from confguration import FoobNixConf
 
 class PlayList:    
     def __init__(self, playListWidget):
@@ -34,6 +35,15 @@ class PlayList:
         
         self.songs = None;
         
+        if(FoobNixConf().isPlayOnStart):
+            songs = FoobNixConf().savedPlayList
+            index = FoobNixConf().savedSongIndex
+            if songs:
+                self.addSongs(songs, index)            
+            #self.currentIndex = FoobNixConf().savedSongIndex
+            #self._playCurrentSong(FoobNixConf().savedSongIndex)
+        
+        
 
     def get_icon(self, name):
         theme = gtk.icon_theme_get_default()
@@ -54,6 +64,9 @@ class PlayList:
     def addSongs(self, songs, active=0):
         self.clear()
         self.songs = songs;
+        FoobNixConf().savedPlayList=songs
+        FoobNixConf().savedSongIndex=active
+        
         
         for i in range(len(songs)):
             song = songs[i]

@@ -12,6 +12,8 @@ from time_utils import convert_ns
 import gtk
 from file_utils import getSongPosition
 from songtags_engine import SongTagsEngine
+import random
+from confguration import FoobNixConf
 
 class PlayerEngine():
     def __init__(self, playListEngine):
@@ -29,16 +31,15 @@ class PlayerEngine():
         self.play_thread_id = None       
     
         self.stop()
-        self.playlistSongs = []
+        
+        self.playlistSongs = []           
+            
         self.currentSong = None
         self.currentIndex = 0;
         
         bus = self.player.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self.on_message)
-        
-        
-        
         
     def setTimeLabelWidget(self, timeLabelWidget):
         self.timeLabelWidget = timeLabelWidget
@@ -50,8 +51,14 @@ class PlayerEngine():
         self.mainWindow = mainWindow   
         
     def setTagsWidget (self, tagsWidget):       
-        self.tagsEngine = SongTagsEngine(tagsWidget)      
+        self.tagsEngine = SongTagsEngine(tagsWidget)
+        
+    def setRandomWidget(self, randomCheckButton):
+        self.randomCheckButton = randomCheckButton
     
+    def setRepeatWidget(self, repeatCheckButton):      
+        self.repeatCheckButton = repeatCheckButton
+        
     def getPlaer(self):
         return self.player
     
@@ -62,8 +69,12 @@ class PlayerEngine():
         self.currentIndex = getSongPosition(song,self.playlistSongs)
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
         
-        self.mainWindow.set_title(self.currentSong.getFullDescription())
-        self.tagsEngine.populate(song)
+        try:
+            self.mainWindow.set_title(self.currentSong.getFullDescription())
+            self.tagsEngine.populate(song)
+        except AttributeError:
+            LOG.debug("not initialized")
+            
         
     def play(self, song=None):
         if song:        
@@ -73,13 +84,26 @@ class PlayerEngine():
             self.runPlaylist()
     
     def next(self):
-        self.currentIndex += 1;
+        self.currentIndex += 1
+        
+        '''if random enable:'''
+        if(self.randomCheckButton.get_active()):
+            rand=random.randint(1, len(self.playlistSongs))            
+            self.currentIndex = rand
+        
+        '''Play First Song when repeat'''    
+        if(self.repeatCheckButton.get_active()):
+            print "repeat"            
+            if self.currentIndex >= len(self.playlistSongs):
+                self.currentIndex = 0   
+            
+            
         self._playCurrentSong(self.currentIndex)
         
     def prev(self):
         self.currentIndex -= 1;
-        self._playCurrentSong(self.currentIndex)    
-        
+        self._playCurrentSong(self.currentIndex)
+
     def _playCurrentSong(self, song_index):        
         playListLenght = len(self.playlistSongs)
                 
@@ -90,20 +114,33 @@ class PlayerEngine():
             self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
             self.playListEngine.setCursorToSong(self.currentSong)
             self.mainWindow.set_title(self.currentSong.getFullDescription())
-            self.tagsEngine.populate(self.currentSong)                
+            self.tagsEngine.populate(self.currentSong)            
+            FoobNixConf().savedSongIndex=song_index                
     
-    def playList(self, songs):
-        self.playlistSongs = songs;        
-        self.currentSong = songs[0];
-        self.runPlaylist()    
+    def playList(self, songs, active=0):
+        self.playlistSongs = songs;
+        if len(songs) ==0:
+            return
+        
+        if active > len(songs):
+            active = 0
+            
+        print len(songs)           
+        print active
+        self.currentSong = songs[active];
+        self.runPlaylist()
+        FoobNixConf().savedPlayList=songs    
         
     
     def runPlaylist(self):
         self.player.get_by_name("file-source").set_property("location", self.currentSong.path)        
         self.player.set_state(gst.STATE_PLAYING)        
         self.play_thread_id = thread.start_new_thread(self.play_thread, ()) 
-        self.mainWindow.set_title(self.currentSong.getFullDescription())
-        self.tagsEngine.populate(self.currentSong)    
+        try:
+            self.mainWindow.set_title(self.currentSong.getFullDescription())        
+            self.tagsEngine.populate(self.currentSong)    
+        except AttributeError:
+            LOG.debug("not initialized")
        
     def volume(self, volumeValue):  
         self.player.get_by_name("volumeValue").set_property('volumeValue', volumeValue)  
@@ -118,10 +155,6 @@ class PlayerEngine():
         LOG.debug("Set position", seek_ns)
                     
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)
-        
-        
-        
-        
         
     def stop(self):        
         self.player.set_state(gst.STATE_NULL)

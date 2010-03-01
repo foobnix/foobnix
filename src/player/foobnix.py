@@ -6,7 +6,8 @@ from mouse_utils import is_double_click
 
 from player_engine import PlayerEngine
 import LOG
-from file_utils import getAllSongsByDirectory, isDirectory, getSongFromWidget
+from file_utils import getAllSongsByDirectory, isDirectory, getSongFromWidget,\
+    getSongPosition
 from playlist import PlayList
 from song import Song
 from dirlist import DirectoryList
@@ -51,9 +52,9 @@ class FoobNIX:
                 self.icon.set_from_stock("gtk-media-play")
                 self.icon.connect("activate", self.iconClick)
                 self.icon.connect("popup-menu", self.iconPopup)
-                self.icon.connect("scroll-event", self.scrollChanged)
+                #self.icon.connect("scroll-event", self.scrollChanged)
                 
-                self.isShow = True
+                self.isShowMainWindow = True
                                 
                 
                 self.timeLabelWidget = self.mainWindow.get_widget("seek_progressbar")
@@ -70,9 +71,14 @@ class FoobNIX:
                 
                 self.musicLibraryFileChooser = self.mainWindow.get_widget("filechooserbutton1")
                 
-             
-                                              
+                self.repeatCheckButton = self.mainWindow.get_widget("repeat_checkbutton")
+                self.randomCheckButton = self.mainWindow.get_widget("random_checkbutton")
+                self.playOnStart = self.mainWindow.get_widget("playonstart_checkbutton")
                 
+                
+                self.repeatCheckButton.set_active(FoobNixConf().isRepeat)
+                self.randomCheckButton.set_active(FoobNixConf().isRandom)
+                self.playOnStart.set_active(FoobNixConf().isPlayOnStart)
                           
                 self.menuBar = self.mainWindow.get_widget("menubar3")
                 self.labelColor = self.mainWindow.get_widget("label31")
@@ -102,9 +108,15 @@ class FoobNIX:
                 self.playerEngine.setSeekWidget(self.seekWidget)
                 self.playerEngine.setWindow(self.window)
                 self.playerEngine.setTagsWidget(self.tagsTreeView)
+                self.playerEngine.setRandomWidget(self.randomCheckButton)
+                self.playerEngine.setRepeatWidget(self.repeatCheckButton)
                                
                 
-                self.player = self.playerEngine.getPlaer()           
+                self.player = self.playerEngine.getPlaer()    
+                
+                if FoobNixConf().isPlayOnStart:                    
+                    self.playerEngine.playList(FoobNixConf().savedPlayList, FoobNixConf().savedSongIndex)
+                       
                 
         
         def onPlayButton(self, event):
@@ -126,12 +138,12 @@ class FoobNIX:
             self.window.hide()
             
         def iconClick(self, *args):
-            if self.isShow:
+            if self.isShowMainWindow:
                 self.window.hide()                
             else:
                 self.window.show()
             
-            self.isShow = not self.isShow
+            self.isShowMainWindow = not self.isShowMainWindow
             print "Icon Click"
             
         def scrollChanged(self, arg1, event):            
@@ -153,6 +165,8 @@ class FoobNIX:
 
         
         def quitApp(self, *args):
+            FoobNixConf().isRandom = self.randomCheckButton.get_active()
+            FoobNixConf().isRepeat = self.repeatCheckButton.get_active()
             FoobNixConf().save()               
             gtk.main_quit()
             #FoobNixConf.save()
@@ -160,7 +174,7 @@ class FoobNIX:
                             
         def iconPopup(self, *args):
             print "Icon PopUp"            
-            gtk.main_quit()
+            self.quitApp()
                         
         def onPauseButton(self, event):            
             self.playerEngine.pause()

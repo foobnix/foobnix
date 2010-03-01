@@ -5,6 +5,7 @@ Created on Feb 27, 2010
 '''
 import pickle
 import LOG
+import os
 
 
 class Singleton(type):
@@ -23,28 +24,29 @@ class FoobNixConf:
     def __init__(self):
         self.mediaLibraryPath = "/home/ivan/Music"
         self.supportTypes = [".mp3",".ogg",".ape",".cue", "flac"]
-        self.currentSong = None
-        self.currentSongIndex = None
-        self.currentPlayListSongs = None
+        self.isRandom = False
+        self.isRepeat = True
+        self.isPlayOnStart = True
+        self.savedPlayList = []
+        self.savedSongIndex = 0
+        
         
         instance = self._loadCfgFromFile()
         if instance:
-            self.mediaLibraryPath = instance.mediaLibraryPath
+            try:
+                self.mediaLibraryPath = instance.mediaLibraryPath
+                self.isRandom = instance.isRandom
+                self.isRepeat = instance.isRepeat
+                self.isPlayOnStart = instance.isPlayOnStart
+                self.savedPlayList = instance.savedPlayList
+                self.savedSongIndex = instance.savedSongIndex
+            except AttributeError:
+                LOG.debug("Configuraton attributes are changed")                
+                os.remove("foobnix_conf.pkl")
             #self.currentSong = None
             #self.currentSongIndex = None
             #self.currentPlayListSongs = None
-        
-                        
-            
 
-    def get(self):             
-        cfg = self._loadCfgFromFile()
-        if cfg:
-            self.mediaLibraryPath = cfg.mediaLibraryPath
-            self.currentSong = cfg.currentSong
-            self.currentPlayListSongs = cfg.currentPlayListSongs 
-        LOG.debug("Load from Fie")
-        return cfg    
     def save(self):
         FoobNixConf()._saveCfgToFile()               
         
