@@ -83,10 +83,11 @@ class FoobNIX:
                                 
                 
                 self.timeLabelWidget = self.mainWindowGlade.get_widget("seek_progressbar")
-                self.window = self.mainWindowGlade.get_widget("foobnixWindow")    
+                self.window = self.mainWindowGlade.get_widget("foobnixWindow")
+                self.window.maximize()    
                 self.popUp = self.popUpGlade.get_widget("popUpWindow")
                 
-                            
+                          
                 
                 self.volumeWidget = self.mainWindowGlade.get_widget("volume_hscale")
                 
@@ -102,6 +103,11 @@ class FoobNIX:
                 self.repeatCheckButton = self.mainWindowGlade.get_widget("repeat_checkbutton")
                 self.randomCheckButton = self.mainWindowGlade.get_widget("random_checkbutton")
                 self.playOnStart = self.mainWindowGlade.get_widget("playonstart_checkbutton")
+                self.vpanel = self.mainWindowGlade.get_widget("vpaned1")
+                self.hpanel = self.mainWindowGlade.get_widget("hpaned1")
+                
+                self.vpanel.set_position(FoobNixConf().vpanelPostition)
+                self.hpanel.set_position(FoobNixConf().hpanelPostition)
                                
                 
                 
@@ -173,7 +179,7 @@ class FoobNIX:
             if self.isShowMainWindow:
                 self.window.hide()                
             else:
-                self.window.show_all()
+                self.window.show()
             
             self.isShowMainWindow = not self.isShowMainWindow
             print "Icon Click"
@@ -199,6 +205,8 @@ class FoobNIX:
         def quitApp(self, *args):
             FoobNixConf().isRandom = self.randomCheckButton.get_active()
             FoobNixConf().isRepeat = self.repeatCheckButton.get_active()
+            FoobNixConf().vpanelPostition = self.vpanel.get_position()
+            FoobNixConf().hpanelPostition = self.hpanel.get_position()
             FoobNixConf().save()               
             gtk.main_quit()
             #FoobNixConf.save()

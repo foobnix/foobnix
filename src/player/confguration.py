@@ -30,6 +30,8 @@ class FoobNixConf:
         self.savedPlayList = []
         self.savedSongIndex = 0
         self.volumeValue = 0
+        self.vpanelPostition = 300
+        self.hpanelPostition = 300
         
         
         instance = self._loadCfgFromFile()
@@ -42,6 +44,8 @@ class FoobNixConf:
                 self.savedPlayList = instance.savedPlayList
                 self.savedSongIndex = instance.savedSongIndex
                 self.volumeValue = instance.volumeValue
+                self.vpanelPostition = instance.vpanelPostition
+                self.hpanelPostition = instance.hpanelPostition
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")                
                 os.remove("foobnix_conf.pkl")
