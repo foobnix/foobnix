@@ -1,0 +1,297 @@
+ccopy_reg
+_reconstructor
+p0
+(cconfguration
+FoobNixConf
+p1
+c__builtin__
+object
+p2
+Ntp3
+Rp4
+(dp5
+S'supportTypes'
+p6
+(lp7
+S'.mp3'
+p8
+aS'.ogg'
+p9
+aS'.ape'
+p10
+aS'.cue'
+p11
+aS'flac'
+p12
+asS'savedPlayList'
+p13
+(lp14
+(isong
+Song
+p15
+(dp16
+S'album'
+p17
+VThe Sound Of Nightwish Reborn  EP
+p18
+sS'name'
+p19
+S'07-Meadows Of Heaven.mp3'
+p20
+sS'artist'
+p21
+VNightwish
+p22
+sS'title'
+p23
+VMeadows Of Heaven (Orchestral Version)
+p24
+sS'genre'
+p25
+VMetal
+p26
+sS'tracknumber'
+p27
+V7
+p28
+sS'date'
+p29
+V2008
+p30
+sS'path'
+p31
+S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/07-Meadows Of Heaven.mp3'
+p32
+sba(isong
+Song
+p33
+(dp34
+g17
+VThe Sound Of Nightwish Reborn  EP
+p35
+sg19
+S'01-Eva.mp3'
+p36
+sg21
+VNightwish
+p37
+sg23
+VEva (Pre-Anette Olzon Demo Version)
+p38
+sg25
+g26
+sg27
+V1
+p39
+sg29
+V2008
+p40
+sg31
+S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/01-Eva.mp3'
+p41
+sba(isong
+Song
+p42
+(dp43
+g17
+VThe Sound Of Nightwish Reborn  EP
+p44
+sg19
+S'05-The Poet And The Pendulum.mp3'
+p45
+sg21
+VNightwish
+p46
+sg23
+VThe Poet And The Pendulum (Pre-Anette Olzon Demo Version)
+p47
+sg25
+g26
+sg27
+V5
+p48
+sg29
+V2008
+p49
+sg31
+S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/05-The Poet And The Pendulum.mp3'
+p50
+sba(isong
+Song
+p51
+(dp52
+g17
+VThe Sound Of Nightwish Reborn  EP
+p53
+sg19
+S'06-Bye Bye Beautiful.mp3'
+p54
+sg21
+VNightwish
+p55
+sg23
+VBye Bye Beautiful (DJ Orkidea Remix)
+p56
+sg25
+g26
+sg27
+V6
+p57
+sg29
+V2008
+p58
+sg31
+S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/06-Bye Bye Beautiful.mp3'
+p59
+sba(isong
+Song
+p60
+(dp61
+g17
+VThe Sound Of Nightwish Reborn  EP
+p62
+sg19
+S'02-Reach.mp3'
+p63
+sg21
+VNightwish
+p64
+sg23
+VReach (Pre-Anette Olzon Demo Version)
+p65
+sg25
+g26
+sg27
+V2
+p66
+sg29
+V2008
+p67
+sg31
+S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/02-Reach.mp3'
+p68
+sba(isong
+Song
+p69
+(dp70
+g17
+VThe Sound Of Nightwish Reborn  EP
+p71
+sg19
+S'03-While Your Lips Are Still Red.mp3'
+p72
+sg21
+VNightwish
+p73
+sg23
+VWhile Your Lips Are Still Red (B-Side)
+p74
+sg25
+g26
+sg27
+V3
+p75
+sg29
+V2008
+p76
+sg31
+S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/03-While Your Lips Are Still Red.mp3'
+p77
+sba(isong
+Song
+p78
+(dp79
+g17
+VThe Sound Of Nightwish Reborn  EP
+p80
+sg19
+S'08-Amaranth.mp3'
+p81
+sg21
+VNightwish
+p82
+sg23
+VAmaranth (Orchestral Version)
+p83
+sg25
+g26
+sg27
+V8
+p84
+sg29
+V2008
+p85
+sg31
+S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/08-Amaranth.mp3'
+p86
+sba(isong
+Song
+p87
+(dp88
+g17
+VThe Sound Of Nightwish Reborn  EP
+p89
+sg19
+S'04-The Escapist.mp3'
+p90
+sg21
+VNightwish
+p91
+sg23
+VThe Escapist (B-Side)
+p92
+sg25
+g26
+sg27
+V4
+p93
+sg29
+V2008
+p94
+sg31
+S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/04-The Escapist.mp3'
+p95
+sba(isong
+Song
+p96
+(dp97
+g17
+VThe Sound Of Nightwish Reborn  EP
+p98
+sg19
+S'09-The Escapist (Instrumental Version).mp3'
+p99
+sg21
+VNightwish
+p100
+sg23
+VThe Escapist (Instrumental Version)
+p101
+sg25
+g26
+sg27
+V9
+p102
+sg29
+V2008
+p103
+sg31
+S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/09-The Escapist (Instrumental Version).mp3'
+p104
+sbasS'isRepeat'
+p105
+I01
+sS'isPlayOnStart'
+p106
+I01
+sS'savedSongIndex'
+p107
+I2
+sS'isRandom'
+p108
+I00
+sS'mediaLibraryPath'
+p109
+S'/home/ivan/Music'
+p110
+sb.
