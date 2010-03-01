@@ -32,302 +32,200 @@ p15
 (dp16
 S'album'
 p17
-VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
+S''
 p18
 sS'name'
 p19
-S'08 Bohemian Rhapsody.mp3'
+S'04 Sun (Der Wind).mp3'
 p20
-sS'artist'
-p21
-VRoyal Philarmonic Orchestra
-p22
 sS'title'
-p23
-VBohemian Rhapsody
-p24
+p21
+g18
+sS'artist'
+p22
+g18
 sS'genre'
-p25
-VRock
-p26
+p23
+VOther
+p24
 sS'tracknumber'
-p27
-V08/10
-p28
+p25
+g18
 sS'date'
-p29
-V1994
-p30
+p26
+g18
 sS'path'
+p27
+S'/home/ivan/Music/I ging symphony/04 Sun (Der Wind).mp3'
+p28
+sba(isong
+Song
+p29
+(dp30
+g17
+g18
+sg19
+S'08 Gen (Der Berg).mp3'
 p31
-S'/home/ivan/Music/CD1/08 Bohemian Rhapsody.mp3'
+sg21
+g18
+sg22
+g18
+sg23
+g24
+sg25
+g18
+sg26
+g18
+sg27
+S'/home/ivan/Music/I ging symphony/08 Gen (Der Berg).mp3'
 p32
 sba(isong
 Song
 p33
 (dp34
 g17
-VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
-p35
+g18
 sg19
-S'04 No Son Of Mine.mp3'
-p36
+S'07 Dui (Der See).mp3'
+p35
 sg21
-VRoyal Philarmonic Orchestra
-p37
+g18
+sg22
+g18
 sg23
-VNo Son Of Mine
-p38
+g24
 sg25
-VRock
-p39
+g18
+sg26
+g18
 sg27
-V04/10
-p40
-sg29
-V1994
-p41
-sg31
-S'/home/ivan/Music/CD1/04 No Son Of Mine.mp3'
-p42
+S'/home/ivan/Music/I ging symphony/07 Dui (Der See).mp3'
+p36
 sba(isong
 Song
-p43
-(dp44
+p37
+(dp38
 g17
-VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
-p45
+g18
 sg19
-S'06 Your Song.mp3'
-p46
+S'03 Dschen (Der Donner).mp3'
+p39
 sg21
-VRoyal Philarmonic Orchestra
-p47
+g18
+sg22
+g18
 sg23
-VYour Song
-p48
+g24
 sg25
-VRock
-p49
+g18
+sg26
+g18
 sg27
-V06/10
-p50
-sg29
-V1994
+S'/home/ivan/Music/I ging symphony/03 Dschen (Der Donner).mp3'
+p40
+sba(isong
+Song
+p41
+(dp42
+g17
+g18
+sg19
+S'05 Li (Das Feuer).mp3'
+p43
+sg21
+g18
+sg22
+g18
+sg23
+g24
+sg25
+g18
+sg26
+g18
+sg27
+S'/home/ivan/Music/I ging symphony/05 Li (Das Feuer).mp3'
+p44
+sba(isong
+Song
+p45
+(dp46
+g17
+g18
+sg19
+S'06 Kan (Das Wasser).mp3'
+p47
+sg21
+g18
+sg22
+g18
+sg23
+g24
+sg25
+g18
+sg26
+g18
+sg27
+S'/home/ivan/Music/I ging symphony/06 Kan (Das Wasser).mp3'
+p48
+sba(isong
+Song
+p49
+(dp50
+g17
+g18
+sg19
+S'02 Kun (Die Erde).mp3'
 p51
-sg31
-S'/home/ivan/Music/CD1/06 Your Song.mp3'
+sg21
+g18
+sg22
+g18
+sg23
+g24
+sg25
+g18
+sg26
+g18
+sg27
+S'/home/ivan/Music/I ging symphony/02 Kun (Die Erde).mp3'
 p52
 sba(isong
 Song
 p53
 (dp54
 g17
-VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
+g18
+sg19
+S'01 Kien (Der Himmel).mp3'
 p55
-sg19
-S'02 Throwing It All Away.mp3'
+sg21
+g18
+sg22
+g18
+sg23
+g24
+sg25
+g18
+sg26
+g18
+sg27
+S'/home/ivan/Music/I ging symphony/01 Kien (Der Himmel).mp3'
 p56
-sg21
-VRoyal Philarmonic Orchestra
-p57
-sg23
-VThrowing It All Away
-p58
-sg25
-VRock
-p59
-sg27
-V02/10
-p60
-sg29
-V1994
-p61
-sg31
-S'/home/ivan/Music/CD1/02 Throwing It All Away.mp3'
-p62
-sba(isong
-Song
-p63
-(dp64
-g17
-VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
-p65
-sg19
-S'05 Another Day In Paradise.mp3'
-p66
-sg21
-VRoyal Philarmonic Orchestra
-p67
-sg23
-VAnother Day In Paradise
-p68
-sg25
-VRock
-p69
-sg27
-V05/10
-p70
-sg29
-V1994
-p71
-sg31
-S'/home/ivan/Music/CD1/05 Another Day In Paradise.mp3'
-p72
-sba(isong
-Song
-p73
-(dp74
-g17
-VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
-p75
-sg19
-S'09 Rocket Man.mp3'
-p76
-sg21
-VRoyal Philarmonic Orchestra
-p77
-sg23
-VRocket Man
-p78
-sg25
-VRock
-p79
-sg27
-V09/10
-p80
-sg29
-V1994
-p81
-sg31
-S'/home/ivan/Music/CD1/09 Rocket Man.mp3'
-p82
-sba(isong
-Song
-p83
-(dp84
-g17
-VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
-p85
-sg19
-S'07 In the Air Tonight.mp3'
-p86
-sg21
-VRoyal Philarmonic Orchestra
-p87
-sg23
-VIn the Air Tonight
-p88
-sg25
-VRock
-p89
-sg27
-V07/10
-p90
-sg29
-V1994
-p91
-sg31
-S'/home/ivan/Music/CD1/07 In the Air Tonight.mp3'
-p92
-sba(isong
-Song
-p93
-(dp94
-g17
-VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
-p95
-sg19
-S'01 Another Brick In The Wall.mp3'
-p96
-sg21
-VRoyal Philarmonic Orchestra
-p97
-sg23
-VAnother Brick In The Wall
-p98
-sg25
-VRock
-p99
-sg27
-V01/10
-p100
-sg29
-V1994
-p101
-sg31
-S'/home/ivan/Music/CD1/01 Another Brick In The Wall.mp3'
-p102
-sba(isong
-Song
-p103
-(dp104
-g17
-VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
-p105
-sg19
-S'10 The Great Gig In The Sky.mp3'
-p106
-sg21
-VRoyal Philarmonic Orchestra
-p107
-sg23
-VThe Great Gig In The Sky
-p108
-sg25
-VRock
-p109
-sg27
-V10/10
-p110
-sg29
-V1994
-p111
-sg31
-S'/home/ivan/Music/CD1/10 The Great Gig In The Sky.mp3'
-p112
-sba(isong
-Song
-p113
-(dp114
-g17
-VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
-p115
-sg19
-S"03 I Still Haven't Found What I'm Looking For.mp3"
-p116
-sg21
-VRoyal Philarmonic Orchestra
-p117
-sg23
-VI Still Haven't Found What I'm Looking For
-p118
-sg25
-VRock
-p119
-sg27
-V03/10
-p120
-sg29
-V1994
-p121
-sg31
-S"/home/ivan/Music/CD1/03 I Still Haven't Found What I'm Looking For.mp3"
-p122
 sbasS'isRepeat'
-p123
+p57
 I01
 sS'isPlayOnStart'
-p124
+p58
 I01
 sS'savedSongIndex'
-p125
+p59
 I1
 sS'isRandom'
-p126
+p60
 I00
 sS'mediaLibraryPath'
-p127
+p61
 S'/home/ivan/Music'
-p128
+p62
 sb.

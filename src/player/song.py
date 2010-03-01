@@ -23,10 +23,15 @@ class Song:
             self._getMp3Tags()
     
     def getFullDescription(self):
-        return self.artist + " - ["+self.album + "]  #"+self.tracknumber + " " + self.title
+        if self.title and self.artist and self.album:
+            return self.artist + " - ["+self.album + "]  #"+self.tracknumber + " " + self.title
+        else:
+            return self.name
     
     def getShorDescription(self):
-        return self.tracknumber +" " +  self.title + " (" + self.album + ")"
+        if self.title and self.album:
+            return self.tracknumber +" " +  self.title + " (" + self.album + ")"
+        return self.name
                             
                
     def _getMp3Tags(self):
