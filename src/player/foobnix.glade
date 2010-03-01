@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Mar  1 10:55:51 2010 -->
+<!--Generated with glade3 3.4.5 on Mon Mar  1 11:59:41 2010 -->
 <glade-interface>
   <widget class="GtkWindow" id="foobnixWindow">
     <property name="width_request">800</property>
@@ -165,6 +165,7 @@
                   </widget>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="homogeneous">False</property>
                   </packing>
                 </child>
                 <child>
@@ -241,6 +242,7 @@
                   </widget>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="homogeneous">False</property>
                   </packing>
                 </child>
               </widget>
@@ -273,6 +275,7 @@
                   </widget>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="homogeneous">False</property>
                   </packing>
                 </child>
               </widget>
@@ -283,22 +286,32 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkEventBox" id="eventbox1">
+              <widget class="GtkAspectFrame" id="aspectframe1">
+                <property name="width_request">300</property>
                 <property name="visible">True</property>
-                <signal name="button_press_event" handler="on_button_press_event"/>
-                <signal name="scroll_event" handler="on_scroll_event"/>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">GTK_SHADOW_NONE</property>
+                <property name="ratio">1</property>
                 <child>
-                  <widget class="GtkProgressBar" id="seek_progressbar">
+                  <widget class="GtkEventBox" id="eventbox2">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="show_text">True</property>
-                    <property name="text" translatable="yes">00:00 / 00:00</property>
-                    <property name="ellipsize">PANGO_ELLIPSIZE_START</property>
-                    <property name="discrete_blocks">100</property>
+                    <signal name="button_press_event" handler="on_button_press_event"/>
+                    <child>
+                      <widget class="GtkProgressBar" id="seek_progressbar">
+                        <property name="width_request">300</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="show_text">True</property>
+                        <property name="text" translatable="yes">00:00 / 00:00</property>
+                        <property name="ellipsize">PANGO_ELLIPSIZE_START</property>
+                        <property name="discrete_blocks">100</property>
+                      </widget>
+                    </child>
                   </widget>
                 </child>
               </widget>
               <packing>
+                <property name="expand">False</property>
                 <property name="position">5</property>
               </packing>
             </child>

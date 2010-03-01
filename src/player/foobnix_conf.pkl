@@ -32,266 +32,302 @@ p15
 (dp16
 S'album'
 p17
-VThe Sound Of Nightwish Reborn  EP
+VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
 p18
 sS'name'
 p19
-S'07-Meadows Of Heaven.mp3'
+S'08 Bohemian Rhapsody.mp3'
 p20
 sS'artist'
 p21
-VNightwish
+VRoyal Philarmonic Orchestra
 p22
 sS'title'
 p23
-VMeadows Of Heaven (Orchestral Version)
+VBohemian Rhapsody
 p24
 sS'genre'
 p25
-VMetal
+VRock
 p26
 sS'tracknumber'
 p27
-V7
+V08/10
 p28
 sS'date'
 p29
-V2008
+V1994
 p30
 sS'path'
 p31
-S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/07-Meadows Of Heaven.mp3'
+S'/home/ivan/Music/CD1/08 Bohemian Rhapsody.mp3'
 p32
 sba(isong
 Song
 p33
 (dp34
 g17
-VThe Sound Of Nightwish Reborn  EP
+VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
 p35
 sg19
-S'01-Eva.mp3'
+S'04 No Son Of Mine.mp3'
 p36
 sg21
-VNightwish
+VRoyal Philarmonic Orchestra
 p37
 sg23
-VEva (Pre-Anette Olzon Demo Version)
+VNo Son Of Mine
 p38
 sg25
-g26
-sg27
-V1
+VRock
 p39
-sg29
-V2008
+sg27
+V04/10
 p40
-sg31
-S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/01-Eva.mp3'
+sg29
+V1994
 p41
-sba(isong
-Song
+sg31
+S'/home/ivan/Music/CD1/04 No Son Of Mine.mp3'
 p42
-(dp43
+sba(isong
+Song
+p43
+(dp44
 g17
-VThe Sound Of Nightwish Reborn  EP
-p44
-sg19
-S'05-The Poet And The Pendulum.mp3'
+VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
 p45
-sg21
-VNightwish
+sg19
+S'06 Your Song.mp3'
 p46
-sg23
-VThe Poet And The Pendulum (Pre-Anette Olzon Demo Version)
+sg21
+VRoyal Philarmonic Orchestra
 p47
-sg25
-g26
-sg27
-V5
+sg23
+VYour Song
 p48
-sg29
-V2008
+sg25
+VRock
 p49
-sg31
-S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/05-The Poet And The Pendulum.mp3'
+sg27
+V06/10
 p50
-sba(isong
-Song
+sg29
+V1994
 p51
-(dp52
-g17
-VThe Sound Of Nightwish Reborn  EP
+sg31
+S'/home/ivan/Music/CD1/06 Your Song.mp3'
+p52
+sba(isong
+Song
 p53
-sg19
-S'06-Bye Bye Beautiful.mp3'
-p54
-sg21
-VNightwish
+(dp54
+g17
+VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
 p55
-sg23
-VBye Bye Beautiful (DJ Orkidea Remix)
+sg19
+S'02 Throwing It All Away.mp3'
 p56
-sg25
-g26
-sg27
-V6
+sg21
+VRoyal Philarmonic Orchestra
 p57
-sg29
-V2008
+sg23
+VThrowing It All Away
 p58
-sg31
-S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/06-Bye Bye Beautiful.mp3'
+sg25
+VRock
 p59
-sba(isong
-Song
+sg27
+V02/10
 p60
-(dp61
-g17
-VThe Sound Of Nightwish Reborn  EP
+sg29
+V1994
+p61
+sg31
+S'/home/ivan/Music/CD1/02 Throwing It All Away.mp3'
 p62
-sg19
-S'02-Reach.mp3'
+sba(isong
+Song
 p63
-sg21
-VNightwish
-p64
-sg23
-VReach (Pre-Anette Olzon Demo Version)
+(dp64
+g17
+VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
 p65
-sg25
-g26
-sg27
-V2
+sg19
+S'05 Another Day In Paradise.mp3'
 p66
-sg29
-V2008
+sg21
+VRoyal Philarmonic Orchestra
 p67
-sg31
-S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/02-Reach.mp3'
+sg23
+VAnother Day In Paradise
 p68
-sba(isong
-Song
+sg25
+VRock
 p69
-(dp70
-g17
-VThe Sound Of Nightwish Reborn  EP
+sg27
+V05/10
+p70
+sg29
+V1994
 p71
-sg19
-S'03-While Your Lips Are Still Red.mp3'
+sg31
+S'/home/ivan/Music/CD1/05 Another Day In Paradise.mp3'
 p72
-sg21
-VNightwish
+sba(isong
+Song
 p73
-sg23
-VWhile Your Lips Are Still Red (B-Side)
-p74
-sg25
-g26
-sg27
-V3
+(dp74
+g17
+VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
 p75
-sg29
-V2008
+sg19
+S'09 Rocket Man.mp3'
 p76
-sg31
-S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/03-While Your Lips Are Still Red.mp3'
+sg21
+VRoyal Philarmonic Orchestra
 p77
-sba(isong
-Song
+sg23
+VRocket Man
 p78
-(dp79
-g17
-VThe Sound Of Nightwish Reborn  EP
+sg25
+VRock
+p79
+sg27
+V09/10
 p80
-sg19
-S'08-Amaranth.mp3'
+sg29
+V1994
 p81
-sg21
-VNightwish
+sg31
+S'/home/ivan/Music/CD1/09 Rocket Man.mp3'
 p82
-sg23
-VAmaranth (Orchestral Version)
+sba(isong
+Song
 p83
-sg25
-g26
-sg27
-V8
-p84
-sg29
-V2008
+(dp84
+g17
+VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
 p85
-sg31
-S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/08-Amaranth.mp3'
+sg19
+S'07 In the Air Tonight.mp3'
 p86
-sba(isong
-Song
+sg21
+VRoyal Philarmonic Orchestra
 p87
-(dp88
-g17
-VThe Sound Of Nightwish Reborn  EP
-p89
-sg19
-S'04-The Escapist.mp3'
-p90
-sg21
-VNightwish
-p91
 sg23
-VThe Escapist (B-Side)
-p92
+VIn the Air Tonight
+p88
 sg25
-g26
+VRock
+p89
 sg27
-V4
-p93
+V07/10
+p90
 sg29
-V2008
-p94
+V1994
+p91
 sg31
-S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/04-The Escapist.mp3'
-p95
+S'/home/ivan/Music/CD1/07 In the Air Tonight.mp3'
+p92
 sba(isong
 Song
-p96
-(dp97
+p93
+(dp94
 g17
-VThe Sound Of Nightwish Reborn  EP
-p98
+VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
+p95
 sg19
-S'09-The Escapist (Instrumental Version).mp3'
-p99
+S'01 Another Brick In The Wall.mp3'
+p96
 sg21
-VNightwish
-p100
+VRoyal Philarmonic Orchestra
+p97
 sg23
-VThe Escapist (Instrumental Version)
-p101
+VAnother Brick In The Wall
+p98
 sg25
-g26
+VRock
+p99
 sg27
-V9
-p102
+V01/10
+p100
 sg29
-V2008
-p103
+V1994
+p101
 sg31
-S'/home/ivan/Music/nightwish/2008-The Sound Of Nightwish Reborn (VBR)/09-The Escapist (Instrumental Version).mp3'
-p104
-sbasS'isRepeat'
+S'/home/ivan/Music/CD1/01 Another Brick In The Wall.mp3'
+p102
+sba(isong
+Song
+p103
+(dp104
+g17
+VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
 p105
+sg19
+S'10 The Great Gig In The Sky.mp3'
+p106
+sg21
+VRoyal Philarmonic Orchestra
+p107
+sg23
+VThe Great Gig In The Sky
+p108
+sg25
+VRock
+p109
+sg27
+V10/10
+p110
+sg29
+V1994
+p111
+sg31
+S'/home/ivan/Music/CD1/10 The Great Gig In The Sky.mp3'
+p112
+sba(isong
+Song
+p113
+(dp114
+g17
+VThe Very Best of the Royal Philarmonic Orchestra (CD 1)
+p115
+sg19
+S"03 I Still Haven't Found What I'm Looking For.mp3"
+p116
+sg21
+VRoyal Philarmonic Orchestra
+p117
+sg23
+VI Still Haven't Found What I'm Looking For
+p118
+sg25
+VRock
+p119
+sg27
+V03/10
+p120
+sg29
+V1994
+p121
+sg31
+S"/home/ivan/Music/CD1/03 I Still Haven't Found What I'm Looking For.mp3"
+p122
+sbasS'isRepeat'
+p123
 I01
 sS'isPlayOnStart'
-p106
+p124
 I01
 sS'savedSongIndex'
-p107
-I2
+p125
+I1
 sS'isRandom'
-p108
+p126
 I00
 sS'mediaLibraryPath'
-p109
+p127
 S'/home/ivan/Music'
-p110
+p128
 sb.
