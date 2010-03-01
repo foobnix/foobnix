@@ -48,7 +48,7 @@ class PlayerEngine():
         self.seekWiget = seekWidget
     
     def setWindow(self, mainWindow):
-        self.mainWindow = mainWindow   
+        self.mainWindowGlade = mainWindow   
         
     def setTagsWidget (self, tagsWidget):       
         self.tagsEngine = SongTagsEngine(tagsWidget)
@@ -73,7 +73,7 @@ class PlayerEngine():
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
         
         try:
-            self.mainWindow.set_title(self.currentSong.getFullDescription())
+            self.mainWindowGlade.set_title(self.currentSong.getFullDescription())
             self.tagsEngine.populate(song)
         except AttributeError:
             LOG.debug("not initialized")
@@ -116,7 +116,7 @@ class PlayerEngine():
             self.forcePlay(self.currentSong)
             self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
             self.playListEngine.setCursorToSong(self.currentSong)
-            self.mainWindow.set_title(self.currentSong.getFullDescription())
+            self.mainWindowGlade.set_title(self.currentSong.getFullDescription())
             self.tagsEngine.populate(self.currentSong)            
             FoobNixConf().savedSongIndex=song_index                
     
@@ -140,7 +140,7 @@ class PlayerEngine():
         self.player.set_state(gst.STATE_PLAYING)        
         self.play_thread_id = thread.start_new_thread(self.play_thread, ()) 
         try:
-            self.mainWindow.set_title(self.currentSong.getFullDescription())        
+            self.mainWindowGlade.set_title(self.currentSong.getFullDescription())        
             self.tagsEngine.populate(self.currentSong)    
         except AttributeError:
             LOG.debug("not initialized")

@@ -6,7 +6,7 @@ from mouse_utils import is_double_click
 
 from player_engine import PlayerEngine
 import LOG
-from file_utils import getAllSongsByDirectory, isDirectory, getSongFromWidget,\
+from file_utils import getAllSongsByDirectory, isDirectory, getSongFromWidget, \
     getSongPosition
 from playlist import PlayList
 from song import Song
@@ -17,7 +17,7 @@ from songtags_engine import SongTagsEngine
 
 class FoobNIX:
         def __init__(self): 
-                rc_st =''' 
+                rc_st = ''' 
                             style "menubar-style" { 
                                 GtkMenuBar::shadow_type = none
                                 GtkMenuBar::internal-padding = 0                                 
@@ -28,11 +28,13 @@ class FoobNIX:
                 gtk.rc_parse_string(rc_st)   
                             
                 self.gladefile = "foobnix.glade"  
-                #self.mainWindow = gtk.glade.XML(self.gladefile, "mainWindow")
-                self.mainWindow = gtk.glade.XML(self.gladefile, "foobnixWindow")
-                #self.mainWindow = gtk.glade.XML(self.gladefile)
+                #self.mainWindowGlade = gtk.glade.XML(self.gladefile, "mainWindowGlade")
+                self.mainWindowGlade = gtk.glade.XML(self.gladefile, "foobnixWindow")
+                self.popUpGlade = gtk.glade.XML(self.gladefile, "popUpWindow")
+                
+                #self.mainWindowGlade = gtk.glade.XML(self.gladefile)
                 dic = {
-               "on_foobnix_mainWindow_destroy" : self.quitApp,
+               "on_foobnix_mainWindow_destroy" : self.hideWindow,
                "on_play_button_clicked":self.onPlayButton,
                "on_pause_button_clicked":self.onPauseButton,
                "on_stop_button_clicked":self.onStopButton,
@@ -42,54 +44,79 @@ class FoobNIX:
                "on_scroll_event": self.onScrollSeek,
                "on_button_press_event": self.onMouseClickSeek,
                "on_directory_treeview_button_press_event":self.onSelectDirectoryRow,
-               "on_playlist_treeview_button_press_event":self.onSelectPlayListRow,               
+               "on_playlist_treeview_button_press_event":self.onSelectPlayListRow,
                "on_filechooserbutton1_current_folder_changed":self.onChooseMusicDirectory
                }
                 
-                self.mainWindow.signal_autoconnect(dic)
+                self.mainWindowGlade.signal_autoconnect(dic)
+                
+                dicPopUp = {
+                "on_close_clicked" :self.quitApp,
+                "on_play_clicked" :self.onPlayButton,
+                "on_pause_clicked" :self.onPauseButton,
+                "on_next_clicked" :self.onPlayNextButton,
+                "on_prev_clicked" :self.onPlayPrevButton,
+                "on_cancel_clicked": self.closePopUP
+                            }
+                self.popUpGlade.signal_autoconnect(dicPopUp)
                 
                 self.icon = gtk.StatusIcon()
+                self.icon.set_tooltip("Foobnix music player")
                 self.icon.set_from_stock("gtk-media-play")
                 self.icon.connect("activate", self.iconClick)
-                self.icon.connect("popup-menu", self.iconPopup)
+                
+                menu = gtk.Menu()
+
+                for i in range(3):
+                # Copy the names to the buf.
+                    buf = "Test-undermenu - %d" % i
+        
+                    # Create a new menu-item with a name...
+                    menu_items = gtk.MenuItem(buf)
+        
+                # ...and add it to the menu.
+                    menu.append(menu_items)
+                self.icon.connect("popup-menu", self.iconPopup, menu)
                 #self.icon.connect("scroll-event", self.scrollChanged)
                 
                 self.isShowMainWindow = True
                                 
                 
-                self.timeLabelWidget = self.mainWindow.get_widget("seek_progressbar")
-                self.window = self.mainWindow.get_widget("foobnixWindow")    
+                self.timeLabelWidget = self.mainWindowGlade.get_widget("seek_progressbar")
+                self.window = self.mainWindowGlade.get_widget("foobnixWindow")    
+                self.popUp = self.popUpGlade.get_widget("popUpWindow")
                 
                             
                 
-                self.volumeWidget = self.mainWindow.get_widget("volume_hscale")
+                self.volumeWidget = self.mainWindowGlade.get_widget("volume_hscale")
                 
                 
-                self.seekWidget = self.mainWindow.get_widget("seek_progressbar")
+                self.seekWidget = self.mainWindowGlade.get_widget("seek_progressbar")
                 
-                self.directoryListWidget = self.mainWindow.get_widget("direcotry_treeview")
-                self.playListWidget = self.mainWindow.get_widget("playlist_treeview")
-                self.tagsTreeView = self.mainWindow.get_widget("song_tags_treeview")
+                self.directoryListWidget = self.mainWindowGlade.get_widget("direcotry_treeview")
+                self.playListWidget = self.mainWindowGlade.get_widget("playlist_treeview")
+                self.tagsTreeView = self.mainWindowGlade.get_widget("song_tags_treeview")
                 
-                self.musicLibraryFileChooser = self.mainWindow.get_widget("filechooserbutton1")
+                self.musicLibraryFileChooser = self.mainWindowGlade.get_widget("filechooserbutton1")
                 
-                self.repeatCheckButton = self.mainWindow.get_widget("repeat_checkbutton")
-                self.randomCheckButton = self.mainWindow.get_widget("random_checkbutton")
-                self.playOnStart = self.mainWindow.get_widget("playonstart_checkbutton")
+                self.repeatCheckButton = self.mainWindowGlade.get_widget("repeat_checkbutton")
+                self.randomCheckButton = self.mainWindowGlade.get_widget("random_checkbutton")
+                self.playOnStart = self.mainWindowGlade.get_widget("playonstart_checkbutton")
+                               
                 
                 
                 self.repeatCheckButton.set_active(FoobNixConf().isRepeat)
                 self.randomCheckButton.set_active(FoobNixConf().isRandom)
                 self.playOnStart.set_active(FoobNixConf().isPlayOnStart)
                           
-                self.menuBar = self.mainWindow.get_widget("menubar3")
-                self.labelColor = self.mainWindow.get_widget("label31")
+                self.menuBar = self.mainWindowGlade.get_widget("menubar3")
+                self.labelColor = self.mainWindowGlade.get_widget("label31")
                 
-                bg_color =  self.labelColor.get_style().bg[gtk.STATE_NORMAL]
+                bg_color = self.labelColor.get_style().bg[gtk.STATE_NORMAL]
                 txt_color = self.labelColor.get_style().fg[gtk.STATE_NORMAL]
                 
                 
-                self.menuBar.modify_bg(gtk.STATE_NORMAL,bg_color)
+                self.menuBar.modify_bg(gtk.STATE_NORMAL, bg_color)
                 
                 items = self.menuBar.get_children()
                 #print self.menuBar.shadow_type(gtk.SHADOW_NONE)
@@ -135,8 +162,8 @@ class FoobNIX:
         def onMouseClickSeek(self, widget, event):    
             if event.button == 1:
                 width = self.seekWidget.allocation.width          
-                x =  event.x
-                self.playerEngine.seek((x+0.0) / width * 100);            
+                x = event.x
+                self.playerEngine.seek((x + 0.0) / width * 100);            
 
             
         def hideWindow(self, *args):
@@ -146,7 +173,7 @@ class FoobNIX:
             if self.isShowMainWindow:
                 self.window.hide()                
             else:
-                self.window.show()
+                self.window.show_all()
             
             self.isShowMainWindow = not self.isShowMainWindow
             print "Icon Click"
@@ -163,7 +190,7 @@ class FoobNIX:
         
         
         def onChooseMusicDirectory(self, path):
-            root_direcotry =  self.musicLibraryFileChooser.get_filename()
+            root_direcotry = self.musicLibraryFileChooser.get_filename()
             LOG.debug(root_direcotry)
             self.directoryList.updateDirctoryByPath(root_direcotry)
             FoobNixConf().mediaLibraryPath = root_direcotry
@@ -177,10 +204,14 @@ class FoobNIX:
             #FoobNixConf.save()
             LOG.debug("configuration save")
                             
-        def iconPopup(self, *args):
-            print "Icon PopUp"            
-            self.quitApp()
-                        
+              
+        
+        def iconPopup(self, arg1, arg3, widget, event):
+            self.popUp.show()
+
+        def closePopUP(self, *args):
+            self.popUp.hide()
+               
         def onPauseButton(self, event):            
             self.playerEngine.pause()
                         
@@ -202,7 +233,7 @@ class FoobNIX:
         def onSelectDirectoryRow(self, widget, event):                         
             #left double click     
             if is_double_click(event):                
-                song = getSongFromWidget(self.directoryListWidget,0,1)                 
+                song = getSongFromWidget(self.directoryListWidget, 0, 1)                 
                 
                 
                 if not isDirectory(song.path):
@@ -216,7 +247,7 @@ class FoobNIX:
         def onSelectPlayListRow(self, widget, event):
             if is_double_click(event):
                 self.playListWidget
-                song = getSongFromWidget(self.playListWidget,0,2)
+                song = getSongFromWidget(self.playListWidget, 0, 2)
                 
                 
                 self.playList.setCursorToSong(song)                    
