@@ -52,7 +52,10 @@ class PlayerEngine():
         
     def setTagsWidget (self, tagsWidget):       
         self.tagsEngine = SongTagsEngine(tagsWidget)
-        
+    
+    def setVolume(self, volume):
+        self.player.get_by_name("volume").set_property('volume', volume / 100)
+            
     def setRandomWidget(self, randomCheckButton):
         self.randomCheckButton = randomCheckButton
     

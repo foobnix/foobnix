@@ -29,6 +29,7 @@ class FoobNixConf:
         self.isPlayOnStart = True
         self.savedPlayList = []
         self.savedSongIndex = 0
+        self.volumeValue = 0
         
         
         instance = self._loadCfgFromFile()
@@ -40,6 +41,7 @@ class FoobNixConf:
                 self.isPlayOnStart = instance.isPlayOnStart
                 self.savedPlayList = instance.savedPlayList
                 self.savedSongIndex = instance.savedSongIndex
+                self.volumeValue = instance.volumeValue
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")                
                 os.remove("foobnix_conf.pkl")

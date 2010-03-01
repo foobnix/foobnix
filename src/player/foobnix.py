@@ -63,6 +63,8 @@ class FoobNIX:
                             
                 
                 self.volumeWidget = self.mainWindow.get_widget("volume_hscale")
+                
+                
                 self.seekWidget = self.mainWindow.get_widget("seek_progressbar")
                 
                 self.directoryListWidget = self.mainWindow.get_widget("direcotry_treeview")
@@ -116,6 +118,9 @@ class FoobNIX:
                 
                 if FoobNixConf().isPlayOnStart:                    
                     self.playerEngine.playList(FoobNixConf().savedPlayList, FoobNixConf().savedSongIndex)
+                
+                self.volumeWidget.set_value(FoobNixConf().volumeValue)
+                self.playerEngine.setVolume(FoobNixConf().volumeValue)
                        
                 
         
@@ -189,7 +194,10 @@ class FoobNIX:
             self.playerEngine.prev()        
             
         def onVolumeChange(self, widget, obj3, volume):
-            self.player.get_by_name("volume").set_property('volume', volume / 100)
+            FoobNixConf().volumeValue = volume            
+            self.playerEngine.setVolume(volume)
+        
+        
         
         def onSelectDirectoryRow(self, widget, event):                         
             #left double click     
