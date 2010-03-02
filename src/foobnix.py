@@ -11,7 +11,7 @@ from file_utils import getAllSongsByDirectory, isDirectory, getSongFromWidget, \
 from playlist import PlayList
 from song import Song
 from dirlist import DirectoryList
-from confguration import FoobNixConf
+from confguration import FConfiguration
 from songtags_engine import SongTagsEngine
 
 from player_engine import PlayerEngine
@@ -47,7 +47,8 @@ class FoobNIX:
                "on_button_press_event": self.onMouseClickSeek,
                "on_directory_treeview_button_press_event":self.onSelectDirectoryRow,
                "on_playlist_treeview_button_press_event":self.onSelectPlayListRow,
-               "on_filechooserbutton1_current_folder_changed":self.onChooseMusicDirectory
+               "on_filechooserbutton1_current_folder_changed":self.onChooseMusicDirectory,
+               "on_file_quit_activate" :self.quitApp
                }
                 
                 self.mainWindowGlade.signal_autoconnect(dic)
@@ -108,14 +109,14 @@ class FoobNIX:
                 self.vpanel = self.mainWindowGlade.get_widget("vpaned1")
                 self.hpanel = self.mainWindowGlade.get_widget("hpaned1")
                 
-                self.vpanel.set_position(FoobNixConf().vpanelPostition)
-                self.hpanel.set_position(FoobNixConf().hpanelPostition)
+                self.vpanel.set_position(FConfiguration().vpanelPostition)
+                self.hpanel.set_position(FConfiguration().hpanelPostition)
                                
                 
                 
-                self.repeatCheckButton.set_active(FoobNixConf().isRepeat)
-                self.randomCheckButton.set_active(FoobNixConf().isRandom)
-                self.playOnStart.set_active(FoobNixConf().isPlayOnStart)
+                self.repeatCheckButton.set_active(FConfiguration().isRepeat)
+                self.randomCheckButton.set_active(FConfiguration().isRandom)
+                self.playOnStart.set_active(FConfiguration().isPlayOnStart)
                           
                 self.menuBar = self.mainWindowGlade.get_widget("menubar3")
                 self.labelColor = self.mainWindowGlade.get_widget("label31")
@@ -136,33 +137,33 @@ class FoobNIX:
                 
                 
                 #Directory list panel
-                root_dir = FoobNixConf().mediaLibraryPath
+                root_dir = FConfiguration().mediaLibraryPath
                 self.directoryList = DirectoryList(root_dir, self.directoryListWidget)
                 self.playList = PlayList(self.playListWidget)     
                 
-                self.playerEngine = PlayerEngine(self.playList)
-                self.playerEngine.setTimeLabelWidget(self.timeLabelWidget)
-                self.playerEngine.setSeekWidget(self.seekWidget)
-                self.playerEngine.setWindow(self.window)
-                self.playerEngine.setTagsWidget(self.tagsTreeView)
-                self.playerEngine.setRandomWidget(self.randomCheckButton)
-                self.playerEngine.setRepeatWidget(self.repeatCheckButton)
+                self.player = PlayerEngine(self.playList)
+                self.player.setTimeLabelWidget(self.timeLabelWidget)
+                self.player.setSeekWidget(self.seekWidget)
+                self.player.setWindow(self.window)
+                self.player.setTagsWidget(self.tagsTreeView)
+                self.player.setRandomWidget(self.randomCheckButton)
+                self.player.setRepeatWidget(self.repeatCheckButton)
                                
                 
-                self.player = self.playerEngine.getPlaer()    
+                #self.player = self.player.getPlaer()    
                 
-                if FoobNixConf().isPlayOnStart:                    
-                    self.playerEngine.playList(FoobNixConf().savedPlayList, FoobNixConf().savedSongIndex)
+                if FConfiguration().isPlayOnStart:                    
+                    self.player.playList(FConfiguration().savedPlayList, FConfiguration().savedSongIndex)
                 
-                self.volumeWidget.set_value(FoobNixConf().volumeValue)
-                self.playerEngine.setVolume(FoobNixConf().volumeValue)
+                self.volumeWidget.set_value(FConfiguration().volumeValue)
+                self.player.setVolume(FConfiguration().volumeValue)
                        
                 
         
         def onPlayButton(self, event):
             LOG.debug("Start Playing")            
                                                                            
-            self.playerEngine.play()
+            self.player.play()
             
         def onScrollSeek(self, *events):
             print "scroll"
@@ -171,7 +172,7 @@ class FoobNIX:
             if event.button == 1:
                 width = self.seekWidget.allocation.width          
                 x = event.x
-                self.playerEngine.seek((x + 0.0) / width * 100);            
+                self.player.seek((x + 0.0) / width * 100);            
 
             
         def hideWindow(self, *args):
@@ -201,15 +202,15 @@ class FoobNIX:
             root_direcotry = self.musicLibraryFileChooser.get_filename()
             LOG.debug(root_direcotry)
             self.directoryList.updateDirctoryByPath(root_direcotry)
-            FoobNixConf().mediaLibraryPath = root_direcotry
+            FConfiguration().mediaLibraryPath = root_direcotry
 
         
         def quitApp(self, *args):
-            FoobNixConf().isRandom = self.randomCheckButton.get_active()
-            FoobNixConf().isRepeat = self.repeatCheckButton.get_active()
-            FoobNixConf().vpanelPostition = self.vpanel.get_position()
-            FoobNixConf().hpanelPostition = self.hpanel.get_position()
-            FoobNixConf().save()               
+            FConfiguration().isRandom = self.randomCheckButton.get_active()
+            FConfiguration().isRepeat = self.repeatCheckButton.get_active()
+            FConfiguration().vpanelPostition = self.vpanel.get_position()
+            FConfiguration().hpanelPostition = self.hpanel.get_position()
+            FConfiguration().save()               
             gtk.main_quit()
             #FoobNixConf.save()
             LOG.debug("configuration save")
@@ -223,20 +224,20 @@ class FoobNIX:
             self.popUp.hide()
                
         def onPauseButton(self, event):            
-            self.playerEngine.pause()
+            self.player.pause()
                         
         def onStopButton(self, event):
-            self.playerEngine.stop()            
+            self.player.stop()            
         
         def onPlayNextButton(self, event):
-            self.playerEngine.next()
+            self.player.next()
         
         def onPlayPrevButton(self, event):
-            self.playerEngine.prev()        
+            self.player.prev()        
             
         def onVolumeChange(self, widget, obj3, volume):
-            FoobNixConf().volumeValue = volume            
-            self.playerEngine.setVolume(volume)
+            FConfiguration().volumeValue = volume            
+            self.player.setVolume(volume)
                 
         def onSelectDirectoryRow(self, widget, event):                         
             #left double click     
@@ -246,11 +247,11 @@ class FoobNIX:
                 
                 if not isDirectory(song.path):
                     self.playList.addSong(song)
-                    self.playerEngine.forcePlay(song)
+                    self.player.forcePlay(song)
                 else:                        
                     songs = getAllSongsByDirectory(song.path)
                     self.playList.addSongs(songs)
-                    self.playerEngine.playList(songs)
+                    self.player.playList(songs)
         
         def onSelectPlayListRow(self, widget, event):
             if is_double_click(event):
@@ -260,11 +261,11 @@ class FoobNIX:
                 
                 self.playList.setCursorToSong(song)                    
                 
-                self.playerEngine.forcePlay(song)
+                self.player.forcePlay(song)
                                                        
 
         def onSeek(self, widget, value):            
-            self.playerEngine.seek(value);
+            self.player.seek(value);
             
 if __name__ == "__main__":
     

@@ -11,7 +11,7 @@ import gtk
 from songtags_engine import SongTagsEngine
 import random
 from file_utils import getSongPosition
-from confguration import FoobNixConf
+from confguration import FConfiguration
 import LOG
 
 
@@ -28,7 +28,7 @@ class PlayerEngine():
         self.player.add(source, decoder, conv, volume, sink)
         gst.element_link_many(source, decoder, volume, conv, sink)
         
-        self.play_thread_id = None       
+        self.playerThreadId = None       
     
         self.stop()
         
@@ -118,7 +118,7 @@ class PlayerEngine():
             self.playListEngine.setCursorToSong(self.currentSong)
             self.mainWindowGlade.set_title(self.currentSong.getFullDescription())
             self.tagsEngine.populate(self.currentSong)            
-            FoobNixConf().savedSongIndex = song_index                
+            FConfiguration().savedSongIndex = song_index                
     
     def playList(self, songs, active=0):
         self.playlistSongs = songs;
@@ -132,13 +132,13 @@ class PlayerEngine():
         print active
         self.currentSong = songs[active];
         self.runPlaylist()
-        FoobNixConf().savedPlayList = songs    
+        FConfiguration().savedPlayList = songs    
         
     
     def runPlaylist(self):
         self.player.get_by_name("file-source").set_property("location", self.currentSong.path)        
         self.player.set_state(gst.STATE_PLAYING)        
-        self.play_thread_id = thread.start_new_thread(self.play_thread, ()) 
+        self.playerThreadId = thread.start_new_thread(self.play_thread, ()) 
         try:
             self.mainWindowGlade.set_title(self.currentSong.getFullDescription())        
             self.tagsEngine.populate(self.currentSong)    
@@ -168,15 +168,15 @@ class PlayerEngine():
         self.player.set_state(gst.STATE_PAUSED)  
         
     def play_thread(self):
-            print "Thread Start"
-            play_thread_id = self.play_thread_id
+            
+            play_thread_id = self.playerThreadId
             gtk.gdk.threads_enter() #@UndefinedVariable
             
             self.timeLabelWidget.set_text("00:00 / 00:00")
             
             gtk.gdk.threads_leave() #@UndefinedVariable
     
-            while play_thread_id == self.play_thread_id:
+            while play_thread_id == self.playerThreadId:
                 try:
                     time.sleep(0.2)
                     dur_int = self.player.query_duration(self.time_format, None)[0]
@@ -191,10 +191,10 @@ class PlayerEngine():
                     pass
                     
             time.sleep(0.2)
-            while play_thread_id == self.play_thread_id:
+            while play_thread_id == self.playerThreadId:
                 pos_int = self.player.query_position(self.time_format, None)[0]
                 pos_str = convert_ns(pos_int)
-                if play_thread_id == self.play_thread_id:
+                if play_thread_id == self.playerThreadId:
                     gtk.gdk.threads_enter() #@UndefinedVariable                   
                     
                     self.timePlayingAsString = pos_str + " / " + dur_str
@@ -209,7 +209,7 @@ class PlayerEngine():
             t = message.type
             if t == gst.MESSAGE_EOS:
                 print "MESSAGE_EOS"                
-                self.play_thread_id = None
+                self.playerThreadId = None
                 self.player.set_state(gst.STATE_NULL)                
                 self.timeLabelWidget.set_text("00:00 / 00:00")
                 
@@ -223,7 +223,7 @@ class PlayerEngine():
                 print "MESSAGE_ERROR"
                 err, debug = message.parse_error()
                 print "Error: %s" % err, debug
-                self.play_thread_id = None
+                self.playerThreadId = None
                 self.player.set_state(gst.STATE_NULL)
                 
                 self.timeLabelWidget.set_text("00:00 / 00:00")

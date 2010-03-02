@@ -1,0 +1,18 @@
+'''
+Created on Mar 2, 2010
+
+@author: ivan
+'''
+from type import accepts, returns
+
+@accepts(int, int)
+@returns(int)
+def some(a, b):
+    print a
+    print b
+    return ""
+    
+some(1, 5)
+
+
+

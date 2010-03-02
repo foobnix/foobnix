@@ -7,7 +7,7 @@ import os
 import LOG
 import song
 from song import Song
-from confguration import FoobNixConf
+from confguration import FConfiguration
 
 def isDirectory(path):
     return os.path.isdir(path)
@@ -17,7 +17,7 @@ def getAllSongsByDirectory(path):
     list = os.listdir(dir)
     result = []            
     for file_name in list:
-        if getExtenstion(file_name) not in FoobNixConf().supportTypes:
+        if getExtenstion(file_name) not in FConfiguration().supportTypes:
                 continue
                     
         full_path = path + "/" + file_name

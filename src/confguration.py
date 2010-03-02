@@ -18,7 +18,7 @@ class Singleton(type):
         super(Singleton, self).__init__(name, bases, dict)
         self.instance = None
 
-class FoobNixConf:
+class FConfiguration:
     __metaclass__ = Singleton
     
     def __init__(self):
@@ -54,10 +54,10 @@ class FoobNixConf:
             #self.currentPlayListSongs = None
 
     def save(self):
-        FoobNixConf()._saveCfgToFile()               
+        FConfiguration()._saveCfgToFile()               
         
     def _saveCfgToFile(self):
-        #conf = FoobNixConf()
+        #conf = FConfiguration()
         save_file = file("foobnix_conf.pkl", 'w')
         pickle.dump(self, save_file)
         save_file.close()
@@ -73,7 +73,7 @@ class FoobNixConf:
             conf = pickle.load(load_file)
         except AttributeError:
             LOG.debug("Error loading configuration")
-            conf = FoobNixConf()
+            conf = FConfiguration()
             return conf
         
         load_file.close()    

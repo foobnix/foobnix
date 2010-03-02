@@ -22,6 +22,9 @@ class Song:
         self.tracknumber = ""
         if os.path.isfile(self.path):
             self._getMp3Tags()
+            
+    def __str__(self):
+        return "Song: " + self.path
     
     def getFullDescription(self):
         if self.title and self.artist and self.album:
@@ -49,4 +52,5 @@ class Song:
             if audio and audio.has_key('date'): self.date = audio["date"][0]
             if audio and audio.has_key('genre'): self.genre = audio["genre"][0]
             if audio and audio.has_key('tracknumber'): self.tracknumber = audio["tracknumber"][0]
-        
+
+                

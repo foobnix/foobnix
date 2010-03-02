@@ -5,7 +5,7 @@ Created on Feb 26, 2010
 '''
 import gtk
 from file_utils import getSongPosition
-from confguration import FoobNixConf
+from confguration import FConfiguration
 
 class PlayList:    
     def __init__(self, playListWidget):
@@ -32,9 +32,9 @@ class PlayList:
         
         self.songs = None;
         
-        if(FoobNixConf().isPlayOnStart):
-            songs = FoobNixConf().savedPlayList
-            index = FoobNixConf().savedSongIndex
+        if(FConfiguration().isPlayOnStart):
+            songs = FConfiguration().savedPlayList
+            index = FConfiguration().savedSongIndex
             if songs:
                 self.addSongs(songs, index)            
             #self.currentIndex = FoobNixConf().savedSongIndex
@@ -61,8 +61,8 @@ class PlayList:
     def addSongs(self, songs, active=0):
         self.clear()
         self.songs = songs;
-        FoobNixConf().savedPlayList = songs
-        FoobNixConf().savedSongIndex = active
+        FConfiguration().savedPlayList = songs
+        FConfiguration().savedSongIndex = active
         
         
         for i in range(len(songs)):

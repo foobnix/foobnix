@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Mar  1 17:11:46 2010 -->
+<!--Generated with glade3 3.4.5 on Tue Mar  2 12:32:53 2010 -->
 <glade-interface>
   <widget class="GtkWindow" id="foobnixWindow">
     <property name="width_request">800</property>
@@ -65,11 +65,13 @@
                           </widget>
                         </child>
                         <child>
-                          <widget class="GtkImageMenuItem" id="imagemenuitem25">
+                          <widget class="GtkImageMenuItem" id="file_quit">
                             <property name="visible">True</property>
+                            <property name="tooltip" translatable="yes">Quit</property>
                             <property name="label">gtk-quit</property>
                             <property name="use_underline">True</property>
                             <property name="use_stock">True</property>
+                            <signal name="activate" handler="on_file_quit_activate"/>
                           </widget>
                         </child>
                       </widget>
