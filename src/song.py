@@ -34,7 +34,7 @@ class Song:
     
     def getShorDescription(self):
         if self.title and self.album:
-            return self.tracknumber + " " + self.title + " (" + self.album + ")"
+            return self.title + " (" + self.album + ")"
         return self.name
                             
                

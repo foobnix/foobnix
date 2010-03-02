@@ -131,13 +131,21 @@ class FoobNIX:
             
             #self.playerEngine = self.playerEngine.getPlaer()    
             
-            if FConfiguration().isPlayOnStart:                   
-                self.playerEngine.setPlayList(FConfiguration().savedPlayList)
-                self.playerEngine.playIndex(FConfiguration().savedSongIndex)
+            if FConfiguration().isPlayOnStart: 
+                
+                songs = FConfiguration().savedPlayList
+                index = FConfiguration().savedSongIndex                  
+                self.playList.setSongs(songs, index)
+                self.playerEngine.setPlayList(songs)
+                self.playerEngine.playIndex(index)
+                
+               
                 
             self.volumeWidget.set_value(FConfiguration().volumeValue)
             self.playerEngine.setVolume(FConfiguration().volumeValue)
-                       
+              
+           
+                   
                 
         
         def onPlayButton(self, event):
@@ -230,7 +238,7 @@ class FoobNIX:
         
         def onSelectPlayListRow(self, widget, event):
             if is_double_click(event):                
-                song = getSongFromWidget(self.playListWidget, 0, 2)
+                song = getSongFromWidget(self.playListWidget, 0, 3)
                                 
                 self.playList.setCursorToSong(song)                  
                 self.playerEngine.playSong(song)
