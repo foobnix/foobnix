@@ -4,7 +4,7 @@ import gtk.glade
 import gst
 from mouse_utils import is_double_click
 
-from player_engine import PlayerEngine
+
 import LOG
 from file_utils import getAllSongsByDirectory, isDirectory, getSongFromWidget, \
     getSongPosition
@@ -13,6 +13,8 @@ from song import Song
 from dirlist import DirectoryList
 from confguration import FoobNixConf
 from songtags_engine import SongTagsEngine
+
+from player_engine import PlayerEngine
 
 
 class FoobNIX:
@@ -235,9 +237,7 @@ class FoobNIX:
         def onVolumeChange(self, widget, obj3, volume):
             FoobNixConf().volumeValue = volume            
             self.playerEngine.setVolume(volume)
-        
-        
-        
+                
         def onSelectDirectoryRow(self, widget, event):                         
             #left double click     
             if is_double_click(event):                

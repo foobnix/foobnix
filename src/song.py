@@ -8,6 +8,7 @@ from mutagen.easyid3 import EasyID3
 
 import os
 import LOG
+
 class Song:
     def __init__(self, name, path):
         self.name = name
@@ -24,13 +25,13 @@ class Song:
     
     def getFullDescription(self):
         if self.title and self.artist and self.album:
-            return self.artist + " - ["+self.album + "]  #"+self.tracknumber + " " + self.title
+            return self.artist + " - [" + self.album + "]  #" + self.tracknumber + " " + self.title
         else:
             return self.name
     
     def getShorDescription(self):
         if self.title and self.album:
-            return self.tracknumber +" " +  self.title + " (" + self.album + ")"
+            return self.tracknumber + " " + self.title + " (" + self.album + ")"
         return self.name
                             
                

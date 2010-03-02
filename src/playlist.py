@@ -4,9 +4,6 @@ Created on Feb 26, 2010
 @author: ivan
 '''
 import gtk
-from song import Song
-import gobject
-import LOG
 from file_utils import getSongPosition
 from confguration import FoobNixConf
 
@@ -64,8 +61,8 @@ class PlayList:
     def addSongs(self, songs, active=0):
         self.clear()
         self.songs = songs;
-        FoobNixConf().savedPlayList=songs
-        FoobNixConf().savedSongIndex=active
+        FoobNixConf().savedPlayList = songs
+        FoobNixConf().savedSongIndex = active
         
         
         for i in range(len(songs)):

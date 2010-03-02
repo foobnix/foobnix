@@ -4,16 +4,16 @@ Created on Feb 26, 2010
 @author: ivan
 '''
 import gst
-from song import Song
 import time
 import thread
-import LOG
 from time_utils import convert_ns
 import gtk
-from file_utils import getSongPosition
 from songtags_engine import SongTagsEngine
 import random
+from file_utils import getSongPosition
 from confguration import FoobNixConf
+import LOG
+
 
 class PlayerEngine():
     def __init__(self, playListEngine):
@@ -69,7 +69,7 @@ class PlayerEngine():
         self.stop()
         self.play(song)
         self.currentSong = song
-        self.currentIndex = getSongPosition(song,self.playlistSongs)
+        self.currentIndex = getSongPosition(song, self.playlistSongs)
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
         
         try:
@@ -91,7 +91,7 @@ class PlayerEngine():
         
         '''if random enable:'''
         if(self.randomCheckButton.get_active()):
-            rand=random.randint(1, len(self.playlistSongs))            
+            rand = random.randint(1, len(self.playlistSongs))            
             self.currentIndex = rand
         
         '''Play First Song when repeat'''    
@@ -118,11 +118,11 @@ class PlayerEngine():
             self.playListEngine.setCursorToSong(self.currentSong)
             self.mainWindowGlade.set_title(self.currentSong.getFullDescription())
             self.tagsEngine.populate(self.currentSong)            
-            FoobNixConf().savedSongIndex=song_index                
+            FoobNixConf().savedSongIndex = song_index                
     
     def playList(self, songs, active=0):
         self.playlistSongs = songs;
-        if len(songs) ==0:
+        if len(songs) == 0:
             return
         
         if active > len(songs):
@@ -132,7 +132,7 @@ class PlayerEngine():
         print active
         self.currentSong = songs[active];
         self.runPlaylist()
-        FoobNixConf().savedPlayList=songs    
+        FoobNixConf().savedPlayList = songs    
         
     
     def runPlaylist(self):

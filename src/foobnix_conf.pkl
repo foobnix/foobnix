@@ -1,0 +1,468 @@
+ccopy_reg
+_reconstructor
+p0
+(cconfguration
+FoobNixConf
+p1
+c__builtin__
+object
+p2
+Ntp3
+Rp4
+(dp5
+S'supportTypes'
+p6
+(lp7
+S'.mp3'
+p8
+aS'.ogg'
+p9
+aS'.ape'
+p10
+aS'.cue'
+p11
+aS'flac'
+p12
+asS'hpanelPostition'
+p13
+I424
+sS'savedPlayList'
+p14
+(lp15
+(isong
+Song
+p16
+(dp17
+S'album'
+p18
+VAngels: Chill Trance Essentials Vol. 2
+p19
+sS'name'
+p20
+S'14. Pako & Fredrik - 45 Minutes (Medway Ambient Remix).mp3'
+p21
+sS'title'
+p22
+VPako & Fredrik - 45 Minutes [Medway Ambient Remix]
+p23
+sS'artist'
+p24
+VVA - Angels - Chill Trance Essentials 2 [2005]
+p25
+sS'genre'
+p26
+VOther
+p27
+sS'tracknumber'
+p28
+V14
+p29
+sS'date'
+p30
+V2005
+p31
+sS'path'
+p32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/14. Pako & Fredrik - 45 Minutes (Medway Ambient Remix).mp3'
+p33
+sba(isong
+Song
+p34
+(dp35
+g18
+VAngels: Chill Trance Essentia
+p36
+sg20
+S'11. Kansai - Remember This Night (Chill Out Mix).mp3'
+p37
+sg22
+VRemember This Night [Chill Ou
+p38
+sg24
+VKansai
+p39
+sg26
+g27
+sg28
+V1
+p40
+sg30
+V0200
+p41
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/11. Kansai - Remember This Night (Chill Out Mix).mp3'
+p42
+sba(isong
+Song
+p43
+(dp44
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p45
+sg20
+S'12. Lange - Frozen Beach.mp3'
+p46
+sg22
+VFrozen Beach
+p47
+sg24
+VLange
+p48
+sg26
+g27
+sg28
+V02
+p49
+sg30
+V2005
+p50
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/12. Lange - Frozen Beach.mp3'
+p51
+sba(isong
+Song
+p52
+(dp53
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p54
+sg20
+S"05. The Thrillseeker - Synaesthesia (Alaska's Sunset Mix).mp3"
+p55
+sg22
+VSynaesthesia [Alaska's Sunset Mix]
+p56
+sg24
+VThe Thrillseeker
+p57
+sg26
+g27
+sg28
+V05
+p58
+sg30
+V2005
+p59
+sg32
+S"/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/05. The Thrillseeker - Synaesthesia (Alaska's Sunset Mix).mp3"
+p60
+sba(isong
+Song
+p61
+(dp62
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p63
+sg20
+S'09. Way Out West - Intensify (Blind Faith Remix).mp3'
+p64
+sg22
+VIntensify [Blind Faith Remix]
+p65
+sg24
+VWay Out West
+p66
+sg26
+g27
+sg28
+V09
+p67
+sg30
+V2005
+p68
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/09. Way Out West - Intensify (Blind Faith Remix).mp3'
+p69
+sba(isong
+Song
+p70
+(dp71
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p72
+sg20
+S'04. Armin Van Buuren feat. Justine Suissa - Burned With Desire.mp3'
+p73
+sg22
+VBurned With Desire
+p74
+sg24
+VArmin Van Buuren feat. Justine Suissa
+p75
+sg26
+g27
+sg28
+V04
+p76
+sg30
+V2005
+p77
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/04. Armin Van Buuren feat. Justine Suissa - Burned With Desire.mp3'
+p78
+sba(isong
+Song
+p79
+(dp80
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p81
+sg20
+S'06. Bedrock - Beautiful Strange.mp3'
+p82
+sg22
+VBeautiful Strange
+p83
+sg24
+VBedrock
+p84
+sg26
+g27
+sg28
+V06
+p85
+sg30
+V2005
+p86
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/06. Bedrock - Beautiful Strange.mp3'
+p87
+sba(isong
+Song
+p88
+(dp89
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p90
+sg20
+S'10. Y-Traxx - Mysteryland (Moonwatchers Remix).mp3'
+p91
+sg22
+VMysteryland [Moonwatchers Remix]
+p92
+sg24
+VY-Traxx
+p93
+sg26
+g27
+sg28
+S''
+p94
+sg30
+V2005
+p95
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/10. Y-Traxx - Mysteryland (Moonwatchers Remix).mp3'
+p96
+sba(isong
+Song
+p97
+(dp98
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p99
+sg20
+S'01. Matt Darey - Gamemaster (Mandrake Chilled Remix).mp3'
+p100
+sg22
+VGamemaster [Mandrake Chilled Remix]
+p101
+sg24
+VMatt Darey
+p102
+sg26
+g27
+sg28
+V01
+p103
+sg30
+V2005
+p104
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/01. Matt Darey - Gamemaster (Mandrake Chilled Remix).mp3'
+p105
+sba(isong
+Song
+p106
+(dp107
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p108
+sg20
+S'15. Hybrid - Finished Symphony.mp3'
+p109
+sg22
+VFinished Symphony
+p110
+sg24
+VHybrid
+p111
+sg26
+g27
+sg28
+V05
+p112
+sg30
+V2005
+p113
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/15. Hybrid - Finished Symphony.mp3'
+p114
+sba(isong
+Song
+p115
+(dp116
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p117
+sg20
+S'13. Ascension - For A Lifetime (The Lustral Sunset Mix).mp3'
+p118
+sg22
+VFor A Lifetime [The Lustral Sunset Mix]
+p119
+sg24
+VAscension
+p120
+sg26
+g27
+sg28
+V03
+p121
+sg30
+V2005
+p122
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/13. Ascension - For A Lifetime (The Lustral Sunset Mix).mp3'
+p123
+sba(isong
+Song
+p124
+(dp125
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p126
+sg20
+S'02. Chicane - Saltwater (Thrillseekers Remix).mp3'
+p127
+sg22
+VSaltwater [Thrillseekers Remix]
+p128
+sg24
+VChicane
+p129
+sg26
+g27
+sg28
+V02
+p130
+sg30
+V2005
+p131
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/02. Chicane - Saltwater (Thrillseekers Remix).mp3'
+p132
+sba(isong
+Song
+p133
+(dp134
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p135
+sg20
+S'08. Airwave - Trilogique.mp3'
+p136
+sg22
+VTrilogique
+p137
+sg24
+VAirwave
+p138
+sg26
+g27
+sg28
+V08
+p139
+sg30
+V2005
+p140
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/08. Airwave - Trilogique.mp3'
+p141
+sba(isong
+Song
+p142
+(dp143
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p144
+sg20
+S'03. Three Drives - Greece 2000 (Moonwatchers Remix).mp3'
+p145
+sg22
+VGreece 2000 [Moonwatchers Remix]
+p146
+sg24
+VThree Drives
+p147
+sg26
+g27
+sg28
+V03
+p148
+sg30
+V2005
+p149
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/03. Three Drives - Greece 2000 (Moonwatchers Remix).mp3'
+p150
+sba(isong
+Song
+p151
+(dp152
+g18
+VAngels: Chill Trance Essentials Vol. 2
+p153
+sg20
+S'07. Reflekt feat. Delline Bass - Need To Feel Loved (Horizontal Mix).mp3'
+p154
+sg22
+VNeed To Feel Loved [Horizontal Mix]
+p155
+sg24
+VReflekt feat. Delline Bass
+p156
+sg26
+g27
+sg28
+V07
+p157
+sg30
+V2005
+p158
+sg32
+S'/home/ivan/Music/!music/07.02.2009/VA - Angels - Chill Trance Essentials 1-3/VA - Angels - Chill Trance Essentials Vol. 2 (2005)/CD1/07. Reflekt feat. Delline Bass - Need To Feel Loved (Horizontal Mix).mp3'
+p159
+sbasS'isRepeat'
+p160
+I01
+sS'isPlayOnStart'
+p161
+I01
+sS'volumeValue'
+p162
+F13.173252279635257
+sS'savedSongIndex'
+p163
+I1
+sS'isRandom'
+p164
+I00
+sS'vpanelPostition'
+p165
+I648
+sS'mediaLibraryPath'
+p166
+S'/home/ivan/Music'
+p167
+sb.
