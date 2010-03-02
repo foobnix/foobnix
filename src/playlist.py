@@ -14,6 +14,7 @@ class PlayList:
         
         self.tvcolumn = gtk.TreeViewColumn('Icon')
         self.tvcolumn1 = gtk.TreeViewColumn('PlayList')
+        self.tvcolumn1.set_clickable(True)
         
         playListWidget.append_column(self.tvcolumn)
         playListWidget.append_column(self.tvcolumn1)
@@ -67,6 +68,3 @@ class PlayList:
                 self.playListModel.append([song.getShorDescription(), gtk.STOCK_GO_FORWARD, song.path])
             else:
                 self.playListModel.append([song.getShorDescription(), None, song.path])   
-   
-
-     
