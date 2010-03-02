@@ -24,7 +24,7 @@ class PlayerModule():
         self.playListSongs = songs   
     
     def play(self, active=0):  
-        self.playerEngine.playSong(self.playListSongs[active])        
+        self.playerEngine.setAndPlaySong(self.playListSongs[active])        
         self.playerThreadId = thread.start_new_thread(self.playThread, ())         
     
     def pause(self):

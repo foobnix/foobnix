@@ -1,18 +1,16 @@
 #!/usr/bin/env python
-import thread, time
 import gtk.glade
 import gst
 from mouse_utils import is_double_click
 
-
 import LOG
-from file_utils import getAllSongsByDirectory, isDirectory, getSongFromWidget, \
-    getSongPosition
+from file_utils import getAllSongsByDirectory, isDirectory, getSongFromWidget
+    
 from playlist import PlayList
-from song import Song
+
 from dirlist import DirectoryList
 from confguration import FConfiguration
-from songtags_engine import SongTagsEngine
+
 
 from player_engine import PlayerEngine
 
@@ -64,8 +62,8 @@ class FoobNIX:
                 self.popUpGlade.signal_autoconnect(dicPopUp)
                 
                 self.icon = gtk.StatusIcon()
-                self.icon.set_tooltip("Foobnix music player")
-                self.icon.set_from_stock("gtk-media-play")
+                self.icon.set_tooltip("Foobnix music playerEngine")
+                self.icon.set_from_stock("gtk-media-playIndex")
                 self.icon.connect("activate", self.iconClick)
                 
                 menu = gtk.Menu()
@@ -141,29 +139,30 @@ class FoobNIX:
                 self.directoryList = DirectoryList(root_dir, self.directoryListWidget)
                 self.playList = PlayList(self.playListWidget)     
                 
-                self.player = PlayerEngine(self.playList)
-                self.player.setTimeLabelWidget(self.timeLabelWidget)
-                self.player.setSeekWidget(self.seekWidget)
-                self.player.setWindow(self.window)
-                self.player.setTagsWidget(self.tagsTreeView)
-                self.player.setRandomWidget(self.randomCheckButton)
-                self.player.setRepeatWidget(self.repeatCheckButton)
+                self.playerEngine = PlayerEngine(self.playList)
+                self.playerEngine.setTimeLabelWidget(self.timeLabelWidget)
+                self.playerEngine.setSeekWidget(self.seekWidget)
+                self.playerEngine.setWindow(self.window)
+                self.playerEngine.setTagsWidget(self.tagsTreeView)
+                self.playerEngine.setRandomWidget(self.randomCheckButton)
+                self.playerEngine.setRepeatWidget(self.repeatCheckButton)
                                
                 
-                #self.player = self.player.getPlaer()    
+                #self.playerEngine = self.playerEngine.getPlaer()    
                 
-                if FConfiguration().isPlayOnStart:                    
-                    self.player.playList(FConfiguration().savedPlayList, FConfiguration().savedSongIndex)
+                if FConfiguration().isPlayOnStart:                   
+                    self.playerEngine.setPlayList(FConfiguration().savedPlayList)
+                    self.playerEngine.playIndex(FConfiguration().savedSongIndex)
+                    
                 
                 self.volumeWidget.set_value(FConfiguration().volumeValue)
-                self.player.setVolume(FConfiguration().volumeValue)
+                self.playerEngine.setVolume(FConfiguration().volumeValue)
                        
                 
         
         def onPlayButton(self, event):
-            LOG.debug("Start Playing")            
-                                                                           
-            self.player.play()
+            LOG.debug("Start Playing")           
+            self.playerEngine.playState()
             
         def onScrollSeek(self, *events):
             print "scroll"
@@ -172,7 +171,7 @@ class FoobNIX:
             if event.button == 1:
                 width = self.seekWidget.allocation.width          
                 x = event.x
-                self.player.seek((x + 0.0) / width * 100);            
+                self.playerEngine.seek((x + 0.0) / width * 100);            
 
             
         def hideWindow(self, *args):
@@ -188,11 +187,11 @@ class FoobNIX:
             print "Icon Click"
             
         def scrollChanged(self, arg1, event):            
-            volume = self.player.get_by_name("volume").get_property('volume');            
+            volume = self.playerEngine.get_by_name("volume").get_property('volume');            
             if event.direction == gtk.gdk.SCROLL_UP: #@UndefinedVariable
-                self.player.get_by_name("volume").set_property('volume', volume + 0.05)                
+                self.playerEngine.get_by_name("volume").set_property('volume', volume + 0.05)                
             else:
-                self.player.get_by_name("volume").set_property('volume', volume - 0.05)
+                self.playerEngine.get_by_name("volume").set_property('volume', volume - 0.05)
             
             self.volumeWidget.set_value(volume * 100)    
             print volume
@@ -224,48 +223,47 @@ class FoobNIX:
             self.popUp.hide()
                
         def onPauseButton(self, event):            
-            self.player.pause()
+            self.playerEngine.pauseState()
                         
         def onStopButton(self, event):
-            self.player.stop()            
+            self.playerEngine.stopState()            
         
         def onPlayNextButton(self, event):
-            self.player.next()
+            self.playerEngine.next()
         
         def onPlayPrevButton(self, event):
-            self.player.prev()        
+            self.playerEngine.prev()        
             
         def onVolumeChange(self, widget, obj3, volume):
             FConfiguration().volumeValue = volume            
-            self.player.setVolume(volume)
+            self.playerEngine.setVolume(volume)
                 
         def onSelectDirectoryRow(self, widget, event):                         
             #left double click     
             if is_double_click(event):                
                 song = getSongFromWidget(self.directoryListWidget, 0, 1)                 
                 
-                
-                if not isDirectory(song.path):
-                    self.playList.addSong(song)
-                    self.player.forcePlay(song)
+                if not isDirectory(song.path):                    
+                    self.playList.setSongs([song])
+                    self.playerEngine.setPlayList([song])
+                    self.playerEngine.playIndex()
                 else:                        
                     songs = getAllSongsByDirectory(song.path)
-                    self.playList.addSongs(songs)
-                    self.player.playList(songs)
+                    self.playList.setSongs(songs)
+                    self.playerEngine.setPlayList(songs)
+                    self.playerEngine.playIndex()
         
         def onSelectPlayListRow(self, widget, event):
             if is_double_click(event):
                 self.playListWidget
                 song = getSongFromWidget(self.playListWidget, 0, 2)
-                
-                
-                self.playList.setCursorToSong(song)                    
-                
-                self.player.forcePlay(song)
+                                
+                self.playList.setCursorToSong(song)                  
+                self.playerEngine.playSong(song)
                                                        
 
         def onSeek(self, widget, value):            
-            self.player.seek(value);
+            self.playerEngine.seek(value);
             
 if __name__ == "__main__":
     

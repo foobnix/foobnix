@@ -36,7 +36,7 @@ class PlayList:
             songs = FConfiguration().savedPlayList
             index = FConfiguration().savedSongIndex
             if songs:
-                self.addSongs(songs, index)            
+                self.setSongs(songs, index)            
             #self.currentIndex = FoobNixConf().savedSongIndex
             #self._playCurrentSong(FoobNixConf().savedSongIndex)
         
@@ -48,17 +48,13 @@ class PlayList:
     
     def clear(self):
         self.playListModel.clear()
-        
-    def addSong(self, song):
-        self.clear()
-        self.playListModel.append([song.getShorDescription(), gtk.STOCK_GO_FORWARD, song.path])       
     
     def setCursorToSong(self, song):
         active_pos = getSongPosition(song, self.songs)                             
-        self.addSongs(self.songs, active_pos)
+        self.setSongs(self.songs, active_pos)
         print "active", song
     
-    def addSongs(self, songs, active=0):
+    def setSongs(self, songs, active=0):
         self.clear()
         self.songs = songs;
         FConfiguration().savedPlayList = songs

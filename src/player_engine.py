@@ -18,28 +18,25 @@ import LOG
 class PlayerEngine():
     def __init__(self, playListEngine):
         self.playListEngine = playListEngine
-        self.player = gst.Pipeline("player")
+        self.playerEngine = gst.Pipeline("playerEngine")
         source = gst.element_factory_make("filesrc", "file-source")
         decoder = gst.element_factory_make("mad", "mp3-decoder")
         conv = gst.element_factory_make("audioconvert", "converter")
         sink = gst.element_factory_make("alsasink", "alsa-output")
         volume = gst.element_factory_make("volume", "volume")        
         self.time_format = gst.Format(gst.FORMAT_TIME)
-        self.player.add(source, decoder, conv, volume, sink)
+        self.playerEngine.add(source, decoder, conv, volume, sink)
         gst.element_link_many(source, decoder, volume, conv, sink)
-        
-        self.playerThreadId = None       
-    
-        self.stop()
-        
-        self.playlistSongs = []           
-            
+                    
+        #Song represents
+        self.playlistSongs = []
         self.currentSong = None
         self.currentIndex = 0;
         
-        bus = self.player.get_bus()
+        bus = self.playerEngine.get_bus()
         bus.add_signal_watch()
-        bus.connect("message", self.on_message)
+        bus.connect("message", self.onMessage)
+   
         
     def setTimeLabelWidget(self, timeLabelWidget):
         self.timeLabelWidget = timeLabelWidget
@@ -54,7 +51,7 @@ class PlayerEngine():
         self.tagsEngine = SongTagsEngine(tagsWidget)
     
     def setVolume(self, volume):
-        self.player.get_by_name("volume").set_property('volume', volume / 100)
+        self.playerEngine.get_by_name("volume").set_property('volume', volume / 100)
             
     def setRandomWidget(self, randomCheckButton):
         self.randomCheckButton = randomCheckButton
@@ -63,30 +60,29 @@ class PlayerEngine():
         self.repeatCheckButton = repeatCheckButton
         
     def getPlaer(self):
-        return self.player
-    
-    def forcePlay(self, song):
-        self.stop()
-        self.play(song)
-        self.currentSong = song
-        self.currentIndex = getSongPosition(song, self.playlistSongs)
-        self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
+        return self.playerEngine
         
-        try:
-            self.mainWindowGlade.set_title(self.currentSong.getFullDescription())
-            self.tagsEngine.populate(song)
-        except AttributeError:
-            LOG.debug("not initialized")
+    def setPlayList(self, songs):
+        self.playlistSongs = songs
+        self.currentIndex = 0
+        if songs and len(songs) > 0:
+            self.currentSong = songs[0]
             
         
-    def play(self, song=None):
-        if song:        
-            self.currentSong = song;
-            self.runPlaylist()
-        else:
-            self.runPlaylist()
+    def playIndex(self, index=0):
+        self.stopState()
+        self.currentIndex = index         
+        self._playCurrentSong()
+    
+    def playSong(self, song):
+        self.stopState()
+        self.currentIndex = getSongPosition(song, self.playlistSongs)
+        self.currentSong = song         
+        self._playCurrentSong()    
+        
     
     def next(self):
+        self.stopState()
         self.currentIndex += 1
         
         '''if random enable:'''
@@ -101,73 +97,58 @@ class PlayerEngine():
                 self.currentIndex = 0   
             
             
-        self._playCurrentSong(self.currentIndex)
+        self._playCurrentSong()
         
     def prev(self):
+        self.stopState()
         self.currentIndex -= 1;
-        self._playCurrentSong(self.currentIndex)
+        self._playCurrentSong()
 
-    def _playCurrentSong(self, song_index):        
+    def _playCurrentSong(self):        
         playListLenght = len(self.playlistSongs)
                 
-        if 0 <= song_index < playListLenght:
+        if 0 <= self.currentIndex < playListLenght:
             self.currentSong = self.playlistSongs[self.currentIndex]
-            print self.currentSong                     
-            self.forcePlay(self.currentSong)
-            self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
+            print "_playCurrentSong" + self.currentSong.path                    
+            self.playerEngine.get_by_name("file-source").set_property("location", self.currentSong.path)
+            self.playState()
+            self.playerThreadId = thread.start_new_thread(self.playThread, ())
+            self.playerEngine.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
             self.playListEngine.setCursorToSong(self.currentSong)
             self.mainWindowGlade.set_title(self.currentSong.getFullDescription())
             self.tagsEngine.populate(self.currentSong)            
-            FConfiguration().savedSongIndex = song_index                
+            FConfiguration().savedSongIndex = self.currentIndex                
     
-    def playList(self, songs, active=0):
-        self.playlistSongs = songs;
-        if len(songs) == 0:
-            return
-        
-        if active > len(songs):
-            active = 0
-            
-        print len(songs)           
-        print active
-        self.currentSong = songs[active];
-        self.runPlaylist()
-        FConfiguration().savedPlayList = songs    
-        
-    
-    def runPlaylist(self):
-        self.player.get_by_name("file-source").set_property("location", self.currentSong.path)        
-        self.player.set_state(gst.STATE_PLAYING)        
-        self.playerThreadId = thread.start_new_thread(self.play_thread, ()) 
-        try:
-            self.mainWindowGlade.set_title(self.currentSong.getFullDescription())        
-            self.tagsEngine.populate(self.currentSong)    
-        except AttributeError:
-            LOG.debug("not initialized")
+   
        
+    
     def volume(self, volumeValue):  
-        self.player.get_by_name("volumeValue").set_property('volumeValue', volumeValue)  
+        self.playerEngine.get_by_name("volumeValue").set_property('volumeValue', volumeValue)  
     
     def seek(self, value):
-        pos_current = self.player.query_position(self.time_format, None)[0]
-        pos_max = self.player.query_duration(self.time_format, None)[0]           
+        pos_current = self.playerEngine.query_position(self.time_format, None)[0]
+        pos_max = self.playerEngine.query_duration(self.time_format, None)[0]           
         
         LOG.debug("Current", pos_current, pos_max)        
         seek_ns = pos_max * value / 100;  
               
         LOG.debug("Set position", seek_ns)
                     
-        self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)
+        self.playerEngine.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)
         
-    def stop(self):        
-        self.player.set_state(gst.STATE_NULL)
-        self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
+    def stopState(self):        
+        self.playerEngine.set_state(gst.STATE_NULL)
+        self.playerEngine.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
         
     
-    def pause(self):
-        self.player.set_state(gst.STATE_PAUSED)  
+    def pauseState(self):
+        self.playerEngine.set_state(gst.STATE_PAUSED)  
+    
+    def playState(self):
+        self.playerEngine.set_state(gst.STATE_PLAYING)
         
-    def play_thread(self):
+        
+    def playThread(self):
             
             play_thread_id = self.playerThreadId
             gtk.gdk.threads_enter() #@UndefinedVariable
@@ -179,7 +160,7 @@ class PlayerEngine():
             while play_thread_id == self.playerThreadId:
                 try:
                     time.sleep(0.2)
-                    dur_int = self.player.query_duration(self.time_format, None)[0]
+                    dur_int = self.playerEngine.query_duration(self.time_format, None)[0]
                     dur_str = convert_ns(dur_int)
                     gtk.gdk.threads_enter() #@UndefinedVariable
                     
@@ -192,7 +173,7 @@ class PlayerEngine():
                     
             time.sleep(0.2)
             while play_thread_id == self.playerThreadId:
-                pos_int = self.player.query_position(self.time_format, None)[0]
+                pos_int = self.playerEngine.query_position(self.time_format, None)[0]
                 pos_str = convert_ns(pos_int)
                 if play_thread_id == self.playerThreadId:
                     gtk.gdk.threads_enter() #@UndefinedVariable                   
@@ -205,28 +186,28 @@ class PlayerEngine():
                     gtk.gdk.threads_leave() #@UndefinedVariable
                 time.sleep(1)
     
-    def on_message(self, bus, message):
-            t = message.type
-            if t == gst.MESSAGE_EOS:
-                print "MESSAGE_EOS"                
-                self.playerThreadId = None
-                self.player.set_state(gst.STATE_NULL)                
-                self.timeLabelWidget.set_text("00:00 / 00:00")
-                
-                
-                gtk.gdk.threads_enter() #@UndefinedVariable
-                self.next()               
-                gtk.gdk.threads_leave() #@UndefinedVariable
-                
-                
-            elif t == gst.MESSAGE_ERROR:
-                print "MESSAGE_ERROR"
-                err, debug = message.parse_error()
-                print "Error: %s" % err, debug
-                self.playerThreadId = None
-                self.player.set_state(gst.STATE_NULL)
-                
-                self.timeLabelWidget.set_text("00:00 / 00:00")
-            elif t == gst.MESSAGE_SEGMENT_DONE:
-                print "MESSAGE_SEGMENT_DONE"
-    
+    def onMessage(self, bus, message):
+        type = message.type
+        if type == gst.MESSAGE_EOS:
+            print "MESSAGE_EOS"                
+            self.playerThreadId = None
+            self.playerEngine.set_state(gst.STATE_NULL)                
+            self.timeLabelWidget.set_text("00:00 / 00:00")
+            
+            
+            gtk.gdk.threads_enter() #@UndefinedVariable
+            self.next()               
+            gtk.gdk.threads_leave() #@UndefinedVariable
+            
+            
+        elif type == gst.MESSAGE_ERROR:
+            print "MESSAGE_ERROR"
+            err, debug = message.parse_error()
+            print "Error: %s" % err, debug
+            self.playerThreadId = None
+            self.playerEngine.set_state(gst.STATE_NULL)
+            
+            self.timeLabelWidget.set_text("00:00 / 00:00")
+        elif type == gst.MESSAGE_SEGMENT_DONE:
+            print "MESSAGE_SEGMENT_DONE"
+
