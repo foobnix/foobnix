@@ -12,6 +12,8 @@ from confguration import FConfiguration
 
 from player_engine import PlayerEngine
 from dirlist import DirectoryList
+from song import Song
+from parstpls import PLSParser
 
 
 class FoobNIX:
@@ -43,7 +45,12 @@ class FoobNIX:
                    "on_playlist_treeview_button_press_event":self.onSelectPlayListRow,
                    "on_filechooserbutton1_current_folder_changed":self.onChooseMusicDirectory,
                    "on_file_quit_activate" :self.quitApp,
-                   "on_menu-about-button_activate": self.showAboutDialog
+                   "on_menu-about-button_activate": self.showAboutDialog,
+                   "on_add_radio_toolbutton_clicked" : self.onAddRadio,
+                   "on_remove_radio_toolbuton_clicked" : self.onRemoveRadio,
+                   "on_refresh_radio_toolbutton_clicked" : self.onRefreshRadio,
+                   "on_radio_list_treeview_button_press_event" : self.onRadioPlay
+                   
            }
             
             self.mainWindowGlade.signal_autoconnect(signalsMainWindow)
@@ -68,7 +75,7 @@ class FoobNIX:
             self.icon.set_from_stock("gtk-media-play")
             self.icon.connect("activate", self.iconLeftClick)
             self.icon.connect("popup-menu", self.iconRightClick)
-            #self.icon.connect("scroll-event", self.scrollChanged)
+            self.icon.connect("scroll-event", self.scrollChanged)
             
             self.isShowMainWindow = True
                             
@@ -90,6 +97,10 @@ class FoobNIX:
             
             self.playListWidget = self.mainWindowGlade.get_widget("playlist_treeview")
             self.tagsTreeView = self.mainWindowGlade.get_widget("song_tags_treeview")
+            
+            self.radioListTreeView = self.mainWindowGlade.get_widget("radio_list_treeview")
+            self.radioUrlEntry = self.mainWindowGlade.get_widget("radio_url_entry")
+            
             
             self.musicLibraryFileChooser = self.mainWindowGlade.get_widget("filechooserbutton1")
             
@@ -128,7 +139,9 @@ class FoobNIX:
             #Directory list panel
             root_dir = FConfiguration().mediaLibraryPath
             self.directoryList = DirectoryList(root_dir, self.directoryListWidget)
-            self.playList = PlayList(self.playListWidget)     
+            self.playList = PlayList(self.playListWidget)
+            
+            self.radioListEngine = PlayList(self.radioListTreeView)     
             
             self.playerEngine = PlayerEngine(self.playList)
             self.playerEngine.setTimeLabelWidget(self.timeLabelWidget)
@@ -153,10 +166,36 @@ class FoobNIX:
                 
             self.volumeWidget.set_value(FConfiguration().volumeValue)
             self.playerEngine.setVolume(FConfiguration().volumeValue)
-              
-           
-                   
-                
+            self.radioListEngine.setSongs(FConfiguration().savedRadioList)  
+        
+        
+        def onRadioPlay(self, widget, event): 
+            if is_double_click(event):                
+                song = getSongFromWidget(self.radioListTreeView, 0, 3)
+                song.type = Song.URL_TYPE
+                self.radioListEngine.setCursorToSong(song)                  
+                self.playerEngine.setPlayList([song])
+                self.playerEngine.playIndex()
+        
+        def onAddRadio(self, *args):
+            songUrl = self.radioUrlEntry.get_text()
+            if songUrl:
+                plsParser = PLSParser(songUrl)
+                songUrl = plsParser.getFirst()
+                self.radioListEngine.addSong(Song(songUrl, songUrl, Song.URL_TYPE))
+                self.radioUrlEntry.set_text("") 
+                FConfiguration().savedRadioList = self.radioListEngine.getAllSongs()                 
+        
+        def onRemoveRadio(self, *args):
+            model, iter =  self.radioListTreeView.get_selection().get_selected()
+            if iter:                
+                songUrl =  model.get_value(iter,2)
+                model.remove(iter)
+                self.radioListEngine.removeSong(Song(songUrl,songUrl))
+                FConfiguration().savedRadioList = self.radioListEngine.getAllSongs()
+        
+        def onRefreshRadio(self, *args):
+            pass
         
         def onPlayButton(self, event):
             LOG.debug("Start Playing")           
@@ -182,11 +221,11 @@ class FoobNIX:
             self.isShowMainWindow = not self.isShowMainWindow            
             
         def scrollChanged(self, arg1, event):            
-            volume = self.playerEngine.get_by_name("volume").get_property('volume');            
+            volume = self.playerEngine.getVolume()            
             if event.direction == gtk.gdk.SCROLL_UP: #@UndefinedVariable
-                self.playerEngine.get_by_name("volume").set_property('volume', volume + 0.05)                
+                self.playerEngine.setVolume(volume + 0.1)                
             else:
-                self.playerEngine.get_by_name("volume").set_property('volume', volume - 0.05)
+                self.playerEngine.setVolume(volume - 0.1)
             
             self.volumeWidget.set_value(volume * 100)    
         
@@ -227,7 +266,8 @@ class FoobNIX:
             
         def onVolumeChange(self, widget, obj3, volume):
             FConfiguration().volumeValue = volume            
-            self.playerEngine.setVolume(volume)
+            self.playerEngine.setVolume(volume / 100)
+        
                 
         def onSelectDirectoryRow(self, widget, event):                         
             #left double click     
@@ -243,13 +283,17 @@ class FoobNIX:
                     self.playList.setSongs(songs)
                     self.playerEngine.setPlayList(songs)
                     self.playerEngine.playIndex()
+                    
+                FConfiguration().savedPlayList = songs               
         
         def onSelectPlayListRow(self, widget, event):
             if is_double_click(event):                
                 song = getSongFromWidget(self.playListWidget, 0, 3)
-                                
-                self.playList.setCursorToSong(song)                  
+                song.type = Song.FILE_TYPE                
+                self.playList.setCursorToSong(song)  
+                self.playerEngine.setPlayList(FConfiguration().savedPlayList)                
                 self.playerEngine.playSong(song)
+                
                                                        
 
         def onSeek(self, widget, value):            

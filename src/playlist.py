@@ -6,6 +6,7 @@ Created on Feb 26, 2010
 import gtk
 from file_utils import getSongPosition
 from confguration import FConfiguration
+from song import Song
 
 class PlayList:    
     def __init__(self, playListWidget):
@@ -38,12 +39,30 @@ class PlayList:
         self.setSongs(self.songs, active_pos)
         print "active", song
     
+    def getAllSongs(self):
+        return self.songs
+    
+    def removeSong(self, song):
+        
+        if self.songs:
+            for i in range(len(self.songs)):
+                tempSong = self.songs[i]
+                if song.path == tempSong.path:
+                    break
+            self.songs.remove(tempSong)
+            
+            
+    def addSong(self, song):
+        if self.songs:
+            self.songs.append(song)
+        else:
+            self.songs = [song]
+        
+        self.setSongs(self.songs)
+    
     def setSongs(self, songs, active=0):
         self.clear()
         self.songs = songs;
-        FConfiguration().savedPlayList = songs
-        FConfiguration().savedSongIndex = active
-        
         
         for i in range(len(songs)):
             song = songs[i]

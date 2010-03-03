@@ -12,7 +12,13 @@ from mutagen import File
 
 
 class Song:
-    def __init__(self, name, path):
+    
+    FOLDER_TYPE = 0
+    FILE_TYPE = 1
+    URL_TYPE = 2
+    
+    
+    def __init__(self, name, path, type = FILE_TYPE):
         self.name = name
         self.path = path
         
@@ -24,6 +30,9 @@ class Song:
         self.date = ""
         self.genre = ""
         self.tracknumber = ""
+        
+        self.type = type
+        
         if os.path.isfile(self.path):
             self._getMp3Tags()
             
@@ -31,10 +40,13 @@ class Song:
         return "Song: " + self.path
     
     def getFullDescription(self):
-        if self.title and self.artist and self.album:
-            return self.artist + " - [" + self.album + "]  #" + self.tracknumber + " " + self.title
+        if self.type!=self.URL_TYPE:
+            if self.title and self.artist and self.album:
+                return self.artist + " - [" + self.album + "]  #" + self.tracknumber + " " + self.title
+            else:
+                return self.name
         else:
-            return self.name
+            return "Radio Playing..."
     
     def getShorDescription(self):
         if self.title and self.album:

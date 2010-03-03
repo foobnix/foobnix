@@ -13,6 +13,7 @@ import random
 from file_utils import getSongPosition, getExtenstion
 from confguration import FConfiguration
 import LOG
+from song import Song
 
 
 class PlayerEngine():
@@ -46,7 +47,10 @@ class PlayerEngine():
         self.tagsEngine = SongTagsEngine(tagsWidget)
     
     def setVolume(self, volume):
-        self.playerEngine.set_property('volume', volume / 100)
+        self.playerEngine.set_property('volume', volume)
+    
+    def getVolume(self):
+        return self.playerEngine.get_property('volume')
             
     def setRandomWidget(self, randomCheckButton):
         self.randomCheckButton = randomCheckButton
@@ -105,8 +109,14 @@ class PlayerEngine():
         if 0 <= self.currentIndex < playListLenght:
             self.currentSong = self.playlistSongs[self.currentIndex]
             print "_playCurrentSong" + self.currentSong.path                    
-            self.playerEngine.set_property("uri", "file://" + self.currentSong.path)
-            #self.playerEngine.set_property("uri", "http://188.72.202.18:8001")
+            
+            if self.currentSong.type == Song.URL_TYPE:
+                LOG.debug("PLAY RADIO: " + self.currentSong.path)
+                self.playerEngine.set_property("uri", self.currentSong.path)
+            else:
+                LOG.debug("PLAY FILE: " + self.currentSong.path)
+                self.playerEngine.set_property("uri", "file://" + self.currentSong.path)
+            
             self.playState()
             self.playerThreadId = thread.start_new_thread(self.playThread, ())
             self.playerEngine.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
@@ -156,7 +166,9 @@ class PlayerEngine():
             while play_thread_id == self.playerThreadId:
                 try:
                     time.sleep(0.2)
-                    dur_int = self.playerEngine.query_duration(self.time_format, None)[0]                    
+                    if self.currentSong == Song.FILE_TYPE:
+                        dur_int = self.playerEngine.query_duration(self.time_format, None)[0]
+                                        
                     self.currentSong.second = dur_int / 1000000000
                     dur_str = convert_ns(dur_int)
                     gtk.gdk.threads_enter() #@UndefinedVariable

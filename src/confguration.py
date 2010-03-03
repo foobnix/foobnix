@@ -28,6 +28,7 @@ class FConfiguration:
         self.isRepeat = True
         self.isPlayOnStart = True
         self.savedPlayList = []
+        self.savedRadioList = []
         self.savedSongIndex = 0
         self.volumeValue = 0
         self.vpanelPostition = 300
@@ -46,6 +47,8 @@ class FConfiguration:
                 self.volumeValue = instance.volumeValue
                 self.vpanelPostition = instance.vpanelPostition
                 self.hpanelPostition = instance.hpanelPostition
+                self.savedRadioList = instance.savedRadioList
+                
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")                
                 os.remove("foobnix_conf.pkl")
