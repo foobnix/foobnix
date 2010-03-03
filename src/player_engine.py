@@ -106,6 +106,7 @@ class PlayerEngine():
             self.currentSong = self.playlistSongs[self.currentIndex]
             print "_playCurrentSong" + self.currentSong.path                    
             self.playerEngine.set_property("uri", "file://" + self.currentSong.path)
+            #self.playerEngine.set_property("uri", "http://188.72.202.18:8001")
             self.playState()
             self.playerThreadId = thread.start_new_thread(self.playThread, ())
             self.playerEngine.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
