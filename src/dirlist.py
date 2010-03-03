@@ -66,7 +66,21 @@ class DirectoryList:
                 files.append(file)
                 
         return sorted(directories) + sorted(files)
-                
+    
+    def isDirectoryWithMusic(self, path):
+        if isDirectory(path):
+            dir = os.path.abspath(path)
+            list = os.listdir(dir)
+            for file in list:
+                full_path = path + "/" + file
+                if isDirectory(full_path):                              
+                    if self.isDirectoryWithMusic(full_path):
+                        return True                    
+                else:
+                    if getExtenstion(file) in FConfiguration().supportTypes:
+                        return True
+                    
+        return False            
     
     def go_recursive(self, path, level):
             
@@ -80,11 +94,12 @@ class DirectoryList:
             
             if not isDirectory(full_path) and getExtenstion(file) not in FConfiguration().supportTypes:
                 continue
-                    
-            sub = self.direcotryTreeModel.append(level, [file, full_path])              
             
-            if isDirectory(full_path):
-                LOG.debug("directory", file)                    
+            if self.isDirectoryWithMusic(full_path):
+                LOG.debug("directory", file)
+                sub = self.direcotryTreeModel.append(level, [file, full_path])                    
                 self.go_recursive(full_path, sub) 
             else:
-                LOG.debug("file", file)                             
+                if not isDirectory(full_path):
+                    self.direcotryTreeModel.append(level, [file, full_path])
+                    LOG.debug("file", file)                             

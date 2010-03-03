@@ -8,7 +8,8 @@ from mutagen.easyid3 import EasyID3
 
 import os
 import LOG
-from mutagen.flac import FLAC
+from mutagen import File
+
 
 class Song:
     def __init__(self, name, path):
@@ -40,13 +41,13 @@ class Song:
                             
                
     def _getMp3Tags(self):
-        #if self.path[-4:].lower() == ".mp3":
+        
         try:
             audio = MP3(self.path, ID3=EasyID3)
-        except HeaderNotFoundError:
-            audio = FLAC(self.path)
-              
-        LOG.debug("VALID KEYS" , EasyID3.valid_keys.keys())
+        except HeaderNotFoundError:        
+            audio = File(self.path)
+             
+        LOG.debug("VALID KEYS" , audio)
         if audio and audio.has_key('album'): self.album = audio["album"][0]
         if audio and audio.has_key('artist'): self.artist = audio["artist"][0]
         if audio and audio.has_key('title'): self.title = audio["title"][0]
