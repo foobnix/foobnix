@@ -41,11 +41,14 @@ class Song:
                             
                
     def _getMp3Tags(self):
-        
+        audio = None
         try:
             audio = MP3(self.path, ID3=EasyID3)
-        except HeaderNotFoundError:        
-            audio = File(self.path)
+        except HeaderNotFoundError:
+            try:
+                audio = File(self.path)
+            except HeaderNotFoundError:
+                pass        
              
         LOG.debug("VALID KEYS" , audio)
         if audio and audio.has_key('album'): self.album = audio["album"][0]

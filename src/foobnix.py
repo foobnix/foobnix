@@ -42,7 +42,8 @@ class FoobNIX:
                    "on_directory_treeview_button_press_event":self.onSelectDirectoryRow,
                    "on_playlist_treeview_button_press_event":self.onSelectPlayListRow,
                    "on_filechooserbutton1_current_folder_changed":self.onChooseMusicDirectory,
-                   "on_file_quit_activate" :self.quitApp
+                   "on_file_quit_activate" :self.quitApp,
+                   "on_menu-about-button_activate": self.showAboutDialog
            }
             
             self.mainWindowGlade.signal_autoconnect(signalsMainWindow)
@@ -55,6 +56,10 @@ class FoobNIX:
                     "on_prev_clicked" :self.onPlayPrevButton,
                     "on_cancel_clicked": self.closePopUP
             }
+            
+            aboutGlade = gtk.glade.XML(self.gladefile, "aboutdialog")
+            self.aboutDialog = aboutGlade.get_widget("aboutdialog")
+            
             
             self.popUpGlade.signal_autoconnect(signalsPopUp)
             
@@ -70,6 +75,7 @@ class FoobNIX:
             
             self.timeLabelWidget = self.mainWindowGlade.get_widget("seek_progressbar")
             self.window = self.mainWindowGlade.get_widget("foobnixWindow")
+           
             self.window.maximize()
                 
             self.menuPopUp = self.popUpGlade.get_widget("popUpWindow")
@@ -80,6 +86,8 @@ class FoobNIX:
             self.seekWidget = self.mainWindowGlade.get_widget("seek_progressbar")
             
             self.directoryListWidget = self.mainWindowGlade.get_widget("direcotry_treeview")
+            #self.directoryListWidget.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+            
             self.playListWidget = self.mainWindowGlade.get_widget("playlist_treeview")
             self.tagsTreeView = self.mainWindowGlade.get_widget("song_tags_treeview")
             
@@ -243,6 +251,9 @@ class FoobNIX:
 
         def onSeek(self, widget, value):            
             self.playerEngine.seek(value);
+        
+        def showAboutDialog(self, *args):
+            self.aboutDialog.show()
             
 if __name__ == "__main__":
     

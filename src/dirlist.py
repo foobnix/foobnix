@@ -9,16 +9,18 @@ import LOG
 from file_utils import isDirectory, getExtenstion
 from confguration import FConfiguration
 from song import Song
+import pango
 
 
 class DirectoryList:
     def __init__(self, root_directory, directoryListWidget):
         self.root_directory = root_directory        
         
-        column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=0)
+     
+        column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=0, font=2)
         column.set_resizable(True)
         directoryListWidget.append_column(column)
-        self.direcotryTreeModel = gtk.TreeStore(str, str)                
+        self.direcotryTreeModel = gtk.TreeStore(str, str, str)                
         directoryListWidget.set_model(self.direcotryTreeModel)
 
         try:
@@ -96,10 +98,10 @@ class DirectoryList:
                 continue
             
             if self.isDirectoryWithMusic(full_path):
-                LOG.debug("directory", file)
-                sub = self.direcotryTreeModel.append(level, [file, full_path])                    
+                LOG.debug("directory", file)                
+                sub = self.direcotryTreeModel.append(level, [file, full_path, "bold"])                    
                 self.go_recursive(full_path, sub) 
             else:
                 if not isDirectory(full_path):
-                    self.direcotryTreeModel.append(level, [file, full_path])
+                    self.direcotryTreeModel.append(level, [file, full_path, "normal"])
                     LOG.debug("file", file)                             
