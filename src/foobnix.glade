@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Mar  2 12:32:53 2010 -->
+<!--Generated with glade3 3.4.5 on Wed Mar  3 10:46:12 2010 -->
 <glade-interface>
   <widget class="GtkWindow" id="foobnixWindow">
     <property name="width_request">800</property>
@@ -358,6 +358,9 @@
                               <widget class="GtkTreeView" id="direcotry_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="rubber_banding">True</property>
+                                <property name="enable_grid_lines">GTK_TREE_VIEW_GRID_LINES_VERTICAL</property>
+                                <property name="enable_tree_lines">True</property>
                                 <signal name="button_press_event" handler="on_directory_treeview_button_press_event"/>
                               </widget>
                             </child>

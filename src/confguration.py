@@ -23,7 +23,7 @@ class FConfiguration:
     
     def __init__(self):
         self.mediaLibraryPath = "/home/ivan/Music"
-        self.supportTypes = [".mp3",".ogg",".ape",".cue", "flac"]
+        self.supportTypes = [".mp3", ".ogg", ".ape", "flac"]
         self.isRandom = False
         self.isRepeat = True
         self.isPlayOnStart = True

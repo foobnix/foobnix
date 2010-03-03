@@ -10,7 +10,7 @@ from time_utils import convert_ns
 import gtk
 from songtags_engine import SongTagsEngine
 import random
-from file_utils import getSongPosition
+from file_utils import getSongPosition, getExtenstion
 from confguration import FConfiguration
 import LOG
 
@@ -18,16 +18,9 @@ import LOG
 class PlayerEngine():
     def __init__(self, playListEngine):
         self.playListEngine = playListEngine
-        self.playerEngine = gst.Pipeline("playerEngine")
-        source = gst.element_factory_make("filesrc", "file-source")
-        decoder = gst.element_factory_make("mad", "mp3-decoder")
-        conv = gst.element_factory_make("audioconvert", "converter")
-        sink = gst.element_factory_make("alsasink", "alsa-output")
-        volume = gst.element_factory_make("volume", "volume")        
-        self.time_format = gst.Format(gst.FORMAT_TIME)
-        self.playerEngine.add(source, decoder, conv, volume, sink)
-        gst.element_link_many(source, decoder, volume, conv, sink)
-                    
+        
+        self.playerEngine = gst.element_factory_make("playbin2", "player")
+
         #Song represents
         self.playlistSongs = []
         self.currentSong = None
@@ -36,7 +29,9 @@ class PlayerEngine():
         bus = self.playerEngine.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self.onMessage)
-   
+        
+        self.time_format = gst.Format(gst.FORMAT_TIME)
+      
         
     def setTimeLabelWidget(self, timeLabelWidget):
         self.timeLabelWidget = timeLabelWidget
@@ -51,7 +46,7 @@ class PlayerEngine():
         self.tagsEngine = SongTagsEngine(tagsWidget)
     
     def setVolume(self, volume):
-        self.playerEngine.get_by_name("volume").set_property('volume', volume / 100)
+        self.playerEngine.set_property('volume', volume / 100)
             
     def setRandomWidget(self, randomCheckButton):
         self.randomCheckButton = randomCheckButton
@@ -110,7 +105,7 @@ class PlayerEngine():
         if 0 <= self.currentIndex < playListLenght:
             self.currentSong = self.playlistSongs[self.currentIndex]
             print "_playCurrentSong" + self.currentSong.path                    
-            self.playerEngine.get_by_name("file-source").set_property("location", self.currentSong.path)
+            self.playerEngine.set_property("uri", "file://" + self.currentSong.path)
             self.playState()
             self.playerThreadId = thread.start_new_thread(self.playThread, ())
             self.playerEngine.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
@@ -187,6 +182,7 @@ class PlayerEngine():
                 time.sleep(1)
     
     def onMessage(self, bus, message):
+        
         type = message.type
         if type == gst.MESSAGE_EOS:
             print "MESSAGE_EOS"                
