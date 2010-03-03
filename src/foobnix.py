@@ -4,14 +4,14 @@ import gst
 from mouse_utils import is_double_click
 
 import LOG
-from file_utils import getAllSongsByDirectory, isDirectory, getSongFromWidget
+from file_utils import isDirectory, getSongFromWidget
     
 from playlist import PlayList
 
-from dirlist import DirectoryList
 from confguration import FConfiguration
 
 from player_engine import PlayerEngine
+from dirlist import DirectoryList
 
 
 class FoobNIX:
@@ -38,7 +38,6 @@ class FoobNIX:
                    "on_next_button_clicked":self.onPlayNextButton,
                    "on_prev_button_clicked":self.onPlayPrevButton,
                    "on_volume_hscale_change_value": self.onVolumeChange,
-                   "on_scroll_event": self.onScrollSeek,
                    "on_button_press_event": self.onMouseClickSeek,
                    "on_directory_treeview_button_press_event":self.onSelectDirectoryRow,
                    "on_playlist_treeview_button_press_event":self.onSelectPlayListRow,
@@ -152,8 +151,6 @@ class FoobNIX:
             LOG.debug("Start Playing")           
             self.playerEngine.playState()
             
-        def onScrollSeek(self, *events):
-            print "scroll"
             
         def onMouseClickSeek(self, widget, event):    
             if event.button == 1:
@@ -231,7 +228,7 @@ class FoobNIX:
                     self.playerEngine.setPlayList([song])
                     self.playerEngine.playIndex()
                 else:                        
-                    songs = getAllSongsByDirectory(song.path)
+                    songs = self.directoryList.getAllSongsByDirectory(song.path)
                     self.playList.setSongs(songs)
                     self.playerEngine.setPlayList(songs)
                     self.playerEngine.playIndex()

@@ -12,22 +12,6 @@ from confguration import FConfiguration
 def isDirectory(path):
     return os.path.isdir(path)
 
-def getAllSongsByDirectory(path):
-    dir = os.path.abspath(path)
-    list = os.listdir(dir)
-    result = []            
-    for file_name in list:
-        if getExtenstion(file_name) not in FConfiguration().supportTypes:
-                continue
-                    
-        full_path = path + "/" + file_name
-        
-        if not isDirectory(full_path):                                
-            result.append(Song(file_name, full_path))
-            
-    LOG.debug(result)
-    return result
-
 def getExtenstion(fileName):
     return fileName[-4:].lower()
 
@@ -42,11 +26,11 @@ def getSongFromWidget(widget, name_pos, path_pos):
 
 def getSongPosition(song, songs):
     if not songs:
-        return -1
+        return - 1
     for i in range(len(songs)):
         tempSong = songs[i]
         if tempSong.path == song.path:
             return i                
-    return -1
+    return - 1
 
 

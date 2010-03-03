@@ -6,18 +6,15 @@ Created on Feb 28, 2010
 import gtk
 class SongTagsEngine():
     def __init__(self, widget):
-        self.widgetModel = gtk.ListStore(str,str,)
+        self.widgetModel = gtk.ListStore(str, str,)
         
-        nameColumn = gtk.TreeViewColumn('Name',gtk.CellRendererText(),text=0)
-        valueColumn = gtk.TreeViewColumn('Value',gtk.CellRendererText(),text=1)
+        nameColumn = gtk.TreeViewColumn('Name', gtk.CellRendererText(), text=0)
+        valueColumn = gtk.TreeViewColumn('Value', gtk.CellRendererText(), text=1)
         
         widget.append_column(nameColumn)
         widget.append_column(valueColumn)
         
-        
         widget.set_model(self.widgetModel)  
-      
-        
       
     def populate(self, song):
         self.widgetModel.clear()
