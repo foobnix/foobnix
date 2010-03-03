@@ -13,7 +13,8 @@ from confguration import FConfiguration
 from player_engine import PlayerEngine
 from dirlist import DirectoryList
 from song import Song
-from parstpls import PLSParser
+from plsparser import PLSParser
+
 
 
 class FoobNIX:
@@ -181,10 +182,14 @@ class FoobNIX:
             songUrl = self.radioUrlEntry.get_text()
             if songUrl:
                 plsParser = PLSParser(songUrl)
+                
+                plsName = plsParser.getPlsName()
                 songUrl = plsParser.getFirst()
-                self.radioListEngine.addSong(Song(songUrl, songUrl, Song.URL_TYPE))
-                self.radioUrlEntry.set_text("") 
-                FConfiguration().savedRadioList = self.radioListEngine.getAllSongs()                 
+                
+                if plsName and songUrl:                
+                    self.radioListEngine.addSong(Song(plsName +"  ["+ songUrl+"]", songUrl, Song.URL_TYPE))                
+                    self.radioUrlEntry.set_text("") 
+                    FConfiguration().savedRadioList = self.radioListEngine.getAllSongs()                 
         
         def onRemoveRadio(self, *args):
             model, iter =  self.radioListTreeView.get_selection().get_selected()
