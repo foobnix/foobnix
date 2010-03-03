@@ -156,6 +156,8 @@ class PlayerEngine():
                 try:
                     time.sleep(0.2)
                     dur_int = self.playerEngine.query_duration(self.time_format, None)[0]
+                    print "IN SECNONDS IS " , dur_int / 1000000000
+                    self.currentSong.second = dur_int / 1000000000
                     dur_str = convert_ns(dur_int)
                     gtk.gdk.threads_enter() #@UndefinedVariable
                     

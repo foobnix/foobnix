@@ -16,6 +16,8 @@ class Song:
         self.name = name
         self.path = path
         
+        self.seconds = 0
+        
         self.album = ""
         self.artist = ""
         self.title = ""

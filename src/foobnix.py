@@ -109,6 +109,9 @@ class FoobNIX:
             self.menuBar = self.mainWindowGlade.get_widget("menubar3")
             self.labelColor = self.mainWindowGlade.get_widget("label31")
             
+            self.statusBar = self.mainWindowGlade.get_widget("statusbar")
+            self.statusBar.push(0, "If you see it Foobnix is working :)")
+            
             bgColor = self.labelColor.get_style().bg[gtk.STATE_NORMAL]
             txtColor = self.labelColor.get_style().fg[gtk.STATE_NORMAL]
             

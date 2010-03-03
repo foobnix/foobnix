@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Mar  3 16:13:28 2010 -->
+<!--Generated with glade3 3.4.5 on Wed Mar  3 16:27:50 2010 -->
 <glade-interface>
   <widget class="GtkWindow" id="foobnixWindow">
     <property name="width_request">800</property>
@@ -807,7 +807,7 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkStatusbar" id="statusbar1">
+          <widget class="GtkStatusbar" id="statusbar">
             <property name="visible">True</property>
             <property name="spacing">2</property>
           </widget>
