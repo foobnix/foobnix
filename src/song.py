@@ -8,6 +8,7 @@ from mutagen.easyid3 import EasyID3
 
 import os
 import LOG
+from mutagen.flac import FLAC
 
 class Song:
     def __init__(self, name, path):
@@ -39,18 +40,18 @@ class Song:
                             
                
     def _getMp3Tags(self):
-        if self.path[-4:].lower() == ".mp3":
-            audio = None
-            try:
-                audio = MP3(self.path, ID3=EasyID3)
-            except HeaderNotFoundError:
-                LOG.debug("Mutagen not find headers")    
-            LOG.debug(EasyID3.valid_keys.keys())
-            if audio and audio.has_key('album'): self.album = audio["album"][0]
-            if audio and audio.has_key('artist'): self.artist = audio["artist"][0]
-            if audio and audio.has_key('title'): self.title = audio["title"][0]
-            if audio and audio.has_key('date'): self.date = audio["date"][0]
-            if audio and audio.has_key('genre'): self.genre = audio["genre"][0]
-            if audio and audio.has_key('tracknumber'): self.tracknumber = audio["tracknumber"][0]
+        #if self.path[-4:].lower() == ".mp3":
+        try:
+            audio = MP3(self.path, ID3=EasyID3)
+        except HeaderNotFoundError:
+            audio = FLAC(self.path)
+              
+        LOG.debug("VALID KEYS" , EasyID3.valid_keys.keys())
+        if audio and audio.has_key('album'): self.album = audio["album"][0]
+        if audio and audio.has_key('artist'): self.artist = audio["artist"][0]
+        if audio and audio.has_key('title'): self.title = audio["title"][0]
+        if audio and audio.has_key('date'): self.date = audio["date"][0]
+        if audio and audio.has_key('genre'): self.genre = audio["genre"][0]
+        if audio and audio.has_key('tracknumber'): self.tracknumber = audio["tracknumber"][0]
 
                 
