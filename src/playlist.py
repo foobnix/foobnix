@@ -10,11 +10,13 @@ from confguration import FConfiguration
 class PlayList:    
     def __init__(self, playListWidget):
         
-        self.playListModel = gtk.ListStore(str, str, str, str)
+        self.playListModel = gtk.ListStore(str, str, str, str, str)
         
-        iconColumn = gtk.TreeViewColumn('Icon', gtk.CellRendererPixbuf(), stock_id=0)
-        numbetColumn = gtk.TreeViewColumn('N', gtk.CellRendererText(), text=1)
-        descriptionColumn = gtk.TreeViewColumn('PlayList', gtk.CellRendererText(), text=2)
+        cellpb = gtk.CellRendererPixbuf()
+        cellpb.set_property('cell-background', 'yellow')
+        iconColumn = gtk.TreeViewColumn('Icon', cellpb, stock_id=0, cell_background=4)
+        numbetColumn = gtk.TreeViewColumn('N', gtk.CellRendererText(), text=1, background=4)
+        descriptionColumn = gtk.TreeViewColumn('PlayList', gtk.CellRendererText(), text=2, background=4)
                 
         playListWidget.append_column(iconColumn)
         playListWidget.append_column(numbetColumn)
@@ -45,7 +47,16 @@ class PlayList:
         
         for i in range(len(songs)):
             song = songs[i]
-            if i == active:
-                self.playListModel.append([gtk.STOCK_GO_FORWARD, song.tracknumber, song.getShorDescription(), song.path])
+            color = self.getBackgroundColour(i)
+            if i == active:                
+                self.playListModel.append([gtk.STOCK_GO_FORWARD, song.tracknumber, song.getShorDescription(), song.path, color])
             else:
-                self.playListModel.append([None, song.tracknumber, song.getShorDescription(), song.path])   
+                self.playListModel.append([None, song.tracknumber, song.getShorDescription(), song.path, color])
+                   
+    def getBackgroundColour(self, i):
+        if i % 2 :
+            return "#F2F2F2"
+        else:
+            return "#FFFFE5"
+        
+                
