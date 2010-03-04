@@ -20,9 +20,9 @@ class PlayerEngine():
     def __init__(self, playListEngine):
         self.playListEngine = playListEngine
         
-        self.playerEngine = gst.element_factory_make("playbin2", "player")
+        self.playerEngine = gst.element_factory_make("playbin", "player")
         
-        self.playerEngine.connect('about-to-finish', self.__about_to_finish)
+        #self.playerEngine.connect('about-to-finish', self.__about_to_finish)
 
         #Song represents
         self.playlistSongs = []

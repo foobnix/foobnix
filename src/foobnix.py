@@ -174,9 +174,11 @@ class FoobNIX:
             if is_double_click(event):                
                 song = getSongFromWidget(self.radioListTreeView, 0, 3)
                 song.type = Song.URL_TYPE
+                self.playerEngine.stopState()
                 self.radioListEngine.setCursorToSong(song)                  
                 self.playerEngine.setPlayList([song])
                 self.playerEngine.playIndex()
+                self.playerEngine.playState()
         
         def onAddRadio(self, *args):
             songUrl = self.radioUrlEntry.get_text()
