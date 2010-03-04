@@ -168,7 +168,9 @@ class FoobNIX:
                 
             self.volumeWidget.set_value(FConfiguration().volumeValue * 100)
             self.playerEngine.setVolume(FConfiguration().volumeValue)
-            self.radioListEngine.setSongs(FConfiguration().savedRadioList)  
+            self.radioListEngine.setSongs(FConfiguration().savedRadioList)
+            
+              
         
         
         def onRadioPlay(self, widget, event): 
