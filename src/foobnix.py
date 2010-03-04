@@ -14,6 +14,7 @@ from player_engine import PlayerEngine
 from dirlist import DirectoryList
 from song import Song
 from plsparser import PLSParser
+import os
 
 
 
@@ -202,6 +203,26 @@ class FoobNIX:
                 FConfiguration().savedRadioList = self.radioListEngine.getAllSongs()
         
         def onRefreshRadio(self, *args):
+            
+            self.radioListEngine.clear()
+            
+            PATH = "/mnt/temp/ivan/workspace/python/foobnix/test/radio/"
+            list = os.listdir(PATH)
+            list = sorted(list)
+            for file in list:
+                f = open(PATH + file, "r")
+                data = f.read()
+                f.close()
+                
+                plsParser = PLSParser(None)
+                songUrl = plsParser.getStations(data)[0]
+                plsName = file
+                
+                self.radioListEngine.addSong(Song(plsName + "  [" + songUrl + "]", songUrl, Song.URL_TYPE))                
+                self.radioUrlEntry.set_text("") 
+            FConfiguration().savedRadioList = self.radioListEngine.getAllSongs()
+                         
+            
             pass
         
         def onPlayButton(self, event):

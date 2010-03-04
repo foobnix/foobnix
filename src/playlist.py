@@ -32,6 +32,7 @@ class PlayList:
         return theme.load_icon(name, 48, 0)     
     
     def clear(self):
+        self.songs = []
         self.playListModel.clear()
     
     def setCursorToSong(self, song):
