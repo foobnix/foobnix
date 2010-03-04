@@ -210,6 +210,9 @@ class FoobNIX:
             list = os.listdir(PATH)
             list = sorted(list)
             for file in list:
+                if not file.endswith(".pls"):
+                    continue
+                
                 f = open(PATH + file, "r")
                 data = f.read()
                 f.close()

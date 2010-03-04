@@ -115,6 +115,8 @@ class PlayerEngine():
             
             if self.currentSong.type == Song.URL_TYPE:
                 LOG.debug("PLAY RADIO: " + self.currentSong.path)
+                self.timeLabelWidget.set_text("Networking stream...")
+                self.seekWiget.set_fraction(0)
                 self.stopState()
                 self.playerEngine.set_property("uri", self.currentSong.path)
             else:
