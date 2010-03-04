@@ -76,7 +76,7 @@ class FoobNIX:
             self.icon.set_from_stock("gtk-media-play")
             self.icon.connect("activate", self.iconLeftClick)
             self.icon.connect("popup-menu", self.iconRightClick)
-            self.icon.connect("scroll-event", self.scrollChanged)
+            #self.icon.connect("scroll-event", self.scrollChanged)
             
             self.isShowMainWindow = True
                             
@@ -187,16 +187,16 @@ class FoobNIX:
                 songUrl = plsParser.getFirst()
                 
                 if plsName and songUrl:                
-                    self.radioListEngine.addSong(Song(plsName +"  ["+ songUrl+"]", songUrl, Song.URL_TYPE))                
+                    self.radioListEngine.addSong(Song(plsName + "  [" + songUrl + "]", songUrl, Song.URL_TYPE))                
                     self.radioUrlEntry.set_text("") 
                     FConfiguration().savedRadioList = self.radioListEngine.getAllSongs()                 
         
         def onRemoveRadio(self, *args):
-            model, iter =  self.radioListTreeView.get_selection().get_selected()
+            model, iter = self.radioListTreeView.get_selection().get_selected()
             if iter:                
-                songUrl =  model.get_value(iter,2)
+                songUrl = model.get_value(iter, 2)
                 model.remove(iter)
-                self.radioListEngine.removeSong(Song(songUrl,songUrl))
+                self.radioListEngine.removeSong(Song(songUrl, songUrl))
                 FConfiguration().savedRadioList = self.radioListEngine.getAllSongs()
         
         def onRefreshRadio(self, *args):

@@ -21,6 +21,8 @@ class PlayerEngine():
         self.playListEngine = playListEngine
         
         self.playerEngine = gst.element_factory_make("playbin2", "player")
+        
+        self.playerEngine.connect('about-to-finish', self.__about_to_finish)
 
         #Song represents
         self.playlistSongs = []
@@ -32,7 +34,8 @@ class PlayerEngine():
         bus.connect("message", self.onMessage)
         
         self.time_format = gst.Format(gst.FORMAT_TIME)
-      
+    def __about_to_finish(self, *args):
+        self.next()               
         
     def setTimeLabelWidget(self, timeLabelWidget):
         self.timeLabelWidget = timeLabelWidget
@@ -46,8 +49,8 @@ class PlayerEngine():
     def setTagsWidget (self, tagsWidget):       
         self.tagsEngine = SongTagsEngine(tagsWidget)
     
-    def setVolume(self, volume):
-        self.playerEngine.set_property('volume', volume)
+    def setVolume(self, volume):        
+        self.playerEngine.set_property('volume', volume + 0.0)
     
     def getVolume(self):
         return self.playerEngine.get_property('volume')
@@ -112,18 +115,20 @@ class PlayerEngine():
             
             if self.currentSong.type == Song.URL_TYPE:
                 LOG.debug("PLAY RADIO: " + self.currentSong.path)
+                self.stopState()
                 self.playerEngine.set_property("uri", self.currentSong.path)
             else:
                 LOG.debug("PLAY FILE: " + self.currentSong.path)
                 self.playerEngine.set_property("uri", "file://" + self.currentSong.path)
-            
-            self.playState()
-            self.playerThreadId = thread.start_new_thread(self.playThread, ())
-            self.playerEngine.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
-            self.playListEngine.setCursorToSong(self.currentSong)
-            self.mainWindowGlade.set_title(self.currentSong.getFullDescription())
-            self.tagsEngine.populate(self.currentSong)            
-            FConfiguration().savedSongIndex = self.currentIndex                
+                self.playState()
+                self.playerThreadId = thread.start_new_thread(self.playThread, ())
+                self.playerEngine.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, 0)
+                self.playListEngine.setCursorToSong(self.currentSong)
+                self.mainWindowGlade.set_title(self.currentSong.getFullDescription())
+                self.tagsEngine.populate(self.currentSong)            
+                FConfiguration().savedSongIndex = self.currentIndex
+                
+                            
     
    
        
@@ -155,45 +160,55 @@ class PlayerEngine():
         
         
     def playThread(self):
-            
-            play_thread_id = self.playerThreadId
-            gtk.gdk.threads_enter() #@UndefinedVariable
-            
-            self.timeLabelWidget.set_text("00:00 / 00:00")
-            
-            gtk.gdk.threads_leave() #@UndefinedVariable
-    
-            while play_thread_id == self.playerThreadId:
-                try:
-                    time.sleep(0.2)
-                    if self.currentSong == Song.FILE_TYPE:
-                        dur_int = self.playerEngine.query_duration(self.time_format, None)[0]
-                                        
-                    self.currentSong.second = dur_int / 1000000000
-                    dur_str = convert_ns(dur_int)
-                    gtk.gdk.threads_enter() #@UndefinedVariable
-                    
-                    self.timeLabelWidget.set_text("00:00 / " + dur_str)                    
-                    
-                    gtk.gdk.threads_leave() #@UndefinedVariable
+        if self.currentSong.type == Song.URL_TYPE:
+            return
+         
+        LOG.debug("START")
+        play_thread_id = self.playerThreadId
+        gtk.gdk.threads_enter() #@UndefinedVariable
+        
+        self.timeLabelWidget.set_text("00:00 / 00:00")
+        
+        gtk.gdk.threads_leave() #@UndefinedVariable
+
+        while play_thread_id == self.playerThreadId:
+            try:
+                if self.currentSong.type == Song.URL_TYPE:
                     break
-                except:
-                    pass
-                    
-            time.sleep(0.2)
-            while play_thread_id == self.playerThreadId:
-                pos_int = self.playerEngine.query_position(self.time_format, None)[0]
-                pos_str = convert_ns(pos_int)
-                if play_thread_id == self.playerThreadId:
-                    gtk.gdk.threads_enter() #@UndefinedVariable                   
-                    
-                    self.timePlayingAsString = pos_str + " / " + dur_str
-                    self.timePlayingAsPersent = (pos_int + 0.0) / dur_int                    
-                    self.timeLabelWidget.set_text(self.timePlayingAsString)
-                    self.seekWiget.set_fraction(self.timePlayingAsPersent)
-                    
-                    gtk.gdk.threads_leave() #@UndefinedVariable
-                time.sleep(1)
+            
+                LOG.debug("START LENGHT")
+                time.sleep(0.2)
+                if self.currentSong.type == Song.FILE_TYPE:
+                    dur_int = self.playerEngine.query_duration(self.time_format, None)[0]
+                                    
+                self.currentSong.second = dur_int / 1000000000
+                dur_str = convert_ns(dur_int)
+                gtk.gdk.threads_enter() #@UndefinedVariable
+                
+                self.timeLabelWidget.set_text("00:00 / " + dur_str)                    
+                
+                gtk.gdk.threads_leave() #@UndefinedVariable
+                break
+            except:
+                LOG.debug("ERROR LENGHT")
+                pass
+                
+        time.sleep(0.2)
+        while play_thread_id == self.playerThreadId:
+            if self.currentSong.type == Song.URL_TYPE:
+                break
+            pos_int = self.playerEngine.query_position(self.time_format, None)[0]
+            pos_str = convert_ns(pos_int)
+            if play_thread_id == self.playerThreadId:
+                gtk.gdk.threads_enter() #@UndefinedVariable                   
+                
+                self.timePlayingAsString = pos_str + " / " + dur_str
+                self.timePlayingAsPersent = (pos_int + 0.0) / dur_int                    
+                self.timeLabelWidget.set_text(self.timePlayingAsString)
+                self.seekWiget.set_fraction(self.timePlayingAsPersent)
+                
+                gtk.gdk.threads_leave() #@UndefinedVariable
+            time.sleep(1)
     
     def onMessage(self, bus, message):
         
@@ -203,13 +218,7 @@ class PlayerEngine():
             self.playerThreadId = None
             self.playerEngine.set_state(gst.STATE_NULL)                
             self.timeLabelWidget.set_text("00:00 / 00:00")
-            
-            
-            gtk.gdk.threads_enter() #@UndefinedVariable
-            self.next()               
-            gtk.gdk.threads_leave() #@UndefinedVariable
-            
-            
+
         elif type == gst.MESSAGE_ERROR:
             print "MESSAGE_ERROR"
             err, debug = message.parse_error()
