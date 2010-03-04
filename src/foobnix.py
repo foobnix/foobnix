@@ -166,7 +166,7 @@ class FoobNIX:
                 
                
                 
-            self.volumeWidget.set_value(FConfiguration().volumeValue)
+            self.volumeWidget.set_value(FConfiguration().volumeValue * 100)
             self.playerEngine.setVolume(FConfiguration().volumeValue)
             self.radioListEngine.setSongs(FConfiguration().savedRadioList)  
         
@@ -296,7 +296,7 @@ class FoobNIX:
             self.playerEngine.prev()        
             
         def onVolumeChange(self, widget, obj3, volume):
-            FConfiguration().volumeValue = volume            
+            FConfiguration().volumeValue = volume / 100            
             self.playerEngine.setVolume(volume / 100)
         
                 
@@ -314,8 +314,9 @@ class FoobNIX:
                     self.playList.setSongs(songs)
                     self.playerEngine.setPlayList(songs)
                     self.playerEngine.playIndex()
+                    FConfiguration().savedPlayList = songs
                     
-                FConfiguration().savedPlayList = songs               
+                               
         
         def onSelectPlayListRow(self, widget, event):
             if is_double_click(event):                
