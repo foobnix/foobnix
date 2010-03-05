@@ -1,40 +1,29 @@
 #!/usr/bin/env python
 import gtk.glade
 import gst
-from mouse_utils import is_double_click
 
-import LOG
-from file_utils import isDirectory, getSongFromWidget
-    
-from playlist import PlayList
 
-from confguration import FConfiguration
-
-from player_engine import PlayerEngine
-from dirlist import DirectoryList
-from song import Song
-from plsparser import PLSParser
 import os
 import time
-
+from foobnix.confguration import FConfiguration
+from foobnix.player_engine import PlayerEngine
+from foobnix.playlist import PlayList
+from foobnix.dirlist import DirectoryList
+from foobnix.song import Song
+from foobnix.plsparser import PLSParser
+from foobnix.file_utils import getSongFromWidget
+from foobnix import LOG
+from foobnix.mouse_utils import is_double_click
+from foobnix.gui.InitGlade import InitGlade
 
 
 class FoobNIX:
         def __init__(self): 
-            rc_st = ''' 
-                        style "menubar-style" { 
-                            GtkMenuBar::shadow_type = none
-                            GtkMenuBar::internal-padding = 0                                 
-                            }                         
-                         class "GtkMenuBar" style "menubar-style"
-                    '''
-            #set custom stile for menubar
-            gtk.rc_parse_string(rc_st)   
-                        
-            self.gladefile = "foobnix.glade" 
-            self.mainWindowGlade = gtk.glade.XML(self.gladefile, "foobnixWindow")
-            self.popUpGlade = gtk.glade.XML(self.gladefile, "popUpWindow")
-
+     
+            initGlade = InitGlade()            
+            self.mainWindowGlade = initGlade.getTopLevel("foobnixWindow")
+            self.popUpGlade = initGlade.getTopLevel("popUpWindow")
+     
             signalsMainWindow = {
                    "on_foobnix_mainWindow_destroy" : self.quitApp,
                    "on_play_button_clicked":self.onPlayButton,
@@ -71,8 +60,9 @@ class FoobNIX:
                     "on_cancel_clicked": self.closePopUP
             }
             
-            aboutGlade = gtk.glade.XML(self.gladefile, "aboutdialog")
-            self.aboutDialog = aboutGlade.get_widget("aboutdialog")
+            #aboutGlade = gtk.glade.XML(self.gladefile, "aboutdialog")
+            #aboutGlade = AboutDialogGladeWidget().getWidget()
+            #self.aboutDialog = aboutGlade.get_widget("aboutdialog")
             
             
             self.popUpGlade.signal_autoconnect(signalsPopUp)
