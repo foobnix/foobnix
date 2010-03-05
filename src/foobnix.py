@@ -57,6 +57,7 @@ class FoobNIX:
                    "on_filter-comboboxentry-entry_key_release_event":self.onFilterDirectoryList,
                    "on_view_combobox_changed": self.onViewDirecotry
                    
+                   
            }
             
             self.mainWindowGlade.signal_autoconnect(signalsMainWindow)
@@ -99,9 +100,32 @@ class FoobNIX:
             self.seekWidget = self.mainWindowGlade.get_widget("seek_progressbar")
             
             self.directoryListWidget = self.mainWindowGlade.get_widget("direcotry_treeview")
+            self.playListWidget = self.mainWindowGlade.get_widget("playlist_treeview")
+            
+            TARGETS = [
+              ('MY_TREE_MODEL_ROW', gtk.TARGET_OTHER_WIDGET, 0),
+              ('text/plain', 0, 1),
+              ('TEXT', 0, 2),
+              ('STRING', 0, 3),
+             ]
+
+            
+            #self.directoryListWidget.enable_model_drag_dest(TARGETS, gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_MOVE)
+            #self.playListWidget.enable_model_drag_dest(TARGETS, gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_MOVE)
+            
+            self.directoryListWidget.connect("drag_end", self.onDragDir)
+            #self.playListWidget.connect("drag-data-get", self.onDragDirReveived)
+            self.playListWidget.connect("drag_data_get", self.onDragDirReveived)
+            self.playListWidget.connect("drag_data_received", self.onDragDirReveived)
+            
+            #self.directoryListWidget.connect("drag_leave", self.onDragDir)
+            #self.directoryListWidget.connect("drag_motion", self.onDragDir)
+            
+
+
             #self.directoryListWidget.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
             
-            self.playListWidget = self.mainWindowGlade.get_widget("playlist_treeview")
+            
             self.tagsTreeView = self.mainWindowGlade.get_widget("song_tags_treeview")
             
             self.filterDirectoryEntry = self.mainWindowGlade.get_widget("filter-comboboxentry-entry")
@@ -190,7 +214,45 @@ class FoobNIX:
             self.volumeWidget.set_value(FConfiguration().volumeValue * 100)
             self.playerEngine.setVolume(FConfiguration().volumeValue)
             self.radioListEngine.setSongs(FConfiguration().savedRadioList)
+        
+        def onDragDir(self, treeview, selection):
+                selection = treeview.get_selection()
+                model, selected = selection.get_selected()
+                print selected
+                if selected:
+                    name = model.get_value(selected, DirectoryList.POS_NAME)
+                    path = model.get_value(selected, DirectoryList.POS_PATH)
+                    type = model.get_value(selected, DirectoryList.POS_TYPE)               
+                    
+                    if type == DirectoryList.TYPE_FILE:
+                        print "type", type
+                        song = Song(name, path, Song.TYPE_FILE)                    
+                        self.playList.addSongs([song])
+                        self.playerEngine.setPlayList([song])
+                        #self.playerEngine.playIndex()
+                    elif type == DirectoryList.TYPE_FOLDER:
+                        print "type", type                        
+                        songs = self.directoryList.getAllSongsByDirectory(path)
+                        
+                        self.playList.addSongs(songs)
+                        self.playerEngine.setPlayList(songs)
+                        #self.playerEngine.playIndex()
+                        FConfiguration().savedPlayList = songs
+                    else:
+                        print "type", type
+                        song = Song(name, path, Song.TYPE_URL)
+                        self.playerEngine.stopState()
+                        self.playList.addSongs([song])              
+                        self.playerEngine.setPlayList([song])
+                        #self.playerEngine.playIndex()
+                        #self.playerEngine.playState()
             
+        def onDragDirReveived(self, *args):
+            print "drag received"                        
+        
+        def onDragReceived(self, *args):
+            print "drug"   
+                
         def onFilterDirectoryList(self, widget, key):
             text = self.filterDirectoryEntry.get_text() 
             self.directoryList.filterByName(text)
@@ -397,7 +459,7 @@ class FoobNIX:
                 song = getSongFromWidget(self.playListWidget, PlayList.POS_DESCRIPTIOPN, PlayList.POS_PATH)
                 song.type = Song.TYPE_FILE                
                 self.playList.setCursorToSong(song)  
-                self.playerEngine.setPlayList(FConfiguration().savedPlayList)                
+                self.playerEngine.setPlayList(FConfiguration().savedPlayList)                        
                 self.playerEngine.playSong(song)
                 
                                                        

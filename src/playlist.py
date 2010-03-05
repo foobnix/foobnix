@@ -66,6 +66,14 @@ class PlayList:
         
         self.setSongs(self.songs)
     
+    def addSongs(self, songs):        
+        
+        for i in range(len(songs)):
+            song = songs[i]
+            self.songs.append(song)
+            color = self.getBackgroundColour(i)
+            self.playListModel.append([None, song.tracknumber, song.getShorDescription(), song.path, color])
+
     def setSongs(self, songs, active=0):
         self.clear()
         self.songs = songs;

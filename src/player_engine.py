@@ -154,15 +154,16 @@ class PlayerEngine():
         self.playerEngine.get_by_name("volumeValue").set_property('volumeValue', volumeValue)  
     
     def seek(self, value):
-        pos_current = self.playerEngine.query_position(self.time_format, None)[0]
-        pos_max = self.playerEngine.query_duration(self.time_format, None)[0]           
+        if self.currentSong.type == Song.TYPE_FILE:
+            pos_current = self.playerEngine.query_position(self.time_format, None)[0]
+            pos_max = self.playerEngine.query_duration(self.time_format, None)[0]           
         
-        LOG.debug("Current", pos_current, pos_max)        
-        seek_ns = pos_max * value / 100;  
+            LOG.debug("Current", pos_current, pos_max)        
+            seek_ns = pos_max * value / 100;  
               
-        LOG.debug("Set position", seek_ns)
+            LOG.debug("Set position", seek_ns)
                     
-        self.playerEngine.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)
+            self.playerEngine.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)
         
     def stopState(self):        
         self.playerEngine.set_state(gst.STATE_NULL)
