@@ -19,10 +19,11 @@ class DirectoryList:
     POS_PATH = 1
     POS_FONT = 2
     POS_VISIBLE = 3
-    POS_TYPE = 3
+    POS_TYPE = 4
     
-    TYPE_FOLDER = 0
-    TYPE_FILE = 1
+    TYPE_FOLDER = 10
+    TYPE_FILE = 11
+    TYPE_URL = 21
     
     def __init__(self, root_directory, directoryListWidget):
         self.root_directory = root_directory       
@@ -33,7 +34,7 @@ class DirectoryList:
         column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=0, font=2)
         column.set_resizable(True)
         directoryListWidget.append_column(column)
-        self.direcotryTreeModel = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, gobject.TYPE_BOOLEAN)                
+        self.direcotryTreeModel = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str)                
         #directoryListWidget.set_model(self.direcotryTreeModel)
         
         
@@ -51,7 +52,7 @@ class DirectoryList:
         
     
     def filterByName(self, string):        
-        if string:
+        if len(string.strip()) > 0:
             for line in self.direcotryTreeModel:
                 name = line[self.POS_NAME].lower()
                 string = string.strip().lower()
@@ -59,32 +60,30 @@ class DirectoryList:
                 if name.find(string) >= 0:
                     print "FIND :", name, string
                     line[self.POS_VISIBLE] = True                    
-                else:                    
-                    if self.getALLChildren(line, string):
-                        line[self.POS_VISIBLE] = True
-                    else:                        
-                        line[self.POS_VISIBLE] = False
+                else:                   
+                    line[self.POS_VISIBLE] = False
         else:
             for line in self.direcotryTreeModel:                
                 line[self.POS_VISIBLE] = True
 
-    def getALLChildren(self, row, string):
+    def getALLChildren(self, row, string):        
         for child in row.iterchildren():
             name = child[self.POS_NAME].lower()            
             if name.find(string) >= 0:
                 print "FIND SUB :", name, string
-                child[self.POS_VISIBLE] = True
-                return True            
-            else:
-                if child[self.POS_TYPE] == self.TYPE_FOLDER:
-                    child[self.POS_VISIBLE] = False
-        return False
+                child[self.POS_VISIBLE] = True        
+            else:               
+                child[self.POS_VISIBLE] = False
+        
                     
         
     def updateDirctoryByPath(self, root_direcotry):
         self.root_directory = root_direcotry
         self.direcotryTreeModel.clear()
         self.addAll()
+    
+    def clear(self):
+        self.direcotryTreeModel.clear()
         
     def getAllSongsByDirectory(self, path):
         dir = os.path.abspath(path)
@@ -101,7 +100,9 @@ class DirectoryList:
                 result.append(Song(file_name, full_path))
                 
         LOG.debug(result)
-        return result        
+        return result 
+    def addSong(self, song): 
+        self.direcotryTreeModel.append(None, [song.name, song.path, "normal", True, self.TYPE_URL])
     
     def addAll(self):
         level = None;

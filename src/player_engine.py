@@ -20,9 +20,9 @@ class PlayerEngine():
     def __init__(self, playListEngine):
         self.playListEngine = playListEngine
         
-        self.playerEngine = gst.element_factory_make("playbin2", "player")
+        self.playerEngine = gst.element_factory_make("playbin", "player")
         
-        self.playerEngine.connect('about-to-finish', self.__about_to_finish)
+        #self.playerEngine.connect('about-to-finish', self.__about_to_finish)
 
         #Song represents
         self.playlistSongs = []
@@ -113,7 +113,7 @@ class PlayerEngine():
             self.currentSong = self.playlistSongs[self.currentIndex]
             print "_playCurrentSong" + self.currentSong.path                    
             
-            if self.currentSong.type == Song.URL_TYPE:
+            if self.currentSong.type == Song.URL_TYPE or self.currentSong.path.startswith("http://"):
                 LOG.debug("PLAY RADIO: " + self.currentSong.path)
                 self.timeLabelWidget.set_text("Networking stream...")
                 self.seekWiget.set_fraction(0)
@@ -180,8 +180,8 @@ class PlayerEngine():
             
                 LOG.debug("START LENGHT")
                 time.sleep(0.2)
-                if self.currentSong.type == Song.FILE_TYPE:
-                    dur_int = self.playerEngine.query_duration(self.time_format, None)[0]
+                
+                dur_int = self.playerEngine.query_duration(self.time_format, None)[0]
                                     
                 self.currentSong.second = dur_int / 1000000000
                 dur_str = convert_ns(dur_int)
@@ -197,9 +197,12 @@ class PlayerEngine():
                 
         time.sleep(0.2)
         while play_thread_id == self.playerThreadId:
+            
             if self.currentSong.type == Song.URL_TYPE:
                 break
+                       
             pos_int = self.playerEngine.query_position(self.time_format, None)[0]
+            
             pos_str = convert_ns(pos_int)
             if play_thread_id == self.playerThreadId:
                 gtk.gdk.threads_enter() #@UndefinedVariable                   

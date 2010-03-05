@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Fri Mar  5 11:28:18 2010 -->
+<!--Generated with glade3 3.4.5 on Fri Mar  5 15:43:03 2010 -->
 <glade-interface>
   <widget class="GtkWindow" id="foobnixWindow">
     <property name="width_request">800</property>
@@ -595,8 +595,9 @@
                                 <property name="visible">True</property>
                                 <property name="left_padding">12</property>
                                 <child>
-                                  <widget class="GtkComboBox" id="combobox1">
+                                  <widget class="GtkComboBox" id="view_combobox">
                                     <property name="visible">True</property>
+                                    <signal name="changed" handler="on_view_combobox_changed"/>
                                   </widget>
                                 </child>
                               </widget>
@@ -623,7 +624,7 @@
                                 <property name="visible">True</property>
                                 <property name="left_padding">12</property>
                                 <child>
-                                  <widget class="GtkComboBoxEntry" id="comboboxentry2">
+                                  <widget class="GtkComboBoxEntry" id="filter_comboboxentry">
                                     <property name="visible">True</property>
                                     <child internal-child="entry">
                                       <widget class="GtkEntry" id="filter-comboboxentry-entry">

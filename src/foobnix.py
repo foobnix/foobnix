@@ -15,6 +15,7 @@ from dirlist import DirectoryList
 from song import Song
 from plsparser import PLSParser
 import os
+import time
 
 
 
@@ -52,8 +53,9 @@ class FoobNIX:
                    "on_remove_radio_toolbuton_clicked" : self.onRemoveRadio,
                    "on_refresh_radio_toolbutton_clicked" : self.onRefreshRadio,
                    "on_radio_list_treeview_button_press_event" : self.onRadioPlay,
-                   "on_filter-comboboxentry-entry_key_press_event": self.onFilterDirectoryList,
-                   "on_filter-comboboxentry-entry_key_release_event":self.onFilterDirectoryList
+                   #"on_filter-comboboxentry-entry_key_press_event": self.onFilterDirectoryList,
+                   "on_filter-comboboxentry-entry_key_release_event":self.onFilterDirectoryList,
+                   "on_view_combobox_changed": self.onViewDirecotry
                    
            }
             
@@ -126,6 +128,20 @@ class FoobNIX:
             self.menuBar = self.mainWindowGlade.get_widget("menubar3")
             self.labelColor = self.mainWindowGlade.get_widget("label31")
             
+            self.viewSourceType = self.mainWindowGlade.get_widget("view_combobox")
+            cell = gtk.CellRendererText()
+            self.viewSourceType.pack_start(cell, True)
+            self.viewSourceType.add_attribute(cell, 'text', 0)  
+            liststore = gtk.ListStore(str)
+            self.viewSourceType.set_model(liststore)
+            
+            self.viewSourceType.append_text("by artist/album")
+            self.viewSourceType.append_text("by radio/stations")
+            self.viewSourceType.append_text("by virtual lists")
+            self.viewSourceType.set_active(0)
+            
+            
+            
             self.statusBar = self.mainWindowGlade.get_widget("statusbar")
             self.statusBar.push(0, "If you see it Foobnix is working :)")
             
@@ -143,8 +159,9 @@ class FoobNIX:
                 current.modify_fg(gtk.STATE_NORMAL, txtColor)              
             
             #Directory list panel
-            root_dir = FConfiguration().mediaLibraryPath
-            self.directoryList = DirectoryList(root_dir, self.directoryListWidget)
+            self.root_dir = FConfiguration().mediaLibraryPath
+            self.directoryList = DirectoryList(self.root_dir, self.directoryListWidget)
+            
             self.playList = PlayList(self.playListWidget)
             
             self.radioListEngine = PlayList(self.radioListTreeView)     
@@ -177,7 +194,33 @@ class FoobNIX:
         def onFilterDirectoryList(self, widget, key):
             text = self.filterDirectoryEntry.get_text() 
             self.directoryList.filterByName(text)
-        
+        def onViewDirecotry(self, *args):
+            active_index = self.viewSourceType.get_active()  
+            if active_index == 0:
+                self.directoryList = DirectoryList(FConfiguration().mediaLibraryPath, self.directoryListWidget)                
+            elif active_index == 1:
+                PATH = "/mnt/temp/ivan/workspace/python/foobnix/test/radio/"
+                list = os.listdir(PATH)
+                list = sorted(list)
+                self.directoryList.clear()
+                for file in list:
+                    if not file.endswith(".pls"):
+                        continue
+                
+                    f = open(PATH + file, "r")
+                    data = f.read()
+                    f.close()
+                    
+                    plsParser = PLSParser(None)
+                    songUrl = plsParser.getStations(data)[0]
+                    plsName = file
+                    
+                    self.directoryList.addSong(Song(plsName + "  [" + songUrl + "]", songUrl, Song.URL_TYPE))                
+                    self.radioUrlEntry.set_text("") 
+                FConfiguration().savedRadioList = self.radioListEngine.getAllSongs()
+            else:
+                pass
+            
         
         def onRadioPlay(self, widget, event): 
             if is_double_click(event):                
@@ -311,18 +354,40 @@ class FoobNIX:
         def onSelectDirectoryRow(self, widget, event):                         
             #left double click     
             if is_double_click(event):                
-                song = getSongFromWidget(self.directoryListWidget, DirectoryList.POS_NAME, DirectoryList.POS_PATH)                 
-                
-                if not isDirectory(song.path):                    
-                    self.playList.setSongs([song])
-                    self.playerEngine.setPlayList([song])
-                    self.playerEngine.playIndex()
-                else:                        
-                    songs = self.directoryList.getAllSongsByDirectory(song.path)
-                    self.playList.setSongs(songs)
-                    self.playerEngine.setPlayList(songs)
-                    self.playerEngine.playIndex()
-                    FConfiguration().savedPlayList = songs
+                                
+                selection = widget.get_selection()
+                model, selected = selection.get_selected()
+                if selected:
+                    name = model.get_value(selected, DirectoryList.POS_NAME)
+                    path = model.get_value(selected, DirectoryList.POS_PATH)
+                    type = model.get_value(selected, DirectoryList.POS_TYPE)               
+                    
+                    if type == DirectoryList.TYPE_FILE:
+                        print "type", type
+                        song = Song(name, path, Song.FILE_TYPE)                    
+                        self.playList.setSongs([song])
+                        self.playerEngine.setPlayList([song])
+                        self.playerEngine.playIndex()
+                    elif type == DirectoryList.TYPE_FOLDER:
+                        print "type", type                        
+                        songs = self.directoryList.getAllSongsByDirectory(path)
+                        self.playList.setSongs(songs)
+                        self.playerEngine.setPlayList(songs)
+                        self.playerEngine.playIndex()
+                        FConfiguration().savedPlayList = songs
+                    else:
+                        print "type", type
+                        song = Song(name, path, Song.URL_TYPE)
+                        self.playerEngine.stopState()
+                        self.playList.setSongs([song])              
+                        self.playerEngine.setPlayList([song])
+                        self.playerEngine.playIndex()
+                        self.playerEngine.playState()
+                        
+                        
+                        
+                        
+                        
                     
                                
         
