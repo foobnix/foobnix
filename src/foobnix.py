@@ -371,11 +371,11 @@ class FoobNIX:
                     elif type == DirectoryList.TYPE_FOLDER:
                         print "type", type                        
                         songs = self.directoryList.getAllSongsByDirectory(path)
-                        if songs:
-                            self.playList.setSongs(songs)
-                            self.playerEngine.setPlayList(songs)
-                            self.playerEngine.playIndex()
-                            FConfiguration().savedPlayList = songs
+                        
+                        self.playList.setSongs(songs)
+                        self.playerEngine.setPlayList(songs)
+                        self.playerEngine.playIndex()
+                        FConfiguration().savedPlayList = songs
                     else:
                         print "type", type
                         song = Song(name, path, Song.TYPE_URL)
