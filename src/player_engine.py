@@ -20,7 +20,7 @@ class PlayerEngine():
     def __init__(self, playListEngine):
         self.playListEngine = playListEngine
         
-        self.playerEngine = gst.element_factory_make("playbin", "player")
+        self.playerEngine = self.playerEngine1()
         
         #self.playerEngine.connect('about-to-finish', self.__about_to_finish)
 
@@ -34,6 +34,19 @@ class PlayerEngine():
         bus.connect("message", self.onMessage)
         
         self.time_format = gst.Format(gst.FORMAT_TIME)
+    
+    def playerEngine1(self):
+        print "Player Engine 1"
+        playerEngine = gst.element_factory_make("playbin", "player")
+        #playerEngine.connect('about-to-finish', self.__about_to_finish)
+        return playerEngine
+    
+    def playerEngine2(self):
+        print "Player Engine 2"
+        playerEngine = gst.element_factory_make("playbin2", "player")
+        playerEngine.connect('about-to-finish', self.__about_to_finish)
+        return playerEngine       
+        
     def __about_to_finish(self, *args):
         self.next()               
         
@@ -114,12 +127,14 @@ class PlayerEngine():
             print "_playCurrentSong" + self.currentSong.path                    
             
             if self.currentSong.type == Song.URL_TYPE or self.currentSong.path.startswith("http://"):
+                self.playerEngine = self.playerEngine1()
                 LOG.debug("PLAY RADIO: " + self.currentSong.path)
                 self.timeLabelWidget.set_text("Networking stream...")
                 self.seekWiget.set_fraction(0)
                 self.stopState()
                 self.playerEngine.set_property("uri", self.currentSong.path)
             else:
+                self.playerEngine = self.playerEngine2()
                 LOG.debug("PLAY FILE: " + self.currentSong.path)
                 self.playerEngine.set_property("uri", "file://" + self.currentSong.path)
                 self.playState()
