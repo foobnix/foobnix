@@ -215,7 +215,7 @@ class FoobNIX:
                     songUrl = plsParser.getStations(data)[0]
                     plsName = file
                     
-                    self.directoryList.addSong(Song(plsName + "  [" + songUrl + "]", songUrl, Song.URL_TYPE))                
+                    self.directoryList.addSong(Song(plsName + "  [" + songUrl + "]", songUrl, Song.TYPE_URL))                
                     self.radioUrlEntry.set_text("") 
                 FConfiguration().savedRadioList = self.radioListEngine.getAllSongs()
             else:
@@ -225,7 +225,7 @@ class FoobNIX:
         def onRadioPlay(self, widget, event): 
             if is_double_click(event):                
                 song = getSongFromWidget(self.radioListTreeView, 0, 3)
-                song.type = Song.URL_TYPE
+                song.type = Song.TYPE_URL
                 self.playerEngine.stopState()
                 self.radioListEngine.setCursorToSong(song)                  
                 self.playerEngine.setPlayList([song])
@@ -241,7 +241,7 @@ class FoobNIX:
                 songUrl = plsParser.getFirst()
                 
                 if plsName and songUrl:                
-                    self.radioListEngine.addSong(Song(plsName + "  [" + songUrl + "]", songUrl, Song.URL_TYPE))                
+                    self.radioListEngine.addSong(Song(plsName + "  [" + songUrl + "]", songUrl, Song.TYPE_URL))                
                     self.radioUrlEntry.set_text("") 
                     FConfiguration().savedRadioList = self.radioListEngine.getAllSongs()                 
         
@@ -272,7 +272,7 @@ class FoobNIX:
                 songUrl = plsParser.getStations(data)[0]
                 plsName = file
                 
-                self.radioListEngine.addSong(Song(plsName + "  [" + songUrl + "]", songUrl, Song.URL_TYPE))                
+                self.radioListEngine.addSong(Song(plsName + "  [" + songUrl + "]", songUrl, Song.TYPE_URL))                
                 self.radioUrlEntry.set_text("") 
             FConfiguration().savedRadioList = self.radioListEngine.getAllSongs()
                          
@@ -364,20 +364,21 @@ class FoobNIX:
                     
                     if type == DirectoryList.TYPE_FILE:
                         print "type", type
-                        song = Song(name, path, Song.FILE_TYPE)                    
+                        song = Song(name, path, Song.TYPE_FILE)                    
                         self.playList.setSongs([song])
                         self.playerEngine.setPlayList([song])
                         self.playerEngine.playIndex()
                     elif type == DirectoryList.TYPE_FOLDER:
                         print "type", type                        
                         songs = self.directoryList.getAllSongsByDirectory(path)
-                        self.playList.setSongs(songs)
-                        self.playerEngine.setPlayList(songs)
-                        self.playerEngine.playIndex()
-                        FConfiguration().savedPlayList = songs
+                        if songs:
+                            self.playList.setSongs(songs)
+                            self.playerEngine.setPlayList(songs)
+                            self.playerEngine.playIndex()
+                            FConfiguration().savedPlayList = songs
                     else:
                         print "type", type
-                        song = Song(name, path, Song.URL_TYPE)
+                        song = Song(name, path, Song.TYPE_URL)
                         self.playerEngine.stopState()
                         self.playList.setSongs([song])              
                         self.playerEngine.setPlayList([song])
@@ -394,7 +395,7 @@ class FoobNIX:
         def onSelectPlayListRow(self, widget, event):
             if is_double_click(event):                
                 song = getSongFromWidget(self.playListWidget, PlayList.POS_DESCRIPTIOPN, PlayList.POS_PATH)
-                song.type = Song.FILE_TYPE                
+                song.type = Song.TYPE_FILE                
                 self.playList.setCursorToSong(song)  
                 self.playerEngine.setPlayList(FConfiguration().savedPlayList)                
                 self.playerEngine.playSong(song)

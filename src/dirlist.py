@@ -21,9 +21,9 @@ class DirectoryList:
     POS_VISIBLE = 3
     POS_TYPE = 4
     
-    TYPE_FOLDER = 10
-    TYPE_FILE = 11
-    TYPE_URL = 21
+    TYPE_FOLDER = "TYPE_FOLDER"
+    TYPE_FILE = "TYPE_FILE"
+    TYPE_URL = "TYPE_URL"
     
     def __init__(self, root_directory, directoryListWidget):
         self.root_directory = root_directory       

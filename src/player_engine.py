@@ -126,7 +126,7 @@ class PlayerEngine():
             self.currentSong = self.playlistSongs[self.currentIndex]
             print "_playCurrentSong" + self.currentSong.path                    
             
-            if self.currentSong.type == Song.URL_TYPE or self.currentSong.path.startswith("http://"):
+            if self.currentSong.type == Song.TYPE_URL or self.currentSong.path.startswith("http://"):
                 self.playerEngine = self.playerEngine1()
                 LOG.debug("PLAY RADIO: " + self.currentSong.path)
                 self.timeLabelWidget.set_text("Networking stream...")
@@ -177,7 +177,7 @@ class PlayerEngine():
         
         
     def playThread(self):
-        if self.currentSong.type == Song.URL_TYPE:
+        if self.currentSong.type == Song.TYPE_URL:
             return
          
         LOG.debug("START")
@@ -190,7 +190,7 @@ class PlayerEngine():
 
         while play_thread_id == self.playerThreadId:
             try:
-                if self.currentSong.type == Song.URL_TYPE:
+                if self.currentSong.type == Song.TYPE_URL:
                     break
             
                 LOG.debug("START LENGHT")
@@ -213,7 +213,7 @@ class PlayerEngine():
         time.sleep(0.2)
         while play_thread_id == self.playerThreadId:
             
-            if self.currentSong.type == Song.URL_TYPE:
+            if self.currentSong.type == Song.TYPE_URL:
                 break
                        
             pos_int = self.playerEngine.query_position(self.time_format, None)[0]
