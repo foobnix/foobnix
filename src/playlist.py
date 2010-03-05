@@ -5,10 +5,15 @@ Created on Feb 26, 2010
 '''
 import gtk
 from file_utils import getSongPosition
-from confguration import FConfiguration
-from song import Song
 
-class PlayList:    
+class PlayList:
+    """ Define positions in the model"""
+    POS_ICON = 0
+    POS_TRACK_NUMBER = 1
+    POS_DESCRIPTIOPN = 2
+    POS_PATH = 3
+    POS_COLOR = 4
+    
     def __init__(self, playListWidget):
         
         self.playListModel = gtk.ListStore(str, str, str, str, str)

@@ -74,7 +74,7 @@ class FileListingCellDataExample:
         listmodel = self.make_list(dname)
  
         # create the TreeView
-        self.treeview = gtk.TreeView()
+        self.treeView = gtk.TreeView()
  
         # create the TreeViewColumns to display the data
         self.tvcolumn = [None] * len(self.column_names)
@@ -84,20 +84,20 @@ class FileListingCellDataExample:
         cell = gtk.CellRendererText()
         self.tvcolumn[0].pack_start(cell, False)
         self.tvcolumn[0].set_cell_data_func(cell, self.file_name)
-        self.treeview.append_column(self.tvcolumn[0])
+        self.treeView.append_column(self.tvcolumn[0])
         for n in range(1, len(self.column_names)):
             cell = gtk.CellRendererText()
             self.tvcolumn[n] = gtk.TreeViewColumn(self.column_names[n], cell)
             if n == 1:
                 cell.set_property('xalign', 1.0)
             self.tvcolumn[n].set_cell_data_func(cell, cell_data_funcs[n])
-            self.treeview.append_column(self.tvcolumn[n])
+            self.treeView.append_column(self.tvcolumn[n])
 
-        self.treeview.connect('row-activated', self.open_file)
+        self.treeView.connect('row-activated', self.open_file)
         self.scrolledwindow = gtk.ScrolledWindow()
-        self.scrolledwindow.add(self.treeview)
+        self.scrolledwindow.add(self.treeView)
         self.window.add(self.scrolledwindow)
-        self.treeview.set_model(listmodel)
+        self.treeView.set_model(listmodel)
  
         self.window.show_all()
         return

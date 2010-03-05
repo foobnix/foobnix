@@ -51,7 +51,9 @@ class FoobNIX:
                    "on_add_radio_toolbutton_clicked" : self.onAddRadio,
                    "on_remove_radio_toolbuton_clicked" : self.onRemoveRadio,
                    "on_refresh_radio_toolbutton_clicked" : self.onRefreshRadio,
-                   "on_radio_list_treeview_button_press_event" : self.onRadioPlay
+                   "on_radio_list_treeview_button_press_event" : self.onRadioPlay,
+                   "on_filter-comboboxentry-entry_key_press_event": self.onFilterDirectoryList,
+                   "on_filter-comboboxentry-entry_key_release_event":self.onFilterDirectoryList
                    
            }
             
@@ -99,6 +101,8 @@ class FoobNIX:
             
             self.playListWidget = self.mainWindowGlade.get_widget("playlist_treeview")
             self.tagsTreeView = self.mainWindowGlade.get_widget("song_tags_treeview")
+            
+            self.filterDirectoryEntry = self.mainWindowGlade.get_widget("filter-comboboxentry-entry")
             
             self.radioListTreeView = self.mainWindowGlade.get_widget("radio_list_treeview")
             self.radioUrlEntry = self.mainWindowGlade.get_widget("radio_url_entry")
@@ -170,7 +174,9 @@ class FoobNIX:
             self.playerEngine.setVolume(FConfiguration().volumeValue)
             self.radioListEngine.setSongs(FConfiguration().savedRadioList)
             
-              
+        def onFilterDirectoryList(self, widget, key):
+            text = self.filterDirectoryEntry.get_text() 
+            self.directoryList.filterByName(text)
         
         
         def onRadioPlay(self, widget, event): 
@@ -305,7 +311,7 @@ class FoobNIX:
         def onSelectDirectoryRow(self, widget, event):                         
             #left double click     
             if is_double_click(event):                
-                song = getSongFromWidget(self.directoryListWidget, 0, 1)                 
+                song = getSongFromWidget(self.directoryListWidget, DirectoryList.POS_NAME, DirectoryList.POS_PATH)                 
                 
                 if not isDirectory(song.path):                    
                     self.playList.setSongs([song])
@@ -322,7 +328,7 @@ class FoobNIX:
         
         def onSelectPlayListRow(self, widget, event):
             if is_double_click(event):                
-                song = getSongFromWidget(self.playListWidget, 0, 3)
+                song = getSongFromWidget(self.playListWidget, PlayList.POS_DESCRIPTIOPN, PlayList.POS_PATH)
                 song.type = Song.FILE_TYPE                
                 self.playList.setCursorToSong(song)  
                 self.playerEngine.setPlayList(FConfiguration().savedPlayList)                

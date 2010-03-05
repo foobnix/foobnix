@@ -37,13 +37,13 @@ class BasicTreeViewExample:
            
 
         # create the TreeView using treestore
-        self.treeview = gtk.TreeView(self.treestore)
+        self.treeView = gtk.TreeView(self.treestore)
 
         # create the TreeViewColumn to display the data
         self.tvcolumn = gtk.TreeViewColumn('Column 0')
 
-        # add tvcolumn to treeview
-        self.treeview.append_column(self.tvcolumn)
+        # add tvcolumn to treeView
+        self.treeView.append_column(self.tvcolumn)
 
         # create a CellRendererText to render the data
         self.cell = gtk.CellRendererText()
@@ -56,15 +56,15 @@ class BasicTreeViewExample:
         self.tvcolumn.add_attribute(self.cell, 'text', 0)
 
         # make it searchable
-        self.treeview.set_search_column(0)
+        self.treeView.set_search_column(0)
 
         # Allow sorting on the column
         self.tvcolumn.set_sort_column_id(0)
 
         # Allow drag and drop reordering of rows
-        self.treeview.set_reorderable(True)
+        self.treeView.set_reorderable(True)
 
-        self.window.add(self.treeview)
+        self.window.add(self.treeView)
 
         self.window.show_all()
 
