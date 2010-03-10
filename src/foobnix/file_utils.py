@@ -4,7 +4,7 @@ Created on Feb 26, 2010
 @author: ivan
 '''
 import os
-import LOG
+from foobnix.util import LOG
 import song
 from song import Song
 from confguration import FConfiguration

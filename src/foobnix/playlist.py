@@ -5,6 +5,7 @@ Created on Feb 26, 2010
 '''
 import gtk
 from file_utils import getSongPosition
+from foobnix.gui.InitGlade import InitGlade
 
 class PlayList:
     """ Define positions in the model"""
@@ -14,7 +15,10 @@ class PlayList:
     POS_PATH = 3
     POS_COLOR = 4
     
-    def __init__(self, playListWidget):
+    def __init__(self, busController):
+        
+        glade = InitGlade().getTopLevel("foobnixWindow")
+        playListWidget = glade.get_widget("playlist_treeview")
         
         self.playListModel = gtk.ListStore(str, str, str, str, str)
         

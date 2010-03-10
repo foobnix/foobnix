@@ -7,7 +7,7 @@ from mutagen.mp3 import MP3, HeaderNotFoundError
 from mutagen.easyid3 import EasyID3
 
 import os
-import LOG
+from foobnix.util import LOG
 from mutagen import File
 
 

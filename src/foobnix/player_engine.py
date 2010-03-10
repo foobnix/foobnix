@@ -12,7 +12,7 @@ from songtags_engine import SongTagsEngine
 import random
 from file_utils import getSongPosition, getExtenstion
 from confguration import FConfiguration
-import LOG
+from foobnix.util import LOG
 from song import Song
 
 

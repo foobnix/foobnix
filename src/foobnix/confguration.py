@@ -4,8 +4,8 @@ Created on Feb 27, 2010
 @author: ivan
 '''
 import pickle
-import LOG
 import os
+from foobnix.util import LOG
 
 
 class Singleton(type):

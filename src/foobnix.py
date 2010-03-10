@@ -12,44 +12,28 @@ from foobnix.dirlist import DirectoryList
 from foobnix.song import Song
 from foobnix.plsparser import PLSParser
 from foobnix.file_utils import getSongFromWidget
-from foobnix import LOG
+from foobnix.util import LOG
 from foobnix.mouse_utils import is_double_click
 from foobnix.gui.InitGlade import InitGlade
+from foobnix.gui.TrayIcon import TrayIcon
+from foobnix.service.WindowService import WindowService
+from foobnix.gui.MainWindowWidget import MainWindowWidget
+from foobnix.bus.BusController import BusController
 
 
 class FoobNIX:
         def __init__(self): 
      
-            initGlade = InitGlade()            
-            self.mainWindowGlade = initGlade.getTopLevel("foobnixWindow")
-            self.popUpGlade = initGlade.getTopLevel("popUpWindow")
-     
-            signalsMainWindow = {
-                   "on_foobnix_mainWindow_destroy" : self.quitApp,
-                   "on_play_button_clicked":self.onPlayButton,
-                   "on_pause_button_clicked":self.onPauseButton,
-                   "on_stop_button_clicked":self.onStopButton,
-                   "on_next_button_clicked":self.onPlayNextButton,
-                   "on_prev_button_clicked":self.onPlayPrevButton,
-                   "on_volume_hscale_change_value": self.onVolumeChange,
-                   "on_button_press_event": self.onMouseClickSeek,
-                   "on_directory_treeview_button_press_event":self.onSelectDirectoryRow,
-                   "on_playlist_treeview_button_press_event":self.onSelectPlayListRow,
-                   "on_filechooserbutton1_current_folder_changed":self.onChooseMusicDirectory,
-                   "on_file_quit_activate" :self.quitApp,
-                   "on_menu-about-button_activate": self.showAboutDialog,
-                   "on_add_radio_toolbutton_clicked" : self.onAddRadio,
-                   "on_remove_radio_toolbuton_clicked" : self.onRemoveRadio,
-                   "on_refresh_radio_toolbutton_clicked" : self.onRefreshRadio,
-                   "on_radio_list_treeview_button_press_event" : self.onRadioPlay,
-                   #"on_filter-comboboxentry-entry_key_press_event": self.onFilterDirectoryList,
-                   "on_filter-comboboxentry-entry_key_release_event":self.onFilterDirectoryList,
-                   "on_view_combobox_changed": self.onViewDirecotry
-                   
-                   
-           }
+            initGlade = InitGlade()
             
-            self.mainWindowGlade.signal_autoconnect(signalsMainWindow)
+            busController = BusController()
+                        
+            self.mainWindowGlade = MainWindowWidget(busController).getGlade()
+            self.popUpGlade = initGlade.getTopLevel("popUpWindow")
+            aboutGlade = initGlade.getTopLevel("aboutdialog")
+            
+            
+            
             
             signalsPopUp = {
                     "on_close_clicked" :self.quitApp,
@@ -60,18 +44,19 @@ class FoobNIX:
                     "on_cancel_clicked": self.closePopUP
             }
             
-            #aboutGlade = gtk.glade.XML(self.gladefile, "aboutdialog")
-            #aboutGlade = AboutDialogGladeWidget().getWidget()
-            #self.aboutDialog = aboutGlade.get_widget("aboutdialog")
+                        
+            self.aboutDialog = aboutGlade.get_widget("aboutdialog")
             
             
             self.popUpGlade.signal_autoconnect(signalsPopUp)
             
-            self.icon = gtk.StatusIcon()
-            self.icon.set_tooltip("Foobnix music playerEngine")
-            self.icon.set_from_stock("gtk-media-play")
-            self.icon.connect("activate", self.iconLeftClick)
-            self.icon.connect("popup-menu", self.iconRightClick)
+            #self.icon = gtk.StatusIcon()
+            #self.icon.set_tooltip("Foobnix music playerEngine")
+            #self.icon.set_from_stock("gtk-media-play")
+            #self.icon.connect("activate", self.iconLeftClick)
+            
+            
+            #self.icon.connect("popup-menu", self.iconRightClick)
             #self.icon.connect("scroll-event", self.scrollChanged)
             
             self.isShowMainWindow = True
@@ -79,6 +64,10 @@ class FoobNIX:
             
             self.timeLabelWidget = self.mainWindowGlade.get_widget("seek_progressbar")
             self.window = self.mainWindowGlade.get_widget("foobnixWindow")
+           
+           
+            windowService = WindowService(self.window)
+            self.icon = TrayIcon(windowService)
            
             self.window.maximize()
                 
@@ -181,6 +170,9 @@ class FoobNIX:
             self.radioListEngine = PlayList(self.radioListTreeView)     
             
             self.playerEngine = PlayerEngine(self.playList)
+            
+            busController.setPlayerEngine(self.playerEngine)
+            
             self.playerEngine.setTimeLabelWidget(self.timeLabelWidget)
             self.playerEngine.setSeekWidget(self.seekWidget)
             self.playerEngine.setWindow(self.window)

@@ -1,62 +1,23 @@
 '''
-Created on Feb 26, 2010
+Created on Mar 11, 2010
 
 @author: ivan
 '''
-import gtk
 import os
+from foobnix.confguration import FConfiguration
+from foobnix.file_utils import isDirectory, getExtenstion
+from foobnix.song import Song
 from foobnix.util import LOG
-from file_utils import isDirectory, getExtenstion
-from confguration import FConfiguration
-from song import Song
-import pango
-import gobject
-from foobnix.gui.InitGlade import InitGlade
-
-
-class DirectoryList:
-        
-    POS_NAME = 0
-    POS_PATH = 1
-    POS_FONT = 2
-    POS_VISIBLE = 3
-    POS_TYPE = 4
+from foobnix.mvc.directory.directory_model import DirectoryBeen, DirectoryModel
+class DirectoryCntr():
     
-    TYPE_FOLDER = "TYPE_FOLDER"
-    TYPE_FILE = "TYPE_FILE"
-    TYPE_URL = "TYPE_URL"
+    def __init__(self, widget):
+        self.model = DirectoryModel(widget)
+               
+        self.root_directory = FConfiguration().mediaLibraryPath
+        os.listdir(self.root_directory)
+        self.addAll()
     
-    def __init__(self, busController):
-        
-        glade = InitGlade().getTopLevel("foobnixWindow")
-        directoryListWidget = glade.get_widget("direcotry_treeview")
-             
-        root_directory = FConfiguration().mediaLibraryPath    
-        
-        self.root_directory = root_directory       
-        
-         
-        
-     
-        column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=0, font=2)
-        column.set_resizable(True)
-        directoryListWidget.append_column(column)
-        self.direcotryTreeModel = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str)                
-        #directoryListWidget.set_model(self.direcotryTreeModel)
-        
-        
-        filter = self.direcotryTreeModel.filter_new()
-        filter.set_visible_column(self.POS_VISIBLE)
-        directoryListWidget.set_model(filter)
-
-        try:
-            os.listdir(root_directory)
-            self.addAll()
-        except OSError:
-            print "No directory", root_directory
-            
-        
-        
     
     def filterByName(self, string):        
         if len(string.strip()) > 0:
@@ -90,7 +51,7 @@ class DirectoryList:
         self.addAll()
     
     def clear(self):
-        self.direcotryTreeModel.clear()
+        self.directory.clear()
         
     def getAllSongsByDirectory(self, path):
         dir = os.path.abspath(path)
@@ -155,12 +116,14 @@ class DirectoryList:
             
             if not isDirectory(full_path) and getExtenstion(file) not in FConfiguration().supportTypes:
                 continue
+      
             
             if self.isDirectoryWithMusic(full_path):
                 #LOG.debug("directory", file)                
-                sub = self.direcotryTreeModel.append(level, [file, full_path, "bold", True, self.TYPE_FOLDER])                    
+                sub = self.model.append(level, DirectoryBeen(file, full_path, "bold", True, DirectoryBeen.TYPE_FOLDER))                    
                 self.go_recursive(full_path, sub) 
             else:
                 if not isDirectory(full_path):
-                    self.direcotryTreeModel.append(level, [file, full_path, "normal", True, self.TYPE_FILE])
+                    self.model.append(level, DirectoryBeen(file, full_path, "normal", True, DirectoryBeen.TYPE_FILE))
                     #LOG.debug("file", file)                             
+
