@@ -15,16 +15,17 @@ from foobnix.mvc.directory.directory_model import DirectoryModel
 from foobnix.mvc.directory.directory_controller import DirectoryCntr
 from foobnix.mvc.playlist.playlist_c import PlaylistCntr
 from foobnix.mvc.player.player_controller import PlayerController
+from foobnix.mvc.player.player_widgets_cntr import PlayerWidgetsCntl
 
 class AppView():
     glade = "foobnix/glade/foobnix.glade"  
     top = "foobnixWindow"
 
     def __init__(self):
-        gx = gtk.glade.XML(self.glade, self.top)
-        self.window = gx.get_widget("foobnixWindow")        
-        self.directory = gx.get_widget("direcotry_treeview")
-        self.playlist = gx.get_widget("playlist_treeview")
+        self.gx = gtk.glade.XML(self.glade, self.top)
+        self.window = self.gx.get_widget("foobnixWindow")        
+        self.directory = self.gx.get_widget("direcotry_treeview")
+        self.playlist = self.gx.get_widget("playlist_treeview")
                 
 
 class AppController():   
@@ -33,11 +34,11 @@ class AppController():
         v.window.connect("destroy", self.onDestroy)
         playerCntr = PlayerController()
         playlistCntr = PlaylistCntr(v.playlist, playerCntr)
+        
+        playerWidgets = PlayerWidgetsCntl(v.gx, playerCntr)
+        playerCntr.registerWidgets(playerWidgets)
+                
         DirectoryCntr(v.directory, playlistCntr)
-        
-        
-        
-        
         
     def onDestroy(self, *a):
         print "Destroy"

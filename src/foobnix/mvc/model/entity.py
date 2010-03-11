@@ -23,18 +23,14 @@ class SongBean(EntityBean):
     def __init__(self, name=None, path=None, type = EntityBean.TYPE_MUSIC_FILE):                       
         EntityBean.__init__(self, name, path, type)
         self.tracknumber = None
-    
-
-class FolderBean(EntityBean):       
-    def __init__(self, name, path):                       
-        EntityBean.__init__(self, name, path, type=EntityBean.TYPE_FOLDER)
 
 class PlaylistBean(SongBean):
-    def __init__(self, icon=None,font=10, name=None, path=None, color=None):
+    def __init__(self, icon=None,tracknumber=10, name=None, path=None, color=None, index=0):
         SongBean.__init__(self, name, path)
         self.icon = icon        
         self.color = color 
-        self.font = font
+        self.tracknumber = tracknumber
+        self.index = index
         
 class DirectoryBean(EntityBean):    
     def __init__(self, name, path, font=10, is_visible=True, type=EntityBean.TYPE_FOLDER):

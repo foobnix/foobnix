@@ -30,12 +30,12 @@ class DirectoryCntr():
             directoryBean = self.model.getSelectedBean()
             if directoryBean.type == DirectoryBean.TYPE_MUSIC_FILE:
                 self.playlistCntr.clear()                                                                           
-                self.playlistCntr.append([SongBean().init(directoryBean)])
+                self.playlistCntr.setPlaylist([SongBean().init(directoryBean)])
             elif directoryBean.type == DirectoryBean.TYPE_FOLDER:
                 songs = self.getAllSongsByPath(directoryBean.path)
                 if songs:
                     self.playlistCntr.clear()
-                    self.playlistCntr.append(songs)
+                    self.playlistCntr.setPlaylist(songs)
                 
                 
     

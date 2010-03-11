@@ -17,5 +17,6 @@ class App():
 
 if __name__ == "__main__":
     app = App()
+    gtk.gdk.threads_init() #@UndefinedVariable
     gtk.main()
     print "Succes"
