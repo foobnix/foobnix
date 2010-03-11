@@ -14,6 +14,7 @@ from foobnix.util import LOG
 from foobnix.mvc.directory.directory_model import DirectoryModel
 from foobnix.mvc.directory.directory_controller import DirectoryCntr
 from foobnix.mvc.playlist.playlist_c import PlaylistCntr
+from foobnix.mvc.player.player_controller import PlayerController
 
 class AppView():
     glade = "foobnix/glade/foobnix.glade"  
@@ -30,8 +31,13 @@ class AppController():
 
     def __init__(self, v):
         v.window.connect("destroy", self.onDestroy)
-        DirectoryCntr(v.directory)
-        PlaylistCntr(v.playlist)
+        playerCntr = PlayerController()
+        playlistCntr = PlaylistCntr(v.playlist, playerCntr)
+        DirectoryCntr(v.directory, playlistCntr)
+        
+        
+        
+        
         
     def onDestroy(self, *a):
         print "Destroy"

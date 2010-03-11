@@ -25,15 +25,9 @@ class PlaylistModel:
         widget.append_column(descriptionColumn)
         
         widget.set_model(self.model)
-        
-    def append(self, bean):   
-        self.model.append([bean.icon, bean.tracknumber, bean.description, bean.path, bean.color])
- 
-class PlaylistBean():
     
-    def __init__(self, icon, tracknumber, description, path, color):
-        self.icon = icon
-        self.tracknumber = tracknumber
-        self.description = description
-        self.path = path
-        self.color = color 
+    def clear(self):
+        self.model.clear()
+            
+    def append(self, playlistBean):   
+        self.model.append([playlistBean.icon, playlistBean.tracknumber, playlistBean.name, playlistBean.path, playlistBean.color])

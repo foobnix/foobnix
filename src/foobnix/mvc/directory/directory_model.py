@@ -5,6 +5,7 @@ Created on Mar 11, 2010
 '''
 import gtk
 import gobject
+from foobnix.mvc.model.entity import DirectoryBean
 
 class DirectoryModel():
     POS_NAME = 0
@@ -14,6 +15,7 @@ class DirectoryModel():
     POS_TYPE = 4
     
     def __init__(self, widget):
+        self.widget = widget
         column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=0, font=2)
         column.set_resizable(True)
         widget.append_column(column)
@@ -27,18 +29,17 @@ class DirectoryModel():
         return self.model.append(level, [been.name, been.path, been.font, been.is_visible, been.type])
         
     def clear(self):
-        self.model.clear()             
-
-class DirectoryBeen():
-    TYPE_FOLDER = "TYPE_FOLDER"
-    TYPE_FILE = "TYPE_FILE"
-    TYPE_URL = "TYPE_URL"
-    
-    def __init__(self, name, path, font, is_visible, type):
-        if name: self.name = name
-        if path: self.path = path
-        if font: self.font = font
-        if is_visible: self.is_visible = is_visible
-        if type: self.type = type       
+        self.model.clear() 
+        
+    def getSelectedBean(self):
+        selection = self.widget.get_selection()
+        model, selected = selection.get_selected()
+        if selected:
+            name = model.get_value(selected, self.POS_NAME)
+            path = model.get_value(selected, self.POS_PATH)
+            type = model.get_value(selected, self.POS_TYPE)
+            font = model.get_value(selected, self.POS_FONT)
+            visible = model.get_value(selected, self.POS_VISIBLE)
+        return DirectoryBean(name, path, font, visible, type);                                 
     
 

@@ -8,16 +8,36 @@ from foobnix.confguration import FConfiguration
 from foobnix.file_utils import isDirectory, getExtenstion
 from foobnix.song import Song
 from foobnix.util import LOG
-from foobnix.mvc.directory.directory_model import DirectoryBeen, DirectoryModel
+
+from foobnix.mouse_utils import is_double_click
+
+from foobnix.mvc.directory.directory_model import DirectoryModel
+from foobnix.mvc.model.entity import DirectoryBean, PlaylistBean, SongBean
 class DirectoryCntr():
     
-    def __init__(self, widget):
+    def __init__(self, widget, playlistCntr):
+        self.playlistCntr = playlistCntr
         self.model = DirectoryModel(widget)
                
         self.root_directory = FConfiguration().mediaLibraryPath
         os.listdir(self.root_directory)
         self.addAll()
+        
+        widget.connect("button-press-event", self.onMouseClick)
     
+    def onMouseClick(self,w,e):
+        if is_double_click(e): 
+            directoryBean = self.model.getSelectedBean()
+            if directoryBean.type == DirectoryBean.TYPE_MUSIC_FILE:
+                self.playlistCntr.clear()                                                                           
+                self.playlistCntr.append([SongBean().init(directoryBean)])
+            elif directoryBean.type == DirectoryBean.TYPE_FOLDER:
+                songs = self.getAllSongsByPath(directoryBean.path)
+                if songs:
+                    self.playlistCntr.clear()
+                    self.playlistCntr.append(songs)
+                
+                
     
     def filterByName(self, string):        
         if len(string.strip()) > 0:
@@ -53,7 +73,7 @@ class DirectoryCntr():
     def clear(self):
         self.directory.clear()
         
-    def getAllSongsByDirectory(self, path):
+    def getAllSongsByPath(self, path):
         dir = os.path.abspath(path)
         list = os.listdir(dir)
         list = sorted(list)
@@ -65,10 +85,11 @@ class DirectoryCntr():
             full_path = path + "/" + file_name
             
             if not isDirectory(full_path):                                
-                result.append(Song(file_name, full_path))
+                result.append(SongBean(file_name, full_path))
                 
         LOG.debug(result)
         return result 
+    
     def addSong(self, song): 
         self.direcotryTreeModel.append(None, [song.name, song.path, "normal", True, self.TYPE_URL])
     
@@ -120,10 +141,10 @@ class DirectoryCntr():
             
             if self.isDirectoryWithMusic(full_path):
                 #LOG.debug("directory", file)                
-                sub = self.model.append(level, DirectoryBeen(file, full_path, "bold", True, DirectoryBeen.TYPE_FOLDER))                    
+                sub = self.model.append(level, DirectoryBean(file, full_path, "bold", True, DirectoryBean.TYPE_FOLDER))                    
                 self.go_recursive(full_path, sub) 
             else:
                 if not isDirectory(full_path):
-                    self.model.append(level, DirectoryBeen(file, full_path, "normal", True, DirectoryBeen.TYPE_FILE))
+                    self.model.append(level, DirectoryBean(file, full_path, "normal", True, DirectoryBean.TYPE_MUSIC_FILE))
                     #LOG.debug("file", file)                             
 
