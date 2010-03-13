@@ -20,7 +20,18 @@ class PlaylistCntr():
         
         self.entityBeans = []
         self.index = 0;
+    
+    def getState(self):
+        return [self.entityBeans,self.index]
         
+    def setState(self, state):
+        self.entityBeans = state[0]
+        self.index = state[1]
+        self.repopulate(self.entityBeans, self.index);
+        self.playerCntr.playSong(self.entityBeans[self.index])
+              
+        
+    
     def clear(self):
         self.model.clear()
         

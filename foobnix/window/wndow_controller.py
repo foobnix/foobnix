@@ -9,6 +9,9 @@ class WindowController():
         self.window = gx.get_widget("foobnixWindow")
         self.window.connect("destroy", self.onDestroy)
     
+    def registerOnExitCnrt(self, onExitCnrt):
+        self.onExitCnrt = onExitCnrt
+    
     def show(self):
         self.window.show()
     
@@ -17,4 +20,5 @@ class WindowController():
     
     def onDestroy(self, *a):
         print "Destroy"
+        self.onExitCnrt.onExit()
         gtk.main_quit() 

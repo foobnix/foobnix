@@ -180,10 +180,11 @@
             </child>
             <child>
               <widget class="GtkToolbar" id="toolbar4">
-                <property name="width_request">100</property>
+                <property name="width_request">120</property>
                 <property name="visible">True</property>
                 <property name="toolbar_style">icons</property>
-                <property name="icon_size">0</property>
+                <property name="icon_size">1</property>
+                <property name="icon_size_set">True</property>
                 <child>
                   <widget class="GtkSeparatorToolItem" id="toolbutton6">
                     <property name="visible">True</property>

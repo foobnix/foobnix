@@ -38,8 +38,6 @@ class PlaylistModel:
         color = self.model[position][ self.POS_COLOR]
         index = self.model[position][ self.POS_INDEX]
         return PlaylistBean(icon, tracknumber, name, path, color, index)       
-        
-    
 
     def getSelectedBean(self):
         selection = self.widget.get_selection()
@@ -56,6 +54,10 @@ class PlaylistModel:
     
     def clear(self):
         self.model.clear()
+ 
             
     def append(self, playlistBean):   
         self.model.append([playlistBean.icon, playlistBean.tracknumber, playlistBean.name, playlistBean.path, playlistBean.color, playlistBean.index])
+
+    def __del__(self,*a):
+        print "del"
