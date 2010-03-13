@@ -20,17 +20,25 @@ class PlayerController:
         self.cIndex = 0
         
         self.time_format = gst.Format(gst.FORMAT_TIME)
+        
     pass
+
+    def registerPlaylistCntr(self, playlistCntr):
+        self.playlistCntr = playlistCntr
 
     def registerWidgets(self, widgets):
         self.widgets = widgets
 
     def playSong(self, song):
         print "play song"
+                
         self.stopState()
+                
         self.player.set_property("uri", "file://" + song.path)
-        self.playState()
         self.playerThreadId = thread.start_new_thread(self.playThread, ())
+        self.playState()        
+        
+        
 
     def pauseState(self):
         self.player.set_state(gst.STATE_PAUSED)  
@@ -49,11 +57,14 @@ class PlayerController:
     def playerLocal(self):
         print "Player Local Files"
         playbin2 = gst.element_factory_make("playbin2", "player")
-        playbin2.connect('about-to-finish', self.onFinishSong)
+        #playbin2.connect('about-to-finish', self.onFinishSong)
         return playbin2       
     
     
     def onFinishSong(self, *a):
+        song = self.playlistCntr.getNextSong()
+        print "PATH", song.path
+        self.playSong(song)
         pass
     
     def setVolume(self, volumeValue): 
@@ -96,10 +107,11 @@ class PlayerController:
             if play_thread_id == self.playerThreadId:
                 gtk.gdk.threads_enter() #@UndefinedVariable                   
                 
-                self.timePlayingAsString = pos_str + " / " + dur_str
-                self.timePlayingAsPersent = (pos_int + 0.0) / dur_int                    
-                self.widgets.seekBar.set_text(self.timePlayingAsString)
-                self.widgets.seekBar.set_fraction(self.timePlayingAsPersent)
+                timeStr = pos_str + " / " + dur_str
+                timePersent = (pos_int + 0.0) / dur_int
+                              
+                self.widgets.seekBar.set_text(timeStr)
+                self.widgets.seekBar.set_fraction(timePersent)
                 
                 gtk.gdk.threads_leave() #@UndefinedVariable
             time.sleep(1)
@@ -109,15 +121,20 @@ class PlayerController:
     def onBusMessage(self, bus, message):
         type = message.type
         if type == gst.MESSAGE_EOS:
+            
             print "MESSAGE_EOS"                
+            self.stopState()
             self.playerThreadId = None
-            self.stopState()                
+            
+            self.onFinishSong()
+                            
 
         elif type == gst.MESSAGE_ERROR:
             print "MESSAGE_ERROR"
             err, debug = message.parse_error()
             print "Error: %s" % err, debug
-            self.playerThreadId = None
             self.stopState()
+            self.playerThreadId = None
+            
             
     

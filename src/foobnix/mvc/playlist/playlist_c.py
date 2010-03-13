@@ -19,6 +19,7 @@ class PlaylistCntr():
         widget.connect("button-press-event", self.onPlaySong)
         
         self.entityBeans = []
+        self.index = 0;
         
     def clear(self):
         self.model.clear()
@@ -27,7 +28,18 @@ class PlaylistCntr():
         if is_double_click(e):
             playlistBean = self.model.getSelectedBean()           
             self.repopulate(self.entityBeans, playlistBean.index);
+            self.index = playlistBean.index
             self.playerCntr.playSong(playlistBean)
+            
+    def getNextSong(self):
+        self.index += 1
+        if self.index >= len(self.entityBeans):
+            self.index = 0
+            
+        playlistBean = self.model.getBeenByPosition(self.index)           
+        self.repopulate(self.entityBeans, playlistBean.index);        
+        return playlistBean
+        
      
     def setPlaylist(self, entityBeans):
         self.entityBeans = entityBeans    

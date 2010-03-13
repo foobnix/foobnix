@@ -37,6 +37,7 @@ class AppController():
         
         playerWidgets = PlayerWidgetsCntl(v.gx, playerCntr)
         playerCntr.registerWidgets(playerWidgets)
+        playerCntr.registerPlaylistCntr(playlistCntr)
                 
         DirectoryCntr(v.directory, playlistCntr)
         

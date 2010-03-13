@@ -28,10 +28,22 @@ class PlaylistModel:
         widget.append_column(descriptionColumn)
         
         widget.set_model(self.model)
+    
+    def getBeenByPosition(self, position):        
+        icon = self.model[position][ self.POS_ICON]
+        tracknumber = self.model[position][ self.POS_TRACK_NUMBER]
+        name = self.model[position][ self.POS_NAME]
+        path = self.model[position][ self.POS_PATH]
+        color = self.model[position][ self.POS_COLOR]
+        index = self.model[position][ self.POS_INDEX]
+        return PlaylistBean(icon, tracknumber, name, path, color, index)       
+        
+    
 
     def getSelectedBean(self):
         selection = self.widget.get_selection()
         model, selected = selection.get_selected()
+        
         if selected:
             icon = model.get_value(selected, self.POS_ICON)
             tracknumber = model.get_value(selected, self.POS_TRACK_NUMBER)
