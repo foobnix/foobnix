@@ -5,7 +5,7 @@ Created on Mar 13, 2010
 '''
 import gtk
 class WindowController():
-    def __init__(self, gx):
+    def __init__(self, gx):        
         self.window = gx.get_widget("foobnixWindow")
         self.window.connect("destroy", self.onDestroy)
     
