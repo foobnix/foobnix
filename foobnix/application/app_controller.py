@@ -16,7 +16,7 @@ class AppController():
 
     def __init__(self, v):
         
-        windowController = WindowController(v.gxMain)
+        
         
         playerCntr = PlayerController()
         playlistCntr = PlaylistCntr(v.playlist, playerCntr)
@@ -26,6 +26,8 @@ class AppController():
         playerCntr.registerPlaylistCntr(playlistCntr)
                 
         DirectoryCntr(v.directory, playlistCntr)
+        
+        windowController = WindowController(v.gxMain)
         
         TrayIcon(v.gxTryIcon, windowController,playerCntr)
         

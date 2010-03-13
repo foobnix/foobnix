@@ -8,20 +8,45 @@ class PlayerWidgetsCntl():
     '''
    
     '''
-    def __init__(self, gx, playerCntr):
+    def __init__(self, gxMain, playerCntr):
         self.playerCntr = playerCntr
         
-        self.volume = gx.get_widget("volume_hscale")
+        self.volume = gxMain.get_widget("volume_hscale")
         self.volume.connect("change-value",self.onVolumeChange)
         
-        self.seek = gx.get_widget("seek_eventbox")
+        self.seek = gxMain.get_widget("seek_eventbox")
         self.seek.connect("button-press-event",self.onSeek)
         
-        self.seekBar = gx.get_widget("seek_progressbar")
-        self.timeLabel =  gx.get_widget("seek_progressbar")
+        self.seekBar = gxMain.get_widget("seek_progressbar")
+        self.timeLabel =  gxMain.get_widget("seek_progressbar")
         
-        pass
+        
+           
+        navigationEvents = {                
+                "on_play_button_clicked" :self.onPlayButton,
+                "on_stop_button_clicked" :self.onStopButton,
+                "on_pause_button_clicked" :self.onPauseButton,
+                "on_prev_button_clicked" :self.onPrevButton,
+                "on_next_button_clicked": self.onNextButton
+        }
+        
+        gxMain.signal_autoconnect(navigationEvents)        
     
+    def onPlayButton(self, *a):
+        self.playerCntr.playState()
+    
+    def onStopButton(self, *a):
+        self.playerCntr.stopState()
+        
+    def onPauseButton(self, *a):
+        self.playerCntr.pauseState()
+        
+    def onPrevButton(self, *a):
+        self.playerCntr.prev()
+    
+    def onNextButton(self, *a):
+        self.playerCntr.next()
+        
     def onSeek(self, widget, event):
         if event.button == 1:
             width = self.seek.allocation.width          

@@ -17,8 +17,7 @@ class OnLoadExitAppCntr():
             self.playlistCntr.setState(FConfiguration().playlistState)
             
     def onExit(self):
-        print "Save configs"
-        print self.playlistCntr.getState()
+        print "Save configs"        
         FConfiguration().playlistState = self.playlistCntr.getState()
         FConfiguration().save()
     
