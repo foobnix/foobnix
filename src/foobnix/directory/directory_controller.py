@@ -4,15 +4,16 @@ Created on Mar 11, 2010
 @author: ivan
 '''
 import os
-from foobnix.confguration import FConfiguration
-from foobnix.file_utils import isDirectory, getExtenstion
-from foobnix.song import Song
+
 from foobnix.util import LOG
 
-from foobnix.mouse_utils import is_double_click
+
 
 from foobnix.directory.directory_model import DirectoryModel
 from foobnix.model.entity import DirectoryBean, PlaylistBean, SongBean
+from foobnix.util.confguration import FConfiguration
+from foobnix.util.file_utils import isDirectory, getExtenstion
+from foobnix.util.mouse_utils import is_double_click
 class DirectoryCntr():
     
     def __init__(self, widget, playlistCntr):
