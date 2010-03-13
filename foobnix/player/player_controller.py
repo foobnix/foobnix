@@ -6,8 +6,9 @@ Created on Mar 11, 2010
 import gst
 import gtk
 import time
-from foobnix.time_utils import convert_ns
+
 import thread
+from foobnix.util.time_utils import convert_ns
 class PlayerController:
     def __init__(self):
         self.player = self.playerLocal()

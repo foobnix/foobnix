@@ -5,10 +5,10 @@ Created on Mar 11, 2010
 '''
 
 import gtk
-from foobnix.song import Song
+
 from foobnix.playlist.playlist_model import PlaylistModel
 from foobnix.model.entity import PlaylistBean
-from foobnix.mouse_utils import is_double_click
+from foobnix.util.mouse_utils import is_double_click
 
 class PlaylistCntr():
     def __init__(self, widget, playerCntr):
