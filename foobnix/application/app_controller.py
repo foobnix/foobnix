@@ -26,10 +26,11 @@ class AppController():
         playerCntr.registerWidgets(playerWidgets)
         playerCntr.registerPlaylistCntr(playlistCntr)
                 
-        directoryCntr = DirectoryCntr(v.directory, playlistCntr)
+        directoryCntr = DirectoryCntr(v.gxMain, v.directory, playlistCntr)
         appConfCntr = AppConfigurationCntrl(v.gxMain, directoryCntr)
         
         windowController = WindowController(v.gxMain)
+        playerCntr.registerWindowController(windowController)
         
         TrayIcon(v.gxTryIcon, windowController,playerCntr)
         

@@ -10,12 +10,11 @@ from foobnix.playlist.playlist_model import PlaylistModel
 from foobnix.model.entity import PlaylistBean
 from foobnix.util.mouse_utils import is_double_click
 
+
 class PlaylistCntr():
     def __init__(self, widget, playerCntr):
         self.model = PlaylistModel(widget)
         self.playerCntr = playerCntr
-        self.model.append(PlaylistBean(gtk.STOCK_GO_FORWARD, "1", "Description", "path", "#F2F2F2"))
-        self.model.append(PlaylistBean(None, "12", "Description", "path", "#FFFFE5"))
         widget.connect("button-press-event", self.onPlaySong)
         
         self.entityBeans = []
@@ -74,11 +73,10 @@ class PlaylistCntr():
         for i in range(len(entityBeans)):
             songBean = entityBeans[i]            
             color = self.getBackgroundColour(i)
-            
             if i == index:                
-                self.model.append(PlaylistBean(gtk.STOCK_GO_FORWARD, songBean.tracknumber, songBean.name, songBean.path, color, i))
+                self.model.append(PlaylistBean(gtk.STOCK_GO_FORWARD, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, color, i))
             else:
-                self.model.append(PlaylistBean(None, songBean.tracknumber, songBean.name, songBean.path, color, i))
+                self.model.append(PlaylistBean(None, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, color, i))
                    
     def getBackgroundColour(self, i):
         if i % 2 :

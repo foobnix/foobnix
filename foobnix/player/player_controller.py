@@ -24,6 +24,10 @@ class PlayerController:
         
     pass
 
+    def registerWindowController(self, windowController):
+        self.windowController = windowController
+    
+
     def registerPlaylistCntr(self, playlistCntr):
         self.playlistCntr = playlistCntr
 
@@ -37,7 +41,8 @@ class PlayerController:
                 
         self.player.set_property("uri", "file://" + song.path)
         self.playerThreadId = thread.start_new_thread(self.playThread, ())
-        self.playState()        
+        self.playState()
+        self.windowController.setTitle(song.getTitleDescription())        
     
     def pauseState(self):
         self.player.set_state(gst.STATE_PAUSED)  
@@ -63,6 +68,7 @@ class PlayerController:
     def next(self, *a):
         song = self.playlistCntr.getNextSong()        
         self.playSong(song)
+        
     
     def prev(self):
         song = self.playlistCntr.getPrevSong()        

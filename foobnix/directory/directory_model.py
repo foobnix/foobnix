@@ -42,4 +42,19 @@ class DirectoryModel():
             visible = model.get_value(selected, self.POS_VISIBLE)
         return DirectoryBean(name, path, font, visible, type);                                 
     
+    def filterByName(self, string):        
+        if len(string.strip()) > 0:
+            for line in self.model:
+                name = line[self.POS_NAME].lower()
+                string = string.strip().lower()
+                
+                if name.find(string) >= 0:
+                    print "FIND :", name, string
+                    line[self.POS_VISIBLE] = True                    
+                else:                   
+                    line[self.POS_VISIBLE] = False
+        else:
+            for line in self.model:                
+                line[self.POS_VISIBLE] = True
+    
 

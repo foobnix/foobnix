@@ -12,6 +12,11 @@ class WindowController():
         self.window.maximize()
         self.window.connect("destroy", self.onDestroy)
     
+        self.window.set_title("Foobnix 1.0 beta")
+        
+    def setTitle(self, text):
+        self.window.set_title(text)
+    
     def registerOnExitCnrt(self, onExitCnrt):
         self.onExitCnrt = onExitCnrt
     
