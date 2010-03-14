@@ -3,6 +3,9 @@ Created on Feb 26, 2010
 
 @author: ivan
 '''
+from mutagen.easyid3 import EasyID3
+from mutagen.mp3 import MP3, HeaderNotFoundError
+from mutagen import File
 class EntityBean():
     TYPE_FOLDER = "FOLDER"
     TYPE_MUSIC_FILE = "TYPE_MUSIC_FILE"
@@ -19,10 +22,48 @@ class EntityBean():
         self.type = entity.type
         return self       
         
-class SongBean(EntityBean):           
+class SongBean(EntityBean):
+    album = ""
+    artist = ""
+    title = ""
+    date = ""
+    genre = ""
+    tracknumber = ""           
     def __init__(self, name=None, path=None, type = EntityBean.TYPE_MUSIC_FILE):                       
-        EntityBean.__init__(self, name, path, type)
-        self.tracknumber = None
+        EntityBean.__init__(self, name, path, type)        
+        
+        self._getMp3Tags()
+        
+
+    def getTitleDescription(self):    
+        if self.title and self.artist and self.album:
+            return self.artist + " - [" + self.album + "]  #" + self.tracknumber + " " + self.title
+        else:
+            return self.name
+        
+    
+    def getPlayListDescription(self):
+        if self.title and self.album:
+            return self.title + " (" + self.album + ")"
+        return self.name
+    
+    def _getMp3Tags(self):
+        audio = None
+        try:
+            audio = MP3(self.path, ID3=EasyID3)
+        except HeaderNotFoundError:
+            try:
+                audio = File(self.path)
+            except HeaderNotFoundError:
+                pass        
+        
+        if audio and audio.has_key('album'): self.album = audio["album"][0]
+        if audio and audio.has_key('artist'): self.artist = audio["artist"][0]
+        if audio and audio.has_key('title'): self.title = audio["title"][0]
+        if audio and audio.has_key('date'): self.date = audio["date"][0]
+        if audio and audio.has_key('genre'): self.genre = audio["genre"][0]
+        if audio and audio.has_key('tracknumber'): self.tracknumber = audio["tracknumber"][0]
+        
 
 class PlaylistBean(SongBean):
     def __init__(self, icon=None,tracknumber=10, name=None, path=None, color=None, index =0):

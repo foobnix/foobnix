@@ -643,8 +643,9 @@
                                 <property name="visible">True</property>
                                 <property name="left_padding">12</property>
                                 <child>
-                                  <widget class="GtkComboBoxEntry" id="filter_comboboxentry">
+                                  <widget class="GtkComboBoxEntry" id="filter-combobox-entry">
                                     <property name="visible">True</property>
+                                    <property name="items" translatable="yes">old rearch	</property>
                                   </widget>
                                 </child>
                               </widget>

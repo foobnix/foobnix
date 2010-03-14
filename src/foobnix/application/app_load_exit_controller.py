@@ -31,8 +31,7 @@ class OnLoadExitAppCntr():
         if FConfiguration().vpanelPostition:
             self.playerWidgets.vpanel.set_position(FConfiguration().vpanelPostition)
             
-        if FConfiguration().mediaLibraryPath:
-            #self.directoryCntr.updateDirectoryByPath(FConfiguration().mediaLibraryPath)
+        if FConfiguration().mediaLibraryPath:            
             self.appConfCntr.setMusicFolder(FConfiguration().mediaLibraryPath)
             
     def onExit(self):

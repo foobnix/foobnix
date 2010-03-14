@@ -16,16 +16,19 @@ from foobnix.util.file_utils import isDirectory, getExtenstion
 from foobnix.util.mouse_utils import is_double_click
 class DirectoryCntr():
     
-    def __init__(self, widget, playlistCntr):
+    def __init__(self, gxMain, widget, playlistCntr):
         self.playlistCntr = playlistCntr
         self.model = DirectoryModel(widget)
-               
-        #self.musicFolder = FConfiguration().mediaLibraryPath
-        #os.listdir(self.musicFolder)
-        #self.addAll()
-        
+
         widget.connect("button-press-event", self.onMouseClick)
-       
+        
+        self.filter = gxMain.get_widget("filter-combobox-entry")        
+        self.filter.connect("key-release-event", self.onFiltering)
+    
+    def onFiltering(self, *args):   
+        text = self.filter.get_children()[0].get_text()
+        if text : 
+            self.model.filterByName(text)
     
     def onMouseClick(self,w,e):
         if is_double_click(e): 
@@ -38,23 +41,7 @@ class DirectoryCntr():
                 if songs:
                     self.playlistCntr.clear()
                     self.playlistCntr.setPlaylist(songs)
-                
-                
-    
-    def filterByName(self, string):        
-        if len(string.strip()) > 0:
-            for line in self.direcotryTreeModel:
-                name = line[self.POS_NAME].lower()
-                string = string.strip().lower()
-                
-                if name.find(string) >= 0:
-                    print "FIND :", name, string
-                    line[self.POS_VISIBLE] = True                    
-                else:                   
-                    line[self.POS_VISIBLE] = False
-        else:
-            for line in self.direcotryTreeModel:                
-                line[self.POS_VISIBLE] = True
+  
 
     def getALLChildren(self, row, string):        
         for child in row.iterchildren():
