@@ -11,6 +11,7 @@ from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.tryicon.tryicon_controller import TrayIcon
 from foobnix.application.app_load_exit_controller import OnLoadExitAppCntr
 from foobnix.application.app_configuration_controller import AppConfigurationCntrl
+from foobnix.preferences.pref_controller import PrefController
 
 
 class AppController():   
@@ -29,7 +30,9 @@ class AppController():
         directoryCntr = DirectoryCntr(v.gxMain, v.directory, playlistCntr)
         appConfCntr = AppConfigurationCntrl(v.gxMain, directoryCntr)
         
-        windowController = WindowController(v.gxMain)
+        prefCntr = PrefController(v.gxPref)
+        
+        windowController = WindowController(v.gxMain, prefCntr)
         playerCntr.registerWindowController(windowController)
         
         TrayIcon(v.gxTryIcon, windowController,playerCntr)

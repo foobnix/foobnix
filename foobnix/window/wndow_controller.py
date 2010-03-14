@@ -5,14 +5,26 @@ Created on Mar 13, 2010
 '''
 import gtk
 class WindowController():
-    def __init__(self, gx):
+    def __init__(self, gx, prefCntr):
         self.decorate(gx)
+        self.prefCntr = prefCntr
+        
           
         self.window = gx.get_widget("foobnixWindow")
         self.window.maximize()
         self.window.connect("destroy", self.onDestroy)
     
         self.window.set_title("Foobnix 1.0 beta")
+        
+        signalsPopup = {
+                "on_gtk-preferences_activate" :self.showPref                
+        }
+        
+        gx.signal_autoconnect(signalsPopup)        
+    
+    def showPref(self, *args):
+        self.prefCntr.show()
+        
         
     def setTitle(self, text):
         self.window.set_title(text)
