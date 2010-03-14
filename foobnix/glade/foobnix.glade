@@ -436,6 +436,7 @@
                         <child>
                           <widget class="GtkVBox" id="vbox3">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <child>
                               <widget class="GtkHBox" id="hbox1">
                                 <property name="visible">True</property>
@@ -450,7 +451,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkFileChooserButton" id="filechooserbutton1">
+                                  <widget class="GtkFileChooserButton" id="music_dir_filechooserbutton">
                                     <property name="visible">True</property>
                                     <property name="action">select-folder</property>
                                     <signal name="file_set" handler="on_filechooserbutton1_file_set"/>

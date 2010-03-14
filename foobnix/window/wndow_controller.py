@@ -9,6 +9,7 @@ class WindowController():
         self.decorate(gx)
           
         self.window = gx.get_widget("foobnixWindow")
+        self.window.maximize()
         self.window.connect("destroy", self.onDestroy)
     
     def registerOnExitCnrt(self, onExitCnrt):

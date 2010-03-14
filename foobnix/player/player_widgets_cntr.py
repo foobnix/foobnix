@@ -20,8 +20,9 @@ class PlayerWidgetsCntl():
         self.seekBar = gxMain.get_widget("seek_progressbar")
         self.timeLabel =  gxMain.get_widget("seek_progressbar")
         
+        self.vpanel = gxMain.get_widget("vpaned1")
+        self.hpanel = gxMain.get_widget("hpaned1")
         
-           
         navigationEvents = {                
                 "on_play_button_clicked" :self.onPlayButton,
                 "on_stop_button_clicked" :self.onStopButton,
@@ -31,6 +32,9 @@ class PlayerWidgetsCntl():
         }
         
         gxMain.signal_autoconnect(navigationEvents)        
+        
+   
+
     
     def onPlayButton(self, *a):
         self.playerCntr.playState()

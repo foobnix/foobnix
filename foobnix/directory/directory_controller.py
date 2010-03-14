@@ -20,11 +20,12 @@ class DirectoryCntr():
         self.playlistCntr = playlistCntr
         self.model = DirectoryModel(widget)
                
-        self.root_directory = FConfiguration().mediaLibraryPath
-        os.listdir(self.root_directory)
-        self.addAll()
+        #self.musicFolder = FConfiguration().mediaLibraryPath
+        #os.listdir(self.musicFolder)
+        #self.addAll()
         
         widget.connect("button-press-event", self.onMouseClick)
+       
     
     def onMouseClick(self,w,e):
         if is_double_click(e): 
@@ -66,9 +67,10 @@ class DirectoryCntr():
         
                     
         
-    def updateDirctoryByPath(self, root_direcotry):
-        self.root_directory = root_direcotry
-        self.direcotryTreeModel.clear()
+    def updateDirectoryByPath(self, path):
+        print "Update path", path
+        self.musicFolder = path
+        self.model.clear()
         self.addAll()
     
     def clear(self):
@@ -96,7 +98,7 @@ class DirectoryCntr():
     
     def addAll(self):
         level = None;
-        self.go_recursive(self.root_directory, level) 
+        self.go_recursive(self.musicFolder, level) 
         
     def sortedDirsAndFiles(self, path, list):        
         files = []

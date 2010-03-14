@@ -54,12 +54,19 @@ class FConfiguration:
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")                
                 os.remove("foobnix_conf.pkl")
-            #self.currentSong = None
-            #self.currentSongIndex = None
-            #self.currentPlayListSongs = None
+ 
+        print "LOAD CONFIGS"
+        self.printArttibutes()
 
     def save(self):
-        FConfiguration()._saveCfgToFile()               
+        print "SAVE CONFIGS"
+        self.printArttibutes()
+        FConfiguration()._saveCfgToFile()      
+        
+    def printArttibutes(self):
+        for i in dir(self):
+            if not i.startswith("__"):
+                print i, getattr(self,i)         
         
     def _saveCfgToFile(self):
         #conf = FConfiguration()
