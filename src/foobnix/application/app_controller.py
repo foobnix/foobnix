@@ -10,6 +10,7 @@ from foobnix.player.player_widgets_cntr import PlayerWidgetsCntl
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.tryicon.tryicon_controller import TrayIcon
 from foobnix.application.app_load_exit_controller import OnLoadExitAppCntr
+from foobnix.application.app_configuration_controller import AppConfigurationCntrl
 
 
 class AppController():   
@@ -25,13 +26,14 @@ class AppController():
         playerCntr.registerWidgets(playerWidgets)
         playerCntr.registerPlaylistCntr(playlistCntr)
                 
-        DirectoryCntr(v.directory, playlistCntr)
+        directoryCntr = DirectoryCntr(v.directory, playlistCntr)
+        appConfCntr = AppConfigurationCntrl(v.gxMain, directoryCntr)
         
         windowController = WindowController(v.gxMain)
         
         TrayIcon(v.gxTryIcon, windowController,playerCntr)
         
-        loadExit = OnLoadExitAppCntr(playlistCntr)
+        loadExit = OnLoadExitAppCntr(playlistCntr, playerWidgets, playerCntr, directoryCntr, appConfCntr)
         windowController.registerOnExitCnrt(loadExit)
         
     

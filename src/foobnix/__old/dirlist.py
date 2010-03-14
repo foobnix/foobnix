@@ -33,7 +33,7 @@ class DirectoryList:
              
         root_directory = FConfiguration().mediaLibraryPath    
         
-        self.root_directory = root_directory       
+        self.musicFolder = root_directory       
         
          
         
@@ -85,7 +85,7 @@ class DirectoryList:
                     
         
     def updateDirctoryByPath(self, root_direcotry):
-        self.root_directory = root_direcotry
+        self.musicFolder = root_direcotry
         self.direcotryTreeModel.clear()
         self.addAll()
     
@@ -113,7 +113,7 @@ class DirectoryList:
     
     def addAll(self):
         level = None;
-        self.go_recursive(self.root_directory, level) 
+        self.go_recursive(self.musicFolder, level) 
         
     def sortedDirsAndFiles(self, path, list):        
         files = []
