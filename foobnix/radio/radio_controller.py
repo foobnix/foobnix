@@ -4,6 +4,7 @@ Created on Mar 16, 2010
 @author: ivan
 '''
 from foobnix.radio.radio_model import RadioListModel
+from foobnix.util.plsparser import getStationPath, getPlsName
 '''
 Created on Mar 11, 2010
 
@@ -42,7 +43,12 @@ class RadioListCntr():
     def onAddRadio(self,*args):
         urlStation =self.urlText.get_text()
         if urlStation:
-            entity = PlaylistBean(name=urlStation,path=urlStation,type=EntityBean.TYPE_MUSIC_URL,index=self.index+1);
+            nameDef=urlStation
+            if urlStation.startswith("http://") and urlStation.endswith(".pls"):                
+                urlStation = getStationPath(urlStation)                
+                nameDef = getPlsName(nameDef) + " ["+urlStation+" ]"
+            
+            entity = PlaylistBean(name=nameDef,path=urlStation,type=EntityBean.TYPE_MUSIC_URL,index=self.index+1);
             self.entityBeans.append(entity)
             self.repopulate(self.entityBeans, (self.model.getSize()))
             self.urlText.set_text("")                        
