@@ -9,6 +9,7 @@ import time
 
 import thread
 from foobnix.util.time_utils import convert_ns
+from foobnix.model.entity import EntityBean
 class PlayerController:
     def __init__(self):
         self.player = self.playerLocal()
@@ -38,9 +39,17 @@ class PlayerController:
         print "play song"
                 
         self.stopState()
-                
-        self.player.set_property("uri", "file://" + song.path)
-        self.playerThreadId = thread.start_new_thread(self.playThread, ())
+        
+        print "Type", song.type
+        if song.type == None or song.type == EntityBean.TYPE_MUSIC_FILE:
+            self.player = self.playerLocal()                        
+            self.player.set_property("uri", "file://" + song.path)
+        else:
+            print "URL PLAYING", song.path
+            self.player = self.playerHTTP()                        
+            self.player.set_property("uri", song.path)
+        
+        #self.playerThreadId = thread.start_new_thread(self.playThread, ())
         self.playState()
         self.windowController.setTitle(song.getTitleDescription())        
     

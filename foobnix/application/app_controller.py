@@ -12,6 +12,7 @@ from foobnix.tryicon.tryicon_controller import TrayIcon
 from foobnix.application.app_load_exit_controller import OnLoadExitAppCntr
 from foobnix.application.app_configuration_controller import AppConfigurationCntrl
 from foobnix.preferences.pref_controller import PrefController
+from foobnix.radio.radio_controller import RadioListCntr
 
 
 class AppController():   
@@ -22,6 +23,8 @@ class AppController():
         
         playerCntr = PlayerController()
         playlistCntr = PlaylistCntr(v.playlist, playerCntr)
+        
+        radioListCntr = RadioListCntr(v.gxMain, playerCntr)
         
         playerWidgets = PlayerWidgetsCntl(v.gxMain, playerCntr)
         playerCntr.registerWidgets(playerWidgets)
@@ -37,7 +40,7 @@ class AppController():
         
         TrayIcon(v.gxTryIcon, windowController,playerCntr)
         
-        loadExit = OnLoadExitAppCntr(playlistCntr, playerWidgets, playerCntr, directoryCntr, appConfCntr)
+        loadExit = OnLoadExitAppCntr(playlistCntr, playerWidgets, playerCntr, directoryCntr, appConfCntr, radioListCntr)
         windowController.registerOnExitCnrt(loadExit)
         
     

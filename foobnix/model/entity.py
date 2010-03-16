@@ -6,6 +6,7 @@ Created on Feb 26, 2010
 from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3, HeaderNotFoundError
 from mutagen import File
+import os
 class EntityBean():
     TYPE_FOLDER = "FOLDER"
     TYPE_MUSIC_FILE = "TYPE_MUSIC_FILE"
@@ -21,6 +22,11 @@ class EntityBean():
         self.path = entity.path
         self.type = entity.type
         return self       
+
+class URLBeen(EntityBean):
+        def __init__(self, name=None, path=None, type = EntityBean.TYPE_MUSIC_URL):
+            EntityBean.__init__(self, name, path, type)
+               
         
 class SongBean(EntityBean):
     album = ""
@@ -49,6 +55,10 @@ class SongBean(EntityBean):
     
     def _getMp3Tags(self):
         audio = None
+        
+        if not os.path.exists(self.path):
+            return
+        
         try:
             audio = MP3(self.path, ID3=EasyID3)
         except HeaderNotFoundError:
@@ -66,12 +76,13 @@ class SongBean(EntityBean):
         
 
 class PlaylistBean(SongBean):
-    def __init__(self, icon=None,tracknumber=10, name=None, path=None, color=None, index =0):
+    def __init__(self, icon=None,tracknumber="", name=None, path=None, color=None, index =0, type=None):
         SongBean.__init__(self, name, path)
         self.icon = icon        
         self.color = color 
         self.tracknumber = tracknumber
         self.index = index
+        self.type = type
         
 class DirectoryBean(EntityBean):    
     def __init__(self, name, path, font=10, is_visible=True, type=EntityBean.TYPE_FOLDER):

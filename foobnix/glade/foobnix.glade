@@ -778,6 +778,7 @@
                 <child>
                   <widget class="GtkVBox" id="vbox4">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <child>
                       <widget class="GtkToolbar" id="toolbar2">
                         <property name="visible">True</property>
