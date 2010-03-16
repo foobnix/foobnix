@@ -5,12 +5,13 @@ Created on Mar 14, 2010
 '''
 from foobnix.util.confguration import FConfiguration
 class OnLoadExitAppCntr():
-    def __init__(self, playlistCntr, playerWidgets, playerCntr, directoryCntr, appConfCntr):
+    def __init__(self, playlistCntr, playerWidgets, playerCntr, directoryCntr, appConfCntr, radioListCntr):
         self.directoryCntr = directoryCntr
         self.playlistCntr = playlistCntr
         self.playerWidgets = playerWidgets
         self.playerCntr = playerCntr
         self.appConfCntr = appConfCntr
+        self.radioListCntr = radioListCntr
         
         self.onStart()
 
@@ -34,9 +35,14 @@ class OnLoadExitAppCntr():
         if FConfiguration().mediaLibraryPath:            
             self.appConfCntr.setMusicFolder(FConfiguration().mediaLibraryPath)
             
+        if FConfiguration().radiolistState:
+            self.radioListCntr.setState(FConfiguration().radiolistState)
+            
     def onExit(self):
         print "Save configs"        
         FConfiguration().playlistState = self.playlistCntr.getState()
+        FConfiguration().radiolistState = self.radioListCntr.getState()
+        
         FConfiguration().volumeValue = self.playerWidgets.volume.get_value()
         FConfiguration().vpanelPostition = self.playerWidgets.vpanel.get_position()
         FConfiguration().hpanelPostition = self.playerWidgets.hpanel.get_position()

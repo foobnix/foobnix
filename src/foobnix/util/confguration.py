@@ -35,11 +35,13 @@ class FConfiguration:
         self.hpanelPostition = 300
         
         self.playlistState = None
+        self.radiolistState = None
         
         instance = self._loadCfgFromFile()
         if instance:
             try:
                 self.playlistState = instance.playlistState
+                self.radiolistState = instance.radiolistState 
                 self.mediaLibraryPath = instance.mediaLibraryPath
                 self.isRandom = instance.isRandom
                 self.isRepeat = instance.isRepeat
