@@ -91,13 +91,13 @@ def search(value):
 vk = Vkontakte('ivan.ivanenko@gmail.com', 'desteni')
 vk.get_cookie()
 #print vk.get_page()
-ulr = "http://d3.vpleer.ru/download2/60/4649/64388245/785e3f0f9e70/DDT-%D0%91%D0%B5%D0%B7_%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F.mp3"
+ulr = "http://d1.vpleer.ru/download2/47/4404/3425657/3e404fb9b105/DDT-%D0%94%D0%BE%D1%80%D0%BE%D0%B3%D0%B0.mp3"
 player = gst.element_factory_make("playbin", "player")
 player.set_state(gst.STATE_NULL)
-#player.set_property("uri", ulr)
+player.set_property("uri", ulr)
 player.set_state(gst.STATE_PLAYING)
 
-#time.sleep(10)
+time.sleep(20)
 
 result = search("ddt")
 #result = "href=\"http://d3.vpleer.ru/download2/32/4503/51659145/2fbc500428d2/DDT-V_poslednyuyu_osen%26%2339%3B_%5B_wp-team_%5D.mp3"
@@ -123,10 +123,10 @@ def get_ausong(line):
 
 unicode(result, 'utf-8')
 
-p1 = re.findall('href=\"([\w#!:.?+=&%@!\-\/]*.mp3") title="Download"', result)
+p1 = re.findall('href="([\w#!:.?+=&%@!\-\/]*.mp3)" title="Download"', result)
 p2 = re.findall('<span class="auname">([a-zA-Z0-9_ \S]*)</span>', result)
-p3 = re.findall("<span class=\"ausong\">([a-zA-Z0-9_ \S]*)</span> -", result)
-p4 = re.findall("<div class=\"time\">([0-9:]*)</div>", result)
+p3 = re.findall('<span class="ausong">([a-zA-Z0-9_ \S]*)</span> -', result)
+p4 = re.findall('<div class="time">([0-9:]*)</div>', result)
 
 print "path  ",len(p1), p1
 print "auname",len(p2), p2
