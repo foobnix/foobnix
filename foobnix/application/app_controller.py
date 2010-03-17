@@ -3,7 +3,7 @@ Created on Mar 14, 2010
 
 @author: ivan
 '''
-from foobnix.window.wndow_controller import WindowController
+from foobnix.window.window_controller import WindowController
 from foobnix.player.player_controller import PlayerController
 from foobnix.playlist.playlist_controller import PlaylistCntr
 from foobnix.player.player_widgets_cntr import PlayerWidgetsCntl
@@ -38,7 +38,7 @@ class AppController():
         windowController = WindowController(v.gxMain, prefCntr)
         playerCntr.registerWindowController(windowController)
         
-        TrayIcon(v.gxTryIcon, windowController,playerCntr)
+        TrayIcon(v.gxTryIcon, windowController, playerCntr)
         
         loadExit = OnLoadExitAppCntr(playlistCntr, playerWidgets, playerCntr, directoryCntr, appConfCntr, radioListCntr)
         windowController.registerOnExitCnrt(loadExit)

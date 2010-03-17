@@ -45,12 +45,14 @@ class PlayerController:
         if song.type == None or song.type == EntityBean.TYPE_MUSIC_FILE:
             self.player = self.playerLocal()                        
             self.player.set_property("uri", "file://" + song.path)
+            self.playerThreadId = thread.start_new_thread(self.playThread, ())
         else:
             print "URL PLAYING", song.path
             self.player = self.playerHTTP()                        
             self.player.set_property("uri", song.path)
+            self.widgets.seekBar.set_text("Url Playing...")
         
-        #self.playerThreadId = thread.start_new_thread(self.playThread, ())        
+                
         self.playState()
         self.setVolume(self.volume)
         self.windowController.setTitle(song.getTitleDescription())        
@@ -99,7 +101,7 @@ class PlayerController:
         print "Start Thread"        
         play_thread_id = self.playerThreadId
         gtk.gdk.threads_enter()#@UndefinedVariable
-        self.widgets.seekBar.set_text("00:00 / 00:00 init")
+        self.widgets.seekBar.set_text("00:00 / 00:00")
         gtk.gdk.threads_leave() #@UndefinedVariable
 
         while play_thread_id == self.playerThreadId:
