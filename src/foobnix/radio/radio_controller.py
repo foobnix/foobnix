@@ -22,8 +22,8 @@ class RadioListCntr():
     def __init__(self, gxMain, playerCntr):
         self.widget = gxMain.get_widget("radio_list_treeview")
         
-        addButton=gxMain.get_widget("add_radio_toolbutton")        
-        removeButton=gxMain.get_widget("remove_radio_toolbuton")
+        addButton = gxMain.get_widget("add_radio_toolbutton")        
+        removeButton = gxMain.get_widget("remove_radio_toolbuton")
         self.urlText = gxMain.get_widget("radio_url_entry")
         
         
@@ -40,15 +40,16 @@ class RadioListCntr():
         self.index = self.model.getSize();
                 
     
-    def onAddRadio(self,*args):
-        urlStation =self.urlText.get_text()
+    def onAddRadio(self, *args):
+        urlStation = self.urlText.get_text()
         if urlStation:
-            nameDef=urlStation
-            if urlStation.startswith("http://") and urlStation.endswith(".pls"):                
-                urlStation = getStationPath(urlStation)                
-                nameDef = getPlsName(nameDef) + " ["+urlStation+" ]"
+            nameDef = urlStation
+            getUrl = getStationPath(urlStation)
+            if getUrl:                
+                urlStation = getUrl         
+                nameDef = getPlsName(nameDef) + " [" + urlStation + " ]"
             
-            entity = PlaylistBean(name=nameDef,path=urlStation,type=EntityBean.TYPE_MUSIC_URL,index=self.index+1);
+            entity = PlaylistBean(name=nameDef, path=urlStation, type=EntityBean.TYPE_MUSIC_URL, index=self.index + 1);
             self.entityBeans.append(entity)
             self.repopulate(self.entityBeans, (self.model.getSize()))
             self.urlText.set_text("")                        
@@ -67,7 +68,7 @@ class RadioListCntr():
                 
                 
     def getState(self):
-        return [self.entityBeans,self.index]
+        return [self.entityBeans, self.index]
         
     def setState(self, state):
         self.entityBeans = state[0]
@@ -104,7 +105,7 @@ class RadioListCntr():
     def getPrevSong(self):
         self.index -= 1
         if self.index < 0:
-            self.index = len(self.entityBeans) -1
+            self.index = len(self.entityBeans) - 1
             
         playlistBean = self.model.getBeenByPosition(self.index)           
         self.repopulate(self.entityBeans, playlistBean.index);        

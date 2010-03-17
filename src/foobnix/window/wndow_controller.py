@@ -12,7 +12,8 @@ class WindowController():
           
         self.window = gx.get_widget("foobnixWindow")
         self.window.maximize()
-        self.window.connect("destroy", self.onDestroy)
+        #self.window.connect("destroy", self.onDestroy)
+        self.window.connect("delete-event", self.hide)
     
         self.window.set_title("Foobnix 1.0 beta")
         
@@ -35,16 +36,17 @@ class WindowController():
     def show(self):
         self.window.show()
     
-    def hide(self):
+    def hide(self, *args):
         self.window.hide()
+        return True
     
     def onDestroy(self, *a):
-        print "Destroy"
+        print "Destroy"        
         self.onExitCnrt.onExit()
         gtk.main_quit() 
         
         
-    def decorate(self,gx):
+    def decorate(self, gx):
         rc_st = ''' 
                         style "menubar-style" { 
                             GtkMenuBar::shadow_type = none
