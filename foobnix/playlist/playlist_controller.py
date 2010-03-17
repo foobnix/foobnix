@@ -28,7 +28,7 @@ class PlaylistCntr():
         self.index = state[1]
         if self.entityBeans:
             self.repopulate(self.entityBeans, self.index);
-            self.playerCntr.playSong(self.entityBeans[self.index])
+           #self.playerCntr.playSong(self.entityBeans[self.index])
               
         
     

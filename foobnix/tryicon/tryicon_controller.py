@@ -31,7 +31,8 @@ class TrayIcon:
     def connect(self):
         self.icon.connect("activate", self.onLeftMouseClick)
         self.icon.connect("popup-menu", self.onRightMouseClick)
-        self.icon.connect("scroll-event", self.onScrollUpDown)
+        
+        #self.icon.connect("scroll-event", self.onScrollUpDown)
      
     def quitApp(self, *a):
         self.windowController.onDestroy()  

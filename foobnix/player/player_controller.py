@@ -22,6 +22,7 @@ class PlayerController:
         self.cIndex = 0
         
         self.time_format = gst.Format(gst.FORMAT_TIME)
+        self.volume = 0
         
     pass
 
@@ -49,8 +50,9 @@ class PlayerController:
             self.player = self.playerHTTP()                        
             self.player.set_property("uri", song.path)
         
-        #self.playerThreadId = thread.start_new_thread(self.playThread, ())
+        #self.playerThreadId = thread.start_new_thread(self.playThread, ())        
         self.playState()
+        self.setVolume(self.volume)
         self.windowController.setTitle(song.getTitleDescription())        
     
     def pauseState(self):
@@ -61,17 +63,20 @@ class PlayerController:
     
     def stopState(self):
         self.player.set_state(gst.STATE_NULL)
+        
+    def setVolume(self, volumeValue): 
+        self.volume = volumeValue
+        self.player.set_property('volume', volumeValue + 0.0)      
 
     def playerHTTP(self):
         print "Player For remote files"
-        playbin = gst.element_factory_make("playbin", "player")
-        return playbin
+        self.playbin = gst.element_factory_make("playbin", "player")       
+        return self.playbin
 
     def playerLocal(self):
         print "Player Local Files"
-        playbin2 = gst.element_factory_make("playbin2", "player")
-        #playbin2.connect('about-to-finish', self.next)
-        return playbin2       
+        self.playbin = gst.element_factory_make("playbin2", "player")
+        return self.playbin       
     
     
     def next(self, *a):
@@ -83,8 +88,7 @@ class PlayerController:
         song = self.playlistCntr.getPrevSong()        
         self.playSong(song)
     
-    def setVolume(self, volumeValue): 
-        self.player.set_property('volume', volumeValue + 0.0)  
+    
     
     def setSeek(self, persentValue):        
         pos_max = self.player.query_duration(self.time_format, None)[0]           
