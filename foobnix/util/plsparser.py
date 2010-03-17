@@ -16,6 +16,8 @@ def getStationPath(url):
         urls = getStations(data, urls)
     except:
         print "INCORRECT URL ERROR .... ", url
+        
+        
     return urls[0]
         
 def getStations(data, urls):

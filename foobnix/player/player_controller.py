@@ -14,9 +14,7 @@ class PlayerController:
     def __init__(self):
         self.player = self.playerLocal()
         
-        bus = self.player.get_bus()
-        bus.add_signal_watch()
-        bus.connect("message", self.onBusMessage)
+       
         
         self.songs = []
         self.cIndex = 0
@@ -72,12 +70,19 @@ class PlayerController:
 
     def playerHTTP(self):
         print "Player For remote files"
-        self.playbin = gst.element_factory_make("playbin", "player")       
+        self.playbin = gst.element_factory_make("playbin", "player")  
+        bus = self.playbin.get_bus()
+        bus.add_signal_watch()
+        bus.connect("message", self.onBusMessage)     
         return self.playbin
 
     def playerLocal(self):
         print "Player Local Files"
         self.playbin = gst.element_factory_make("playbin2", "player")
+        bus = self.playbin.get_bus()
+        bus.add_signal_watch()
+        bus.connect("message", self.onBusMessage)
+        
         return self.playbin       
     
     
@@ -146,7 +151,7 @@ class PlayerController:
             
             print "MESSAGE_EOS"                
             self.stopState()
-            self.playerThreadId = None
+            self.playerThreadId = None            
             
             self.next()
                             
