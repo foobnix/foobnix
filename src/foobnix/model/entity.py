@@ -56,6 +56,9 @@ class SongBean(EntityBean):
     def _getMp3Tags(self):
         audio = None
         
+        if not self.path:
+            return
+        
         if not os.path.exists(self.path):
             return
         

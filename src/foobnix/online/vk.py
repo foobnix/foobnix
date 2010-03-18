@@ -86,7 +86,7 @@ class Vkontakte:
         return result
     
     def find_song_urls(self, song_title):
-        page = vk.get_page(song_title)
+        page = self.get_page(song_title)
         resultall = re.findall("return operate\(([\w() ,']*)\);", page)
         urls  = []
         for result in resultall:
