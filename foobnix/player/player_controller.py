@@ -51,6 +51,10 @@ class PlayerController:
         
         print "Type", song.type
         print "Path", song.path
+        
+        if song.path == None:
+            self.next()
+        
         if  song.type == EntityBean.TYPE_MUSIC_FILE:
             self.player = self.playerLocal()                        
             self.player.set_property("uri", "file://" + song.path)
