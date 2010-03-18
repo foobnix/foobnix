@@ -44,10 +44,11 @@ class RadioListCntr():
         urlStation = self.urlText.get_text()
         if urlStation:
             nameDef = urlStation
-            getUrl = getStationPath(urlStation)
-            if getUrl:                
-                urlStation = getUrl         
-                nameDef = getPlsName(nameDef) + " [" + urlStation + " ]"
+            if urlStation.endswith(".pls"):                
+                getUrl = getStationPath(urlStation)
+                if getUrl:                
+                    urlStation = getUrl         
+                    nameDef = getPlsName(nameDef) + " [" + urlStation + " ]"
             
             entity = PlaylistBean(name=nameDef, path=urlStation, type=EntityBean.TYPE_MUSIC_URL, index=self.index + 1);
             self.entityBeans.append(entity)

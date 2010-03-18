@@ -83,7 +83,7 @@ class Vkontakte:
         result = data.read()
         return result
     
-def search(value):
+def last_search_query(value):
     host = "http://en.vpleer.ru/?q="+value
     data = urllib2.urlopen(host)
     return data.read()

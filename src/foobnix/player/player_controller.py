@@ -105,7 +105,7 @@ class PlayerController:
     def playThread(self):
         print "Start Thread"        
         play_thread_id = self.playerThreadId
-        gtk.gdk.threads_enter()#@UndefinedVariable
+        gtk.gdk.threads_enter()#@UndefinedVariable        
         self.widgets.seekBar.set_text("00:00 / 00:00")
         gtk.gdk.threads_leave() #@UndefinedVariable
 

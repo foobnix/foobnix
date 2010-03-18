@@ -13,6 +13,7 @@ from foobnix.application.app_load_exit_controller import OnLoadExitAppCntr
 from foobnix.application.app_configuration_controller import AppConfigurationCntrl
 from foobnix.preferences.pref_controller import PrefController
 from foobnix.radio.radio_controller import RadioListCntr
+from foobnix.online.online_controller import OnlineListCntr
 
 
 class AppController():   
@@ -23,6 +24,8 @@ class AppController():
         
         playerCntr = PlayerController()
         playlistCntr = PlaylistCntr(v.playlist, playerCntr)
+        
+        OnlineListCntr(v.gxMain, playerCntr)
         
         radioListCntr = RadioListCntr(v.gxMain, playerCntr)
         
