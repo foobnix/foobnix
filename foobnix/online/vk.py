@@ -87,7 +87,14 @@ class Vkontakte:
     
     def find_song_urls(self, song_title):
         page = self.get_page(song_title)
+        #print page
         resultall = re.findall("return operate\(([\w() ,']*)\);", page)
+        result_album = re.findall("b id=\"performer([0-9]*)\">([\w \s#!:.?+=&%@!\-\/]*)</b", page)
+        result_track = re.findall("span id=\"title([0-9]*)\">([\w \s#!:.?+=&%@!\-\/]*)</span", page)
+        print len(resultall), resultall
+        print len(result_album), result_album
+        print len(result_track), result_track
+        
         urls  = []
         for result in resultall:
             result = replace(result, "'", " ")
@@ -107,4 +114,10 @@ class Vkontakte:
         
         return urls
 
+line = """<b id="performer73985803">From Facultet Day@ and KVN</b>"""
+#print re.findall("<b id=\"performer([0-9]*)\">([\w \s#!:.?+=&%@!\-\/]*)</b>", line)
+
+line = """<span id="title85151550">From Facultet</span>"""
+#print re.findall("<span id=\"title([0-9]*)\">([\w \s#!:.?+=&%@!\-\/]*)</span>", line)
+        
 

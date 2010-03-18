@@ -40,6 +40,7 @@ class OnlineListCntr():
     TOP_SONGS = "TOP_SONG"
     TOP_ALBUMS = "TOP_ALBUMS"
     TOP_SIMILAR = "TOP_SIMILAR"
+    TOP_SEARCH = "TOP_SEARCH"
     
     def __init__(self, gxMain, playerCntr):
         self.playerCntr = playerCntr
@@ -53,6 +54,7 @@ class OnlineListCntr():
         self.radio_song = gxMain.get_widget("radiobutton_song")        
         self.radio_album = gxMain.get_widget("radiobutton_album")
         self.radio_similar = gxMain.get_widget("radiobutton_similar")
+        self.radio_search = gxMain.get_widget("radiobutton_search")
         
         self.treeview = gxMain.get_widget("online_treeview")
         
@@ -102,8 +104,13 @@ class OnlineListCntr():
         if query:  
             if self.get_search_by() == self.TOP_ALBUMS:                
                 beans = search_top_albums(self.network, query)                
-            elif self.get_search_by() ==self.TOP_SONGS:
+            
+            elif self.get_search_by() == self.TOP_SONGS:
                 beans = search_top_tracks(self.network, query)
+            
+            elif self.get_search_by() ==  self.TOP_SIMILAR:
+                beans = search_top_similar(self.network, query)
+            
             else:
                 beans = search_top_similar(self.network, query)
                 
