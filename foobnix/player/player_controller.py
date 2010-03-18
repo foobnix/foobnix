@@ -11,6 +11,10 @@ import thread
 from foobnix.util.time_utils import convert_ns
 from foobnix.model.entity import EntityBean
 class PlayerController:
+    MODE_RADIO = "RADIO"
+    MODE_PLAY_LIST = "PLAY_LIST"
+    MODE_ONLINE_LIST = "ONLINE_LIST"
+    
     def __init__(self):
         self.player = self.playerLocal()
         
@@ -21,8 +25,11 @@ class PlayerController:
         
         self.time_format = gst.Format(gst.FORMAT_TIME)
         self.volume = 0
-        
+        self.mode = self.MODE_PLAY_LIST
     pass
+
+    def set_mode(self, mode):
+        self.mode = mode 
 
     def registerWindowController(self, windowController):
         self.windowController = windowController
@@ -30,6 +37,9 @@ class PlayerController:
 
     def registerPlaylistCntr(self, playlistCntr):
         self.playlistCntr = playlistCntr
+    
+    def registerOnlineCntr(self, onlineCntr):
+        self.onlineCntr = onlineCntr
 
     def registerWidgets(self, widgets):
         self.widgets = widgets
@@ -87,12 +97,20 @@ class PlayerController:
     
     
     def next(self, *a):
-        song = self.playlistCntr.getNextSong()        
+        if self.mode == self.MODE_ONLINE_LIST:
+            song = self.onlineCntr.getNextSong()
+        else:
+            song = self.playlistCntr.getNextSong()
+                    
         self.playSong(song)
         
     
     def prev(self):
-        song = self.playlistCntr.getPrevSong()        
+        if self.mode == self.MODE_ONLINE_LIST:
+            song = self.onlineCntr.getPrevSong()   
+        else:
+            song = self.playlistCntr.getPrevSong()  
+           
         self.playSong(song)
     
     

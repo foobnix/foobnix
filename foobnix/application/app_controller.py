@@ -25,13 +25,14 @@ class AppController():
         playerCntr = PlayerController()
         playlistCntr = PlaylistCntr(v.playlist, playerCntr)
         
-        OnlineListCntr(v.gxMain, playerCntr)
+        onlineCntr = OnlineListCntr(v.gxMain, playerCntr)
         
         radioListCntr = RadioListCntr(v.gxMain, playerCntr)
         
         playerWidgets = PlayerWidgetsCntl(v.gxMain, playerCntr)
         playerCntr.registerWidgets(playerWidgets)
         playerCntr.registerPlaylistCntr(playlistCntr)
+        playerCntr.registerOnlineCntr(onlineCntr)
                 
         directoryCntr = DirectoryCntr(v.gxMain, v.directory, playlistCntr)
         appConfCntr = AppConfigurationCntrl(v.gxMain, directoryCntr)
