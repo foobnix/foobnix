@@ -85,34 +85,26 @@ class Vkontakte:
         result = data.read()
         return result
     
-def last_search_query(value):
-    host = "http://en.vpleer.ru/?q=" + value
-    data = urllib2.urlopen(host)
-    return data.read()
+    def find_song_urls(self, song_title):
+        page = vk.get_page(song_title)
+        resultall = re.findall("return operate\(([\w() ,']*)\);", page)
+        urls  = []
+        for result in resultall:
+            result = replace(result, "'", " ")
+            result = replace(result, ",", " ")
+            
+            result = result.split()
+            
+            if len(result) > 4:
+                id_un1 = result[0]
+                id_server = result[1]
+                id_folder = result[2]
+                id_file = result[3]
+                id_un2 = result[3]
+            
+                url = "http://cs" + id_server + ".vkontakte.ru/u" + id_folder + "/audio/" + id_file + ".mp3"
+                urls.append(url)
+        
+        return urls
 
-vk = Vkontakte('ivan.ivanenko@gmail.com', '')
-#vk.get_cookie()
 
-page = """
-    <img class="playimg" onclick="return operate(87939180, 4634, 38310345, '522b4844829d', 242);" id="imgbutton87939180" nosorthandle="true" src="images / play.gif">
-    style=\\\"width: 18px; vertical-align:top\\\">\\n <img class=\\\"playimg\\\" onclick=\\\"return operate(85948082,4636,68974845,'4f6715c83b1b',250);\\\" id=\\\"imgbutton85948082\\\" nosorthandle=\\\"true\\\" 
-    """
-page = vk.get_page("Ария")
-print page
-resultall = re.findall("return operate\(([\w() ,']*)\);", page)
-for result in resultall:
-    result = replace(result, "'", " ")
-    result = replace(result, ",", " ")
-    
-    result = result.split()
-    "http://cs4634.vkontakte.ru/u38310345/audio/96859a617a23.mp3"
-    print result
-    if len(result) > 4:
-        id_un1 = result[0]
-        id_server = result[1]
-        id_folder = result[2]
-        id_file = result[3]
-        id_un2 = result[3]
-    
-        url = "http://cs" + id_server + ".vkontakte.ru/u" + id_folder + "/audio/" + id_file + ".mp3"
-        print url

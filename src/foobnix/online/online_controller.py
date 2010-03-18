@@ -12,6 +12,7 @@ import time
 from foobnix.online.online_model import OnlineListModel
 from foobnix.online.rupleer import find_song_urls
 from foobnix.player.player_controller import PlayerController
+from foobnix.online.vk import Vkontakte
 '''
 Created on Mar 11, 2010
 
@@ -63,6 +64,8 @@ class OnlineListCntr():
         
         self.last_search_query = None
         
+        self.vk = Vkontakte('qax@bigmir.net', 'foobnix')
+        
         pass #end of init
     
     
@@ -105,13 +108,10 @@ class OnlineListCntr():
             print "Albums: ", albums  
             
             for album in albums:    
-                album_txt = album['item']
+                album_txt = album.item
                 tracks = album_txt.get_tracks()
-                bean = PlaylistBean(name="===[" + album_txt.get_title() + "]===", path="", type=EntityBean.TYPE_FOLDER);
+                bean = PlaylistBean(name="===[ " + album_txt.get_title() + " ]===", path="", type=EntityBean.TYPE_FOLDER);
                 self.append(bean)
-                
-                
-                
                 
                 for track in tracks:
                     bean = PlaylistBean(name=track, path="", type=EntityBean.TYPE_MUSIC_URL);
@@ -133,24 +133,39 @@ class OnlineListCntr():
             print "play", playlistBean
             print "type", playlistBean.type            
             if playlistBean.type == EntityBean.TYPE_MUSIC_URL:
-                playlistBean.path = find_song_urls(playlistBean.name)[0]
+                
+                self.setSongResource(playlistBean)
+
                 print "Find path", playlistBean.path         
                 self.playerCntr.set_mode(PlayerController.MODE_ONLINE_LIST)                                  
                 self.playerCntr.playSong(playlistBean)
                 
                 self.index = playlistBean.index
                 self.repopulate(self.entityBeans, self.index)
+    
+    def setSongResource(self, playlistBean):
+        if not playlistBean.path:
+            if playlistBean.type == EntityBean.TYPE_MUSIC_URL:
+                #Seach by pvleer engine
+                #playlistBean.path = find_song_urls(playlistBean.name)[0]
                 
-            
+                #Seach by vk engine
+                playlistBean.path = self.vk.find_song_urls(playlistBean.name)[0]
+                
+        return playlistBean  
+    
     def getNextSong(self):
         self.index += 1
         if self.index >= len(self.entityBeans):
             self.index = 0
             
         playlistBean = self.model.getBeenByPosition(self.index) 
-        
+        print "NEXT", playlistBean.type, playlistBean.path
         if(playlistBean.type == EntityBean.TYPE_FOLDER):
             self.getNextSong()
+        
+        playlistBean = self.setSongResource(playlistBean)
+        print "PATH", playlistBean.path
                       
         self.repopulate(self.entityBeans, playlistBean.index);        
         return playlistBean
@@ -164,6 +179,8 @@ class OnlineListCntr():
         
         if(playlistBean.type == EntityBean.TYPE_FOLDER):
             self.getPrevSong()
+               
+        self.setSongResource(playlistBean)       
                                    
         self.repopulate(self.entityBeans, playlistBean.index);        
         return playlistBean
