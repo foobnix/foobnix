@@ -46,7 +46,7 @@ class OnlineListModel:
         color = self.model[position][ self.POS_COLOR]
         index = self.model[position][ self.POS_INDEX]
         type = self.model[position][ self.POS_TYPE]
-        return PlaylistBean(icon, tracknumber, name, path, color, index)       
+        return PlaylistBean(icon, tracknumber, name, path, color, index,type)       
 
     def getSelectedBean(self):
         print self.widget

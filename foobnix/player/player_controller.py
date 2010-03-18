@@ -50,16 +50,19 @@ class PlayerController:
         self.stopState()
         
         print "Type", song.type
-        if song.type == None or song.type == EntityBean.TYPE_MUSIC_FILE:
+        print "Path", song.path
+        if  song.type == EntityBean.TYPE_MUSIC_FILE:
             self.player = self.playerLocal()                        
             self.player.set_property("uri", "file://" + song.path)
             self.playerThreadId = thread.start_new_thread(self.playThread, ())
-        else:
+        elif song.type == EntityBean.TYPE_MUSIC_URL:
             print "URL PLAYING", song.path
             self.player = self.playerHTTP()                        
             self.player.set_property("uri", song.path)
             self.widgets.seekBar.set_text("Url Playing...")
-        
+        else:
+            self.widgets.seekBar.set_text("Error playing...")
+            return
                 
         self.playState()
         self.setVolume(self.volume)
