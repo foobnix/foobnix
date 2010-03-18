@@ -11,6 +11,7 @@ from foobnix.online import pylast
 import time
 from foobnix.online.online_model import OnlineListModel
 from foobnix.online.rupleer import find_song_urls
+from foobnix.player.player_controller import PlayerController
 '''
 Created on Mar 11, 2010
 
@@ -97,7 +98,7 @@ class OnlineListCntr():
             unicode(query, "utf-8")
             artist = self.network.get_artist(query)
             print "Artist: ", artist            
-            print "BIO: ", artist.get_bio_summary()
+            #print "BIO: ", artist.get_bio_summary()
             
             albums = artist.get_top_albums()
             
@@ -120,7 +121,7 @@ class OnlineListCntr():
     
     def append(self, bean):
         self.entityBeans.append(bean)
-        self.repopulate(self.entityBeans, 0)
+        self.repopulate(self.entityBeans, -1)
         
 
     def clear(self):
@@ -133,7 +134,8 @@ class OnlineListCntr():
             print "type", playlistBean.type            
             if playlistBean.type == EntityBean.TYPE_MUSIC_URL:
                 playlistBean.path = find_song_urls(playlistBean.name)[0]
-                print "Find path", playlistBean.path                                           
+                print "Find path", playlistBean.path         
+                self.playerCntr.set_mode(PlayerController.MODE_ONLINE_LIST)                                  
                 self.playerCntr.playSong(playlistBean)
                 
                 self.index = playlistBean.index
@@ -145,16 +147,24 @@ class OnlineListCntr():
         if self.index >= len(self.entityBeans):
             self.index = 0
             
-        playlistBean = self.model.getBeenByPosition(self.index)           
+        playlistBean = self.model.getBeenByPosition(self.index) 
+        
+        if(playlistBean.type == EntityBean.TYPE_FOLDER):
+            self.getNextSong()
+                      
         self.repopulate(self.entityBeans, playlistBean.index);        
         return playlistBean
     
     def getPrevSong(self):
         self.index -= 1
         if self.index < 0:
-            self.index = len(self.entityBeans) - 1
+            self.index = len(self.entityBeans) - 1            
             
-        playlistBean = self.model.getBeenByPosition(self.index)           
+        playlistBean = self.model.getBeenByPosition(self.index)
+        
+        if(playlistBean.type == EntityBean.TYPE_FOLDER):
+            self.getPrevSong()
+                                   
         self.repopulate(self.entityBeans, playlistBean.index);        
         return playlistBean
             
