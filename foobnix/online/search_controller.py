@@ -19,8 +19,12 @@ def search_top_albums(network, query):
     beans = []    
     print "Albums: ", albums  
     
-    for album in albums:            
-        album_txt = album.item
+    for album in albums:
+        try:            
+            album_txt = album.item
+        except AttributeError:
+            album_txt = album['item']
+        
         tracks = album_txt.get_tracks()
         bean = PlaylistBean(name="===[ " + album_txt.get_title() + " ]===", path="", type=EntityBean.TYPE_FOLDER);
         beans.append(bean)
@@ -30,6 +34,8 @@ def search_top_albums(network, query):
             beans.append(bean)
             
     return beans
+
+
 
 def search_top_tracks(network, query):
     unicode(query, "utf-8")
@@ -46,7 +52,11 @@ def search_top_tracks(network, query):
     print "Tracks: ", tracks 
         
     for track in tracks:
-        bean = PlaylistBean(name=track.item, path="", type=EntityBean.TYPE_MUSIC_URL);
+        try:            
+            track_item = track.item
+        except AttributeError:
+            track_item = track['item']
+        bean = PlaylistBean(name=track_item, path="", type=EntityBean.TYPE_MUSIC_URL);
         beans.append(bean)
         
     return beans
@@ -61,9 +71,14 @@ def search_top_similar(network, query):
     artists = artist.get_similar(10)
     beans = []   
     for artist in artists:
-        print artist, artist.item
-        title = str(artist.item)
-        bean = PlaylistBean(name="===[ "+title+" ]===", path="", type=EntityBean.TYPE_FOLDER);
+        try:            
+            artist_txt = artist.item
+        except AttributeError:
+            artist_txt = artist['item']
+            
+        print artist, artist_txt
+        title = str(artist_txt)
+        bean = PlaylistBean(name="===[ " + title + " ]===", path="", type=EntityBean.TYPE_FOLDER);
         beans.append(bean)
         tops = search_top_tracks(network, title)
         for top in tops:

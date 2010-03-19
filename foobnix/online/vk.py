@@ -11,6 +11,8 @@ import re
 import gst
 import time
 from string import replace
+from base64 import encode
+import sys
 
 # -*- coding: utf-8 -*-
 
@@ -85,17 +87,36 @@ class Vkontakte:
         result = data.read()
         return result
     
+    def get_name_by(self, id, result_album):
+            for album in result_album:
+                id_album = album[0]
+                name = album[1]
+                if id_album == id:
+                    return name
+            
+            return None       
+    
     def find_song_urls(self, song_title):
-        page = self.get_page(song_title)
-        #print page
-        resultall = re.findall("return operate\(([\w() ,']*)\);", page)
-        result_album = re.findall("b id=\"performer([0-9]*)\">([\w \s#!:.?+=&%@!\-\/]*)</b", page)
-        result_track = re.findall("span id=\"title([0-9]*)\">([\w \s#!:.?+=&%@!\-\/]*)</span", page)
-        print len(resultall), resultall
-        print len(result_album), result_album
-        print len(result_track), result_track
         
-        urls  = []
+        page = self.get_page(song_title)
+        page = page.decode('cp1251')
+        #page = page.decode("cp1251")
+        #unicode(page, "cp1251")
+        
+        #print page
+                
+        
+                
+        reg_all = "([А-ЯA-Z0-9_ #!:;.?+=&%@!\-\/'()]*)"
+        resultall = re.findall("return operate\(([\w() ,']*)\);", page, re.IGNORECASE)
+        result_album = re.findall(u"<b id=\\\\\"performer([0-9]*)\\\\\">" + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
+        result_track = re.findall(u"<span id=\\\\\"title([0-9]*)\\\\\">" + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
+        result_time = re.findall("<div class=\\\\\"duration\\\\\">" + reg_all + "<", page, re.IGNORECASE)
+        
+        
+        urls = []
+        ids = []
+        vkSongs = [] 
         for result in resultall:
             result = replace(result, "'", " ")
             result = replace(result, ",", " ")
@@ -103,7 +124,7 @@ class Vkontakte:
             result = result.split()
             
             if len(result) > 4:
-                id_un1 = result[0]
+                id_id = result[0]
                 id_server = result[1]
                 id_folder = result[2]
                 id_file = result[3]
@@ -111,13 +132,63 @@ class Vkontakte:
             
                 url = "http://cs" + id_server + ".vkontakte.ru/u" + id_folder + "/audio/" + id_file + ".mp3"
                 urls.append(url)
+                ids.append(id_id)
         
-        return urls
+        #print len(resultall), resultall
+        #print len(urls), urls
+        print len(result_album), result_album
+        print len(result_track), result_track
+        #print len(result_time), result_time
+        
+        for i in xrange(len(result_time)):    
+            id = ids[i]       
+            path = urls[i] 
+            album = self.get_name_by(id, result_album)
+            track = self.get_name_by(id, result_track)
+            time = result_time[i] 
+            vkSong = VKSong(path, album, track, time)
+            vkSongs.append(vkSong)            
+        
+        return vkSongs
+        
+        
+       
 
-line = """<b id="performer73985803">From Facultet Day@ and KVN</b>"""
-#print re.findall("<b id=\"performer([0-9]*)\">([\w \s#!:.?+=&%@!\-\/]*)</b>", line)
+class VKSong():
+    def __init__(self, path, album, track, time):
+        self.path = path
+        self.album = album
+        self.track = track
+        self.time = time
+        
+    def getFullDescription(self):
+        return "[ " + self.s(self.album) + " ] " + self.s(self.track) + " " + self.s(self.time) 
+    
+    def __str__(self):
+        return "" + self.s(self.album) + " " + self.s(self.track) + " " + self.s(self.time) + " " + self.s(self.path)
 
-line = """<span id="title85151550">From Facultet</span>"""
-#print re.findall("<span id=\"title([0-9]*)\">([\w \s#!:.?+=&%@!\-\/]*)</span>", line)
+    def s(self, value):
+        if value:
+            return value
+        else: 
+            return ""   
+
+        
+#vk = Vkontakte("qax@bigmir.net", "foobnix")
+#vkSongs = vk.find_song_urls("ария")
+
+#for vkSong in vkSongs:
+#    print vkSong
+
+line = """ <b id=\"performer87403420\"> mi123sdf ФЫВАв serdce Trofim)<\/b><span><b id=\"performer87403420"""
+print line
+print re.findall("<b id=\"performer([0-9]*)\">([А-ЯA-Z0-9 ()]*)<", line, re.IGNORECASE)
+
+line = """nbsp;<\/span><span id=\"title76067271\">SHtil&#39;<\/span> <small class=\<span id="title87919392">
+<a href="javascript: showLyrics(87919392,3966457);">Кто ты</a>
+</span>"""
+print re.findall(" < span id = \"title([0-9]*)\">([А-ЯA-ZёЁ0-9 \s#!;:.?+=&%@!\-\/'()]*)<", line, re.IGNORECASE)
+
+
         
 

@@ -13,7 +13,7 @@ from foobnix.online.online_model import OnlineListModel
 from foobnix.online.rupleer import find_song_urls
 from foobnix.player.player_controller import PlayerController
 from foobnix.online.vk import Vkontakte
-from foobnix.online.search_controller import search_top_albums,\
+from foobnix.online.search_controller import search_top_albums, \
     search_top_tracks, search_top_similar
 
 '''
@@ -86,6 +86,7 @@ class OnlineListCntr():
         if self.radio_song.get_active(): return self.TOP_SONGS
         if self.radio_album.get_active(): return self.TOP_ALBUMS
         if self.radio_similar.get_active(): return self.TOP_SIMILAR
+        if self.radio_search.get_active(): return self.TOP_SEARCH
         #default is
         return self.TOP_SONGS
     
@@ -108,17 +109,24 @@ class OnlineListCntr():
             elif self.get_search_by() == self.TOP_SONGS:
                 beans = search_top_tracks(self.network, query)
             
-            elif self.get_search_by() ==  self.TOP_SIMILAR:
+            elif self.get_search_by() == self.TOP_SIMILAR:
                 beans = search_top_similar(self.network, query)
-            
             else:
-                beans = search_top_similar(self.network, query)
+                vkSongs = self.vk.find_song_urls(query)
+                beans = self.convertVKstoBeans(vkSongs)
                 
             if beans:
                 self.append(beans)
             else:
                 self.append([self.NotFoundBeen()])
         pass
+    
+    def convertVKstoBeans(self, vkSongs):
+        beans = []
+        for vkSong in vkSongs:
+            bean = PlaylistBean(name=vkSong.getFullDescription(), path=vkSong.path, type=EntityBean.TYPE_MUSIC_URL);
+            beans.append(bean)
+        return beans
     
     def NotFoundBeen(self):
         return PlaylistBean(name="Not found ", path=None, type=EntityBean.TYPE_FOLDER)
@@ -154,9 +162,12 @@ class OnlineListCntr():
                 #playlistBean.path = find_song_urls(playlistBean.name)[0]
                 
                 #Seach by vk engine
-                result = self.vk.find_song_urls(playlistBean.name)
-                if result:
-                    playlistBean.path = result[0]
+                vkSongs = self.vk.find_song_urls(playlistBean.name)
+                #print vkSongs
+                if vkSongs:
+                    path = vkSongs[0].path 
+                    print "GET PATH", path
+                    playlistBean.path = path
                 else:
                     playlistBean.path = None
                 
