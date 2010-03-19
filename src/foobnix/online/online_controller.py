@@ -148,7 +148,8 @@ class OnlineListCntr():
                 
                 self.setSongResource(playlistBean)
 
-                print "Find path", playlistBean.path         
+                print "Find path", playlistBean.path   
+                
                 self.playerCntr.set_mode(PlayerController.MODE_ONLINE_LIST)                                  
                 self.playerCntr.playSong(playlistBean)
                 
