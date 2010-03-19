@@ -10,27 +10,58 @@ from foobnix.util import LOG
 
 
 from foobnix.directory.directory_model import DirectoryModel
-from foobnix.model.entity import DirectoryBean, PlaylistBean, SongBean
+from foobnix.model.entity import DirectoryBean, PlaylistBean, SongBean, \
+    EntityBean
 from foobnix.util.confguration import FConfiguration
 from foobnix.util.file_utils import isDirectory, getExtenstion
 from foobnix.util.mouse_utils import is_double_click
+import gtk
 class DirectoryCntr():
     
-    def __init__(self, gxMain, widget, playlistCntr):
+    def __init__(self, gxMain, widget, playlistCntr, radioListCntr):
         self.playlistCntr = playlistCntr
+        self.radioListCntr = radioListCntr
         self.model = DirectoryModel(widget)
 
         widget.connect("button-press-event", self.onMouseClick)
         
-        self.filter = gxMain.get_widget("filter-combobox-entry")        
+        self.filter = gxMain.get_widget("filter-combobox-entry")
         self.filter.connect("key-release-event", self.onFiltering)
+        
+        self.view_list = gxMain.get_widget("view_list_combobox")
+        cell = gtk.CellRendererText()
+        self.view_list.pack_start(cell, True)
+        self.view_list.add_attribute(cell, 'text', 0)  
+        liststore = gtk.ListStore(str)
+        self.view_list.set_model(liststore)
+        self.view_list.append_text("by artist/album")
+        self.view_list.append_text("by radio/stations")
+        self.view_list.append_text("by play lists")
+        self.view_list.set_active(0)
+        
+        self.view_list.connect("changed", self.onChangeView)
+
+    def onChangeView(self, *args):
+        active_index = self.view_list.get_active()  
+        if active_index == 0:
+            self.clear()
+            self.addAll()
+        elif active_index == 1:
+            self.clear()
+            beans = self.radioListCntr.getState()[0]
+            print beans
+            for bean in beans:
+                self.model.append(None, DirectoryBean(bean.name, bean.path, "normal", True, DirectoryBean.TYPE_MUSIC_URL))
+        else:
+            pass
+    
     
     def onFiltering(self, *args):   
         text = self.filter.get_children()[0].get_text()
         if text : 
             self.model.filterByName(text)
     
-    def onMouseClick(self,w,e):
+    def onMouseClick(self, w, e):
         if is_double_click(e): 
             directoryBean = self.model.getSelectedBean()
             if directoryBean.type == DirectoryBean.TYPE_MUSIC_FILE:
@@ -41,7 +72,8 @@ class DirectoryCntr():
                 if songs:
                     self.playlistCntr.clear()
                     self.playlistCntr.setPlaylist(songs)
-  
+            else:
+                self.playlistCntr.setPlaylist([SongBean(type=EntityBean.TYPE_MUSIC_URL).init(directoryBean)])
 
     def getALLChildren(self, row, string):        
         for child in row.iterchildren():
@@ -61,7 +93,7 @@ class DirectoryCntr():
         self.addAll()
     
     def clear(self):
-        self.directory.clear()
+        self.model.clear()
         
     def getAllSongsByPath(self, path):
         dir = os.path.abspath(path)

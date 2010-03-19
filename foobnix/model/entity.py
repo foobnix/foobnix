@@ -24,7 +24,7 @@ class EntityBean():
         return self       
 
 class URLBeen(EntityBean):
-        def __init__(self, name=None, path=None, type = EntityBean.TYPE_MUSIC_URL):
+        def __init__(self, name=None, path=None, type=EntityBean.TYPE_MUSIC_URL):
             EntityBean.__init__(self, name, path, type)
                
         
@@ -35,7 +35,7 @@ class SongBean(EntityBean):
     date = ""
     genre = ""
     tracknumber = ""           
-    def __init__(self, name=None, path=None, type = EntityBean.TYPE_MUSIC_FILE):                       
+    def __init__(self, name=None, path=None, type=EntityBean.TYPE_MUSIC_FILE):                       
         EntityBean.__init__(self, name, path, type)        
         
         self._getMp3Tags()
@@ -79,13 +79,14 @@ class SongBean(EntityBean):
         
 
 class PlaylistBean(SongBean):
-    def __init__(self, icon=None,tracknumber="", name=None, path=None, color=None, index =0, type=None):
+    def __init__(self, icon=None, tracknumber="", name=None, path=None, color=None, index=0, type=None, time=None):
         SongBean.__init__(self, name, path)
         self.icon = icon        
         self.color = color 
         self.tracknumber = tracknumber
         self.index = index
         self.type = type
+        self.time = time
         
 class DirectoryBean(EntityBean):    
     def __init__(self, name, path, font=10, is_visible=True, type=EntityBean.TYPE_FOLDER):

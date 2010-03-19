@@ -7,8 +7,9 @@ Created on Mar 11, 2010
 import gtk
 
 from foobnix.playlist.playlist_model import PlaylistModel
-from foobnix.model.entity import PlaylistBean
+from foobnix.model.entity import PlaylistBean, EntityBean
 from foobnix.util.mouse_utils import is_double_click
+from foobnix.player.player_controller import PlayerController
 
 
 class PlaylistCntr():
@@ -21,7 +22,7 @@ class PlaylistCntr():
         self.index = 0;
     
     def getState(self):
-        return [self.entityBeans,self.index]
+        return [self.entityBeans, self.index]
         
     def setState(self, state):
         self.entityBeans = state[0]
@@ -40,6 +41,8 @@ class PlaylistCntr():
             playlistBean = self.model.getSelectedBean()           
             self.repopulate(self.entityBeans, playlistBean.index);
             self.index = playlistBean.index
+            self.playerCntr.set_mode(PlayerController.MODE_PLAY_LIST)
+            playlistBean.type = EntityBean.TYPE_MUSIC_FILE
             self.playerCntr.playSong(playlistBean)
             
     def getNextSong(self):
@@ -54,7 +57,7 @@ class PlaylistCntr():
     def getPrevSong(self):
         self.index -= 1
         if self.index < 0:
-            self.index = len(self.entityBeans) -1
+            self.index = len(self.entityBeans) - 1
             
         playlistBean = self.model.getBeenByPosition(self.index)           
         self.repopulate(self.entityBeans, playlistBean.index);        

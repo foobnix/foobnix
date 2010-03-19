@@ -51,6 +51,7 @@ class PlayerController:
         
         print "Type", song.type
         print "Path", song.path
+        print "MODE", self.mode
         
         if song.path == None:
             self.next()

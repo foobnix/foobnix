@@ -34,7 +34,7 @@ class AppController():
         playerCntr.registerPlaylistCntr(playlistCntr)
         playerCntr.registerOnlineCntr(onlineCntr)
                 
-        directoryCntr = DirectoryCntr(v.gxMain, v.directory, playlistCntr)
+        directoryCntr = DirectoryCntr(v.gxMain, v.directory, playlistCntr, radioListCntr)
         appConfCntr = AppConfigurationCntrl(v.gxMain, directoryCntr)
         
         prefCntr = PrefController(v.gxPref)
