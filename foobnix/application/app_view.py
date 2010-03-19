@@ -4,9 +4,10 @@ Created on Mar 14, 2010
 @author: ivan
 '''
 import gtk
+import os
 class AppView():
-    gladeMain = "foobnix/glade/foobnix.glade" 
-    gladePref = "foobnix/glade/preferences.glade"
+    gladeMain = os.path.abspath("foobnix/glade/foobnix.glade") 
+    gladePref = os.path.abspath("foobnix/glade/preferences.glade")
 
     def __init__(self):
         self.gxMain = gtk.glade.XML(self.gladeMain, "foobnixWindow")
