@@ -18,12 +18,23 @@ from foobnix.util.mouse_utils import is_double_click
 import gtk
 class DirectoryCntr():
     
-    def __init__(self, gxMain, widget, playlistCntr, radioListCntr):
+    def __init__(self, gxMain, playlistCntr, radioListCntr):
         self.playlistCntr = playlistCntr
         self.radioListCntr = radioListCntr
+        
+        widget = gxMain.get_widget("direcotry_treeview")
         self.model = DirectoryModel(widget)
-
         widget.connect("button-press-event", self.onMouseClick)
+        
+        #widget.connect("drag-begin", self.all)
+        #widget.connect("drag-data-get", self.all)
+        #widget.connect("drag-data-received", self.all)
+        #widget.connect("drag-drop", self.all)
+        widget.connect("drag-end", self.on_drag_get)
+        #widget.connect("drag-failed", self.all)
+        #widget.connect("drag-leave", self.all)
+        
+        
         
         self.filter = gxMain.get_widget("filter-combobox-entry")
         self.filter.connect("key-release-event", self.onFiltering)
@@ -40,6 +51,13 @@ class DirectoryCntr():
         self.view_list.set_active(0)
         
         self.view_list.connect("changed", self.onChangeView)
+    
+    def all(self, *args):
+        for arg in args:
+            print args
+    
+    def on_drag_get(self, *args):    
+        self.populate_playlist(append=True)
 
     def onChangeView(self, *args):
         active_index = self.view_list.get_active()  
@@ -63,18 +81,29 @@ class DirectoryCntr():
     
     def onMouseClick(self, w, e):
         if is_double_click(e): 
-            directoryBean = self.model.getSelectedBean()
-            if directoryBean.type == DirectoryBean.TYPE_MUSIC_FILE:
-                self.playlistCntr.clear()                                                                           
+            self.populate_playlist()
+    
+    def populate_playlist(self, append=False):
+        directoryBean = self.model.getSelectedBean()
+        if directoryBean.type == DirectoryBean.TYPE_MUSIC_FILE:
+            if append:                                                                            
+                self.playlistCntr.appendPlaylist([SongBean().init(directoryBean)])
+            else:
                 self.playlistCntr.setPlaylist([SongBean().init(directoryBean)])
-            elif directoryBean.type == DirectoryBean.TYPE_FOLDER:
-                songs = self.getAllSongsByPath(directoryBean.path)
-                if songs:
-                    self.playlistCntr.clear()
-                    self.playlistCntr.setPlaylist(songs)
+        elif directoryBean.type == DirectoryBean.TYPE_FOLDER:
+            songs = self.getAllSongsByPath(directoryBean.path)
+            if append:                                                                            
+                self.playlistCntr.appendPlaylist(songs)
+            else:
+                self.playlistCntr.setPlaylist(songs)
+        else:
+            if append:                                                                            
+                self.playlistCntr.appendPlaylist([SongBean(type=EntityBean.TYPE_MUSIC_URL).init(directoryBean)])
             else:
                 self.playlistCntr.setPlaylist([SongBean(type=EntityBean.TYPE_MUSIC_URL).init(directoryBean)])
-
+            
+    
+    
     def getALLChildren(self, row, string):        
         for child in row.iterchildren():
             name = child[self.POS_NAME].lower()            
