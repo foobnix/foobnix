@@ -49,12 +49,14 @@ class PlayerController:
                 
         self.stopState()
         
+        if song.path == None:
+            print "SONG NOT FOUND", song.name
+            return self.next()
+        
         print "Type", song.type
         print "Path", song.path
         print "MODE", self.mode
-        
-        if song.path == None:
-            self.next()
+        print "Name", song.name
         
         if  song.type == EntityBean.TYPE_MUSIC_FILE:
             self.player = self.playerLocal()                        
