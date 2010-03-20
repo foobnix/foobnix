@@ -15,6 +15,7 @@ from foobnix.player.player_controller import PlayerController
 from foobnix.online.vk import Vkontakte
 from foobnix.online.search_controller import search_top_albums, \
     search_top_tracks, search_top_similar
+import thread
 
 '''
 Created on Mar 11, 2010
@@ -80,6 +81,8 @@ class OnlineListCntr():
     def on_drag_end(self, *ars):
         playlistBean = self.model.getSelectedBean()
         playlistBean.type = CommonBean.TYPE_MUSIC_URL
+        
+        
         self.setSongResource(playlistBean)
                 
         self.directoryCntr.append_virtual(playlistBean)
@@ -178,13 +181,13 @@ class OnlineListCntr():
                 #Seach by pvleer engine
                 #playlistBean.path = find_song_urls(playlistBean.name)[0]
                 
-                #Seach by vk engine
+                #Seach by vk engine                
                 vkSongs = self.vk.find_song_urls(playlistBean.name)
                 #print vkSongs
                 if vkSongs:
                     path = vkSongs[0].path 
                     print "GET PATH", path
-                    playlistBean.path = path
+                    playlistBean.path = path                    
                 else:
                     playlistBean.path = None
                 
