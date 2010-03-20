@@ -58,6 +58,7 @@ class OnlineListCntr():
         self.radio_search = gxMain.get_widget("radiobutton_search")
         
         self.treeview = gxMain.get_widget("online_treeview")
+        
         self.treeview.connect("drag-end", self.on_drag_end)
         
         self.treeview .connect("button-press-event", self.onPlaySong)
@@ -80,6 +81,7 @@ class OnlineListCntr():
         playlistBean = self.model.getSelectedBean()
         playlistBean.type = EntityBean.TYPE_MUSIC_URL
         self.setSongResource(playlistBean)
+                
         self.directoryCntr.append_virtual(playlistBean)
         print "drug"
     
@@ -115,7 +117,7 @@ class OnlineListCntr():
             if self.get_search_by() == self.TOP_ALBUMS:                
                 beans = search_top_albums(self.network, query)                
             
-            elif self.get_search_by() == self.TOP_SONGS:
+            elif self.get_search_by() == self.TOP_SONGS:                
                 beans = search_top_tracks(self.network, query)
             
             elif self.get_search_by() == self.TOP_SIMILAR:
@@ -124,7 +126,8 @@ class OnlineListCntr():
                 vkSongs = self.vk.find_song_urls(query)
                 beans = self.convertVKstoBeans(vkSongs)
                 
-            if beans:
+            if beans:                
+                self.append([self.SearchCriteriaBeen(query)])
                 self.append(beans)
             else:
                 self.append([self.NotFoundBeen()])
@@ -140,8 +143,12 @@ class OnlineListCntr():
     def NotFoundBeen(self):
         return PlaylistBean(name="Not found ", path=None, type=EntityBean.TYPE_FOLDER)
     
-    def append(self, beans):        
-        self.entityBeans = beans
+    def SearchCriteriaBeen(self, name):
+        return PlaylistBean(name=name, path=None, color="#4DCC33", type=EntityBean.TYPE_FOLDER)
+    
+    def append(self, beans):  
+        for bean in beans:                  
+            self.entityBeans.append(bean)
         self.repopulate(self.entityBeans, -1)
         
 
@@ -238,7 +245,11 @@ class OnlineListCntr():
                 self.model.append(PlaylistBean(gtk.STOCK_GO_FORWARD, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, color, i, songBean.type))
             else:
                 if songBean.type == EntityBean.TYPE_FOLDER:
-                    self.model.append(PlaylistBean(None, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, "green", i, songBean.type))
+                    if songBean.color: 
+                        self.model.append(PlaylistBean(None, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, songBean.color, i, songBean.type))
+                    else:
+                        self.model.append(PlaylistBean(None, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, "GREEN", i, songBean.type))
+                        
                 else:
                     self.model.append(PlaylistBean(None, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, color, i, songBean.type))
             
