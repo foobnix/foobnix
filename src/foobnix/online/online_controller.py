@@ -251,6 +251,7 @@ class OnlineListCntr():
                 songBean.setIconPlaying()               
                 self.model.append(songBean)
             else:
+                songBean.setIconNone()  
                 self.model.append(songBean)
                    
     def getBackgroundColour(self, i):
