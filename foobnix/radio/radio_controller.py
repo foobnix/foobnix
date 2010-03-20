@@ -14,7 +14,7 @@ Created on Mar 11, 2010
 import gtk
 
 from foobnix.playlist.playlist_model import PlaylistModel
-from foobnix.model.entity import PlaylistBean, URLBeen, EntityBean
+from foobnix.model.entity import  CommonBean
 from foobnix.util.mouse_utils import is_double_click
 
 
@@ -50,7 +50,7 @@ class RadioListCntr():
                     urlStation = getUrl         
                     nameDef = getPlsName(nameDef) + " [" + urlStation + " ]"
             
-            entity = PlaylistBean(name=nameDef, path=urlStation, type=EntityBean.TYPE_MUSIC_URL, index=self.index + 1);
+            entity = CommonBean(name=nameDef, path=urlStation, type=CommonBean.TYPE_MUSIC_URL, index=self.index + 1);
             self.entityBeans.append(entity)
             self.repopulate(self.entityBeans, (self.model.getSize()))
             self.urlText.set_text("")                        
@@ -88,7 +88,7 @@ class RadioListCntr():
             print w
             print e
             playlistBean = self.model.getSelectedBean()
-            playlistBean.type = EntityBean.TYPE_MUSIC_URL  
+            playlistBean.type = CommonBean.TYPE_MUSIC_URL  
                      
             #self.repopulate(self.entityBeans, playlistBean.index);
             self.index = playlistBean.index
@@ -124,11 +124,16 @@ class RadioListCntr():
         self.model.clear()        
         for i in range(len(entityBeans)):
             songBean = entityBeans[i]            
-            color = self.getBackgroundColour(i)
+            songBean.color = self.getBackgroundColour(i)
+            songBean.name = songBean.getPlayListDescription()
+            songBean.index = i
+            
             if i == index:                
-                self.model.append(PlaylistBean(gtk.STOCK_GO_FORWARD, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, color, i))
+                songBean.setIconPlaying()                
+                self.model.append(songBean)
             else:
-                self.model.append(PlaylistBean(None, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, color, i))
+                songBean.setIconNone()
+                self.model.append(songBean)
                    
     def getBackgroundColour(self, i):
         if i % 2 :

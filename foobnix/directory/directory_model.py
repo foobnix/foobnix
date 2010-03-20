@@ -5,7 +5,7 @@ Created on Mar 11, 2010
 '''
 import gtk
 import gobject
-from foobnix.model.entity import DirectoryBean
+from foobnix.model.entity import CommonBean
 
 class DirectoryModel():
     POS_NAME = 0
@@ -35,12 +35,13 @@ class DirectoryModel():
         selection = self.widget.get_selection()
         model, selected = selection.get_selected()
         if selected:
-            name = model.get_value(selected, self.POS_NAME)
-            path = model.get_value(selected, self.POS_PATH)
-            type = model.get_value(selected, self.POS_TYPE)
-            font = model.get_value(selected, self.POS_FONT)
-            visible = model.get_value(selected, self.POS_VISIBLE)
-        return DirectoryBean(name, path, font, visible, type);                                 
+            bean = CommonBean()
+            bean.name = model.get_value(selected, self.POS_NAME)
+            bean.path = model.get_value(selected, self.POS_PATH)            
+            bean.font = model.get_value(selected, self.POS_FONT)
+            bean.visible = model.get_value(selected, self.POS_VISIBLE)
+            bean.type = model.get_value(selected, self.POS_TYPE)
+        return bean                                 
     
     def filterByName(self, string):        
         if len(string.strip()) > 0:

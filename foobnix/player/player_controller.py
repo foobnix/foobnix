@@ -9,7 +9,7 @@ import time
 
 import thread
 from foobnix.util.time_utils import convert_ns
-from foobnix.model.entity import EntityBean
+from foobnix.model.entity import CommonBean
 class PlayerController:
     MODE_RADIO = "RADIO"
     MODE_PLAY_LIST = "PLAY_LIST"
@@ -58,11 +58,11 @@ class PlayerController:
         print "MODE", self.mode
         print "Name", song.name
         
-        if  song.type == EntityBean.TYPE_MUSIC_FILE:
+        if  song.type == CommonBean.TYPE_MUSIC_FILE:
             self.player = self.playerLocal()                        
             self.player.set_property("uri", "file://" + song.path)
             self.playerThreadId = thread.start_new_thread(self.playThread, ())
-        elif song.type == EntityBean.TYPE_MUSIC_URL:
+        elif song.type == CommonBean.TYPE_MUSIC_URL:
             print "URL PLAYING", song.path
             self.player = self.playerHTTP()                        
             self.player.set_property("uri", song.path)

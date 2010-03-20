@@ -7,47 +7,43 @@ from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3, HeaderNotFoundError
 from mutagen import File
 import os
-class EntityBean():
-    TYPE_FOLDER = "FOLDER"
-    TYPE_PARENT_FOLDER = "PARENT_FOLDER"
+import gtk
+class CommonBean():
+    TYPE_FOLDER = "FOLDER"    
     TYPE_MUSIC_FILE = "TYPE_MUSIC_FILE"
     TYPE_MUSIC_URL = "TYPE_MUSIC_URL"
     
-    def __init__(self, name=None, path=None, type=None):
-        self.name = name
-        self.path = path
-        self.type = type
-    
-    def init(self, entity):
-        self.name = entity.name
-        self.path = entity.path
-        self.type = entity.type
-        return self       
-
-class URLBeen(EntityBean):
-        def __init__(self, name=None, path=None, type=EntityBean.TYPE_MUSIC_URL):
-            EntityBean.__init__(self, name, path, type)
-               
-        
-class SongBean(EntityBean):
+    #Song attributes
     album = ""
     artist = ""
     title = ""
     date = ""
     genre = ""
-    tracknumber = ""           
-    def __init__(self, name=None, path=None, type=EntityBean.TYPE_MUSIC_FILE):                       
-        EntityBean.__init__(self, name, path, type)        
+    tracknumber = ""
+    
+    def __init__(self, name=None, path=None, type=None, is_visible=True, color=None, font="normal", index = -1):
+        self.name = name
+        self.path = path
+        self.type = type
+        self.icon = None        
+        self.color = color
+        self.index = index
+        self.time = None
+        self.is_visible = is_visible
+        self.font = font
         
-        self._getMp3Tags()
+        #self._getMp3Tags()
+    
+    def setIconPlaying(self):
+        self.icon = gtk.STOCK_GO_FORWARD
+    def setIconNone(self):
+        self.icon = None
         
-
     def getTitleDescription(self):    
         if self.title and self.artist and self.album:
             return self.artist + " - [" + self.album + "]  #" + self.tracknumber + " " + self.title
         else:
             return self.name
-        
     
     def getPlayListDescription(self):
         if self.title and self.album:
@@ -58,6 +54,12 @@ class SongBean(EntityBean):
         audio = None
         
         if not self.path:
+            return
+        
+        if not self.type:
+            return
+        
+        if self.type != self.TYPE_MUSIC_FILE:
             return
         
         if not os.path.exists(self.path):
@@ -77,20 +79,22 @@ class SongBean(EntityBean):
         if audio and audio.has_key('date'): self.date = audio["date"][0]
         if audio and audio.has_key('genre'): self.genre = audio["genre"][0]
         if audio and audio.has_key('tracknumber'): self.tracknumber = audio["tracknumber"][0]
-        
+    
+    def __str__(self):           
+        return "Common Bean :" + self.__contcat(
+        "name:", self.name,
+        "path:",self.path,
+        "type:",self.type,
+        "icon:",self.icon,
+        "color:",self.color,
+        "index:",self.index,
+        "time:",self.time,
+        "is_visible:",self.is_visible,
+        "font:",self.font)
+    
+    def __contcat(self, *args):
+        result = ""
+        for arg in args:
+            result += " " + str(arg)
+        return result   
 
-class PlaylistBean(SongBean):
-    def __init__(self, icon=None, tracknumber="", name=None, path=None, color=None, index=0, type=None, time=None):
-        SongBean.__init__(self, name, path)
-        self.icon = icon        
-        self.color = color 
-        self.tracknumber = tracknumber
-        self.index = index
-        self.type = type
-        self.time = time
-        
-class DirectoryBean(EntityBean):    
-    def __init__(self, name, path, font=10, is_visible=True, type=EntityBean.TYPE_FOLDER):
-        EntityBean.__init__(self, name, path, type)        
-        self.font = font
-        self.is_visible = is_visible      

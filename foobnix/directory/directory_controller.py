@@ -10,8 +10,7 @@ from foobnix.util import LOG
 
 
 from foobnix.directory.directory_model import DirectoryModel
-from foobnix.model.entity import DirectoryBean, PlaylistBean, SongBean, \
-    EntityBean
+from foobnix.model.entity import CommonBean
 from foobnix.util.confguration import FConfiguration
 from foobnix.util.file_utils import isDirectory, getExtenstion
 from foobnix.util.mouse_utils import is_double_click
@@ -80,12 +79,12 @@ class DirectoryCntr():
             beans = self.radioListCntr.getState()[0]
             print beans
             for bean in beans:
-                self.model.append(None, DirectoryBean(bean.name, bean.path, "normal", True, DirectoryBean.TYPE_MUSIC_URL))
+                self.model.append(None, CommonBean(bean.name, bean.path, "normal", True, CommonBean.TYPE_MUSIC_URL))
         elif active_index == self.VIEW_VIRTUAL_LISTS:
             self.clear()  
             items = self.virtualListCntr.get_items()
             for item in items:
-                self.model.append(None, DirectoryBean(item.name, item.path, "normal", True, DirectoryBean.TYPE_MUSIC_URL))
+                self.model.append(None, CommonBean(item.name, item.path, "normal", True, CommonBean.TYPE_MUSIC_URL))
     
     def append_virtual(self, bean):
         self.virtualListCntr.append(bean)
@@ -93,10 +92,10 @@ class DirectoryCntr():
         items = self.virtualListCntr.get_items()
         parent = None
         for item in items:
-            if bean.type == EntityBean.TYPE_FOLDER:
-                parent = self.model.append(parent, DirectoryBean(item.name, item.path, "normal", True, DirectoryBean.TYPE_FOLDER))
+            if bean.type == CommonBean.TYPE_FOLDER:
+                parent = self.model.append(parent, CommonBean(item.name, item.path, "normal", True, CommonBean.TYPE_FOLDER))
             else:
-                self.model.append(parent, DirectoryBean(item.name, item.path, "normal", True, DirectoryBean.TYPE_MUSIC_URL))
+                self.model.append(parent, CommonBean(item.name, item.path, "normal", True, CommonBean.TYPE_MUSIC_URL))
         
     
     def onFiltering(self, *args):   
@@ -110,22 +109,24 @@ class DirectoryCntr():
     
     def populate_playlist(self, append=False):
         directoryBean = self.model.getSelectedBean()
-        if directoryBean.type == DirectoryBean.TYPE_MUSIC_FILE:
+        if directoryBean.type == CommonBean.TYPE_MUSIC_FILE:
             if append:                                                                            
-                self.playlistCntr.appendPlaylist([SongBean().init(directoryBean)])
+                self.playlistCntr.appendPlaylist([directoryBean])
             else:
-                self.playlistCntr.setPlaylist([SongBean().init(directoryBean)])
-        elif directoryBean.type == DirectoryBean.TYPE_FOLDER:
+                self.playlistCntr.setPlaylist([directoryBean])
+        elif directoryBean.type == CommonBean.TYPE_FOLDER:
             songs = self.getAllSongsByPath(directoryBean.path)
             if append:                                                                            
                 self.playlistCntr.appendPlaylist(songs)
             else:
                 self.playlistCntr.setPlaylist(songs)
         else:
-            if append:                                                                            
-                self.playlistCntr.appendPlaylist([SongBean(type=EntityBean.TYPE_MUSIC_URL).init(directoryBean)])
+            if append:                                       
+                directoryBean.type=CommonBean.TYPE_MUSIC_URL                                     
+                self.playlistCntr.appendPlaylist([directoryBean])
             else:
-                self.playlistCntr.setPlaylist([SongBean(type=EntityBean.TYPE_MUSIC_URL).init(directoryBean)])
+                directoryBean.type=CommonBean.TYPE_MUSIC_URL
+                self.playlistCntr.setPlaylist([directoryBean])
             
     
     
@@ -161,16 +162,16 @@ class DirectoryCntr():
             full_path = path + "/" + file_name
             
             if not isDirectory(full_path):                                
-                result.append(SongBean(file_name, full_path))
+                bean = CommonBean(name=file_name,path=full_path,type=CommonBean.TYPE_MUSIC_FILE)
+                result.append(bean)
                 
         LOG.debug(result)
         return result 
     
-    def addSong(self, song): 
-        self.direcotryTreeModel.append(None, [song.name, song.path, "normal", True, self.TYPE_URL])
     
     def addAll(self):
         level = None;
+        #print "DIABLE ADD ALLLLLL"
         self.go_recursive(self.musicFolder, level) 
         
     def sortedDirsAndFiles(self, path, list):        
@@ -202,7 +203,6 @@ class DirectoryCntr():
         return False            
     
     def go_recursive(self, path, level):
-            
         dir = os.path.abspath(path)
         list = os.listdir(dir)
         list = self.sortedDirsAndFiles(path, list)
@@ -217,10 +217,10 @@ class DirectoryCntr():
             
             if self.isDirectoryWithMusic(full_path):
                 #LOG.debug("directory", file)                
-                sub = self.model.append(level, DirectoryBean(file, full_path, "bold", True, DirectoryBean.TYPE_FOLDER))                    
+                sub = self.model.append(level, CommonBean(name=file, path=full_path, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER))                    
                 self.go_recursive(full_path, sub) 
             else:
                 if not isDirectory(full_path):
-                    self.model.append(level, DirectoryBean(file, full_path, "normal", True, DirectoryBean.TYPE_MUSIC_FILE))
+                    self.model.append(level, CommonBean(name=file, path=full_path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_FILE))
                     #LOG.debug("file", file)                             
 
