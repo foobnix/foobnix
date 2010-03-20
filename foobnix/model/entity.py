@@ -9,6 +9,7 @@ from mutagen import File
 import os
 class EntityBean():
     TYPE_FOLDER = "FOLDER"
+    TYPE_PARENT_FOLDER = "PARENT_FOLDER"
     TYPE_MUSIC_FILE = "TYPE_MUSIC_FILE"
     TYPE_MUSIC_URL = "TYPE_MUSIC_URL"
     

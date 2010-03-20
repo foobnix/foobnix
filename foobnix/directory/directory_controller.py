@@ -91,8 +91,12 @@ class DirectoryCntr():
         self.virtualListCntr.append(bean)
         self.clear()
         items = self.virtualListCntr.get_items()
+        parent = None
         for item in items:
-            self.model.append(None, DirectoryBean(item.name, item.path, "normal", True, DirectoryBean.TYPE_MUSIC_URL))
+            if bean.type == EntityBean.TYPE_FOLDER:
+                parent = self.model.append(parent, DirectoryBean(item.name, item.path, "normal", True, DirectoryBean.TYPE_FOLDER))
+            else:
+                self.model.append(parent, DirectoryBean(item.name, item.path, "normal", True, DirectoryBean.TYPE_MUSIC_URL))
         
     
     def onFiltering(self, *args):   
