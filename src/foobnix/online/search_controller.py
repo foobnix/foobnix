@@ -3,7 +3,7 @@ Created on Mar 18, 2010
 
 @author: ivan
 '''
-from foobnix.model.entity import EntityBean, PlaylistBean
+from foobnix.model.entity import CommonBean
 from foobnix.online.pylast import WSError
 def search_top_albums(network, query):
     unicode(query, "utf-8")
@@ -26,11 +26,11 @@ def search_top_albums(network, query):
             album_txt = album['item']
         
         tracks = album_txt.get_tracks()
-        bean = PlaylistBean(name="===[ " + album_txt.get_title() + " ]===", path="", type=EntityBean.TYPE_FOLDER);
+        bean = CommonBean(name="===[ " + album_txt.get_title() + " ]===", path="", type=CommonBean.TYPE_FOLDER);
         beans.append(bean)
         
         for track in tracks:
-            bean = PlaylistBean(name=track, path="", type=EntityBean.TYPE_MUSIC_URL);
+            bean = CommonBean(name=track, path="", type=CommonBean.TYPE_MUSIC_URL);
             beans.append(bean)
             
     return beans
@@ -56,7 +56,7 @@ def search_top_tracks(network, query):
             track_item = track.item
         except AttributeError:
             track_item = track['item']
-        bean = PlaylistBean(name=track_item, path="", type=EntityBean.TYPE_MUSIC_URL);
+        bean = CommonBean(name=track_item, path="", type=CommonBean.TYPE_MUSIC_URL);
         beans.append(bean)
         
     return beans
@@ -78,7 +78,7 @@ def search_top_similar(network, query):
             
         print artist, artist_txt
         title = str(artist_txt)
-        bean = PlaylistBean(name="===[ " + title + " ]===", path="", type=EntityBean.TYPE_FOLDER);
+        bean = CommonBean(name="===[ " + title + " ]===", path="", type=CommonBean.TYPE_FOLDER);
         beans.append(bean)
         tops = search_top_tracks(network, title)
         for top in tops:

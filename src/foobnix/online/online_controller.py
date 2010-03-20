@@ -25,7 +25,7 @@ Created on Mar 11, 2010
 import gtk
 
 from foobnix.playlist.playlist_model import PlaylistModel
-from foobnix.model.entity import PlaylistBean, URLBeen, EntityBean
+from foobnix.model.entity import  CommonBean
 from foobnix.util.mouse_utils import is_double_click
 
 
@@ -79,7 +79,7 @@ class OnlineListCntr():
     
     def on_drag_end(self, *ars):
         playlistBean = self.model.getSelectedBean()
-        playlistBean.type = EntityBean.TYPE_MUSIC_URL
+        playlistBean.type = CommonBean.TYPE_MUSIC_URL
         self.setSongResource(playlistBean)
                 
         self.directoryCntr.append_virtual(playlistBean)
@@ -136,15 +136,15 @@ class OnlineListCntr():
     def convertVKstoBeans(self, vkSongs):
         beans = []
         for vkSong in vkSongs:
-            bean = PlaylistBean(name=vkSong.getFullDescription(), path=vkSong.path, type=EntityBean.TYPE_MUSIC_URL);
+            bean = CommonBean(name=vkSong.getFullDescription(), path=vkSong.path, type=CommonBean.TYPE_MUSIC_URL);
             beans.append(bean)
         return beans
     
     def NotFoundBeen(self):
-        return PlaylistBean(name="Not found ", path=None, type=EntityBean.TYPE_FOLDER)
+        return CommonBean(name="Not found ", path=None, color="RED",type=CommonBean.TYPE_FOLDER)
     
     def SearchCriteriaBeen(self, name):
-        return PlaylistBean(name=name, path=None, color="#4DCC33", type=EntityBean.TYPE_FOLDER)
+        return CommonBean(name=name, path=None, color="#4DCC33", type=CommonBean.TYPE_FOLDER)
     
     def append(self, beans):  
         for bean in beans:                  
@@ -160,7 +160,7 @@ class OnlineListCntr():
             playlistBean = self.model.getSelectedBean()
             print "play", playlistBean
             print "type", playlistBean.type            
-            if playlistBean.type == EntityBean.TYPE_MUSIC_URL:
+            if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
                 
                 self.setSongResource(playlistBean)
 
@@ -174,7 +174,7 @@ class OnlineListCntr():
     
     def setSongResource(self, playlistBean):
         if not playlistBean.path:
-            if playlistBean.type == EntityBean.TYPE_MUSIC_URL:
+            if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
                 #Seach by pvleer engine
                 #playlistBean.path = find_song_urls(playlistBean.name)[0]
                 
@@ -208,7 +208,7 @@ class OnlineListCntr():
     def getNextSong(self):
         playlistBean = self.nextBean() 
         
-        if(playlistBean.type == EntityBean.TYPE_FOLDER):
+        if(playlistBean.type == CommonBean.TYPE_FOLDER):
             playlistBean = self.nextBean()
         
         self.setSongResource(playlistBean)
@@ -220,7 +220,7 @@ class OnlineListCntr():
     def getPrevSong(self):
         playlistBean = self.prevBean()
         
-        if(playlistBean.type == EntityBean.TYPE_FOLDER):
+        if(playlistBean.type == CommonBean.TYPE_FOLDER):
             self.getPrevSong()
                
         self.setSongResource(playlistBean)       
@@ -239,23 +239,19 @@ class OnlineListCntr():
     def repopulate(self, entityBeans, index):
         self.model.clear()        
         for i in range(len(entityBeans)):
-            songBean = entityBeans[i]            
-            color = self.getBackgroundColour(i)
-            if i == index:                
-                self.model.append(PlaylistBean(gtk.STOCK_GO_FORWARD, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, color, i, songBean.type))
+            songBean = entityBeans[i]
+            
+            if not songBean.color:            
+                songBean.color = self.getBackgroundColour(i)
+            
+            songBean.name = songBean.getPlayListDescription()
+            songBean.index = i
+            
+            if i == index:
+                songBean.setIconPlaying()               
+                self.model.append(songBean)
             else:
-                if songBean.type == EntityBean.TYPE_FOLDER:
-                    if songBean.color: 
-                        self.model.append(PlaylistBean(None, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, songBean.color, i, songBean.type))
-                    else:
-                        self.model.append(PlaylistBean(None, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, "GREEN", i, songBean.type))
-                        
-                else:
-                    self.model.append(PlaylistBean(None, songBean.tracknumber, songBean.getPlayListDescription(), songBean.path, color, i, songBean.type))
-            
-            
-                
-                
+                self.model.append(songBean)
                    
     def getBackgroundColour(self, i):
         if i % 2 :

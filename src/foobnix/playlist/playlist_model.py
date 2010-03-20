@@ -4,7 +4,7 @@ Created on Mar 11, 2010
 @author: ivan
 '''
 import gtk
-from foobnix.model.entity import PlaylistBean
+from foobnix.model.entity import CommonBean
 class PlaylistModel:
     POS_ICON = 0
     POS_TRACK_NUMBER = 1
@@ -12,10 +12,11 @@ class PlaylistModel:
     POS_PATH = 3
     POS_COLOR = 4
     POS_INDEX = 5
+    POS_TYPE = 6
     
     def __init__(self, widget):
         self.widget = widget
-        self.model = gtk.ListStore(str, str, str, str, str, int)
+        self.model = gtk.ListStore(str, str, str, str, str, int, str)
                
         cellpb = gtk.CellRendererPixbuf()
         cellpb.set_property('cell-background', 'yellow')
@@ -30,34 +31,37 @@ class PlaylistModel:
         widget.set_model(self.model)
     
     def getBeenByPosition(self, position):
-        
-        icon = self.model[position][ self.POS_ICON]
-        tracknumber = self.model[position][ self.POS_TRACK_NUMBER]
-        name = self.model[position][ self.POS_NAME]
-        path = self.model[position][ self.POS_PATH]
-        color = self.model[position][ self.POS_COLOR]
-        index = self.model[position][ self.POS_INDEX]
-        return PlaylistBean(icon, tracknumber, name, path, color, index)       
+        bean = CommonBean() 
+        bean.icon = self.model[position][ self.POS_ICON]
+        bean.tracknumber = self.model[position][ self.POS_TRACK_NUMBER]
+        bean.name = self.model[position][ self.POS_NAME]
+        bean.path = self.model[position][ self.POS_PATH]
+        bean.color = self.model[position][ self.POS_COLOR]
+        bean.index = self.model[position][ self.POS_INDEX]
+        bean.type = self.model[position][ self.POS_TYPE]
+        return bean       
 
     def getSelectedBean(self):
         selection = self.widget.get_selection()
         model, selected = selection.get_selected()
         
         if selected:
-            icon = model.get_value(selected, self.POS_ICON)
-            tracknumber = model.get_value(selected, self.POS_TRACK_NUMBER)
-            name = model.get_value(selected, self.POS_NAME)
-            path = model.get_value(selected, self.POS_PATH)
-            color = model.get_value(selected, self.POS_COLOR)
-            index = model.get_value(selected, self.POS_INDEX)
-        return PlaylistBean(icon, tracknumber, name, path, color, index)                       
+            bean = CommonBean() 
+            bean.icon = model.get_value(selected, self.POS_ICON)
+            bean.tracknumber = model.get_value(selected, self.POS_TRACK_NUMBER)
+            bean.name = model.get_value(selected, self.POS_NAME)
+            bean.path = model.get_value(selected, self.POS_PATH)
+            bean.color = model.get_value(selected, self.POS_COLOR)
+            bean.index = model.get_value(selected, self.POS_INDEX)
+            bean.type = model.get_value(selected, self.POS_TYPE)
+        return bean                       
     
     def clear(self):
         self.model.clear()
  
             
-    def append(self, playlistBean):   
-        self.model.append([playlistBean.icon, playlistBean.tracknumber, playlistBean.name, playlistBean.path, playlistBean.color, playlistBean.index])
+    def append(self, bean):   
+        self.model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index,bean.type])
 
     def __del__(self,*a):
         print "del"
