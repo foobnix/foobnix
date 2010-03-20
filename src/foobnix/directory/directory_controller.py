@@ -16,11 +16,18 @@ from foobnix.util.confguration import FConfiguration
 from foobnix.util.file_utils import isDirectory, getExtenstion
 from foobnix.util.mouse_utils import is_double_click
 import gtk
+from foobnix.directory.virtuallist_controller import VirturalLIstCntr
 class DirectoryCntr():
     
-    def __init__(self, gxMain, playlistCntr, radioListCntr):
+    VIEW_ARTIST_ALBUM = 0
+    VIEW_RADIO_STATION = 1
+    VIEW_VIRTUAL_LISTS = 2
+    
+    
+    def __init__(self, gxMain, playlistCntr, radioListCntr, virtualListCntr):
         self.playlistCntr = playlistCntr
         self.radioListCntr = radioListCntr
+        self.virtualListCntr = virtualListCntr
         
         widget = gxMain.get_widget("direcotry_treeview")
         self.model = DirectoryModel(widget)
@@ -56,23 +63,37 @@ class DirectoryCntr():
         for arg in args:
             print args
     
+    
+    def getModel(self):
+        return self.model
+    
     def on_drag_get(self, *args):    
         self.populate_playlist(append=True)
 
     def onChangeView(self, *args):
         active_index = self.view_list.get_active()  
-        if active_index == 0:
+        if active_index == self.VIEW_ARTIST_ALBUM:
             self.clear()
             self.addAll()
-        elif active_index == 1:
+        elif active_index == self.VIEW_RADIO_STATION:
             self.clear()
             beans = self.radioListCntr.getState()[0]
             print beans
             for bean in beans:
                 self.model.append(None, DirectoryBean(bean.name, bean.path, "normal", True, DirectoryBean.TYPE_MUSIC_URL))
-        else:
-            pass
+        elif active_index == self.VIEW_VIRTUAL_LISTS:
+            self.clear()  
+            items = self.virtualListCntr.get_items()
+            for item in items:
+                self.model.append(None, DirectoryBean(item.name, item.path, "normal", True, DirectoryBean.TYPE_MUSIC_URL))
     
+    def append_virtual(self, bean):
+        self.virtualListCntr.append(bean)
+        self.clear()
+        items = self.virtualListCntr.get_items()
+        for item in items:
+            self.model.append(None, DirectoryBean(item.name, item.path, "normal", True, DirectoryBean.TYPE_MUSIC_URL))
+        
     
     def onFiltering(self, *args):   
         text = self.filter.get_children()[0].get_text()
