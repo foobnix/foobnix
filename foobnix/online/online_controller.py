@@ -42,8 +42,9 @@ class OnlineListCntr():
     TOP_SIMILAR = "TOP_SIMILAR"
     TOP_SEARCH = "TOP_SEARCH"
     
-    def __init__(self, gxMain, playerCntr):
+    def __init__(self, gxMain, playerCntr, directoryCntr):
         self.playerCntr = playerCntr
+        self.directoryCntr = directoryCntr
         
         self.search_text = gxMain.get_widget("search_entry")
         self.search_text.connect("key-press-event", self.on_key_pressed)
@@ -57,6 +58,7 @@ class OnlineListCntr():
         self.radio_search = gxMain.get_widget("radiobutton_search")
         
         self.treeview = gxMain.get_widget("online_treeview")
+        self.treeview.connect("drag-end", self.on_drag_end)
         
         self.treeview .connect("button-press-event", self.onPlaySong)
         
@@ -72,7 +74,14 @@ class OnlineListCntr():
         self.vk = Vkontakte('qax@bigmir.net', 'foobnix')
         
         pass #end of init
+
     
+    def on_drag_end(self, *ars):
+        playlistBean = self.model.getSelectedBean()
+        playlistBean.type = EntityBean.TYPE_MUSIC_URL
+        self.setSongResource(playlistBean)
+        self.directoryCntr.append_virtual(playlistBean)
+        print "drug"
     
     def on_key_pressed(self, w, event):
         if event.type == gtk.gdk.KEY_PRESS: #@UndefinedVariable

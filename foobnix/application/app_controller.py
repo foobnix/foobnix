@@ -14,6 +14,7 @@ from foobnix.application.app_configuration_controller import AppConfigurationCnt
 from foobnix.preferences.pref_controller import PrefController
 from foobnix.radio.radio_controller import RadioListCntr
 from foobnix.online.online_controller import OnlineListCntr
+from foobnix.directory.virtuallist_controller import VirturalLIstCntr
 
 
 class AppController():   
@@ -25,17 +26,23 @@ class AppController():
         playerCntr = PlayerController()
         playlistCntr = PlaylistCntr(v.playlist, playerCntr)
         
-        onlineCntr = OnlineListCntr(v.gxMain, playerCntr)
+        virtualListCntr = VirturalLIstCntr()
+        
+
+       
         
         radioListCntr = RadioListCntr(v.gxMain, playerCntr)
         
         playerWidgets = PlayerWidgetsCntl(v.gxMain, playerCntr)
         playerCntr.registerWidgets(playerWidgets)
         playerCntr.registerPlaylistCntr(playlistCntr)
-        playerCntr.registerOnlineCntr(onlineCntr)
+        
                 
-        directoryCntr = DirectoryCntr(v.gxMain, playlistCntr, radioListCntr)
+        directoryCntr = DirectoryCntr(v.gxMain, playlistCntr, radioListCntr, virtualListCntr)
         appConfCntr = AppConfigurationCntrl(v.gxMain, directoryCntr)
+        
+        onlineCntr = OnlineListCntr(v.gxMain, playerCntr, directoryCntr)
+        playerCntr.registerOnlineCntr(onlineCntr)
         
         prefCntr = PrefController(v.gxPref)
         
