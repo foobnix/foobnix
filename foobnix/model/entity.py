@@ -12,6 +12,7 @@ class CommonBean():
     TYPE_FOLDER = "FOLDER"    
     TYPE_MUSIC_FILE = "TYPE_MUSIC_FILE"
     TYPE_MUSIC_URL = "TYPE_MUSIC_URL"
+    TYPE_RADIO_URL = "TYPE_RADIO_URL"
     
     #Song attributes
     album = ""

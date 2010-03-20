@@ -50,7 +50,7 @@ class RadioListCntr():
                     urlStation = getUrl         
                     nameDef = getPlsName(nameDef) + " [" + urlStation + " ]"
             
-            entity = CommonBean(name=nameDef, path=urlStation, type=CommonBean.TYPE_MUSIC_URL, index=self.index + 1);
+            entity = CommonBean(name=nameDef, path=urlStation, type=CommonBean.TYPE_RADIO_URL, index=self.index + 1);
             self.entityBeans.append(entity)
             self.repopulate(self.entityBeans, (self.model.getSize()))
             self.urlText.set_text("")                        
@@ -88,7 +88,7 @@ class RadioListCntr():
             print w
             print e
             playlistBean = self.model.getSelectedBean()
-            playlistBean.type = CommonBean.TYPE_MUSIC_URL  
+            playlistBean.type = CommonBean.TYPE_RADIO_URL  
                      
             #self.repopulate(self.entityBeans, playlistBean.index);
             self.index = playlistBean.index

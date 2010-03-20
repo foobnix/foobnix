@@ -62,11 +62,16 @@ class PlayerController:
             self.player = self.playerLocal()                        
             self.player.set_property("uri", "file://" + song.path)
             self.playerThreadId = thread.start_new_thread(self.playThread, ())
-        elif song.type == CommonBean.TYPE_MUSIC_URL:
+        elif song.type == CommonBean.TYPE_RADIO_URL:
             print "URL PLAYING", song.path
             self.player = self.playerHTTP()                        
             self.player.set_property("uri", song.path)
             self.widgets.seekBar.set_text("Url Playing...")
+        elif song.type == CommonBean.TYPE_MUSIC_URL:
+            print "URL PLAYING", song.path
+            self.player = self.playerHTTP()                        
+            self.player.set_property("uri", song.path)            
+            self.playerThreadId = thread.start_new_thread(self.playThread, ())
         else:
             self.widgets.seekBar.set_text("Error playing...")
             return
