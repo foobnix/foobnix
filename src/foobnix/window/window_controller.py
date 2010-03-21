@@ -18,7 +18,8 @@ class WindowController():
         self.window.set_title("Foobnix 1.0 beta")
         
         signalsPopup = {
-                "on_gtk-preferences_activate" :self.showPref                
+                "on_gtk-preferences_activate" :self.showPref,
+                "on_file_quit_activate":self.onDestroy               
         }
         
         gx.signal_autoconnect(signalsPopup)        
