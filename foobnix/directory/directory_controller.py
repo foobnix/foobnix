@@ -31,6 +31,7 @@ class DirectoryCntr():
         widget = gxMain.get_widget("direcotry_treeview")
         self.model = DirectoryModel(widget)
         widget.connect("button-press-event", self.onMouseClick)
+        widget.connect("key-release-event", self.onTreeViewDeleteItem)
         
         #widget.connect("drag-begin", self.all)
         #widget.connect("drag-data-get", self.all)
@@ -91,12 +92,31 @@ class DirectoryCntr():
             
         items = self.virtualListCntr.get_items()
         parent = None
+        i = 0
         for item in items:
             if item.parent == None:
-                parent = self.model.append(None, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=item.parent))
+                parent = self.model.append(None, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=item.parent,index=i))
             else:
-                self.model.append(parent, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_URL,parent=item.parent))
+                self.model.append(parent, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_URL,parent=item.parent, index=i))
+            i +=1
+    
+    def onTreeViewDeleteItem(self, w, event):
+        if self.view_list.get_active()  != self.VIEW_VIRTUAL_LISTS:
+            return
         
+        print event
+        if event.type == gtk.gdk.KEY_RELEASE: #@UndefinedVariable
+            #Enter pressed
+            print event.keyval
+            print event.hardware_keycode
+            if event.hardware_keycode==119:
+                print "Delete"
+                bean = self.model.getSelectedBean()
+                print bean
+                print bean.index      
+                self.virtualListCntr.remove_with_childrens(bean.index, bean.parent)                
+                self.append_virtual()
+            
     
     def onFiltering(self, *args):   
         text = self.filter.get_children()[0].get_text()

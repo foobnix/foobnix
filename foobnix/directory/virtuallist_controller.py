@@ -10,6 +10,9 @@ class VirturalLIstCntr():
                        
     def get_items(self):
         return self.items
+    
+    def get_item_by_index(self, index):
+        return self.items[index]
 
     def append(self, item):
         self.items.append(item)
@@ -19,3 +22,31 @@ class VirturalLIstCntr():
     
     def setState(self,items):
         self.items = items
+    
+    def remove(self, index):
+        if index > len(self.items):
+            "INDEX TOO BIG"
+            return 
+        item = self.get_item_by_index(index)
+        print "DELETE", item.name
+        self.items.remove(item)
+    
+    def remove_with_childrens(self, index,parent=None):
+        type = self.get_item_by_index(index).type
+        print type
+        if type !=CommonBean.TYPE_FOLDER:
+            self.remove(index)
+            return
+        
+        self.remove(index)
+        size = len(self.items)-1
+        for i in xrange(index+1, size):
+            print "index" + str(i), 
+            print self.items[index].parent
+            if self.items[index].parent == parent:
+                return
+            else:
+                self.remove(index)
+            
+            
+            
