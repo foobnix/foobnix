@@ -50,13 +50,18 @@ class PlayerController:
                 
         self.stopState()
         
+        print "Path before", song.path
+        #Try to set resource
+        if song.path == None or song.path =="":
+            self.onlineCntr.setSongResource(song)
+        
+        print "Path after", song.path
         if song.path == None:
             print "SONG NOT FOUND", song.name
-            return
-            #return self.next()
+            return self.next()
         
         print "Type", song.type
-        print "Path", song.path
+       
         print "MODE", self.mode
         print "Name", song.name
         
