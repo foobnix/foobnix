@@ -126,26 +126,40 @@ class OnlineListCntr():
       
         query = self.get_search_query()        
         if query:  
-            self.append([self.SearchingCriteriaBean(query)])  
+            
             if self.get_search_by() == self.TOP_ALBUMS:
-                self.playerThreadId = thread.start_new_thread(self.search_top_albums, (query,))                
+                self.playerThreadId = thread.start_new_thread(self.search_top_albums, (query,))
+                thread.start_new_thread(self.search_dots, (query,))                
 
             elif self.get_search_by() == self.TOP_SONGS:                
-                self.playerThreadId = thread.start_new_thread(self.search_top_tracks, (query,))         
+                self.playerThreadId = thread.start_new_thread(self.search_top_tracks, (query,))
+                thread.start_new_thread(self.search_dots, (query,))          
             
             elif self.get_search_by() == self.TOP_SIMILAR:
-                self.playerThreadId = thread.start_new_thread(self.search_top_similar, (query,))         
+                self.playerThreadId = thread.start_new_thread(self.search_top_similar, (query,))
+                thread.start_new_thread(self.search_dots, (query,))          
             
             else:
-                self.playerThreadId = thread.start_new_thread(self.search_vk_engine, (query,))         
+                self.playerThreadId = thread.start_new_thread(self.search_vk_engine, (query,))
+                thread.start_new_thread(self.search_dots, (query,))          
             
             #self.show_results(query, beans) 
             
         pass
     
+    
+    def search_dots(self, query):
+        dots = "..."        
+        while self.playerThreadId != None:            
+            dots += "."
+            self.clear()
+            self.append([self.SearchingCriteriaBean(query + dots)])
+            time.sleep(1)
+        
     def search_top_albums(self, query):
         beans = search_top_albums(self.network, query)
         self.show_results(query, beans) 
+       
     
     def search_top_tracks(self, query):
         beans = search_top_tracks(self.network, query)        
@@ -160,6 +174,7 @@ class OnlineListCntr():
         self.show_results(query, beans)
     
     def show_results(self, query, beans):
+        self.playerThreadId = None
         self.clear()
         
         if beans:                
@@ -182,7 +197,7 @@ class OnlineListCntr():
         return CommonBean(name=name, path=None, color="#4DCC33", type=CommonBean.TYPE_FOLDER)
     
     def SearchingCriteriaBean(self, name):
-        return CommonBean(name="Searching: " + name + " ..... ", path=None, color="GREEN", type=CommonBean.TYPE_FOLDER)
+        return CommonBean(name="Searching: " + name, path=None, color="GREEN", type=CommonBean.TYPE_FOLDER)
     
     def append(self, beans):  
         for bean in beans:                  
