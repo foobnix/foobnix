@@ -26,7 +26,7 @@ def search_top_albums(network, query):
             album_txt = album['item']
         
         tracks = album_txt.get_tracks()
-        bean = CommonBean(name="===[ " + album_txt.get_title() + " ]===", path="",color="GREEN", type=CommonBean.TYPE_FOLDER, parent=query);
+        bean = CommonBean(name=album_txt.get_title(), path="",color="GREEN", type=CommonBean.TYPE_FOLDER, parent=query);
         beans.append(bean)
         
         for track in tracks:
@@ -68,7 +68,7 @@ def search_top_similar(network, query):
     if not artist:
         return None
     
-    artists = artist.get_similar(10)
+    artists = artist.get_similar(2)
     beans = []   
     for artist in artists:
         try:            
@@ -78,7 +78,7 @@ def search_top_similar(network, query):
             
         print artist, artist_txt
         title = str(artist_txt)
-        bean = CommonBean(name="===[ " + title + " ]===", path="", type=CommonBean.TYPE_FOLDER, color="GREEN",parent=title);
+        bean = CommonBean(name=title, path="", type=CommonBean.TYPE_FOLDER, color="GREEN",parent=query);
         beans.append(bean)
         tops = search_top_tracks(network, title)
         for top in tops:

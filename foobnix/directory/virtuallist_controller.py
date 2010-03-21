@@ -39,8 +39,8 @@ class VirturalLIstCntr():
             return
         
         self.remove(index)
-        size = len(self.items)-1
-        for i in xrange(index+1, size):
+        size = len(self.items)
+        for i in xrange(index, size):
             print "index" + str(i), 
             print self.items[index].parent
             if self.items[index].parent == parent:
