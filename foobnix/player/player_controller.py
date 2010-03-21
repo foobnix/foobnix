@@ -10,6 +10,7 @@ import time
 import thread
 from foobnix.util.time_utils import convert_ns
 from foobnix.model.entity import CommonBean
+
 class PlayerController:
     MODE_RADIO = "RADIO"
     MODE_PLAY_LIST = "PLAY_LIST"
@@ -51,7 +52,8 @@ class PlayerController:
         
         if song.path == None:
             print "SONG NOT FOUND", song.name
-            return self.next()
+            return
+            #return self.next()
         
         print "Type", song.type
         print "Path", song.path

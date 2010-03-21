@@ -26,11 +26,11 @@ def search_top_albums(network, query):
             album_txt = album['item']
         
         tracks = album_txt.get_tracks()
-        bean = CommonBean(name="===[ " + album_txt.get_title() + " ]===", path="", type=CommonBean.TYPE_FOLDER);
+        bean = CommonBean(name="===[ " + album_txt.get_title() + " ]===", path="", type=CommonBean.TYPE_FOLDER, parent=query);
         beans.append(bean)
         
         for track in tracks:
-            bean = CommonBean(name=track, path="", type=CommonBean.TYPE_MUSIC_URL);
+            bean = CommonBean(name=track, path="", type=CommonBean.TYPE_MUSIC_URL,parent=album_txt.get_title());
             beans.append(bean)
             
     return beans
@@ -56,7 +56,7 @@ def search_top_tracks(network, query):
             track_item = track.item
         except AttributeError:
             track_item = track['item']
-        bean = CommonBean(name=track_item, path="", type=CommonBean.TYPE_MUSIC_URL);
+        bean = CommonBean(name=track_item, path="", type=CommonBean.TYPE_MUSIC_URL, parent=query);
         beans.append(bean)
         
     return beans
@@ -78,7 +78,7 @@ def search_top_similar(network, query):
             
         print artist, artist_txt
         title = str(artist_txt)
-        bean = CommonBean(name="===[ " + title + " ]===", path="", type=CommonBean.TYPE_FOLDER);
+        bean = CommonBean(name="===[ " + title + " ]===", path="", type=CommonBean.TYPE_FOLDER, color="GREEN",parent=title);
         beans.append(bean)
         tops = search_top_tracks(network, title)
         for top in tops:

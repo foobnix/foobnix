@@ -36,10 +36,12 @@ class FConfiguration:
         
         self.playlistState = None
         self.radiolistState = None
+        self.virtualListState= None
         
         instance = self._loadCfgFromFile()
         if instance:
             try:
+                self.virtualListState = instance.virtualListState
                 self.playlistState = instance.playlistState
                 self.radiolistState = instance.radiolistState 
                 self.mediaLibraryPath = instance.mediaLibraryPath

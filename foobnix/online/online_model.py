@@ -18,10 +18,11 @@ class OnlineListModel:
     POS_COLOR = 4
     POS_INDEX = 5
     POS_TYPE = 6
+    POS_PARENT = 7
     
     def __init__(self, widget):
         self.widget = widget
-        self.model = gtk.ListStore(str, str, str, str, str, int, str)
+        self.model = gtk.ListStore(str, str, str, str, str, int, str, str)
                
         cellpb = gtk.CellRendererPixbuf()
         cellpb.set_property('cell-background', 'yellow')
@@ -46,7 +47,11 @@ class OnlineListModel:
         bean.color = self.model[position][ self.POS_COLOR]
         bean.index = self.model[position][ self.POS_INDEX]
         bean.type = self.model[position][ self.POS_TYPE]
-        return bean       
+        bean.parent = self.model[position][ self.POS_PARENT]
+        return bean  
+    
+    def getModel(self):
+        return self.model
 
     def getSelectedBean(self):
         print self.widget
@@ -63,6 +68,7 @@ class OnlineListModel:
             bean.color = model.get_value(selected, self.POS_COLOR)
             bean.index = model.get_value(selected, self.POS_INDEX)
             bean.type = model.get_value(selected, self.POS_TYPE)
+            bean.parent = model.get_value(selected, self.POS_PARENT)
             return bean                
     
     def clear(self):
@@ -71,7 +77,7 @@ class OnlineListModel:
             
     def append(self, bean):   
         print bean
-        self.model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type])
+        self.model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent])
 
     def __del__(self, *a):
         print "del"

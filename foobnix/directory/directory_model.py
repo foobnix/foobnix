@@ -30,19 +30,42 @@ class DirectoryModel():
         
     def clear(self):
         self.model.clear() 
+    def getModel(self):
+        return self.model
         
     def getSelectedBean(self):
         selection = self.widget.get_selection()
         model, selected = selection.get_selected()
-        if selected:
-            bean = CommonBean()
-            bean.name = model.get_value(selected, self.POS_NAME)
-            bean.path = model.get_value(selected, self.POS_PATH)            
-            bean.font = model.get_value(selected, self.POS_FONT)
-            bean.visible = model.get_value(selected, self.POS_VISIBLE)
-            bean.type = model.get_value(selected, self.POS_TYPE)
-        return bean                                 
+        return self._getBeanByIter(model, selected)   
     
+    def _getBeanByIter(self, model, iter):
+        if iter:
+            bean = CommonBean()
+            bean.name = model.get_value(iter, self.POS_NAME)
+            bean.path = model.get_value(iter, self.POS_PATH)            
+            bean.font = model.get_value(iter, self.POS_FONT)
+            bean.visible = model.get_value(iter, self.POS_VISIBLE)
+            bean.type = model.get_value(iter, self.POS_TYPE)            
+            return bean
+        return None
+
+    def getChildSongBySelected(self):
+        selection = self.widget.get_selection()
+        model, selected = selection.get_selected()
+        n = model.iter_n_children(selected)
+        iterch = model.iter_children(selected)
+        
+        results = []
+        
+        for i in xrange(n):
+            song = self._getBeanByIter(model, iterch)
+            if song.type != CommonBean.TYPE_FOLDER:  
+                results.append(self._getBeanByIter(model, iterch))
+            iterch = model.iter_next(iterch)
+        
+        return results
+        
+        
     def filterByName(self, string):        
         if len(string.strip()) > 0:
             for line in self.model:
