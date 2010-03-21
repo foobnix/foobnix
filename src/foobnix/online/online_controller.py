@@ -123,27 +123,50 @@ class OnlineListCntr():
     
     def on_search(self, *args):
         self.clear()
-        self.entityBeans = []
+      
         query = self.get_search_query()        
         if query:  
-            if self.get_search_by() == self.TOP_ALBUMS:                
-                beans = search_top_albums(self.network, query)                
-            
+            self.append([self.SearchingCriteriaBean(query)])  
+            if self.get_search_by() == self.TOP_ALBUMS:
+                self.playerThreadId = thread.start_new_thread(self.search_top_albums, (query,))                
+
             elif self.get_search_by() == self.TOP_SONGS:                
-                beans = search_top_tracks(self.network, query)
+                self.playerThreadId = thread.start_new_thread(self.search_top_tracks, (query,))         
             
             elif self.get_search_by() == self.TOP_SIMILAR:
-                beans = search_top_similar(self.network, query)
+                self.playerThreadId = thread.start_new_thread(self.search_top_similar, (query,))         
+            
             else:
-                vkSongs = self.vk.find_song_urls(query)
-                beans = self.convertVKstoBeans(vkSongs)
-                
-            if beans:                
-                self.append([self.SearchCriteriaBeen(query)])
-                self.append(beans)
-            else:
-                self.append([self.NotFoundBeen()])
+                self.playerThreadId = thread.start_new_thread(self.search_vk_engine, (query,))         
+            
+            #self.show_results(query, beans) 
+            
         pass
+    
+    def search_top_albums(self, query):
+        beans = search_top_albums(self.network, query)
+        self.show_results(query, beans) 
+    
+    def search_top_tracks(self, query):
+        beans = search_top_tracks(self.network, query)        
+        self.show_results(query, beans)      
+    
+    def search_top_similar(self, query):
+        beans = search_top_similar(self.network, query)
+        self.show_results(query, beans)  
+    def search_vk_engine(self, query):
+        vkSongs = self.vk.find_song_urls(query)
+        beans = self.convertVKstoBeans(vkSongs)
+        self.show_results(query, beans)
+    
+    def show_results(self, query, beans):
+        self.clear()
+        
+        if beans:                
+            self.append([self.SearchCriteriaBeen(query)])
+            self.append(beans)
+        else:
+            self.append([self.NotFoundBeen()])
     
     def convertVKstoBeans(self, vkSongs):
         beans = []
@@ -158,6 +181,9 @@ class OnlineListCntr():
     def SearchCriteriaBeen(self, name):
         return CommonBean(name=name, path=None, color="#4DCC33", type=CommonBean.TYPE_FOLDER)
     
+    def SearchingCriteriaBean(self, name):
+        return CommonBean(name="Searching: " + name + " ..... ", path=None, color="GREEN", type=CommonBean.TYPE_FOLDER)
+    
     def append(self, beans):  
         for bean in beans:                  
             self.entityBeans.append(bean)
@@ -165,6 +191,7 @@ class OnlineListCntr():
         
 
     def clear(self):
+        self.entityBeans = []
         self.model.clear()
         
     def onPlaySong(self, w, e):
