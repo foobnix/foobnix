@@ -68,7 +68,7 @@ def search_top_similar(network, query):
     if not artist:
         return None
     
-    artists = artist.get_similar(2)
+    artists = artist.get_similar(10)
     beans = []   
     for artist in artists:
         try:            
