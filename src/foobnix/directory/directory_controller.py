@@ -80,22 +80,22 @@ class DirectoryCntr():
             print beans
             for bean in beans:
                 self.model.append(None, CommonBean(bean.name, bean.path, "normal", True, CommonBean.TYPE_MUSIC_URL))
-        elif active_index == self.VIEW_VIRTUAL_LISTS:
-            self.clear()  
-            items = self.virtualListCntr.get_items()
-            for item in items:
-                self.model.append(None, CommonBean(item.name, item.path, "normal", True, CommonBean.TYPE_MUSIC_URL))
+        elif active_index == self.VIEW_VIRTUAL_LISTS:          
+            self.append_virtual()
     
-    def append_virtual(self, bean):
-        self.virtualListCntr.append(bean)
+    def append_virtual(self, beans=None):
         self.clear()
+        if beans:                    
+            for bean in beans:
+                self.virtualListCntr.append(bean)
+            
         items = self.virtualListCntr.get_items()
         parent = None
         for item in items:
-            if bean.type == CommonBean.TYPE_FOLDER:
-                parent = self.model.append(parent, CommonBean(item.name, item.path, "normal", True, CommonBean.TYPE_FOLDER))
+            if item.parent == None:
+                parent = self.model.append(None, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=item.parent))
             else:
-                self.model.append(parent, CommonBean(item.name, item.path, "normal", True, CommonBean.TYPE_MUSIC_URL))
+                self.model.append(parent, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_URL,parent=item.parent))
         
     
     def onFiltering(self, *args):   
@@ -108,24 +108,19 @@ class DirectoryCntr():
             self.populate_playlist()
     
     def populate_playlist(self, append=False):
-        directoryBean = self.model.getSelectedBean()
-        if directoryBean.type == CommonBean.TYPE_MUSIC_FILE:
-            if append:                                                                            
-                self.playlistCntr.appendPlaylist([directoryBean])
-            else:
-                self.playlistCntr.setPlaylist([directoryBean])
-        elif directoryBean.type == CommonBean.TYPE_FOLDER:
-            songs = self.getAllSongsByPath(directoryBean.path)
+        directoryBean = self.model.getSelectedBean()        
+        if directoryBean.type == CommonBean.TYPE_FOLDER:
+            songs = self.model.getChildSongBySelected()
+            if not songs:
+                return
             if append:                                                                            
                 self.playlistCntr.appendPlaylist(songs)
             else:
                 self.playlistCntr.setPlaylist(songs)
         else:
-            if append:                                       
-                directoryBean.type=CommonBean.TYPE_MUSIC_URL                                     
+            if append:                                      
                 self.playlistCntr.appendPlaylist([directoryBean])
             else:
-                directoryBean.type=CommonBean.TYPE_MUSIC_URL
                 self.playlistCntr.setPlaylist([directoryBean])
             
     

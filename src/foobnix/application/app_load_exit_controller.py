@@ -5,13 +5,14 @@ Created on Mar 14, 2010
 '''
 from foobnix.util.confguration import FConfiguration
 class OnLoadExitAppCntr():
-    def __init__(self, playlistCntr, playerWidgets, playerCntr, directoryCntr, appConfCntr, radioListCntr):
+    def __init__(self, playlistCntr, playerWidgets, playerCntr, directoryCntr, appConfCntr, radioListCntr, virtualListCntr):
         self.directoryCntr = directoryCntr
         self.playlistCntr = playlistCntr
         self.playerWidgets = playerWidgets
         self.playerCntr = playerCntr
         self.appConfCntr = appConfCntr
         self.radioListCntr = radioListCntr
+        self.virtualListCntr = virtualListCntr
         
         self.onStart()
 
@@ -21,6 +22,9 @@ class OnLoadExitAppCntr():
         
         if FConfiguration().playlistState:
             self.playlistCntr.setState(FConfiguration().playlistState)
+        
+        if FConfiguration().virtualListState:
+            self.virtualListCntr.setState(FConfiguration().virtualListState)
         
         if FConfiguration().volumeValue:
             self.playerWidgets.volume.set_value(FConfiguration().volumeValue)
@@ -37,10 +41,16 @@ class OnLoadExitAppCntr():
             
         if FConfiguration().radiolistState:
             self.radioListCntr.setState(FConfiguration().radiolistState)
+        
+        
+            
+            
             
     def onExit(self):
         print "Save configs"        
         FConfiguration().playlistState = self.playlistCntr.getState()
+        FConfiguration().virtualListState = self.virtualListCntr.getState()
+        
         FConfiguration().radiolistState = self.radioListCntr.getState()
         
         FConfiguration().volumeValue = self.playerWidgets.volume.get_value()

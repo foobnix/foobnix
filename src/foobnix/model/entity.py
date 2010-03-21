@@ -22,7 +22,7 @@ class CommonBean():
     genre = ""
     tracknumber = ""
     
-    def __init__(self, name=None, path=None, type=None, is_visible=True, color=None, font="normal", index = -1):
+    def __init__(self, name=None, path=None, type=None, is_visible=True, color=None, font="normal", index = -1, parent = None):
         self.name = name
         self.path = path
         self.type = type
@@ -32,6 +32,7 @@ class CommonBean():
         self.time = None
         self.is_visible = is_visible
         self.font = font
+        self.parent = parent
         
         #self._getMp3Tags()
     
@@ -48,7 +49,7 @@ class CommonBean():
     
     def getPlayListDescription(self):
         if self.title and self.album:
-            return self.title + " (" + self.album + ")"
+            return self.title + " (" + self.album + ")" + self.parent
         return self.name
     
     def _getMp3Tags(self):

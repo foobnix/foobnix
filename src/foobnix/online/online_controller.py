@@ -79,14 +79,23 @@ class OnlineListCntr():
 
     
     def on_drag_end(self, *ars):
-        playlistBean = self.model.getSelectedBean()
-        playlistBean.type = CommonBean.TYPE_MUSIC_URL
-        
-        
-        self.setSongResource(playlistBean)
-                
-        self.directoryCntr.append_virtual(playlistBean)
+        selected = self.model.getSelectedBean()
+        if selected.type == CommonBean.TYPE_MUSIC_URL:                            
+            self.setSongResource([selected])
+            self.directoryCntr.append_virtual([selected])
+        elif selected.type == CommonBean.TYPE_FOLDER:
+            results = [selected]       
+            for i in xrange(self.model.getSize()):            
+                bean = self.model.getBeenByPosition(i)
+                print "SElected parent", selected.name
+                print "song parent", bean.name
+                if bean.parent == selected.name:
+                    self.setSongResource(bean)
+                    time.sleep(0.5)                                
+                    results.append(bean)
+            self.directoryCntr.append_virtual(results)
         print "drug"
+    
     
     def on_key_pressed(self, w, event):
         if event.type == gtk.gdk.KEY_PRESS: #@UndefinedVariable
