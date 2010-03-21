@@ -73,8 +73,7 @@ class OnlineListModel:
     
     def clear(self):
         self.model.clear()
- 
-            
+    
     def append(self, bean):   
         print bean
         self.model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent])
