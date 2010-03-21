@@ -81,7 +81,7 @@ class OnlineListCntr():
     def on_drag_end(self, *ars):
         selected = self.model.getSelectedBean()
         if selected.type == CommonBean.TYPE_MUSIC_URL:                            
-            self.setSongResource([selected])
+            self.setSongResource(selected)
             self.directoryCntr.append_virtual([selected])
         elif selected.type == CommonBean.TYPE_FOLDER:
             results = [selected]       
@@ -90,8 +90,8 @@ class OnlineListCntr():
                 print "SElected parent", selected.name
                 print "song parent", bean.name
                 if bean.parent == selected.name:
-                    self.setSongResource(bean)
-                    time.sleep(0.5)                                
+                    #self.setSongResource(bean)
+                    #time.sleep(0.5)                                
                     results.append(bean)
             self.directoryCntr.append_virtual(results)
         print "drug"

@@ -13,20 +13,21 @@ class DirectoryModel():
     POS_FONT = 2
     POS_VISIBLE = 3
     POS_TYPE = 4
+    POS_INDEX = 5
     
     def __init__(self, widget):
         self.widget = widget
         column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=0, font=2)
         column.set_resizable(True)
         widget.append_column(column)
-        self.model =gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str)
+        self.model =gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int)
                 
         filter = self.model.filter_new()
         filter.set_visible_column(self.POS_VISIBLE)
         widget.set_model(filter)
         
-    def append(self, level, been):
-        return self.model.append(level, [been.name, been.path, been.font, been.is_visible, been.type])
+    def append(self, level, bean):
+        return self.model.append(level, [bean.name, bean.path, bean.font, bean.is_visible, bean.type, bean.index])
         
     def clear(self):
         self.model.clear() 
@@ -38,6 +39,11 @@ class DirectoryModel():
         model, selected = selection.get_selected()
         return self._getBeanByIter(model, selected)   
     
+    def deleteSelected(self):
+        model, iter = self.widget.get_selection().get_selected()
+        if iter:             
+            model.remove(iter)
+
     def _getBeanByIter(self, model, iter):
         if iter:
             bean = CommonBean()
@@ -45,7 +51,8 @@ class DirectoryModel():
             bean.path = model.get_value(iter, self.POS_PATH)            
             bean.font = model.get_value(iter, self.POS_FONT)
             bean.visible = model.get_value(iter, self.POS_VISIBLE)
-            bean.type = model.get_value(iter, self.POS_TYPE)            
+            bean.type = model.get_value(iter, self.POS_TYPE)
+            bean.index = model.get_value(iter, self.POS_INDEX)                
             return bean
         return None
 
