@@ -16,6 +16,7 @@ from foobnix.online.vk import Vkontakte
 from foobnix.online.search_controller import search_top_albums, \
     search_top_tracks, search_top_similar
 import thread
+from foobnix.directory.directory_controller import DirectoryCntr
 
 '''
 Created on Mar 11, 2010
@@ -80,19 +81,25 @@ class OnlineListCntr():
     
     def on_drag_end(self, *ars):
         selected = self.model.getSelectedBean()
-        if selected.type == CommonBean.TYPE_MUSIC_URL:                            
-            self.setSongResource(selected)
+        print "SELECTED", selected
+        self.directoryCntr.set_active_view(DirectoryCntr.VIEW_VIRTUAL_LISTS)
+        if selected.type == CommonBean.TYPE_MUSIC_URL:
+            selected.parent = None                            
             self.directoryCntr.append_virtual([selected])
         elif selected.type == CommonBean.TYPE_FOLDER:
-            results = [selected]       
+            results = []       
             for i in xrange(self.model.getSize()):            
-                bean = self.model.getBeenByPosition(i)
-                print "SElected parent", selected.name
-                print "song parent", bean.name
-                if bean.parent == selected.name:
-                    #self.setSongResource(bean)
-                    #time.sleep(0.5)                                
-                    results.append(bean)
+                searchBean = self.model.getBeenByPosition(i)
+                #print "Search", searchBean 
+                if str(searchBean.name) == str(selected.name):
+                    searchBean.parent = None
+                    results.append(searchBean)
+                    
+                elif str(searchBean.parent) == str(selected.name):
+                    results.append(searchBean)
+                else:
+                    print str(searchBean.parent) + " != "  + str(selected.name) 
+                    
             self.directoryCntr.append_virtual(results)
         print "drug"
     

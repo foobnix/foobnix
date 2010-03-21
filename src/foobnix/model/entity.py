@@ -9,7 +9,7 @@ from mutagen import File
 import os
 import gtk
 class CommonBean():
-    TYPE_FOLDER = "FOLDER"    
+    TYPE_FOLDER = "TYPE_FOLDER"    
     TYPE_MUSIC_FILE = "TYPE_MUSIC_FILE"
     TYPE_MUSIC_URL = "TYPE_MUSIC_URL"
     TYPE_RADIO_URL = "TYPE_RADIO_URL"
@@ -92,7 +92,8 @@ class CommonBean():
         "index:",self.index,
         "time:",self.time,
         "is_visible:",self.is_visible,
-        "font:",self.font)
+        "font:",self.font,
+        "parent",self.parent)
     
     def __contcat(self, *args):
         result = ""

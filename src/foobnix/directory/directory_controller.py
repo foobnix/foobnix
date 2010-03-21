@@ -69,6 +69,9 @@ class DirectoryCntr():
     
     def on_drag_get(self, *args):    
         self.populate_playlist(append=True)
+    
+    def set_active_view(self, view_type):
+        self.view_list.set_active(view_type)
 
     def onChangeView(self, *args):
         active_index = self.view_list.get_active()  
