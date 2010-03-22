@@ -222,16 +222,25 @@ class OnlineListCntr():
             print "play", playlistBean
             print "type", playlistBean.type            
             if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
-                
-                self.setSongResource(playlistBean)
+                thread.start_new_thread(self.playBean, (playlistBean,))                  
+                #self.playBean(playlistBean)
 
-                print "Find path", playlistBean.path   
+    def playBean(self, playlistBean):
+        if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
                 
-                self.playerCntr.set_mode(PlayerController.MODE_ONLINE_LIST)                                  
-                self.playerCntr.playSong(playlistBean)
-                
-                self.index = playlistBean.index
-                self.repopulate(self.entityBeans, self.index)
+            self.setSongResource(playlistBean)
+
+            print "Find path", playlistBean.path 
+            if not playlistBean.path:
+                playlistBean.setIconErorr()                
+                return self.playBean(self.getNextSong())
+            
+            self.playerCntr.set_mode(PlayerController.MODE_ONLINE_LIST)                                  
+            self.playerCntr.playSong(playlistBean)
+            
+            self.index = playlistBean.index
+            self.repopulate(self.entityBeans, self.index)
+        
     
     def setSongResource(self, playlistBean):
         if not playlistBean.path:
@@ -315,7 +324,7 @@ class OnlineListCntr():
             if i == index:
                 songBean.setIconPlaying()               
                 self.model.append(songBean)
-            else:
+            else:           
                 songBean.setIconNone()  
                 self.model.append(songBean)
                    
