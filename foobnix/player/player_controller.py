@@ -53,6 +53,7 @@ class PlayerController:
         print "Path before", song.path
         #Try to set resource
         if song.path == None or song.path == "":
+            print "PL CNTR SET PATH"
             self.onlineCntr.setSongResource(song)
         
         print "Path after", song.path

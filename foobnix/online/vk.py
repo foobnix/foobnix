@@ -94,7 +94,38 @@ class Vkontakte:
                 if id_album == id:
                     return name
             
-            return None       
+            return None   
+        
+    def find_most_relative_song(self, song_title):
+        vkSongs = self.find_song_urls(song_title)
+        if not vkSongs:
+            return None
+            
+        times_count = {}
+        for song in vkSongs:
+            time = song.time
+            if time in times_count:
+                times_count[time] = times_count[time] + 1
+            else:
+                times_count[time] = 1 
+        
+        #get most relatives times time
+        r_count = max(times_count.values())
+        r_time = self.find_time_value(times_count, r_count)
+        print r_time
+        print r_count
+        
+        for song in vkSongs:
+            if song.time == r_time:        
+                return song
+                    
+        return vkSongs[0]
+            
+    def find_time_value(self, times_count, r_count):
+        for i in times_count:
+            if times_count[i] == r_count:
+                return i
+        return None              
     
     def find_song_urls(self, song_title):
         
@@ -160,6 +191,12 @@ class VKSong():
         self.album = album
         self.track = track
         self.time = time
+    
+    def getTime(self):
+        if self.time:
+            return time
+        else: 
+            return "no time" 
         
     def getFullDescription(self):
         return "[ " + self.s(self.album) + " ] " + self.s(self.track) + " " + self.s(self.time) 
@@ -175,8 +212,9 @@ class VKSong():
 
         
 #vk = Vkontakte("qax@bigmir.net", "foobnix")
-#vkSongs = vk.find_song_urls("ария")
+#vkSongs = vk.find_song_urls("rammstein du hast")
 
+#print "RESULT ", vk.find_more_relative_song("rammstein du hast")
 #for vkSong in vkSongs:
 #    print vkSong
 
@@ -189,6 +227,21 @@ line = """nbsp;<\/span><span id=\"title76067271\">SHtil&#39;<\/span> <small clas
 </span>"""
 print re.findall(" < span id = \"title([0-9]*)\">([А-ЯA-ZёЁ0-9 \s#!;:.?+=&%@!\-\/'()]*)<", line, re.IGNORECASE)
 
+map = {}
+for i in xrange(3, 10):
+    map[i] = -i * i
+    
+    
+for el in map:
+    print el, map[el]
+    
+
+print 4 in map    
+print max(map)
+print map.keys()
+print max(map.values())
+print max(map)
+print [ k for k in sorted(map.values())] 
 
         
 
