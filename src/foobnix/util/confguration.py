@@ -6,6 +6,7 @@ Created on Feb 27, 2010
 import pickle
 import os
 from foobnix.util import LOG
+import tempfile
 
 
 class Singleton(type):
@@ -20,8 +21,9 @@ class Singleton(type):
 
 class FConfiguration:
     __metaclass__ = Singleton
+    CFG_FILE = "/tmp/foobnix_conf.pkl"
     
-    def __init__(self):
+    def __init__(self, is_load_file=True):
         self.mediaLibraryPath = "/home/ivan/Music"
         self.supportTypes = [".mp3", ".ogg", ".ape", "flac"]
         self.isRandom = False
@@ -38,7 +40,7 @@ class FConfiguration:
         self.radiolistState = None
         self.virtualListState= None
         
-        instance = self._loadCfgFromFile()
+        instance = self._loadCfgFromFile(is_load_file)
         if instance:
             try:
                 self.virtualListState = instance.virtualListState
@@ -74,22 +76,30 @@ class FConfiguration:
         
     def _saveCfgToFile(self):
         #conf = FConfiguration()
-        save_file = file("foobnix_conf.pkl", 'w')
+        
+        save_file = file(self.CFG_FILE, 'w')
         pickle.dump(self, save_file)
         save_file.close()
         LOG.debug("Save configuration")
             
-    def _loadCfgFromFile(self): 
+    def _loadCfgFromFile(self,is_load_file):
+        if not is_load_file:
+            return
+        
         try:       
-            load_file = file("foobnix_conf.pkl", "r")
+            load_file = file(self.CFG_FILE, "w")
         except IOError:
             LOG.debug("file not exists")
             return None
         try:        
             conf = pickle.load(load_file)
-        except AttributeError:
+        except:
             LOG.debug("Error loading configuration")
-            conf = FConfiguration()
+            load_file.close()
+            LOG.debug("Delete file")
+            os.remove(self.CFG_FILE)
+            
+            conf = FConfiguration(False)
             return conf
         
         load_file.close()    

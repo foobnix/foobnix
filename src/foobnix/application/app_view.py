@@ -26,12 +26,10 @@ class AppView():
         try:
             return gtk.glade.XML(main, widget)
         except:
-            return gtk.glade.XML("/usr/lib/python2.5/site-packages/" + main, widget)
-            
-        try:
-            return gtk.glade.XML("/usr/lib/python2.6/site-packages/" + main, widget)
-        except:
-            pass
+            try:
+                return gtk.glade.XML("/usr/local/lib/python2.6/dist-packages/" + main, widget)
+            except:
+                return gtk.glade.XML("/usr/lib/python2.5/site-packages/" + main, widget)
             
         
   
