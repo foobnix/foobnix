@@ -91,7 +91,7 @@ class Vkontakte:
         #Do not run to offten
         cur_time = time.time()
         if cur_time - self.execute_time < 0.5:
-            print "Sleep to many requests..."
+            print "Sleep because to many requests..."
             time.sleep(0.8)        
         self.execute_time = time.time()
         
