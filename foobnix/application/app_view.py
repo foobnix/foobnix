@@ -5,14 +5,33 @@ Created on Mar 14, 2010
 '''
 import gtk
 import os
+import sys
 class AppView():
-    gladeMain = os.path.abspath("foobnix/glade/foobnix.glade") 
-    gladePref = os.path.abspath("foobnix/glade/preferences.glade")
+    os.path.abspath(".")
+    
+    print sys.path
 
+    gladeMain = "foobnix/glade/foobnix.glade"
+    gladePref = "foobnix/glade/preferences.glade"
+    
     def __init__(self):
-        self.gxMain = gtk.glade.XML(self.gladeMain, "foobnixWindow")
-        self.gxTryIcon = gtk.glade.XML(self.gladeMain, "popUpWindow")
-        self.gxPref = gtk.glade.XML(self.gladePref, "window")
+        self.gxMain = self.glade_XML(self.gladeMain, "foobnixWindow")
+        self.gxTryIcon = self.glade_XML(self.gladeMain, "popUpWindow")
+        self.gxPref = self.glade_XML(self.gladePref, "window")
                 
         
         self.playlist = self.gxMain.get_widget("playlist_treeview")
+
+    def glade_XML(self, main, widget):
+        try:
+            return gtk.glade.XML(main, widget)
+        except:
+            return gtk.glade.XML("/usr/lib/python2.5/site-packages/" + main, widget)
+            
+        try:
+            return gtk.glade.XML("/usr/lib/python2.6/site-packages/" + main, widget)
+        except:
+            pass
+            
+        
+  
