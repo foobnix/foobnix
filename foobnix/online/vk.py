@@ -23,6 +23,7 @@ class Vkontakte:
         self.email = email
         self.password = password
         self.cookie = None
+        self.execute_time = time.time()
 
     def get_s_value(self):
 
@@ -67,6 +68,9 @@ class Vkontakte:
         return self.cookie
     
     def get_page(self, query):
+        if not query:
+            return None
+        
         host = 'http://vkontakte.ru/gsearch.php?section=audio&q=vasya#c[q]=some%20id&c[section]=audio'
         post = urllib.urlencode({
                                  "c[q]" : query,
@@ -83,6 +87,14 @@ class Vkontakte:
                    'Cache-Control' : '    no-cache'
                   }
         conn = urllib2.Request(host, post, headers)
+        
+        #Do not run to offten
+        cur_time = time.time()
+        if cur_time - self.execute_time < 0.5:
+            print "Sleep to many requests..."
+            time.sleep(0.8)        
+        self.execute_time = time.time()
+        
         data = urllib2.urlopen(conn);
         result = data.read()
         return result
@@ -112,8 +124,8 @@ class Vkontakte:
         #get most relatives times time
         r_count = max(times_count.values())
         r_time = self.find_time_value(times_count, r_count)
-        print r_time
-        print r_count
+        print "Print Song time", r_time
+        print "Print Count of congs", r_count
         
         for song in vkSongs:
             if song.time == r_time:        
@@ -213,6 +225,10 @@ class VKSong():
         
 #vk = Vkontakte("qax@bigmir.net", "foobnix")
 #vkSongs = vk.find_song_urls("rammstein du hast")
+#vkSongs = vk.find_song_urls("rammstein du hast1")
+#vkSongs = vk.find_song_urls("rammstein du hast1")
+#vkSongs = vk.find_song_urls("rammstein du hast3")
+
 
 #print "RESULT ", vk.find_more_relative_song("rammstein du hast")
 #for vkSong in vkSongs:
@@ -226,22 +242,6 @@ line = """nbsp;<\/span><span id=\"title76067271\">SHtil&#39;<\/span> <small clas
 <a href="javascript: showLyrics(87919392,3966457);">Кто ты</a>
 </span>"""
 print re.findall(" < span id = \"title([0-9]*)\">([А-ЯA-ZёЁ0-9 \s#!;:.?+=&%@!\-\/'()]*)<", line, re.IGNORECASE)
-
-map = {}
-for i in xrange(3, 10):
-    map[i] = -i * i
-    
-    
-for el in map:
-    print el, map[el]
-    
-
-print 4 in map    
-print max(map)
-print map.keys()
-print max(map.values())
-print max(map)
-print [ k for k in sorted(map.values())] 
 
         
 

@@ -38,6 +38,10 @@ class CommonBean():
     
     def setIconPlaying(self):
         self.icon = gtk.STOCK_GO_FORWARD
+    
+    def setIconErorr(self):
+        self.icon = gtk.STOCK_DIALOG_ERROR
+        
     def setIconNone(self):
         self.icon = None
         
