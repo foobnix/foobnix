@@ -59,7 +59,7 @@ class FConfiguration:
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")                
-                os.remove("foobnix_conf.pkl")
+                os.remove(self.CFG_FILE)
  
         print "LOAD CONFIGS"
         self.printArttibutes()
@@ -87,13 +87,14 @@ class FConfiguration:
             return
         
         try:       
-            load_file = file(self.CFG_FILE, "w")
+            load_file = file(self.CFG_FILE, 'r')
         except IOError:
             LOG.debug("file not exists")
             return None
         try:        
             conf = pickle.load(load_file)
-        except:
+        except type:
+            print type
             LOG.debug("Error loading configuration")
             load_file.close()
             LOG.debug("Delete file")
