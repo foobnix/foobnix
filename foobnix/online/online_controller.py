@@ -17,6 +17,8 @@ from foobnix.online.search_controller import search_top_albums, \
     search_top_tracks, search_top_similar
 import thread
 from foobnix.directory.directory_controller import DirectoryCntr
+from foobnix.util.confguration import FConfiguration
+
 
 '''
 Created on Mar 11, 2010
@@ -33,11 +35,11 @@ from foobnix.util.mouse_utils import is_double_click
 
 class OnlineListCntr():
     
-    API_KEY = "cd461af0871de8509abee1e982cae29e"
-    API_SECRET = "0d25b8eedef9bf50108646b14d504463"
+    API_KEY = FConfiguration().API_KEY
+    API_SECRET = FConfiguration().API_SECRET
     
-    username = "foobnix"
-    password_hash = pylast.md5("foobnix")    
+    username = FConfiguration().lfm_login
+    password_hash = pylast.md5(FConfiguration().lfm_password)    
     
     TOP_SONGS = "TOP_SONG"
     TOP_ALBUMS = "TOP_ALBUMS"
@@ -69,12 +71,13 @@ class OnlineListCntr():
                 
         self.entityBeans = []
         self.index = self.model.getSize();
+        try:
+            self.network = pylast.get_lastfm_network(api_key=self.API_KEY, api_secret=self.API_SECRET, username=self.username, password_hash=self.password_hash)
+        except:
+            print "network not found"
+            return
         
-        self.network = pylast.get_lastfm_network(api_key=self.API_KEY, api_secret=self.API_SECRET, username=self.username, password_hash=self.password_hash)
-        
-        
-        
-        self.vk = Vkontakte('qax@bigmir.net', 'foobnix')
+        self.vk = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
         self.play_attempt = 0
         
         pass #end of init
