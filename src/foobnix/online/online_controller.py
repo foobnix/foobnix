@@ -75,6 +75,7 @@ class OnlineListCntr():
         
         
         self.vk = Vkontakte('qax@bigmir.net', 'foobnix')
+        self.play_attempt = 0
         
         pass #end of init
 
@@ -229,15 +230,14 @@ class OnlineListCntr():
             print "play", playlistBean
             print "type", playlistBean.type            
             if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
-                thread.start_new_thread(self.playBean, (playlistBean,))                  
+                thread.start_new_thread(self.playBean, (playlistBean,))
                 #self.playBean(playlistBean)
 
-    def playBean(self, playlistBean):
+    def playBean(self, playlistBean):            
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
-                
             self.setSongResource(playlistBean)
-
             print "Find path", playlistBean.path 
+          
             if not playlistBean.path:
                 playlistBean.setIconErorr()                
                 return self.playBean(self.getNextSong())
@@ -247,6 +247,9 @@ class OnlineListCntr():
             
             self.index = playlistBean.index
             self.repopulate(self.entityBeans, self.index)
+           
+                
+            
         
     
     def setSongResource(self, playlistBean):
