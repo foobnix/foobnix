@@ -230,8 +230,8 @@ class OnlineListCntr():
             print "play", playlistBean
             print "type", playlistBean.type            
             if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
-                thread.start_new_thread(self.playBean, (playlistBean,))
-                #self.playBean(playlistBean)
+                #thread.start_new_thread(self.playBean, (playlistBean,))
+                self.playBean(playlistBean)
 
     def playBean(self, playlistBean):            
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
