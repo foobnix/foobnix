@@ -133,6 +133,8 @@ class OnlineListCntr():
       
         query = self.get_search_query()        
         if query:  
+            query = self.capitilize_query(u"" + query)
+            print query
             
             if self.get_search_by() == self.TOP_ALBUMS:
                 self.playerThreadId = thread.start_new_thread(self.search_top_albums, (query,))
@@ -153,7 +155,12 @@ class OnlineListCntr():
             #self.show_results(query, beans) 
             
         pass
-    
+  
+    def capitilize_query(self, line):        
+        result = ""
+        for l in line.split():
+            result += " " + l.capitalize()
+        return result
     
     def search_dots(self, query):
         dots = "..."        

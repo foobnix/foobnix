@@ -243,5 +243,10 @@ line = """nbsp;<\/span><span id=\"title76067271\">SHtil&#39;<\/span> <small clas
 </span>"""
 print re.findall(" < span id = \"title([0-9]*)\">([А-ЯA-ZёЁ0-9 \s#!;:.?+=&%@!\-\/'()]*)<", line, re.IGNORECASE)
 
-        
+line = u"sadf asdf asd фыав фыва фыв  asdf"
+result = ""
+for l in line.split():
+    result += " " + l.capitalize()
+print result
+
 

@@ -6,7 +6,7 @@ Created on Mar 18, 2010
 from foobnix.model.entity import CommonBean
 from foobnix.online.pylast import WSError
 def search_top_albums(network, query):
-    unicode(query, "utf-8")
+    #unicode(query, "utf-8")
     artist = network.get_artist(query)
     if not artist:
         return None
@@ -38,7 +38,7 @@ def search_top_albums(network, query):
 
 
 def search_top_tracks(network, query):
-    unicode(query, "utf-8")
+    #unicode(query, "utf-8")
     artist = network.get_artist(query)
     if not artist:
         return None
@@ -65,7 +65,7 @@ def search_top_tracks(network, query):
     return beans
 
 def search_top_similar(network, query):
-    unicode(query, "utf-8")
+    #unicode(query, "utf-8")
     
     artist = network.get_artist(query)
     if not artist:
