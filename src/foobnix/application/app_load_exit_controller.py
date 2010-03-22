@@ -42,7 +42,8 @@ class OnLoadExitAppCntr():
         if FConfiguration().radiolistState:
             self.radioListCntr.setState(FConfiguration().radiolistState)
         
-        
+        self.appConfCntr.setVkLoginPass(FConfiguration().vk_login, FConfiguration().vk_password)
+        self.appConfCntr.setLfmLoginPass(FConfiguration().lfm_login, FConfiguration().lfm_password)
             
             
             
@@ -56,7 +57,14 @@ class OnLoadExitAppCntr():
         FConfiguration().volumeValue = self.playerWidgets.volume.get_value()
         FConfiguration().vpanelPostition = self.playerWidgets.vpanel.get_position()
         FConfiguration().hpanelPostition = self.playerWidgets.hpanel.get_position()
-        FConfiguration().mediaLibraryPath = self.appConfCntr.getMusicFolder()  
+        FConfiguration().mediaLibraryPath = self.appConfCntr.getMusicFolder()
+        
+        FConfiguration().vk_login = self.appConfCntr.getVkLogin()
+        FConfiguration().vk_password = self.appConfCntr.getVkPassword()
+        
+        FConfiguration().lfm_login = self.appConfCntr.getLfmLogin()
+        FConfiguration().lfm_password = self.appConfCntr.getLfmPassword()
+          
         FConfiguration().save()
     
     

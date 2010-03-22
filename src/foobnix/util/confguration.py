@@ -40,6 +40,16 @@ class FConfiguration:
         self.radiolistState = None
         self.virtualListState= None
         
+        self.vk_login="qax@bigmir.net"
+        self.vk_password = "foobnix"
+        
+        self.lfm_login = "foobnix"
+        self.lfm_password = "foobnix"
+        
+        self.API_KEY = "cd461af0871de8509abee1e982cae29e"
+        self.API_SECRET = "0d25b8eedef9bf50108646b14d504463"
+    
+   
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
             try:
@@ -56,6 +66,13 @@ class FConfiguration:
                 self.vpanelPostition = instance.vpanelPostition
                 self.hpanelPostition = instance.hpanelPostition
                 self.savedRadioList = instance.savedRadioList
+                
+                
+                self.vk_login=instance.vk_login
+                self.vk_password = instance.vk_password
+                
+                self.lfm_login = instance.lfm_login
+                self.lfm_password = instance.lfm_password
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")                
