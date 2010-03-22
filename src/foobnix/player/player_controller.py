@@ -52,11 +52,11 @@ class PlayerController:
         
         print "Path before", song.path
         #Try to set resource
-        if song.path == None or song.path =="":
+        if song.path == None or song.path == "":
             self.onlineCntr.setSongResource(song)
         
         print "Path after", song.path
-        if song.path == None:
+        if song.path == None or song.path == "":
             print "SONG NOT FOUND", song.name
             return self.next()
         

@@ -98,13 +98,13 @@ class DirectoryCntr():
         i = 0
         for item in items:
             if item.parent == None:
-                parent = self.model.append(None, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=item.parent,index=i))
+                parent = self.model.append(None, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=item.parent, index=i))
             else:
-                self.model.append(parent, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_URL,parent=item.parent, index=i))
-            i +=1
+                self.model.append(parent, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_URL, parent=item.parent, index=i))
+            i += 1
     
     def onTreeViewDeleteItem(self, w, event):
-        if self.view_list.get_active()  != self.VIEW_VIRTUAL_LISTS:
+        if self.view_list.get_active() != self.VIEW_VIRTUAL_LISTS:
             return
         
         print event
@@ -112,7 +112,7 @@ class DirectoryCntr():
             #Enter pressed
             print event.keyval
             print event.hardware_keycode
-            if event.hardware_keycode==119:
+            if event.hardware_keycode == 119 or event.hardware_keycode == 107:
                 print "Delete"
                 bean = self.model.getSelectedBean()
                 print bean
@@ -180,7 +180,7 @@ class DirectoryCntr():
             full_path = path + "/" + file_name
             
             if not isDirectory(full_path):                                
-                bean = CommonBean(name=file_name,path=full_path,type=CommonBean.TYPE_MUSIC_FILE)
+                bean = CommonBean(name=file_name, path=full_path, type=CommonBean.TYPE_MUSIC_FILE)
                 result.append(bean)
                 
         LOG.debug(result)
