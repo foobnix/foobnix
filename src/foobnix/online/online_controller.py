@@ -98,7 +98,7 @@ class OnlineListCntr():
                 elif str(searchBean.parent) == str(selected.name):
                     results.append(searchBean)
                 else:
-                    print str(searchBean.parent) + " != "  + str(selected.name) 
+                    print str(searchBean.parent) + " != " + str(selected.name) 
                     
             self.directoryCntr.append_virtual(results)
         print "drug"
@@ -198,7 +198,7 @@ class OnlineListCntr():
         return beans
     
     def NotFoundBeen(self):
-        return CommonBean(name="Not found ", path=None, color="RED",type=CommonBean.TYPE_FOLDER)
+        return CommonBean(name="Not found ", path=None, color="RED", type=CommonBean.TYPE_FOLDER)
     
     def SearchCriteriaBeen(self, name):
         return CommonBean(name=name, path=None, color="#4DCC33", type=CommonBean.TYPE_FOLDER)
@@ -240,14 +240,18 @@ class OnlineListCntr():
                 #playlistBean.path = find_song_urls(playlistBean.name)[0]
                 
                 #Seach by vk engine                
-                vkSongs = self.vk.find_song_urls(playlistBean.name)
+                vkSong = self.vk.find_most_relative_song(playlistBean.name)
                 #print vkSongs
-                if vkSongs:
-                    path = vkSongs[0].path 
-                    print "GET PATH", path
-                    playlistBean.path = path                    
+                if vkSong:
+                     
+                    print "GET PATH", vkSong.path
+                    #playlistBean.name = playlistBean.name + " vk[" + str(vk.album) + " " + str(vk.track) + " " + str(vk.time) + "]"
+                    
+                    playlistBean.path = vkSong.path                    
                 else:
                     playlistBean.path = None
+                
+                
                 
        
     

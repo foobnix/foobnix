@@ -131,7 +131,10 @@ class DirectoryCntr():
             self.populate_playlist()
     
     def populate_playlist(self, append=False):
-        directoryBean = self.model.getSelectedBean()        
+        directoryBean = self.model.getSelectedBean()
+        if not directoryBean:
+            return 
+                
         if directoryBean.type == CommonBean.TYPE_FOLDER:
             songs = self.model.getChildSongBySelected()
             if not songs:

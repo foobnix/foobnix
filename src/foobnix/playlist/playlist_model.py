@@ -41,6 +41,18 @@ class PlaylistModel:
         bean.type = self.model[position][ self.POS_TYPE]
         return bean       
 
+    def get_all_beans(self):
+        beans = []
+        for i in xrange(len(self.model)):
+            beans.append(self.getBeenByPosition(i))
+        return beans
+    
+    def set_all_beans(self, beans):
+        self.clear()
+        for bean in beans:
+            self.append(bean)
+        
+    
     def getSelectedBean(self):
         selection = self.widget.get_selection()
         model, selected = selection.get_selected()
@@ -61,7 +73,7 @@ class PlaylistModel:
  
             
     def append(self, bean):   
-        self.model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index,bean.type])
+        self.model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type])
 
-    def __del__(self,*a):
+    def __del__(self, *a):
         print "del"
