@@ -35,6 +35,16 @@ class CommonBean():
         self.parent = parent
         
         #self._getMp3Tags()
+        
+    def getArtist(self):
+        s = self.name.split(" - ")
+        if len(s) > 1:
+            return self.name.split(" - ")[0]
+    
+    def getTitle(self):
+        s = self.name.split(" - ")
+        if len(s) > 1:
+            return self.name.split(" - ")[1]
     
     def setIconPlaying(self):
         self.icon = gtk.STOCK_GO_FORWARD
@@ -104,4 +114,7 @@ class CommonBean():
         for arg in args:
             result += " " + str(arg)
         return result   
-
+    
+s = CommonBean(name="asdf - 2342134asfd asf as ")
+print s.getArtist()
+print s.getTitle()

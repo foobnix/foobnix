@@ -61,6 +61,9 @@ class PlayerController:
             print "SONG NOT FOUND", song.name
             return self.next()
         
+        
+        self.widgets.setLiric(song)
+            
         print "Type", song.type
        
         print "MODE", self.mode
