@@ -49,7 +49,11 @@ class PlayerWidgetsCntl():
     def _setLiricThread(self, song):
         print "Get lirics for:", song.getArtist(),  song.getTitle()
         if song.getArtist() and  song.getTitle():
-            self.textbuffer.set_text(get_lyrics(song.getArtist(), song.getTitle())) 
+            text =  get_lyrics(song.getArtist(), song.getTitle())
+            if text: 
+                self.textbuffer.set_text(text)
+            else: 
+                self.textbuffer.set_text("Not Found"+song.getArtist() +" "+  song.getTitle())
     
     def onPlayButton(self, *a):
         self.playerCntr.playState()
