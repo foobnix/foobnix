@@ -235,16 +235,21 @@ class OnlineListCntr():
             if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
                 #thread.start_new_thread(self.playBean, (playlistBean,))
                 self.playBean(playlistBean)
-
+    count = 0
     def playBean(self, playlistBean):            
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
             self.setSongResource(playlistBean)
             print "Find path", playlistBean.path 
           
             if not playlistBean.path:
-                playlistBean.setIconErorr()                
-                return self.playBean(self.getNextSong())
+                self.count += 1
+                print self.count
+                playlistBean.setIconErorr()
+                if self.count < 5   :                
+                    return self.playBean(self.getNextSong())
+                return 
             
+            count = 0
             self.playerCntr.set_mode(PlayerController.MODE_ONLINE_LIST)                                  
             self.playerCntr.playSong(playlistBean)
             
