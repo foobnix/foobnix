@@ -10,6 +10,7 @@ import os
 import gtk
 class CommonBean():
     TYPE_FOLDER = "TYPE_FOLDER"    
+    TYPE_GOOGLE_HELP = "TYPE_GOOGLE_HELP"
     TYPE_MUSIC_FILE = "TYPE_MUSIC_FILE"
     TYPE_MUSIC_URL = "TYPE_MUSIC_URL"
     TYPE_RADIO_URL = "TYPE_RADIO_URL"
