@@ -45,6 +45,7 @@ class PlayerController:
     def registerWidgets(self, widgets):
         self.widgets = widgets
 
+    count = 0
     def playSong(self, song):
         print "play song"
                 
@@ -58,10 +59,14 @@ class PlayerController:
         
         print "Path after", song.path
         if song.path == None or song.path == "":
+            self.count += 1
             print "SONG NOT FOUND", song.name
+            print "Count is", self.count
+            if self.count > 5:
+                return
             return self.next()
         
-        
+        self.count = 0
         self.widgets.setLiric(song)
             
         print "Type", song.type
