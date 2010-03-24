@@ -190,7 +190,7 @@ class PlayerController:
                 self.widgets.seekBar.set_fraction(timePersent)
                 
                 gtk.gdk.threads_leave() #@UndefinedVariable
-            time.sleep(1)
+            time.sleep(0.5)
     
         
 

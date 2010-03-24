@@ -179,8 +179,8 @@ class Vkontakte:
         
         #print len(resultall), resultall
         #print len(urls), urls
-        print len(result_album), result_album
-        print len(result_track), result_track
+        #print len(result_album), result_album
+        #print len(result_track), result_track
         #print len(result_time), result_time
         
         for i in xrange(len(result_time)):    

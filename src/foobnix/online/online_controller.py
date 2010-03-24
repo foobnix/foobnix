@@ -18,6 +18,7 @@ from foobnix.online.search_controller import search_top_albums, \
 import thread
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.util.confguration import FConfiguration
+from foobnix.online.google.search import GoogleSearch, SearchError
 
 
 '''
@@ -199,7 +200,18 @@ class OnlineListCntr():
             self.append([self.SearchCriteriaBeen(query)])
             self.append(beans)
         else:
-            self.append([self.NotFoundBeen()])
+            self.append([self.TextBeen("Not Found, wait for results from google ...")])
+            try:
+                ask = query.encode('utf-8')
+                gs = GoogleSearch(ask)
+                gs.results_per_page = 10
+                results = gs.get_results()
+                for res in results:
+                    result = res.title.encode('utf8')
+                    self.append([self.TextBeen(result, color="YELLOW", type=CommonBean.TYPE_GOOGLE_HELP)])
+                    
+            except SearchError, e:
+                print "Search failed: %s" % e
     
     def convertVKstoBeans(self, vkSongs):
         beans = []
@@ -208,8 +220,8 @@ class OnlineListCntr():
             beans.append(bean)
         return beans
     
-    def NotFoundBeen(self):
-        return CommonBean(name="Not found ", path=None, color="RED", type=CommonBean.TYPE_FOLDER)
+    def TextBeen(self, query, color="RED", type=CommonBean.TYPE_FOLDER):
+        return CommonBean(name=query, path=None, color=color, type=type)
     
     def SearchCriteriaBeen(self, name):
         return CommonBean(name=name, path=None, color="#4DCC33", type=CommonBean.TYPE_FOLDER)
@@ -235,6 +247,9 @@ class OnlineListCntr():
             if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
                 #thread.start_new_thread(self.playBean, (playlistBean,))
                 self.playBean(playlistBean)
+            elif playlistBean.type == CommonBean.TYPE_GOOGLE_HELP:
+                self.search_text.set_text(playlistBean.name)
+                
     count = 0
     def playBean(self, playlistBean):            
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
