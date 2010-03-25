@@ -19,6 +19,8 @@ import thread
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.util.confguration import FConfiguration
 from foobnix.online.google.search import GoogleSearch, SearchError
+import urllib2
+import os
 
 
 '''
@@ -46,6 +48,11 @@ class OnlineListCntr():
     TOP_ALBUMS = "TOP_ALBUMS"
     TOP_SIMILAR = "TOP_SIMILAR"
     TOP_SEARCH = "TOP_SEARCH"
+    
+    LIBRARY_DIR = os.getenv("HOME")+"/.foobnix/music"
+    if not os.path.isdir(LIBRARY_DIR):
+        os.makedirs(LIBRARY_DIR)
+    
     
     def __init__(self, gxMain, playerCntr, directoryCntr):
         self.playerCntr = playerCntr
@@ -280,14 +287,35 @@ class OnlineListCntr():
             
             self.index = playlistBean.index
             self.repopulate(self.entityBeans, self.index)
-           
+
                 
-            
+    def dowloadSong(self, song):
+        print "===Dowload song start"
+        time.sleep(3)
+        remotefile = urllib2.urlopen(song.path)
+        file = self.get_file_store_path(song)
+        f = open(file, 'wb')
+        f.write(remotefile.read())
+        f.close()
+        print "===Dowload song End ", file
         
+    def get_file_store_path(self, song):
+        return self.LIBRARY_DIR+"/"+song.name + ".mp3"
     
     def setSongResource(self, playlistBean):
         if not playlistBean.path:
             if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
+                
+                file = self.get_file_store_path(playlistBean)
+                if os.path.isfile(file):
+                    print "Find file dowloaded"
+                    playlistBean.path = file
+                    playlistBean.type = CommonBean.TYPE_MUSIC_FILE
+                    return True
+                else:
+                    print "FILE NOT FOUND IN SYSTEM"
+                                    
+                
                 #Seach by pvleer engine
                 #playlistBean.path = find_song_urls(playlistBean.name)[0]
                 
@@ -299,7 +327,9 @@ class OnlineListCntr():
                     print "GET PATH", vkSong.path
                     #playlistBean.name = playlistBean.name + " vk[" + str(vk.album) + " " + str(vk.track) + " " + str(vk.time) + "]"
                     
-                    playlistBean.path = vkSong.path                    
+                    playlistBean.path = vkSong.path   
+                    #self.dowloadSong(playlistBean)  
+                    thread.start_new_thread(self.dowloadSong, (playlistBean,))               
                 else:
                     playlistBean.path = None
                 
