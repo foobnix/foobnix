@@ -185,8 +185,15 @@ class OnlineListCntr():
         self.show_results(query, beans)      
     
     def search_top_similar(self, query):
-        beans = search_top_similar(self.network, query)
-        self.show_results(query, beans)  
+        try:
+            beans = search_top_similar(self.network, query)
+            self.show_results(query, beans)
+        except:
+            self.playerThreadId = None
+            self.googleHelp(query)
+            
+            
+          
     def search_vk_engine(self, query):
         vkSongs = self.vk.find_song_urls(query)
         beans = self.convertVKstoBeans(vkSongs)
@@ -200,18 +207,21 @@ class OnlineListCntr():
             self.append([self.SearchCriteriaBeen(query)])
             self.append(beans)
         else:
-            self.append([self.TextBeen("Not Found, wait for results from google ...")])
-            try:
-                ask = query.encode('utf-8')
-                gs = GoogleSearch(ask)
-                gs.results_per_page = 10
-                results = gs.get_results()
-                for res in results:
-                    result = res.title.encode('utf8')
-                    self.append([self.TextBeen(result, color="YELLOW", type=CommonBean.TYPE_GOOGLE_HELP)])
-                    
-            except SearchError, e:
-                print "Search failed: %s" % e
+            self.googleHelp(query)
+    
+    def googleHelp(self, query):
+        self.append([self.TextBeen("Not Found, wait for results from google ...")])
+        try:
+            ask = query.encode('utf-8')
+            gs = GoogleSearch(ask)
+            gs.results_per_page = 10
+            results = gs.get_results()
+            for res in results:
+                result = res.title.encode('utf8')
+                self.append([self.TextBeen(result, color="YELLOW", type=CommonBean.TYPE_GOOGLE_HELP)])
+                
+        except SearchError, e:
+            print "Search failed: %s" % e
     
     def convertVKstoBeans(self, vkSongs):
         beans = []

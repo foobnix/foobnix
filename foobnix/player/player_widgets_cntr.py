@@ -51,7 +51,8 @@ class PlayerWidgetsCntl():
         if song.getArtist() and  song.getTitle():
             text =  get_lyrics(song.getArtist(), song.getTitle())
             if text: 
-                self.textbuffer.set_text(text)
+                
+                self.textbuffer.set_text(song.getArtist() +"" +song.getTitle() +"\n" +text)
             else: 
                 self.textbuffer.set_text("Not Found"+song.getArtist() +" "+  song.getTitle())
     
