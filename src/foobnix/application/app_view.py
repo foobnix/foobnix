@@ -3,13 +3,8 @@ Created on Mar 14, 2010
 
 @author: ivan
 '''
-import gtk
-import os
-import sys
+import gtk.glade
 class AppView():
-    os.path.abspath(".")
-    
-    print sys.path
 
     gladeMain = "foobnix/glade/foobnix.glade"
     gladePref = "foobnix/glade/preferences.glade"

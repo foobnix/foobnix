@@ -16,6 +16,7 @@ class PlayerController:
     MODE_PLAY_LIST = "PLAY_LIST"
     MODE_ONLINE_LIST = "ONLINE_LIST"
     
+    
     def __init__(self):
         self.player = self.playerLocal()
         
