@@ -98,8 +98,8 @@ setup(name='foobnix',
 # Cleanup (remove /build, /mo, and *.pyc files:
 print "Cleaning up..."
 try:
-    #removeall("build/")
-    #os.rmdir("build/")
+    removeall("build/")
+    os.rmdir("build/")
     pass
 except:
     pass

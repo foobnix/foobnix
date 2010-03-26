@@ -16,6 +16,7 @@ from foobnix.util.file_utils import isDirectory, getExtenstion
 from foobnix.util.mouse_utils import is_double_click
 import gtk
 from foobnix.directory.virtuallist_controller import VirturalLIstCntr
+import copy
 class DirectoryCntr():
     
     VIEW_ARTIST_ALBUM = 0
@@ -58,6 +59,8 @@ class DirectoryCntr():
         self.view_list.set_active(0)
         
         self.view_list.connect("changed", self.onChangeView)
+        
+        self.saved_model = None
     
     def all(self, *args):
         for arg in args:
@@ -77,7 +80,9 @@ class DirectoryCntr():
         active_index = self.view_list.get_active()  
         if active_index == self.VIEW_ARTIST_ALBUM:
             self.clear()
-            self.addAll()
+            self.addAll()                
+                
+                
         elif active_index == self.VIEW_RADIO_STATION:
             self.clear()
             beans = self.radioListCntr.getState()[0]
@@ -192,6 +197,7 @@ class DirectoryCntr():
         level = None;
         #print "DIABLE ADD ALLLLLL"
         self.go_recursive(self.musicFolder, level) 
+        
         
     def sortedDirsAndFiles(self, path, list):        
         files = []

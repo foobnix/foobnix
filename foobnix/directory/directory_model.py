@@ -33,6 +33,9 @@ class DirectoryModel():
         self.model.clear() 
     def getModel(self):
         return self.model
+    
+    def setModel(self,model):
+        self.model = model
         
     def getSelectedBean(self):
         selection = self.widget.get_selection()
