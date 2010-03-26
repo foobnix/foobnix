@@ -41,6 +41,7 @@ class CommonBean():
         s = self.name.split(" - ")
         if len(s) > 1:
             return self.name.split(" - ")[0]
+        return None
     
     def getTitle(self):
         s = self.name.split(" - ")

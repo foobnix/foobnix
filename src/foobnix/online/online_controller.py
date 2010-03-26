@@ -49,9 +49,12 @@ class OnlineListCntr():
     TOP_SIMILAR = "TOP_SIMILAR"
     TOP_SEARCH = "TOP_SEARCH"
     
-    LIBRARY_DIR = os.getenv("HOME") + "/.foobnix/music"
-    if not os.path.isdir(LIBRARY_DIR):
-        os.makedirs(LIBRARY_DIR)
+    LIBRARY_DIR = FConfiguration().onlineMusicPath
+       
+    
+    def make_dirs(self, path):
+        if not os.path.isdir(path):
+            os.makedirs(path)
     
     
     def __init__(self, gxMain, playerCntr, directoryCntr):
@@ -302,7 +305,7 @@ class OnlineListCntr():
                 
     def dowloadSong(self, song):
         print "===Dowload song start"
-        time.sleep(3)
+        time.sleep(5)
         remotefile = urllib2.urlopen(song.path)
         file = self.get_file_store_path(song)
         f = open(file, 'wb')
@@ -311,7 +314,13 @@ class OnlineListCntr():
         print "===Dowload song End ", file
         
     def get_file_store_path(self, song):
-        return self.LIBRARY_DIR + "/" + song.name + ".mp3"
+        dir = self.LIBRARY_DIR
+        if song.getArtist():
+            dir = dir +"/" +song.getArtist()
+        self.make_dirs(dir)
+        song = dir + "/" + song.name + ".mp3"
+        print "Stored dir: ", song
+        return song
     
     def setSongResource(self, playlistBean):
         if not playlistBean.path:
