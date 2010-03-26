@@ -109,7 +109,9 @@ class PlayerController:
     def setVolume(self, volumeValue): 
         self.volume = volumeValue
         self.player.set_property('volume', volumeValue + 0.0)      
-
+    def getVolume(self):
+        return self.volume
+    
     def playerHTTP(self):
         print "Player For remote files"
         self.playbin = gst.element_factory_make("playbin", "player")  

@@ -5,9 +5,10 @@ Created on Mar 13, 2010
 '''
 import gtk
 class TrayIcon:
-    def __init__(self, gxTryIcon, windowController, playerController):
+    def __init__(self, gxTryIcon, windowController, playerController, playerWidgets):
         self.windowController = windowController
-        self.playerController = playerController        
+        self.playerController = playerController
+        self.playerWidgets = playerWidgets        
         self.icon = gtk.StatusIcon()
         self.icon.set_tooltip("Foobnix music playerEngine")
         self.icon.set_from_stock("gtk-media-play")
@@ -31,8 +32,10 @@ class TrayIcon:
     def connect(self):
         self.icon.connect("activate", self.onLeftMouseClick)
         self.icon.connect("popup-menu", self.onRightMouseClick)
-        
-        #self.icon.connect("scroll-event", self.onScrollUpDown)
+        try:
+            self.icon.connect("scroll-event", self.onScrollUpDown)
+        except:
+            pass
      
     def quitApp(self, *a):
         self.windowController.onDestroy()  
@@ -63,5 +66,13 @@ class TrayIcon:
     def onRightMouseClick(self, *args):      
         self.popup.show()
     
-    def onScrollUpDown(self, *args):      
-        pass
+    def onScrollUpDown(self, w, event):      
+        volume = self.playerController.getVolume()            
+        if event.direction == gtk.gdk.SCROLL_UP: #@UndefinedVariable
+            print "Volume UP"
+            self.playerController.setVolume(volume + 0.05)                
+        else:
+            print "Volume Down"
+            self.playerController.setVolume(volume - 0.05)
+        
+        self.playerWidgets.volume.set_value(volume * 100)  
