@@ -239,7 +239,7 @@ class OnlineListCntr():
             results = gs.get_results()
             for res in results:
                 result = res.title.encode('utf8')
-                self.append([self.TextBeen(result, color="YELLOW", type=CommonBean.TYPE_GOOGLE_HELP)])
+                self.append([self.TextBeen(str(result), color="YELLOW", type=CommonBean.TYPE_GOOGLE_HELP)])
                 
         except SearchError, e:
             print "Search failed: %s" % e
