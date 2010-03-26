@@ -4,20 +4,20 @@ Created on Mar 10, 2010
 
 @author: ivan
 '''
-
-import gtk.glade
 from foobnix.application.app_view import AppView
 from foobnix.application.app_controller import AppController
+import os
+import gtk
+
+
+USERDIR=os.getenv("HOME")
+CONTROL = os.path.join(USERDIR, "control")
 
 class App():
-    def __init__(self):        
+    def __init__(self):
         v = AppView()  
-        c = AppController(v)
-        pass
-        
-    pass # end of class
-
-
+        AppController(v)
+    
 if __name__ == "__main__":
     app = App()
     gtk.gdk.threads_init() #@UndefinedVariable
