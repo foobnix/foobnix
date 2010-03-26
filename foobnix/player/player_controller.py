@@ -180,7 +180,10 @@ class PlayerController:
         
                     
         while play_thread_id == self.playerThreadId:
-            pos_int = self.player.query_position(self.time_format, None)[0]
+            try:
+                pos_int = self.player.query_position(self.time_format, None)[0]
+            except gst.QueryError: 
+                print "QueryError error..."
             
             pos_str = convert_ns(pos_int)
             if play_thread_id == self.playerThreadId:

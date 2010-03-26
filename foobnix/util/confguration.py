@@ -24,7 +24,9 @@ class FConfiguration:
     CFG_FILE = os.getenv("HOME") + "/foobnix_conf.pkl"
     
     def __init__(self, is_load_file=True):
-        self.mediaLibraryPath = "/home/ivan/Music"
+        
+        self.mediaLibraryPath = os.getenv("HOME") +"/Music"
+        self.onlineMusicPath = tempfile.gettempdir() + "/Music"
         self.supportTypes = [".mp3", ".ogg", ".ape", "flac"]
         self.isRandom = False
         self.isRepeat = True
@@ -39,6 +41,10 @@ class FConfiguration:
         self.playlistState = None
         self.radiolistState = None
         self.virtualListState = None
+        
+        self.is_save_online = False
+        self.song_source_relevance_algorithm = 0
+        self.online_tab_show_by = 0
         
         self.vk_login = "qax@bigmir.net"
         self.vk_password = "foobnix"
@@ -67,6 +73,8 @@ class FConfiguration:
                 self.hpanelPostition = instance.hpanelPostition
                 self.savedRadioList = instance.savedRadioList
                 
+                self.is_save_online = instance.is_save_online
+                self.onlineMusicPath = instance.onlineMusicPath
                 
                 self.vk_login = instance.vk_login
                 self.vk_password = instance.vk_password
