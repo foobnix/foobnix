@@ -194,7 +194,7 @@ class OnlineListCntr():
             dots += "."
             self.clear()
             self.append([self.SearchingCriteriaBean(query + dots)])
-            time.sleep(1)
+            time.sleep(2)
         
     def search_top_albums(self, query):
         beans = search_top_albums(self.network, query)
@@ -223,7 +223,7 @@ class OnlineListCntr():
     def show_results(self, query, beans):
         self.playerThreadId = None
         self.clear()
-        
+        print "Show results...."
         if beans:                
             self.append([self.SearchCriteriaBeen(query)])
             self.append(beans)
