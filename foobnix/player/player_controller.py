@@ -78,7 +78,7 @@ class PlayerController:
         if  song.type == CommonBean.TYPE_MUSIC_FILE:
             self.player = self.playerLocal()                        
             self.player.set_property("uri", "file://" + song.path)
-            self.playerThreadId = thread.start_new_thread(self.playThread, ())
+            self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
         elif song.type == CommonBean.TYPE_RADIO_URL:
             print "URL PLAYING", song.path
             self.player = self.playerHTTP()                        
@@ -88,7 +88,7 @@ class PlayerController:
             print "URL PLAYING", song.path
             self.player = self.playerHTTP()                        
             self.player.set_property("uri", song.path)            
-            self.playerThreadId = thread.start_new_thread(self.playThread, ())
+            self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
         else:
             self.widgets.seekBar.set_text("Error playing...")
             return
@@ -152,7 +152,7 @@ class PlayerController:
         seek_ns = pos_max * persentValue / 100;  
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)
     
-    def playThread(self):
+    def playThread(self, song=None):
         print "Start Thread"        
         play_thread_id = self.playerThreadId
         gtk.gdk.threads_enter()#@UndefinedVariable        
@@ -177,6 +177,8 @@ class PlayerController:
                 pass
                 
         time.sleep(0.2)
+        
+                    
         while play_thread_id == self.playerThreadId:
             pos_int = self.player.query_position(self.time_format, None)[0]
             
@@ -186,12 +188,17 @@ class PlayerController:
                 
                 timeStr = pos_str + " / " + dur_str
                 timePersent = (pos_int + 0.0) / dur_int
+                
                               
                 self.widgets.seekBar.set_text(timeStr)
                 self.widgets.seekBar.set_fraction(timePersent)
                 
                 gtk.gdk.threads_leave() #@UndefinedVariable
+                
             time.sleep(0.5)
+            if song:
+                pass
+                #self.onlineCntr.report_now_playing(song)
     
         
 

@@ -115,8 +115,6 @@ class DirectoryCntr():
             if event.hardware_keycode == 119 or event.hardware_keycode == 107:
                 print "Delete"
                 bean = self.model.getSelectedBean()
-                print bean
-                print bean.index      
                 self.virtualListCntr.remove_with_childrens(bean.index, bean.parent)                
                 self.append_virtual()
             

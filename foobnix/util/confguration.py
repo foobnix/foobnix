@@ -21,7 +21,7 @@ class Singleton(type):
 
 class FConfiguration:
     __metaclass__ = Singleton
-    CFG_FILE = os.getenv("HOME")+"/foobnix_conf.pkl"
+    CFG_FILE = os.getenv("HOME") + "/foobnix_conf.pkl"
     
     def __init__(self, is_load_file=True):
         self.mediaLibraryPath = "/home/ivan/Music"
@@ -38,16 +38,16 @@ class FConfiguration:
         
         self.playlistState = None
         self.radiolistState = None
-        self.virtualListState= None
+        self.virtualListState = None
         
-        self.vk_login="qax@bigmir.net"
+        self.vk_login = "qax@bigmir.net"
         self.vk_password = "foobnix"
         
         self.lfm_login = "foobnix"
         self.lfm_password = "foobnix"
         
-        self.API_KEY = "cd461af0871de8509abee1e982cae29e"
-        self.API_SECRET = "0d25b8eedef9bf50108646b14d504463"
+        self.API_KEY = "bca6866edc9bdcec8d5e8c32f709bea1"
+        self.API_SECRET = "800adaf46e237805a4ec2a81404b3ff2"
     
    
         instance = self._loadCfgFromFile(is_load_file)
@@ -68,7 +68,7 @@ class FConfiguration:
                 self.savedRadioList = instance.savedRadioList
                 
                 
-                self.vk_login=instance.vk_login
+                self.vk_login = instance.vk_login
                 self.vk_password = instance.vk_password
                 
                 self.lfm_login = instance.lfm_login
@@ -89,7 +89,7 @@ class FConfiguration:
     def printArttibutes(self):
         for i in dir(self):
             if not i.startswith("__"):
-                print i, getattr(self,i)         
+                print i, getattr(self, i)         
         
     def _saveCfgToFile(self):
         #conf = FConfiguration()
@@ -99,7 +99,7 @@ class FConfiguration:
         save_file.close()
         LOG.debug("Save configuration")
             
-    def _loadCfgFromFile(self,is_load_file):
+    def _loadCfgFromFile(self, is_load_file):
         if not is_load_file:
             return
         
