@@ -115,7 +115,3 @@ class CommonBean():
         for arg in args:
             result += " " + str(arg)
         return result   
-    
-s = CommonBean(name="asdf - 2342134asfd asf as ")
-print s.getArtist()
-print s.getTitle()

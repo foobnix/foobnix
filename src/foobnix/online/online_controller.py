@@ -49,7 +49,7 @@ class OnlineListCntr():
     TOP_SIMILAR = "TOP_SIMILAR"
     TOP_SEARCH = "TOP_SEARCH"
     
-    LIBRARY_DIR = os.getenv("HOME")+"/.foobnix/music"
+    LIBRARY_DIR = os.getenv("HOME") + "/.foobnix/music"
     if not os.path.isdir(LIBRARY_DIR):
         os.makedirs(LIBRARY_DIR)
     
@@ -81,6 +81,7 @@ class OnlineListCntr():
         self.index = self.model.getSize();
         try:
             self.network = pylast.get_lastfm_network(api_key=self.API_KEY, api_secret=self.API_SECRET, username=self.username, password_hash=self.password_hash)
+            #self.scrobler = self.network.get_scrobbler("tst", "1.0")  
         except:
             print "network not found"
             return
@@ -91,6 +92,16 @@ class OnlineListCntr():
         pass #end of init
 
     
+    def report_now_playing(self, song):
+        if song.getArtist() and song.getTitle():
+            print "Reporting about ... ARTIST: " + song.getArtist(), "TITLE: ", song.getTitle()
+            #self.scrobler.report_now_playing(song.getArtist(), song.getTitle())
+        else:
+            print "Artist and title not correct"
+        
+    def scrobble(self, artist, title, time_started, source, mode, duration, album="", track_number="", mbid=""):
+        self.scrobler.scrobble(artist, title, time_started, source, mode, duration, album, track_number, mbid)
+        
     def on_drag_end(self, *ars):
         selected = self.model.getSelectedBean()
         print "SELECTED", selected
@@ -300,14 +311,14 @@ class OnlineListCntr():
         print "===Dowload song End ", file
         
     def get_file_store_path(self, song):
-        return self.LIBRARY_DIR+"/"+song.name + ".mp3"
+        return self.LIBRARY_DIR + "/" + song.name + ".mp3"
     
     def setSongResource(self, playlistBean):
         if not playlistBean.path:
             if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
                 
                 file = self.get_file_store_path(playlistBean)
-                if os.path.isfile(file):
+                if os.path.isfile(file) and os.path.getsize(file) > 1:
                     print "Find file dowloaded"
                     playlistBean.path = file
                     playlistBean.type = CommonBean.TYPE_MUSIC_FILE
