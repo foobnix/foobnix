@@ -304,6 +304,10 @@ class OnlineListCntr():
 
                 
     def dowloadSong(self, song):
+        if not FConfiguration().is_save_online:
+            print "Source not saved ...., please set in configuration"
+            return None
+            
         print "===Dowload song start"
         time.sleep(5)
         remotefile = urllib2.urlopen(song.path)
