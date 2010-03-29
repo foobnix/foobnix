@@ -5,12 +5,13 @@ Created on Mar 13, 2010
 '''
 import gtk
 class WindowController():
-    def __init__(self, gx, prefCntr):
-        self.decorate(gx)
+    def __init__(self, gxMain, gxAbout,  prefCntr):
+        self.decorate(gxMain)
         self.prefCntr = prefCntr
         
+        
           
-        self.window = gx.get_widget("foobnixWindow")
+        self.window = gxMain.get_widget("foobnixWindow")
         self.window.maximize()
         #self.window.connect("destroy", self.onDestroy)
         self.window.connect("delete-event", self.hide)
@@ -19,10 +20,21 @@ class WindowController():
         
         signalsPopup = {
                 "on_gtk-preferences_activate" :self.showPref,
-                "on_file_quit_activate":self.onDestroy               
+                "on_file_quit_activate":self.onDestroy,
+                "on_menu_about_activate":self.showAbout               
         }
         
-        gx.signal_autoconnect(signalsPopup)        
+        gxMain.signal_autoconnect(signalsPopup)     
+        
+        self.about = gxAbout.get_widget("aboutdialog")
+        self.about.connect("delete-event", self.hideAbout)
+         
+        
+    def showAbout(self, *args):
+        self.about.show()
+    def hideAbout(self, *args):
+        self.about.hide()
+        return True
     
     def showPref(self, *args):
         self.prefCntr.show()

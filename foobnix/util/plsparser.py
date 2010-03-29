@@ -8,7 +8,7 @@ import urllib2
             
 def getStationPath(url):
     print "get station"
-    return None
+    
     if not url:
         return None
     

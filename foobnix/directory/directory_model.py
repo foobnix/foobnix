@@ -17,14 +17,40 @@ class DirectoryModel():
     
     def __init__(self, widget):
         self.widget = widget
-        column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=0, font=2)
+        self.model =gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int)
+        renderer = gtk.CellRendererText()
+        renderer.connect('edited', self.editRow)
+        
+        renderer.set_property('editable', True)
+
+        
+        print "ATTTR", renderer.get_property("attributes")
+        
+        
+        column = gtk.TreeViewColumn("Title", renderer, text=0, font=2)
         column.set_resizable(True)
         widget.append_column(column)
-        self.model =gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int)
+
                 
         filter = self.model.filter_new()
         filter.set_visible_column(self.POS_VISIBLE)
         widget.set_model(filter)
+        
+         
+    
+        
+    def editRow(self, w, event, value):
+        if value:
+            selection = self.widget.get_selection()
+            model, selected = selection.get_selected()
+            print "VAlue", value          
+            print selected
+            i =  model.get_string_from_iter(selected)
+            print "I ", i
+            if i.find(":") == -1:
+                print i
+                self.model[int(i)][self.POS_NAME] = value
+           
         
     def append(self, level, bean):
         return self.model.append(level, [bean.name, bean.path, bean.font, bean.is_visible, bean.type, bean.index])

@@ -3,7 +3,7 @@
 '''
 Created on Mar 16, 2010
 
-@author: ivan
+@author: ivanf
 '''
 from foobnix.radio.radio_model import RadioListModel
 from foobnix.util.plsparser import getStationPath, getPlsName
@@ -239,8 +239,8 @@ class OnlineListCntr():
             gs.results_per_page = 10
             results = gs.get_results()
             for res in results:
-                result = res.title.encode('utf8')
-                self.append([self.TextBeen(str(result), color="YELLOW", type=CommonBean.TYPE_GOOGLE_HELP)])
+                #result = res.title.encode('utf8')
+                self.append([self.TextBeen(str(res.title), color="YELLOW", type=CommonBean.TYPE_GOOGLE_HELP)])
                 
         except SearchError, e:
             print "Search failed: %s" % e

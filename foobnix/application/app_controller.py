@@ -46,7 +46,7 @@ class AppController():
         
         prefCntr = PrefController(v.gxPref)
         
-        windowController = WindowController(v.gxMain, prefCntr)
+        windowController = WindowController(v.gxMain,v.gxAbout, prefCntr)
         playerCntr.registerWindowController(windowController)
         
         TrayIcon(v.gxTryIcon, windowController, playerCntr,playerWidgets)
