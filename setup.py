@@ -89,12 +89,12 @@ setup(name='foobnix',
         #package_dir={"src/foobnix": "foobnix/"},
         scripts=['foobnix/foobnix'],
         data_files=[('share/foobnix', ['README', 'CHANGELOG', 'TODO', 'TRANSLATORS']),
-                    ('share/applications', ['foobnix.desktop.in']),
+                    ('share/applications', ['foobnix.desktop']),
                     ('share/pixmaps', glob.glob('foobnix/pixmaps/*')),
-                    ('share/man/man1', ['foobnix.1'])
+                    ('share/man/man1', ['foobnix.1'])]
                     #('share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo']),
                     #('share/locale/uk/LC_MESSAGES', ['mo/uk/foobnix.mo'])
-                    ],
+                    
         )
 
 # Cleanup (remove /build, /mo, and *.pyc files:
