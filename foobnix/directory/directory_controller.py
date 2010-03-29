@@ -103,9 +103,9 @@ class DirectoryCntr():
         i = 0
         for item in items:
             if item.parent == None:
-                parent = self.model.append(None, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=item.parent, index=i))
+                parent = self.model.append(None, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=item.type, parent=item.parent, index=i))
             else:
-                self.model.append(parent, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_URL, parent=item.parent, index=i))
+                self.model.append(parent, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=item.type, parent=item.parent, index=i))
             i += 1
     
     def onTreeViewDeleteItem(self, w, event):
@@ -137,7 +137,8 @@ class DirectoryCntr():
         directoryBean = self.model.getSelectedBean()
         if not directoryBean:
             return 
-                
+        
+        print "Select: ", directoryBean.name, directoryBean.type     
         if directoryBean.type == CommonBean.TYPE_FOLDER:
             songs = self.model.getChildSongBySelected()
             if not songs:
