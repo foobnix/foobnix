@@ -49,6 +49,7 @@ class RadioListCntr():
                 if getUrl:                
                     urlStation = getUrl         
                     nameDef = getPlsName(nameDef) + " [" + urlStation + " ]"
+                    print nameDef
             
             entity = CommonBean(name=nameDef, path=urlStation, type=CommonBean.TYPE_RADIO_URL, index=self.index + 1);
             self.entityBeans.append(entity)

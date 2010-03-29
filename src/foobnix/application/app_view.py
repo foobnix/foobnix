@@ -13,6 +13,7 @@ class AppView():
         self.gxMain = self.glade_XML(self.gladeMain, "foobnixWindow")
         self.gxTryIcon = self.glade_XML(self.gladeMain, "popUpWindow")
         self.gxPref = self.glade_XML(self.gladePref, "window")
+        self.gxAbout = self.glade_XML(self.gladeMain, "aboutdialog")
                 
         
         self.playlist = self.gxMain.get_widget("playlist_treeview")

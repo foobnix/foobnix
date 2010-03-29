@@ -107,6 +107,7 @@ class DirectoryCntr():
             else:
                 self.model.append(parent, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=item.type, parent=item.parent, index=i))
             i += 1
+        
     
     def onTreeViewDeleteItem(self, w, event):
         if self.view_list.get_active() != self.VIEW_VIRTUAL_LISTS:
@@ -129,9 +130,12 @@ class DirectoryCntr():
         if text : 
             self.model.filterByName(text)
     
-    def onMouseClick(self, w, e):
-        if is_double_click(e): 
+    def onMouseClick(self, w, event):
+        if event.button == 1 and event.type == gtk.gdk._2BUTTON_PRESS: #@UndefinedVariable
             self.populate_playlist()
+        if event.button == 3 and event.type == gtk.gdk._2BUTTON_PRESS: #@UndefinedVariable
+            print "Create new"
+            self.append_virtual([CommonBean(name="New Artist", type=CommonBean.TYPE_FOLDER, parent=None)])
     
     def populate_playlist(self, append=False):
         directoryBean = self.model.getSelectedBean()
