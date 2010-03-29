@@ -1,12 +1,9 @@
-#!/usr/bin/env xdg-open
-
 [Desktop Entry]
-Encoding=UTF-8
-Version=1.0
-Type=Application
-Terminal=false
-Icon[en_US]=foobnix
+Name=Foobnix
+_GenericName=Music Player
+_Comment=Listen to, browse, or edit your audio collection
 Exec=foobnix
-Name[en_US]=foobnix
-Name=foobnix
-Icon=foobnix
+Terminal=false
+Type=Application
+Icon=foobnix.png
+Categories=AudioVideo;Audio;Player;GTK
