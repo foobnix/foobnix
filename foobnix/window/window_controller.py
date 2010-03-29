@@ -16,7 +16,7 @@ class WindowController():
         #self.window.connect("destroy", self.onDestroy)
         self.window.connect("delete-event", self.hide)
     
-        self.window.set_title("Foobnix 1.0 beta")
+        self.window.set_title("Foobnix pre - pre - pre Alfa")
         
         signalsPopup = {
                 "on_gtk-preferences_activate" :self.showPref,
