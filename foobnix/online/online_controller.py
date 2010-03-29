@@ -304,7 +304,7 @@ class OnlineListCntr():
             self.repopulate(self.entityBeans, self.index)
 
                 
-    def dowloadSong(self, song):
+    def downloadSong(self, song):
         if not FConfiguration().is_save_online:
             print "Source not saved ...., please set in configuration"
             return None
@@ -318,10 +318,13 @@ class OnlineListCntr():
         #f.write(remotefile.read())
         #f.close()
         #urllib.file = self.get_file_store_path(song
-        r = urllib.urlretrieve(song.path, file)
-        print r
-        
-        print "===Dowload song End ", file
+        if not os.path.exists(file + ".tmp"):
+            r = urllib.urlretrieve(song.path, file + ".tmp")
+            os.rename(file + ".tmp", file)
+            print r        
+            print "===Dowload song End ", file
+        else:
+            print "Exists ..."
         
     def get_file_store_path(self, song):
         dir = self.LIBRARY_DIR
@@ -358,8 +361,8 @@ class OnlineListCntr():
                     #playlistBean.name = playlistBean.name + " vk[" + str(vk.album) + " " + str(vk.track) + " " + str(vk.time) + "]"
                     
                        
-                    #self.dowloadSong(playlistBean)  
-                    thread.start_new_thread(self.dowloadSong, (playlistBean,))
+                    #self.downloadSong(playlistBean)  
+                    thread.start_new_thread(self.downloadSong, (playlistBean,))
                     playlistBean.path = vkSong.path
                                    
                 else:
