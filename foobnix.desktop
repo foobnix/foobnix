@@ -1,9 +1,12 @@
+#!/usr/bin/env xdg-open
+
 [Desktop Entry]
-Name=Foobnix
-Comment=An elegant GTK+ MPD client
-Exec=foobnix
-Terminal=false
+Encoding=UTF-8
+Version=1.0
 Type=Application
+Terminal=false
+Icon[en_US]=foobnix
+Exec=foobnix
+Name[en_US]=foobnix
+Name=foobnix
 Icon=foobnix
-Categories=GTK;AudioVideo;Player;
-StartupNotify=true
