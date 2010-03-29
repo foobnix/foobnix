@@ -30,6 +30,7 @@ def rmgeneric(path, __func__):
         pass
 
 # Create mo files:
+"""
 if not os.path.exists("mo/"):
     os.mkdir("mo/")
 for lang in ('de', 'pl', 'ru', 'fr', 'zh_CN', 'sv', 'es', 'fi', 'uk', 'it', 'cs', \
@@ -41,7 +42,7 @@ for lang in ('de', 'pl', 'ru', 'fr', 'zh_CN', 'sv', 'es', 'fi', 'uk', 'it', 'cs'
         os.mkdir("mo/" + lang + "/")
     print "generating", mofile
     os.system("msgfmt %s -o %s" % (pofile, mofile))
-
+"""
 # Copy script "foobnix" file to foobnix dir:
 shutil.copyfile("foobnix.py", "foobnix/foobnix")
 
@@ -87,12 +88,13 @@ setup(name='foobnix',
         package_data={'foobnix': ['glade/*.glade', 'glade/*.ico']},
         #package_dir={"src/foobnix": "foobnix/"},
         scripts=['foobnix/foobnix'],
-        data_files=[('src/foobnix', ['README', 'CHANGELOG', 'TODO', 'TRANSLATORS']),
-                    ('src/applications', ['foobnix.desktop']),
+        data_files=[('share/foobnix', ['README', 'CHANGELOG', 'TODO', 'TRANSLATORS']),
+                    ('share/applications', ['foobnix.desktop.in']),
                     ('share/pixmaps', glob.glob('foobnix/pixmaps/*')),
-                    ('src/man/man1', ['foobnix.1']),
-                    ('src/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo']),
-                    ('src/locale/uk/LC_MESSAGES', ['mo/uk/foobnix.mo'])],
+                    ('share/man/man1', ['foobnix.1'])
+                    #('share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo']),
+                    #('share/locale/uk/LC_MESSAGES', ['mo/uk/foobnix.mo'])
+                    ],
         )
 
 # Cleanup (remove /build, /mo, and *.pyc files:
