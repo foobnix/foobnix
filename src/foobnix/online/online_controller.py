@@ -360,16 +360,18 @@ class OnlineListCntr():
                     print "GET PATH", vkSong.path
                     #playlistBean.name = playlistBean.name + " vk[" + str(vk.album) + " " + str(vk.track) + " " + str(vk.time) + "]"
                     
+                    #self.dowloadThread(playlistBean)
                        
                     #self.downloadSong(playlistBean)  
-                    thread.start_new_thread(self.downloadSong, (playlistBean,))
+                    
                     playlistBean.path = vkSong.path
                                    
                 else:
                     playlistBean.path = None
                 
                 
-                
+    def dowloadThread(self, bean):
+        thread.start_new_thread(self.downloadSong, (bean,))                
        
     
     def nextBean(self):

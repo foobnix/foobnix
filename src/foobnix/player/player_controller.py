@@ -156,6 +156,7 @@ class PlayerController:
     
     def playThread(self, song=None):
         print "Start Thread"        
+        flag = True
         play_thread_id = self.playerThreadId
         gtk.gdk.threads_enter()#@UndefinedVariable        
         self.widgets.seekBar.set_text("00:00 / 00:00")
@@ -201,10 +202,11 @@ class PlayerController:
                 
                 gtk.gdk.threads_leave() #@UndefinedVariable
                 
-            time.sleep(0.5)
-            if song:
-                pass
-                #self.onlineCntr.report_now_playing(song)
+            time.sleep(0.5)            
+            "Download only if you listen this music"
+            if flag and timePersent > 0.15:
+                flag = False                
+                self.onlineCntr.dowloadThread(song)
     
         
 
