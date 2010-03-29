@@ -204,7 +204,7 @@ class PlayerController:
                 
             time.sleep(0.5)            
             "Download only if you listen this music"
-            if flag and timePersent > 0.15:
+            if flag and timePersent > 0.25:
                 flag = False                
                 self.onlineCntr.dowloadThread(song)
     
