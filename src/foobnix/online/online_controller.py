@@ -21,6 +21,7 @@ from foobnix.util.confguration import FConfiguration
 from foobnix.online.google.search import GoogleSearch, SearchError
 import urllib2
 import os
+import urllib
 
 
 '''
@@ -309,18 +310,23 @@ class OnlineListCntr():
             return None
             
         print "===Dowload song start"
-        time.sleep(5)
-        remotefile = urllib2.urlopen(song.path)
+        #time.sleep(5)
         file = self.get_file_store_path(song)
-        f = open(file, 'wb')
-        f.write(remotefile.read())
-        f.close()
+        
+        #remotefile = urllib2.urlopen(song.path)
+        #f = open(file, 'wb')
+        #f.write(remotefile.read())
+        #f.close()
+        #urllib.file = self.get_file_store_path(song
+        r = urllib.urlretrieve(song.path, file)
+        print r
+        
         print "===Dowload song End ", file
         
     def get_file_store_path(self, song):
         dir = self.LIBRARY_DIR
         if song.getArtist():
-            dir = dir +"/" +song.getArtist()
+            dir = dir + "/" + song.getArtist()
         self.make_dirs(dir)
         song = dir + "/" + song.name + ".mp3"
         print "Stored dir: ", song
@@ -351,9 +357,11 @@ class OnlineListCntr():
                     print "GET PATH", vkSong.path
                     #playlistBean.name = playlistBean.name + " vk[" + str(vk.album) + " " + str(vk.track) + " " + str(vk.time) + "]"
                     
-                    playlistBean.path = vkSong.path   
+                       
                     #self.dowloadSong(playlistBean)  
-                    thread.start_new_thread(self.dowloadSong, (playlistBean,))               
+                    thread.start_new_thread(self.dowloadSong, (playlistBean,))
+                    playlistBean.path = vkSong.path
+                                   
                 else:
                     playlistBean.path = None
                 
