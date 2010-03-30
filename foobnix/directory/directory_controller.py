@@ -18,6 +18,7 @@ import gtk
 from foobnix.directory.virtuallist_controller import VirturalLIstCntr
 import copy
 from foobnix.directory.pref_list_model import PrefListModel
+import thread
 class DirectoryCntr():
     
     VIEW_ARTIST_ALBUM = 0
@@ -299,10 +300,12 @@ class DirectoryCntr():
         LOG.debug(result)
         return result 
     
+    def addAllThread(self):
+        level = None;                
+        self.go_recursive(self.musicFolder, level)
     
-    def addAll(self):
-        level = None;        
-        self.go_recursive(self.musicFolder, level) 
+    def addAll(self):                
+        thread.start_new_thread(self.addAllThread(), ())
         
         
     def sortedDirsAndFiles(self, path, list):        
