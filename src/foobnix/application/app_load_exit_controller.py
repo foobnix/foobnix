@@ -24,7 +24,7 @@ class OnLoadExitAppCntr():
             self.playlistCntr.setState(FConfiguration().playlistState)
         
         if FConfiguration().virtualListState:
-            self.virtualListCntr.setState(FConfiguration().virtualListState)
+            self.directoryCntr.setState(FConfiguration().virtualListState)
         
         if FConfiguration().volumeValue:
             self.playerWidgets.volume.set_value(FConfiguration().volumeValue)
@@ -50,7 +50,7 @@ class OnLoadExitAppCntr():
     def onExit(self):
         print "Save configs"        
         FConfiguration().playlistState = self.playlistCntr.getState()
-        FConfiguration().virtualListState = self.virtualListCntr.getState()
+        FConfiguration().virtualListState = self.directoryCntr.getState()
         
         FConfiguration().radiolistState = self.radioListCntr.getState()
         

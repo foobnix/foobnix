@@ -68,20 +68,24 @@ class PlaylistCntr():
             
      
     def setPlaylist(self, entityBeans):
+        print "Set play list"
         self.clear()
         self.set_playlist_beans(entityBeans)    
         self.index = 0
         if entityBeans:
-            self.playerCntr.playSong(entityBeans[self.index])
+            #self.playerCntr.playSong(entityBeans[self.index])
             self.repopulate(entityBeans, self.index);
             
-    def appendPlaylist(self, entityBeans):        
-        for entity in entityBeans:
-            self.get_playlist_beans().append(entity)
+    def appendPlaylist(self, entityBeans):
+        print "Append play list"        
         
-        if self.get_playlist_beans():
+        self.model.append_all_beans(entityBeans)
+        
+        #if self.get_playlist_beans():
             #self.playerCntr.playSong(self.get_playlist_beans()[index])
-            self.repopulate(self.get_playlist_beans(), self.index);        
+        self.repopulate(self.get_playlist_beans(), self.index);
+            
+                
         
     def repopulate(self, entityBeans, index):
         self.model.clear()        
