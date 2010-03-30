@@ -4,14 +4,18 @@ Created on Mar 10, 2010
 
 @author: ivan
 '''
-from foobnix.application.app_view import AppView
-from foobnix.application.app_controller import AppController
+
 import os
 import gtk
 import gettext
-
-
+from foobnix.application.app_view import AppView
+APP_NAME = "foobnix"
+gettext.install(APP_NAME, unicode=True)
+gettext.textdomain(APP_NAME)
+gtk.glade.textdomain(APP_NAME)
     
+
+from foobnix.application.app_controller import AppController
     
 class App():
     def __init__(self):
@@ -19,10 +23,7 @@ class App():
         AppController(v)
     
 if __name__ == "__main__":
-    APP_NAME = "foobnix"
-    gettext.install(APP_NAME, unicode=True)
-    gettext.textdomain(APP_NAME)
-    gtk.glade.textdomain(APP_NAME)
+   
 
     app = App()
     gtk.gdk.threads_init() #@UndefinedVariable

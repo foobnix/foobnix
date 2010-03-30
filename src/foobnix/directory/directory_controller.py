@@ -25,10 +25,11 @@ class DirectoryCntr():
     VIEW_RADIO_STATION = 1
     VIEW_VIRTUAL_LISTS = 2
     
-    DEFAULT_LIST = "Default"
+    DEFAULT_LIST = _("Default")
     
     
     def __init__(self, gxMain, playlistCntr, radioListCntr, virtualListCntr):
+        
         self.playlistCntr = playlistCntr
         self.radioListCntr = radioListCntr
         self.virtualListCntr = virtualListCntr
@@ -72,9 +73,9 @@ class DirectoryCntr():
         self.view_list.add_attribute(cell, 'text', 0)  
         liststore = gtk.ListStore(str)
         self.view_list.set_model(liststore)
-        self.view_list.append_text("by artist/album")
-        self.view_list.append_text("by radio/stations")
-        self.view_list.append_text("by play lists")
+        self.view_list.append_text(_("by artist/album"))
+        self.view_list.append_text(_("by radio/stations"))
+        self.view_list.append_text(_("by play lists"))
         self.view_list.set_active(0)
         
         self.view_list.connect("changed", self.onChangeView)
