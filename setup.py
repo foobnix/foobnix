@@ -90,8 +90,8 @@ setup(name='foobnix',
                     ('share/applications', ['foobnix.desktop']),
                     ('share/pixmaps', glob.glob('foobnix/pixmaps/*')),
                     ('share/man/man1', ['foobnix.1']),
-                    ('share/locale/uk/LC_MESSAGES', ['mo/uk/foobnix.mo']),
-                    ('share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo'])
+                    ('/usr/share/locale/uk/LC_MESSAGES', ['mo/uk/foobnix.mo']),
+                    ('/usr/share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo'])
                     ]
                     
         )
