@@ -10,8 +10,8 @@ import os
 import gtk
 import gettext
 
-gettext.install('foobnix', unicode=True)
-gettext.textdomain('foobnix')
+
+    
     
 class App():
     def __init__(self):
@@ -19,6 +19,11 @@ class App():
         AppController(v)
     
 if __name__ == "__main__":
+    APP_NAME = "foobnix"
+    gettext.install(APP_NAME, unicode=True)
+    gettext.textdomain(APP_NAME)
+    gtk.glade.textdomain(APP_NAME)
+
     app = App()
     gtk.gdk.threads_init() #@UndefinedVariable
     gtk.main()    

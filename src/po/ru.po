@@ -5,6 +5,7 @@
 #
 msgid ""
 msgstr ""
+
 "Project-Id-Version: Sonata\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-30 12:16+0300\n"
@@ -16,11 +17,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1: 2);\n"
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1: 2);\n"
-"X-Poedit-Bookmarks: -1,99,98,-1,-1,-1,-1,-1,-1,-1\n"
+#"Plural-Forms: 10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+#"n%10<=4 && (n%100<10 || n%100>=20) ? 1: 2);\n"
+#"X-Poedit-Bookmarks: -1,99,98,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: .././foobnix.py:25
 #, fuzzy
@@ -33,39 +32,39 @@ msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:2
 msgid "<b>Filter</b>"
-msgstr ""
+msgstr "<b>Фильтр</b>"
 
 #: .././foobnix/glade/foobnix.glade.h:3
 msgid "<b>Search song source by relevance</b>"
-msgstr ""
+msgstr "<b>Поиск пести по релевантрости</b>"
 
 #: .././foobnix/glade/foobnix.glade.h:4
 msgid "<b>View</b>"
-msgstr ""
+msgstr "<b>Вид</b>"
 
 #: .././foobnix/glade/foobnix.glade.h:5
 msgid "About Foobnix"
-msgstr ""
+msgstr "О Foobnix"
 
 #: .././foobnix/glade/foobnix.glade.h:6
 msgid "Add"
-msgstr ""
+msgstr "Добавить"
 
 #: .././foobnix/glade/foobnix.glade.h:7
 msgid "Album List"
-msgstr ""
+msgstr "Список Альбомов"
 
 #: .././foobnix/glade/foobnix.glade.h:8
 msgid "By first"
-msgstr ""
+msgstr "По первой"
 
 #: .././foobnix/glade/foobnix.glade.h:9
 msgid "By popularity"
-msgstr ""
+msgstr "По популярности"
 
 #: .././foobnix/glade/foobnix.glade.h:10
 msgid "By time"
-msgstr ""
+msgstr "По времени"
 
 #: .././foobnix/glade/foobnix.glade.h:11
 msgid "Default"
@@ -73,111 +72,111 @@ msgstr "По умолчанию"
 
 #: .././foobnix/glade/foobnix.glade.h:12
 msgid "Delete"
-msgstr ""
+msgstr "Удалить"
 
 #: .././foobnix/glade/foobnix.glade.h:13
 msgid "Developed by Ivan Ivanenko"
-msgstr ""
+msgstr "Разработал Иван Иваненко "
 
 #: .././foobnix/glade/foobnix.glade.h:14
 msgid "Last.FM     "
-msgstr ""
+msgstr "Ласт.ФМ"
 
 #: .././foobnix/glade/foobnix.glade.h:15
 msgid "Location"
-msgstr ""
+msgstr "Расположение"
 
 #: .././foobnix/glade/foobnix.glade.h:16
 msgid "Lyrics"
-msgstr ""
+msgstr "Текст песни"
 
 #: .././foobnix/glade/foobnix.glade.h:17
 msgid "Music dir:"
-msgstr ""
+msgstr "Папка с музыкой"
 
 #: .././foobnix/glade/foobnix.glade.h:18
 msgid "Online Music"
-msgstr ""
+msgstr "Папка для сохранения"
 
 #: .././foobnix/glade/foobnix.glade.h:19
 msgid "Play on start: "
-msgstr ""
+msgstr "Играть при старте"
 
 #: .././foobnix/glade/foobnix.glade.h:20
 msgid "Playing all imaginations"
-msgstr ""
+msgstr "Проиграет любую фантазию"
 
 #: .././foobnix/glade/foobnix.glade.h:21
 msgid "Properties"
-msgstr ""
+msgstr "Свойства"
 
 #: .././foobnix/glade/foobnix.glade.h:22
 msgid "Quit"
-msgstr ""
+msgstr "Выход"
 
 #: .././foobnix/glade/foobnix.glade.h:23
 msgid "Radio"
-msgstr ""
+msgstr "Радио"
 
 #: .././foobnix/glade/foobnix.glade.h:24
 msgid "Radio Url:"
-msgstr ""
+msgstr "Сылка на радио"
 
 #: .././foobnix/glade/foobnix.glade.h:25
 msgid "Random: "
-msgstr ""
+msgstr "Случайно"
 
 #: .././foobnix/glade/foobnix.glade.h:26
 msgid "Refresh"
-msgstr ""
+msgstr "Обновить"
 
 #: .././foobnix/glade/foobnix.glade.h:27
 msgid "Repeat: "
-msgstr ""
+msgstr "Повторить"
 
 #: .././foobnix/glade/foobnix.glade.h:28
 msgid "Save online music"
-msgstr ""
+msgstr "Сохранять онлайн музыку"
 
 #: .././foobnix/glade/foobnix.glade.h:29
 msgid "Search"
-msgstr ""
+msgstr "Поиск"
 
 #: .././foobnix/glade/foobnix.glade.h:30
 msgid "Show By"
-msgstr ""
+msgstr "Показывать по"
 
 #: .././foobnix/glade/foobnix.glade.h:31
 msgid "Title"
-msgstr ""
+msgstr "Оглавление"
 
 #: .././foobnix/glade/foobnix.glade.h:32
 msgid "Vkontakte"
-msgstr ""
+msgstr "ВКонтакте"
 
 #: .././foobnix/glade/foobnix.glade.h:33
 msgid "_Edit"
-msgstr ""
+msgstr "_Редактировать"
 
 #: .././foobnix/glade/foobnix.glade.h:34
 msgid "_File"
-msgstr ""
+msgstr "_Файл"
 
 #: .././foobnix/glade/foobnix.glade.h:35
 msgid "_Help"
-msgstr ""
+msgstr "_Помощь"
 
 #: .././foobnix/glade/foobnix.glade.h:36
 msgid "_Playback"
-msgstr ""
+msgstr "_Проигрыватель"
 
 #: .././foobnix/glade/foobnix.glade.h:37
 msgid "_View"
-msgstr ""
+msgstr "_Вид"
 
 #: .././foobnix/glade/foobnix.glade.h:38
 msgid "login:"
-msgstr ""
+msgstr "Логин"
 
 #: .././foobnix/glade/foobnix.glade.h:39
 msgid "old rearch\t"
@@ -185,11 +184,11 @@ msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:40
 msgid "passw:"
-msgstr ""
+msgstr "Пароль"
 
 #: .././foobnix/glade/foobnix.glade.h:41
 msgid "search"
-msgstr ""
+msgstr "Поиск"
 
 #: .././foobnix/glade/foobnix.glade.h:42
 msgid "toolbutton10"
@@ -213,16 +212,13 @@ msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:47
 msgid "top albums"
-msgstr ""
+msgstr "Лучшие альбомы"
 
 #: .././foobnix/glade/foobnix.glade.h:48
 msgid "top similar"
-msgstr ""
+msgstr "Наиболее похожие"
 
 #: .././foobnix/glade/foobnix.glade.h:49
 msgid "top songs"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Succes2"
-#~ msgstr "rus"
