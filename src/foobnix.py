@@ -8,11 +8,11 @@ from foobnix.application.app_view import AppView
 from foobnix.application.app_controller import AppController
 import os
 import gtk
+import gettext
 
-
-USERDIR=os.getenv("HOME")
-CONTROL = os.path.join(USERDIR, "control")
-
+gettext.install('foobnix', unicode=True)
+gettext.textdomain('foobnix')
+    
 class App():
     def __init__(self):
         v = AppView()  
@@ -21,5 +21,6 @@ class App():
 if __name__ == "__main__":
     app = App()
     gtk.gdk.threads_init() #@UndefinedVariable
-    gtk.main()
-    print "Succes"
+    gtk.main()    
+    print _("Success")
+    

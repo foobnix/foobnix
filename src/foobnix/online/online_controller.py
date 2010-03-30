@@ -101,7 +101,7 @@ class OnlineListCntr():
             print "Reporting about ... ARTIST: " + song.getArtist(), "TITLE: ", song.getTitle()
             #self.scrobler.report_now_playing(song.getArtist(), song.getTitle())
         else:
-            print "Artist and title not correct"
+            print _("Artist and title not correct")
         
     def scrobble(self, artist, title, time_started, source, mode, duration, album="", track_number="", mbid=""):
         self.scrobler.scrobble(artist, title, time_started, source, mode, duration, album, track_number, mbid)
