@@ -17,11 +17,11 @@ class DirectoryModel():
     
     def __init__(self, widget):
         self.widget = widget
-        self.model =gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int)
+        self.model = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int)
         renderer = gtk.CellRendererText()
-        renderer.connect('edited', self.editRow)
+        #renderer.connect('edited', self.editRow)
         
-        renderer.set_property('editable', True)
+        #renderer.set_property('editable', True)
 
         
         print "ATTTR", renderer.get_property("attributes")
@@ -36,7 +36,7 @@ class DirectoryModel():
         filter.set_visible_column(self.POS_VISIBLE)
         widget.set_model(filter)
         
-         
+    
     
         
     def editRow(self, w, event, value):
@@ -45,7 +45,7 @@ class DirectoryModel():
             model, selected = selection.get_selected()
             print "VAlue", value          
             print selected
-            i =  model.get_string_from_iter(selected)
+            i = model.get_string_from_iter(selected)
             print "I ", i
             if i.find(":") == -1:
                 print i
@@ -60,7 +60,7 @@ class DirectoryModel():
     def getModel(self):
         return self.model
     
-    def setModel(self,model):
+    def setModel(self, model):
         self.model = model
         
     def getSelectedBean(self):
@@ -84,6 +84,26 @@ class DirectoryModel():
             bean.index = model.get_value(iter, self.POS_INDEX)                
             return bean
         return None
+    
+    def getBeenByPosition(self, position):
+        bean = CommonBean()        
+        
+        bean.name = self.model[position][ self.POS_NAME]
+        bean.path = self.model[position][ self.POS_PATH]
+        bean.type = self.model[position][ self.POS_TYPE]
+        bean.visible = self.model[position][ self.POS_VISIBLE]
+        bean.font = self.model[position][ self.POS_FONT]
+        return bean
+
+    def getAllSongs(self):
+        result = []
+        for i in xrange(len(self.model)):
+            been = self.getBeenByPosition(i)
+            
+            if been.type in [CommonBean.TYPE_MUSIC_FILE, CommonBean.TYPE_MUSIC_URL, CommonBean.TYPE_RADIO_URL]:                
+                result.append(been)
+        return result
+        
 
     def getChildSongBySelected(self):
         selection = self.widget.get_selection()

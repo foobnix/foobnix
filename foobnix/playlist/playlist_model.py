@@ -51,6 +51,10 @@ class PlaylistModel:
         self.clear()
         for bean in beans:
             self.append(bean)
+    
+    def append_all_beans(self, beans):        
+        for bean in beans:
+            self.append(bean)
         
     
     def getSelectedBean(self):

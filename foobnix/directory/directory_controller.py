@@ -17,17 +17,22 @@ from foobnix.util.mouse_utils import is_double_click
 import gtk
 from foobnix.directory.virtuallist_controller import VirturalLIstCntr
 import copy
+from foobnix.directory.pref_list_model import PrefListModel
 class DirectoryCntr():
     
     VIEW_ARTIST_ALBUM = 0
     VIEW_RADIO_STATION = 1
     VIEW_VIRTUAL_LISTS = 2
     
+    DEFAULT_LIST = "Default"
+    
     
     def __init__(self, gxMain, playlistCntr, radioListCntr, virtualListCntr):
         self.playlistCntr = playlistCntr
         self.radioListCntr = radioListCntr
         self.virtualListCntr = virtualListCntr
+        
+        
         
         widget = gxMain.get_widget("direcotry_treeview")
         self.model = DirectoryModel(widget)
@@ -42,7 +47,20 @@ class DirectoryCntr():
         #widget.connect("drag-failed", self.all)
         #widget.connect("drag-leave", self.all)
         
+        "Pref lists "
+        self.prefListMap = {self.DEFAULT_LIST : []}
+        self.currentListMap = self.DEFAULT_LIST
         
+        
+        prefList = gxMain.get_widget("treeview3")
+        prefList.connect("button-press-event", self.onPreflListMouseClick)
+        prefList.connect("key-release-event", self.onPreflListDeleteItem)
+        prefList.connect("cursor-changed", self.onPreflListSelect)
+        self.prefModel = PrefListModel(prefList, self.prefListMap)
+        
+        
+        
+                
         
         self.filter = gxMain.get_widget("filter-combobox-entry")
         self.filter.connect("key-release-event", self.onFiltering)
@@ -61,6 +79,66 @@ class DirectoryCntr():
         self.view_list.connect("changed", self.onChangeView)
         
         self.saved_model = None
+        
+        
+        
+    
+    def getState(self):
+        return self.prefListMap
+    
+    def setState(self, preflists):
+        self.prefListMap = preflists
+        self.prefModel.prefListMap = preflists
+        for key in self.prefListMap: 
+            self.prefModel.append(key)
+            
+    
+    
+    def getPrefListBeans(self, preflist=DEFAULT_LIST):
+        if preflist in self.prefListMap:
+            return self.prefListMap[preflist]
+        return None
+    
+    def appendToPrefListBeans(self, beans, preflist=DEFAULT_LIST):
+        if not preflist in self.prefListMap:
+            print "Key not found"
+            self.prefListMap[preflist] = []
+        
+        if beans:                    
+            for bean in beans:
+                self.prefListMap[preflist].append(bean)
+    
+    def clearPrefList(self, listName):
+        if listName in self.prefListMap:
+            self.prefListMap[listName] = []
+            
+    
+    def onPreflListSelect(self, *args):        
+        self.currentListMap = self.prefModel.getSelected()
+        
+        if self.currentListMap in self.prefListMap:
+            beans = self.prefListMap[self.currentListMap]
+            self.display_virtual(beans) 
+        else:
+            self.clear()          
+            
+    
+    def onPreflListMouseClick(self, w, event):
+        if event.button == 3 and event.type == gtk.gdk._2BUTTON_PRESS: #@UndefinedVariable
+            print "Create new"
+            unknownListName = "Unknown play list"
+            if not self.prefModel.isContain(unknownListName):
+                self.prefModel.append(unknownListName)           
+       
+    def onPreflListDeleteItem(self, w, event):
+        print event
+        if event.type == gtk.gdk.KEY_RELEASE: #@UndefinedVariable
+            #Enter pressed
+            print event.keyval
+            print event.hardware_keycode
+            if event.hardware_keycode == 119 or event.hardware_keycode == 107:
+                if self.prefModel.getSelectedIndex() > 0:
+                    self.prefModel.removeSelected()               
     
     def all(self, *args):
         for arg in args:
@@ -89,24 +167,36 @@ class DirectoryCntr():
             print beans
             for bean in beans:
                 self.model.append(None, CommonBean(bean.name, bean.path, "normal", True, CommonBean.TYPE_MUSIC_URL))
-        elif active_index == self.VIEW_VIRTUAL_LISTS:          
-            self.append_virtual()
-    
+        elif active_index == self.VIEW_VIRTUAL_LISTS:                      
+            items = self.getPrefListBeans(self.DEFAULT_LIST)
+            self.display_virtual(items)
+                        
     def append_virtual(self, beans=None):
+        self.appendToPrefListBeans(beans, self.currentListMap)       
+        items = self.getPrefListBeans(self.currentListMap)
+        self.display_virtual(items)
+   
+    def display_virtual(self, items):
         self.clear()
-        if beans:                    
-            for bean in beans:
-                self.virtualListCntr.append(bean)
-            
-        items = self.virtualListCntr.get_items()
+        
+        "Displya list title"
+        self.model.append(None, CommonBean(name="[" + self.currentListMap + "] play list", path=None, font="bold", is_visible=True, type=CommonBean.TYPE_LABEL, parent=None, index=0))
+        
+        if not items:
+            return None
+                
+        
         parent = None
-        i = 0
+        
+        i = 1
         for item in items:
+            print item
             if item.parent == None:
                 parent = self.model.append(None, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=item.type, parent=item.parent, index=i))
             else:
                 self.model.append(parent, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=item.type, parent=item.parent, index=i))
             i += 1
+       
         
     
     def onTreeViewDeleteItem(self, w, event):
@@ -135,18 +225,30 @@ class DirectoryCntr():
             self.populate_playlist()
         if event.button == 3 and event.type == gtk.gdk._2BUTTON_PRESS: #@UndefinedVariable
             print "Create new"
-            self.append_virtual([CommonBean(name="New Artist", type=CommonBean.TYPE_FOLDER, parent=None)])
+            #self.append_virtual([CommonBean(name="New Artist", type=CommonBean.TYPE_FOLDER, parent=None)])
     
     def populate_playlist(self, append=False):
+        print "Drug begin"
         directoryBean = self.model.getSelectedBean()
         if not directoryBean:
             return 
         
-        print "Select: ", directoryBean.name, directoryBean.type     
+        print "Select: ", directoryBean.name, directoryBean.type 
+        print "Drug type", directoryBean.type
+        
+        
+        
         if directoryBean.type == CommonBean.TYPE_FOLDER:
             songs = self.model.getChildSongBySelected()
+            print "Select songs", songs
             if not songs:
                 return
+            if append:                                                                            
+                self.playlistCntr.appendPlaylist(songs)
+            else:
+                self.playlistCntr.setPlaylist(songs)
+        elif directoryBean.type == CommonBean.TYPE_LABEL:
+            songs = self.model.getAllSongs()
             if append:                                                                            
                 self.playlistCntr.appendPlaylist(songs)
             else:
@@ -199,8 +301,7 @@ class DirectoryCntr():
     
     
     def addAll(self):
-        level = None;
-        #print "DIABLE ADD ALLLLLL"
+        level = None;        
         self.go_recursive(self.musicFolder, level) 
         
         

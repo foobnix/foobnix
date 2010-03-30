@@ -40,7 +40,8 @@ class FConfiguration:
         
         self.playlistState = None
         self.radiolistState = None
-        self.virtualListState = None
+        self.virtualListState = {"Default" : []}
+        
         
         self.is_save_online = False
         self.song_source_relevance_algorithm = 0
