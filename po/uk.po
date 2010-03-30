@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sonata\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-30 12:16+0300\n"
+"POT-Creation-Date: 2010-03-31 00:12+0300\n"
 "PO-Revision-Date: 2007-02-09 11:04+0200\n"
 "Last-Translator: Dogmatist Demon <dogmaton@gmail.com>\n"
 "Language-Team: Ukranian\n"
@@ -15,10 +15,27 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .././foobnix.py:25
+#: .././foobnix.py:31
 #, fuzzy
 msgid "Success"
 msgstr "urk"
+
+#: .././foobnix/directory/directory_controller.py:28
+#: .././foobnix/glade/foobnix.glade.h:11
+msgid "Default"
+msgstr "по замовчуванню"
+
+#: .././foobnix/directory/directory_controller.py:76
+msgid "by artist/album"
+msgstr ""
+
+#: .././foobnix/directory/directory_controller.py:77
+msgid "by radio/stations"
+msgstr ""
+
+#: .././foobnix/directory/directory_controller.py:78
+msgid "by play lists"
+msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:1
 msgid "00:00 / 00:00"
@@ -59,10 +76,6 @@ msgstr ""
 #: .././foobnix/glade/foobnix.glade.h:10
 msgid "By time"
 msgstr ""
-
-#: .././foobnix/glade/foobnix.glade.h:11
-msgid "Default"
-msgstr "по замовчуванню"
 
 #: .././foobnix/glade/foobnix.glade.h:12
 msgid "Delete"

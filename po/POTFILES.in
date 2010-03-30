@@ -6,6 +6,7 @@
 ./foobnix/application/app_view.py
 ./foobnix/directory/directory_controller.py
 ./foobnix/directory/directory_model.py
+./foobnix/directory/pref_list_model.py
 ./foobnix/directory/virtuallist_controller.py
 ./foobnix/lyric/lyr.py
 ./foobnix/glade/foobnix.glade.h
