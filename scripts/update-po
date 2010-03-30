@@ -7,7 +7,7 @@ writelines() {
      then
        echo $2${i} >> $1
      fi
-   done
+    done
 }
 
 cd $(dirname "$0")
@@ -20,8 +20,18 @@ touch ../po/POTFILES.in
 cd ..
 writelines po/POTFILES.in ./
 
-cd foobnix/online
-writelines ../../po/POTFILES.in ./foobnix/online/
+cd foobnix/application
+writelines ../../po/POTFILES.in ./foobnix/application/
+
+cd ../directory
+writelines ../../po/POTFILES.in ./foobnix/directory/
+
+cd ../lyric
+writelines ../../po/POTFILES.in ./foobnix/lyric/
+
+cd ../glade
+intltool-extract --type=gettext/glade foobnix.glade
+echo ./foobnix/glade/foobnix.glade.h >> ../../po/POTFILES.in
 
 cd ../../po
 

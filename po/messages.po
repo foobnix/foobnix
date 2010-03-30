@@ -1,0 +1,217 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-03-30 12:16+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .././foobnix.py:25
+msgid "Success"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:1
+msgid "00:00 / 00:00"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:2
+msgid "<b>Filter</b>"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:3
+msgid "<b>Search song source by relevance</b>"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:4
+msgid "<b>View</b>"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:5
+msgid "About Foobnix"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:6
+msgid "Add"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:7
+msgid "Album List"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:8
+msgid "By first"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:9
+msgid "By popularity"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:10
+msgid "By time"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:11
+msgid "Default"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:12
+msgid "Delete"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:13
+msgid "Developed by Ivan Ivanenko"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:14
+msgid "Last.FM     "
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:15
+msgid "Location"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:16
+msgid "Lyrics"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:17
+msgid "Music dir:"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:18
+msgid "Online Music"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:19
+msgid "Play on start: "
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:20
+msgid "Playing all imaginations"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:21
+msgid "Properties"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:22
+msgid "Quit"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:23
+msgid "Radio"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:24
+msgid "Radio Url:"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:25
+msgid "Random: "
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:26
+msgid "Refresh"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:27
+msgid "Repeat: "
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:28
+msgid "Save online music"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:29
+msgid "Search"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:30
+msgid "Show By"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:31
+msgid "Title"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:32
+msgid "Vkontakte"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:33
+msgid "_Edit"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:34
+msgid "_File"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:35
+msgid "_Help"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:36
+msgid "_Playback"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:37
+msgid "_View"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:38
+msgid "login:"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:39
+msgid "old rearch\t"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:40
+msgid "passw:"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:41
+msgid "search"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:42
+msgid "toolbutton10"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:43
+msgid "toolbutton11"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:44
+msgid "toolbutton7"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:45
+msgid "toolbutton8"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:46
+msgid "toolbutton9"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:47
+msgid "top albums"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:48
+msgid "top similar"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:49
+msgid "top songs"
+msgstr ""

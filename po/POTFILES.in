@@ -1,0 +1,11 @@
+./foobnix.py
+./setup.py
+./foobnix/application/app_configuration_controller.py
+./foobnix/application/app_controller.py
+./foobnix/application/app_load_exit_controller.py
+./foobnix/application/app_view.py
+./foobnix/directory/directory_controller.py
+./foobnix/directory/directory_model.py
+./foobnix/directory/virtuallist_controller.py
+./foobnix/lyric/lyr.py
+./foobnix/glade/foobnix.glade.h
