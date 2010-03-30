@@ -124,3 +124,7 @@ try:
     os.remove("foobnix/version.py")
 except:
     pass
+try:
+    os.remove(os.getenv("HOME") + "/foobnix_conf.pkl")
+except:
+    pass
