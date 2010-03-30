@@ -1,0 +1,7 @@
+#!/bin/bash
+scriptdir=$(dirname "$0")
+[ -z "$scriptdir" ] && scriptdir=$(which "$0")
+files="$scriptdir/../sonata/*.py"
+[ "$#" != 0 ] && files=$*
+pychecker --limit 999999 $files | 
+    egrep -v "\(_.*\) not used|No global \(_\) found|Imported module \(gettext\) not used"

@@ -1,0 +1,26 @@
+#!/bin/bash
+scriptdir=$(dirname "$0")
+[ -z "$scriptdir" ] && scriptdir=$(which "$0")
+files="sonata/*.py"
+
+function do_pycheck() {
+pychecker --limit 999999 $1 | 
+    egrep -v "\(_.*\) not used|No global \(_\) found|Imported module \(gettext\) not used"
+}
+
+function setup() {
+src=$1
+dst=$2
+(
+rm -Rf "$dst"
+mkdir -p "$dst/sonata"
+cd "$dst/sonata"
+for f in $src; do
+	cp -a "$f" "$(basename "$f" .svn-base)"
+done
+)
+}
+
+setup "../../../sonata/.svn/text-base/*.py.svn-base" "$scriptdir/pycheck-tmp"
+setup "../../../sonata/*.py" "$scriptdir/pycheck-tmp2"
+diff -u <(cd "$scriptdir/pycheck-tmp" && do_pycheck "$files") <(cd "$scriptdir/pycheck-tmp2" && do_pycheck "$files")
