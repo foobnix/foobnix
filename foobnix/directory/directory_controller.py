@@ -25,7 +25,7 @@ class DirectoryCntr():
     VIEW_RADIO_STATION = 1
     VIEW_VIRTUAL_LISTS = 2
     
-    DEFAULT_LIST = _("Default")
+    DEFAULT_LIST = "Default"
     
     
     def __init__(self, gxMain, playlistCntr, radioListCntr, virtualListCntr):
