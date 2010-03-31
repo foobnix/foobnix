@@ -37,12 +37,12 @@ class AppConfigurationCntrl():
             self.online_dir.set_sensitive(True)
         else:
             self.online_dir.set_sensitive(False)
-        
+                
         FConfiguration().is_save_online = value            
     
     def onChangeOnline(self, *args):
         path = self.online_dir.get_filename()        
-        print "Change music online folder",path 
+        print "Change music online folder", path 
         FConfiguration().onlineMusicPath = path  
                 
     """ Vkontatke"""
@@ -64,7 +64,7 @@ class AppConfigurationCntrl():
         
     def onChangeMusicFolder(self, path):                
         self.musicFolder = self.folderChoser.get_filename()        
-        print "Change music folder",self.musicFolder 
+        print "Change music folder", self.musicFolder 
         self.directoryCntr.updateDirectoryByPath(self.musicFolder)                   
     
     def setMusicFolder(self, path):
