@@ -316,7 +316,7 @@ class DirectoryCntr():
         self.go_recursive(self.musicFolder, level)
     
     def addAll(self):                
-        thread.start_new_thread(self.addAllThread(), ())
+        thread.start_new_thread(self.addAllThread, ())
         
         
     def sortedDirsAndFiles(self, path, list):        

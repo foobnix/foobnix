@@ -22,6 +22,8 @@ from foobnix.online.google.search import GoogleSearch, SearchError
 import urllib2
 import os
 import urllib
+from multiprocessing.synchronize import Lock
+import threading
 
 
 '''
@@ -90,6 +92,8 @@ class OnlineListCntr():
         self.vk = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
         self.play_attempt = 0
         
+        self.playerThreadId = None
+        
         pass #end of init
 
     
@@ -152,32 +156,37 @@ class OnlineListCntr():
         #Nothing found
         return None
     
+    lock = threading.Lock()
+
     def on_search(self, *args):
+        if self.playerThreadId:
+            return None
+        
+        self.lock.acquire()
         self.clear()
-      
+        
         query = self.get_search_query()        
         if query:  
             query = self.capitilize_query(u"" + query)
             print query
-            
+            self.append([self.TextBeen("Searching... please wait", color="GREEN")])
             if self.get_search_by() == self.TOP_ALBUMS:
                 self.playerThreadId = thread.start_new_thread(self.search_top_albums, (query,))
-                thread.start_new_thread(self.search_dots, (query,))                
+                #thread.start_new_thread(self.search_dots, (query,))                
 
             elif self.get_search_by() == self.TOP_SONGS:                
                 self.playerThreadId = thread.start_new_thread(self.search_top_tracks, (query,))
-                thread.start_new_thread(self.search_dots, (query,))          
+                #thread.start_new_thread(self.search_dots, (query,))          
             
             elif self.get_search_by() == self.TOP_SIMILAR:
                 self.playerThreadId = thread.start_new_thread(self.search_top_similar, (query,))
-                thread.start_new_thread(self.search_dots, (query,))          
             
-            else:
+            else:                
                 self.playerThreadId = thread.start_new_thread(self.search_vk_engine, (query,))
-                thread.start_new_thread(self.search_dots, (query,))          
+                #thread.start_new_thread(self.search_dots, (query,))          
             
-            #self.show_results(query, beans) 
-            
+            #self.show_results(query, beans)
+        self.lock.release() 
         pass
   
     def capitilize_query(self, line):
@@ -220,7 +229,7 @@ class OnlineListCntr():
         self.show_results(query, beans)
     
     def show_results(self, query, beans):
-        self.playerThreadId = None
+    
         self.clear()
         print "Show results...."
         if beans:                
@@ -228,21 +237,29 @@ class OnlineListCntr():
             self.append(beans)
         else:
             self.googleHelp(query)
+        self.playerThreadId = None    
+        
     
     def googleHelp(self, query):
+      
         self.append([self.TextBeen("Not Found, wait for results from google ...")])
+
         try:
             ask = query.encode('utf-8')
+            
+            
             gs = GoogleSearch(ask)
             gs.results_per_page = 10
             results = gs.get_results()
             for res in results:
-                #result = res.title.encode('utf8')
-                self.append([self.TextBeen(str(res.title), color="YELLOW", type=CommonBean.TYPE_GOOGLE_HELP)])
-                
-        except SearchError, e:
-            print "Search failed: %s" % e
-    
+                result = res.title.encode('utf8')   
+                time.sleep(0.05)             
+                self.append([self.TextBeen(str(result), color="YELLOW", type=CommonBean.TYPE_GOOGLE_HELP)])
+        except :
+            print "Search failed: %s" 
+        
+        
+        
     def convertVKstoBeans(self, vkSongs):
         beans = []
         for vkSong in vkSongs:

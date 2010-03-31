@@ -120,13 +120,6 @@ class GoogleSearch(object):
         self._page += 1
         self._last_from = search_info['from']
         return results
-    def get_suggests(self):
-        page = self._get_results_page()
-        print page    
-        reg_all = "([А-ЯA-Z0-9_ #!:;.?+=&%@!\-\/'()]*)"
-        print re.findall("<i>" + reg_all + "</i>", "" + str(page), re.IGNORECASE)
-        
-        
 
     def _maybe_raise(self, cls, *arg):
         if self.debug:
@@ -173,15 +166,7 @@ class GoogleSearch(object):
         return {'from': int(matches.group(1)), 'to': int(matches.group(2)), 'total': int(matches.group(3))}
 
     def _extract_results(self, soup):
-        print soup
         results = soup.findAll('li', {'class': 'g'})
-        print "======="
-        reg_all = "([А-ЯA-Z0-9_ #!:;.?+=&%@!\-\/'()]*)"
-        """class="spell"><b><i>arabesque</i></b></a>"""
-        
-        print re.findall(u"class=\"spell\"><b><i>" + reg_all + "</i></b></a>", str(soup), re.IGNORECASE)
-        
-
         ret_res = []
         for result in results:
             eres = self._extract_result(result)
