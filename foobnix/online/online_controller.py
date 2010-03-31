@@ -50,9 +50,6 @@ class OnlineListCntr():
     TOP_SIMILAR = "TOP_SIMILAR"
     TOP_SEARCH = "TOP_SEARCH"
     
-    LIBRARY_DIR = FConfiguration().onlineMusicPath
-       
-    
     def make_dirs(self, path):
         if not os.path.isdir(path):
             os.makedirs(path)
@@ -327,7 +324,7 @@ class OnlineListCntr():
             print "Exists ..."
         
     def get_file_store_path(self, song):
-        dir = self.LIBRARY_DIR
+        dir = FConfiguration().onlineMusicPath
         if song.getArtist():
             dir = dir + "/" + song.getArtist()
         self.make_dirs(dir)
