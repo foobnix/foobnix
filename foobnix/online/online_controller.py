@@ -180,10 +180,11 @@ class OnlineListCntr():
             
         pass
   
-    def capitilize_query(self, line):        
+    def capitilize_query(self, line):
+        line = line.strip()        
         result = ""
         for l in line.split():
-            result += " " + l.capitalize()
+            result += " " + l[0].upper() + l[1:]
         return result
     
     def search_dots(self, query):
