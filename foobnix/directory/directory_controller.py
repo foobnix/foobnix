@@ -20,6 +20,7 @@ import copy
 from foobnix.directory.pref_list_model import PrefListModel
 import thread
 import gettext
+from multiprocessing.synchronize import Lock
 
 gettext.install("foobnix", unicode=True)
 
@@ -311,9 +312,12 @@ class DirectoryCntr():
         LOG.debug(result)
         return result 
     
+    lock = Lock()
     def addAllThread(self):
-        level = None;                
+        level = None;
+        self.lock.acquire()                
         self.go_recursive(self.musicFolder, level)
+        self.lock.release()
     
     def addAll(self):                
         thread.start_new_thread(self.addAllThread, ())
@@ -335,7 +339,15 @@ class DirectoryCntr():
     def isDirectoryWithMusic(self, path):
         if isDirectory(path):
             dir = os.path.abspath(path)
-            list = os.listdir(dir)
+            list = None
+            try:
+                list = os.listdir(dir)
+            except OSError, e:
+                print "Can'r get list of dir", e
+            
+            if not list:
+                return False
+                 
             for file in list:
                 full_path = path + "/" + file
                 if isDirectory(full_path):                              
