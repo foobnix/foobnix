@@ -101,6 +101,8 @@ class DirectoryCntr():
     
     
     def getPrefListBeans(self, preflist=DEFAULT_LIST):
+        
+        
         if preflist in self.prefListMap:
             return self.prefListMap[preflist]
         return None
@@ -119,7 +121,8 @@ class DirectoryCntr():
             self.prefListMap[listName] = []
             
     
-    def onPreflListSelect(self, *args):        
+    def onPreflListSelect(self, *args):
+        self.view_list.set_active(self.VIEW_VIRTUAL_LISTS)        
         self.currentListMap = self.prefModel.getSelected()
         
         if self.currentListMap in self.prefListMap:
@@ -217,8 +220,11 @@ class DirectoryCntr():
             if event.hardware_keycode == 119 or event.hardware_keycode == 107:
                 print "Delete"
                 bean = self.model.getSelectedBean()
-                self.virtualListCntr.remove_with_childrens(bean.index, bean.parent)                
-                self.append_virtual()
+                print bean.index
+                if bean.index > 0:
+                    self.virtualListCntr.items = self.prefListMap[self.currentListMap]
+                    self.virtualListCntr.remove_with_childrens(bean.index - 1, bean.parent)                
+                    self.append_virtual()
             
     
     def onFiltering(self, *args):   
