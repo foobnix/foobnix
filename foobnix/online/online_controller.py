@@ -221,7 +221,7 @@ class OnlineListCntr():
     
     def search_tags_genre(self, query):
         beans = search_tags_genre(self.network, query)        
-        self.show_results(query, beans)
+        self.show_results(query, beans, False)
     
     def search_top_similar(self, query):
         try:
@@ -238,12 +238,13 @@ class OnlineListCntr():
         beans = self.convertVKstoBeans(vkSongs)
         self.show_results(query, beans)
     
-    def show_results(self, query, beans):
+    def show_results(self, query, beans, criteria=True):
     
         self.clear()
         print "Show results...."
-        if beans:                
-            #self.append([self.SearchCriteriaBeen(query)])
+        if beans:
+            if criteria:                
+                self.append([self.SearchCriteriaBeen(query)])
             self.append(beans)
         else:
             self.googleHelp(query)

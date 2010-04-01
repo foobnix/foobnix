@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sonata\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-31 00:12+0300\n"
+"POT-Creation-Date: 2010-04-01 23:26+0300\n"
 "PO-Revision-Date: 2007-02-09 11:04+0200\n"
 "Last-Translator: Dogmatist Demon <dogmaton@gmail.com>\n"
 "Language-Team: Ukranian\n"
@@ -15,25 +15,20 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .././foobnix.py:31
+#: .././foobnix.py:30
 #, fuzzy
 msgid "Success"
 msgstr "urk"
 
-#: .././foobnix/directory/directory_controller.py:28
-#: .././foobnix/glade/foobnix.glade.h:11
-msgid "Default"
-msgstr "по замовчуванню"
-
-#: .././foobnix/directory/directory_controller.py:76
+#: .././foobnix/directory/directory_controller.py:82
 msgid "by artist/album"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:77
+#: .././foobnix/directory/directory_controller.py:83
 msgid "by radio/stations"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:78
+#: .././foobnix/directory/directory_controller.py:84
 msgid "by play lists"
 msgstr ""
 
@@ -76,6 +71,10 @@ msgstr ""
 #: .././foobnix/glade/foobnix.glade.h:10
 msgid "By time"
 msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:11
+msgid "Default"
+msgstr "по замовчуванню"
 
 #: .././foobnix/glade/foobnix.glade.h:12
 msgid "Delete"
@@ -182,50 +181,54 @@ msgid "_View"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:38
-msgid "login:"
+msgid "all search"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:39
-msgid "old rearch\t"
+msgid "login:"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:40
-msgid "passw:"
+msgid "old rearch\t"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:41
-msgid "search"
+msgid "passw:"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:42
-msgid "toolbutton10"
+msgid "tags / genre"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:43
-msgid "toolbutton11"
+msgid "toolbutton10"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:44
-msgid "toolbutton7"
+msgid "toolbutton11"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:45
-msgid "toolbutton8"
+msgid "toolbutton7"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:46
-msgid "toolbutton9"
+msgid "toolbutton8"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:47
-msgid "top albums"
+msgid "toolbutton9"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:48
-msgid "top similar"
+msgid "top albums"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:49
+msgid "top similar"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:50
 msgid "top songs"
 msgstr ""
 
