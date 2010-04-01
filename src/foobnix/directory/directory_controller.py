@@ -20,7 +20,8 @@ import copy
 from foobnix.directory.pref_list_model import PrefListModel
 import thread
 import gettext
-from multiprocessing.synchronize import Lock
+from threading import Lock
+
 
 gettext.install("foobnix", unicode=True)
 

@@ -22,7 +22,7 @@ from foobnix.online.google.search import GoogleSearch, SearchError
 import urllib2
 import os
 import urllib
-from multiprocessing.synchronize import Lock
+
 import threading
 
 
