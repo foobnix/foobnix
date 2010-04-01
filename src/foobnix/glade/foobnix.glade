@@ -740,9 +740,9 @@
                                   <widget class="GtkFileChooserButton" id="online_dir_filechooserbutton">
                                     <property name="visible">True</property>
                                     <property name="sensitive">False</property>
-                                    <property name="show_hidden">True</property>
-                                    <property name="create_folders">False</property>
                                     <property name="action">select-folder</property>
+                                    <property name="create_folders">False</property>
+                                    <property name="show_hidden">True</property>
                                   </widget>
                                   <packing>
                                     <property name="position">1</property>
@@ -1080,7 +1080,7 @@
                         </child>
                         <child>
                           <widget class="GtkRadioButton" id="radiobutton_search">
-                            <property name="label" translatable="yes">search</property>
+                            <property name="label" translatable="yes">all search</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -1089,6 +1089,20 @@
                           </widget>
                           <packing>
                             <property name="position">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkRadioButton" id="radiobutton_tags">
+                            <property name="label" translatable="yes">tags / genre</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="active">True</property>
+                            <property name="draw_indicator">True</property>
+                            <property name="group">radiobutton_album</property>
+                          </widget>
+                          <packing>
+                            <property name="position">5</property>
                           </packing>
                         </child>
                       </widget>
