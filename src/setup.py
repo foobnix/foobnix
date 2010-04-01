@@ -30,7 +30,7 @@ def rmgeneric(path, __func__):
         pass
 
 # Create mo files:
-
+"""
 if not os.path.exists("mo/"):
     os.mkdir("mo/")
 for lang in ('ru', 'uk'):
@@ -40,7 +40,7 @@ for lang in ('ru', 'uk'):
         os.mkdir("mo/" + lang + "/")
     print "generating", mofile
     os.system("msgfmt %s -o %s" % (pofile, mofile))
-
+"""
 # Copy script "foobnix" file to foobnix dir:
 shutil.copyfile("foobnix.py", "foobnix/foobnix")
 
@@ -97,6 +97,7 @@ setup(name='foobnix',
         )
 
 # Cleanup (remove /build, /mo, and *.pyc files:
+
 print "Cleaning up..."
 try:
     removeall("build/")
@@ -128,3 +129,4 @@ try:
     os.remove(os.getenv("HOME") + "/foobnix_conf.pkl")
 except:
     pass
+
