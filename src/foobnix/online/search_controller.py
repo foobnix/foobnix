@@ -66,10 +66,12 @@ def search_tags_genre(network, query):
     
     flag = True
     
-    for i, tag in enumerate(tags.get_next_page()):
-        "we find it top"
+    for i, tag in enumerate(tags.get_next_page()):        
         if i == 0:
-            continue;
+            print "we find it top", tag, query
+            continue
+        
+            
         
         if i < 4:
             bean = CommonBean(name=tag.get_name(), path="",color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=query)
