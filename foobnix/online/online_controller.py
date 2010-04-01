@@ -14,7 +14,7 @@ from foobnix.online.rupleer import find_song_urls
 from foobnix.player.player_controller import PlayerController
 from foobnix.online.vk import Vkontakte
 from foobnix.online.search_controller import search_top_albums, \
-    search_top_tracks, search_top_similar
+    search_top_tracks, search_top_similar, search_tags_genre
 import thread
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.util.confguration import FConfiguration
@@ -51,6 +51,7 @@ class OnlineListCntr():
     TOP_ALBUMS = "TOP_ALBUMS"
     TOP_SIMILAR = "TOP_SIMILAR"
     TOP_SEARCH = "TOP_SEARCH"
+    TOP_TAGS_GENRE = "TOP_TAGS_GENRE"
     
     def make_dirs(self, path):
         if not os.path.isdir(path):
@@ -71,6 +72,7 @@ class OnlineListCntr():
         self.radio_album = gxMain.get_widget("radiobutton_album")
         self.radio_similar = gxMain.get_widget("radiobutton_similar")
         self.radio_search = gxMain.get_widget("radiobutton_search")
+        self.radio_tags_genre = gxMain.get_widget("radiobutton_tags")
         
         self.treeview = gxMain.get_widget("online_treeview")
         
@@ -114,7 +116,7 @@ class OnlineListCntr():
         if selected.type == CommonBean.TYPE_MUSIC_URL:
             selected.parent = None                            
             self.directoryCntr.append_virtual([selected])
-        elif selected.type == CommonBean.TYPE_FOLDER:
+        elif selected.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP]:
             results = []       
             for i in xrange(self.model.getSize()):            
                 searchBean = self.model.getBeenByPosition(i)
@@ -145,6 +147,7 @@ class OnlineListCntr():
         if self.radio_album.get_active(): return self.TOP_ALBUMS
         if self.radio_similar.get_active(): return self.TOP_SIMILAR
         if self.radio_search.get_active(): return self.TOP_SEARCH
+        if self.radio_tags_genre.get_active(): return self.TOP_TAGS_GENRE
         #default is
         return self.TOP_SONGS
     
@@ -181,9 +184,12 @@ class OnlineListCntr():
             elif self.get_search_by() == self.TOP_SIMILAR:
                 self.playerThreadId = thread.start_new_thread(self.search_top_similar, (query,))
             
-            else:                
+            elif self.get_search_by() == self.TOP_SEARCH:                
                 self.playerThreadId = thread.start_new_thread(self.search_vk_engine, (query,))
-                #thread.start_new_thread(self.search_dots, (query,))          
+                #thread.start_new_thread(self.search_dots, (query,))
+            elif self.get_search_by() == self.TOP_TAGS_GENRE:
+                self.playerThreadId = thread.start_new_thread(self.search_tags_genre, (query,))
+                
             
             #self.show_results(query, beans)
         self.lock.release() 
@@ -213,6 +219,10 @@ class OnlineListCntr():
         beans = search_top_tracks(self.network, query)        
         self.show_results(query, beans)      
     
+    def search_tags_genre(self, query):
+        beans = search_tags_genre(self.network, query)        
+        self.show_results(query, beans)
+    
     def search_top_similar(self, query):
         try:
             beans = search_top_similar(self.network, query)
@@ -233,7 +243,7 @@ class OnlineListCntr():
         self.clear()
         print "Show results...."
         if beans:                
-            self.append([self.SearchCriteriaBeen(query)])
+            #self.append([self.SearchCriteriaBeen(query)])
             self.append(beans)
         else:
             self.googleHelp(query)
