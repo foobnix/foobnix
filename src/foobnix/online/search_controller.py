@@ -5,7 +5,7 @@ Created on Mar 18, 2010
 '''
 from foobnix.model.entity import CommonBean
 from foobnix.online.pylast import WSError
-from warnings import catch_warnings
+
 def search_top_albums(network, query):
     #unicode(query, "utf-8")
     artist = network.get_artist(query)
@@ -41,7 +41,7 @@ def search_tags_genre(network, query):
     beans = [] 
     
     tag = network.get_tag(query)
-    bean = CommonBean(name=tag.get_name(), path="",color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=query)
+    bean = CommonBean(name=tag.get_name(), path="", color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=query)
     beans.append(bean)
     try:
         tracks = tag.get_top_tracks()
@@ -49,13 +49,13 @@ def search_tags_genre(network, query):
         return None
     
     for j, track in enumerate(tracks):
-        if j> 20:
+        if j > 20:
             break
         try:            
             track_item = track.item
         except AttributeError:
             track_item = track['item']
-        bean = CommonBean(name=track_item.get_artist().get_name() +" - "+track_item.get_title(), path="", type=CommonBean.TYPE_MUSIC_URL, parent=tag.get_name())
+        bean = CommonBean(name=track_item.get_artist().get_name() + " - " + track_item.get_title(), path="", type=CommonBean.TYPE_MUSIC_URL, parent=tag.get_name())
         beans.append(bean)
     
        
@@ -74,25 +74,25 @@ def search_tags_genre(network, query):
             
         
         if i < 4:
-            bean = CommonBean(name=tag.get_name(), path="",color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=query)
+            bean = CommonBean(name=tag.get_name(), path="", color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=query)
             beans.append(bean)
             
             tracks = tag.get_top_tracks()
             for j, track in enumerate(tracks):
-                if j> 10:
+                if j > 10:
                     break
                 try:            
                     track_item = track.item
                 except AttributeError:
                     track_item = track['item']
-                bean = CommonBean(name=track_item.get_artist().get_name() +" - "+track_item.get_title(), path="", type=CommonBean.TYPE_MUSIC_URL, parent=tag.get_name())
+                bean = CommonBean(name=track_item.get_artist().get_name() + " - " + track_item.get_title(), path="", type=CommonBean.TYPE_MUSIC_URL, parent=tag.get_name())
                 beans.append(bean)
         else:
             if flag:
-                bean = CommonBean(name="OTHER TAGS", path="",color="#FF99FF", type=CommonBean.TYPE_FOLDER, parent=query)
+                bean = CommonBean(name="OTHER TAGS", path="", color="#FF99FF", type=CommonBean.TYPE_FOLDER, parent=query)
                 beans.append(bean)
                 flag = False
-            bean = CommonBean(name=tag.get_name(), path="",color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=query)
+            bean = CommonBean(name=tag.get_name(), path="", color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=query)
             beans.append(bean)
             
     return beans
