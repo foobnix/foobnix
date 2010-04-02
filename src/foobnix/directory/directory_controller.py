@@ -252,7 +252,7 @@ class DirectoryCntr():
         
         
         
-        if directoryBean.type == CommonBean.TYPE_FOLDER:
+        if directoryBean.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP] :
             songs = self.model.getChildSongBySelected()
             print "Select songs", songs
             if not songs:

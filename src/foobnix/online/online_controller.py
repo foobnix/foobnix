@@ -118,6 +118,7 @@ class OnlineListCntr():
             selected.parent = None                            
             self.directoryCntr.append_virtual([selected])
         elif selected.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP]:
+            selected.type = CommonBean.TYPE_FOLDER
             results = []       
             for i in xrange(self.model.getSize()):            
                 searchBean = self.model.getBeenByPosition(i)
