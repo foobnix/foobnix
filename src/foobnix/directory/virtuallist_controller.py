@@ -20,7 +20,7 @@ class VirturalLIstCntr():
     def getState(self):
         return self.items
     
-    def setState(self,items):
+    def setState(self, items):
         self.items = items
     
     def remove(self, index):
@@ -31,17 +31,17 @@ class VirturalLIstCntr():
         print "DELETE", item.name
         self.items.remove(item)
     
-    def remove_with_childrens(self, index,parent=None):
+    def remove_with_childrens(self, index, parent=None):
         type = self.get_item_by_index(index).type
         print type
-        if type !=CommonBean.TYPE_FOLDER:
+        if type not in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP] :
             self.remove(index)
             return
         
         self.remove(index)
         size = len(self.items)
         for i in xrange(index, size):
-            print "index" + str(i), 
+            print "index" + str(i),
             print self.items[index].parent
             if self.items[index].parent == parent:
                 return
