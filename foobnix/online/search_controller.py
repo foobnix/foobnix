@@ -41,7 +41,7 @@ def search_tags_genre(network, query):
     beans = [] 
     
     tag = network.get_tag(query)
-    bean = CommonBean(name=tag.get_name(), path="", color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=query)
+    bean = CommonBean(name=tag.get_name(), path="", color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=None)
     beans.append(bean)
     try:
         tracks = tag.get_top_tracks()
@@ -74,7 +74,7 @@ def search_tags_genre(network, query):
             
         
         if i < 4:
-            bean = CommonBean(name=tag.get_name(), path="", color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=query)
+            bean = CommonBean(name=tag.get_name(), path="", color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=None)
             beans.append(bean)
             
             tracks = tag.get_top_tracks()
@@ -89,10 +89,10 @@ def search_tags_genre(network, query):
                 beans.append(bean)
         else:
             if flag:
-                bean = CommonBean(name="OTHER TAGS", path="", color="#FF99FF", type=CommonBean.TYPE_FOLDER, parent=query)
+                bean = CommonBean(name="OTHER TAGS", path="", color="#FF99FF", type=CommonBean.TYPE_FOLDER, parent=None)
                 beans.append(bean)
                 flag = False
-            bean = CommonBean(name=tag.get_name(), path="", color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=query)
+            bean = CommonBean(name=tag.get_name(), path="", color="GREEN", type=CommonBean.TYPE_GOOGLE_HELP, parent=None)
             beans.append(bean)
             
     return beans
