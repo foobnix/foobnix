@@ -14,6 +14,7 @@ from string import replace
 from base64 import encode
 import sys
 
+
 # -*- coding: utf-8 -*-
 
 
@@ -24,6 +25,7 @@ class Vkontakte:
         self.password = password
         self.cookie = None
         self.execute_time = time.time()
+        
 
     def get_s_value(self):
 
