@@ -24,6 +24,7 @@ import os
 import urllib
 
 import threading
+from foobnix.online.google.translate import Translator
 
 
 '''
@@ -219,7 +220,16 @@ class OnlineListCntr():
         beans = search_top_tracks(self.network, query)        
         self.show_results(query, beans)      
     
-    def search_tags_genre(self, query):
+
+    def is_ascii(self, s):
+        return all(ord(c) < 128 for c in s)    
+    
+    def search_tags_genre(self, query):        
+        if not self.is_ascii(query):
+            translator = Translator()            
+            query = translator.translate(query.encode(), lang_from="ru")
+            self.append([self.TextBeen("Translated: " + query, color="LIGHT GREEN")])
+        
         beans = search_tags_genre(self.network, query)        
         self.show_results(query, beans, False)
     
