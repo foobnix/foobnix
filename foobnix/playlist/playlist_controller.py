@@ -73,7 +73,7 @@ class PlaylistCntr():
         self.set_playlist_beans(entityBeans)    
         self.index = 0
         if entityBeans:
-            #self.playerCntr.playSong(entityBeans[self.index])
+            self.playerCntr.playSong(entityBeans[0])
             self.repopulate(entityBeans, self.index);
             
     def appendPlaylist(self, entityBeans):
