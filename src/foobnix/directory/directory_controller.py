@@ -71,7 +71,9 @@ class DirectoryCntr():
                 
         
         self.filter = gxMain.get_widget("filter-combobox-entry")
+        #self.filter.connect("key-press-event", self.onFiltering)
         self.filter.connect("key-release-event", self.onFiltering)
+        
         
         self.view_list = gxMain.get_widget("view_list_combobox")
         cell = gtk.CellRendererText()
@@ -142,7 +144,7 @@ class DirectoryCntr():
                 self.prefModel.append(unknownListName)           
        
     def onPreflListDeleteItem(self, w, event):
-        print event
+        
         if event.type == gtk.gdk.KEY_RELEASE: #@UndefinedVariable
             #Enter pressed
             print event.keyval
@@ -231,8 +233,9 @@ class DirectoryCntr():
     
     def onFiltering(self, *args):   
         text = self.filter.get_children()[0].get_text()
-        if text : 
-            self.model.filterByName(text)
+        print "filtering by text", text
+        self.model.filterByName(text)
+        
     
     def onMouseClick(self, w, event):
         if event.button == 1 and event.type == gtk.gdk._2BUTTON_PRESS: #@UndefinedVariable

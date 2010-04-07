@@ -4,6 +4,7 @@ Created on Mar 30, 2010
 @author: ivan
 '''
 import gtk
+import time
 class PrefListModel():
     POS_NAME = 0
     def __init__(self, widget, prefListMap):
@@ -25,6 +26,8 @@ class PrefListModel():
         selection = self.widget.get_selection()
         model, selected = selection.get_selected()
         if selected:
+            time.sleep(0.05)
+        
             self.model.remove(selected)
         
     
