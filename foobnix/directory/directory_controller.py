@@ -322,9 +322,16 @@ class DirectoryCntr():
     lock = Lock()
     def addAllThread(self):
         level = None;
-        self.lock.acquire()                
+        self.lock.acquire()
+        
+                        
         self.go_recursive(self.musicFolder, level)
+        if not  len(self.model.getModel()):
+            self.model.append(level, CommonBean(name="Music not found in " + FConfiguration().mediaLibraryPath, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER))
         self.lock.release()
+        
+        
+        
     
     def addAll(self):                
         thread.start_new_thread(self.addAllThread, ())
