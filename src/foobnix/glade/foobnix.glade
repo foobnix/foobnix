@@ -29,43 +29,6 @@
                       <widget class="GtkMenu" id="menu7">
                         <property name="visible">True</property>
                         <child>
-                          <widget class="GtkImageMenuItem" id="imagemenuitem21">
-                            <property name="label">gtk-new</property>
-                            <property name="visible">True</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkImageMenuItem" id="imagemenuitem22">
-                            <property name="label">gtk-open</property>
-                            <property name="visible">True</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkImageMenuItem" id="imagemenuitem23">
-                            <property name="label">gtk-save</property>
-                            <property name="visible">True</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkImageMenuItem" id="imagemenuitem24">
-                            <property name="label">gtk-save-as</property>
-                            <property name="visible">True</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkSeparatorMenuItem" id="separatormenuitem3">
-                            <property name="visible">True</property>
-                          </widget>
-                        </child>
-                        <child>
                           <widget class="GtkImageMenuItem" id="file_quit">
                             <property name="label">gtk-quit</property>
                             <property name="visible">True</property>
@@ -77,78 +40,6 @@
                         </child>
                       </widget>
                     </child>
-                  </widget>
-                </child>
-                <child>
-                  <widget class="GtkMenuItem" id="menuitem10">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">_Edit</property>
-                    <property name="use_underline">True</property>
-                    <child>
-                      <widget class="GtkMenu" id="menu8">
-                        <property name="visible">True</property>
-                        <child>
-                          <widget class="GtkImageMenuItem" id="imagemenuitem26">
-                            <property name="label">gtk-cut</property>
-                            <property name="visible">True</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkImageMenuItem" id="imagemenuitem27">
-                            <property name="label">gtk-copy</property>
-                            <property name="visible">True</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkImageMenuItem" id="imagemenuitem28">
-                            <property name="label">gtk-paste</property>
-                            <property name="visible">True</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkImageMenuItem" id="imagemenuitem29">
-                            <property name="label">gtk-delete</property>
-                            <property name="visible">True</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkImageMenuItem" id="gtk-preferences">
-                            <property name="label">gtk-preferences</property>
-                            <property name="visible">True</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                            <signal name="activate" handler="on_gtk-preferences_activate"/>
-                          </widget>
-                        </child>
-                      </widget>
-                    </child>
-                  </widget>
-                </child>
-                <child>
-                  <widget class="GtkMenuItem" id="menuitem11">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">_View</property>
-                    <property name="use_underline">True</property>
-                    <child>
-                      <widget class="GtkMenu" id="menu1">
-                        <property name="visible">True</property>
-                      </widget>
-                    </child>
-                  </widget>
-                </child>
-                <child>
-                  <widget class="GtkMenuItem" id="_Playback">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">_Playback</property>
-                    <property name="use_underline">True</property>
                   </widget>
                 </child>
                 <child>
@@ -181,9 +72,9 @@
             </child>
             <child>
               <widget class="GtkToolbar" id="toolbar4">
-                <property name="width_request">120</property>
                 <property name="visible">True</property>
                 <property name="toolbar_style">icons</property>
+                <property name="show_arrow">False</property>
                 <property name="icon_size">0</property>
                 <property name="icon_size_set">True</property>
                 <child>
@@ -261,6 +152,8 @@
                 </child>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -284,6 +177,7 @@
             </child>
             <child>
               <widget class="GtkHScale" id="volume_hscale">
+                <property name="width_request">200</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="adjustment">40 1 100 1 10 10</property>
@@ -291,6 +185,8 @@
                 <signal name="change_value" handler="on_volume_hscale_change_value"/>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">3</property>
               </packing>
             </child>
@@ -316,7 +212,6 @@
             </child>
             <child>
               <widget class="GtkAspectFrame" id="aspectframe1">
-                <property name="width_request">300</property>
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <property name="shadow_type">none</property>
@@ -326,12 +221,12 @@
                     <signal name="button_press_event" handler="on_button_press_event"/>
                     <child>
                       <widget class="GtkProgressBar" id="seek_progressbar">
-                        <property name="width_request">300</property>
+                        <property name="width_request">500</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="show_text">True</property>
                         <property name="text" translatable="yes">00:00 / 00:00</property>
-                        <property name="ellipsize">start</property>
+                        <property name="ellipsize">middle</property>
                         <property name="discrete_blocks">100</property>
                       </widget>
                     </child>
@@ -340,6 +235,7 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">5</property>
               </packing>
             </child>

@@ -236,19 +236,6 @@ class VKSong():
 #for vkSong in vkSongs:
 #    print vkSong
 
-line = """ <b id=\"performer87403420\"> mi123sdf ФЫВАв serdce Trofim)<\/b><span><b id=\"performer87403420"""
-print line
-print re.findall("<b id=\"performer([0-9]*)\">([А-ЯA-Z0-9 ()]*)<", line, re.IGNORECASE)
 
-line = """nbsp;<\/span><span id=\"title76067271\">SHtil&#39;<\/span> <small class=\<span id="title87919392">
-<a href="javascript: showLyrics(87919392,3966457);">Кто ты</a>
-</span>"""
-print re.findall(" < span id = \"title([0-9]*)\">([А-ЯA-ZёЁ0-9 \s#!;:.?+=&%@!\-\/'()]*)<", line, re.IGNORECASE)
-
-line = u"sadf asdf asd фыав фыва фыв  asdf"
-result = ""
-for l in line.split():
-    result += " " + l.capitalize()
-print result
 
 
