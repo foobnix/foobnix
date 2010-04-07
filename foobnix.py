@@ -10,6 +10,9 @@ import gtk
 import gettext
 from foobnix.application.app_view import AppView
 from foobnix.application.app_controller import AppController
+
+
+
     
 class App():
     def __init__(self):
