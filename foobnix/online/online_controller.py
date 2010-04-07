@@ -173,7 +173,7 @@ class OnlineListCntr():
         query = self.get_search_query()        
         if query:  
             query = self.capitilize_query(u"" + query)
-            print query
+            
             self.append([self.TextBeen("Searching... " + query + " please wait", color="GREEN")])
             if self.get_search_by() == self.TOP_ALBUMS:
                 self.playerThreadId = thread.start_new_thread(self.search_top_albums, (query,))
