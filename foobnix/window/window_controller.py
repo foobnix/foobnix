@@ -4,6 +4,8 @@ Created on Mar 13, 2010
 @author: ivan
 '''
 import gtk
+from foobnix.util.confguration import VERSION
+
 class WindowController():
     def __init__(self, gxMain, gxAbout,  prefCntr):
         self.decorate(gxMain)
@@ -16,7 +18,7 @@ class WindowController():
         #self.window.connect("destroy", self.onDestroy)
         self.window.connect("delete-event", self.hide)
     
-        self.window.set_title("Foobnix pre - pre - pre Alfa")
+        self.window.set_title("Foobnix "+VERSION)
         
         signalsPopup = {
                 "on_gtk-preferences_activate" :self.showPref,

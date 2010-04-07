@@ -149,8 +149,10 @@ class PlayerController:
     
     
     
-    def setSeek(self, persentValue):        
-        pos_max = self.player.query_duration(self.time_format, None)[0]           
+    def setSeek(self, persentValue):  
+        if self.player.get_state()[1] == gst.STATE_NULL:
+            return None
+        pos_max = self.player.query_duration(self.time_format, None)[0]
         seek_ns = pos_max * persentValue / 100;  
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)
     

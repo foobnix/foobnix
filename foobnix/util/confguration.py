@@ -8,6 +8,7 @@ import os
 from foobnix.util import LOG
 import tempfile
 
+VERSION = "0.1.0"
 
 class Singleton(type):
     def __call__(self, *args, **kw):
@@ -35,8 +36,8 @@ class FConfiguration:
         self.savedRadioList = []
         self.savedSongIndex = 0
         self.volumeValue = 50
-        self.vpanelPostition = 300
-        self.hpanelPostition = 300
+        self.vpanelPostition = 500
+        self.hpanelPostition = 350
         
         self.playlistState = None
         self.radiolistState = None
