@@ -6,6 +6,7 @@ Created on Mar 11, 2010
 '''
 from foobnix.lyric.lyr import get_lyrics
 import thread
+import gtk
 
 class PlayerWidgetsCntl():
     '''
@@ -28,6 +29,13 @@ class PlayerWidgetsCntl():
         
         self.lyric = gxMain.get_widget("lyric_textview")
         self.textbuffer = self.lyric.get_buffer()
+        
+        #tag = self.textbuffer.create_tag('aligned')
+        #tag.set_property("font", "Courier")
+        #tag.set_property("foreground", "red")
+        #tag.set_property("size-points", 12)
+        #tag.set_property("weight", 400)
+        #self.textbuffer.insert_with_tags(self.textbuffer.get_start_iter(),"YES!!!", tag)
 
        
         self.lyric.set_editable(False)
@@ -51,10 +59,10 @@ class PlayerWidgetsCntl():
         if song.getArtist() and  song.getTitle():
             text =  get_lyrics(song.getArtist(), song.getTitle())
             if text: 
-                
-                self.textbuffer.set_text(song.getArtist() +"" +song.getTitle() +"\n" +text)
+                self.textbuffer.set_text("*** "+ song.getArtist() +" - " +song.getTitle() +" ***\n" +text)
             else: 
-                self.textbuffer.set_text("Not Found"+song.getArtist() +" "+  song.getTitle())
+                self.textbuffer.set_text("Not Found lyrics for "+song.getArtist() +" - "+  song.getTitle() + "\n")
+            
     
     def onPlayButton(self, *a):
         self.playerCntr.playState()
