@@ -67,7 +67,8 @@ class DirectoryCntr():
         self.prefModel = PrefListModel(prefList, self.prefListMap)
         
         
-        
+        self.mainNoteBook = gxMain.get_widget("main_notebook")
+        self.leftNoteBook = gxMain.get_widget("left_notebook")
                 
         
         self.filter = gxMain.get_widget("filter-combobox-entry")
@@ -253,8 +254,6 @@ class DirectoryCntr():
         print "Select: ", directoryBean.name, directoryBean.type 
         print "Drug type", directoryBean.type
         
-        
-        
         if directoryBean.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP] :
             songs = self.model.getChildSongBySelected()
             print "Select songs", songs
@@ -275,6 +274,10 @@ class DirectoryCntr():
                 self.playlistCntr.appendPlaylist([directoryBean])
             else:
                 self.playlistCntr.setPlaylist([directoryBean])
+        
+        #print "PAGE", self.leftNoteBook.get_current_page() 
+        print "SET PAGE", self.mainNoteBook.set_current_page(0)
+        
             
     
     

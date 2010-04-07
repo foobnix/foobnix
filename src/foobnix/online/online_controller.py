@@ -133,7 +133,8 @@ class OnlineListCntr():
                     print str(searchBean.parent) + " != " + str(selected.name) 
                     
             self.directoryCntr.append_virtual(results)
-        print "drug"
+        print "drug"        
+        self.directoryCntr.leftNoteBook.set_current_page(0)
     
     
     def on_key_pressed(self, w, event):
