@@ -34,7 +34,7 @@ class FConfiguration:
         self.savedPlayList = []
         self.savedRadioList = []
         self.savedSongIndex = 0
-        self.volumeValue = 0
+        self.volumeValue = 50
         self.vpanelPostition = 300
         self.hpanelPostition = 300
         
