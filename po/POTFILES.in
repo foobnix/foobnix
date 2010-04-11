@@ -9,4 +9,13 @@
 ./foobnix/directory/pref_list_model.py
 ./foobnix/directory/virtuallist_controller.py
 ./foobnix/lyric/lyr.py
+./foobnix/playlist/playlist_controller.py
+./foobnix/playlist/playlist_model.py
+./foobnix/util/LOG.py
+./foobnix/util/confguration.py
+./foobnix/util/file_utils.py
+./foobnix/util/isrunning.py
+./foobnix/util/mouse_utils.py
+./foobnix/util/plsparser.py
+./foobnix/util/time_utils.py
 ./foobnix/glade/foobnix.glade.h

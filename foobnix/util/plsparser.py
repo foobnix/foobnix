@@ -42,5 +42,3 @@ def getFirst(self, urls):
         return urls[0]
     else:
         return None
-    
-print getStationPath("http://www.di.fm/mp3/classiceurodance.pls"), getPlsName("http://www.di.fm/mp3/classiceurodance.pls")

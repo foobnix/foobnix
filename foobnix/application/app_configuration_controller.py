@@ -30,7 +30,31 @@ class AppConfigurationCntrl():
         self.by_first = gxMain.get_widget("radiobutton_by_first")
         self.by_popularity = gxMain.get_widget("radiobutton_by_popularity")
         self.by_time = gxMain.get_widget("radiobutton_by_time")
+        
+        """Random button"""
+        self.randomCheckButton = gxMain.get_widget("random_checkbutton")
+        self.randomCheckButton.set_active(FConfiguration().isRandom)
+        self.randomCheckButton.connect("clicked", self.onRandomClicked)
+        
+        """Repeat button"""
+        self.repeatCheckButton = gxMain.get_widget("repeat_checkbutton")
+        self.repeatCheckButton.set_active(FConfiguration().isRepeat)
+        self.repeatCheckButton.connect("clicked", self.onRepeatClicked)
+        
+        """Play on Start"""
+        self.playOnStartCheckButton = gxMain.get_widget("playonstart_checkbutton")
+        self.playOnStartCheckButton.set_active(FConfiguration().isPlayOnStart)
+        self.playOnStartCheckButton.connect("clicked", self.onPlayOnStartClicked)
     
+    def onPlayOnStartClicked(self, *args):
+        FConfiguration().isPlayOnStart = self.playOnStartCheckButton.get_active()
+        
+    def onRepeatClicked(self, *args):
+        FConfiguration().isRepeat = self.repeatCheckButton.get_active()
+        
+    def onRandomClicked(self, *args):
+        FConfiguration().isRandom = self.randomCheckButton.get_active()
+        
     def on_save_online(self, *args):
         value = self.save_online.get_active()
         if  value:

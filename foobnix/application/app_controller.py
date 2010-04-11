@@ -21,8 +21,7 @@ class AppController():
 
     def __init__(self, v):
         
-        
-        
+                
         playerCntr = PlayerController()
         playlistCntr = PlaylistCntr(v.playlist, playerCntr)
         
@@ -39,9 +38,10 @@ class AppController():
         
                 
         directoryCntr = DirectoryCntr(v.gxMain, playlistCntr, radioListCntr, virtualListCntr)
+        playlistCntr.registerDirectoryCntr(directoryCntr)
         appConfCntr = AppConfigurationCntrl(v.gxMain, directoryCntr)
         
-        onlineCntr = OnlineListCntr(v.gxMain, playerCntr, directoryCntr)
+        onlineCntr = OnlineListCntr(v.gxMain, playerCntr, directoryCntr, playerWidgets)
         playerCntr.registerOnlineCntr(onlineCntr)
         
         prefCntr = PrefController(v.gxPref)

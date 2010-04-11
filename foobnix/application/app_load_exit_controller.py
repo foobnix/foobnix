@@ -44,7 +44,9 @@ class OnLoadExitAppCntr():
         
         self.appConfCntr.setVkLoginPass(FConfiguration().vk_login, FConfiguration().vk_password)
         self.appConfCntr.setLfmLoginPass(FConfiguration().lfm_login, FConfiguration().lfm_password)
-            
+        
+        if FConfiguration().isPlayOnStart:
+            self.playerCntr.next()  
             
             
     def onExit(self):

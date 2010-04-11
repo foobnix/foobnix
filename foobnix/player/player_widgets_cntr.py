@@ -7,6 +7,8 @@ Created on Mar 11, 2010
 from foobnix.lyric.lyr import get_lyrics
 import thread
 import gtk
+from foobnix.util import LOG
+
 
 class PlayerWidgetsCntl():
     '''
@@ -30,13 +32,7 @@ class PlayerWidgetsCntl():
         self.lyric = gxMain.get_widget("lyric_textview")
         self.textbuffer = self.lyric.get_buffer()
         
-        #tag = self.textbuffer.create_tag('aligned')
-        #tag.set_property("font", "Courier")
-        #tag.set_property("foreground", "red")
-        #tag.set_property("size-points", 12)
-        #tag.set_property("weight", 400)
-        #self.textbuffer.insert_with_tags(self.textbuffer.get_start_iter(),"YES!!!", tag)
-
+        self.statusbar = gxMain.get_widget("statusbar")
        
         self.lyric.set_editable(False)
         
@@ -51,13 +47,22 @@ class PlayerWidgetsCntl():
         gxMain.signal_autoconnect(navigationEvents)        
         
    
+    def setStatusText(self, text):
+        self.statusbar.push(0,text)
+   
     def setLiric(self, song):
         thread.start_new_thread(self._setLiricThread, (song,))
     
     def _setLiricThread(self, song):
         print "Get lirics for:", song.getArtist(),  song.getTitle()
         if song.getArtist() and  song.getTitle():
-            text =  get_lyrics(song.getArtist(), song.getTitle())
+            try:
+                text =  get_lyrics(song.getArtist(), song.getTitle())
+            except:
+                self.setStatusText(_("Connection lyrics error"))
+                LOG.error("Connection lyrics error")
+                return None
+                
             if text: 
                 self.textbuffer.set_text("*** "+ song.getArtist() +" - " +song.getTitle() +" ***\n" +text)
             else: 

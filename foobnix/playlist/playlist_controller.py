@@ -10,6 +10,10 @@ from foobnix.playlist.playlist_model import PlaylistModel
 from foobnix.model.entity import CommonBean
 from foobnix.util.mouse_utils import is_double_click
 from foobnix.player.player_controller import PlayerController
+from random import random, randint
+from foobnix.util.confguration import FConfiguration
+from foobnix.directory.directory_controller import DirectoryCntr
+from foobnix.util import LOG
 
 
 class PlaylistCntr():
@@ -19,6 +23,22 @@ class PlaylistCntr():
         widget.connect("button-press-event", self.onPlaySong)
                 
         self.index = 0;
+        widget.connect("drag-end", self.onDrugBean)
+        
+    def registerDirectoryCntr(self, directoryCntr):
+        self.directoryCntr=directoryCntr
+                                             
+    
+        
+    def onDrugBean(self, *ars):
+        selected = self.model.getSelectedBean()
+        LOG.info("Drug song", selected, selected.type)
+        self.directoryCntr.set_active_view(DirectoryCntr.VIEW_VIRTUAL_LISTS)
+        if selected.type in [CommonBean.TYPE_MUSIC_URL, CommonBean.TYPE_MUSIC_FILE]:
+            selected.parent = None                            
+            self.directoryCntr.append_virtual([selected])
+            
+        self.directoryCntr.leftNoteBook.set_current_page(0)
     
     def getState(self):
         return [self.get_playlist_beans(), self.index]
@@ -49,18 +69,33 @@ class PlaylistCntr():
             self.playerCntr.playSong(playlistBean)
             
     def getNextSong(self):
-        self.index += 1
+        if FConfiguration().isRandom:            
+            self.index = randint(0,len(self.get_playlist_beans()))   
+        else:
+            self.index += 1
+        
         if self.index >= len(self.get_playlist_beans()):
-            self.index = 0
+                self.index = 0
+                if not FConfiguration().isRepeat:
+                    self.index = len(self.get_playlist_beans()) 
+                    return None
             
-        playlistBean = self.model.getBeenByPosition(self.index)           
+        playlistBean = self.model.getBeenByPosition(self.index)
+        if not playlistBean:
+            return None           
         self.repopulate(self.get_playlist_beans(), playlistBean.index);        
         return playlistBean
     
     def getPrevSong(self):
-        self.index -= 1
+        
+        if FConfiguration().isRandom:            
+            self.index = randint(0,len(self.get_playlist_beans()))
+        else:
+            self.index -= 1
+        
         if self.index < 0:
             self.index = len(self.get_playlist_beans()) - 1
+        
             
         playlistBean = self.model.getBeenByPosition(self.index)           
         self.repopulate(self.get_playlist_beans(), playlistBean.index);        

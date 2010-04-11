@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on Feb 27, 2010
 
@@ -28,20 +29,20 @@ class FConfiguration:
         
         self.mediaLibraryPath = tempfile.gettempdir()
         self.onlineMusicPath = tempfile.gettempdir()
-        self.supportTypes = [".mp3", ".ogg", ".ape", "flac"]
+        self.supportTypes = [".mp3", ".ogg", ".ape", "flac","wma"]
         self.isRandom = False
         self.isRepeat = True
-        self.isPlayOnStart = True
+        self.isPlayOnStart = False
         self.savedPlayList = []
         self.savedRadioList = []
         self.savedSongIndex = 0
-        self.volumeValue = 50
+        self.volumeValue = 50.0
         self.vpanelPostition = 500
         self.hpanelPostition = 350
         
         self.playlistState = None
         self.radiolistState = None
-        self.virtualListState = {"Default" : []}
+        self.virtualListState = {"Default list" : []}
         
         
         self.is_save_online = False

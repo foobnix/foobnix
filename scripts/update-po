@@ -29,6 +29,12 @@ writelines ../../po/POTFILES.in ./foobnix/directory/
 cd ../lyric
 writelines ../../po/POTFILES.in ./foobnix/lyric/
 
+cd ../playlist
+writelines ../../po/POTFILES.in ./foobnix/playlist/
+
+cd ../util
+writelines ../../po/POTFILES.in ./foobnix/util/
+
 cd ../glade
 intltool-extract --type=gettext/glade foobnix.glade
 echo ./foobnix/glade/foobnix.glade.h >> ../../po/POTFILES.in

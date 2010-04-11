@@ -14,10 +14,11 @@ class DirectoryModel():
     POS_VISIBLE = 3
     POS_TYPE = 4
     POS_INDEX = 5
+    POS_PARENT = 5
     
     def __init__(self, widget):
         self.widget = widget
-        self.model = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int)
+        self.model = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int,str)
         renderer = gtk.CellRendererText()
         #renderer.connect('edited', self.editRow)
         
@@ -27,7 +28,7 @@ class DirectoryModel():
         print "ATTTR", renderer.get_property("attributes")
         
         
-        column = gtk.TreeViewColumn("Title", renderer, text=0, font=2)
+        column = gtk.TreeViewColumn(_("Title"), renderer, text=0, font=2)
         column.set_resizable(True)
         widget.append_column(column)
 
@@ -53,7 +54,7 @@ class DirectoryModel():
            
         
     def append(self, level, bean):
-        return self.model.append(level, [bean.name, bean.path, bean.font, bean.is_visible, bean.type, bean.index])
+        return self.model.append(level, [bean.name, bean.path, bean.font, bean.is_visible, bean.type, bean.index, bean.parent])
         
     def clear(self):
         self.model.clear() 
@@ -81,7 +82,8 @@ class DirectoryModel():
             bean.font = model.get_value(iter, self.POS_FONT)
             bean.visible = model.get_value(iter, self.POS_VISIBLE)
             bean.type = model.get_value(iter, self.POS_TYPE)
-            bean.index = model.get_value(iter, self.POS_INDEX)                
+            bean.index = model.get_value(iter, self.POS_INDEX)
+            bean.parent = model.get_value(iter, self.POS_PARENT)                  
             return bean
         return None
     
@@ -93,6 +95,7 @@ class DirectoryModel():
         bean.type = self.model[position][ self.POS_TYPE]
         bean.visible = self.model[position][ self.POS_VISIBLE]
         bean.font = self.model[position][ self.POS_FONT]
+        bean.parent = self.model[position][self.POS_PARENT]
         return bean
 
     def getAllSongs(self):

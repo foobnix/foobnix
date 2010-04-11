@@ -5,11 +5,11 @@ Created on Feb 26, 2010
 '''
 
 def debug(*args):
-    print "DEBUG", args
+    print "DEBUG:", args
 
 def info(*args):    
-    print "INFO", args
+    print "INFO:", args
 
 def error(*args):    
-    print "ERROR", args
+    print "ERROR:", args
     

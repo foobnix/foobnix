@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on Mar 11, 2010
 
@@ -21,6 +22,7 @@ from foobnix.directory.pref_list_model import PrefListModel
 import thread
 import gettext
 from threading import Lock
+import time
 
 
 gettext.install("foobnix", unicode=True)
@@ -31,8 +33,8 @@ class DirectoryCntr():
     VIEW_RADIO_STATION = 1
     VIEW_VIRTUAL_LISTS = 2
     
-    DEFAULT_LIST = "Default"
-    
+    DEFAULT_LIST = "Default list";
+    #DEFAULT_LIST_NAME = _("Default list");
     
     def __init__(self, gxMain, playlistCntr, radioListCntr, virtualListCntr):
         
@@ -94,13 +96,14 @@ class DirectoryCntr():
         
         
     
-    def getState(self):
+    def getState(self):        
         return self.prefListMap
     
     def setState(self, preflists):
         self.prefListMap = preflists
         self.prefModel.prefListMap = preflists
-        for key in self.prefListMap: 
+        for key in self.prefListMap:
+            LOG.info("add key to virtual list", unicode(key))             
             self.prefModel.append(key)
             
     
@@ -139,10 +142,11 @@ class DirectoryCntr():
     
     def onPreflListMouseClick(self, w, event):
         if event.button == 3 and event.type == gtk.gdk._2BUTTON_PRESS: #@UndefinedVariable
-            print "Create new"
-            unknownListName = "Unknown play list"
+            LOG.debug("Create new paly list")
+            unknownListName = _("New play list")
             if not self.prefModel.isContain(unknownListName):
-                self.prefModel.append(unknownListName)           
+                self.prefModel.append(unknownListName) 
+                self.prefListMap[unknownListName] = []          
        
     def onPreflListDeleteItem(self, w, event):
         
@@ -152,7 +156,11 @@ class DirectoryCntr():
             print event.hardware_keycode
             if event.hardware_keycode == 119 or event.hardware_keycode == 107:
                 if self.prefModel.getSelectedIndex() > 0:
-                    self.prefModel.removeSelected()               
+                    del self.prefListMap[unicode(self.prefModel.getSelected())]
+                    self.prefModel.removeSelected()
+                                        
+                    self.clear()                     
+                                   
     
     def all(self, *args):
         for arg in args:
@@ -169,6 +177,7 @@ class DirectoryCntr():
         self.view_list.set_active(view_type)
 
     def onChangeView(self, *args):
+        self.leftNoteBook.set_current_page(0)
         active_index = self.view_list.get_active()  
         if active_index == self.VIEW_ARTIST_ALBUM:
             self.clear()
@@ -184,8 +193,14 @@ class DirectoryCntr():
         elif active_index == self.VIEW_VIRTUAL_LISTS:                      
             items = self.getPrefListBeans(self.DEFAULT_LIST)
             self.display_virtual(items)
+            
+        
                         
     def append_virtual(self, beans=None):
+        LOG.debug("Current virtual list", self.currentListMap)
+        if not self.currentListMap:
+            self.currentListMap = self.DEFAULT_LIST 
+            
         self.appendToPrefListBeans(beans, self.currentListMap)       
         items = self.getPrefListBeans(self.currentListMap)
         self.display_virtual(items)
@@ -194,7 +209,7 @@ class DirectoryCntr():
         self.clear()
         
         "Displya list title"
-        self.model.append(None, CommonBean(name="[" + self.currentListMap + "] play list", path=None, font="bold", is_visible=True, type=CommonBean.TYPE_LABEL, parent=None, index=0))
+        self.model.append(None, CommonBean(name="[" + self.currentListMap + "]", path=None, font="bold", is_visible=True, type=CommonBean.TYPE_LABEL, parent=None, index=0))
         
         if not items:
             return None
@@ -319,23 +334,33 @@ class DirectoryCntr():
         LOG.debug(result)
         return result 
     
-    lock = Lock()
+    cachModel = []
+    
     def addAllThread(self):
+        """
+        if self.cachModel:            
+            for bean in self.cachModel:                    
+                    self.model.append(None, bean)  
+            return True
+      """
+      
         level = None;
-        self.lock.acquire()
-        
-                        
         self.go_recursive(self.musicFolder, level)
         if not  len(self.model.getModel()):
-            self.model.append(level, CommonBean(name="Music not found in " + FConfiguration().mediaLibraryPath, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER))
-        self.lock.release()
+            self.model.append(level, CommonBean(name=_("Music not found in ") + FConfiguration().mediaLibraryPath, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=level))
+        else:                
+            """
+            for i in xrange(len(self.model.getModel())):   
+                bean = self.model.getBeenByPosition(i)
+                self.cachModel.append(bean)
+           """ 
         
         
         
     
     def addAll(self):                
-        thread.start_new_thread(self.addAllThread, ())
-        
+        #thread.start_new_thread(self.addAllThread, ())
+        self.addAllThread()
         
     def sortedDirsAndFiles(self, path, list):        
         files = []
@@ -388,10 +413,10 @@ class DirectoryCntr():
             
             if self.isDirectoryWithMusic(full_path):
                 #LOG.debug("directory", file)                
-                sub = self.model.append(level, CommonBean(name=file, path=full_path, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER))                    
+                sub = self.model.append(level, CommonBean(name=file, path=full_path, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=level))                    
                 self.go_recursive(full_path, sub) 
             else:
                 if not isDirectory(full_path):
-                    self.model.append(level, CommonBean(name=file, path=full_path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_FILE))
+                    self.model.append(level, CommonBean(name=file, path=full_path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_FILE, parent=level))
                     #LOG.debug("file", file)                             
 

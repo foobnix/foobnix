@@ -25,7 +25,10 @@ class Vkontakte:
         self.password = password
         self.cookie = None
         self.execute_time = time.time()
+       
         
+    def isLive(self):
+        return self.get_s_value()
 
     def get_s_value(self):
 
@@ -47,7 +50,11 @@ class Vkontakte:
         data = urllib2.urlopen(conn)
         result = data.read()
         
-        return re.findall(r"name='s' id='s' value='(.*?)'", result)[0]
+        value = re.findall(r"name='s' id='s' value='(.*?)'", result)
+        if value:
+            return value[0]
+        
+        return None
 
     def get_cookie(self):
 

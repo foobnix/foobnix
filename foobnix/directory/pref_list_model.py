@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on Mar 30, 2010
 
@@ -5,6 +6,7 @@ Created on Mar 30, 2010
 '''
 import gtk
 import time
+from foobnix.util import LOG
 class PrefListModel():
     POS_NAME = 0
     def __init__(self, widget, prefListMap):
@@ -15,7 +17,7 @@ class PrefListModel():
         renderer.connect('edited', self.editRow)        
         renderer.set_property('editable', True)
         
-        column = gtk.TreeViewColumn("Prefer play lists", renderer, text=0, font=2)
+        column = gtk.TreeViewColumn(_("My play lists"), renderer, text=0, font=2)
         column.set_resizable(True)
         widget.append_column(column)
         
@@ -25,21 +27,19 @@ class PrefListModel():
     def removeSelected(self):
         selection = self.widget.get_selection()
         model, selected = selection.get_selected()
-        if selected:
-            time.sleep(0.05)
-        
+        if selected:                
             self.model.remove(selected)
         
     
     def editRow(self, w, event, value):
-        beforeRename = self.getSelected()
+        beforeRename = unicode(self.getSelected())
         
         if value:
             i = self.getSelectedIndex()
             if i > 0 and not self.isContain(value):                                        
                 self.model[i][self.POS_NAME] = value
                 
-                "copy songs with new name"
+                """copy songs with new name"""
                 print "beforeRename ", beforeRename, self.prefListMap.keys()
                 datas = self.prefListMap[beforeRename]
                 print datas
@@ -52,7 +52,7 @@ class PrefListModel():
         if selected:
             i = model.get_string_from_iter(selected)        
             if i.find(":") == -1:
-                print "Selected index is " , i
+                LOG.info("Selected index is " , i)
                 return int(i)
         return None
     
