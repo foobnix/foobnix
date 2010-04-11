@@ -25,6 +25,7 @@ import urllib
 
 import threading
 from foobnix.online.google.translate import Translator
+from foobnix.util import LOG
 
 
 '''
@@ -59,9 +60,10 @@ class OnlineListCntr():
             os.makedirs(path)
     
     
-    def __init__(self, gxMain, playerCntr, directoryCntr):
+    def __init__(self, gxMain, playerCntr, directoryCntr, playerWidgets):
         self.playerCntr = playerCntr
         self.directoryCntr = directoryCntr
+        self.playerWidgets = playerWidgets
         
         self.search_text = gxMain.get_widget("search_entry")
         self.search_text.connect("key-press-event", self.on_key_pressed)
@@ -89,10 +91,16 @@ class OnlineListCntr():
             self.network = pylast.get_lastfm_network(api_key=self.API_KEY, api_secret=self.API_SECRET, username=self.username, password_hash=self.password_hash)
             #self.scrobler = self.network.get_scrobbler("tst", "1.0")  
         except:
-            print "network not found"
-            return
+            self.playerWidgets.setStatusText(_("lasf.fm connection error"))
+            LOG.error("lasf.fm connection error")
+            #return None
         
         self.vk = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
+        if not self.vk.isLive():            
+            self.playerWidgets.setStatusText(_("Vkontakte connection error"))
+            LOG.error("Vkontakte connection error")
+            
+        
         self.play_attempt = 0
         
         self.playerThreadId = None
@@ -166,6 +174,11 @@ class OnlineListCntr():
 
     def on_search(self, *args):
         if self.playerThreadId:
+            return None
+        
+        if not self.vk.isLive():
+            LOG.error("VK is not availiable")
+            LOG.error("Vkontakte connection error")
             return None
         
         self.lock.acquire()
@@ -427,17 +440,19 @@ class OnlineListCntr():
         playlistBean = self.model.getBeenByPosition(self.index)
         return playlistBean
     
+        
     def getNextSong(self):
-        playlistBean = self.nextBean() 
         
-        if(playlistBean.type == CommonBean.TYPE_FOLDER):
-            playlistBean = self.nextBean()
+        currentSong = self.nextBean() 
         
-        self.setSongResource(playlistBean)
-        print "PATH", playlistBean.path
+        if(currentSong.type == CommonBean.TYPE_FOLDER):
+            currentSong = self.nextBean()
+        
+        self.setSongResource(currentSong)
+        print "PATH", currentSong.path
                       
-        self.repopulate(self.entityBeans, playlistBean.index);        
-        return playlistBean
+        self.repopulate(self.entityBeans, currentSong.index);        
+        return currentSong
     
     def getPrevSong(self):
         playlistBean = self.prevBean()

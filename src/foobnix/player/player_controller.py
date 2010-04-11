@@ -10,6 +10,8 @@ import time
 import thread
 from foobnix.util.time_utils import convert_ns
 from foobnix.model.entity import CommonBean
+from foobnix.util import LOG
+from foobnix.util.confguration import FConfiguration
 
 class PlayerController:
     MODE_RADIO = "RADIO"
@@ -28,6 +30,7 @@ class PlayerController:
         self.time_format = gst.Format(gst.FORMAT_TIME)
         self.volume = 0
         self.mode = self.MODE_PLAY_LIST
+        
     pass
 
     def set_mode(self, mode):
@@ -51,6 +54,10 @@ class PlayerController:
         print "play song"
                 
         self.stopState()
+        
+        if not song:
+            LOG.info("NULL song can't playing")
+            return
         
         print "Path before", song.path
         #Try to set resource
@@ -103,7 +110,11 @@ class PlayerController:
     def playState(self):
         self.player.set_state(gst.STATE_PLAYING)
     
-    def stopState(self):
+    def stopState(self):        
+        self.setSeek(0.0)
+        self.widgets.seekBar.set_fraction(0.0)
+        self.widgets.seekBar.set_text("00:00 / 00:00")
+        self.playerThreadId = None
         self.player.set_state(gst.STATE_NULL)
         
     def setVolume(self, volumeValue): 
@@ -113,7 +124,7 @@ class PlayerController:
         return self.volume
     
     def playerHTTP(self):
-        print "Player For remote files"
+        LOG.info("Player For remote files")
         self.playbin = gst.element_factory_make("playbin", "player")  
         bus = self.playbin.get_bus()
         bus.add_signal_watch()
@@ -121,7 +132,7 @@ class PlayerController:
         return self.playbin
 
     def playerLocal(self):
-        print "Player Local Files"
+        LOG.info("Player Local Files")
         self.playbin = gst.element_factory_make("playbin2", "player")
         bus = self.playbin.get_bus()
         bus.add_signal_watch()
@@ -135,8 +146,9 @@ class PlayerController:
             song = self.onlineCntr.getNextSong()
         else:
             song = self.playlistCntr.getNextSong()
-                    
-        self.playSong(song)
+        
+        if song:
+            self.playSong(song)
         
     
     def prev(self):
@@ -148,16 +160,19 @@ class PlayerController:
         self.playSong(song)
     
     
+    def _isStatusNull(self):
+        return self.player.get_state()[1] == gst.STATE_NULL
     
     def setSeek(self, persentValue):  
-        if self.player.get_state()[1] == gst.STATE_NULL:
+        if self._isStatusNull():
+            self.playerThreadId = None
             return None
         pos_max = self.player.query_duration(self.time_format, None)[0]
         seek_ns = pos_max * persentValue / 100;  
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)
     
     def playThread(self, song=None):
-        print "Start Thread"        
+        LOG.info("Starts playing thread")        
         flag = True
         play_thread_id = self.playerThreadId
         gtk.gdk.threads_enter()#@UndefinedVariable        

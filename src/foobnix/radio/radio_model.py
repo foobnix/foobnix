@@ -24,9 +24,9 @@ class RadioListModel:
                
         cellpb = gtk.CellRendererPixbuf()
         cellpb.set_property('cell-background', 'yellow')
-        iconColumn = gtk.TreeViewColumn('Icon', cellpb, stock_id=0, cell_background=4)
-        numbetColumn = gtk.TreeViewColumn('N', gtk.CellRendererText(), text=1, background=4)
-        descriptionColumn = gtk.TreeViewColumn('PlayList', gtk.CellRendererText(), text=2, background=4)
+        iconColumn = gtk.TreeViewColumn(_('Icon'), cellpb, stock_id=0, cell_background=4)
+        numbetColumn = gtk.TreeViewColumn(_('N'), gtk.CellRendererText(), text=1, background=4)
+        descriptionColumn = gtk.TreeViewColumn(_('Music List'), gtk.CellRendererText(), text=2, background=4)
                 
         widget.append_column(iconColumn)
         widget.append_column(numbetColumn)

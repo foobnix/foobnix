@@ -796,8 +796,7 @@
                                 <property name="left_padding">12</property>
                                 <child>
                                   <widget class="GtkComboBoxEntry" id="filter-combobox-entry">
-                                    <property name="visible">True</property>
-                                    <property name="items" translatable="yes">old rearch	</property>
+                                    <property name="visible">True</property>                                    
                                   </widget>
                                 </child>
                               </widget>
@@ -868,6 +867,7 @@
                       <widget class="GtkTreeView" id="playlist_treeview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="reorderable">True</property>
                         <signal name="button_press_event" handler="on_playlist_treeview_button_press_event"/>
                         <signal name="drag_data_received" handler="on_playlist_treeview_drag_data_received"/>
                       </widget>

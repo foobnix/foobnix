@@ -5,6 +5,7 @@ Created on Mar 11, 2010
 '''
 import gtk
 from foobnix.model.entity import CommonBean
+from foobnix.util import LOG
 class PlaylistModel:
     POS_ICON = 0
     POS_TRACK_NUMBER = 1
@@ -20,9 +21,9 @@ class PlaylistModel:
                
         cellpb = gtk.CellRendererPixbuf()
         cellpb.set_property('cell-background', 'yellow')
-        iconColumn = gtk.TreeViewColumn('Icon', cellpb, stock_id=0, cell_background=4)
-        numbetColumn = gtk.TreeViewColumn('N', gtk.CellRendererText(), text=1, background=4)
-        descriptionColumn = gtk.TreeViewColumn('PlayList', gtk.CellRendererText(), text=2, background=4)
+        iconColumn = gtk.TreeViewColumn(_('Icon'), cellpb, stock_id=0, cell_background=4)
+        numbetColumn = gtk.TreeViewColumn(_('N'), gtk.CellRendererText(), text=1, background=4)
+        descriptionColumn = gtk.TreeViewColumn(_("Music List"), gtk.CellRendererText(), text=2, background=4)
                 
         widget.append_column(iconColumn)
         widget.append_column(numbetColumn)
@@ -31,6 +32,10 @@ class PlaylistModel:
         widget.set_model(self.model)
     
     def getBeenByPosition(self, position):
+        if position >= len(self.model):
+            LOG.error("Song index too much", position)
+            return None
+    
         bean = CommonBean() 
         bean.icon = self.model[position][ self.POS_ICON]
         bean.tracknumber = self.model[position][ self.POS_TRACK_NUMBER]
