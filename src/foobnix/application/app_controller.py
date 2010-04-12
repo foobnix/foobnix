@@ -49,7 +49,8 @@ class AppController():
         windowController = WindowController(v.gxMain,v.gxAbout, prefCntr)
         playerCntr.registerWindowController(windowController)
         
-        TrayIcon(v.gxTryIcon, windowController, playerCntr,playerWidgets)
+        trayIcon = TrayIcon(v.gxTryIcon, windowController, playerCntr,playerWidgets)
+        playerCntr.registerTrayIcon(trayIcon)
         
         loadExit = OnLoadExitAppCntr(playlistCntr, playerWidgets, playerCntr, directoryCntr, appConfCntr, radioListCntr, virtualListCntr)
         windowController.registerOnExitCnrt(loadExit)

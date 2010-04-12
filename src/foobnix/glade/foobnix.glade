@@ -634,8 +634,8 @@
                                   <widget class="GtkFileChooserButton" id="online_dir_filechooserbutton">
                                     <property name="visible">True</property>
                                     <property name="sensitive">False</property>
-                                    <property name="create_folders">False</property>
                                     <property name="action">select-folder</property>
+                                    <property name="create_folders">False</property>
                                     <property name="show_hidden">True</property>
                                   </widget>
                                   <packing>
@@ -796,7 +796,7 @@
                                 <property name="left_padding">12</property>
                                 <child>
                                   <widget class="GtkComboBoxEntry" id="filter-combobox-entry">
-                                    <property name="visible">True</property>                                    
+                                    <property name="visible">True</property>
                                   </widget>
                                 </child>
                               </widget>
@@ -1212,83 +1212,101 @@
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">popup-menu</property>
     <child>
-      <widget class="GtkToolbar" id="toolbar3">
+      <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
-        <property name="toolbar_style">icons</property>
-        <property name="tooltips">False</property>
-        <property name="icon_size">0</property>
+        <property name="orientation">vertical</property>
         <child>
-          <widget class="GtkToolButton" id="close">
+          <widget class="GtkToolbar" id="toolbar3">
             <property name="visible">True</property>
-            <property name="stock_id">gtk-quit</property>
-            <signal name="clicked" handler="on_close_clicked"/>
+            <property name="toolbar_style">icons</property>
+            <child>
+              <widget class="GtkToolButton" id="close">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-quit</property>
+                <signal name="clicked" handler="on_close_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="prev">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">toolbutton10</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-media-previous</property>
+                <signal name="clicked" handler="on_prev_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="play">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">toolbutton8</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-media-play</property>
+                <signal name="clicked" handler="on_play_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="pause">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">toolbutton9</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-media-pause</property>
+                <signal name="clicked" handler="on_pause_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="next">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">toolbutton11</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-media-next</property>
+                <signal name="clicked" handler="on_next_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="cancel">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-apply</property>
+                <signal name="clicked" handler="on_cancel_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
           </widget>
           <packing>
-            <property name="expand">False</property>
-            <property name="homogeneous">True</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkToolButton" id="prev">
+          <widget class="GtkLabel" id="text1">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">toolbutton10</property>
-            <property name="use_underline">True</property>
-            <property name="stock_id">gtk-media-previous</property>
-            <signal name="clicked" handler="on_prev_clicked"/>
+            <property name="label" translatable="yes">Foobnix</property>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="homogeneous">True</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkToolButton" id="play">
-            <property name="visible">True</property>
-            <property name="label" translatable="yes">toolbutton8</property>
-            <property name="use_underline">True</property>
-            <property name="stock_id">gtk-media-play</property>
-            <signal name="clicked" handler="on_play_clicked"/>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="homogeneous">True</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkToolButton" id="pause">
-            <property name="visible">True</property>
-            <property name="label" translatable="yes">toolbutton9</property>
-            <property name="use_underline">True</property>
-            <property name="stock_id">gtk-media-pause</property>
-            <signal name="clicked" handler="on_pause_clicked"/>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="homogeneous">True</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkToolButton" id="next">
-            <property name="visible">True</property>
-            <property name="label" translatable="yes">toolbutton11</property>
-            <property name="use_underline">True</property>
-            <property name="stock_id">gtk-media-next</property>
-            <signal name="clicked" handler="on_next_clicked"/>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="homogeneous">True</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkToolButton" id="cancel">
-            <property name="visible">True</property>
-            <property name="stock_id">gtk-apply</property>
-            <signal name="clicked" handler="on_cancel_clicked"/>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="homogeneous">True</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </widget>

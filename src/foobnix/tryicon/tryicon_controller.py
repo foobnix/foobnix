@@ -16,6 +16,8 @@ class TrayIcon:
         self.connect()       
         
         self.popup = gxTryIcon.get_widget("popUpWindow")
+        self.text1 = gxTryIcon.get_widget("text1")
+        self.text2 = gxTryIcon.get_widget("text2")
          
         signalsPopup = {
                 "on_close_clicked" :self.quitApp,
@@ -36,6 +38,12 @@ class TrayIcon:
             self.icon.connect("scroll-event", self.onScrollUpDown)
         except:
             pass
+    
+    def setText1(self, text):
+        self.text1.set_text(text) 
+    
+    def setText2(self, text):
+        self.text2.set_text(text)
      
     def quitApp(self, *a):
         self.windowController.onDestroy()  

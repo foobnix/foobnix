@@ -39,6 +39,8 @@ class PlayerController:
     def registerWindowController(self, windowController):
         self.windowController = windowController
     
+    def registerTrayIcon(self, trayIcon):
+        self.trayIcon = trayIcon
 
     def registerPlaylistCntr(self, playlistCntr):
         self.playlistCntr = playlistCntr
@@ -102,7 +104,9 @@ class PlayerController:
                 
         self.playState()
         self.setVolume(self.volume)
-        self.windowController.setTitle(song.getTitleDescription())        
+        self.windowController.setTitle(song.getTitleDescription())
+        self.trayIcon.setText1(song.getTitleDescription())
+                
     
     def pauseState(self):
         self.player.set_state(gst.STATE_PAUSED)  
