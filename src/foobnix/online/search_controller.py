@@ -20,7 +20,9 @@ def search_top_albums(network, query):
     beans = []    
     print "Albums: ", albums  
     
-    for album in albums:
+    for i, album in enumerate(albums):
+        if i > 6:
+            break;
         try:            
             album_txt = album.item
         except AttributeError:
