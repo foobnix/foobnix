@@ -4,6 +4,7 @@ Created on Mar 13, 2010
 @author: ivan
 '''
 import gtk
+import os.path
 class TrayIcon:
     def __init__(self, gxTryIcon, windowController, playerController, playerWidgets):
         self.windowController = windowController
@@ -11,7 +12,12 @@ class TrayIcon:
         self.playerWidgets = playerWidgets        
         self.icon = gtk.StatusIcon()
         self.icon.set_tooltip("Foobnix music playerEngine")
-        self.icon.set_from_stock("gtk-media-play")
+        iconPath = "/usr/local/share/pixmaps/foobnix.png"
+        if os.path.exists(iconPath):
+            self.icon.set_from_file(iconPath)
+        else:
+            self.icon.set_from_stock("gtk-media-play")
+        
         
         self.connect()       
         
