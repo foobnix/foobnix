@@ -8,6 +8,8 @@ from foobnix.lyric.lyr import get_lyrics
 import thread
 import gtk
 from foobnix.util import LOG
+from foobnix.util.confguration import FConfiguration
+
 
 
 class PlayerWidgetsCntl():
@@ -54,19 +56,25 @@ class PlayerWidgetsCntl():
         thread.start_new_thread(self._setLiricThread, (song,))
     
     def _setLiricThread(self, song):
-        print "Get lirics for:", song.getArtist(),  song.getTitle()
+        title = ""+song.getTitle()
+        for extension in FConfiguration().supportTypes:
+            if title.endswith(extension):
+                title = title.replace(extension,"")
+                break
+                
+        print "Get lirics for:", song.getArtist(),  title
         if song.getArtist() and  song.getTitle():
             try:
-                text =  get_lyrics(song.getArtist(), song.getTitle())
+                text =  get_lyrics(song.getArtist(), title)
             except:
                 self.setStatusText(_("Connection lyrics error"))
                 LOG.error("Connection lyrics error")
                 return None
                 
             if text: 
-                self.textbuffer.set_text("*** "+ song.getArtist() +" - " +song.getTitle() +" ***\n" +text)
+                self.textbuffer.set_text("*** "+ song.getArtist() +" - " +title +" ***\n" +text)
             else: 
-                self.textbuffer.set_text("Not Found lyrics for "+song.getArtist() +" - "+  song.getTitle() + "\n")
+                self.textbuffer.set_text("Not Found lyrics for "+song.getArtist() +" - "+  title + "\n")
             
     
     def onPlayButton(self, *a):
