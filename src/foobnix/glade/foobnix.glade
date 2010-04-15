@@ -634,9 +634,9 @@
                                   <widget class="GtkFileChooserButton" id="online_dir_filechooserbutton">
                                     <property name="visible">True</property>
                                     <property name="sensitive">False</property>
-                                    <property name="show_hidden">True</property>
                                     <property name="action">select-folder</property>
                                     <property name="create_folders">False</property>
+                                    <property name="show_hidden">True</property>
                                   </widget>
                                   <packing>
                                     <property name="position">1</property>
@@ -1323,11 +1323,13 @@
     <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
     <property name="program_name">Foobnix</property>
-    <property name="copyright" translatable="yes">Developed by Ivan Ivanenko</property>
+    <property name="copyright" translatable="yes">Developed by Ivan Ivanenko
+ivan.ivanenko@gmail.com</property>
     <property name="comments" translatable="yes">Playing all imaginations</property>
     <property name="website">http://code.google.com/p/foobnix/</property>
-    <property name="authors">Ivan Ivanenko</property>
-    <property name="logo">icon.ico</property>
+    <property name="authors">Ivan Ivanenko - Developer
+Vladimir Yashin - Icon</property>
+    <property name="logo">foobnix.png</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
