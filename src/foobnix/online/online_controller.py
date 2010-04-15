@@ -433,9 +433,9 @@ class OnlineListCntr():
         playlistBean = self.model.getBeenByPosition(self.index)
         return playlistBean
     def prevBean(self):
-        self.index += 1
-        if self.index >= len(self.entityBeans):
-            self.index = 0
+        self.index -= 1
+        if self.index <= 0:
+            self.index = len(self.entityBeans)
             
         playlistBean = self.model.getBeenByPosition(self.index)
         return playlistBean
