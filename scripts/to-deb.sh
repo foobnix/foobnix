@@ -1,13 +1,16 @@
 #!/bin/sh
 cd ../
 
+python setup.py install --record files.txt
+cat files.txt | sudo xargs rm -rf
+
 checkinstall \
 -y \
 --install=no \
 --deldoc=yes \
 --pkgname=foobnix \
 --pkgversion=0.1.0 \
---pkgrelease=1  \
+--pkgrelease=2  \
 --pkglicense=GPL \
 --pkggroup=foobnix \
 --pkgsource=. \

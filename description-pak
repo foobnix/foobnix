@@ -1,8 +1,8 @@
-Foobnix  music player
+Foobnix  Python GTK+ Music Player
 Play any music you want by last.fm album lists (free last.fm radio)
 
-Caching(save) already played music
 Support variety of audio formats
+Caching(save) already played online music
 Search and immediately listem by artist albums
 Search and immediately listem by the best tracks of artist
 Search similar artists
@@ -11,4 +11,4 @@ Make playlist by online musics
 Displya song lyrics
 Add and listen radio stations
 Very user friendly functional
-No necessary authorization on ВКонтакте and last.fm
+No necessary authorization on Vkontakte and last.fm
