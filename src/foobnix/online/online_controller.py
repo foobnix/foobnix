@@ -24,8 +24,8 @@ import os
 import urllib
 
 import threading
-from foobnix.online.google.translate import Translator
 from foobnix.util import LOG
+from foobnix.online.google.translate import translate
 
 
 '''
@@ -52,8 +52,9 @@ class OnlineListCntr():
     TOP_SONGS = "TOP_SONG"
     TOP_ALBUMS = "TOP_ALBUMS"
     TOP_SIMILAR = "TOP_SIMILAR"
-    TOP_SEARCH = "TOP_SEARCH"
+    TOP_ALL_SEARCH = "TOP_ALL_SEARCH"
     TOP_TAGS_GENRE = "TOP_TAGS_GENRE"
+    TOP_TRACKS = "TOP_TRACKS"
     
     def make_dirs(self, path):
         if not os.path.isdir(path):
@@ -71,11 +72,27 @@ class OnlineListCntr():
         search_button.connect("clicked", self.on_search)
         
         
-        self.radio_song = gxMain.get_widget("radiobutton_song")        
-        self.radio_album = gxMain.get_widget("radiobutton_album")
-        self.radio_similar = gxMain.get_widget("radiobutton_similar")
-        self.radio_search = gxMain.get_widget("radiobutton_search")
-        self.radio_tags_genre = gxMain.get_widget("radiobutton_tags")
+        self.button_top_songs = gxMain.get_widget("top_songs_togglebutton")
+        self.button_top_songs.connect("toggled", self.onSetSearchType, self.TOP_SONGS)
+        self.searchType = self.TOP_SONGS
+                
+        self.button_top_albums = gxMain.get_widget("top_albums_togglebutton")
+        self.button_top_albums.connect("toggled", self.onSetSearchType, self.TOP_ALBUMS)
+        
+        
+        self.button_top_similar = gxMain.get_widget("top_similar_togglebutton")
+        self.button_top_similar.connect("toggled", self.onSetSearchType, self.TOP_SIMILAR)
+        
+        self.button_all_search = gxMain.get_widget("all_search_togglebutton")
+        self.button_all_search.connect("toggled", self.onSetSearchType, self.TOP_ALL_SEARCH)
+        
+        self.button_tags = gxMain.get_widget("tags_togglebutton")
+        self.button_tags.connect("toggled", self.onSetSearchType, self.TOP_TAGS_GENRE)
+        
+        self.button_tracks = gxMain.get_widget("tracks_togglebutton")
+        self.button_tracks.connect("toggled", self.onSetSearchType, self.TOP_TRACKS)
+        
+        
         
         self.treeview = gxMain.get_widget("online_treeview")
         
@@ -106,7 +123,34 @@ class OnlineListCntr():
         self.playerThreadId = None
         
         pass #end of init
+    
+    def unActiveAllSearhcButtons(self, active):
+        if active != self.button_top_songs:
+            self.button_top_songs.set_active(False)
+        
+        if active != self.button_top_albums:    
+            self.button_top_albums.set_active(False)
+        
+        if active != self.button_top_similar:     
+            self.button_top_similar.set_active(False)
+        
+        if active != self.button_all_search:
+            self.button_all_search.set_active(False)
+        
+        if active != self.button_tags:
+            self.button_tags.set_active(False)
+        
+        if active != self.button_tracks:
+            self.button_tracks.set_active(False)        
 
+    def onSetSearchType(self, button, type=None):
+        button.set_active(True)
+        self.unActiveAllSearhcButtons(button)
+        self.searchType =  type        
+        LOG.info("Selected Search type", type)    
+        
+                  
+        
     
     def report_now_playing(self, song):
         if song.getArtist() and song.getTitle():
@@ -151,16 +195,6 @@ class OnlineListCntr():
             print "keyval", event.keyval, "keycode", event.hardware_keycode
             if event.hardware_keycode == 36:                
                 self.on_search()
-        
-    
-    def get_search_by(self):
-        if self.radio_song.get_active(): return self.TOP_SONGS
-        if self.radio_album.get_active(): return self.TOP_ALBUMS
-        if self.radio_similar.get_active(): return self.TOP_SIMILAR
-        if self.radio_search.get_active(): return self.TOP_SEARCH
-        if self.radio_tags_genre.get_active(): return self.TOP_TAGS_GENRE
-        #default is
-        return self.TOP_SONGS
     
     def get_search_query(self):
         query = self.search_text.get_text()
@@ -189,21 +223,21 @@ class OnlineListCntr():
             query = self.capitilize_query(u"" + query)
             
             self.append([self.TextBeen("Searching... " + query + " please wait", color="GREEN")])
-            if self.get_search_by() == self.TOP_ALBUMS:
+            if self.searchType == self.TOP_ALBUMS:
                 self.playerThreadId = thread.start_new_thread(self.search_top_albums, (query,))
                 #thread.start_new_thread(self.search_dots, (query,))                
 
-            elif self.get_search_by() == self.TOP_SONGS:                
+            elif self.searchType == self.TOP_SONGS:                
                 self.playerThreadId = thread.start_new_thread(self.search_top_tracks, (query,))
                 #thread.start_new_thread(self.search_dots, (query,))          
             
-            elif self.get_search_by() == self.TOP_SIMILAR:
+            elif self.searchType == self.TOP_SIMILAR:
                 self.playerThreadId = thread.start_new_thread(self.search_top_similar, (query,))
             
-            elif self.get_search_by() == self.TOP_SEARCH:                
+            elif self.searchType == self.TOP_ALL_SEARCH:                
                 self.playerThreadId = thread.start_new_thread(self.search_vk_engine, (query,))
                 #thread.start_new_thread(self.search_dots, (query,))
-            elif self.get_search_by() == self.TOP_TAGS_GENRE:
+            elif self.searchType == self.TOP_TAGS_GENRE:
                 self.playerThreadId = thread.start_new_thread(self.search_tags_genre, (query,))
                 
             
@@ -241,8 +275,8 @@ class OnlineListCntr():
     
     def search_tags_genre(self, query):        
         if not self.is_ascii(query):
-            translator = Translator()            
-            query = translator.translate(query.encode(), lang_from="ru")
+                       
+            query = translate(query, src="ru", to="en")
             self.append([self.TextBeen("Translated: " + query, color="LIGHT GREEN")])
         
         beans = search_tags_genre(self.network, query)        
