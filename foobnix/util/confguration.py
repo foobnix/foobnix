@@ -39,6 +39,7 @@ class FConfiguration:
         self.volumeValue = 50.0
         self.vpanelPostition = 500
         self.hpanelPostition = 350
+        self.hpanel2Postition = 500
         
         self.playlistState = None
         self.radiolistState = None
@@ -74,6 +75,8 @@ class FConfiguration:
                 self.volumeValue = instance.volumeValue
                 self.vpanelPostition = instance.vpanelPostition
                 self.hpanelPostition = instance.hpanelPostition
+                self.hpanel2Postition = instance.hpanel2Postition
+                
                 self.savedRadioList = instance.savedRadioList
                 
                 self.is_save_online = instance.is_save_online

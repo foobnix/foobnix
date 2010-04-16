@@ -33,6 +33,10 @@ class OnLoadExitAppCntr():
         if FConfiguration().hpanelPostition:
             self.playerWidgets.hpanel.set_position(FConfiguration().hpanelPostition)
         
+        if FConfiguration().hpanel2Postition:
+            self.playerWidgets.hpanel2.set_position(FConfiguration().hpanel2Postition)    
+            
+        
         if FConfiguration().vpanelPostition:
             self.playerWidgets.vpanel.set_position(FConfiguration().vpanelPostition)
             
@@ -59,6 +63,7 @@ class OnLoadExitAppCntr():
         FConfiguration().volumeValue = self.playerWidgets.volume.get_value()
         FConfiguration().vpanelPostition = self.playerWidgets.vpanel.get_position()
         FConfiguration().hpanelPostition = self.playerWidgets.hpanel.get_position()
+        FConfiguration().hpanel2Postition = self.playerWidgets.hpanel2.get_position()
         FConfiguration().mediaLibraryPath = self.appConfCntr.getMusicFolder()
         
         FConfiguration().vk_login = self.appConfCntr.getVkLogin()

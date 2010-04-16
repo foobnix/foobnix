@@ -73,11 +73,11 @@ class DirectoryCntr():
         self.leftNoteBook = gxMain.get_widget("left_notebook")
                 
         
-        self.filter = gxMain.get_widget("filter-combobox-entry")
+        self.filter = gxMain.get_widget("filter-entry")
         #self.filter.connect("key-press-event", self.onFiltering)
         self.filter.connect("key-release-event", self.onFiltering)
         
-        
+        """
         self.view_list = gxMain.get_widget("view_list_combobox")
         cell = gtk.CellRendererText()
         self.view_list.pack_start(cell, True)
@@ -90,7 +90,7 @@ class DirectoryCntr():
         self.view_list.set_active(0)
         
         self.view_list.connect("changed", self.onChangeView)
-        
+        """
         self.saved_model = None
         
         
