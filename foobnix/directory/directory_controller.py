@@ -262,7 +262,7 @@ class DirectoryCntr():
             
     
     def onFiltering(self, *args):   
-        text = self.filter.get_children()[0].get_text()
+        text = self.filter.get_text()
         print "filtering by text", text
         self.model.filterByName(text)
         
