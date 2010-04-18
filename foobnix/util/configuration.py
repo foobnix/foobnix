@@ -5,7 +5,7 @@ Created on Feb 27, 2010
 @author: ivan
 '''
 import pickle
-import os
+import os, sys
 from foobnix.util import LOG
 import tempfile
 
@@ -29,7 +29,7 @@ class FConfiguration:
         
         self.mediaLibraryPath = tempfile.gettempdir()
         self.onlineMusicPath = tempfile.gettempdir()
-        self.supportTypes = [".mp3", ".ogg", ".ape", ".flac",".wma"]
+        self.supportTypes = [".mp3", ".ogg", ".ape", ".flac", ".wma"]
         self.isRandom = False
         self.isRepeat = True
         self.isPlayOnStart = False
@@ -89,7 +89,7 @@ class FConfiguration:
                 self.lfm_password = instance.lfm_password
                 
             except AttributeError:
-                LOG.debug("Configuraton attributes are changed")                
+                LOG.debug("Configuraton attributes are changed")
                 os.remove(self.CFG_FILE)
  
         print "LOAD CONFIGS"
@@ -98,12 +98,12 @@ class FConfiguration:
     def save(self):
         print "SAVE CONFIGS"
         self.printArttibutes()
-        FConfiguration()._saveCfgToFile()      
+        FConfiguration()._saveCfgToFile()
         
     def printArttibutes(self):
         for i in dir(self):
             if not i.startswith("__"):
-                print i, getattr(self, i)         
+                print i, getattr(self, i)
         
     def _saveCfgToFile(self):
         #conf = FConfiguration()
@@ -116,25 +116,20 @@ class FConfiguration:
     def _loadCfgFromFile(self, is_load_file):
         if not is_load_file:
             return
-        
-        try:       
-            load_file = file(self.CFG_FILE, 'r')
+
+        try:
+            with file(self.CFG_FILE, 'r') as load_file:
+                pickled = load_file.read()
+                # fixing mistyped 'configuration' package name
+                if 'confguration' in pickled:
+                    pickled = pickled.replace('confguration', 'configuration')
+                return pickle.loads(pickled)
         except IOError:
-            LOG.debug("file not exists")
-            return None
-        try:        
-            conf = pickle.load(load_file)
-        except type:
-            print type
-            LOG.debug("Error loading configuration")
-            load_file.close()
-            LOG.debug("Delete file")
+            LOG.debug('Configuration file does not exist.')
+        except ImportError, ex:
+            print >> sys.stderr, ex
+            LOG.debug('Configuration file is corrupted. Removing it...')
             os.remove(self.CFG_FILE)
-            
-            conf = FConfiguration(False)
-            return conf
-        
-        load_file.close()    
-        
-        LOG.debug("Load configuration")
-        return conf
+        except BaseException, ex:
+            print >> sys.stderr, 'Unexpected exception of type %s: "%s".' % (ex.__class__.__name__, ex)
+

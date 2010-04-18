@@ -3,7 +3,7 @@ Created on Mar 14, 2010
 
 @author: ivan
 '''
-from foobnix.util.confguration import FConfiguration
+from foobnix.util.configuration import FConfiguration
 class AppConfigurationCntrl():
     def __init__(self, gxMain, directoryCntr):
         self.directoryCntr = directoryCntr

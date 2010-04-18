@@ -12,7 +12,7 @@ from foobnix.util import LOG
 
 from foobnix.directory.directory_model import DirectoryModel
 from foobnix.model.entity import CommonBean
-from foobnix.util.confguration import FConfiguration
+from foobnix.util.configuration import FConfiguration
 from foobnix.util.file_utils import isDirectory, getExtenstion
 import gtk
 from foobnix.directory.pref_list_model import PrefListModel
