@@ -3,7 +3,7 @@
 import os, glob, shutil
 
 from distutils.core import setup
-from foobnix.util.confguration import VERSION
+from foobnix.util.configuration import VERSION
 
 
 def capture(cmd):

@@ -3,7 +3,7 @@ Created on Mar 14, 2010
 
 @author: ivan
 '''
-from foobnix.util.confguration import FConfiguration
+from foobnix.util.configuration import FConfiguration
 class OnLoadExitAppCntr():
     def __init__(self, playlistCntr, playerWidgets, playerCntr, directoryCntr, appConfCntr, radioListCntr, virtualListCntr):
         self.directoryCntr = directoryCntr

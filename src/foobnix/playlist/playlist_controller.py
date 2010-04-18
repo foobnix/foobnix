@@ -10,7 +10,7 @@ from foobnix.model.entity import CommonBean
 from foobnix.util.mouse_utils import is_double_click
 from foobnix.player.player_controller import PlayerController
 from random import randint
-from foobnix.util.confguration import FConfiguration
+from foobnix.util.configuration import FConfiguration
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.util import LOG
 

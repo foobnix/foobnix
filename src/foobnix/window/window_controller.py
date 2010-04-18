@@ -4,7 +4,7 @@ Created on Mar 13, 2010
 @author: ivan
 '''
 import gtk
-from foobnix.util.confguration import VERSION
+from foobnix.util.configuration import VERSION
 
 class WindowController():
     def __init__(self, gxMain, gxAbout,  prefCntr):

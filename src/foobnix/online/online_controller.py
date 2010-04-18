@@ -14,7 +14,7 @@ from foobnix.online.search_controller import search_top_albums, \
     search_top_tracks, search_top_similar, search_tags_genre
 import thread
 from foobnix.directory.directory_controller import DirectoryCntr
-from foobnix.util.confguration import FConfiguration
+from foobnix.util.configuration import FConfiguration
 from foobnix.online.google.search import GoogleSearch
 import os
 import urllib
