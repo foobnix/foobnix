@@ -14,7 +14,7 @@ class AppView():
     
     def __init__(self):
         self.gxMain = self.glade_XML(self.gladeMain, "foobnixWindow")
-        self.gxTryIcon = self.glade_XML(self.gladeMain, "popUpWindow")
+        self.gxTrayIcon = self.glade_XML(self.gladeMain, "popUpWindow")
         self.gxPref = self.glade_XML(self.gladePref, "window")
         self.gxAbout = self.glade_XML(self.gladeMain, "aboutdialog")
                 

@@ -6,7 +6,7 @@ Created on Mar 13, 2010
 import gtk
 import os.path
 class TrayIcon:
-    def __init__(self, gxTryIcon, windowController, playerController, playerWidgets):
+    def __init__(self, gxTrayIcon, windowController, playerController, playerWidgets):
         self.windowController = windowController
         self.playerController = playerController
         self.playerWidgets = playerWidgets        
@@ -21,9 +21,9 @@ class TrayIcon:
         
         self.connect()       
         
-        self.popup = gxTryIcon.get_widget("popUpWindow")
-        self.text1 = gxTryIcon.get_widget("text1")
-        self.text2 = gxTryIcon.get_widget("text2")
+        self.popup = gxTrayIcon.get_widget("popUpWindow")
+        self.text1 = gxTrayIcon.get_widget("text1")
+        self.text2 = gxTrayIcon.get_widget("text2")
          
         signalsPopup = {
                 "on_close_clicked" :self.quitApp,
@@ -34,7 +34,7 @@ class TrayIcon:
                 "on_cancel_clicked": self.closePopUP
         }
         
-        gxTryIcon.signal_autoconnect(signalsPopup)        
+        gxTrayIcon.signal_autoconnect(signalsPopup)        
         self.isVisible = True
         
     def connect(self):
