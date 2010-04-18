@@ -29,6 +29,7 @@ import gtk
 
 from foobnix.model.entity import  CommonBean
 from foobnix.util.mouse_utils import is_double_click
+from foobnix.online.information_controller import InfortaionController
 
 
 class OnlineListCntr():
@@ -111,6 +112,8 @@ class OnlineListCntr():
         self.play_attempt = 0
         
         self.playerThreadId = None
+        
+        self.info = InfortaionController(gxMain, self.network)
         
         pass #end of init
     
@@ -360,7 +363,8 @@ class OnlineListCntr():
     def playBean(self, playlistBean):            
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
             self.setSongResource(playlistBean)
-            print "Find path", playlistBean.path 
+            
+            LOG.info("Song source path", playlistBean.path) 
           
             if not playlistBean.path:
                 self.count += 1
@@ -375,6 +379,10 @@ class OnlineListCntr():
             
             self.index = playlistBean.index
             self.repopulate(self.entityBeans, self.index)
+            
+            """retrive images and other info"""
+            self.info.show_song_info(playlistBean)
+            
 
                 
     def downloadSong(self, song):
@@ -420,25 +428,12 @@ class OnlineListCntr():
                     return True
                 else:
                     print "FILE NOT FOUND IN SYSTEM"
-                                    
-                
-                #Seach by pvleer engine
-                #playlistBean.path = find_song_urls(playlistBean.name)[0]
-                
+                              
                 #Seach by vk engine                
                 vkSong = self.vk.find_most_relative_song(playlistBean.name)
-                #print vkSongs
-                if vkSong:
-                     
-                    print "GET PATH", vkSong.path
-                    #playlistBean.name = playlistBean.name + " vk[" + str(vk.album) + " " + str(vk.track) + " " + str(vk.time) + "]"
-                    
-                    #self.dowloadThread(playlistBean)
-                       
-                    #self.downloadSong(playlistBean)  
-                    
-                    playlistBean.path = vkSong.path
-                                   
+                if vkSong:                    
+                    LOG.info("Find song on VK", vkSong, vkSong.path)                      
+                    playlistBean.path = vkSong.path                                   
                 else:
                     playlistBean.path = None
                 

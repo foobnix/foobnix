@@ -637,9 +637,9 @@
                                   <widget class="GtkFileChooserButton" id="online_dir_filechooserbutton">
                                     <property name="visible">True</property>
                                     <property name="sensitive">False</property>
+                                    <property name="show_hidden">True</property>
                                     <property name="action">select-folder</property>
                                     <property name="create_folders">False</property>
-                                    <property name="show_hidden">True</property>
                                   </widget>
                                   <packing>
                                     <property name="position">1</property>
@@ -1137,9 +1137,9 @@
                                   <widget class="GtkHBox" id="hbox16">
                                     <property name="visible">True</property>
                                     <child>
-                                      <widget class="GtkImage" id="image1">
-                                        <property name="width_request">200</property>
-                                        <property name="height_request">200</property>
+                                      <widget class="GtkImage" id="image_widget">
+                                        <property name="width_request">250</property>
+                                        <property name="height_request">250</property>
                                         <property name="visible">True</property>
                                         <property name="pixbuf">Cover.jpg</property>
                                       </widget>
@@ -1150,7 +1150,7 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkTreeView" id="treeview1">
+                                      <widget class="GtkTreeView" id="treeview_similart_artists">
                                         <property name="width_request">100</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
@@ -1173,7 +1173,7 @@
                                     <property name="hscrollbar_policy">automatic</property>
                                     <property name="vscrollbar_policy">automatic</property>
                                     <child>
-                                      <widget class="GtkTextView" id="textview1">
+                                      <widget class="GtkTextView" id="biography_textview">
                                         <property name="width_request">150</property>
                                         <property name="height_request">150</property>
                                         <property name="visible">True</property>
@@ -1257,7 +1257,7 @@
                                             <property name="hscrollbar_policy">automatic</property>
                                             <property name="vscrollbar_policy">automatic</property>
                                             <child>
-                                              <widget class="GtkTreeView" id="treeview2">
+                                              <widget class="GtkTreeView" id="treeview_similar_songs">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                               </widget>
@@ -1274,7 +1274,7 @@
                                             <property name="hscrollbar_policy">automatic</property>
                                             <property name="vscrollbar_policy">automatic</property>
                                             <child>
-                                              <widget class="GtkTreeView" id="treeview4">
+                                              <widget class="GtkTreeView" id="treeview_song_tags">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                               </widget>
@@ -1686,7 +1686,7 @@
     <property name="resizable">False</property>
     <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
-    <property name="icon">icon.ico</property>
+    <property name="icon">foobnix.png</property>
     <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
     <property name="program_name">Foobnix</property>
