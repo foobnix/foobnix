@@ -3,9 +3,12 @@ Created on Mar 11, 2010
 
 @author: ivan
 '''
+import pygst
+pygst.require('0.10')
 import gst
 import gtk
 import time
+import urllib
 
 import thread
 from foobnix.util.time_utils import convert_ns
@@ -85,8 +88,8 @@ class PlayerController:
         print "Name", song.name
         
         if  song.type == CommonBean.TYPE_MUSIC_FILE:
-            self.player = self.playerLocal()                        
-            self.player.set_property("uri", "file://" + song.path)
+            self.player = self.playerLocal()              
+            self.player.set_property("uri", 'file:' + urllib.pathname2url(song.path))
             self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
         elif song.type == CommonBean.TYPE_RADIO_URL:
             print "URL PLAYING", song.path
