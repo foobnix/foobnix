@@ -5,12 +5,9 @@ Created on Mar 16, 2010
 
 @author: ivanf
 '''
-from foobnix.radio.radio_model import RadioListModel
-from foobnix.util.plsparser import getStationPath, getPlsName
 from foobnix.online import pylast
 import time
 from foobnix.online.online_model import OnlineListModel
-from foobnix.online.rupleer import find_song_urls
 from foobnix.player.player_controller import PlayerController
 from foobnix.online.vk import Vkontakte
 from foobnix.online.search_controller import search_top_albums, \
@@ -18,8 +15,7 @@ from foobnix.online.search_controller import search_top_albums, \
 import thread
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.util.confguration import FConfiguration
-from foobnix.online.google.search import GoogleSearch, SearchError
-import urllib2
+from foobnix.online.google.search import GoogleSearch
 import os
 import urllib
 
@@ -28,15 +24,9 @@ from foobnix.util import LOG
 from foobnix.online.google.translate import translate
 
 
-'''
-Created on Mar 11, 2010
-
-@author: ivan
-'''
 
 import gtk
 
-from foobnix.playlist.playlist_model import PlaylistModel
 from foobnix.model.entity import  CommonBean
 from foobnix.util.mouse_utils import is_double_click
 
@@ -367,7 +357,6 @@ class OnlineListCntr():
             elif playlistBean.type == CommonBean.TYPE_GOOGLE_HELP:
                 self.search_text.set_text(playlistBean.name)
                 
-    count = 0
     def playBean(self, playlistBean):            
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
             self.setSongResource(playlistBean)
@@ -381,7 +370,6 @@ class OnlineListCntr():
                     return self.playBean(self.getNextSong())
                 return 
             
-            count = 0
             self.playerCntr.set_mode(PlayerController.MODE_ONLINE_LIST)                                  
             self.playerCntr.playSong(playlistBean)
             

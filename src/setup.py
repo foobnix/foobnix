@@ -2,7 +2,7 @@
 
 import os, glob, shutil
 
-from distutils.core import setup, Extension
+from distutils.core import setup
 from foobnix.util.confguration import VERSION
 
 

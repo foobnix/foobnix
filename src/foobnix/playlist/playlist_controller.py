@@ -4,13 +4,12 @@ Created on Mar 11, 2010
 @author: ivan
 '''
 
-import gtk
 
 from foobnix.playlist.playlist_model import PlaylistModel
 from foobnix.model.entity import CommonBean
 from foobnix.util.mouse_utils import is_double_click
 from foobnix.player.player_controller import PlayerController
-from random import random, randint
+from random import randint
 from foobnix.util.confguration import FConfiguration
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.util import LOG
@@ -55,7 +54,7 @@ class PlaylistCntr():
         self.index = state[1]
         if self.get_playlist_beans():
             self.repopulate(self.get_playlist_beans(), self.index);
-           #self.playerCntr.playSong(self.get_playlist_beans()[self.index])
+            #self.playerCntr.playSong(self.get_playlist_beans()[self.index])
               
     def clear(self):
         self.model.clear()

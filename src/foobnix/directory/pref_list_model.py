@@ -4,9 +4,10 @@ Created on Mar 30, 2010
 
 @author: ivan
 '''
+
 import gtk
-import time
 from foobnix.util import LOG
+
 class PrefListModel():
     POS_NAME = 0
     def __init__(self, widget, prefListMap):
@@ -26,7 +27,7 @@ class PrefListModel():
     
     def removeSelected(self):
         selection = self.widget.get_selection()
-        model, selected = selection.get_selected()
+        selected = selection.get_selected()[1]
         if selected:                
             self.model.remove(selected)
         

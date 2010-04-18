@@ -14,15 +14,9 @@ from foobnix.directory.directory_model import DirectoryModel
 from foobnix.model.entity import CommonBean
 from foobnix.util.confguration import FConfiguration
 from foobnix.util.file_utils import isDirectory, getExtenstion
-from foobnix.util.mouse_utils import is_double_click
 import gtk
-from foobnix.directory.virtuallist_controller import VirturalLIstCntr
-import copy
 from foobnix.directory.pref_list_model import PrefListModel
-import thread
 import gettext
-from threading import Lock
-import time
 
 
 gettext.install("foobnix", unicode=True)
@@ -164,7 +158,7 @@ class DirectoryCntr():
     
     def all(self, *args):
         for arg in args:
-            print args
+            print arg
     
     
     def getModel(self):
