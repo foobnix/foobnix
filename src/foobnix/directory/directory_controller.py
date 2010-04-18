@@ -23,12 +23,14 @@ gettext.install("foobnix", unicode=True)
 
 class DirectoryCntr():
     
-    VIEW_ARTIST_ALBUM = 0
+    VIEW_LOCAL_MUSIC = 0
     VIEW_RADIO_STATION = 1
     VIEW_VIRTUAL_LISTS = 2
+    VIEW_CHARTS_LISTS = 2
     
     DEFAULT_LIST = "Default list";
     #DEFAULT_LIST_NAME = _("Default list");
+    
     
     def __init__(self, gxMain, playlistCntr, radioListCntr, virtualListCntr):
         
@@ -85,6 +87,22 @@ class DirectoryCntr():
         
         self.view_list.connect("changed", self.onChangeView)
         """
+        
+        show_local = gxMain.get_widget("show_local_music_button")
+        show_local.connect("clicked",self.onChangeView, self.VIEW_LOCAL_MUSIC)
+        
+        show_radio = gxMain.get_widget("show_radio_button")
+        show_radio.connect("clicked",self.onChangeView, self.VIEW_RADIO_STATION)
+        
+        show_play_list = gxMain.get_widget("show_lists_button")
+        show_play_list.connect("clicked",self.onChangeView, self.VIEW_VIRTUAL_LISTS)
+        
+        show_charts_ = gxMain.get_widget("show_charts_button")
+        show_charts_.connect("clicked",self.onChangeView, self.VIEW_CHARTS_LISTS)
+        
+        self.onChangeView
+        
+        
         self.saved_model = None
         
         
@@ -124,7 +142,7 @@ class DirectoryCntr():
             
     
     def onPreflListSelect(self, *args):
-        self.view_list.set_active(self.VIEW_VIRTUAL_LISTS)        
+        #self.view_list.set_active(self.VIEW_VIRTUAL_LISTS)        
         self.currentListMap = self.prefModel.getSelected()
         
         if self.currentListMap in self.prefListMap:
@@ -167,13 +185,15 @@ class DirectoryCntr():
     def on_drag_get(self, *args):    
         self.populate_playlist(append=True)
     
+    "TODO: set active button state"
     def set_active_view(self, view_type):
-        self.view_list.set_active(view_type)
+        #self.view_list.set_active(view_type)
+        pass
 
-    def onChangeView(self, *args):
+    def onChangeView(self, w, active_index):
         self.leftNoteBook.set_current_page(0)
-        active_index = self.view_list.get_active()  
-        if active_index == self.VIEW_ARTIST_ALBUM:
+        
+        if active_index == self.VIEW_LOCAL_MUSIC:
             self.clear()
             self.addAll()                
                 
