@@ -6,8 +6,6 @@ Created on Mar 18, 2010
 '''
 import urllib2
 import re
-from base64 import encode
-import urllib
 from string import replace
 
 def _engine_search(value):

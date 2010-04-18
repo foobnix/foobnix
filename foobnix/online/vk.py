@@ -4,18 +4,12 @@ Created on Mar 17, 2010
 
 @author: ivan
 '''
-# -*- coding: utf-8 -*-
+
 import urllib2
 import urllib
 import re
-import gst
 import time
 from string import replace
-from base64 import encode
-import sys
-
-
-# -*- coding: utf-8 -*-
 
 
 
@@ -180,7 +174,6 @@ class Vkontakte:
                 id_server = result[1]
                 id_folder = result[2]
                 id_file = result[3]
-                id_un2 = result[3]
             
                 url = "http://cs" + id_server + ".vkontakte.ru/u" + id_folder + "/audio/" + id_file + ".mp3"
                 urls.append(url)

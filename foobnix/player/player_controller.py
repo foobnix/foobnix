@@ -14,7 +14,6 @@ import thread
 from foobnix.util.time_utils import convert_ns
 from foobnix.model.entity import CommonBean
 from foobnix.util import LOG
-from foobnix.util.confguration import FConfiguration
 
 class PlayerController:
     MODE_RADIO = "RADIO"

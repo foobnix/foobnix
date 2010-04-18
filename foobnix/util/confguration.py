@@ -23,7 +23,7 @@ class Singleton(type):
 
 class FConfiguration:
     __metaclass__ = Singleton
-    CFG_FILE = os.getenv("HOME") + "/foobnix_conf.pkl"
+    CFG_FILE = 'q:' + "/foobnix_conf.pkl"
     
     def __init__(self, is_load_file=True):
         

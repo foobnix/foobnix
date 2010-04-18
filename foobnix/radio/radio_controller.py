@@ -5,15 +5,7 @@ Created on Mar 16, 2010
 '''
 from foobnix.radio.radio_model import RadioListModel
 from foobnix.util.plsparser import getStationPath, getPlsName
-'''
-Created on Mar 11, 2010
 
-@author: ivan
-'''
-
-import gtk
-
-from foobnix.playlist.playlist_model import PlaylistModel
 from foobnix.model.entity import  CommonBean
 from foobnix.util.mouse_utils import is_double_click
 

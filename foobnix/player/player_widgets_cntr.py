@@ -6,7 +6,6 @@ Created on Mar 11, 2010
 '''
 from foobnix.lyric.lyr import get_lyrics
 import thread
-import gtk
 from foobnix.util import LOG
 from foobnix.util.confguration import FConfiguration
 from foobnix.online.google.translate import translate

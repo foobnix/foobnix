@@ -4,7 +4,6 @@ Created on Mar 14, 2010
 @author: ivan
 '''
 import gtk.glade
-import gettext
 class AppView():
 
     gladeMain = "foobnix/glade/foobnix.glade"
