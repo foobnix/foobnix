@@ -110,6 +110,7 @@ class OnlineListCntr():
             
         
         self.play_attempt = 0
+        self.count = 0
         
         self.playerThreadId = None
         
