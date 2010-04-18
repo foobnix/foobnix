@@ -12,8 +12,12 @@ import thread
 class InfortaionController():
     def __init__(self,gx_main, last_fm_network):
         self.album_image = gx_main.get_widget("image_widget")
+        self.album_name = gx_main.get_widget("label_album_name")
         self.similar_artists = gx_main.get_widget("treeview_similart_artists")
+        
         self.biography_textVeiw = gx_main.get_widget("biography_textview")
+        self.biography_text = self.biography_textVeiw.get_buffer()
+        
         self.similar_artists = gx_main.get_widget("treeview_similar_songs")
         self.song_tags = gx_main.get_widget("treeview_song_tags")
         
@@ -46,7 +50,17 @@ class InfortaionController():
             image = album.get_cover_image(size=pylast.COVER_EXTRA_LARGE)
         except:
             LOG.info("image not found for:", song)
+        
+        self.album_name.set_text("Album: " + album.get_title())
+        wiki = None
+        try:
+            wiki = album.get_wiki_summary()
+        except:
+            LOG.info("wiki not found")
             
+        if wiki:
+            self.biography_text.set_text(wiki);
+        
         LOG.info("image:", image)        
         return image
     
