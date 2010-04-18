@@ -8,7 +8,7 @@ from foobnix.player.player_controller import PlayerController
 from foobnix.playlist.playlist_controller import PlaylistCntr
 from foobnix.player.player_widgets_cntr import PlayerWidgetsCntl
 from foobnix.directory.directory_controller import DirectoryCntr
-from foobnix.trayicon.trayicon_controller import TrayIcon
+from foobnix.trayicon import TrayIcon
 from foobnix.application.app_load_exit_controller import OnLoadExitAppCntr
 from foobnix.application.app_configuration_controller import AppConfigurationCntrl
 from foobnix.preferences.pref_controller import PrefController
