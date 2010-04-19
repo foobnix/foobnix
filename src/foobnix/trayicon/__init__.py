@@ -5,14 +5,15 @@ Created on Mar 13, 2010
 '''
 
 import gtk
-import sys
 import os.path
-from foobnix.util import LOG
 from foobnix.base import BaseController
 from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE
 
 
 class TrayIcon(BaseController):
+    """
+    A class that represents tray icon and a widget that pops up when the icon is right-clicked.
+    """
     
     __gsignals__ = {
         'exit'  : (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
@@ -30,18 +31,19 @@ class TrayIcon(BaseController):
     def __init__(self, gx_tray_icon):
         BaseController.__init__(self)
         
-        self.icon = gtk.StatusIcon()
-        self.icon.set_tooltip("Foobnix music playerEngine")
-        iconPath = "/usr/local/share/pixmaps/foobnix.png"
-        if os.path.exists(iconPath):
-            self.icon.set_from_file(iconPath)
-        else:
-            self.icon.set_from_stock("gtk-media-play")
-        
         self.popup = gx_tray_icon.get_widget("popUpWindow")
         self.text1 = gx_tray_icon.get_widget("text1")
         self.text2 = gx_tray_icon.get_widget("text2")
          
+        self.icon = gtk.StatusIcon()
+        self.icon.set_tooltip("Foobnix music playerEngine")
+        # TODO: move the path to config
+        icon_path = "/usr/local/share/pixmaps/foobnix.png"
+        if os.path.exists(icon_path):
+            self.icon.set_from_file(icon_path)
+        else:
+            self.icon.set_from_stock("gtk-media-play")
+        
         self.icon.connect("activate",   lambda *a: self.emit('toggle_window_visibility'))
         self.icon.connect("popup-menu", lambda *a: self.popup.show())
         try:
@@ -57,9 +59,8 @@ class TrayIcon(BaseController):
                 "on_prev_clicked"  : lambda *s: self.emit('prev'),
                 "on_cancel_clicked": lambda *a: self.popup.hide()
         }
-        
         gx_tray_icon.signal_autoconnect(popup_signals)
-        self.isVisible = True
+
         
     def setText1(self, text):
         self.text1.set_text(text)
@@ -68,10 +69,10 @@ class TrayIcon(BaseController):
         self.text2.set_text(text)
 
     def on_mouse_wheel_scrolled(self, w, event):
-        if event.direction == gtk.gdk.SCROLL_UP: #@UndefinedVariable
+        if event.direction == gtk.gdk.SCROLL_UP:    #@UndefinedVariable
             self.emit('volume_up')
         else:
             self.emit('volume_down')
-        
+        # TODO: move next line to player_controller 
         # self.playerWidgets.volume.set_value(volume * 100)
 
