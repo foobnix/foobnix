@@ -1138,8 +1138,8 @@
                                     <property name="visible">True</property>
                                     <child>
                                       <widget class="GtkImage" id="image_widget">
-                                        <property name="width_request">250</property>
-                                        <property name="height_request">250</property>
+                                        <property name="width_request">280</property>
+                                        <property name="height_request">280</property>
                                         <property name="visible">True</property>
                                         <property name="pixbuf">Cover.jpg</property>
                                       </widget>
