@@ -83,9 +83,9 @@ class InfortaionController():
         """similar tracks"""
         similars = track.get_similar()
         self.similar_songs_model.clear()
-        for song in similars:
-            song = CommonBean(name=song.item, type=CommonBean.TYPE_MUSIC_URL)
-            self.add_similar_song(song)
+        for tsong in similars:
+            tsong = CommonBean(name=tsong.item, type=CommonBean.TYPE_MUSIC_URL)
+            self.add_similar_song(tsong)
         
         """similar tags"""
         tags = track.get_top_tags(20)        
