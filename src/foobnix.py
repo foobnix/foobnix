@@ -4,6 +4,11 @@ Created on Mar 10, 2010
 
 @author: ivan
 '''
+import pygst
+pygst.require('0.10')
+
+import pygtk
+pygtk.require20()
 
 import gtk
 import gettext

@@ -15,17 +15,17 @@ class TrayIcon(BaseController):
     A class that represents tray icon and a widget that pops up when the icon is right-clicked.
     """
     
+    _BASIC_SIGNAL = (SIGNAL_RUN_FIRST, TYPE_NONE, ())
+    
     __gsignals__ = {
-        'exit'  : (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
-        'toggle_window_visibility' : (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
-
-        'play'  : (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
-        'pause' : (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
-        'next'  : (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
-        'prev'  : (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
-        
-        'volume_up'   : (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
-        'volume_down' : (SIGNAL_RUN_FIRST, TYPE_NONE, ())
+        'exit'  : _BASIC_SIGNAL,
+        'toggle_window_visibility' : _BASIC_SIGNAL,
+        'play'  : _BASIC_SIGNAL,
+        'pause' : _BASIC_SIGNAL,
+        'next'  : _BASIC_SIGNAL,
+        'prev'  : _BASIC_SIGNAL,
+        'volume_up'   : _BASIC_SIGNAL,
+        'volume_down' : _BASIC_SIGNAL
     }
     
     def __init__(self, gx_tray_icon):
@@ -67,6 +67,9 @@ class TrayIcon(BaseController):
     
     def setText2(self, text):
         self.text2.set_text(text)
+    
+    def on_song_started(self, sender, song):
+        self.setText1(song.getTitleDescription())
 
     def on_mouse_wheel_scrolled(self, w, event):
         if event.direction == gtk.gdk.SCROLL_UP:    #@UndefinedVariable
