@@ -9,6 +9,7 @@ import gobject
 
 SIGNAL_RUN_FIRST = gobject.SIGNAL_RUN_FIRST     #@UndefinedVariable
 TYPE_NONE = gobject.TYPE_NONE
+TYPE_PYOBJECT = gobject.TYPE_PYOBJECT
 
 class BaseController(GObject):
     

@@ -5,9 +5,17 @@ Created on Mar 13, 2010
 '''
 import gtk
 from foobnix.util.configuration import VERSION
+from foobnix.base import BaseController
+from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE
 
-class WindowController():
+class WindowController(BaseController):
+    
+    __gsignals__ = {
+        'exit'  : (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
+    }
+    
     def __init__(self, gxMain, gxAbout,  prefCntr):
+        BaseController.__init__(self)
         self.decorate(gxMain)
         self.prefCntr = prefCntr
         
@@ -15,14 +23,13 @@ class WindowController():
           
         self.window = gxMain.get_widget("foobnixWindow")
         self.window.maximize()
-        #self.window.connect("destroy", self.onDestroy)
         self.window.connect("delete-event", self.hide)
     
         self.window.set_title("Foobnix "+VERSION)
         
         signalsPopup = {
                 "on_gtk-preferences_activate" :self.showPref,
-                "on_file_quit_activate":self.onDestroy,
+                "on_file_quit_activate": lambda *a: self.emit('exit'),
                 "on_menu_about_activate":self.showAbout               
         }
         
@@ -45,9 +52,6 @@ class WindowController():
     def setTitle(self, text):
         self.window.set_title(text)
     
-    def registerOnExitCnrt(self, onExitCnrt):
-        self.onExitCnrt = onExitCnrt
-    
     def show(self):
         self.window.show()
     
@@ -59,11 +63,6 @@ class WindowController():
         visible = self.window.get_property('visible')
         self.window.set_property('visible', not visible)
     
-    def onDestroy(self, *a):
-        self.onExitCnrt.onExit()
-        gtk.main_quit() 
-        
-        
     def decorate(self, gx):
         rc_st = ''' 
                         style "menubar-style" { 

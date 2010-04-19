@@ -3,8 +3,6 @@ Created on Mar 11, 2010
 
 @author: ivan
 '''
-import pygst
-pygst.require('0.10')
 import gst
 import gtk
 import time
@@ -14,14 +12,22 @@ import thread
 from foobnix.util.time_utils import convert_ns
 from foobnix.model.entity import CommonBean
 from foobnix.util import LOG
+from foobnix.base import BaseController
+from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE, TYPE_PYOBJECT
 
-class PlayerController:
+class PlayerController(BaseController):
     MODE_RADIO = "RADIO"
     MODE_PLAY_LIST = "PLAY_LIST"
     MODE_ONLINE_LIST = "ONLINE_LIST"
     
     
+    __gsignals__ = {
+        'song_playback_started' : (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,))
+    }
+    
+        
     def __init__(self):
+        BaseController.__init__(self)
         self.player = self.playerLocal()
         
         self.songs = []
@@ -42,9 +48,6 @@ class PlayerController:
     def registerWindowController(self, windowController):
         self.windowController = windowController
     
-    def registerTrayIcon(self, trayIcon):
-        self.trayIcon = trayIcon
-
     def registerPlaylistCntr(self, playlistCntr):
         self.playlistCntr = playlistCntr
     
@@ -108,7 +111,7 @@ class PlayerController:
         self.playState()
         self.setVolume(self.volume)
         self.windowController.setTitle(song.getTitleDescription())
-        self.trayIcon.setText1(song.getTitleDescription())
+        self.emit('song_playback_started', song)
                 
     
     def pauseState(self, *args):
