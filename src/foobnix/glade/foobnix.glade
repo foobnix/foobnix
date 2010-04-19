@@ -638,8 +638,8 @@
                                     <property name="visible">True</property>
                                     <property name="sensitive">False</property>
                                     <property name="show_hidden">True</property>
-                                    <property name="create_folders">False</property>
                                     <property name="action">select-folder</property>
+                                    <property name="create_folders">False</property>
                                   </widget>
                                   <packing>
                                     <property name="position">1</property>
@@ -1150,10 +1150,18 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkTreeView" id="treeview_similart_artists">
-                                        <property name="width_request">100</property>
+                                      <widget class="GtkScrolledWindow" id="scrolledwindow9">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="hscrollbar_policy">automatic</property>
+                                        <property name="vscrollbar_policy">automatic</property>
+                                        <child>
+                                          <widget class="GtkTreeView" id="treeview_similart_artists">
+                                            <property name="width_request">100</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                          </widget>
+                                        </child>
                                       </widget>
                                       <packing>
                                         <property name="position">1</property>
@@ -1167,31 +1175,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkScrolledWindow" id="scrolledwindow9">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">automatic</property>
-                                    <property name="vscrollbar_policy">automatic</property>
-                                    <child>
-                                      <widget class="GtkTextView" id="biography_textview">
-                                        <property name="width_request">150</property>
-                                        <property name="height_request">150</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="editable">False</property>
-                                        <property name="wrap_mode">char</property>
-                                        <property name="text" translatable="yes">&#x41D;&#x435;&#x43A;&#x43E;&#x442;&#x43E;&#x440;&#x44B;&#x435; &#x43B;&#x44E;&#x434;&#x438; - &#x43F;&#x440;&#x438;&#x440;&#x43E;&#x436;&#x434;&#x435;&#x43D;&#x43D;&#x44B;&#x435; &#x43C;&#x443;&#x437;&#x44B;&#x43A;&#x430;&#x43D;&#x442;&#x44B;. Keith Kenniff - &#x43E;&#x434;&#x438;&#x43D; &#x438;&#x437; &#x442;&#x430;&#x43A;&#x438;&#x445; &#x43B;&#x44E;&#x434;&#x435;&#x439;.
-&#x412; &#x43C;&#x43E;&#x43B;&#x43E;&#x434;&#x43E;&#x43C; &#x432;&#x43E;&#x437;&#x440;&#x430;&#x441;&#x442;&#x435; &#x43E;&#x43D; &#x438; &#x435;&#x433;&#x43E; &#x431;&#x440;&#x430;&#x442; &#x43D;&#x430;&#x447;&#x430;&#x43B;&#x438; &#x438;&#x437;&#x443;&#x447;&#x430;&#x442;&#x44C; &#x43A;&#x43B;&#x430;&#x441;&#x441;&#x438;&#x447;&#x435;&#x441;&#x43A;&#x443;&#x44E; &#x433;&#x438;&#x442;&#x430;&#x440;&#x443;, &#x431;&#x430;&#x441; &#x438; &#x431;&#x430;&#x440;&#x430;&#x431;&#x430;&#x43D;&#x44B; &#x43F;&#x440;&#x438; &#x43F;&#x43E;&#x434;&#x434;&#x435;&#x440;&#x436;&#x43A;&#x435; &#x438;&#x445; &#x43E;&#x442;&#x446;&#x430;. Keith &#x438;&#x433;&#x440;&#x430;&#x43B; &#x432;&#x43E; &#x43C;&#x43D;&#x43E;&#x433;&#x438;&#x445; &#x43C;&#x430;&#x43B;&#x43E;&#x438;&#x437;&#x432;&#x435;&#x441;&#x442;&#x43D;&#x44B;&#x445; &#x433;&#x440;&#x443;&#x43F;&#x43F;&#x430;&#x445; - &#x43E;&#x442; &#x440;&#x43E;&#x43A;&#x430; &#x434;&#x43E; &#x434;&#x436;&#x430;&#x437;&#x430; &#x438; &#x43A;&#x43B;&#x430;&#x441;&#x441;&#x438;&#x43A;&#x438;, &#x44D;&#x43A;&#x441;&#x43F;&#x435;&#x440;&#x438;&#x43C;&#x435;&#x43D;&#x442;&#x438;&#x440;&#x443;&#x44F; &#x438; &#x43F;&#x43E;&#x437;&#x43D;&#x430;&#x432;&#x430;&#x44F; &#x43F;&#x440;&#x435;&#x436;&#x434;&#x435; &#x432;&#x441;&#x435;&#x433;&#x43E; &#x441;&#x435;&#x431;&#x44F; &#x441;&#x430;&#x43C;&#x43E;&#x433;&#x43E;. &#x412; &#x43A;&#x43E;&#x43D;&#x446;&#x435; &#x43A;&#x43E;&#x43D;&#x446;&#x43E;&#x432; &#x43E;&#x43D; &#x43F;&#x43E;&#x441;&#x442;&#x443;&#x43F;&#x438;&#x43B; &#x432; &#x43F;&#x440;&#x435;&#x441;&#x442;&#x438;&#x436;&#x43D;&#x44B;&#x439; &#x431;&#x43E;&#x441;&#x442;&#x43E;&#x43D;&#x441;&#x43A;&#x438;&#x439; &#x43C;&#x443;&#x437;&#x44B;&#x43A;&#x430;&#x43B;&#x44C;&#x43D;&#x44B;&#x439; &#x43A;&#x43E;&#x43B;&#x43B;&#x435;&#x434;&#x436; Berklee.
-&#x41C;&#x443;&#x437;&#x44B;&#x43A;&#x430;&#x43B;&#x44C;&#x43D;&#x44B;&#x439; &#x43F;&#x440;&#x43E;&#x435;&#x43A;&#x442; Helios &#x434;&#x430;&#x440;&#x438;&#x442; &#x43D;&#x430;&#x43C; &#x43F;&#x43E;&#x442;&#x440;&#x44F;&#x441;&#x430;&#x44E;&#x449;&#x435;&#x435; &#x43C;&#x44F;&#x433;&#x43A;&#x43E;&#x435;, &#x43D;&#x435;&#x436;&#x43D;&#x43E;&#x435; &#x437;&#x432;&#x443;&#x447;&#x430;&#x43D;&#x438;&#x435; &#x443;&#x434;&#x430;&#x440;&#x43D;&#x44B;&#x445; &#x438; &#x433;&#x438;&#x442;&#x430;&#x440;&#x43D;&#x44B;&#x445; &#x43F;&#x430;&#x440;&#x442;&#x438;&#x439;.
-&#x41D;&#x430;&#x445;&#x43E;&#x434;&#x44F;&#x449;&#x438;&#x439;&#x441;&#x44F; &#x432; &#x41C;&#x430;&#x439;&#x430;&#x43C;&#x438; &#x43B;&#x435;&#x439;&#x431;&#x43B; merck records &#x432;&#x44B;&#x43F;&#x443;&#x441;&#x442;&#x438;&#x43B; &#x435;&#x433;&#x43E; &#x43F;&#x435;&#x440;&#x432;&#x43E;&#x433;&#x43E; &#x430;&#x43B;&#x44C;&#x431;&#x43E;&#x43C; - Unomia, &#x43A;&#x43E;&#x442;&#x43E;&#x440;&#x44B;&#x439; &#x43F;&#x43E;&#x43B;&#x443;&#x447;&#x438;&#x43B; &#x43C;&#x435;&#x436;&#x434;&#x443;&#x43D;&#x430;&#x440;&#x43E;&#x434;&#x43D;&#x43E;&#x435; &#x43F;&#x440;&#x438;&#x437;&#x43D;&#x430;&#x43D;&#x438;&#x435;.</property>
-                                      </widget>
-                                    </child>
-                                  </widget>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
+                                  <placeholder/>
                                 </child>
                                 <child>
                                   <widget class="GtkHBox" id="hbox7">
@@ -1258,6 +1242,7 @@
                                             <property name="vscrollbar_policy">automatic</property>
                                             <child>
                                               <widget class="GtkTreeView" id="treeview_similar_songs">
+                                                <property name="width_request">200</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                               </widget>
@@ -1287,7 +1272,7 @@
                                       </widget>
                                     </child>
                                     <child>
-                                      <widget class="GtkLabel" id="label16">
+                                      <widget class="GtkLabel" id="current_song_label">
                                         <property name="visible">True</property>
                                         <property name="label" translatable="yes">&lt;b&gt;Current song name&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>

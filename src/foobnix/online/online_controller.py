@@ -91,10 +91,10 @@ class OnlineListCntr():
         
         self.treeview .connect("button-press-event", self.onPlaySong)
         
-        self.model = OnlineListModel(self.treeview)
+        self.similar_songs_model = OnlineListModel(self.treeview)
                 
         self.entityBeans = []
-        self.index = self.model.getSize();
+        self.index = self.similar_songs_model.getSize();
         try:
             self.network = pylast.get_lastfm_network(api_key=self.API_KEY, api_secret=self.API_SECRET, username=self.username, password_hash=self.password_hash)
             #self.scrobler = self.network.get_scrobbler("tst", "1.0")  
@@ -157,7 +157,7 @@ class OnlineListCntr():
         self.scrobler.scrobble(artist, title, time_started, source, mode, duration, album, track_number, mbid)
         
     def on_drag_end(self, *ars):
-        selected = self.model.getSelectedBean()
+        selected = self.similar_songs_model.getSelectedBean()
         print "SELECTED", selected
         self.directoryCntr.set_active_view(DirectoryCntr.VIEW_VIRTUAL_LISTS)
         if selected.type == CommonBean.TYPE_MUSIC_URL:
@@ -166,8 +166,8 @@ class OnlineListCntr():
         elif selected.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP]:
             selected.type = CommonBean.TYPE_FOLDER
             results = []       
-            for i in xrange(self.model.getSize()):            
-                searchBean = self.model.getBeenByPosition(i)
+            for i in xrange(self.similar_songs_model.getSize()):            
+                searchBean = self.similar_songs_model.getBeenByPosition(i)
                 #print "Search", searchBean 
                 if str(searchBean.name) == str(selected.name):
                     searchBean.parent = None
@@ -348,11 +348,11 @@ class OnlineListCntr():
 
     def clear(self):
         self.entityBeans = []
-        self.model.clear()
+        self.similar_songs_model.clear()
         
     def onPlaySong(self, w, e):
         if is_double_click(e):            
-            playlistBean = self.model.getSelectedBean()
+            playlistBean = self.similar_songs_model.getSelectedBean()
             print "play", playlistBean
             print "type", playlistBean.type            
             if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
@@ -448,14 +448,14 @@ class OnlineListCntr():
         if self.index >= len(self.entityBeans):
             self.index = 0
             
-        playlistBean = self.model.getBeenByPosition(self.index)
+        playlistBean = self.similar_songs_model.getBeenByPosition(self.index)
         return playlistBean
     def prevBean(self):
         self.index -= 1
         if self.index <= 0:
             self.index = len(self.entityBeans)
             
-        playlistBean = self.model.getBeenByPosition(self.index)
+        playlistBean = self.similar_songs_model.getBeenByPosition(self.index)
         return playlistBean
     
         
@@ -492,7 +492,7 @@ class OnlineListCntr():
             self.repopulate(entityBeans, index);
         
     def repopulate(self, entityBeans, index):
-        self.model.clear()        
+        self.similar_songs_model.clear()        
         for i in range(len(entityBeans)):
             songBean = entityBeans[i]
             
@@ -504,10 +504,10 @@ class OnlineListCntr():
             
             if i == index:
                 songBean.setIconPlaying()               
-                self.model.append(songBean)
+                self.similar_songs_model.append(songBean)
             else:           
                 songBean.setIconNone()  
-                self.model.append(songBean)
+                self.similar_songs_model.append(songBean)
                    
     def getBackgroundColour(self, i):
         if i % 2 :

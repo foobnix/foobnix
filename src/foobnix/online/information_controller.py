@@ -9,22 +9,54 @@ from foobnix.online import pylast
 import urllib
 import gtk
 import thread
+from foobnix.model.entity import CommonBean
 class InfortaionController():
     def __init__(self,gx_main, last_fm_network):
         self.album_image = gx_main.get_widget("image_widget")
-        self.album_name = gx_main.get_widget("label_album_name")
-        self.similar_artists = gx_main.get_widget("treeview_similart_artists")
         
-        self.biography_textVeiw = gx_main.get_widget("biography_textview")
-        self.biography_text = self.biography_textVeiw.get_buffer()
+        """album name"""
+        self.album_name = gx_main.get_widget("label_album_name")        
+        self.album_name.set_use_markup(gtk.TRUE)
         
-        self.similar_artists = gx_main.get_widget("treeview_similar_songs")
+        self.current_song_label = gx_main.get_widget("current_song_label")
+        self.current_song_label.set_use_markup(gtk.TRUE)
+        """Similar artists"""
+        self.similar_artists = gx_main.get_widget("treeview_similart_artists")        
+        self.similar_artists_model = gtk.ListStore(str)
+        song_column = gtk.TreeViewColumn(_('Similar Artists'), gtk.CellRendererText(), text=0)
+        self.similar_artists.append_column(song_column)        
+        self.similar_artists.set_model(self.similar_artists_model)
+        
+        """similar songs"""
+        self.similar_songs = gx_main.get_widget("treeview_similar_songs")
+        self.similar_songs_model = gtk.ListStore(str, str)
+        song_column = gtk.TreeViewColumn(_('Similar songs'), gtk.CellRendererText(), text=0)
+        self.similar_songs.append_column(song_column)        
+        self.similar_songs.set_model(self.similar_songs_model)
+        
+        """song tags"""       
         self.song_tags = gx_main.get_widget("treeview_song_tags")
+        self.song_tags_model = gtk.ListStore(str)
+        song_column = gtk.TreeViewColumn(_('Song tags'), gtk.CellRendererText(), text=0)
+        self.song_tags.append_column(song_column)        
+        self.song_tags.set_model(self.song_tags_model)
+        
+        
         
         self.last_fm_network = last_fm_network
     
+    def add_similar_song(self, song):
+        self.similar_songs_model.append([song.get_short_description(), song.path])
+    
+    def add_similar_artist(self, artist):
+        self.similar_artists_model.append([artist])
+    
+    def add_tag(self, tag):
+        self.song_tags_model.append([tag])
+    
     def show_song_info(self, song):
         thread.start_new_thread(self.show_song_info_tread, (song,))
+        #self.show_song_info_tread(song)
             
     def show_song_info_tread(self, song):
         self.song = song
@@ -36,30 +68,50 @@ class InfortaionController():
     
         image_pix_buf = self.create_pbuf_image_from_url(image_url)
         self.album_image.set_from_pixbuf(image_pix_buf)
-    
+        
     def set_image(self, path):
         pass
     
     def get_album_image_url(self, song):
-        album = self.last_fm_network.get_album(song.getArtist(), song.getTitle())
+        
+        self.current_song_label.set_markup("<b>" + song.getTitle()+"</b>")
+        
+        track = self.last_fm_network.get_track(song.getArtist(), song.getTitle())        
+        #album = self.last_fm_network.get_album(song.getArtist(), song.getTitle())
+        album = track.get_album()
+        
+        """similar tracks"""
+        similars = track.get_similar()
+        self.similar_songs_model.clear()
+        for song in similars:
+            song = CommonBean(name=song.item, type=CommonBean.TYPE_MUSIC_URL)
+            self.add_similar_song(song)
+        
+        """similar tags"""
+        tags = track.get_top_tags(20)        
+        self.song_tags_model.clear()
+        for tag in tags:
+            self.add_tag(tag.item.get_name())
+        
+        """similar artists"""
+        artist = track.get_artist()
+        similar_artists = artist.get_similar(20)
+       
+        self.similar_artists_model.clear()
+        for artist in similar_artists:
+            self.add_similar_artist(artist.item.get_name())
+        
+        
         LOG.info("Find album", album)
         if not album:
             return None
         LOG.info(album)
         try:
             image = album.get_cover_image(size=pylast.COVER_EXTRA_LARGE)
-        except:
+        except:            
             LOG.info("image not found for:", song)
         
-        self.album_name.set_text("Album: " + album.get_title())
-        wiki = None
-        try:
-            wiki = album.get_wiki_summary()
-        except:
-            LOG.info("wiki not found")
-            
-        if wiki:
-            self.biography_text.set_text(wiki);
+        self.album_name.set_markup("<b>" +song.getArtist() + " - " +  album.get_name()+"</b>")
         
         LOG.info("image:", image)        
         return image
