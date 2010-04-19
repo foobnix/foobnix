@@ -13,7 +13,7 @@ class PrefListModel():
     def __init__(self, widget, prefListMap):
         self.widget = widget
         self.prefListMap = prefListMap
-        self.model = gtk.ListStore(str)
+        self.similar_songs_model = gtk.ListStore(str)
         renderer = gtk.CellRendererText()
         renderer.connect('edited', self.editRow)        
         renderer.set_property('editable', True)
@@ -22,14 +22,14 @@ class PrefListModel():
         column.set_resizable(True)
         widget.append_column(column)
         
-        widget.set_model(self.model)
+        widget.set_model(self.similar_songs_model)
                
     
     def removeSelected(self):
         selection = self.widget.get_selection()
         selected = selection.get_selected()[1]
         if selected:                
-            self.model.remove(selected)
+            self.similar_songs_model.remove(selected)
         
     
     def editRow(self, w, event, value):
@@ -38,7 +38,7 @@ class PrefListModel():
         if value:
             i = self.getSelectedIndex()
             if i > 0 and not self.isContain(value):                                        
-                self.model[i][self.POS_NAME] = value
+                self.similar_songs_model[i][self.POS_NAME] = value
                 
                 """copy songs with new name"""
                 print "beforeRename ", beforeRename, self.prefListMap.keys()
@@ -58,8 +58,8 @@ class PrefListModel():
         return None
     
     def isContain(self, name):
-        for i in xrange(len(self.model)):
-            if str(self.model[i][self.POS_NAME]) == name:
+        for i in xrange(len(self.similar_songs_model)):
+            if str(self.similar_songs_model[i][self.POS_NAME]) == name:
                 return True            
         return False     
         
@@ -74,8 +74,8 @@ class PrefListModel():
             return None
     
     def clear(self):
-        self.model.clear()    
+        self.similar_songs_model.clear()    
     
     def append(self, name):
-        self.model.append([name])
+        self.similar_songs_model.append([name])
                 

@@ -116,6 +116,7 @@ def search_top_tracks(network, query):
     print "Tracks: ", tracks 
         
     for track in tracks:
+        
         try:            
             track_item = track.item
         except AttributeError:

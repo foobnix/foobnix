@@ -17,7 +17,7 @@ class PlaylistModel:
     
     def __init__(self, widget):
         self.widget = widget
-        self.model = gtk.ListStore(str, str, str, str, str, int, str)
+        self.similar_songs_model = gtk.ListStore(str, str, str, str, str, int, str)
                
         cellpb = gtk.CellRendererPixbuf()
         cellpb.set_property('cell-background', 'yellow')
@@ -29,26 +29,26 @@ class PlaylistModel:
         widget.append_column(numbetColumn)
         widget.append_column(descriptionColumn)
         
-        widget.set_model(self.model)
+        widget.set_model(self.similar_songs_model)
     
     def getBeenByPosition(self, position):
-        if position >= len(self.model):
+        if position >= len(self.similar_songs_model):
             LOG.error("Song index too much", position)
             return None
     
         bean = CommonBean() 
-        bean.icon = self.model[position][ self.POS_ICON]
-        bean.tracknumber = self.model[position][ self.POS_TRACK_NUMBER]
-        bean.name = self.model[position][ self.POS_NAME]
-        bean.path = self.model[position][ self.POS_PATH]
-        bean.color = self.model[position][ self.POS_COLOR]
-        bean.index = self.model[position][ self.POS_INDEX]
-        bean.type = self.model[position][ self.POS_TYPE]
+        bean.icon = self.similar_songs_model[position][ self.POS_ICON]
+        bean.tracknumber = self.similar_songs_model[position][ self.POS_TRACK_NUMBER]
+        bean.name = self.similar_songs_model[position][ self.POS_NAME]
+        bean.path = self.similar_songs_model[position][ self.POS_PATH]
+        bean.color = self.similar_songs_model[position][ self.POS_COLOR]
+        bean.index = self.similar_songs_model[position][ self.POS_INDEX]
+        bean.type = self.similar_songs_model[position][ self.POS_TYPE]
         return bean       
 
     def get_all_beans(self):
         beans = []
-        for i in xrange(len(self.model)):
+        for i in xrange(len(self.similar_songs_model)):
             beans.append(self.getBeenByPosition(i))
         return beans
     
@@ -78,11 +78,11 @@ class PlaylistModel:
         return bean                       
     
     def clear(self):
-        self.model.clear()
+        self.similar_songs_model.clear()
  
             
     def append(self, bean):   
-        self.model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type])
+        self.similar_songs_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type])
 
     def __del__(self, *a):
         print "del"

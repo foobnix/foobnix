@@ -48,6 +48,8 @@ class CommonBean():
         s = self.name.split(" - ")
         if len(s) > 1:
             return self.name.split(" - ")[1]
+        else:
+            return self.name
     
     def setIconPlaying(self):
         self.icon = gtk.STOCK_GO_FORWARD
@@ -63,6 +65,13 @@ class CommonBean():
             return self.artist + " - [" + self.album + "]  #" + self.tracknumber + " " + self.title
         else:
             return self.name
+    
+    def get_short_description(self):
+        if self.title:
+            return self.tracknumber + " - " + self.title
+        else:
+            return self.name
+        
     
     def getPlayListDescription(self):
         if self.title and self.album:
