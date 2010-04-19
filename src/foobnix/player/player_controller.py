@@ -24,8 +24,6 @@ class PlayerController:
     def __init__(self):
         self.player = self.playerLocal()
         
-       
-        
         self.songs = []
         self.cIndex = 0
         
@@ -33,7 +31,10 @@ class PlayerController:
         self.volume = 0
         self.mode = self.MODE_PLAY_LIST
         
-    pass
+        # TODO: rename playState() to play() and remove this hack
+        self.play = self.playState
+        self.pause = self.pauseState
+        
 
     def set_mode(self, mode):
         self.mode = mode 
@@ -110,10 +111,10 @@ class PlayerController:
         self.trayIcon.setText1(song.getTitleDescription())
                 
     
-    def pauseState(self):
+    def pauseState(self, *args):
         self.player.set_state(gst.STATE_PAUSED)  
     
-    def playState(self):
+    def playState(self, *args):
         self.player.set_state(gst.STATE_PLAYING)
     
     def stopState(self):        
@@ -122,10 +123,16 @@ class PlayerController:
         self.widgets.seekBar.set_text("00:00 / 00:00")
         self.playerThreadId = None
         self.player.set_state(gst.STATE_NULL)
-        
+    
+    def volume_up(self, *args):
+        self.setVolume(self.getVolume() + 0.05)
+
+    def volume_down(self, *args):
+        self.setVolume(self.getVolume() - 0.05)
+    
     def setVolume(self, volumeValue): 
         self.volume = volumeValue
-        self.player.set_property('volume', volumeValue + 0.0)      
+        self.player.set_property('volume', volumeValue + 0.0)
     def getVolume(self):
         return self.volume
     
@@ -147,7 +154,7 @@ class PlayerController:
         return self.playbin       
     
     
-    def next(self, *a):
+    def next(self, *args):
         if self.mode == self.MODE_ONLINE_LIST:
             song = self.onlineCntr.getNextSong()
         else:
@@ -157,7 +164,7 @@ class PlayerController:
             self.playSong(song)
         
     
-    def prev(self):
+    def prev(self, *args):
         if self.mode == self.MODE_ONLINE_LIST:
             song = self.onlineCntr.getPrevSong()   
         else:

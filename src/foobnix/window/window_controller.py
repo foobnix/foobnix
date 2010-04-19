@@ -55,8 +55,11 @@ class WindowController():
         self.window.hide()
         return True
     
+    def toggle_visibility(self, *a):
+        visible = self.window.get_property('visible')
+        self.window.set_property('visible', not visible)
+    
     def onDestroy(self, *a):
-        print "Destroy"        
         self.onExitCnrt.onExit()
         gtk.main_quit() 
         
