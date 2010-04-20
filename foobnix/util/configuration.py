@@ -118,12 +118,15 @@ class FConfiguration:
             return
 
         try:
-            with file(self.CFG_FILE, 'r') as load_file:
-                pickled = load_file.read()
-                # fixing mistyped 'configuration' package name
-                if 'confguration' in pickled:
-                    pickled = pickled.replace('confguration', 'configuration')
-                return pickle.loads(pickled)
+            """TODO: it is important to supporn python 2.5 (Debian)""" 
+            #with file(self.CFG_FILE, 'r') as load_file:
+            load_file = file(self.CFG_FILE, 'r') 
+            pickled = load_file.read()
+            # fixing mistyped 'configuration' package name
+            if 'confguration' in pickled:
+                pickled = pickled.replace('confguration', 'configuration')
+            return pickle.loads(pickled)
+        
         except IOError:
             LOG.debug('Configuration file does not exist.')
         except ImportError, ex:
