@@ -11,6 +11,9 @@ import re
 import time
 from string import replace
 
+from foobnix.util import LOG
+from foobnix.util.configuration import FConfiguration
+
 
 
 class Vkontakte:
@@ -51,9 +54,14 @@ class Vkontakte:
         return None
 
     def get_cookie(self):
-
+        
+        if FConfiguration().cookie:
+            LOG.info("Get VK cookie from cache") 
+            return FConfiguration().cookie 
+        
         if self.cookie: return self.cookie
-
+        
+        
         host = 'http://vkontakte.ru/login.php?op=slogin'
         post = urllib.urlencode({'s' : self.get_s_value()})
         headers = {'User-Agent' : 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.13) Gecko/2009073022 Firefox/3.0.13',
@@ -68,6 +76,8 @@ class Vkontakte:
         data = urllib2.urlopen(conn)
         cookie_src = data.info().get('Set-Cookie')
         self.cookie = re.sub(r'(expires=.*?;\s|path=\/;\s|domain=\.vkontakte\.ru(?:,\s)?)', '', cookie_src)
+        
+        FConfiguration().cookie = self.cookie 
         return self.cookie
     
     def get_page(self, query):
