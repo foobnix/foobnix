@@ -105,7 +105,7 @@ class InfortaionController():
         
         """similar artists"""
         artist = track.get_artist()
-        similar_artists = artist.get_similar(20)
+        similar_artists = artist.get_similar(30)
        
         self.similar_artists_model.clear()
         for artist in similar_artists:

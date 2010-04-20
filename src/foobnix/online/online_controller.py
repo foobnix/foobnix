@@ -383,8 +383,7 @@ class OnlineListCntr():
             self.index = playlistBean.index
             self.repopulate(self.entityBeans, self.index)
             
-            """retrive images and other info"""
-            self.info.show_song_info(playlistBean)
+            
             
 
                 
@@ -439,7 +438,9 @@ class OnlineListCntr():
                     playlistBean.path = vkSong.path                                   
                 else:
                     playlistBean.path = None
-                
+        
+        """retrive images and other info"""
+        self.info.show_song_info(playlistBean)
                 
     def dowloadThread(self, bean):
         thread.start_new_thread(self.downloadSong, (bean,))                
