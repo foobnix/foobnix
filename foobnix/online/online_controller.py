@@ -114,7 +114,7 @@ class OnlineListCntr():
         
         self.playerThreadId = None
         
-        self.info = InfortaionController(gxMain, self.network)
+        self.info = InfortaionController(gxMain, self.network, self.playerCntr)
         
         pass #end of init
     
@@ -418,7 +418,7 @@ class OnlineListCntr():
         print "Stored dir: ", song
         return song
     
-    def setSongResource(self, playlistBean):
+    def setSongResource(self, playlistBean, update_song_info=True):
         if not playlistBean.path:
             if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
                 
@@ -439,8 +439,9 @@ class OnlineListCntr():
                 else:
                     playlistBean.path = None
         
-        """retrive images and other info"""
-        self.info.show_song_info(playlistBean)
+        if update_song_info:
+            """retrive images and other info"""
+            self.info.show_song_info(playlistBean)
                 
     def dowloadThread(self, bean):
         thread.start_new_thread(self.downloadSong, (bean,))                

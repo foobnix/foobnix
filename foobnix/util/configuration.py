@@ -60,6 +60,7 @@ class FConfiguration:
         self.API_KEY = "bca6866edc9bdcec8d5e8c32f709bea1"
         self.API_SECRET = "800adaf46e237805a4ec2a81404b3ff2"
     
+        self.cookie = None 
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -89,6 +90,7 @@ class FConfiguration:
                 self.lfm_login = instance.lfm_login
                 self.lfm_password = instance.lfm_password
                 
+                self.cookie = instance.cookie
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")
                 os.remove(self.CFG_FILE)

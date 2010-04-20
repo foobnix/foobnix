@@ -10,8 +10,26 @@ import urllib
 import gtk
 import thread
 from foobnix.model.entity import CommonBean
+from foobnix.base.base_list_controller import BaseListController
+from foobnix.online.song_resource import SongResource
+
+class SimilartSongsController(BaseListController):
+        def __init__(self, gx_main, playerCntr):
+            self.playerCntr = playerCntr
+            widget = gx_main.get_widget("treeview_similar_songs")
+            BaseListController.__init__(self, widget)
+            
+        def on_duble_click(self):            
+            artist_track = self.get_selected_item()
+            song = CommonBean(name=artist_track, type=CommonBean.TYPE_MUSIC_URL)
+            resource = SongResource()
+            song.path = resource.get_song_path(song)
+            self.playerCntr.playSong(song)
+            
+
+
 class InfortaionController():
-    def __init__(self,gx_main, last_fm_network):
+    def __init__(self,gx_main, last_fm_network, playerCntr):
         self.album_image = gx_main.get_widget("image_widget")
         
         """album name"""
@@ -29,11 +47,10 @@ class InfortaionController():
         self.similar_artists.set_model(self.similar_artists_model)
         
         """similar songs"""
-        self.similar_songs = gx_main.get_widget("treeview_similar_songs")
-        self.similar_songs_model = gtk.ListStore(str, str)
-        song_column = gtk.TreeViewColumn(_('Similar songs'), gtk.CellRendererText(), text=0)
-        self.similar_songs.append_column(song_column)        
-        self.similar_songs.set_model(self.similar_songs_model)
+        self.similar_songs_cntr = SimilartSongsController(gx_main, playerCntr)              
+        self.similar_songs_cntr.set_title("Similar Songs")
+        self.similar_songs_cntr.add_item("Madonna - Like a Prayer")
+        
         
         """song tags"""       
         self.song_tags = gx_main.get_widget("treeview_song_tags")
@@ -48,7 +65,8 @@ class InfortaionController():
         self.last_fm_network = last_fm_network
     
     def add_similar_song(self, song):
-        self.similar_songs_model.append([song.get_short_description(), song.path])
+        #self.similar_songs_model.append([song.get_short_description(), song.path])
+        self.similar_songs_cntr.add_item(song.get_name())
     
     def add_similar_artist(self, artist):
         self.similar_artists_model.append([artist])
@@ -57,8 +75,8 @@ class InfortaionController():
         self.song_tags_model.append([tag])
     
     def show_song_info(self, song):
-        thread.start_new_thread(self.show_song_info_tread, (song,))
-        #self.show_song_info_tread(song)
+        #thread.start_new_thread(self.show_song_info_tread, (song,))
+        self.show_song_info_tread(song)
             
     def show_song_info_tread(self, song):
         self.song = song
@@ -84,16 +102,14 @@ class InfortaionController():
         
         """similar tracks"""
         similars = track.get_similar()
-        self.similar_songs_model.clear()
+        self.similar_songs_cntr.clear()
         for tsong in similars:
             try:            
                 tsong_item = tsong.item
             except AttributeError:
                 tsong_item = tsong['item']
-            
-            
-            tsong = CommonBean(name=str(tsong_item), type=CommonBean.TYPE_MUSIC_URL)
-            self.add_similar_song(tsong)
+            #tsong = CommonBean(name=str(tsong_item), type=CommonBean.TYPE_MUSIC_URL)
+            self.similar_songs_cntr.add_item(str(tsong_item))
         
         """similar tags"""
         tags = track.get_top_tags(20)        
