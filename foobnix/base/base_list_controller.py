@@ -5,6 +5,8 @@ Created on 20.04.2010
 '''
 import gtk
 from foobnix.util.mouse_utils import is_double_click
+
+"""Base list controller for similar functional on any listview or treeview"""
 class BaseListController():
     POSITION_0 = 0
     def __init__(self, widget):
