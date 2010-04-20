@@ -138,6 +138,8 @@ class OnlineListCntr():
             self.button_tracks.set_active(False)        
 
     def onSetSearchType(self, button, type=None):
+        if type==None:
+            return
         button.set_active(True)
         self.unActiveAllSearhcButtons(button)
         self.searchType =  type        
