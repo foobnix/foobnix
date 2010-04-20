@@ -49,7 +49,7 @@ class InfortaionController():
         """similar songs"""
         self.similar_songs_cntr = SimilartSongsController(gx_main, playerCntr)              
         self.similar_songs_cntr.set_title("Similar Songs")
-        self.similar_songs_cntr.add_item("Madonna - Like a Prayer")
+        
         
         
         """song tags"""       
@@ -64,6 +64,10 @@ class InfortaionController():
         
         self.last_fm_network = last_fm_network
     
+    def show_song_info(self, song):
+        thread.start_new_thread(self.show_song_info_tread, (song,))
+        #self.show_song_info_tread(song)
+    
     def add_similar_song(self, song):
         self.similar_songs_model.append([song.get_short_description(), song.path])
         #self.similar_songs_cntr.add_item(song.get_name())
@@ -74,10 +78,6 @@ class InfortaionController():
     def add_tag(self, tag):
         self.song_tags_model.append([tag])
     
-    def show_song_info(self, song):
-        #thread.start_new_thread(self.show_song_info_tread, (song,))
-        self.show_song_info_tread(song)
-            
     def show_song_info_tread(self, song):
         self.song = song
         LOG.info("Get all possible information about song")
@@ -96,12 +96,19 @@ class InfortaionController():
         
         self.current_song_label.set_markup("<b>" + song.getTitle()+"</b>")
         
-        track = self.last_fm_network.get_track(song.getArtist(), song.getTitle())        
-        #album = self.last_fm_network.get_album(song.getArtist(), song.getTitle())
-        album = track.get_album()
+        
+        track = self.last_fm_network.get_track(song.getArtist(), song.getTitle())
+        print track
+        if not track:
+            return None
         
         """similar tracks"""
-        similars = track.get_similar()
+        try:
+            similars = track.get_similar()
+        except:
+            LOG.error("Similar not found")
+            return None
+            
         self.similar_songs_cntr.clear()
         for tsong in similars:
             try:            
@@ -133,7 +140,19 @@ class InfortaionController():
                 artist_item = artist['item']
             self.add_similar_artist(artist_item.get_name())
         
-        self.album_name.set_markup("<b>" +song.getArtist() + " - " +  album.get_name()+"</b>")
+        album = track.get_album()
+        if album:
+            self.album_name.set_markup("<b>" +song.getArtist() + " - " +  album.get_name()+"</b>")
+        
+                
+        #album = self.last_fm_network.get_album(song.getArtist(), song.getTitle())
+        
+        
+        if not album:
+            return None
+        
+        
+       
         
         LOG.info("Find album", album)
         
