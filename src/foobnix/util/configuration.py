@@ -4,6 +4,7 @@ Created on Feb 27, 2010
 
 @author: ivan
 '''
+from __future__ import with_statement
 import pickle
 import os, sys
 from foobnix.util import LOG
@@ -118,14 +119,13 @@ class FConfiguration:
             return
 
         try:
-            """TODO: it is important to supporn python 2.5 (Debian)""" 
-            #with file(self.CFG_FILE, 'r') as load_file:
-            load_file = file(self.CFG_FILE, 'r') 
-            pickled = load_file.read()
-            # fixing mistyped 'configuration' package name
-            if 'confguration' in pickled:
-                pickled = pickled.replace('confguration', 'configuration')
-            return pickle.loads(pickled)
+            with file(self.CFG_FILE, 'r') as load_file:
+                load_file = file(self.CFG_FILE, 'r') 
+                pickled = load_file.read()
+                # fixing mistyped 'configuration' package name
+                if 'confguration' in pickled:
+                    pickled = pickled.replace('confguration', 'configuration')
+                return pickle.loads(pickled)
         
         except IOError:
             LOG.debug('Configuration file does not exist.')
