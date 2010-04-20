@@ -15,8 +15,7 @@ from foobnix.util.configuration import FConfiguration
 class SongResource():
     def __init__(self):
         self.vk = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
-        if not self.vk.isLive():            
-            self.playerWidgets.setStatusText(_("Vkontakte connection error"))
+        if not self.vk.isLive():           
             LOG.error("Vkontakte connection error")
 
     def get_song_path(self, song):
