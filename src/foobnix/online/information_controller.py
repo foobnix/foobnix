@@ -84,14 +84,24 @@ class InfortaionController():
         similars = track.get_similar()
         self.similar_songs_model.clear()
         for tsong in similars:
-            tsong = CommonBean(name=tsong.item, type=CommonBean.TYPE_MUSIC_URL)
+            try:            
+                tsong_item = tsong.item
+            except AttributeError:
+                tsong_item = tsong['item']
+            
+            
+            tsong = CommonBean(name=str(tsong_item), type=CommonBean.TYPE_MUSIC_URL)
             self.add_similar_song(tsong)
         
         """similar tags"""
         tags = track.get_top_tags(20)        
         self.song_tags_model.clear()
         for tag in tags:
-            self.add_tag(tag.item.get_name())
+            try:            
+                tag_item = tag.item
+            except AttributeError:
+                tag_item = tag['item']
+            self.add_tag(tag_item.get_name())
         
         """similar artists"""
         artist = track.get_artist()
@@ -99,8 +109,11 @@ class InfortaionController():
        
         self.similar_artists_model.clear()
         for artist in similar_artists:
-            self.add_similar_artist(artist.item.get_name())
-        
+            try:            
+                artist_item = artist.item
+            except AttributeError:
+                artist_item = artist['item']
+            self.add_similar_artist(artist_item.get_name())
         
         LOG.info("Find album", album)
         if not album:
