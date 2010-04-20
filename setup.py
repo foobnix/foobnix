@@ -72,6 +72,7 @@ setup(name='foobnix',
          packages=[
                 "foobnix",
                 "foobnix.application",
+                "foobnix.base",
                 "foobnix.directory",
                 "foobnix.glade",
                 "foobnix.lyric",
