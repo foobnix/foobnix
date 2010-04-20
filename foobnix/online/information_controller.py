@@ -20,6 +20,7 @@ class InfortaionController():
         
         self.current_song_label = gx_main.get_widget("current_song_label")
         self.current_song_label.set_use_markup(gtk.TRUE)
+        
         """Similar artists"""
         self.similar_artists = gx_main.get_widget("treeview_similart_artists")        
         self.similar_artists_model = gtk.ListStore(str)
@@ -42,6 +43,7 @@ class InfortaionController():
         self.song_tags.set_model(self.song_tags_model)
         
         
+        self.last_album_name = None
         
         self.last_fm_network = last_fm_network
     
@@ -115,16 +117,25 @@ class InfortaionController():
                 artist_item = artist['item']
             self.add_similar_artist(artist_item.get_name())
         
+        self.album_name.set_markup("<b>" +song.getArtist() + " - " +  album.get_name()+"</b>")
+        
         LOG.info("Find album", album)
+        
+        if self.last_album_name == album.get_name():
+            LOG.info("Album the same, not need to dowlaod image")
+            #TODO  need to implement album image cache
+            return None
+        
         if not album:
             return None
         LOG.info(album)
         try:
             image = album.get_cover_image(size=pylast.COVER_EXTRA_LARGE)
+            self.last_album_name = album.get_name()
         except:            
             LOG.info("image not found for:", song)
         
-        self.album_name.set_markup("<b>" +song.getArtist() + " - " +  album.get_name()+"</b>")
+        
         
         LOG.info("image:", image)        
         return image

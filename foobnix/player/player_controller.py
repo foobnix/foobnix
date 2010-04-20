@@ -183,7 +183,12 @@ class PlayerController(BaseController):
         if self._isStatusNull():
             self.playerThreadId = None
             return None
-        pos_max = self.player.query_duration(self.time_format, None)[0]
+        pos_max = 1
+        try:
+            pos_max = self.player.query_duration(self.time_format, None)[0]
+        except:
+            LOG.error("Seek for new position error")
+            
         seek_ns = pos_max * persentValue / 100;  
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)
     

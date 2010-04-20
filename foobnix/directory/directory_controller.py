@@ -190,21 +190,21 @@ class DirectoryCntr():
         #self.view_list.set_active(view_type)
         pass
 
-    def onChangeView(self, w, active_index):
+    def onChangeView(self, w, active_view):
         self.leftNoteBook.set_current_page(0)
         
-        if active_index == self.VIEW_LOCAL_MUSIC:
+        if active_view == self.VIEW_LOCAL_MUSIC:
             self.clear()
             self.addAll()                
                 
                 
-        elif active_index == self.VIEW_RADIO_STATION:
+        elif active_view == self.VIEW_RADIO_STATION:
             self.clear()
             beans = self.radioListCntr.getState()[0]
             print beans
             for bean in beans:
                 self.similar_songs_model.append(None, CommonBean(bean.name, bean.path, "normal", True, CommonBean.TYPE_MUSIC_URL))
-        elif active_index == self.VIEW_VIRTUAL_LISTS:                      
+        elif active_view == self.VIEW_VIRTUAL_LISTS:                      
             items = self.getPrefListBeans(self.DEFAULT_LIST)
             self.display_virtual(items)
             
@@ -243,7 +243,7 @@ class DirectoryCntr():
         
     
     def onTreeViewDeleteItem(self, w, event):
-        if self.view_list.get_active() != self.VIEW_VIRTUAL_LISTS:
+        if self.active_view != self.VIEW_VIRTUAL_LISTS:
             return
         
         print event
