@@ -45,9 +45,6 @@ class PlayerController(BaseController):
     def set_mode(self, mode):
         self.mode = mode 
 
-    def registerWindowController(self, windowController):
-        self.windowController = windowController
-    
     def registerPlaylistCntr(self, playlistCntr):
         self.playlistCntr = playlistCntr
     
@@ -110,7 +107,6 @@ class PlayerController(BaseController):
                 
         self.playState()
         self.setVolume(self.volume)
-        self.windowController.setTitle(song.getTitleDescription())
         self.emit('song_playback_started', song)
                 
     

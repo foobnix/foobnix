@@ -20,7 +20,7 @@ from foobnix.base import BaseController
 
 from foobnix.util.configuration import FConfiguration
 
-class AppController(BaseController):   
+class AppController(BaseController):
 
     def __init__(self, v):
         BaseController.__init__(self)
@@ -36,7 +36,7 @@ class AppController(BaseController):
         self.player_controller.registerWidgets(self.playerWidgets)
         self.player_controller.registerPlaylistCntr(self.playlistCntr)
         
-                
+        
         self.directoryCntr = DirectoryCntr(v.gxMain, self.playlistCntr, self.radioListCntr, self.virtualListCntr)
         self.playlistCntr.registerDirectoryCntr(self.directoryCntr)
         self.appConfCntr = AppConfigurationCntrl(v.gxMain, self.directoryCntr)
@@ -44,13 +44,13 @@ class AppController(BaseController):
         onlineCntr = OnlineListCntr(v.gxMain, self.player_controller, self.directoryCntr, self.playerWidgets)
         self.player_controller.registerOnlineCntr(onlineCntr)
         
-        self.prefCntr = PrefController(v.gxPref)
+        self.preferences_window_controller = PrefController(v.gxPref)
         
-        self.window_controller = WindowController(v.gxMain,v.gxAbout, self.prefCntr)
-        self.player_controller.registerWindowController(self.window_controller)
+        self.main_window_controller = WindowController(v.gxMain, v.gxAbout)
+        self.main_window_controller.connect('show_preferences', self.preferences_window_controller.show)
         
         self.tray_icon = TrayIcon(v.gxTrayIcon)
-        self.tray_icon.connect('toggle_window_visibility', self.window_controller.toggle_visibility)
+        self.tray_icon.connect('toggle_window_visibility', self.main_window_controller.toggle_visibility)
         self.tray_icon.connect('exit',  self.exit)
         self.tray_icon.connect('play',  self.player_controller.play)
         self.tray_icon.connect('pause', self.player_controller.pause)
@@ -60,8 +60,9 @@ class AppController(BaseController):
         self.tray_icon.connect('volume_down',  self.player_controller.volume_down)
         
         self.player_controller.connect('song_playback_started', self.tray_icon.on_song_started)
+        self.player_controller.connect('song_playback_started', self.main_window_controller.on_song_started)
 
-        self.window_controller.connect('exit', self.exit)
+        self.main_window_controller.connect('exit', self.exit)
         
         self.restore_state()
     
@@ -85,15 +86,15 @@ class AppController(BaseController):
             self.playerWidgets.hpanel.set_position(FConfiguration().hpanelPostition)
         
         if FConfiguration().hpanel2Postition:
-            self.playerWidgets.hpanel2.set_position(FConfiguration().hpanel2Postition)    
-            
+            self.playerWidgets.hpanel2.set_position(FConfiguration().hpanel2Postition)
+        
         
         if FConfiguration().vpanelPostition:
             self.playerWidgets.vpanel.set_position(FConfiguration().vpanelPostition)
-            
-        if FConfiguration().mediaLibraryPath:            
+        
+        if FConfiguration().mediaLibraryPath:
             self.appConfCntr.setMusicFolder(FConfiguration().mediaLibraryPath)
-            
+        
         if FConfiguration().radiolistState:
             self.radioListCntr.setState(FConfiguration().radiolistState)
         
@@ -101,7 +102,7 @@ class AppController(BaseController):
         self.appConfCntr.setLfmLoginPass(FConfiguration().lfm_login, FConfiguration().lfm_password)
         
         if FConfiguration().isPlayOnStart:
-            self.player_controller.next()  
+            self.player_controller.next()
     
     def save_state(self):
         FConfiguration().playlistState = self.playlistCntr.getState()
@@ -120,6 +121,6 @@ class AppController(BaseController):
         
         FConfiguration().lfm_login = self.appConfCntr.getLfmLogin()
         FConfiguration().lfm_password = self.appConfCntr.getLfmPassword()
-          
+        
         FConfiguration().save()
 
