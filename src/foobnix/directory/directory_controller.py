@@ -90,7 +90,8 @@ class DirectoryCntr():
         
         show_local = gxMain.get_widget("show_local_music_button")
         show_local.connect("clicked",self.onChangeView, self.VIEW_LOCAL_MUSIC)
-        
+        self.active_view=self.VIEW_LOCAL_MUSIC
+                
         show_radio = gxMain.get_widget("show_radio_button")
         show_radio.connect("clicked",self.onChangeView, self.VIEW_RADIO_STATION)
         
@@ -191,6 +192,7 @@ class DirectoryCntr():
         pass
 
     def onChangeView(self, w, active_view):
+        self.active_view = active_view
         self.leftNoteBook.set_current_page(0)
         
         if active_view == self.VIEW_LOCAL_MUSIC:

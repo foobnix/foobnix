@@ -14,27 +14,39 @@ from foobnix.base.base_list_controller import BaseListController
 from foobnix.online.song_resource import SongResource
 
 class SimilartSongsController(BaseListController):
-        def __init__(self, gx_main, playerCntr):
+        def __init__(self, gx_main, playerCntr, directoryCntr):
+            self.directoryCntr = directoryCntr
             self.playerCntr = playerCntr
             widget = gx_main.get_widget("treeview_similar_songs")
             BaseListController.__init__(self, widget)
             
-        def on_duble_click(self):            
+        def on_duble_click(self):
             artist_track = self.get_selected_item()
             song = CommonBean(name=artist_track, type=CommonBean.TYPE_MUSIC_URL)
             resource = SongResource()
             song.path = resource.get_song_path(song)
             self.playerCntr.playSong(song)
-            
-
+        
+        def on_drag(self):
+            items = self.get_all_items()
+            songs = []
+            parent = "Similar songs"
+            song = CommonBean(name=parent, type=CommonBean.TYPE_FOLDER)
+            songs.append(song)
+            for i, item in enumerate(items):                
+                song = CommonBean(name=item, type=CommonBean.TYPE_MUSIC_URL, parent=parent)
+                songs.append(song)
+            self.directoryCntr.append_virtual(songs)
+        
 
 class InfortaionController():
-    def __init__(self,gx_main, last_fm_network, playerCntr):
+    def __init__(self,gx_main, last_fm_network, playerCntr, directoryCntr):
+        
         self.album_image = gx_main.get_widget("image_widget")
         
         """album name"""
         self.album_name = gx_main.get_widget("label_album_name")        
-        self.album_name.set_use_markup(gtk.TRUE)
+        self.album_name.set_use_markup(True)
         
         self.current_song_label = gx_main.get_widget("current_song_label")
         self.current_song_label.set_use_markup(gtk.TRUE)
@@ -47,10 +59,8 @@ class InfortaionController():
         self.similar_artists.set_model(self.similar_artists_model)
         
         """similar songs"""
-        self.similar_songs_cntr = SimilartSongsController(gx_main, playerCntr)              
-        self.similar_songs_cntr.set_title("Similar Songs")
-        
-        
+        self.similar_songs_cntr = SimilartSongsController(gx_main, playerCntr, directoryCntr)              
+        self.similar_songs_cntr.set_title("Similar Songs")   
         
         """song tags"""       
         self.song_tags = gx_main.get_widget("treeview_song_tags")
