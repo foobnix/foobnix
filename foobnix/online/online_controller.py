@@ -113,8 +113,8 @@ class OnlineListCntr():
         self.count = 0
         
         self.playerThreadId = None
-        
-        self.info = InfortaionController(gxMain, self.network, self.playerCntr)
+          
+        self.info = InfortaionController(gxMain, self.network, self.playerCntr, self.directoryCntr)
         
         pass #end of init
     
