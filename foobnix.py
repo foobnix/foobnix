@@ -11,6 +11,7 @@ import pygtk
 pygtk.require20()
 
 import gtk
+import gobject
 import gettext
 from foobnix.application.app_view import AppView
 from foobnix.application.app_controller import AppController
@@ -22,6 +23,6 @@ if __name__ == "__main__":
     gtk.glade.textdomain(APP_NAME)
     
     AppController(AppView())
-    gtk.gdk.threads_init()  #@UndefinedVariable
+    gobject.threads_init()  #@UndefinedVariable
     gtk.main()
     print _("Success")
