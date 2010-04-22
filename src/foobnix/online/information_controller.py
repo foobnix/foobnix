@@ -4,7 +4,6 @@ Created on 18.04.2010
 @author: ivan
 '''
 from foobnix.util import LOG
-from foobnix.online.pylast import COVER_MEDIUM
 from foobnix.online import pylast
 import urllib
 import gtk
@@ -33,7 +32,7 @@ class SimilartSongsController(BaseListController):
             parent = "Similar songs"
             song = CommonBean(name=parent, type=CommonBean.TYPE_FOLDER)
             songs.append(song)
-            for i, item in enumerate(items):                
+            for item in items:                
                 song = CommonBean(name=item, type=CommonBean.TYPE_MUSIC_URL, parent=parent)
                 songs.append(song)
             self.directoryCntr.append_virtual(songs)

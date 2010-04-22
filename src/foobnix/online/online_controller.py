@@ -32,6 +32,24 @@ from foobnix.util.mouse_utils import is_double_click
 from foobnix.online.information_controller import InfortaionController
 
 
+def search_artist_top_tracks():
+    pass
+
+def search_artist_top_albums():
+    pass
+
+def search_artist_similar_artists():
+    pass
+
+def search_tracks_by_name():
+    pass
+
+def search_tracks_by_tags():
+    pass
+
+def spermophile_search():
+    pass
+
 class OnlineListCntr():
 
     API_KEY = FConfiguration().API_KEY
@@ -39,13 +57,6 @@ class OnlineListCntr():
 
     username = FConfiguration().lfm_login
     password_hash = pylast.md5(FConfiguration().lfm_password)
-
-    TOP_SONGS = "TOP_SONG"
-    TOP_ALBUMS = "TOP_ALBUMS"
-    TOP_SIMILAR = "TOP_SIMILAR"
-    TOP_ALL_SEARCH = "TOP_ALL_SEARCH"
-    TOP_TAGS_GENRE = "TOP_TAGS_GENRE"
-    TOP_TRACKS = "TOP_TRACKS"
 
     def make_dirs(self, path):
         if not os.path.isdir(path):
@@ -62,7 +73,7 @@ class OnlineListCntr():
         search_button = gxMain.get_widget("search_button")
         search_button.connect("clicked", self.on_search)
 
-        self.searchType = self.TOP_SONGS
+        self.searchType = search_artist_top_tracks
         self.create_search_mode_buttons(gxMain)
 
         self.treeview = gxMain.get_widget("online_treeview")
@@ -97,12 +108,12 @@ class OnlineListCntr():
         pass #end of init
 
     def create_search_mode_buttons(self, gxMain):
-        mode_to_button_map = {self.TOP_SONGS: 'top_songs_togglebutton',
-                              self.TOP_ALBUMS: 'top_albums_togglebutton',
-                              self.TOP_SIMILAR: 'top_similar_togglebutton',
-                              self.TOP_ALL_SEARCH: 'all_search_togglebutton',
-                              self.TOP_TAGS_GENRE: 'tags_togglebutton',
-                              self.TOP_TRACKS: 'tracks_togglebutton' }
+        mode_to_button_map = {search_artist_top_tracks: 'top_songs_togglebutton',
+                              search_artist_top_albums: 'top_albums_togglebutton',
+                              search_artist_similar_artists: 'top_similar_togglebutton',
+                              search_tracks_by_name: 'all_search_togglebutton',
+                              search_tracks_by_tags: 'tags_togglebutton',
+                              spermophile_search: 'tracks_togglebutton' }
         self.search_mode_buttons = {}
         for mode, name in mode_to_button_map.items():
             button = gxMain.get_widget(name)
@@ -195,21 +206,21 @@ class OnlineListCntr():
             query = self.capitilize_query(u"" + query)
 
             self.append([self.TextBeen("Searching... " + query + " please wait", color="GREEN")])
-            if self.searchType == self.TOP_ALBUMS:
+            if self.searchType == search_artist_top_albums:
                 self.playerThreadId = thread.start_new_thread(self.search_top_albums, (query,))
                 #thread.start_new_thread(self.search_dots, (query,))
 
-            elif self.searchType == self.TOP_SONGS:
+            elif self.searchType == search_artist_top_tracks:
                 self.playerThreadId = thread.start_new_thread(self.search_top_tracks, (query,))
                 #thread.start_new_thread(self.search_dots, (query,))
 
-            elif self.searchType == self.TOP_SIMILAR:
+            elif self.searchType == search_artist_similar_artists:
                 self.playerThreadId = thread.start_new_thread(self.search_top_similar, (query,))
 
-            elif self.searchType == self.TOP_ALL_SEARCH:
+            elif self.searchType == search_tracks_by_name:
                 self.playerThreadId = thread.start_new_thread(self.search_vk_engine, (query,))
                 #thread.start_new_thread(self.search_dots, (query,))
-            elif self.searchType == self.TOP_TAGS_GENRE:
+            elif self.searchType == search_tracks_by_tags:
                 self.playerThreadId = thread.start_new_thread(self.search_tags_genre, (query,))
 
 

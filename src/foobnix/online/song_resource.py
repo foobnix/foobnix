@@ -7,7 +7,6 @@ from foobnix.model.entity import CommonBean
 
 import os
 from foobnix.util import LOG
-from foobnix.online.rupleer import get_song_path
 from foobnix.online.vk import Vkontakte
 from foobnix.util.configuration import FConfiguration
 
