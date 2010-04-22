@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 '''
 Created on Mar 16, 2010
 
@@ -32,31 +32,62 @@ from foobnix.util.mouse_utils import is_double_click
 from foobnix.online.information_controller import InfortaionController
 
 
-def search_artist_top_tracks():
+API_KEY = FConfiguration().API_KEY
+API_SECRET = FConfiguration().API_SECRET
+
+username = FConfiguration().lfm_login
+password_hash = pylast.md5(FConfiguration().lfm_password)
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
+
+try:
+    lastfm = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
+except:
+    lastfm = None
+    LOG.error("lasf.fm connection error")
+
+def search_artist_top_tracks(query, on_success, on_fail=None):
+    def _perform_search():
+        try:
+            beans = search_top_tracks(lastfm, query)
+            on_success(query, beans)
+        except:
+            if on_fail:
+                on_fail(query)
+    return thread.start_new_thread(_perform_search, ())
+
+def search_artist_top_albums(query, on_success, on_fail=None):
+    def _perform_search():
+        try:
+            beans = search_top_albums(lastfm, query)
+            on_success(query, beans)
+        except:
+            if on_fail:
+                on_fail(query)
+
+    return thread.start_new_thread(_perform_search, ())
+
+def search_artist_similar_artists(query, on_success, on_fail=None):
+    def _perform_search():
+        try:
+            beans = search_top_similar(lastfm, query)
+            on_success(query, beans)
+        except:
+            if on_fail:
+                on_fail(query)
+
+    return thread.start_new_thread(_perform_search, ())
+
+def search_tracks_by_name(query):
     pass
 
-def search_artist_top_albums():
+def search_tracks_by_tags(query):
     pass
 
-def search_artist_similar_artists():
+def spermophile_search(query):
     pass
-
-def search_tracks_by_name():
-    pass
-
-def search_tracks_by_tags():
-    pass
-
-def spermophile_search():
-    pass
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
 class OnlineListCntr():
-
-    API_KEY = FConfiguration().API_KEY
-    API_SECRET = FConfiguration().API_SECRET
-
-    username = FConfiguration().lfm_login
-    password_hash = pylast.md5(FConfiguration().lfm_password)
 
     def make_dirs(self, path):
         if not os.path.isdir(path):
@@ -84,13 +115,9 @@ class OnlineListCntr():
 
         self.entityBeans = []
         self.index = self.similar_songs_model.getSize();
-        try:
-            self.network = pylast.get_lastfm_network(api_key=self.API_KEY, api_secret=self.API_SECRET, username=self.username, password_hash=self.password_hash)
-            #self.scrobler = self.network.get_scrobbler("tst", "1.0")
-        except:
+        
+        if not lastfm:
             self.playerWidgets.setStatusText(_("lasf.fm connection error"))
-            LOG.error("lasf.fm connection error")
-            #return None
 
         self.vk = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
         if not self.vk.isLive():
@@ -103,9 +130,10 @@ class OnlineListCntr():
 
         self.playerThreadId = None
 
-        self.info = InfortaionController(gxMain, self.network, self.playerCntr, self.directoryCntr)
+        self.info = InfortaionController(gxMain, lastfm, self.playerCntr, self.directoryCntr)
 
         pass #end of init
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def create_search_mode_buttons(self, gxMain):
         mode_to_button_map = {search_artist_top_tracks: 'top_songs_togglebutton',
@@ -141,6 +169,7 @@ class OnlineListCntr():
             #self.scrobler.report_now_playing(song.getArtist(), song.getTitle())
         else:
             print _("Artist and title not correct")
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def scrobble(self, artist, title, time_started, source, mode, duration, album="", track_number="", mbid=""):
         self.scrobler.scrobble(artist, title, time_started, source, mode, duration, album, track_number, mbid)
@@ -189,6 +218,7 @@ class OnlineListCntr():
 
     lock = threading.Lock()
 
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
     def on_search(self, *args):
         if self.playerThreadId:
             return None
@@ -207,15 +237,13 @@ class OnlineListCntr():
 
             self.append([self.TextBeen("Searching... " + query + " please wait", color="GREEN")])
             if self.searchType == search_artist_top_albums:
-                self.playerThreadId = thread.start_new_thread(self.search_top_albums, (query,))
-                #thread.start_new_thread(self.search_dots, (query,))
+                self.playerThreadId = search_artist_top_albums(query, self.show_results)
 
             elif self.searchType == search_artist_top_tracks:
-                self.playerThreadId = thread.start_new_thread(self.search_top_tracks, (query,))
-                #thread.start_new_thread(self.search_dots, (query,))
+                self.playerThreadId = search_artist_top_tracks(query, self.show_results)
 
             elif self.searchType == search_artist_similar_artists:
-                self.playerThreadId = thread.start_new_thread(self.search_top_similar, (query,))
+                self.playerThreadId = search_artist_similar_artists(query, self.show_results, self.googleHelp)
 
             elif self.searchType == search_tracks_by_name:
                 self.playerThreadId = thread.start_new_thread(self.search_vk_engine, (query,))
@@ -243,16 +271,6 @@ class OnlineListCntr():
             self.append([self.SearchingCriteriaBean(query + dots)])
             time.sleep(2)
 
-    def search_top_albums(self, query):
-        beans = search_top_albums(self.network, query)
-        self.show_results(query, beans)
-
-
-    def search_top_tracks(self, query):
-        beans = search_top_tracks(self.network, query)
-        self.show_results(query, beans)
-
-
     def is_ascii(self, s):
         return all(ord(c) < 128 for c in s)
 
@@ -262,18 +280,9 @@ class OnlineListCntr():
             query = translate(query, src="ru", to="en")
             self.append([self.TextBeen("Translated: " + query, color="LIGHT GREEN")])
 
-        beans = search_tags_genre(self.network, query)
+        beans = search_tags_genre(lastfm, query)
         self.show_results(query, beans, False)
-
-    def search_top_similar(self, query):
-        try:
-            beans = search_top_similar(self.network, query)
-            self.show_results(query, beans)
-        except:
-            self.playerThreadId = None
-            self.googleHelp(query)
-
-
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def search_vk_engine(self, query):
         vkSongs = self.vk.find_song_urls(query)
@@ -312,6 +321,7 @@ class OnlineListCntr():
             print "Search failed: %s"
 
 
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def convertVKstoBeans(self, vkSongs):
         beans = []
@@ -349,6 +359,7 @@ class OnlineListCntr():
                 self.playBean(playlistBean)
             elif playlistBean.type == CommonBean.TYPE_GOOGLE_HELP:
                 self.search_text.set_text(playlistBean.name)
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def playBean(self, playlistBean):
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
@@ -404,6 +415,7 @@ class OnlineListCntr():
         song = dir + "/" + song.name + ".mp3"
         print "Stored dir: ", song
         return song
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def setSongResource(self, playlistBean, update_song_info=True):
         if not playlistBean.path:
@@ -449,6 +461,7 @@ class OnlineListCntr():
         playlistBean = self.similar_songs_model.getBeenByPosition(self.index)
         return playlistBean
 
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def getNextSong(self):
 
@@ -481,6 +494,7 @@ class OnlineListCntr():
         if entityBeans:
             self.playerCntr.playSong(entityBeans[index])
             self.repopulate(entityBeans, index);
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def repopulate(self, entityBeans, index):
         self.similar_songs_model.clear()
