@@ -63,61 +63,57 @@ def convertVKstoBeans(vkSongs):
     return beans
 
 
-def search_artist_top_tracks(query, on_success, on_fail=None):
+def search_artist_top_tracks(query, on_success):
     def _perform_search():
         try:
             beans = search_top_tracks(lastfm, query)
-            on_success(query, beans)
         except:
-            if on_fail:
-                on_fail(query)
+            beans = None
+        on_success(query, beans)
+    
     return thread.start_new_thread(_perform_search, ())
 
-def search_artist_top_albums(query, on_success, on_fail=None):
+def search_artist_top_albums(query, on_success):
     def _perform_search():
         try:
             beans = search_top_albums(lastfm, query)
-            on_success(query, beans)
         except:
-            if on_fail:
-                on_fail(query)
+            beans = None
+        on_success(query, beans)
 
     return thread.start_new_thread(_perform_search, ())
 
-def search_artist_similar_artists(query, on_success, on_fail=None):
+def search_artist_similar_artists(query, on_success):
     def _perform_search():
         try:
             beans = search_top_similar(lastfm, query)
-            on_success(query, beans)
         except:
-            if on_fail:
-                on_fail(query)
+            beans = None
+        on_success(query, beans)
 
     return thread.start_new_thread(_perform_search, ())
 
-def search_tracks_by_name(query, on_success, on_fail=None):
+def search_tracks_by_name(query, on_success):
     def _perform_search():
         try:
             vkSongs = vkontakte.find_song_urls(query)
             beans = convertVKstoBeans(vkSongs)
-            on_success(query, beans)
         except:
-            if on_fail:
-                on_fail(query)
+            beans = None
+        on_success(query, beans)
 
     return thread.start_new_thread(_perform_search, ())
 
-def search_tracks_by_tags(query, on_success, on_fail=None):
+def search_tracks_by_tags(query, on_success):
     def _perform_search():
         try:
 #            if not is_ascii(query):
 #                query = translate(query, src="ru", to="en")
 #                self.append([self.TextBeen("Translated: " + query, color="LIGHT GREEN")])
             beans = search_tags_genre(lastfm, query)
-            on_success(query, beans)
         except:
-            if on_fail:
-                on_fail(query)
+            beans = None
+        on_success(query, beans)
 
     return thread.start_new_thread(_perform_search, ())
 
@@ -143,7 +139,7 @@ class OnlineListCntr():
         search_button = gxMain.get_widget("search_button")
         search_button.connect("clicked", self.on_search)
 
-        self.searchType = search_artist_top_tracks
+        self.search_routine = search_artist_top_tracks
         self.create_search_mode_buttons(gxMain)
 
         self.treeview = gxMain.get_widget("online_treeview")
@@ -198,7 +194,7 @@ class OnlineListCntr():
             if mode != selected_mode:
                 button.set_active(False)
 
-        self.searchType = selected_mode
+        self.search_routine = selected_mode
         LOG.info("Selected Search type", selected_mode)
 
 
@@ -275,23 +271,8 @@ class OnlineListCntr():
         query = self.get_search_query()
         if query:
             query = self.capitilize_query(u"" + query)
-
-            self.append([self.TextBeen("Searching... " + query + " please wait", color="GREEN")])
-            if self.searchType == search_artist_top_albums:
+            if self.search_routine:
                 self.playerThreadId = search_artist_top_albums(query, self.show_results)
-
-            elif self.searchType == search_artist_top_tracks:
-                self.playerThreadId = search_artist_top_tracks(query, self.show_results)
-
-            elif self.searchType == search_artist_similar_artists:
-                self.playerThreadId = search_artist_similar_artists(query, self.show_results, self.googleHelp)
-
-            elif self.searchType == search_tracks_by_name:
-                self.playerThreadId = search_tracks_by_name(query, self.show_results)
-
-            elif self.searchType == search_tracks_by_tags:
-                self.playerThreadId = search_tracks_by_tags(query, self.show_results)
-
 
         self.lock.release()
         pass
