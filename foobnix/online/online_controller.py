@@ -189,7 +189,11 @@ class OnlineListCntr():
     def on_search_mode_selected(self, button, selected_mode=None):
         if selected_mode==None:
             return
-        button.set_active(True)
+        #button.set_active(True)
+        #TODO kostul' to set button in toggled state by double click, set_active do not draw it enable.
+        #errors in console, how to fix it?
+        button.clicked()
+        
         for mode, button in self.search_mode_buttons.items():
             if mode != selected_mode:
                 button.set_active(False)
