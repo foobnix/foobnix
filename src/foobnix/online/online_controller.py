@@ -21,7 +21,7 @@ import urllib
 
 import threading
 from foobnix.util import LOG
-from foobnix.online.google.translate import translate
+#from foobnix.online.google.translate import translate
 
 
 
@@ -44,6 +44,24 @@ try:
 except:
     lastfm = None
     LOG.error("lasf.fm connection error")
+
+try:
+    vkontakte = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
+except:
+    vkontakte = None
+    LOG.error("Vkontakte connection error")
+    
+
+def is_ascii(s):    # TODO: search for python function doing this
+    return all(ord(c) < 128 for c in s)
+
+def convertVKstoBeans(vkSongs):
+    beans = []
+    for vkSong in vkSongs:
+        bean = CommonBean(name=vkSong.getFullDescription(), path=vkSong.path, type=CommonBean.TYPE_MUSIC_URL);
+        beans.append(bean)
+    return beans
+
 
 def search_artist_top_tracks(query, on_success, on_fail=None):
     def _perform_search():
@@ -77,14 +95,35 @@ def search_artist_similar_artists(query, on_success, on_fail=None):
 
     return thread.start_new_thread(_perform_search, ())
 
-def search_tracks_by_name(query):
-    pass
+def search_tracks_by_name(query, on_success, on_fail=None):
+    def _perform_search():
+        try:
+            vkSongs = vkontakte.find_song_urls(query)
+            beans = convertVKstoBeans(vkSongs)
+            on_success(query, beans)
+        except:
+            if on_fail:
+                on_fail(query)
 
-def search_tracks_by_tags(query):
-    pass
+    return thread.start_new_thread(_perform_search, ())
+
+def search_tracks_by_tags(query, on_success, on_fail=None):
+    def _perform_search():
+        try:
+#            if not is_ascii(query):
+#                query = translate(query, src="ru", to="en")
+#                self.append([self.TextBeen("Translated: " + query, color="LIGHT GREEN")])
+            beans = search_tags_genre(lastfm, query)
+            on_success(query, beans)
+        except:
+            if on_fail:
+                on_fail(query)
+
+    return thread.start_new_thread(_perform_search, ())
+
 
 def spermophile_search(query):
-    pass
+    return None
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
 class OnlineListCntr():
@@ -119,10 +158,8 @@ class OnlineListCntr():
         if not lastfm:
             self.playerWidgets.setStatusText(_("lasf.fm connection error"))
 
-        self.vk = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
-        if not self.vk.isLive():
+        if not vkontakte or not vkontakte.isLive():
             self.playerWidgets.setStatusText(_("Vkontakte connection error"))
-            LOG.error("Vkontakte connection error")
 
 
         self.play_attempt = 0
@@ -223,7 +260,7 @@ class OnlineListCntr():
         if self.playerThreadId:
             return None
 
-        if not self.vk.isLive():
+        if not vkontakte or not vkontakte.isLive():
             LOG.error("VK is not availiable")
             LOG.error("Vkontakte connection error")
             return None
@@ -246,13 +283,12 @@ class OnlineListCntr():
                 self.playerThreadId = search_artist_similar_artists(query, self.show_results, self.googleHelp)
 
             elif self.searchType == search_tracks_by_name:
-                self.playerThreadId = thread.start_new_thread(self.search_vk_engine, (query,))
-                #thread.start_new_thread(self.search_dots, (query,))
+                self.playerThreadId = search_tracks_by_name(query, self.show_results)
+
             elif self.searchType == search_tracks_by_tags:
-                self.playerThreadId = thread.start_new_thread(self.search_tags_genre, (query,))
+                self.playerThreadId = search_tracks_by_tags(query, self.show_results)
 
 
-            #self.show_results(query, beans)
         self.lock.release()
         pass
 
@@ -271,22 +307,11 @@ class OnlineListCntr():
             self.append([self.SearchingCriteriaBean(query + dots)])
             time.sleep(2)
 
-    def is_ascii(self, s):
-        return all(ord(c) < 128 for c in s)
-
-    def search_tags_genre(self, query):
-        if not self.is_ascii(query):
-
-            query = translate(query, src="ru", to="en")
-            self.append([self.TextBeen("Translated: " + query, color="LIGHT GREEN")])
-
-        beans = search_tags_genre(lastfm, query)
-        self.show_results(query, beans, False)
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def search_vk_engine(self, query):
-        vkSongs = self.vk.find_song_urls(query)
-        beans = self.convertVKstoBeans(vkSongs)
+        vkSongs = vkontakte.find_song_urls(query)
+        beans = convertVKstoBeans(vkSongs)
         self.show_results(query, beans)
 
     def show_results(self, query, beans, criteria=True):
@@ -322,13 +347,6 @@ class OnlineListCntr():
 
 
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-
-    def convertVKstoBeans(self, vkSongs):
-        beans = []
-        for vkSong in vkSongs:
-            bean = CommonBean(name=vkSong.getFullDescription(), path=vkSong.path, type=CommonBean.TYPE_MUSIC_URL);
-            beans.append(bean)
-        return beans
 
     def TextBeen(self, query, color="RED", type=CommonBean.TYPE_FOLDER):
         return CommonBean(name=query, path=None, color=color, type=type)
@@ -431,7 +449,7 @@ class OnlineListCntr():
                     print "FILE NOT FOUND IN SYSTEM"
 
                 #Seach by vk engine
-                vkSong = self.vk.find_most_relative_song(playlistBean.name)
+                vkSong = vkontakte.find_most_relative_song(playlistBean.name)
                 if vkSong:
                     LOG.info("Find song on VK", vkSong, vkSong.path)
                     playlistBean.path = vkSong.path
