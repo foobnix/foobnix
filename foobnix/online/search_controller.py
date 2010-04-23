@@ -4,7 +4,7 @@ Created on Mar 18, 2010
 @author: ivan
 '''
 from foobnix.model.entity import CommonBean
-from foobnix.online.pylast import WSError
+from foobnix.thirdparty.pylast import WSError
 
 def search_top_albums(network, query):
     #unicode(query, "utf-8")

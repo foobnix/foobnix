@@ -5,7 +5,7 @@ Created on Mar 16, 2010
 
 @author: ivanf
 '''
-from foobnix.online import pylast
+from foobnix.thirdparty import pylast
 import time
 from foobnix.online.online_model import OnlineListModel
 from foobnix.player.player_controller import PlayerController
@@ -29,7 +29,7 @@ import gtk
 
 from foobnix.model.entity import  CommonBean
 from foobnix.util.mouse_utils import is_double_click
-from foobnix.online.information_controller import InfortaionController
+from foobnix.online.information_controller import InformationController
 
 
 API_KEY = FConfiguration().API_KEY
@@ -43,7 +43,7 @@ try:
     lastfm = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
 except:
     lastfm = None
-    LOG.error("lasf.fm connection error")
+    LOG.error("last.fm connection error")
 
 try:
     vkontakte = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
@@ -163,7 +163,7 @@ class OnlineListCntr():
 
         self.playerThreadId = None
 
-        self.info = InfortaionController(gxMain, lastfm, self.playerCntr, self.directoryCntr)
+        self.info = InformationController(gxMain, lastfm, self.playerCntr, self.directoryCntr)
 
         pass #end of init
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
@@ -272,7 +272,7 @@ class OnlineListCntr():
         if query:
             query = self.capitilize_query(u"" + query)
             if self.search_routine:
-                self.playerThreadId = search_artist_top_albums(query, self.show_results)
+                self.playerThreadId = self.search_routine(query, self.show_results)
 
         self.lock.release()
         pass
