@@ -4,7 +4,7 @@ Created on 18.04.2010
 @author: ivan
 '''
 from foobnix.util import LOG
-from foobnix.online import pylast
+from foobnix.thirdparty import pylast
 import urllib
 import gtk
 import thread
@@ -38,7 +38,7 @@ class SimilartSongsController(BaseListController):
             self.directoryCntr.append_virtual(songs)
         
 
-class InfortaionController():
+class InformationController():
     def __init__(self,gx_main, last_fm_network, playerCntr, directoryCntr):
         
         self.album_image = gx_main.get_widget("image_widget")
