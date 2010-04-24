@@ -13,6 +13,7 @@ from string import replace
 
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
+from foobnix.model.entity import CommonBean
 
 
 
@@ -150,7 +151,16 @@ class Vkontakte:
         for i in times_count:
             if times_count[i] == r_count:
                 return i
-        return None              
+        return None 
+    
+    def convert_vk_songs_to_beans(self, vk_songs):
+        beans = []
+        for vk_song in vk_songs:
+            bean = CommonBean(name=vk_song.getFullDescription(), path=vk_song.path, type=CommonBean.TYPE_MUSIC_URL);
+            beans.append(bean)
+        return beans
+
+             
     
     def find_song_urls(self, song_title):
         
@@ -204,7 +214,7 @@ class Vkontakte:
             vkSong = VKSong(path, album, track, time)
             vkSongs.append(vkSong)            
         
-        return vkSongs
+        return self.convert_vk_songs_to_beans(vkSongs)
         
         
        

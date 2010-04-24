@@ -155,3 +155,7 @@ def search_top_similar(network, query):
         
             
     return beans
+
+
+def unimplemented_search(network, query):
+    return None
