@@ -11,6 +11,7 @@ import thread
 from foobnix.model.entity import CommonBean
 from foobnix.base.base_list_controller import BaseListController
 from foobnix.online.song_resource import SongResource
+from foobnix.util.configuration import FConfiguration
 
 class SimilartSongsController(BaseListController):
         def __init__(self, gx_main, playerCntr, directoryCntr):
@@ -37,9 +38,22 @@ class SimilartSongsController(BaseListController):
                 songs.append(song)
             self.directoryCntr.append_virtual(songs)
         
+API_KEY = FConfiguration().API_KEY
+API_SECRET = FConfiguration().API_SECRET
+
+username = FConfiguration().lfm_login
+password_hash = pylast.md5(FConfiguration().lfm_password)
+#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
+
+try:
+    lastfm = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
+except:
+    lastfm = None
+    LOG.error("last.fm connection error")
+
 
 class InformationController():
-    def __init__(self,gx_main, last_fm_network, playerCntr, directoryCntr):
+    def __init__(self,gx_main, playerCntr, directoryCntr):
         
         self.album_image = gx_main.get_widget("image_widget")
         
@@ -71,7 +85,7 @@ class InformationController():
         
         self.last_album_name = None
         
-        self.last_fm_network = last_fm_network
+        self.last_fm_network = lastfm
     
     def show_song_info(self, song):
         thread.start_new_thread(self.show_song_info_tread, (song,))

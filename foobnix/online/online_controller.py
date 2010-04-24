@@ -5,13 +5,11 @@ Created on Mar 16, 2010
 
 @author: ivanf
 '''
-from foobnix.thirdparty import pylast
 import time
 from foobnix.online.online_model import OnlineListModel
 from foobnix.player.player_controller import PlayerController
 from foobnix.online.vk import Vkontakte
-from foobnix.online.search_controller import search_top_albums, \
-    search_top_tracks, search_top_similar, search_tags_genre
+import foobnix.online.integration.lastfm as lastfm
 import thread
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.util.configuration import FConfiguration
@@ -27,23 +25,12 @@ from foobnix.util import LOG
 
 import gtk
 
-from foobnix.model.entity import  CommonBean
+from foobnix.model.entity import CommonBean
 from foobnix.util.mouse_utils import is_double_click
 from foobnix.online.information_controller import InformationController
 
 
-API_KEY = FConfiguration().API_KEY
-API_SECRET = FConfiguration().API_SECRET
-
-username = FConfiguration().lfm_login
-password_hash = pylast.md5(FConfiguration().lfm_password)
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-
-try:
-    lastfm = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
-except:
-    lastfm = None
-    LOG.error("last.fm connection error")
 
 try:
     vkontakte = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
@@ -52,77 +39,8 @@ except:
     LOG.error("Vkontakte connection error")
     
 
-def is_ascii(s):    # TODO: search for python function doing this
-    return all(ord(c) < 128 for c in s)
 
-def convertVKstoBeans(vkSongs):
-    beans = []
-    for vkSong in vkSongs:
-        bean = CommonBean(name=vkSong.getFullDescription(), path=vkSong.path, type=CommonBean.TYPE_MUSIC_URL);
-        beans.append(bean)
-    return beans
-
-
-def search_artist_top_tracks(query, on_success):
-    def _perform_search():
-        try:
-            beans = search_top_tracks(lastfm, query)
-        except:
-            beans = None
-        on_success(query, beans)
-    
-    return thread.start_new_thread(_perform_search, ())
-
-def search_artist_top_albums(query, on_success):
-    def _perform_search():
-        try:
-            beans = search_top_albums(lastfm, query)
-        except:
-            beans = None
-        on_success(query, beans)
-
-    return thread.start_new_thread(_perform_search, ())
-
-def search_artist_similar_artists(query, on_success):
-    def _perform_search():
-        try:
-            beans = search_top_similar(lastfm, query)
-        except:
-            beans = None
-        on_success(query, beans)
-
-    return thread.start_new_thread(_perform_search, ())
-
-def search_tracks_by_name(query, on_success):
-    def _perform_search():
-        try:
-            vkSongs = vkontakte.find_song_urls(query)
-            beans = convertVKstoBeans(vkSongs)
-        except:
-            beans = None
-        on_success(query, beans)
-
-    return thread.start_new_thread(_perform_search, ())
-
-def search_tracks_by_tags(query, on_success):
-    def _perform_search():
-        try:
-#            if not is_ascii(query):
-#                query = translate(query, src="ru", to="en")
-#                self.append([self.TextBeen("Translated: " + query, color="LIGHT GREEN")])
-            beans = search_tags_genre(lastfm, query)
-        except:
-            beans = None
-        on_success(query, beans)
-
-    return thread.start_new_thread(_perform_search, ())
-
-
-def spermophile_search(query):
-    return None
-#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-
-class OnlineListCntr():
+class OnlineListCntr(object):
 
     def make_dirs(self, path):
         if not os.path.isdir(path):
@@ -139,7 +57,7 @@ class OnlineListCntr():
         search_button = gxMain.get_widget("search_button")
         search_button.connect("clicked", self.on_search)
 
-        self.search_routine = search_artist_top_tracks
+        self.search_routine = lastfm.search_top_tracks
         self.create_search_mode_buttons(gxMain)
 
         self.treeview = gxMain.get_widget("online_treeview")
@@ -151,7 +69,7 @@ class OnlineListCntr():
         self.entityBeans = []
         self.index = self.similar_songs_model.getSize();
         
-        if not lastfm:
+        if not lastfm.connected():
             self.playerWidgets.setStatusText(_("lasf.fm connection error"))
 
         if not vkontakte or not vkontakte.isLive():
@@ -163,18 +81,18 @@ class OnlineListCntr():
 
         self.playerThreadId = None
 
-        self.info = InformationController(gxMain, lastfm, self.playerCntr, self.directoryCntr)
+        self.info = InformationController(gxMain, self.playerCntr, self.directoryCntr)
 
         pass #end of init
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def create_search_mode_buttons(self, gxMain):
-        mode_to_button_map = {search_artist_top_tracks: 'top_songs_togglebutton',
-                              search_artist_top_albums: 'top_albums_togglebutton',
-                              search_artist_similar_artists: 'top_similar_togglebutton',
-                              search_tracks_by_name: 'all_search_togglebutton',
-                              search_tracks_by_tags: 'tags_togglebutton',
-                              spermophile_search: 'tracks_togglebutton' }
+        mode_to_button_map = {lastfm.search_top_tracks: 'top_songs_togglebutton',
+                              lastfm.search_top_albums: 'top_albums_togglebutton',
+                              lastfm.search_top_similar: 'top_similar_togglebutton',
+                              vkontakte.find_song_urls: 'all_search_togglebutton',
+                              lastfm.search_tags_genre: 'tags_togglebutton',
+                              lastfm.unimplemented_search: 'tracks_togglebutton' }
         self.search_mode_buttons = {}
         for mode, name in mode_to_button_map.items():
             button = gxMain.get_widget(name)
@@ -271,11 +189,18 @@ class OnlineListCntr():
         query = self.get_search_query()
         if query:
             query = self.capitilize_query(u"" + query)
-            if self.search_routine:
-                self.playerThreadId = self.search_routine(query, self.show_results)
+            self.playerThreadId = thread.start_new_thread(self.perform_search, (query,))
 
         self.lock.release()
-        pass
+    
+    def perform_search(self, query):
+        beans = None
+        try:
+            if self.search_routine:
+                beans = self.search_routine(query)
+        except BaseException, ex:
+            LOG.error('Error while search for %s: %s' % (query, ex))
+        self.show_results(query, beans)
 
     def capitilize_query(self, line):
         line = line.strip()
@@ -293,11 +218,6 @@ class OnlineListCntr():
             time.sleep(2)
 
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-
-    def search_vk_engine(self, query):
-        vkSongs = vkontakte.find_song_urls(query)
-        beans = convertVKstoBeans(vkSongs)
-        self.show_results(query, beans)
 
     def show_results(self, query, beans, criteria=True):
 
