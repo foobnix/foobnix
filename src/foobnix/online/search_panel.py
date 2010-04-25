@@ -4,6 +4,7 @@ Created on 25 Apr 2010
 @author: Matik
 '''
 from __future__ import with_statement
+
 import gtk
 from gobject import TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING #@UnresolvedImport
 
@@ -34,7 +35,8 @@ class SearchPanel(BaseController):
         self.search_routine = lastfm.search_top_tracks
         self.create_search_mode_buttons(gx_main)
         self.search_text = gx_main.get_widget("search_entry")
-        self.search_text.connect("key-press-event", self.on_key_pressed)
+        self.search_text.connect("activate", self.on_search)    # GTK manual doesn't recommend to do this
+        #self.search_text.connect("key-press-event", self.on_key_pressed)
         search_button = gx_main.get_widget("search_button")
         search_button.connect("clicked", self.on_search)
         self.lock = thread.allocate_lock()
