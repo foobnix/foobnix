@@ -179,7 +179,7 @@ def search_top_similar(query):
         title = str(artist_txt)
         bean = CommonBean(name=title, path="", type=CommonBean.TYPE_FOLDER, color="GREEN", parent=query);
         beans.append(bean)
-        tops = search_top_tracks(network, title)
+        tops = search_top_tracks(title)
         for top in tops:
             beans.append(top)
         

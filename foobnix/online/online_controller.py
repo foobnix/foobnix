@@ -5,30 +5,28 @@ Created on Mar 16, 2010
 
 @author: ivanf
 '''
-import time
-from foobnix.online.online_model import OnlineListModel
-from foobnix.player.player_controller import PlayerController
-from foobnix.online.vk import Vkontakte
-import foobnix.online.integration.lastfm as lastfm
-import thread
-from foobnix.directory.directory_controller import DirectoryCntr
-from foobnix.util.configuration import FConfiguration
-from foobnix.online.google.search import GoogleSearch
 import os
+import thread
+import time
 import urllib
 
-import threading
-from foobnix.util import LOG
-#from foobnix.online.google.translate import translate
+from gobject import GObject #@UnresolvedImport
 
-
-
-import gtk
-
+from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.model.entity import CommonBean
-from foobnix.util.mouse_utils import is_double_click
+from foobnix.online.google.search import GoogleSearch
 from foobnix.online.information_controller import InformationController
+from foobnix.online.online_model import OnlineListModel
+from foobnix.online.search_panel import SearchPanel
+from foobnix.online.vk import Vkontakte
+from foobnix.player.player_controller import PlayerController
+from foobnix.util import LOG
+from foobnix.util.configuration import FConfiguration
+from foobnix.util.mouse_utils import is_double_click
 
+
+
+#from foobnix.online.google.translate import translate
 
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
@@ -40,82 +38,28 @@ except:
     
 
 
-class OnlineListCntr(object):
-
-    def make_dirs(self, path):
-        if not os.path.isdir(path):
-            os.makedirs(path)
-
+class OnlineListCntr(GObject):
 
     def __init__(self, gxMain, playerCntr, directoryCntr, playerWidgets):
         self.playerCntr = playerCntr
         self.directoryCntr = directoryCntr
         self.playerWidgets = playerWidgets
 
-        self.search_text = gxMain.get_widget("search_entry")
-        self.search_text.connect("key-press-event", self.on_key_pressed)
-        search_button = gxMain.get_widget("search_button")
-        search_button.connect("clicked", self.on_search)
-
-        self.search_routine = lastfm.search_top_tracks
-        self.create_search_mode_buttons(gxMain)
+        self.search_panel = SearchPanel(gxMain)
 
         self.treeview = gxMain.get_widget("online_treeview")
         self.treeview.connect("drag-end", self.on_drag_end)
-        self.treeview .connect("button-press-event", self.onPlaySong)
+        self.treeview.connect("button-press-event", self.onPlaySong)
 
         self.similar_songs_model = OnlineListModel(self.treeview)
 
         self.entityBeans = []
         self.index = self.similar_songs_model.getSize();
         
-        if not lastfm.connected():
-            self.playerWidgets.setStatusText(_("lasf.fm connection error"))
-
-        if not vkontakte or not vkontakte.isLive():
-            self.playerWidgets.setStatusText(_("Vkontakte connection error"))
-
-
-        self.play_attempt = 0
         self.count = 0
-
-        self.playerThreadId = None
-
         self.info = InformationController(gxMain, self.playerCntr, self.directoryCntr)
 
-        pass #end of init
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-
-    def create_search_mode_buttons(self, gxMain):
-        mode_to_button_map = {lastfm.search_top_tracks: 'top_songs_togglebutton',
-                              lastfm.search_top_albums: 'top_albums_togglebutton',
-                              lastfm.search_top_similar: 'top_similar_togglebutton',
-                              vkontakte.find_song_urls: 'all_search_togglebutton',
-                              lastfm.search_tags_genre: 'tags_togglebutton',
-                              lastfm.unimplemented_search: 'tracks_togglebutton' }
-        self.search_mode_buttons = {}
-        for mode, name in mode_to_button_map.items():
-            button = gxMain.get_widget(name)
-            button.connect('toggled', self.on_search_mode_selected, mode)
-            self.search_mode_buttons[mode] = button
-
-
-    def on_search_mode_selected(self, button, selected_mode=None):
-        if selected_mode==None:
-            return
-        #button.set_active(True)
-        #TODO kostul' to set button in toggled state by double click, set_active do not draw it enable.
-        #errors in console, how to fix it?
-        button.clicked()
-        
-        for mode, button in self.search_mode_buttons.items():
-            if mode != selected_mode:
-                button.set_active(False)
-
-        self.search_routine = selected_mode
-        LOG.info("Selected Search type", selected_mode)
-
-
 
 
     def report_now_playing(self, song):
@@ -156,70 +100,11 @@ class OnlineListCntr(object):
         self.directoryCntr.leftNoteBook.set_current_page(0)
 
 
-    def on_key_pressed(self, w, event):
-        if event.type == gtk.gdk.KEY_PRESS: #@UndefinedVariable
-            #Enter pressed
-            print "keyval", event.keyval, "keycode", event.hardware_keycode
-            if event.hardware_keycode == 36:
-                self.on_search()
-
-    def get_search_query(self):
-        query = self.search_text.get_text()
-        if query and len(query.strip()) > 0:
-            print query
-            return query
-        #Nothing found
-        return None
-
-    lock = threading.Lock()
 
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-    def on_search(self, *args):
-        if self.playerThreadId:
-            return None
-
-        if not vkontakte or not vkontakte.isLive():
-            LOG.error("VK is not availiable")
-            LOG.error("Vkontakte connection error")
-            return None
-
-        self.lock.acquire()
-        self.clear()
-
-        query = self.get_search_query()
-        if query:
-            query = self.capitilize_query(u"" + query)
-            self.playerThreadId = thread.start_new_thread(self.perform_search, (query,))
-
-        self.lock.release()
     
-    def perform_search(self, query):
-        beans = None
-        try:
-            if self.search_routine:
-                beans = self.search_routine(query)
-        except BaseException, ex:
-            LOG.error('Error while search for %s: %s' % (query, ex))
-        self.show_results(query, beans)
 
-    def capitilize_query(self, line):
-        line = line.strip()
-        result = ""
-        for l in line.split():
-            result += " " + l[0].upper() + l[1:]
-        return result
-
-    def search_dots(self, query):
-        dots = "..."
-        while self.playerThreadId != None:
-            dots += "."
-            self.clear()
-            self.append([self.SearchingCriteriaBean(query + dots)])
-            time.sleep(2)
-
-#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-
-    def show_results(self, query, beans, criteria=True):
+    def show_results(self, sender, query, beans, criteria=True):
 
         self.clear()
         print "Show results...."
@@ -229,7 +114,6 @@ class OnlineListCntr(object):
             self.append(beans)
         else:
             self.googleHelp(query)
-        self.playerThreadId = None
 
 
     def googleHelp(self, query):
@@ -442,3 +326,7 @@ class OnlineListCntr(object):
             return "#F2F2F2"
         else:
             return "#FFFFE5"
+
+    def make_dirs(self, path):
+        if not os.path.isdir(path):
+            os.makedirs(path)
