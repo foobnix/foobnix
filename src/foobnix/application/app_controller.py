@@ -19,6 +19,7 @@ from foobnix.directory.virtuallist_controller import VirturalLIstCntr
 from foobnix.base import BaseController
 
 from foobnix.util.configuration import FConfiguration
+from foobnix.online.search_panel import SearchPanel
 
 class AppController(BaseController):
 
@@ -63,6 +64,10 @@ class AppController(BaseController):
         self.player_controller.connect('song_playback_started', self.main_window_controller.on_song_started)
 
         self.main_window_controller.connect('exit', self.exit)
+        
+        self.search_panel = SearchPanel(v.gxMain)
+        self.search_panel.connect('show_search_results', onlineCntr.show_results)
+        #self.search_panel.connect('starting_search', onlineCntr.clear)
         
         self.restore_state()
     
