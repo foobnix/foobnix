@@ -188,5 +188,32 @@ def search_top_similar(query):
     return beans
 
 
-def unimplemented_search(query):
-    return None
+def unimplemented_search(query):    
+    song = CommonBean(name=query, type=CommonBean.TYPE_MUSIC_URL)
+    artist = song.getArtist()
+    title = song.getTitle()
+    track = network.get_track(artist, title)
+    LOG.debug("Search similar songs", song.getArtist(), song.getTitle())
+    
+    beans = []
+    if not track:
+        return []
+    
+    
+    """similar tracks"""
+    try:
+        similars = track.get_similar()
+        
+    except:
+        LOG.error("Similar not found")
+        return None
+    beans.append(song)
+    for tsong in similars:
+        try:            
+            tsong_item = tsong.item
+        except AttributeError:
+            tsong_item = tsong['item']
+
+        beans.append(CommonBean(name=str(tsong_item), type=CommonBean.TYPE_MUSIC_URL, parent=query))
+          
+    return beans
