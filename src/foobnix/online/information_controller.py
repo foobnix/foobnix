@@ -62,7 +62,7 @@ class InformationController():
         self.album_name.set_use_markup(True)
         
         self.current_song_label = gx_main.get_widget("current_song_label")
-        self.current_song_label.set_use_markup(gtk.TRUE)
+        self.current_song_label.set_use_markup(True)
         
         """Similar artists"""
         self.similar_artists = gx_main.get_widget("treeview_similart_artists")        
