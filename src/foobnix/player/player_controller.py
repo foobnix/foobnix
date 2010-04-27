@@ -14,6 +14,21 @@ from foobnix.model.entity import CommonBean
 from foobnix.util import LOG
 from foobnix.base import BaseController
 from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE, TYPE_PYOBJECT
+from foobnix.thirdparty import pylast
+from foobnix.util.configuration import FConfiguration
+
+
+username = FConfiguration().lfm_login
+password_hash = pylast.md5(FConfiguration().lfm_password)
+
+try:
+    lastfm = pylast.get_lastfm_network(username=username, password_hash=password_hash)
+    scrobler = lastfm.get_scrobbler("fbx", "1.0")
+except:
+    lastfm = None
+    scrobler = None
+    LOG.error("last.fm or scrobler connection error")
+    
 
 class PlayerController(BaseController):
     MODE_RADIO = "RADIO"
@@ -191,6 +206,7 @@ class PlayerController(BaseController):
     def playThread(self, song=None):
         LOG.info("Starts playing thread")        
         flag = True
+        is_scrobled = False
         play_thread_id = self.playerThreadId
         gtk.gdk.threads_enter()#@UndefinedVariable        
         self.widgets.seekBar.set_text("00:00 / 00:00")
@@ -201,7 +217,7 @@ class PlayerController(BaseController):
                 print "Try"
                 time.sleep(0.2)
                 dur_int = self.player.query_duration(self.time_format, None)[0]
-                #self.currentSong= dur_int / 1000000000
+                duration_sec= dur_int / 1000000000
                 dur_str = convert_ns(dur_int)
                 gtk.gdk.threads_enter() #@UndefinedVariable
                 
@@ -214,6 +230,7 @@ class PlayerController(BaseController):
                 pass
                 
         time.sleep(0.2)
+        start_time = str(int(time.time()));
         
                     
         while play_thread_id == self.playerThreadId:
@@ -236,11 +253,23 @@ class PlayerController(BaseController):
                 
                 gtk.gdk.threads_leave() #@UndefinedVariable
                 
-            time.sleep(0.5)            
+                """report now playing song"""
+                if song.getArtist() and song.getTitle():
+                    scrobler.report_now_playing(song.getArtist(), song.getTitle())                
+                
+            time.sleep(1)            
+            
             "Download only if you listen this music"
-            if flag and song.type == CommonBean.TYPE_MUSIC_URL and timePersent > 0.25:
+            if flag and song.type == CommonBean.TYPE_MUSIC_URL and timePersent > 0.35:
                 flag = False                
                 self.onlineCntr.dowloadThread(song)
+            
+            if not is_scrobled and timePersent > 0.45:
+                is_scrobled = True   
+                if song.getArtist() and song.getTitle():             
+                    scrobler.scrobble(song.getArtist(),song.getTitle(), start_time, "P", "",duration_sec)
+                    LOG.debug("Song Successfully scrobbled", song.getArtist(),  song.getTitle())
+                
     
         
 
