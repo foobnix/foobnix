@@ -89,7 +89,7 @@ class PlayerController(BaseController):
         
         if  song.type == CommonBean.TYPE_MUSIC_FILE:
             self.player = self.playerLocal()              
-            self.player.set_property("uri", 'file:' + urllib.pathname2url(song.path))
+            self.player.set_property("uri", 'file://' + urllib.pathname2url(song.path))
             self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
         elif song.type == CommonBean.TYPE_RADIO_URL:
             print "URL PLAYING", song.path
