@@ -264,8 +264,8 @@ class PlayerController(BaseController):
             if flag and song.type == CommonBean.TYPE_MUSIC_URL and timePersent > 0.35:
                 flag = False                
                 self.onlineCntr.dowloadThread(song)
-            sec+=1
-            print sec
+            
+            sec+=1            
             if not is_scrobled and sec >= 45:
                 is_scrobled = True   
                 if song.getArtist() and song.getTitle():             
