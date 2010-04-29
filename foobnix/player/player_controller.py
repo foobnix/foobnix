@@ -266,7 +266,7 @@ class PlayerController(BaseController):
                 self.onlineCntr.dowloadThread(song)
             
             sec+=1            
-            if not is_scrobled and sec >= 45:
+            if not is_scrobled and sec >= duration_sec / 2:
                 is_scrobled = True   
                 if song.getArtist() and song.getTitle():             
                     scrobler.scrobble(song.getArtist(),song.getTitle(), start_time, "P", "",duration_sec)
