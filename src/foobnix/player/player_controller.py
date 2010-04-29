@@ -190,6 +190,9 @@ class PlayerController(BaseController):
     def _isStatusNull(self):
         return self.player.get_state()[1] == gst.STATE_NULL
     
+    def _get_state(self):
+        return self.player.get_state()[1]
+    
     def setSeek(self, persentValue):  
         if self._isStatusNull():
             self.playerThreadId = None
@@ -265,8 +268,11 @@ class PlayerController(BaseController):
                 flag = False                
                 self.onlineCntr.dowloadThread(song)
             
-            sec+=1            
-            if not is_scrobled and sec >= duration_sec / 2:
+            if  self._get_state()!= gst.STATE_PAUSED:
+                sec+=1            
+                #LOG.debug("Song duration", sec, timePersent);    
+                            
+            if not is_scrobled and (sec >= duration_sec / 2 or (sec>=45 and timePersent>=0.9)):
                 is_scrobled = True   
                 if song.getArtist() and song.getTitle():             
                     scrobler.scrobble(song.getArtist(),song.getTitle(), start_time, "P", "",duration_sec)
