@@ -66,9 +66,13 @@ class PlayerWidgetsCntl():
             LOG.debug("double click", w)
             if w.get_position() == 0:
                 LOG.debug("position", FConfiguration().hpanelPostition)
-                w.set_position(FConfiguration().hpanelPostition)             
+                w.set_position(FConfiguration().hpanelPostition)
+                h2 = self.hpanel2.get_position()
+                self.hpanel2.set_position(h2 - FConfiguration().hpanelPostition)             
             else:
                 LOG.debug("position 0")
+                h2 = self.hpanel2.get_position()
+                self.hpanel2.set_position(h2 + FConfiguration().hpanelPostition)
                 w.set_position(0)
             time.sleep(0.2)
                    
