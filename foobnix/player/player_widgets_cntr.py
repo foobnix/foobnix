@@ -9,6 +9,8 @@ import thread
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.online.google.translate import translate
+from foobnix.util.mouse_utils import is_double_click
+import time
 
 
 class PlayerWidgetsCntl():
@@ -29,6 +31,10 @@ class PlayerWidgetsCntl():
         
         self.vpanel = gxMain.get_widget("vpaned1")
         self.hpanel = gxMain.get_widget("hpaned1")
+        self.hpanel.connect("button-press-event", self.on_show_hide_paned);
+        
+        #self.hpanel.set_property("position-set", True)
+        
         self.hpanel2 = gxMain.get_widget("hpaned2")
         
         
@@ -53,7 +59,22 @@ class PlayerWidgetsCntl():
         }
         
         gxMain.signal_autoconnect(navigationEvents)        
-        
+   
+    def on_show_hide_paned(self, w, e):
+        #TODO: Matik, could you view, this signal rise on any paned double click.
+        if is_double_click(e):
+            LOG.debug("double click", w)
+            if w.get_position() == 0:
+                LOG.debug("position", FConfiguration().hpanelPostition)
+                w.set_position(FConfiguration().hpanelPostition)             
+            else:
+                LOG.debug("position 0")
+                w.set_position(0)
+            time.sleep(0.2)
+                   
+                
+                
+                      
    
     def setStatusText(self, text):
         self.statusbar.push(0,text)
