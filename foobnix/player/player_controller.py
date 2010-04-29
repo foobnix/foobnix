@@ -211,6 +211,7 @@ class PlayerController(BaseController):
         gtk.gdk.threads_enter()#@UndefinedVariable        
         self.widgets.seekBar.set_text("00:00 / 00:00")
         gtk.gdk.threads_leave() #@UndefinedVariable
+        sec = 0;
 
         while play_thread_id == self.playerThreadId:
             try:
@@ -263,8 +264,9 @@ class PlayerController(BaseController):
             if flag and song.type == CommonBean.TYPE_MUSIC_URL and timePersent > 0.35:
                 flag = False                
                 self.onlineCntr.dowloadThread(song)
-            
-            if not is_scrobled and timePersent > 0.45:
+            sec+=1
+            print sec
+            if not is_scrobled and sec >= 45:
                 is_scrobled = True   
                 if song.getArtist() and song.getTitle():             
                     scrobler.scrobble(song.getArtist(),song.getTitle(), start_time, "P", "",duration_sec)
