@@ -42,7 +42,7 @@ class AppController(BaseController):
         self.playlistCntr.registerDirectoryCntr(self.directoryCntr)
         self.appConfCntr = AppConfigurationCntrl(v.gxMain, self.directoryCntr)
         
-        onlineCntr = OnlineListCntr(v.gxMain, self.player_controller, self.directoryCntr, self.playerWidgets)
+        onlineCntr = OnlineListCntr(v.gxMain, self.player_controller, self.directoryCntr)
         self.player_controller.registerOnlineCntr(onlineCntr)
         
         self.preferences_window_controller = PrefController(v.gxPref)

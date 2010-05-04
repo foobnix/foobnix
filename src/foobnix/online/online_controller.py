@@ -40,10 +40,9 @@ except:
 
 class OnlineListCntr(GObject):
 
-    def __init__(self, gxMain, playerCntr, directoryCntr, playerWidgets):
+    def __init__(self, gxMain, playerCntr, directoryCntr):
         self.playerCntr = playerCntr
         self.directoryCntr = directoryCntr
-        self.playerWidgets = playerWidgets
 
         self.search_panel = SearchPanel(gxMain)
 
@@ -60,18 +59,6 @@ class OnlineListCntr(GObject):
         self.info = InformationController(gxMain, self.playerCntr, self.directoryCntr)
 
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-
-
-    def report_now_playing(self, song):
-        if song.getArtist() and song.getTitle():
-            print "Reporting about ... ARTIST: " + song.getArtist(), "TITLE: ", song.getTitle()
-            #self.scrobler.report_now_playing(song.getArtist(), song.getTitle())
-        else:
-            print _("Artist and title not correct")
-#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-
-    def scrobble(self, artist, title, time_started, source, mode, duration, album="", track_number="", mbid=""):
-        self.scrobler.scrobble(artist, title, time_started, source, mode, duration, album, track_number, mbid)
 
     def on_drag_end(self, *ars):
         selected = self.similar_songs_model.getSelectedBean()
@@ -260,6 +247,7 @@ class OnlineListCntr(GObject):
 
         playlistBean = self.similar_songs_model.getBeenByPosition(self.index)
         return playlistBean
+    
     def prevBean(self):
         self.index -= 1
         if self.index <= 0:
