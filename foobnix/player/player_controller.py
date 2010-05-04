@@ -3,6 +3,7 @@ Created on Mar 11, 2010
 
 @author: ivan
 '''
+import os
 import gst
 import gtk
 import time
@@ -103,8 +104,11 @@ class PlayerController(BaseController):
         print "Name", song.name
         
         if  song.type == CommonBean.TYPE_MUSIC_FILE:
-            self.player = self.playerLocal()              
-            self.player.set_property("uri", 'file://' + urllib.pathname2url(song.path))
+            self.player = self.playerLocal()
+            uri = 'file://' + urllib.pathname2url(song.path)
+            if os.name == 'nt':
+                uri = 'file:' + urllib.pathname2url(song.path)
+            self.player.set_property("uri", uri)
             self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
         elif song.type == CommonBean.TYPE_RADIO_URL:
             print "URL PLAYING", song.path
