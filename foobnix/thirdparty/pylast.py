@@ -19,6 +19,7 @@
 # USA
 #
 # http://code.google.com/p/pylast/
+import datetime
     
 __version__ = '0.4'
 __author__ = 'Amr Hassan'
@@ -1170,6 +1171,10 @@ class Album(_BaseObject, _Taggable):
         """Retruns the release date of the album."""
         
         return _extract(self._request("album.getInfo", cacheable = True), "releasedate")
+    
+    def get_release_year(self):
+        dt= datetime.datetime.strptime(self.get_release_date(),"%d %b %Y, %H:%M")
+        return str(dt.year)
     
     def get_cover_image(self, size = COVER_EXTRA_LARGE):
         """

@@ -60,7 +60,7 @@ def search_top_albums(query):
             album_txt = album['item']
         
         tracks = album_txt.get_tracks()
-        bean = CommonBean(name=album_txt.get_title(), path="", color="GREEN", type=CommonBean.TYPE_FOLDER, parent=query);
+        bean = CommonBean(name=album_txt.get_title()+" ("+album_txt.get_release_year()+")", path="", color="GREEN", type=CommonBean.TYPE_FOLDER, parent=query);
         beans.append(bean)
         
         for track in tracks:

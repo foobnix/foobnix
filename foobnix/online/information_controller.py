@@ -12,6 +12,9 @@ from foobnix.model.entity import CommonBean
 from foobnix.base.base_list_controller import BaseListController
 from foobnix.online.song_resource import SongResource
 from foobnix.util.configuration import FConfiguration
+import datetime
+import time
+
 
 class SimilartSongsController(BaseListController):
         def __init__(self, gx_main, playerCntr, directoryCntr):
@@ -164,8 +167,8 @@ class InformationController():
             self.add_similar_artist(artist_item.get_name())
         
         album = track.get_album()
-        if album:
-            self.album_name.set_markup("<b>" +song.getArtist() + " - " +  album.get_name()+"</b>")
+        if album:           
+            self.album_name.set_markup("<b>" +song.getArtist() + " - " +  album.get_name()+" ("+album.get_release_year()+")</b>")
         
                 
         #album = self.last_fm_network.get_album(song.getArtist(), song.getTitle())
