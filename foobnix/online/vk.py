@@ -252,20 +252,25 @@ class Vkontakte:
     def get_songs_by_url(self, url):
         LOG.debug("Search By URL")
         result = self.get_page_by_url(url)
+        print result
         result=unicode(result)
-        reg_all = "([^<>]*)"
+        reg_all = "([^{</}]*)"
         result_url = re.findall(ur"http:([\\/.0-9A-Z]*)", result, re.IGNORECASE)
         result_artist = re.findall(u"q]="+reg_all+"'", result, re.IGNORECASE | re.UNICODE)
         result_title = re.findall(u"\"title([0-9]*)\\\\\">"+  reg_all+"", result, re.IGNORECASE | re.UNICODE)
         result_time = re.findall("duration\\\\\">" + reg_all, result, re.IGNORECASE | re.UNICODE)
-        
+        result_lyr = re.findall(ur"showLyrics"+reg_all, result, re.IGNORECASE | re.UNICODE)
+        print "lyr:::", result_lyr
         songs = []
+        j = 0
         for i, artist in enumerate(result_artist):
-            chars = {"&#39;":"'", "&#146;":"'"}
-            
             path = "http:" +result_url[i].replace("\\/", "/")
-            print result_title[i][1] 
             title =  self.to_good_chars(result_title[i][1])
+            if not title:
+                if len(result_lyr) > j:
+                    title = result_lyr[j]
+                    title = title[title.find(";'>")+3:]
+                    j +=1                
             artist =  self.to_good_chars(artist)
             song = VKSong(path, artist, title, result_time[i]);            
             songs.append(song)        
@@ -313,8 +318,8 @@ def get_group_id(str):
     
     
 vk = Vkontakte("ivan.ivanenko@gmail.com", "1")
-line = "http://vkontakte.ru/audio.php?id=2765347"
-print vk.get_songs_by_url(line)
+#line = "http://vkontakte.ru/audio.php?id=7185772"
+#print vk.get_songs_by_url(line)
 
 #s = "http://vkontakte.ru/audio.php?id=2765347 < & > ' &#39; &amp;"
 #print unescape(s)    
