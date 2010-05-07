@@ -120,10 +120,9 @@ class Vkontakte:
     def get_page_by_url(self, host_url):
         if not host_url:
             return host_url
-        
-        post = urllib.urlencode({
-                                 "gid" : get_group_id(host_url),                                 
-                                })
+        host_url.replace("#","&")
+        post = host_url[host_url.find("?")+1:]
+        LOG.debug("post", post)
         headers = {'User-Agent' : 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.13) Gecko/2009073022 Firefox/3.0.13',
                    'Host' : 'vkontakte.ru',
                    'Referer' : 'http://vkontakte.ru/index.php',
@@ -313,7 +312,9 @@ def unescape(s):
 #vk = Vkontakte("qax@bigmir.net", "foobnix")
 #vk.get_vk_songs_by_url("http://vkontakte.ru/audio.php?gid=10787995")
 
+#line = "http://vkontakte.ru/audio.php?gid=15#album_id=0&gid=15&id=0&offset=200"
+#line1 = "http://vkontakte.ru/audio.php?gid=15"
 
-    
+#print vk.get_songs_by_url(line)    
 
 

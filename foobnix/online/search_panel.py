@@ -120,10 +120,8 @@ class SearchPanel(BaseController):
     def perform_search(self, query):
         beans = None
         try:
-            if query.lower().startswith("http"):
-                print "asdf", query
-                beans = vkontakte.get_songs_by_url(query)
-                            
+            if query.lower().startswith("http"):                
+                beans = vkontakte.get_songs_by_url(query)                            
             elif self.search_routine:
                 beans = self.search_routine(query)
         except BaseException, ex:
