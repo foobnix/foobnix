@@ -14,6 +14,9 @@ from string import replace
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.model.entity import CommonBean
+import httplib
+import sys
+import pprint
 
 
 
@@ -113,6 +116,37 @@ class Vkontakte:
         result = data.read()
         return result
     
+       
+    def get_page_by_url(self, host_url):
+        if not host_url:
+            return host_url
+        
+        post = urllib.urlencode({
+                                 "gid" : get_group_id(host_url),                                 
+                                })
+        headers = {'User-Agent' : 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.13) Gecko/2009073022 Firefox/3.0.13',
+                   'Host' : 'vkontakte.ru',
+                   'Referer' : 'http://vkontakte.ru/index.php',
+                   'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
+                   'X-Requested-With' : 'XMLHttpRequest',
+                   'Connection' : 'close',
+                   'Cookie' : 'remixlang=0; remixchk=5; audio_vol=100; %s' % self.get_cookie(),
+                   'Pragma' : 'no-cache',
+                   'Cache-Control' : '    no-cache'
+                  }
+        conn = urllib2.Request(host_url, post, headers)
+        
+        #Do not run to offten
+        cur_time = time.time()
+        if cur_time - self.execute_time < 0.5:
+            print "Sleep because to many requests..."
+            time.sleep(0.8)        
+        self.execute_time = time.time()
+        
+        data = urllib2.urlopen(conn);
+        result = data.read()
+        return result
+    
     def get_name_by(self, id, result_album):
             for album in result_album:
                 id_album = album[0]
@@ -156,7 +190,7 @@ class Vkontakte:
     def convert_vk_songs_to_beans(self, vk_songs):
         beans = []
         for vk_song in vk_songs:
-            bean = CommonBean(name=vk_song.getFullDescription(), path=vk_song.path, type=CommonBean.TYPE_MUSIC_URL);
+            bean = CommonBean(name=vk_song.album + " - " + vk_song.track, path=vk_song.path, type=CommonBean.TYPE_MUSIC_URL);
             beans.append(bean)
         return beans
 
@@ -215,7 +249,27 @@ class Vkontakte:
             vkSongs.append(vkSong)            
         
         return self.convert_vk_songs_to_beans(vkSongs)
+     
+    def get_songs_by_url(self, url):
+        LOG.debug("Search By URL")
+        result = self.get_page_by_url(url)
+        result=unicode(result)
+        reg_all = "([А-ЯA-Z0-9_ #!:;.?+=&%@!\-\/'()]*)"
+        result_url = re.findall(ur"http:([\\/.0-9A-Z]*)", result, re.IGNORECASE)
+        result_artist = re.findall(u"q]="+reg_all+"'", result, re.IGNORECASE | re.UNICODE)
+        result_title = re.findall(u"\"title([0-9]*)\\\\\">"+  reg_all+"", result, re.IGNORECASE | re.UNICODE)
+        result_time = re.findall("duration\\\\\">" + reg_all, result, re.IGNORECASE | re.UNICODE)
         
+        songs = []
+        for i, artist in enumerate(result_artist):
+            path = unescape("http:" + result_url[i])
+            title = unescape(result_title[i][1])
+            artist = unescape(artist)
+            song = VKSong(path, artist, title, result_time[i]);            
+            songs.append(song)        
+        print songs
+        return self.convert_vk_songs_to_beans(songs)    
+            
         
        
 
@@ -244,18 +298,22 @@ class VKSong():
         else: 
             return ""   
 
-        
+def get_group_id(str):
+    search = "gid="
+    index = str.find("gid=")
+    return str[index+len(search):]
+def unescape(s):
+    s = s.replace("&lt;", "<")
+    s = s.replace("&gt;", ">")
+    s = s.replace("&amp;", "&")
+    s = s.replace("\\/", "/")    
+    
+    return s
+    
 #vk = Vkontakte("qax@bigmir.net", "foobnix")
-#vkSongs = vk.find_song_urls("rammstein du hast")
-#vkSongs = vk.find_song_urls("rammstein du hast1")
-#vkSongs = vk.find_song_urls("rammstein du hast1")
-#vkSongs = vk.find_song_urls("rammstein du hast3")
+#vk.get_vk_songs_by_url("http://vkontakte.ru/audio.php?gid=10787995")
 
 
-#print "RESULT ", vk.find_more_relative_song("rammstein du hast")
-#for vkSong in vkSongs:
-#    print vkSong
-
-
+    
 
 

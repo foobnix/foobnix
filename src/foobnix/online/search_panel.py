@@ -93,6 +93,9 @@ class SearchPanel(BaseController):
         
 
     def capitilize_query(self, line):
+        if line.startswith("http"):
+            return line
+        
         line = line.strip()
         result = ""
         for l in line.split():
@@ -107,17 +110,21 @@ class SearchPanel(BaseController):
     
             self.emit('starting_search')
             LOG.error('>>>>>>> search with ' + str(self.search_routine))
-            query = self.get_search_query()
+            query = self.get_search_query()            
             if query:
                 query = self.capitilize_query(u"" + query)
-                self.search_thread_id = thread.start_new_thread(self.perform_search, (query,))
-                #self.perform_search(query)
+                #self.search_thread_id = thread.start_new_thread(self.perform_search, (query,))
+                self.perform_search(query)
 
     
     def perform_search(self, query):
         beans = None
         try:
-            if self.search_routine:
+            if query.lower().startswith("http"):
+                print "asdf", query
+                beans = vkontakte.get_songs_by_url(query)
+                            
+            elif self.search_routine:
                 beans = self.search_routine(query)
         except BaseException, ex:
             LOG.error('Error while search for %s: %s' % (query, ex))
