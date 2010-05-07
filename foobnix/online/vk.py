@@ -14,9 +14,6 @@ from string import replace
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.model.entity import CommonBean
-import httplib
-import sys
-import pprint
 
 
 
@@ -253,7 +250,8 @@ class Vkontakte:
         LOG.debug("Search By URL")
         result = self.get_page_by_url(url)
         result=unicode(result)
-        reg_all = "([А-ЯA-Z0-9_ #!:;.?+=&%@!\-\/'()]*)"
+        print result
+        reg_all = "([А-ЯІЇєA-Z0-9_ #!:,;.?+=&%@!\-\/'()]*)"
         result_url = re.findall(ur"http:([\\/.0-9A-Z]*)", result, re.IGNORECASE)
         result_artist = re.findall(u"q]="+reg_all+"'", result, re.IGNORECASE | re.UNICODE)
         result_title = re.findall(u"\"title([0-9]*)\\\\\">"+  reg_all+"", result, re.IGNORECASE | re.UNICODE)
@@ -309,8 +307,7 @@ def unescape(s):
     
     return s
     
-#vk = Vkontakte("qax@bigmir.net", "foobnix")
-#vk.get_vk_songs_by_url("http://vkontakte.ru/audio.php?gid=10787995")
+vk = Vkontakte("ivan.ivanenko@gmail.com", "1")
 
 #line = "http://vkontakte.ru/audio.php?gid=15#album_id=0&gid=15&id=0&offset=200"
 #line1 = "http://vkontakte.ru/audio.php?gid=15"
