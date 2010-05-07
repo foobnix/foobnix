@@ -113,8 +113,8 @@ class SearchPanel(BaseController):
             query = self.get_search_query()            
             if query:
                 query = self.capitilize_query(u"" + query)
-                #self.search_thread_id = thread.start_new_thread(self.perform_search, (query,))
-                self.perform_search(query)
+                self.search_thread_id = thread.start_new_thread(self.perform_search, (query,))
+                #self.perform_search(query)
 
     
     def perform_search(self, query):
