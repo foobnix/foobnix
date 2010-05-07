@@ -15,6 +15,11 @@ from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.model.entity import CommonBean
 
+from xml.sax.saxutils import escape
+from _xmlplus.sax.saxutils import unescape
+import htmlentitydefs
+from setuptools.package_index import htmldecode
+
 
 
 class Vkontakte:
@@ -201,9 +206,7 @@ class Vkontakte:
         
         #print page
                 
-        
-                
-        reg_all = "([А-ЯA-Z0-9_ #!:;.?+=&%@!\-\/'()]*)"
+        reg_all = "([^<>]*)"
         resultall = re.findall("return operate\(([\w() ,']*)\);", page, re.IGNORECASE)
         result_album = re.findall(u"<b id=\\\\\"performer([0-9]*)\\\\\">" + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
         result_track = re.findall(u"<span id=\\\\\"title([0-9]*)\\\\\">" + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
@@ -250,8 +253,7 @@ class Vkontakte:
         LOG.debug("Search By URL")
         result = self.get_page_by_url(url)
         result=unicode(result)
-        print result
-        reg_all = "([А-ЯІЇєA-Z0-9_ #!:,;.?+=&%@!\-\/'()]*)"
+        reg_all = "([^<>]*)"
         result_url = re.findall(ur"http:([\\/.0-9A-Z]*)", result, re.IGNORECASE)
         result_artist = re.findall(u"q]="+reg_all+"'", result, re.IGNORECASE | re.UNICODE)
         result_title = re.findall(u"\"title([0-9]*)\\\\\">"+  reg_all+"", result, re.IGNORECASE | re.UNICODE)
@@ -259,14 +261,23 @@ class Vkontakte:
         
         songs = []
         for i, artist in enumerate(result_artist):
-            path = unescape("http:" + result_url[i])
-            title = unescape(result_title[i][1])
-            artist = unescape(artist)
+            chars = {"&#39;":"'", "&#146;":"'"}
+            
+            path = "http:" +result_url[i].replace("\\/", "/")
+            print result_title[i][1] 
+            title =  self.to_good_chars(result_title[i][1])
+            artist =  self.to_good_chars(artist)
             song = VKSong(path, artist, title, result_time[i]);            
             songs.append(song)        
-        print songs
+        print len(songs)
         return self.convert_vk_songs_to_beans(songs)    
-            
+
+    def to_good_chars(self, line):
+        try:
+            return htmldecode(line)
+        except:
+            return unescape(line)
+        
         
        
 
@@ -299,19 +310,13 @@ def get_group_id(str):
     search = "gid="
     index = str.find("gid=")
     return str[index+len(search):]
-def unescape(s):
-    s = s.replace("&lt;", "<")
-    s = s.replace("&gt;", ">")
-    s = s.replace("&amp;", "&")
-    s = s.replace("\\/", "/")    
     
-    return s
     
 vk = Vkontakte("ivan.ivanenko@gmail.com", "1")
+line = "http://vkontakte.ru/audio.php?id=2765347"
+print vk.get_songs_by_url(line)
 
-#line = "http://vkontakte.ru/audio.php?gid=15#album_id=0&gid=15&id=0&offset=200"
-#line1 = "http://vkontakte.ru/audio.php?gid=15"
-
-#print vk.get_songs_by_url(line)    
+#s = "http://vkontakte.ru/audio.php?id=2765347 < & > ' &#39; &amp;"
+#print unescape(s)    
 
 
