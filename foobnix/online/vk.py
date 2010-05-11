@@ -15,8 +15,7 @@ from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.model.entity import CommonBean
 
-from xml.sax.saxutils import escape
-from _xmlplus.sax.saxutils import unescape
+from xml.sax.saxutils import escape, unescape
 import htmlentitydefs
 from setuptools.package_index import htmldecode
 
