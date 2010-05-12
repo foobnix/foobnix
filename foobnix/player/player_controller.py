@@ -237,7 +237,7 @@ class PlayerController(BaseController):
                 print "Error"
                 pass
                 
-        time.sleep(0.2)
+        time.sleep(0.5)
         start_time = str(int(time.time()));
         
                     
