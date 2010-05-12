@@ -43,6 +43,39 @@
                   </widget>
                 </child>
                 <child>
+                  <widget class="GtkMenuItem" id="View">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">_View</property>
+                    <property name="use_underline">True</property>
+                    <child>
+                      <widget class="GtkMenu" id="menu1">
+                        <property name="visible">True</property>
+                        <child>
+                          <widget class="GtkMenuItem" id="view-full">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">_Full View</property>
+                            <property name="use_underline">True</property>
+                          </widget>
+                        </child>
+                        <child>
+                          <widget class="GtkMenuItem" id="view-compact">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">_Compact View</property>
+                            <property name="use_underline">True</property>
+                          </widget>
+                        </child>
+                        <child>
+                          <widget class="GtkMenuItem" id="view-small">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">_Small View</property>
+                            <property name="use_underline">True</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+                <child>
                   <widget class="GtkMenuItem" id="menuitem12">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">_Help</property>
@@ -637,9 +670,9 @@
                                   <widget class="GtkFileChooserButton" id="online_dir_filechooserbutton">
                                     <property name="visible">True</property>
                                     <property name="sensitive">False</property>
-                                    <property name="create_folders">False</property>
                                     <property name="show_hidden">True</property>
                                     <property name="action">select-folder</property>
+                                    <property name="create_folders">False</property>
                                   </widget>
                                   <packing>
                                     <property name="position">1</property>
