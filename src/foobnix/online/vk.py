@@ -250,9 +250,12 @@ class Vkontakte:
      
     def get_songs_by_url(self, url):
         LOG.debug("Search By URL")
-        result = self.get_page_by_url(url)
-        print result
-        result=unicode(result)
+        result = self.get_page_by_url(url) 
+        try:       
+            result=unicode(result)
+        except:
+            result=result
+            LOG.error("VK connectino error, try other user")
         reg_all = "([^{</}]*)"
         result_url = re.findall(ur"http:([\\/.0-9A-Z]*)", result, re.IGNORECASE)
         result_artist = re.findall(u"q]="+reg_all+"'", result, re.IGNORECASE | re.UNICODE)
@@ -316,9 +319,11 @@ def get_group_id(str):
     return str[index+len(search):]
     
     
-vk = Vkontakte("ivan.ivanenko@gmail.com", "1")
+vk = Vkontakte("qax@bigmir.net", "foobnix")
 #line = "http://vkontakte.ru/audio.php?id=7185772"
-#print vk.get_songs_by_url(line)
+line = "http://vkontakte.ru/club10787995"
+
+print vk.get_songs_by_url(line)
 
 #s = "http://vkontakte.ru/audio.php?id=2765347 < & > ' &#39; &amp;"
 #print unescape(s)    
