@@ -2,6 +2,8 @@ package com.foobnix;
 
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.roarsoftware.lastfm.Artist;
 import net.roarsoftware.lastfm.Track;
 
@@ -59,7 +61,7 @@ public class FoobnixGui extends QWidget {
 
     public void search() {
         String text = searchLine.text();
-        if (text != null && text.trim() != "")
+        if (StringUtils.isEmpty(text))
             list.clear();
 
         Collection<Track> tracks = Artist.getTopTracks(text, LAST_FM_KEY);
