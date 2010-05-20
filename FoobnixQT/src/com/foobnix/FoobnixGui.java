@@ -63,7 +63,7 @@ public class FoobnixGui extends QWidget {
         String text = searchLine.text();
         if (StringUtils.isEmpty(text))
             list.clear();
-
+        
         Collection<Track> tracks = Artist.getTopTracks(text, LAST_FM_KEY);
         for (Track track : tracks) {
             addLine(list, track.getArtist() + " - " + track.getName());
