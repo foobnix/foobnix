@@ -1,4 +1,4 @@
-package com.foobnix;
+package com.foobnix.gui;
 
 import java.util.Collection;
 import java.util.List;
