@@ -1,44 +1,31 @@
 package com.foobnix.gui;
 
-import java.awt.event.TextEvent;
-
-import javax.swing.GroupLayout.Alignment;
-
 import com.trolltech.qt.core.Qt.Orientation;
+import com.trolltech.qt.core.Qt.WindowState;
 import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QApplication;
-import com.trolltech.qt.gui.QBoxLayout;
-import com.trolltech.qt.gui.QFrame;
-import com.trolltech.qt.gui.QGraphicsView;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QIcon;
-import com.trolltech.qt.gui.QImage;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QLineEdit;
-import com.trolltech.qt.gui.QListView;
 import com.trolltech.qt.gui.QMainWindow;
-import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QProgressBar;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QSlider;
 import com.trolltech.qt.gui.QSplitter;
 import com.trolltech.qt.gui.QTabWidget;
-import com.trolltech.qt.gui.QTableView;
 import com.trolltech.qt.gui.QTableWidget;
 import com.trolltech.qt.gui.QToolBar;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
-import com.trolltech.qt.gui.QImage.Format;
 import com.trolltech.qt.gui.QTabWidget.TabPosition;
-import com.trolltech.qt.phonon.VolumeSlider;
 
 public class PlayerGui extends QMainWindow {
 
     public PlayerGui() {
         setupUI();
     }
-
     private void setupUI() {
    
         
@@ -55,6 +42,7 @@ public class PlayerGui extends QMainWindow {
         QSplitter splitter = new QSplitter(Orientation.Horizontal);
         splitter.addWidget(lefpMiddleSplitter);
         splitter.addWidget(rightPanel);
+        // splitter.setSizes(Arrays.asList(120, 1));
         
         centerLayout.addWidget(splitter);
         
@@ -70,14 +58,19 @@ public class PlayerGui extends QMainWindow {
         setCentralWidget(widget);
         setWindowTitle("Phonon Music Player");
         setWindowIcon(new QIcon("classpath:images/foobnix-64.png"));
+        setWindowState(WindowState.WindowMaximized);
 
     }
 
     private QSplitter lefpPanel() {
         QWidget frame = lefpTools();
         QSplitter lefpMiddleSplitter = new QSplitter(Orientation.Vertical);
+                
         lefpMiddleSplitter.addWidget(frame);
+        // lefpMiddleSplitter.setSizes(Arrays.asList(800));
+
         QVBoxLayout box = new QVBoxLayout();
+       
         box.addWidget(new QTableWidget(3,1));
         QWidget wi = new QWidget();
         wi.setLayout(box);
@@ -89,6 +82,7 @@ public class PlayerGui extends QMainWindow {
         QVBoxLayout right = new QVBoxLayout();
         
         
+
         QHBoxLayout searchLine = new QHBoxLayout();
         searchLine.addWidget(new QLineEdit("[input artis hear]"));
         searchLine.addWidget(new QPushButton("Search"));
@@ -115,6 +109,7 @@ public class PlayerGui extends QMainWindow {
         
         QVBoxLayout info = new QVBoxLayout();
         
+
         info.addWidget(new QLabel("<b>Album</b"));
         QPixmap image = new QPixmap("classpath:images/blank-disc.jpg");
         QLabel imageLabel = new QLabel();
@@ -125,7 +120,12 @@ public class PlayerGui extends QMainWindow {
         info.addWidget(new QLabel("<b>Album</b"));
         info.addWidget(new QTableWidget(10,1));
         
-        lay.addLayout(info);
+        QWidget infoWidget = new QWidget();
+        infoWidget.setMaximumWidth(300);
+
+        infoWidget.setLayout(info);
+
+        lay.addWidget(infoWidget);
         
         right.addLayout(lay);
         
@@ -134,6 +134,7 @@ public class PlayerGui extends QMainWindow {
        
         QWidget frame1 = new QWidget();
         frame1.setLayout(right);
+
         return frame1;
     }
 
@@ -165,7 +166,9 @@ public class PlayerGui extends QMainWindow {
         topPanel.addWidget(new QPushButton("Next"));
         topPanel.addWidget(new QPushButton("Prev"));
         
-        topPanel.addWidget(new QSlider(Orientation.Horizontal));
+        QSlider volume = new QSlider(Orientation.Horizontal);
+        volume.setMaximumWidth(150);
+        topPanel.addWidget(volume);
         QProgressBar progressBar = new QProgressBar();
         progressBar.setMinimumWidth(200);
         progressBar.setTextVisible(true);
@@ -180,6 +183,7 @@ public class PlayerGui extends QMainWindow {
     public static void main(String args[]) {
         QApplication.initialize(args);
         QApplication.setApplicationName("Music Player");
+
 
         new PlayerGui().show();
 
