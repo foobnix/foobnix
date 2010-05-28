@@ -1,0 +1,19 @@
+application: foobnix
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /stylesheets
+  static_dir: stylesheets
+
+- url: /js
+  static_dir: js  
+
+- url: /skin
+  static_dir: skin  
+  
+  
+- url: .*
+  script: search.py
+  
