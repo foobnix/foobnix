@@ -152,7 +152,7 @@ class OnlineListCntr(GObject):
                 #thread.start_new_thread(self.playBean, (playlistBean,))
                 self.playBean(playlistBean)
             elif playlistBean.type == CommonBean.TYPE_GOOGLE_HELP:
-                self.search_text.set_text(playlistBean.name)
+                self.search_panel.search_text.set_text(playlistBean.name)
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def playBean(self, playlistBean):
