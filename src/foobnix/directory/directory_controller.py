@@ -66,6 +66,7 @@ class DirectoryCntr():
         
         
         self.mainNoteBook = gxMain.get_widget("main_notebook")
+        self.mainNoteBook.set_current_page(1)
         self.leftNoteBook = gxMain.get_widget("left_notebook")
                 
         

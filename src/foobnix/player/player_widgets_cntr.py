@@ -55,25 +55,33 @@ class PlayerWidgetsCntl():
                 "on_stop_button_clicked" :self.onStopButton,
                 "on_pause_button_clicked" :self.onPauseButton,
                 "on_prev_button_clicked" :self.onPrevButton,
-                "on_next_button_clicked": self.onNextButton
+                "on_next_button_clicked": self.onNextButton,
+                "on_view-full_activate":self.on_full_view,
+                "on_view-compact_activate":self.on_compact_view
         }
         
         gxMain.signal_autoconnect(navigationEvents)        
    
+    def on_full_view(self, *args):
+        LOG.debug("position", FConfiguration().hpanelPostition)
+        self.hpanel.set_position(FConfiguration().hpanelPostition)
+        h2 = self.hpanel2.get_position()
+        self.hpanel2.set_position(h2 - FConfiguration().hpanelPostition)
+    
+    def on_compact_view(self,*args):
+        LOG.debug("position 0")
+        h2 = self.hpanel2.get_position()
+        self.hpanel2.set_position(h2 + FConfiguration().hpanelPostition)
+        self.hpanel.set_position(0)
+        
     def on_show_hide_paned(self, w, e):
         #TODO: Matik, could you view, this signal rise on any paned double click.
         if is_double_click(e):
             LOG.debug("double click", w)
             if w.get_position() == 0:
-                LOG.debug("position", FConfiguration().hpanelPostition)
-                w.set_position(FConfiguration().hpanelPostition)
-                h2 = self.hpanel2.get_position()
-                self.hpanel2.set_position(h2 - FConfiguration().hpanelPostition)             
+                self.on_full_view(w, e)         
             else:
-                LOG.debug("position 0")
-                h2 = self.hpanel2.get_position()
-                self.hpanel2.set_position(h2 + FConfiguration().hpanelPostition)
-                w.set_position(0)
+                self.on_compact_view(w, e)
             time.sleep(0.2)
                    
                 

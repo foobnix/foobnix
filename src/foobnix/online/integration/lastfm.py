@@ -9,6 +9,7 @@ from foobnix.thirdparty import pylast
 from foobnix.thirdparty.pylast import WSError
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
+from foobnix.online.google.translate import translate
 
 
 __all__ = [
@@ -71,6 +72,7 @@ def search_top_albums(query):
 
 
 def search_tags_genre(query):
+    query = translate(query, src="ru", to="en")
     beans = [] 
     
     tag = network.get_tag(query)

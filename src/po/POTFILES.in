@@ -2,7 +2,6 @@
 ./setup.py
 ./foobnix/application/app_configuration_controller.py
 ./foobnix/application/app_controller.py
-./foobnix/application/app_load_exit_controller.py
 ./foobnix/application/app_view.py
 ./foobnix/directory/directory_controller.py
 ./foobnix/directory/directory_model.py
@@ -12,9 +11,8 @@
 ./foobnix/playlist/playlist_controller.py
 ./foobnix/playlist/playlist_model.py
 ./foobnix/util/LOG.py
-./foobnix/util/confguration.py
+./foobnix/util/configuration.py
 ./foobnix/util/file_utils.py
-./foobnix/util/isrunning.py
 ./foobnix/util/mouse_utils.py
 ./foobnix/util/plsparser.py
 ./foobnix/util/time_utils.py

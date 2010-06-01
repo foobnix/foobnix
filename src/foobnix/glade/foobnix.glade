@@ -55,6 +55,7 @@
                             <property name="visible">True</property>
                             <property name="label" translatable="yes">_Full View</property>
                             <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_view-full_activate"/>
                           </widget>
                         </child>
                         <child>
@@ -62,13 +63,7 @@
                             <property name="visible">True</property>
                             <property name="label" translatable="yes">_Compact View</property>
                             <property name="use_underline">True</property>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkMenuItem" id="view-small">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">_Small View</property>
-                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_view-compact_activate"/>
                           </widget>
                         </child>
                       </widget>
@@ -671,8 +666,8 @@
                                     <property name="visible">True</property>
                                     <property name="sensitive">False</property>
                                     <property name="show_hidden">True</property>
-                                    <property name="action">select-folder</property>
                                     <property name="create_folders">False</property>
+                                    <property name="action">select-folder</property>
                                   </widget>
                                   <packing>
                                     <property name="position">1</property>
@@ -1169,96 +1164,6 @@
                                 <property name="type">tab</property>
                               </packing>
                             </child>
-                            <child>
-                              <widget class="GtkScrolledWindow" id="scrolledwindow12">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
-                                <child>
-                                  <widget class="GtkTreeView" id="online_treeview1">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="reorderable">True</property>
-                                  </widget>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label16">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Top Songs: Madonna</property>
-                                <property name="angle">90</property>
-                              </widget>
-                              <packing>
-                                <property name="position">1</property>
-                                <property name="tab_fill">False</property>
-                                <property name="type">tab</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkScrolledWindow" id="scrolledwindow14">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
-                                <child>
-                                  <widget class="GtkTreeView" id="online_treeview3">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="reorderable">True</property>
-                                  </widget>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="position">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label21">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Play list: By Best Music</property>
-                                <property name="angle">90</property>
-                              </widget>
-                              <packing>
-                                <property name="position">3</property>
-                                <property name="tab_fill">False</property>
-                                <property name="type">tab</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkScrolledWindow" id="scrolledwindow13">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
-                                <child>
-                                  <widget class="GtkTreeView" id="online_treeview2">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="reorderable">True</property>
-                                  </widget>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="position">3</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label20">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Similar: The Cranberries - Zomby</property>
-                                <property name="angle">90</property>
-                              </widget>
-                              <packing>
-                                <property name="position">3</property>
-                                <property name="tab_fill">False</property>
-                                <property name="type">tab</property>
-                              </packing>
-                            </child>
                           </widget>
                           <packing>
                             <property name="resize">False</property>
@@ -1322,39 +1227,39 @@
                                   <widget class="GtkHBox" id="hbox7">
                                     <property name="visible">True</property>
                                     <child>
-                                      <widget class="GtkLinkButton" id="linkbutton1">
+                                      <widget class="GtkLinkButton" id="wiki_linkbutton">
                                         <property name="label" translatable="yes">wiki</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
                                         <property name="relief">none</property>
-                                        <property name="uri">http://glade.gnome.org</property>
+                                        <property name="uri">http://www.foobnix.com</property>
                                       </widget>
                                       <packing>
                                         <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkLinkButton" id="linkbutton2">
+                                      <widget class="GtkLinkButton" id="lastfm_linkbutton">
                                         <property name="label" translatable="yes">last.fm</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
                                         <property name="relief">none</property>
-                                        <property name="uri">http://glade.gnome.org</property>
+                                        <property name="uri">http://www.foobnix.com</property>
                                       </widget>
                                       <packing>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkLinkButton" id="linkbutton3">
-                                        <property name="label" translatable="yes">othre</property>
+                                      <widget class="GtkLinkButton" id="mb_linkbutton">
+                                        <property name="label" translatable="yes">musicbrainz</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
                                         <property name="relief">none</property>
-                                        <property name="uri">http://glade.gnome.org</property>
+                                        <property name="uri">http://www.foobnix.com</property>
                                       </widget>
                                       <packing>
                                         <property name="position">2</property>

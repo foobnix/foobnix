@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-10 15:06+0300\n"
+"POT-Creation-Date: 2010-06-01 23:30+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,41 +16,24 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .././foobnix.py:30
+#: .././foobnix.py:28
 msgid "Success"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:35
-#: .././foobnix/util/confguration.py:44
-msgid "Default list"
-msgstr ""
-
-#: .././foobnix/directory/directory_controller.py:85
-msgid "by artist/album"
-msgstr ""
-
-#: .././foobnix/directory/directory_controller.py:86
-msgid "by radio/stations"
-msgstr ""
-
-#: .././foobnix/directory/directory_controller.py:87
-msgid "by play lists"
-msgstr ""
-
-#: .././foobnix/directory/directory_controller.py:143
+#: .././foobnix/directory/directory_controller.py:160
 msgid "New play list"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:345
+#: .././foobnix/directory/directory_controller.py:367
 msgid "Music not found in "
 msgstr ""
 
 #: .././foobnix/directory/directory_model.py:31
-#: .././foobnix/glade/foobnix.glade.h:31
+#: .././foobnix/glade/foobnix.glade.h:46
 msgid "Title"
 msgstr ""
 
-#: .././foobnix/directory/pref_list_model.py:19
+#: .././foobnix/directory/pref_list_model.py:21
 msgid "My play lists"
 msgstr ""
 
@@ -71,177 +54,263 @@ msgid "00:00 / 00:00"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:2
-msgid "<b>Filter</b>"
+msgid "<b>Album name of this artist</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:3
-msgid "<b>Search song source by relevance</b>"
+msgid "<b>By Any</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:4
-msgid "<b>View</b>"
+msgid "<b>By Artist</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:5
-msgid "About Foobnix"
+msgid "<b>Current song name</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:6
-msgid "Add"
+msgid "<b>Filter</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:7
-msgid "Album List"
+msgid "<b>Original</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:8
-msgid "By first"
+msgid "<b>Search song source by relevance</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:9
-msgid "By popularity"
+msgid "<b>Translated</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:10
-msgid "By time"
+msgid "About Foobnix"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:11
-msgid "Default"
+msgid "Add"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:12
-msgid "Delete"
+msgid "Album List"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:13
-msgid "Developed by Ivan Ivanenko"
+msgid "All Search"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:14
-msgid "Last.FM     "
+msgid "By first"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:15
-msgid "Location"
+msgid "By popularity"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:16
-msgid "Lyrics"
+msgid "By time"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:17
-msgid "Music dir:"
+msgid "Charts"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:18
-msgid "Online Music"
+msgid "Default"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:19
-msgid "Play on start: "
+msgid "Delete"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:20
-msgid "Playing all imaginations"
-msgstr ""
-
-#: .././foobnix/glade/foobnix.glade.h:21
-msgid "Properties"
+msgid ""
+"Developed by Ivan Ivanenko\n"
+"ivan.ivanenko@gmail.com"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:22
-msgid "Quit"
+msgid "Foobnix"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:23
-msgid "Radio"
+msgid "Last.FM     "
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:24
-msgid "Radio Url:"
+msgid "Location"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:25
-msgid "Random: "
+msgid "Lyrics"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:26
-msgid "Refresh"
+msgid "Music dir:"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:27
-msgid "Repeat: "
+msgid "Musics"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:28
-msgid "Save online music"
+msgid "Online Music"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:29
-msgid "Search"
+msgid "Play Lists"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:30
-msgid "Show By"
+msgid "Play list: By Best Music"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:31
+msgid "Play on start: "
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:32
-msgid "Vkontakte"
+msgid "Playing all imaginations"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:33
-msgid "_File"
+msgid "Properties"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:34
-msgid "_Help"
+msgid "Quit"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:35
-msgid "all search"
+msgid "Radio"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:36
-msgid "login:"
+msgid "Radio Url:"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:37
-msgid "passw:"
+msgid "Radios"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:38
-msgid "tags / genre"
+msgid "Random: "
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:39
-msgid "toolbutton10"
+msgid "Refresh"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:40
-msgid "toolbutton11"
+msgid "Repeat: "
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:41
-msgid "toolbutton7"
+msgid "Save online music"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:42
-msgid "toolbutton8"
+msgid "Search"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:43
-msgid "toolbutton9"
+msgid "Similar: Scorpions"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:44
-msgid "top albums"
+msgid "Similar: The Cranberries - Zomby"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:45
-msgid "top similar"
+msgid "Tags"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:46
-msgid "top songs"
+#: .././foobnix/glade/foobnix.glade.h:47
+msgid "Top Albums"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:48
+msgid "Top Similar"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:49
+msgid "Top Songs"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:50
+msgid "Top Songs: Madonna"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:51
+msgid "Tracks"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:52
+msgid "Vkontakte"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:53
+msgid "_Compact View"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:54
+msgid "_File"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:55
+msgid "_Full View"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:56
+msgid "_Help"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:57
+msgid "_Small View"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:58
+msgid "_View"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:59
+msgid "last.fm"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:60
+msgid "login:"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:61
+msgid "musicbrainz"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:62
+msgid "passw:"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:63
+msgid "toolbutton10"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:64
+msgid "toolbutton11"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:65
+msgid "toolbutton7"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:66
+msgid "toolbutton8"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:67
+msgid "toolbutton9"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:68
+msgid "wiki"
 msgstr ""
