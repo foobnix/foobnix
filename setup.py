@@ -87,9 +87,7 @@ setup(name='foobnix',
                 "foobnix.thirdparty",
                 "foobnix.trayicon",
                 "foobnix.util",
-                "foobnix.window",
-                "mutagen",
-                "simplejson"                
+                "foobnix.window"                                
                 ],
         package_data={'foobnix': ['glade/*.glade', 'glade/*.png']},
         #package_dir={"src/foobnix": "foobnix/"},
