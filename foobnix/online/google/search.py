@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 #
 # Peteris Krumins (peter@catonmat.net)
@@ -50,11 +49,10 @@ class SearchResult:
         return 'Google Search Result: "%s"' % self.title
 
 class GoogleSearch(object):
-    SEARCH_URL_0 = "http://www.google.com.ua/search?hl=en&q=%(query)s&btnG=Google+Search"
-    #SEARCH_URL_0 = "search?hl=uk&q=%(query)&btnG=Пошук&meta=&aq=f&aqi=&aql=&oq=&gs_rfai="
-    NEXT_PAGE_0 = "http://www.google.com.ua/search?hl=en&q=%(query)s&start=%(start)d"
-    SEARCH_URL_1 = "http://www.google.com.ua/search?hl=en&q=%(query)s&num=%(num)d&btnG=Google+Search"
-    NEXT_PAGE_1 = "http://www.google.com.ua/search?hl=en&q=%(query)s&num=%(num)d&start=%(start)d"
+    SEARCH_URL_0 = "http://www.google.com/search?hl=en&q=%(query)s&btnG=Google+Search"
+    NEXT_PAGE_0 = "http://www.google.com/search?hl=en&q=%(query)s&start=%(start)d"
+    SEARCH_URL_1 = "http://www.google.com/search?hl=en&q=%(query)s&num=%(num)d&btnG=Google+Search"
+    NEXT_PAGE_1 = "http://www.google.com/search?hl=en&q=%(query)s&num=%(num)d&start=%(start)d"
 
     def __init__(self, query, random_agent=False, debug=False):
         self.query = query
@@ -96,19 +94,19 @@ class GoogleSearch(object):
 
     def get_results(self):
         """ Gets a page of results """
-        if self.eor:
-            return []
+        #if self.eor:
+        #    return []
 
-        page = self._get_results_page()        
+        page = self._get_results_page()
         search_info = self._extract_info(page)
-         
-        if not self.results_info:
-            self.results_info = search_info
-            if self.num_results == 0:
-                self.eor = True
-                return []
+        #if not self.results_info:
+        #    self.results_info = search_info
+        #    if self.num_results == 0:
+        #        self.eor = True
+        #        return []
         results = self._extract_results(page)
-        
+    
+        return results
         if not results:
             self.eor = True
             return []
@@ -182,7 +180,6 @@ class GoogleSearch(object):
         return SearchResult(title, url, desc)
 
     def _extract_title_url(self, result):
-       
         #title_a = result.find('a', {'class': re.compile(r'\bl\b')})
         title_a = result.find('a')
         if not title_a:
@@ -237,6 +234,6 @@ class GoogleSearch(object):
             else:
                 return m.group(0)
 
-        s = re.sub(r'&#(\d+);', ascii_replacer, str, re.U)
+        s =    re.sub(r'&#(\d+);',  ascii_replacer, str, re.U)
         return re.sub(r'&([^;]+);', entity_replacer, s, re.U)
 

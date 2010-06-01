@@ -1173,7 +1173,16 @@ class Album(_BaseObject, _Taggable):
         return _extract(self._request("album.getInfo", cacheable = True), "releasedate")
     
     def get_release_year(self):
-        dt= datetime.datetime.strptime(self.get_release_date(),"%d %b %Y, %H:%M")
+        st_date = str(self.get_release_date())
+        print st_date
+        try:
+            dt= datetime.datetime.strptime(st_date,"%d %b %Y, %H:%M")
+        except:
+            if st_date:
+                i = st_date.find(",")    
+                return st_date[i-4:i]
+            else:
+                return st_date
         return str(dt.year)
     
     def get_cover_image(self, size = COVER_EXTRA_LARGE):
