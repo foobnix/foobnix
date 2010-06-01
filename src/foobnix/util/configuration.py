@@ -10,7 +10,7 @@ import os, sys
 from foobnix.util import LOG
 import tempfile
 
-VERSION = "0.1.0"
+VERSION = "0.1.5"
 
 class Singleton(type):
     def __call__(self, *args, **kw):

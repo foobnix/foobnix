@@ -43,7 +43,8 @@ class Model():
         self.model.append([None, text,time,id,bg_color, None])
     
     def set_song_icon(self, uuid, icon):
-        self._get_line_by_uuid(uuid)[self.POS_ICON] =  icon    
+        self._get_line_by_uuid(uuid)[self.POS_ICON] =  icon
+        self._get_line_by_uuid(uuid)[self.POS_BG_COLOR] =  "#FF34FF"    
    
     def set_status_icon(self, uuid, icon):
         self._get_line_by_uuid(uuid)[self.POS_ICON_STATUS] =  icon
