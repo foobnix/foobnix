@@ -128,7 +128,7 @@ class InformationController():
     def get_album_image_url(self, song):
         
         """set urls"""
-        self.lastfm_url.set_uri("http://www.lastfm.ru/search?q="+song.getArtist())
+        self.lastfm_url.set_uri("http://www.lastfm.ru/search?q="+song.getArtist()+"&type=artist")
         self.wiki_linkbutton.set_uri("http://en.wikipedia.org/w/index.php?search="+song.getArtist())
         self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query="+song.getArtist())
 
