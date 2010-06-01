@@ -85,6 +85,12 @@ class InformationController():
         self.song_tags.append_column(song_column)        
         self.song_tags.set_model(self.song_tags_model)
         
+        """link buttons"""
+        self.lastfm_url = gx_main.get_widget("lastfm_linkbutton")
+        self.wiki_linkbutton = gx_main.get_widget("wiki_linkbutton")
+        self.mb_linkbutton = gx_main.get_widget("mb_linkbutton")
+        
+        
         
         self.last_album_name = None
         
@@ -110,6 +116,7 @@ class InformationController():
         image_url = self.get_album_image_url(song)        
         if not image_url:
             LOG.info("Image not found, load empty.")
+            self.album_image.set_from_file("share/pixmaps/blank-disk.jpg")
             return None
     
         image_pix_buf = self.create_pbuf_image_from_url(image_url)
@@ -119,6 +126,12 @@ class InformationController():
         pass
     
     def get_album_image_url(self, song):
+        
+        """set urls"""
+        self.lastfm_url.set_uri("http://www.lastfm.ru/search?q="+song.getArtist())
+        self.wiki_linkbutton.set_uri("http://en.wikipedia.org/w/index.php?search="+song.getArtist())
+        self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query="+song.getArtist())
+
         
         self.current_song_label.set_markup("<b>" + song.getTitle()+"</b>")
         
@@ -195,8 +208,6 @@ class InformationController():
             self.last_album_name = album.get_name()
         except:            
             LOG.info("image not found for:", song)
-        
-        
         
         LOG.info("image:", image)        
         return image
