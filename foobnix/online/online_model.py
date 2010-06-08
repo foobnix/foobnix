@@ -38,6 +38,12 @@ class OnlineListModel:
     def getSize(self):
         return len(self.similar_songs_model)
     
+    def get_all_beans(self):
+        beans  =[]
+        for i in xrange(self.getSize()):
+            beans.append(self.getBeenByPosition(i))
+        return beans
+    
     def getBeenByPosition(self, position):
         bean = CommonBean()
         bean.icon = self.similar_songs_model[position][ self.POS_ICON]

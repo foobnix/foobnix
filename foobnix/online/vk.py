@@ -206,7 +206,6 @@ class Vkontakte:
     def find_song_urls(self, song_title):
         
         page = self.get_page(song_title)
-        print page
         page = page.decode('cp1251')
         #page = page.decode("cp1251")
         #unicode(page, "cp1251")
