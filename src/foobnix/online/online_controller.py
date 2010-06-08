@@ -9,6 +9,7 @@ import os
 import thread
 import time
 import urllib
+import gtk
 
 from gobject import GObject #@UnresolvedImport
 
@@ -39,24 +40,69 @@ except:
 
 
 class OnlineListCntr(GObject):
+    
+    trees = []
+    models = []
+    
+    def create_tree_view(self):
+        self.treeview = gtk.TreeView()
+        self.similar_songs_model = OnlineListModel(self.treeview)
+        
+        self.treeview.connect("drag-end", self.on_drag_end)
+        self.treeview.connect("button-press-event", self.onPlaySong, self.similar_songs_model)
+
+        self.treeview.show()
+        
+        self.similar_songs_model.clear()
+        
+        self.trees.insert(0,self.treeview)
+        self.models.insert(0,self.similar_songs_model)
+        
+        self.entityBeans =  self.similar_songs_model.get_all_beans()
+        print self.entityBeans
+        
+        window =gtk.ScrolledWindow()
+        window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        window.add_with_viewport(self.treeview)
+        window.show()
+        
+        
+        return  window
+    
+   
+        
 
     def __init__(self, gxMain, playerCntr, directoryCntr):
         self.playerCntr = playerCntr
         self.directoryCntr = directoryCntr
 
         self.search_panel = SearchPanel(gxMain)
-
-        self.treeview = gxMain.get_widget("online_treeview")
-        self.treeview.connect("drag-end", self.on_drag_end)
-        self.treeview.connect("button-press-event", self.onPlaySong)
-
-        self.similar_songs_model = OnlineListModel(self.treeview)
-
-        self.entityBeans = []
-        self.index = self.similar_songs_model.getSize();
         
         self.count = 0
         self.info = InformationController(gxMain, self.playerCntr, self.directoryCntr)
+        
+        self.online_notebook = gxMain.get_widget("online_notebook")
+        self.online_notebook.connect("switch-page", self.on_change_page)
+        
+        
+    def on_change_page(self, page, page_num, param):
+        #self.treeview = self.trees[param]
+        #self.similar_songs_model = self.models[param]
+        print "select", self.similar_songs_model
+        print page.get_children()
+        print page_num
+        print param
+        
+        
+    def append_page(self, name):
+        print "append new tab"
+        label = gtk.Label(name)
+        label.set_angle(90)         
+        self.online_notebook.prepend_page(self.create_tree_view(), label)
+        self.online_notebook.set_current_page(0)
+        
+        
+         
 
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
@@ -92,7 +138,7 @@ class OnlineListCntr(GObject):
     
 
     def show_results(self, sender, query, beans, criteria=True):
-
+        self.append_page(query)
         self.clear()
         print "Show results...."
         if beans:
@@ -143,9 +189,9 @@ class OnlineListCntr(GObject):
         self.entityBeans = []
         self.similar_songs_model.clear()
 
-    def onPlaySong(self, w, e):
+    def onPlaySong(self, w, e, similar_songs_model):
         if is_double_click(e):
-            playlistBean = self.similar_songs_model.getSelectedBean()
+            playlistBean = similar_songs_model.getSelectedBean()
             print "play", playlistBean
             print "type", playlistBean.type
             if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
