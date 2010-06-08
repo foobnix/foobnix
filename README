@@ -1,1 +1,10 @@
-Foobar README
+Foobnix GTK+ Music Player
+
+==INSTALL==
+
+1)install dependencies
+>> sudo apt-get install subversion, gettextj, python-setuptools
+
+2)install player from source
+>> sudo python setup.py install
+
