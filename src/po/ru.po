@@ -81,7 +81,7 @@ msgstr "<b>Оригинал</b>"
 
 #: .././foobnix/glade/foobnix.glade.h:8
 msgid "<b>Search song source by relevance</b>"
-msgstr "<b>Поск наиболее подходящей песни</b>"
+msgstr "<b>Поиск наиболее подходящей песни</b>"
 
 #: .././foobnix/glade/foobnix.glade.h:9
 msgid "<b>Translated</b>"
