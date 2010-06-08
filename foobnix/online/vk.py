@@ -35,12 +35,13 @@ class Vkontakte:
     def get_s_value(self):
 
         host = 'http://login.vk.com/?act=login'
+        #host = 'http://vkontakte.ru/login.php'
         post = urllib.urlencode({'email' : self.email,
                                  'expire' : '',
                                  'pass' : self.password,
                                  'vk' : ''})
 
-        headers = {'User-Agent' : 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.13) Gecko/2009073022 Firefox/3.0.13 (.NET CLR 3.5.30729)',
+        headers = {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; uk; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.0',
                    'Host' : 'login.vk.com',
                    'Referer' : 'http://vkontakte.ru/index.php',
                    'Connection' : 'close',
@@ -50,9 +51,13 @@ class Vkontakte:
 
         conn = urllib2.Request(host, post, headers)
         data = urllib2.urlopen(conn)
-        result = data.read()
+        result = data.read()               
+        value = re.findall(r"name='s' value='(.*?)'", result)
         
-        value = re.findall(r"name='s' id='s' value='(.*?)'", result)
+        """old response format"""
+        if not value:
+            value = re.findall(r"name='s' id='s' value='(.*?)'", result)
+            
         if value:
             return value[0]
         
@@ -69,7 +74,7 @@ class Vkontakte:
         
         host = 'http://vkontakte.ru/login.php?op=slogin'
         post = urllib.urlencode({'s' : self.get_s_value()})
-        headers = {'User-Agent' : 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.13) Gecko/2009073022 Firefox/3.0.13',
+        headers = {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; uk; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.0',
                    'Host' : 'vkontakte.ru',
                    'Referer' : 'http://login.vk.com/?act=login',
                    'Connection' : 'close',
@@ -89,12 +94,14 @@ class Vkontakte:
         if not query:
             return None
         
-        host = 'http://vkontakte.ru/gsearch.php?section=audio&q=vasya#c[q]=some%20id&c[section]=audio'
+        #GET /gsearch.php?section=audio&q=madonna&name=1
+
+        host = 'http://vkontakte.ru/gsearch.php?section=audio&q=vasya#c[q]=some%20id&c[section]=audio&name=1'
         post = urllib.urlencode({
                                  "c[q]" : query,
                                  "c[section]":"audio"
                                 })
-        headers = {'User-Agent' : 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.13) Gecko/2009073022 Firefox/3.0.13',
+        headers = {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; uk; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.0',
                    'Host' : 'vkontakte.ru',
                    'Referer' : 'http://vkontakte.ru/index.php',
                    'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -124,7 +131,7 @@ class Vkontakte:
         host_url.replace("#","&")
         post = host_url[host_url.find("?")+1:]
         LOG.debug("post", post)
-        headers = {'User-Agent' : 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.13) Gecko/2009073022 Firefox/3.0.13',
+        headers = {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; uk; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.0',
                    'Host' : 'vkontakte.ru',
                    'Referer' : 'http://vkontakte.ru/index.php',
                    'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -199,6 +206,7 @@ class Vkontakte:
     def find_song_urls(self, song_title):
         
         page = self.get_page(song_title)
+        print page
         page = page.decode('cp1251')
         #page = page.decode("cp1251")
         #unicode(page, "cp1251")
@@ -319,11 +327,11 @@ def get_group_id(str):
     return str[index+len(search):]
     
     
-vk = Vkontakte("qax@bigmir.net", "foobnix")
+#vk = Vkontakte("qax@bigmir.net", "foobnix")
+#print vk.get_s_value()
+#print vk.get_cookie()
 #line = "http://vkontakte.ru/audio.php?id=7185772"
-line = "http://vkontakte.ru/club10787995"
-
-print vk.get_songs_by_url(line)
+#print vk.find_most_relative_song("madonna")
 
 #s = "http://vkontakte.ru/audio.php?id=2765347 < & > ' &#39; &amp;"
 #print unescape(s)    
