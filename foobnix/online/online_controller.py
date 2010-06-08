@@ -82,21 +82,18 @@ class OnlineListCntr(GObject):
         self.info = InformationController(gxMain, self.playerCntr, self.directoryCntr)
         
         self.online_notebook = gxMain.get_widget("online_notebook")
-        self.online_notebook.connect("switch-page", self.on_change_page)
         
+    
+    def remove_tab(self,w,e):
+        print w
         
-    def on_change_page(self, page, page_num, param):
-        #self.treeview = self.trees[param]
-        #self.similar_songs_model = self.models[param]
-        print "select", self.similar_songs_model
-        print page.get_children()
-        print page_num
-        print param
+        #self.online_notebook.remove_page()
         
         
     def append_page(self, name):
         print "append new tab"
         label = gtk.Label(name)
+        
         label.set_angle(90)         
         self.online_notebook.prepend_page(self.create_tree_view(), label)
         self.online_notebook.set_current_page(0)
