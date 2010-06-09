@@ -20,7 +20,7 @@ class RadioListModel:
     
     def __init__(self, widget):
         self.widget = widget
-        self.similar_songs_model = gtk.ListStore(str, str, str, str, str, int)
+        self.current_list_model = gtk.ListStore(str, str, str, str, str, int)
                
         cellpb = gtk.CellRendererPixbuf()
         cellpb.set_property('cell-background', 'yellow')
@@ -32,18 +32,18 @@ class RadioListModel:
         widget.append_column(numbetColumn)
         widget.append_column(descriptionColumn)
         
-        widget.set_model(self.similar_songs_model)
+        widget.set_model(self.current_list_model)
     def getSize(self):
-        return len(self.similar_songs_model)
+        return len(self.current_list_model)
     
     def getBeenByPosition(self, position):
         bean = CommonBean()
-        bean.icon = self.similar_songs_model[position][ self.POS_ICON]
-        bean.tracknumber = self.similar_songs_model[position][ self.POS_TRACK_NUMBER]
-        bean.name = self.similar_songs_model[position][ self.POS_NAME]
-        bean.path = self.similar_songs_model[position][ self.POS_PATH]
-        bean.color = self.similar_songs_model[position][ self.POS_COLOR]
-        bean.index = self.similar_songs_model[position][ self.POS_INDEX]
+        bean.icon = self.current_list_model[position][ self.POS_ICON]
+        bean.tracknumber = self.current_list_model[position][ self.POS_TRACK_NUMBER]
+        bean.name = self.current_list_model[position][ self.POS_NAME]
+        bean.path = self.current_list_model[position][ self.POS_PATH]
+        bean.color = self.current_list_model[position][ self.POS_COLOR]
+        bean.index = self.current_list_model[position][ self.POS_INDEX]
         return bean
 
     def getSelectedBean(self):
@@ -63,11 +63,11 @@ class RadioListModel:
             return bean          
     
     def clear(self):
-        self.similar_songs_model.clear()
+        self.current_list_model.clear()
  
             
     def append(self, playlistBean):   
-        self.similar_songs_model.append([playlistBean.icon, playlistBean.tracknumber, playlistBean.name, playlistBean.path, playlistBean.color, playlistBean.index])
+        self.current_list_model.append([playlistBean.icon, playlistBean.tracknumber, playlistBean.name, playlistBean.path, playlistBean.color, playlistBean.index])
 
     def __del__(self,*a):
         print "del"

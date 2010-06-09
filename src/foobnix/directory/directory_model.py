@@ -18,7 +18,7 @@ class DirectoryModel():
     
     def __init__(self, widget):
         self.widget = widget
-        self.similar_songs_model = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int,str)
+        self.current_list_model = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int,str)
         renderer = gtk.CellRendererText()
         #renderer.connect('edited', self.editRow)
         
@@ -33,7 +33,7 @@ class DirectoryModel():
         widget.append_column(column)
 
                 
-        filter = self.similar_songs_model.filter_new()
+        filter = self.current_list_model.filter_new()
         filter.set_visible_column(self.POS_VISIBLE)
         widget.set_model(filter)
         
@@ -50,19 +50,19 @@ class DirectoryModel():
             print "I ", i
             if i.find(":") == -1:
                 print i
-                self.similar_songs_model[int(i)][self.POS_NAME] = value
+                self.current_list_model[int(i)][self.POS_NAME] = value
            
         
     def append(self, level, bean):
-        return self.similar_songs_model.append(level, [bean.name, bean.path, bean.font, bean.is_visible, bean.type, bean.index, bean.parent])
+        return self.current_list_model.append(level, [bean.name, bean.path, bean.font, bean.is_visible, bean.type, bean.index, bean.parent])
         
     def clear(self):
-        self.similar_songs_model.clear() 
+        self.current_list_model.clear() 
     def getModel(self):
-        return self.similar_songs_model
+        return self.current_list_model
     
     def setModel(self, model):
-        self.similar_songs_model = model
+        self.current_list_model = model
         
     def getSelectedBean(self):
         selection = self.widget.get_selection()
@@ -90,17 +90,17 @@ class DirectoryModel():
     def getBeenByPosition(self, position):
         bean = CommonBean()        
         
-        bean.name = self.similar_songs_model[position][ self.POS_NAME]
-        bean.path = self.similar_songs_model[position][ self.POS_PATH]
-        bean.type = self.similar_songs_model[position][ self.POS_TYPE]
-        bean.visible = self.similar_songs_model[position][ self.POS_VISIBLE]
-        bean.font = self.similar_songs_model[position][ self.POS_FONT]
-        bean.parent = self.similar_songs_model[position][self.POS_PARENT]
+        bean.name = self.current_list_model[position][ self.POS_NAME]
+        bean.path = self.current_list_model[position][ self.POS_PATH]
+        bean.type = self.current_list_model[position][ self.POS_TYPE]
+        bean.visible = self.current_list_model[position][ self.POS_VISIBLE]
+        bean.font = self.current_list_model[position][ self.POS_FONT]
+        bean.parent = self.current_list_model[position][self.POS_PARENT]
         return bean
 
     def getAllSongs(self):
         result = []
-        for i in xrange(len(self.similar_songs_model)):
+        for i in xrange(len(self.current_list_model)):
             been = self.getBeenByPosition(i)
             
             if been.type in [CommonBean.TYPE_MUSIC_FILE, CommonBean.TYPE_MUSIC_URL, CommonBean.TYPE_RADIO_URL]:                
@@ -127,7 +127,7 @@ class DirectoryModel():
         
     def filterByName(self, string):        
         if len(string.strip()) > 0:
-            for line in self.similar_songs_model:
+            for line in self.current_list_model:
                 name = line[self.POS_NAME].lower()
                 string = string.strip().lower()
                 
@@ -137,7 +137,7 @@ class DirectoryModel():
                 else:                   
                     line[self.POS_VISIBLE] = False
         else:
-            for line in self.similar_songs_model:                
+            for line in self.current_list_model:                
                 line[self.POS_VISIBLE] = True
     
 
