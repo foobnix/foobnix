@@ -101,7 +101,7 @@ class InformationController():
         #self.show_song_info_tread(song)
     
     def add_similar_song(self, song):
-        self.similar_songs_model.append([song.get_short_description(), song.path])
+        self.current_list_model.append([song.get_short_description(), song.path])
         #self.similar_songs_cntr.add_item(song.get_name())
     
     def add_similar_artist(self, artist):
