@@ -45,25 +45,26 @@ class OnlineListCntr(GObject):
     models = []
     
     def create_tree_view(self):
-        self.treeview = gtk.TreeView()
-        self.similar_songs_model = OnlineListModel(self.treeview)
+        treeview = gtk.TreeView()
+        similar_songs_model = OnlineListModel(treeview)
+        self.similar_songs_model = similar_songs_model
         
-        self.treeview.connect("drag-end", self.on_drag_end)
-        self.treeview.connect("button-press-event", self.onPlaySong, self.similar_songs_model)
+        treeview.connect("drag-end", self.on_drag_end)
+        treeview.connect("button-press-event", self.onPlaySong, similar_songs_model)
 
-        self.treeview.show()
+        treeview.show()
         
-        self.similar_songs_model.clear()
         
-        self.trees.insert(0,self.treeview)
-        self.models.insert(0,self.similar_songs_model)
         
-        self.entityBeans =  self.similar_songs_model.get_all_beans()
+        self.trees.insert(0,treeview)
+        self.models.insert(0,similar_songs_model)
+        
+        self.entityBeans =  similar_songs_model.get_all_beans()
         print self.entityBeans
         
         window =gtk.ScrolledWindow()
         window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        window.add_with_viewport(self.treeview)
+        window.add_with_viewport(treeview)
         window.show()
         
         
@@ -81,7 +82,7 @@ class OnlineListCntr(GObject):
         self.count = 0
         self.info = InformationController(gxMain, self.playerCntr, self.directoryCntr)
         
-        self.online_notebook = gxMain.get_widget("online_notebook")
+        self.online_notebook = gxMain.get_widget("notebook1")
         
     
     def remove_tab(self,w,e):
@@ -184,9 +185,12 @@ class OnlineListCntr(GObject):
 
     def clear(self):
         self.entityBeans = []
-        self.similar_songs_model.clear()
+        #self.similar_songs_model.clear()
 
-    def onPlaySong(self, w, e, similar_songs_model):
+    def onPlaySong(self, w, e, similar_songs_model):        
+        self.similar_songs_model = similar_songs_model
+        self.entityBeans = similar_songs_model.get_all_beans()
+        self.index = similar_songs_model.getSelectedBean().index
         if is_double_click(e):
             playlistBean = similar_songs_model.getSelectedBean()
             print "play", playlistBean
