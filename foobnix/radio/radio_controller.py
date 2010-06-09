@@ -23,13 +23,13 @@ class RadioListCntr():
         addButton.connect("clicked", self.onAddRadio)
         removeButton.connect("clicked", self.onRemoveRadio)
         
-        self.similar_songs_model = RadioListModel(self.widget)
+        self.current_list_model = RadioListModel(self.widget)
         
         self.playerCntr = playerCntr
         self.widget.connect("button-press-event", self.onPlaySong)
         
         self.entityBeans = []
-        self.index = self.similar_songs_model.getSize();
+        self.index = self.current_list_model.getSize();
                 
     
     def onAddRadio(self, *args):
@@ -45,7 +45,7 @@ class RadioListCntr():
             
             entity = CommonBean(name=nameDef, path=urlStation, type=CommonBean.TYPE_RADIO_URL, index=self.index + 1);
             self.entityBeans.append(entity)
-            self.repopulate(self.entityBeans, (self.similar_songs_model.getSize()))
+            self.repopulate(self.entityBeans, (self.current_list_model.getSize()))
             self.urlText.set_text("")                        
         
         pass
@@ -53,7 +53,7 @@ class RadioListCntr():
     def onRemoveRadio(self, *args):
             model, iter = self.widget.get_selection().get_selected()
             if iter:              
-                playlistBean = self.similar_songs_model.getSelectedBean()
+                playlistBean = self.current_list_model.getSelectedBean()
                 for i, entity in enumerate(self.entityBeans):
                     if entity.path == playlistBean.path: 
                         self.index = 0                       
@@ -74,13 +74,13 @@ class RadioListCntr():
         
     
     def clear(self):
-        self.similar_songs_model.clear()
+        self.current_list_model.clear()
         
     def onPlaySong(self, w, e):
         if is_double_click(e):
             print w
             print e
-            playlistBean = self.similar_songs_model.getSelectedBean()
+            playlistBean = self.current_list_model.getSelectedBean()
             playlistBean.type = CommonBean.TYPE_RADIO_URL  
                      
             #self.repopulate(self.entityBeans, playlistBean.index);
@@ -92,7 +92,7 @@ class RadioListCntr():
         if self.index >= len(self.entityBeans):
             self.index = 0
             
-        playlistBean = self.similar_songs_model.getBeenByPosition(self.index)           
+        playlistBean = self.current_list_model.getBeenByPosition(self.index)           
         self.repopulate(self.entityBeans, playlistBean.index);        
         return playlistBean
     
@@ -101,7 +101,7 @@ class RadioListCntr():
         if self.index < 0:
             self.index = len(self.entityBeans) - 1
             
-        playlistBean = self.similar_songs_model.getBeenByPosition(self.index)           
+        playlistBean = self.current_list_model.getBeenByPosition(self.index)           
         self.repopulate(self.entityBeans, playlistBean.index);        
         return playlistBean
             
@@ -114,7 +114,7 @@ class RadioListCntr():
             self.repopulate(entityBeans, index);
         
     def repopulate(self, entityBeans, index):
-        self.similar_songs_model.clear()        
+        self.current_list_model.clear()        
         for i in range(len(entityBeans)):
             songBean = entityBeans[i]            
             songBean.color = self.getBackgroundColour(i)
@@ -123,10 +123,10 @@ class RadioListCntr():
             
             if i == index:                
                 songBean.setIconPlaying()                
-                self.similar_songs_model.append(songBean)
+                self.current_list_model.append(songBean)
             else:
                 songBean.setIconNone()
-                self.similar_songs_model.append(songBean)
+                self.current_list_model.append(songBean)
                    
     def getBackgroundColour(self, i):
         if i % 2 :

@@ -41,7 +41,7 @@ class DirectoryCntr():
         
         
         widget = gxMain.get_widget("direcotry_treeview")
-        self.similar_songs_model = DirectoryModel(widget)
+        self.current_list_model = DirectoryModel(widget)
         widget.connect("button-press-event", self.onMouseClick)
         widget.connect("key-release-event", self.onTreeViewDeleteItem)
         
@@ -182,7 +182,7 @@ class DirectoryCntr():
     
     
     def getModel(self):
-        return self.similar_songs_model
+        return self.current_list_model
     
     def on_drag_get(self, *args):    
         self.populate_playlist(append=True)
@@ -206,7 +206,7 @@ class DirectoryCntr():
             beans = self.radioListCntr.getState()[0]
             print beans
             for bean in beans:
-                self.similar_songs_model.append(None, CommonBean(bean.name, bean.path, "normal", True, CommonBean.TYPE_MUSIC_URL))
+                self.current_list_model.append(None, CommonBean(bean.name, bean.path, "normal", True, CommonBean.TYPE_MUSIC_URL))
         elif active_view == self.VIEW_VIRTUAL_LISTS:                      
             items = self.getPrefListBeans(self.DEFAULT_LIST)
             self.display_virtual(items)
@@ -226,7 +226,7 @@ class DirectoryCntr():
         self.clear()
         
         "Displya list title"
-        self.similar_songs_model.append(None, CommonBean(name="[" + self.currentListMap + "]", path=None, font="bold", is_visible=True, type=CommonBean.TYPE_LABEL, parent=None, index=0))
+        self.current_list_model.append(None, CommonBean(name="[" + self.currentListMap + "]", path=None, font="bold", is_visible=True, type=CommonBean.TYPE_LABEL, parent=None, index=0))
         
         if not items:
             return None
@@ -238,9 +238,9 @@ class DirectoryCntr():
         for item in items:
             print item
             if item.parent == None:
-                parent = self.similar_songs_model.append(None, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=item.type, parent=item.parent, index=i))
+                parent = self.current_list_model.append(None, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=item.type, parent=item.parent, index=i))
             else:
-                self.similar_songs_model.append(parent, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=item.type, parent=item.parent, index=i))
+                self.current_list_model.append(parent, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=item.type, parent=item.parent, index=i))
             i += 1
        
         
@@ -256,7 +256,7 @@ class DirectoryCntr():
             print event.hardware_keycode
             if event.hardware_keycode == 119 or event.hardware_keycode == 107:
                 print "Delete"
-                bean = self.similar_songs_model.getSelectedBean()
+                bean = self.current_list_model.getSelectedBean()
                 print bean.index
                 if bean.index > 0:
                     self.virtualListCntr.items = self.prefListMap[self.currentListMap]
@@ -267,7 +267,7 @@ class DirectoryCntr():
     def onFiltering(self, *args):   
         text = self.filter.get_text()
         print "filtering by text", text
-        self.similar_songs_model.filterByName(text)
+        self.current_list_model.filterByName(text)
         
     
     def onMouseClick(self, w, event):
@@ -279,7 +279,7 @@ class DirectoryCntr():
     
     def populate_playlist(self, append=False):
         print "Drug begin"
-        directoryBean = self.similar_songs_model.getSelectedBean()
+        directoryBean = self.current_list_model.getSelectedBean()
         if not directoryBean:
             return 
         
@@ -287,7 +287,7 @@ class DirectoryCntr():
         print "Drug type", directoryBean.type
         
         if directoryBean.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP] :
-            songs = self.similar_songs_model.getChildSongBySelected()
+            songs = self.current_list_model.getChildSongBySelected()
             print "Select songs", songs
             if not songs:
                 return
@@ -296,7 +296,7 @@ class DirectoryCntr():
             else:
                 self.playlistCntr.setPlaylist(songs)
         elif directoryBean.type == CommonBean.TYPE_LABEL:
-            songs = self.similar_songs_model.getAllSongs()
+            songs = self.current_list_model.getAllSongs()
             if append:                                                                            
                 self.playlistCntr.appendPlaylist(songs)
             else:
@@ -327,11 +327,11 @@ class DirectoryCntr():
     def updateDirectoryByPath(self, path):
         print "Update path", path
         self.musicFolder = path
-        self.similar_songs_model.clear()
+        self.current_list_model.clear()
         self.addAll()
     
     def clear(self):
-        self.similar_songs_model.clear()
+        self.current_list_model.clear()
         
     def getAllSongsByPath(self, path):
         dir = os.path.abspath(path)
@@ -357,18 +357,18 @@ class DirectoryCntr():
         """
         if self.cachModel:            
             for bean in self.cachModel:                    
-                    self.similar_songs_model.append(None, bean)  
+                    self.current_list_model.append(None, bean)  
             return True
       """
       
         level = None;
         self.go_recursive(self.musicFolder, level)
-        if not  len(self.similar_songs_model.getModel()):
-            self.similar_songs_model.append(level, CommonBean(name=_("Music not found in ") + FConfiguration().mediaLibraryPath, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=level))
+        if not  len(self.current_list_model.getModel()):
+            self.current_list_model.append(level, CommonBean(name=_("Music not found in ") + FConfiguration().mediaLibraryPath, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=level))
         else:                
             """
-            for i in xrange(len(self.similar_songs_model.getModel())):   
-                bean = self.similar_songs_model.getBeenByPosition(i)
+            for i in xrange(len(self.current_list_model.getModel())):   
+                bean = self.current_list_model.getBeenByPosition(i)
                 self.cachModel.append(bean)
            """ 
         
@@ -430,10 +430,10 @@ class DirectoryCntr():
             
             if self.isDirectoryWithMusic(full_path):
                 #LOG.debug("directory", file)                
-                sub = self.similar_songs_model.append(level, CommonBean(name=file, path=full_path, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=level))                    
+                sub = self.current_list_model.append(level, CommonBean(name=file, path=full_path, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=level))                    
                 self.go_recursive(full_path, sub) 
             else:
                 if not isDirectory(full_path):
-                    self.similar_songs_model.append(level, CommonBean(name=file, path=full_path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_FILE, parent=level))
+                    self.current_list_model.append(level, CommonBean(name=file, path=full_path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_FILE, parent=level))
                     #LOG.debug("file", file)                             
 
