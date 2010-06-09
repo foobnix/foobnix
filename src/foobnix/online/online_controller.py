@@ -36,43 +36,9 @@ try:
 except:
     vkontakte = None
     LOG.error("Vkontakte connection error")
-    
-
 
 class OnlineListCntr(GObject):
     
-    trees = []
-    models = []
-    
-    def create_tree_view(self):
-        treeview = gtk.TreeView()
-        similar_songs_model = OnlineListModel(treeview)
-        self.similar_songs_model = similar_songs_model
-        
-        treeview.connect("drag-end", self.on_drag_end)
-        treeview.connect("button-press-event", self.onPlaySong, similar_songs_model)
-
-        treeview.show()
-        
-        
-        
-        self.trees.insert(0,treeview)
-        self.models.insert(0,similar_songs_model)
-        
-        self.entityBeans =  similar_songs_model.get_all_beans()
-        print self.entityBeans
-        
-        window =gtk.ScrolledWindow()
-        window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        window.add_with_viewport(treeview)
-        window.show()
-        
-        
-        return  window
-    
-   
-        
-
     def __init__(self, gxMain, playerCntr, directoryCntr):
         self.playerCntr = playerCntr
         self.directoryCntr = directoryCntr
@@ -83,29 +49,36 @@ class OnlineListCntr(GObject):
         self.info = InformationController(gxMain, self.playerCntr, self.directoryCntr)
         
         self.online_notebook = gxMain.get_widget("notebook1")
-        
     
-    def remove_tab(self,w,e):
-        print w
+    def create_notebook_tab(self):
+        treeview = gtk.TreeView()
+        model = OnlineListModel(treeview)
+        self.current_list_model = model
         
-        #self.online_notebook.remove_page()
+        treeview.connect("drag-end", self.on_drag_end)
+        treeview.connect("button-press-event", self.onPlaySong, model)
+
+        treeview.show()
         
+        window =gtk.ScrolledWindow()
+        window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        window.add_with_viewport(treeview)
+        window.show()
+        return  window    
         
-    def append_page(self, name):
+    def append_notebook_page(self, name):
         print "append new tab"
         label = gtk.Label(name)
         
         label.set_angle(90)         
-        self.online_notebook.prepend_page(self.create_tree_view(), label)
+        self.online_notebook.prepend_page(self.create_notebook_tab(), label)
         self.online_notebook.set_current_page(0)
-        
-        
          
 
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def on_drag_end(self, *ars):
-        selected = self.similar_songs_model.getSelectedBean()
+        selected = self.current_list_model.getSelectedBean()
         print "SELECTED", selected
         self.directoryCntr.set_active_view(DirectoryCntr.VIEW_VIRTUAL_LISTS)
         if selected.type == CommonBean.TYPE_MUSIC_URL:
@@ -114,8 +87,8 @@ class OnlineListCntr(GObject):
         elif selected.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP]:
             selected.type = CommonBean.TYPE_FOLDER
             results = []
-            for i in xrange(self.similar_songs_model.getSize()):
-                searchBean = self.similar_songs_model.getBeenByPosition(i)
+            for i in xrange(self.current_list_model.getSize()):
+                searchBean = self.current_list_model.getBeenByPosition(i)
                 #print "Search", searchBean
                 if str(searchBean.name) == str(selected.name):
                     searchBean.parent = None
@@ -130,14 +103,12 @@ class OnlineListCntr(GObject):
         print "drug"
         self.directoryCntr.leftNoteBook.set_current_page(0)
 
-
-
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
     
 
     def show_results(self, sender, query, beans, criteria=True):
-        self.append_page(query)
-        self.clear()
+        self.append_notebook_page(query)
+        
         print "Show results...."
         if beans:
             if criteria:
@@ -153,8 +124,6 @@ class OnlineListCntr(GObject):
 
         try:
             ask = query.encode('utf-8')
-
-
             gs = GoogleSearch(ask)
             gs.results_per_page = 10
             results = gs.get_results()
@@ -179,17 +148,12 @@ class OnlineListCntr(GObject):
 
     def append(self, beans):
         for bean in beans:
-            self.entityBeans.append(bean)
-        self.repopulate(self.entityBeans, -1)
-
-
-    def clear(self):
-        self.entityBeans = []
-        #self.similar_songs_model.clear()
+            self.current_list_model.append(bean)
+            
+        self.repopulate(-1)
 
     def onPlaySong(self, w, e, similar_songs_model):        
-        self.similar_songs_model = similar_songs_model
-        self.entityBeans = similar_songs_model.get_all_beans()
+        self.current_list_model = similar_songs_model
         self.index = similar_songs_model.getSelectedBean().index
         if is_double_click(e):
             playlistBean = similar_songs_model.getSelectedBean()
@@ -219,11 +183,8 @@ class OnlineListCntr(GObject):
             self.playerCntr.set_mode(PlayerController.MODE_ONLINE_LIST)
             self.playerCntr.playSong(playlistBean)
 
-            self.index = playlistBean.index
-            self.repopulate(self.entityBeans, self.index)
-
-
-
+            self.index = playlistBean.index            
+            self.repopulate(self.index)
 
 
     def downloadSong(self, song):
@@ -234,12 +195,7 @@ class OnlineListCntr(GObject):
         print "===Dowload song start"
         #time.sleep(5)
         file = self.get_file_store_path(song)
-
-        #remotefile = urllib2.urlopen(song.path)
-        #f = open(file, 'wb')
-        #f.write(remotefile.read())
-        #f.close()
-        #urllib.file = self.get_file_store_path(song
+        
         if not os.path.exists(file + ".tmp"):
             r = urllib.urlretrieve(song.path, file + ".tmp")
             os.rename(file + ".tmp", file)
@@ -288,19 +244,21 @@ class OnlineListCntr(GObject):
 
 
     def nextBean(self):
+        
         self.index += 1
-        if self.index >= len(self.entityBeans):
+        if self.index >= self.current_list_model.getSize():
             self.index = 0
 
-        playlistBean = self.similar_songs_model.getBeenByPosition(self.index)
+        playlistBean = self.current_list_model.getBeenByPosition(self.index)
         return playlistBean
     
     def prevBean(self):
+        list = self.current_list_model.get_all_beans()
         self.index -= 1
         if self.index <= 0:
-            self.index = len(self.entityBeans)
+            self.index = self.current_list_model.getSize()
 
-        playlistBean = self.similar_songs_model.getBeenByPosition(self.index)
+        playlistBean = self.current_list_model.getBeenByPosition(self.index)
         return playlistBean
 
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
@@ -314,8 +272,8 @@ class OnlineListCntr(GObject):
 
         self.setSongResource(currentSong)
         print "PATH", currentSong.path
-
-        self.repopulate(self.entityBeans, currentSong.index);
+        
+        self.repopulate(currentSong.index);
         return currentSong
 
     def getPrevSong(self):
@@ -326,7 +284,7 @@ class OnlineListCntr(GObject):
 
         self.setSongResource(playlistBean)
 
-        self.repopulate(self.entityBeans, playlistBean.index);
+        self.repopulate(playlistBean.index);
         return playlistBean
 
 
@@ -335,13 +293,14 @@ class OnlineListCntr(GObject):
         index = 0
         if entityBeans:
             self.playerCntr.playSong(entityBeans[index])
-            self.repopulate(entityBeans, index);
+            self.repopulate(index);
 #TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
-    def repopulate(self, entityBeans, index):
-        self.similar_songs_model.clear()
-        for i in range(len(entityBeans)):
-            songBean = entityBeans[i]
+    def repopulate(self, index):
+        list = self.current_list_model.get_all_beans()
+        self.current_list_model.clear()
+        for i in xrange(len(list)):
+            songBean = list[i]
 
             if not songBean.color:
                 songBean.color = self.getBackgroundColour(i)
@@ -351,10 +310,10 @@ class OnlineListCntr(GObject):
 
             if i == index:
                 songBean.setIconPlaying()
-                self.similar_songs_model.append(songBean)
+                self.current_list_model.append(songBean)
             else:
                 songBean.setIconNone()
-                self.similar_songs_model.append(songBean)
+                self.current_list_model.append(songBean)
 
     def getBackgroundColour(self, i):
         if i % 2 :

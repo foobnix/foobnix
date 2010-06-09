@@ -22,7 +22,7 @@ class OnlineListModel:
     
     def __init__(self, widget):
         self.widget = widget
-        self.similar_songs_model = gtk.ListStore(str, str, str, str, str, int, str, str)
+        self.current_list_model = gtk.ListStore(str, str, str, str, str, int, str, str)
                
         cellpb = gtk.CellRendererPixbuf()
         cellpb.set_property('cell-background', 'yellow')
@@ -34,9 +34,9 @@ class OnlineListModel:
         widget.append_column(numbetColumn)
         widget.append_column(descriptionColumn)
         
-        widget.set_model(self.similar_songs_model)
+        widget.set_model(self.current_list_model)
     def getSize(self):
-        return len(self.similar_songs_model)
+        return len(self.current_list_model)
     
     def get_all_beans(self):
         beans  =[]
@@ -46,18 +46,18 @@ class OnlineListModel:
     
     def getBeenByPosition(self, position):
         bean = CommonBean()
-        bean.icon = self.similar_songs_model[position][ self.POS_ICON]
-        bean.tracknumber = self.similar_songs_model[position][ self.POS_TRACK_NUMBER]
-        bean.name = self.similar_songs_model[position][ self.POS_NAME]
-        bean.path = self.similar_songs_model[position][ self.POS_PATH]
-        bean.color = self.similar_songs_model[position][ self.POS_COLOR]
-        bean.index = self.similar_songs_model[position][ self.POS_INDEX]
-        bean.type = self.similar_songs_model[position][ self.POS_TYPE]
-        bean.parent = self.similar_songs_model[position][ self.POS_PARENT]
+        bean.icon = self.current_list_model[position][ self.POS_ICON]
+        bean.tracknumber = self.current_list_model[position][ self.POS_TRACK_NUMBER]
+        bean.name = self.current_list_model[position][ self.POS_NAME]
+        bean.path = self.current_list_model[position][ self.POS_PATH]
+        bean.color = self.current_list_model[position][ self.POS_COLOR]
+        bean.index = self.current_list_model[position][ self.POS_INDEX]
+        bean.type = self.current_list_model[position][ self.POS_TYPE]
+        bean.parent = self.current_list_model[position][ self.POS_PARENT]
         return bean  
     
     def getModel(self):
-        return self.similar_songs_model
+        return self.current_list_model
 
     def getSelectedBean(self):
         print self.widget
@@ -78,11 +78,11 @@ class OnlineListModel:
             return bean                
     
     def clear(self):
-        self.similar_songs_model.clear()
+        self.current_list_model.clear()
     
     def append(self, bean):   
         print bean
-        self.similar_songs_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent])
+        self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent])
 
     def __del__(self, *a):
         print "del"
