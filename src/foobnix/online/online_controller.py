@@ -7,7 +7,6 @@ Created on Mar 16, 2010
 '''
 import os
 import thread
-import time
 import urllib
 import gtk
 
@@ -15,7 +14,6 @@ from gobject import GObject #@UnresolvedImport
 
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.model.entity import CommonBean
-from foobnix.online.google.search import GoogleSearch
 from foobnix.online.information_controller import InformationController
 from foobnix.online.online_model import OnlineListModel
 from foobnix.online.search_panel import SearchPanel
@@ -24,12 +22,8 @@ from foobnix.player.player_controller import PlayerController
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.util.mouse_utils import is_double_click
-
-
-
-#from foobnix.online.google.translate import translate
-
-#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
+from foobnix.online.google_utils import google_search_resutls
+from random import randint
 
 try:
     vkontakte = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
@@ -75,8 +69,6 @@ class OnlineListCntr(GObject):
         self.online_notebook.set_current_page(0)
          
 
-#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-
     def on_drag_end(self, *ars):
         selected = self.current_list_model.getSelectedBean()
         print "SELECTED", selected
@@ -87,7 +79,7 @@ class OnlineListCntr(GObject):
         elif selected.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP]:
             selected.type = CommonBean.TYPE_FOLDER
             results = []
-            for i in xrange(self.current_list_model.getSize()):
+            for i in xrange(self.current_list_model.get_size()):
                 searchBean = self.current_list_model.getBeenByPosition(i)
                 #print "Search", searchBean
                 if str(searchBean.name) == str(selected.name):
@@ -103,39 +95,26 @@ class OnlineListCntr(GObject):
         print "drug"
         self.directoryCntr.leftNoteBook.set_current_page(0)
 
-#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-    
-
     def show_results(self, sender, query, beans, criteria=True):
         self.append_notebook_page(query)
         
-        print "Show results...."
+        print LOG.debug("Showing search results")
         if beans:
             if criteria:
                 self.append([self.SearchCriteriaBeen(query)])
             self.append(beans)
         else:
-            self.googleHelp(query)
+            self.google_suggests(query)
 
 
-    def googleHelp(self, query):
-
-        self.append([self.TextBeen("Not Found, wait for results from google ...")])
-
-        try:
-            ask = query.encode('utf-8')
-            gs = GoogleSearch(ask)
-            gs.results_per_page = 10
-            results = gs.get_results()
-            for res in results:
-                result = res.title.encode('utf8')
-                time.sleep(0.05)
-                self.append([self.TextBeen(str(result), color="YELLOW", type=CommonBean.TYPE_GOOGLE_HELP)])
-        except :
-            print "Search failed: %s"
-
-
-#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
+    def google_suggests(self, query):
+        self.append([self.TextBeen(query + _(" not found on last.fm, wait for google suggests ..."))])
+        suggests = google_search_resutls(query, 15)
+        if suggests:
+            for line in suggests:            
+                self.append([self.TextBeen(line, color="YELLOW", type=CommonBean.TYPE_GOOGLE_HELP)])
+        else :
+            self.append([self.TextBeen(_("Google not found suggests"))])
 
     def TextBeen(self, query, color="RED", type=CommonBean.TYPE_FOLDER):
         return CommonBean(name=query, path=None, color=color, type=type)
@@ -164,7 +143,6 @@ class OnlineListCntr(GObject):
                 self.playBean(playlistBean)
             elif playlistBean.type == CommonBean.TYPE_GOOGLE_HELP:
                 self.search_panel.search_text.set_text(playlistBean.name)
-#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def playBean(self, playlistBean):
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
@@ -244,19 +222,28 @@ class OnlineListCntr(GObject):
 
 
     def nextBean(self):
+        if FConfiguration().isRandom:            
+            return self.current_list_model.get_random_bean()   
         
         self.index += 1
-        if self.index >= self.current_list_model.getSize():
-            self.index = 0
-
-        playlistBean = self.current_list_model.getBeenByPosition(self.index)
-        return playlistBean
-    
+        
+        if self.index >= self.current_list_model.get_size():
+                self.index = 0
+                if not FConfiguration().isRepeat:
+                    self.index = self.current_list_model.get_size()
+                    return None
+            
+        return self.current_list_model.getBeenByPosition(self.index)
+            
     def prevBean(self):
+        if FConfiguration().isRandom:            
+            return self.current_list_model.get_random_bean()
+        
+        self.index -= 1        
         list = self.current_list_model.get_all_beans()
-        self.index -= 1
+        
         if self.index <= 0:
-            self.index = self.current_list_model.getSize()
+            self.index = self.current_list_model.get_size()
 
         playlistBean = self.current_list_model.getBeenByPosition(self.index)
         return playlistBean
@@ -275,6 +262,7 @@ class OnlineListCntr(GObject):
         
         self.repopulate(currentSong.index);
         return currentSong
+    
 
     def getPrevSong(self):
         playlistBean = self.prevBean()

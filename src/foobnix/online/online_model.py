@@ -3,6 +3,7 @@ Created on Mar 16, 2010
 
 @author: ivan
 '''
+from random import randint
 '''
 Created on Mar 11, 2010
 
@@ -35,12 +36,12 @@ class OnlineListModel:
         widget.append_column(descriptionColumn)
         
         widget.set_model(self.current_list_model)
-    def getSize(self):
+    def get_size(self):
         return len(self.current_list_model)
     
     def get_all_beans(self):
         beans  =[]
-        for i in xrange(self.getSize()):
+        for i in xrange(self.get_size()):
             beans.append(self.getBeenByPosition(i))
         return beans
     
@@ -55,6 +56,11 @@ class OnlineListModel:
         bean.type = self.current_list_model[position][ self.POS_TYPE]
         bean.parent = self.current_list_model[position][ self.POS_PARENT]
         return bean  
+    
+    
+    def get_random_bean(self):
+        index = randint(0,self.get_size())
+        return self.getBeenByPosition(index) 
     
     def getModel(self):
         return self.current_list_model

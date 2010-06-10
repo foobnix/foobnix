@@ -33,7 +33,7 @@ class RadioListModel:
         widget.append_column(descriptionColumn)
         
         widget.set_model(self.current_list_model)
-    def getSize(self):
+    def get_size(self):
         return len(self.current_list_model)
     
     def getBeenByPosition(self, position):

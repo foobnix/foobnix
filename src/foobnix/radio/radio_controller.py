@@ -29,7 +29,7 @@ class RadioListCntr():
         self.widget.connect("button-press-event", self.onPlaySong)
         
         self.entityBeans = []
-        self.index = self.current_list_model.getSize();
+        self.index = self.current_list_model.get_size();
                 
     
     def onAddRadio(self, *args):
@@ -45,7 +45,7 @@ class RadioListCntr():
             
             entity = CommonBean(name=nameDef, path=urlStation, type=CommonBean.TYPE_RADIO_URL, index=self.index + 1);
             self.entityBeans.append(entity)
-            self.repopulate(self.entityBeans, (self.current_list_model.getSize()))
+            self.repopulate(self.entityBeans, (self.current_list_model.get_size()))
             self.urlText.set_text("")                        
         
         pass
