@@ -92,3 +92,29 @@ class OnlineListModel:
 
     def __del__(self, *a):
         print "del"
+        
+        
+    def repopulate(self, played_index):
+        list = self.get_all_beans()
+        self.clear()        
+        for i in xrange(len(list)):
+            songBean = list[i]
+
+            if not songBean.color:
+                songBean.color = self.get_bg_color(i)
+
+            songBean.name = songBean.getPlayListDescription()
+            songBean.index = i
+
+            if i == played_index:
+                songBean.setIconPlaying()
+                self.append(songBean)
+            else:
+                songBean.setIconNone()
+                self.append(songBean)
+
+    def get_bg_color(self, i):
+        if i % 2 :
+            return "#F2F2F2"
+        else:
+            return "#FFFFE5"        

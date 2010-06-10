@@ -17,6 +17,7 @@ from foobnix.base import BaseController
 from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE, TYPE_PYOBJECT
 from foobnix.thirdparty import pylast
 from foobnix.util.configuration import FConfiguration
+from foobnix.online.dowload_util import dowload_song_thread
 
 
 username = FConfiguration().lfm_login
@@ -270,7 +271,7 @@ class PlayerController(BaseController):
             "Download only if you listen this music"
             if flag and song.type == CommonBean.TYPE_MUSIC_URL and timePersent > 0.35:
                 flag = False                
-                self.onlineCntr.dowloadThread(song)
+                dowload_song_thread(song)
             
             if  self._get_state()!= gst.STATE_PAUSED:
                 sec+=1            
@@ -283,8 +284,7 @@ class PlayerController(BaseController):
                     LOG.debug("Song Successfully scrobbled", song.getArtist(),  song.getTitle())
                 
     
-        
-
+    
     def onBusMessage(self, bus, message):
         type = message.type
         if type == gst.MESSAGE_EOS:

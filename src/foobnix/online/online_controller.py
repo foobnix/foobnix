@@ -3,7 +3,7 @@
 '''
 Created on Mar 16, 2010
 
-@author: ivanf
+@author: ivan
 '''
 import os
 import thread
@@ -23,7 +23,7 @@ from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.util.mouse_utils import is_double_click
 from foobnix.online.google_utils import google_search_resutls
-from random import randint
+from foobnix.online.dowload_util import download_song, get_file_store_path
 
 try:
     vkontakte = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
@@ -104,6 +104,7 @@ class OnlineListCntr(GObject):
                 self.append([self.SearchCriteriaBeen(query)])
             self.append(beans)
         else:
+            LOG.debug("Nothing found get try google suggests")
             self.google_suggests(query)
 
 
@@ -129,7 +130,7 @@ class OnlineListCntr(GObject):
         for bean in beans:
             self.current_list_model.append(bean)
             
-        self.repopulate(-1)
+        self.current_list_model.repopulate(-1)
 
     def onPlaySong(self, w, e, similar_songs_model):        
         self.current_list_model = similar_songs_model
@@ -162,41 +163,14 @@ class OnlineListCntr(GObject):
             self.playerCntr.playSong(playlistBean)
 
             self.index = playlistBean.index            
-            self.repopulate(self.index)
+            self.current_list_model.repopulate(self.index)
 
-
-    def downloadSong(self, song):
-        if not FConfiguration().is_save_online:
-            print "Source not saved ...., please set in configuration"
-            return None
-
-        print "===Dowload song start"
-        #time.sleep(5)
-        file = self.get_file_store_path(song)
-        
-        if not os.path.exists(file + ".tmp"):
-            r = urllib.urlretrieve(song.path, file + ".tmp")
-            os.rename(file + ".tmp", file)
-            print r
-            print "===Dowload song End ", file
-        else:
-            print "Exists ..."
-
-    def get_file_store_path(self, song):
-        dir = FConfiguration().onlineMusicPath
-        if song.getArtist():
-            dir = dir + "/" + song.getArtist()
-        self.make_dirs(dir)
-        song = dir + "/" + song.name + ".mp3"
-        print "Stored dir: ", song
-        return song
-#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
 
     def setSongResource(self, playlistBean, update_song_info=True):
         if not playlistBean.path:
             if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
 
-                file = self.get_file_store_path(playlistBean)
+                file = get_file_store_path(playlistBean)
                 if os.path.isfile(file) and os.path.getsize(file) > 1:
                     print "Find file dowloaded"
                     playlistBean.path = file
@@ -216,10 +190,6 @@ class OnlineListCntr(GObject):
         if update_song_info:
             """retrive images and other info"""
             self.info.show_song_info(playlistBean)
-
-    def dowloadThread(self, bean):
-        thread.start_new_thread(self.downloadSong, (bean,))
-
 
     def nextBean(self):
         if FConfiguration().isRandom:            
@@ -260,7 +230,7 @@ class OnlineListCntr(GObject):
         self.setSongResource(currentSong)
         print "PATH", currentSong.path
         
-        self.repopulate(currentSong.index);
+        self.current_list_model.repopulate(currentSong.index);
         return currentSong
     
 
@@ -272,7 +242,7 @@ class OnlineListCntr(GObject):
 
         self.setSongResource(playlistBean)
 
-        self.repopulate(playlistBean.index);
+        self.current_list_model.repopulate(playlistBean.index);
         return playlistBean
 
 
@@ -281,34 +251,4 @@ class OnlineListCntr(GObject):
         index = 0
         if entityBeans:
             self.playerCntr.playSong(entityBeans[index])
-            self.repopulate(index);
-#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-
-    def repopulate(self, index):
-        list = self.current_list_model.get_all_beans()
-        self.current_list_model.clear()
-        for i in xrange(len(list)):
-            songBean = list[i]
-
-            if not songBean.color:
-                songBean.color = self.getBackgroundColour(i)
-
-            songBean.name = songBean.getPlayListDescription()
-            songBean.index = i
-
-            if i == index:
-                songBean.setIconPlaying()
-                self.current_list_model.append(songBean)
-            else:
-                songBean.setIconNone()
-                self.current_list_model.append(songBean)
-
-    def getBackgroundColour(self, i):
-        if i % 2 :
-            return "#F2F2F2"
-        else:
-            return "#FFFFE5"
-
-    def make_dirs(self, path):
-        if not os.path.isdir(path):
-            os.makedirs(path)
+            self.current_list_model.repopulate(index);
