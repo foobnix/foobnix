@@ -92,8 +92,7 @@ class OnlineListModel:
 
     def __del__(self, *a):
         print "del"
-        
-        
+
     def repopulate(self, played_index):
         list = self.get_all_beans()
         self.clear()        
