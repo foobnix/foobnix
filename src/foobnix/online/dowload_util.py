@@ -21,7 +21,7 @@ def download_song(song):
     LOG.debug("Download song start", song)
     file = get_file_store_path(song)
     if not os.path.exists(file + ".tmp"):
-        r = urllib.urlretrieve(song.path, file + ".tmp")
+        urllib.urlretrieve(song.path, file + ".tmp")
         os.rename(file + ".tmp", file)        
         LOG.debug("Download song finished", file)
     else:

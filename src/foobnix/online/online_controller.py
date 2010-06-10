@@ -46,6 +46,7 @@ class OnlineListCntr(GObject):
     
     def create_notebook_tab(self):
         treeview = gtk.TreeView()
+        treeview.set_reorderable(True)
         model = OnlineListModel(treeview)
         self.current_list_model = model
         
@@ -63,11 +64,21 @@ class OnlineListCntr(GObject):
     def append_notebook_page(self, name):
         print "append new tab"
         label = gtk.Label(name)
+        label.set_angle(90)
+        label.show()
         
-        label.set_angle(90)         
-        self.online_notebook.prepend_page(self.create_notebook_tab(), label)
+        event_box = gtk.EventBox()
+        event_box.add(label)
+        event_box.connect('event', self.on_tab_click)
+                 
+        self.online_notebook.prepend_page(self.create_notebook_tab(), event_box)
         self.online_notebook.set_current_page(0)
-         
+    
+    def on_tab_click(self, w, e):
+        if e.type == gtk.gdk._2BUTTON_PRESS and e.button == 3:
+            LOG.info("Close Current TAB")
+            page = self.online_notebook.get_current_page()
+            self.online_notebook.remove_page(page)
 
     def on_drag_end(self, *ars):
         selected = self.current_list_model.getSelectedBean()
