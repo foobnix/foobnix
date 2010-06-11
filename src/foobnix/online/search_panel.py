@@ -15,6 +15,8 @@ from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 import foobnix.online.integration.lastfm as lastfm
 from foobnix.base import BaseController, SIGNAL_RUN_FIRST
+import time
+from threading import Thread
 
 
 try:
@@ -22,6 +24,15 @@ try:
 except:
     vkontakte = None
     LOG.error("Vkontakte connection error")
+
+class SearchResults(Thread):
+    def __init__ (self, query, function):
+        Thread.__init__(self)
+        self.query = query
+        self.function = function
+           
+    def run(self):
+        self.function(self.query)    
 
 class SearchPanel(BaseController):
     
@@ -39,9 +50,6 @@ class SearchPanel(BaseController):
         #self.search_text.connect("key-press-event", self.on_key_pressed)
         search_button = gx_main.get_widget("search_button")
         search_button.connect("clicked", self.on_search)
-        self.lock = thread.allocate_lock()
-        self.search_thread_id = None
-
 
     def on_key_pressed(self, w, event):
         if event.type == gtk.gdk.KEY_PRESS: #@UndefinedVariable
@@ -103,19 +111,21 @@ class SearchPanel(BaseController):
         return result
 
     
-    def on_search(self, *args):
-        with self.lock:
-            if self.search_thread_id:
-                return None
-    
-            self.emit('starting_search')
-            LOG.error('>>>>>>> search with ' + str(self.search_routine))
-            query = self.get_search_query()            
-            if query:
-                query = self.capitilize_query(u"" + query)
-                self.search_thread_id = thread.start_new_thread(self.perform_search, (query,))
-                #self.perform_search(query)
 
+    search_thread_id = SearchResults(None,None)
+    def on_search(self, *args):
+        LOG.debug('>>>>>>> search with ' + str(self.search_routine))
+        query = self.get_search_query()            
+        if query:
+            query = self.capitilize_query(u"" + query)            
+            #thread.start_new_thread(self.perform_search, (query,))
+            if not self.search_thread_id.isAlive():
+                self.search_thread_id = SearchResults(query, self.perform_search)
+                self.search_thread_id.start()
+            
+            #self.perform_search(query)
+    
+   
     
     def perform_search(self, query):
         beans = None
@@ -127,4 +137,3 @@ class SearchPanel(BaseController):
         except BaseException, ex:
             LOG.error('Error while search for %s: %s' % (query, ex))
         self.emit('show_search_results', query, beans)
-        self.search_thread_id = None
