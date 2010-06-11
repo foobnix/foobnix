@@ -61,6 +61,8 @@ class FConfiguration:
         self.API_SECRET = "800adaf46e237805a4ec2a81404b3ff2"
     
         self.cookie = None 
+        
+        self.count_of_tabs = 10
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -89,6 +91,8 @@ class FConfiguration:
                 
                 self.lfm_login = instance.lfm_login
                 self.lfm_password = instance.lfm_password
+                
+                self.count_of_tabs = instance.count_of_tabs
                 
                 self.cookie = instance.cookie
             except AttributeError:
