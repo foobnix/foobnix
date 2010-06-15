@@ -40,7 +40,7 @@ class OnlineListCntr(GObject):
         self.search_panel = SearchPanel(gxMain)
         
         self.count = 0
-        self.info = InformationController(gxMain, self.playerCntr, self.directoryCntr)
+        self.info = InformationController(gxMain, self.playerCntr, self.directoryCntr, self.search_panel)
         
         self.online_notebook = gxMain.get_widget("notebook1")
     
@@ -154,7 +154,7 @@ class OnlineListCntr(GObject):
                 #thread.start_new_thread(self.playBean, (playlistBean,))
                 self.playBean(playlistBean)
             elif playlistBean.type == CommonBean.TYPE_GOOGLE_HELP:
-                self.search_panel.search_text.set_text(playlistBean.name)
+                self.search_panel.set_text(playlistBean.name)
 
     def playBean(self, playlistBean):
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
