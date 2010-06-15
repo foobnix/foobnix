@@ -67,6 +67,8 @@ class SearchPanel(BaseController):
         #Nothing found
         return None
 
+    def set_text(self, text):
+        self.search_text.set_text(text)
     
     def create_search_mode_buttons(self, gx_main):
         mode_to_button_map = {lastfm.search_top_tracks    : 'top_songs_togglebutton',

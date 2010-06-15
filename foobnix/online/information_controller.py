@@ -40,6 +40,30 @@ class SimilartSongsController(BaseListController):
                 song = CommonBean(name=item, type=CommonBean.TYPE_MUSIC_URL, parent=parent)
                 songs.append(song)
             self.directoryCntr.append_virtual(songs)
+
+class SimilartArtistsController(BaseListController):
+    def __init__(self, gx_main, search_panel):
+        self.search_panel = search_panel
+        widget = gx_main.get_widget("treeview_similart_artists")
+        BaseListController.__init__(self, widget)
+    
+    def on_duble_click(self):
+        artist = self.get_selected_item()
+        LOG.debug("Clicked Similar Artist:", artist)
+        self.search_panel.set_text(artist)
+        
+class SimilartTagsController(BaseListController):
+    def __init__(self, gx_main, search_panel):
+        self.search_panel = search_panel
+        widget = gx_main.get_widget("treeview_song_tags")
+        BaseListController.__init__(self, widget)
+    
+    def on_duble_click(self):
+        tags = self.get_selected_item()
+        LOG.debug("Clicked tags:", tags)
+        self.search_panel.set_text(tags)        
+        
+                
         
 API_KEY = FConfiguration().API_KEY
 API_SECRET = FConfiguration().API_SECRET
@@ -56,7 +80,7 @@ except:
 
 
 class InformationController():
-    def __init__(self,gx_main, playerCntr, directoryCntr):
+    def __init__(self,gx_main, playerCntr, directoryCntr, search_panel):
         
         self.album_image = gx_main.get_widget("image_widget")
         
@@ -68,22 +92,16 @@ class InformationController():
         self.current_song_label.set_use_markup(True)
         
         """Similar artists"""
-        self.similar_artists = gx_main.get_widget("treeview_similart_artists")        
-        self.similar_artists_model = gtk.ListStore(str)
-        song_column = gtk.TreeViewColumn(_('Similar Artists'), gtk.CellRendererText(), text=0)
-        self.similar_artists.append_column(song_column)        
-        self.similar_artists.set_model(self.similar_artists_model)
+        self.similar_artists_cntr = SimilartArtistsController(gx_main, search_panel)
+        self.similar_artists_cntr.set_title(_('Song Artists'))     
         
         """similar songs"""
         self.similar_songs_cntr = SimilartSongsController(gx_main, playerCntr, directoryCntr)              
-        self.similar_songs_cntr.set_title("Similar Songs")   
+        self.similar_songs_cntr.set_title(_("Similar Songs"))   
         
         """song tags"""       
-        self.song_tags = gx_main.get_widget("treeview_song_tags")
-        self.song_tags_model = gtk.ListStore(str)
-        song_column = gtk.TreeViewColumn(_('Song tags'), gtk.CellRendererText(), text=0)
-        self.song_tags.append_column(song_column)        
-        self.song_tags.set_model(self.song_tags_model)
+        self.song_tags_cntr = SimilartTagsController(gx_main,search_panel)
+        self.song_tags_cntr.set_title(_("Similar Tags"))
         
         """link buttons"""
         self.lastfm_url = gx_main.get_widget("lastfm_linkbutton")
@@ -105,10 +123,10 @@ class InformationController():
         #self.similar_songs_cntr.add_item(song.get_name())
     
     def add_similar_artist(self, artist):
-        self.similar_artists_model.append([artist])
+        self.similar_artists_cntr.add_item(artist)
     
     def add_tag(self, tag):
-        self.song_tags_model.append([tag])
+        self.song_tags_cntr.add_item(tag)
     
     def show_song_info_tread(self, song):
         self.song = song
@@ -159,7 +177,7 @@ class InformationController():
         
         """similar tags"""
         tags = track.get_top_tags(20)        
-        self.song_tags_model.clear()
+        self.song_tags_cntr.clear()
         for tag in tags:
             try:            
                 tag_item = tag.item
@@ -171,7 +189,7 @@ class InformationController():
         artist = track.get_artist()
         similar_artists = artist.get_similar(30)
        
-        self.similar_artists_model.clear()
+        self.similar_artists_cntr.clear()
         for artist in similar_artists:
             try:            
                 artist_item = artist.item
