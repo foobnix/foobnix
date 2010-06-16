@@ -7,23 +7,11 @@ from __future__ import with_statement
 
 import gtk
 from gobject import TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING #@UnresolvedImport
-
-import thread
-
-from foobnix.online.vk import Vkontakte
 from foobnix.util import LOG
-from foobnix.util.configuration import FConfiguration
 import foobnix.online.integration.lastfm as lastfm
 from foobnix.base import BaseController, SIGNAL_RUN_FIRST
-import time
 from threading import Thread
-
-
-try:
-    vkontakte = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
-except:
-    vkontakte = None
-    LOG.error("Vkontakte connection error")
+from foobnix.online.song_resource import get_songs_by_url, find_song_urls
 
 class SearchResults(Thread):
     def __init__ (self, query, function):
@@ -74,7 +62,7 @@ class SearchPanel(BaseController):
         mode_to_button_map = {lastfm.search_top_tracks    : 'top_songs_togglebutton',
                               lastfm.search_top_albums    : 'top_albums_togglebutton',
                               lastfm.search_top_similar   : 'top_similar_togglebutton',
-                              vkontakte.find_song_urls    : 'all_search_togglebutton',
+                              find_song_urls    : 'all_search_togglebutton',
                               lastfm.search_tags_genre    : 'tags_togglebutton',
                               lastfm.unimplemented_search : 'tracks_togglebutton' }
         self.search_mode_buttons = {}
@@ -133,7 +121,7 @@ class SearchPanel(BaseController):
         beans = None
         try:
             if query.lower().startswith("http"):                
-                beans = vkontakte.get_songs_by_url(query)                            
+                beans = get_songs_by_url(query)                            
             elif self.search_routine:
                 beans = self.search_routine(query)
         except BaseException, ex:

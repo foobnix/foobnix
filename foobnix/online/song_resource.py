@@ -26,6 +26,12 @@ def get_song_path(song):
             return _get_song_remote_url(song)                  
     return None
 
+def get_songs_by_url(url):
+    return vk.get_songs_by_url(url);
+
+def find_song_urls(title):
+    return vk.find_song_urls(title)
+
 def update_song_path(song):
     if not song.path:
         if song.type == CommonBean.TYPE_MUSIC_URL:                                
