@@ -29,16 +29,19 @@ from foobnix.online.song_resource import update_song_path
 
 class OnlineListCntr(GObject):
     
-    def __init__(self, gxMain, playerCntr, directoryCntr):
+    def __init__(self, gxMain, playerCntr):
+        self.directoryCntr = None
         self.playerCntr = playerCntr
-        self.directoryCntr = directoryCntr
 
         self.search_panel = SearchPanel(gxMain)
         
         self.count = 0
-        self.info = InformationController(gxMain, self.playerCntr, self.directoryCntr, self.search_panel)
         
+        self.info = InformationController(gxMain, self.playerCntr, self.directoryCntr, self.search_panel)
         self.online_notebook = gxMain.get_widget("notebook1")
+    
+    def register_directory_cntr(self, directoryCntr ):
+        self.directoryCntr = directoryCntr
     
     def create_notebook_tab(self):
         treeview = gtk.TreeView()
@@ -150,6 +153,8 @@ class OnlineListCntr(GObject):
             self.playBean(playlistBean)
         elif playlistBean.type == CommonBean.TYPE_GOOGLE_HELP:
             self.search_panel.set_text(playlistBean.name)
+        else:
+            self.playBean(playlistBean)
     
     def show_save_as_dialog(self, song):
         LOG.debug("Show Save As Song dialog")    
@@ -166,7 +171,8 @@ class OnlineListCntr(GObject):
     def onPlaySong(self, w, e, similar_songs_model):        
         self.current_list_model = similar_songs_model
         song = similar_songs_model.getSelectedBean()
-        self.index = song.index
+        self.index = similar_songs_model.get_selected_index()
+        LOG.debug("Seletected index", self.index)
         if is_double_click(e):
             self.on_play_selected(similar_songs_model);
                 
@@ -200,7 +206,7 @@ class OnlineListCntr(GObject):
             menu.popup( None, None, None, e.button, e.time)
 
     def playBean(self, playlistBean):
-        if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
+        if playlistBean.type in [CommonBean.TYPE_MUSIC_URL, CommonBean.TYPE_MUSIC_FILE]:
             self.setSongResource(playlistBean)
 
             LOG.info("Song source path", playlistBean.path)
@@ -215,8 +221,7 @@ class OnlineListCntr(GObject):
 
             self.playerCntr.set_mode(PlayerController.MODE_ONLINE_LIST)
             self.playerCntr.playSong(playlistBean)
-
-            self.index = playlistBean.index            
+                     
             self.current_list_model.repopulate(self.index)
 
 
@@ -282,7 +287,15 @@ class OnlineListCntr(GObject):
         self.current_list_model.repopulate(currentSong.index);
         return currentSong
     
-
+    
+    def setState(self, state):
+        #TODO
+        pass
+        
+    def getState(self):
+        #TODO
+        pass
+    
     def getPrevSong(self):
         playlistBean = self.prevBean()
 
@@ -295,9 +308,8 @@ class OnlineListCntr(GObject):
         return playlistBean
 
 
-    def setPlaylist(self, entityBeans):
-        self.entityBeans = entityBeans
-        index = 0
-        if entityBeans:
-            self.playerCntr.playSong(entityBeans[index])
-            self.current_list_model.repopulate(index);
+    def append_and_play(self, beans):
+        for bean in beans:
+            self.current_list_model.append(bean)
+        self.current_list_model.repopulate(0)
+        self.playerCntr.playSong(beans[0])

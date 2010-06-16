@@ -17,6 +17,7 @@ from foobnix.util.file_utils import isDirectory, getExtenstion
 import gtk
 from foobnix.directory.pref_list_model import PrefListModel
 import gettext
+from foobnix.util.mouse_utils import is_double_rigth_click, is_double_left_click
 
 
 gettext.install("foobnix", unicode=True)
@@ -45,13 +46,7 @@ class DirectoryCntr():
         widget.connect("button-press-event", self.onMouseClick)
         widget.connect("key-release-event", self.onTreeViewDeleteItem)
         
-        #widget.connect("drag-begin", self.all)
-        #widget.connect("drag-data-get", self.all)
-        #widget.connect("drag-data-received", self.all)
-        #widget.connect("drag-drop", self.all)
         widget.connect("drag-end", self.on_drag_get)
-        #widget.connect("drag-failed", self.all)
-        #widget.connect("drag-leave", self.all)
         
         "Pref lists "
         self.prefListMap = {self.DEFAULT_LIST : []}
@@ -71,23 +66,7 @@ class DirectoryCntr():
                 
         
         self.filter = gxMain.get_widget("filter-entry")
-        #self.filter.connect("key-press-event", self.onFiltering)
         self.filter.connect("key-release-event", self.onFiltering)
-        
-        """
-        self.view_list = gxMain.get_widget("view_list_combobox")
-        cell = gtk.CellRendererText()
-        self.view_list.pack_start(cell, True)
-        self.view_list.add_attribute(cell, 'text', 0)  
-        liststore = gtk.ListStore(str)
-        self.view_list.set_model(liststore)
-        self.view_list.append_text(_("by artist/album"))
-        self.view_list.append_text(_("by radio/stations"))
-        self.view_list.append_text(_("by play lists"))
-        self.view_list.set_active(0)
-        
-        self.view_list.connect("changed", self.onChangeView)
-        """
         
         show_local = gxMain.get_widget("show_local_music_button")
         show_local.connect("clicked",self.onChangeView, self.VIEW_LOCAL_MUSIC)
@@ -271,11 +250,8 @@ class DirectoryCntr():
         
     
     def onMouseClick(self, w, event):
-        if event.button == 1 and event.type == gtk.gdk._2BUTTON_PRESS: #@UndefinedVariable
+        if is_double_left_click(event):
             self.populate_playlist()
-        if event.button == 3 and event.type == gtk.gdk._2BUTTON_PRESS: #@UndefinedVariable
-            print "Create new"
-            #self.append_virtual([CommonBean(name="New Artist", type=CommonBean.TYPE_FOLDER, parent=None)])
     
     def populate_playlist(self, append=False):
         print "Drug begin"
@@ -291,24 +267,29 @@ class DirectoryCntr():
             print "Select songs", songs
             if not songs:
                 return
-            if append:                                                                            
-                self.playlistCntr.appendPlaylist(songs)
+            if append:                  
+                self.playlistCntr.append(songs)
             else:
-                self.playlistCntr.setPlaylist(songs)
+                self.playlistCntr.append_notebook_page(directoryBean.name)
+                self.playlistCntr.append_and_play(songs)
+                
         elif directoryBean.type == CommonBean.TYPE_LABEL:
             songs = self.current_list_model.getAllSongs()
+            
             if append:                                                                            
-                self.playlistCntr.appendPlaylist(songs)
+                self.playlistCntr.append(songs)
             else:
-                self.playlistCntr.setPlaylist(songs)
+                self.playlistCntr.append_notebook_page(directoryBean.name)
+                self.playlistCntr.append_and_play(songs)
         else:
             if append:                                      
-                self.playlistCntr.appendPlaylist([directoryBean])
+                self.playlistCntr.append([directoryBean])
             else:
-                self.playlistCntr.setPlaylist([directoryBean])
+                self.playlistCntr.append_notebook_page(directoryBean.name)
+                self.playlistCntr.append_and_play([directoryBean])
         
         #print "PAGE", self.leftNoteBook.get_current_page() 
-        print "SET PAGE", self.mainNoteBook.set_current_page(0)
+        #print "SET PAGE", self.mainNoteBook.set_current_page(0)
         
             
     

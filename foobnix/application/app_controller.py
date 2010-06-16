@@ -27,7 +27,11 @@ class AppController(BaseController):
         BaseController.__init__(self)
                 
         self.player_controller = PlayerController()
-        self.playlistCntr = PlaylistCntr(v.playlist, self.player_controller)
+        
+        #self.playlistCntr = PlaylistCntr(v.playlist, self.player_controller)
+        onlineCntr = OnlineListCntr(v.gxMain, self.player_controller)
+        
+        self.playlistCntr  = onlineCntr 
         
         self.virtualListCntr = VirturalLIstCntr()
         
@@ -39,10 +43,10 @@ class AppController(BaseController):
         
         
         self.directoryCntr = DirectoryCntr(v.gxMain, self.playlistCntr, self.radioListCntr, self.virtualListCntr)
-        self.playlistCntr.registerDirectoryCntr(self.directoryCntr)
+        #self.playlistCntr.registerDirectoryCntr(self.directoryCntr)
         self.appConfCntr = AppConfigurationCntrl(v.gxMain, self.directoryCntr)
+        onlineCntr.register_directory_cntr(self.directoryCntr)
         
-        onlineCntr = OnlineListCntr(v.gxMain, self.player_controller, self.directoryCntr)
         self.player_controller.registerOnlineCntr(onlineCntr)
         
         self.preferences_window_controller = PrefController(v.gxPref)
