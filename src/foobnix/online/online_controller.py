@@ -17,7 +17,6 @@ from foobnix.model.entity import CommonBean
 from foobnix.online.information_controller import InformationController
 from foobnix.online.online_model import OnlineListModel
 from foobnix.online.search_panel import SearchPanel
-from foobnix.online.vk import Vkontakte
 from foobnix.player.player_controller import PlayerController
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
@@ -26,11 +25,7 @@ from foobnix.online.google_utils import google_search_resutls
 from foobnix.online.dowload_util import download_song, get_file_store_path,\
     dowload_song_thread, save_as_song_thread, save_song_thread
 
-try:
-    vkontakte = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
-except:
-    vkontakte = None
-    LOG.error("Vkontakte connection error")
+from foobnix.online.song_resource import update_song_path
 
 class OnlineListCntr(GObject):
     
@@ -239,12 +234,7 @@ class OnlineListCntr(GObject):
                     print "FILE NOT FOUND IN SYSTEM"
 
                 #Seach by vk engine
-                vkSong = vkontakte.find_most_relative_song(playlistBean.name)
-                if vkSong:
-                    LOG.info("Find song on VK", vkSong, vkSong.path)
-                    playlistBean.path = vkSong.path
-                else:
-                    playlistBean.path = None
+                update_song_path(playlistBean)
 
         if update_song_info:
             """retrive images and other info"""
