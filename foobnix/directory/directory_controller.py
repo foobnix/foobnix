@@ -20,7 +20,6 @@ import gettext
 from foobnix.util.mouse_utils import is_double_rigth_click, is_double_left_click
 from mutagen.mp3 import MP3
 from mutagen.flac import FLAC
-import normilize_time
 from foobnix.util.time_utils import normilize_time
 from mutagen.easyid3 import EasyID3
 
@@ -66,9 +65,10 @@ class DirectoryCntr():
         
         
         self.mainNoteBook = gxMain.get_widget("main_notebook")
-        self.mainNoteBook.set_current_page(1)
+        self.mainNoteBook.set_current_page(0)
+        
         self.leftNoteBook = gxMain.get_widget("left_notebook")
-                
+        
         
         self.filter = gxMain.get_widget("filter-entry")
         self.filter.connect("key-release-event", self.onFiltering)

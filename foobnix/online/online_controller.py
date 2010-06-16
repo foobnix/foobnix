@@ -39,9 +39,10 @@ class OnlineListCntr(GObject):
         self.count = 0
         
         
-        self.online_notebook = gxMain.get_widget("notebook1")
+        self.online_notebook = gxMain.get_widget("online_notebook")
     
     def register_directory_cntr(self, directoryCntr ):
+        self.directoryCntr = directoryCntr
         self.info = InformationController(self.gx_main, self.playerCntr, directoryCntr, self.search_panel)
     
     def create_notebook_tab(self):
