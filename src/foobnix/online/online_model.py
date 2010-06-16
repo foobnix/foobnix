@@ -4,6 +4,7 @@ Created on Mar 16, 2010
 @author: ivan
 '''
 from random import randint
+from foobnix.util import LOG
 '''
 Created on Mar 11, 2010
 
@@ -97,8 +98,21 @@ class OnlineListModel:
 
     def __del__(self, *a):
         print "del"
+        
+        
+    def get_selected_index(self):
+        selection = self.widget.get_selection()
+        model, selected = selection.get_selected()
+        if selected:
+            i = model.get_string_from_iter(selected)  
+            #print "!!I", i      
+            #if i.find(":") == -1:
+            #return int(i)
+            return int(i)
+        return None    
 
     def repopulate(self, played_index):
+        LOG.info("Selected index", played_index)
         list = self.get_all_beans()
         self.clear()        
         for i in xrange(len(list)):
