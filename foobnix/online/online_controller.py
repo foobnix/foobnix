@@ -21,9 +21,10 @@ from foobnix.online.vk import Vkontakte
 from foobnix.player.player_controller import PlayerController
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
-from foobnix.util.mouse_utils import is_double_click
+from foobnix.util.mouse_utils import is_double_click, is_rigth_click
 from foobnix.online.google_utils import google_search_resutls
-from foobnix.online.dowload_util import download_song, get_file_store_path
+from foobnix.online.dowload_util import download_song, get_file_store_path,\
+    dowload_song_thread, save_as_song_thread, save_song_thread
 
 try:
     vkontakte = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
@@ -80,7 +81,8 @@ class OnlineListCntr(GObject):
             page = self.online_notebook.get_current_page()
             self.online_notebook.remove_page(page)
 
-    def on_drag_end(self, *ars):
+
+    def add_selected_to_playlist(self):
         selected = self.current_list_model.getSelectedBean()
         print "SELECTED", selected
         self.directoryCntr.set_active_view(DirectoryCntr.VIEW_VIRTUAL_LISTS)
@@ -92,19 +94,21 @@ class OnlineListCntr(GObject):
             results = []
             for i in xrange(self.current_list_model.get_size()):
                 searchBean = self.current_list_model.getBeenByPosition(i)
-                #print "Search", searchBean
+            #print "Search", searchBean
                 if str(searchBean.name) == str(selected.name):
                     searchBean.parent = None
                     results.append(searchBean)
-
                 elif str(searchBean.parent) == str(selected.name):
                     results.append(searchBean)
                 else:
                     print str(searchBean.parent) + " != " + str(selected.name)
-
+            
             self.directoryCntr.append_virtual(results)
         print "drug"
         self.directoryCntr.leftNoteBook.set_current_page(0)
+
+    def on_drag_end(self, *ars):
+        self.add_selected_to_playlist()
 
     def show_results(self, sender, query, beans, criteria=True):
         self.append_notebook_page(query)
@@ -142,19 +146,63 @@ class OnlineListCntr(GObject):
             self.current_list_model.append(bean)
             
         self.current_list_model.repopulate(-1)
+        
+    def on_play_selected(self, similar_songs_model):
+        playlistBean = similar_songs_model.getSelectedBean()
+        print "play", playlistBean
+        print "type", playlistBean.type
+        if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
+            self.playBean(playlistBean)
+        elif playlistBean.type == CommonBean.TYPE_GOOGLE_HELP:
+            self.search_panel.set_text(playlistBean.name)
+    
+    def show_save_as_dialog(self, song):
+        LOG.debug("Show Save As Song dialog")    
+        chooser = gtk.FileChooserDialog(title=_("Choose directory to save song"),action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        chooser.set_default_response(gtk.RESPONSE_OK)
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK:
+            path = chooser.get_filename()
+            save_as_song_thread(song, path)
+        elif response == gtk.RESPONSE_CANCEL:
+            print 'Closed, no files selected'
+        chooser.destroy()
 
     def onPlaySong(self, w, e, similar_songs_model):        
         self.current_list_model = similar_songs_model
-        self.index = similar_songs_model.getSelectedBean().index
+        song = similar_songs_model.getSelectedBean()
+        self.index = song.index
         if is_double_click(e):
-            playlistBean = similar_songs_model.getSelectedBean()
-            print "play", playlistBean
-            print "type", playlistBean.type
-            if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
-                #thread.start_new_thread(self.playBean, (playlistBean,))
-                self.playBean(playlistBean)
-            elif playlistBean.type == CommonBean.TYPE_GOOGLE_HELP:
-                self.search_panel.set_text(playlistBean.name)
+            self.on_play_selected(similar_songs_model);
+                
+        elif is_rigth_click(e):
+            menu = gtk.Menu()
+            
+            play = gtk.ImageMenuItem(gtk.STOCK_MEDIA_PLAY)
+            play.connect("activate", lambda *a: self.on_play_selected(similar_songs_model))
+            menu.add(play)
+            
+            save = gtk.ImageMenuItem(gtk.STOCK_SAVE)
+            save.connect("activate", lambda *a: save_song_thread(song))            
+            menu.add(save)
+            
+            save_as = gtk.ImageMenuItem(gtk.STOCK_SAVE_AS)
+            save_as.connect("activate", lambda *a: self.show_save_as_dialog(song))
+            menu.add(save_as)
+            
+            add = gtk.ImageMenuItem(gtk.STOCK_ADD)
+            add.connect("activate", lambda *a: self.add_selected_to_playlist())
+            menu.add(add)
+
+            remove = gtk.ImageMenuItem(gtk.STOCK_REMOVE)
+            remove.connect("activate", lambda *a: similar_songs_model.remove_selected())
+            menu.add(remove)
+            
+            info = gtk.ImageMenuItem(gtk.STOCK_INFO)
+            menu.add(info)
+            
+            menu.show_all()
+            menu.popup( None, None, None, e.button, e.time)
 
     def playBean(self, playlistBean):
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:

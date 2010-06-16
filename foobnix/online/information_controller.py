@@ -10,10 +10,10 @@ import gtk
 import thread
 from foobnix.model.entity import CommonBean
 from foobnix.base.base_list_controller import BaseListController
-from foobnix.online.song_resource import SongResource
 from foobnix.util.configuration import FConfiguration
 import datetime
 import time
+from foobnix.online.song_resource import update_song_path
 
 
 class SimilartSongsController(BaseListController):
@@ -26,8 +26,7 @@ class SimilartSongsController(BaseListController):
         def on_duble_click(self):
             artist_track = self.get_selected_item()
             song = CommonBean(name=artist_track, type=CommonBean.TYPE_MUSIC_URL)
-            resource = SongResource()
-            song.path = resource.get_song_path(song)
+            update_song_path(song)
             self.playerCntr.playSong(song)
         
         def on_drag(self):
