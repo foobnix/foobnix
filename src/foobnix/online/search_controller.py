@@ -125,6 +125,7 @@ def search_top_tracks(network, query):
         #print track.get_duration()
         
         bean = CommonBean(name=str(track_item), path="", type=CommonBean.TYPE_MUSIC_URL, parent=query);
+        
         beans.append(bean)
         
     return beans

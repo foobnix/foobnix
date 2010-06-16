@@ -9,6 +9,10 @@ import os
 import urllib
 import thread
 from foobnix.online.song_resource import update_song_path
+from mutagen.easyid3 import EasyID3
+from tagpy import id3v2, id3v1
+from mutagen import id3
+from mutagen.id3 import ID3
 
 
 def dowload_song_thread(song):
@@ -28,7 +32,8 @@ def save_song(song):
     if not os.path.exists(file + ".tmp"):
         LOG.debug("Song PATH", song.path)
         urllib.urlretrieve(song.path, file + ".tmp")
-        os.rename(file + ".tmp", file)        
+        os.rename(file + ".tmp", file)
+        update_id3_tags(song,file)          
         LOG.debug("Download song finished", file)
     else:
         LOG.debug("Found file already dowloaded", file)
@@ -40,10 +45,21 @@ def save_as_song(song, path):
     LOG.debug("Store song path", file)
     if not os.path.exists(file + ".tmp"):
         urllib.urlretrieve(song.path, file + ".tmp")
-        os.rename(file + ".tmp", file)        
+        os.rename(file + ".tmp", file) 
+        update_id3_tags(song,file)      
         LOG.debug("Download song finished", file)
     else:
         LOG.debug("Found file already dowloaded", file)
+
+def update_id3_tags(song, path):
+    audio = EasyID3(path)
+    audio["title"] = song.getArtist()
+    audio["artist"] = song.getTitle()
+    audio["album"] = song.album
+    audio["date"] = song.year
+    audio.save()
+    
+    
 
 """Dowload song proccess"""
 def download_song(song):

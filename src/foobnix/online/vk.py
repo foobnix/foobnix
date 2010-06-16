@@ -198,6 +198,7 @@ class Vkontakte:
         beans = []
         for vk_song in vk_songs:
             bean = CommonBean(name=vk_song.album + " - " + vk_song.track, path=vk_song.path, type=CommonBean.TYPE_MUSIC_URL);
+            bean.time = vk_song.time
             beans.append(bean)
         return beans
 
@@ -242,7 +243,7 @@ class Vkontakte:
         #print len(urls), urls
         #print len(result_album), result_album
         #print len(result_track), result_track
-        #print len(result_time), result_time
+        print len(result_time), result_time
         
         for i in xrange(len(result_time)):    
             id = ids[i]       
