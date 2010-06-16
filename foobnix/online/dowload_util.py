@@ -33,7 +33,6 @@ def save_song(song):
         LOG.debug("Song PATH", song.path)
         urllib.urlretrieve(song.path, file + ".tmp")
         os.rename(file + ".tmp", file)
-        update_id3_tags(song,file)          
         LOG.debug("Download song finished", file)
     else:
         LOG.debug("Found file already dowloaded", file)
@@ -46,7 +45,6 @@ def save_as_song(song, path):
     if not os.path.exists(file + ".tmp"):
         urllib.urlretrieve(song.path, file + ".tmp")
         os.rename(file + ".tmp", file) 
-        update_id3_tags(song,file)      
         LOG.debug("Download song finished", file)
     else:
         LOG.debug("Found file already dowloaded", file)

@@ -18,7 +18,7 @@ class BaseListController():
         self.widget.append_column(self.column)        
         self.widget.set_model(self.model)
         
-        self.widget.connect("button-press-event", self.__on_button_press)
+        self.widget.connect("button-press-event", self.on_button_press)
         self.widget.connect("drag-end", self.__on_drag_end)
     
     
@@ -28,9 +28,8 @@ class BaseListController():
     def __on_drag_end(self, *args):
         self.on_drag()
     
-    def __on_button_press(self,w,e):
-        if is_double_click(e):
-            self.on_duble_click()
+    def on_button_press(self,w,e):
+        pass
     
     def on_drag(self):
         pass
@@ -62,7 +61,12 @@ class BaseListController():
         self.model.append([value])
     
     def clear(self):
-        self.model.clear()            
+        self.model.clear()           
+        
+    def remove_selected(self):
+        selection = self.widget.get_selection()
+        model, selected = selection.get_selected()
+        model.remove(selected) 
         
     
         

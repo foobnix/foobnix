@@ -22,6 +22,7 @@ from mutagen.mp3 import MP3
 from mutagen.flac import FLAC
 import normilize_time
 from foobnix.util.time_utils import normilize_time
+from mutagen.easyid3 import EasyID3
 
 
 gettext.install("foobnix", unicode=True)
@@ -259,9 +260,18 @@ class DirectoryCntr():
     
     def update_songs_time(self, songs):
         for song in songs:
-            if song.path.endswith("3") and not song.time:
+            if song.path and song.path.endswith("3") and not song.time:
                 audio = MP3(song.path)
-                print audio.info.length
+                song.time = normilize_time(audio.info.length)
+                
+                audio = EasyID3(song.path)
+                song.title = str(audio["title"][0])                 
+                song.artist =str( audio["artist"][0])
+                song.album = str(audio["album"][0])
+                song.tracknumber= str(audio["tracknumber"][0])
+                print song.title, song.artist, song.album
+                
+                
     
     
     def populate_playlist(self, append=False):

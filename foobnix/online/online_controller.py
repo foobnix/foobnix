@@ -30,6 +30,7 @@ from foobnix.online.song_resource import update_song_path
 class OnlineListCntr(GObject):
     
     def __init__(self, gxMain, playerCntr):
+        self.gx_main = gxMain
         self.directoryCntr = None
         self.playerCntr = playerCntr
 
@@ -37,11 +38,11 @@ class OnlineListCntr(GObject):
         
         self.count = 0
         
-        self.info = InformationController(gxMain, self.playerCntr, self.directoryCntr, self.search_panel)
+        
         self.online_notebook = gxMain.get_widget("notebook1")
     
     def register_directory_cntr(self, directoryCntr ):
-        self.directoryCntr = directoryCntr
+        self.info = InformationController(self.gx_main, self.playerCntr, directoryCntr, self.search_panel)
     
     def create_notebook_tab(self):
         treeview = gtk.TreeView()
