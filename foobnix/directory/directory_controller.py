@@ -18,6 +18,10 @@ import gtk
 from foobnix.directory.pref_list_model import PrefListModel
 import gettext
 from foobnix.util.mouse_utils import is_double_rigth_click, is_double_left_click
+from mutagen.mp3 import MP3
+from mutagen.flac import FLAC
+import normilize_time
+from foobnix.util.time_utils import normilize_time
 
 
 gettext.install("foobnix", unicode=True)
@@ -253,6 +257,13 @@ class DirectoryCntr():
         if is_double_left_click(event):
             self.populate_playlist()
     
+    def update_songs_time(self, songs):
+        for song in songs:
+            if song.path.endswith("3") and not song.time:
+                audio = MP3(song.path)
+                print audio.info.length
+    
+    
     def populate_playlist(self, append=False):
         print "Drug begin"
         directoryBean = self.current_list_model.getSelectedBean()
@@ -264,6 +275,7 @@ class DirectoryCntr():
         
         if directoryBean.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP] :
             songs = self.current_list_model.getChildSongBySelected()
+            self.update_songs_time(songs)
             print "Select songs", songs
             if not songs:
                 return

@@ -35,9 +35,13 @@ class CommonBean():
         self.is_visible = is_visible
         self.font = font
         self.parent = parent
+        self.time = None
+        self.album = None
+        self.year = None
         
         #self._getMp3Tags()
         
+    
     def getArtist(self):
         s = self.name.split(" - ")
         if len(s) > 1:

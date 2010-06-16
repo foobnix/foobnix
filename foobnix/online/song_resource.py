@@ -23,7 +23,7 @@ def get_song_path(song):
             if _check_set_local_path(song):
                 return song.path
             
-            return _get_song_remote_url(song)                  
+            return _get_vk_song(song).path                  
     return None
 
 def get_songs_by_url(url):
@@ -38,8 +38,10 @@ def update_song_path(song):
             """File exists in file system"""
             if _check_set_local_path(song):
                 return song.path
-            
-            song.path = _get_song_remote_url(song)                  
+            vkSong = _get_vk_song(song)
+            song.path = vkSong.path 
+            song.time = vkSong.time
+            LOG.debug("Time", song.time) 
     
 
 def _check_set_local_path(song):
@@ -51,14 +53,10 @@ def _check_set_local_path(song):
         return True
     return False
 
-def _get_song_remote_url(song):
+def _get_vk_song(song):
     LOG.info("Starting search song path in Internet", song.path)                              
-    
-    """Search by VK"""                
     vkSong = vk.find_most_relative_song(song.name)
-    if vkSong:                    
-        LOG.info("Find song on VK", vkSong, vkSong.path)                      
-        return vkSong.path                          
+    return vkSong                          
 
 def _make_dirs(path):
     if not os.path.isdir(path):

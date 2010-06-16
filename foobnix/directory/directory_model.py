@@ -6,6 +6,7 @@ Created on Mar 11, 2010
 import gtk
 import gobject
 from foobnix.model.entity import CommonBean
+from mutagen.mp3 import MP3
 
 class DirectoryModel():
     POS_NAME = 0

@@ -10,6 +10,7 @@ from foobnix.thirdparty.pylast import WSError
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.online.google.translate import translate
+from foobnix.util.time_utils import normilize_time
 
 
 __all__ = [
@@ -158,6 +159,9 @@ def search_top_tracks(query):
         #print track.get_duration()
         
         bean = CommonBean(name=str(track_item), path="", type=CommonBean.TYPE_MUSIC_URL, parent=query);
+        #norm_duration = track_item.get_duration() / 1000
+        #print track_item.get_duration(), norm_duration
+        #bean.time = normilize_time(norm_duration)
         beans.append(bean)
         
     return beans
