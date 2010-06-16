@@ -29,6 +29,7 @@ def convert_ns(time_int):
 
 
 def normilize_time(length):
+    length = int(length)
     result = ""
     hour = int(length / 60 / 60)
     if hour:

@@ -14,31 +14,86 @@ from foobnix.util.configuration import FConfiguration
 import datetime
 import time
 from foobnix.online.song_resource import update_song_path
+from foobnix.util.mouse_utils import is_double_rigth_click, is_double_left_click,\
+    is_rigth_click
+from foobnix.online.dowload_util import save_song_thread, save_as_song_thread
 
 
 class SimilartSongsController(BaseListController):
+    
         def __init__(self, gx_main, playerCntr, directoryCntr):
             self.directoryCntr = directoryCntr
             self.playerCntr = playerCntr
             widget = gx_main.get_widget("treeview_similar_songs")
             BaseListController.__init__(self, widget)
             
-        def on_duble_click(self):
+            self.parent = "Simirat to"
+            
+        def on_drag(self):
+            items = self.get_all_items()
+            songs = []
+            similar = "Similar to: "+self.parent
+            song = CommonBean(name=similar, type=CommonBean.TYPE_FOLDER)
+            songs.append(song)
+            for item in items:                
+                song = CommonBean(name=item, type=CommonBean.TYPE_MUSIC_URL, parent=similar)
+                songs.append(song)
+            self.directoryCntr.append_virtual(songs)
+        
+        def play_selected_song(self):
             artist_track = self.get_selected_item()
             song = CommonBean(name=artist_track, type=CommonBean.TYPE_MUSIC_URL)
             update_song_path(song)
             self.playerCntr.playSong(song)
         
-        def on_drag(self):
-            items = self.get_all_items()
-            songs = []
-            parent = "Similar songs"
-            song = CommonBean(name=parent, type=CommonBean.TYPE_FOLDER)
-            songs.append(song)
-            for item in items:                
-                song = CommonBean(name=item, type=CommonBean.TYPE_MUSIC_URL, parent=parent)
-                songs.append(song)
-            self.directoryCntr.append_virtual(songs)
+        def show_save_as_dialog(self, song):
+            LOG.debug("Show Save As Song dialog")    
+            chooser = gtk.FileChooserDialog(title=_("Choose directory to save song"),action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+            chooser.set_default_response(gtk.RESPONSE_OK)
+            response = chooser.run()
+            if response == gtk.RESPONSE_OK:
+                path = chooser.get_filename()
+                save_as_song_thread(song, path)
+            elif response == gtk.RESPONSE_CANCEL:
+                print 'Closed, no files selected'
+            chooser.destroy()
+            
+        def on_button_press(self,w,e):
+            if is_double_left_click(e):
+                self.play_selected_song()
+                    
+            if is_rigth_click(e):
+                artist_track = self.get_selected_item()
+                song = CommonBean(name=artist_track, type=CommonBean.TYPE_MUSIC_URL)
+
+                
+                menu = gtk.Menu()
+                
+                play = gtk.ImageMenuItem(gtk.STOCK_MEDIA_PLAY)
+                play.connect("activate", lambda *a: self.play_selected_song())
+                menu.add(play)
+                
+                save = gtk.ImageMenuItem(gtk.STOCK_SAVE)
+                save.connect("activate", lambda *a: save_song_thread(song))            
+                menu.add(save)
+                
+                save_as = gtk.ImageMenuItem(gtk.STOCK_SAVE_AS)
+                save_as.connect("activate", lambda *a: self.show_save_as_dialog(song))
+                menu.add(save_as)
+                
+                add = gtk.ImageMenuItem(gtk.STOCK_ADD)
+                add.connect("activate", lambda *a: self.on_drag())
+                menu.add(add)
+    
+                remove = gtk.ImageMenuItem(gtk.STOCK_REMOVE)
+                remove.connect("activate", lambda *a: self.remove_selected())
+                menu.add(remove)
+                
+                info = gtk.ImageMenuItem(gtk.STOCK_INFO)
+                menu.add(info)
+                
+                menu.show_all()
+                menu.popup( None, None, None, e.button, e.time)    
 
 class SimilartArtistsController(BaseListController):
     def __init__(self, gx_main, search_panel):
@@ -61,8 +116,7 @@ class SimilartTagsController(BaseListController):
         tags = self.get_selected_item()
         LOG.debug("Clicked tags:", tags)
         self.search_panel.set_text(tags)        
-        
-                
+    
         
 API_KEY = FConfiguration().API_KEY
 API_SECRET = FConfiguration().API_SECRET
@@ -79,6 +133,7 @@ except:
 
 
 class InformationController():
+    
     def __init__(self,gx_main, playerCntr, directoryCntr, search_panel):
         
         self.album_image = gx_main.get_widget("image_widget")
@@ -154,6 +209,9 @@ class InformationController():
         
         
         track = self.last_fm_network.get_track(song.getArtist(), song.getTitle())
+        
+        self.similar_songs_cntr.parent = song.getArtist() +" - "+ song.getTitle()
+        
         print track
         if not track:
             return None
