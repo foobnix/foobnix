@@ -86,6 +86,11 @@ class OnlineListModel:
     def clear(self):
         self.current_list_model.clear()
     
+    def remove_selected(self):
+        selection = self.widget.get_selection()
+        model, selected = selection.get_selected()
+        self.current_list_model.remove(selected)
+    
     def append(self, bean):   
         print bean
         self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent])
