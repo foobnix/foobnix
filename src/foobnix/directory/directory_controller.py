@@ -264,12 +264,12 @@ class DirectoryCntr():
                 audio = MP3(song.path)
                 song.time = normilize_time(audio.info.length)
                 
-                audio = EasyID3(song.path)
-                song.title = str(audio["title"][0])                 
-                song.artist =str( audio["artist"][0])
-                song.album = str(audio["album"][0])
-                song.tracknumber= str(audio["tracknumber"][0])
-                print song.title, song.artist, song.album
+                #audio = EasyID3(song.path)
+                #song.title = str(audio["title"][0])                 
+                #song.artist =str( audio["artist"][0])
+                #song.album = str(audio["album"][0])
+                #song.tracknumber= str(audio["tracknumber"][0])
+                #print song.title, song.artist, song.album
                 
                 
     
