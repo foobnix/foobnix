@@ -47,6 +47,9 @@ class OnlineListCntr(GObject):
     
     def create_notebook_tab(self):
         treeview = gtk.TreeView()
+        treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        treeview.set_rubber_banding(True)
+        
         treeview.set_reorderable(True)
         model = OnlineListModel(treeview)
         self.current_list_model = model
@@ -83,7 +86,7 @@ class OnlineListCntr(GObject):
 
 
     def add_selected_to_playlist(self):
-        selected = self.current_list_model.getSelectedBean()
+        selected = self.current_list_model.get_selected_bean()
         print "SELECTED", selected
         self.directoryCntr.set_active_view(DirectoryCntr.VIEW_VIRTUAL_LISTS)
         if selected.type == CommonBean.TYPE_MUSIC_URL:
@@ -148,7 +151,7 @@ class OnlineListCntr(GObject):
         self.current_list_model.repopulate(-1)
         
     def on_play_selected(self, similar_songs_model):
-        playlistBean = similar_songs_model.getSelectedBean()
+        playlistBean = similar_songs_model.get_selected_bean()
         print "play", playlistBean
         print "type", playlistBean.type
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
@@ -169,10 +172,20 @@ class OnlineListCntr(GObject):
         elif response == gtk.RESPONSE_CANCEL:
             print 'Closed, no files selected'
         chooser.destroy()
+        
+    def show_info(self, songs):
+            result = ""
+            for song in songs:
+                result += song.getArtist() + " - " + song.getTitle() + "\n"
+            md = gtk.MessageDialog(None, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO, 
+                                   gtk.BUTTONS_CLOSE, result)
+            md.run()
+            md.destroy()
 
     def onPlaySong(self, w, e, similar_songs_model):        
         self.current_list_model = similar_songs_model
-        song = similar_songs_model.getSelectedBean()
+        
+        song = similar_songs_model.get_selected_bean()
         self.index = similar_songs_model.get_selected_index()
         LOG.debug("Seletected index", self.index)
         if is_double_click(e):
@@ -202,6 +215,7 @@ class OnlineListCntr(GObject):
             menu.add(remove)
             
             info = gtk.ImageMenuItem(gtk.STOCK_INFO)
+            info.connect("activate", lambda *a: self.show_info(similar_songs_model.get_all_selected_beans()))
             menu.add(info)
             
             menu.show_all()

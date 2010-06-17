@@ -81,32 +81,54 @@ class OnlineListModel:
     def getModel(self):
         return self.current_list_model
 
-    def getSelectedBean(self):
-        print self.widget
+    def get_selected_bean(self):
         selection = self.widget.get_selection()
-        print selection
-        model, selected = selection.get_selected()
-        print model, selected
-        if selected:
+        model, paths = selection.get_selected_rows()
+
+        if not paths:
+            return None
+        
+        return self._get_bean_by_path(paths[0])
+    
+    def get_all_selected_beans(self):
+        selection = self.widget.get_selection()
+        model, paths = selection.get_selected_rows()
+        if not paths:
+            return None
+        beans = []
+        for path in paths:            
+            bean = self._get_bean_by_path(path)
+            beans.append(bean)
+        return beans    
+    
+    def _get_bean_by_path(self, path):
+        model = self.current_list_model
+        iter = model.get_iter(path)
+        if iter:
             bean = CommonBean()
-            bean.icon = model.get_value(selected, self.POS_ICON)
-            bean.tracknumber = model.get_value(selected, self.POS_TRACK_NUMBER)
-            bean.name = model.get_value(selected, self.POS_NAME)
-            bean.path = model.get_value(selected, self.POS_PATH)
-            bean.color = model.get_value(selected, self.POS_COLOR)
-            bean.index = model.get_value(selected, self.POS_INDEX)
-            bean.type = model.get_value(selected, self.POS_TYPE)
-            bean.parent = model.get_value(selected, self.POS_PARENT)
-            bean.time = model.get_value(selected, self.POS_TIME)
-            return bean                
+            bean.icon = model.get_value(iter, self.POS_ICON)
+            bean.tracknumber = model.get_value(iter, self.POS_TRACK_NUMBER)
+            bean.name = model.get_value(iter, self.POS_NAME)
+            bean.path = model.get_value(iter, self.POS_PATH)
+            bean.color = model.get_value(iter, self.POS_COLOR)
+            bean.index = model.get_value(iter, self.POS_INDEX)
+            bean.type = model.get_value(iter, self.POS_TYPE)
+            bean.parent = model.get_value(iter, self.POS_PARENT)
+            bean.time = model.get_value(iter, self.POS_TIME)
+            return bean
+        return None
+                
     
     def clear(self):
         self.current_list_model.clear()
     
     def remove_selected(self):
         selection = self.widget.get_selection()
-        model, selected = selection.get_selected()
-        self.current_list_model.remove(selected)
+        model, selected = selection.get_selected_rows()
+        for path in selected:
+            print "P", path, selected
+            iter = self.current_list_model.get_iter(path)
+            self.current_list_model.remove(iter)
     
     def append(self, bean):   
         self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent, bean.time])
@@ -116,10 +138,15 @@ class OnlineListModel:
         
         
     def get_selected_index(self):
+        
         selection = self.widget.get_selection()
-        model, selected = selection.get_selected()
-        if selected:
-            i = model.get_string_from_iter(selected)  
+        #model, selected = selection.get_selected()
+        model, selected = selection.get_selected_rows()
+        if not selected:
+            return None
+        iter = self.current_list_model.get_iter(selected[0])
+        if iter:
+            i = model.get_string_from_iter(iter)  
             #print "!!I", i      
             #if i.find(":") == -1:
             #return int(i)

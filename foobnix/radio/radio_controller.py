@@ -53,7 +53,7 @@ class RadioListCntr():
     def onRemoveRadio(self, *args):
             model, iter = self.widget.get_selection().get_selected()
             if iter:              
-                playlistBean = self.current_list_model.getSelectedBean()
+                playlistBean = self.current_list_model.get_selected_bean()
                 for i, entity in enumerate(self.entityBeans):
                     if entity.path == playlistBean.path: 
                         self.index = 0                       
@@ -80,7 +80,7 @@ class RadioListCntr():
         if is_double_click(e):
             print w
             print e
-            playlistBean = self.current_list_model.getSelectedBean()
+            playlistBean = self.current_list_model.get_selected_bean()
             playlistBean.type = CommonBean.TYPE_RADIO_URL  
                      
             #self.repopulate(self.entityBeans, playlistBean.index);

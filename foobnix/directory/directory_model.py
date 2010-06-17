@@ -65,7 +65,7 @@ class DirectoryModel():
     def setModel(self, model):
         self.current_list_model = model
         
-    def getSelectedBean(self):
+    def get_selected_bean(self):
         selection = self.widget.get_selection()
         model, selected = selection.get_selected()
         return self._getBeanByIter(model, selected)   
