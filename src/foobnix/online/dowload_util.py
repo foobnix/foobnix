@@ -11,7 +11,8 @@ import thread
 from foobnix.online.song_resource import update_song_path
 from mutagen.easyid3 import EasyID3
 import time
-from mutagen.id3 import ID3NoHeaderError, ID3, TIT2, COMM, TPE1, TENC
+from mutagen.id3 import ID3NoHeaderError, ID3, TIT2, COMM, TPE1, TENC, TDRC,\
+    TALB
 
 def dowload_song_thread(song):
     thread.start_new_thread(download_song, (song,))
@@ -67,6 +68,9 @@ def update_id3_tags(song, path):
         tags["COMM"] = COMM(encoding=3,lang="eng",desc='desc', text='Grab by www.foobnix.com')
         tags["TENC"] = TENC(encoding=3, text='www.foobnix.com')
         tags["TPE1"] = TPE1(encoding=3, text= song.getArtist())
+        
+        tags["TDRC"] = TDRC(encoding=3, text= song.year)
+        tags["TALB"] = TALB(encoding=3, text= song.album)
         
         tags.save(path)
         

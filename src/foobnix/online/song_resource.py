@@ -39,9 +39,13 @@ def update_song_path(song):
             if _check_set_local_path(song):
                 return song.path
             vkSong = _get_vk_song(song)
-            song.path = vkSong.path 
-            song.time = vkSong.time
-            LOG.debug("Time", song.time) 
+            if vkSong:
+                song.path = vkSong.path 
+                song.time = vkSong.time
+                LOG.debug("Time", song.time)
+            else:
+                LOG.error("VK song source not found") 
+                return None
     
 
 def _check_set_local_path(song):
