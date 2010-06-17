@@ -48,7 +48,7 @@ class OnlineListCntr(GObject):
     def create_notebook_tab(self):
         treeview = gtk.TreeView()
         treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
-        treeview.set_rubber_banding(True)
+        treeview.set_rubber_banding(False)
         
         treeview.set_reorderable(True)
         model = OnlineListModel(treeview)
@@ -161,14 +161,14 @@ class OnlineListCntr(GObject):
         else:
             self.playBean(playlistBean)
     
-    def show_save_as_dialog(self, song):
-        LOG.debug("Show Save As Song dialog")    
+    def show_save_as_dialog(self, songs):
+        LOG.debug("Show Save As Song dialog", songs)    
         chooser = gtk.FileChooserDialog(title=_("Choose directory to save song"),action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
             path = chooser.get_filename()
-            save_as_song_thread(song, path)
+            save_as_song_thread(songs, path)
         elif response == gtk.RESPONSE_CANCEL:
             print 'Closed, no files selected'
         chooser.destroy()
@@ -184,10 +184,9 @@ class OnlineListCntr(GObject):
 
     def onPlaySong(self, w, e, similar_songs_model):        
         self.current_list_model = similar_songs_model
-        
-        song = similar_songs_model.get_selected_bean()
+        songs = similar_songs_model.get_all_selected_beans()    
         self.index = similar_songs_model.get_selected_index()
-        LOG.debug("Seletected index", self.index)
+        #LOG.debug("Seletected index", self.index, songs)
         if is_double_click(e):
             self.on_play_selected(similar_songs_model);
                 
@@ -199,11 +198,11 @@ class OnlineListCntr(GObject):
             menu.add(play)
             
             save = gtk.ImageMenuItem(gtk.STOCK_SAVE)
-            save.connect("activate", lambda *a: save_song_thread(song))            
+            save.connect("activate", lambda *a: save_song_thread(songs))            
             menu.add(save)
             
             save_as = gtk.ImageMenuItem(gtk.STOCK_SAVE_AS)
-            save_as.connect("activate", lambda *a: self.show_save_as_dialog(song))
+            save_as.connect("activate", lambda *a: self.show_save_as_dialog(songs))
             menu.add(save_as)
             
             add = gtk.ImageMenuItem(gtk.STOCK_ADD)
@@ -215,7 +214,7 @@ class OnlineListCntr(GObject):
             menu.add(remove)
             
             info = gtk.ImageMenuItem(gtk.STOCK_INFO)
-            info.connect("activate", lambda *a: self.show_info(similar_songs_model.get_all_selected_beans()))
+            info.connect("activate", lambda *a: self.show_info(songs))
             menu.add(info)
             
             menu.show_all()
