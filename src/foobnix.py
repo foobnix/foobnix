@@ -24,5 +24,5 @@ if __name__ == "__main__":
     
     AppController(AppView())
     gobject.threads_init()  #@UndefinedVariable
-    gtk.main()
+    gtk.main()    
     print _("Success")
