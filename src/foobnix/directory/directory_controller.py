@@ -240,7 +240,7 @@ class DirectoryCntr():
             print event.hardware_keycode
             if event.hardware_keycode == 119 or event.hardware_keycode == 107:
                 print "Delete"
-                bean = self.current_list_model.getSelectedBean()
+                bean = self.current_list_model.get_selected_bean()
                 print bean.index
                 if bean.index > 0:
                     self.virtualListCntr.items = self.prefListMap[self.currentListMap]
@@ -276,7 +276,7 @@ class DirectoryCntr():
     
     def populate_playlist(self, append=False):
         print "Drug begin"
-        directoryBean = self.current_list_model.getSelectedBean()
+        directoryBean = self.current_list_model.get_selected_bean()
         if not directoryBean:
             return 
         

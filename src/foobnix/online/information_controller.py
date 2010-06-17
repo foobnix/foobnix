@@ -25,6 +25,7 @@ class SimilartSongsController(BaseListController):
             self.directoryCntr = directoryCntr
             self.playerCntr = playerCntr
             widget = gx_main.get_widget("treeview_similar_songs")
+            widget.get_parent().set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
             BaseListController.__init__(self, widget)
             
             self.parent = "Simirat to"
@@ -58,6 +59,13 @@ class SimilartSongsController(BaseListController):
                 print 'Closed, no files selected'
             chooser.destroy()
             
+        def show_info(self, song):
+            md = gtk.MessageDialog(None, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO, 
+                                   gtk.BUTTONS_CLOSE, song.getArtist() + " - " + song.getTitle())
+            md.run()
+            md.destroy()
+            
+            
         def on_button_press(self,w,e):
             if is_double_left_click(e):
                 self.play_selected_song()
@@ -90,6 +98,7 @@ class SimilartSongsController(BaseListController):
                 menu.add(remove)
                 
                 info = gtk.ImageMenuItem(gtk.STOCK_INFO)
+                info.connect("activate", lambda *a: self.show_info(song))
                 menu.add(info)
                 
                 menu.show_all()
@@ -99,17 +108,20 @@ class SimilartArtistsController(BaseListController):
     def __init__(self, gx_main, search_panel):
         self.search_panel = search_panel
         widget = gx_main.get_widget("treeview_similart_artists")
+        widget.get_parent().set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         BaseListController.__init__(self, widget)
     
-    def on_duble_click(self):
-        artist = self.get_selected_item()
-        LOG.debug("Clicked Similar Artist:", artist)
-        self.search_panel.set_text(artist)
+    def on_button_press(self,w,e):
+        if is_double_left_click(e):
+            artist = self.get_selected_item()
+            LOG.debug("Clicked Similar Artist:", artist)
+            self.search_panel.set_text(artist)
         
 class SimilartTagsController(BaseListController):
     def __init__(self, gx_main, search_panel):
         self.search_panel = search_panel
         widget = gx_main.get_widget("treeview_song_tags")
+        widget.get_parent().set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         BaseListController.__init__(self, widget)
     
     def on_duble_click(self):

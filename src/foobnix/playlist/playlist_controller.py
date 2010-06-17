@@ -30,7 +30,7 @@ class PlaylistCntr():
     
         
     def onDrugBean(self, *ars):
-        selected = self.current_list_model.getSelectedBean()
+        selected = self.current_list_model.get_selected_bean()
         LOG.info("Drug song", selected, selected.type)
         self.directoryCntr.set_active_view(DirectoryCntr.VIEW_VIRTUAL_LISTS)
         if selected.type in [CommonBean.TYPE_MUSIC_URL, CommonBean.TYPE_MUSIC_FILE]:
@@ -61,7 +61,7 @@ class PlaylistCntr():
         
     def onPlaySong(self, w, e):
         if is_double_click(e):
-            playlistBean = self.current_list_model.getSelectedBean()           
+            playlistBean = self.current_list_model.get_selected_bean()           
             self.repopulate(self.get_playlist_beans(), playlistBean.index);
             self.index = playlistBean.index
             self.playerCntr.set_mode(PlayerController.MODE_PLAY_LIST)            
