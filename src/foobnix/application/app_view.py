@@ -17,6 +17,8 @@ class AppView():
         self.gxTrayIcon = self.glade_XML(self.gladeMain, "popUpWindow")
         self.gxPref = self.glade_XML(self.gladePref, "window")
         self.gxAbout = self.glade_XML(self.gladeMain, "aboutdialog")
+        about_widget=  self.gxAbout.get_widget("aboutdialog")
+        about_widget.connect("response", lambda *a: about_widget.hide())
                 
         
         self.playlist = self.gxMain.get_widget("playlist_treeview")
