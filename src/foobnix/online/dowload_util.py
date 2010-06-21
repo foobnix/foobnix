@@ -72,8 +72,11 @@ def update_id3_tags(song, path):
         tags["TDRC"] = TDRC(encoding=3, text= song.year)
         tags["TALB"] = TALB(encoding=3, text= song.album)
         
-        tags.save(path)
-        
+        try:
+            tags.save(path)
+        except:
+            LOG.error("Tags can't be updated")
+            pass
        
         LOG.debug("ID3 TAGS updated")
     else:

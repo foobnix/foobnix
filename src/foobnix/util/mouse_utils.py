@@ -25,4 +25,10 @@ def is_rigth_click(event):
     else:
         return False
 
+
+def is_left_click(event):
+    if event.button == 1 and event.type == gtk.gdk.BUTTON_PRESS: #@UndefinedVariable
+        return True
+    else:
+        return False
     

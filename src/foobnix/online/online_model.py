@@ -5,8 +5,6 @@ Created on Mar 16, 2010
 '''
 from random import randint
 from foobnix.util import LOG
-from mutagen.easyid3 import EasyID3
-from mutagen.mp3 import MP3
 '''
 Created on Mar 11, 2010
 
@@ -96,7 +94,8 @@ class OnlineListModel:
         if not paths:
             return None
         beans = []
-        for path in paths:            
+        for path in paths:       
+            selection.select_path(path)     
             bean = self._get_bean_by_path(path)
             beans.append(bean)
         return beans    
@@ -125,10 +124,10 @@ class OnlineListModel:
     def remove_selected(self):
         selection = self.widget.get_selection()
         model, selected = selection.get_selected_rows()
-        for path in selected:
-            print "P", path, selected
-            iter = self.current_list_model.get_iter(path)
-            self.current_list_model.remove(iter)
+        iters = [model.get_iter(path) for path in selected]
+        LOG.debug("REMOVE:",iters)
+        for iter in iters:
+            model.remove(iter)
     
     def append(self, bean):   
         self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent, bean.time])

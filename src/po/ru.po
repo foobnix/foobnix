@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sonata\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-21 21:56+0300\n"
+"POT-Creation-Date: 2010-06-21 22:37+0300\n"
 "PO-Revision-Date: 2009-04-06 21:35+0300\n"
 "Last-Translator: Fomin Denis <fominde@mail.ru>\n"
 "Language-Team: badDron <andrew@infonet.by>\n"
@@ -39,20 +39,24 @@ msgstr "Название"
 msgid "My play lists"
 msgstr "Мои плей листы"
 
-#: .././foobnix/online/information_controller.py:52
+#: .././foobnix/online/information_controller.py:37
+msgid "Similar to: "
+msgstr "Похожие на: "
+
+#: .././foobnix/online/information_controller.py:53
 #: .././foobnix/online/online_controller.py:166
 msgid "Choose directory to save song"
 msgstr "Выбирете директорию для сохранения"
 
-#: .././foobnix/online/information_controller.py:162
+#: .././foobnix/online/information_controller.py:174
 msgid "Similar Artists"
 msgstr "Похожие Артисты"
 
-#: .././foobnix/online/information_controller.py:166
+#: .././foobnix/online/information_controller.py:178
 msgid "Similar Songs"
 msgstr "Похожие Песни"
 
-#: .././foobnix/online/information_controller.py:170
+#: .././foobnix/online/information_controller.py:182
 msgid "Similar Tags"
 msgstr "Похожие Теги"
 
@@ -327,25 +331,3 @@ msgstr ""
 msgid "wiki"
 msgstr ""
 
-#~ msgid "Default"
-#~ msgstr "По умолчанию"
-
-#~ msgid "Play list: By Best Music"
-#~ msgstr "Плей листы: по лучшей музыке"
-
-#~ msgid "Similar: The Cranberries - Zomby"
-#~ msgstr "Вкладка 2"
-
-#~ msgid "Top Songs: Madonna"
-#~ msgstr "Вкладка..."
-
-#~ msgid "_Small View"
-#~ msgstr "_Уменьшеный Вид"
-
-#, fuzzy
-#~ msgid "Default list"
-#~ msgstr "по замовчуванню"
-
-#, fuzzy
-#~ msgid "Succes2"
-#~ msgstr "urk"
