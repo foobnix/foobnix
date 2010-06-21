@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sonata\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-21 22:11+0300\n"
+"POT-Creation-Date: 2010-06-21 22:37+0300\n"
 "PO-Revision-Date: 2007-02-09 11:04+0200\n"
 "Last-Translator: Dogmatist Demon <dogmaton@gmail.com>\n"
 "Language-Team: Ukranian\n"
@@ -37,27 +37,27 @@ msgstr "Название"
 msgid "My play lists"
 msgstr "Мои плей листы"
 
-#: .././foobnix/online/information_controller.py:36
+#: .././foobnix/online/information_controller.py:37
 #, fuzzy
 msgid "Similar to: "
 msgstr "Схожі пісні"
 
-#: .././foobnix/online/information_controller.py:52
+#: .././foobnix/online/information_controller.py:53
 #: .././foobnix/online/online_controller.py:166
 msgid "Choose directory to save song"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:162
+#: .././foobnix/online/information_controller.py:174
 #, fuzzy
 msgid "Similar Artists"
 msgstr "Схожі виконацві"
 
-#: .././foobnix/online/information_controller.py:166
+#: .././foobnix/online/information_controller.py:178
 #, fuzzy
 msgid "Similar Songs"
 msgstr "Схожі пісні"
 
-#: .././foobnix/online/information_controller.py:170
+#: .././foobnix/online/information_controller.py:182
 #, fuzzy
 msgid "Similar Tags"
 msgstr "Схожі теги"

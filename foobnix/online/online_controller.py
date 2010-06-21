@@ -20,7 +20,8 @@ from foobnix.online.search_panel import SearchPanel
 from foobnix.player.player_controller import PlayerController
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
-from foobnix.util.mouse_utils import is_double_click, is_rigth_click
+from foobnix.util.mouse_utils import is_double_click, is_rigth_click,\
+    is_left_click
 from foobnix.online.google_utils import google_search_resutls
 from foobnix.online.dowload_util import download_song, get_file_store_path,\
     dowload_song_thread, save_as_song_thread, save_song_thread
@@ -45,6 +46,9 @@ class OnlineListCntr(GObject):
         self.directoryCntr = directoryCntr
         self.info = InformationController(self.gx_main, self.playerCntr, directoryCntr, self.search_panel)
     
+    def none(self, *a):
+        return False
+    
     def create_notebook_tab(self):
         treeview = gtk.TreeView()
         treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
@@ -56,6 +60,7 @@ class OnlineListCntr(GObject):
         
         treeview.connect("drag-end", self.on_drag_end)
         treeview.connect("button-press-event", self.onPlaySong, model)
+      
 
         treeview.show()
         
@@ -174,23 +179,40 @@ class OnlineListCntr(GObject):
         chooser.destroy()
         
     def show_info(self, songs):
-            result = ""
-            for song in songs:
-                result += song.getArtist() + " - " + song.getTitle() + "\n"
-            md = gtk.MessageDialog(None, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO, 
-                                   gtk.BUTTONS_CLOSE, result)
-            md.run()
-            md.destroy()
+        if not songs:
+            return None
+    
+        result = ""
+        for song in songs:
+            result += song.getArtist() + " - " + song.getTitle() + "\n"
+        md = gtk.MessageDialog(None, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO, 
+                               gtk.BUTTONS_CLOSE, result)
+        md.run()
+        md.destroy()
 
-    def onPlaySong(self, w, e, similar_songs_model):        
+    def changed(self, a,type=None):
+        if self.paths:
+            a.select_range(self.paths[0], self.paths[len(self.paths)-1])
+
+    def onPlaySong(self, w, e, similar_songs_model): 
+        
         self.current_list_model = similar_songs_model
         songs = similar_songs_model.get_all_selected_beans()    
         self.index = similar_songs_model.get_selected_index()
+        
+        #selected rows
+        treeselection = similar_songs_model.widget.get_selection()
+        model, self.paths = treeselection.get_selected_rows()
+        
         #LOG.debug("Seletected index", self.index, songs)
-        if is_double_click(e):
+        if is_left_click(e):
+            self.paths = None
+            LOG.debug("SAVE SELECTED", self.paths)
+        elif is_double_click(e):
+            self.paths = None
             self.on_play_selected(similar_songs_model);
-                
         elif is_rigth_click(e):
+            treeselection.connect('changed', self.changed, True)
             menu = gtk.Menu()
             
             play = gtk.ImageMenuItem(gtk.STOCK_MEDIA_PLAY)
@@ -219,6 +241,7 @@ class OnlineListCntr(GObject):
             
             menu.show_all()
             menu.popup( None, None, None, e.button, e.time)
+            treeselection.select_all()
 
     def playBean(self, playlistBean):
         if playlistBean.type in [CommonBean.TYPE_MUSIC_URL, CommonBean.TYPE_MUSIC_FILE]:

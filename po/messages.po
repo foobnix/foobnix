@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-21 22:11+0300\n"
+"POT-Creation-Date: 2010-06-21 22:37+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,24 +37,24 @@ msgstr ""
 msgid "My play lists"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:36
+#: .././foobnix/online/information_controller.py:37
 msgid "Similar to: "
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:52
+#: .././foobnix/online/information_controller.py:53
 #: .././foobnix/online/online_controller.py:166
 msgid "Choose directory to save song"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:162
+#: .././foobnix/online/information_controller.py:174
 msgid "Similar Artists"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:166
+#: .././foobnix/online/information_controller.py:178
 msgid "Similar Songs"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:170
+#: .././foobnix/online/information_controller.py:182
 msgid "Similar Tags"
 msgstr ""
 
