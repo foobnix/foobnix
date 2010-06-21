@@ -44,7 +44,12 @@ def save_song(songs):
 def save_as_song(songs, path):
     for song in songs:
         update_song_path(song)
-        file = path +  "/" + song.name + ".mp3"
+        
+        if song.name.endswith(".mp3"):
+            file = path +  "/" + song.name
+        else:
+            file = path +  "/" + song.name + ".mp3"
+            
         LOG.debug("Download song start", file)
         if not os.path.exists(file + ".tmp"):
             urllib.urlretrieve(song.path, file + ".tmp")
