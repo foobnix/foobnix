@@ -8,6 +8,17 @@
 ./foobnix/directory/pref_list_model.py
 ./foobnix/directory/virtuallist_controller.py
 ./foobnix/lyric/lyr.py
+./foobnix/online/dowload_util.py
+./foobnix/online/google_search.py
+./foobnix/online/google_utils.py
+./foobnix/online/information_controller.py
+./foobnix/online/online_controller.py
+./foobnix/online/online_model.py
+./foobnix/online/rupleer.py
+./foobnix/online/search_controller.py
+./foobnix/online/search_panel.py
+./foobnix/online/song_resource.py
+./foobnix/online/vk.py
 ./foobnix/playlist/playlist_controller.py
 ./foobnix/playlist/playlist_model.py
 ./foobnix/util/LOG.py

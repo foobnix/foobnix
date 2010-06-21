@@ -1679,7 +1679,8 @@ ivan.ivanenko@gmail.com</property>
     <property name="comments" translatable="yes">Playing all imaginations</property>
     <property name="website">http://code.google.com/p/foobnix/</property>
     <property name="authors">Ivan Ivanenko - Developer
-Vladimir Yashin - Icon</property>
+Vladimir Yashin - Icon Designer
+Roman Novachenko - Code Refactoring, Windows Installer.</property>
     <property name="logo">foobnix.png</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">

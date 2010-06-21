@@ -15,11 +15,13 @@
 /usr/local/lib/python2.6/dist-packages/foobnix/lyric/lyr.py
 /usr/local/lib/python2.6/dist-packages/foobnix/model/__init__.py
 /usr/local/lib/python2.6/dist-packages/foobnix/model/entity.py
+/usr/local/lib/python2.6/dist-packages/foobnix/online/dowload_util.py
 /usr/local/lib/python2.6/dist-packages/foobnix/online/google_search.py
 /usr/local/lib/python2.6/dist-packages/foobnix/online/vk.py
 /usr/local/lib/python2.6/dist-packages/foobnix/online/__init__.py
 /usr/local/lib/python2.6/dist-packages/foobnix/online/search_panel.py
 /usr/local/lib/python2.6/dist-packages/foobnix/online/song_resource.py
+/usr/local/lib/python2.6/dist-packages/foobnix/online/google_utils.py
 /usr/local/lib/python2.6/dist-packages/foobnix/online/rupleer.py
 /usr/local/lib/python2.6/dist-packages/foobnix/online/online_controller.py
 /usr/local/lib/python2.6/dist-packages/foobnix/online/online_model.py
@@ -77,11 +79,13 @@
 /usr/local/lib/python2.6/dist-packages/foobnix/lyric/lyr.pyc
 /usr/local/lib/python2.6/dist-packages/foobnix/model/__init__.pyc
 /usr/local/lib/python2.6/dist-packages/foobnix/model/entity.pyc
+/usr/local/lib/python2.6/dist-packages/foobnix/online/dowload_util.pyc
 /usr/local/lib/python2.6/dist-packages/foobnix/online/google_search.pyc
 /usr/local/lib/python2.6/dist-packages/foobnix/online/vk.pyc
 /usr/local/lib/python2.6/dist-packages/foobnix/online/__init__.pyc
 /usr/local/lib/python2.6/dist-packages/foobnix/online/search_panel.pyc
 /usr/local/lib/python2.6/dist-packages/foobnix/online/song_resource.pyc
+/usr/local/lib/python2.6/dist-packages/foobnix/online/google_utils.pyc
 /usr/local/lib/python2.6/dist-packages/foobnix/online/rupleer.pyc
 /usr/local/lib/python2.6/dist-packages/foobnix/online/online_controller.pyc
 /usr/local/lib/python2.6/dist-packages/foobnix/online/online_model.pyc
@@ -134,4 +138,4 @@
 /usr/local/share/man/man1/foobnix.1
 /usr/share/locale/uk/LC_MESSAGES/foobnix.mo
 /usr/share/locale/ru/LC_MESSAGES/foobnix.mo
-/usr/local/lib/python2.6/dist-packages/foobnix-0.1.5.egg-info
+/usr/local/lib/python2.6/dist-packages/foobnix-0.1.7.egg-info

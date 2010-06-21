@@ -17,6 +17,7 @@ from foobnix.online.song_resource import update_song_path
 from foobnix.util.mouse_utils import is_double_rigth_click, is_double_left_click,\
     is_rigth_click
 from foobnix.online.dowload_util import save_song_thread, save_as_song_thread
+from warnings import catch_warnings
 
 
 class SimilartSongsController(BaseListController):
@@ -33,7 +34,7 @@ class SimilartSongsController(BaseListController):
         def on_drag(self):
             items = self.get_all_items()
             songs = []
-            similar = "Similar to: "+self.parent
+            similar = _("Similar to: ")+self.parent
             song = CommonBean(name=similar, type=CommonBean.TYPE_FOLDER)
             songs.append(song)
             for item in items:                
@@ -82,11 +83,11 @@ class SimilartSongsController(BaseListController):
                 menu.add(play)
                 
                 save = gtk.ImageMenuItem(gtk.STOCK_SAVE)
-                save.connect("activate", lambda *a: save_song_thread(song))            
+                save.connect("activate", lambda *a: save_song_thread([song]))            
                 menu.add(save)
                 
                 save_as = gtk.ImageMenuItem(gtk.STOCK_SAVE_AS)
-                save_as.connect("activate", lambda *a: self.show_save_as_dialog(song))
+                save_as.connect("activate", lambda *a: self.show_save_as_dialog([song]))
                 menu.add(save_as)
                 
                 add = gtk.ImageMenuItem(gtk.STOCK_ADD)
@@ -146,9 +147,20 @@ except:
 
 class InformationController():
     
+
+    def set_no_image_album(self):
+        try:
+            pix = gtk.gdk.pixbuf_new_from_file("/usr/local/share/pixmaps/blank-disc.jpg") #@UndefinedVariable
+            self.album_image.set_from_pixbuf(pix)
+        except:
+            pix = gtk.gdk.pixbuf_new_from_file("foobnix/pixmaps/blank-disc.jpg") #@UndefinedVariable
+            self.album_image.set_from_pixbuf(pix)
+
     def __init__(self,gx_main, playerCntr, directoryCntr, search_panel):
         
         self.album_image = gx_main.get_widget("image_widget")
+        self.set_no_image_album()
+            
         
         """album name"""
         self.album_name = gx_main.get_widget("label_album_name")        
@@ -159,7 +171,7 @@ class InformationController():
         
         """Similar artists"""
         self.similar_artists_cntr = SimilartArtistsController(gx_main, search_panel)
-        self.similar_artists_cntr.set_title(_('Song Artists'))     
+        self.similar_artists_cntr.set_title(_('Similar Artists'))     
         
         """similar songs"""
         self.similar_songs_cntr = SimilartSongsController(gx_main, playerCntr, directoryCntr)              
@@ -200,7 +212,7 @@ class InformationController():
         image_url = self.get_album_image_url(song)        
         if not image_url:
             LOG.info("Image not found, load empty.")
-            self.album_image.set_from_file("share/pixmaps/blank-disk.jpg")
+            self.set_no_image_album()
             return None
     
         image_pix_buf = self.create_pbuf_image_from_url(image_url)
