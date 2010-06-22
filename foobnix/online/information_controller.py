@@ -17,8 +17,6 @@ from foobnix.online.song_resource import update_song_path
 from foobnix.util.mouse_utils import is_double_rigth_click, is_double_left_click,\
     is_rigth_click
 from foobnix.online.dowload_util import save_song_thread, save_as_song_thread
-from warnings import catch_warnings
-
 
 class SimilartSongsController(BaseListController):
     
