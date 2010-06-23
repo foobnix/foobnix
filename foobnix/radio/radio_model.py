@@ -46,7 +46,7 @@ class RadioListModel:
         bean.index = self.current_list_model[position][ self.POS_INDEX]
         return bean
 
-    def getSelectedBean(self):
+    def get_selected_bean(self):
         print self.widget
         selection = self.widget.get_selection()
         print selection
