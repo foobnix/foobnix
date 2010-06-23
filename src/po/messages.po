@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-21 22:37+0300\n"
+"POT-Creation-Date: 2010-06-23 21:38+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,45 +37,45 @@ msgstr ""
 msgid "My play lists"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:37
+#: .././foobnix/online/information_controller.py:35
 msgid "Similar to: "
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:53
-#: .././foobnix/online/online_controller.py:166
+#: .././foobnix/online/information_controller.py:51
+#: .././foobnix/online/online_controller.py:171
 msgid "Choose directory to save song"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:174
+#: .././foobnix/online/information_controller.py:172
 msgid "Similar Artists"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:178
+#: .././foobnix/online/information_controller.py:176
 msgid "Similar Songs"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:182
+#: .././foobnix/online/information_controller.py:180
 msgid "Similar Tags"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:130
+#: .././foobnix/online/online_controller.py:135
 msgid " not found on last.fm, wait for google suggests ..."
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:136
+#: .././foobnix/online/online_controller.py:141
 msgid "Google not found suggests"
 msgstr ""
 
-#: .././foobnix/online/online_model.py:34
+#: .././foobnix/online/online_model.py:32
 #: .././foobnix/playlist/playlist_model.py:24
 msgid "Icon"
 msgstr ""
 
-#: .././foobnix/online/online_model.py:37
+#: .././foobnix/online/online_model.py:35
 msgid "Artist - Title"
 msgstr ""
 
-#: .././foobnix/online/online_model.py:41
+#: .././foobnix/online/online_model.py:39
 msgid "Time"
 msgstr ""
 

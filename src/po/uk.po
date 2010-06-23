@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sonata\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-21 22:37+0300\n"
+"POT-Creation-Date: 2010-06-23 21:38+0300\n"
 "PO-Revision-Date: 2007-02-09 11:04+0200\n"
 "Last-Translator: Dogmatist Demon <dogmaton@gmail.com>\n"
 "Language-Team: Ukranian\n"
@@ -37,49 +37,49 @@ msgstr "Название"
 msgid "My play lists"
 msgstr "Мои плей листы"
 
-#: .././foobnix/online/information_controller.py:37
+#: .././foobnix/online/information_controller.py:35
 #, fuzzy
 msgid "Similar to: "
 msgstr "Схожі пісні"
 
-#: .././foobnix/online/information_controller.py:53
-#: .././foobnix/online/online_controller.py:166
+#: .././foobnix/online/information_controller.py:51
+#: .././foobnix/online/online_controller.py:171
 msgid "Choose directory to save song"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:174
+#: .././foobnix/online/information_controller.py:172
 #, fuzzy
 msgid "Similar Artists"
 msgstr "Схожі виконацві"
 
-#: .././foobnix/online/information_controller.py:178
+#: .././foobnix/online/information_controller.py:176
 #, fuzzy
 msgid "Similar Songs"
 msgstr "Схожі пісні"
 
-#: .././foobnix/online/information_controller.py:182
+#: .././foobnix/online/information_controller.py:180
 #, fuzzy
 msgid "Similar Tags"
 msgstr "Схожі теги"
 
-#: .././foobnix/online/online_controller.py:130
+#: .././foobnix/online/online_controller.py:135
 msgid " not found on last.fm, wait for google suggests ..."
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:136
+#: .././foobnix/online/online_controller.py:141
 msgid "Google not found suggests"
 msgstr ""
 
-#: .././foobnix/online/online_model.py:34
+#: .././foobnix/online/online_model.py:32
 #: .././foobnix/playlist/playlist_model.py:24
 msgid "Icon"
 msgstr "Иконка"
 
-#: .././foobnix/online/online_model.py:37
+#: .././foobnix/online/online_model.py:35
 msgid "Artist - Title"
 msgstr "Артист - Назва пісні"
 
-#: .././foobnix/online/online_model.py:41
+#: .././foobnix/online/online_model.py:39
 #, fuzzy
 msgid "Time"
 msgstr "Название"

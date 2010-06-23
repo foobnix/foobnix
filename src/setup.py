@@ -35,7 +35,7 @@ def rmgeneric(path, __func__):
 
 if not os.path.exists("mo/"):
     os.mkdir("mo/")
-for lang in ('ru', 'uk'):
+for lang in ('ru', 'uk','he'):
     pofile = "po/" + lang + ".po"
     mofile = "mo/" + lang + "/foobnix.mo"
     if not os.path.exists("mo/" + lang + "/"):
@@ -97,6 +97,7 @@ setup(name='foobnix',
                     ('share/pixmaps', glob.glob('foobnix/pixmaps/*')),
                     ('share/man/man1', ['foobnix.1']),
                     ('/usr/share/locale/uk/LC_MESSAGES', ['mo/uk/foobnix.mo']),
+                    ('/usr/share/locale/he/LC_MESSAGES', ['mo/he/foobnix.mo']),
                     ('/usr/share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo'])
                     ]
                     
