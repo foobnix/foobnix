@@ -8,6 +8,8 @@ from foobnix.util.plsparser import getStationPath, getPlsName
 
 from foobnix.model.entity import  CommonBean
 from foobnix.util.mouse_utils import is_double_click
+import urllib2
+from foobnix.util import LOG
 
 
 class RadioListCntr():
@@ -85,7 +87,19 @@ class RadioListCntr():
                      
             #self.repopulate(self.entityBeans, playlistBean.index);
             self.index = playlistBean.index
-            self.playerCntr.playSong(playlistBean)
+            
+            if not playlistBean.path.startswith("http"):
+                return None
+            
+            print playlistBean.path
+            remotefile = urllib2.urlopen(playlistBean.path)
+            print "INFO", remotefile.info()
+            if not remotefile.info():
+                self.playerCntr.playSong(playlistBean)                
+            else:            
+                LOG.error("Can't play html page")
+                return None
+                
             
     def getNextSong(self):
         self.index += 1
