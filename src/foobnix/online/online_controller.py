@@ -82,6 +82,10 @@ class OnlineListCntr(GObject):
                  
         self.online_notebook.prepend_page(self.create_notebook_tab(), event_box)
         self.online_notebook.set_current_page(0)
+        
+        if self.online_notebook.get_n_pages() > FConfiguration().count_of_tabs:
+            self.online_notebook.remove_page(self.online_notebook.get_n_pages()-1)
+        
     
     def on_tab_click(self, w, e):
         if e.type == gtk.gdk._2BUTTON_PRESS and e.button == 3:

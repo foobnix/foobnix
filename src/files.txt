@@ -137,5 +137,6 @@
 /usr/local/share/pixmaps/foobnix.png
 /usr/local/share/man/man1/foobnix.1
 /usr/share/locale/uk/LC_MESSAGES/foobnix.mo
+/usr/share/locale/he/LC_MESSAGES/foobnix.mo
 /usr/share/locale/ru/LC_MESSAGES/foobnix.mo
 /usr/local/lib/python2.6/dist-packages/foobnix-0.1.7.egg-info

@@ -27,7 +27,7 @@ class SimilartSongsController(BaseListController):
             widget.get_parent().set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
             BaseListController.__init__(self, widget)
             
-            self.parent = "Simirat to"
+            self.parent = "Similar to"
             
         def on_drag(self):
             items = self.get_all_items()
