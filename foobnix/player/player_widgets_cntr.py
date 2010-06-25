@@ -31,7 +31,7 @@ class PlayerWidgetsCntl():
         
         self.vpanel = gxMain.get_widget("vpaned1")
         self.hpanel = gxMain.get_widget("hpaned1")
-        self.hpanel.connect("button-press-event", self.on_show_hide_paned);
+        #self.hpanel.connect("button-press-event", self.on_show_hide_paned);
         
         #self.hpanel.set_property("position-set", True)
         
@@ -43,6 +43,11 @@ class PlayerWidgetsCntl():
         
         self.tr_lyric = gxMain.get_widget("translate_lyric_textview")
         self.tr_textbuffer = self.tr_lyric.get_buffer()
+        
+        spinbutton1_tabs = gxMain.get_widget("spinbutton1_tabs")
+        spinbutton1_tabs.set_value(FConfiguration().count_of_tabs)
+        spinbutton1_tabs.connect("value-changed", self.on_chage_tabs)
+                                                                     
         
         
         
@@ -61,6 +66,12 @@ class PlayerWidgetsCntl():
         }
         
         gxMain.signal_autoconnect(navigationEvents)        
+   
+    def on_chage_tabs(self, w):
+        val = w.get_value_as_int()
+        FConfiguration().count_of_tabs = val
+        LOG.debug("Set size of tabs", val)
+        
    
     def on_full_view(self, *args):
         LOG.debug("position", FConfiguration().hpanelPostition)
