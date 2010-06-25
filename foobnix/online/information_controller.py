@@ -123,11 +123,12 @@ class SimilartTagsController(BaseListController):
         widget.get_parent().set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         BaseListController.__init__(self, widget)
     
-    def on_duble_click(self):
-        tags = self.get_selected_item()
-        LOG.debug("Clicked tags:", tags)
-        self.search_panel.set_text(tags)        
-    
+    def on_button_press(self,w,e):
+        if is_double_left_click(e):
+            tags = self.get_selected_item()
+            LOG.debug("Clicked tags:", tags)
+            self.search_panel.set_text(tags)        
+        
         
 API_KEY = FConfiguration().API_KEY
 API_SECRET = FConfiguration().API_SECRET
