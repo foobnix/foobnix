@@ -152,8 +152,12 @@ class InformationController():
             pix = gtk.gdk.pixbuf_new_from_file("/usr/local/share/pixmaps/blank-disc.jpg") #@UndefinedVariable
             self.album_image.set_from_pixbuf(pix)
         except:
-            pix = gtk.gdk.pixbuf_new_from_file("foobnix/pixmaps/blank-disc.jpg") #@UndefinedVariable
-            self.album_image.set_from_pixbuf(pix)
+            try:
+                pix = gtk.gdk.pixbuf_new_from_file("/usr/share/pixmaps/blank-disc.jpg") #@UndefinedVariable
+                self.album_image.set_from_pixbuf(pix)
+            except:    
+                pix = gtk.gdk.pixbuf_new_from_file("foobnix/pixmaps/blank-disc.jpg") #@UndefinedVariable
+                self.album_image.set_from_pixbuf(pix)
 
     def __init__(self,gx_main, playerCntr, directoryCntr, search_panel):
         

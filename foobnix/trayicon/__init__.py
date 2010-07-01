@@ -38,9 +38,12 @@ class TrayIcon(BaseController):
         self.icon = gtk.StatusIcon()
         self.icon.set_tooltip("Foobnix music playerEngine")
         # TODO: move the path to config
-        icon_path = "/usr/local/share/pixmaps/foobnix.png"
+        icon_path =  "/usr/local/share/pixmaps/foobnix.png"
+        icon_path2 = "/usr/share/pixmaps/foobnix.png"
         if os.path.exists(icon_path):
             self.icon.set_from_file(icon_path)
+        elif os.path.exists(icon_path2):
+            self.icon.set_from_file(icon_path2)
         else:
             self.icon.set_from_stock("gtk-media-play")
         
