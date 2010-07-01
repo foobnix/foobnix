@@ -4,7 +4,6 @@ Created on 20.04.2010
 @author: ivan
 '''
 import gtk
-from foobnix.util.mouse_utils import is_double_click
 
 """Base list controller for similar functional on any listview or treeview"""
 class BaseListController():
@@ -28,7 +27,7 @@ class BaseListController():
     def __on_drag_end(self, *args):
         self.on_drag()
     
-    def on_button_press(self,w,e):
+    def on_button_press(self, w, e):
         pass
     
     def on_drag(self):

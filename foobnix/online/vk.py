@@ -15,8 +15,7 @@ from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.model.entity import CommonBean
 
-from xml.sax.saxutils import escape, unescape
-import htmlentitydefs
+from xml.sax.saxutils import unescape
 from setuptools.package_index import htmldecode
 
 
@@ -128,8 +127,8 @@ class Vkontakte:
     def get_page_by_url(self, host_url):
         if not host_url:
             return host_url
-        host_url.replace("#","&")
-        post = host_url[host_url.find("?")+1:]
+        host_url.replace("#", "&")
+        post = host_url[host_url.find("?") + 1:]
         LOG.debug("post", post)
         headers = {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; uk; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.0',
                    'Host' : 'vkontakte.ru',
@@ -260,28 +259,28 @@ class Vkontakte:
         LOG.debug("Search By URL")
         result = self.get_page_by_url(url) 
         try:       
-            result=unicode(result)
+            result = unicode(result)
         except:
-            result=result
+            result = result
             LOG.error("VK connectino error, try other user")
         reg_all = "([^{</}]*)"
         result_url = re.findall(ur"http:([\\/.0-9A-Z]*)", result, re.IGNORECASE)
-        result_artist = re.findall(u"q]="+reg_all+"'", result, re.IGNORECASE | re.UNICODE)
-        result_title = re.findall(u"\"title([0-9]*)\\\\\">"+  reg_all+"", result, re.IGNORECASE | re.UNICODE)
+        result_artist = re.findall(u"q]=" + reg_all + "'", result, re.IGNORECASE | re.UNICODE)
+        result_title = re.findall(u"\"title([0-9]*)\\\\\">" + reg_all + "", result, re.IGNORECASE | re.UNICODE)
         result_time = re.findall("duration\\\\\">" + reg_all, result, re.IGNORECASE | re.UNICODE)
-        result_lyr = re.findall(ur"showLyrics"+reg_all, result, re.IGNORECASE | re.UNICODE)
+        result_lyr = re.findall(ur"showLyrics" + reg_all, result, re.IGNORECASE | re.UNICODE)
         print "lyr:::", result_lyr
         songs = []
         j = 0
         for i, artist in enumerate(result_artist):
-            path = "http:" +result_url[i].replace("\\/", "/")
-            title =  self.to_good_chars(result_title[i][1])
+            path = "http:" + result_url[i].replace("\\/", "/")
+            title = self.to_good_chars(result_title[i][1])
             if not title:
                 if len(result_lyr) > j:
                     title = result_lyr[j]
-                    title = title[title.find(";'>")+3:]
-                    j +=1                
-            artist =  self.to_good_chars(artist)
+                    title = title[title.find(";'>") + 3:]
+                    j += 1                
+            artist = self.to_good_chars(artist)
             song = VKSong(path, artist, title, result_time[i]);            
             songs.append(song)        
         print len(songs)
@@ -324,7 +323,7 @@ class VKSong():
 def get_group_id(str):
     search = "gid="
     index = str.find("gid=")
-    return str[index+len(search):]
+    return str[index + len(search):]
     
     
 #vk = Vkontakte("qax@bigmir.net", "foobnix")

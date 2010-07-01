@@ -6,8 +6,6 @@ Created on Mar 16, 2010
 @author: ivan
 '''
 import os
-import thread
-import urllib
 import gtk
 
 from gobject import GObject #@UnresolvedImport
@@ -20,11 +18,11 @@ from foobnix.online.search_panel import SearchPanel
 from foobnix.player.player_controller import PlayerController
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
-from foobnix.util.mouse_utils import is_double_click, is_rigth_click,\
+from foobnix.util.mouse_utils import is_double_click, is_rigth_click, \
     is_left_click
 from foobnix.online.google_utils import google_search_resutls
-from foobnix.online.dowload_util import download_song, get_file_store_path,\
-    dowload_song_thread, save_as_song_thread, save_song_thread
+from foobnix.online.dowload_util import  get_file_store_path, \
+    save_as_song_thread, save_song_thread
 
 from foobnix.online.song_resource import update_song_path
 
@@ -42,7 +40,7 @@ class OnlineListCntr(GObject):
         
         self.online_notebook = gxMain.get_widget("online_notebook")
     
-    def register_directory_cntr(self, directoryCntr ):
+    def register_directory_cntr(self, directoryCntr):
         self.directoryCntr = directoryCntr
         self.info = InformationController(self.gx_main, self.playerCntr, directoryCntr, self.search_panel)
     
@@ -64,7 +62,7 @@ class OnlineListCntr(GObject):
 
         treeview.show()
         
-        window =gtk.ScrolledWindow()
+        window = gtk.ScrolledWindow()
         window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         window.add_with_viewport(treeview)
         window.show()
@@ -84,7 +82,7 @@ class OnlineListCntr(GObject):
         self.online_notebook.set_current_page(0)
         
         if self.online_notebook.get_n_pages() > FConfiguration().count_of_tabs:
-            self.online_notebook.remove_page(self.online_notebook.get_n_pages()-1)
+            self.online_notebook.remove_page(self.online_notebook.get_n_pages() - 1)
         
     
     def on_tab_click(self, w, e):
@@ -172,7 +170,7 @@ class OnlineListCntr(GObject):
     
     def show_save_as_dialog(self, songs):
         LOG.debug("Show Save As Song dialog", songs)    
-        chooser = gtk.FileChooserDialog(title=_("Choose directory to save song"),action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        chooser = gtk.FileChooserDialog(title=_("Choose directory to save song"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
@@ -189,14 +187,14 @@ class OnlineListCntr(GObject):
         result = ""
         for song in songs:
             result += song.getArtist() + " - " + song.getTitle() + "\n"
-        md = gtk.MessageDialog(None, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO, 
+        md = gtk.MessageDialog(None, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO,
                                gtk.BUTTONS_CLOSE, result)
         md.run()
         md.destroy()
 
-    def changed(self, a,type=None):
+    def changed(self, a, type=None):
         if self.paths:
-            a.select_range(self.paths[0], self.paths[len(self.paths)-1])
+            a.select_range(self.paths[0], self.paths[len(self.paths) - 1])
 
     def onPlaySong(self, w, e, similar_songs_model): 
         
@@ -220,31 +218,31 @@ class OnlineListCntr(GObject):
             menu = gtk.Menu()
             
             play = gtk.ImageMenuItem(gtk.STOCK_MEDIA_PLAY)
-            play.connect("activate", lambda *a: self.on_play_selected(similar_songs_model))
+            play.connect("activate", lambda * a: self.on_play_selected(similar_songs_model))
             menu.add(play)
             
             save = gtk.ImageMenuItem(gtk.STOCK_SAVE)
-            save.connect("activate", lambda *a: save_song_thread(songs))            
+            save.connect("activate", lambda * a: save_song_thread(songs))            
             menu.add(save)
             
             save_as = gtk.ImageMenuItem(gtk.STOCK_SAVE_AS)
-            save_as.connect("activate", lambda *a: self.show_save_as_dialog(songs))
+            save_as.connect("activate", lambda * a: self.show_save_as_dialog(songs))
             menu.add(save_as)
             
             add = gtk.ImageMenuItem(gtk.STOCK_ADD)
-            add.connect("activate", lambda *a: self.add_selected_to_playlist())
+            add.connect("activate", lambda * a: self.add_selected_to_playlist())
             menu.add(add)
 
             remove = gtk.ImageMenuItem(gtk.STOCK_REMOVE)
-            remove.connect("activate", lambda *a: similar_songs_model.remove_selected())
+            remove.connect("activate", lambda * a: similar_songs_model.remove_selected())
             menu.add(remove)
             
             info = gtk.ImageMenuItem(gtk.STOCK_INFO)
-            info.connect("activate", lambda *a: self.show_info(songs))
+            info.connect("activate", lambda * a: self.show_info(songs))
             menu.add(info)
             
             menu.show_all()
-            menu.popup( None, None, None, e.button, e.time)
+            menu.popup(None, None, None, e.button, e.time)
             treeselection.select_all()
 
     def playBean(self, playlistBean):
