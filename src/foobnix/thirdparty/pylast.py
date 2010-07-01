@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # pylast - A Python interface to Last.fm (and other API compatible social networks)
 # Copyright (C) 2008-2009  Amr Hassan
