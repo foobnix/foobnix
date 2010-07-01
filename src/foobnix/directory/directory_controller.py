@@ -17,11 +17,9 @@ from foobnix.util.file_utils import isDirectory, getExtenstion
 import gtk
 from foobnix.directory.pref_list_model import PrefListModel
 import gettext
-from foobnix.util.mouse_utils import is_double_rigth_click, is_double_left_click
+from foobnix.util.mouse_utils import  is_double_left_click
 from mutagen.mp3 import MP3
-from mutagen.flac import FLAC
 from foobnix.util.time_utils import normilize_time
-from mutagen.easyid3 import EasyID3
 
 
 gettext.install("foobnix", unicode=True)
@@ -74,17 +72,17 @@ class DirectoryCntr():
         self.filter.connect("key-release-event", self.onFiltering)
         
         show_local = gxMain.get_widget("show_local_music_button")
-        show_local.connect("clicked",self.onChangeView, self.VIEW_LOCAL_MUSIC)
-        self.active_view=self.VIEW_LOCAL_MUSIC
+        show_local.connect("clicked", self.onChangeView, self.VIEW_LOCAL_MUSIC)
+        self.active_view = self.VIEW_LOCAL_MUSIC
                 
         show_radio = gxMain.get_widget("show_radio_button")
-        show_radio.connect("clicked",self.onChangeView, self.VIEW_RADIO_STATION)
+        show_radio.connect("clicked", self.onChangeView, self.VIEW_RADIO_STATION)
         
         show_play_list = gxMain.get_widget("show_lists_button")
-        show_play_list.connect("clicked",self.onChangeView, self.VIEW_VIRTUAL_LISTS)
+        show_play_list.connect("clicked", self.onChangeView, self.VIEW_VIRTUAL_LISTS)
         
         show_charts_ = gxMain.get_widget("show_charts_button")
-        show_charts_.connect("clicked",self.onChangeView, self.VIEW_CHARTS_LISTS)
+        show_charts_.connect("clicked", self.onChangeView, self.VIEW_CHARTS_LISTS)
         
         self.onChangeView
         

@@ -3,7 +3,7 @@ Created on 01.06.2010
 
 @author: ivan
 '''
-from foobnix.online.google.search import GoogleSearch, SearchError
+from foobnix.online.google.search import GoogleSearch
 import time
 def googleHelp(query):
     print "Not Found, wait for results from google ..."
@@ -11,7 +11,7 @@ def googleHelp(query):
     ask = query.encode('utf-8')
     print ask
 
-    gs = GoogleSearch(ask,True, True)
+    gs = GoogleSearch(ask, True, True)
     print gs
     gs.results_per_page = 10
     results = gs.get_results()

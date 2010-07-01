@@ -7,7 +7,6 @@ import gtk
 
 from foobnix.window.window_controller import WindowController
 from foobnix.player.player_controller import PlayerController
-from foobnix.playlist.playlist_controller import PlaylistCntr
 from foobnix.player.player_widgets_cntr import PlayerWidgetsCntl
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.trayicon import TrayIcon
@@ -31,7 +30,7 @@ class AppController(BaseController):
         #self.playlistCntr = PlaylistCntr(v.playlist, self.player_controller)
         onlineCntr = OnlineListCntr(v.gxMain, self.player_controller)
         
-        self.playlistCntr  = onlineCntr 
+        self.playlistCntr = onlineCntr 
         
         self.virtualListCntr = VirturalLIstCntr()
         
@@ -56,13 +55,13 @@ class AppController(BaseController):
         
         self.tray_icon = TrayIcon(v.gxTrayIcon)
         self.tray_icon.connect('toggle_window_visibility', self.main_window_controller.toggle_visibility)
-        self.tray_icon.connect('exit',  self.exit)
-        self.tray_icon.connect('play',  self.player_controller.play)
+        self.tray_icon.connect('exit', self.exit)
+        self.tray_icon.connect('play', self.player_controller.play)
         self.tray_icon.connect('pause', self.player_controller.pause)
-        self.tray_icon.connect('prev',  self.player_controller.prev)
-        self.tray_icon.connect('next',  self.player_controller.next)
-        self.tray_icon.connect('volume_up',    self.player_controller.volume_up)
-        self.tray_icon.connect('volume_down',  self.player_controller.volume_down)
+        self.tray_icon.connect('prev', self.player_controller.prev)
+        self.tray_icon.connect('next', self.player_controller.next)
+        self.tray_icon.connect('volume_up', self.player_controller.volume_up)
+        self.tray_icon.connect('volume_down', self.player_controller.volume_down)
         
         self.player_controller.connect('song_playback_started', self.tray_icon.on_song_started)
         self.player_controller.connect('song_playback_started', self.main_window_controller.on_song_started)

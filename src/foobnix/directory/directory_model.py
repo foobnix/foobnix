@@ -6,7 +6,6 @@ Created on Mar 11, 2010
 import gtk
 import gobject
 from foobnix.model.entity import CommonBean
-from mutagen.mp3 import MP3
 
 class DirectoryModel():
     POS_NAME = 0
@@ -19,7 +18,7 @@ class DirectoryModel():
     
     def __init__(self, widget):
         self.widget = widget
-        self.current_list_model = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int,str)
+        self.current_list_model = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int, str)
         renderer = gtk.CellRendererText()
         #renderer.connect('edited', self.editRow)
         

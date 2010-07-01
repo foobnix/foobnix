@@ -11,10 +11,8 @@ import thread
 from foobnix.model.entity import CommonBean
 from foobnix.base.base_list_controller import BaseListController
 from foobnix.util.configuration import FConfiguration
-import datetime
-import time
 from foobnix.online.song_resource import update_song_path
-from foobnix.util.mouse_utils import is_double_rigth_click, is_double_left_click,\
+from foobnix.util.mouse_utils import  is_double_left_click, \
     is_rigth_click
 from foobnix.online.dowload_util import save_song_thread, save_as_song_thread
 
@@ -32,7 +30,7 @@ class SimilartSongsController(BaseListController):
         def on_drag(self):
             items = self.get_all_items()
             songs = []
-            similar = _("Similar to: ")+self.parent
+            similar = _("Similar to: ") + self.parent
             song = CommonBean(name=similar, type=CommonBean.TYPE_FOLDER)
             songs.append(song)
             for item in items:                
@@ -48,7 +46,7 @@ class SimilartSongsController(BaseListController):
         
         def show_save_as_dialog(self, song):
             LOG.debug("Show Save As Song dialog")    
-            chooser = gtk.FileChooserDialog(title=_("Choose directory to save song"),action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+            chooser = gtk.FileChooserDialog(title=_("Choose directory to save song"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
             chooser.set_default_response(gtk.RESPONSE_OK)
             response = chooser.run()
             if response == gtk.RESPONSE_OK:
@@ -59,13 +57,13 @@ class SimilartSongsController(BaseListController):
             chooser.destroy()
             
         def show_info(self, song):
-            md = gtk.MessageDialog(None, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO, 
+            md = gtk.MessageDialog(None, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO,
                                    gtk.BUTTONS_CLOSE, song.getArtist() + " - " + song.getTitle())
             md.run()
             md.destroy()
             
             
-        def on_button_press(self,w,e):
+        def on_button_press(self, w, e):
             if is_double_left_click(e):
                 self.play_selected_song()
                     
@@ -77,31 +75,31 @@ class SimilartSongsController(BaseListController):
                 menu = gtk.Menu()
                 
                 play = gtk.ImageMenuItem(gtk.STOCK_MEDIA_PLAY)
-                play.connect("activate", lambda *a: self.play_selected_song())
+                play.connect("activate", lambda * a: self.play_selected_song())
                 menu.add(play)
                 
                 save = gtk.ImageMenuItem(gtk.STOCK_SAVE)
-                save.connect("activate", lambda *a: save_song_thread([song]))            
+                save.connect("activate", lambda * a: save_song_thread([song]))            
                 menu.add(save)
                 
                 save_as = gtk.ImageMenuItem(gtk.STOCK_SAVE_AS)
-                save_as.connect("activate", lambda *a: self.show_save_as_dialog([song]))
+                save_as.connect("activate", lambda * a: self.show_save_as_dialog([song]))
                 menu.add(save_as)
                 
                 add = gtk.ImageMenuItem(gtk.STOCK_ADD)
-                add.connect("activate", lambda *a: self.on_drag())
+                add.connect("activate", lambda * a: self.on_drag())
                 menu.add(add)
     
                 remove = gtk.ImageMenuItem(gtk.STOCK_REMOVE)
-                remove.connect("activate", lambda *a: self.remove_selected())
+                remove.connect("activate", lambda * a: self.remove_selected())
                 menu.add(remove)
                 
                 info = gtk.ImageMenuItem(gtk.STOCK_INFO)
-                info.connect("activate", lambda *a: self.show_info(song))
+                info.connect("activate", lambda * a: self.show_info(song))
                 menu.add(info)
                 
                 menu.show_all()
-                menu.popup( None, None, None, e.button, e.time)    
+                menu.popup(None, None, None, e.button, e.time)    
 
 class SimilartArtistsController(BaseListController):
     def __init__(self, gx_main, search_panel):
@@ -110,7 +108,7 @@ class SimilartArtistsController(BaseListController):
         widget.get_parent().set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         BaseListController.__init__(self, widget)
     
-    def on_button_press(self,w,e):
+    def on_button_press(self, w, e):
         if is_double_left_click(e):
             artist = self.get_selected_item()
             LOG.debug("Clicked Similar Artist:", artist)
@@ -123,7 +121,7 @@ class SimilartTagsController(BaseListController):
         widget.get_parent().set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         BaseListController.__init__(self, widget)
     
-    def on_button_press(self,w,e):
+    def on_button_press(self, w, e):
         if is_double_left_click(e):
             tags = self.get_selected_item()
             LOG.debug("Clicked tags:", tags)
@@ -159,7 +157,7 @@ class InformationController():
                 pix = gtk.gdk.pixbuf_new_from_file("foobnix/pixmaps/blank-disc.jpg") #@UndefinedVariable
                 self.album_image.set_from_pixbuf(pix)
 
-    def __init__(self,gx_main, playerCntr, directoryCntr, search_panel):
+    def __init__(self, gx_main, playerCntr, directoryCntr, search_panel):
         
         self.album_image = gx_main.get_widget("image_widget")
         self.set_no_image_album()
@@ -181,7 +179,7 @@ class InformationController():
         self.similar_songs_cntr.set_title(_("Similar Songs"))   
         
         """song tags"""       
-        self.song_tags_cntr = SimilartTagsController(gx_main,search_panel)
+        self.song_tags_cntr = SimilartTagsController(gx_main, search_panel)
         self.song_tags_cntr.set_title(_("Similar Tags"))
         
         """link buttons"""
@@ -227,17 +225,17 @@ class InformationController():
     def get_album_image_url(self, song):
         
         """set urls"""
-        self.lastfm_url.set_uri("http://www.lastfm.ru/search?q="+song.getArtist()+"&type=artist")
-        self.wiki_linkbutton.set_uri("http://en.wikipedia.org/w/index.php?search="+song.getArtist())
-        self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query="+song.getArtist())
+        self.lastfm_url.set_uri("http://www.lastfm.ru/search?q=" + song.getArtist() + "&type=artist")
+        self.wiki_linkbutton.set_uri("http://en.wikipedia.org/w/index.php?search=" + song.getArtist())
+        self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query=" + song.getArtist())
 
         
-        self.current_song_label.set_markup("<b>" + song.getTitle()+"</b>")
+        self.current_song_label.set_markup("<b>" + song.getTitle() + "</b>")
         
         
         track = self.last_fm_network.get_track(song.getArtist(), song.getTitle())
         
-        self.similar_songs_cntr.parent = song.getArtist() +" - "+ song.getTitle()
+        self.similar_songs_cntr.parent = song.getArtist() + " - " + song.getTitle()
         
         print track
         if not track:
@@ -283,7 +281,7 @@ class InformationController():
         
         album = track.get_album()
         if album:           
-            self.album_name.set_markup("<b>" +song.getArtist() + " - " +  album.get_name()+" ("+album.get_release_year()+")</b>")
+            self.album_name.set_markup("<b>" + song.getArtist() + " - " + album.get_name() + " (" + album.get_release_year() + ")</b>")
         
                 
         #album = self.last_fm_network.get_album(song.getArtist(), song.getTitle())
