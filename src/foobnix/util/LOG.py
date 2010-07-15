@@ -16,5 +16,5 @@ def warn(*args):
     print "WARN:", args    
 
 def error(*args):    
-    print >> sys.stderr, args
+    print >> sys.stderr, "ERROR", args
     
