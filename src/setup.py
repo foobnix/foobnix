@@ -5,6 +5,7 @@ import os, glob, shutil
 from distutils.core import setup
 from foobnix.util.configuration import VERSION
 
+FOOBNIX_DIR = (os.getenv("HOME") or os.getenv('USERPROFILE')) + "/foobnix"
 
 def capture(cmd):
     return os.popen(cmd).read().strip()
@@ -35,7 +36,7 @@ def rmgeneric(path, __func__):
 
 if not os.path.exists("mo/"):
     os.mkdir("mo/")
-for lang in ('ru', 'uk','he'):
+for lang in ('ru', 'uk', 'he'):
     pofile = "po/" + lang + ".po"
     mofile = "mo/" + lang + "/foobnix.mo"
     if not os.path.exists("mo/" + lang + "/"):

@@ -5,10 +5,7 @@ Created on Mar 10, 2010
 @author: ivan
 '''
 import pygst
-import fcntl
-import sys
 from foobnix.util import LOG
-import thread
 pygst.require('0.10')
 
 import pygtk
@@ -24,8 +21,8 @@ import __main__, os
 def is_only_instance():
     # Determine if there are more than the current instance of the application
     # running at the current time.
-    return os.system("(( $(ps -ef | grep python | grep '[" +
-                     __main__.__file__[0] + "]" + __main__.__file__[1:] +
+    return os.system("(( $(ps -ef | grep python | grep '[" + 
+                     __main__.__file__[0] + "]" + __main__.__file__[1:] + 
                      "' | wc -l) > 1 ))") != 0
 
 if __name__ == "__main__":
