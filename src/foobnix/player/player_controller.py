@@ -139,7 +139,9 @@ class PlayerController(BaseController):
     def playState(self, *args):
         self.player.set_state(gst.STATE_PLAYING)
     
-    def stopState(self):        
+    def stopState(self):
+        if not self.player:
+            self.player = self.playerLocal()    
         self.setSeek(0.0)
         self.widgets.seekBar.set_fraction(0.0)
         self.widgets.seekBar.set_text("00:00 / 00:00")
@@ -304,8 +306,8 @@ class PlayerController(BaseController):
             print "MESSAGE_ERROR"
             err, debug = message.parse_error()
             print "Error: %s" % err, debug
-            self.stopState()
-            self.playerThreadId = None            
+            self.playerThreadId = None
+            self.player = None            
             """Try to play next"""
                               
             
