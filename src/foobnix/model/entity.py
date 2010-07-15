@@ -46,14 +46,14 @@ class CommonBean():
         s = self.name.split(" - ")
         if len(s) > 1:
             artist = self.name.split(" - ")[0]
-            return (""+artist).strip()
-        return None
+            return ("" + artist).strip()
+        return ""
     
     def getTitle(self):
         s = self.name.split(" - ")
         if len(s) > 1:
             title = self.name.split(" - ")[1]
-            return (""+title).strip()                    
+            return ("" + title).strip()                    
         else:
             return self.name
     

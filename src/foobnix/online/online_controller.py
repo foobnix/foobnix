@@ -259,10 +259,10 @@ class OnlineListCntr(GObject):
                     return self.playBean(self.getNextSong())
                 return
 
-            self.playerCntr.set_mode(PlayerController.MODE_ONLINE_LIST)
-            self.playerCntr.playSong(playlistBean)
-                     
-            self.current_list_model.repopulate(self.index)
+        self.playerCntr.set_mode(PlayerController.MODE_ONLINE_LIST)
+        self.playerCntr.playSong(playlistBean)
+                 
+        self.current_list_model.repopulate(self.index)
 
 
     def setSongResource(self, playlistBean, update_song_info=True):
