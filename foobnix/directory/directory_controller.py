@@ -20,6 +20,7 @@ import gettext
 from foobnix.util.mouse_utils import  is_double_left_click
 from mutagen.mp3 import MP3
 from foobnix.util.time_utils import normilize_time
+from foobnix.radio.radios import get_radio_FPLs
 
 
 gettext.install("foobnix", unicode=True)
@@ -185,10 +186,14 @@ class DirectoryCntr():
                 
         elif active_view == self.VIEW_RADIO_STATION:
             self.clear()
-            beans = self.radioListCntr.getState()[0]
-            print beans
-            for bean in beans:
-                self.current_list_model.append(None, CommonBean(bean.name, bean.path, "normal", True, CommonBean.TYPE_MUSIC_URL))
+            files = get_radio_FPLs()
+            for fpl in files:
+                parent = self.current_list_model.append(None, CommonBean(name=fpl.name, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER))
+                for radio, urls in fpl.urls_dict.iteritems():
+                    self.current_list_model.append(parent, CommonBean(name=radio, path=urls[0], font="normal", is_visible=True, type=CommonBean.TYPE_RADIO_URL, parent=fpl.name))
+                    
+                
+                
         elif active_view == self.VIEW_VIRTUAL_LISTS:                      
             items = self.getPrefListBeans(self.DEFAULT_LIST)
             self.display_virtual(items)
