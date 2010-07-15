@@ -309,7 +309,7 @@ class PlayerController(BaseController):
             self.playerThreadId = None
             self.player.set_state(gst.STATE_NULL)
             #self.player = None    
-            time.sleep(6) 
+            time.sleep(4) 
             self.player.set_state(gst.STATE_NULL)
             if self.song.type == CommonBean.TYPE_RADIO_URL:
                 self.playSong(self.song)       
