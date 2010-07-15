@@ -4,7 +4,22 @@ Created on Mar 3, 2010
 @author: ivan
 '''
 import urllib2
+from foobnix.util import LOG
 
+
+"Get content of the url"
+def get_content(url):
+    if not url:
+        return None
+
+    try:       
+        connect = urllib2.urlopen(url)
+        data = connect.read()
+        return data
+    except:
+        LOG.error("INCORRECT URL ERROR .... ", url)
+        return None
+    
             
 def getStationPath(url):
     print "get station"

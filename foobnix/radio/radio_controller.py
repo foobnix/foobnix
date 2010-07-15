@@ -4,7 +4,7 @@ Created on Mar 16, 2010
 @author: ivan
 '''
 from foobnix.radio.radio_model import RadioListModel
-from foobnix.util.plsparser import getStationPath, getPlsName
+from foobnix.util.plsparser import getStationPath, getPlsName, get_content
 
 from foobnix.model.entity import  CommonBean
 from foobnix.util.mouse_utils import is_double_click
@@ -44,6 +44,15 @@ class RadioListCntr():
                     urlStation = getUrl         
                     nameDef = getPlsName(nameDef) + " [" + urlStation + " ]"
                     print nameDef
+            elif urlStation.endswith(".m3u"):
+                content = get_content(urlStation)
+                for line in content.rsplit():
+                    if not line.startswith("#"):
+                        urlStation = line         
+                        nameDef = line
+                        break
+                     
+            
             
             entity = CommonBean(name=nameDef, path=urlStation, type=CommonBean.TYPE_RADIO_URL, index=self.index + 1);
             self.entityBeans.append(entity)
@@ -93,8 +102,8 @@ class RadioListCntr():
             
             print playlistBean.path
             remotefile = urllib2.urlopen(playlistBean.path)
-            print "INFO", remotefile.info()
-            if not remotefile.info():
+            print "INFO", remotefile
+            if not remotefile.info() or remotefile.info()["Content-Type"].find("text") == -1:
                 self.playerCntr.playSong(playlistBean)                
             else:            
                 LOG.error("Can't play html page")
