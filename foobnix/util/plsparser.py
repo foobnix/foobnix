@@ -46,6 +46,23 @@ def getStations(data, urls):
                 print url
                 urls.append(url)
                 return urls    
+
+def get_radio_source(url):
+    if url:          
+        if url.endswith(".pls"):                
+            source_url = getStationPath(url)
+            if source_url :                
+                return  source_url                   
+                
+        elif url.endswith(".m3u"):
+            content = get_content(url)
+            for line in content.rsplit():
+                if not line.startswith("#"):
+                    return line
+    return url
+             
+                        
+                     
                 
 
 def getPlsName(_file_url):

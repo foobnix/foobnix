@@ -18,6 +18,7 @@ from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE, TYPE_PYOBJECT
 from foobnix.thirdparty import pylast
 from foobnix.util.configuration import FConfiguration
 from foobnix.online.dowload_util import dowload_song_thread
+from foobnix.util.plsparser import get_radio_source
 
 
 username = FConfiguration().lfm_login
@@ -73,6 +74,7 @@ class PlayerController(BaseController):
 
     count = 0
     def playSong(self, song):
+        self.song = song
         print "play song"
                 
         self.stopState()
@@ -113,8 +115,9 @@ class PlayerController(BaseController):
             self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
         elif song.type == CommonBean.TYPE_RADIO_URL:
             print "URL PLAYING", song.path
-            self.player = self.playerHTTP()                        
-            self.player.set_property("uri", song.path)
+            self.player = self.playerHTTP()    
+            path = get_radio_source(song.path)                    
+            self.player.set_property("uri", path)
             self.widgets.seekBar.set_text("Url Playing...")
         elif song.type == CommonBean.TYPE_MUSIC_URL:
             print "URL PLAYING", song.path
@@ -226,7 +229,7 @@ class PlayerController(BaseController):
                 print "Try"
                 time.sleep(0.2)
                 dur_int = self.player.query_duration(self.time_format, None)[0]
-                duration_sec= dur_int / 1000000000
+                duration_sec = dur_int / 1000000000
                 dur_str = convert_ns(dur_int)
                 gtk.gdk.threads_enter() #@UndefinedVariable
                 
@@ -273,15 +276,15 @@ class PlayerController(BaseController):
                 flag = False                
                 dowload_song_thread(song)
             
-            if  self._get_state()!= gst.STATE_PAUSED:
-                sec+=1            
+            if  self._get_state() != gst.STATE_PAUSED:
+                sec += 1            
                 #LOG.debug("Song duration", sec, timePersent);    
                             
-            if not is_scrobled and (sec >= duration_sec / 2 or (sec>=45 and timePersent>=0.9)):
+            if not is_scrobled and (sec >= duration_sec / 2 or (sec >= 45 and timePersent >= 0.9)):
                 is_scrobled = True   
                 if song.getArtist() and song.getTitle():             
-                    scrobler.scrobble(song.getArtist(),song.getTitle(), start_time, "P", "",duration_sec)
-                    LOG.debug("Song Successfully scrobbled", song.getArtist(),  song.getTitle())
+                    scrobler.scrobble(song.getArtist(), song.getTitle(), start_time, "P", "", duration_sec)
+                    LOG.debug("Song Successfully scrobbled", song.getArtist(), song.getTitle())
                 
     
     
@@ -291,7 +294,8 @@ class PlayerController(BaseController):
             
             print "MESSAGE_EOS"                
             self.stopState()
-            self.playerThreadId = None            
+            self.playerThreadId = None
+                        
             
             self.next()
                             
@@ -301,7 +305,9 @@ class PlayerController(BaseController):
             err, debug = message.parse_error()
             print "Error: %s" % err, debug
             self.stopState()
-            self.playerThreadId = None
+            self.playerThreadId = None            
+            """Try to play next"""
+                              
             
             
     

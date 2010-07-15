@@ -210,7 +210,12 @@ class InformationController():
     def show_song_info_tread(self, song):
         self.song = song
         LOG.info("Get all possible information about song")
-        image_url = self.get_album_image_url(song)        
+        try:
+            image_url = self.get_album_image_url(song)            
+        except:
+            LOG.error("Image url dowlaod error")
+            image_url = None
+            
         if not image_url:
             LOG.info("Image not found, load empty.")
             self.set_no_image_album()
@@ -225,6 +230,7 @@ class InformationController():
     def get_album_image_url(self, song):
         
         """set urls"""
+        """TODO TypeError: cannot concatenate 'str' and 'NoneType' objects """
         self.lastfm_url.set_uri("http://www.lastfm.ru/search?q=" + song.getArtist() + "&type=artist")
         self.wiki_linkbutton.set_uri("http://en.wikipedia.org/w/index.php?search=" + song.getArtist())
         self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query=" + song.getArtist())
