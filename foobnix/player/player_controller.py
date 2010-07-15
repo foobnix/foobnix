@@ -307,7 +307,12 @@ class PlayerController(BaseController):
             err, debug = message.parse_error()
             print "Error: %s" % err, debug
             self.playerThreadId = None
-            self.player = None            
+            self.player.set_state(gst.STATE_NULL)
+            #self.player = None    
+            time.sleep(2) 
+            self.player.set_state(gst.STATE_NULL)
+            if self.song.type == CommonBean.TYPE_RADIO_URL:
+                self.playSong(self.song)       
             """Try to play next"""
                               
             
