@@ -134,7 +134,7 @@ class DirectoryModel():
                 if name.find(string) >= 0:
                     print "FIND :", name, string
                     line[self.POS_VISIBLE] = True                    
-                else:                   
+                else:
                     line[self.POS_VISIBLE] = False
         else:
             for line in self.current_list_model:                
