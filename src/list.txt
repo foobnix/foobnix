@@ -1,0 +1,111 @@
+generating mo/ru/foobnix.mo
+generating mo/uk/foobnix.mo
+generating mo/he/foobnix.mo
+running install
+running build
+running build_py
+creating build
+creating build/lib
+creating build/lib/foobnix
+copying foobnix/__init__.py -> build/lib/foobnix
+copying foobnix/version.py -> build/lib/foobnix
+creating build/lib/foobnix/application
+copying foobnix/application/__init__.py -> build/lib/foobnix/application
+copying foobnix/application/app_controller.py -> build/lib/foobnix/application
+copying foobnix/application/app_view.py -> build/lib/foobnix/application
+copying foobnix/application/app_configuration_controller.py -> build/lib/foobnix/application
+creating build/lib/foobnix/base
+copying foobnix/base/__init__.py -> build/lib/foobnix/base
+copying foobnix/base/base_list_controller.py -> build/lib/foobnix/base
+creating build/lib/foobnix/directory
+copying foobnix/directory/__init__.py -> build/lib/foobnix/directory
+copying foobnix/directory/virtuallist_controller.py -> build/lib/foobnix/directory
+copying foobnix/directory/pref_list_model.py -> build/lib/foobnix/directory
+copying foobnix/directory/directory_model.py -> build/lib/foobnix/directory
+copying foobnix/directory/directory_controller.py -> build/lib/foobnix/directory
+package init file 'foobnix/glade/__init__.py' not found (or not a regular file)
+creating build/lib/foobnix/lyric
+copying foobnix/lyric/lyr.py -> build/lib/foobnix/lyric
+copying foobnix/lyric/__init__.py -> build/lib/foobnix/lyric
+creating build/lib/foobnix/model
+copying foobnix/model/__init__.py -> build/lib/foobnix/model
+copying foobnix/model/entity.py -> build/lib/foobnix/model
+creating build/lib/foobnix/online
+copying foobnix/online/__init__.py -> build/lib/foobnix/online
+copying foobnix/online/dowload_util.py -> build/lib/foobnix/online
+copying foobnix/online/vk.py -> build/lib/foobnix/online
+copying foobnix/online/search_panel.py -> build/lib/foobnix/online
+copying foobnix/online/song_resource.py -> build/lib/foobnix/online
+copying foobnix/online/information_controller.py -> build/lib/foobnix/online
+copying foobnix/online/rupleer.py -> build/lib/foobnix/online
+copying foobnix/online/google_utils.py -> build/lib/foobnix/online
+copying foobnix/online/google_search.py -> build/lib/foobnix/online
+copying foobnix/online/online_model.py -> build/lib/foobnix/online
+copying foobnix/online/online_controller.py -> build/lib/foobnix/online
+creating build/lib/foobnix/online/google
+copying foobnix/online/google/translate.py -> build/lib/foobnix/online/google
+copying foobnix/online/google/__init__.py -> build/lib/foobnix/online/google
+copying foobnix/online/google/search.py -> build/lib/foobnix/online/google
+copying foobnix/online/google/BeautifulSoup.py -> build/lib/foobnix/online/google
+copying foobnix/online/google/browser.py -> build/lib/foobnix/online/google
+copying foobnix/online/google/sponsoredlinks.py -> build/lib/foobnix/online/google
+copying foobnix/online/google/googlesets.py -> build/lib/foobnix/online/google
+creating build/lib/foobnix/online/integration
+copying foobnix/online/integration/__init__.py -> build/lib/foobnix/online/integration
+copying foobnix/online/integration/lastfm.py -> build/lib/foobnix/online/integration
+creating build/lib/foobnix/player
+copying foobnix/player/__init__.py -> build/lib/foobnix/player
+copying foobnix/player/player_controller.py -> build/lib/foobnix/player
+copying foobnix/player/player_widgets_cntr.py -> build/lib/foobnix/player
+creating build/lib/foobnix/playlist
+copying foobnix/playlist/__init__.py -> build/lib/foobnix/playlist
+copying foobnix/playlist/playlist_model.py -> build/lib/foobnix/playlist
+copying foobnix/playlist/playlist_controller.py -> build/lib/foobnix/playlist
+creating build/lib/foobnix/preferences
+copying foobnix/preferences/__init__.py -> build/lib/foobnix/preferences
+copying foobnix/preferences/pref_controller.py -> build/lib/foobnix/preferences
+creating build/lib/foobnix/radio
+copying foobnix/radio/radio_controller.py -> build/lib/foobnix/radio
+copying foobnix/radio/__init__.py -> build/lib/foobnix/radio
+copying foobnix/radio/radio_model.py -> build/lib/foobnix/radio
+copying foobnix/radio/radios.py -> build/lib/foobnix/radio
+creating build/lib/foobnix/thirdparty
+copying foobnix/thirdparty/__init__.py -> build/lib/foobnix/thirdparty
+copying foobnix/thirdparty/pylast.py -> build/lib/foobnix/thirdparty
+creating build/lib/foobnix/trayicon
+copying foobnix/trayicon/__init__.py -> build/lib/foobnix/trayicon
+creating build/lib/foobnix/util
+copying foobnix/util/LOG.py -> build/lib/foobnix/util
+copying foobnix/util/__init__.py -> build/lib/foobnix/util
+copying foobnix/util/file_utils.py -> build/lib/foobnix/util
+copying foobnix/util/plsparser.py -> build/lib/foobnix/util
+copying foobnix/util/time_utils.py -> build/lib/foobnix/util
+copying foobnix/util/mouse_utils.py -> build/lib/foobnix/util
+copying foobnix/util/configuration.py -> build/lib/foobnix/util
+creating build/lib/foobnix/window
+copying foobnix/window/window_controller.py -> build/lib/foobnix/window
+copying foobnix/window/__init__.py -> build/lib/foobnix/window
+creating build/lib/foobnix/glade
+copying foobnix/glade/foobnix.glade -> build/lib/foobnix/glade
+copying foobnix/glade/preferences.glade -> build/lib/foobnix/glade
+copying foobnix/glade/foobnix.png -> build/lib/foobnix/glade
+package init file 'foobnix/glade/__init__.py' not found (or not a regular file)
+running build_scripts
+creating build/scripts-2.5
+copying and adjusting foobnix/foobnix -> build/scripts-2.5
+changing mode of build/scripts-2.5/foobnix from 644 to 755
+running install_lib
+copying build/lib/foobnix/version.py -> /usr/lib/python2.5/site-packages/foobnix
+byte-compiling /usr/lib/python2.5/site-packages/foobnix/version.py to version.pyc
+running install_scripts
+copying build/scripts-2.5/foobnix -> /usr/bin
+changing mode of /usr/bin/foobnix to 755
+running install_data
+copying mo/uk/foobnix.mo -> /usr/share/locale/uk/LC_MESSAGES
+copying mo/he/foobnix.mo -> /usr/share/locale/he/LC_MESSAGES
+copying mo/ru/foobnix.mo -> /usr/share/locale/ru/LC_MESSAGES
+running install_egg_info
+Removing /usr/lib/python2.5/site-packages/foobnix-0.1.7_3.egg-info
+Writing /usr/lib/python2.5/site-packages/foobnix-0.1.7_3.egg-info
+Current user id 1000 1000
+Cleaning up...

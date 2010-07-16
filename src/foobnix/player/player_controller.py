@@ -58,6 +58,7 @@ class PlayerController(BaseController):
         # TODO: rename playState() to play() and remove this hack
         self.play = self.playState
         self.pause = self.pauseState
+        self.erros = 0
         
 
     def set_mode(self, mode):
@@ -129,8 +130,10 @@ class PlayerController(BaseController):
             return
                 
         self.playState()
+        
         self.setVolume(self.volume)
         self.emit('song_playback_started', song)
+        
                 
     
     def pauseState(self, *args):
@@ -245,7 +248,6 @@ class PlayerController(BaseController):
                 
         time.sleep(0.5)
         start_time = str(int(time.time()));
-        
                     
         while play_thread_id == self.playerThreadId:
             pos_int = 0
@@ -269,6 +271,7 @@ class PlayerController(BaseController):
                 
                 """report now playing song"""
                 if song.getArtist() and song.getTitle():
+                    self.erros = 0
                     scrobler.report_now_playing(song.getArtist(), song.getTitle())                
                 
             time.sleep(1)            
@@ -288,7 +291,6 @@ class PlayerController(BaseController):
                     scrobler.scrobble(song.getArtist(), song.getTitle(), start_time, "P", "", duration_sec)
                     LOG.debug("Song Successfully scrobbled", song.getArtist(), song.getTitle())
                 
-    
     
     def onBusMessage(self, bus, message):
         type = message.type
@@ -311,7 +313,9 @@ class PlayerController(BaseController):
             #self.player = None    
             time.sleep(4) 
             self.player.set_state(gst.STATE_NULL)
-            if self.song.type == CommonBean.TYPE_RADIO_URL:
+            if self.song.type == CommonBean.TYPE_RADIO_URL and self.erros < 3:
+                LOG.error("Error Num", self.erros)
+                self.erros =self.erros+1;                
                 self.playSong(self.song)       
             """Try to play next"""
                               
