@@ -4,6 +4,7 @@ import os, glob, shutil
 
 from distutils.core import setup
 from foobnix.util.configuration import VERSION
+import pwd
 
 FOOBNIX_DIR = (os.getenv("HOME") or os.getenv('USERPROFILE')) + "/.foobnix"
 FOOBNIX_DIR_RADIO = FOOBNIX_DIR + "/radio"
@@ -109,6 +110,21 @@ setup(name='foobnix',
                     ]
                     
         )
+
+
+"""Change permissions for foobnix folder"""
+user_info = pwd.getpwnam(os.getlogin())
+uid =  user_info.pw_uid
+gid =  user_info.pw_gid    
+print "Current user id", uid, gid
+
+os.chown(FOOBNIX_DIR, uid, gid)
+os.chown(FOOBNIX_DIR_RADIO, uid, gid)
+
+for item in os.listdir(FOOBNIX_DIR_RADIO):
+        path = os.path.join(FOOBNIX_DIR_RADIO, item)
+        os.chown(path, uid, gid)
+
 
 # Cleanup (remove /build, /mo, and *.pyc files:
 
