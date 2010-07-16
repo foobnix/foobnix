@@ -5,7 +5,7 @@ python setup.py install --record files.txt
 cat files.txt | sudo xargs rm -rf
 
 VERSION=0.1.8
-RELEASE=0
+RELEASE=
 
 checkinstall \
 -y \
