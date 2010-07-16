@@ -20,7 +20,7 @@ import gettext
 from foobnix.util.mouse_utils import  is_double_left_click
 from mutagen.mp3 import MP3
 from foobnix.util.time_utils import normilize_time
-from foobnix.radio.radios import get_radio_FPLs
+from foobnix.radio.radios import  RadioFolder
 
 
 gettext.install("foobnix", unicode=True)
@@ -90,7 +90,7 @@ class DirectoryCntr():
         
         self.saved_model = None
         
-        
+        self.radio_folder = RadioFolder()
         
     
     def getState(self):        
@@ -186,7 +186,7 @@ class DirectoryCntr():
                 
         elif active_view == self.VIEW_RADIO_STATION:
             self.clear()
-            files = get_radio_FPLs()
+            files = self.radio_folder.get_radio_FPLs()
             for fpl in files:
                 parent = self.current_list_model.append(None, CommonBean(name=fpl.name, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER))
                 for radio, urls in fpl.urls_dict.iteritems():

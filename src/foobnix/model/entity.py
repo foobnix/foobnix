@@ -40,7 +40,7 @@ class CommonBean():
         
         self.artist = None
         self.title = None
-        
+        self.child_count = None
         #self._getMp3Tags()
         
     
