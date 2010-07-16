@@ -292,8 +292,20 @@ class PlayerController(BaseController):
                     LOG.debug("Song Successfully scrobbled", song.getArtist(), song.getTitle())
                 
     
-    def onBusMessage(self, bus, message):
-        type = message.type
+    def onBusMessage(self, bus, message): 
+        #print message   
+        """Show radio info"""  
+        if message.type==gst.MESSAGE_TAG  and message.parse_tag():
+            try:
+                title =  message.structure['title']
+                self.widgets.seekBar.set_text("Radio: " + title)
+                
+                aritst =  message.structure['artist']
+                self.widgets.seekBar.set_text("Radio: " + aritst+ " - " + title)
+            except:
+                None
+            #print message.parse_tag()['title']
+            
         if type == gst.MESSAGE_EOS:
             
             print "MESSAGE_EOS"                
