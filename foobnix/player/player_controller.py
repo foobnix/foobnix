@@ -290,6 +290,7 @@ class PlayerController(BaseController):
                 if song.getArtist() and song.getTitle():             
                     scrobler.scrobble(song.getArtist(), song.getTitle(), start_time, "P", "", duration_sec)
                     LOG.debug("Song Successfully scrobbled", song.getArtist(), song.getTitle())
+    
                 
     
     def onBusMessage(self, bus, message): 
@@ -314,6 +315,7 @@ class PlayerController(BaseController):
 
             LOG.info("show info!")
             self.onlineCntr.info.show_song_info(self.song)
+            print self.player.get_state()[1]
                 
                 
             #print message.parse_tag()['title']
