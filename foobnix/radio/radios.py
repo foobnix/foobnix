@@ -3,6 +3,7 @@ Created on 15  2010
 
 @author: ivan
 '''
+from __future__ import with_statement
 import os
 from foobnix.util import LOG
 
