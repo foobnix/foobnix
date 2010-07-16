@@ -7,7 +7,10 @@ from __future__ import with_statement
 import os
 from foobnix.util import LOG
 
-radio_folder = "/home/ivan/.foobnix/radio"
+
+FOOBNIX_DIR = (os.getenv("HOME") or os.getenv('USERPROFILE')) + "/.foobnix"
+FOOBNIX_DIR_RADIO = FOOBNIX_DIR + "/radio"
+radio_folder = FOOBNIX_DIR_RADIO
 EXTENSION = ".fpl"
 
 class FPL():
