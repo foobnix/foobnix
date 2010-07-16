@@ -264,7 +264,7 @@ class InformationController():
             self.similar_songs_cntr.add_item(str(tsong_item))
         
         """similar tags"""
-        tags = track.get_top_tags(20)        
+        tags = track.get_top_tags(15)        
         self.song_tags_cntr.clear()
         for tag in tags:
             try:            
@@ -275,7 +275,7 @@ class InformationController():
         
         """similar artists"""
         artist = track.get_artist()
-        similar_artists = artist.get_similar(30)
+        similar_artists = artist.get_similar(15)
        
         self.similar_artists_cntr.clear()
         for artist in similar_artists:
