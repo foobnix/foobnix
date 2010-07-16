@@ -353,4 +353,6 @@ class OnlineListCntr(GObject):
             self.current_list_model.append(bean)
         self.index = 0    
         self.current_list_model.repopulate(self.index)
-        self.playerCntr.playSong(beans[self.index])
+        song = beans[self.index]
+        LOG.info("PLAY", song)
+        self.playerCntr.playSong(song)

@@ -264,8 +264,11 @@ class DirectoryCntr():
     def update_songs_time(self, songs):
         for song in songs:
             if song.path and song.path.endswith("3") and not song.time:
-                audio = MP3(song.path)
-                song.time = normilize_time(audio.info.length)
+                try:
+                    audio = MP3(song.path)
+                    song.time = normilize_time(audio.info.length)
+                except:
+                    pass
                 
                 #audio = EasyID3(song.path)
                 #song.title = str(audio["title"][0])                 
