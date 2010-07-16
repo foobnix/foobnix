@@ -14,11 +14,12 @@ class DirectoryModel():
     POS_VISIBLE = 3
     POS_TYPE = 4
     POS_INDEX = 5
-    POS_PARENT = 5
+    POS_PARENT = 6
+    POS_FILTER_CHILD_COUNT = 7
     
     def __init__(self, widget):
         self.widget = widget
-        self.current_list_model = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int, str)
+        self.current_list_model = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int, str, str)
         renderer = gtk.CellRendererText()
         #renderer.connect('edited', self.editRow)
         
@@ -54,7 +55,7 @@ class DirectoryModel():
            
         
     def append(self, level, bean):
-        return self.current_list_model.append(level, [bean.name, bean.path, bean.font, bean.is_visible, bean.type, bean.index, bean.parent])
+        return self.current_list_model.append(level, [bean.name, bean.path, bean.font, bean.is_visible, bean.type, bean.index, bean.parent, bean.child_count])
         
     def clear(self):
         self.current_list_model.clear() 
@@ -83,7 +84,8 @@ class DirectoryModel():
             bean.visible = model.get_value(iter, self.POS_VISIBLE)
             bean.type = model.get_value(iter, self.POS_TYPE)
             bean.index = model.get_value(iter, self.POS_INDEX)
-            bean.parent = model.get_value(iter, self.POS_PARENT)                  
+            bean.parent = model.get_value(iter, self.POS_PARENT)
+            bean.child_count = model.get_value(iter, self.POS_FILTER_CHILD_COUNT)                  
             return bean
         return None
     
@@ -96,6 +98,7 @@ class DirectoryModel():
         bean.visible = self.current_list_model[position][ self.POS_VISIBLE]
         bean.font = self.current_list_model[position][ self.POS_FONT]
         bean.parent = self.current_list_model[position][self.POS_PARENT]
+        bean.child_count = self.current_list_model[position][self.POS_FILTER_CHILD_COUNT]
         return bean
 
     def getAllSongs(self):
@@ -136,19 +139,27 @@ class DirectoryModel():
                     line[self.POS_VISIBLE] = True                    
                 else:
                     find = False
+                    child_count = 0;
                     for child in line.iterchildren():
                         name = child[self.POS_NAME].lower()
                         if name.find(string) >= 0:
+                            child_count += 1
                             print "FIND :", name, string
                             child[self.POS_VISIBLE] = True
                             line[self.POS_VISIBLE] = True
+                            line[self.POS_FILTER_CHILD_COUNT] = child_count 
                             find = True
+                            
                         else:
                             child[self.POS_VISIBLE] = False
                     if not find:
                         line[self.POS_VISIBLE] = False
+                    else:
+                        self.widget.expand_all()
+                    
                         
         else:
+            self.widget.collapse_all()
             for line in self.current_list_model:                
                 line[self.POS_VISIBLE] = True
                 for child in line.iterchildren():
