@@ -135,16 +135,24 @@ class DirectoryModel():
                     print "FIND :", name, string
                     line[self.POS_VISIBLE] = True                    
                 else:
+                    find = False
                     for child in line.iterchildren():
                         name = child[self.POS_NAME].lower()
                         if name.find(string) >= 0:
                             print "FIND :", name, string
                             child[self.POS_VISIBLE] = True
                             line[self.POS_VISIBLE] = True
+                            find = True
                         else:
                             child[self.POS_VISIBLE] = False
+                    if not find:
+                        line[self.POS_VISIBLE] = False
+                        
         else:
             for line in self.current_list_model:                
                 line[self.POS_VISIBLE] = True
+                for child in line.iterchildren():
+                    child[self.POS_VISIBLE] = True
+                
     
 
