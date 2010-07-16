@@ -10,7 +10,7 @@ from foobnix.util import LOG
 
 FOOBNIX_DIR = (os.getenv("HOME") or os.getenv('USERPROFILE')) + "/.foobnix"
 FOOBNIX_DIR_RADIO = FOOBNIX_DIR + "/radio"
-radio_folder = FOOBNIX_DIR_RADIO
+
 EXTENSION = ".fpl"
 
 class FPL():
@@ -23,14 +23,14 @@ class FPL():
 
 """get list of foobnix playlist files in the directory"""
 def get_radio_list():
-    if not os.path.isdir(radio_folder):
-        LOG.warn("Not a folder ", radio_folder)
+    if not os.path.isdir(FOOBNIX_DIR_RADIO):
+        LOG.warn("Not a folder ", FOOBNIX_DIR_RADIO)
         return None
     
     result = []
     """read directory files by extestion and size > 0 """
-    for item in os.listdir(radio_folder):
-        path = os.path.join(radio_folder, item)
+    for item in os.listdir(FOOBNIX_DIR_RADIO):
+        path = os.path.join(FOOBNIX_DIR_RADIO, item)
         if item.endswith(EXTENSION) and os.path.isfile(path) and os.path.getsize(path) > 0:
             LOG.info("Find radio station playlist", item)
             result.append(item)
@@ -38,7 +38,7 @@ def get_radio_list():
 
 """parser playlist by name"""
 def parse_play_list(list_name):
-    path = os.path.join(radio_folder, list_name)
+    path = os.path.join(FOOBNIX_DIR_RADIO, list_name)
     if not os.path.isfile(path):
         LOG.warn("Not a file ", path)    
         return None
