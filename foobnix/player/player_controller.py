@@ -272,7 +272,7 @@ class PlayerController(BaseController):
                 """report now playing song"""
                 if song.getArtist() and song.getTitle():
                     self.erros = 0
-                    scrobler.report_now_playing(song.getArtist(), song.getTitle())                
+                    scrobler.report_now_playing(song.getArtist(), song.getTitle())
                 
             time.sleep(1)            
             
@@ -294,19 +294,31 @@ class PlayerController(BaseController):
     
     def onBusMessage(self, bus, message): 
         #print message   
-        """Show radio info"""  
-        if message.type==gst.MESSAGE_TAG  and message.parse_tag():
+        """Show radio info"""
+        type = message.type
+        if type == gst.MESSAGE_TAG  and message.parse_tag():
             try:
                 title =  message.structure['title']
                 self.widgets.seekBar.set_text("Radio: " + title)
+                LOG.info("show title!", title)
+                self.song.name = title
                 
-                aritst =  message.structure['artist']
-                self.widgets.seekBar.set_text("Radio: " + aritst+ " - " + title)
+                artist =  message.structure['artist']
+                self.widgets.seekBar.set_text("Radio: " + artist+ " - " + title)
+                LOG.info("show artist and title!", artist, title)
+
+                self.song.artist = artist
+                self.song.title= title                
             except:
-                None
+                pass
+
+            LOG.info("show info!")
+            self.onlineCntr.info.show_song_info(self.song)
+                
+                
             #print message.parse_tag()['title']
             
-        if type == gst.MESSAGE_EOS:
+        elif type == gst.MESSAGE_EOS:
             
             print "MESSAGE_EOS"                
             self.stopState()
@@ -330,7 +342,9 @@ class PlayerController(BaseController):
                 self.erros =self.erros+1;                
                 self.playSong(self.song)       
             """Try to play next"""
-                              
+        else:
+            #print message
+            pass                   
             
             
     
