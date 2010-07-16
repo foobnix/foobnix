@@ -18,8 +18,7 @@ class CommonBean():
     
     #Song attributes
     album = ""
-    artist = ""
-    title = ""
+    
     date = ""
     genre = ""
     tracknumber = ""
@@ -39,10 +38,16 @@ class CommonBean():
         self.album = None
         self.year = None
         
+        self.artist = None
+        self.title = None
+        
         #self._getMp3Tags()
         
     
     def getArtist(self):
+        if self.artist:
+            return self.artist
+        
         s = self.name.split(" - ")
         if len(s) > 1:
             artist = self.name.split(" - ")[0]
@@ -50,6 +55,9 @@ class CommonBean():
         return ""
     
     def getTitle(self):
+        if self.title:
+            return self.title
+        
         s = self.name.split(" - ")
         if len(s) > 1:
             title = self.name.split(" - ")[1]
