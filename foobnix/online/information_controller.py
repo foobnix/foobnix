@@ -195,7 +195,7 @@ class InformationController():
     
     def show_song_info(self, song):
         thread.start_new_thread(self.show_song_info_tread, (song,))
-        #self.show_song_info_tread(song)
+        #    self.show_song_info_tread(song)
     
     def add_similar_song(self, song):
         self.current_list_model.append([song.get_short_description(), song.path])

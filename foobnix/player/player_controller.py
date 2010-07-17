@@ -313,11 +313,12 @@ class PlayerController(BaseController):
                 self.song.title = title                
             except:
                 pass
-
-            LOG.info("show info!")
-            self.onlineCntr.info.show_song_info(self.song)
-            print self.player.get_state()[1]
-                
+            
+            if self.song.type == CommonBean.TYPE_RADIO_URL:
+                LOG.info("show info!")
+                self.onlineCntr.info.show_song_info(self.song)
+                print self.player.get_state()[1]
+                    
                 
             #print message.parse_tag()['title']
             
