@@ -1,0 +1,259 @@
+/home/ivan/workspace/foobnix/src/scripts
+generating mo/ru/foobnix.mo
+generating mo/uk/foobnix.mo
+generating mo/he/foobnix.mo
+running install
+running build
+running build_py
+creating build
+creating build/lib.linux-i686-2.6
+creating build/lib.linux-i686-2.6/foobnix
+copying foobnix/version.py -> build/lib.linux-i686-2.6/foobnix
+copying foobnix/__init__.py -> build/lib.linux-i686-2.6/foobnix
+creating build/lib.linux-i686-2.6/foobnix/application
+copying foobnix/application/app_view.py -> build/lib.linux-i686-2.6/foobnix/application
+copying foobnix/application/app_configuration_controller.py -> build/lib.linux-i686-2.6/foobnix/application
+copying foobnix/application/__init__.py -> build/lib.linux-i686-2.6/foobnix/application
+copying foobnix/application/app_controller.py -> build/lib.linux-i686-2.6/foobnix/application
+creating build/lib.linux-i686-2.6/foobnix/base
+copying foobnix/base/base_list_controller.py -> build/lib.linux-i686-2.6/foobnix/base
+copying foobnix/base/__init__.py -> build/lib.linux-i686-2.6/foobnix/base
+creating build/lib.linux-i686-2.6/foobnix/directory
+copying foobnix/directory/pref_list_model.py -> build/lib.linux-i686-2.6/foobnix/directory
+copying foobnix/directory/virtuallist_controller.py -> build/lib.linux-i686-2.6/foobnix/directory
+copying foobnix/directory/directory_controller.py -> build/lib.linux-i686-2.6/foobnix/directory
+copying foobnix/directory/__init__.py -> build/lib.linux-i686-2.6/foobnix/directory
+copying foobnix/directory/directory_model.py -> build/lib.linux-i686-2.6/foobnix/directory
+package init file 'foobnix/glade/__init__.py' not found (or not a regular file)
+creating build/lib.linux-i686-2.6/foobnix/lyric
+copying foobnix/lyric/__init__.py -> build/lib.linux-i686-2.6/foobnix/lyric
+copying foobnix/lyric/lyr.py -> build/lib.linux-i686-2.6/foobnix/lyric
+creating build/lib.linux-i686-2.6/foobnix/model
+copying foobnix/model/__init__.py -> build/lib.linux-i686-2.6/foobnix/model
+copying foobnix/model/entity.py -> build/lib.linux-i686-2.6/foobnix/model
+creating build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/information_controller.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/vk.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/google_search.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/online_model.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/online_controller.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/google_utils.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/rupleer.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/search_panel.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/__init__.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/song_resource.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/dowload_util.py -> build/lib.linux-i686-2.6/foobnix/online
+creating build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/BeautifulSoup.py -> build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/translate.py -> build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/search.py -> build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/googlesets.py -> build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/__init__.py -> build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/browser.py -> build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/sponsoredlinks.py -> build/lib.linux-i686-2.6/foobnix/online/google
+creating build/lib.linux-i686-2.6/foobnix/online/integration
+copying foobnix/online/integration/lastfm.py -> build/lib.linux-i686-2.6/foobnix/online/integration
+copying foobnix/online/integration/__init__.py -> build/lib.linux-i686-2.6/foobnix/online/integration
+creating build/lib.linux-i686-2.6/foobnix/player
+copying foobnix/player/player_widgets_cntr.py -> build/lib.linux-i686-2.6/foobnix/player
+copying foobnix/player/player_controller.py -> build/lib.linux-i686-2.6/foobnix/player
+copying foobnix/player/__init__.py -> build/lib.linux-i686-2.6/foobnix/player
+creating build/lib.linux-i686-2.6/foobnix/playlist
+copying foobnix/playlist/playlist_controller.py -> build/lib.linux-i686-2.6/foobnix/playlist
+copying foobnix/playlist/playlist_model.py -> build/lib.linux-i686-2.6/foobnix/playlist
+copying foobnix/playlist/__init__.py -> build/lib.linux-i686-2.6/foobnix/playlist
+creating build/lib.linux-i686-2.6/foobnix/preferences
+copying foobnix/preferences/pref_controller.py -> build/lib.linux-i686-2.6/foobnix/preferences
+copying foobnix/preferences/__init__.py -> build/lib.linux-i686-2.6/foobnix/preferences
+creating build/lib.linux-i686-2.6/foobnix/radio
+copying foobnix/radio/radios.py -> build/lib.linux-i686-2.6/foobnix/radio
+copying foobnix/radio/radio_model.py -> build/lib.linux-i686-2.6/foobnix/radio
+copying foobnix/radio/__init__.py -> build/lib.linux-i686-2.6/foobnix/radio
+copying foobnix/radio/radio_controller.py -> build/lib.linux-i686-2.6/foobnix/radio
+creating build/lib.linux-i686-2.6/foobnix/thirdparty
+copying foobnix/thirdparty/pylast.py -> build/lib.linux-i686-2.6/foobnix/thirdparty
+copying foobnix/thirdparty/__init__.py -> build/lib.linux-i686-2.6/foobnix/thirdparty
+creating build/lib.linux-i686-2.6/foobnix/trayicon
+copying foobnix/trayicon/__init__.py -> build/lib.linux-i686-2.6/foobnix/trayicon
+creating build/lib.linux-i686-2.6/foobnix/util
+copying foobnix/util/LOG.py -> build/lib.linux-i686-2.6/foobnix/util
+copying foobnix/util/time_utils.py -> build/lib.linux-i686-2.6/foobnix/util
+copying foobnix/util/mouse_utils.py -> build/lib.linux-i686-2.6/foobnix/util
+copying foobnix/util/plsparser.py -> build/lib.linux-i686-2.6/foobnix/util
+copying foobnix/util/file_utils.py -> build/lib.linux-i686-2.6/foobnix/util
+copying foobnix/util/__init__.py -> build/lib.linux-i686-2.6/foobnix/util
+copying foobnix/util/configuration.py -> build/lib.linux-i686-2.6/foobnix/util
+creating build/lib.linux-i686-2.6/foobnix/window
+copying foobnix/window/window_controller.py -> build/lib.linux-i686-2.6/foobnix/window
+copying foobnix/window/__init__.py -> build/lib.linux-i686-2.6/foobnix/window
+creating build/lib.linux-i686-2.6/foobnix/glade
+copying foobnix/glade/preferences.glade -> build/lib.linux-i686-2.6/foobnix/glade
+copying foobnix/glade/foobnix.glade -> build/lib.linux-i686-2.6/foobnix/glade
+copying foobnix/glade/foobnix.png -> build/lib.linux-i686-2.6/foobnix/glade
+package init file 'foobnix/glade/__init__.py' not found (or not a regular file)
+running build_scripts
+creating build/scripts-2.6
+copying and adjusting foobnix/foobnix -> build/scripts-2.6
+changing mode of build/scripts-2.6/foobnix from 644 to 755
+running install_lib
+copying build/lib.linux-i686-2.6/foobnix/radio/radios.py -> /usr/local/lib/python2.6/dist-packages/foobnix/radio
+copying build/lib.linux-i686-2.6/foobnix/radio/radio_model.py -> /usr/local/lib/python2.6/dist-packages/foobnix/radio
+copying build/lib.linux-i686-2.6/foobnix/radio/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/radio
+copying build/lib.linux-i686-2.6/foobnix/radio/radio_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/radio
+copying build/lib.linux-i686-2.6/foobnix/version.py -> /usr/local/lib/python2.6/dist-packages/foobnix
+copying build/lib.linux-i686-2.6/foobnix/player/player_widgets_cntr.py -> /usr/local/lib/python2.6/dist-packages/foobnix/player
+copying build/lib.linux-i686-2.6/foobnix/player/player_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/player
+copying build/lib.linux-i686-2.6/foobnix/player/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/player
+copying build/lib.linux-i686-2.6/foobnix/preferences/pref_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/preferences
+copying build/lib.linux-i686-2.6/foobnix/preferences/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/preferences
+copying build/lib.linux-i686-2.6/foobnix/playlist/playlist_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/playlist
+copying build/lib.linux-i686-2.6/foobnix/playlist/playlist_model.py -> /usr/local/lib/python2.6/dist-packages/foobnix/playlist
+copying build/lib.linux-i686-2.6/foobnix/playlist/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/playlist
+copying build/lib.linux-i686-2.6/foobnix/model/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/model
+copying build/lib.linux-i686-2.6/foobnix/model/entity.py -> /usr/local/lib/python2.6/dist-packages/foobnix/model
+copying build/lib.linux-i686-2.6/foobnix/application/app_view.py -> /usr/local/lib/python2.6/dist-packages/foobnix/application
+copying build/lib.linux-i686-2.6/foobnix/application/app_configuration_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/application
+copying build/lib.linux-i686-2.6/foobnix/application/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/application
+copying build/lib.linux-i686-2.6/foobnix/application/app_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/application
+copying build/lib.linux-i686-2.6/foobnix/glade/preferences.glade -> /usr/local/lib/python2.6/dist-packages/foobnix/glade
+copying build/lib.linux-i686-2.6/foobnix/glade/foobnix.png -> /usr/local/lib/python2.6/dist-packages/foobnix/glade
+copying build/lib.linux-i686-2.6/foobnix/glade/foobnix.glade -> /usr/local/lib/python2.6/dist-packages/foobnix/glade
+copying build/lib.linux-i686-2.6/foobnix/directory/pref_list_model.py -> /usr/local/lib/python2.6/dist-packages/foobnix/directory
+copying build/lib.linux-i686-2.6/foobnix/directory/virtuallist_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/directory
+copying build/lib.linux-i686-2.6/foobnix/directory/directory_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/directory
+copying build/lib.linux-i686-2.6/foobnix/directory/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/directory
+copying build/lib.linux-i686-2.6/foobnix/directory/directory_model.py -> /usr/local/lib/python2.6/dist-packages/foobnix/directory
+copying build/lib.linux-i686-2.6/foobnix/base/base_list_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/base
+copying build/lib.linux-i686-2.6/foobnix/base/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/base
+copying build/lib.linux-i686-2.6/foobnix/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix
+copying build/lib.linux-i686-2.6/foobnix/window/window_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/window
+copying build/lib.linux-i686-2.6/foobnix/window/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/window
+copying build/lib.linux-i686-2.6/foobnix/trayicon/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/trayicon
+copying build/lib.linux-i686-2.6/foobnix/online/information_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
+copying build/lib.linux-i686-2.6/foobnix/online/vk.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
+copying build/lib.linux-i686-2.6/foobnix/online/google_search.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
+copying build/lib.linux-i686-2.6/foobnix/online/online_model.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
+copying build/lib.linux-i686-2.6/foobnix/online/online_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
+copying build/lib.linux-i686-2.6/foobnix/online/google_utils.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
+copying build/lib.linux-i686-2.6/foobnix/online/rupleer.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
+copying build/lib.linux-i686-2.6/foobnix/online/search_panel.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
+copying build/lib.linux-i686-2.6/foobnix/online/google/BeautifulSoup.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
+copying build/lib.linux-i686-2.6/foobnix/online/google/translate.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
+copying build/lib.linux-i686-2.6/foobnix/online/google/search.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
+copying build/lib.linux-i686-2.6/foobnix/online/google/googlesets.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
+copying build/lib.linux-i686-2.6/foobnix/online/google/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
+copying build/lib.linux-i686-2.6/foobnix/online/google/browser.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
+copying build/lib.linux-i686-2.6/foobnix/online/google/sponsoredlinks.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
+copying build/lib.linux-i686-2.6/foobnix/online/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
+copying build/lib.linux-i686-2.6/foobnix/online/song_resource.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
+copying build/lib.linux-i686-2.6/foobnix/online/dowload_util.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
+copying build/lib.linux-i686-2.6/foobnix/online/integration/lastfm.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/integration
+copying build/lib.linux-i686-2.6/foobnix/online/integration/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/integration
+copying build/lib.linux-i686-2.6/foobnix/thirdparty/pylast.py -> /usr/local/lib/python2.6/dist-packages/foobnix/thirdparty
+copying build/lib.linux-i686-2.6/foobnix/thirdparty/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/thirdparty
+copying build/lib.linux-i686-2.6/foobnix/util/LOG.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
+copying build/lib.linux-i686-2.6/foobnix/util/time_utils.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
+copying build/lib.linux-i686-2.6/foobnix/util/mouse_utils.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
+copying build/lib.linux-i686-2.6/foobnix/util/plsparser.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
+copying build/lib.linux-i686-2.6/foobnix/util/file_utils.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
+copying build/lib.linux-i686-2.6/foobnix/util/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
+copying build/lib.linux-i686-2.6/foobnix/util/configuration.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
+copying build/lib.linux-i686-2.6/foobnix/lyric/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/lyric
+copying build/lib.linux-i686-2.6/foobnix/lyric/lyr.py -> /usr/local/lib/python2.6/dist-packages/foobnix/lyric
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/radio/radios.py to radios.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/radio/radio_model.py to radio_model.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/radio/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/radio/radio_controller.py to radio_controller.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/version.py to version.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/player/player_widgets_cntr.py to player_widgets_cntr.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/player/player_controller.py to player_controller.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/player/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/preferences/pref_controller.py to pref_controller.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/preferences/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/playlist/playlist_controller.py to playlist_controller.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/playlist/playlist_model.py to playlist_model.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/playlist/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/model/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/model/entity.py to entity.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/application/app_view.py to app_view.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/application/app_configuration_controller.py to app_configuration_controller.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/application/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/application/app_controller.py to app_controller.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/directory/pref_list_model.py to pref_list_model.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/directory/virtuallist_controller.py to virtuallist_controller.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/directory/directory_controller.py to directory_controller.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/directory/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/directory/directory_model.py to directory_model.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/base/base_list_controller.py to base_list_controller.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/base/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/window/window_controller.py to window_controller.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/window/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/trayicon/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/information_controller.py to information_controller.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/vk.py to vk.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/google_search.py to google_search.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/online_model.py to online_model.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/online_controller.py to online_controller.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/google_utils.py to google_utils.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/rupleer.py to rupleer.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/search_panel.py to search_panel.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/google/BeautifulSoup.py to BeautifulSoup.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/google/translate.py to translate.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/google/search.py to search.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/google/googlesets.py to googlesets.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/google/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/google/browser.py to browser.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/google/sponsoredlinks.py to sponsoredlinks.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/song_resource.py to song_resource.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/dowload_util.py to dowload_util.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/integration/lastfm.py to lastfm.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/online/integration/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/thirdparty/pylast.py to pylast.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/thirdparty/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/util/LOG.py to LOG.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/util/time_utils.py to time_utils.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/util/mouse_utils.py to mouse_utils.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/util/plsparser.py to plsparser.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/util/file_utils.py to file_utils.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/util/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/util/configuration.py to configuration.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/lyric/__init__.py to __init__.pyc
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/lyric/lyr.py to lyr.pyc
+running install_scripts
+copying build/scripts-2.6/foobnix -> /usr/local/bin
+changing mode of /usr/local/bin/foobnix to 755
+running install_data
+copying README -> /usr/local/share/foobnix
+copying CHANGELOG -> /usr/local/share/foobnix
+copying TODO -> /usr/local/share/foobnix
+copying TRANSLATORS -> /usr/local/share/foobnix
+copying foobnix.desktop -> /usr/local/share/applications
+copying foobnix/pixmaps/foobnix-big.png -> /usr/local/share/pixmaps
+copying foobnix/pixmaps/foobnix.png -> /usr/local/share/pixmaps
+copying foobnix/pixmaps/foobnix-64.png -> /usr/local/share/pixmaps
+copying foobnix/pixmaps/foobnix-192.png -> /usr/local/share/pixmaps
+copying foobnix/pixmaps/blank-disc.jpg -> /usr/local/share/pixmaps
+copying foobnix/pixmaps/foobnix-14.png -> /usr/local/share/pixmaps
+copying radio/GUZEI.COM.fpl -> /home/ivan/.foobnix/radio
+copying radio/SKY.FM.fpl -> /home/ivan/.foobnix/radio
+copying radio/DI.FM.fpl -> /home/ivan/.foobnix/radio
+copying radio/MYRADIO.UA.fpl -> /home/ivan/.foobnix/radio
+copying foobnix.1 -> /usr/local/share/man/man1
+copying mo/uk/foobnix.mo -> /usr/share/locale/uk/LC_MESSAGES
+copying mo/he/foobnix.mo -> /usr/share/locale/he/LC_MESSAGES
+copying mo/ru/foobnix.mo -> /usr/share/locale/ru/LC_MESSAGES
+running install_egg_info
+Writing /usr/local/lib/python2.6/dist-packages/foobnix-0.1.8.egg-info
+package init file 'foobnix/glade/__init__.py' not found (or not a regular file)
+writing list of installed files to 'files.txt'
+Can't chown folder ~user/.foobnix
+Cleaning up...
+
+checkinstall 1.6.1, Copyright 2002 Felipe Eduardo Sanchez Diaz Duran
+
+
+
+
+
