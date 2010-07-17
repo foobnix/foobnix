@@ -335,6 +335,7 @@ class PlayerController(BaseController):
             print "MESSAGE_ERROR"
             err, debug = message.parse_error()
             print "Error: %s" % err, debug
+            self.widgets.seekBar.set_text(str(err))
             self.playerThreadId = None
             self.player.set_state(gst.STATE_NULL)
             #self.player = None    

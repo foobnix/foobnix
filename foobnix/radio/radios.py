@@ -63,8 +63,10 @@ class RadioFolder():
                         for url in stations:
                             good_url = url.strip()
                             if good_url and (good_url.startswith("http://") or good_url.startswith("file://")):
-                                good_stations.append(good_url)
-                                dict[name] = good_stations
+                                if not good_url.endswith("wma"):
+                                    if not good_url.endswith("asx"):                                
+                                        good_stations.append(good_url)
+                                        dict[name] = good_stations
         return dict
         
    
