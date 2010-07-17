@@ -128,23 +128,24 @@ class DirectoryModel():
         return results
         
         
-    def filterByName(self, string):        
-        if len(string.strip()) > 0:
+    def filterByName(self, query):        
+        if len(query.strip()) > 0:
+            query = query.strip().decode("utf-8").lower()
+            
             for line in self.current_list_model:
-                name = line[self.POS_NAME].lower()
-                string = string.strip().lower()
-                
-                if name.find(string) >= 0:
-                    print "FIND :", name, string
+                name = str(line[self.POS_NAME]).lower()
+
+                if name.find(query) >= 0:
+                    print "FIND PARENT:", name, query
                     line[self.POS_VISIBLE] = True                    
                 else:
                     find = False
                     child_count = 0;
                     for child in line.iterchildren():
-                        name = child[self.POS_NAME].lower()
-                        if name.find(string) >= 0:
+                        name = str(child[self.POS_NAME]).decode("utf-8").lower()
+                        if name.find(query) >= 0:
                             child_count += 1
-                            print "FIND :", name, string
+                            print "FIND CHILD :", name, query
                             child[self.POS_VISIBLE] = True
                             line[self.POS_VISIBLE] = True
                             line[self.POS_FILTER_CHILD_COUNT] = child_count 
