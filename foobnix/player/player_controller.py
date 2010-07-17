@@ -312,7 +312,7 @@ class PlayerController(BaseController):
                     self.onlineCntr.info.show_song_info(self.song)
                     print self.player.get_state()[1]
             except:
-                LOG.error("Error in the RADIO INO module")
+                LOG.warn("Messege info error appear")
                 pass
             
             
