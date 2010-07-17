@@ -59,6 +59,7 @@ class PlayerController(BaseController):
         self.play = self.playState
         self.pause = self.pauseState
         self.erros = 0
+        self.prev_song = CommonBean()
         
 
     def set_mode(self, mode):
@@ -314,7 +315,8 @@ class PlayerController(BaseController):
             except:
                 pass
             
-            if self.song.type == CommonBean.TYPE_RADIO_URL:
+            if self.song.type == CommonBean.TYPE_RADIO_URL and self.prev_song.name != self.song.name:
+                self.prev_song = self.song
                 LOG.info("show info!")
                 self.onlineCntr.info.show_song_info(self.song)
                 print self.player.get_state()[1]
