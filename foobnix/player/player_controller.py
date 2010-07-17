@@ -299,6 +299,7 @@ class PlayerController(BaseController):
         type = message.type
         if type == gst.MESSAGE_TAG  and message.parse_tag():
             try:
+                self.erros = 0
                 title = message.structure['title']
                 self.widgets.seekBar.set_text("Radio: " + title)
                 LOG.info("show title!", title)
@@ -339,7 +340,7 @@ class PlayerController(BaseController):
             #self.player = None    
             time.sleep(4) 
             self.player.set_state(gst.STATE_NULL)
-            if self.song.type == CommonBean.TYPE_RADIO_URL and self.erros < 3:
+            if self.song.type == CommonBean.TYPE_RADIO_URL and self.erros < 2:
                 LOG.error("Error Num", self.erros)
                 self.erros = self.erros + 1;                
                 self.playSong(self.song)       
