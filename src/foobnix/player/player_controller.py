@@ -303,23 +303,19 @@ class PlayerController(BaseController):
                 self.erros = 0
                 title = message.structure['title']
                 self.widgets.seekBar.set_text("Radio: " + title)
-                LOG.info("show title!", title)
+                LOG.info("show title!", title)               
                 self.song.name = title
                 
-                artist = message.structure['artist']
-                self.widgets.seekBar.set_text("Radio: " + artist + " - " + title)
-                LOG.info("show artist and title!", artist, title)
-
-                self.song.artist = artist
-                self.song.title = title                
+                if title and self.song.type == CommonBean.TYPE_RADIO_URL and self.prev_song.name != self.song.name:
+                    self.prev_song = self.song
+                    LOG.info("show info!", self.song.name)
+                    self.onlineCntr.info.show_song_info(self.song)
+                    print self.player.get_state()[1]
             except:
+                LOG.error("Error in the RADIO INO module")
                 pass
             
-            if self.song.type == CommonBean.TYPE_RADIO_URL and self.prev_song.name != self.song.name:
-                self.prev_song = self.song
-                LOG.info("show info!")
-                self.onlineCntr.info.show_song_info(self.song)
-                print self.player.get_state()[1]
+            
                     
                 
             #print message.parse_tag()['title']
