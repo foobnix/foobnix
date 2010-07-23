@@ -174,7 +174,7 @@ class PlayerController(BaseController):
         except:
             pass
         self.player = None
-        time.sleep(1)
+        time.sleep(2)
         
         self.playbin = gst.element_factory_make("playbin", "player")  
         bus = self.playbin.get_bus()
@@ -191,7 +191,7 @@ class PlayerController(BaseController):
         except:
             pass
         self.player = None
-        time.sleep(1)
+        time.sleep(2)
         
         self.playbin = gst.element_factory_make("playbin2", "player")
         bus = self.playbin.get_bus()

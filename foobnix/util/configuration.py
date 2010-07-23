@@ -7,10 +7,11 @@ Created on Feb 27, 2010
 from __future__ import with_statement
 import pickle
 import os, sys
-from foobnix.util import LOG
 import tempfile
+from foobnix.util import LOG
 
 VERSION = "0.1.8"
+LOG.debug('Foobnix version: ', VERSION)
 
 class Singleton(type):
     def __call__(self, *args, **kw):
