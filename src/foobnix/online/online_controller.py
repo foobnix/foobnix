@@ -69,7 +69,7 @@ class OnlineListCntr(GObject):
         return  window    
         
     def append_notebook_page(self, name):
-        print "append new tab"
+        LOG.info("append new tab")
         label = gtk.Label(name)
         label.set_angle(90)
         label.show()
@@ -94,7 +94,7 @@ class OnlineListCntr(GObject):
 
     def add_selected_to_playlist(self):
         selected = self.current_list_model.get_selected_bean()
-        print "SELECTED", selected
+        LOG.info("SELECTED", selected)
         self.directoryCntr.set_active_view(DirectoryCntr.VIEW_VIRTUAL_LISTS)
         if selected.type == CommonBean.TYPE_MUSIC_URL:
             selected.parent = None
@@ -104,17 +104,17 @@ class OnlineListCntr(GObject):
             results = []
             for i in xrange(self.current_list_model.get_size()):
                 searchBean = self.current_list_model.getBeenByPosition(i)
-            #print "Search", searchBean
+            #LOG.info("Search", searchBean
                 if str(searchBean.name) == str(selected.name):
                     searchBean.parent = None
                     results.append(searchBean)
                 elif str(searchBean.parent) == str(selected.name):
                     results.append(searchBean)
                 else:
-                    print str(searchBean.parent) + " != " + str(selected.name)
+                    LOG.info(str(searchBean.parent) + " != " + str(selected.name))
             
             self.directoryCntr.append_virtual(results)
-        print "drug"
+        LOG.info("drug")
         self.directoryCntr.leftNoteBook.set_current_page(0)
 
     def on_drag_end(self, *ars):
@@ -123,7 +123,7 @@ class OnlineListCntr(GObject):
     def show_results(self, sender, query, beans, criteria=True):
         self.append_notebook_page(query)
         
-        print LOG.debug("Showing search results")
+        LOG.debug("Showing search results")
         if beans:
             if criteria:
                 self.append([self.SearchCriteriaBeen(query)])
@@ -159,8 +159,8 @@ class OnlineListCntr(GObject):
         
     def on_play_selected(self, similar_songs_model):
         playlistBean = similar_songs_model.get_selected_bean()
-        print "play", playlistBean
-        print "type", playlistBean.type
+        LOG.info("play", playlistBean)
+        LOG.info("type", playlistBean.type)
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
             self.playBean(playlistBean)
         elif playlistBean.type == CommonBean.TYPE_GOOGLE_HELP:
@@ -177,7 +177,7 @@ class OnlineListCntr(GObject):
             path = chooser.get_filename()
             save_as_song_thread(songs, path)
         elif response == gtk.RESPONSE_CANCEL:
-            print 'Closed, no files selected'
+            LOG.info('Closed, no files selected')
         chooser.destroy()
         
     def show_info(self, songs):
@@ -253,7 +253,7 @@ class OnlineListCntr(GObject):
 
             if not playlistBean.path:
                 self.count += 1
-                print self.count
+                LOG.info(self.count)
                 playlistBean.setIconErorr()
                 if self.count < 5   :
                     return self.playBean(self.getNextSong())
@@ -271,12 +271,12 @@ class OnlineListCntr(GObject):
 
                 file = get_file_store_path(playlistBean)
                 if os.path.isfile(file) and os.path.getsize(file) > 1:
-                    print "Find file dowloaded"
+                    LOG.info("Find file dowloaded")
                     playlistBean.path = file
                     playlistBean.type = CommonBean.TYPE_MUSIC_FILE
                     return True
                 else:
-                    print "FILE NOT FOUND IN SYSTEM"
+                    LOG.info("FILE NOT FOUND IN SYSTEM")
 
                 #Seach by vk engine
                 update_song_path(playlistBean)
@@ -322,7 +322,7 @@ class OnlineListCntr(GObject):
             currentSong = self.nextBean()
 
         self.setSongResource(currentSong)
-        print "PATH", currentSong.path
+        LOG.info("PATH", currentSong.path)
         
         self.current_list_model.repopulate(currentSong.index);
         return currentSong

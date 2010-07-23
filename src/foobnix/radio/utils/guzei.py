@@ -21,7 +21,7 @@ def load_urls_name_page():
         result = {}  
         
         for line in data.split("\n"):
-            #print line
+            #LOG.info(line
             reg_all = "([^{</}]*)"
           
             all = '<a href="./listen.php\?online_radio_id=([0-9]*)" target="guzei_online" title="'+reg_all+'"><span class="name">'+reg_all+'</span></a>'
@@ -37,8 +37,8 @@ def load_urls_name_page():
                     i+=1
                     url = get_ulr_by_id(id)
                     res =  name + " = " + url
-                    print j
-                    print res
+                    LOG.info(j
+                    LOG.info(res
                     file.write(res + "\n")
                     
                 
@@ -64,5 +64,5 @@ def get_ulr_by_id(id):
             
         
 
-#print get_ulr_by_id("5369")
+#LOG.info(get_ulr_by_id("5369")
 load_urls_name_page()

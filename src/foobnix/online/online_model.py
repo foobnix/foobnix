@@ -25,7 +25,7 @@ class OnlineListModel:
     
     def __init__(self, widget):
         self.widget = widget
-        self.current_list_model = gtk.ListStore(str, str, str, str, str, int, str, str,str)
+        self.current_list_model = gtk.ListStore(str, str, str, str, str, int, str, str, str)
                
         cellpb = gtk.CellRendererPixbuf()
         cellpb.set_property('cell-background', 'yellow')
@@ -40,7 +40,7 @@ class OnlineListModel:
         timeColumn.set_fixed_width(5)
         timeColumn.set_min_width(5)
         
-        empty = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=-1, background=self.POS_COLOR)
+        empty = gtk.TreeViewColumn(None, gtk.CellRendererText(), text= -1, background=self.POS_COLOR)
                 
         widget.append_column(iconColumn)
         #widget.append_column(numbetColumn)
@@ -53,7 +53,7 @@ class OnlineListModel:
         return len(self.current_list_model)
     
     def get_all_beans(self):
-        beans  =[]
+        beans = []
         for i in xrange(self.get_size()):
             beans.append(self.getBeenByPosition(i))
         return beans
@@ -73,7 +73,7 @@ class OnlineListModel:
     
     
     def get_random_bean(self):
-        index = randint(0,self.get_size())
+        index = randint(0, self.get_size())
         return self.getBeenByPosition(index) 
     
     def getModel(self):
@@ -125,7 +125,7 @@ class OnlineListModel:
         selection = self.widget.get_selection()
         model, selected = selection.get_selected_rows()
         iters = [model.get_iter(path) for path in selected]
-        LOG.debug("REMOVE:",iters)
+        LOG.debug("REMOVE:", iters)
         for iter in iters:
             model.remove(iter)
     
@@ -133,7 +133,7 @@ class OnlineListModel:
         self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent, bean.time])
 
     def __del__(self, *a):
-        print "del"
+        LOG.info("del")
         
         
     def get_selected_index(self):
@@ -146,7 +146,7 @@ class OnlineListModel:
         iter = self.current_list_model.get_iter(selected[0])
         if iter:
             i = model.get_string_from_iter(iter)  
-            #print "!!I", i      
+            #LOG.info("!!I", i      
             #if i.find(":") == -1:
             #return int(i)
             return int(i)

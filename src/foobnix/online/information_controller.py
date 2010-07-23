@@ -53,7 +53,7 @@ class SimilartSongsController(BaseListController):
                 path = chooser.get_filename()
                 save_as_song_thread(song, path)
             elif response == gtk.RESPONSE_CANCEL:
-                print 'Closed, no files selected'
+                LOG.info('Closed, no files selected')
             chooser.destroy()
             
         def show_info(self, song):
@@ -221,8 +221,12 @@ class InformationController():
             self.set_no_image_album()
             return None
     
-        image_pix_buf = self.create_pbuf_image_from_url(image_url)
-        self.album_image.set_from_pixbuf(image_pix_buf)
+        try:
+            image_pix_buf = self.create_pbuf_image_from_url(image_url)
+            self.album_image.set_from_pixbuf(image_pix_buf)
+        except:
+            LOG.error("dowload image error")
+        
         
     def set_image(self, path):
         pass
@@ -243,7 +247,7 @@ class InformationController():
         
         self.similar_songs_cntr.parent = song.getArtist() + " - " + song.getTitle()
         
-        print track
+        LOG.info(track)
         if not track:
             return None
         

@@ -26,7 +26,7 @@ def load_urls_name_page():
             urls = get_radio_ulr(url.strip()).split(",")
             line = name.strip() + " = " + urls[1] + ", " + urls[0]
             file.write(line + "\n");
-            print line
+            LOG.info(line
             
             if url.strip() == "chanel/eurovision":
                 file.close();
@@ -50,7 +50,7 @@ def get_radio_ulr(chanel):
 
                 
              
-print  load_urls_name_page()
+LOG.info( load_urls_name_page()
     
     
 

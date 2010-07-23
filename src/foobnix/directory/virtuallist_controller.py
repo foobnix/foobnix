@@ -4,6 +4,7 @@ Created on Mar 11, 2010
 @author: ivan
 '''
 from foobnix.model.entity import CommonBean
+from foobnix.util import LOG
 class VirturalLIstCntr():    
     def __init__(self):
         self.items = []
@@ -28,12 +29,12 @@ class VirturalLIstCntr():
             "INDEX TOO BIG"
             return 
         item = self.get_item_by_index(index)
-        print "DELETE", item.name
+        LOG.info("DELETE", item.name)
         self.items.remove(item)
     
     def remove_with_childrens(self, index, parent=None):
         type = self.get_item_by_index(index).type
-        print type
+        LOG.info(type)
         if type not in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP] :
             self.remove(index)
             return
@@ -41,8 +42,8 @@ class VirturalLIstCntr():
         self.remove(index)
         size = len(self.items)
         for i in xrange(index, size):
-            print "index" + str(i),
-            print self.items[index].parent
+            LOG.info("index" + str(i),)
+            LOG.info(self.items[index].parent)
             if self.items[index].parent == parent:
                 return
             else:

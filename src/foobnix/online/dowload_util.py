@@ -64,7 +64,7 @@ def update_id3_tags(song, path):
         try: 
             tags = ID3(path)
         except ID3NoHeaderError:
-            print "Adding ID3 header;",
+            LOG.info("Adding ID3 header;")
             tags = ID3()
    
         tags["TIT2"] = TIT2(encoding=3, text=song.getTitle())

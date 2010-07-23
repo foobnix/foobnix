@@ -42,7 +42,7 @@ class SearchPanel(BaseController):
     def on_key_pressed(self, w, event):
         if event.type == gtk.gdk.KEY_PRESS: #@UndefinedVariable
             #Enter pressed
-            print "keyval", event.keyval, "keycode", event.hardware_keycode
+            LOG.info("keyval", event.keyval, "keycode", event.hardware_keycode)
             if event.hardware_keycode == 36:
                 self.on_search()
 
@@ -50,7 +50,7 @@ class SearchPanel(BaseController):
     def get_search_query(self):
         query = self.search_text.get_text()
         if query and len(query.strip()) > 0:
-            print query
+            LOG.info(query)
             return query
         #Nothing found
         return None
@@ -75,7 +75,7 @@ class SearchPanel(BaseController):
     def on_search_mode_selected(self, clicked_button, selected_mode=None):
         # Look if the clicked button was the only button that was checked. If yes, then turn 
         # it back to checked - we don't allow all buttons to be unchecked at the same time
-        if all( [not button.get_active() for button in self.search_mode_buttons.values()] ):
+        if all([not button.get_active() for button in self.search_mode_buttons.values()]):
             clicked_button.set_active(True)
 
         # if the button should become unchecked, then do nothing
@@ -102,7 +102,7 @@ class SearchPanel(BaseController):
 
     
 
-    search_thread_id = SearchResults(None,None)
+    search_thread_id = SearchResults(None, None)
     def on_search(self, *args):
         LOG.debug('>>>>>>> search with ' + str(self.search_routine))
         query = self.get_search_query()            

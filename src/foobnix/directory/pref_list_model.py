@@ -41,9 +41,9 @@ class PrefListModel():
                 self.current_list_model[i][self.POS_NAME] = value
                 
                 """copy songs with new name"""
-                print "beforeRename ", beforeRename, self.prefListMap.keys()
+                LOG.info("beforeRename ", beforeRename, self.prefListMap.keys())
                 datas = self.prefListMap[beforeRename]
-                print datas
+                LOG.info(datas)
                 del self.prefListMap[beforeRename]
                 self.prefListMap[value] = datas
     

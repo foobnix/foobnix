@@ -99,18 +99,18 @@ class FConfiguration:
                 LOG.debug("Configuraton attributes are changed")
                 os.remove(self.CFG_FILE)
  
-        print "LOAD CONFIGS"
+        LOG.info("LOAD CONFIGS")
         self.printArttibutes()
 
     def save(self):
-        print "SAVE CONFIGS"
+        LOG.info("SAVE CONFIGS")
         self.printArttibutes()
         FConfiguration()._saveCfgToFile()
         
     def printArttibutes(self):
         for i in dir(self):
             if not i.startswith("__"):
-                print i, getattr(self, i)
+                LOG.info(i, getattr(self, i))
         
     def _saveCfgToFile(self):
         #conf = FConfiguration()
@@ -135,10 +135,9 @@ class FConfiguration:
         
         except IOError:
             LOG.debug('Configuration file does not exist.')
-        except ImportError, ex:
-            print >> sys.stderr, ex
-            LOG.debug('Configuration file is corrupted. Removing it...')
+        except ImportError, ex:            
+            LOG.error('Configuration file is corrupted. Removing it...')
             os.remove(self.CFG_FILE)
         except BaseException, ex:
-            print >> sys.stderr, 'Unexpected exception of type %s: "%s".' % (ex.__class__.__name__, ex)
+            LOG.error('Unexpected exception of type %s: "%s".' % (ex.__class__.__name__, ex))
 

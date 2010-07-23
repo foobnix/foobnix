@@ -73,5 +73,5 @@ def _get_cached_song(song):
         dir = dir + "/" + song.getArtist()
     _make_dirs(dir)
     song = dir + "/" + song.name + ".mp3"
-    print "Stored dir: ", song
+    LOG.info("Stored dir: ", song)
     return song

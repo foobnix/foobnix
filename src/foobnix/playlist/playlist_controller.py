@@ -25,7 +25,7 @@ class PlaylistCntr():
         widget.connect("drag-end", self.onDrugBean)
         
     def registerDirectoryCntr(self, directoryCntr):
-        self.directoryCntr=directoryCntr
+        self.directoryCntr = directoryCntr
                                              
     
         
@@ -69,7 +69,7 @@ class PlaylistCntr():
             
     def getNextSong(self):
         if FConfiguration().isRandom:            
-            self.index = randint(0,len(self.get_playlist_beans()))   
+            self.index = randint(0, len(self.get_playlist_beans()))   
         else:
             self.index += 1
         
@@ -88,7 +88,7 @@ class PlaylistCntr():
     def getPrevSong(self):
         
         if FConfiguration().isRandom:            
-            self.index = randint(0,len(self.get_playlist_beans()))
+            self.index = randint(0, len(self.get_playlist_beans()))
         else:
             self.index -= 1
         
@@ -102,7 +102,7 @@ class PlaylistCntr():
             
      
     def setPlaylist(self, entityBeans):
-        print "Set play list"
+        LOG.info("Set play list")
         self.clear()
         self.set_playlist_beans(entityBeans)    
         self.index = 0
@@ -111,7 +111,7 @@ class PlaylistCntr():
             self.repopulate(entityBeans, self.index);
             
     def appendPlaylist(self, entityBeans):
-        print "Append play list"        
+        LOG.info("Append play list")        
         
         self.current_list_model.append_all_beans(entityBeans)
         

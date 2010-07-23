@@ -47,11 +47,11 @@ def search_top_albums(query):
     try:
         albums = artist.get_top_albums()
     except WSError:
-        print "No artist with that name"
+        LOG.info("No artist with that name")
         return None
     
     beans = []    
-    print "Albums: ", albums  
+    LOG.info("Albums: ", albums)  
     
     for i, album in enumerate(albums):
         if i > 6:
@@ -62,7 +62,7 @@ def search_top_albums(query):
             album_txt = album['item']
         
         tracks = album_txt.get_tracks()
-        bean = CommonBean(name=album_txt.get_title()+" ("+album_txt.get_release_year()+")", path="", color="GREEN", type=CommonBean.TYPE_FOLDER, parent=query);
+        bean = CommonBean(name=album_txt.get_title() + " (" + album_txt.get_release_year() + ")", path="", color="GREEN", type=CommonBean.TYPE_FOLDER, parent=query);
         beans.append(bean)
         
         for track in tracks:
@@ -96,15 +96,15 @@ def search_tags_genre(query):
     
        
     tags = network.search_for_tag(query)
-    print "tags"
-    print tags
+    LOG.info("tags")
+    LOG.info(tags)
     
     
     flag = True
     
     for i, tag in enumerate(tags.get_next_page()):        
         if i == 0:
-            print "we find it top", tag, query
+            LOG.info("we find it top", tag, query)
             continue
         
             
@@ -143,11 +143,11 @@ def search_top_tracks(query):
     try:
         tracks = artist.get_top_tracks()
     except WSError:
-        print "No artist with that name"
+        LOG.info("No artist with that name")
         return None
     
     beans = []    
-    print "Tracks: ", tracks 
+    LOG.info("Tracks: ", tracks)
         
     for track in tracks:
         
@@ -156,11 +156,11 @@ def search_top_tracks(query):
         except AttributeError:
             track_item = track['item']
         
-        #print track.get_duration()
+        #LOG.info(track.get_duration()
         
         bean = CommonBean(name=str(track_item), path="", type=CommonBean.TYPE_MUSIC_URL, parent=query);
         #norm_duration = track_item.get_duration() / 1000
-        #print track_item.get_duration(), norm_duration
+        #LOG.info(track_item.get_duration(), norm_duration
         #bean.time = normilize_time(norm_duration)
         beans.append(bean)
         
@@ -181,7 +181,7 @@ def search_top_similar(query):
         except AttributeError:
             artist_txt = artist['item']
             
-        print artist, artist_txt
+        LOG.info(artist, artist_txt)
         title = str(artist_txt)
         bean = CommonBean(name=title, path="", type=CommonBean.TYPE_FOLDER, color="GREEN", parent=query);
         beans.append(bean)

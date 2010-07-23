@@ -85,4 +85,4 @@ class PlaylistModel:
         self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type])
 
     def __del__(self, *a):
-        print "del"
+        LOG.info("del")

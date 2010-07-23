@@ -43,7 +43,7 @@ class RadioListCntr():
                 if getUrl:                
                     urlStation = getUrl         
                     nameDef = getPlsName(nameDef) + " [" + urlStation + " ]"
-                    print nameDef
+                    LOG.info(nameDef)
             elif urlStation.endswith(".m3u"):
                 content = get_content(urlStation)
                 for line in content.rsplit():
@@ -89,8 +89,7 @@ class RadioListCntr():
         
     def onPlaySong(self, w, e):
         if is_double_click(e):
-            print w
-            print e
+            LOG.info(w, e)
             playlistBean = self.current_list_model.get_selected_bean()
             playlistBean.type = CommonBean.TYPE_RADIO_URL  
                      
@@ -100,9 +99,9 @@ class RadioListCntr():
             if not playlistBean.path.startswith("http"):
                 return None
             
-            print playlistBean.path
+            LOG.info(playlistBean.path)
             remotefile = urllib2.urlopen(playlistBean.path)
-            print "INFO", remotefile
+            LOG.info("INFO", remotefile)
             if not remotefile.info() or remotefile.info()["Content-Type"].find("text") == -1:
                 self.playerCntr.playSong(playlistBean)                
             else:            

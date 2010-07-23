@@ -115,7 +115,7 @@ class Vkontakte:
         #Do not run to offten
         cur_time = time.time()
         if cur_time - self.execute_time < 0.5:
-            print "Sleep because to many requests..."
+            LOG.info("Sleep because to many requests...")
             time.sleep(0.8)        
         self.execute_time = time.time()
         
@@ -145,7 +145,7 @@ class Vkontakte:
         #Do not run to offten
         cur_time = time.time()
         if cur_time - self.execute_time < 0.5:
-            print "Sleep because to many requests..."
+            LOG.info("Sleep because to many requests...")
             time.sleep(0.8)        
         self.execute_time = time.time()
         
@@ -178,8 +178,8 @@ class Vkontakte:
         #get most relatives times time
         r_count = max(times_count.values())
         r_time = self.find_time_value(times_count, r_count)
-        print "Print Song time", r_time
-        print "Print Count of congs", r_count
+        LOG.info("LOG.info(Song time", r_time)
+        LOG.info("LOG.info(Count of congs", r_count)
         
         for song in vkSongs:
             if song.time == r_time:        
@@ -210,7 +210,7 @@ class Vkontakte:
         #page = page.decode("cp1251")
         #unicode(page, "cp1251")
         
-        #print page
+        #LOG.info(page
                 
         reg_all = "([^<>]*)"
         resultall = re.findall("return operate\(([\w() ,']*)\);", page, re.IGNORECASE)
@@ -238,11 +238,11 @@ class Vkontakte:
                 urls.append(url)
                 ids.append(id_id)
         
-        #print len(resultall), resultall
-        #print len(urls), urls
-        #print len(result_album), result_album
-        #print len(result_track), result_track
-        print len(result_time), result_time
+        #LOG.info(len(resultall), resultall
+        #LOG.info(len(urls), urls
+        #LOG.info(len(result_album), result_album
+        #LOG.info(len(result_track), result_track
+        LOG.info(len(result_time), result_time)
         
         for i in xrange(len(result_time)):    
             id = ids[i]       
@@ -269,7 +269,7 @@ class Vkontakte:
         result_title = re.findall(u"\"title([0-9]*)\\\\\">" + reg_all + "", result, re.IGNORECASE | re.UNICODE)
         result_time = re.findall("duration\\\\\">" + reg_all, result, re.IGNORECASE | re.UNICODE)
         result_lyr = re.findall(ur"showLyrics" + reg_all, result, re.IGNORECASE | re.UNICODE)
-        print "lyr:::", result_lyr
+        LOG.info("lyr:::", result_lyr)
         songs = []
         j = 0
         for i, artist in enumerate(result_artist):
@@ -283,7 +283,7 @@ class Vkontakte:
             artist = self.to_good_chars(artist)
             song = VKSong(path, artist, title, result_time[i]);            
             songs.append(song)        
-        print len(songs)
+        LOG.info(len(songs))
         return self.convert_vk_songs_to_beans(songs)    
 
     def to_good_chars(self, line):
@@ -327,12 +327,12 @@ def get_group_id(str):
     
     
 #vk = Vkontakte("qax@bigmir.net", "foobnix")
-#print vk.get_s_value()
-#print vk.get_cookie()
+#LOG.info(vk.get_s_value()
+#LOG.info(vk.get_cookie()
 #line = "http://vkontakte.ru/audio.php?id=7185772"
-#print vk.find_most_relative_song("madonna")
+#LOG.info(vk.find_most_relative_song("madonna")
 
 #s = "http://vkontakte.ru/audio.php?id=2765347 < & > ' &#39; &amp;"
-#print unescape(s)    
+#LOG.info(unescape(s)    
 
 

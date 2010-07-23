@@ -114,7 +114,7 @@ class DirectoryCntr():
     
     def appendToPrefListBeans(self, beans, preflist=DEFAULT_LIST):
         if not preflist in self.prefListMap:
-            print "Key not found"
+            LOG.info("Key not found")
             self.prefListMap[preflist] = []
         
         if beans:                    
@@ -149,8 +149,8 @@ class DirectoryCntr():
         
         if event.type == gtk.gdk.KEY_RELEASE: #@UndefinedVariable
             #Enter pressed
-            print event.keyval
-            print event.hardware_keycode
+            LOG.info(event.keyval)
+            LOG.info(event.hardware_keycode)
             if event.hardware_keycode == 119 or event.hardware_keycode == 107:
                 if self.prefModel.getSelectedIndex() > 0:
                     del self.prefListMap[unicode(self.prefModel.getSelected())]
@@ -161,7 +161,7 @@ class DirectoryCntr():
     
     def all(self, *args):
         for arg in args:
-            print arg
+            LOG.info(arg)
     
     
     def getModel(self):
@@ -223,7 +223,7 @@ class DirectoryCntr():
         
         i = 1
         for item in items:
-            print item
+            LOG.info(item)
             if item.parent == None:
                 parent = self.current_list_model.append(None, CommonBean(name=item.name, path=item.path, font="normal", is_visible=True, type=item.type, parent=item.parent, index=i))
             else:
@@ -236,15 +236,15 @@ class DirectoryCntr():
         if self.active_view != self.VIEW_VIRTUAL_LISTS:
             return
         
-        print event
+        LOG.info(event)
         if event.type == gtk.gdk.KEY_RELEASE: #@UndefinedVariable
             #Enter pressed
-            print event.keyval
-            print event.hardware_keycode
+            LOG.info(event.keyval)
+            LOG.info(event.hardware_keycode)
             if event.hardware_keycode == 119 or event.hardware_keycode == 107:
-                print "Delete"
+                LOG.info("Delete")
                 bean = self.current_list_model.get_selected_bean()
-                print bean.index
+                LOG.info(bean.index)
                 if bean.index > 0:
                     self.virtualListCntr.items = self.prefListMap[self.currentListMap]
                     self.virtualListCntr.remove_with_childrens(bean.index - 1, bean.parent)                
@@ -253,7 +253,7 @@ class DirectoryCntr():
     
     def onFiltering(self, *args):   
         text = self.filter.get_text()
-        print "filtering by text", text
+        LOG.info("filtering by text", text)
         self.current_list_model.filterByName(text)
         
     
@@ -275,24 +275,24 @@ class DirectoryCntr():
                 #song.artist =str( audio["artist"][0])
                 #song.album = str(audio["album"][0])
                 #song.tracknumber= str(audio["tracknumber"][0])
-                #print song.title, song.artist, song.album
+                #LOG.info(song.title, song.artist, song.album
                 
                 
     
     
     def populate_playlist(self, append=False):
-        print "Drug begin"
+        LOG.info("Drug begin")
         directoryBean = self.current_list_model.get_selected_bean()
         if not directoryBean:
             return 
         
-        print "Select: ", directoryBean.name, directoryBean.type 
-        print "Drug type", directoryBean.type
+        LOG.info("Select: ", directoryBean.name, directoryBean.type) 
+        LOG.info("Drug type", directoryBean.type)
         
         if directoryBean.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP] :
             songs = self.current_list_model.getChildSongBySelected()
             self.update_songs_time(songs)
-            print "Select songs", songs
+            LOG.info("Select songs", songs)
             if not songs:
                 return
             if append:                  
@@ -316,8 +316,8 @@ class DirectoryCntr():
                 self.playlistCntr.append_notebook_page(directoryBean.name)
                 self.playlistCntr.append_and_play([directoryBean])
         
-        #print "PAGE", self.leftNoteBook.get_current_page() 
-        #print "SET PAGE", self.mainNoteBook.set_current_page(0)
+        #LOG.info("PAGE", self.leftNoteBook.get_current_page() 
+        #LOG.info("SET PAGE", self.mainNoteBook.set_current_page(0)
         
             
     
@@ -326,7 +326,7 @@ class DirectoryCntr():
         for child in row.iterchildren():
             name = child[self.POS_NAME].lower()            
             if name.find(string) >= 0:
-                print "FIND SUB :", name, string
+                LOG.info("FIND SUB :", name, string)
                 child[self.POS_VISIBLE] = True        
             else:               
                 child[self.POS_VISIBLE] = False
@@ -334,7 +334,7 @@ class DirectoryCntr():
                     
         
     def updateDirectoryByPath(self, path):
-        print "Update path", path
+        LOG.info("Update path", path)
         self.musicFolder = path
         self.current_list_model.clear()
         self.addAll()
@@ -408,7 +408,7 @@ class DirectoryCntr():
             try:
                 list = os.listdir(dir)
             except OSError, e:
-                print "Can'r get list of dir", e
+                LOG.info("Can'r get list of dir", e)
             
             if not list:
                 return False

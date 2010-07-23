@@ -15,10 +15,10 @@ def load_urls_name_page():
         if line.find(pre) > 0:
             el = "<td><a href=\""
             url = line[line.find(el) + len(el) :line.find("\" rel")]
-            print url
+            LOG.info(url
             name = url[url.rfind("/") + 1:]
             name = name[:-4]
-            print 
+            LOG.info(
             file.write(name + " = " + url + "\n")
             
     file.close()

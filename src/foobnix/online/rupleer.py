@@ -11,7 +11,7 @@ from string import replace
 def _engine_search(value):
     value = replace(value, " ", "+")
     host = "http://en.vpleer.ru/?q=" + value
-    print host  
+    LOG.info(host)  
     data = urllib2.urlopen(host)
     return data.read()
 
@@ -36,6 +36,6 @@ def find_song_urls(song_title):
     return paths
 
 
-#print "Result:", find_song_urls("Ария - Антихрист")  
+#LOG.info("Result:", find_song_urls("Ария - Антихрист")  
     
     
