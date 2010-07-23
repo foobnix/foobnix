@@ -124,7 +124,7 @@ class PlayerController(BaseController):
         elif song.type == CommonBean.TYPE_MUSIC_URL:
             print "URL PLAYING", song.path
             self.player = self.playerHTTP()                        
-            self.player.set_property("uri", song.path)            
+            self.player.set_property("uri", song.path)                        
             self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
         else:
             self.widgets.seekBar.set_text("Error playing...")
@@ -297,7 +297,9 @@ class PlayerController(BaseController):
     def onBusMessage(self, bus, message): 
         #print message   
         """Show radio info"""
+        
         type = message.type
+            
         if type == gst.MESSAGE_TAG  and message.parse_tag():
             try:
                 self.erros = 0
@@ -332,15 +334,31 @@ class PlayerController(BaseController):
 
         elif type == gst.MESSAGE_ERROR:
             print "MESSAGE_ERROR"
+            
             err, debug = message.parse_error()
-            print "Error: %s" % err, debug
+            print "Error: %s" % err, debug, err.domain, err.code
+            if message.structure:
+                name = message.structure.get_name()
+                print "Structure name:", name
+                # name == "missing-plugin" or
+                
+                #in all cases we break playing, retry only if it paused.  
+                if err.code != 1:
+                    self.widgets.seekBar.set_text(str(err))
+                    self.playerThreadId = None
+                    self.player.set_state(gst.STATE_NULL)
+                    #self.player = None    
+                    time.sleep(4)
+                    return None
+            
+            
             self.widgets.seekBar.set_text(str(err))
             self.playerThreadId = None
             self.player.set_state(gst.STATE_NULL)
             #self.player = None    
             time.sleep(4) 
             self.player.set_state(gst.STATE_NULL)
-            if self.song.type == CommonBean.TYPE_RADIO_URL and self.erros <= 2:
+            if self.song.type == CommonBean.TYPE_RADIO_URL and self.erros <= 1:
                 LOG.error("Error Num", self.erros)
                 self.erros = self.erros + 1;                
                 self.playSong(self.song)       

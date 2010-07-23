@@ -666,8 +666,8 @@
                                     <property name="visible">True</property>
                                     <property name="sensitive">False</property>
                                     <property name="create_folders">False</property>
-                                    <property name="show_hidden">True</property>
                                     <property name="action">select-folder</property>
+                                    <property name="show_hidden">True</property>
                                   </widget>
                                   <packing>
                                     <property name="position">1</property>
@@ -881,7 +881,6 @@
                         </child>
                         <child>
                           <widget class="GtkToolButton" id="show_charts_button">
-                            <property name="visible">True</property>
                             <property name="label" translatable="yes">Charts</property>
                             <property name="use_underline">True</property>
                             <property name="stock_id">gtk-about</property>
@@ -960,6 +959,7 @@
               <widget class="GtkNotebook" id="main_notebook">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="show_tabs">False</property>
                 <child>
                   <widget class="GtkVBox" id="vbox5">
                     <property name="visible">True</property>
@@ -1466,7 +1466,6 @@
                 </child>
                 <child>
                   <widget class="GtkLabel" id="label36">
-                    <property name="visible">True</property>
                     <property name="label" translatable="yes">Radio</property>
                   </widget>
                   <packing>
@@ -1553,7 +1552,6 @@
                 </child>
                 <child>
                   <widget class="GtkLabel" id="label14">
-                    <property name="visible">True</property>
                     <property name="label" translatable="yes">Lyrics</property>
                   </widget>
                   <packing>
