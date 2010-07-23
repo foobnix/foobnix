@@ -77,7 +77,7 @@ class PlayerController(BaseController):
     count = 0
     def playSong(self, song):
         self.song = song
-        print "play song"
+        LOG.info("play song")
                 
         self.stopState()
         
@@ -85,17 +85,17 @@ class PlayerController(BaseController):
             LOG.info("NULL song can't playing")
             return
         
-        print "Path before", song.path
+        LOG.info("Path before", song.path)
         #Try to set resource
         if song.path == None or song.path == "":
-            print "PL CNTR SET PATH"
+            LOG.info("PL CNTR SET PATH")
             self.onlineCntr.setSongResource(song)
         
-        print "Path after", song.path
+        LOG.info("Path after", song.path)
         if song.path == None or song.path == "":
             self.count += 1
-            print "SONG NOT FOUND", song.name
-            print "Count is", self.count
+            LOG.info("SONG NOT FOUND", song.name)
+            LOG.info("Count is", self.count)
             if self.count > 5:
                 return
             return self.next()
@@ -103,10 +103,10 @@ class PlayerController(BaseController):
         self.count = 0
         self.widgets.setLiric(song)
             
-        print "Type", song.type
+        LOG.info("Type", song.type)
        
-        print "MODE", self.mode
-        print "Name", song.name
+        LOG.info("MODE", self.mode)
+        LOG.info("Name", song.name)
         
         if  song.type == CommonBean.TYPE_MUSIC_FILE:
             self.player = self.playerLocal()
@@ -116,13 +116,13 @@ class PlayerController(BaseController):
             self.player.set_property("uri", uri)
             self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
         elif song.type == CommonBean.TYPE_RADIO_URL:
-            print "URL PLAYING", song.path
+            LOG.info("URL PLAYING", song.path)
             self.player = self.playerHTTP()    
             path = get_radio_source(song.path)                    
             self.player.set_property("uri", path)
             self.widgets.seekBar.set_text("Url Playing...")
         elif song.type == CommonBean.TYPE_MUSIC_URL:
-            print "URL PLAYING", song.path
+            LOG.info("URL PLAYING", song.path)
             self.player = self.playerHTTP()                        
             self.player.set_property("uri", song.path)                        
             self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
@@ -254,7 +254,7 @@ class PlayerController(BaseController):
 
         while play_thread_id == self.playerThreadId:
             try:
-                print "Try"
+                LOG.info("Try")
                 time.sleep(0.2)
                 dur_int = self.player.query_duration(self.time_format, None)[0]
                 duration_sec = dur_int / 1000000000
@@ -266,7 +266,7 @@ class PlayerController(BaseController):
                 gtk.gdk.threads_leave() #@UndefinedVariable
                 break
             except:
-                print "Error"
+                LOG.info("Error")
                 pass
                 
         time.sleep(0.5)
@@ -277,7 +277,7 @@ class PlayerController(BaseController):
             try:
                 pos_int = self.player.query_position(self.time_format, None)[0]
             except gst.QueryError: 
-                print "QueryError error..."
+                LOG.info("QueryError error...")
             
             pos_str = convert_ns(pos_int)
             if play_thread_id == self.playerThreadId:
@@ -317,7 +317,7 @@ class PlayerController(BaseController):
                 
     
     def onBusMessage(self, bus, message): 
-        #print message   
+        #LOG.info(message   
         """Show radio info"""
         
         type = message.type
@@ -334,7 +334,7 @@ class PlayerController(BaseController):
                     self.prev_song = self.song
                     LOG.info("show info!", self.song.name)
                     self.onlineCntr.info.show_song_info(self.song)
-                    print self.player.get_state()[1]
+                    LOG.info(self.player.get_state()[1])
             except:
                 LOG.warn("Messege info error appear")
                 pass
@@ -342,11 +342,11 @@ class PlayerController(BaseController):
             
                     
                 
-            #print message.parse_tag()['title']
+            #LOG.info(message.parse_tag()['title']
             
         elif type == gst.MESSAGE_EOS:
             
-            print "MESSAGE_EOS"                
+            LOG.info("MESSAGE_EOS")             
             self.stopState()
             self.playerThreadId = None
                         
@@ -355,13 +355,13 @@ class PlayerController(BaseController):
                             
 
         elif type == gst.MESSAGE_ERROR:
-            print "MESSAGE_ERROR"
+            LOG.info("MESSAGE_ERROR")
             
             err, debug = message.parse_error()
-            print "Error: %s" % err, debug, err.domain, err.code
+            LOG.info("Error: %s" % err, debug, err.domain, err.code)
             if message.structure:
                 name = message.structure.get_name()
-                print "Structure name:", name
+                LOG.info("Structure name:", name)
                 # name == "missing-plugin" or
                 
                 #in all cases we break playing, retry only if it paused.  
@@ -385,7 +385,7 @@ class PlayerController(BaseController):
                 self.playSong(self.song)       
             """Try to play next"""
         else:
-            #print message
+            #LOG.info(message
             pass                   
             
             

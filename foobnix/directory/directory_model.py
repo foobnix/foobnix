@@ -6,6 +6,7 @@ Created on Mar 11, 2010
 import gtk
 import gobject
 from foobnix.model.entity import CommonBean
+from foobnix.util import LOG
 
 class DirectoryModel():
     POS_NAME = 0
@@ -26,7 +27,7 @@ class DirectoryModel():
         #renderer.set_property('editable', True)
 
         
-        print "ATTTR", renderer.get_property("attributes")
+        LOG.info("ATTTR", renderer.get_property("attributes"))
         
         
         column = gtk.TreeViewColumn(_("Title"), renderer, text=0, font=2)
@@ -45,12 +46,12 @@ class DirectoryModel():
         if value:
             selection = self.widget.get_selection()
             model, selected = selection.get_selected()
-            print "VAlue", value          
-            print selected
+            LOG.info("VAlue", value)          
+            LOG.info(selected)
             i = model.get_string_from_iter(selected)
-            print "I ", i
+            LOG.info("I ", i)
             if i.find(":") == -1:
-                print i
+                LOG.info(i)
                 self.current_list_model[int(i)][self.POS_NAME] = value
            
         
@@ -136,7 +137,7 @@ class DirectoryModel():
                 name = str(line[self.POS_NAME]).lower()
 
                 if name.find(query) >= 0:
-                    print "FIND PARENT:", name, query
+                    LOG.info("FIND PARENT:", name, query)
                     line[self.POS_VISIBLE] = True                    
                 else:
                     find = False
@@ -145,7 +146,7 @@ class DirectoryModel():
                         name = str(child[self.POS_NAME]).decode("utf-8").lower()
                         if name.find(query) >= 0:
                             child_count += 1
-                            print "FIND CHILD :", name, query
+                            LOG.info("FIND CHILD :", name, query)
                             child[self.POS_VISIBLE] = True
                             line[self.POS_VISIBLE] = True
                             line[self.POS_FILTER_CHILD_COUNT] = child_count 

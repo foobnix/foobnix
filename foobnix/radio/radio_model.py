@@ -3,6 +3,7 @@ Created on Mar 16, 2010
 
 @author: ivan
 '''
+from foobnix.util import LOG
 '''
 Created on Mar 11, 2010
 
@@ -47,11 +48,11 @@ class RadioListModel:
         return bean
 
     def get_selected_bean(self):
-        print self.widget
+        LOG.info(self.widget)
         selection = self.widget.get_selection()
-        print selection
+        LOG.info(selection)
         model, selected = selection.get_selected()
-        print model, selected
+        LOG.info(model, selected)
         if selected:
             bean = CommonBean()
             bean.icon = model.get_value(selected, self.POS_ICON)
@@ -69,5 +70,5 @@ class RadioListModel:
     def append(self, playlistBean):   
         self.current_list_model.append([playlistBean.icon, playlistBean.tracknumber, playlistBean.name, playlistBean.path, playlistBean.color, playlistBean.index])
 
-    def __del__(self,*a):
-        print "del"
+    def __del__(self, *a):
+        LOG.info("del")

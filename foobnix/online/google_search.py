@@ -6,32 +6,32 @@ Created on 01.06.2010
 from foobnix.online.google.search import GoogleSearch
 import time
 def googleHelp(query):
-    print "Not Found, wait for results from google ..."
+    LOG.info("Not Found, wait for results from google ..."
     results = []
     ask = query.encode('utf-8')
-    print ask
+    LOG.info(ask
 
     gs = GoogleSearch(ask, True, True)
-    print gs
+    LOG.info(gs)
     gs.results_per_page = 10
     results = gs.get_results()
-    print results
+    LOG.info(results)
     for res in results:
         result = res.title.encode('utf8')
         time.sleep(0.05)
         results.append(str(result))
     
-#print googleHelp("madoonna 1")
+#LOG.info(googleHelp("madoonna 1")
 def search():
-    print "Begin"
+    LOG.info("Begin")
     gs = GoogleSearch("quick and dirty")
     gs.results_per_page = 5
     results = gs.get_results()
-    print results
+    LOG.info(results)
     for res in results:
-        print res.title.encode("utf8")
-        print res.desc.encode("utf8")
-        print res.url.encode("utf8")
+        LOG.info(res.title.encode("utf8")
+        LOG.info(res.desc.encode("utf8")
+        LOG.info(res.url.encode("utf8")
 
 search()
         

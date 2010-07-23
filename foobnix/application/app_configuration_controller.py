@@ -4,6 +4,7 @@ Created on Mar 14, 2010
 @author: ivan
 '''
 from foobnix.util.configuration import FConfiguration
+from foobnix.util import LOG
 class AppConfigurationCntrl():
     def __init__(self, gxMain, directoryCntr):
         self.directoryCntr = directoryCntr
@@ -66,7 +67,7 @@ class AppConfigurationCntrl():
     
     def onChangeOnline(self, *args):
         path = self.online_dir.get_filename()        
-        print "Change music online folder", path 
+        LOG.info("Change music online folder", path) 
         FConfiguration().onlineMusicPath = path  
                 
     """ Vkontatke"""
@@ -88,11 +89,12 @@ class AppConfigurationCntrl():
         
     def onChangeMusicFolder(self, path):                
         self.musicFolder = self.folderChoser.get_filename()        
-        print "Change music folder", self.musicFolder 
+        LOG.info("Change music folder", self.musicFolder)
+                 
         self.directoryCntr.updateDirectoryByPath(self.musicFolder)                   
     
     def setMusicFolder(self, path):
-        print "Set Folder", path
+        LOG.info("Set Folder", path)
         self.folderChoser.set_current_folder(path)
         
     def getMusicFolder(self):

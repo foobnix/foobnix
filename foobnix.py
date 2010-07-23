@@ -26,15 +26,18 @@ def is_only_instance():
                      "' | wc -l) > 1 ))") != 0
 
 if __name__ == "__main__":
-    if is_only_instance():
+    LOG.print_debug_info()
+    if is_only_instance():        
         APP_NAME = "foobnix"
         gettext.install(APP_NAME, unicode=True)
         gettext.textdomain(APP_NAME)
         gtk.glade.textdomain(APP_NAME)
         
         AppController(AppView())
+        
         gobject.threads_init()  #@UndefinedVariable
-        gtk.main()    
-        print _("Success")
+        gtk.main()
+            
+        LOG.info(_("Success"))
     else:
         LOG.warn("Other instance of player is already running")

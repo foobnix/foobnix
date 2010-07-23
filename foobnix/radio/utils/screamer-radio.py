@@ -16,7 +16,7 @@ def load_urls_name_page():
         if line.find("sky.fm") > 0:            
             url = line[line.find('<td><a href="')+len('<td><a href="')+1:line.find('/">')]
             name = line[line.find('sky.fm -')+len('sky.fm -')+1:line.find('</a></td>')]
-            print name, url
+            LOG.info(name, url
             urls = get_urls(site + url)
             file.write(name.strip() + " = " + urls + "\n");
     file.close()       
@@ -31,4 +31,4 @@ def get_urls(path):
 
     return result[:-2]
 load_urls_name_page()
-#print get_urls("http://www.screamer-radio.com/directory/show/3825/")
+#LOG.info(get_urls("http://www.screamer-radio.com/directory/show/3825/")

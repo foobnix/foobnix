@@ -21,13 +21,13 @@ class PlayerWidgetsCntl():
         self.playerCntr = playerCntr
         
         self.volume = gxMain.get_widget("volume_hscale")
-        self.volume.connect("change-value",self.onVolumeChange)
+        self.volume.connect("change-value", self.onVolumeChange)
         
         self.seek = gxMain.get_widget("seek_eventbox")
-        self.seek.connect("button-press-event",self.onSeek)
+        self.seek.connect("button-press-event", self.onSeek)
         
         self.seekBar = gxMain.get_widget("seek_progressbar")
-        self.timeLabel =  gxMain.get_widget("seek_progressbar")
+        self.timeLabel = gxMain.get_widget("seek_progressbar")
         
         self.vpanel = gxMain.get_widget("vpaned1")
         self.hpanel = gxMain.get_widget("hpaned1")
@@ -79,7 +79,7 @@ class PlayerWidgetsCntl():
         h2 = self.hpanel2.get_position()
         self.hpanel2.set_position(h2 - FConfiguration().hpanelPostition)
     
-    def on_compact_view(self,*args):
+    def on_compact_view(self, *args):
         LOG.debug("position 0")
         h2 = self.hpanel2.get_position()
         self.hpanel2.set_position(h2 + FConfiguration().hpanelPostition)
@@ -100,7 +100,7 @@ class PlayerWidgetsCntl():
                       
    
     def setStatusText(self, text):
-        self.statusbar.push(0,text)
+        self.statusbar.push(0, text)
    
     def setLiric(self, song):
         thread.start_new_thread(self._setLiricThread, (song,))
@@ -108,42 +108,42 @@ class PlayerWidgetsCntl():
     def _setLiricThread(self, song):
         self.tr_textbuffer.set_text("")
         
-        title = ""+song.getTitle()
+        title = "" + song.getTitle()
         for extension in FConfiguration().supportTypes:
             if title.endswith(extension):
-                title = title.replace(extension,"")
+                title = title.replace(extension, "")
                 break
                 
-        print "Get lirics for:", song.getArtist(),  title
+        LOG.info("Get lirics for:", song.getArtist(), title)
         if song.getArtist() and  song.getTitle():
             try:
-                text =  get_lyrics(song.getArtist(), title)
+                text = get_lyrics(song.getArtist(), title)
             except:
                 self.setStatusText(_("Connection lyrics error"))
                 LOG.error("Connection lyrics error")
                 return None
                 
             if text:
-                header = "*** "+ song.getArtist() +" - " +title +" ***" 
-                self.textbuffer.set_text(header+ "\n" +text)
+                header = "*** " + song.getArtist() + " - " + title + " ***" 
+                self.textbuffer.set_text(header + "\n" + text)
                                 
                 LOG.info("try to translate")
                 text_tr = self.getTranstalted(text)
-                self.tr_textbuffer.set_text("*** "+ song.getArtist() +" - " +title +" ***\n" +text_tr)
+                self.tr_textbuffer.set_text("*** " + song.getArtist() + " - " + title + " ***\n" + text_tr)
             else: 
-                self.textbuffer.set_text("Not Found lyrics for "+song.getArtist() +" - "+  title + "\n")
+                self.textbuffer.set_text("Not Found lyrics for " + song.getArtist() + " - " + title + "\n")
     
     def getTranstalted(self, text):
         input = ""
         result = ""
         for line in text.rsplit("\n"):            
             line = line + "#";
-            input+=line
+            input += line
             
         res = translate(input, src="", to="ru")
         
         for line in res.rsplit("#"):
-            result =result+ line + "\n"
+            result = result + line + "\n"
         return result
     
     def is_ascii(self, s):
@@ -169,7 +169,7 @@ class PlayerWidgetsCntl():
             width = self.seek.allocation.width          
             x = event.x
             seekValue = (x + 0.0) / width * 100
-            print seekValue
+            LOG.info(seekValue)
             self.playerCntr.setSeek(seekValue);            
         
     def onVolumeChange(self, widget, obj3, volume):                      
