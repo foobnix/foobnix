@@ -60,5 +60,6 @@ def print_debug_info():
     debug('==Executable Architecture==')
     debug('interpreter:', platform.architecture())
     debug('/bin/ls    :', platform.architecture('/bin/ls'))
+    debug('*******************************************************')
     
         
