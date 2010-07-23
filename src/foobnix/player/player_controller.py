@@ -151,6 +151,7 @@ class PlayerController(BaseController):
         self.widgets.seekBar.set_text("00:00 / 00:00")
         self.playerThreadId = None
         self.player.set_state(gst.STATE_NULL)
+        
     
     def volume_up(self, *args):
         self.setVolume(self.getVolume() + 0.05)
@@ -166,6 +167,15 @@ class PlayerController(BaseController):
     
     def playerHTTP(self):
         LOG.info("Player For remote files")
+        
+        self.playerThreadId = None
+        try:
+            self.player.set_state(gst.STATE_NULL)
+        except:
+            pass
+        self.player = None
+        time.sleep(1)
+        
         self.playbin = gst.element_factory_make("playbin", "player")  
         bus = self.playbin.get_bus()
         bus.add_signal_watch()
@@ -174,6 +184,15 @@ class PlayerController(BaseController):
 
     def playerLocal(self):
         LOG.info("Player Local Files")
+        
+        self.playerThreadId = None
+        try:
+            self.player.set_state(gst.STATE_NULL)
+        except:
+            pass
+        self.player = None
+        time.sleep(1)
+        
         self.playbin = gst.element_factory_make("playbin2", "player")
         bus = self.playbin.get_bus()
         bus.add_signal_watch()
@@ -205,7 +224,10 @@ class PlayerController(BaseController):
         return self.player.get_state()[1] == gst.STATE_NULL
     
     def _get_state(self):
-        return self.player.get_state()[1]
+        if self.player:
+            return self.player.get_state()[1]
+        else:
+            return None
     
     def setSeek(self, persentValue):  
         if self._isStatusNull():
@@ -348,7 +370,6 @@ class PlayerController(BaseController):
                     self.playerThreadId = None
                     self.player.set_state(gst.STATE_NULL)
                     #self.player = None    
-                    time.sleep(4)
                     return None
             
             

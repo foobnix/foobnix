@@ -103,68 +103,222 @@ copying build/lib.linux-i686-2.6/foobnix/radio/radio_controller.py -> /usr/local
 copying build/lib.linux-i686-2.6/foobnix/version.py -> /usr/local/lib/python2.6/dist-packages/foobnix
 copying build/lib.linux-i686-2.6/foobnix/player/player_widgets_cntr.py -> /usr/local/lib/python2.6/dist-packages/foobnix/player
 copying build/lib.linux-i686-2.6/foobnix/player/player_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/player
-copying build/lib.linux-i686-2.6/foobnix/player/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/player
-copying build/lib.linux-i686-2.6/foobnix/preferences/pref_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/preferences
-copying build/lib.linux-i686-2.6/foobnix/preferences/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/preferences
-copying build/lib.linux-i686-2.6/foobnix/playlist/playlist_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/playlist
-copying build/lib.linux-i686-2.6/foobnix/playlist/playlist_model.py -> /usr/local/lib/python2.6/dist-packages/foobnix/playlist
-copying build/lib.linux-i686-2.6/foobnix/playlist/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/playlist
-copying build/lib.linux-i686-2.6/foobnix/model/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/model
-copying build/lib.linux-i686-2.6/foobnix/model/entity.py -> /usr/local/lib/python2.6/dist-packages/foobnix/model
-copying build/lib.linux-i686-2.6/foobnix/application/app_view.py -> /usr/local/lib/python2.6/dist-packages/foobnix/application
-copying build/lib.linux-i686-2.6/foobnix/application/app_configuration_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/application
-copying build/lib.linux-i686-2.6/foobnix/application/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/application
-copying build/lib.linux-i686-2.6/foobnix/application/app_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/application
-copying build/lib.linux-i686-2.6/foobnix/glade/preferences.glade -> /usr/local/lib/python2.6/dist-packages/foobnix/glade
-copying build/lib.linux-i686-2.6/foobnix/glade/foobnix.png -> /usr/local/lib/python2.6/dist-packages/foobnix/glade
-copying build/lib.linux-i686-2.6/foobnix/glade/foobnix.glade -> /usr/local/lib/python2.6/dist-packages/foobnix/glade
-copying build/lib.linux-i686-2.6/foobnix/directory/pref_list_model.py -> /usr/local/lib/python2.6/dist-packages/foobnix/directory
-copying build/lib.linux-i686-2.6/foobnix/directory/virtuallist_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/directory
-copying build/lib.linux-i686-2.6/foobnix/directory/directory_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/directory
-copying build/lib.linux-i686-2.6/foobnix/directory/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/directory
-copying build/lib.linux-i686-2.6/foobnix/directory/directory_model.py -> /usr/local/lib/python2.6/dist-packages/foobnix/directory
-copying build/lib.linux-i686-2.6/foobnix/base/base_list_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/base
-copying build/lib.linux-i686-2.6/foobnix/base/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/base
-copying build/lib.linux-i686-2.6/foobnix/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix
-copying build/lib.linux-i686-2.6/foobnix/window/window_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/window
-copying build/lib.linux-i686-2.6/foobnix/window/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/window
-copying build/lib.linux-i686-2.6/foobnix/trayicon/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/trayicon
-copying build/lib.linux-i686-2.6/foobnix/online/information_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
-copying build/lib.linux-i686-2.6/foobnix/online/vk.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
-copying build/lib.linux-i686-2.6/foobnix/online/google_search.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
-copying build/lib.linux-i686-2.6/foobnix/online/online_model.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
-copying build/lib.linux-i686-2.6/foobnix/online/online_controller.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
-copying build/lib.linux-i686-2.6/foobnix/online/google_utils.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
-copying build/lib.linux-i686-2.6/foobnix/online/rupleer.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
-copying build/lib.linux-i686-2.6/foobnix/online/search_panel.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
-copying build/lib.linux-i686-2.6/foobnix/online/google/BeautifulSoup.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
-copying build/lib.linux-i686-2.6/foobnix/online/google/translate.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
-copying build/lib.linux-i686-2.6/foobnix/online/google/search.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
-copying build/lib.linux-i686-2.6/foobnix/online/google/googlesets.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
-copying build/lib.linux-i686-2.6/foobnix/online/google/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
-copying build/lib.linux-i686-2.6/foobnix/online/google/browser.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
-copying build/lib.linux-i686-2.6/foobnix/online/google/sponsoredlinks.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/google
-copying build/lib.linux-i686-2.6/foobnix/online/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
-copying build/lib.linux-i686-2.6/foobnix/online/song_resource.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
-copying build/lib.linux-i686-2.6/foobnix/online/dowload_util.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online
-copying build/lib.linux-i686-2.6/foobnix/online/integration/lastfm.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/integration
-copying build/lib.linux-i686-2.6/foobnix/online/integration/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/online/integration
-copying build/lib.linux-i686-2.6/foobnix/thirdparty/pylast.py -> /usr/local/lib/python2.6/dist-packages/foobnix/thirdparty
-copying build/lib.linux-i686-2.6/foobnix/thirdparty/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/thirdparty
-copying build/lib.linux-i686-2.6/foobnix/util/LOG.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
-copying build/lib.linux-i686-2.6/foobnix/util/time_utils.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
-copying build/lib.linux-i686-2.6/foobnix/util/mouse_utils.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
-copying build/lib.linux-i686-2.6/foobnix/util/plsparser.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
-copying build/lib.linux-i686-2.6/foobnix/util/file_utils.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
-copying build/lib.linux-i686-2.6/foobnix/util/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
-copying build/lib.linux-i686-2.6/foobnix/util/configuration.py -> /usr/local/lib/python2.6/dist-packages/foobnix/util
-copying build/lib.linux-i686-2.6/foobnix/lyric/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/lyric
-copying build/lib.linux-i686-2.6/foobnix/lyric/lyr.py -> /usr/local/lib/python2.6/dist-packages/foobnix/lyric
-byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/radio/radios.py to radios.pyc
-byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/radio/radio_model.py to radio_model.pyc
-byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/radio/__init__.py to __init__.pyc
-byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/radio/radio_controller.py to radio_controller.pyc
-byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/version.py to version.pyc
+copying build/lib.linux-i686-2.6/foobnix/player/__init__.py -> /usr/local/lib/python2.6/dist-packages/foobnix/playermsgfmt: ошибка открытия файла "mo/ru/foobnix.mo" для записи: No such file or directory
+generating mo/ru/foobnix.mo
+Traceback (most recent call last):
+  File "setup.py", line 47, in <module>
+    os.mkdir("mo/" + lang + "/")
+OSError: [Errno 2] No such file or directory: 'mo/uk/'
+
+
+
+
+../src/
+../src/COPYING
+../src/radio/
+../src/radio/GUZEI.COM.fpl
+../src/radio/SKY.FM.fpl
+../src/radio/DI.FM.fpl
+../src/radio/MYRADIO.UA.fpl
+../src/files.txt
+../src/.lock.pod
+../src/doc-pak/
+../src/doc-pak/COPYING
+../src/doc-pak/README
+../src/doc-pak/TODO
+../src/doc-pak/CHANGELOG
+../src/foobnix.py
+../src/README
+../src/foobnix.desktop
+../src/po/
+../src/po/uk.po
+../src/po/messages.po
+../src/po/ru.po
+../src/po/he.po
+../src/po/POTFILES.in
+../src/TRANSLATORS
+../src/scripts/
+../src/scripts/update-po
+../src/scripts/to-deb.sh
+../src/scripts/pycheck
+../src/scripts/pycheck-svndiff
+../src/scripts/info.txt
+../src/scripts/uninstall.sh
+../src/scripts/upload.py
+../src/scripts/release.sh
+../src/foobnix/
+../src/foobnix/radio/
+../src/foobnix/radio/radios.pyc
+../src/foobnix/radio/__init__.pyc
+../src/foobnix/radio/radio_model.pyc
+../src/foobnix/radio/radio_controller.pyc
+../src/foobnix/radio/radios.py
+../src/foobnix/radio/radio_model.py
+../src/foobnix/radio/__init__.py
+../src/foobnix/radio/utils/
+../src/foobnix/radio/utils/myradio_ua.py
+../src/foobnix/radio/utils/di_fm.py
+../src/foobnix/radio/utils/screamer-radio.py
+../src/foobnix/radio/utils/Connector.py
+../src/foobnix/radio/utils/guzei.py
+../src/foobnix/radio/utils/__init__.py
+../src/foobnix/radio/radio_controller.py
+../src/foobnix/version.py
+../src/foobnix/player/
+../src/foobnix/player/player_widgets_cntr.py
+../src/foobnix/player/__init__.pyc
+../src/foobnix/player/player_controller.pyc
+../src/foobnix/player/player_controller.py
+../src/foobnix/player/player_widgets_cntr.pyc
+../src/foobnix/player/__init__.py
+../src/foobnix/__init__.pyc
+../src/foobnix/pixmaps/
+../src/foobnix/pixmaps/foobnix-big.png
+../src/foobnix/pixmaps/foobnix.png
+../src/foobnix/pixmaps/foobnix-64.png
+../src/foobnix/pixmaps/foobnix-192.png
+../src/foobnix/pixmaps/blank-disc.jpg
+../src/foobnix/pixmaps/foobnix-14.png
+../src/foobnix/preferences/
+../src/foobnix/preferences/__init__.pyc
+../src/foobnix/preferences/pref_controller.pyc
+../src/foobnix/preferences/pref_controller.py
+../src/foobnix/preferences/__init__.py
+../src/foobnix/playlist/
+../src/foobnix/playlist/playlist_controller.py
+../src/foobnix/playlist/__init__.pyc
+../src/foobnix/playlist/playlist_model.py
+../src/foobnix/playlist/playlist_model.pyc
+../src/foobnix/playlist/__init__.py
+../src/foobnix/playlist/playlist_controller.pyc
+../src/foobnix/model/
+../src/foobnix/model/__init__.pyc
+../src/foobnix/model/__init__.py
+../src/foobnix/model/entity.pyc
+../src/foobnix/model/entity.py
+../src/foobnix/application/
+../src/foobnix/application/app_view.py
+../src/foobnix/application/__init__.pyc
+../src/foobnix/application/app_view.pyc
+../src/foobnix/application/app_controller.pyc
+../src/foobnix/application/app_configuration_controller.py
+../src/foobnix/application/__init__.py
+../src/foobnix/application/app_configuration_controller.pyc
+../src/foobnix/application/app_controller.py
+../src/foobnix/glade/
+../src/foobnix/glade/preferences.glade
+../src/foobnix/glade/foobnix.png
+../src/foobnix/glade/Cover.jpg
+../src/foobnix/glade/foobnix.glade
+../src/foobnix/glade/foobnix.glade.h
+../src/foobnix/directory/
+../src/foobnix/directory/pref_list_model.py
+../src/foobnix/directory/__init__.pyc
+../src/foobnix/directory/directory_model.pyc
+../src/foobnix/directory/pref_list_model.pyc
+../src/foobnix/directory/virtuallist_controller.py
+../src/foobnix/directory/directory_controller.py
+../src/foobnix/directory/directory_controller.pyc
+../src/foobnix/directory/__init__.py
+../src/foobnix/directory/directory_model.py
+../src/foobnix/directory/virtuallist_controller.pyc
+../src/foobnix/foobnix
+../src/foobnix/base/
+../src/foobnix/base/base_list_controller.py
+../src/foobnix/base/__init__.pyc
+../src/foobnix/base/__init__.py
+../src/foobnix/base/base_list_controller.pyc
+../src/foobnix/__init__.py
+../src/foobnix/window/
+../src/foobnix/window/window_controller.py
+../src/foobnix/window/__init__.pyc
+../src/foobnix/window/window_controller.pyc
+../src/foobnix/window/__init__.py
+../src/foobnix/trayicon/
+../src/foobnix/trayicon/__init__.pyc
+../src/foobnix/trayicon/__init__.py
+../src/foobnix/online/
+../src/foobnix/online/information_controller.py
+../src/foobnix/online/information_controller.pyc
+../src/foobnix/online/search_panel.pyc
+../src/foobnix/online/__init__.pyc
+../src/foobnix/online/dowload_util.pyc
+../src/foobnix/online/vk.py
+../src/foobnix/online/google_search.py
+../src/foobnix/online/online_model.pyc
+../src/foobnix/online/online_model.py
+../src/foobnix/online/vk.pyc
+../src/foobnix/online/online_controller.py
+../src/foobnix/online/google_utils.py
+../src/foobnix/online/rupleer.py
+../src/foobnix/online/google_utils.pyc
+../src/foobnix/online/search_panel.py
+../src/foobnix/online/google/
+../src/foobnix/online/google/BeautifulSoup.py
+../src/foobnix/online/google/search.pyc
+../src/foobnix/online/google/__init__.pyc
+../src/foobnix/online/google/translate.py
+../src/foobnix/online/google/search.py
+../src/foobnix/online/google/googlesets.py
+../src/foobnix/online/google/translate.pyc
+../src/foobnix/online/google/__init__.py
+../src/foobnix/online/google/browser.py
+../src/foobnix/online/google/sponsoredlinks.py
+../src/foobnix/online/google/browser.pyc
+../src/foobnix/online/google/BeautifulSoup.pyc
+../src/foobnix/online/__init__.py
+../src/foobnix/online/song_resource.py
+../src/foobnix/online/dowload_util.py
+../src/foobnix/online/song_resource.pyc
+../src/foobnix/online/integration/
+../src/foobnix/online/integration/__init__.pyc
+../src/foobnix/online/integration/lastfm.pyc
+../src/foobnix/online/integration/lastfm.py
+../src/foobnix/online/integration/__init__.py
+../src/foobnix/online/online_controller.pyc
+../src/foobnix/thirdparty/
+../src/foobnix/thirdparty/__init__.pyc
+../src/foobnix/thirdparty/pylast.py
+../src/foobnix/thirdparty/pylast.pyc
+../src/foobnix/thirdparty/__init__.py
+../src/foobnix/util/
+../src/foobnix/util/LOG.py
+../src/foobnix/util/time_utils.py
+../src/foobnix/util/__init__.pyc
+../src/foobnix/util/plsparser.pyc
+../src/foobnix/util/time_utils.pyc
+../src/foobnix/util/LOG.pyc
+../src/foobnix/util/file_utils.pyc
+../src/foobnix/util/mouse_utils.pyc
+../src/foobnix/util/mouse_utils.py
+../src/foobnix/util/plsparser.py
+../src/foobnix/util/file_utils.py
+../src/foobnix/util/__init__.py
+../src/foobnix/util/configuration.pyc
+../src/foobnix/util/configuration.py
+../src/foobnix/lyric/
+../src/foobnix/lyric/__init__.pyc
+../src/foobnix/lyric/lyr.pyc
+../src/foobnix/lyric/__init__.py
+../src/foobnix/lyric/lyr.py
+../src/list.txt
+../src/__init__.py
+../src/1
+../src/setup.py
+../src/TODO
+../src/description-pak
+../src/CHANGELOG
+../src/foobnix.1
+/home/ivan/workspace/foobnix/src
+Please enter your googlecode.com password.
+** Note that this is NOT your Gmail account password! **
+It is the password you use to access Subversion repositories,
+and can be found here: http://code.google.com/hosting/settings
+Please enter your googlecode.com password.
+** Note that this is NOT your Gmail account password! **
+It is the password you use to access Subversion repositories,
+and can be found here: http://code.google.com/hosting/settings
+piling /usr/local/lib/python2.6/dist-packages/foobnix/version.py to version.pyc
 byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/player/player_widgets_cntr.py to player_widgets_cntr.pyc
 byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/player/player_controller.py to player_controller.pyc
 byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/player/__init__.py to __init__.pyc
@@ -257,3 +411,306 @@ checkinstall 1.6.1, Copyright 2002 Felipe Eduardo Sanchez Diaz Duran
 
 
 
+
+
+
+
+
+
+
+generating mo/ru/foobnix.mo
+generating mo/uk/foobnix.mo
+generating mo/he/foobnix.mo
+running install
+running build
+running build_py
+copying foobnix/directory/directory_controller.py -> build/lib.linux-i686-2.6/foobnix/directory
+copying foobnix/directory/__init__.py -> build/lib.linux-i686-2.6/foobnix/directory
+copying foobnix/directory/directory_model.py -> build/lib.linux-i686-2.6/foobnix/directory
+package init file 'foobnix/glade/__init__.py' not found (or not a regular file)
+creating build/lib.linux-i686-2.6/foobnix/lyric
+copying foobnix/online/search_panel.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/__init__.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/song_resource.py -> build/lib.linux-i686-2.6/foobnix/online
+copying foobnix/online/dowload_util.py -> build/lib.linux-i686-2.6/foobnix/online
+creating build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/BeautifulSoup.py -> build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/translate.py -> build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/search.py -> build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/googlesets.py -> build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/__init__.py -> build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/browser.py -> build/lib.linux-i686-2.6/foobnix/online/google
+copying foobnix/online/google/sponsoredlinks.py -> build/lib.linux-i686-2.6/foobnix/online/google
+creating build/lib.linux-i686-2.6/foobnix/online/integration
+copying foobnix/online/integration/lastfm.py -> build/lib.linux-i686-2.6/foobnix/online/integration
+copying foobnix/online/integration/__init__.py -> build/lib.linux-i686-2.6/foobnix/online/integration
+creating build/lib.linux-i686-2.6/foobnix/player
+copying foobnix/player/player_widgets_cntr.py -> build/lib.linux-i686-2.6/foobnix/player
+copying foobnix/player/player_controller.py -> build/lib.linux-i686-2.6/foobnix/player
+copying foobnix/radio/radio_model.py -> build/lib.linux-i686-2.6/foobnix/radio
+copying foobnix/radio/__init__.py -> build/lib.linux-i686-2.6/foobnix/radio
+copying foobnix/radio/radio_controller.py -> build/lib.linux-i686-2.6/foobnix/radio
+creating build/lib.linux-i686-2.6/foobnix/thirdparty
+copying foobnix/thirdparty/pylast.py -> build/lib.linux-i686-2.6/foobnix/thirdparty
+creating build/lib.linux-i686-2.6/foobnix/glade
+copying foobnix/glade/preferences.glade -> build/lib.linux-i686-2.6/foobnix/glade
+copying foobnix/glade/foobnix.glade -> build/lib.linux-i686-2.6/foobnix/glade
+copying foobnix/glade/foobnix.png -> build/lib.linux-i686-2.6/foobnix/glade
+package init file 'foobnix/glade/__init__.py' not found (or not a regular file)
+running build_scripts
+creating build/scripts-2.6
+copying and adjusting foobnix/foobnix -> build/scripts-2.6
+changing mode of build/scripts-2.6/foobnix from 644 to 755
+running install_lib
+copying build/lib.linux-i686-2.6/foobnix/version.py -> /usr/local/lib/python2.6/dist-packages/foobnix
+byte-compiling /usr/local/lib/python2.6/dist-packages/foobnix/version.py to version.pyc
+running install_scripts
+copying build/scripts-2.6/foobnix -> /usr/local/bin
+changing mode of /usr/local/bin/foobnix to 755
+running install_data
+copying foobnix.1 -> /usr/local/share/man/man1
+copying mo/uk/foobnix.mo -> /usr/share/locale/uk/LC_MESSAGES
+copying mo/he/foobnix.mo -> /usr/share/locale/he/LC_MESSAGES
+copying mo/ru/foobnix.mo -> /usr/share/locale/ru/LC_MESSAGES
+running install_egg_info
+Removing /usr/local/lib/python2.6/dist-packages/foobnix-0.1.8.egg-info
+Writing /usr/local/lib/python2.6/dist-packages/foobnix-0.1.8.egg-info
+Can't chown folder ~user/.foobnix
+Cleaning up...
+
+
+Copying documentation directory...
+./
+./COPYING
+./README
+./TODO
+./CHANGELOG
+
+
+
+
+
+
+
+
+
+
+
+**********************************************************************
+
+
+**********************************************************************
+
+../src/
+../src/COPYING
+../src/radio/
+../src/radio/GUZEI.COM.fpl
+../src/radio/SKY.FM.fpl
+../src/radio/DI.FM.fpl
+../src/radio/MYRADIO.UA.fpl
+../src/files.txt
+../src/.lock.pod
+../src/doc-pak/
+../src/doc-pak/COPYING
+../src/doc-pak/README
+../src/doc-pak/TODO
+../src/doc-pak/CHANGELOG
+../src/foobnix.py
+../src/README
+../src/foobnix.desktop
+../src/po/
+../src/po/uk.po
+../src/po/messages.po
+../src/po/ru.po
+../src/po/he.po
+../src/po/POTFILES.in
+../src/TRANSLATORS
+../src/scripts/
+../src/scripts/update-po
+../src/scripts/to-deb.sh
+../src/scripts/pycheck
+../src/scripts/pycheck-svndiff
+../src/scripts/info.txt
+../src/scripts/uninstall.sh
+../src/scripts/upload.py
+../src/scripts/release.sh
+../src/foobnix/
+../src/foobnix/radio/
+../src/foobnix/radio/radios.pyc
+../src/foobnix/radio/__init__.pyc
+../src/foobnix/radio/radio_model.pyc
+../src/foobnix/radio/radio_controller.pyc
+../src/foobnix/radio/radios.py
+../src/foobnix/radio/radio_model.py
+../src/foobnix/radio/__init__.py
+../src/foobnix/radio/utils/
+../src/foobnix/radio/utils/myradio_ua.py
+../src/foobnix/radio/utils/di_fm.py
+../src/foobnix/radio/utils/screamer-radio.py
+../src/foobnix/radio/utils/Connector.py
+../src/foobnix/radio/utils/guzei.py
+../src/foobnix/radio/utils/__init__.py
+../src/foobnix/radio/radio_controller.py
+../src/foobnix/player/
+../src/foobnix/player/player_widgets_cntr.py
+../src/foobnix/player/__init__.pyc
+../src/foobnix/player/player_controller.pyc
+../src/foobnix/player/player_controller.py
+../src/foobnix/player/player_widgets_cntr.pyc
+../src/foobnix/player/__init__.py
+../src/foobnix/__init__.pyc
+../src/foobnix/pixmaps/
+../src/foobnix/pixmaps/foobnix-big.png
+../src/foobnix/pixmaps/foobnix.png
+../src/foobnix/pixmaps/foobnix-64.png
+../src/foobnix/pixmaps/foobnix-192.png
+../src/foobnix/pixmaps/blank-disc.jpg
+../src/foobnix/pixmaps/foobnix-14.png
+../src/foobnix/preferences/
+../src/foobnix/preferences/__init__.pyc
+../src/foobnix/preferences/pref_controller.pyc
+../src/foobnix/preferences/pref_controller.py
+../src/foobnix/preferences/__init__.py
+../src/foobnix/playlist/
+../src/foobnix/playlist/playlist_controller.py
+../src/foobnix/playlist/__init__.pyc
+../src/foobnix/playlist/playlist_model.py
+../src/foobnix/playlist/playlist_model.pyc
+../src/foobnix/playlist/__init__.py
+../src/foobnix/playlist/playlist_controller.pyc
+../src/foobnix/model/
+../src/foobnix/model/__init__.pyc
+../src/foobnix/model/__init__.py
+../src/foobnix/model/entity.pyc
+../src/foobnix/model/entity.py
+../src/foobnix/application/
+../src/foobnix/application/app_view.py
+../src/foobnix/application/__init__.pyc
+../src/foobnix/application/app_view.pyc
+../src/foobnix/application/app_controller.pyc
+../src/foobnix/application/app_configuration_controller.py
+../src/foobnix/application/__init__.py
+../src/foobnix/application/app_configuration_controller.pyc
+../src/foobnix/application/app_controller.py
+../src/foobnix/glade/
+../src/foobnix/glade/preferences.glade
+../src/foobnix/glade/foobnix.png
+../src/foobnix/glade/Cover.jpg
+../src/foobnix/glade/foobnix.glade
+../src/foobnix/glade/foobnix.glade.h
+../src/foobnix/directory/
+../src/foobnix/directory/pref_list_model.py
+../src/foobnix/directory/__init__.pyc
+../src/foobnix/directory/directory_model.pyc
+../src/foobnix/directory/pref_list_model.pyc
+../src/foobnix/directory/virtuallist_controller.py
+../src/foobnix/directory/directory_controller.py
+../src/foobnix/directory/directory_controller.pyc
+../src/foobnix/directory/__init__.py
+../src/foobnix/directory/directory_model.py
+../src/foobnix/directory/virtuallist_controller.pyc
+../src/foobnix/base/
+../src/foobnix/base/base_list_controller.py
+../src/foobnix/base/__init__.pyc
+../
+
+
+
+
+
+obnix/base/__init_
+
+
+
+
+../src/foobnix/base/base_list_controller.pyc
+../src/foobnix/__init__.py
+../src/foobnix/window/
+../src/foobnix/window/window_controller.py
+../src/foobnix/window/__init__.pyc
+../src/foobnix/window/window_controller.pyc
+../src/foobnix/window/__init__.py
+../src/foobnix/trayicon/
+../src/foobnix/trayicon/__init__.pyc
+../src/foobnix/trayicon/__init__.py
+../src/foobnix/online/
+../src/foobnix/online/information_controller.py
+../src/foobnix/online/information_controller.pyc
+../src/foobnix/online/search_panel.pyc
+../src/foobnix/online/__init__.pyc
+../src/foobnix/online/dowload_util.pyc
+../src/foobnix/online/vk.py
+../src/foobnix/online/google_search.py
+../src/foobnix/online/online_model.pyc
+../src/foobnix/online/online_model.py
+../src/foobnix/online/vk.pyc
+../src/foobnix/online/online_controller.py
+../src/foobnix/online/google_utils.py
+../src/foobnix/online/rupleer.py
+../src/foobnix/online/google_utils.pyc
+../src/foobnix/online/search_panel.py
+../src/foobnix/online/google/
+../src/foobnix/online/google/BeautifulSoup.py
+../src/foobnix/online/google/search.pyc
+../src/foobnix/online/google/__init__.pyc
+../src/foobnix/online/google/translate.py
+../src/foobnix/online/google/search.py
+../src/foobnix/online/google/googlesets.py
+../src/foobnix/online/google/translate.pyc
+../src/foobnix/online/google/__init__.py
+../src/foobnix/online/google/browser.py
+../src/foobnix/online/google/sponsoredlinks.py
+../src/foobnix/online/google/browser.pyc
+../src/foobnix/online/google/BeautifulSoup.pyc
+../src/foobnix/online/__init__.py
+../src/foobnix/online/song_resource.py
+../src/foobnix/online/dowload_util.py
+../src/foobnix/online/song_resource.pyc
+../src/foobnix/online/integration/
+../src/foobnix/online/integration/__init__.pyc
+../src/foobnix/online/integration/lastfm.pyc
+../src/foobnix/online/integration/lastfm.py
+../src/foobnix/online/integration/__init__.py
+../src/foobnix/online/online_controller.pyc
+../src/foobnix/thirdparty/
+../src/foobnix/thirdparty/__init__.pyc
+../src/foobnix/thirdparty/pylast.py
+../src/foobnix/thirdparty/pylast.pyc
+../src/foobnix/thirdparty/__init__.py
+../src/foobnix/util/
+../src/foobnix/util/LOG.py
+../src/foobnix/util/time_utils.py
+../src/foobnix/util/__init__.pyc
+../src/foobnix/util/plsparser.pyc
+../src/foobnix/util/time_utils.pyc
+../src/foobnix/util/LOG.pyc
+../src/foobnix/util/file_utils.pyc
+../src/foobnix/util/mouse_utils.pyc
+../src/foobnix/util/mouse_utils.py
+../src/foobnix/util/plsparser.py
+../src/foobnix/util/file_utils.py
+../src/foobnix/util/__init__.py
+../src/foobnix/util/configuration.pyc
+../src/foobnix/util/configuration.py
+../src/foobnix/lyric/
+../src/foobnix/lyric/__init__.pyc
+../src/foobnix/lyric/lyr.pyc
+../src/foobnix/lyric/__init__.py
+../src/foobnix/lyric/lyr.py
+../src/list.txt
+../src/__init__.py
+../src/1
+../src/setup.py
+../src/TODO
+../src/description-pak
+../src/CHANGELOG
+../src/foobnix.1
+/home/ivan/workspace/foobnix/src
+Please enter your googlecode.com password.
+** Note that this is NOT your Gmail account password! **
+It is the password you use to access Subversion repositories,
+and can be found here: http://code.google.com/hosting/settings
+Please enter your googlecode.com password.
+** Note that this is NOT your Gmail account password! **
+It is the password you use to access Subversion repositories,
+and can be found here: http://code.google.com/hosting/settings
