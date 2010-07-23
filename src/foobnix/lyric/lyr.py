@@ -80,6 +80,8 @@ def _get_lyrics(artist, title):
             return content[content.find("<lyric>") + len("<lyric>") : content.find("</lyric>")].strip()
 
 def get_lyrics(artist, title, cache_dir=None):
+    return "Lyrics Disabled"
+
     """
         Get lyrics by artist and title
         set cache_dir to a valid (existing) directory
