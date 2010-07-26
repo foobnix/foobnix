@@ -17,19 +17,22 @@ class AppView():
         self.gxTrayIcon = self.glade_XML(self.gladeMain, "popUpWindow")
         self.gxPref = self.glade_XML(self.gladePref, "window")
         self.gxAbout = self.glade_XML(self.gladeMain, "aboutdialog")
-        about_widget=  self.gxAbout.get_widget("aboutdialog")
-        about_widget.connect("response", lambda *a: about_widget.hide())
+        self.about_widget = self.gxAbout.get_widget("aboutdialog")
+        self.about_widget.connect("response", lambda * a: self.about_widget.hide())
                 
         
         self.playlist = self.gxMain.get_widget("playlist_treeview")
 
+    def close_dialog(self):
+        pass
+        
     def glade_XML(self, main, widget):
         domain = "foobnix"
         try:
-            return gtk.glade.XML(main, widget,domain)
+            return gtk.glade.XML(main, widget, domain)
         except:
             try:
-                return gtk.glade.XML("/usr/local/lib/python2.6/dist-packages/" + main, widget,domain)
+                return gtk.glade.XML("/usr/local/lib/python2.6/dist-packages/" + main, widget, domain)
             except:
                 return gtk.glade.XML("/usr/lib/python2.5/site-packages/" + main, widget, domain)
             
