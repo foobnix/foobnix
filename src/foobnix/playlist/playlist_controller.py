@@ -33,7 +33,7 @@ class PlaylistCntr():
         selected = self.current_list_model.get_selected_bean()
         LOG.info("Drug song", selected, selected.type)
         self.directoryCntr.set_active_view(DirectoryCntr.VIEW_VIRTUAL_LISTS)
-        if selected.type in [CommonBean.TYPE_MUSIC_URL, CommonBean.TYPE_MUSIC_FILE]:
+        if selected.type in [CommonBean.TYPE_MUSIC_URL, CommonBean.TYPE_MUSIC_FILE, CommonBean.TYPE_RADIO_URL]:
             selected.parent = None                            
             self.directoryCntr.append_virtual([selected])
             
