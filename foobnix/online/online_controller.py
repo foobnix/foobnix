@@ -99,7 +99,7 @@ class OnlineListCntr(GObject):
         if selected.type == CommonBean.TYPE_MUSIC_URL:
             selected.parent = None
             self.directoryCntr.append_virtual([selected])
-        elif selected.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP]:
+        elif selected.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP, CommonBean.TYPE_RADIO_URL]:
             selected.type = CommonBean.TYPE_FOLDER
             results = []
             for i in xrange(self.current_list_model.get_size()):
