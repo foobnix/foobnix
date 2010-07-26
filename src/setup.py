@@ -45,7 +45,7 @@ for lang in ('ru', 'uk', 'he'):
     mofile = "mo/" + lang + "/foobnix.mo"
     if not os.path.exists("mo/" + lang + "/"):
         os.mkdir("mo/" + lang + "/")
-    LOG.info("generating", mofile
+    print "generating", mofile
     os.system("msgfmt %s -o %s" % (pofile, mofile))
 
 # Copy script "foobnix" file to foobnix dir:
@@ -117,7 +117,7 @@ try:
     user_info = pwd.getpwnam(str(login))
     uid = user_info.pw_uid
     gid = user_info.pw_gid    
-    LOG.info("Current user id", login, uid, gid
+    print "Current user id", login, uid, gid
     
     os.chown(FOOBNIX_DIR, uid, gid)
     os.chown(FOOBNIX_DIR_RADIO, uid, gid)
@@ -126,11 +126,11 @@ try:
             path = os.path.join(FOOBNIX_DIR_RADIO, item)
             os.chown(path, uid, gid)
 except:
-    LOG.info("Can't chown folder ~user/.foobnix"
+    print "Can't chown folder ~user/.foobnix"
 
 # Cleanup (remove /build, /mo, and *.pyc files:
 
-LOG.info("Cleaning up..."
+print "Cleaning up..."
 try:
     removeall("build/")
     os.rmdir("build/")

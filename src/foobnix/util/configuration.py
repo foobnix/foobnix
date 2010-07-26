@@ -10,7 +10,7 @@ import os, sys
 import tempfile
 from foobnix.util import LOG
 
-VERSION = "0.1.8"
+VERSION = "0.1.8-2"
 LOG.debug('Foobnix version: ', VERSION)
 
 class Singleton(type):
