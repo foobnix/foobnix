@@ -293,9 +293,8 @@ class PlayerController(BaseController):
                 gtk.gdk.threads_leave() #@UndefinedVariable
                 
                 """report now playing song"""
-                print "report", song, "1", song.getArtist(), "2", song.getTitle()
+                
                 if song.getArtist() and song.getTitle():
-                    print song.getArtist(), song.getTitle()
                     self.erros = 0
                     scrobler.report_now_playing(song.getArtist(), song.getTitle())
                 
