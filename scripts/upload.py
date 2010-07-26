@@ -88,7 +88,7 @@ def upload(file, project_name, user_name, password, summary, labels=None):
 
   upload_host = '%s.googlecode.com' % project_name
   upload_uri = '/files'
-  auth_token = base64.b64encode('%s:%s'% (user_name, password))
+  auth_token = base64.b64encode('%s:%s' % (user_name, password))
   headers = {
     'Authorization': 'Basic %s' % auth_token,
     'User-Agent': 'Googlecode.com uploader v0.9.4',
@@ -177,10 +177,10 @@ def upload_find_auth(file_path, project_name, summary, labels=None,
       user_name = sys.stdin.readline().rstrip()
     if password is None:
       # Read password if not loaded from svn config, or on subsequent tries.
-      LOG.info('Please enter your googlecode.com password.'
-      LOG.info('** Note that this is NOT your Gmail account password! **'
-      LOG.info('It is the password you use to access Subversion repositories,'
-      LOG.info('and can be found here: http://code.google.com/hosting/settings'
+      print 'Please enter your googlecode.com password.'
+      print '** Note that this is NOT your Gmail account password! **'
+      print 'It is the password you use to access Subversion repositories,'
+      print 'and can be found here: http://code.google.com/hosting/settings'
       password = getpass.getpass()
 
     status, reason, url = upload(file_path, project_name, user_name, password,
@@ -235,12 +235,12 @@ def main():
                                          options.summary, labels,
                                          options.user, options.password)
   if url:
-    LOG.info('The file was uploaded successfully.'
-    LOG.info('URL: %s' % url
+    print 'The file was uploaded successfully.'
+    print 'URL: %s' % url
     return 0
   else:
-    LOG.info('An error occurred. Your file was not uploaded.'
-    LOG.info('Google Code upload server said: %s (%s)' % (reason, status)
+    print 'An error occurred. Your file was not uploaded.'
+    print 'Google Code upload server said: %s (%s)' % (reason, status)
     return 1
 
 
