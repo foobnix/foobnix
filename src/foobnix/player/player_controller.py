@@ -77,7 +77,7 @@ class PlayerController(BaseController):
     count = 0
     def playSong(self, song):
         self.song = song
-        LOG.info("play song")
+        LOG.info("play song", song.name, song.getArtist(), song.getTitle())
                 
         self.stopState()
         
@@ -293,7 +293,9 @@ class PlayerController(BaseController):
                 gtk.gdk.threads_leave() #@UndefinedVariable
                 
                 """report now playing song"""
+                print "report", song, "1", song.getArtist(), "2", song.getTitle()
                 if song.getArtist() and song.getTitle():
+                    print song.getArtist(), song.getTitle()
                     self.erros = 0
                     scrobler.report_now_playing(song.getArtist(), song.getTitle())
                 
@@ -322,7 +324,7 @@ class PlayerController(BaseController):
         
         type = message.type
             
-        if type == gst.MESSAGE_TAG  and message.parse_tag():
+        if self.song.type == CommonBean.TYPE_RADIO_URL and type == gst.MESSAGE_TAG  and message.parse_tag():
             try:
                 self.erros = 0
                 title = message.structure['title']
