@@ -5,11 +5,12 @@ Created on 01.06.2010
 '''
 from foobnix.online.google.search import GoogleSearch
 import time
+from foobnix.util import LOG
 def googleHelp(query):
-    LOG.info("Not Found, wait for results from google ..."
+    LOG.info("Not Found, wait for results from google ...")
     results = []
     ask = query.encode('utf-8')
-    LOG.info(ask
+    LOG.info(ask)
 
     gs = GoogleSearch(ask, True, True)
     LOG.info(gs)
@@ -29,9 +30,9 @@ def search():
     results = gs.get_results()
     LOG.info(results)
     for res in results:
-        LOG.info(res.title.encode("utf8")
-        LOG.info(res.desc.encode("utf8")
-        LOG.info(res.url.encode("utf8")
+        LOG.info(res.title.encode("utf8"))
+        LOG.info(res.desc.encode("utf8"))
+        LOG.info(res.url.encode("utf8"))
 
 search()
         
