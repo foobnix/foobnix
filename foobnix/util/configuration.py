@@ -8,14 +8,11 @@ from __future__ import with_statement
 import pickle
 import os, sys
 import tempfile
-from foobnix.util import LOG
 import ConfigParser
 from foobnix.util.singleton import Singleton
+from foobnix.util import LOG
 
 VERSION = "0.1.8-2"
-LOG.debug('Foobnix version: ', VERSION)
-
-
 
 class FConfiguration:
     

@@ -5,36 +5,42 @@ Created on Feb 26, 2010
 '''
 
 import sys
-import logging
 import platform
+import logging
 
-LOG_FILENAME = '/tmp/foobnix.log'
-LEVELS = {'debug': logging.DEBUG,
+
+def init():
+    LOG_FILENAME = '/tmp/foobnix.log'
+    LEVELS = {'debug': logging.DEBUG,
           'info': logging.INFO,
           'warning': logging.WARNING,
           'error': logging.ERROR,
           'critical': logging.CRITICAL}
-
-logging.basicConfig(filename=LOG_FILENAME, level=logging.NOTSET)
-
+    logging.basicConfig(filename=LOG_FILENAME, level=logging.NOTSET)
+    
 
 def debug(*args):
+    init()
     print "DEBUG:", args
     logging.debug(args)
 
-def info(*args):    
+def info(*args): 
+    init()   
     print "INFO:", args
     logging.info(args)
 
-def warn(*args):    
+def warn(*args):
+    init()    
     print  "WARN:", args
     logging.warn(args)    
 
-def error(*args):    
+def error(*args):
+    init()    
     print >> sys.stderr, "ERROR", args
     logging.error(args)
 
 def print_debug_info():
+    init()
     debug('*************** PLATFORM INFORMATION ************************')
     
     debug('==Interpreter==')
