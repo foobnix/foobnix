@@ -9,29 +9,36 @@ import pickle
 import os, sys
 import tempfile
 from foobnix.util import LOG
+import ConfigParser
+from foobnix.util.singleton import Singleton
 
 VERSION = "0.1.8-2"
 LOG.debug('Foobnix version: ', VERSION)
 
-class Singleton(type):
-    def __call__(self, *args, **kw):
-        if self.instance is None:
-            self.instance = super(Singleton, self).__call__(*args, **kw)
-        return self.instance
-    
-    def __init__(self, name, bases, dict):
-        super(Singleton, self).__init__(name, bases, dict)
-        self.instance = None
+
 
 class FConfiguration:
+    
+    FOOBNIX = "foobnix"
+    SUPPORTED_AUDIO_FORMATS = 'supported_audio_formats'
+    
     __metaclass__ = Singleton
-    CFG_FILE = (os.getenv("HOME") or os.getenv('USERPROFILE')) + "/foobnix_conf.pkl"
+    USER_DIR = os.getenv("HOME") or os.getenv('USERPROFILE')
+    CFG_FILE = USER_DIR + "/foobnix_conf.pkl"
+    
+    config = ConfigParser.RawConfigParser()
+    config.read(os.path.join(USER_DIR,"/.foobnix/foobnix.cfg"))
+    
+    
+    def get(self, type):
+        return self.config.get(self.FOOBNIX, self.SUPPORTED_AUDIO_FORMATS)
     
     def __init__(self, is_load_file=True):
         
         self.mediaLibraryPath = tempfile.gettempdir()
         self.onlineMusicPath = tempfile.gettempdir()
         self.supportTypes = [".mp3", ".ogg", ".ape", ".flac", ".wma"]
+        
         self.isRandom = False
         self.isRepeat = True
         self.isPlayOnStart = False
