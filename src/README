@@ -1,10 +1,21 @@
-Foobnix GTK+ Music Player
+Самый простое скачать и установить (открыть в GDebi):
+foobnix_XXX.deb
+http://code.google.com/p/foobnix/downloads/list 
 
-==INSTALL==
+Альтертанивная установка из tar.gz
+#1 sudo apt-get install gettext python-mutagen python-simplejson python-setuptools
+#2 скачть tar.gz, расспаковать, установить:
+#3 sudo python setup.py install
 
-1)install dependencies
->> sudo apt-get install subversion, gettextj, python-setuptools
+Обновление до последней версии из репозитория (Не обязятельно) 
+#1 Установить пакеты:
+sudo apt-get install subversion gettext python-mutagen python-simplejson python-setuptools
+#2 Скачать-обновить программу
+svn checkout http://foobnix.googlecode.com/svn/trunk/ foobnix-read-only
+#3 Установить и запустить
+cd foobnix-read-only/src
+sudo python setup.py install
+foobnix 
 
-2)install player from source
->> sudo python setup.py install
-
+Восстановить настройки плеера по умолчанию
+Необходимо удалить конфигурационный файл файл ~user/foobnix.pkl
