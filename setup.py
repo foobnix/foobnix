@@ -1,16 +1,12 @@
 #!/usr/bin/env python
 
-import os, glob, shutil, pwd
+import os, glob, shutil
 from distutils.core import setup
-from foobnix.util.configuration import VERSION
+from foobnix.util.configuration import VERSION, FOOBNIX_TMP, FOOBNIX_TMP_RADIO
 
-FOOBNIX_DIR = (os.getenv("HOME") or os.getenv('USERPROFILE')) + "/.foobnix"
-FOOBNIX_DIR_RADIO = FOOBNIX_DIR + "/radio"
-FOOBNIX_TMP_RADIO = "/opt/foobnix/radio"
-
-if not os.path.exists(FOOBNIX_DIR):
-    os.mkdir(FOOBNIX_DIR)
-    os.mkdir(FOOBNIX_DIR_RADIO)
+if not os.path.exists(FOOBNIX_TMP):
+    os.mkdir(FOOBNIX_TMP)
+    os.mkdir(FOOBNIX_TMP_RADIO)
 
 def capture(cmd):
     return os.popen(cmd).read().strip()
@@ -99,6 +95,7 @@ setup(name='foobnix',
         #package_dir={"src/foobnix": "foobnix/"},
         scripts=['foobnix/foobnix'],
         data_files=[('share/foobnix', ['README', 'CHANGELOG', 'TODO', 'TRANSLATORS']),
+                    (FOOBNIX_TMP, ['version']),
                     ('share/applications', ['foobnix.desktop']),
                     ('share/pixmaps', glob.glob('foobnix/pixmaps/*')),
                     (FOOBNIX_TMP_RADIO, glob.glob('radio/*')),
@@ -110,24 +107,6 @@ setup(name='foobnix',
                     
         )
 
-
-
-"""Change permissions for foobnix folder"""
-try:
-    login = os.getlogin()
-    user_info = pwd.getpwnam(str(login))
-    uid = user_info.pw_uid
-    gid = user_info.pw_gid    
-    print "Current user id", login, uid, gid
-    
-    os.chown(FOOBNIX_DIR, uid, gid)
-    os.chown(FOOBNIX_DIR_RADIO, uid, gid)
-    
-    for item in os.listdir(FOOBNIX_DIR_RADIO):
-            path = os.path.join(FOOBNIX_DIR_RADIO, item)
-            os.chown(path, uid, gid)
-except:
-    print "Can't chown folder ~user/.foobnix"
 
 # Cleanup (remove /build, /mo, and *.pyc files:
 

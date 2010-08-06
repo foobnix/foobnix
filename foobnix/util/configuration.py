@@ -12,10 +12,22 @@ import ConfigParser
 from foobnix.util.singleton import Singleton
 from foobnix.util import LOG
 
+FOOBNIX_TMP = "/opt/foobnix"
+FOOBNIX_TMP_RADIO = os.path.join(FOOBNIX_TMP, "radio")
+FOOBNIX_VERSION_FILE_NAME = "version"
+
+
 """get last version from file"""
 def get_version():
-    result = "A" 
-    with file("version", 'r') as v_file:
+    result = "A"
+    version_file = None
+    if os.path.exists(os.path.join(FOOBNIX_TMP, FOOBNIX_VERSION_FILE_NAME)):
+        version_file = os.path.join(FOOBNIX_TMP, FOOBNIX_VERSION_FILE_NAME)
+    elif os.path.exists(FOOBNIX_VERSION_FILE_NAME):
+        version_file = os.path.join(FOOBNIX_VERSION_FILE_NAME)
+     
+    with file(version_file, 'r') as v_file:
+        
         for line in v_file:      
             line = str(line).strip()     
             if line.find("VERSION=") >= 0:             
@@ -29,6 +41,8 @@ VERSION = get_version()
 
 class FConfiguration:
     
+    
+    
     FOOBNIX = "foobnix"
     SUPPORTED_AUDIO_FORMATS = 'supported_audio_formats'
     
@@ -37,7 +51,7 @@ class FConfiguration:
     CFG_FILE = USER_DIR + "/foobnix_conf.pkl"
     
     config = ConfigParser.RawConfigParser()
-    config.read(os.path.join(USER_DIR, "/.foobnix/foobnix.cfg"))
+    config.read(os.path.join(USER_DIR, "foobnix.cfg"))
     
     
     def get(self, type):

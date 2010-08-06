@@ -132,6 +132,7 @@
 /usr/local/share/foobnix/CHANGELOG
 /usr/local/share/foobnix/TODO
 /usr/local/share/foobnix/TRANSLATORS
+/opt/foobnix/version
 /usr/local/share/applications/foobnix.desktop
 /usr/local/share/pixmaps/foobnix-big.png
 /usr/local/share/pixmaps/foobnix.png
@@ -147,4 +148,4 @@
 /usr/share/locale/uk/LC_MESSAGES/foobnix.mo
 /usr/share/locale/he/LC_MESSAGES/foobnix.mo
 /usr/share/locale/ru/LC_MESSAGES/foobnix.mo
-/usr/local/lib/python2.6/dist-packages/foobnix-0.1.8_3.egg-info
+/usr/local/lib/python2.6/dist-packages/foobnix-0.1.8_4.egg-info

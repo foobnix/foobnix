@@ -16,7 +16,7 @@ class Config:
     
     USER_DIR = os.getenv("HOME") or os.getenv('USERPROFILE')
     CFG_LOCAL_FILE = USER_DIR + "/foobnix.cfg"
-    CFG_INSTALLED_FILE = USER_DIR + "/.foobnix/foobnix.cfg"
+    CFG_INSTALLED_FILE = USER_DIR + "/foobnix.cfg"
     CFG_LOCAL_TEST_FILE = "../../foobnix.cfg"
      
     def __init__(self):
