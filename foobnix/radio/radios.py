@@ -9,7 +9,7 @@ from foobnix.util import LOG
 
 
 FOOBNIX_DIR = (os.getenv("HOME") or os.getenv('USERPROFILE')) + "/.foobnix"
-FOOBNIX_DIR_RADIO = FOOBNIX_DIR + "/radio"
+FOOBNIX_DIR_RADIO = "/opt/foobnix/radio"
 
 EXTENSION = ".fpl"
 

@@ -6,7 +6,7 @@ from foobnix.util.configuration import VERSION
 
 FOOBNIX_DIR = (os.getenv("HOME") or os.getenv('USERPROFILE')) + "/.foobnix"
 FOOBNIX_DIR_RADIO = FOOBNIX_DIR + "/radio"
-FOOBNIX_TMP_RADIO = "/tmp/foobnix/radio"
+FOOBNIX_TMP_RADIO = "/opt/foobnix/radio"
 
 if not os.path.exists(FOOBNIX_DIR):
     os.mkdir(FOOBNIX_DIR)

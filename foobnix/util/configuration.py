@@ -6,13 +6,26 @@ Created on Feb 27, 2010
 '''
 from __future__ import with_statement
 import pickle
-import os, sys
+import os
 import tempfile
 import ConfigParser
 from foobnix.util.singleton import Singleton
 from foobnix.util import LOG
 
-VERSION = "0.1.8-3"
+"""get last version from file"""
+def get_version():
+    result = "A" 
+    with file("version", 'r') as v_file:
+        for line in v_file:      
+            line = str(line).strip()     
+            if line.find("VERSION=") >= 0:             
+                result = line[len("VERSION="):]
+            elif line.find("RELEASE=") >= 0:  
+                result += "-" + line[len("RELEASE="):]  
+    return result
+
+VERSION = get_version()        
+
 
 class FConfiguration:
     

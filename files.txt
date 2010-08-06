@@ -139,10 +139,10 @@
 /usr/local/share/pixmaps/foobnix-192.png
 /usr/local/share/pixmaps/blank-disc.jpg
 /usr/local/share/pixmaps/foobnix-14.png
-/tmp/foobnix/radio/GUZEI.COM.fpl
-/tmp/foobnix/radio/SKY.FM.fpl
-/tmp/foobnix/radio/DI.FM.fpl
-/tmp/foobnix/radio/MYRADIO.UA.fpl
+/opt/foobnix/radio/GUZEI.COM.fpl
+/opt/foobnix/radio/SKY.FM.fpl
+/opt/foobnix/radio/DI.FM.fpl
+/opt/foobnix/radio/MYRADIO.UA.fpl
 /usr/local/share/man/man1/foobnix.1
 /usr/share/locale/uk/LC_MESSAGES/foobnix.mo
 /usr/share/locale/he/LC_MESSAGES/foobnix.mo
