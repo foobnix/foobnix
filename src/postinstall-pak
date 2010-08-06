@@ -1,0 +1,6 @@
+#!/bin/sh
+echo Copy radiostation to $HOME/.foobnix/radio
+mkdir -p $HOME/.foobnix/radio
+cp /tmp/foobnix/radio/* $HOME/.foobnix/radio
+echo "chown" $LOGNAME:$LOGNAME -R $HOME/.foobnix
+chown $LOGNAME:$LOGNAME -R $HOME/.foobnix

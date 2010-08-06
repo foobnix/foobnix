@@ -12,7 +12,7 @@ import ConfigParser
 from foobnix.util.singleton import Singleton
 from foobnix.util import LOG
 
-VERSION = "0.1.8-2"
+VERSION = "0.1.8-3"
 
 class FConfiguration:
     
@@ -24,7 +24,7 @@ class FConfiguration:
     CFG_FILE = USER_DIR + "/foobnix_conf.pkl"
     
     config = ConfigParser.RawConfigParser()
-    config.read(os.path.join(USER_DIR,"/.foobnix/foobnix.cfg"))
+    config.read(os.path.join(USER_DIR, "/.foobnix/foobnix.cfg"))
     
     
     def get(self, type):

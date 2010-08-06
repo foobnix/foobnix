@@ -4,11 +4,11 @@ rm  ../../deb/*.deb
 rm ../../deb/*.tar.gz
 cd ../
 
-python setup.py install --record files.txt
+sudo python setup.py install --record files.txt
 cat files.txt | sudo xargs rm -rf
 
 VERSION=0.1.8
-RELEASE=2
+RELEASE=3
 
 checkinstall \
 -y \
@@ -36,4 +36,4 @@ pwd
 cd scripts
 
 ./upload.py --summary=foobnix_$VERSION-$RELEASE.tar.gz --project=foobnix --user=ivan.ivanenko@gmail.com --labels=Featured ../../deb/foobnix_$VERSION-$RELEASE.tar.gz
-./upload.py --summary=foobnix_$VERSION-2_i386.deb --project=foobnix --user=ivan.ivanenko@gmail.com --labels=Featured ../../deb/foobnix_$VERSION-2_i386.deb
+./upload.py --summary=foobnix_$VERSION-2_i386.deb --project=foobnix --user=ivan.ivanenko@gmail.com --labels=Featured ../../deb/foobnix_$VERSION-3_i386.deb
