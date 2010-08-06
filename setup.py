@@ -6,6 +6,7 @@ from foobnix.util.configuration import VERSION
 
 FOOBNIX_DIR = (os.getenv("HOME") or os.getenv('USERPROFILE')) + "/.foobnix"
 FOOBNIX_DIR_RADIO = FOOBNIX_DIR + "/radio"
+FOOBNIX_TMP_RADIO = "/tmp/foobnix/radio"
 
 if not os.path.exists(FOOBNIX_DIR):
     os.mkdir(FOOBNIX_DIR)
@@ -100,7 +101,7 @@ setup(name='foobnix',
         data_files=[('share/foobnix', ['README', 'CHANGELOG', 'TODO', 'TRANSLATORS']),
                     ('share/applications', ['foobnix.desktop']),
                     ('share/pixmaps', glob.glob('foobnix/pixmaps/*')),
-                    (FOOBNIX_DIR_RADIO, glob.glob('radio/*')),
+                    (FOOBNIX_TMP_RADIO, glob.glob('radio/*')),
                     ('share/man/man1', ['foobnix.1']),
                     ('/usr/share/locale/uk/LC_MESSAGES', ['mo/uk/foobnix.mo']),
                     ('/usr/share/locale/he/LC_MESSAGES', ['mo/he/foobnix.mo']),
