@@ -210,11 +210,11 @@ class InformationController():
     def show_song_info_tread(self, song):
         self.song = song
         LOG.info("Get all possible information about song")
-        try:
-            image_url = self.get_album_image_url(song)            
-        except:
-            LOG.error("Image url dowlaod error")
-            image_url = None
+        
+        image_url = self.get_album_image_url(song)            
+        
+        #    LOG.error("Image url dowlaod error")
+        #    image_url = None
             
         if not image_url:
             LOG.info("Image not found, load empty.")
@@ -292,7 +292,10 @@ class InformationController():
         album = track.get_album()
         if album:           
             self.album_name.set_markup("<b>" + song.getArtist() + " - " + album.get_name() + " (" + album.get_release_year() + ")</b>")
-        
+        else:
+            self.album_name.set_markup(u"<b>" + song.getArtist() + "</b>")
+                
+            
                 
         #album = self.last_fm_network.get_album(song.getArtist(), song.getTitle())
         
@@ -305,6 +308,7 @@ class InformationController():
         
         LOG.info("Find album", album)
         
+        
         if self.last_album_name == album.get_name():
             LOG.info("Album the same, not need to dowlaod image")
             #TODO  need to implement album image cache
@@ -312,10 +316,11 @@ class InformationController():
         
         if not album:
             return None
+        
         LOG.info(album)
         try:
+            self.last_album_name = album.get_name()            
             image = album.get_cover_image(size=pylast.COVER_EXTRA_LARGE)
-            self.last_album_name = album.get_name()
         except:            
             LOG.info("image not found for:", song)
         

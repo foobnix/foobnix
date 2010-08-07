@@ -82,11 +82,13 @@ class CueReader():
     
     def get_common_beans(self):
         beans = []
-        for track  in self.parse().tracks:
+        cue = self.parse()
+        for track  in cue.tracks:
             bean = CommonBean(name=track.performer + " - " + track.title, path=track.path, type=CommonBean.TYPE_MUSIC_FILE)
             bean.start_at = track.get_start_time_sec()
             bean.duration = track.duration        
             bean.time = normilize_time(track.duration)
+            bean.parent = cue.performer + " - " + cue.title
             
             beans.append(bean)    
             
