@@ -18,9 +18,12 @@ class DirectoryModel():
     POS_PARENT = 6
     POS_FILTER_CHILD_COUNT = 7
     
+    POS_START_AT = 8
+    POS_DURATION = 9
+    
     def __init__(self, widget):
         self.widget = widget
-        self.current_list_model = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int, str, str)
+        self.current_list_model = gtk.TreeStore(str, str, str, gobject.TYPE_BOOLEAN, str, int, str, str, str, str)
         renderer = gtk.CellRendererText()
         #renderer.connect('edited', self.editRow)
         
@@ -56,7 +59,7 @@ class DirectoryModel():
            
         
     def append(self, level, bean):
-        return self.current_list_model.append(level, [bean.name, bean.path, bean.font, bean.is_visible, bean.type, bean.index, bean.parent, bean.child_count])
+        return self.current_list_model.append(level, [bean.name, bean.path, bean.font, bean.is_visible, bean.type, bean.index, bean.parent, bean.child_count, bean.start_at, bean.duration])
         
     def clear(self):
         self.current_list_model.clear() 
@@ -86,7 +89,9 @@ class DirectoryModel():
             bean.type = model.get_value(iter, self.POS_TYPE)
             bean.index = model.get_value(iter, self.POS_INDEX)
             bean.parent = model.get_value(iter, self.POS_PARENT)
-            bean.child_count = model.get_value(iter, self.POS_FILTER_CHILD_COUNT)                  
+            bean.child_count = model.get_value(iter, self.POS_FILTER_CHILD_COUNT)
+            bean.start_at = model.get_value(iter, self.POS_START_AT)
+            bean.duration = model.get_value(iter, self.POS_DURATION)                  
             return bean
         return None
     
@@ -100,6 +105,8 @@ class DirectoryModel():
         bean.font = self.current_list_model[position][ self.POS_FONT]
         bean.parent = self.current_list_model[position][self.POS_PARENT]
         bean.child_count = self.current_list_model[position][self.POS_FILTER_CHILD_COUNT]
+        bean.start_at = self.current_list_model[position][self.POS_START_AT]
+        bean.duration = self.current_list_model[position][self.POS_DURATION]
         return bean
 
     def getAllSongs(self):

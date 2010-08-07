@@ -90,6 +90,9 @@ class PlayerController(BaseController):
         if song.path == None or song.path == "":
             LOG.info("PL CNTR SET PATH")
             self.onlineCntr.setSongResource(song)
+        else:
+            LOG.info("GET SONG INFO", song.getArtist(), song.getTitle())
+            self.onlineCntr.info.show_song_info(song)
         
         LOG.info("Path after", song.path)
         if song.path == None or song.path == "":
@@ -129,11 +132,15 @@ class PlayerController(BaseController):
         else:
             self.widgets.seekBar.set_text("Error playing...")
             return
-                
+
         self.playState()
         
         self.setVolume(self.volume)
+        
+        
         self.emit('song_playback_started', song)
+        
+        
         
                 
     
@@ -239,11 +246,22 @@ class PlayerController(BaseController):
         except:
             LOG.error("Seek for new position error")
             
-        seek_ns = pos_max * persentValue / 100;  
+        seek_ns = pos_max * persentValue / 100;
+        LOG.info("SEC SEEK persent", seek_ns)  
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)
     
+    def set_seek_sec(self, sec):  
+        if self._isStatusNull():
+            self.playerThreadId = None
+            return None
+        
+        seek_ns = int(sec) * 1000000000 ;
+        LOG.info("SEC SEEK SEC", seek_ns)  
+        self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)    
+    
     def playThread(self, song=None):
-        LOG.info("Starts playing thread")        
+        LOG.info("Starts playing thread")
+                
         flag = True
         is_scrobled = False
         play_thread_id = self.playerThreadId
@@ -251,6 +269,10 @@ class PlayerController(BaseController):
         self.widgets.seekBar.set_text("00:00 / 00:00")
         gtk.gdk.threads_leave() #@UndefinedVariable
         sec = 0;
+        
+        print "SONG START", song.start_at
+        if song.start_at > 0:
+            self.set_seek_sec(song.start_at)
 
         while play_thread_id == self.playerThreadId:
             try:

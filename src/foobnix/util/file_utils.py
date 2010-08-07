@@ -8,6 +8,6 @@ import os
 def isDirectory(path):
     return os.path.isdir(path)
 
-def getExtenstion(fileName):
-    return fileName[-4:].lower()
+def get_file_extenstion(fileName):    
+    return os.path.splitext(fileName)[1].lower()
                
