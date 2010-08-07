@@ -37,6 +37,7 @@ class OnlineListCntr(GObject):
         self.search_panel = SearchPanel(gxMain)
         
         self.count = 0
+        self.index = 0
         
         
         self.online_notebook = gxMain.get_widget("online_notebook")
@@ -158,7 +159,7 @@ class OnlineListCntr(GObject):
         normilized = []
         for bean in beans:
             LOG.info("append", bean, bean.path)
-            if bean.path.endswith(".cue"):
+            if bean.path and bean.path.endswith(".cue"):
                 cues = CueReader(bean.path).get_common_beans()
                 for cue in cues:                
                     self.current_list_model.append(cue)
@@ -169,7 +170,7 @@ class OnlineListCntr(GObject):
         return normilized
 
     def append(self, beans):
-        self._populate_model(1)
+        self._populate_model(beans)
         self.current_list_model.repopulate(-1)
 
     def append_and_play(self, beans):
