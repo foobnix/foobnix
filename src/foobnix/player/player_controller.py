@@ -245,8 +245,15 @@ class PlayerController(BaseController):
             pos_max = self.player.query_duration(self.time_format, None)[0]
         except:
             LOG.error("Seek for new position error")
+
+        if self.song and self.song.duration > 0:
+            pos_max = int(self.song.duration) * 1000000000    
             
         seek_ns = pos_max * persentValue / 100;
+        
+        if self.song and self.song.duration > 0:
+            seek_ns = seek_ns + int(self.song.start_at) * 1000000000
+            
         LOG.info("SEC SEEK persent", seek_ns)  
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)
     
@@ -279,8 +286,16 @@ class PlayerController(BaseController):
                 LOG.info("Try")
                 time.sleep(0.2)
                 dur_int = self.player.query_duration(self.time_format, None)[0]
+                
+                if song.duration > 0:
+                    dur_int = int(song.duration) * 1000000000
+                
                 duration_sec = dur_int / 1000000000
+                
                 dur_str = convert_ns(dur_int)
+                
+                
+                
                 gtk.gdk.threads_enter() #@UndefinedVariable
                 
                 self.widgets.seekBar.set_text("00:00 / " + dur_str)                    
@@ -300,6 +315,9 @@ class PlayerController(BaseController):
                 pos_int = self.player.query_position(self.time_format, None)[0]
             except gst.QueryError: 
                 LOG.info("QueryError error...")
+                
+            if song.duration > 0:
+                    pos_int = pos_int - int(song.start_at) * 1000000000
             
             pos_str = convert_ns(pos_int)
             if play_thread_id == self.playerThreadId:
@@ -319,6 +337,9 @@ class PlayerController(BaseController):
                 if song.getArtist() and song.getTitle():
                     self.erros = 0
                     scrobler.report_now_playing(song.getArtist(), song.getTitle())
+            
+            if song.duration > 0 and pos_int > (int(song.duration) - 2) * 1000000000:
+                self.next()
                 
             time.sleep(1)            
             
@@ -336,7 +357,7 @@ class PlayerController(BaseController):
                 if song.getArtist() and song.getTitle():             
                     scrobler.scrobble(song.getArtist(), song.getTitle(), start_time, "P", "", duration_sec)
                     LOG.debug("Song Successfully scrobbled", song.getArtist(), song.getTitle())
-    
+                    
                 
     
     def onBusMessage(self, bus, message): 
