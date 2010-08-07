@@ -25,6 +25,7 @@ from foobnix.online.dowload_util import  get_file_store_path, \
     save_as_song_thread, save_song_thread
 
 from foobnix.online.song_resource import update_song_path
+from foobnix.cue.cue_reader import CueReader
 
 class OnlineListCntr(GObject):
     
@@ -151,11 +152,37 @@ class OnlineListCntr(GObject):
     def SearchingCriteriaBean(self, name):
         return CommonBean(name="Searching: " + name, path=None, color="GREEN", type=CommonBean.TYPE_FOLDER)
 
-    def append(self, beans):
+
+    
+    def _populate_model(self, beans):
+        normilized = []
         for bean in beans:
-            self.current_list_model.append(bean)
-            
+            LOG.info("append", bean, bean.path)
+            if bean.path.endswith(".cue"):
+                cues = CueReader(bean.path).get_common_beans()
+                for cue in cues:                
+                    self.current_list_model.append(cue)
+                    normilized.append(cue)
+            else:
+                self.current_list_model.append(bean)
+                normilized.append(bean)
+        return normilized
+
+    def append(self, beans):
+        self._populate_model(1)
         self.current_list_model.repopulate(-1)
+
+    def append_and_play(self, beans):
+        beans = self._populate_model(beans)
+        if not beans:
+            return None
+        self.index = 0    
+        self.current_list_model.repopulate(self.index)
+        song = beans[self.index]
+        LOG.info("PLAY", song)
+        self.playerCntr.playSong(song)
+    
+        
         
     def on_play_selected(self, similar_songs_model):
         playlistBean = similar_songs_model.get_selected_bean()
@@ -346,13 +373,4 @@ class OnlineListCntr(GObject):
 
         self.current_list_model.repopulate(playlistBean.index);
         return playlistBean
-
-
-    def append_and_play(self, beans):
-        for bean in beans:
-            self.current_list_model.append(bean)
-        self.index = 0    
-        self.current_list_model.repopulate(self.index)
-        song = beans[self.index]
-        LOG.info("PLAY", song)
-        self.playerCntr.playSong(song)
+ 

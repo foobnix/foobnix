@@ -8,6 +8,7 @@ from mutagen.mp3 import MP3, HeaderNotFoundError
 from mutagen import File
 import os
 import gtk
+from foobnix.util.configuration import FConfiguration
 class CommonBean():
     TYPE_FOLDER = "TYPE_FOLDER"    
     TYPE_LABEL = "TYPE_LABEL"
@@ -43,6 +44,9 @@ class CommonBean():
         self.child_count = None
         #self._getMp3Tags()
         
+        self.start_at = None
+        self.duration = None
+        
     
     def getArtist(self):
         if self.artist:
@@ -59,11 +63,17 @@ class CommonBean():
             return self.title
         
         s = self.name.split(" - ")
+        result = ""
         if len(s) > 1:
             title = self.name.split(" - ")[1]
-            return ("" + title).strip()                    
+            result = ("" + title).strip()                    
         else:
-            return self.name
+            result = self.name
+        
+        for ex in FConfiguration().supportTypes:
+            if result.endswith(ex):
+                result = result[:-len(ex)]
+        return result
     
     def setIconPlaying(self):
         self.icon = gtk.STOCK_GO_FORWARD

@@ -27,7 +27,7 @@ checkinstall \
 --deldesc=yes \
 --delspec=yes \
 --backup=no \
---requires="python-mutagen, python-simplejson, python-setuptools,  gstreamer0.10-plugins-good,  gstreamer0.10-plugins-ugly, gstreamer0.10-ffmpeg, python-gst0.10" \
+--requires="python-gtk2, python-glade2, python-mutagen, python-simplejson, python-setuptools,  gstreamer0.10-plugins-good,  gstreamer0.10-plugins-ugly, gstreamer0.10-ffmpeg, python-gst0.10" \
 --maintainer="Ivan Ivanenko ivan.ivanenko@gmail.com" \
 python setup.py install
 

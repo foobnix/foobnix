@@ -23,9 +23,12 @@ class OnlineListModel:
     POS_PARENT = 7
     POS_TIME = 8
     
+    POS_START_AT = 9
+    POS_DURATION = 10
+    
     def __init__(self, widget):
         self.widget = widget
-        self.current_list_model = gtk.ListStore(str, str, str, str, str, int, str, str, str)
+        self.current_list_model = gtk.ListStore(str, str, str, str, str, int, str, str, str, str, str)
                
         cellpb = gtk.CellRendererPixbuf()
         cellpb.set_property('cell-background', 'yellow')
@@ -69,6 +72,8 @@ class OnlineListModel:
         bean.type = self.current_list_model[position][ self.POS_TYPE]
         bean.parent = self.current_list_model[position][ self.POS_PARENT]
         bean.time = self.current_list_model[position][ self.POS_TIME]
+        bean.start_at = self.current_list_model[position][ self.POS_START_AT]
+        bean.duration = self.current_list_model[position][ self.POS_DURATION]
         return bean  
     
     
@@ -114,6 +119,8 @@ class OnlineListModel:
             bean.type = model.get_value(iter, self.POS_TYPE)
             bean.parent = model.get_value(iter, self.POS_PARENT)
             bean.time = model.get_value(iter, self.POS_TIME)
+            bean.start_at = model.get_value(iter, self.POS_START_AT)
+            bean.duration = model.get_value(iter, self.POS_DURATION)
             return bean
         return None
                 
@@ -130,7 +137,7 @@ class OnlineListModel:
             model.remove(iter)
     
     def append(self, bean):   
-        self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent, bean.time])
+        self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent, bean.time, bean.start_at, bean.duration])
 
     def __del__(self, *a):
         LOG.info("del")

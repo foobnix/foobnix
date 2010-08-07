@@ -61,7 +61,7 @@ class FConfiguration:
         
         self.mediaLibraryPath = tempfile.gettempdir()
         self.onlineMusicPath = tempfile.gettempdir()
-        self.supportTypes = [".mp3", ".ogg", ".ape", ".flac", ".wma"]
+        self.supportTypes = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".cue"]
         
         self.isRandom = False
         self.isRepeat = True

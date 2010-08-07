@@ -13,7 +13,7 @@ from foobnix.util import LOG
 from foobnix.directory.directory_model import DirectoryModel
 from foobnix.model.entity import CommonBean
 from foobnix.util.configuration import FConfiguration
-from foobnix.util.file_utils import isDirectory, getExtenstion
+from foobnix.util.file_utils import isDirectory, get_file_extenstion
 import gtk
 from foobnix.directory.pref_list_model import PrefListModel
 import gettext
@@ -21,6 +21,7 @@ from foobnix.util.mouse_utils import  is_double_left_click
 from mutagen.mp3 import MP3
 from foobnix.util.time_utils import normilize_time
 from foobnix.radio.radios import  RadioFolder
+from foobnix.cue.cue_reader import CueReader
 
 
 gettext.install("foobnix", unicode=True)
@@ -291,6 +292,7 @@ class DirectoryCntr():
         
         if directoryBean.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP] :
             songs = self.current_list_model.getChildSongBySelected()
+            
             self.update_songs_time(songs)
             LOG.info("Select songs", songs)
             if not songs:
@@ -348,7 +350,7 @@ class DirectoryCntr():
         list = sorted(list)
         result = []            
         for file_name in list:
-            if getExtenstion(file_name) not in FConfiguration().supportTypes:
+            if get_file_extenstion(file_name) not in FConfiguration().supportTypes:
                     continue
                         
             full_path = path + "/" + file_name
@@ -419,7 +421,7 @@ class DirectoryCntr():
                     if self.isDirectoryWithMusic(full_path):
                         return True                    
                 else:
-                    if getExtenstion(file) in FConfiguration().supportTypes:
+                    if get_file_extenstion(file) in FConfiguration().supportTypes:
                         return True
                     
         return False            
@@ -433,9 +435,12 @@ class DirectoryCntr():
             
             full_path = path + "/" + file
             
-            if not isDirectory(full_path) and getExtenstion(file) not in FConfiguration().supportTypes:
+            if not isDirectory(full_path) and get_file_extenstion(file) not in FConfiguration().supportTypes:
                 continue
       
+            """check cue is valid"""
+            if full_path.endswith(".cue") and not CueReader(full_path).is_cue_valid():
+                continue
             
             if self.isDirectoryWithMusic(full_path):
                 #LOG.debug("directory", file)                
