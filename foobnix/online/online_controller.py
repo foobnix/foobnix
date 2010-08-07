@@ -157,6 +157,7 @@ class OnlineListCntr(GObject):
     
     def _populate_model(self, beans):
         normilized = []
+        """first add cue files"""
         for bean in beans:
             LOG.info("append", bean, bean.path)
             if bean.path and bean.path.endswith(".cue"):
@@ -164,7 +165,10 @@ class OnlineListCntr(GObject):
                 for cue in cues:                
                     self.current_list_model.append(cue)
                     normilized.append(cue)
-            else:
+        
+        """end big file to the end"""
+        for bean in beans:
+            if bean.path and not bean.path.endswith(".cue"):
                 self.current_list_model.append(bean)
                 normilized.append(bean)
         return normilized

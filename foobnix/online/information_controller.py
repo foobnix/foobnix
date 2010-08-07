@@ -190,6 +190,7 @@ class InformationController():
         
         
         self.last_album_name = None
+        self.last_image = None
         
         self.last_fm_network = lastfm
     
@@ -312,7 +313,7 @@ class InformationController():
         if self.last_album_name == album.get_name():
             LOG.info("Album the same, not need to dowlaod image")
             #TODO  need to implement album image cache
-            return None
+            return self.last_image
         
         if not album:
             return None
@@ -320,12 +321,12 @@ class InformationController():
         LOG.info(album)
         try:
             self.last_album_name = album.get_name()            
-            image = album.get_cover_image(size=pylast.COVER_EXTRA_LARGE)
+            self.last_image = album.get_cover_image(size=pylast.COVER_EXTRA_LARGE)
         except:            
             LOG.info("image not found for:", song)
         
-        LOG.info("image:", image)        
-        return image
+        LOG.info("image:", self.last_image)        
+        return self.last_image
     
     def create_pbuf_image_from_url(self, url_to_image):
         f = urllib.urlopen(url_to_image)
