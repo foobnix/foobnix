@@ -52,7 +52,7 @@ class OnlineListCntr(GObject):
     def create_notebook_tab(self):
         treeview = gtk.TreeView()
         treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
-        treeview.set_rubber_banding(False)
+        treeview.set_rubber_banding(True)
         
         treeview.set_reorderable(True)
         model = OnlineListModel(treeview)
