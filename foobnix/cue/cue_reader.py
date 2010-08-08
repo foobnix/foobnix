@@ -6,7 +6,6 @@ Created on 7  2010
 from foobnix.model.entity import CommonBean
 import os
 from foobnix.util.time_utils import normilize_time
-from AptUrl.Parser import parse
 from foobnix.util import LOG, file_utils
 '''
 Created on 4 
