@@ -146,16 +146,24 @@ class InformationController():
     
 
     def set_no_image_album(self):
+        
+        heigth = gtk.gdk.screen_height()            
+        if heigth < 610:
+            image_name = "blank-disc-small.jpg"
+        else:
+            image_name = "blank-disc.jpg"
+        
         try:
-            pix = gtk.gdk.pixbuf_new_from_file("/usr/local/share/pixmaps/blank-disc.jpg") #@UndefinedVariable
-            self.album_image.set_from_pixbuf(pix)
+            pix = gtk.gdk.pixbuf_new_from_file("/usr/local/share/pixmaps/" + image_name) #@UndefinedVariable
         except:
             try:
-                pix = gtk.gdk.pixbuf_new_from_file("/usr/share/pixmaps/blank-disc.jpg") #@UndefinedVariable
-                self.album_image.set_from_pixbuf(pix)
+                pix = gtk.gdk.pixbuf_new_from_file("/usr/share/pixmaps/" + image_name) #@UndefinedVariable
             except:    
-                pix = gtk.gdk.pixbuf_new_from_file("foobnix/pixmaps/blank-disc.jpg") #@UndefinedVariable
-                self.album_image.set_from_pixbuf(pix)
+                pix = gtk.gdk.pixbuf_new_from_file("foobnix/pixmaps/" + image_name) #@UndefinedVariable
+        
+        self.album_image.set_from_pixbuf(pix)
+        
+             
 
     def __init__(self, gx_main, playerCntr, directoryCntr, search_panel):
         
@@ -320,8 +328,14 @@ class InformationController():
         
         LOG.info(album)
         try:
-            self.last_album_name = album.get_name()            
-            self.last_image = album.get_cover_image(size=pylast.COVER_EXTRA_LARGE)
+            self.last_album_name = album.get_name()
+            
+            heigth = gtk.gdk.screen_height()                
+            if heigth < 610:
+                self.last_image = album.get_cover_image(size=pylast.COVER_LARGE)                       
+            else:
+                self.last_image = album.get_cover_image(size=pylast.COVER_EXTRA_LARGE)            
+                
         except:            
             LOG.info("image not found for:", song)
         

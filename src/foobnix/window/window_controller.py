@@ -20,15 +20,15 @@ class WindowController(BaseController):
         self.decorate(gx_main_window)
 
         popup_signals = {
-                "on_gtk-preferences_activate": lambda *a: self.emit('show_preferences'),
-                "on_file_quit_activate": lambda *a: self.emit('exit'),
+                "on_gtk-preferences_activate": lambda * a: self.emit('show_preferences'),
+                "on_file_quit_activate": lambda * a: self.emit('exit'),
                 "on_menu_about_activate": self.show_about_window
         }
         gx_main_window.signal_autoconnect(popup_signals)
 
         self.main_window = gx_main_window.get_widget("foobnixWindow")
         self.main_window.connect("delete-event", self.hide)
-        self.main_window.set_title("Foobnix "+VERSION)
+        self.main_window.set_title("Foobnix " + VERSION)
         self.main_window.maximize()
 
         self.about_window = gx_about.get_widget("aboutdialog")

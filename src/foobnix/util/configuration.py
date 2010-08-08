@@ -70,9 +70,9 @@ class FConfiguration:
         self.savedRadioList = []
         self.savedSongIndex = 0
         self.volumeValue = 50.0
-        self.vpanelPostition = 500
-        self.hpanelPostition = 350
-        self.hpanel2Postition = 500
+        self.vpanelPostition = 234
+        self.hpanelPostition = 370
+        self.hpanel2Postition = 521
         
         self.playlistState = None
         self.radiolistState = None

@@ -19,6 +19,7 @@ from foobnix.base import BaseController
 
 from foobnix.util.configuration import FConfiguration
 from foobnix.online.search_panel import SearchPanel
+import time
 
 class AppController(BaseController):
 
@@ -90,12 +91,12 @@ class AppController(BaseController):
             self.playerWidgets.volume.set_value(FConfiguration().volumeValue)
             self.player_controller.setVolume(FConfiguration().volumeValue / 100)
         
-        if FConfiguration().hpanelPostition:
+        if FConfiguration().hpanelPostition:            
             self.playerWidgets.hpanel.set_position(FConfiguration().hpanelPostition)
+        
         
         if FConfiguration().hpanel2Postition:
             self.playerWidgets.hpanel2.set_position(FConfiguration().hpanel2Postition)
-        
         
         if FConfiguration().vpanelPostition:
             self.playerWidgets.vpanel.set_position(FConfiguration().vpanelPostition)

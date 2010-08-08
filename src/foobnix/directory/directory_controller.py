@@ -83,8 +83,8 @@ class DirectoryCntr():
         show_play_list = gxMain.get_widget("show_lists_button")
         show_play_list.connect("clicked", self.onChangeView, self.VIEW_VIRTUAL_LISTS)
         
-        show_charts_ = gxMain.get_widget("show_charts_button")
-        show_charts_.connect("clicked", self.onChangeView, self.VIEW_CHARTS_LISTS)
+        #show_charts_ = gxMain.get_widget("show_charts_button")
+        #show_charts_.connect("clicked", self.onChangeView, self.VIEW_CHARTS_LISTS)
         
         self.onChangeView
         
