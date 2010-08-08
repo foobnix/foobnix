@@ -1033,6 +1033,7 @@
                                         <property name="vscrollbar_policy">automatic</property>
                                         <child>
                                           <widget class="GtkTreeView" id="treeview_similart_artists">
+                                            <property name="width_request">150</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                           </widget>
