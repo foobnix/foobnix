@@ -1114,7 +1114,7 @@
                                             <property name="vscrollbar_policy">automatic</property>
                                             <child>
                                               <widget class="GtkTreeView" id="treeview_similar_songs">
-                                                <property name="width_request">200</property>
+                                                <property name="width_request">250</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="reorderable">True</property>
@@ -1133,12 +1133,14 @@
                                             <property name="vscrollbar_policy">automatic</property>
                                             <child>
                                               <widget class="GtkTreeView" id="treeview_song_tags">
+                                                <property name="width_request">150</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                               </widget>
                                             </child>
                                           </widget>
                                           <packing>
+                                            <property name="expand">False</property>
                                             <property name="position">1</property>
                                           </packing>
                                         </child>
