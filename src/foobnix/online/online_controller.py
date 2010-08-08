@@ -168,7 +168,7 @@ class OnlineListCntr(GObject):
         
         """end big file to the end"""
         for bean in beans:
-            if bean.path and not bean.path.endswith(".cue"):
+            if not bean.path or (bean.path and not bean.path.endswith(".cue")):
                 self.current_list_model.append(bean)
                 normilized.append(bean)
         return normilized
