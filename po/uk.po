@@ -228,7 +228,7 @@ msgstr "Радио сылка:"
 
 #: .././foobnix/glade/foobnix.glade.h:35
 msgid "Radios"
-msgstr "Радиостанции"
+msgstr "Радио"
 
 #: .././foobnix/glade/foobnix.glade.h:36
 msgid "Random: "
