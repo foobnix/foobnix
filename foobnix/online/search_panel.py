@@ -36,6 +36,7 @@ class SearchPanel(BaseController):
         self.search_text = gx_main.get_widget("search_entry")
         self.search_text.connect("activate", self.on_search)    # GTK manual doesn't recommend to do this
         #self.search_text.connect("key-press-event", self.on_key_pressed)
+        
         search_button = gx_main.get_widget("search_button")
         search_button.connect("clicked", self.on_search)
 
