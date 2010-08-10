@@ -17,7 +17,8 @@ for FILE_NAME in ${LIST[@]}
 do
 	if [ -f ${FILE_PATH}${FILE_NAME} ]
 	then
-		echo file exists ${PATH}${FILE_NAME}
+		echo file exists ${FILE_PATH}${FILE_NAME}
+		echo ./upload.py --summary=${FILE_NAME} --project=foobnix --user=ivan.ivanenko@gmail.com --password=$PASSWORD --labels=Featured ${FILE_PATH}${FILE_NAME}
 		./upload.py --summary=${FILE_NAME} --project=foobnix --user=ivan.ivanenko@gmail.com --password=$PASSWORD --labels=Featured ${FILE_PATH}${FILE_NAME}
 	fi
 done
