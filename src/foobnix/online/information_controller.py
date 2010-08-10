@@ -148,7 +148,7 @@ class InformationController():
     def set_no_image_album(self):
         
         heigth = gtk.gdk.screen_height()            
-        if heigth < 610:
+        if heigth < 800:
             image_name = "blank-disc-small.jpg"
         else:
             image_name = "blank-disc.jpg"
@@ -331,7 +331,7 @@ class InformationController():
             self.last_album_name = album.get_name()
             
             heigth = gtk.gdk.screen_height()                
-            if heigth < 610:
+            if heigth < 800:
                 self.last_image = album.get_cover_image(size=pylast.COVER_LARGE)                       
             else:
                 self.last_image = album.get_cover_image(size=pylast.COVER_EXTRA_LARGE)            

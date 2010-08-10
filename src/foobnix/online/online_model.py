@@ -25,14 +25,15 @@ class OnlineListModel:
     
     POS_START_AT = 9
     POS_DURATION = 10
+    POS_ID3 = 11
     
     def __init__(self, widget):
         self.widget = widget
-        self.current_list_model = gtk.ListStore(str, str, str, str, str, int, str, str, str, str, str)
+        self.current_list_model = gtk.ListStore(str, str, str, str, str, int, str, str, str, str, str, str)
                
         cellpb = gtk.CellRendererPixbuf()
         cellpb.set_property('cell-background', 'yellow')
-        iconColumn = gtk.TreeViewColumn(_('Icon'), cellpb, stock_id=0, cell_background=4)
+        iconColumn = gtk.TreeViewColumn(None, cellpb, stock_id=0, cell_background=4)
         iconColumn.set_fixed_width(5)
         
         descriptionColumn = gtk.TreeViewColumn(_('Artist - Title'), gtk.CellRendererText(), text=self.POS_NAME, background=self.POS_COLOR)
@@ -74,6 +75,7 @@ class OnlineListModel:
         bean.time = self.current_list_model[position][ self.POS_TIME]
         bean.start_at = self.current_list_model[position][ self.POS_START_AT]
         bean.duration = self.current_list_model[position][ self.POS_DURATION]
+        bean.id3 = self.current_list_model[position][ self.POS_ID3]
         return bean  
     
     
@@ -121,6 +123,7 @@ class OnlineListModel:
             bean.time = model.get_value(iter, self.POS_TIME)
             bean.start_at = model.get_value(iter, self.POS_START_AT)
             bean.duration = model.get_value(iter, self.POS_DURATION)
+            bean.id3 = model.get_value(iter, self.POS_ID3)
             return bean
         return None
                 
@@ -136,8 +139,8 @@ class OnlineListModel:
         for iter in iters:
             model.remove(iter)
     
-    def append(self, bean):   
-        self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent, bean.time, bean.start_at, bean.duration])
+    def append(self, bean): 
+        self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent, bean.time, bean.start_at, bean.duration, bean.id3])
 
     def __del__(self, *a):
         LOG.info("del")

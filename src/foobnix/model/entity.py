@@ -24,7 +24,7 @@ class CommonBean():
     genre = ""
     tracknumber = ""
     
-    def __init__(self, name=None, path=None, type=None, is_visible=True, color=None, font="normal", index= -1, parent=None):
+    def __init__(self, name=None, path=None, type=None, is_visible=True, color=None, font="normal", index= -1, parent=None, id3=None):
         self.name = name
         self.path = path
         self.type = type
@@ -42,13 +42,17 @@ class CommonBean():
         self.artist = None
         self.title = None
         self.child_count = None
-        #self._getMp3Tags()
+        
         
         self.start_at = None
         self.duration = None
         
+        self.id3 = None
+        
     
     def getArtist(self):
+        
+        
         if self.artist:
             return self.artist
         
@@ -59,6 +63,8 @@ class CommonBean():
         return ""
     
     def getTitle(self):
+        
+        
         if self.title:
             return self.title
         
@@ -88,7 +94,10 @@ class CommonBean():
         if self.title and self.artist and self.album:
             return self.artist + " - [" + self.album + "]  #" + self.tracknumber + " " + self.title
         else:
-            return self.name
+            if self.id3:
+                return "[" + self.id3 + "] " + self.name
+            else:
+                return self.name
     
     def get_short_description(self):
         if self.title:
@@ -102,7 +111,7 @@ class CommonBean():
             return self.name + " - " + self.title + " (" + self.album + ")" + self.parent
         return self.name
     
-    def _getMp3Tags(self):
+    def getMp3TagsName(self):
         audio = None
         
         if not self.path:
@@ -123,14 +132,16 @@ class CommonBean():
             try:
                 audio = File(self.path)
             except HeaderNotFoundError:
-                pass        
+                pass
+                return None
+                    
+        artist = None
+        title = None
+        if audio and audio.has_key('artist'): artist = audio["artist"][0]
+        if audio and audio.has_key('title'): title = audio["title"][0]
+        if artist and title:
+            return artist + " - " + title
         
-        if audio and audio.has_key('album'): self.album = audio["album"][0]
-        if audio and audio.has_key('artist'): self.artist = audio["artist"][0]
-        if audio and audio.has_key('title'): self.title = audio["title"][0]
-        if audio and audio.has_key('date'): self.date = audio["date"][0]
-        if audio and audio.has_key('genre'): self.genre = audio["genre"][0]
-        if audio and audio.has_key('tracknumber'): self.tracknumber = audio["tracknumber"][0]
     
     def __str__(self):           
         return "Common Bean :" + self.__contcat(

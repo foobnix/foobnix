@@ -95,8 +95,8 @@ class AppController(BaseController):
             self.playerWidgets.hpanel.set_position(FConfiguration().hpanelPostition)
         
         
-        if FConfiguration().hpanel2Postition:
-            self.playerWidgets.hpanel2.set_position(FConfiguration().hpanel2Postition)
+#        if FConfiguration().hpanel2Postition:
+#            self.playerWidgets.hpanel2.set_position(FConfiguration().hpanel2Postition)
         
         if FConfiguration().vpanelPostition:
             self.playerWidgets.vpanel.set_position(FConfiguration().vpanelPostition)
@@ -124,8 +124,8 @@ class AppController(BaseController):
             FConfiguration().vpanelPostition = self.playerWidgets.vpanel.get_position()
         if self.playerWidgets.hpanel.get_position() > 0:
             FConfiguration().hpanelPostition = self.playerWidgets.hpanel.get_position()        
-        if self.playerWidgets.hpanel2.get_position() > 0:
-            FConfiguration().hpanel2Postition = self.playerWidgets.hpanel2.get_position()
+        #if self.playerWidgets.hpanel2.get_position() > 0:
+        #    FConfiguration().hpanel2Postition = self.playerWidgets.hpanel2.get_position()
         
         FConfiguration().mediaLibraryPath = self.appConfCntr.getMusicFolder()
         

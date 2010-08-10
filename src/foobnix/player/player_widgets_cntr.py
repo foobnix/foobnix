@@ -35,8 +35,8 @@ class PlayerWidgetsCntl():
         
         #self.hpanel.set_property("position-set", True)
         
-        self.hpanel2 = gxMain.get_widget("hpaned2")
-        print "POSITION", self.hpanel2.get_position()
+        #self.hpanel2 = gxMain.get_widget("vpaned1")
+        #print "POSITION", self.hpanel2.get_position()
         
         
         self.lyric = gxMain.get_widget("lyric_textview")
@@ -76,22 +76,9 @@ class PlayerWidgetsCntl():
         
    
     def on_full_view(self, *args):
-        LOG.debug("hpanel", self.hpanel.get_position())
-        LOG.debug("hpanel2", self.hpanel2.get_position())
-        
-        LOG.debug("saved phanel", FConfiguration().hpanelPostition)
-        LOG.debug("saved phanel2", FConfiguration().hpanel2Postition)
-        
         self.hpanel.set_position(FConfiguration().hpanelPostition)
-        
-        h2 = self.hpanel2.get_position()
-        
-        self.hpanel2.set_position(h2 - FConfiguration().hpanelPostition)
     
     def on_compact_view(self, *args):
-        LOG.debug("position 0")
-        h2 = self.hpanel2.get_position()
-        self.hpanel2.set_position(h2 + FConfiguration().hpanelPostition)
         self.hpanel.set_position(0)
         
     def on_show_hide_paned(self, w, e):
