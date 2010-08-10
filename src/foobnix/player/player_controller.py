@@ -324,7 +324,7 @@ class PlayerController(BaseController):
                 gtk.gdk.threads_enter() #@UndefinedVariable                   
                 
                 timeStr = pos_str + " / " + dur_str
-                timePersent = (pos_int + 0.0) / dur_int
+                timePersent = (pos_int + 0.0) / (dur_int)
                 
                               
                 self.widgets.seekBar.set_text(timeStr)

@@ -20,12 +20,12 @@ INDEX = "INDEX"
 
 class CueTrack():
     
-    def __init__(self, title, performer, index):
+    def __init__(self, title, performer, index, path):
         self.title = title
         self.performer = performer
         self.index = index
         self.duration = 0
-        self.path = None
+        self.path = path
     
     def __str__(self):
         return "Track: " + self.title + " " + self.performer + " " + self.index
@@ -73,7 +73,9 @@ class CueReader():
             next_track = tracks[i + 1]
             duration = next_track.get_start_time_sec() - track. get_start_time_sec()
             track.duration = duration
-            track.path = cue_file.file
+            print "Duration", duration
+            if not track.path:
+                track.path = cue_file.file
             duration_tracks.append(track)
             
         cue_file.tracks = duration_tracks            
@@ -142,19 +144,22 @@ class CueReader():
                         full_file = nor + ".flac"
                     elif os.path.exists(nor + ".wav"):
                         full_file = nor + ".wav"
+                    elif os.path.exists(nor + ".mp3"):
+                        full_file = nor + ".mp3"    
                     else:                                           
                         self.is_valid = False
                         return cue_file
                 
                 if is_title:
                     cue_file.file = full_file
+                
                     
             if line.startswith(INDEX):
                 index = self.get_line_value(line)            
                 
             if line.startswith("TRACK") and line.find("AUDIO"):
                 if not is_title:           
-                    cue_track = CueTrack(title, performer, index)
+                    cue_track = CueTrack(title, performer, index, full_file)
                     cue_file.append_track(cue_track)
                     
                 is_title = False 
