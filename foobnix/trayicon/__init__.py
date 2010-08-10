@@ -38,7 +38,7 @@ class TrayIcon(BaseController):
         self.icon = gtk.StatusIcon()
         self.icon.set_tooltip("Foobnix music playerEngine")
         # TODO: move the path to config
-        icon_path =  "/usr/local/share/pixmaps/foobnix.png"
+        icon_path = "/usr/local/share/pixmaps/foobnix.png"
         icon_path2 = "/usr/share/pixmaps/foobnix.png"
         if os.path.exists(icon_path):
             self.icon.set_from_file(icon_path)
@@ -47,20 +47,20 @@ class TrayIcon(BaseController):
         else:
             self.icon.set_from_stock("gtk-media-play")
         
-        self.icon.connect("activate",   lambda *a: self.emit('toggle_window_visibility'))
-        self.icon.connect("popup-menu", lambda *a: self.popup.show())
+        self.icon.connect("activate", lambda * a: self.emit('toggle_window_visibility'))
+        self.icon.connect("popup-menu", lambda * a: self.popup.show())
         try:
             self.icon.connect("scroll-event", self.on_mouse_wheel_scrolled)
         except:
             pass
 
         popup_signals = {
-                "on_close_clicked" : lambda *a: self.emit('exit'),
-                "on_play_clicked"  : lambda *a: self.emit('play'),
-                "on_pause_clicked" : lambda *a: self.emit('pause'),
-                "on_next_clicked"  : lambda *a: self.emit('next'),
-                "on_prev_clicked"  : lambda *s: self.emit('prev'),
-                "on_cancel_clicked": lambda *a: self.popup.hide()
+                "on_close_clicked" : lambda * a: self.emit('exit'),
+                "on_play_clicked"  : lambda * a: self.emit('play'),
+                "on_pause_clicked" : lambda * a: self.emit('pause'),
+                "on_next_clicked"  : lambda * a: self.emit('next'),
+                "on_prev_clicked"  : lambda * s: self.emit('prev'),
+                "on_cancel_clicked": lambda * a: self.popup.hide()
         }
         gx_tray_icon.signal_autoconnect(popup_signals)
 
@@ -72,7 +72,7 @@ class TrayIcon(BaseController):
         self.text2.set_text(text)
     
     def on_song_started(self, sender, song):
-        self.setText1(song.getTitleDescription())
+        self.setText1(song.name)
 
     def on_mouse_wheel_scrolled(self, w, event):
         if event.direction == gtk.gdk.SCROLL_UP:    #@UndefinedVariable

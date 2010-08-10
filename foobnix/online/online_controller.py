@@ -168,8 +168,13 @@ class OnlineListCntr(GObject):
         
         """end big file to the end"""
         for bean in beans:
+            id3 = bean.getMp3TagsName()
+            if id3:
+                bean.id3, bean.name = bean.name, id3
+                
             if not bean.path or (bean.path and not bean.path.endswith(".cue")):
                 self.current_list_model.append(bean)
+                
                 normilized.append(bean)
         return normilized
 
