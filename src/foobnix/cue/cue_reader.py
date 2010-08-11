@@ -7,6 +7,8 @@ from foobnix.model.entity import CommonBean
 import os
 from foobnix.util.time_utils import normilize_time
 from foobnix.util import LOG, file_utils
+import codecs
+import chardet
 '''
 Created on 4 
 
@@ -100,16 +102,28 @@ class CueReader():
         self.parse()
         LOG.info("CUE VALID", self.cue_file, self.is_valid)
         return self.is_valid
-        
+    
+    """detect file encoding"""
+    def code_detecter(self, filename):
+        with open(filename) as codefile:
+            data = codefile.read()
+            
+        return chardet.detect(data)['encoding']    
     
     def parse(self):
         file = open(self.cue_file, "r")
+        code = self.code_detecter(self.cue_file);
+        LOG.debug("File encoding is", code)
         
         is_title = True
         cue_file = CueFile()
         
         for line in file:
+            line = unicode(line, code)
+            
             line = str(line).strip()
+            
+            
                     
             if not line:
                 continue

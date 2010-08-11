@@ -65,7 +65,7 @@ class OnlineListCntr(GObject):
         treeview.show()
         
         window = gtk.ScrolledWindow()
-        window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         window.add_with_viewport(treeview)
         window.show()
         return  window    
