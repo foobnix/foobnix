@@ -334,7 +334,7 @@ class PlayerController(BaseController):
                 
                 """report now playing song"""
                 
-                if song.getArtist() and song.getTitle():
+                if sec % 10 == 0 and song.getArtist() and song.getTitle():
                     self.erros = 0
                     scrobler.report_now_playing(song.getArtist(), song.getTitle())
             
