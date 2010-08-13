@@ -3,11 +3,11 @@ Created on 7  2010
 
 @author: ivan
 '''
+from __future__ import with_statement
 from foobnix.model.entity import CommonBean
 import os
 from foobnix.util.time_utils import normilize_time
 from foobnix.util import LOG, file_utils
-import codecs
 import chardet
 '''
 Created on 4 
