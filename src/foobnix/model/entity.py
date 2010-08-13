@@ -9,6 +9,8 @@ from mutagen import File
 import os
 import gtk
 from foobnix.util.configuration import FConfiguration
+from mutagen.flac import FLAC
+from mutagen.apev2 import APEv2
 class CommonBean():
     TYPE_FOLDER = "TYPE_FOLDER"    
     TYPE_LABEL = "TYPE_LABEL"
@@ -126,17 +128,29 @@ class CommonBean():
         if not os.path.exists(self.path):
             return
         
-        try:
-            audio = MP3(self.path, ID3=EasyID3)
-        except HeaderNotFoundError:
+        path = self.path.lower()
+        
+        if path.endswith(".flac"):
             try:
-                audio = File(self.path)
-            except HeaderNotFoundError:
-                pass
+                audio = FLAC(self.path)
+            except:
                 return None
+
+        elif path.endswith(".ape") or path.endswith(".mpc"):
+            try:
+                audio = APEv2(self.path)
+            except:
+                return None
+        else:
+            try:
+                audio = MP3(self.path, ID3=EasyID3)
+            except:
+                return None
+        
                     
         artist = None
         title = None
+        duration = None
         if audio and audio.has_key('artist'): artist = audio["artist"][0]
         if audio and audio.has_key('title'): title = audio["title"][0]
         if artist and title:

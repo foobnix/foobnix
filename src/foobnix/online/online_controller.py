@@ -74,6 +74,7 @@ class OnlineListCntr(GObject):
         LOG.info("append new tab")
         if name and len(name) > 50:
             name = name[:50]
+                        
         label = gtk.Label(name)
         label.set_angle(90)
         label.show()
