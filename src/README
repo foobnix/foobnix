@@ -3,13 +3,13 @@ foobnix_XXX.deb
 http://code.google.com/p/foobnix/downloads/list 
 
 Альтертанивная установка из tar.gz
-#1 sudo apt-get install gettext python-mutagen python-simplejson python-setuptools
-#2 скачть tar.gz, расспаковать, установить:
+#1 sudo apt-get install gettext python-chardet python-gtk2 python-glade2 python-mutagen python-simplejson python-setuptools gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly gstreamer0.10-ffmpeg python-gst0.10
+#2 скачть tar.gz расспаковать установить:
 #3 sudo python setup.py install
 
 Обновление до последней версии из репозитория (Не обязятельно) 
 #1 Установить пакеты:
-sudo apt-get install subversion gettext python-mutagen python-simplejson python-setuptools
+sudo apt-get install subversion gettext python-chardet python-gtk2 python-glade2 python-mutagen python-simplejson python-setuptools gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly gstreamer0.10-ffmpeg python-gst0.10
 #2 Скачать-обновить программу
 svn checkout http://foobnix.googlecode.com/svn/trunk/ foobnix-read-only
 #3 Установить и запустить
