@@ -9,6 +9,7 @@ import os
 from foobnix.util.time_utils import normilize_time
 from foobnix.util import LOG, file_utils
 import chardet
+import re
 '''
 Created on 4 
 
@@ -37,16 +38,23 @@ class CueTrack():
     
     def get_start_time_sec(self):
         time = self.get_start_time_str()
-        "00:00:0"
-        m = time[:2]
-        s = time[len("00:"):len("00:") + 2]
-        return int(m) * 60 + int(s)
+                
+        times = re.findall("([0-9]{1,2}):", time)
+        
+        if not times or len(times) < 2:
+            return 0
+        
+        print times
+        min = times[0]
+        sec = times[1]
+        starts = int(min) * 60 + int(sec)        
+        return starts
             
 class CueFile():
     def __init__(self):
         self.title = None
         self.performer = None 
-        self.file = None
+        self.file = ""
         
         self.tracks = []
     
@@ -54,6 +62,13 @@ class CueFile():
         self.tracks.append(track)
         
     def __str__(self):
+        if self.title:
+            LOG.info("Title", self.title)
+        if self.performer:
+            LOG.info("Performer", self.performer)
+        if self.file:
+            LOG.info("File", self.file)    
+            
         return "CUEFILE: " + self.title + " " + self.performer + " " + self.file  
 
 class CueReader():
@@ -75,7 +90,6 @@ class CueReader():
             next_track = tracks[i + 1]
             duration = next_track.get_start_time_sec() - track. get_start_time_sec()
             track.duration = duration
-            print "Duration", duration
             if not track.path:
                 track.path = cue_file.file
             duration_tracks.append(track)

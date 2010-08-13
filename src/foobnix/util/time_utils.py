@@ -29,22 +29,25 @@ def convert_ns(time_int):
 
 
 def normilize_time(length):
+    if length < 0:
+        return 0
+    
     length = int(length)
     result = ""
     hour = int(length / 60 / 60)
     if hour:
         if hour < 10:
-            hour = "0"+str(hour)
+            hour = "0" + str(hour)
         result = str(hour) + ":"     
-    min = int(length / 60) - int(hour)*60
+    min = int(length / 60) - int(hour) * 60
     if min:
         if min < 10:
-            min = "0"+str(min)
+            min = "0" + str(min)
         result += str(min) + ":"
     
-    sec = length - int(min) * 60 - int(hour)*3600
+    sec = length - int(min) * 60 - int(hour) * 3600
     if sec < 10:
-        sec = "0"+str(sec)   
+        sec = "0" + str(sec)   
     
     result += str(sec)
     return result
