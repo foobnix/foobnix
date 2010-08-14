@@ -162,7 +162,7 @@ class InformationController():
                 pix = gtk.gdk.pixbuf_new_from_file("foobnix/pixmaps/" + image_name) #@UndefinedVariable
         
         self.album_image.set_from_pixbuf(pix)
-        
+        self.info_thread = None
              
 
     def __init__(self, gx_main, playerCntr, directoryCntr, search_panel):
@@ -203,8 +203,10 @@ class InformationController():
         self.last_fm_network = lastfm
     
     def show_song_info(self, song):
-        if FConfiguration().view_info_panel:
-            thread.start_new_thread(self.show_song_info_tread, (song,))
+        if FConfiguration().view_info_panel and not self.info_thread:
+            self.info_thread = thread.start_new_thread(self.show_song_info_tread, (song,))
+        else:
+            LOG.warn("Please try later... search is not finished")
         #    self.show_song_info_tread(song)
     
     def add_similar_song(self, song):
@@ -237,6 +239,7 @@ class InformationController():
         except:
             LOG.error("dowload image error")
         
+        self.info_thread = None
         
     def set_image(self, path):
         pass
