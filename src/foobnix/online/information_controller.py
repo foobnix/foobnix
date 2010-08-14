@@ -203,7 +203,8 @@ class InformationController():
         self.last_fm_network = lastfm
     
     def show_song_info(self, song):
-        thread.start_new_thread(self.show_song_info_tread, (song,))
+        if FConfiguration().view_info_panel:
+            thread.start_new_thread(self.show_song_info_tread, (song,))
         #    self.show_song_info_tread(song)
     
     def add_similar_song(self, song):
@@ -216,7 +217,7 @@ class InformationController():
     def add_tag(self, tag):
         self.song_tags_cntr.add_item(tag)
     
-    def show_song_info_tread(self, song):
+    def show_song_info_tread(self, song):        
         self.song = song
         LOG.info("Get all possible information about song")
         

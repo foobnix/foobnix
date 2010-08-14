@@ -90,13 +90,7 @@ class PlayerController(BaseController):
         
         LOG.info("Path before", song.path)
         #Try to set resource
-        if song.path == None or song.path == "":
-            LOG.info("PL CNTR SET PATH")
-            self.onlineCntr.setSongResource(song)
-        else:
-            LOG.info("GET SONG INFO", song.getArtist(), song.getTitle())
-            self.onlineCntr.info.show_song_info(song)
-        
+       
         LOG.info("Path after", song.path)
         if song.path == None or song.path == "":
             self.count += 1
@@ -147,6 +141,8 @@ class PlayerController(BaseController):
         
         self.setVolume(self.volume)
         
+        
+        self.onlineCntr.info.show_song_info(song)
         
         self.emit('song_playback_started', song)
         

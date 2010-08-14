@@ -35,14 +35,14 @@ class AppController(BaseController):
         
         self.virtualListCntr = VirturalLIstCntr()
         
-        self.radioListCntr = RadioListCntr(v.gxMain, self.player_controller)
+        #self.radioListCntr = RadioListCntr(v.gxMain, self.player_controller)
         
         self.playerWidgets = PlayerWidgetsCntl(v.gxMain, self.player_controller)
         self.player_controller.registerWidgets(self.playerWidgets)
         self.player_controller.registerPlaylistCntr(self.playlistCntr)
         
         
-        self.directoryCntr = DirectoryCntr(v.gxMain, self.playlistCntr, self.radioListCntr, self.virtualListCntr)
+        self.directoryCntr = DirectoryCntr(v.gxMain, self.playlistCntr, self.virtualListCntr)
         #self.playlistCntr.registerDirectoryCntr(self.directoryCntr)
         self.appConfCntr = AppConfigurationCntrl(v.gxMain, self.directoryCntr)
         onlineCntr.register_directory_cntr(self.directoryCntr)
@@ -81,6 +81,7 @@ class AppController(BaseController):
         gtk.main_quit()
 
     def restore_state(self):
+        
         if FConfiguration().playlistState:
             self.playlistCntr.setState(FConfiguration().playlistState)
         
@@ -90,13 +91,6 @@ class AppController(BaseController):
         if FConfiguration().volumeValue:
             self.playerWidgets.volume.set_value(FConfiguration().volumeValue)
             self.player_controller.setVolume(FConfiguration().volumeValue / 100)
-        
-        if FConfiguration().hpanelPostition:            
-            self.playerWidgets.hpanel.set_position(FConfiguration().hpanelPostition)
-        
-        
-#        if FConfiguration().hpanel2Postition:
-#            self.playerWidgets.hpanel2.set_position(FConfiguration().hpanel2Postition)
         
         if FConfiguration().vpanelPostition:
             self.playerWidgets.vpanel.set_position(FConfiguration().vpanelPostition)
@@ -117,7 +111,7 @@ class AppController(BaseController):
         FConfiguration().playlistState = self.playlistCntr.getState()
         FConfiguration().virtualListState = self.directoryCntr.getState()
         
-        FConfiguration().radiolistState = self.radioListCntr.getState()
+        #FConfiguration().radiolistState = self.radioListCntr.getState()
         
         FConfiguration().volumeValue = self.playerWidgets.volume.get_value()
         if self.playerWidgets.vpanel.get_position() > 0:

@@ -37,10 +37,9 @@ class DirectoryCntr():
     #DEFAULT_LIST_NAME = _("Default list");
     
     
-    def __init__(self, gxMain, playlistCntr, radioListCntr, virtualListCntr):
+    def __init__(self, gxMain, playlistCntr, virtualListCntr):
         
         self.playlistCntr = playlistCntr
-        self.radioListCntr = radioListCntr
         self.virtualListCntr = virtualListCntr
         
         

@@ -74,6 +74,11 @@ class FConfiguration:
         self.hpanelPostition = 370
         self.hpanel2Postition = 521
         
+        ### view panels ###
+        self.view_tree_panel = True
+        self.view_search_panel = True
+        self.view_info_panel = True
+        
         self.playlistState = None
         self.radiolistState = None
         self.virtualListState = {"Default list" : []}
@@ -127,6 +132,12 @@ class FConfiguration:
                 self.count_of_tabs = instance.count_of_tabs
                 
                 self.cookie = instance.cookie
+                
+                self.view_tree_panel = instance.view_tree_panel
+                self.view_search_panel = instance.view_search_panel
+                self.view_info_panel = instance.view_info_panel
+                
+                
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")
                 os.remove(self.CFG_FILE)

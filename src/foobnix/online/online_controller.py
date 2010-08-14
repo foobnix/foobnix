@@ -321,11 +321,13 @@ class OnlineListCntr(GObject):
                 #Seach by vk engine
                 update_song_path(playlistBean)
 
-        if update_song_info:
+            #if update_song_info:
             """retrive images and other info"""
-            self.info.show_song_info(playlistBean)
+            #self.info.show_song_info(playlistBean)
 
     def nextBean(self):
+        if not self.current_list_model:
+            return None
         if FConfiguration().isRandom:            
             return self.current_list_model.get_random_bean()   
         
@@ -340,6 +342,9 @@ class OnlineListCntr(GObject):
         return self.current_list_model.getBeenByPosition(self.index)
             
     def prevBean(self):
+        if not self.current_list_model:
+            return None
+
         if FConfiguration().isRandom:            
             return self.current_list_model.get_random_bean()
         

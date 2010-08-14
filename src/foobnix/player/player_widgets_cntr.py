@@ -39,22 +39,29 @@ class PlayerWidgetsCntl():
         #print "POSITION", self.hpanel2.get_position()
         
         
-        self.lyric = gxMain.get_widget("lyric_textview")
-        self.textbuffer = self.lyric.get_buffer()
+        #self.lyric = gxMain.get_widget("lyric_textview")
+        #self.textbuffer = self.lyric.get_buffer()
         
-        self.tr_lyric = gxMain.get_widget("translate_lyric_textview")
-        self.tr_textbuffer = self.tr_lyric.get_buffer()
+        #self.tr_lyric = gxMain.get_widget("translate_lyric_textview")
+        #self.tr_textbuffer = self.tr_lyric.get_buffer()
         
         spinbutton1_tabs = gxMain.get_widget("spinbutton1_tabs")
         spinbutton1_tabs.set_value(FConfiguration().count_of_tabs)
         spinbutton1_tabs.connect("value-changed", self.on_chage_tabs)
                                                                      
+        self.info_panel = gxMain.get_widget("info_frame")
+        self.search_panel = gxMain.get_widget("search_frame")
         
+        self.view_tree_panel = gxMain.get_widget("view-left-navigation")
+        self.view_tree_panel.connect("toggled", self.show_tree_panel)
         
+        self.view_info_panel = gxMain.get_widget("view-info-panel")
+        self.view_info_panel.connect("toggled", self.show_info_panel)
+        
+        self.view_search_panel = gxMain.get_widget("view-search-panel")
+        self.view_search_panel.connect("toggled", self.show_search_panel)
         
         self.statusbar = gxMain.get_widget("statusbar")
-       
-        self.lyric.set_editable(False)
         
         navigationEvents = {                
                 "on_play_button_clicked" :self.onPlayButton,
@@ -62,24 +69,50 @@ class PlayerWidgetsCntl():
                 "on_pause_button_clicked" :self.onPauseButton,
                 "on_prev_button_clicked" :self.onPrevButton,
                 "on_next_button_clicked": self.onNextButton,
-                "on_view-full_activate":self.on_full_view,
-                "on_view-compact_activate":self.on_compact_view
+                
         }
         
         gxMain.signal_autoconnect(navigationEvents)
-                
+        
+        self.show_info_panel(None, FConfiguration().view_info_panel)
+        self.show_search_panel(None, FConfiguration().view_search_panel)
+        self.show_tree_panel(None, FConfiguration().view_tree_panel)
+    
+    def show_info_panel(self, w, flag=True):
+        if w:
+            flag = w.get_active()
+        if flag:
+            self.info_panel.show()
+        else:
+            self.info_panel.hide()
+        FConfiguration().view_info_panel = flag
+        self.view_info_panel.set_active(flag)
+    
+    def show_search_panel(self, w, flag=True):
+        if w:
+            flag = w.get_active()            
+        if flag:
+            self.search_panel.show()
+        else:
+            self.search_panel.hide()
+        FConfiguration().view_search_panel = flag
+        self.view_search_panel.set_active(flag)    
+
+    def show_tree_panel(self, w, flag=True):
+        if w:
+            flag = w.get_active()
+        if flag:
+            self.hpanel.set_position(FConfiguration().hpanelPostition)
+        else:
+            self.hpanel.set_position(0)
+        FConfiguration().view_tree_panel = flag
+        self.view_tree_panel.set_active(flag)
    
     def on_chage_tabs(self, w):
         val = w.get_value_as_int()
         FConfiguration().count_of_tabs = val
         LOG.debug("Set size of tabs", val)
         
-   
-    def on_full_view(self, *args):
-        self.hpanel.set_position(FConfiguration().hpanelPostition)
-    
-    def on_compact_view(self, *args):
-        self.hpanel.set_position(0)
         
     def on_show_hide_paned(self, w, e):
         #TODO: Matik, could you view, this signal rise on any paned double click.
@@ -99,7 +132,8 @@ class PlayerWidgetsCntl():
         self.statusbar.push(0, text)
    
     def setLiric(self, song):
-        thread.start_new_thread(self._setLiricThread, (song,))
+        pass
+        #thread.start_new_thread(self._setLiricThread, (song,))
     
     def _setLiricThread(self, song):
         self.tr_textbuffer.set_text("")
