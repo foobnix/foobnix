@@ -94,7 +94,7 @@ class FConfiguration:
     
         self.cookie = None 
         
-        self.count_of_tabs = 2
+        self.count_of_tabs = 3
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:

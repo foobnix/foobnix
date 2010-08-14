@@ -179,7 +179,7 @@ class CueReader():
                         return cue_file
                 
                 if is_title:
-                    cue_file.file = full_file
+                    cue_file.file = full_file   
                 
                     
             if line.startswith(INDEX):

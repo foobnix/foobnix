@@ -61,6 +61,8 @@ class PlayerController(BaseController):
         self.erros = 0
         self.prev_title = ""
         
+        self.prev_path = ""
+        
 
     def set_mode(self, mode):
         self.mode = mode 
@@ -78,8 +80,9 @@ class PlayerController(BaseController):
     def playSong(self, song):
         self.song = song
         LOG.info("play song", song.name, song.getArtist(), song.getTitle())
-                
-        self.stopState()
+        
+        if song.path != self.prev_path:        
+            self.stopState()
         
         if not song:
             LOG.info("NULL song can't playing")
@@ -112,12 +115,16 @@ class PlayerController(BaseController):
         LOG.info("Name", song.name)
         
         if  song.type == CommonBean.TYPE_MUSIC_FILE:
-            self.player = self.playerLocal()
-            uri = 'file://' + urllib.pathname2url(song.path)
-            if os.name == 'nt':
-                uri = 'file:' + urllib.pathname2url(song.path)
-            self.player.set_property("uri", uri)
-            self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
+            if song.path != self.prev_path:
+                self.prev_path = song.path
+                self.player = self.playerLocal()
+                uri = 'file://' + urllib.pathname2url(song.path)
+                if os.name == 'nt':
+                    uri = 'file:' + urllib.pathname2url(song.path)
+                
+                self.player.set_property("uri", uri)
+                self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
+                
         elif song.type == CommonBean.TYPE_RADIO_URL:
             LOG.info("URL PLAYING", song.path)
             self.player = self.playerHTTP()    
@@ -134,6 +141,9 @@ class PlayerController(BaseController):
             return
 
         self.playState()
+        print "SONG START", song.start_at
+        if song.start_at > 0:
+            self.set_seek_sec(song.start_at)
         
         self.setVolume(self.volume)
         
@@ -267,6 +277,7 @@ class PlayerController(BaseController):
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)    
     
     def playThread(self, song=None):
+        
         LOG.info("Starts playing thread")
                 
         flag = True
@@ -277,12 +288,11 @@ class PlayerController(BaseController):
         gtk.gdk.threads_leave() #@UndefinedVariable
         sec = 0;
         
-        print "SONG START", song.start_at
-        if song.start_at > 0:
-            self.set_seek_sec(song.start_at)
+       
 
         while play_thread_id == self.playerThreadId:
             try:
+                song = self.song
                 LOG.info("Try")
                 time.sleep(0.2)
                 dur_int = self.player.query_duration(self.time_format, None)[0]
@@ -312,6 +322,16 @@ class PlayerController(BaseController):
         while play_thread_id == self.playerThreadId:
             pos_int = 0
             try:
+                song = self.song
+                dur_int = self.player.query_duration(self.time_format, None)[0]
+                
+                if song.duration > 0:
+                    dur_int = int(song.duration) * 1000000000
+                
+                duration_sec = dur_int / 1000000000
+                
+                dur_str = convert_ns(dur_int)
+                
                 pos_int = self.player.query_position(self.time_format, None)[0]
             except gst.QueryError: 
                 LOG.info("QueryError error...")
@@ -392,13 +412,11 @@ class PlayerController(BaseController):
             
         elif type == gst.MESSAGE_EOS:
             
-            LOG.info("MESSAGE_EOS")             
+            LOG.info("MESSAGE_EOS")
             self.stopState()
             self.playerThreadId = None
-                        
-            
             self.next()
-                            
+                        
 
         elif type == gst.MESSAGE_ERROR:
             LOG.info("MESSAGE_ERROR")
@@ -420,8 +438,9 @@ class PlayerController(BaseController):
             
             
             self.widgets.seekBar.set_text(str(err))
-            self.playerThreadId = None
-            self.player.set_state(gst.STATE_NULL)
+            if self.song.path != self.prev_path: 
+                self.playerThreadId = None
+                self.player.set_state(gst.STATE_NULL)
             #self.player = None    
             time.sleep(4) 
             self.player.set_state(gst.STATE_NULL)
