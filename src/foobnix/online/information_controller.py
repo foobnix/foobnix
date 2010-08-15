@@ -15,6 +15,7 @@ from foobnix.online.song_resource import update_song_path
 from foobnix.util.mouse_utils import  is_double_left_click, \
     is_rigth_click
 from foobnix.online.dowload_util import save_song_thread, save_as_song_thread
+from foobnix.lyric.lyr import get_lyrics
 
 class SimilartSongsController(BaseListController):
     
@@ -162,12 +163,19 @@ class InformationController():
                 pix = gtk.gdk.pixbuf_new_from_file("foobnix/pixmaps/" + image_name) #@UndefinedVariable
         
         self.album_image.set_from_pixbuf(pix)
+        self.lyric_image_widget.set_from_pixbuf(pix)
         self.info_thread = None
              
 
     def __init__(self, gx_main, playerCntr, directoryCntr, search_panel):
         
         self.album_image = gx_main.get_widget("image_widget")
+        self.lyric_image_widget = gx_main.get_widget("lyric_image_widget")
+        self.lyrics_text_widget = gx_main.get_widget("lyric_text")
+        
+        self.lyric_artist_title = gx_main.get_widget("lyric_artist_title")
+        
+        self.lyrics_buffer = self.lyrics_text_widget.get_buffer()
         self.set_no_image_album()
             
         
@@ -203,7 +211,7 @@ class InformationController():
         self.last_fm_network = lastfm
     
     def show_song_info(self, song):
-        if FConfiguration().view_info_panel and not self.info_thread:
+        if (FConfiguration().view_info_panel or FConfiguration().view_lyric_panel) and not self.info_thread:
             self.info_thread = thread.start_new_thread(self.show_song_info_tread, (song,))
         else:
             LOG.warn("Please try later... search is not finished")
@@ -236,6 +244,7 @@ class InformationController():
         try:
             image_pix_buf = self.create_pbuf_image_from_url(image_url)
             self.album_image.set_from_pixbuf(image_pix_buf)
+            self.lyric_image_widget.set_from_pixbuf(image_pix_buf)
         except:
             LOG.error("dowload image error")
         
@@ -246,12 +255,23 @@ class InformationController():
     
     def get_album_image_url(self, song):
         
+        
+        
         """set urls"""
         """TODO TypeError: cannot concatenate 'str' and 'NoneType' objects """
         self.lastfm_url.set_uri("http://www.lastfm.ru/search?q=" + song.getArtist() + "&type=artist")
         self.wiki_linkbutton.set_uri("http://en.wikipedia.org/w/index.php?search=" + song.getArtist())
         self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query=" + song.getArtist())
-
+        
+        if song.getArtist() and song.getTitle():
+            lyric = get_lyrics(song.getArtist(), song.getTitle())
+            if lyric:
+                self.lyrics_buffer.set_text(lyric)
+            else:
+                self.lyrics_buffer.set_text(_("Lyric not found"))
+                
+            self.lyric_artist_title.set_markup("<b>" + song.getArtist() + " - " + song.getTitle() + "</b>")
+        
         
         self.current_song_label.set_markup("<b>" + song.getTitle() + "</b>")
         

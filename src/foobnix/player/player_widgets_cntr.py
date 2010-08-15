@@ -51,6 +51,7 @@ class PlayerWidgetsCntl():
                                                                      
         self.info_panel = gxMain.get_widget("info_frame")
         self.search_panel = gxMain.get_widget("search_frame")
+        self.lyric_panel = gxMain.get_widget("lyric_frame")
         
         self.view_tree_panel = gxMain.get_widget("view-left-navigation")
         self.view_tree_panel.connect("toggled", self.show_tree_panel)
@@ -60,6 +61,12 @@ class PlayerWidgetsCntl():
         
         self.view_search_panel = gxMain.get_widget("view-search-panel")
         self.view_search_panel.connect("toggled", self.show_search_panel)
+        
+        self.view_lyric_panel = gxMain.get_widget("view-lyric-panel")
+        self.view_lyric_panel.connect("toggled", self.show_lyric_panel)
+        
+        
+        
         
         self.statusbar = gxMain.get_widget("statusbar")
         
@@ -77,11 +84,16 @@ class PlayerWidgetsCntl():
         self.show_info_panel(None, FConfiguration().view_info_panel)
         self.show_search_panel(None, FConfiguration().view_search_panel)
         self.show_tree_panel(None, FConfiguration().view_tree_panel)
+        self.show_lyric_panel(None, FConfiguration().view_lyric_panel)
     
     def show_info_panel(self, w, flag=True):
         if w:
             flag = w.get_active()
         if flag:
+            self.lyric_panel.hide()
+            FConfiguration().view_lyric_panel = False
+            self.view_lyric_panel.set_active(False)    
+            
             self.info_panel.show()
         else:
             self.info_panel.hide()
@@ -97,6 +109,22 @@ class PlayerWidgetsCntl():
             self.search_panel.hide()
         FConfiguration().view_search_panel = flag
         self.view_search_panel.set_active(flag)    
+        
+    def show_lyric_panel(self, w, flag=True):
+        if w:
+            flag = w.get_active()            
+        if flag:
+            
+            self.info_panel.hide()
+            FConfiguration().view_info_panel = False
+            self.view_info_panel.set_active(False)
+            
+            
+            self.lyric_panel.show()
+        else:
+            self.lyric_panel.hide()
+        FConfiguration().view_lyric_panel = flag
+        self.view_lyric_panel.set_active(flag)        
 
     def show_tree_panel(self, w, flag=True):
         if w:

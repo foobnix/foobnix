@@ -78,6 +78,7 @@ class FConfiguration:
         self.view_tree_panel = True
         self.view_search_panel = True
         self.view_info_panel = True
+        self.view_lyric_panel = False
         
         self.playlistState = None
         self.radiolistState = None
@@ -136,6 +137,7 @@ class FConfiguration:
                 self.view_tree_panel = instance.view_tree_panel
                 self.view_search_panel = instance.view_search_panel
                 self.view_info_panel = instance.view_info_panel
+                self.view_lyric_panel = instance.view_lyric_panel
                 
                 
             except AttributeError:

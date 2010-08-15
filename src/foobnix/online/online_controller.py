@@ -137,6 +137,7 @@ class OnlineListCntr(GObject):
         #self.append([self.SearchingCriteriaBean(query)])
         #self.append_notebook_page(query)                
         self.append_notebook_page(query)
+        time.sleep(0.1)
         
         LOG.debug("Showing search results")
         if beans:

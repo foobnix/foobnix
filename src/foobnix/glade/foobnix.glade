@@ -60,21 +60,32 @@
                           </widget>
                         </child>
                         <child>
-                          <widget class="GtkCheckMenuItem" id="view-info-panel">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">_View Info Panel</property>
-                            <property name="use_underline">True</property>
-                            <property name="active">True</property>
-                            <signal name="toggled" handler="on_view-info-panel_toggled"/>
-                          </widget>
-                        </child>
-                        <child>
                           <widget class="GtkCheckMenuItem" id="view-search-panel">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes">_View Search Panel</property>
                             <property name="use_underline">True</property>
                             <property name="active">True</property>
                             <signal name="toggled" handler="on_view-search-panel_toggled"/>
+                          </widget>
+                        </child>
+                        <child>
+                          <widget class="GtkSeparatorMenuItem" id="menuitem1">
+                            <property name="visible">True</property>
+                          </widget>
+                        </child>
+                        <child>
+                          <widget class="GtkCheckMenuItem" id="view-lyric-panel">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">_View Lyric Panel</property>
+                            <property name="use_underline">True</property>
+                          </widget>
+                        </child>
+                        <child>
+                          <widget class="GtkCheckMenuItem" id="view-info-panel">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">_View Info Panel</property>
+                            <property name="use_underline">True</property>
+                            <property name="active">True</property>
                           </widget>
                         </child>
                       </widget>
@@ -389,8 +400,8 @@
                                     <property name="visible">True</property>
                                     <property name="sensitive">False</property>
                                     <property name="action">select-folder</property>
-                                    <property name="create_folders">False</property>
                                     <property name="show_hidden">True</property>
+                                    <property name="create_folders">False</property>
                                   </widget>
                                   <packing>
                                     <property name="position">3</property>
@@ -1046,6 +1057,62 @@
                           </widget>
                           <packing>
                             <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkFrame" id="lyric_frame">
+                            <property name="visible">True</property>
+                            <property name="label_xalign">0</property>
+                            <property name="shadow_type">none</property>
+                            <child>
+                              <widget class="GtkVBox" id="vbox6">
+                                <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <widget class="GtkImage" id="lyric_image_widget">
+                                    <property name="visible">True</property>
+                                    <property name="stock">gtk-missing-image</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="GtkScrolledWindow" id="scrolledwindow2">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="hscrollbar_policy">automatic</property>
+                                    <property name="vscrollbar_policy">automatic</property>
+                                    <child>
+                                      <widget class="GtkTextView" id="lyric_text">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                      </widget>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </widget>
+                            </child>
+                            <child>
+                              <widget class="GtkLabel" id="lyric_artist_title">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">&lt;b&gt;Lyric&lt;/b&gt;</property>
+                                <property name="use_markup">True</property>
+                              </widget>
+                              <packing>
+                                <property name="type">label_item</property>
+                              </packing>
+                            </child>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                         <child>
