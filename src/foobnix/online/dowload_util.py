@@ -29,7 +29,7 @@ def save_song(songs):
         update_song_path(song)
         file = get_file_store_path(song)
         LOG.debug("Download song start", file)
-        if not os.path.exists(file + ".tmp"):
+        if not os.path.exists(file + ".tmp") and song.path:
             LOG.debug("Song PATH", song.path)
             urllib.urlretrieve(song.path, file + ".tmp")
             os.rename(file + ".tmp", file)
@@ -49,7 +49,7 @@ def save_as_song(songs, path):
             file = path + "/" + song.name + ".mp3"
             
         LOG.debug("Download song start", file)
-        if not os.path.exists(file + ".tmp"):
+        if not os.path.exists(file + ".tmp") and song.path:
             urllib.urlretrieve(song.path, file + ".tmp")
             os.rename(file + ".tmp", file)
             update_id3_tags(song, file)
