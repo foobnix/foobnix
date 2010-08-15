@@ -9,7 +9,7 @@ import os
 import gtk
 
 from gobject import GObject #@UnresolvedImport
-
+import time
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.model.entity import CommonBean
 from foobnix.online.information_controller import InformationController
@@ -135,6 +135,7 @@ class OnlineListCntr(GObject):
         #self.append([self.SearchingCriteriaBean(query)])
         #self.append_notebook_page(query)                
         self.append_notebook_page(query)
+        time.sleep(0.05)
         LOG.debug("Showing search results")
         if beans:
             if criteria:
