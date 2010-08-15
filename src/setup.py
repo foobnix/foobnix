@@ -4,8 +4,11 @@ import os, glob, shutil
 from distutils.core import setup
 from foobnix.util.configuration import VERSION, FOOBNIX_TMP, FOOBNIX_TMP_RADIO
 
+print "RADIO", FOOBNIX_TMP, FOOBNIX_TMP_RADIO
 if not os.path.exists(FOOBNIX_TMP):
     os.mkdir(FOOBNIX_TMP)
+
+if not os.path.exists(FOOBNIX_TMP):    
     os.mkdir(FOOBNIX_TMP_RADIO)
 
 def capture(cmd):
