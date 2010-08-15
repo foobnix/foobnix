@@ -12,7 +12,7 @@ import ConfigParser
 from foobnix.util.singleton import Singleton
 from foobnix.util import LOG
 
-FOOBNIX_TMP = "/opt/foobnix"
+FOOBNIX_TMP = "/usr/share/foobnix"
 FOOBNIX_TMP_RADIO = os.path.join(FOOBNIX_TMP, "radio")
 FOOBNIX_VERSION_FILE_NAME = "version"
 
