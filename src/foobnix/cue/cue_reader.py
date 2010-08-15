@@ -44,7 +44,6 @@ class CueTrack():
         if not times or len(times) < 2:
             return 0
         
-        print times
         min = times[0]
         sec = times[1]
         starts = int(min) * 60 + int(sec)        

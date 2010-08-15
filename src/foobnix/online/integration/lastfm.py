@@ -10,7 +10,6 @@ from foobnix.thirdparty.pylast import WSError
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.online.google.translate import translate
-from foobnix.util.time_utils import normilize_time
 
 
 __all__ = [

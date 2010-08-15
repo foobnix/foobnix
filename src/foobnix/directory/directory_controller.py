@@ -22,6 +22,7 @@ from mutagen.mp3 import MP3
 from foobnix.util.time_utils import normilize_time
 from foobnix.radio.radios import  RadioFolder
 from foobnix.cue.cue_reader import CueReader
+import thread
 
 
 gettext.install("foobnix", unicode=True)
@@ -91,7 +92,7 @@ class DirectoryCntr():
         self.saved_model = None
         
         self.radio_folder = RadioFolder()
-        
+        self.direcotory_thread = None        
     
     def getState(self):        
         return self.prefListMap
@@ -381,13 +382,16 @@ class DirectoryCntr():
                 bean = self.current_list_model.getBeenByPosition(i)
                 self.cachModel.append(bean)
            """ 
-        
+        self.direcotory_thread = None
         
         
     
-    def addAll(self):                
-        #thread.start_new_thread(self.addAllThread, ())
-        self.addAllThread()
+    def addAll(self):         
+        if not self.direcotory_thread:       
+            self.direcotory_thread = thread.start_new_thread(self.addAllThread, ())
+        else:
+            LOG.info("Directory is updating")
+        #self.addAllThread()
         
     def sortedDirsAndFiles(self, path, list):        
         files = []

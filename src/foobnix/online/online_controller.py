@@ -125,9 +125,16 @@ class OnlineListCntr(GObject):
     def on_drag_end(self, *ars):
         self.add_selected_to_playlist()
 
-    def show_results(self, sender, query, beans, criteria=True):
+    def show_searching(self, sender, query):
         self.append_notebook_page(query)
-        
+        self.append([self.SearchingCriteriaBean(query)])
+        pass
+    
+    def show_results(self, sender, query, beans, criteria=True):
+        self.online_notebook.remove_page(0)
+        #self.append([self.SearchingCriteriaBean(query)])
+        #self.append_notebook_page(query)                
+        self.append_notebook_page(query)
         LOG.debug("Showing search results")
         if beans:
             if criteria:
@@ -154,7 +161,7 @@ class OnlineListCntr(GObject):
         return CommonBean(name=name, path=None, color="#4DCC33", type=CommonBean.TYPE_FOLDER)
 
     def SearchingCriteriaBean(self, name):
-        return CommonBean(name="Searching: " + name, path=None, color="GREEN", type=CommonBean.TYPE_FOLDER)
+        return CommonBean(name=_("Searching: ") + name + _(" ... please wait a second"), path=None, color="GREEN", type=CommonBean.TYPE_FOLDER)
 
 
     

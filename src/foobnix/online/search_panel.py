@@ -12,6 +12,7 @@ import foobnix.online.integration.lastfm as lastfm
 from foobnix.base import BaseController, SIGNAL_RUN_FIRST
 from threading import Thread
 from foobnix.online.song_resource import get_songs_by_url, find_song_urls
+import thread
 
 class SearchResults(Thread):
     def __init__ (self, query, function):
@@ -26,7 +27,8 @@ class SearchPanel(BaseController):
     
     __gsignals__ = {
         'show_search_results': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING, TYPE_PYOBJECT)),
-        'starting_search': (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
+        'show_searching_line': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING,)),
+        'starting_search': (SIGNAL_RUN_FIRST, TYPE_NONE, ())
     }
     
     def __init__(self, gx_main):
@@ -39,6 +41,8 @@ class SearchPanel(BaseController):
         
         search_button = gx_main.get_widget("search_button")
         search_button.connect("clicked", self.on_search)
+        
+        self.search_thread = None
 
     def on_key_pressed(self, w, event):
         if event.type == gtk.gdk.KEY_PRESS: #@UndefinedVariable
@@ -103,22 +107,24 @@ class SearchPanel(BaseController):
 
     
 
-    search_thread_id = SearchResults(None, None)
+    
     def on_search(self, *args):
         LOG.debug('>>>>>>> search with ' + str(self.search_routine))
-        query = self.get_search_query()            
+        query = self.get_search_query()
+                    
         if query:
-            query = self.capitilize_query(u"" + query)            
-            #thread.start_new_thread(self.perform_search, (query,))
-            if not self.search_thread_id.isAlive():
-                #self.search_thread_id = SearchResults(query, self.perform_search)
-                #self.search_thread_id.start()
+            query = self.capitilize_query(u"" + query)           
+            #self.perform_search(query)
+            if not self.search_thread:
+                
+                self.search_thread = thread.start_new_thread(self.perform_search, (query,))
+            else:
+                LOG.info("Shearch is working...")
             
-                self.perform_search(query)
     
-   
     
     def perform_search(self, query):
+        self.emit('show_searching_line', query)
         beans = None
         try:
             if query.lower().startswith("http"):                
@@ -128,3 +134,4 @@ class SearchPanel(BaseController):
         except BaseException, ex:
             LOG.error('Error while search for %s: %s' % (query, ex))
         self.emit('show_search_results', query, beans)
+        self.search_thread = None

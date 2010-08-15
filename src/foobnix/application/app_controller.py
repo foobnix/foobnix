@@ -12,14 +12,12 @@ from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.trayicon import TrayIcon
 from foobnix.application.app_configuration_controller import AppConfigurationCntrl
 from foobnix.preferences.pref_controller import PrefController
-from foobnix.radio.radio_controller import RadioListCntr
 from foobnix.online.online_controller import OnlineListCntr
 from foobnix.directory.virtuallist_controller import VirturalLIstCntr
 from foobnix.base import BaseController
 
 from foobnix.util.configuration import FConfiguration
 from foobnix.online.search_panel import SearchPanel
-import time
 
 class AppController(BaseController):
 
@@ -71,7 +69,7 @@ class AppController(BaseController):
         
         self.search_panel = SearchPanel(v.gxMain)
         self.search_panel.connect('show_search_results', onlineCntr.show_results)
-        #self.search_panel.connect('starting_search', onlineCntr.clear)
+        self.search_panel.connect('show_searching_line', onlineCntr.show_searching)
         
         self.restore_state()
     
