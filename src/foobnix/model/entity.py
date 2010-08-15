@@ -11,6 +11,7 @@ import gtk
 from foobnix.util.configuration import FConfiguration
 from mutagen.flac import FLAC
 from mutagen.apev2 import APEv2
+from foobnix.util import LOG
 class CommonBean():
     TYPE_FOLDER = "TYPE_FOLDER"    
     TYPE_LABEL = "TYPE_LABEL"
@@ -151,10 +152,15 @@ class CommonBean():
         artist = None
         title = None
         duration = None
-        if audio and audio.has_key('artist'): artist = audio["artist"][0]
-        if audio and audio.has_key('title'): title = audio["title"][0]
-        if artist and title:
-            return artist + " - " + title
+        try:
+            if audio and audio.has_key('artist'): artist = audio["artist"][0]
+            if audio and audio.has_key('title'): title = audio["title"][0]
+            if artist and title:
+                return artist + " - " + title
+        except:
+            LOG.error("Get song attribute error", song)
+            pass
+        
         
     
     def __str__(self):           
