@@ -158,7 +158,7 @@ class CommonBean():
             if artist and title:
                 return artist + " - " + title
         except:
-            LOG.error("Get song attribute error", song)
+            LOG.error("Get song attribute error")
             pass
         
         
