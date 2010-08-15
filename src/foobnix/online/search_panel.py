@@ -117,14 +117,15 @@ class SearchPanel(BaseController):
             #self.perform_search(query)
             if not self.search_thread:
                 
-                self.search_thread = thread.start_new_thread(self.perform_search, (query,))
+                #self.search_thread = thread.start_new_thread(self.perform_search, (query,))
+                self.perform_search(query)
             else:
                 LOG.info("Shearch is working...")
             
     
     
     def perform_search(self, query):
-        self.emit('show_searching_line', query)
+        #self.emit('show_searching_line', query)
         beans = None
         try:
             if query.lower().startswith("http"):                

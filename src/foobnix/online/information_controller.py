@@ -239,6 +239,7 @@ class InformationController():
         if not image_url:
             LOG.info("Image not found, load empty.")
             self.set_no_image_album()
+            self.info_thread = None
             return None
     
         try:

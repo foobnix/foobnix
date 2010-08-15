@@ -128,16 +128,16 @@ class OnlineListCntr(GObject):
     def show_searching(self, sender, query):
         self.append_notebook_page(query)
         self.append([self.SearchingCriteriaBean(query)])
-        
         pass
     
     def show_results(self, sender, query, beans, criteria=True):
-        time.sleep(0.1)
-        self.online_notebook.remove_page(0)
+        #time.sleep(0.1)
+        #self.online_notebook.remove_page(0)
         #self.append([self.SearchingCriteriaBean(query)])
-        #self.append_notebook_page(query)                
-        self.append_notebook_page(query)
-        time.sleep(0.1)
+        self.append_notebook_page(query)                
+        #self.append_notebook_page(query)
+        #time.sleep(0.1)
+        #self.current_list_model.clear()
         
         LOG.debug("Showing search results")
         if beans:
@@ -210,6 +210,8 @@ class OnlineListCntr(GObject):
         
     def on_play_selected(self, similar_songs_model):
         playlistBean = similar_songs_model.get_selected_bean()
+        if not playlistBean:
+            return None
         LOG.info("play", playlistBean)
         LOG.info("type", playlistBean.type)
         if playlistBean.type == CommonBean.TYPE_MUSIC_URL:
