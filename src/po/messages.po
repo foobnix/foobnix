@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-15 18:31+0300\n"
+"POT-Creation-Date: 2010-08-15 22:29+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,12 +24,12 @@ msgstr ""
 msgid "New play list"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:378
+#: .././foobnix/directory/directory_controller.py:374
 msgid "Music not found in "
 msgstr ""
 
 #: .././foobnix/directory/directory_model.py:36
-#: .././foobnix/glade/foobnix.glade.h:31
+#: .././foobnix/glade/foobnix.glade.h:33
 msgid "Title"
 msgstr ""
 
@@ -42,7 +42,7 @@ msgid "Similar to: "
 msgstr ""
 
 #: .././foobnix/online/information_controller.py:50
-#: .././foobnix/online/online_controller.py:226
+#: .././foobnix/online/online_controller.py:279
 msgid "Choose directory to save song"
 msgstr ""
 
@@ -62,19 +62,35 @@ msgstr ""
 msgid "Lyric not found"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:153
+#: .././foobnix/online/online_controller.py:51
+msgid "Choose file to open"
+msgstr ""
+
+#: .././foobnix/online/online_controller.py:66
+msgid "Nothing found to play in the file(s)"
+msgstr ""
+
+#: .././foobnix/online/online_controller.py:73
+msgid "Choose directory with music"
+msgstr ""
+
+#: .././foobnix/online/online_controller.py:90
+msgid "Nothing found to play in the folder(s)"
+msgstr ""
+
+#: .././foobnix/online/online_controller.py:206
 msgid " not found on last.fm, wait for google suggests ..."
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:159
+#: .././foobnix/online/online_controller.py:212
 msgid "Google not found suggests"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:168
+#: .././foobnix/online/online_controller.py:221
 msgid "Searching: "
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:168
+#: .././foobnix/online/online_controller.py:221
 msgid " ... please wait a second"
 msgstr ""
 
@@ -135,175 +151,183 @@ msgid "About Foobnix"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:10
-msgid "Album List"
+msgid "Add File"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:11
-msgid "All Search"
+msgid "Add Folder"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:12
+msgid "Album List"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:13
+msgid "All Search"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:14
 msgid ""
 "Developed by Ivan Ivanenko\n"
 "ivan.ivanenko@gmail.com"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:14
+#: .././foobnix/glade/foobnix.glade.h:16
 msgid "Foobnix"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:15
+#: .././foobnix/glade/foobnix.glade.h:17
 msgid "Location"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:16
+#: .././foobnix/glade/foobnix.glade.h:18
 msgid "Lyrics"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:17
+#: .././foobnix/glade/foobnix.glade.h:19
 msgid "Music"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:18
+#: .././foobnix/glade/foobnix.glade.h:20
 msgid "Music dir:"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:19
+#: .././foobnix/glade/foobnix.glade.h:21
 msgid "Online Music"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:20
+#: .././foobnix/glade/foobnix.glade.h:22
 msgid "Play List"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:21
+#: .././foobnix/glade/foobnix.glade.h:23
 msgid "Play list tabs"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:22
+#: .././foobnix/glade/foobnix.glade.h:24
 msgid "Play on start: "
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:23
+#: .././foobnix/glade/foobnix.glade.h:25
 msgid "Playing all imaginations"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:24
+#: .././foobnix/glade/foobnix.glade.h:26
 msgid "Quit"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:25
+#: .././foobnix/glade/foobnix.glade.h:27
 msgid "Radio"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:26
+#: .././foobnix/glade/foobnix.glade.h:28
 msgid "Random: "
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:27
+#: .././foobnix/glade/foobnix.glade.h:29
 msgid "Repeat: "
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:28
+#: .././foobnix/glade/foobnix.glade.h:30
 msgid "Save to"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:29
+#: .././foobnix/glade/foobnix.glade.h:31
 msgid "Search"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:30
+#: .././foobnix/glade/foobnix.glade.h:32
 msgid "Tags"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:32
+#: .././foobnix/glade/foobnix.glade.h:34
 msgid "Top Albums"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:33
+#: .././foobnix/glade/foobnix.glade.h:35
 msgid "Top Similar"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:34
+#: .././foobnix/glade/foobnix.glade.h:36
 msgid "Top Songs"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:35
+#: .././foobnix/glade/foobnix.glade.h:37
 msgid "Tracks"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:36
+#: .././foobnix/glade/foobnix.glade.h:38
 msgid "_File"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:37
+#: .././foobnix/glade/foobnix.glade.h:39
 msgid "_Help"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:38
+#: .././foobnix/glade/foobnix.glade.h:40
 msgid "_View"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:39
+#: .././foobnix/glade/foobnix.glade.h:41
 msgid "_View Info Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:40
+#: .././foobnix/glade/foobnix.glade.h:42
 msgid "_View Lyric Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:41
+#: .././foobnix/glade/foobnix.glade.h:43
 msgid "_View Music Tree"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:42
+#: .././foobnix/glade/foobnix.glade.h:44
 msgid "_View Search Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:43
+#: .././foobnix/glade/foobnix.glade.h:45
 msgid "last.fm"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:44
+#: .././foobnix/glade/foobnix.glade.h:46
 msgid "last.fm "
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:45
+#: .././foobnix/glade/foobnix.glade.h:47
 msgid "login:"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:46
+#: .././foobnix/glade/foobnix.glade.h:48
 msgid "musicbrainz"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:47
+#: .././foobnix/glade/foobnix.glade.h:49
 msgid "pass:"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:48
+#: .././foobnix/glade/foobnix.glade.h:50
 msgid "toolbutton10"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:49
+#: .././foobnix/glade/foobnix.glade.h:51
 msgid "toolbutton11"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:50
+#: .././foobnix/glade/foobnix.glade.h:52
 msgid "toolbutton7"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:51
+#: .././foobnix/glade/foobnix.glade.h:53
 msgid "toolbutton8"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:52
+#: .././foobnix/glade/foobnix.glade.h:54
 msgid "toolbutton9"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:53
+#: .././foobnix/glade/foobnix.glade.h:55
 msgid "vk.com "
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:54
+#: .././foobnix/glade/foobnix.glade.h:56
 msgid "wiki"
 msgstr ""
