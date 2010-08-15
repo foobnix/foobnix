@@ -265,7 +265,11 @@ class InformationController():
         self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query=" + song.getArtist())
         
         if song.getArtist() and song.getTitle():
-            lyric = get_lyrics(song.getArtist(), song.getTitle())
+            try:
+                lyric = get_lyrics(song.getArtist(), song.getTitle())
+            except:
+                LOG.error("Lyrics get error")
+                pass
             if lyric:
                 self.lyrics_buffer.set_text(lyric)
             else:
