@@ -41,6 +41,59 @@ class OnlineListCntr(GObject):
         
         
         self.online_notebook = gxMain.get_widget("online_notebook")
+        
+        add_file_menu = gxMain.get_widget("add-file")
+        add_file_menu.connect("activate", self.on_add_file)
+        add_folder_menu = gxMain.get_widget("add-folder")
+        add_folder_menu.connect("activate", self.on_add_folder)
+    
+    def on_add_file(self, *a):
+        chooser = gtk.FileChooserDialog(title=_("Choose file to open"), action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        chooser.set_default_response(gtk.RESPONSE_OK)
+        chooser.set_select_multiple(True)
+
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK:
+            paths = chooser.get_filenames()
+            self.append_notebook_page(paths[0])
+            beans = []
+            for path in paths:
+                bean = self.directoryCntr.get_common_bean_by_file(path)
+                beans.append(bean)
+            if beans:            
+                self.append_and_play(beans)
+            else:
+                self.append([self.SearchCriteriaBeen(_("Nothing found to play in the file(s)") + paths[0])])
+        elif response == gtk.RESPONSE_CANCEL:
+            LOG.info('Closed, no files selected')
+        chooser.destroy()
+        print "add file"  
+    
+    def on_add_folder(self, *a):
+        chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        chooser.set_default_response(gtk.RESPONSE_OK)
+        chooser.set_select_multiple(True)
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK:
+            paths = chooser.get_filenames()
+            self.append_notebook_page(paths[0])
+            
+            all_beans = []
+            for path in paths:            
+                beans = self.directoryCntr.get_common_beans_by_folder(path)
+                for bean in beans:
+                    all_beans.append(bean)
+                
+            if all_beans:            
+                self.append_and_play(all_beans)
+            else:
+                self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
+            
+            
+        elif response == gtk.RESPONSE_CANCEL:
+            LOG.info('Closed, no files selected')
+        chooser.destroy()
+        print "add folder"
     
     def register_directory_cntr(self, directoryCntr):
         self.directoryCntr = directoryCntr

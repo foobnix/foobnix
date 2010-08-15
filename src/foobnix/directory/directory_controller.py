@@ -318,10 +318,6 @@ class DirectoryCntr():
                 self.playlistCntr.append_notebook_page(directoryBean.name)
                 self.playlistCntr.append_and_play([directoryBean])
         
-        #LOG.info("PAGE", self.leftNoteBook.get_current_page() 
-        #LOG.info("SET PAGE", self.mainNoteBook.set_current_page(0)
-        
-            
     
     
     def getALLChildren(self, row, string):        
@@ -427,7 +423,57 @@ class DirectoryCntr():
                     if get_file_extenstion(file) in FConfiguration().supportTypes:
                         return True
                     
-        return False            
+        return False 
+    
+    
+    def get_common_beans_by_folder(self, path):
+        LOG.info("begin schanning")
+        self.result = []
+        self.scanner(path, None)
+        return self.result
+    
+    def get_common_bean_by_file(self, full_path):
+        if not os.path.isfile(full_path):
+            LOG.warn(full_path + " not a file")
+            return None
+        ext = get_file_extenstion(full_path)
+        LOG.info("Extension is ", ext) 
+        if ext not in FConfiguration().supportTypes:
+            LOG.warn(full_path + " extensions not supported")
+            return None
+  
+        """check cue is valid"""
+        if full_path.endswith(".cue") and not CueReader(full_path).is_cue_valid():
+            LOG.warn(full_path + " cue not valid")
+            return None
+
+        return CommonBean(name=full_path, path=full_path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_FILE, parent=full_path)
+    
+    
+    def scanner(self, path, level):
+        LOG.info("scanner", path)
+        dir = os.path.abspath(path)
+        list = os.listdir(dir)
+        list = self.sortedDirsAndFiles(path, list)
+                
+        for file in list:
+            
+            full_path = path + "/" + file
+            
+            if not isDirectory(full_path) and get_file_extenstion(file) not in FConfiguration().supportTypes:
+                continue
+      
+            """check cue is valid"""
+            if full_path.endswith(".cue") and not CueReader(full_path).is_cue_valid():
+                continue
+            
+            if self.isDirectoryWithMusic(full_path):                              
+                #self.result.append(CommonBean(name=file, path=full_path, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=level))                    
+                self.scanner(full_path, None) 
+            else:
+                if not isDirectory(full_path):
+                    self.result.append(CommonBean(name=file, path=full_path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_FILE, parent=level))
+                                                 
     
     def go_recursive(self, path, level):
         dir = os.path.abspath(path)
@@ -453,4 +499,3 @@ class DirectoryCntr():
                 if not isDirectory(full_path):
                     self.current_list_model.append(level, CommonBean(name=file, path=full_path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_FILE, parent=level))
                     #LOG.debug("file", file)                             
-

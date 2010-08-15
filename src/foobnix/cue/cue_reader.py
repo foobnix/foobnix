@@ -131,8 +131,18 @@ class CueReader():
         is_title = True
         cue_file = CueFile()
         
+        title = "" 
+        performer = "" 
+        index = "00:00:00"
+        full_file = None
+        
         for line in file:
-            line = unicode(line, code)
+
+            try:
+                line = unicode(line, code)
+            except:
+                LOG.error("File encoding is too strange", code)
+                pass
             
             line = str(line).strip()
             
