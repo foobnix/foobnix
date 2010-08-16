@@ -26,6 +26,7 @@ char *s = N_("Playing all imaginations");
 char *s = N_("Quit");
 char *s = N_("Radio");
 char *s = N_("Random: ");
+char *s = N_("Reload directory");
 char *s = N_("Repeat: ");
 char *s = N_("Save to");
 char *s = N_("Search");

@@ -101,6 +101,8 @@ class FConfiguration:
         self.cookie = None 
         
         self.count_of_tabs = 3
+        
+        self.cache_music_beans = []
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -139,6 +141,7 @@ class FConfiguration:
                 self.view_info_panel = instance.view_info_panel
                 self.view_lyric_panel = instance.view_lyric_panel
                 
+                self.cache_music_beans = instance.cache_music_beans
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

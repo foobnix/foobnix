@@ -11,6 +11,9 @@ class AppConfigurationCntrl():
         self.folderChoser = gxMain.get_widget("music_dir_filechooserbutton")
         self.folderChoser.connect("current-folder-changed", self.onChangeMusicFolder)
         
+        reload_dir_button = gxMain.get_widget("reload_dir_button")
+        reload_dir_button.connect("clicked", self.onChangeMusicFolder)
+        
         self.vk_entry_label = gxMain.get_widget("vk_entry_login")
         self.vk_entry_passw = gxMain.get_widget("vk_entry_password")
         

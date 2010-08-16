@@ -413,6 +413,25 @@
                                   </packing>
                                 </child>
                                 <child>
+                                  <widget class="GtkButton" id="reload_dir_button">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="tooltip" translatable="yes">Reload directory</property>
+                                    <child>
+                                      <widget class="GtkImage" id="image3">
+                                        <property name="visible">True</property>
+                                        <property name="stock">gtk-refresh</property>
+                                      </widget>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">2</property>
+                                  </packing>
+                                </child>
+                                <child>
                                   <widget class="GtkCheckButton" id="save_online_checkbutton">
                                     <property name="label" translatable="yes">Save to</property>
                                     <property name="visible">True</property>
@@ -423,7 +442,7 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
-                                    <property name="position">2</property>
+                                    <property name="position">3</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -435,7 +454,7 @@
                                     <property name="action">select-folder</property>
                                   </widget>
                                   <packing>
-                                    <property name="position">3</property>
+                                    <property name="position">4</property>
                                   </packing>
                                 </child>
                               </widget>

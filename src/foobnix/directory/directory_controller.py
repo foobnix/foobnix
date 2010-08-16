@@ -92,7 +92,10 @@ class DirectoryCntr():
         self.saved_model = None
         
         self.radio_folder = RadioFolder()
-        self.direcotory_thread = None        
+        self.direcotory_thread = None      
+        self.radio_update_thread = None  
+        
+        self.cache_music_beans = FConfiguration().cache_music_beans
     
     def getState(self):        
         return self.prefListMap
@@ -182,24 +185,27 @@ class DirectoryCntr():
         
         if active_view == self.VIEW_LOCAL_MUSIC:
             self.clear()
-            self.addAll()                
+            self.addAll(reload=False)                
                 
                 
         elif active_view == self.VIEW_RADIO_STATION:
-            self.clear()
-            files = self.radio_folder.get_radio_FPLs()
-            for fpl in files:
-                parent = self.current_list_model.append(None, CommonBean(name=fpl.name, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER))
-                for radio, urls in fpl.urls_dict.iteritems():
-                    self.current_list_model.append(parent, CommonBean(name=radio, path=urls[0], font="normal", is_visible=True, type=CommonBean.TYPE_RADIO_URL, parent=fpl.name))
-                    
+            if not self.radio_update_thread:
+                self.radio_update_thread = thread.start_new_thread(self.update_radio_thread, ())                    
                 
                 
         elif active_view == self.VIEW_VIRTUAL_LISTS:                      
             items = self.getPrefListBeans(self.DEFAULT_LIST)
             self.display_virtual(items)
             
-        
+   
+    def update_radio_thread(self):
+        self.clear()
+        files = self.radio_folder.get_radio_FPLs()
+        for fpl in files:
+            parent = self.current_list_model.append(None, CommonBean(name=fpl.name, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER))
+            for radio, urls in fpl.urls_dict.iteritems():
+                self.current_list_model.append(parent, CommonBean(name=radio, path=urls[0], font="normal", is_visible=True, type=CommonBean.TYPE_RADIO_URL, parent=fpl.name))
+        self.radio_update_thread = None
                         
     def append_virtual(self, beans=None):
         LOG.debug("Current virtual list", self.currentListMap)
@@ -335,7 +341,7 @@ class DirectoryCntr():
         LOG.info("Update path", path)
         self.musicFolder = path
         self.current_list_model.clear()
-        self.addAll()
+        self.addAll(reload=True)
     
     def clear(self):
         self.current_list_model.clear()
@@ -360,33 +366,45 @@ class DirectoryCntr():
     
     cachModel = []
     
-    def addAllThread(self):
-        """
-        if self.cachModel:            
-            for bean in self.cachModel:                    
-                    self.current_list_model.append(None, bean)  
-            return True
-      """
-      
-        level = None;
-        self.go_recursive(self.musicFolder, level)
-        if not  len(self.current_list_model.getModel()):
-            self.current_list_model.append(level, CommonBean(name=_("Music not found in ") + FConfiguration().mediaLibraryPath, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=level))
-        else:                
-            """
-            for i in xrange(len(self.current_list_model.getModel())):   
-                bean = self.current_list_model.getBeenByPosition(i)
-                self.cachModel.append(bean)
-           """ 
+    def addAllThread(self, reload):
+        if reload:
+            self.cache_music_beans = []
+        
+        if not self.cache_music_beans:
+            self.go_recursive(self.musicFolder, None)
+            FConfiguration().cache_music_beans = self.cache_music_beans           
+        else:
+            self.cache_music_beans
+        
+        if not self.cache_music_beans:
+            self.current_list_model.append(None, CommonBean(name=_("Music not found in ") + FConfiguration().mediaLibraryPath, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=None))
+        else:               
+            self.show_music_tree(self.cache_music_beans)
+           
         self.direcotory_thread = None
+    
+    
+    """show music tree by parent-child relations"""
+    def show_music_tree(self, beans):
+        hash = {None:None}
+        for bean in beans:
+            if hash.has_key(bean.parent):
+                iter = hash[bean.parent]
+            else:
+                iter = None
+
+            new_iter = self.current_list_model.append(iter, bean)
+            hash[bean.path] = new_iter
         
         
     
-    def addAll(self):         
-        if not self.direcotory_thread:       
-            self.direcotory_thread = thread.start_new_thread(self.addAllThread, ())
+    def addAll(self, reload=False):         
+        
+        if not self.direcotory_thread:                
+            self.direcotory_thread = thread.start_new_thread(self.addAllThread, (reload,))
         else:
             LOG.info("Directory is updating")
+        
         #self.addAllThread()
         
     def sortedDirsAndFiles(self, path, list):        
@@ -493,9 +511,9 @@ class DirectoryCntr():
             
             if self.isDirectoryWithMusic(full_path):
                 #LOG.debug("directory", file)                
-                sub = self.current_list_model.append(level, CommonBean(name=file, path=full_path, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=level))                    
-                self.go_recursive(full_path, sub) 
+                self.cache_music_beans.append(CommonBean(name=file, path=full_path, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=level))                    
+                self.go_recursive(full_path, full_path) 
             else:
                 if not isDirectory(full_path):
-                    self.current_list_model.append(level, CommonBean(name=file, path=full_path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_FILE, parent=level))
+                    self.cache_music_beans.append(CommonBean(name=file, path=full_path, font="normal", is_visible=True, type=CommonBean.TYPE_MUSIC_FILE, parent=level))
                     #LOG.debug("file", file)                             

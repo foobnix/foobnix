@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sonata\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-15 22:41+0300\n"
+"POT-Creation-Date: 2010-08-16 23:36+0300\n"
 "PO-Revision-Date: 2007-02-09 11:04+0200\n"
 "Last-Translator: Dogmatist Demon <dogmaton@gmail.com>\n"
 "Language-Team: Ukranian\n"
@@ -20,16 +20,16 @@ msgstr ""
 msgid "Success"
 msgstr "urk"
 
-#: .././foobnix/directory/directory_controller.py:144
+#: .././foobnix/directory/directory_controller.py:147
 msgid "New play list"
 msgstr "Новый плей лист"
 
-#: .././foobnix/directory/directory_controller.py:374
+#: .././foobnix/directory/directory_controller.py:377
 msgid "Music not found in "
 msgstr "Музыка не найдена в"
 
 #: .././foobnix/directory/directory_model.py:36
-#: .././foobnix/glade/foobnix.glade.h:33
+#: .././foobnix/glade/foobnix.glade.h:34
 msgid "Title"
 msgstr "Название"
 
@@ -62,7 +62,7 @@ msgstr "Схожі пісні"
 msgid "Similar Tags"
 msgstr "Схожі теги"
 
-#: .././foobnix/online/information_controller.py:272
+#: .././foobnix/online/information_controller.py:276
 #, fuzzy
 msgid "Lyric not found"
 msgstr "Музыка не найдена в"
@@ -238,111 +238,115 @@ msgid "Random: "
 msgstr "Случайный: "
 
 #: .././foobnix/glade/foobnix.glade.h:29
+msgid "Reload directory"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:30
 msgid "Repeat: "
 msgstr "Повторить: "
 
-#: .././foobnix/glade/foobnix.glade.h:30
+#: .././foobnix/glade/foobnix.glade.h:31
 msgid "Save to"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:31
+#: .././foobnix/glade/foobnix.glade.h:32
 msgid "Search"
 msgstr "Поиск"
 
-#: .././foobnix/glade/foobnix.glade.h:32
+#: .././foobnix/glade/foobnix.glade.h:33
 msgid "Tags"
 msgstr "Теги"
 
-#: .././foobnix/glade/foobnix.glade.h:34
+#: .././foobnix/glade/foobnix.glade.h:35
 msgid "Top Albums"
 msgstr "По альбомах"
 
-#: .././foobnix/glade/foobnix.glade.h:35
+#: .././foobnix/glade/foobnix.glade.h:36
 msgid "Top Similar"
 msgstr "Похожие исполнители"
 
-#: .././foobnix/glade/foobnix.glade.h:36
+#: .././foobnix/glade/foobnix.glade.h:37
 msgid "Top Songs"
 msgstr "Лучшие песни"
 
-#: .././foobnix/glade/foobnix.glade.h:37
+#: .././foobnix/glade/foobnix.glade.h:38
 msgid "Tracks"
 msgstr "По Треку"
 
-#: .././foobnix/glade/foobnix.glade.h:38
+#: .././foobnix/glade/foobnix.glade.h:39
 msgid "_File"
 msgstr "_Файл"
 
-#: .././foobnix/glade/foobnix.glade.h:39
+#: .././foobnix/glade/foobnix.glade.h:40
 msgid "_Help"
 msgstr "_Помощь"
 
-#: .././foobnix/glade/foobnix.glade.h:40
+#: .././foobnix/glade/foobnix.glade.h:41
 msgid "_View"
 msgstr "_Вид"
 
-#: .././foobnix/glade/foobnix.glade.h:41
+#: .././foobnix/glade/foobnix.glade.h:42
 msgid "_View Info Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:42
+#: .././foobnix/glade/foobnix.glade.h:43
 msgid "_View Lyric Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:43
+#: .././foobnix/glade/foobnix.glade.h:44
 msgid "_View Music Tree"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:44
+#: .././foobnix/glade/foobnix.glade.h:45
 msgid "_View Search Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:45
+#: .././foobnix/glade/foobnix.glade.h:46
 msgid "last.fm"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:46
+#: .././foobnix/glade/foobnix.glade.h:47
 msgid "last.fm "
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:47
+#: .././foobnix/glade/foobnix.glade.h:48
 msgid "login:"
 msgstr "логин:"
 
-#: .././foobnix/glade/foobnix.glade.h:48
+#: .././foobnix/glade/foobnix.glade.h:49
 msgid "musicbrainz"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:49
+#: .././foobnix/glade/foobnix.glade.h:50
 #, fuzzy
 msgid "pass:"
 msgstr "пароль:"
 
-#: .././foobnix/glade/foobnix.glade.h:50
+#: .././foobnix/glade/foobnix.glade.h:51
 msgid "toolbutton10"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:51
+#: .././foobnix/glade/foobnix.glade.h:52
 msgid "toolbutton11"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:52
+#: .././foobnix/glade/foobnix.glade.h:53
 msgid "toolbutton7"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:53
+#: .././foobnix/glade/foobnix.glade.h:54
 msgid "toolbutton8"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:54
+#: .././foobnix/glade/foobnix.glade.h:55
 msgid "toolbutton9"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:55
+#: .././foobnix/glade/foobnix.glade.h:56
 msgid "vk.com "
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:56
+#: .././foobnix/glade/foobnix.glade.h:57
 msgid "wiki"
 msgstr ""
 
