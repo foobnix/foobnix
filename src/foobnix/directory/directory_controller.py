@@ -366,17 +366,19 @@ class DirectoryCntr():
     
     cachModel = []
     
-    def addAllThread(self, reload):
+    def addAllThread(self, reload):        
         if reload:
             self.cache_music_beans = []
         
         if not self.cache_music_beans:
+            self.current_list_model.append(None, CommonBean(name=_("Updating music, please wait... ") + FConfiguration().mediaLibraryPath, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=None))
             self.go_recursive(self.musicFolder, None)
             FConfiguration().cache_music_beans = self.cache_music_beans           
         else:
             self.cache_music_beans
         
         if not self.cache_music_beans:
+            self.current_list_model.clear()
             self.current_list_model.append(None, CommonBean(name=_("Music not found in ") + FConfiguration().mediaLibraryPath, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=None))
         else:               
             self.show_music_tree(self.cache_music_beans)
@@ -386,6 +388,7 @@ class DirectoryCntr():
     
     """show music tree by parent-child relations"""
     def show_music_tree(self, beans):
+        self.current_list_model.clear()
         hash = {None:None}
         for bean in beans:
             if hash.has_key(bean.parent):
