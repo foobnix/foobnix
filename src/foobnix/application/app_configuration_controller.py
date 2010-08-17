@@ -9,7 +9,7 @@ class AppConfigurationCntrl():
     def __init__(self, gxMain, directoryCntr):
         self.directoryCntr = directoryCntr
         self.folderChoser = gxMain.get_widget("music_dir_filechooserbutton")
-        self.folderChoser.connect("current-folder-changed", self.onChangeMusicFolder)
+        self.folderChoser.connect("current-folder-changed", self.update_music_path)
         
         reload_dir_button = gxMain.get_widget("reload_dir_button")
         reload_dir_button.connect("clicked", self.onChangeMusicFolder)
@@ -89,6 +89,9 @@ class AppConfigurationCntrl():
     def getLfmLogin(self): return self.lfm_entry_label.get_text()    
     def getLfmPassword(self): return self.lfm_entry_passw.get_text()
 
+    def update_music_path(self, *a):
+        LOG.info("Update music library path", self.folderChoser.get_filename())
+        FConfiguration().mediaLibraryPath = self.folderChoser.get_filename()
         
     def onChangeMusicFolder(self, path):                
         self.musicFolder = self.folderChoser.get_filename()        

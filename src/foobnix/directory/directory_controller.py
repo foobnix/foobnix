@@ -92,10 +92,15 @@ class DirectoryCntr():
         self.saved_model = None
         
         self.radio_folder = RadioFolder()
-        self.direcotory_thread = None      
-        self.radio_update_thread = None  
+          
         
         self.cache_music_beans = FConfiguration().cache_music_beans
+        self.radio_update_thread = None 
+        
+        self.direcotory_thread = None
+        self.addAll(reload=False)
+        self.direcotory_thread = None              
+        
     
     def getState(self):        
         return self.prefListMap
@@ -372,10 +377,8 @@ class DirectoryCntr():
         
         if not self.cache_music_beans:
             self.current_list_model.append(None, CommonBean(name=_("Updating music, please wait... ") + FConfiguration().mediaLibraryPath, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=None))
-            self.go_recursive(self.musicFolder, None)
+            self.go_recursive(FConfiguration().mediaLibraryPath, None)
             FConfiguration().cache_music_beans = self.cache_music_beans           
-        else:
-            self.cache_music_beans
         
         if not self.cache_music_beans:
             self.current_list_model.clear()
@@ -405,6 +408,7 @@ class DirectoryCntr():
         
         if not self.direcotory_thread:                
             self.direcotory_thread = thread.start_new_thread(self.addAllThread, (reload,))
+            #self.addAllThread(reload)
         else:
             LOG.info("Directory is updating")
         
