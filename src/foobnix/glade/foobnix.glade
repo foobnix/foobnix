@@ -450,8 +450,8 @@
                                     <property name="visible">True</property>
                                     <property name="sensitive">False</property>
                                     <property name="action">select-folder</property>
-                                    <property name="create_folders">False</property>
                                     <property name="show_hidden">True</property>
+                                    <property name="create_folders">False</property>
                                   </widget>
                                   <packing>
                                     <property name="position">4</property>
@@ -778,7 +778,6 @@
                                 </child>
                                 <child>
                                   <widget class="GtkSpinButton" id="spinbutton1">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x25CF;</property>
                                     <property name="adjustment">150 10 300 1 10 10</property>

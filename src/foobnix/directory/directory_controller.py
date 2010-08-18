@@ -301,6 +301,9 @@ class DirectoryCntr():
         LOG.info("Select: ", directoryBean.name, directoryBean.type) 
         LOG.info("Drug type", directoryBean.type)
         
+        if append and not self.playlistCntr.current_list_model:
+                self.playlistCntr.append_notebook_page(directoryBean.name)
+        
         if directoryBean.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP] :
             songs = self.current_list_model.getChildSongBySelected()
             
@@ -308,9 +311,6 @@ class DirectoryCntr():
             LOG.info("Select songs", songs)
             if not songs:
                 return
-            
-            if not self.playlistCntr.current_list_model:
-                self.playlistCntr.append_notebook_page(directoryBean.name)
             
             if append:                  
                 self.playlistCntr.append(songs)
