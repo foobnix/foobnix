@@ -32,6 +32,7 @@ class OnlineListCntr(GObject):
         self.gx_main = gxMain
         self.directoryCntr = None
         self.playerCntr = playerCntr
+        self.current_list_model = None 
 
         self.search_panel = SearchPanel(gxMain)
         

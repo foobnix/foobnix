@@ -308,6 +308,10 @@ class DirectoryCntr():
             LOG.info("Select songs", songs)
             if not songs:
                 return
+            
+            if not self.playlistCntr.current_list_model:
+                self.playlistCntr.append_notebook_page(directoryBean.name)
+            
             if append:                  
                 self.playlistCntr.append(songs)
             else:
