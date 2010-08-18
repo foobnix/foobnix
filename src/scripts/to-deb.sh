@@ -34,12 +34,5 @@ python setup.py install
 pwd
 cp -r . ../foobnix_$VERSION-$RELEASE
 echo "Create archive"
-tar cvzf ../deb/foobnix_$VERSION-$RELEASE.tar.gz ../foobnix_$VERSION-$RELEASE --exclude=.svn
+tar cvzf ../deb/foobnix_$VERSION-$RELEASE.tar.gz ../foobnix_$VERSION-$RELEASE --exclude=.svn --exclude=*.pyc 
 rm -rf ../foobnix_$VERSION-$RELEASE
-
-#Releas tar.gz
-pwd
-cd scripts
-
-#./upload.py --summary=foobnix_$VERSION-$RELEASE.tar.gz --project=foobnix --user=ivan.ivanenko@gmail.com --labels=Featured ../../deb/foobnix_$VERSION-$RELEASE.tar.gz
-#./upload.py --summary=foobnix_$VERSION-${RELEASE}_i386.deb --project=foobnix --user=ivan.ivanenko@gmail.com --labels=Featured ../../deb/foobnix_$VERSION-${RELEASE}_i386.deb
