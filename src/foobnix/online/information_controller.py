@@ -16,6 +16,7 @@ from foobnix.util.mouse_utils import  is_double_left_click, \
     is_rigth_click
 from foobnix.online.dowload_util import save_song_thread, save_as_song_thread
 from foobnix.lyric.lyr import get_lyrics
+import os
 
 class SimilartSongsController(BaseListController):
     
@@ -213,9 +214,10 @@ class InformationController():
     def show_song_info(self, song):
         if (FConfiguration().view_info_panel or FConfiguration().view_lyric_panel) and not self.info_thread:
             self.info_thread = thread.start_new_thread(self.show_song_info_tread, (song,))
+            #self.show_song_info_tread(song)
         else:
             LOG.warn("Please try later... search is not finished")
-        #    self.show_song_info_tread(song)
+            
     
     def add_similar_song(self, song):
         self.current_list_model.append([song.get_short_description(), song.path])
@@ -229,13 +231,54 @@ class InformationController():
     
     def show_song_info_tread(self, song):        
         self.song = song
-        LOG.info("Get all possible information about song")
         
-        image_url = self.get_album_image_url(song)            
+        if not song.getArtist() or not song.getTitle():
+            LOG.warn("For update info artist and title are required", song.name, song.getArtist(), song.getTitle())
+            self.info_thread = None
+            return None
         
-        #    LOG.error("Image url dowlaod error")
-        #    image_url = None
+        LOG.info("Update song info", song.name, song.getArtist(), song.getTitle())
+        try:
+            track = self.last_fm_network.get_track(song.getArtist(), song.getTitle())
+            album = track.get_album()
+        except:
+            LOG.error("Error getting track and album from last.fm")
+            self.info_thread = None
+            return None
+        
+        if song.image:
+            self.update_image_from_file(song)
+        else:
+            self.update_image_from_url(album)
+        
+        self.update_lyrics(song)
+        self.update_links(song)
+        self.update_info_panel(song, track, album)
+        
+        
+        self.info_thread = None
+    
+    def update_image_from_file(self, song):
+        if os.path.isfile(song.image):
+            pixbuf = gtk.gdk.pixbuf_new_from_file(song.image)            #@UndefinedVariable
+            heigth = gtk.gdk.screen_height() #@UndefinedVariable
             
+            if heigth < 800:
+                LOG.info("Image size 174x174")
+                scaled_buf = pixbuf.scale_simple(174, 174, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
+            else:
+                LOG.info("Image size 300x300")
+                scaled_buf = pixbuf.scale_simple(300, 300, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
+            
+            self.album_image.set_from_pixbuf(scaled_buf)
+            self.lyric_image_widget.set_from_pixbuf(scaled_buf)
+        else:
+            LOG.error("Song image not found", song)
+    
+    def update_image_from_url(self, album):        
+            
+        image_url = self.get_album_image_url(album)            
+     
         if not image_url:
             LOG.info("Image not found, load empty.")
             self.set_no_image_album()
@@ -244,26 +287,21 @@ class InformationController():
     
         try:
             image_pix_buf = self.create_pbuf_image_from_url(image_url)
+            heigth = gtk.gdk.screen_height() #@UndefinedVariable
+            if heigth < 800:
+                LOG.info("Image size 174x174")
+                image_pix_buf = image_pix_buf.scale_simple(174, 174, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
+            else:
+                LOG.info("Image size 300x300")
+                image_pix_buf = image_pix_buf.scale_simple(300, 300, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
+            
+            
             self.album_image.set_from_pixbuf(image_pix_buf)
             self.lyric_image_widget.set_from_pixbuf(image_pix_buf)
         except:
             LOG.error("dowload image error")
         
-        self.info_thread = None
-        
-    def set_image(self, path):
-        pass
-    
-    def get_album_image_url(self, song):
-        
-        
-        
-        """set urls"""
-        """TODO TypeError: cannot concatenate 'str' and 'NoneType' objects """
-        self.lastfm_url.set_uri("http://www.lastfm.ru/search?q=" + song.getArtist() + "&type=artist")
-        self.wiki_linkbutton.set_uri("http://en.wikipedia.org/w/index.php?search=" + song.getArtist())
-        self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query=" + song.getArtist())
-        
+    def update_lyrics(self, song):
         if song.getArtist() and song.getTitle():
             try:
                 lyric = get_lyrics(song.getArtist(), song.getTitle())
@@ -276,13 +314,17 @@ class InformationController():
                 self.lyrics_buffer.set_text(_("Lyric not found"))
                 
             self.lyric_artist_title.set_markup("<b>" + song.getArtist() + " - " + song.getTitle() + "</b>")
-        
-        
-        self.current_song_label.set_markup("<b>" + song.getTitle() + "</b>")
-        
-        
-        track = self.last_fm_network.get_track(song.getArtist(), song.getTitle())
-        
+               
+            self.current_song_label.set_markup("<b>" + song.getTitle() + "</b>")
+
+    def update_links(self, song):
+        """set urls"""
+        """TODO TypeError: cannot concatenate 'str' and 'NoneType' objects """
+        self.lastfm_url.set_uri("http://www.lastfm.ru/search?q=" + song.getArtist() + "&type=artist")
+        self.wiki_linkbutton.set_uri("http://en.wikipedia.org/w/index.php?search=" + song.getArtist())
+        self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query=" + song.getArtist())
+    
+    def update_info_panel(self, song, track, album):
         self.similar_songs_cntr.parent = song.getArtist() + " - " + song.getTitle()
         
         LOG.info(track)
@@ -327,34 +369,22 @@ class InformationController():
                 artist_item = artist['item']
             self.add_similar_artist(artist_item.get_name())
         
-        album = track.get_album()
         if album:           
             self.album_name.set_markup("<b>" + song.getArtist() + " - " + album.get_name() + " (" + album.get_release_year() + ")</b>")
         else:
             self.album_name.set_markup(u"<b>" + song.getArtist() + "</b>")
                 
-            
-                
-        #album = self.last_fm_network.get_album(song.getArtist(), song.getTitle())
-        
-        
+    
+    def get_album_image_url(self, album):
         if not album:
             return None
-        
-        
-       
-        
-        LOG.info("Find album", album)
-        
         
         if self.last_album_name == album.get_name():
             LOG.info("Album the same, not need to dowlaod image")
             #TODO  need to implement album image cache
             return self.last_image
         
-        if not album:
-            return None
-        
+       
         LOG.info(album)
         try:
             self.last_album_name = album.get_name()
@@ -366,7 +396,7 @@ class InformationController():
                 self.last_image = album.get_cover_image(size=pylast.COVER_EXTRA_LARGE)            
                 
         except:            
-            LOG.info("image not found for:", song)
+            LOG.info("image not found for:")
         
         LOG.info("image:", self.last_image)        
         return self.last_image

@@ -9,7 +9,6 @@ import os
 import gtk
 
 from gobject import GObject #@UnresolvedImport
-import time
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.model.entity import CommonBean
 from foobnix.online.information_controller import InformationController

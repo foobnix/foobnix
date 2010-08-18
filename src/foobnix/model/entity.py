@@ -51,22 +51,32 @@ class CommonBean():
         self.duration = None
         
         self.id3 = None
-        
+        self.image = None
+    
+    def set_name(self, name):
+        self.artist = None;
+        self.tilte = None
+        self.name = name    
     
     def getArtist(self):
-        
-        
         if self.artist:
             return self.artist
         
         s = self.name.split(" - ")
         if len(s) > 1:
             artist = self.name.split(" - ")[0]
-            return ("" + artist).strip()
+            self.artist = ("" + artist).strip()
+            return self.decode_string(self.artist)
         return ""
     
+    def decode_string(self, str):
+        try:
+            return str.decode('utf-8')
+        except:
+            LOG.error("Error decode str", str)
+            return str
+    
     def getTitle(self):
-        
         
         if self.title:
             return self.title
@@ -82,7 +92,8 @@ class CommonBean():
         for ex in FConfiguration().supportTypes:
             if result.endswith(ex):
                 result = result[:-len(ex)]
-        return result
+        self.title = result         
+        return self.decode_string(result)
     
     def setIconPlaying(self):
         self.icon = gtk.STOCK_GO_FORWARD

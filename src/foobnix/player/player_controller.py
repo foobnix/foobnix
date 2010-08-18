@@ -26,7 +26,8 @@ password_hash = pylast.md5(FConfiguration().lfm_password)
 
 try:
     lastfm = pylast.get_lastfm_network(username=username, password_hash=password_hash)
-    scrobler = lastfm.get_scrobbler("fbx", "1.0")
+    if username != "foobnix":
+        scrobler = lastfm.get_scrobbler("fbx", "1.0")
 except:
     lastfm = None
     scrobler = None
@@ -273,7 +274,6 @@ class PlayerController(BaseController):
         self.player.seek_simple(self.time_format, gst.SEEK_FLAG_FLUSH, seek_ns)    
     
     def playThread(self, song=None):
-        
         LOG.info("Starts playing thread")
                 
         flag = True
@@ -283,8 +283,6 @@ class PlayerController(BaseController):
         self.widgets.seekBar.set_text("00:00 / 00:00")
         gtk.gdk.threads_leave() #@UndefinedVariable
         sec = 0;
-        
-       
 
         while play_thread_id == self.playerThreadId:
             try:
@@ -297,15 +295,10 @@ class PlayerController(BaseController):
                     dur_int = int(song.duration) * 1000000000
                 
                 duration_sec = dur_int / 1000000000
-                
                 dur_str = convert_ns(dur_int)
                 
-                
-                
                 gtk.gdk.threads_enter() #@UndefinedVariable
-                
                 self.widgets.seekBar.set_text("00:00 / " + dur_str)                    
-                
                 gtk.gdk.threads_leave() #@UndefinedVariable
                 break
             except:
@@ -324,8 +317,7 @@ class PlayerController(BaseController):
                 if song.duration > 0:
                     dur_int = int(song.duration) * 1000000000
                 
-                duration_sec = dur_int / 1000000000
-                
+                duration_sec = dur_int / 1000000000                
                 dur_str = convert_ns(dur_int)
                 
                 pos_int = self.player.query_position(self.time_format, None)[0]
@@ -336,45 +328,53 @@ class PlayerController(BaseController):
                     pos_int = pos_int - int(song.start_at) * 1000000000
             
             pos_str = convert_ns(pos_int)
+            
             if play_thread_id == self.playerThreadId:
                 gtk.gdk.threads_enter() #@UndefinedVariable                   
                 
                 timeStr = pos_str + " / " + dur_str
-                timePersent = (pos_int + 0.0) / (dur_int)
-                
+                timePersent = (pos_int + 0.0) / (dur_int)                
                               
                 self.widgets.seekBar.set_text(timeStr)
                 self.widgets.seekBar.set_fraction(timePersent)
                 
                 gtk.gdk.threads_leave() #@UndefinedVariable
                 
-                """report now playing song"""
+                if  self._get_state() != gst.STATE_PAUSED:
+                    sec += 1            
+               
+                if song.duration > 0 and pos_int > (int(song.duration) - 2) * 1000000000:
+                    self.next()
+               
+                time.sleep(1)
+                #self.on_notify_components(sec, pos_int, flag, is_scrobled, duration_sec, timePersent, start_time)
+                if sec % 10 == 0:
+                    LOG.info("Now playing...", song.getArtist(), song.getTitle())
+                    #thread.start_new_thread(self.on_notify_components, (sec, pos_int, flag, is_scrobled, duration_sec, timePersent, start_time,))
+                    """report now playing song"""        
+                    if song.getArtist() and song.getTitle():
+                        self.erros = 0
+                        try:
+                            if scrobler:
+                                scrobler.report_now_playing(song.getArtist(), song.getTitle())
+                        except:
+                            LOG.error("Error reporting now playing last.fm", song.getArtist(), song.getTitle())
                 
-                if sec % 10 == 0 and song.getArtist() and song.getTitle():
-                    self.erros = 0
-                    scrobler.report_now_playing(song.getArtist(), song.getTitle())
-            
-            if song.duration > 0 and pos_int > (int(song.duration) - 2) * 1000000000:
-                self.next()
-                
-            time.sleep(1)            
-            
-            "Download only if you listen this music"
-            if flag and song.type == CommonBean.TYPE_MUSIC_URL and timePersent > 0.35:
-                flag = False                
-                dowload_song_thread(song)
-            
-            if  self._get_state() != gst.STATE_PAUSED:
-                sec += 1            
-                #LOG.debug("Song duration", sec, timePersent);    
-                            
-            if not is_scrobled and (sec >= duration_sec / 2 or (sec >= 45 and timePersent >= 0.9)):
-                is_scrobled = True   
-                if song.getArtist() and song.getTitle():             
-                    scrobler.scrobble(song.getArtist(), song.getTitle(), start_time, "P", "", duration_sec)
-                    LOG.debug("Song Successfully scrobbled", song.getArtist(), song.getTitle())
-                    
-                
+                    "Download only if you listen this music"
+                    if flag and song.type == CommonBean.TYPE_MUSIC_URL and timePersent > 0.35:
+                        flag = False                            
+                        dowload_song_thread(song)
+                                    
+                    if not is_scrobled and (sec >= duration_sec / 2 or (sec >= 45 and timePersent >= 0.9)):
+                        is_scrobled = True   
+                        if song.getArtist() and song.getTitle():
+                            try:
+                                if scrobler:             
+                                    scrobler.scrobble(song.getArtist(), song.getTitle(), start_time, "P", "", duration_sec)
+                                LOG.debug("Song Successfully scrobbled", song.getArtist(), song.getTitle())
+                            except:
+                                LOG.error("Error reporting scobling", song.getArtist(), song.getTitle())      
+    
     
     def onBusMessage(self, bus, message): 
         #LOG.info(message   
@@ -390,6 +390,8 @@ class PlayerController(BaseController):
                 self.widgets.seekBar.set_text("Radio: " + title)
                 LOG.info("show title!", title)               
                 self.song.name = title
+                self.song.artist = None
+                self.song.title = None
                 
                 print self.prev_title, title
                 if title and self.song.type == CommonBean.TYPE_RADIO_URL and self.prev_title != title:
