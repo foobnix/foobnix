@@ -4,8 +4,7 @@ Created on Feb 26, 2010
 @author: ivan
 '''
 from mutagen.easyid3 import EasyID3
-from mutagen.mp3 import MP3, HeaderNotFoundError
-from mutagen import File
+from mutagen.mp3 import MP3
 import os
 import gtk
 from foobnix.util.configuration import FConfiguration

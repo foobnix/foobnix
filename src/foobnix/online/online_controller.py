@@ -38,6 +38,16 @@ class OnlineListCntr(GObject):
         self.count = 0
         self.index = 0
         
+         
+        self.radio_tab_left = gxMain.get_widget("radiobutton-tab-left")
+        self.radio_tab_left.connect("toggled", self.on_chage_tab_position)
+        
+        self.radio_tab_top = gxMain.get_widget("radiobutton-tab-top")
+        self.radio_tab_top.connect("toggled", self.on_chage_tab_position)
+        
+        self.radio_tab_no = gxMain.get_widget("radiobutton-tab-no")
+        self.radio_tab_no.connect("toggled", self.on_chage_tab_position)
+        
         
         self.online_notebook = gxMain.get_widget("online_notebook")
         
@@ -45,6 +55,59 @@ class OnlineListCntr(GObject):
         add_file_menu.connect("activate", self.on_add_file)
         add_folder_menu = gxMain.get_widget("add-folder")
         add_folder_menu.connect("activate", self.on_add_folder)
+        
+        self.tab_labes = []
+        self.default_angel = 90
+        
+        self.set_tabs_position_on_load()        
+        
+    def set_tabs_position_on_load(self):
+        if  FConfiguration().tab_position == gtk.POS_LEFT:
+            #self.set_tab_left()
+            self.radio_tab_left.set_active(True)
+        
+        elif  FConfiguration().tab_position == gtk.POS_TOP:
+            #self.set_tab_top()
+            self.radio_tab_top.set_active(True)
+        
+        elif FConfiguration().tab_position == None:
+            #self.set_tab_no()
+            self.radio_tab_no.set_active(True)
+    
+    def update_label_angel(self, angle):
+        for label in self.tab_labes:
+            label.set_angle(angle)
+    
+    def set_tab_left(self):
+        LOG.info("Set tabs Left")
+        self.online_notebook.set_tab_pos(gtk.POS_LEFT)
+        self.update_label_angel(90)
+        self.default_angel = 90
+        self.online_notebook.set_show_tabs(True)
+        FConfiguration().tab_position = gtk.POS_LEFT
+    
+    def set_tab_top(self):
+        LOG.info("Set tabs top")
+        self.online_notebook.set_tab_pos(gtk.POS_TOP)
+        self.update_label_angel(0)
+        self.default_angel = 0
+        self.online_notebook.set_show_tabs(True)
+        FConfiguration().tab_position = gtk.POS_TOP
+    
+    def set_tab_no(self):
+        LOG.info("Set tabs no")
+        self.online_notebook.set_show_tabs(False)
+        FConfiguration().tab_position = None
+    
+    def on_chage_tab_position(self, *args):
+        if self.radio_tab_left.get_active():
+            self.set_tab_left()
+        
+        elif self.radio_tab_top.get_active():
+            self.set_tab_top()
+        
+        elif self.radio_tab_no.get_active():
+            self.set_tab_no()
     
     def on_add_file(self, *a):
         chooser = gtk.FileChooserDialog(title=_("Choose file to open"), action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
@@ -128,8 +191,11 @@ class OnlineListCntr(GObject):
             name = name[:50]
                         
         label = gtk.Label(name)
-        label.set_angle(90)
+        
+        label.set_angle(self.default_angel)
         label.show()
+        
+        self.tab_labes.append(label)
         
         event_box = gtk.EventBox()
         event_box.add(label)
@@ -143,7 +209,8 @@ class OnlineListCntr(GObject):
         
     
     def on_tab_click(self, w, e):
-        if e.type == gtk.gdk._2BUTTON_PRESS and e.button == 3:
+        """ double left or whell pressed"""
+        if (e.type == gtk.gdk._2BUTTON_PRESS and e.button == 3) or (e.type == gtk.gdk.BUTTON_PRESS and e.button == 2):
             LOG.info("Close Current TAB")
             page = self.online_notebook.get_current_page()
             self.online_notebook.remove_page(page)

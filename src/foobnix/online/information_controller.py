@@ -243,6 +243,7 @@ class InformationController():
             album = track.get_album()
         except:
             LOG.error("Error getting track and album from last.fm")
+            self.set_no_image_album()
             self.info_thread = None
             return None
         
@@ -300,6 +301,7 @@ class InformationController():
             self.lyric_image_widget.set_from_pixbuf(image_pix_buf)
         except:
             LOG.error("dowload image error")
+            self.set_no_image_album()
         
     def update_lyrics(self, song):
         if song.getArtist() and song.getTitle():

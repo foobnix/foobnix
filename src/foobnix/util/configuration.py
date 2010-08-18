@@ -11,6 +11,7 @@ import tempfile
 import ConfigParser
 from foobnix.util.singleton import Singleton
 from foobnix.util import LOG
+import gtk
 
 FOOBNIX_TMP = "/usr/share/foobnix"
 FOOBNIX_TMP_RADIO = os.path.join(FOOBNIX_TMP, "radio")
@@ -103,6 +104,8 @@ class FConfiguration:
         self.count_of_tabs = 3
         
         self.cache_music_beans = []
+        
+        self.tab_position = gtk.POS_LEFT
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -142,6 +145,7 @@ class FConfiguration:
                 self.view_lyric_panel = instance.view_lyric_panel
                 
                 self.cache_music_beans = instance.cache_music_beans
+                self.tab_position = instance.tab_position
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")
