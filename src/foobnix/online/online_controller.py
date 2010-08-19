@@ -63,15 +63,15 @@ class OnlineListCntr(GObject):
         self.set_tabs_position_on_load()        
         
     def set_tabs_position_on_load(self):
-        if  FConfiguration().tab_position == gtk.POS_LEFT:
+        if  FConfiguration().tab_position == "left":
             #self.set_tab_left()
             self.radio_tab_left.set_active(True)
         
-        elif  FConfiguration().tab_position == gtk.POS_TOP:
+        elif  FConfiguration().tab_position == "top":
             #self.set_tab_top()
             self.radio_tab_top.set_active(True)
         
-        elif FConfiguration().tab_position == None:
+        elif FConfiguration().tab_position == "no":
             #self.set_tab_no()
             self.radio_tab_no.set_active(True)
     
@@ -85,7 +85,7 @@ class OnlineListCntr(GObject):
         self.update_label_angel(90)
         self.default_angel = 90
         self.online_notebook.set_show_tabs(True)
-        FConfiguration().tab_position = gtk.POS_LEFT
+        FConfiguration().tab_position = "left"
     
     def set_tab_top(self):
         LOG.info("Set tabs top")
@@ -93,12 +93,12 @@ class OnlineListCntr(GObject):
         self.update_label_angel(0)
         self.default_angel = 0
         self.online_notebook.set_show_tabs(True)
-        FConfiguration().tab_position = gtk.POS_TOP
+        FConfiguration().tab_position = "top"
     
     def set_tab_no(self):
         LOG.info("Set tabs no")
         self.online_notebook.set_show_tabs(False)
-        FConfiguration().tab_position = None
+        FConfiguration().tab_position = "no"
     
     def on_chage_tab_position(self, *args):
         if self.radio_tab_left.get_active():

@@ -26,7 +26,7 @@ password_hash = pylast.md5(FConfiguration().lfm_password)
 
 try:
     lastfm = pylast.get_lastfm_network(username=username, password_hash=password_hash)
-    if username != "foobnix":
+    if username != FConfiguration().lfm_user_default:
         scrobler = lastfm.get_scrobbler("fbx", "1.0")
 except:
     lastfm = None

@@ -93,8 +93,9 @@ class FConfiguration:
         self.vk_login = "qax@bigmir.net"
         self.vk_password = "foobnix"
         
-        self.lfm_login = "foobnix"
-        self.lfm_password = "foobnix"
+        self.lfm_user_default = "l_user_" 
+        self.lfm_login = self.lfm_user_default
+        self.lfm_password = "l_pass_"
         
         self.API_KEY = "bca6866edc9bdcec8d5e8c32f709bea1"
         self.API_SECRET = "800adaf46e237805a4ec2a81404b3ff2"
@@ -105,7 +106,7 @@ class FConfiguration:
         
         self.cache_music_beans = []
         
-        self.tab_position = gtk.POS_LEFT
+        self.tab_position = "left"
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -168,7 +169,10 @@ class FConfiguration:
         #conf = FConfiguration()
         
         save_file = file(self.CFG_FILE, 'w')
-        pickle.dump(self, save_file)
+        try:
+            pickle.dump(self, save_file)
+        except:
+            LOG.error("Erorr dumping pickle conf")
         save_file.close()
         LOG.debug("Save configuration")
             
