@@ -1,3 +1,4 @@
+# ~*~ coding:utf-8 ~*~ #
 '''
 Created on Feb 26, 2010
 
@@ -166,7 +167,16 @@ class CommonBean():
             if audio and audio.has_key('artist'): artist = audio["artist"][0]
             if audio and audio.has_key('title'): title = audio["title"][0]
             if artist and title:
-                return artist + " - " + title
+                line = artist + " - " + title
+                try:
+                    decode_line = line.decode("cp866")
+                    if decode_line.find(u"├") >= 0 :
+                        LOG.warn("File tags encoding is very old cp866")
+                        line = decode_line.replace(u"├", "")
+                except:
+                    pass
+                
+                return line
         except:
             LOG.error("Get song attribute error")
             pass
