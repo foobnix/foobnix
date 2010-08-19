@@ -143,8 +143,7 @@ class OnlineListModel:
             model.remove(iter)
     
     def append(self, bean):
-        """teplorary disable colors"""
-        bean.color = None 
+        """teplorary disable colors"""        
         self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent, bean.time, bean.start_at, bean.duration, bean.id3, bean.image])
 
     def __del__(self, *a):
@@ -188,6 +187,8 @@ class OnlineListModel:
                 self.append(songBean)
 
     def get_bg_color(self, i):
+        """temp no color"""
+        return None
         if i % 2 :
             return "#F2F2F2"
         else:
