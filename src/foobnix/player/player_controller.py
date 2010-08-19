@@ -26,8 +26,13 @@ password_hash = pylast.md5(FConfiguration().lfm_password)
 
 try:
     lastfm = pylast.get_lastfm_network(username=username, password_hash=password_hash)
-    if username != FConfiguration().lfm_user_default:
+    if username != FConfiguration().lfm_user_default:        
         scrobler = lastfm.get_scrobbler("fbx", "1.0")
+        LOG.debug("lastfm Scroblerr enable for user", username)
+    else:
+        LOG.debug("NO lastfm Scroblerr enable for user", username)
+        scrobler = None
+        
 except:
     lastfm = None
     scrobler = None
@@ -354,11 +359,11 @@ class PlayerController(BaseController):
                     """report now playing song"""        
                     if song.getArtist() and song.getTitle():
                         self.erros = 0
-                        try:
-                            if scrobler:
-                                scrobler.report_now_playing(song.getArtist(), song.getTitle())
-                        except:
-                            LOG.error("Error reporting now playing last.fm", song.getArtist(), song.getTitle())
+                        
+                    if scrobler:
+                        thread.start_new_thread(self.last_fm_reporting_thread, (song,))
+                        #scrobler.report_now_playing(song.getArtist(), song.getTitle())
+                
                 
                     "Download only if you listen this music"
                     if flag and song.type == CommonBean.TYPE_MUSIC_URL and timePersent > 0.35:
@@ -375,6 +380,13 @@ class PlayerController(BaseController):
                             except:
                                 LOG.error("Error reporting scobling", song.getArtist(), song.getTitle())      
     
+    
+    def last_fm_reporting_thread(self, song):
+        LOG.info("last.fm report now playing")
+        try:
+            scrobler.report_now_playing(song.getArtist(), song.getTitle())
+        except:
+            LOG.error("Error reporting now playing last.fm", song.getArtist(), song.getTitle())
     
     def onBusMessage(self, bus, message): 
         #LOG.info(message   

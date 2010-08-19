@@ -308,6 +308,7 @@ class InformationController():
             try:
                 lyric = get_lyrics(song.getArtist(), song.getTitle())
             except:
+                lyric = None
                 LOG.error("Lyrics get error")
                 pass
             if lyric:
