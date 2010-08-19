@@ -302,7 +302,7 @@ class OnlineListCntr(GObject):
         
         """end big file to the end"""
         for bean in beans:
-            id3 = bean.getMp3TagsName()
+            id3 = bean.getMp3TagsName()            
             if id3:
                 bean.id3, bean.name = bean.name, id3
                 

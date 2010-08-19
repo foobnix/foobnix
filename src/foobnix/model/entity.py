@@ -162,10 +162,12 @@ class CommonBean():
                     
         artist = None
         title = None
-        duration = None
+        
         try:
             if audio and audio.has_key('artist'): artist = audio["artist"][0]
             if audio and audio.has_key('title'): title = audio["title"][0]
+            #if audio and audio.has_key('duration'): self.duration = audio["duration"][0]
+            
             if artist and title:
                 line = artist + " - " + title
                 try:

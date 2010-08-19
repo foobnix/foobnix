@@ -163,6 +163,8 @@ class CueReader():
         
         cue_file.image = self.get_image_by_path(self.cue_file)
         
+        self.files_count = 0
+        
         for line in file:
 
             try:
@@ -190,6 +192,12 @@ class CueReader():
                     cue_file.performer = performer
                 
             if line.startswith(FILE):
+                self.files_count += 1
+                
+                if self.files_count > 1:
+                        self.is_valid = False
+                        return cue_file
+                
                 file = self.get_line_value(line)
                 dir = os.path.dirname(self.cue_file)
                 full_file = os.path.join(dir, file)
