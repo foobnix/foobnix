@@ -142,7 +142,9 @@ class OnlineListModel:
         for iter in iters:
             model.remove(iter)
     
-    def append(self, bean): 
+    def append(self, bean):
+        """teplorary disable colors"""
+        bean.color = None 
         self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent, bean.time, bean.start_at, bean.duration, bean.id3, bean.image])
 
     def __del__(self, *a):
