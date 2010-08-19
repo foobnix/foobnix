@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sonata\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-16 23:36+0300\n"
+"POT-Creation-Date: 2010-08-19 22:29+0300\n"
 "PO-Revision-Date: 2009-04-06 21:35+0300\n"
 "Last-Translator: Fomin Denis <fominde@mail.ru>\n"
 "Language-Team: badDron <andrew@infonet.by>\n"
@@ -21,16 +21,20 @@ msgstr ""
 msgid "Success"
 msgstr "הצלחה"
 
-#: .././foobnix/directory/directory_controller.py:147
+#: .././foobnix/directory/directory_controller.py:152
 msgid "New play list"
 msgstr "רשימת השמעה חדשה"
 
-#: .././foobnix/directory/directory_controller.py:377
+#: .././foobnix/directory/directory_controller.py:383
+msgid "Updating music, please wait... "
+msgstr ""
+
+#: .././foobnix/directory/directory_controller.py:389
 msgid "Music not found in "
 msgstr "לא נמצאו קבצי השמע "
 
 #: .././foobnix/directory/directory_model.py:36
-#: .././foobnix/glade/foobnix.glade.h:34
+#: .././foobnix/glade/foobnix.glade.h:36
 msgid "Title"
 msgstr "שם"
 
@@ -38,72 +42,72 @@ msgstr "שם"
 msgid "My play lists"
 msgstr "רשימות השמעה שלי"
 
-#: .././foobnix/online/information_controller.py:34
+#: .././foobnix/online/information_controller.py:36
 msgid "Similar to: "
 msgstr "דומה לזה"
 
-#: .././foobnix/online/information_controller.py:50
-#: .././foobnix/online/online_controller.py:279
+#: .././foobnix/online/information_controller.py:52
+#: .././foobnix/online/online_controller.py:346
 msgid "Choose directory to save song"
 msgstr "נא לבחור תיקיה לשמירת השיר"
 
-#: .././foobnix/online/information_controller.py:191
+#: .././foobnix/online/information_controller.py:193
 msgid "Similar Artists"
 msgstr "אומנים דומים"
 
-#: .././foobnix/online/information_controller.py:195
+#: .././foobnix/online/information_controller.py:197
 msgid "Similar Songs"
 msgstr "שירים דומים"
 
-#: .././foobnix/online/information_controller.py:199
+#: .././foobnix/online/information_controller.py:201
 msgid "Similar Tags"
 msgstr "טאגים דומים"
 
-#: .././foobnix/online/information_controller.py:276
+#: .././foobnix/online/information_controller.py:328
 #, fuzzy
 msgid "Lyric not found"
 msgstr "לא נמצאו קבצי השמע "
 
-#: .././foobnix/online/online_controller.py:51
+#: .././foobnix/online/online_controller.py:114
 #, fuzzy
 msgid "Choose file to open"
 msgstr "נא לבחור תיקיה לשמירת השיר"
 
-#: .././foobnix/online/online_controller.py:66
+#: .././foobnix/online/online_controller.py:129
 msgid "Nothing found to play in the file(s)"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:73
+#: .././foobnix/online/online_controller.py:136
 #, fuzzy
 msgid "Choose directory with music"
 msgstr "נא לבחור תיקיה לשמירת השיר"
 
-#: .././foobnix/online/online_controller.py:90
+#: .././foobnix/online/online_controller.py:153
 msgid "Nothing found to play in the folder(s)"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:206
+#: .././foobnix/online/online_controller.py:273
 msgid " not found on last.fm, wait for google suggests ..."
 msgstr "לא נימצא בלאסט.פם, מחפסים הצעות בגוגל"
 
-#: .././foobnix/online/online_controller.py:212
+#: .././foobnix/online/online_controller.py:279
 msgid "Google not found suggests"
 msgstr "גם גוגל לא מצא"
 
-#: .././foobnix/online/online_controller.py:221
+#: .././foobnix/online/online_controller.py:288
 #, fuzzy
 msgid "Searching: "
 msgstr "חיפוס"
 
-#: .././foobnix/online/online_controller.py:221
+#: .././foobnix/online/online_controller.py:288
 msgid " ... please wait a second"
 msgstr ""
 
-#: .././foobnix/online/online_model.py:39
+#: .././foobnix/online/online_model.py:40
 msgid "Artist - Title"
 msgstr "שם האומן - שם השיר"
 
-#: .././foobnix/online/online_model.py:43
+#: .././foobnix/online/online_model.py:44
 msgid "Time"
 msgstr "משך השיר"
 
@@ -187,166 +191,178 @@ msgid "Foobnix"
 msgstr "פובניקס"
 
 #: .././foobnix/glade/foobnix.glade.h:17
+msgid "Left"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:18
 msgid "Location"
 msgstr "מיקום"
 
-#: .././foobnix/glade/foobnix.glade.h:18
+#: .././foobnix/glade/foobnix.glade.h:19
 msgid "Lyrics"
 msgstr "לחן"
 
-#: .././foobnix/glade/foobnix.glade.h:19
+#: .././foobnix/glade/foobnix.glade.h:20
 #, fuzzy
 msgid "Music"
 msgstr "מוסיקה"
 
-#: .././foobnix/glade/foobnix.glade.h:20
+#: .././foobnix/glade/foobnix.glade.h:21
 msgid "Music dir:"
 msgstr "תיקיית המוסיקה"
 
-#: .././foobnix/glade/foobnix.glade.h:21
+#: .././foobnix/glade/foobnix.glade.h:22
+msgid "No tabs"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:23
 msgid "Online Music"
 msgstr "מוסיקה ברשת"
 
-#: .././foobnix/glade/foobnix.glade.h:22
+#: .././foobnix/glade/foobnix.glade.h:24
 #, fuzzy
 msgid "Play List"
 msgstr "רשימות השמע"
 
-#: .././foobnix/glade/foobnix.glade.h:23
+#: .././foobnix/glade/foobnix.glade.h:25
 #, fuzzy
 msgid "Play list tabs"
 msgstr "רשימות השמע"
 
-#: .././foobnix/glade/foobnix.glade.h:24
+#: .././foobnix/glade/foobnix.glade.h:26
 msgid "Play on start: "
 msgstr "נגן בהתחלה"
 
-#: .././foobnix/glade/foobnix.glade.h:25
+#: .././foobnix/glade/foobnix.glade.h:27
 msgid "Playing all imaginations"
 msgstr "מנגן כל המוסיקה"
 
-#: .././foobnix/glade/foobnix.glade.h:26
+#: .././foobnix/glade/foobnix.glade.h:28
 msgid "Quit"
 msgstr "לצאת"
 
-#: .././foobnix/glade/foobnix.glade.h:27
+#: .././foobnix/glade/foobnix.glade.h:29
 msgid "Radio"
 msgstr "רדיו"
 
-#: .././foobnix/glade/foobnix.glade.h:28
+#: .././foobnix/glade/foobnix.glade.h:30
 msgid "Random: "
 msgstr "אקרעי"
 
-#: .././foobnix/glade/foobnix.glade.h:29
+#: .././foobnix/glade/foobnix.glade.h:31
 msgid "Reload directory"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:30
+#: .././foobnix/glade/foobnix.glade.h:32
 msgid "Repeat: "
 msgstr "חזור על עצמו"
 
-#: .././foobnix/glade/foobnix.glade.h:31
+#: .././foobnix/glade/foobnix.glade.h:33
 msgid "Save to"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:32
+#: .././foobnix/glade/foobnix.glade.h:34
 msgid "Search"
 msgstr "חיפוס"
 
-#: .././foobnix/glade/foobnix.glade.h:33
+#: .././foobnix/glade/foobnix.glade.h:35
 msgid "Tags"
 msgstr "טאגים"
 
-#: .././foobnix/glade/foobnix.glade.h:35
+#: .././foobnix/glade/foobnix.glade.h:37
+msgid "Top"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:38
 msgid "Top Albums"
 msgstr "מצעד האלבומים"
 
-#: .././foobnix/glade/foobnix.glade.h:36
+#: .././foobnix/glade/foobnix.glade.h:39
 msgid "Top Similar"
 msgstr "מצעד הדומים"
 
-#: .././foobnix/glade/foobnix.glade.h:37
+#: .././foobnix/glade/foobnix.glade.h:40
 msgid "Top Songs"
 msgstr "מצעד השירים"
 
-#: .././foobnix/glade/foobnix.glade.h:38
+#: .././foobnix/glade/foobnix.glade.h:41
 msgid "Tracks"
 msgstr "מצעד הרצועות"
 
-#: .././foobnix/glade/foobnix.glade.h:39
+#: .././foobnix/glade/foobnix.glade.h:42
 msgid "_File"
 msgstr "קובץ"
 
-#: .././foobnix/glade/foobnix.glade.h:40
+#: .././foobnix/glade/foobnix.glade.h:43
 msgid "_Help"
 msgstr "עזרא"
 
-#: .././foobnix/glade/foobnix.glade.h:41
+#: .././foobnix/glade/foobnix.glade.h:44
 msgid "_View"
 msgstr "מראה"
 
-#: .././foobnix/glade/foobnix.glade.h:42
+#: .././foobnix/glade/foobnix.glade.h:45
 msgid "_View Info Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:43
+#: .././foobnix/glade/foobnix.glade.h:46
 msgid "_View Lyric Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:44
+#: .././foobnix/glade/foobnix.glade.h:47
 msgid "_View Music Tree"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:45
+#: .././foobnix/glade/foobnix.glade.h:48
 msgid "_View Search Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:46
+#: .././foobnix/glade/foobnix.glade.h:49
 msgid "last.fm"
 msgstr "last.fm"
 
-#: .././foobnix/glade/foobnix.glade.h:47
+#: .././foobnix/glade/foobnix.glade.h:50
 #, fuzzy
 msgid "last.fm "
 msgstr "last.fm"
 
-#: .././foobnix/glade/foobnix.glade.h:48
+#: .././foobnix/glade/foobnix.glade.h:51
 msgid "login:"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:49
+#: .././foobnix/glade/foobnix.glade.h:52
 msgid "musicbrainz"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:50
+#: .././foobnix/glade/foobnix.glade.h:53
 msgid "pass:"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:51
+#: .././foobnix/glade/foobnix.glade.h:54
 msgid "toolbutton10"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:52
+#: .././foobnix/glade/foobnix.glade.h:55
 msgid "toolbutton11"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:53
+#: .././foobnix/glade/foobnix.glade.h:56
 msgid "toolbutton7"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:54
+#: .././foobnix/glade/foobnix.glade.h:57
 msgid "toolbutton8"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:55
+#: .././foobnix/glade/foobnix.glade.h:58
 msgid "toolbutton9"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:56
+#: .././foobnix/glade/foobnix.glade.h:59
 msgid "vk.com "
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:57
+#: .././foobnix/glade/foobnix.glade.h:60
 msgid "wiki"
 msgstr "wiki"
 

@@ -17,6 +17,7 @@ from foobnix.util.mouse_utils import  is_double_left_click, \
 from foobnix.online.dowload_util import save_song_thread, save_as_song_thread
 from foobnix.lyric.lyr import get_lyrics
 import os
+import time
 
 class SimilartSongsController(BaseListController):
     
@@ -210,14 +211,24 @@ class InformationController():
         self.last_image = None
         
         self.last_fm_network = lastfm
+        self.none_thead = None
     
     def show_song_info(self, song):
         if (FConfiguration().view_info_panel or FConfiguration().view_lyric_panel) and not self.info_thread:
             self.info_thread = thread.start_new_thread(self.show_song_info_tread, (song,))
             #self.show_song_info_tread(song)
         else:
-            LOG.warn("Please try later... search is not finished")
-            
+            LOG.warn("Please try later... search is not finished, or get permission in 20 sec")
+            if not self.none_thead:
+                self.none_thead = thread.start_new_thread(self.none_thread, ())
+    
+    def none_thread(self):
+        LOG.info("run none thread")
+        time.sleep(20) 
+        LOG.info("None thread finished, try search again")
+        self.info_thread = None
+        self.none_thead = None
+        
     
     def add_similar_song(self, song):
         self.current_list_model.append([song.get_short_description(), song.path])
