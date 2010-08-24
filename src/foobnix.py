@@ -28,10 +28,7 @@ def is_only_instance():
 if __name__ == "__main__":
     LOG.print_debug_info()
     if is_only_instance():        
-        APP_NAME = "foobnix"
-        gettext.install(APP_NAME, unicode=True)
-        gettext.textdomain(APP_NAME)
-        gtk.glade.textdomain(APP_NAME)
+        import foobnix.util.localization 
         
         AppController(AppView())
         

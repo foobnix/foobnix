@@ -29,6 +29,13 @@ writelines ../../po/POTFILES.in ./foobnix/directory/
 cd ../lyric
 writelines ../../po/POTFILES.in ./foobnix/lyric/
 
+cd ../preferences
+writelines ../../po/POTFILES.in ./foobnix/preferences/
+
+cd ../preferences/configs
+writelines ../../../po/POTFILES.in ./foobnix/preferences/configs/
+cd ../
+
 cd ../online
 writelines ../../po/POTFILES.in ./foobnix/online/
 

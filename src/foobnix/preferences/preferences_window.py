@@ -96,7 +96,7 @@ class PreferencesWindow:
         
         window.set_border_width(10)
 
-        window.set_title("Foobnix " + get_version() + " - Preferences")
+        window.set_title("Foobnix " + get_version() + " - " + _  ("Preferences"))
         window.set_resizable(False)
         window.set_position(gtk.WIN_POS_CENTER_ALWAYS)  
         
@@ -112,7 +112,7 @@ class PreferencesWindow:
         
         treeview = gtk.TreeView()
         
-        column_name = gtk.TreeViewColumn("Categories", gtk.CellRendererText(), text=self.POS_NAME)
+        column_name = gtk.TreeViewColumn(_("Categories"), gtk.CellRendererText(), text=self.POS_NAME)
         treeview.append_column(column_name)
         
         treeview.set_model(model)
@@ -141,11 +141,13 @@ class PreferencesWindow:
         box = gtk.HBox(False, 0)
         box.show()
         
-        button_save = gtk.Button("Save")
+        button_save = gtk.Button(_("Save"))
+        button_save.set_size_request(100, -1)
         button_save.connect("clicked", lambda * a:self.save())
         button_save.show()
         
-        button_cancel = gtk.Button("Cancel")
+        button_cancel = gtk.Button(_("Cancel"))
+        button_cancel.set_size_request(100, -1)
         button_cancel.connect("clicked", lambda * a:self.hide())
         button_cancel.show()
         

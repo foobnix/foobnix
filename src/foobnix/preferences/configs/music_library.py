@@ -10,8 +10,10 @@ from foobnix.base.base_list_controller import BaseListController
 from deluge.log import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.helpers.dialog_entry import show_entry_dialog
+import foobnix.util.localization 
+
 class MusicLibraryConfig(ConfigPlugin):
-    name = "Music Library"
+    name = _("Music Library")
     enable = True
        
     def __init__(self, directory_controller):
@@ -28,7 +30,7 @@ class MusicLibraryConfig(ConfigPlugin):
     
     
     def dirs(self):
-        frame = gtk.Frame(label="Music dirs")
+        frame = gtk.Frame(label=_("Music dirs"))
         frame.set_border_width(0)
         frame.show()
         
@@ -41,11 +43,11 @@ class MusicLibraryConfig(ConfigPlugin):
         dir_tree.set_size_request(-1, 150)
         dir_tree.show()
         self.tree_controller = BaseListController(dir_tree)
-        self.tree_controller.set_title("Path")
+        self.tree_controller.set_title(_("Path"))
         
         
         """reload button"""
-        reload_button = gtk.Button("Reload")
+        reload_button = gtk.Button(_("Reload"))
         reload_button.show()
         
         
@@ -54,12 +56,12 @@ class MusicLibraryConfig(ConfigPlugin):
         button_box = gtk.VBox(False, 0)
         button_box.show()
         
-        bt_add = gtk.Button("Add")
+        bt_add = gtk.Button(_("Add"))
         bt_add.connect("clicked", self.add_dir)
         bt_add.set_size_request(80, -1)
         bt_add.show()
         
-        bt_remove = gtk.Button("Remove")
+        bt_remove = gtk.Button(_("Remove"))
         bt_remove.connect("clicked", self.remove_dir)
         bt_remove.set_size_request(80, -1)
         bt_remove.show()
@@ -67,7 +69,7 @@ class MusicLibraryConfig(ConfigPlugin):
         empty = gtk.Label("")        
         empty.show()
         
-        bt_reload = gtk.Button(label="Reload")
+        bt_reload = gtk.Button(label=_("Reload"))
         bt_reload.connect("clicked", self.reload_dir)
         bt_reload.set_size_request(80, -1)
         bt_reload.show()
@@ -116,7 +118,7 @@ class MusicLibraryConfig(ConfigPlugin):
          
     
     def add_dir(self, *a):
-        chooser = gtk.FileChooserDialog(title="Choose directory with music", action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(True)
         response = chooser.run()
@@ -135,7 +137,7 @@ class MusicLibraryConfig(ConfigPlugin):
         self.tree_controller.remove_selected()
     
     def formats(self):
-        frame = gtk.Frame(label="File Types")
+        frame = gtk.Frame(label=_("File Types"))
         frame.set_border_width(0)
         frame.show()
         
@@ -146,19 +148,19 @@ class MusicLibraryConfig(ConfigPlugin):
         dir_tree = gtk.TreeView()
         dir_tree.show()
         self.files_controller = BaseListController(dir_tree)
-        self.files_controller.set_title("Extension")
+        self.files_controller.set_title(_("Extension"))
         
         
         """buttons"""
         button_box = gtk.VBox(False, 0)
         button_box.show()
         
-        bt_add = gtk.Button("Add")
+        bt_add = gtk.Button(_("Add"))
         bt_add.connect("clicked", self.on_add_file)
         bt_add.set_size_request(80, -1)
         bt_add.show()
         
-        bt_remove = gtk.Button("Remove")
+        bt_remove = gtk.Button(_("Remove"))
         bt_remove.connect("clicked", lambda * a:self.files_controller.remove_selected())
         bt_remove.set_size_request(80, -1)
         bt_remove.show()
@@ -184,7 +186,7 @@ class MusicLibraryConfig(ConfigPlugin):
         return frame
     
     def on_add_file(self, *a):
-        val = show_entry_dialog("Please add audio extension", "Extension should be like '.mp3'")
+        val = show_entry_dialog(_("Please add audio extension"), _("Extension should be like '.mp3'"))
         if val and val.find(".") >= 0 and len(val) <= 5 and val not in self.files_controller.get_all_items():
             self.files_controller.add_item(val)
         else:

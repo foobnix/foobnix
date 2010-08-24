@@ -10,7 +10,7 @@ from foobnix.util.configuration import FConfiguration
 
 class LastFmConfig(ConfigPlugin):
     
-    name = "Last FM"
+    name = _("Last FM")
     
     def __init__(self):
         print "Create try icon conf"
@@ -21,7 +21,7 @@ class LastFmConfig(ConfigPlugin):
         lbox = gtk.HBox(False, 0)
         lbox.show()
         
-        login = gtk.Label("Login")
+        login = gtk.Label(_("Login"))
         login.set_size_request(150, -1)
         login.show()
         
@@ -35,7 +35,7 @@ class LastFmConfig(ConfigPlugin):
         pbox = gtk.HBox(False, 0)
         pbox.show()
         
-        password = gtk.Label("Password")
+        password = gtk.Label(_("Password"))
         password.set_size_request(150, -1)
         password.show()
         

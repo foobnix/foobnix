@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sonata\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-19 22:29+0300\n"
+"POT-Creation-Date: 2010-08-24 21:44+0300\n"
 "PO-Revision-Date: 2007-02-09 11:04+0200\n"
 "Last-Translator: Dogmatist Demon <dogmaton@gmail.com>\n"
 "Language-Team: Ukranian\n"
@@ -24,16 +24,17 @@ msgstr "urk"
 msgid "New play list"
 msgstr "Новый плей лист"
 
-#: .././foobnix/directory/directory_controller.py:383
+#: .././foobnix/directory/directory_controller.py:394
 msgid "Updating music, please wait... "
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:389
-msgid "Music not found in "
+#: .././foobnix/directory/directory_controller.py:401
+#, fuzzy
+msgid "Music not found"
 msgstr "Музыка не найдена в"
 
 #: .././foobnix/directory/directory_model.py:36
-#: .././foobnix/glade/foobnix.glade.h:36
+#: .././foobnix/glade/foobnix.glade.h:22
 msgid "Title"
 msgstr "Название"
 
@@ -41,13 +42,133 @@ msgstr "Название"
 msgid "My play lists"
 msgstr "Мои плей листы"
 
+#: .././foobnix/preferences/preferences_window.py:99
+msgid "Preferences"
+msgstr ""
+
+#: .././foobnix/preferences/preferences_window.py:115
+msgid "Categories"
+msgstr ""
+
+#: .././foobnix/preferences/preferences_window.py:144
+msgid "Save"
+msgstr ""
+
+#: .././foobnix/preferences/preferences_window.py:149
+msgid "Cancel"
+msgstr ""
+
+#: .././foobnix/preferences/configs/last_fm.py:13
+msgid "Last FM"
+msgstr ""
+
+#: .././foobnix/preferences/configs/last_fm.py:24
+#, fuzzy
+msgid "Login"
+msgstr "логин:"
+
+#: .././foobnix/preferences/configs/last_fm.py:38
+msgid "Password"
+msgstr ""
+
+#: .././foobnix/preferences/configs/music_library.py:16
+#, fuzzy
+msgid "Music Library"
+msgstr "Листы музыки"
+
+#: .././foobnix/preferences/configs/music_library.py:33
+#, fuzzy
+msgid "Music dirs"
+msgstr "Папку с музыкой"
+
+#: .././foobnix/preferences/configs/music_library.py:46
+msgid "Path"
+msgstr ""
+
+#: .././foobnix/preferences/configs/music_library.py:50
+#: .././foobnix/preferences/configs/music_library.py:72
+msgid "Reload"
+msgstr ""
+
+#: .././foobnix/preferences/configs/music_library.py:59
+#: .././foobnix/preferences/configs/music_library.py:158
+msgid "Add"
+msgstr "Добавить"
+
+#: .././foobnix/preferences/configs/music_library.py:64
+#: .././foobnix/preferences/configs/music_library.py:163
+msgid "Remove"
+msgstr ""
+
+#: .././foobnix/preferences/configs/music_library.py:121
+#: .././foobnix/online/online_controller.py:101
+msgid "Choose directory with music"
+msgstr ""
+
+#: .././foobnix/preferences/configs/music_library.py:140
+msgid "File Types"
+msgstr ""
+
+#: .././foobnix/preferences/configs/music_library.py:151
+msgid "Extension"
+msgstr ""
+
+#: .././foobnix/preferences/configs/music_library.py:189
+msgid "Please add audio extension"
+msgstr ""
+
+#: .././foobnix/preferences/configs/music_library.py:189
+msgid "Extension should be like '.mp3'"
+msgstr ""
+
+#: .././foobnix/preferences/configs/save_online.py:14
+msgid "Online Music"
+msgstr "Онлайн Музыка"
+
+#: .././foobnix/preferences/configs/save_online.py:25
+msgid "Save online music"
+msgstr "Сохранять(кешировать) музыку"
+
+#: .././foobnix/preferences/configs/tabs.py:13
+#, fuzzy
+msgid "Tabs"
+msgstr "Теги"
+
+#: .././foobnix/preferences/configs/tabs.py:25
+msgid "Count of tabs"
+msgstr ""
+
+#: .././foobnix/preferences/configs/tabs.py:42
+msgid "Max length of tab"
+msgstr ""
+
+#: .././foobnix/preferences/configs/tabs.py:58
+msgid "Tab position"
+msgstr ""
+
+#: .././foobnix/preferences/configs/tabs.py:62
+msgid "Left"
+msgstr ""
+
+#: .././foobnix/preferences/configs/tabs.py:66
+msgid "Top"
+msgstr ""
+
+#: .././foobnix/preferences/configs/tabs.py:70
+msgid "No Tabs"
+msgstr ""
+
+#: .././foobnix/preferences/configs/vk_conf.py:12
+msgid "Vkontakte"
+msgstr "Вконтакте"
+
 #: .././foobnix/online/information_controller.py:36
 #, fuzzy
 msgid "Similar to: "
 msgstr "Схожі пісні"
 
 #: .././foobnix/online/information_controller.py:52
-#: .././foobnix/online/online_controller.py:346
+#: .././foobnix/online/online_controller.py:311
 msgid "Choose directory to save song"
 msgstr ""
 
@@ -71,36 +192,32 @@ msgstr "Схожі теги"
 msgid "Lyric not found"
 msgstr "Музыка не найдена в"
 
-#: .././foobnix/online/online_controller.py:114
+#: .././foobnix/online/online_controller.py:79
 msgid "Choose file to open"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:129
+#: .././foobnix/online/online_controller.py:94
 msgid "Nothing found to play in the file(s)"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:136
-msgid "Choose directory with music"
-msgstr ""
-
-#: .././foobnix/online/online_controller.py:153
+#: .././foobnix/online/online_controller.py:118
 msgid "Nothing found to play in the folder(s)"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:273
+#: .././foobnix/online/online_controller.py:238
 msgid " not found on last.fm, wait for google suggests ..."
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:279
+#: .././foobnix/online/online_controller.py:244
 msgid "Google not found suggests"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:288
+#: .././foobnix/online/online_controller.py:253
 #, fuzzy
 msgid "Searching: "
 msgstr "Поиск"
 
-#: .././foobnix/online/online_controller.py:288
+#: .././foobnix/online/online_controller.py:253
 msgid " ... please wait a second"
 msgstr ""
 
@@ -146,225 +263,176 @@ msgid "<b>Current song name</b>"
 msgstr "<b>Название песни</b>"
 
 #: .././foobnix/glade/foobnix.glade.h:6
-msgid "<b>Filter</b>"
-msgstr "<b>Фильтр</b>"
-
-#: .././foobnix/glade/foobnix.glade.h:7
 #, fuzzy
 msgid "<b>Lyric</b>"
 msgstr "<b>По артисту</b>"
 
-#: .././foobnix/glade/foobnix.glade.h:8
+#: .././foobnix/glade/foobnix.glade.h:7
 #, fuzzy
 msgid "<b>Online Music Search:</b>"
 msgstr "Онлайн Музыка"
 
-#: .././foobnix/glade/foobnix.glade.h:9
+#: .././foobnix/glade/foobnix.glade.h:8
 msgid "About Foobnix"
 msgstr "О программе"
 
-#: .././foobnix/glade/foobnix.glade.h:10
+#: .././foobnix/glade/foobnix.glade.h:9
 #, fuzzy
 msgid "Add File"
 msgstr "_Файл"
 
-#: .././foobnix/glade/foobnix.glade.h:11
+#: .././foobnix/glade/foobnix.glade.h:10
 msgid "Add Folder"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:12
-msgid "Album List"
-msgstr "Список альбомов"
-
-#: .././foobnix/glade/foobnix.glade.h:13
+#: .././foobnix/glade/foobnix.glade.h:11
 msgid "All Search"
 msgstr "Поиск всего"
 
-#: .././foobnix/glade/foobnix.glade.h:14
+#: .././foobnix/glade/foobnix.glade.h:12
 msgid ""
 "Developed by Ivan Ivanenko\n"
 "ivan.ivanenko@gmail.com"
 msgstr "Разработал Иван Иваненко"
 
-#: .././foobnix/glade/foobnix.glade.h:16
+#: .././foobnix/glade/foobnix.glade.h:14
 msgid "Foobnix"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:17
-msgid "Left"
-msgstr ""
-
-#: .././foobnix/glade/foobnix.glade.h:18
-msgid "Location"
-msgstr "Настройки"
-
-#: .././foobnix/glade/foobnix.glade.h:19
-msgid "Lyrics"
-msgstr "Лирика"
-
-#: .././foobnix/glade/foobnix.glade.h:20
+#: .././foobnix/glade/foobnix.glade.h:15
 #, fuzzy
 msgid "Music"
 msgstr "Музыка"
 
-#: .././foobnix/glade/foobnix.glade.h:21
-msgid "Music dir:"
-msgstr "Папку с музыкой"
-
-#: .././foobnix/glade/foobnix.glade.h:22
-msgid "No tabs"
-msgstr ""
-
-#: .././foobnix/glade/foobnix.glade.h:23
-msgid "Online Music"
-msgstr "Онлайн Музыка"
-
-#: .././foobnix/glade/foobnix.glade.h:24
+#: .././foobnix/glade/foobnix.glade.h:16
 #, fuzzy
 msgid "Play List"
 msgstr "Плей листы"
 
-#: .././foobnix/glade/foobnix.glade.h:25
-#, fuzzy
-msgid "Play list tabs"
-msgstr "Плей листы"
-
-#: .././foobnix/glade/foobnix.glade.h:26
-msgid "Play on start: "
-msgstr "Играть при старте"
-
-#: .././foobnix/glade/foobnix.glade.h:27
+#: .././foobnix/glade/foobnix.glade.h:17
 msgid "Playing all imaginations"
 msgstr "Проиграет любую музыку"
 
-#: .././foobnix/glade/foobnix.glade.h:28
+#: .././foobnix/glade/foobnix.glade.h:18
 msgid "Quit"
 msgstr "Выход"
 
-#: .././foobnix/glade/foobnix.glade.h:29
+#: .././foobnix/glade/foobnix.glade.h:19
 msgid "Radio"
 msgstr "Радио"
 
-#: .././foobnix/glade/foobnix.glade.h:30
-msgid "Random: "
-msgstr "Случайный: "
-
-#: .././foobnix/glade/foobnix.glade.h:31
-msgid "Reload directory"
-msgstr ""
-
-#: .././foobnix/glade/foobnix.glade.h:32
-msgid "Repeat: "
-msgstr "Повторить: "
-
-#: .././foobnix/glade/foobnix.glade.h:33
-msgid "Save to"
-msgstr ""
-
-#: .././foobnix/glade/foobnix.glade.h:34
+#: .././foobnix/glade/foobnix.glade.h:20
 msgid "Search"
 msgstr "Поиск"
 
-#: .././foobnix/glade/foobnix.glade.h:35
+#: .././foobnix/glade/foobnix.glade.h:21
 msgid "Tags"
 msgstr "Теги"
 
-#: .././foobnix/glade/foobnix.glade.h:37
-msgid "Top"
-msgstr ""
-
-#: .././foobnix/glade/foobnix.glade.h:38
+#: .././foobnix/glade/foobnix.glade.h:23
 msgid "Top Albums"
 msgstr "По альбомах"
 
-#: .././foobnix/glade/foobnix.glade.h:39
+#: .././foobnix/glade/foobnix.glade.h:24
 msgid "Top Similar"
 msgstr "Похожие исполнители"
 
-#: .././foobnix/glade/foobnix.glade.h:40
+#: .././foobnix/glade/foobnix.glade.h:25
 msgid "Top Songs"
 msgstr "Лучшие песни"
 
-#: .././foobnix/glade/foobnix.glade.h:41
+#: .././foobnix/glade/foobnix.glade.h:26
 msgid "Tracks"
 msgstr "По Треку"
 
-#: .././foobnix/glade/foobnix.glade.h:42
+#: .././foobnix/glade/foobnix.glade.h:27
 msgid "_File"
 msgstr "_Файл"
 
-#: .././foobnix/glade/foobnix.glade.h:43
+#: .././foobnix/glade/foobnix.glade.h:28
 msgid "_Help"
 msgstr "_Помощь"
 
-#: .././foobnix/glade/foobnix.glade.h:44
+#: .././foobnix/glade/foobnix.glade.h:29
 msgid "_View"
 msgstr "_Вид"
 
-#: .././foobnix/glade/foobnix.glade.h:45
+#: .././foobnix/glade/foobnix.glade.h:30
 msgid "_View Info Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:46
+#: .././foobnix/glade/foobnix.glade.h:31
 msgid "_View Lyric Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:47
+#: .././foobnix/glade/foobnix.glade.h:32
 msgid "_View Music Tree"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:48
+#: .././foobnix/glade/foobnix.glade.h:33
 msgid "_View Search Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:49
+#: .././foobnix/glade/foobnix.glade.h:34
 msgid "last.fm"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:50
-msgid "last.fm "
-msgstr ""
-
-#: .././foobnix/glade/foobnix.glade.h:51
-msgid "login:"
-msgstr "логин:"
-
-#: .././foobnix/glade/foobnix.glade.h:52
+#: .././foobnix/glade/foobnix.glade.h:35
 msgid "musicbrainz"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:53
-#, fuzzy
-msgid "pass:"
-msgstr "пароль:"
-
-#: .././foobnix/glade/foobnix.glade.h:54
+#: .././foobnix/glade/foobnix.glade.h:36
 msgid "toolbutton10"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:55
+#: .././foobnix/glade/foobnix.glade.h:37
 msgid "toolbutton11"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:56
+#: .././foobnix/glade/foobnix.glade.h:38
 msgid "toolbutton7"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:57
+#: .././foobnix/glade/foobnix.glade.h:39
 msgid "toolbutton8"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:58
+#: .././foobnix/glade/foobnix.glade.h:40
 msgid "toolbutton9"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:59
-msgid "vk.com "
-msgstr ""
-
-#: .././foobnix/glade/foobnix.glade.h:60
+#: .././foobnix/glade/foobnix.glade.h:41
 msgid "wiki"
 msgstr ""
+
+#~ msgid "<b>Filter</b>"
+#~ msgstr "<b>Фильтр</b>"
+
+#~ msgid "Album List"
+#~ msgstr "Список альбомов"
+
+#~ msgid "Location"
+#~ msgstr "Настройки"
+
+#~ msgid "Lyrics"
+#~ msgstr "Лирика"
+
+#, fuzzy
+#~ msgid "Play list tabs"
+#~ msgstr "Плей листы"
+
+#~ msgid "Play on start: "
+#~ msgstr "Играть при старте"
+
+#~ msgid "Random: "
+#~ msgstr "Случайный: "
+
+#~ msgid "Repeat: "
+#~ msgstr "Повторить: "
+
+#, fuzzy
+#~ msgid "pass:"
+#~ msgstr "пароль:"
 
 #~ msgid "<b>Original</b>"
 #~ msgstr "<b>Оригинал</b>"
@@ -374,9 +442,6 @@ msgstr ""
 
 #~ msgid "<b>Translated</b>"
 #~ msgstr "<b>Перевод</b>"
-
-#~ msgid "Add"
-#~ msgstr "Добавить"
 
 #~ msgid "By first"
 #~ msgstr "По первой"
@@ -404,12 +469,6 @@ msgstr ""
 
 #~ msgid "Refresh"
 #~ msgstr "Обновить"
-
-#~ msgid "Save online music"
-#~ msgstr "Сохранять(кешировать) музыку"
-
-#~ msgid "Vkontakte"
-#~ msgstr "Вконтакте"
 
 #~ msgid "_Compact View"
 #~ msgstr "_Компактный Вид"

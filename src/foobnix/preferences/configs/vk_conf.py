@@ -9,7 +9,7 @@ from foobnix.preferences.configs.last_fm import LastFmConfig
 
 class VkontakteConfig(LastFmConfig):
     
-    name = "Vkontakte"
+    name = _("Vkontakte")
     
     def __init__(self):
         LastFmConfig.__init__(self)

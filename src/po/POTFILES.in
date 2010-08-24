@@ -8,6 +8,16 @@
 ./foobnix/directory/pref_list_model.py
 ./foobnix/directory/virtuallist_controller.py
 ./foobnix/lyric/lyr.py
+./foobnix/preferences/config_plugin.py
+./foobnix/preferences/pref_controller.py
+./foobnix/preferences/preferences_window.py
+./foobnix/preferences/configs/category_info.py
+./foobnix/preferences/configs/last_fm.py
+./foobnix/preferences/configs/music_library.py
+./foobnix/preferences/configs/save_online.py
+./foobnix/preferences/configs/tabs.py
+./foobnix/preferences/configs/try_icon.py
+./foobnix/preferences/configs/vk_conf.py
 ./foobnix/online/dowload_util.py
 ./foobnix/online/google_search.py
 ./foobnix/online/google_utils.py
@@ -24,6 +34,7 @@
 ./foobnix/util/config.py
 ./foobnix/util/configuration.py
 ./foobnix/util/file_utils.py
+./foobnix/util/localization.py
 ./foobnix/util/mouse_utils.py
 ./foobnix/util/plsparser.py
 ./foobnix/util/singleton.py

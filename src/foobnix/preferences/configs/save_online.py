@@ -11,7 +11,7 @@ from foobnix.util import LOG
 
 class SaveOnlineConfig(ConfigPlugin):
     
-    name = "Save online music"
+    name = _("Online Music")
     
     def __init__(self):
         print "Create try icon conf"
@@ -22,7 +22,7 @@ class SaveOnlineConfig(ConfigPlugin):
         hbox = gtk.HBox(False, 0)
         hbox.show()
         
-        self.is_save = gtk.CheckButton(label="Save online music ", use_underline=True)
+        self.is_save = gtk.CheckButton(label=_("Save online music"), use_underline=True)
         self.is_save.connect("clicked", self.on_save_online)
         self.is_save.show()
         

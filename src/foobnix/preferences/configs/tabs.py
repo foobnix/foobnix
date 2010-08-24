@@ -10,7 +10,7 @@ from foobnix.util.configuration import FConfiguration
 from foobnix.util import LOG
 class TabsConfig(ConfigPlugin):
     
-    name = "Tabs"
+    name = _("Tabs")
     
     def __init__(self, online_controller):
         self.online_controller = online_controller
@@ -22,7 +22,7 @@ class TabsConfig(ConfigPlugin):
         cbox = gtk.HBox(False, 0)
         cbox.show()
         
-        tab_label = gtk.Label("Count of tabs")
+        tab_label = gtk.Label(_("Count of tabs"))
         tab_label.set_size_request(150, -1)
         tab_label.show()
         
@@ -39,7 +39,7 @@ class TabsConfig(ConfigPlugin):
         lbox = gtk.HBox(False, 0)
         lbox.show()
         
-        tab_label = gtk.Label("Max length of tab")
+        tab_label = gtk.Label(_("Max length of tab"))
         tab_label.set_size_request(150, -1)
         tab_label.show()
         
@@ -55,19 +55,19 @@ class TabsConfig(ConfigPlugin):
         pbox = gtk.HBox(False, 0)
         pbox.show()
         
-        label = gtk.Label("Tab position")
+        label = gtk.Label(_("Tab position"))
         label.set_size_request(150, -1)
         label.show()
         
-        self.radio_tab_left = gtk.RadioButton(None, "Left")
+        self.radio_tab_left = gtk.RadioButton(None, _("Left"))
         self.radio_tab_left.connect("toggled", self.on_chage_tab_position)
         self.radio_tab_left.show()
         
-        self.radio_tab_top = gtk.RadioButton(self.radio_tab_left, "Top")
+        self.radio_tab_top = gtk.RadioButton(self.radio_tab_left, _("Top"))
         self.radio_tab_top.connect("toggled", self.on_chage_tab_position)
         self.radio_tab_top.show()
         
-        self.radio_tab_no = gtk.RadioButton(self.radio_tab_left, "No Tabs")
+        self.radio_tab_no = gtk.RadioButton(self.radio_tab_left, _("No Tabs"))
         self.radio_tab_no.connect("toggled", self.on_chage_tab_position)
         self.radio_tab_no.show()
         
