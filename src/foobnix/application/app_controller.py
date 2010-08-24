@@ -97,14 +97,8 @@ class AppController(BaseController):
             self.playerWidgets.volume.set_value(FConfiguration().volumeValue)
             self.player_controller.setVolume(FConfiguration().volumeValue / 100)
         
-        if FConfiguration().vpanelPostition:
-            self.playerWidgets.vpanel.set_position(FConfiguration().vpanelPostition)
-        
         if FConfiguration().radiolistState:
             self.radioListCntr.setState(FConfiguration().radiolistState)
-        
-        self.appConfCntr.setVkLoginPass(FConfiguration().vk_login, FConfiguration().vk_password)
-        self.appConfCntr.setLfmLoginPass(FConfiguration().lfm_login, FConfiguration().lfm_password)
         
         if FConfiguration().isPlayOnStart:
             self.player_controller.next()
@@ -116,19 +110,10 @@ class AppController(BaseController):
         #FConfiguration().radiolistState = self.radioListCntr.getState()
         
         FConfiguration().volumeValue = self.playerWidgets.volume.get_value()
-        if self.playerWidgets.vpanel.get_position() > 0:
-            FConfiguration().vpanelPostition = self.playerWidgets.vpanel.get_position()
+        
         if self.playerWidgets.hpanel.get_position() > 0:
             FConfiguration().hpanelPostition = self.playerWidgets.hpanel.get_position()        
-        #if self.playerWidgets.hpanel2.get_position() > 0:
-        #    FConfiguration().hpanel2Postition = self.playerWidgets.hpanel2.get_position()
         
-        
-        FConfiguration().vk_login = self.appConfCntr.getVkLogin()
-        FConfiguration().vk_password = self.appConfCntr.getVkPassword()
-        
-        FConfiguration().lfm_login = self.appConfCntr.getLfmLogin()
-        FConfiguration().lfm_password = self.appConfCntr.getLfmPassword()
         
         FConfiguration().save()
 

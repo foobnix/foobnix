@@ -39,17 +39,6 @@ class OnlineListCntr(GObject):
         self.count = 0
         self.index = 0
         
-         
-        self.radio_tab_left = gxMain.get_widget("radiobutton-tab-left")
-        self.radio_tab_left.connect("toggled", self.on_chage_tab_position)
-        
-        self.radio_tab_top = gxMain.get_widget("radiobutton-tab-top")
-        self.radio_tab_top.connect("toggled", self.on_chage_tab_position)
-        
-        self.radio_tab_no = gxMain.get_widget("radiobutton-tab-no")
-        self.radio_tab_no.connect("toggled", self.on_chage_tab_position)
-        
-        
         self.online_notebook = gxMain.get_widget("online_notebook")
         
         add_file_menu = gxMain.get_widget("add-file")
@@ -84,16 +73,7 @@ class OnlineListCntr(GObject):
         LOG.info("Set tabs no")
         self.online_notebook.set_show_tabs(False)
         FConfiguration().tab_position = "no"
-    
-    def on_chage_tab_position(self, *args):
-        if self.radio_tab_left.get_active():
-            self.set_tab_left()
-        
-        elif self.radio_tab_top.get_active():
-            self.set_tab_top()
-        
-        elif self.radio_tab_no.get_active():
-            self.set_tab_no()
+   
     
     def on_add_file(self, *a):
         chooser = gtk.FileChooserDialog(title=_("Choose file to open"), action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))

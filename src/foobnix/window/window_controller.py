@@ -65,7 +65,7 @@ class WindowController(BaseController):
         '''
         gtk.rc_parse_string(rc_st)
 
-        style = gx.get_widget("label31").get_style()
+        style = gx.get_widget("label6").get_style()
         background_color = style.bg[gtk.STATE_NORMAL]
         text_color = style.fg[gtk.STATE_NORMAL]
         menu_bar = gx.get_widget("menubar3")

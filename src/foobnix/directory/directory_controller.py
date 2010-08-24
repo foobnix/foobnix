@@ -67,7 +67,6 @@ class DirectoryCntr():
         self.mainNoteBook = gxMain.get_widget("main_notebook")
         self.mainNoteBook.set_current_page(0)
         
-        self.leftNoteBook = gxMain.get_widget("left_notebook")
         
         
         self.filter = gxMain.get_widget("filter-entry")
@@ -186,7 +185,6 @@ class DirectoryCntr():
 
     def onChangeView(self, w, active_view):
         self.active_view = active_view
-        self.leftNoteBook.set_current_page(0)
         
         if active_view == self.VIEW_LOCAL_MUSIC:
             self.clear()
