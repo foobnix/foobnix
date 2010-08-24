@@ -21,9 +21,7 @@ from setuptools.package_index import htmldecode
 
 
 class Vkontakte:
-    def __init__(self, email, password):
-        self.email = email
-        self.password = password
+    def __init__(self, email=None, password=None):
         self.cookie = None
         self.execute_time = time.time()
        
@@ -35,9 +33,9 @@ class Vkontakte:
 
         host = 'http://login.vk.com/?act=login'
         #host = 'http://vkontakte.ru/login.php'
-        post = urllib.urlencode({'email' : self.email,
+        post = urllib.urlencode({'email' : FConfiguration().vk_login,
                                  'expire' : '',
-                                 'pass' : self.password,
+                                 'pass' : FConfiguration().vk_password,
                                  'vk' : ''})
 
         headers = {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; uk; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.0',
@@ -204,7 +202,7 @@ class Vkontakte:
              
     
     def find_song_urls(self, song_title):
-        
+        LOG.info("start search songs", song_title)
         page = self.get_page(song_title)
         #page = page.decode('cp1251')
         #page = page.decode("cp1251")
