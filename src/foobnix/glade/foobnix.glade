@@ -392,52 +392,128 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkToolbar" id="toolbar3">
+                  <widget class="GtkHBox" id="hbox1">
                     <property name="visible">True</property>
-                    <property name="toolbar_style">both</property>
-                    <property name="show_arrow">False</property>
-                    <property name="icon_size">1</property>
-                    <property name="icon_size_set">True</property>
+                    <property name="spacing">8</property>
                     <child>
-                      <widget class="GtkToolButton" id="show_local_music_button">
+                      <widget class="GtkToggleButton" id="show_local_music_button">
                         <property name="visible">True</property>
-                        <property name="has_default">True</property>
-                        <property name="label" translatable="yes">Music</property>
-                        <property name="use_underline">True</property>
-                        <property name="stock_id">gtk-harddisk</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="relief">none</property>
+                        <property name="focus_on_click">False</property>
+                        <property name="active">True</property>
+                        <child>
+                          <widget class="GtkVBox" id="vbox3">
+                            <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <widget class="GtkImage" id="image3">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-harddisk</property>
+                              </widget>
+                              <packing>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkLabel" id="label1">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Music</property>
+                              </widget>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </widget>
+                        </child>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkToolButton" id="show_radio_button">
+                      <widget class="GtkToggleButton" id="show_radio_button">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Radio</property>
-                        <property name="use_underline">True</property>
-                        <property name="stock_id">gtk-network</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="relief">none</property>
+                        <property name="focus_on_click">False</property>
+                        <child>
+                          <widget class="GtkVBox" id="vbox7">
+                            <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <widget class="GtkImage" id="image4">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-network</property>
+                              </widget>
+                              <packing>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkLabel" id="label2">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Radio</property>
+                              </widget>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </widget>
+                        </child>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkToolButton" id="show_lists_button">
+                      <widget class="GtkToggleButton" id="show_lists_button">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Play List</property>
-                        <property name="use_underline">True</property>
-                        <property name="stock_id">gtk-index</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="relief">none</property>
+                        <property name="focus_on_click">False</property>
+                        <child>
+                          <widget class="GtkVBox" id="vbox8">
+                            <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <widget class="GtkImage" id="image5">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-index</property>
+                              </widget>
+                              <packing>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkLabel" id="label3">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Play List</property>
+                              </widget>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </widget>
+                        </child>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
+                        <property name="fill">False</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">False</property>
                     <property name="position">2</property>
                   </packing>
                 </child>

@@ -68,14 +68,20 @@ class DirectoryCntr():
         self.filter.connect("key-release-event", self.onFiltering)
         
         show_local = gxMain.get_widget("show_local_music_button")
-        show_local.connect("clicked", self.onChangeView, self.VIEW_LOCAL_MUSIC)
+        show_local.connect("toggled", self.onChangeView, self.VIEW_LOCAL_MUSIC)
         self.active_view = self.VIEW_LOCAL_MUSIC
                 
         show_radio = gxMain.get_widget("show_radio_button")
-        show_radio.connect("clicked", self.onChangeView, self.VIEW_RADIO_STATION)
+        show_radio.connect("toggled", self.onChangeView, self.VIEW_RADIO_STATION)
         
         show_play_list = gxMain.get_widget("show_lists_button")
-        show_play_list.connect("clicked", self.onChangeView, self.VIEW_VIRTUAL_LISTS)
+        show_play_list.connect("toggled", self.onChangeView, self.VIEW_VIRTUAL_LISTS)
+        
+        self.search_mode_buttons = []
+        self.search_mode_buttons.append(show_local)
+        self.search_mode_buttons.append(show_radio)
+        self.search_mode_buttons.append(show_play_list)
+        
         
         #show_charts_ = gxMain.get_widget("show_charts_button")
         #show_charts_.connect("clicked", self.onChangeView, self.VIEW_CHARTS_LISTS)
@@ -178,7 +184,21 @@ class DirectoryCntr():
         #self.view_list.set_active(view_type)
         pass
 
-    def onChangeView(self, w, active_view):
+    def onChangeView(self, clicked_button, active_view):
+        if all([not button.get_active() for button in self.search_mode_buttons]):
+            clicked_button.set_active(True)
+
+        # if the button should become unchecked, then do nothing
+        if not clicked_button.get_active(): 
+            return
+
+        # so, the button becomes checked. Uncheck all other buttons
+        for button in self.search_mode_buttons:
+            if button != clicked_button:
+                button.set_active(False)
+        
+        
+        
         self.active_view = active_view
         
         if active_view == self.VIEW_LOCAL_MUSIC:
