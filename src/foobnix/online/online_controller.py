@@ -59,21 +59,6 @@ class OnlineListCntr(GObject):
         
         self.tab_labes = []
         self.default_angel = 90
-        
-        self.set_tabs_position_on_load()        
-        
-    def set_tabs_position_on_load(self):
-        if  FConfiguration().tab_position == "left":
-            #self.set_tab_left()
-            self.radio_tab_left.set_active(True)
-        
-        elif  FConfiguration().tab_position == "top":
-            #self.set_tab_top()
-            self.radio_tab_top.set_active(True)
-        
-        elif FConfiguration().tab_position == "no":
-            #self.set_tab_no()
-            self.radio_tab_no.set_active(True)
     
     def update_label_angel(self, angle):
         for label in self.tab_labes:

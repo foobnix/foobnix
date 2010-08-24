@@ -18,6 +18,7 @@ from foobnix.base import BaseController
 
 from foobnix.util.configuration import FConfiguration
 from foobnix.online.search_panel import SearchPanel
+from foobnix.preferences.preferences_window import PreferencesWindow
 
 class AppController(BaseController):
 
@@ -51,6 +52,12 @@ class AppController(BaseController):
         
         self.main_window_controller = WindowController(v.gxMain, v.gxAbout)
         self.main_window_controller.connect('show_preferences', self.preferences_window_controller.show)
+        
+        
+        """show pref window"""
+        self.pref = PreferencesWindow(self.directoryCntr, onlineCntr)
+        menu_preferences = v.gxMain.get_widget("menu_preferences")
+        menu_preferences.connect("activate", lambda * a:self.pref.show())
         
         self.tray_icon = TrayIcon(v.gxTrayIcon)
         self.tray_icon.connect('toggle_window_visibility', self.main_window_controller.toggle_visibility)
@@ -93,9 +100,6 @@ class AppController(BaseController):
         if FConfiguration().vpanelPostition:
             self.playerWidgets.vpanel.set_position(FConfiguration().vpanelPostition)
         
-        if FConfiguration().mediaLibraryPath:
-            self.appConfCntr.setMusicFolder(FConfiguration().mediaLibraryPath)
-        
         if FConfiguration().radiolistState:
             self.radioListCntr.setState(FConfiguration().radiolistState)
         
@@ -119,7 +123,6 @@ class AppController(BaseController):
         #if self.playerWidgets.hpanel2.get_position() > 0:
         #    FConfiguration().hpanel2Postition = self.playerWidgets.hpanel2.get_position()
         
-        FConfiguration().mediaLibraryPath = self.appConfCntr.getMusicFolder()
         
         FConfiguration().vk_login = self.appConfCntr.getVkLogin()
         FConfiguration().vk_password = self.appConfCntr.getVkPassword()

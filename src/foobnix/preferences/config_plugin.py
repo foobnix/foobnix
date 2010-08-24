@@ -7,6 +7,7 @@ Created on 24 авг. 2010
 class ConfigPlugin():
     name = 'undefined'
     widget = None
+    enable = False
     
     def show(self):
         self.widget.show()
@@ -14,7 +15,7 @@ class ConfigPlugin():
     def hide(self):
         self.widget.hide()
     
-    def on_laod(self):
+    def on_load(self):
         pass
     
     def on_save(self):

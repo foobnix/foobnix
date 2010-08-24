@@ -101,9 +101,6 @@ class AppConfigurationCntrl():
                  
         self.directoryCntr.updateDirectoryByPath(self.musicFolder)                   
     
-    def setMusicFolder(self, path):
-        LOG.info("Set Folder", path)
-        self.folderChoser.set_current_folder(path)
         
     def getMusicFolder(self):
         return self.folderChoser.get_filename()

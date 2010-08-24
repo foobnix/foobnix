@@ -60,7 +60,7 @@ class FConfiguration:
     
     def __init__(self, is_load_file=True):
         
-        self.mediaLibraryPath = tempfile.gettempdir()
+        self.mediaLibraryPath = [tempfile.gettempdir()]
         self.onlineMusicPath = tempfile.gettempdir()
         self.supportTypes = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".cue", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp" ]
         
@@ -103,6 +103,7 @@ class FConfiguration:
         self.cookie = None 
         
         self.count_of_tabs = 3
+        self.len_of_tab = 50
         
         self.cache_music_beans = []
         
@@ -137,6 +138,7 @@ class FConfiguration:
                 self.lfm_password = instance.lfm_password
                 
                 self.count_of_tabs = instance.count_of_tabs
+                self.len_of_tab = instance.len_of_tab
                 
                 self.cookie = instance.cookie
                 

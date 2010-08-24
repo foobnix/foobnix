@@ -6,17 +6,30 @@ from foobnix.preferences.configs.try_icon import TryIconConfig
 from foobnix.preferences.configs.category_info import CategoryInfoConfig
 import gtk
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
+from foobnix.util.configuration import FConfiguration
+from foobnix.preferences.configs.save_online import SaveOnlineConfig
+from foobnix.preferences.configs.last_fm import LastFmConfig
+from foobnix.preferences.configs.vk_conf import VkontakteConfig
+from foobnix.preferences.configs.tabs import TabsConfig
 
 class PreferencesWindow:
     configs = []
     
-    configs.append(MusicLibraryConfig())
-    configs.append(TryIconConfig())
-    configs.append(CategoryInfoConfig())
+    
     
     POS_NAME = 0
     
-    def __init__(self):
+    def __init__(self, directory_controller, online_controller):
+        
+        self.configs.append(MusicLibraryConfig(directory_controller))
+        self.configs.append(SaveOnlineConfig())
+        self.configs.append(TabsConfig(online_controller))
+        self.configs.append(LastFmConfig())
+        self.configs.append(VkontakteConfig())
+        
+        #self.configs.append(TryIconConfig())
+        #self.configs.append(CategoryInfoConfig())
+        
         self.label = None
         
         mainVBox = gtk.VBox(False, 0)
@@ -51,14 +64,27 @@ class PreferencesWindow:
         #self.show()
         
         self.populate_config_category(self.configs[0].name)
+        self.load()
     
     def show(self):
-        self.window.set_property('visible', True)
+        self.window.show() 
         
     def hide(self):
         print "hide preferences"
-        self.window.hide()    
+        self.window.hide()
+        #TEMP
+        #gtk.main_quit()    
         return True    
+    
+    def load(self):
+        for plugin in self.configs:
+            plugin.on_load()
+    
+    def save(self):
+        for plugin in self.configs:
+            plugin.on_save()
+        FConfiguration().save()
+        self.hide()
         
         
     
@@ -74,7 +100,7 @@ class PreferencesWindow:
         window.set_resizable(False)
         window.set_position(gtk.WIN_POS_CENTER_ALWAYS)  
         
-        window.set_size_request(600, 500)
+        window.set_size_request(800, 500)
         return window
 
     
@@ -116,7 +142,7 @@ class PreferencesWindow:
         box.show()
         
         button_save = gtk.Button("Save")
-        button_save.connect("clicked", lambda * a:self.hide())
+        button_save.connect("clicked", lambda * a:self.save())
         button_save.show()
         
         button_cancel = gtk.Button("Cancel")
@@ -157,6 +183,6 @@ def main():
     return 0         
 
 if __name__ == "__main__":    
-    w = PreferencesWindow()
-    w.show()
+    w = PreferencesWindow(None, None)
+    w.show()    
     main()

@@ -5,7 +5,6 @@ Created on Mar 11, 2010
 @author: ivan
 '''
 from foobnix.lyric.lyr import get_lyrics
-import thread
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.online.google.translate import translate
@@ -86,11 +85,6 @@ class PlayerWidgetsCntl():
         self.show_search_panel(None, FConfiguration().view_search_panel)
         self.show_tree_panel(None, FConfiguration().view_tree_panel)
         self.show_lyric_panel(None, FConfiguration().view_lyric_panel)
-        
-        self.pref = PreferencesWindow()
-        menu_preferences = gxMain.get_widget("menu_preferences")
-        menu_preferences.connect("activate", lambda * a:self.pref.show())
-        
         
     
     def show_info_panel(self, w, flag=True):

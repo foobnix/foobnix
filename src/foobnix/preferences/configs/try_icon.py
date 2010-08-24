@@ -26,3 +26,4 @@ class TryIconConfig(ConfigPlugin):
         box.pack_start(text_popup, False, True, 0)
         
         self.widget = box
+    
