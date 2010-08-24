@@ -9,6 +9,7 @@ import gtk
 from foobnix.base.base_list_controller import BaseListController
 from deluge.log import LOG
 from foobnix.util.configuration import FConfiguration
+from foobnix.helpers.dialog_entry import show_entry_dialog
 class MusicLibraryConfig(ConfigPlugin):
     name = "Music Library"
     enable = True
@@ -110,7 +111,9 @@ class MusicLibraryConfig(ConfigPlugin):
             self.files_controller.add_item(ext)
    
     def on_save(self):             
-        FConfiguration().mediaLibraryPath = self.tree_controller.get_all_items() 
+        FConfiguration().mediaLibraryPath = self.tree_controller.get_all_items()
+        FConfiguration().supportTypes = self.files_controller.get_all_items()
+         
     
     def add_dir(self, *a):
         chooser = gtk.FileChooserDialog(title="Choose directory with music", action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
@@ -151,10 +154,12 @@ class MusicLibraryConfig(ConfigPlugin):
         button_box.show()
         
         bt_add = gtk.Button("Add")
+        bt_add.connect("clicked", self.on_add_file)
         bt_add.set_size_request(80, -1)
         bt_add.show()
         
         bt_remove = gtk.Button("Remove")
+        bt_remove.connect("clicked", lambda * a:self.files_controller.remove_selected())
         bt_remove.set_size_request(80, -1)
         bt_remove.show()
         button_box.pack_start(bt_add, False, False, 0)
@@ -177,4 +182,11 @@ class MusicLibraryConfig(ConfigPlugin):
         
         frame.add(frame_box)
         return frame
+    
+    def on_add_file(self, *a):
+        val = show_entry_dialog("Please add audio extension", "Extension should be like '.mp3'")
+        if val and val.find(".") >= 0 and len(val) <= 5 and val not in self.files_controller.get_all_items():
+            self.files_controller.add_item(val)
+        else:
+            LOG.info("Can't add your value", val)
         

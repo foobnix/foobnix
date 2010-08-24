@@ -112,6 +112,7 @@ class FConfiguration:
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
             try:
+                self.supportTypes = instance.supportTypes
                 self.virtualListState = instance.virtualListState
                 self.playlistState = instance.playlistState
                 self.radiolistState = instance.radiolistState 
