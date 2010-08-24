@@ -259,7 +259,7 @@ class OnlineListCntr(GObject):
         """first add cue files"""
         for bean in beans:
             LOG.info("append", bean, bean.path)
-            if bean.path and bean.path.endswith(".cue"):
+            if bean.path and bean.path.lower().endswith(".cue"):
                 cues = CueReader(bean.path).get_common_beans()
                 for cue in cues:                
                     self.current_list_model.append(cue)
@@ -271,7 +271,7 @@ class OnlineListCntr(GObject):
             if id3:
                 bean.id3, bean.name = bean.name, id3
                 
-            if not bean.path or (bean.path and not bean.path.endswith(".cue")):
+            if not bean.path or (bean.path and not bean.path.lower().endswith(".cue")):
                 self.current_list_model.append(bean)
                 
                 normilized.append(bean)
