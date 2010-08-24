@@ -11,6 +11,7 @@ from foobnix.util.configuration import FConfiguration
 from foobnix.online.google.translate import translate
 from foobnix.util.mouse_utils import is_double_click
 import time
+from foobnix.preferences.preferences_window import PreferencesWindow
 
 
 class PlayerWidgetsCntl():
@@ -85,6 +86,12 @@ class PlayerWidgetsCntl():
         self.show_search_panel(None, FConfiguration().view_search_panel)
         self.show_tree_panel(None, FConfiguration().view_tree_panel)
         self.show_lyric_panel(None, FConfiguration().view_lyric_panel)
+        
+        self.pref = PreferencesWindow()
+        menu_preferences = gxMain.get_widget("menu_preferences")
+        menu_preferences.connect("activate", lambda * a:self.pref.show())
+        
+        
     
     def show_info_panel(self, w, flag=True):
         if w:

@@ -49,6 +49,8 @@ class AppConfigurationCntrl():
         self.playOnStartCheckButton = gxMain.get_widget("playonstart_checkbutton")
         self.playOnStartCheckButton.set_active(FConfiguration().isPlayOnStart)
         self.playOnStartCheckButton.connect("clicked", self.onPlayOnStartClicked)
+               
+        
     
     def onPlayOnStartClicked(self, *args):
         FConfiguration().isPlayOnStart = self.playOnStartCheckButton.get_active()
