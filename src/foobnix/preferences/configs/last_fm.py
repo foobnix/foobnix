@@ -59,5 +59,5 @@ class LastFmConfig(ConfigPlugin):
     
     def on_save(self):
         FConfiguration().lfm_login = self.login_text.get_text()
-        FConfiguration().lfm_password = self.login_text.get_text() 
+        FConfiguration().lfm_password = self.password_text.get_text() 
         

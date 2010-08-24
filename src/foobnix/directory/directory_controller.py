@@ -64,11 +64,6 @@ class DirectoryCntr():
         self.prefModel = PrefListModel(prefList, self.prefListMap)
         
         
-        self.mainNoteBook = gxMain.get_widget("main_notebook")
-        self.mainNoteBook.set_current_page(0)
-        
-        
-        
         self.filter = gxMain.get_widget("filter-entry")
         self.filter.connect("key-release-event", self.onFiltering)
         

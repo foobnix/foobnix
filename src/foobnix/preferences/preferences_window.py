@@ -6,7 +6,7 @@ from foobnix.preferences.configs.try_icon import TryIconConfig
 from foobnix.preferences.configs.category_info import CategoryInfoConfig
 import gtk
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
-from foobnix.util.configuration import FConfiguration
+from foobnix.util.configuration import FConfiguration, get_version
 from foobnix.preferences.configs.save_online import SaveOnlineConfig
 from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs.vk_conf import VkontakteConfig
@@ -96,7 +96,7 @@ class PreferencesWindow:
         
         window.set_border_width(10)
 
-        window.set_title("Preferences")
+        window.set_title("Foobnix " + get_version() + " - Preferences")
         window.set_resizable(False)
         window.set_position(gtk.WIN_POS_CENTER_ALWAYS)  
         
