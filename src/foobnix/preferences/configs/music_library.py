@@ -7,10 +7,10 @@ Created on 24 авг. 2010
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
 from foobnix.base.base_list_controller import BaseListController
-from deluge.log import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.helpers.dialog_entry import show_entry_dialog
 import foobnix.util.localization 
+from foobnix.util import LOG
 
 class MusicLibraryConfig(ConfigPlugin):
     name = _("Music Library")
