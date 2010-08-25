@@ -83,7 +83,8 @@ class OnlineListCntr(GObject):
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
-            self.append_notebook_page(paths[0])
+            list = paths[0].split("/")
+            self.append_notebook_page(list[len(list) - 2])
             beans = []
             for path in paths:
                 bean = self.directoryCntr.get_common_bean_by_file(path)
