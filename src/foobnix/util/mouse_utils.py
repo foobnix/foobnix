@@ -31,4 +31,10 @@ def is_left_click(event):
         return True
     else:
         return False
+
+def is_mouse_click(event):
+    if event.button == 2 and event.type == gtk.gdk.BUTTON_PRESS: #@UndefinedVariable
+        return True
+    else:
+        return False
     

@@ -8,6 +8,7 @@ import gtk
 import os.path
 from foobnix.base import BaseController
 from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE
+from foobnix.util.mouse_utils import is_mouse_click
 
 
 class TrayIcon(BaseController):
@@ -50,6 +51,7 @@ class TrayIcon(BaseController):
         self.icon.connect("activate", lambda * a: self.emit('toggle_window_visibility'))
         self.icon.connect("popup-menu", lambda * a: self.popup.show())
         try:
+            self.icon.connect("button-press-event", self.on_button_press)
             self.icon.connect("scroll-event", self.on_mouse_wheel_scrolled)
         except:
             pass
@@ -63,7 +65,16 @@ class TrayIcon(BaseController):
                 "on_cancel_clicked": lambda * a: self.popup.hide()
         }
         gx_tray_icon.signal_autoconnect(popup_signals)
-
+        
+        self.paused = False
+    
+    def on_button_press(self, w, e):
+        if is_mouse_click(e):
+            self.paused = not self.paused
+            if self.paused:
+                self.emit('pause')
+            else:
+                self.emit('play')
         
     def setText1(self, text):
         self.text1.set_text(text)
@@ -75,6 +86,8 @@ class TrayIcon(BaseController):
         self.setText1(song.name)
 
     def on_mouse_wheel_scrolled(self, w, event):
+        print w, event
+        
         if event.direction == gtk.gdk.SCROLL_UP:    #@UndefinedVariable
             self.emit('volume_up')
         else:

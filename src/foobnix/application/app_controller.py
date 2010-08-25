@@ -80,6 +80,7 @@ class AppController(BaseController):
         
         self.restore_state()
     
+    
     def exit(self, sender):
         self.save_state()
         self.tray_icon.icon.set_visible(False)
