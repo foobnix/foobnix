@@ -104,10 +104,15 @@ class OnlineListCntr(GObject):
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
-            self.append_notebook_page(paths[0])
+            path = paths[0]
+            list = path.split("/")
+            self.append_notebook_page(list[len(list) - 1])
             
             all_beans = []
-            for path in paths:            
+            for path in paths:
+                if path == "/":
+                    LOG.info("Skip root folder")
+                    continue;            
                 beans = self.directoryCntr.get_common_beans_by_folder(path)
                 for bean in beans:
                     all_beans.append(bean)
