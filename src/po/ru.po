@@ -352,7 +352,7 @@ msgstr "Отображать панель с текстом песни"
 
 #: .././foobnix/glade/foobnix.glade.h:32
 msgid "_View Music Tree"
-msgstr "Отображать музыкульную панель"
+msgstr "Отображать музыкальную панель"
 
 #: .././foobnix/glade/foobnix.glade.h:33
 msgid "_View Search Panel"
