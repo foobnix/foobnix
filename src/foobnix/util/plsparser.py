@@ -52,14 +52,20 @@ def get_radio_source(url):
     if url:          
         if url.endswith(".pls"):                
             source_url = getStationPath(url)
-            if source_url :                
+            LOG.info("Radio content", source_url)
+            if source_url :          
+                LOG.info("Radio url", source_url)      
                 return  source_url                   
                 
         elif url.endswith(".m3u"):
             content = get_content(url)
+            LOG.info("Radio content", content)
             for line in content.rsplit():
-                if not line.startswith("#"):
+                if line.startswith("http://"):
+                    LOG.info("Radio url", line)
                     return line
+    
+    LOG.info("Radio url", url)
     return url
              
                         
