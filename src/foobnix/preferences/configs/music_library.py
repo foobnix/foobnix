@@ -40,7 +40,6 @@ class MusicLibraryConfig(ConfigPlugin):
         
                 
         dir_tree = gtk.TreeView()
-        dir_tree.set_size_request(-1, 150)
         dir_tree.show()
         self.tree_controller = BaseListController(dir_tree)
         self.tree_controller.set_title(_("Path"))
@@ -81,14 +80,15 @@ class MusicLibraryConfig(ConfigPlugin):
         button_box.pack_start(bt_reload, False, False, 0)
         
         
-        """
+        
         scrool_tree = gtk.ScrolledWindow()
+        scrool_tree.set_size_request(-1, 170)
         scrool_tree.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scrool_tree.add_with_viewport(dir_tree)
         scrool_tree.show()
-        """
         
-        frame_box.pack_start(dir_tree, True, True, 0)
+        
+        frame_box.pack_start(scrool_tree, True, True, 0)
         frame_box.pack_start(button_box, False, False, 0)
         
            
