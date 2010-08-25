@@ -33,9 +33,9 @@ class AppView():
             return gtk.glade.XML(main, widget, domain)
         except:
             try:
-                return gtk.glade.XML(sys.exec_prefix + '/lib/python' + sys.version[:3] + '/dist-packages/' + main, widget, domain)
+                return gtk.glade.XML('/usr/local/lib/python' + sys.version[:3] + '/dist-packages/' + main, widget, domain)
             except:
-                return gtk.glade.XML(sys.exec_prefix + '/lib/python' + sys.version[:3] + '/site-packages/' + main, widget, domain)
+                return gtk.glade.XML('/usr/lib/python' + sys.version[:3] + '/site-packages/' + main, widget, domain)
             
         
   
