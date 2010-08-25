@@ -20,5 +20,5 @@ class VkontakteConfig(LastFmConfig):
     
     def on_save(self):
         FConfiguration().vk_login = self.login_text.get_text()
-        FConfiguration().vk_password = self.login_text.get_text() 
+        FConfiguration().vk_password = self.password_text.get_text() 
         
