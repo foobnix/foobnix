@@ -24,5 +24,6 @@ rm -rf ../foobnix_$REV
 rm  svn_info.txt
 
 cd ../deb
-svn commit (c) ../deb/foobnix_$REV.tar.gz 
+svn commit ../deb/foobnix_$REV.tar.gz  -m "today build"
+ 
 
