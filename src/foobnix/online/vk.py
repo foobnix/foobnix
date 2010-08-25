@@ -208,7 +208,6 @@ class Vkontakte:
         #page = page.decode("cp1251")
         #unicode(page, "cp1251")
         
-        #LOG.info(page
                 
         reg_all = "([^<>]*)"
         resultall = re.findall("return operate\(([\w() ,']*)\);", page, re.IGNORECASE)
@@ -261,7 +260,7 @@ class Vkontakte:
         except:
             result = result
             LOG.error("VK connectino error, try other user")
-        reg_all = "([^{</}]*)"
+        reg_all = "([^{<}]*)"
         result_url = re.findall(ur"http:([\\/.0-9A-Z]*)", result, re.IGNORECASE)
         result_artist = re.findall(u"q]=" + reg_all + "'", result, re.IGNORECASE | re.UNICODE)
         result_title = re.findall(u"\"title([0-9]*)\\\\\">" + reg_all + "", result, re.IGNORECASE | re.UNICODE)
