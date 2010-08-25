@@ -219,8 +219,8 @@ class InformationController():
             #self.show_song_info_tread(song)
         else:
             LOG.warn("Please try later... search is not finished, or get permission in 20 sec")
-            if not self.none_thead:
-                self.none_thead = thread.start_new_thread(self.none_thread, ())
+            #if not self.none_thead:
+                #self.none_thead = thread.start_new_thread(self.none_thread, ())
     
     def none_thread(self):
         LOG.info("run none thread")
