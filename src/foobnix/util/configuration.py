@@ -108,6 +108,8 @@ class FConfiguration:
         self.cache_music_beans = []
         
         self.tab_position = "left"
+        
+        self.last_dir = None
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -150,6 +152,8 @@ class FConfiguration:
                 
                 self.cache_music_beans = instance.cache_music_beans
                 self.tab_position = instance.tab_position
+                
+                self.last_dir = instance.last_dir
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

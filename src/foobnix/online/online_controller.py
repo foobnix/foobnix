@@ -49,7 +49,7 @@ class OnlineListCntr(GObject):
         
         self.tab_labes = []
         self.default_angel = 90
-    
+        
     def update_label_angel(self, angle):
         for label in self.tab_labes:
             label.set_angle(angle)
@@ -80,11 +80,16 @@ class OnlineListCntr(GObject):
         chooser = gtk.FileChooserDialog(title=_("Choose file to open"), action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(True)
-
+        if FConfiguration().last_dir:
+                chooser.set_current_folder(FConfiguration().last_dir)
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
+            
+            path = paths[0]
             list = paths[0].split("/")
+            
+            FConfiguration().last_dir = path[:path.rfind("/")]
             self.append_notebook_page(list[len(list) - 2])
             beans = []
             for path in paths:
@@ -103,11 +108,15 @@ class OnlineListCntr(GObject):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(True)
+        if FConfiguration().last_dir:
+                chooser.set_current_folder(FConfiguration().last_dir)
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
             path = paths[0]
+            
             list = path.split("/")
+            FConfiguration().last_dir = path[:path.rfind("/")]
             self.append_notebook_page(list[len(list) - 1])
             
             all_beans = []

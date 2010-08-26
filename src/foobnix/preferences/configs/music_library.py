@@ -121,9 +121,13 @@ class MusicLibraryConfig(ConfigPlugin):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(True)
+        if FConfiguration().last_dir:
+                chooser.set_current_folder(FConfiguration().last_dir)
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
-            paths = chooser.get_filenames()            
+            paths = chooser.get_filenames()
+            path = paths[0]  
+            FConfiguration().last_dir = path[:path.rfind("/")]          
             for path in paths:            
                 if path not in self.tree_controller.get_all_items():
                     self.tree_controller.add_item(path)
