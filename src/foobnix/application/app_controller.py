@@ -11,7 +11,6 @@ from foobnix.player.player_widgets_cntr import PlayerWidgetsCntl
 from foobnix.directory.directory_controller import DirectoryCntr
 from foobnix.trayicon import TrayIcon
 from foobnix.application.app_configuration_controller import AppConfigurationCntrl
-from foobnix.preferences.pref_controller import PrefController
 from foobnix.online.online_controller import OnlineListCntr
 from foobnix.directory.virtuallist_controller import VirturalLIstCntr
 from foobnix.base import BaseController
@@ -48,10 +47,9 @@ class AppController(BaseController):
         
         self.player_controller.registerOnlineCntr(onlineCntr)
         
-        self.preferences_window_controller = PrefController(v.gxPref)
+        
         
         self.main_window_controller = WindowController(v.gxMain, v.gxAbout)
-        self.main_window_controller.connect('show_preferences', self.preferences_window_controller.show)
         
         
         """show pref window"""
