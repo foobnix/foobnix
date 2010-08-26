@@ -1,15 +1,20 @@
 #!/usr/bin/env python
 
-import os, glob, shutil
+import sys, os, glob, shutil
 from distutils.core import setup
 from foobnix.util.configuration import VERSION, FOOBNIX_TMP, FOOBNIX_TMP_RADIO
 
-print "RADIO", FOOBNIX_TMP, FOOBNIX_TMP_RADIO
-if not os.path.exists(FOOBNIX_TMP):
-    os.mkdir(FOOBNIX_TMP)
+root_dir = ''
+for a in sys.argv[1:]:
+    if a.find('--root') == 0:
+        root_dir = a[7:]
 
-if not os.path.exists(FOOBNIX_TMP):    
-    os.mkdir(FOOBNIX_TMP_RADIO)
+print "RADIO", FOOBNIX_TMP, FOOBNIX_TMP_RADIO
+if not os.path.exists(os.path.dirname(root_dir) + FOOBNIX_TMP):
+    os.mkdir(os.path.dirname(root_dir) + FOOBNIX_TMP)
+
+if not os.path.exists(os.path.dirname(root_dir) + FOOBNIX_TMP_RADIO):
+    os.mkdir(os.path.dirname(root_dir) + FOOBNIX_TMP_RADIO)
 
 def capture(cmd):
     return os.popen(cmd).read().strip()
