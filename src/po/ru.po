@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-24 21:44+0300\n"
+"POT-Creation-Date: 2010-08-26 23:33+0300\n"
 "PO-Revision-Date: 2009-04-06 21:35+0300\n"
 "Last-Translator: Fomin Denis <fominde@mail.ru>\n"
 "Language-Team: badDron <andrew@infonet.by>\n"
@@ -17,20 +17,42 @@ msgstr ""
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: .././foobnix.py:41
+#: .././foobnix.py:38
 #, fuzzy
 msgid "Success"
 msgstr "urk"
 
-#: .././foobnix/directory/directory_controller.py:152
+#: .././foobnix/directory/directory_controller.py:155
 msgid "New play list"
 msgstr "Новый плей лист"
 
-#: .././foobnix/directory/directory_controller.py:394
+#: .././foobnix/directory/directory_controller.py:193
+#: .././foobnix/directory/directory_controller.py:300
+msgid "Update Music Tree"
+msgstr "Обновить дерево музыки"
+
+#: .././foobnix/directory/directory_controller.py:301
+#: .././foobnix/online/information_controller.py:87
+#: .././foobnix/online/online_controller.py:381
+msgid "Play"
+msgstr "Играть"
+
+#: .././foobnix/directory/directory_controller.py:302
+msgid "Add folder"
+msgstr "Добавить папку"
+
+#: .././foobnix/directory/directory_controller.py:306
+#: .././foobnix/preferences/configs/music_library.py:123
+#: .././foobnix/online/online_controller.py:108
+msgid "Choose directory with music"
+msgstr "Выбирете директорию для проигрываниея"
+
+#: .././foobnix/directory/directory_controller.py:436
 msgid "Updating music, please wait... "
 msgstr "Обновляю музыку, пожалуйста, подождите"
 
-#: .././foobnix/directory/directory_controller.py:401
+#: .././foobnix/directory/directory_controller.py:441
+#: .././foobnix/directory/directory_controller.py:450
 msgid "Music not found"
 msgstr "Музыка не найдена в"
 
@@ -43,19 +65,21 @@ msgstr "Название"
 msgid "My play lists"
 msgstr "Мои плей листы"
 
-#: .././foobnix/preferences/preferences_window.py:99
+#: .././foobnix/preferences/preferences_window.py:100
 msgid "Preferences"
 msgstr "Настройки"
 
-#: .././foobnix/preferences/preferences_window.py:115
+#: .././foobnix/preferences/preferences_window.py:116
 msgid "Categories"
 msgstr "Категории"
 
-#: .././foobnix/preferences/preferences_window.py:144
+#: .././foobnix/preferences/preferences_window.py:145
+#: .././foobnix/online/information_controller.py:88
+#: .././foobnix/online/online_controller.py:382
 msgid "Save"
 msgstr "Сохранить"
 
-#: .././foobnix/preferences/preferences_window.py:149
+#: .././foobnix/preferences/preferences_window.py:150
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -79,43 +103,38 @@ msgstr "Музыкальная Библиотека"
 msgid "Music dirs"
 msgstr "Папка с музыкой"
 
-#: .././foobnix/preferences/configs/music_library.py:46
+#: .././foobnix/preferences/configs/music_library.py:45
 msgid "Path"
 msgstr "Путь"
 
-#: .././foobnix/preferences/configs/music_library.py:50
-#: .././foobnix/preferences/configs/music_library.py:72
+#: .././foobnix/preferences/configs/music_library.py:49
+#: .././foobnix/preferences/configs/music_library.py:71
 msgid "Reload"
 msgstr "Обновить"
 
-#: .././foobnix/preferences/configs/music_library.py:59
-#: .././foobnix/preferences/configs/music_library.py:158
+#: .././foobnix/preferences/configs/music_library.py:58
+#: .././foobnix/preferences/configs/music_library.py:164
 msgid "Add"
 msgstr "Добавить"
 
-#: .././foobnix/preferences/configs/music_library.py:64
-#: .././foobnix/preferences/configs/music_library.py:163
+#: .././foobnix/preferences/configs/music_library.py:63
+#: .././foobnix/preferences/configs/music_library.py:169
 msgid "Remove"
 msgstr "Удалить"
 
-#: .././foobnix/preferences/configs/music_library.py:121
-#: .././foobnix/online/online_controller.py:101
-msgid "Choose directory with music"
-msgstr "Выбирете директорию для проигрываниея"
-
-#: .././foobnix/preferences/configs/music_library.py:140
+#: .././foobnix/preferences/configs/music_library.py:146
 msgid "File Types"
 msgstr "Типы файлов"
 
-#: .././foobnix/preferences/configs/music_library.py:151
+#: .././foobnix/preferences/configs/music_library.py:157
 msgid "Extension"
 msgstr "Расширение"
 
-#: .././foobnix/preferences/configs/music_library.py:189
+#: .././foobnix/preferences/configs/music_library.py:195
 msgid "Please add audio extension"
 msgstr "Добавте формат музыки"
 
-#: .././foobnix/preferences/configs/music_library.py:189
+#: .././foobnix/preferences/configs/music_library.py:195
 msgid "Extension should be like '.mp3'"
 msgstr "Формат должен быть как '.mp3'"
 
@@ -163,54 +182,88 @@ msgstr "ВКонтакте"
 msgid "Similar to: "
 msgstr "Похожие на: "
 
-#: .././foobnix/online/information_controller.py:52
-#: .././foobnix/online/online_controller.py:311
+#: .././foobnix/online/information_controller.py:60
+#: .././foobnix/online/online_controller.py:334
 msgid "Choose directory to save song"
 msgstr "Выбирете директорию для сохранения"
 
-#: .././foobnix/online/information_controller.py:193
+#: .././foobnix/online/information_controller.py:89
+#: .././foobnix/online/online_controller.py:383
+msgid "Save as"
+msgstr "Сохранить в"
+
+#: .././foobnix/online/information_controller.py:90
+msgid "Add all to virtual"
+msgstr "Добавить все в вирт список"
+
+#: .././foobnix/online/information_controller.py:91
+msgid "Add all to tab"
+msgstr "Добавить все в таб список"
+
+#: .././foobnix/online/information_controller.py:92
+#: .././foobnix/online/online_controller.py:385
+msgid "Delete from list"
+msgstr "Удалить со списка"
+
+#: .././foobnix/online/information_controller.py:93
+msgid "Info"
+msgstr "Информация"
+
+#: .././foobnix/online/information_controller.py:189
 msgid "Similar Artists"
 msgstr "Похожие Артисты"
 
-#: .././foobnix/online/information_controller.py:197
+#: .././foobnix/online/information_controller.py:193
 msgid "Similar Songs"
 msgstr "Похожие Песни"
 
-#: .././foobnix/online/information_controller.py:201
+#: .././foobnix/online/information_controller.py:197
 msgid "Similar Tags"
 msgstr "Похожие Теги"
 
-#: .././foobnix/online/information_controller.py:328
+#: .././foobnix/online/information_controller.py:324
 msgid "Lyric not found"
 msgstr "Лирика не найдена"
 
-#: .././foobnix/online/online_controller.py:79
+#: .././foobnix/online/online_controller.py:80
 msgid "Choose file to open"
 msgstr "Выбирете файл(ы) для проигрывания"
 
-#: .././foobnix/online/online_controller.py:94
+#: .././foobnix/online/online_controller.py:101
 msgid "Nothing found to play in the file(s)"
 msgstr "Нечего проиграть в этом файле(файлах)"
 
-#: .././foobnix/online/online_controller.py:118
+#: .././foobnix/online/online_controller.py:134
 msgid "Nothing found to play in the folder(s)"
 msgstr "Нечего проиграть в этой диркектории(ях)"
 
-#: .././foobnix/online/online_controller.py:238
+#: .././foobnix/online/online_controller.py:201
+msgid "Close"
+msgstr "Закрыть"
+
+#: .././foobnix/online/online_controller.py:261
 msgid " not found on last.fm, wait for google suggests ..."
 msgstr " не найденно на ласт.фм, подождем пока гугл поищет"
 
-#: .././foobnix/online/online_controller.py:244
+#: .././foobnix/online/online_controller.py:267
 msgid "Google not found suggests"
 msgstr "Гулг не смог найти подсказку по этому запросу"
 
-#: .././foobnix/online/online_controller.py:253
+#: .././foobnix/online/online_controller.py:276
 msgid "Searching: "
 msgstr "Идет поиск: "
 
-#: .././foobnix/online/online_controller.py:253
+#: .././foobnix/online/online_controller.py:276
 msgid " ... please wait a second"
 msgstr " ... пожалуйста, подождите секундочку"
+
+#: .././foobnix/online/online_controller.py:384
+msgid "Add to virtual"
+msgstr "Добавить в виртуальный"
+
+#: .././foobnix/online/online_controller.py:386
+msgid "Show info"
+msgstr "Показать информацию"
 
 #: .././foobnix/online/online_model.py:40
 msgid "Artist - Title"

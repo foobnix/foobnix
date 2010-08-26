@@ -435,6 +435,12 @@ class DirectoryCntr():
             self.clear()            
             self.current_list_model.append(None, CommonBean(name=_("Updating music, please wait... ") , path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=None))
             for path in FConfiguration().media_library_path:
+                if path == "/":
+                    FConfiguration().media_library_path = None
+                    LOG.error("not possible value in the path!!!")
+                    self.current_list_model.append(None, CommonBean(name=_("Music not found") + path, path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=None))
+                    break;
+                
                 LOG.info("Media path is", path)
                 self.go_recursive(path, None)
             FConfiguration().cache_music_beans = self.cache_music_beans  
@@ -442,6 +448,9 @@ class DirectoryCntr():
         if not self.cache_music_beans:
             self.current_list_model.clear()
             self.current_list_model.append(None, CommonBean(name=_("Music not found"), path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=None))
+            for path in FConfiguration().media_library_path:
+                self.current_list_model.append(None, CommonBean(name=path, path=None, font="normal", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=None))
+                
         else:               
             self.show_music_tree(self.cache_music_beans)
            

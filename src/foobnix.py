@@ -23,7 +23,7 @@ def is_only_instance():
     # running at the current time.
     return os.system("(( $(ps -ef | grep python | grep '[" + 
                      __main__.__file__[0] + "]" + __main__.__file__[1:] + 
-                     "' | wc -l) > 1 ))") != 0
+                     "' | wc -l) > /tmp/1 ))") != 0
 
 if __name__ == "__main__":
     LOG.print_debug_info()

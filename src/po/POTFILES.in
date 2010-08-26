@@ -9,7 +9,6 @@
 ./foobnix/directory/virtuallist_controller.py
 ./foobnix/lyric/lyr.py
 ./foobnix/preferences/config_plugin.py
-./foobnix/preferences/pref_controller.py
 ./foobnix/preferences/preferences_window.py
 ./foobnix/preferences/configs/category_info.py
 ./foobnix/preferences/configs/last_fm.py

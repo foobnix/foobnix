@@ -61,7 +61,7 @@ class FConfiguration:
     def __init__(self, is_load_file=True):
         
         self.media_library_path = [tempfile.gettempdir()]
-        #self.media_library_path = tempfile.gettempdir()
+        
         self.onlineMusicPath = tempfile.gettempdir()
         self.supportTypes = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".cue", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp" ]
         
