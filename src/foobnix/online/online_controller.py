@@ -25,6 +25,7 @@ from foobnix.online.dowload_util import  get_file_store_path, \
 
 from foobnix.online.song_resource import update_song_path
 from foobnix.cue.cue_reader import CueReader
+from foobnix.helpers.menu import Menu
 
 class OnlineListCntr(GObject):
     
@@ -211,7 +212,6 @@ class OnlineListCntr(GObject):
             
             self.directoryCntr.append_virtual(results)
         LOG.info("drug")
-        self.directoryCntr.leftNoteBook.set_current_page(0)
 
     def on_drag_end(self, *ars):
         self.add_selected_to_playlist()
@@ -359,34 +359,17 @@ class OnlineListCntr(GObject):
             self.on_play_selected(similar_songs_model);
         elif is_rigth_click(e):
             treeselection.connect('changed', self.changed, True)
-            menu = gtk.Menu()
             
-            play = gtk.ImageMenuItem(gtk.STOCK_MEDIA_PLAY)
-            play.connect("activate", lambda * a: self.on_play_selected(similar_songs_model))
-            menu.add(play)
+            menu = Menu()
+            menu.add_item(_("Play"),gtk.STOCK_MEDIA_PLAY, self.on_play_selected,similar_songs_model)
+            menu.add_item(_("Save"),gtk.STOCK_SAVE, save_song_thread,songs)
+            menu.add_item(_("Save as"),gtk.STOCK_SAVE_AS, self.show_save_as_dialog,songs)
+            menu.add_item(_("Add to playlist"),gtk.STOCK_ADD, self.add_selected_to_playlist)
+            menu.add_item(_("Delete from list"),gtk.STOCK_REMOVE, similar_songs_model.remove_selected)
+            menu.add_item(_("Show info"),gtk.STOCK_INFO, self.show_info,songs)
+            menu.show(e)
             
-            save = gtk.ImageMenuItem(gtk.STOCK_SAVE)
-            save.connect("activate", lambda * a: save_song_thread(songs))            
-            menu.add(save)
             
-            save_as = gtk.ImageMenuItem(gtk.STOCK_SAVE_AS)
-            save_as.connect("activate", lambda * a: self.show_save_as_dialog(songs))
-            menu.add(save_as)
-            
-            add = gtk.ImageMenuItem(gtk.STOCK_ADD)
-            add.connect("activate", lambda * a: self.add_selected_to_playlist())
-            menu.add(add)
-
-            remove = gtk.ImageMenuItem(gtk.STOCK_REMOVE)
-            remove.connect("activate", lambda * a: similar_songs_model.remove_selected())
-            menu.add(remove)
-            
-            info = gtk.ImageMenuItem(gtk.STOCK_INFO)
-            info.connect("activate", lambda * a: self.show_info(songs))
-            menu.add(info)
-            
-            menu.show_all()
-            menu.popup(None, None, None, e.button, e.time)
             treeselection.select_all()
 
     def playBean(self, playlistBean):
