@@ -23,6 +23,7 @@ from foobnix.util.time_utils import normilize_time
 from foobnix.radio.radios import  RadioFolder
 from foobnix.cue.cue_reader import CueReader
 import thread
+import time
 
 
 gettext.install("foobnix", unicode=True)
@@ -394,7 +395,8 @@ class DirectoryCntr():
             self.current_list_model.append(None, CommonBean(name=_("Updating music, please wait... ") , path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=None))
             for path in FConfiguration().mediaLibraryPath:
                 self.go_recursive(path, None)
-            FConfiguration().cache_music_beans = self.cache_music_beans           
+            FConfiguration().cache_music_beans = self.cache_music_beans  
+            time.sleep(1)         
         
         if not self.cache_music_beans:
             self.current_list_model.clear()
