@@ -296,9 +296,36 @@ class DirectoryCntr():
         if is_double_left_click(event):
             self.populate_playlist()
         if is_rigth_click(event):
-            menu = Popup()
+            menu = Popup()            
             menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, self.addAll, True)
+            menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
+            menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
             menu.show(event)
+    
+    def add_folder(self):
+        chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        chooser.set_default_response(gtk.RESPONSE_OK)
+        chooser.set_select_multiple(True)
+        if FConfiguration().last_dir:
+                chooser.set_current_folder(FConfiguration().last_dir)
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK:
+            paths = chooser.get_filenames()
+            path = paths[0]  
+            FConfiguration().last_dir = path[:path.rfind("/")]          
+            for path in paths:
+                if path in FConfiguration().media_library_path:
+                    pass
+                else:
+                    FConfiguration().media_library_path.append(path)
+            
+            self.addAll(True)
+            
+        elif response == gtk.RESPONSE_CANCEL:
+            LOG.info('Closed, no files selected')
+        chooser.destroy()
+        print "add folder(s)"
+        
     
     def update_songs_time(self, songs):
         for song in songs:
@@ -407,7 +434,8 @@ class DirectoryCntr():
         if not self.cache_music_beans:
             self.clear()            
             self.current_list_model.append(None, CommonBean(name=_("Updating music, please wait... ") , path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=None))
-            for path in FConfiguration().mediaLibraryPath:
+            for path in FConfiguration().media_library_path:
+                LOG.info("Media path is", path)
                 self.go_recursive(path, None)
             FConfiguration().cache_music_beans = self.cache_music_beans  
         
@@ -463,6 +491,7 @@ class DirectoryCntr():
         return sorted(directories) + sorted(files)
     
     def isDirectoryWithMusic(self, path):
+        LOG.info("Begin read", path)
         if isDirectory(path):
             dir = os.path.abspath(path)
             list = None

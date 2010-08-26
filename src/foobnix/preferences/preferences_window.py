@@ -67,6 +67,7 @@ class PreferencesWindow:
         self.load()
     
     def show(self):
+        self.load()
         self.window.show() 
         
     def hide(self):

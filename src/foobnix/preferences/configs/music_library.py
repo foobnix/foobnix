@@ -102,18 +102,20 @@ class MusicLibraryConfig(ConfigPlugin):
         return frame
    
     def reload_dir(self, *a):
-        FConfiguration().mediaLibraryPath = self.tree_controller.get_all_items()
+        FConfiguration().media_library_path = self.tree_controller.get_all_items()
         self.directory_controller.updateDirectoryByPath()
    
     def on_load(self):
-        for path  in FConfiguration().mediaLibraryPath:
+        self.tree_controller.clear()
+        for path in FConfiguration().media_library_path:
             self.tree_controller.add_item(path)
             
+        self.files_controller.clear()
         for ext in FConfiguration().supportTypes:
             self.files_controller.add_item(ext)
    
     def on_save(self):             
-        FConfiguration().mediaLibraryPath = self.tree_controller.get_all_items()
+        FConfiguration().media_library_path = self.tree_controller.get_all_items()
         FConfiguration().supportTypes = self.files_controller.get_all_items()
          
     
