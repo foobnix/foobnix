@@ -25,13 +25,8 @@ class AppView():
     def glade_XML(self, main, widget):
         for path in sys.path:
             full_path = os.path.join(path, main)
-            if os.path.isfile(full_path):
-                try:
-                    LOG.info("Find glade in", full_path)                    
-                    return gtk.glade.XML(os.path.join(path, main), widget, "foobnix")
-                except:
-                    LOG.warn("Can't load glade file in", path);
-                    pass
+            if os.path.isfile(full_path):                                    
+                return gtk.glade.XML(os.path.join(path, main), widget, "foobnix")
                 
         LOG.error("Can't find glade file!!!");
         
