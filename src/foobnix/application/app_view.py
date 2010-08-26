@@ -23,9 +23,14 @@ class AppView():
         pass
         
     def glade_XML(self, main, widget):
+        if os.path.isfile(main):
+            LOG.info("Find glade in current folder", main)
+            return gtk.glade.XML(main, widget, "foobnix")
+        
         for path in sys.path:
             full_path = os.path.join(path, main)
-            if os.path.isfile(full_path):                                    
+            if os.path.isfile(full_path):      
+                LOG.info("Find glade in the folder", full_path)                              
                 return gtk.glade.XML(os.path.join(path, main), widget, "foobnix")
                 
         LOG.error("Can't find glade file!!!");
