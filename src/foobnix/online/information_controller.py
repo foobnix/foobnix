@@ -18,28 +18,36 @@ from foobnix.online.dowload_util import save_song_thread, save_as_song_thread
 from foobnix.lyric.lyr import get_lyrics
 import os
 import time
+from foobnix.helpers.menu import Popup
 
 class SimilartSongsController(BaseListController):
     
-        def __init__(self, gx_main, playerCntr, directoryCntr):
+        def __init__(self, gx_main, playerCntr, directoryCntr, online_controller):
             self.directoryCntr = directoryCntr
+            self.online_controller = online_controller
             self.playerCntr = playerCntr
             widget = gx_main.get_widget("treeview_similar_songs")
             widget.get_parent().set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
             BaseListController.__init__(self, widget)
             
             self.parent = "Similar to"
+        
+        def get_parent_name(self):
+            return _("Similar to: ") + self.parent
             
-        def on_drag(self):
+        def get_all_songs(self):
             items = self.get_all_items()
             songs = []
-            similar = _("Similar to: ") + self.parent
+            similar = self.get_parent_name()
             song = CommonBean(name=similar, type=CommonBean.TYPE_FOLDER)
             songs.append(song)
             for item in items:                
                 song = CommonBean(name=item, type=CommonBean.TYPE_MUSIC_URL, parent=similar)
                 songs.append(song)
-            self.directoryCntr.append_virtual(songs)
+            return songs
+            
+        def on_drag(self):
+            self.directoryCntr.append_virtual(self.get_all_songs())
         
         def play_selected_song(self):
             artist_track = self.get_selected_item()
@@ -75,34 +83,22 @@ class SimilartSongsController(BaseListController):
                 song = CommonBean(name=artist_track, type=CommonBean.TYPE_MUSIC_URL)
 
                 
-                menu = gtk.Menu()
-                
-                play = gtk.ImageMenuItem(gtk.STOCK_MEDIA_PLAY)
-                play.connect("activate", lambda * a: self.play_selected_song())
-                menu.add(play)
-                
-                save = gtk.ImageMenuItem(gtk.STOCK_SAVE)
-                save.connect("activate", lambda * a: save_song_thread([song]))            
-                menu.add(save)
-                
-                save_as = gtk.ImageMenuItem(gtk.STOCK_SAVE_AS)
-                save_as.connect("activate", lambda * a: self.show_save_as_dialog([song]))
-                menu.add(save_as)
-                
-                add = gtk.ImageMenuItem(gtk.STOCK_ADD)
-                add.connect("activate", lambda * a: self.on_drag())
-                menu.add(add)
-    
-                remove = gtk.ImageMenuItem(gtk.STOCK_REMOVE)
-                remove.connect("activate", lambda * a: self.remove_selected())
-                menu.add(remove)
-                
-                info = gtk.ImageMenuItem(gtk.STOCK_INFO)
-                info.connect("activate", lambda * a: self.show_info(song))
-                menu.add(info)
-                
-                menu.show_all()
-                menu.popup(None, None, None, e.button, e.time)    
+                menu = Popup()
+                menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.play_selected_song, None)
+                menu.add_item(_("Save"), gtk.STOCK_SAVE, save_song_thread, [song])
+                menu.add_item(_("Save as"), gtk.STOCK_SAVE, self.show_save_as_dialog, [song])
+                menu.add_item(_("Add all to virtual"), gtk.STOCK_ADD, self.on_drag, None)
+                menu.add_item(_("Add all to tab"), gtk.STOCK_ADD, self.on_append_to_tab, None)
+                menu.add_item(_("Delete from list"), gtk.STOCK_DELETE, self.remove_selected, None)
+                menu.add_item(_("Info"), gtk.STOCK_INFO, self.show_info, song)
+                menu.show(e)
+         
+        def on_append_to_tab(self):
+            LOG.info("Create new tab and play")
+            self.online_controller.append_notebook_page(self.get_parent_name())
+            beans = self.get_all_songs()
+            self.online_controller.append_and_play(beans)
+                  
 
 class SimilartArtistsController(BaseListController):
     def __init__(self, gx_main, search_panel):
@@ -169,7 +165,7 @@ class InformationController():
         self.info_thread = None
              
 
-    def __init__(self, gx_main, playerCntr, directoryCntr, search_panel):
+    def __init__(self, gx_main, playerCntr, directoryCntr, search_panel, online_controller):
         
         self.album_image = gx_main.get_widget("image_widget")
         self.lyric_image_widget = gx_main.get_widget("lyric_image_widget")
@@ -193,7 +189,7 @@ class InformationController():
         self.similar_artists_cntr.set_title(_('Similar Artists'))     
         
         """similar songs"""
-        self.similar_songs_cntr = SimilartSongsController(gx_main, playerCntr, directoryCntr)              
+        self.similar_songs_cntr = SimilartSongsController(gx_main, playerCntr, directoryCntr, online_controller)              
         self.similar_songs_cntr.set_title(_("Similar Songs"))   
         
         """song tags"""       

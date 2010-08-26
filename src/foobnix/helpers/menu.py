@@ -4,8 +4,7 @@ Created on Aug 26, 2010
 @author: ivan
 '''
 import gtk
-import test
-class Menu():
+class Popup():
     
     def __init__(self):        
         self.menu = gtk.Menu()

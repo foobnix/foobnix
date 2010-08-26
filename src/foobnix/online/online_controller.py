@@ -18,14 +18,14 @@ from foobnix.player.player_controller import PlayerController
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.util.mouse_utils import is_double_click, is_rigth_click, \
-    is_left_click
+    is_left_click, is_middle_click
 from foobnix.online.google_utils import google_search_resutls
 from foobnix.online.dowload_util import  get_file_store_path, \
     save_as_song_thread, save_song_thread
 
 from foobnix.online.song_resource import update_song_path
 from foobnix.cue.cue_reader import CueReader
-from foobnix.helpers.menu import Menu
+from foobnix.helpers.menu import Popup
 
 class OnlineListCntr(GObject):
     
@@ -132,7 +132,7 @@ class OnlineListCntr(GObject):
     
     def register_directory_cntr(self, directoryCntr):
         self.directoryCntr = directoryCntr
-        self.info = InformationController(self.gx_main, self.playerCntr, directoryCntr, self.search_panel)
+        self.info = InformationController(self.gx_main, self.playerCntr, directoryCntr, self.search_panel, self)
     
     def none(self, *a):
         return False
@@ -183,11 +183,19 @@ class OnlineListCntr(GObject):
     
     def on_tab_click(self, w, e):
         """ double left or whell pressed"""
-        if (e.type == gtk.gdk._2BUTTON_PRESS and e.button == 3) or (e.type == gtk.gdk.BUTTON_PRESS and e.button == 2):
+        
+        if is_middle_click(e):
             LOG.info("Close Current TAB")
-            page = self.online_notebook.get_current_page()
-            self.online_notebook.remove_page(page)
-
+            self.delete_tab()
+        if is_rigth_click(e):
+            menu = Popup()            
+            menu.add_item(_("Close"), gtk.STOCK_DELETE, self.delete_tab, None)
+            menu.show(e)
+    
+    def delete_tab(self):
+        page = self.online_notebook.get_current_page()            
+        self.online_notebook.remove_page(page)
+        
 
     def add_selected_to_playlist(self):
         selected = self.current_list_model.get_selected_bean()
@@ -360,13 +368,13 @@ class OnlineListCntr(GObject):
         elif is_rigth_click(e):
             treeselection.connect('changed', self.changed, True)
             
-            menu = Menu()
-            menu.add_item(_("Play"),gtk.STOCK_MEDIA_PLAY, self.on_play_selected,similar_songs_model)
-            menu.add_item(_("Save"),gtk.STOCK_SAVE, save_song_thread,songs)
-            menu.add_item(_("Save as"),gtk.STOCK_SAVE_AS, self.show_save_as_dialog,songs)
-            menu.add_item(_("Add to playlist"),gtk.STOCK_ADD, self.add_selected_to_playlist)
-            menu.add_item(_("Delete from list"),gtk.STOCK_REMOVE, similar_songs_model.remove_selected)
-            menu.add_item(_("Show info"),gtk.STOCK_INFO, self.show_info,songs)
+            menu = Popup()
+            menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.on_play_selected, similar_songs_model)
+            menu.add_item(_("Save"), gtk.STOCK_SAVE, save_song_thread, songs)
+            menu.add_item(_("Save as"), gtk.STOCK_SAVE_AS, self.show_save_as_dialog, songs)
+            menu.add_item(_("Add to virtual"), gtk.STOCK_ADD, self.add_selected_to_playlist)
+            menu.add_item(_("Delete from list"), gtk.STOCK_REMOVE, similar_songs_model.remove_selected)
+            menu.add_item(_("Show info"), gtk.STOCK_INFO, self.show_info, songs)
             menu.show(e)
             
             

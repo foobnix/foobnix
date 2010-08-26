@@ -17,13 +17,14 @@ from foobnix.util.file_utils import isDirectory, get_file_extenstion
 import gtk
 from foobnix.directory.pref_list_model import PrefListModel
 import gettext
-from foobnix.util.mouse_utils import  is_double_left_click
+from foobnix.util.mouse_utils import  is_double_left_click, is_rigth_click
 from mutagen.mp3 import MP3
 from foobnix.util.time_utils import normilize_time
 from foobnix.radio.radios import  RadioFolder
 from foobnix.cue.cue_reader import CueReader
 import thread
 import time
+from foobnix.helpers.menu import Popup
 
 
 gettext.install("foobnix", unicode=True)
@@ -70,6 +71,7 @@ class DirectoryCntr():
         
         show_local = gxMain.get_widget("show_local_music_button")
         show_local.connect("toggled", self.onChangeView, self.VIEW_LOCAL_MUSIC)
+        show_local.connect("button-press-event", self.on_local_toggle_click)
         self.active_view = self.VIEW_LOCAL_MUSIC
                 
         show_radio = gxMain.get_widget("show_radio_button")
@@ -185,6 +187,12 @@ class DirectoryCntr():
         #self.view_list.set_active(view_type)
         pass
 
+    def on_local_toggle_click(self, w, event):
+        if is_rigth_click(event):
+            menu = Popup()
+            menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, self.addAll, True)
+            menu.show(event)
+    
     def onChangeView(self, clicked_button, active_view):
         if all([not button.get_active() for button in self.search_mode_buttons]):
             clicked_button.set_active(True)
@@ -209,7 +217,8 @@ class DirectoryCntr():
                 
         elif active_view == self.VIEW_RADIO_STATION:
             if not self.radio_update_thread:
-                self.radio_update_thread = thread.start_new_thread(self.update_radio_thread, ())                    
+                #self.radio_update_thread = thread.start_new_thread(self.update_radio_thread, ())
+                self.update_radio_thread()                    
                 
                 
         elif active_view == self.VIEW_VIRTUAL_LISTS:                      
@@ -286,6 +295,10 @@ class DirectoryCntr():
     def onMouseClick(self, w, event):
         if is_double_left_click(event):
             self.populate_playlist()
+        if is_rigth_click(event):
+            menu = Popup()
+            menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, self.addAll, True)
+            menu.show(event)
     
     def update_songs_time(self, songs):
         for song in songs:
@@ -392,11 +405,12 @@ class DirectoryCntr():
             self.cache_music_beans = []
         
         if not self.cache_music_beans:
+            self.clear()            
             self.current_list_model.append(None, CommonBean(name=_("Updating music, please wait... ") , path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=None))
+            time.sleep(0.5)
             for path in FConfiguration().mediaLibraryPath:
                 self.go_recursive(path, None)
             FConfiguration().cache_music_beans = self.cache_music_beans  
-            time.sleep(1)         
         
         if not self.cache_music_beans:
             self.current_list_model.clear()
@@ -422,13 +436,17 @@ class DirectoryCntr():
         
         
     
-    def addAll(self, reload=False):         
+    def addAll(self, reload=False):       
         
-        if not self.direcotory_thread:                
-            self.direcotory_thread = thread.start_new_thread(self.addAllThread, (reload,))
+        self.addAllThread(reload)
+         
+        
+        if not self.direcotory_thread:
+            pass                
+           # self.direcotory_thread = thread.start_new_thread(self.addAllThread, (reload,))
             #self.addAllThread(reload)
         else:
-            LOG.info("Directory is updating")
+            LOG.info("Directory is updating...")
         
         #self.addAllThread()
         
