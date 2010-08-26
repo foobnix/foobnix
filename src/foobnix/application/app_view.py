@@ -5,6 +5,8 @@ Created on Mar 14, 2010
 '''
 import gtk.glade
 import sys
+from foobnix.util import LOG
+import os
 class AppView():
 
     gladeMain = "foobnix/glade/foobnix.glade"
@@ -29,13 +31,22 @@ class AppView():
         
     def glade_XML(self, main, widget):
         domain = "foobnix"
-        try:
+        try:            
             return gtk.glade.XML(main, widget, domain)
         except:
-            try:
-                return gtk.glade.XML('/usr/local/lib/python' + sys.version[:3] + '/dist-packages/' + main, widget, domain)
-            except:
-                return gtk.glade.XML('/usr/lib/python' + sys.version[:3] + '/site-packages/' + main, widget, domain)
-            
+            pass
+        
+        for path in sys.path:
+            full_path = os.path.join(path, main)
+            if os.path.isfile(full_path) and (path.endswith("dist-packages") or path.endswith("site-packages")):
+                try:
+                    LOG.info("Find glade in", full_path)                    
+                    return gtk.glade.XML(os.path.join(path, main), widget, domain)
+                except:
+                    LOG.warn("Can't find glade file in", path);
+                    pass
+                
+        LOG.error("Can't find glade file!!!");
+        
         
   
