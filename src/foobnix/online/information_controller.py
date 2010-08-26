@@ -39,7 +39,7 @@ class SimilartSongsController(BaseListController):
             items = self.get_all_items()
             songs = []
             similar = self.get_parent_name()
-            song = CommonBean(name=similar, type=CommonBean.TYPE_FOLDER)
+            song = CommonBean(name=similar, type=CommonBean.TYPE_FOLDER, color="GREEN")
             songs.append(song)
             for item in items:                
                 song = CommonBean(name=item, type=CommonBean.TYPE_MUSIC_URL, parent=similar)

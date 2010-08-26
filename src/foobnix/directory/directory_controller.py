@@ -407,7 +407,6 @@ class DirectoryCntr():
         if not self.cache_music_beans:
             self.clear()            
             self.current_list_model.append(None, CommonBean(name=_("Updating music, please wait... ") , path=None, font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER, parent=None))
-            time.sleep(0.5)
             for path in FConfiguration().mediaLibraryPath:
                 self.go_recursive(path, None)
             FConfiguration().cache_music_beans = self.cache_music_beans  
