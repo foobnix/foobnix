@@ -27,9 +27,9 @@ class AppController(BaseController):
         self.player_controller = PlayerController()
         
         #self.playlistCntr = PlaylistCntr(v.playlist, self.player_controller)
-        onlineCntr = OnlineListCntr(v.gxMain, self.player_controller)
+        self.onlineCntr = OnlineListCntr(v.gxMain, self.player_controller)
         
-        self.playlistCntr = onlineCntr 
+        self.playlistCntr = self.onlineCntr 
         
         self.virtualListCntr = VirturalLIstCntr()
         
@@ -43,9 +43,9 @@ class AppController(BaseController):
         self.directoryCntr = DirectoryCntr(v.gxMain, self.playlistCntr, self.virtualListCntr)
         #self.playlistCntr.registerDirectoryCntr(self.directoryCntr)
         self.appConfCntr = AppConfigurationCntrl(v.gxMain, self.directoryCntr)
-        onlineCntr.register_directory_cntr(self.directoryCntr)
+        self.onlineCntr.register_directory_cntr(self.directoryCntr)
         
-        self.player_controller.registerOnlineCntr(onlineCntr)
+        self.player_controller.registerOnlineCntr(self.onlineCntr)
         
         
         
@@ -53,7 +53,7 @@ class AppController(BaseController):
         
         
         """show pref window"""
-        self.pref = PreferencesWindow(self.directoryCntr, onlineCntr)
+        self.pref = PreferencesWindow(self.directoryCntr, self.onlineCntr)
         menu_preferences = v.gxMain.get_widget("menu_preferences")
         menu_preferences.connect("activate", lambda * a:self.pref.show())
         
@@ -73,14 +73,16 @@ class AppController(BaseController):
         self.main_window_controller.connect('exit', self.exit)
         
         self.search_panel = SearchPanel(v.gxMain)
-        self.search_panel.connect('show_search_results', onlineCntr.show_results)
-        self.search_panel.connect('show_searching_line', onlineCntr.show_searching)
+        self.search_panel.connect('show_search_results', self.onlineCntr.show_results)
+        self.search_panel.connect('show_searching_line', self.onlineCntr.show_searching)
         
         self.restore_state()
         
         """paly music via arguments"""
-        onlineCntr.on_play_argumens()
+        self.play_arguments()
     
+    def play_arguments(self):
+        self.onlineCntr.on_play_argumens()
     
     def exit(self, sender):
         self.save_state()
