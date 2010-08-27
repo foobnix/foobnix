@@ -6,6 +6,7 @@ Created on Mar 10, 2010
 '''
 import pygst
 from foobnix.util import LOG
+import sys
 pygst.require('0.10')
 
 import pygtk
@@ -28,7 +29,7 @@ def is_only_instance():
 if __name__ == "__main__":
     LOG.print_debug_info()
     if is_only_instance():        
-        import foobnix.util.localization 
+        import foobnix.util.localization
         
         AppController(AppView())
         

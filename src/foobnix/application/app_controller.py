@@ -77,6 +77,9 @@ class AppController(BaseController):
         self.search_panel.connect('show_searching_line', onlineCntr.show_searching)
         
         self.restore_state()
+        
+        """paly music via arguments"""
+        onlineCntr.on_play_argumens()
     
     
     def exit(self, sender):

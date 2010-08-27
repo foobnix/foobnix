@@ -26,6 +26,8 @@ from foobnix.online.dowload_util import  get_file_store_path, \
 from foobnix.online.song_resource import update_song_path
 from foobnix.cue.cue_reader import CueReader
 from foobnix.helpers.menu import Popup
+from foobnix.util.file_utils import get_file_extenstion
+import sys
 
 class OnlineListCntr(GObject):
     
@@ -49,6 +51,22 @@ class OnlineListCntr(GObject):
         
         self.tab_labes = []
         self.default_angel = 90
+                
+    
+    def on_play_argumens(self):
+        dirs = []
+        files = []
+        for arg in sys.argv:
+            LOG.info("Arguments", arg)
+            if os.path.isdir(arg):
+                dirs.append(arg)
+            elif os.path.isfile(arg) and get_file_extenstion(arg) in FConfiguration().supportTypes:
+                files.append(arg)
+        if dirs:
+            self.populate_from_dirs(dirs)
+        else:
+            self.populate_from_files(files)
+             
         
     def update_label_angel(self, angle):
         for label in self.tab_labes:
@@ -85,25 +103,54 @@ class OnlineListCntr(GObject):
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
+            self.populate_from_files(paths)
             
-            path = paths[0]
-            list = paths[0].split("/")
-            
-            FConfiguration().last_dir = path[:path.rfind("/")]
-            self.append_notebook_page(list[len(list) - 2])
-            beans = []
-            for path in paths:
-                bean = self.directoryCntr.get_common_bean_by_file(path)
-                beans.append(bean)
-            if beans:            
-                self.append_and_play(beans)
-            else:
-                self.append([self.SearchCriteriaBeen(_("Nothing found to play in the file(s)") + paths[0])])
         elif response == gtk.RESPONSE_CANCEL:
             LOG.info('Closed, no files selected')
         chooser.destroy()
         print "add file"  
     
+    def populate_from_files(self, paths):
+        if not paths:
+            return None
+        path = paths[0]
+        list = paths[0].split("/")
+        
+        FConfiguration().last_dir = path[:path.rfind("/")]
+        self.append_notebook_page(list[len(list) - 2])
+        beans = []
+        for path in paths:
+            bean = self.directoryCntr.get_common_bean_by_file(path)
+            beans.append(bean)
+        if beans:            
+            self.append_and_play(beans)
+        else:
+            self.append([self.SearchCriteriaBeen(_("Nothing found to play in the file(s)") + paths[0])])
+    
+    def populate_from_dirs(self, paths):
+        if not paths :
+            return None
+        
+        path = paths[0]
+        
+        list = path.split("/")
+        FConfiguration().last_dir = path[:path.rfind("/")]
+        self.append_notebook_page(list[len(list) - 1])
+        
+        all_beans = []
+        for path in paths:
+            if path == "/":
+                LOG.info("Skip root folder")
+                continue;            
+            beans = self.directoryCntr.get_common_beans_by_folder(path)
+            for bean in beans:
+                all_beans.append(bean)
+            
+        if all_beans:            
+            self.append_and_play(all_beans)
+        else:
+            self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
+
     def on_add_folder(self, *a):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
@@ -113,26 +160,7 @@ class OnlineListCntr(GObject):
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
-            path = paths[0]
-            
-            list = path.split("/")
-            FConfiguration().last_dir = path[:path.rfind("/")]
-            self.append_notebook_page(list[len(list) - 1])
-            
-            all_beans = []
-            for path in paths:
-                if path == "/":
-                    LOG.info("Skip root folder")
-                    continue;            
-                beans = self.directoryCntr.get_common_beans_by_folder(path)
-                for bean in beans:
-                    all_beans.append(bean)
-                
-            if all_beans:            
-                self.append_and_play(all_beans)
-            else:
-                self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
-            
+            self.populate_from_dirs(paths)
             
         elif response == gtk.RESPONSE_CANCEL:
             LOG.info('Closed, no files selected')

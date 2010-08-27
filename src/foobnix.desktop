@@ -1,9 +1,16 @@
+#!/usr/bin/env xdg-open
 [Desktop Entry]
 Name=Foobnix
-_GenericName=Music Player
-_Comment=Listen to, browse, or edit your audio collection
-Exec=foobnix
+GenericName=Music Player
+X-GNOME-FullName=Foobnix Music Player
+Comment=Player for listening to music on Linux
+Exec=foobnix %U
 Terminal=false
 Type=Application
-Icon=foobnix.png
-Categories=AudioVideo;Audio;Player;GTK
+Icon=foobnix
+X-GNOME-DocPath=foobnix/foobnix.xml
+Categories=GNOME;GTK;AudioVideo;
+MimeType=application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;x-content/audio$
+StartupNotify=true
+X-Ubuntu-Gettext-Domain=foobnix
+
