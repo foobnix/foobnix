@@ -18,11 +18,11 @@ class FobonixServer(Pyro.core.ObjBase):
                 print "TEST SUCCESS"
                 return True
             
-            def commands(self):
+            def commands(self,args):
                 print "SERVER COMMANDS"
                 if self.app:
                     print "SERVER COMMANDS ARGUMENTS"
-                    self.app.play_arguments(sys.argv)            
+                    self.app.play_arguments(args)            
                     
                 
             def play(self, song):
@@ -34,7 +34,10 @@ class Foobnix():
         client = self.client()
         if client:
             print "Client, acept commands"
-            client.commands()
+            try:
+                client.commands(sys.argv)
+            except:
+                print >> sys.stderr, "ERROR", "Pyro.errors.ConnectionClosedError: connection lost"
             
         else:   
                        
@@ -42,7 +45,6 @@ class Foobnix():
             from foobnix.application.app_controller import AppController
             import gobject
             import gtk
-
             
             import foobnix.util.localization
             app = AppController(AppView())
@@ -50,8 +52,6 @@ class Foobnix():
             
             gobject.threads_init()  #@UndefinedVariable
             gtk.main()
-            self.server(app)
-            
             
     
     def client(self):
@@ -73,7 +73,7 @@ class Foobnix():
         print "The daemon runs on port:",daemon.port
         print "The object's uri is:",uri
         
-        daemon.requestLoop()
+        daemon.requestLoop(timeout=10)
                 
                 
 if __name__ == "__main__":
