@@ -5,7 +5,6 @@
   <widget class="GtkWindow" id="foobnixWindow">
     <property name="width_request">1000</property>
     <property name="height_request">500</property>
-    <property name="visible">True</property>
     <property name="title" translatable="yes">Title</property>
     <property name="window_position">center</property>
     <property name="icon_name">media-playback-start</property>
@@ -13,6 +12,7 @@
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <widget class="GtkHBox" id="hbox2">
             <property name="visible">True</property>
@@ -379,6 +379,7 @@
             <child>
               <widget class="GtkVBox" id="vbox2">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <widget class="GtkEntry" id="filter-entry">
                     <property name="visible">True</property>
@@ -428,6 +429,7 @@
                         <child>
                           <widget class="GtkVBox" id="vbox3">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <child>
                               <widget class="GtkImage" id="image3">
                                 <property name="visible">True</property>
@@ -465,6 +467,7 @@
                         <child>
                           <widget class="GtkVBox" id="vbox7">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <child>
                               <widget class="GtkImage" id="image4">
                                 <property name="visible">True</property>
@@ -502,6 +505,7 @@
                         <child>
                           <widget class="GtkVBox" id="vbox8">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <child>
                               <widget class="GtkImage" id="image5">
                                 <property name="visible">True</property>
@@ -564,6 +568,7 @@
             <child>
               <widget class="GtkVBox" id="vbox5">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <widget class="GtkFrame" id="search_frame">
                     <property name="visible">True</property>
@@ -576,6 +581,7 @@
                         <child>
                           <widget class="GtkVBox" id="vbox4">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <child>
                               <widget class="GtkHBox" id="hbox6">
                                 <property name="visible">True</property>
@@ -798,6 +804,7 @@
                         <child>
                           <widget class="GtkVBox" id="vbox6">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <child>
                               <widget class="GtkImage" id="lyric_image_widget">
                                 <property name="visible">True</property>
@@ -854,9 +861,11 @@
                         <child>
                           <widget class="GtkVBox" id="vbox11">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <child>
                               <widget class="GtkHBox" id="hbox16">
                                 <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <widget class="GtkImage" id="image_widget">
                                     <property name="visible">True</property>

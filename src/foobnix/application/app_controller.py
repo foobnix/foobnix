@@ -81,6 +81,7 @@ class AppController(BaseController):
         
         """paly music via arguments"""
         self.play_arguments(sys.argv)
+        self.main_window_controller.show()
     
     def play_arguments(self, args):
         #gtk.gdk.threads_leave()     

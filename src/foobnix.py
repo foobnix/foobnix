@@ -8,8 +8,8 @@ Created on Mar 10, 2010
 import Pyro.core
 import gobject
 import threading
-import gtk
 import sys
+
 class Foobnix():
     def __init__(self):
         from foobnix.application.app_view import AppView
