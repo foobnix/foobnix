@@ -3,8 +3,8 @@
   <!-- interface-requires gtk+ 2.12 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="foobnixWindow">
-    <property name="width_request">750</property>
-    <property name="height_request">450</property>
+    <property name="width_request">1000</property>
+    <property name="height_request">500</property>
     <property name="visible">True</property>
     <property name="title" translatable="yes">Title</property>
     <property name="window_position">center</property>
