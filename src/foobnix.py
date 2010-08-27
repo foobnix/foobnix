@@ -38,7 +38,7 @@ class Foobnix():
                 client.commands(sys.argv)
             except:
                 print >> sys.stderr, "ERROR", "Pyro.errors.ConnectionClosedError: connection lost"
-            
+            sys.exit(1)
         else:   
                        
             from foobnix.application.app_view import AppView

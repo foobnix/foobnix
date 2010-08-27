@@ -28,6 +28,10 @@ from foobnix.cue.cue_reader import CueReader
 from foobnix.helpers.menu import Popup
 from foobnix.util.file_utils import get_file_extenstion
 import sys
+import urllib
+
+TARGET_TYPE_URI_LIST = 80
+dnd_list = [ ( 'text/uri-list', 0, TARGET_TYPE_URI_LIST ) ]
 
 class OnlineListCntr(GObject):
     
@@ -43,6 +47,10 @@ class OnlineListCntr(GObject):
         self.index = 0
         
         self.online_notebook = gxMain.get_widget("online_notebook")
+        self.online_notebook.connect('drag-data-received', self.on_drag_data_received)
+        self.online_notebook.drag_dest_set( gtk.DEST_DEFAULT_MOTION |
+                 gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
+                 dnd_list, gtk.gdk.ACTION_COPY)
         
         add_file_menu = gxMain.get_widget("add-file")
         add_file_menu.connect("activate", self.on_add_file)
@@ -51,7 +59,36 @@ class OnlineListCntr(GObject):
         
         self.tab_labes = []
         self.default_angel = 90
+    
+    def get_file_path_from_dnd_dropped_uri(self, uri):
+        # get the path to file
+        path = ""
+        if uri.startswith('file:\\\\\\'): # windows
+            path = uri[8:] # 8 is len('file:///')
+        elif uri.startswith('file://'): # nautilus, rox
+            path = uri[7:] # 7 is len('file://')
+        elif uri.startswith('file:'): # xffm
+            path = uri[5:] # 5 is len('file:')
+        
+        path = urllib.url2pathname(path) # escape special chars
+        path = path.strip('\r\n\x00') # remove \r\n and NULL
+        
+        return path
+    
+    def on_drag_data_received(self, widget, context, x, y, selection, target_type, timestamp):
+        TARGET_TYPE_URI_LIST = 80
+        dnd_list = [ ( 'text/uri-list', 0, TARGET_TYPE_URI_LIST ) ]
+        
+        if target_type == TARGET_TYPE_URI_LIST:
+            uri = selection.data.strip('\r\n\x00')
+            print 'uri', uri
+            uri_splitted = uri.split() # we may have more than one file dropped
+            paths =[]
+            for uri in uri_splitted:
+                path = self.get_file_path_from_dnd_dropped_uri(uri)
+                paths.append(path)
                 
+            self.on_play_argumens(paths)         
     
     def on_play_argumens(self,args):
         dirs = []
@@ -185,8 +222,11 @@ class OnlineListCntr(GObject):
         
         treeview.connect("drag-end", self.on_drag_end)
         treeview.connect("button-press-event", self.onPlaySong, model)
-      
-
+        treeview.connect("drag-data-received", self.on_drag_data_received)
+        treeview.drag_dest_set( gtk.DEST_DEFAULT_MOTION |
+                 gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
+                 dnd_list, gtk.gdk.ACTION_COPY)
+        
         treeview.show()
         
         window = gtk.ScrolledWindow()
