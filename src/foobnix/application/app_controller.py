@@ -18,6 +18,7 @@ from foobnix.base import BaseController
 from foobnix.util.configuration import FConfiguration
 from foobnix.online.search_panel import SearchPanel
 from foobnix.preferences.preferences_window import PreferencesWindow
+import sys
 
 class AppController(BaseController):
 
@@ -79,10 +80,12 @@ class AppController(BaseController):
         self.restore_state()
         
         """paly music via arguments"""
-        self.play_arguments()
+        self.play_arguments(sys.argv)
     
-    def play_arguments(self):
-        self.onlineCntr.on_play_argumens()
+    def play_arguments(self,args):     
+        #gtk.gdk.threads_enter() #@UndefinedVariable   
+        self.onlineCntr.on_play_argumens(args)
+        #gtk.gdk.threads_leave() 
     
     def exit(self, sender):
         self.save_state()

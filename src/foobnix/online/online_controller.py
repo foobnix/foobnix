@@ -53,10 +53,10 @@ class OnlineListCntr(GObject):
         self.default_angel = 90
                 
     
-    def on_play_argumens(self):
+    def on_play_argumens(self,args):
         dirs = []
         files = []
-        for arg in sys.argv:
+        for arg in args:
             LOG.info("Arguments", arg)
             if os.path.isdir(arg):
                 dirs.append(arg)
@@ -210,7 +210,9 @@ class OnlineListCntr(GObject):
         event_box = gtk.EventBox()
         event_box.add(label)
         event_box.connect('event', self.on_tab_click)
-                 
+         
+              
+                        
         self.online_notebook.prepend_page(self.create_notebook_tab(), event_box)
         self.online_notebook.set_current_page(0)
         

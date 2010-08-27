@@ -4,29 +4,78 @@ Created on Mar 10, 2010
 
 @author: ivan
 '''
-import pygst
-from foobnix.util import LOG
+import Pyro.core
 import sys
-from foobnix.util.single_instanse import SingleInstance
-pygst.require('0.10')
+import thread
 
-import pygtk
-pygtk.require20()
+class FobonixServer(Pyro.core.ObjBase):
+            def __init__(self, app):
+                Pyro.core.ObjBase.__init__(self)
+                self.app = app
+                    
+            
+            def test(self):
+                print "TEST SUCCESS"
+                return True
+            
+            def commands(self):
+                print "SERVER COMMANDS"
+                if self.app:
+                    print "SERVER COMMANDS ARGUMENTS"
+                    self.app.play_arguments(sys.argv)            
+                    
+                
+            def play(self, song):
+                print song
 
-import gtk
-import gobject
-from foobnix.application.app_view import AppView
-from foobnix.application.app_controller import AppController
+class Foobnix():
+    def __init__(self):       
+        self.app = None
+        client = self.client()
+        if client:
+            print "Client, acept commands"
+            client.commands()
+            
+        else:   
+                       
+            from foobnix.application.app_view import AppView
+            from foobnix.application.app_controller import AppController
+            import gobject
+            import gtk
 
+            
+            import foobnix.util.localization
+            app = AppController(AppView())
+            thread.start_new_thread(self.server,(app,))
+            
+            gobject.threads_init()  #@UndefinedVariable
+            gtk.main()
+            self.server(app)
+            
+            
+    
+    def client(self):
+        try:
+            client = Pyro.core.getProxyForURI("PYROLOC://localhost:7766/foobnix")
+            client.test()
+            print "run client"
+            return client
+        except:
+            print "client exeption"            
+            return None        
+        
+    def server(self,app):
+        print "run server"
+        Pyro.core.initServer()
+        daemon=Pyro.core.Daemon()
+        uri=daemon.connect(FobonixServer(app),"foobnix")
+        
+        print "The daemon runs on port:",daemon.port
+        print "The object's uri is:",uri
+        
+        daemon.requestLoop()
+                
+                
 if __name__ == "__main__":
-    myapp = SingleInstance()    
-    if myapp.alreadyrunning():
-        print  "player running"
-        sys.exit(1)
-    else:
-        LOG.print_debug_info()
-        import foobnix.util.localization
-        AppController(AppView())
-        gobject.threads_init()  #@UndefinedVariable
-        gtk.main()
-        LOG.info(_("Success"))
+    foobnix = Foobnix();
+    
