@@ -9,7 +9,7 @@ import Pyro.core
 import gobject
 import threading
 import sys
-
+#http://code.google.com/p/media-enclave/source/browse/trunk/aenclave/gst_player/gst_server.py?spec=svn200&r=111
 class Foobnix():
     def __init__(self):
         from foobnix.application.app_view import AppView

@@ -865,7 +865,6 @@
                             <child>
                               <widget class="GtkHBox" id="hbox16">
                                 <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
                                 <child>
                                   <widget class="GtkImage" id="image_widget">
                                     <property name="visible">True</property>
