@@ -82,16 +82,19 @@ class AppController(BaseController):
         """paly music via arguments"""
         self.play_arguments(sys.argv)
     
-    def play_arguments(self,args):
+    def play_arguments(self, args):
         #gtk.gdk.threads_leave()     
         #gtk.gdk.threads_enter() #@UndefinedVariable   
+        #self.player_controller.stopState()
         self.onlineCntr.on_play_argumens(args)
         #gtk.gdk.threads_leave() 
     
     def exit(self, sender):
         self.save_state()
         self.tray_icon.icon.set_visible(False)
+        sys.exit(1)
         gtk.main_quit()
+        
 
     def restore_state(self):
         

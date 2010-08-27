@@ -86,8 +86,6 @@ class TrayIcon(BaseController):
         self.setText1(song.name)
 
     def on_mouse_wheel_scrolled(self, w, event):
-        print w, event
-        
         if event.direction == gtk.gdk.SCROLL_UP:    #@UndefinedVariable
             self.emit('volume_up')
         else:
