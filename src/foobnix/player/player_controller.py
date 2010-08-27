@@ -173,9 +173,11 @@ class PlayerController(BaseController):
         
     
     def volume_up(self, *args):
+        self.widgets.volume.set_value(self.getVolume() * 100)
         self.setVolume(self.getVolume() + 0.05)
 
     def volume_down(self, *args):
+        self.widgets.volume.set_value(self.getVolume() * 100)
         self.setVolume(self.getVolume() - 0.05)
     
     def setVolume(self, volumeValue): 

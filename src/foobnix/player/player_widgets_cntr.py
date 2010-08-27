@@ -11,17 +11,33 @@ from foobnix.online.google.translate import translate
 from foobnix.util.mouse_utils import is_double_click
 import time
 from foobnix.preferences.preferences_window import PreferencesWindow
+import gtk
 
 
 class PlayerWidgetsCntl():
     '''
    
     '''
+    
+    def scroll_event(self,button, event):
+        volume = self.volume.get_value()
+        if event.direction == gtk.gdk.SCROLL_UP:
+            self.volume.set_value(volume +1)
+        else:
+            self.volume.set_value(volume - 1)
+        
+        self.playerCntr.setVolume(volume / 100)
+        
+        return True
+
+    
     def __init__(self, gxMain, playerCntr):
         self.playerCntr = playerCntr
         
         self.volume = gxMain.get_widget("volume_hscale")
         self.volume.connect("change-value", self.onVolumeChange)
+        self.volume.connect("scroll-event", self.scroll_event)
+
         
         self.seek = gxMain.get_widget("seek_eventbox")
         self.seek.connect("button-press-event", self.onSeek)
