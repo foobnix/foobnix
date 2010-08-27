@@ -222,10 +222,6 @@ class OnlineListCntr(GObject):
         
         treeview.connect("drag-end", self.on_drag_end)
         treeview.connect("button-press-event", self.onPlaySong, model)
-        treeview.connect("drag-data-received", self.on_drag_data_received)
-        treeview.drag_dest_set( gtk.DEST_DEFAULT_MOTION |
-                 gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
-                 dnd_list, gtk.gdk.ACTION_COPY)
         
         treeview.show()
         
