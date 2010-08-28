@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 
 # example packbox.py
-
-from foobnix.preferences.configs.try_icon import TryIconConfig
-from foobnix.preferences.configs.category_info import CategoryInfoConfig
 import gtk
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
 from foobnix.util.configuration import FConfiguration, get_version
