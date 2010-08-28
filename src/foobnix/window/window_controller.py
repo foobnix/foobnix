@@ -44,10 +44,23 @@ class WindowController(BaseController):
         self.about_window.hide()
         return True
 
+    def maximize(self):
+        self.main_window.maximize()
+
     def show(self):        
         print "SHOW"
-        self.main_window.maximize()
+        #self.main_window.maximize()
+        
+        #self.main_window.realize()
+        #self.main_window.set_modal(True)
+        
         self.main_window.show()
+        #self.main_window.reshow_with_initial_size()
+        #self.main_window.set_keep_above(True)
+        
+        """Fatal IO error 11 (Resource temporarily unavailable) on X server :0.0."""
+        #self.main_window.set_property('visible', True)
+        
                 
 
     def hide(self, *args):

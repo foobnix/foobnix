@@ -86,9 +86,11 @@ class AppController(BaseController):
     
     def play_arguments(self, args):
         #gtk.gdk.threads_leave()     
+        gtk.gdk.threads_enter() #@UndefinedVariable
+        self.main_window_controller.maximize()
         self.main_window_controller.show()
         
-        gtk.gdk.threads_enter() #@UndefinedVariable
+        
         time.sleep(1)
         self.onlineCntr.on_play_argumens(args)
         gtk.gdk.threads_leave() 
