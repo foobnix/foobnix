@@ -19,6 +19,7 @@ from foobnix.util.configuration import FConfiguration
 from foobnix.online.search_panel import SearchPanel
 from foobnix.preferences.preferences_window import PreferencesWindow
 import sys
+import time
 
 class AppController(BaseController):
 
@@ -85,10 +86,12 @@ class AppController(BaseController):
     
     def play_arguments(self, args):
         #gtk.gdk.threads_leave()     
-        #gtk.gdk.threads_enter() #@UndefinedVariable   
-        #self.player_controller.stopState()
+        self.main_window_controller.show()
+        
+        gtk.gdk.threads_enter() #@UndefinedVariable
+        time.sleep(1)
         self.onlineCntr.on_play_argumens(args)
-        #gtk.gdk.threads_leave() 
+        gtk.gdk.threads_leave() 
     
     def exit(self, sender):
         self.save_state()

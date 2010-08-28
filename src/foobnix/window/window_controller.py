@@ -44,16 +44,27 @@ class WindowController(BaseController):
         self.about_window.hide()
         return True
 
-    def show(self):
+    def show(self):        
+        print "SHOW"
+        self.main_window.maximize()
         self.main_window.show()
+                
 
     def hide(self, *args):
+        print "HIDE"
         self.main_window.hide()
         return True
 
     def toggle_visibility(self, *a):
         visible = self.main_window.get_property('visible')
-        self.main_window.set_property('visible', not visible)
+        print visible
+        if visible:
+            #self.hide()
+            self.hide()
+        else:
+            self.show()
+            
+        
 
     def decorate(self, gx):
         rc_st = '''

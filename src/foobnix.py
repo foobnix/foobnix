@@ -34,22 +34,29 @@ class RemotePlayer(Pyro.core.ObjBase):
     def check(self):
         return True
     def play_args(self, args):
+        print "server before"
         self.foo.play_args(args)
+        print "server after"
     
 def client():
-    client = Pyro.core.getProxyForURI("PYROLOC://localhost:7766/foobnix")
-    try:
-        client.check()
+        client = Pyro.core.getProxyForURI("PYROLOC://localhost:7766/foobnix")
+    
+        print "begin check"
+        try:
+            client.check()
+            return client
+        except Pyro.errors.ProtocolError:
+            return False
+        print "end check"
         return client
-    except:
-        return None
+    
+        return False
 
 def main():
     cl = client()
     if cl:
-        print sys.argv
-        if sys.argv and len(sys.argv) > 1: 
-            cl.play_args(sys.argv)
+        print "Main", sys.argv, cl
+        cl.play_args(sys.argv)
         print "Player running"
         return None
     

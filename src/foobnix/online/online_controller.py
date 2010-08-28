@@ -31,7 +31,7 @@ import sys
 import urllib
 
 TARGET_TYPE_URI_LIST = 80
-dnd_list = [ ( 'text/uri-list', 0, TARGET_TYPE_URI_LIST ) ]
+dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
 
 class OnlineListCntr(GObject):
     
@@ -48,7 +48,7 @@ class OnlineListCntr(GObject):
         
         self.online_notebook = gxMain.get_widget("online_notebook")
         self.online_notebook.connect('drag-data-received', self.on_drag_data_received)
-        self.online_notebook.drag_dest_set( gtk.DEST_DEFAULT_MOTION |
+        self.online_notebook.drag_dest_set(gtk.DEST_DEFAULT_MOTION | 
                  gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
                  dnd_list, gtk.gdk.ACTION_COPY)
         
@@ -77,20 +77,23 @@ class OnlineListCntr(GObject):
     
     def on_drag_data_received(self, widget, context, x, y, selection, target_type, timestamp):
         TARGET_TYPE_URI_LIST = 80
-        dnd_list = [ ( 'text/uri-list', 0, TARGET_TYPE_URI_LIST ) ]
+        dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
         
         if target_type == TARGET_TYPE_URI_LIST:
             uri = selection.data.strip('\r\n\x00')
             print 'uri', uri
             uri_splitted = uri.split() # we may have more than one file dropped
-            paths =[]
+            paths = []
             for uri in uri_splitted:
                 path = self.get_file_path_from_dnd_dropped_uri(uri)
                 paths.append(path)
                 
             self.on_play_argumens(paths)         
     
-    def on_play_argumens(self,args):
+    def on_play_argumens(self, args):
+        if not args or len(args) <= 1:
+            print "no args"
+            return None
         dirs = []
         files = []
         for arg in args:
