@@ -256,7 +256,6 @@ class DirectoryCntr():
 
     def append_virtual(self, beans=None):
         LOG.debug("Current virtual list", self.currentListMap)
-        self.active_view = self.VIEW_VIRTUAL_LISTS
         if not self.currentListMap:
             self.currentListMap = self.DEFAULT_LIST
 
