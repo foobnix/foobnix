@@ -34,7 +34,6 @@ TARGET_TYPE_URI_LIST = 80
 dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
 
 class OnlineListCntr(GObject):
-    
     def __init__(self, gxMain, playerCntr):
         self.gx_main = gxMain
         self.directoryCntr = None
@@ -57,6 +56,8 @@ class OnlineListCntr(GObject):
         add_folder_menu.connect("activate", self.on_add_folder)
         
         self.tab_labes = []
+        self.tab_vboxes = []
+        self.tab_hboxes = []
         self.default_angel = 90
     
     def get_file_path_from_dnd_dropped_uri(self, uri):
@@ -119,6 +120,12 @@ class OnlineListCntr(GObject):
         self.default_angel = 90
         self.online_notebook.set_show_tabs(True)
         FConfiguration().tab_position = "left"
+        
+        for box in self.tab_hboxes:
+            box.hide()
+        
+        for box in self.tab_vboxes:
+            box.show()
     
     def set_tab_top(self):
         LOG.info("Set tabs top")
@@ -127,11 +134,22 @@ class OnlineListCntr(GObject):
         self.default_angel = 0
         self.online_notebook.set_show_tabs(True)
         FConfiguration().tab_position = "top"
+        for box in self.tab_hboxes:
+            box.show()
+        
+        for box in self.tab_vboxes:
+            box.hide()
     
+        
     def set_tab_no(self):
         LOG.info("Set tabs no")
         self.online_notebook.set_show_tabs(False)
         FConfiguration().tab_position = "no"
+        for box in self.tab_hboxes:
+            box.hide()
+        
+        for box in self.tab_vboxes:
+            box.hide()
    
     
     def on_add_file(self, *a):
@@ -236,23 +254,61 @@ class OnlineListCntr(GObject):
         
     def append_notebook_page(self, name):
         LOG.info("append new tab")
-        if name and len(name) > 50:
-            name = name[:50]
-                        
-        label = gtk.Label(name)
+        if name and len(name) > FConfiguration().len_of_tab:
+            name = name[:FConfiguration().len_of_tab]
+
+        tab_content = self.create_notebook_tab()
+        def label():
+            """label"""                        
+            label = gtk.Label(name + " ")
+            label.show()
+            label.set_angle(self.default_angel)
+            self.tab_labes.append(label)
+            
+            #event = gtk.EventBox()
+            #event.show()
+            #event.add(label)            
+            #return event
+            
+            return label
         
-        label.set_angle(self.default_angel)
-        label.show()
+        def button():
+            """button"""
+            button = gtk.Button()
+            button.set_relief(gtk.RELIEF_NONE)
+            img = gtk.image_new_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
+            button.set_image(img)
+           
+                    
+            button.connect("event", self.on_delete_tab, tab_content)
+            button.show()
+            return button
         
-        self.tab_labes.append(label)
+        """container Vertical Tab"""                
+        vbox = gtk.VBox(False, 0)
+        if  self.default_angel == 90:        
+            vbox.show()        
+        vbox.pack_start(button(), False, False, 0)
+        vbox.pack_start(label(), False, False, 0)
+        self.tab_vboxes.append(vbox)
         
-        event_box = gtk.EventBox()
-        event_box.add(label)
-        event_box.connect('event', self.on_tab_click)
-         
-              
-                        
-        self.online_notebook.prepend_page(self.create_notebook_tab(), event_box)
+        """container Horizontal Tab"""                
+        hbox = gtk.HBox(False, 0)    
+        if  self.default_angel == 0:    
+            hbox.show()        
+        hbox.pack_start(label(), False, False, 0)
+        hbox.pack_start(button(), False, False, 0)
+        self.tab_hboxes.append(hbox)
+        #hbox.set_size_request(-1, 16)
+        
+        """container BOTH"""
+        both = gtk.HBox(False, 0)
+        both.show()
+        both.pack_start(vbox, False, False, 0)
+        both.pack_start(hbox, False, False, 0)
+        
+        """append tab"""        
+        self.online_notebook.prepend_page(tab_content, both)
         self.online_notebook.set_current_page(0)
         
         if self.online_notebook.get_n_pages() > FConfiguration().count_of_tabs:
@@ -260,9 +316,9 @@ class OnlineListCntr(GObject):
         
     
     def on_tab_click(self, w, e):
+        print w, e
         """ double left or whell pressed"""
-        
-        if is_middle_click(e):
+        if is_left_click(e):
             LOG.info("Close Current TAB")
             self.delete_tab()
         if is_rigth_click(e):
@@ -270,8 +326,20 @@ class OnlineListCntr(GObject):
             menu.add_item(_("Close"), gtk.STOCK_DELETE, self.delete_tab, None)
             menu.show(e)
     
-    def delete_tab(self):
-        page = self.online_notebook.get_current_page()            
+    def on_delete_tab(self, widget, event, child):
+        if event.type == gtk.gdk.BUTTON_PRESS:
+            print "Button press event", child
+            n = self.online_notebook.page_num(child)
+            #self.online_notebook.set_current_page(n)            
+            self.delete_tab(n)
+            
+
+#        self.delete_tab(tab_num)
+    
+    def delete_tab(self, page=None):
+        if not page:
+            LOG.info("Remove current page")
+            page = self.online_notebook.get_current_page()            
         self.online_notebook.remove_page(page)
         
 
