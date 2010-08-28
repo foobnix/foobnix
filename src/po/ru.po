@@ -45,7 +45,7 @@ msgstr "Добавить папку"
 #: .././foobnix/preferences/configs/music_library.py:123
 #: .././foobnix/online/online_controller.py:108
 msgid "Choose directory with music"
-msgstr "Выбирете директорию для проигрываниея"
+msgstr "Выберите директорию для проигрываниея"
 
 #: .././foobnix/directory/directory_controller.py:436
 msgid "Updating music, please wait... "
@@ -185,7 +185,7 @@ msgstr "Похожие на: "
 #: .././foobnix/online/information_controller.py:60
 #: .././foobnix/online/online_controller.py:334
 msgid "Choose directory to save song"
-msgstr "Выбирете директорию для сохранения"
+msgstr "Выберите директорию для сохранения"
 
 #: .././foobnix/online/information_controller.py:89
 #: .././foobnix/online/online_controller.py:383
@@ -203,7 +203,7 @@ msgstr "Добавить все в таб список"
 #: .././foobnix/online/information_controller.py:92
 #: .././foobnix/online/online_controller.py:385
 msgid "Delete from list"
-msgstr "Удалить со списка"
+msgstr "Удалить из списка"
 
 #: .././foobnix/online/information_controller.py:93
 msgid "Info"
@@ -227,7 +227,7 @@ msgstr "Лирика не найдена"
 
 #: .././foobnix/online/online_controller.py:80
 msgid "Choose file to open"
-msgstr "Выбирете файл(ы) для проигрывания"
+msgstr "Выберите файл(ы) для проигрывания"
 
 #: .././foobnix/online/online_controller.py:101
 msgid "Nothing found to play in the file(s)"
