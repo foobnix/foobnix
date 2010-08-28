@@ -40,6 +40,7 @@ class OnlineListModel:
         descriptionColumn = gtk.TreeViewColumn(_('Artist - Title'), gtk.CellRendererText(), text=self.POS_NAME, background=self.POS_COLOR)
         descriptionColumn.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         descriptionColumn.set_resizable(True)
+        descriptionColumn.set_expand(True)
         
         timeColumn = gtk.TreeViewColumn(_('Time'), gtk.CellRendererText(), text=self.POS_TIME, background=self.POS_COLOR)
         timeColumn.set_fixed_width(5)
