@@ -179,12 +179,36 @@ class Vkontakte:
         LOG.info("LOG.info(Song time", r_time)
         LOG.info("LOG.info(Count of congs", r_count)
         
+        """
         for song in vkSongs:
             if song.time == r_time:        
                 return song
+        """
+        """find songs by path"""
+        """find the longest song via 10"""
+        i = 0
+        max_len = 0
+        max_path = ""
+        for song in vkSongs:
+            if song.time == r_time:
+                i += 1
+                song.content_length = self.get_content_len(song.path)
+                if song.content_length > max_len:
+                    max_len = song.content_length
+                    max_path = song.path
+                    print "Max len ", max_len, max_path
+                if i > 10:
+                    song.path = max_path
+                    return song
                     
         return vkSongs[0]
-            
+    
+    def get_content_len(self, path):
+        open = urllib.urlopen(path)
+        return open.info().getheaders("Content-Length")[0]
+ 
+                
+    
     def find_time_value(self, times_count, r_count):
         for i in times_count:
             if times_count[i] == r_count:
@@ -298,6 +322,7 @@ class VKSong():
         self.album = album
         self.track = track
         self.time = time
+        self.content_length = 0
     
     def getTime(self):
         if self.time:
@@ -309,7 +334,7 @@ class VKSong():
         return "[ " + self.s(self.album) + " ] " + self.s(self.track) + " " + self.s(self.time) 
     
     def __str__(self):
-        return "" + self.s(self.album) + " " + self.s(self.track) + " " + self.s(self.time) + " " + self.s(self.path)
+        return "" + self.s(self.album) + " " + self.s(self.track) + " " + self.s(self.time) + " " + self.s(self.path) + " " + self.s(self.content_length)
 
     def s(self, value):
         if value:
@@ -324,12 +349,10 @@ def get_group_id(str):
     
     
 #vk = Vkontakte("qax@bigmir.net", "foobnix")
-#LOG.info(vk.get_s_value()
-#LOG.info(vk.get_cookie()
-#line = "http://vkontakte.ru/audio.php?id=7185772"
-#LOG.info(vk.find_most_relative_song("madonna")
+#print vk.find_most_relative_song("Максим На радиоволнах")
+#open = urllib.urlopen("http://cs4816.vkontakte.ru/u248745/audio/dacb9e02d033.mp3")
+#print open.info().getheaders("Content-Length")[0]
 
-#s = "http://vkontakte.ru/audio.php?id=2765347 < & > ' &#39; &amp;"
-#LOG.info(unescape(s)    
+
 
 
