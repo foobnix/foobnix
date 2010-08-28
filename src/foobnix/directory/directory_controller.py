@@ -151,14 +151,29 @@ class DirectoryCntr():
         else:
             self.clear()
 
+    def create_new_playlist(self):
+        unknownListName = _("New play list")
+        if not self.prefModel.isContain(unknownListName):
+            self.prefModel.append(unknownListName)
+            self.prefListMap[unknownListName] = []
+    
+    def delete_playlist(self):
+        if self.prefModel.getSelectedIndex() > 0:
+            del self.prefListMap[unicode(self.prefModel.getSelected())]
+            self.prefModel.removeSelected()
 
+            self.clear()
+        
     def onPreflListMouseClick(self, w, event):
         if event.button == 3 and event.type == gtk.gdk._2BUTTON_PRESS: #@UndefinedVariable
             LOG.debug("Create new paly list")
-            unknownListName = _("New play list")
-            if not self.prefModel.isContain(unknownListName):
-                self.prefModel.append(unknownListName)
-                self.prefListMap[unknownListName] = []
+            self.create_new_playlist()
+        if is_rigth_click(event):
+            menu = Popup()
+            #menu.add_item(_"Set"), gtk.STOCK_INDEX, func, arg)
+            menu.add_item(_("Create new"), gtk.STOCK_ADD, self.create_new_playlist, None)
+            menu.add_item(_("Delete"), gtk.STOCK_DELETE, self.delete_playlist, None)
+            menu.show(event)
 
     def onPreflListDeleteItem(self, w, event):
 
@@ -167,12 +182,7 @@ class DirectoryCntr():
             LOG.info(event.keyval)
             LOG.info(event.hardware_keycode)
             if event.hardware_keycode == 119 or event.hardware_keycode == 107:
-                if self.prefModel.getSelectedIndex() > 0:
-                    del self.prefListMap[unicode(self.prefModel.getSelected())]
-                    self.prefModel.removeSelected()
-
-                    self.clear()
-
+                self.delete_playlist()
 
     def all(self, *args):
         for arg in args:
@@ -246,6 +256,7 @@ class DirectoryCntr():
 
     def append_virtual(self, beans=None):
         LOG.debug("Current virtual list", self.currentListMap)
+        self.active_view = self.VIEW_VIRTUAL_LISTS
         if not self.currentListMap:
             self.currentListMap = self.DEFAULT_LIST
 
@@ -280,7 +291,14 @@ class DirectoryCntr():
                                                                   parent=item.parent, index=i))
             i += 1
 
-
+    
+    def delete_virtual_list(self):
+        bean = self.current_list_model.get_selected_bean()
+        LOG.info(bean.index)
+        if bean.index > 0:
+            self.virtualListCntr.items = self.prefListMap[self.currentListMap]
+            self.virtualListCntr.remove_with_childrens(bean.index - 1, bean.parent)
+            self.append_virtual()
 
     def onTreeViewDeleteItem(self, w, event):
         if self.active_view != self.VIEW_VIRTUAL_LISTS:
@@ -293,12 +311,7 @@ class DirectoryCntr():
             LOG.info(event.hardware_keycode)
             if event.hardware_keycode == 119 or event.hardware_keycode == 107:
                 LOG.info("Delete")
-                bean = self.current_list_model.get_selected_bean()
-                LOG.info(bean.index)
-                if bean.index > 0:
-                    self.virtualListCntr.items = self.prefListMap[self.currentListMap]
-                    self.virtualListCntr.remove_with_childrens(bean.index - 1, bean.parent)
-                    self.append_virtual()
+                self.delete_virtual_list()
 
 
     def onFiltering(self, *args):
@@ -311,11 +324,22 @@ class DirectoryCntr():
         if is_double_left_click(event):
             self.populate_playlist()
         if is_rigth_click(event):
-            menu = Popup()
-            menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, self.addAll, True)
-            menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
-            menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
-            menu.show(event)
+            
+            if self.active_view == self.VIEW_LOCAL_MUSIC:
+                menu = Popup()
+                menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, self.addAll, True)
+                menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
+                menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
+                menu.show(event)
+            elif self.active_view == self.VIEW_RADIO_STATION:
+                pass
+                
+            elif self.active_view == self.VIEW_VIRTUAL_LISTS:
+                menu = Popup()
+                menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
+                menu.add_item(_("Delete"), gtk.STOCK_DELETE, self.delete_virtual_list, None)                
+                menu.show(event)
+            
 
     def add_folder(self):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"),
