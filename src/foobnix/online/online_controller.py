@@ -48,9 +48,8 @@ class OnlineListCntr(GObject):
         
         self.online_notebook = gxMain.get_widget("online_notebook")
         self.online_notebook.connect('drag-data-received', self.on_drag_data_received)
-        self.online_notebook.drag_dest_set(gtk.DEST_DEFAULT_MOTION | 
-                 gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
-                 dnd_list, gtk.gdk.ACTION_COPY)
+        self.online_notebook.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP,
+                 dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY)
         
         add_file_menu = gxMain.get_widget("add-file")
         add_file_menu.connect("activate", self.on_add_file)
@@ -86,12 +85,13 @@ class OnlineListCntr(GObject):
             paths = []
             for uri in uri_splitted:
                 path = self.get_file_path_from_dnd_dropped_uri(uri)
+                
                 paths.append(path)
                 
             self.on_play_argumens(paths)         
     
     def on_play_argumens(self, args):
-        if not args or len(args) <= 1:
+        if not args:
             print "no args"
             return None
         dirs = []

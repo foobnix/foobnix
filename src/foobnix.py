@@ -61,8 +61,8 @@ def main():
         return None
     
     # Setup the Pyro daemon.
-    Pyro.config.PYRO_TRACELEVEL = 3
-    Pyro.config.PYRO_STDLOGGING = True
+    #Pyro.config.PYRO_TRACELEVEL = 3
+    #Pyro.config.PYRO_STDLOGGING = True
     Pyro.core.initServer()
     daemon = Pyro.core.Daemon()
     # Create the player and register it with the Pyro name server.
