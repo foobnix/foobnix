@@ -170,7 +170,8 @@ class FConfiguration:
     def printArttibutes(self):
         for i in dir(self):
             if not i.startswith("__"):
-                LOG.info(i, getattr(self, i))
+                value = str(getattr(self, i))[:200]
+                LOG.info(i, value)
         
     def _saveCfgToFile(self):
         #conf = FConfiguration()
