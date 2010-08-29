@@ -4,88 +4,50 @@ Created on Mar 10, 2010
 
 @author: ivan
 '''
-
-import Pyro.core
 import gobject
-import threading
+import gtk
+import dbus.service
+from dbus.mainloop.glib import DBusGMainLoop
 import sys
-#http://code.google.com/p/media-enclave/source/browse/trunk/aenclave/gst_player/gst_server.py?spec=svn200&r=111
+class Manager(dbus.service.Object):
+    def __init__(self, interface, object_path='/org/foobnix_player/FoobnixObject'):
+        self.interface = interface
+        self.bus = dbus.SessionBus()
+        bus_name = dbus.service.BusName("org.foobnix_player.Foobnix", bus=self.bus)
+        dbus.service.Object.__init__(self, bus_name, object_path)
+
+    @dbus.service.method('org.foobnix_player.Foobnix')
+    def interactive_play_args(self, args):
+        print "manager recive", args
+        self.interface.play_args(args)
+
 class Foobnix():
     def __init__(self):
         from foobnix.application.app_view import AppView
         from foobnix.application.app_controller import AppController
         import foobnix.util.localization
-        import sys
-               
+        Manager(self)       
         self.app = AppController(AppView())
+    
+    def start(self):
+        gobject.threads_init()
+        gtk.gdk.threads_enter()
+        gtk.main()    
         
     def play_args(self, args):
-        self.app.play_arguments(args)  
-        
-class RemotePlayer(Pyro.core.ObjBase):
-    """
-    A Pyro remote object that wraps a GstPlayer.
-    """
-    def __init__(self):        
-        Pyro.core.ObjBase.__init__(self)
-        self.foo = Foobnix()
-        
+        print "fobonix play", args
+        self.app.play_arguments(eval(args))  
 
-    def check(self):
-        return True
-    def play_args(self, args):
-        print "server before"
-        self.foo.play_args(args)
-        print "server after"
-    
-def client():
-        client = Pyro.core.getProxyForURI("PYROLOC://localhost:7766/foobnix")
-    
-        print "begin check"
-        try:
-            client.check()
-            return client
-        except Pyro.errors.ProtocolError:
-            return False
-        print "end check"
-        return client
-    
-        return False
+DBusGMainLoop(set_as_default=True)
+bus = dbus.SessionBus()
+dbus_objects = dbus.Interface(bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'), 'org.freedesktop.DBus').ListNames()
 
-def main():
-    cl = client()
-    if cl:
-        print "Main", sys.argv, cl
-        cl.play_args(sys.argv)
-        print "Player running"
-        return None
-    
-    # Setup the Pyro daemon.
-    #Pyro.config.PYRO_TRACELEVEL = 3
-    #Pyro.config.PYRO_STDLOGGING = True
-    Pyro.core.initServer()
-    daemon = Pyro.core.Daemon()
-    # Create the player and register it with the Pyro name server.
-    player = RemotePlayer()
-    # TODO(rnk): Change the naming to make one remote object per channel.
-    uri = daemon.connect(player, "foobnix")
-    print "The object URI: %s" % uri
-    # Run the event loop in another daemon thread.  Marking it as a daemon
-    # allows us to respond to SIGTERM properly.
-    gobject.threads_init()
-      
-    event_thread = threading.Thread(target=gobject.MainLoop().run)
-    event_thread.setDaemon(True)  # TODO(rnk): For 2.6+ switch to the below.
-    #event_thread.daemon = True
-    event_thread.start()    
-    # Run the Pyro request loop.
-    try:
-        daemon.requestLoop()
-        
-    finally:
-        print "exiting main thread"
-        daemon.shutdown()
-
-if __name__ == "__main__":
-    main()
-
+if not "org.foobnix_player.Foobnix" in dbus_objects:
+    print "start server"    
+    foobnix = Foobnix()
+    foobnix.start()
+else:
+    print "start client"    
+    proxy = bus.get_object('org.foobnix_player.Foobnix', '/org/foobnix_player/FoobnixObject')    
+    iface = dbus.Interface(proxy, 'org.foobnix_player.Foobnix')
+    iface.interactive_play_args(str(sys.argv))
