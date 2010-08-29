@@ -15,29 +15,11 @@ from foobnix.model.entity import CommonBean
 from foobnix.util import LOG
 from foobnix.base import BaseController
 from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE, TYPE_PYOBJECT
-from foobnix.thirdparty import pylast
-from foobnix.util.configuration import FConfiguration
 from foobnix.online.dowload_util import dowload_song_thread
 from foobnix.util.plsparser import get_radio_source
+from foobnix.online.integration.lastfm import scrobler
 
-
-username = FConfiguration().lfm_login
-password_hash = pylast.md5(FConfiguration().lfm_password)
-
-try:
-    lastfm = pylast.get_lastfm_network(username=username, password_hash=password_hash)
-    if username != FConfiguration().lfm_user_default:        
-        scrobler = lastfm.get_scrobbler("fbx", "1.0")
-        LOG.debug("lastfm Scroblerr enable for user", username)
-    else:
-        LOG.debug("NO lastfm Scroblerr enable for user", username)
-        scrobler = None
-        
-except:
-    lastfm = None
-    scrobler = None
-    LOG.error("last.fm or scrobler connection error")
-    
+last_fm_scrobler = scrobler
 
 class PlayerController(BaseController):
     MODE_RADIO = "RADIO"
@@ -361,9 +343,10 @@ class PlayerController(BaseController):
                     if song.getArtist() and song.getTitle():
                         self.erros = 0
                         
-                    if scrobler:
+                    if last_fm_scrobler:
+                        pass
                         thread.start_new_thread(self.last_fm_reporting_thread, (song,))
-                        #scrobler.report_now_playing(song.getArtist(), song.getTitle())
+                        #last_fm_scrobler.report_now_playing(song.getArtist(), song.getTitle())
                 
                 
                     "Download only if you listen this music"
@@ -374,19 +357,19 @@ class PlayerController(BaseController):
                     if not is_scrobled and (sec >= duration_sec / 2 or (sec >= 45 and timePersent >= 0.9)):
                         is_scrobled = True   
                         if song.getArtist() and song.getTitle():
+                            
                             try:
-                                if scrobler:             
-                                    scrobler.scrobble(song.getArtist(), song.getTitle(), start_time, "P", "", duration_sec)
-                                LOG.debug("Song Successfully scrobbled", song.getArtist(), song.getTitle())
+                                if last_fm_scrobler:             
+                                    last_fm_scrobler.scrobble(song.getArtist(), song.getTitle(), start_time, "P", "", duration_sec)
+                                    LOG.debug("Song Successfully scrobbled", song.getArtist(), song.getTitle())
                             except:
                                 LOG.error("Error reporting scobling", song.getArtist(), song.getTitle())      
     
     
     def last_fm_reporting_thread(self, song):
-        LOG.info("last.fm report now playing")
         try:
-            scrobler.report_now_playing(song.getArtist(), song.getTitle())
-        except:
+            last_fm_scrobler.report_now_playing(song.getArtist(), song.getTitle())
+        except:       
             LOG.error("Error reporting now playing last.fm", song.getArtist(), song.getTitle())
     
     def onBusMessage(self, bus, message): 

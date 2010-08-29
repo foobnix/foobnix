@@ -46,13 +46,13 @@ class OnlineListModel:
         timeColumn.set_fixed_width(5)
         timeColumn.set_min_width(5)
         
-        empty = gtk.TreeViewColumn(None, gtk.CellRendererText(), text= -1, background=self.POS_COLOR)
+        #empty = gtk.TreeViewColumn(None, gtk.CellRendererText(), text= -1, background=self.POS_COLOR)
                 
         widget.append_column(iconColumn)
         #widget.append_column(numbetColumn)
         widget.append_column(descriptionColumn)
         widget.append_column(timeColumn)
-        widget.append_column(empty)
+        #widget.append_column(empty)
         
         widget.set_model(self.current_list_model)
     def get_size(self):

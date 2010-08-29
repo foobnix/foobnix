@@ -93,6 +93,7 @@ class AppController(BaseController):
     def exit(self, sender):
         self.save_state()
         self.tray_icon.icon.set_visible(False)
+        self.main_window_controller.hide()
         gtk.main_quit()
     
     def restore_state(self):

@@ -29,7 +29,7 @@ class WindowController(BaseController):
         self.main_window = gx_main_window.get_widget("foobnixWindow")
         self.main_window.connect("delete-event", self.hide)
         self.main_window.set_title("Foobnix " + VERSION)
-        self.main_window.maximize()
+        #self.main_window.maximize()
 
         self.about_window = gx_about.get_widget("aboutdialog")
         self.about_window.connect("delete-event", self.hide_about_window)
@@ -47,24 +47,11 @@ class WindowController(BaseController):
     def maximize(self):
         self.main_window.maximize()
 
-    def show(self):        
-        print "SHOW"
-        #self.main_window.maximize()
-        
-        #self.main_window.realize()
-        #self.main_window.set_modal(True)
-        
+    def show(self):
         self.main_window.show()
-        #self.main_window.reshow_with_initial_size()
-        #self.main_window.set_keep_above(True)
-        
-        """Fatal IO error 11 (Resource temporarily unavailable) on X server :0.0."""
-        #self.main_window.set_property('visible', True)
-        
-                
 
     def hide(self, *args):
-        print "HIDE"
+        self.main_window.set_property('visible', False)
         self.main_window.hide()
         return True
 

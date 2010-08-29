@@ -11,7 +11,6 @@ from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.online.google.translate import translate
 
-
 __all__ = [
     'connected',
     'search_top_tracks',
@@ -22,18 +21,16 @@ __all__ = [
     ]
 
 
-network = None
-try:
-    LOG.error('trying to connect to last.fm')
-    API_KEY = FConfiguration().API_KEY
-    API_SECRET = FConfiguration().API_SECRET
-    
-    username = FConfiguration().lfm_login
-    password_hash = pylast.md5(FConfiguration().lfm_password)
-    network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
-except:
-    LOG.error("last.fm connection error")
+API_KEY = FConfiguration().API_KEY
+API_SECRET = FConfiguration().API_SECRET        
+username = FConfiguration().lfm_login
+password_hash = pylast.md5(FConfiguration().lfm_password)
 
+network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
+
+"""scrobler"""
+scrobler_network = pylast.get_lastfm_network(username=username, password_hash=password_hash)
+scrobler = scrobler_network.get_scrobbler("fbx", "1.0")
 
 def connected():
     return network is not None

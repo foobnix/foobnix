@@ -12,7 +12,6 @@ import foobnix.online.integration.lastfm as lastfm
 from foobnix.base import BaseController, SIGNAL_RUN_FIRST
 from threading import Thread
 from foobnix.online.song_resource import get_songs_by_url, find_song_urls
-import thread
 
 class SearchResults(Thread):
     def __init__ (self, query, function):

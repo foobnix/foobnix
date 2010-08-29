@@ -26,7 +26,7 @@ class TabsConfig(ConfigPlugin):
         tab_label.set_size_request(150, -1)
         tab_label.show()
         
-        adjustment = gtk.Adjustment(value=1, lower=1, upper=20, step_incr=1, page_incr=10, page_size=10)
+        adjustment = gtk.Adjustment(value=1, lower=1, upper=20, step_incr=1, page_incr=10, page_size=0)
         self.tabs_count = gtk.SpinButton(adjustment)
         self.tabs_count.connect("value-changed", self.on_chage_count_tabs)
         self.tabs_count.show()
@@ -43,7 +43,7 @@ class TabsConfig(ConfigPlugin):
         tab_label.set_size_request(150, -1)
         tab_label.show()
         
-        adjustment = gtk.Adjustment(value=0, lower=0, upper=300, step_incr=1, page_incr=10, page_size=10)
+        adjustment = gtk.Adjustment(value=0, lower=0, upper=300, step_incr=1, page_incr=10, page_size=0)
         self.tab_len = gtk.SpinButton(adjustment)
         self.tab_len.connect("value-changed", self.on_chage_len_tab)
         self.tab_len.show()

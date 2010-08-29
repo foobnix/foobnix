@@ -19,6 +19,7 @@ from foobnix.lyric.lyr import get_lyrics
 import os
 import time
 from foobnix.helpers.menu import Popup
+from foobnix.online.integration.lastfm import network
 
 class SimilartSongsController(BaseListController):
     
@@ -126,21 +127,6 @@ class SimilartTagsController(BaseListController):
             LOG.debug("Clicked tags:", tags)
             self.search_panel.set_text(tags)        
         
-        
-API_KEY = FConfiguration().API_KEY
-API_SECRET = FConfiguration().API_SECRET
-
-username = FConfiguration().lfm_login
-password_hash = pylast.md5(FConfiguration().lfm_password)
-#TODO: This file is under heavy refactoring, don't touch anything you think is wrong
-
-try:
-    lastfm = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
-except:
-    lastfm = None
-    LOG.error("last.fm connection error")
-
-
 class InformationController():
     
 
@@ -205,8 +191,6 @@ class InformationController():
         
         self.last_album_name = None
         self.last_image = None
-        
-        self.last_fm_network = lastfm
         self.none_thead = None
     
     def show_song_info(self, song):
@@ -246,7 +230,7 @@ class InformationController():
         
         LOG.info("Update song info", song.name, song.getArtist(), song.getTitle())
         try:
-            track = self.last_fm_network.get_track(song.getArtist(), song.getTitle())
+            track = network.get_track(song.getArtist(), song.getTitle())
             album = track.get_album()
         except:
             LOG.error("Error getting track and album from last.fm")

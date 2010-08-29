@@ -9,6 +9,7 @@ import gtk
 import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
 import sys
+import time
 class Manager(dbus.service.Object):
     def __init__(self, interface, object_path='/org/foobnix_player/FoobnixObject'):
         self.interface = interface
@@ -44,8 +45,11 @@ dbus_objects = dbus.Interface(bus.get_object('org.freedesktop.DBus', '/org/freed
 
 if not "org.foobnix_player.Foobnix" in dbus_objects:
     print "start server"    
+    init_time = time.time()
     foobnix = Foobnix()
+    print "******Foobnix run in", time.time() - init_time, " seconds******"
     foobnix.start()
+    
 else:
     print "start client"    
     proxy = bus.get_object('org.foobnix_player.Foobnix', '/org/foobnix_player/FoobnixObject')    
