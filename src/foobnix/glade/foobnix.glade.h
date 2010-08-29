@@ -1,3 +1,5 @@
+char *s = N_("+");
+char *s = N_("-");
 char *s = N_("00:00 / 00:00");
 char *s = N_("<b>Album name of this artist</b>");
 char *s = N_("<b>By Any</b>");

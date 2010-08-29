@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-26 23:33+0300\n"
+"POT-Creation-Date: 2010-08-30 00:34+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,46 +16,53 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .././foobnix.py:38
-msgid "Success"
-msgstr ""
-
 #: .././foobnix/directory/directory_controller.py:155
 msgid "New play list"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:193
-#: .././foobnix/directory/directory_controller.py:300
+#. menu.add_item(_"Set"), gtk.STOCK_INDEX, func, arg)
+#: .././foobnix/directory/directory_controller.py:174
+msgid "Create new"
+msgstr ""
+
+#: .././foobnix/directory/directory_controller.py:175
+#: .././foobnix/directory/directory_controller.py:339
+msgid "Delete"
+msgstr ""
+
+#: .././foobnix/directory/directory_controller.py:209
+#: .././foobnix/directory/directory_controller.py:329
 msgid "Update Music Tree"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:301
-#: .././foobnix/online/information_controller.py:87
-#: .././foobnix/online/online_controller.py:381
+#: .././foobnix/directory/directory_controller.py:330
+#: .././foobnix/directory/directory_controller.py:338
+#: .././foobnix/online/information_controller.py:89
+#: .././foobnix/online/online_controller.py:518
 msgid "Play"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:302
+#: .././foobnix/directory/directory_controller.py:331
 msgid "Add folder"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:306
+#: .././foobnix/directory/directory_controller.py:344
 #: .././foobnix/preferences/configs/music_library.py:123
-#: .././foobnix/online/online_controller.py:108
+#: .././foobnix/online/online_controller.py:213
 msgid "Choose directory with music"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:436
+#: .././foobnix/directory/directory_controller.py:476
 msgid "Updating music, please wait... "
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:441
-#: .././foobnix/directory/directory_controller.py:450
+#: .././foobnix/directory/directory_controller.py:483
+#: .././foobnix/directory/directory_controller.py:494
 msgid "Music not found"
 msgstr ""
 
 #: .././foobnix/directory/directory_model.py:36
-#: .././foobnix/glade/foobnix.glade.h:22
+#: .././foobnix/glade/foobnix.glade.h:24
 msgid "Title"
 msgstr ""
 
@@ -63,22 +70,30 @@ msgstr ""
 msgid "My play lists"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:100
+#: .././foobnix/preferences/preferences_window.py:99
 msgid "Preferences"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:116
+#: .././foobnix/preferences/preferences_window.py:115
 msgid "Categories"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:145
-#: .././foobnix/online/information_controller.py:88
-#: .././foobnix/online/online_controller.py:382
+#: .././foobnix/preferences/preferences_window.py:144
+#: .././foobnix/online/information_controller.py:90
+#: .././foobnix/online/online_controller.py:519
 msgid "Save"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:150
+#: .././foobnix/preferences/preferences_window.py:149
 msgid "Cancel"
+msgstr ""
+
+#: .././foobnix/preferences/configs/info_panel_conf.py:12
+msgid "Info panel"
+msgstr ""
+
+#: .././foobnix/preferences/configs/info_panel_conf.py:23
+msgid "Disc cover size"
 msgstr ""
 
 #: .././foobnix/preferences/configs/last_fm.py:13
@@ -176,90 +191,90 @@ msgstr ""
 msgid "Vkontakte"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:36
+#: .././foobnix/online/information_controller.py:38
 msgid "Similar to: "
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:60
-#: .././foobnix/online/online_controller.py:334
+#: .././foobnix/online/information_controller.py:62
+#: .././foobnix/online/online_controller.py:471
 msgid "Choose directory to save song"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:89
-#: .././foobnix/online/online_controller.py:383
+#: .././foobnix/online/information_controller.py:91
+#: .././foobnix/online/online_controller.py:520
 msgid "Save as"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:90
+#: .././foobnix/online/information_controller.py:92
 msgid "Add all to virtual"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:91
+#: .././foobnix/online/information_controller.py:93
 msgid "Add all to tab"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:92
-#: .././foobnix/online/online_controller.py:385
+#: .././foobnix/online/information_controller.py:94
+#: .././foobnix/online/online_controller.py:522
 msgid "Delete from list"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:93
+#: .././foobnix/online/information_controller.py:95
 msgid "Info"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:189
+#: .././foobnix/online/information_controller.py:179
 msgid "Similar Artists"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:193
+#: .././foobnix/online/information_controller.py:183
 msgid "Similar Songs"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:197
+#: .././foobnix/online/information_controller.py:187
 msgid "Similar Tags"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:324
+#: .././foobnix/online/information_controller.py:302
 msgid "Lyric not found"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:80
+#: .././foobnix/online/online_controller.py:156
 msgid "Choose file to open"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:101
+#: .././foobnix/online/online_controller.py:186
 msgid "Nothing found to play in the file(s)"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:134
+#: .././foobnix/online/online_controller.py:210
 msgid "Nothing found to play in the folder(s)"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:201
+#: .././foobnix/online/online_controller.py:326
 msgid "Close"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:261
+#: .././foobnix/online/online_controller.py:398
 msgid " not found on last.fm, wait for google suggests ..."
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:267
+#: .././foobnix/online/online_controller.py:404
 msgid "Google not found suggests"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:276
+#: .././foobnix/online/online_controller.py:413
 msgid "Searching: "
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:276
+#: .././foobnix/online/online_controller.py:413
 msgid " ... please wait a second"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:384
+#: .././foobnix/online/online_controller.py:521
 msgid "Add to virtual"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:386
+#: .././foobnix/online/online_controller.py:523
 msgid "Show info"
 msgstr ""
 
@@ -267,7 +282,7 @@ msgstr ""
 msgid "Artist - Title"
 msgstr ""
 
-#: .././foobnix/online/online_model.py:44
+#: .././foobnix/online/online_model.py:45
 msgid "Time"
 msgstr ""
 
@@ -284,159 +299,167 @@ msgid "Music List"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:1
-msgid "00:00 / 00:00"
+msgid "+"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:2
-msgid "<b>Album name of this artist</b>"
+msgid "-"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:3
-msgid "<b>By Any</b>"
+msgid "00:00 / 00:00"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:4
-msgid "<b>By Artist</b>"
+msgid "<b>Album name of this artist</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:5
-msgid "<b>Current song name</b>"
+msgid "<b>By Any</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:6
-msgid "<b>Lyric</b>"
+msgid "<b>By Artist</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:7
-msgid "<b>Online Music Search:</b>"
+msgid "<b>Current song name</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:8
-msgid "About Foobnix"
+msgid "<b>Lyric</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:9
-msgid "Add File"
+msgid "<b>Online Music Search:</b>"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:10
-msgid "Add Folder"
+msgid "About Foobnix"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:11
-msgid "All Search"
+msgid "Add File"
 msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:12
+msgid "Add Folder"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:13
+msgid "All Search"
+msgstr ""
+
+#: .././foobnix/glade/foobnix.glade.h:14
 msgid ""
 "Developed by Ivan Ivanenko\n"
 "ivan.ivanenko@gmail.com"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:14
+#: .././foobnix/glade/foobnix.glade.h:16
 msgid "Foobnix"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:15
+#: .././foobnix/glade/foobnix.glade.h:17
 msgid "Music"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:16
+#: .././foobnix/glade/foobnix.glade.h:18
 msgid "Play List"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:17
+#: .././foobnix/glade/foobnix.glade.h:19
 msgid "Playing all imaginations"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:18
+#: .././foobnix/glade/foobnix.glade.h:20
 msgid "Quit"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:19
+#: .././foobnix/glade/foobnix.glade.h:21
 msgid "Radio"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:20
+#: .././foobnix/glade/foobnix.glade.h:22
 msgid "Search"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:21
+#: .././foobnix/glade/foobnix.glade.h:23
 msgid "Tags"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:23
+#: .././foobnix/glade/foobnix.glade.h:25
 msgid "Top Albums"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:24
+#: .././foobnix/glade/foobnix.glade.h:26
 msgid "Top Similar"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:25
+#: .././foobnix/glade/foobnix.glade.h:27
 msgid "Top Songs"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:26
+#: .././foobnix/glade/foobnix.glade.h:28
 msgid "Tracks"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:27
+#: .././foobnix/glade/foobnix.glade.h:29
 msgid "_File"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:28
+#: .././foobnix/glade/foobnix.glade.h:30
 msgid "_Help"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:29
+#: .././foobnix/glade/foobnix.glade.h:31
 msgid "_View"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:30
+#: .././foobnix/glade/foobnix.glade.h:32
 msgid "_View Info Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:31
+#: .././foobnix/glade/foobnix.glade.h:33
 msgid "_View Lyric Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:32
+#: .././foobnix/glade/foobnix.glade.h:34
 msgid "_View Music Tree"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:33
+#: .././foobnix/glade/foobnix.glade.h:35
 msgid "_View Search Panel"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:34
+#: .././foobnix/glade/foobnix.glade.h:36
 msgid "last.fm"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:35
+#: .././foobnix/glade/foobnix.glade.h:37
 msgid "musicbrainz"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:36
+#: .././foobnix/glade/foobnix.glade.h:38
 msgid "toolbutton10"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:37
+#: .././foobnix/glade/foobnix.glade.h:39
 msgid "toolbutton11"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:38
+#: .././foobnix/glade/foobnix.glade.h:40
 msgid "toolbutton7"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:39
+#: .././foobnix/glade/foobnix.glade.h:41
 msgid "toolbutton8"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:40
+#: .././foobnix/glade/foobnix.glade.h:42
 msgid "toolbutton9"
 msgstr ""
 
-#: .././foobnix/glade/foobnix.glade.h:41
+#: .././foobnix/glade/foobnix.glade.h:43
 msgid "wiki"
 msgstr ""

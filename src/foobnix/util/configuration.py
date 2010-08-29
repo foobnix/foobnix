@@ -11,6 +11,7 @@ import tempfile
 import ConfigParser
 from foobnix.util.singleton import Singleton
 from foobnix.util import LOG
+import gtk
 
 FOOBNIX_TMP = "/usr/share/foobnix"
 FOOBNIX_TMP_RADIO = os.path.join(FOOBNIX_TMP, "radio")
@@ -77,7 +78,7 @@ class FConfiguration:
         
         ### view panels ###
         self.view_tree_panel = True
-        self.view_search_panel = True
+        self.view_search_panel = False
         self.view_info_panel = False
         self.view_lyric_panel = False
         
@@ -107,9 +108,18 @@ class FConfiguration:
         
         self.cache_music_beans = []
         
-        self.tab_position = "left"
+        self.tab_position = "top"
         
         self.last_dir = None
+        
+        """info panel"""
+        
+        if gtk.gdk.screen_height() < 800:
+            self.info_panel_image_size = 150
+        else:
+            self.info_panel_image_size = 200    
+                
+        
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -154,6 +164,7 @@ class FConfiguration:
                 self.tab_position = instance.tab_position
                 
                 self.last_dir = instance.last_dir
+                self.info_panel_image_size = instance.info_panel_image_size
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

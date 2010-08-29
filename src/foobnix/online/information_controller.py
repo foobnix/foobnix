@@ -28,6 +28,7 @@ class SimilartSongsController(BaseListController):
             self.online_controller = online_controller
             self.playerCntr = playerCntr
             widget = gx_main.get_widget("treeview_similar_songs")
+            widget.set_size_request(FConfiguration().info_panel_image_size + 50, -1)
             widget.get_parent().set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
             BaseListController.__init__(self, widget)
             
@@ -105,6 +106,7 @@ class SimilartArtistsController(BaseListController):
     def __init__(self, gx_main, search_panel):
         self.search_panel = search_panel
         widget = gx_main.get_widget("treeview_similart_artists")
+        widget.set_size_request(FConfiguration().info_panel_image_size, -1)
         widget.get_parent().set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         BaseListController.__init__(self, widget)
     
@@ -118,6 +120,8 @@ class SimilartTagsController(BaseListController):
     def __init__(self, gx_main, search_panel):
         self.search_panel = search_panel
         widget = gx_main.get_widget("treeview_song_tags")
+        widget.set_size_request(FConfiguration().info_panel_image_size - 50, -1)
+        
         widget.get_parent().set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         BaseListController.__init__(self, widget)
     
@@ -132,11 +136,8 @@ class InformationController():
 
     def set_no_image_album(self):
         
-        heigth = gtk.gdk.screen_height()            
-        if heigth < 800:
-            image_name = "blank-disc-small.jpg"
-        else:
-            image_name = "blank-disc.jpg"
+      
+        image_name = "blank-disc-cut.jpg"
         
         try:
             pix = gtk.gdk.pixbuf_new_from_file("/usr/local/share/pixmaps/" + image_name) #@UndefinedVariable
@@ -145,6 +146,9 @@ class InformationController():
                 pix = gtk.gdk.pixbuf_new_from_file("/usr/share/pixmaps/" + image_name) #@UndefinedVariable
             except:    
                 pix = gtk.gdk.pixbuf_new_from_file("foobnix/pixmaps/" + image_name) #@UndefinedVariable
+
+        size = FConfiguration().info_panel_image_size
+        pix = pix.scale_simple(size, size, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
         
         self.album_image.set_from_pixbuf(pix)
         self.lyric_image_widget.set_from_pixbuf(pix)
@@ -253,14 +257,9 @@ class InformationController():
     def update_image_from_file(self, song):
         if os.path.isfile(song.image):
             pixbuf = gtk.gdk.pixbuf_new_from_file(song.image)            #@UndefinedVariable
-            heigth = gtk.gdk.screen_height() #@UndefinedVariable
-            
-            if heigth < 800:
-                LOG.info("Image size 174x174")
-                scaled_buf = pixbuf.scale_simple(174, 174, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
-            else:
-                LOG.info("Image size 300x300")
-                scaled_buf = pixbuf.scale_simple(300, 300, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
+
+            size = FConfiguration().info_panel_image_size
+            scaled_buf = pixbuf.scale_simple(size, size, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
             
             self.album_image.set_from_pixbuf(scaled_buf)
             self.lyric_image_widget.set_from_pixbuf(scaled_buf)
@@ -279,13 +278,8 @@ class InformationController():
     
         try:
             image_pix_buf = self.create_pbuf_image_from_url(image_url)
-            heigth = gtk.gdk.screen_height() #@UndefinedVariable
-            if heigth < 800:
-                LOG.info("Image size 174x174")
-                image_pix_buf = image_pix_buf.scale_simple(174, 174, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
-            else:
-                LOG.info("Image size 300x300")
-                image_pix_buf = image_pix_buf.scale_simple(300, 300, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
+            size = FConfiguration().info_panel_image_size            
+            image_pix_buf = image_pix_buf.scale_simple(size, size, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
             
             
             self.album_image.set_from_pixbuf(image_pix_buf)
@@ -383,8 +377,8 @@ class InformationController():
         try:
             self.last_album_name = album.get_name()
             
-            heigth = gtk.gdk.screen_height()                
-            if heigth < 800:
+                            
+            if FConfiguration().info_panel_image_size < 180:
                 self.last_image = album.get_cover_image(size=pylast.COVER_LARGE)                       
             else:
                 self.last_image = album.get_cover_image(size=pylast.COVER_EXTRA_LARGE)            

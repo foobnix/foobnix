@@ -54,4 +54,5 @@ else:
     print "start client"    
     proxy = bus.get_object('org.foobnix_player.Foobnix', '/org/foobnix_player/FoobnixObject')    
     iface = dbus.Interface(proxy, 'org.foobnix_player.Foobnix')
-    iface.interactive_play_args(str(sys.argv))
+    if sys.argv:
+        iface.interactive_play_args(str(sys.argv))

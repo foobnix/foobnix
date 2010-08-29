@@ -8,6 +8,7 @@ from foobnix.preferences.configs.save_online import SaveOnlineConfig
 from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs.vk_conf import VkontakteConfig
 from foobnix.preferences.configs.tabs import TabsConfig
+from foobnix.preferences.configs.info_panel_conf import InfoPagenConfig
 
 class PreferencesWindow:
     configs = []
@@ -23,6 +24,7 @@ class PreferencesWindow:
         self.configs.append(TabsConfig(online_controller))
         self.configs.append(LastFmConfig())
         self.configs.append(VkontakteConfig())
+        self.configs.append(InfoPagenConfig())
         
         #self.configs.append(TryIconConfig())
         #self.configs.append(CategoryInfoConfig())

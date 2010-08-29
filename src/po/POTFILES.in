@@ -11,6 +11,7 @@
 ./foobnix/preferences/config_plugin.py
 ./foobnix/preferences/preferences_window.py
 ./foobnix/preferences/configs/category_info.py
+./foobnix/preferences/configs/info_panel_conf.py
 ./foobnix/preferences/configs/last_fm.py
 ./foobnix/preferences/configs/music_library.py
 ./foobnix/preferences/configs/save_online.py
@@ -36,6 +37,7 @@
 ./foobnix/util/localization.py
 ./foobnix/util/mouse_utils.py
 ./foobnix/util/plsparser.py
+./foobnix/util/single_instanse.py
 ./foobnix/util/singleton.py
 ./foobnix/util/time_utils.py
 ./foobnix/glade/foobnix.glade.h
