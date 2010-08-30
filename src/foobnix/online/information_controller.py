@@ -19,7 +19,6 @@ from foobnix.lyric.lyr import get_lyrics
 import os
 import time
 from foobnix.helpers.menu import Popup
-from foobnix.online.integration.lastfm import network
 
 class SimilartSongsController(BaseListController):
     
@@ -155,8 +154,8 @@ class InformationController():
         self.info_thread = None
              
 
-    def __init__(self, gx_main, playerCntr, directoryCntr, search_panel, online_controller):
-        
+    def __init__(self, gx_main, playerCntr, directoryCntr, search_panel, online_controller,  last_fm_connector):
+        self.last_fm_connector = last_fm_connector
         self.album_image = gx_main.get_widget("image_widget")
         self.lyric_image_widget = gx_main.get_widget("lyric_image_widget")
         self.lyrics_text_widget = gx_main.get_widget("lyric_text")
@@ -234,7 +233,7 @@ class InformationController():
         
         LOG.info("Update song info", song.name, song.getArtist(), song.getTitle())
         try:
-            track = network.get_track(song.getArtist(), song.getTitle())
+            track = self.last_fm_connector.network.get_track(song.getArtist(), song.getTitle())
             album = track.get_album()
         except:
             LOG.error("Error getting track and album from last.fm")

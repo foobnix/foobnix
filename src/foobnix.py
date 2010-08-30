@@ -39,13 +39,14 @@ class Foobnix():
         print "fobonix play", args
         self.app.play_arguments(eval(args))  
 
+init_time = time.time()
+
 DBusGMainLoop(set_as_default=True)
 bus = dbus.SessionBus()
 dbus_objects = dbus.Interface(bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'), 'org.freedesktop.DBus').ListNames()
 
 if not "org.foobnix_player.Foobnix" in dbus_objects:
     print "start server"    
-    init_time = time.time()
     foobnix = Foobnix()
     print "******Foobnix run in", time.time() - init_time, " seconds******"
     foobnix.start()
@@ -56,3 +57,4 @@ else:
     iface = dbus.Interface(proxy, 'org.foobnix_player.Foobnix')
     if sys.argv:
         iface.interactive_play_args(str(sys.argv))
+

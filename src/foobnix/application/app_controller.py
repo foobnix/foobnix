@@ -19,16 +19,19 @@ from foobnix.util.configuration import FConfiguration
 from foobnix.online.search_panel import SearchPanel
 from foobnix.preferences.preferences_window import PreferencesWindow
 import sys
+from foobnix.online.integration.lastfm import LastFmConnector
 
 class AppController(BaseController):
 
     def __init__(self, v):
         BaseController.__init__(self)
+        
+        last_fm_connector = LastFmConnector()
                 
-        self.player_controller = PlayerController()
+        self.player_controller = PlayerController(last_fm_connector)
         
         #self.playlistCntr = PlaylistCntr(v.playlist, self.player_controller)
-        self.onlineCntr = OnlineListCntr(v.gxMain, self.player_controller)
+        self.onlineCntr = OnlineListCntr(v.gxMain, self.player_controller, last_fm_connector)
         
         self.playlistCntr = self.onlineCntr 
         
@@ -55,6 +58,8 @@ class AppController(BaseController):
         
         """show pref window"""
         self.pref = PreferencesWindow(self.directoryCntr, self.onlineCntr)
+        last_fm_connector.preferences_window = self.pref
+        
         menu_preferences = v.gxMain.get_widget("menu_preferences")
         menu_preferences.connect("activate", lambda * a:self.pref.show())
         
@@ -73,7 +78,7 @@ class AppController(BaseController):
 
         self.main_window_controller.connect('exit', self.exit)
         
-        self.search_panel = SearchPanel(v.gxMain)
+        self.search_panel = SearchPanel(v.gxMain, last_fm_connector)
         self.search_panel.connect('show_search_results', self.onlineCntr.show_results)
         self.search_panel.connect('show_searching_line', self.onlineCntr.show_searching)
         

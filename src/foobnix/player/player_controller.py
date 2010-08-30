@@ -17,9 +17,8 @@ from foobnix.base import BaseController
 from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE, TYPE_PYOBJECT
 from foobnix.online.dowload_util import dowload_song_thread
 from foobnix.util.plsparser import get_radio_source
-from foobnix.online.integration.lastfm import scrobler
 
-last_fm_scrobler = scrobler
+
 
 class PlayerController(BaseController):
     MODE_RADIO = "RADIO"
@@ -32,8 +31,11 @@ class PlayerController(BaseController):
     }
     
         
-    def __init__(self):
+    def __init__(self, last_fm_connector):        
         BaseController.__init__(self)
+        
+        self.last_fm_scrobler = last_fm_connector
+        
         self.player = self.playerLocal()
         
         self.songs = []
@@ -337,14 +339,14 @@ class PlayerController(BaseController):
                 time.sleep(1)
                 #self.on_notify_components(sec, pos_int, flag, is_scrobled, duration_sec, timePersent, start_time)
                 if sec % 10 == 0:
-                    LOG.info("Now playing...", song.getArtist(), song.getTitle())
+                    
                     #thread.start_new_thread(self.on_notify_components, (sec, pos_int, flag, is_scrobled, duration_sec, timePersent, start_time,))
                     """report now playing song"""        
                     if song.getArtist() and song.getTitle():
                         self.erros = 0
                         
-                    if last_fm_scrobler:
-                        pass
+                    if self.last_fm_scrobler.get_scrobler():
+                        LOG.info("Now playing...", song.getArtist(), song.getTitle())
                         thread.start_new_thread(self.last_fm_reporting_thread, (song,))
                         #last_fm_scrobler.report_now_playing(song.getArtist(), song.getTitle())
                 
@@ -359,8 +361,8 @@ class PlayerController(BaseController):
                         if song.getArtist() and song.getTitle():
                             
                             try:
-                                if last_fm_scrobler:             
-                                    last_fm_scrobler.scrobble(song.getArtist(), song.getTitle(), start_time, "P", "", duration_sec)
+                                if self.last_fm_scrobler.get_scrobler():             
+                                    self.last_fm_scrobler.get_scrobler().scrobble(song.getArtist(), song.getTitle(), start_time, "P", "", duration_sec)
                                     LOG.debug("Song Successfully scrobbled", song.getArtist(), song.getTitle())
                             except:
                                 LOG.error("Error reporting scobling", song.getArtist(), song.getTitle())      
@@ -368,7 +370,7 @@ class PlayerController(BaseController):
     
     def last_fm_reporting_thread(self, song):
         try:
-            last_fm_scrobler.report_now_playing(song.getArtist(), song.getTitle())
+            self.last_fm_scrobler.get_scrobler().report_now_playing(song.getArtist(), song.getTitle())
         except:       
             LOG.error("Error reporting now playing last.fm", song.getArtist(), song.getTitle())
     

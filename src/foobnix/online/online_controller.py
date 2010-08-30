@@ -34,13 +34,14 @@ TARGET_TYPE_URI_LIST = 80
 dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
 
 class OnlineListCntr(GObject):
-    def __init__(self, gxMain, playerCntr):
+    def __init__(self, gxMain, playerCntr, last_fm_connector):
         self.gx_main = gxMain
         self.directoryCntr = None
         self.playerCntr = playerCntr
         self.current_list_model = None 
+        self.last_fm_connector = last_fm_connector
 
-        self.search_panel = SearchPanel(gxMain)
+        self.search_panel = SearchPanel(gxMain,last_fm_connector)
         
         self.count = 0
         self.index = 0
@@ -227,7 +228,7 @@ class OnlineListCntr(GObject):
     
     def register_directory_cntr(self, directoryCntr):
         self.directoryCntr = directoryCntr
-        self.info = InformationController(self.gx_main, self.playerCntr, directoryCntr, self.search_panel, self)
+        self.info = InformationController(self.gx_main, self.playerCntr, directoryCntr, self.search_panel, self,  self.last_fm_connector)
     
     def none(self, *a):
         return False

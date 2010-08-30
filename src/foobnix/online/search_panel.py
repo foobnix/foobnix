@@ -30,9 +30,10 @@ class SearchPanel(BaseController):
         'starting_search': (SIGNAL_RUN_FIRST, TYPE_NONE, ())
     }
     
-    def __init__(self, gx_main):
+    def __init__(self, gx_main, last_fm_connector):
         BaseController.__init__(self)
-        self.search_routine = lastfm.search_top_tracks
+        self.last_fm_connector = last_fm_connector
+        self.search_routine = self.last_fm_connector.search_top_tracks
         self.create_search_mode_buttons(gx_main)
         self.search_text = gx_main.get_widget("search_entry")
         self.search_text.connect("activate", self.on_search)    # GTK manual doesn't recommend to do this
@@ -63,12 +64,12 @@ class SearchPanel(BaseController):
         self.search_text.set_text(text)
     
     def create_search_mode_buttons(self, gx_main):
-        mode_to_button_map = {lastfm.search_top_tracks    : 'top_songs_togglebutton',
-                              lastfm.search_top_albums    : 'top_albums_togglebutton',
-                              lastfm.search_top_similar   : 'top_similar_togglebutton',
+        mode_to_button_map = {self.last_fm_connector.search_top_tracks    : 'top_songs_togglebutton',
+                              self.last_fm_connector.search_top_albums    : 'top_albums_togglebutton',
+                              self.last_fm_connector.search_top_similar   : 'top_similar_togglebutton',
                               find_song_urls    : 'all_search_togglebutton',
-                              lastfm.search_tags_genre    : 'tags_togglebutton',
-                              lastfm.unimplemented_search : 'tracks_togglebutton' }
+                              self.last_fm_connector.search_tags_genre    : 'tags_togglebutton',
+                              self.last_fm_connector.unimplemented_search : 'tracks_togglebutton' }
         self.search_mode_buttons = {}
         for mode, name in mode_to_button_map.items():
             button = gx_main.get_widget(name)
