@@ -136,6 +136,94 @@
                   </widget>
                 </child>
                 <child>
+                  <widget class="GtkMenuItem" id="playback_menu">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">_Playback</property>
+                    <property name="use_underline">True</property>
+                    <child>
+                      <widget class="GtkMenu" id="menu2">
+                        <property name="visible">True</property>
+                        <child>
+                          <widget class="GtkMenuItem" id="order">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">_Order</property>
+                            <property name="use_underline">True</property>
+                            <child>
+                              <widget class="GtkMenu" id="menu3">
+                                <property name="visible">True</property>
+                                <child>
+                                  <widget class="GtkRadioMenuItem" id="linea_menu">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">_Linear</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="draw_as_radio">True</property>
+                                  </widget>
+                                </child>
+                                <child>
+                                  <widget class="GtkRadioMenuItem" id="shuffle_menu">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">_Shuffle</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="draw_as_radio">True</property>
+                                    <property name="group">linea_menu</property>
+                                  </widget>
+                                </child>
+                                <child>
+                                  <widget class="GtkRadioMenuItem" id="random_menu">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">_Random</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="draw_as_radio">True</property>
+                                    <property name="group">linea_menu</property>
+                                  </widget>
+                                </child>
+                              </widget>
+                            </child>
+                          </widget>
+                        </child>
+                        <child>
+                          <widget class="GtkMenuItem" id="looping">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">_Looping</property>
+                            <property name="use_underline">True</property>
+                            <child>
+                              <widget class="GtkMenu" id="menu4">
+                                <property name="visible">True</property>
+                                <child>
+                                  <widget class="GtkRadioMenuItem" id="loop_all_menu">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">Loop _All</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="draw_as_radio">True</property>
+                                  </widget>
+                                </child>
+                                <child>
+                                  <widget class="GtkRadioMenuItem" id="loop_single_menu">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">Loop _Single Song</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="draw_as_radio">True</property>
+                                    <property name="group">loop_all_menu</property>
+                                  </widget>
+                                </child>
+                                <child>
+                                  <widget class="GtkRadioMenuItem" id="dont_loop_menu">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">_Don't Loop</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="draw_as_radio">True</property>
+                                    <property name="group">loop_all_menu</property>
+                                  </widget>
+                                </child>
+                              </widget>
+                            </child>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+                <child>
                   <widget class="GtkMenuItem" id="menuitem12">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">_Help</property>

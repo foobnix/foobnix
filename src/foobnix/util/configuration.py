@@ -10,7 +10,7 @@ import os
 import tempfile
 import ConfigParser
 from foobnix.util.singleton import Singleton
-from foobnix.util import LOG
+from foobnix.util import LOG, const
 import gtk
 
 FOOBNIX_TMP = "/usr/share/foobnix"
@@ -104,7 +104,7 @@ class FConfiguration:
         self.cookie = None 
         
         self.count_of_tabs = 3
-        self.len_of_tab = 50
+        self.len_of_tab = 30
         
         self.cache_music_beans = []
         
@@ -121,6 +121,8 @@ class FConfiguration:
                 
         
         self.tab_close_element = "button"
+        self.play_ordering = const.ORDER_LINEAR 
+        self.play_looping = const.LOPPING_LOOP_ALL
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -167,6 +169,9 @@ class FConfiguration:
                 self.last_dir = instance.last_dir
                 self.info_panel_image_size = instance.info_panel_image_size
                 self.tab_close_element = instance.tab_close_element
+                
+                self.play_ordering = instance.play_ordering 
+                self.play_looping = instance.play_looping
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

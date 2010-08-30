@@ -5,7 +5,7 @@ Created on Mar 11, 2010
 @author: ivan
 '''
 from foobnix.lyric.lyr import get_lyrics
-from foobnix.util import LOG
+from foobnix.util import LOG, const
 from foobnix.util.configuration import FConfiguration
 from foobnix.online.google.translate import translate
 from foobnix.util.mouse_utils import is_double_click
@@ -19,10 +19,10 @@ class PlayerWidgetsCntl():
    
     '''
     
-    def scroll_event(self,button, event):
+    def scroll_event(self, button, event):
         volume = self.volume.get_value()
         if event.direction == gtk.gdk.SCROLL_UP:
-            self.volume.set_value(volume +1)
+            self.volume.set_value(volume + 1)
         else:
             self.volume.set_value(volume - 1)
         
@@ -33,7 +33,7 @@ class PlayerWidgetsCntl():
     
     def __init__(self, gxMain, playerCntr):
         self.playerCntr = playerCntr
-        
+        self.gxMain = gxMain
         self.volume = gxMain.get_widget("volume_hscale")
         self.volume.connect("change-value", self.onVolumeChange)
         self.volume.connect("scroll-event", self.scroll_event)
@@ -78,8 +78,14 @@ class PlayerWidgetsCntl():
         self.view_lyric_panel = gxMain.get_widget("view-lyric-panel")
         self.view_lyric_panel.connect("toggled", self.show_lyric_panel)
         
+        """playback menu"""
+        self.set_update_menu_item("linea_menu", "play_ordering", const.ORDER_LINEAR)
+        self.set_update_menu_item("shuffle_menu", "play_ordering", const.ORDER_SHUFFLE)
+        self.set_update_menu_item("random_menu", "play_ordering", const.ORDER_RANDOM)
         
-        
+        self.set_update_menu_item("loop_all_menu", "play_looping", const.LOPPING_LOOP_ALL)
+        self.set_update_menu_item("loop_single_menu", "play_looping", const.LOPPING_SINGLE)
+        self.set_update_menu_item("dont_loop_menu", "play_looping", const.LOPPING_DONT_LOOP)
         
         self.statusbar = gxMain.get_widget("statusbar")
         
@@ -98,7 +104,25 @@ class PlayerWidgetsCntl():
         self.show_search_panel(None, FConfiguration().view_search_panel)
         self.show_tree_panel(None, FConfiguration().view_tree_panel)
         self.show_lyric_panel(None, FConfiguration().view_lyric_panel)
+    
+    def set_update_menu_item(self, menu_item, conf_constant, value):
+        def set_value(a, b):
+            if a == "play_looping":
+                FConfiguration().play_looping = b
+            elif a == "play_ordering":
+                FConfiguration().play_ordering = b
+            
+        liner = self.gxMain.get_widget(menu_item)        
+        liner.connect("toggled", lambda * a: set_value(conf_constant, value))
         
+        if conf_constant == "play_ordering":
+            if FConfiguration().play_ordering == value:                           
+                liner.set_active(True)
+        elif conf_constant == "play_looping":
+            if FConfiguration().play_looping == value:                           
+                liner.set_active(True)
+        
+             
     
     def show_info_panel(self, w, flag=True):
         if w:
@@ -191,12 +215,12 @@ class PlayerWidgetsCntl():
                 return None
                 
             if text:
-                header = "*** " + song.getArtist() + " - " + title + " ***" 
+                header = " *** " + song.getArtist() + " - " + title + " *** " 
                 self.textbuffer.set_text(header + "\n" + text)
                                 
                 LOG.info("try to translate")
                 text_tr = self.getTranstalted(text)
-                self.tr_textbuffer.set_text("*** " + song.getArtist() + " - " + title + " ***\n" + text_tr)
+                self.tr_textbuffer.set_text("*** " + song.getArtist() + " - " + title + " *** \n" + text_tr)
             else: 
                 self.textbuffer.set_text("Not Found lyrics for " + song.getArtist() + " - " + title + "\n")
     
