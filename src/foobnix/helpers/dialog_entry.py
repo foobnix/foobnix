@@ -9,7 +9,6 @@ def responseToDialog(entry, dialog, response):
         dialog.response(response)
 
 def show_entry_dialog(title, description):
-        #base this on a message dialog
         dialog = gtk.MessageDialog(
             None,
             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -17,25 +16,48 @@ def show_entry_dialog(title, description):
             gtk.BUTTONS_OK,
             None)
         dialog.set_markup(title)
-        #create the text input field
         entry = gtk.Entry()
-        #allow the user to press enter to do ok
         entry.connect("activate", responseToDialog, dialog, gtk.RESPONSE_OK)
-        #create a horizontal box to pack the entry and a label
         hbox = gtk.HBox()
         hbox.pack_start(gtk.Label("Value:"), False, 5, 5)
         hbox.pack_end(entry)
-        #some secondary text
         dialog.format_secondary_markup(description)
-        #add it and show it
         dialog.vbox.pack_end(hbox, True, True, 0)
         dialog.show_all()
-        #go go go
         dialog.run()
         text = entry.get_text()
         dialog.destroy()
         return text
     
+def show_login_password_error_dialog(title,  login, password):
+        dialog = gtk.MessageDialog(
+            None,
+            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            gtk.MESSAGE_ERROR,
+            gtk.BUTTONS_OK,
+            None)
+        dialog.set_markup(title)
+        
+        login_entry = gtk.Entry()
+        login_entry.set_text(login)
+        login_entry.show()
+        
+        password_entry = gtk.Entry()
+        password_entry.set_text(password)
+        password_entry.show()
+        
+        hbox = gtk.VBox()
+        hbox.pack_start(login_entry, False, False,0)
+        hbox.pack_start(password_entry, False, False,0)
+        dialog.vbox.pack_start(hbox, True, True, 0)
+        dialog.show_all()
+        dialog.run()
+        login_text = login_entry.get_text()
+        password_text = password_entry.get_text()
+        dialog.destroy()
+        return [login_text, password_text]    
+    
 if __name__ == '__main__':
-        print "The name was %s" % show_entry_dialog()
+        print "The name was %s" % show_login_password_error_dialog("Last.fm can't connect with","valu1","value2")
         gtk.main()        
+

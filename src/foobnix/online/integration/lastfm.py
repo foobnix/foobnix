@@ -12,6 +12,9 @@ from foobnix.util.configuration import FConfiguration
 from foobnix.online.google.translate import translate
 import thread
 import time
+import gtk
+from foobnix.helpers.dialog_entry import show_entry_dialog,\
+    show_login_password_error_dialog
 
 
 API_KEY = FConfiguration().API_KEY
@@ -37,6 +40,10 @@ class LastFmConnector():
             self.scrobler = scrobler_network.get_scrobbler("fbx", "1.0")
         except:
             LOG.error("Invalid last fm login or password or network problems", username, FConfiguration().lfm_password)
+            val = show_login_password_error_dialog(_("Last.fm error connection"), username, FConfiguration().lfm_password)
+            FConfiguration().lfm_login = val[0]
+            FConfiguration().lfm_password = val[1]
+            
     
     def get_scrobler(self):
         return self.scrobler
