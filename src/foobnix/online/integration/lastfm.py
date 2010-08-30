@@ -19,9 +19,6 @@ from foobnix.helpers.dialog_entry import show_entry_dialog,\
 
 API_KEY = FConfiguration().API_KEY
 API_SECRET = FConfiguration().API_SECRET        
-username = FConfiguration().lfm_login
-password_hash = pylast.md5(FConfiguration().lfm_password)
-
 
 class LastFmConnector():
     def __init__(self):
@@ -32,6 +29,9 @@ class LastFmConnector():
         thread.start_new_thread(self.init_thread, ())
     
     def init_thread(self):
+        username = FConfiguration().lfm_login
+        password_hash = pylast.md5(FConfiguration().lfm_password)
+
         try:
             self.network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
         
@@ -40,7 +40,7 @@ class LastFmConnector():
             self.scrobler = scrobler_network.get_scrobbler("fbx", "1.0")
         except:
             LOG.error("Invalid last fm login or password or network problems", username, FConfiguration().lfm_password)
-            val = show_login_password_error_dialog(_("Last.fm error connection"), username, FConfiguration().lfm_password)
+            val = show_login_password_error_dialog(_("Last.fm connection error"), _("Verify user and password"), username, FConfiguration().lfm_password)
             FConfiguration().lfm_login = val[0]
             FConfiguration().lfm_password = val[1]
             

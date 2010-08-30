@@ -29,14 +29,15 @@ def show_entry_dialog(title, description):
         dialog.destroy()
         return text
     
-def show_login_password_error_dialog(title,  login, password):
+def show_login_password_error_dialog(title, description, login, password):
         dialog = gtk.MessageDialog(
             None,
             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
             gtk.MESSAGE_ERROR,
             gtk.BUTTONS_OK,
-            None)
+            title)
         dialog.set_markup(title)
+        dialog.format_secondary_markup(description)
         
         login_entry = gtk.Entry()
         login_entry.set_text(login)
@@ -44,6 +45,8 @@ def show_login_password_error_dialog(title,  login, password):
         
         password_entry = gtk.Entry()
         password_entry.set_text(password)
+        password_entry.set_visibility(False)
+        password_entry.set_invisible_char("*")
         password_entry.show()
         
         hbox = gtk.VBox()
@@ -58,6 +61,6 @@ def show_login_password_error_dialog(title,  login, password):
         return [login_text, password_text]    
     
 if __name__ == '__main__':
-        print "The name was %s" % show_login_password_error_dialog("Last.fm can't connect with","valu1","value2")
+        print "The name was %s" % show_login_password_error_dialog("Last.fm can't connect with","sdfasdf","valu1","value2")
         gtk.main()        
 
