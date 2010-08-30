@@ -7,7 +7,7 @@ Created on 24 авг. 2010
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
 from foobnix.util.configuration import FConfiguration
-from foobnix.util import LOG
+from foobnix.helpers.my_widgets import tab_close_label, tab_close_button
 class TabsConfig(ConfigPlugin):
     
     name = _("Tabs")
@@ -76,10 +76,33 @@ class TabsConfig(ConfigPlugin):
         pbox.pack_start(self.radio_tab_top, False, True, 0)
         pbox.pack_start(self.radio_tab_no, False, True, 0)
         
+        """closed type """
+        close_label_box = gtk.HBox(False, 0)
+        close_label_box.show()
         
+        close_label = gtk.Label(_("Close tab sign"))
+        close_label.show()
+        
+        self.radio_tab_label = gtk.RadioButton(None, None)
+        self.radio_tab_label.connect("toggled", self.on_chage_tab_position)
+        self.radio_tab_label.show()
+        
+        self.radio_tab_button = gtk.RadioButton(self.radio_tab_label, None)
+        self.radio_tab_button.connect("toggled", self.on_chage_tab_position)
+        self.radio_tab_button.show()
+        
+        
+        close_label_box.pack_start(close_label, False, False, 0)
+        close_label_box.pack_start(self.radio_tab_label, False, False, 0)
+        close_label_box.pack_start(tab_close_label(), False, False, 0)        
+        close_label_box.pack_start(self.radio_tab_button, False, True, 0)
+        close_label_box.pack_start(tab_close_button(), False, False, 0)
+        
+        """global pack"""
         box.pack_start(cbox, False, True, 0)
         box.pack_start(lbox, False, True, 0)
         box.pack_start(pbox, False, True, 0)
+        box.pack_start(close_label_box, False, True, 0)
         
         self.widget = box
         
@@ -93,6 +116,7 @@ class TabsConfig(ConfigPlugin):
         
         elif self.radio_tab_no.get_active():
             self.online_controller.set_tab_no()    
+        
     
     def on_chage_count_tabs(self, w):
         val = w.get_value_as_int()
@@ -114,9 +138,20 @@ class TabsConfig(ConfigPlugin):
         
         elif FConfiguration().tab_position == "no":
             self.radio_tab_no.set_active(True)
-        
+            
+        if  FConfiguration().tab_close_element == "label":
+            self.radio_tab_label.set_active(True)
+            
+        elif FConfiguration().tab_close_element == "button":
+            self.radio_tab_button.set_active(True)
             
     def on_save(self):
         FConfiguration().count_of_tabs = self.tabs_count.get_value_as_int() 
         FConfiguration().len_of_tab = self.tab_len.get_value_as_int()
+        
+        if self.radio_tab_label.get_active():
+            FConfiguration().tab_close_element = "label"
+        elif self.radio_tab_button.get_active():
+            FConfiguration().tab_close_element = "button"
+            
      

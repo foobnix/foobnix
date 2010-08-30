@@ -120,6 +120,7 @@ class FConfiguration:
             self.info_panel_image_size = 200    
                 
         
+        self.tab_close_element = "button"
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -165,6 +166,7 @@ class FConfiguration:
                 
                 self.last_dir = instance.last_dir
                 self.info_panel_image_size = instance.info_panel_image_size
+                self.tab_close_element = instance.tab_close_element
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

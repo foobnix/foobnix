@@ -13,7 +13,7 @@ from foobnix.online.google.translate import translate
 import thread
 import time
 import gtk
-from foobnix.helpers.dialog_entry import show_entry_dialog,\
+from foobnix.helpers.dialog_entry import show_entry_dialog, \
     show_login_password_error_dialog
 
 
@@ -46,13 +46,16 @@ class LastFmConnector():
                 FConfiguration().lfm_password = val[1]
             
     
+    def get_network(self):
+        return self.network
+    
     def get_scrobler(self):
         return self.scrobler
     
     def connected(self):
         return self.network is not None
     
-    def search_top_albums(self,query):
+    def search_top_albums(self, query):
         #unicode(query, "utf-8")
         artist = self.network.get_artist(query)
         if not artist:
@@ -85,7 +88,7 @@ class LastFmConnector():
         return beans
     
     
-    def search_tags_genre(self,query):
+    def search_tags_genre(self, query):
         query = translate(query, src="ru", to="en")
         beans = [] 
         
@@ -179,7 +182,7 @@ class LastFmConnector():
             
         return beans
     
-    def search_top_similar(self,query):
+    def search_top_similar(self, query):
         #unicode(query, "utf-8")
         
         artist = self.network.get_artist(query)
@@ -204,7 +207,7 @@ class LastFmConnector():
             
         return beans
     
-    def unimplemented_search(self,query):    
+    def unimplemented_search(self, query):    
         song = CommonBean(name=query, type=CommonBean.TYPE_MUSIC_URL)
         artist = song.getArtist()
         title = song.getTitle()

@@ -18,11 +18,11 @@ from foobnix.player.player_controller import PlayerController
 from foobnix.util import LOG
 from foobnix.util.configuration import FConfiguration
 from foobnix.util.mouse_utils import is_double_click, is_rigth_click, \
-    is_left_click, is_middle_click
+    is_left_click
 from foobnix.online.google_utils import google_search_resutls
 from foobnix.online.dowload_util import  get_file_store_path, \
     save_as_song_thread, save_song_thread
-
+from foobnix.helpers.my_widgets import tab_close_button, tab_close_label
 from foobnix.online.song_resource import update_song_path
 from foobnix.cue.cue_reader import CueReader
 from foobnix.helpers.menu import Popup
@@ -41,7 +41,7 @@ class OnlineListCntr(GObject):
         self.current_list_model = None 
         self.last_fm_connector = last_fm_connector
 
-        self.search_panel = SearchPanel(gxMain,last_fm_connector)
+        self.search_panel = SearchPanel(gxMain, last_fm_connector)
         
         self.count = 0
         self.index = 0
@@ -228,7 +228,7 @@ class OnlineListCntr(GObject):
     
     def register_directory_cntr(self, directoryCntr):
         self.directoryCntr = directoryCntr
-        self.info = InformationController(self.gx_main, self.playerCntr, directoryCntr, self.search_panel, self,  self.last_fm_connector)
+        self.info = InformationController(self.gx_main, self.playerCntr, directoryCntr, self.search_panel, self, self.last_fm_connector)
     
     def none(self, *a):
         return False
@@ -274,16 +274,11 @@ class OnlineListCntr(GObject):
             return label
         
         def button():
-            """button"""
-            button = gtk.Button()
-            button.set_relief(gtk.RELIEF_NONE)
-            img = gtk.image_new_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
-            button.set_image(img)
-           
-                    
-            button.connect("event", self.on_delete_tab, tab_content)
-            button.show()
-            return button
+            print "ELEMENT", FConfiguration().tab_close_element
+            if FConfiguration().tab_close_element == "button":            
+                return tab_close_button(func=self.on_delete_tab, arg=tab_content)
+            else:
+                return tab_close_label(func=self.on_delete_tab, arg=tab_content, angel=self.default_angel)
         
         """container Vertical Tab"""                
         vbox = gtk.VBox(False, 0)
