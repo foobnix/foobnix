@@ -19,6 +19,10 @@ class VkontakteConfig(LastFmConfig):
         self.password_text.set_text(FConfiguration().vk_password)
     
     def on_save(self):
+        if FConfiguration().vk_login !=  self.login_text.get_text() or FConfiguration().vk_password != self.password_text.get_text():
+            FConfiguration().cookie = None
+                        
         FConfiguration().vk_login = self.login_text.get_text()
         FConfiguration().vk_password = self.password_text.get_text() 
+        
         

@@ -58,6 +58,9 @@ class LastFmConfig(ConfigPlugin):
         self.password_text.set_text(FConfiguration().lfm_password)
     
     def on_save(self):
+        if FConfiguration().lfm_login !=  self.login_text.get_text() or FConfiguration().lfm_password != self.password_text.get_text():
+            FConfiguration().cookie = None
+        
         FConfiguration().lfm_login = self.login_text.get_text()
         FConfiguration().lfm_password = self.password_text.get_text() 
         
