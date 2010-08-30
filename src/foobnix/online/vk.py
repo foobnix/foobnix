@@ -17,6 +17,7 @@ from foobnix.model.entity import CommonBean
 
 from xml.sax.saxutils import unescape
 from setuptools.package_index import htmldecode
+from foobnix.helpers.dialog_entry import show_login_password_error_dialog
 
 
 
@@ -47,7 +48,12 @@ class Vkontakte:
                   }
 
         conn = urllib2.Request(host, post, headers)
-        data = urllib2.urlopen(conn)
+        try:
+            data = urllib2.urlopen(conn)
+        except:
+            LOG.error("Error VK connection")
+            return None
+            
         result = data.read()               
         value = re.findall(r"name='s' value='(.*?)'", result)
         
@@ -61,16 +67,24 @@ class Vkontakte:
         return None
 
     def get_cookie(self):
-        
         if FConfiguration().cookie:
             LOG.info("Get VK cookie from cache") 
-            return FConfiguration().cookie 
+            return FConfiguration().cookie
+        
+        s_value = self.get_s_value()
+        if not s_value:    
+            FConfiguration().cookie = None    
+            val = show_login_password_error_dialog(_("VKontakte connection error"), _("Verify user and password"), FConfiguration().vk_login,  FConfiguration().vk_password)
+            if val:
+                FConfiguration().vk_login = val[0]
+                FConfiguration().vk_password = val[1]
+            return None 
         
         if self.cookie: return self.cookie
         
         
         host = 'http://vkontakte.ru/login.php?op=slogin'
-        post = urllib.urlencode({'s' : self.get_s_value()})
+        post = urllib.urlencode({'s' : s_value})
         headers = {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; uk; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.0',
                    'Host' : 'vkontakte.ru',
                    'Referer' : 'http://login.vk.com/?act=login',

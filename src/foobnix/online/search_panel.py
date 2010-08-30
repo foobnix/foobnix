@@ -12,6 +12,8 @@ import foobnix.online.integration.lastfm as lastfm
 from foobnix.base import BaseController, SIGNAL_RUN_FIRST
 from threading import Thread
 from foobnix.online.song_resource import get_songs_by_url, find_song_urls
+from foobnix.util.configuration import FConfiguration
+from foobnix.helpers.dialog_entry import show_login_password_error_dialog
 
 class SearchResults(Thread):
     def __init__ (self, query, function):
@@ -134,5 +136,6 @@ class SearchPanel(BaseController):
                 beans = self.search_routine(query)
         except BaseException, ex:
             LOG.error('Error while search for %s: %s' % (query, ex))
+            
         self.emit('show_search_results', query, beans)
         self.search_thread = None

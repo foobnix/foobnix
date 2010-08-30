@@ -41,8 +41,9 @@ class LastFmConnector():
         except:
             LOG.error("Invalid last fm login or password or network problems", username, FConfiguration().lfm_password)
             val = show_login_password_error_dialog(_("Last.fm connection error"), _("Verify user and password"), username, FConfiguration().lfm_password)
-            FConfiguration().lfm_login = val[0]
-            FConfiguration().lfm_password = val[1]
+            if val:
+                FConfiguration().lfm_login = val[0]
+                FConfiguration().lfm_password = val[1]
             
     
     def get_scrobler(self):
