@@ -11,7 +11,7 @@ from foobnix.util.configuration import FConfiguration
 
 class TryIconConfig(ConfigPlugin):
     
-    name = "Try Icon"
+    name = _("Try Icon")
     
     def __init__(self, try_icon):
         self.try_icon = try_icon
@@ -19,18 +19,18 @@ class TryIconConfig(ConfigPlugin):
         box = gtk.VBox(False, 0)        
         box.hide()
         
-        self.try_icon_button = gtk.CheckButton(label="Show try icon", use_underline=True)
+        self.try_icon_button = gtk.CheckButton(label=_("Show try icon"), use_underline=True)
         self.try_icon_button.connect("clicked", self.on_show_try_icon)
         self.try_icon_button.show()
         
-        self.close_button = gtk.RadioButton(None, label="On close window - close player")
+        self.close_button = gtk.RadioButton(None, label=_("On close window - close player"))
         self.close_button.show()
         
-        self.hide_button = gtk.RadioButton(self.close_button, label="On close window - hide player")
+        self.hide_button = gtk.RadioButton(self.close_button, label=_("On close window - hide player"))
         self.hide_button.connect("toggled", self.on_show_try_icon)
         self.hide_button.show()
         
-        self.minimize_button = gtk.RadioButton(self.close_button, label="On close window - minimize player")
+        self.minimize_button = gtk.RadioButton(self.close_button, label=_("On close window - minimize player"))
         self.minimize_button.show()
         
         box.pack_start(self.try_icon_button, False, True, 0)

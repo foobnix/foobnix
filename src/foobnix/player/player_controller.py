@@ -168,6 +168,10 @@ class  PlayerController(BaseController):
         self.volume = volumeValue
         self.player.set_property('volume', volumeValue + 0.0)
     def getVolume(self):
+        if self.volume < 0:
+            return 0.05
+        if self.volume > 1.2:
+            return 1.2
         return self.volume
     
     def playerHTTP(self):
