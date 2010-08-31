@@ -5,18 +5,21 @@ Created on Feb 27, 2010
 @author: ivan
 '''
 from __future__ import with_statement
-import pickle
 import os
-import tempfile
 import ConfigParser
 from foobnix.util.singleton import Singleton
-from foobnix.util import LOG, const
+import tempfile
+from foobnix.util import const, LOG
 import gtk
+import pickle
 
 FOOBNIX_TMP = "/usr/share/foobnix"
 FOOBNIX_TMP_RADIO = os.path.join(FOOBNIX_TMP, "radio")
 FOOBNIX_VERSION_FILE_NAME = "version"
 
+USER_DIR = os.getenv("HOME") or os.getenv('USERPROFILE')
+CFG_FILE_DIR = os.path.join(USER_DIR, ".config/foobnix")
+CFG_FILE = os.path.join(CFG_FILE_DIR, "foobnix_conf.pkl")
 
 """get last version from file"""
 def get_version():
@@ -39,6 +42,9 @@ def get_version():
 
 VERSION = get_version()        
 
+def check_create_cfg_dir():
+    if not os.path.exists(CFG_FILE_DIR):
+        os.makedirs(CFG_FILE_DIR)
 
 class FConfiguration:
     
@@ -48,16 +54,15 @@ class FConfiguration:
     SUPPORTED_AUDIO_FORMATS = 'supported_audio_formats'
     
     __metaclass__ = Singleton
-    USER_DIR = os.getenv("HOME") or os.getenv('USERPROFILE')
-    CFG_FILE = USER_DIR + "/foobnix_conf.pkl"
-    
-    config = ConfigParser.RawConfigParser()
-    config.read(os.path.join(USER_DIR, "foobnix.cfg"))
     
     
-    def get(self, type):
-        return self.config.get(self.FOOBNIX, self.SUPPORTED_AUDIO_FORMATS)
+    #config = ConfigParser.RawConfigParser()    
+    #config.read(CFG_FILE)
     
+    
+    #def get(self, type):
+    #    return self.config.get(self.FOOBNIX, self.SUPPORTED_AUDIO_FORMATS)
+    check_create_cfg_dir()
     def __init__(self, is_load_file=True):
         
         self.media_library_path = [tempfile.gettempdir()]
@@ -123,7 +128,7 @@ class FConfiguration:
             self.info_panel_image_size = 200    
                 
         
-        self.tab_close_element = "button"
+        self.tab_close_element = "label"
         self.play_ordering = const.ORDER_LINEAR 
         self.play_looping = const.LOPPING_LOOP_ALL
    
@@ -181,7 +186,7 @@ class FConfiguration:
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")
-                os.remove(self.CFG_FILE)
+                os.remove(CFG_FILE)
  
         LOG.info("LOAD CONFIGS")
         self.printArttibutes()
@@ -200,7 +205,7 @@ class FConfiguration:
     def _saveCfgToFile(self):
         #conf = FConfiguration()
         
-        save_file = file(self.CFG_FILE, 'w')
+        save_file = file(CFG_FILE, 'w')
         try:
             pickle.dump(self, save_file)
         except:
@@ -213,8 +218,8 @@ class FConfiguration:
             return
 
         try:
-            with file(self.CFG_FILE, 'r') as load_file:
-                load_file = file(self.CFG_FILE, 'r') 
+            with file(CFG_FILE, 'r') as load_file:
+                load_file = file(CFG_FILE, 'r') 
                 pickled = load_file.read()
                 # fixing mistyped 'configuration' package name
                 if 'confguration' in pickled:
@@ -225,7 +230,7 @@ class FConfiguration:
             LOG.debug('Configuration file does not exist.')
         except ImportError, ex:            
             LOG.error('Configuration file is corrupted. Removing it...')
-            os.remove(self.CFG_FILE)
+            os.remove(CFG_FILE)
         except BaseException, ex:
             LOG.error('Unexpected exception of type %s: "%s".' % (ex.__class__.__name__, ex))
 

@@ -74,7 +74,7 @@ class Vkontakte:
         s_value = self.get_s_value()
         if not s_value:    
             FConfiguration().cookie = None    
-            val = show_login_password_error_dialog(_("VKontakte connection error"), _("Verify user and password"), FConfiguration().vk_login,  FConfiguration().vk_password)
+            val = show_login_password_error_dialog(_("VKontakte connection error"), _("Verify user and password"), FConfiguration().vk_login, FConfiguration().vk_password)
             if val:
                 FConfiguration().vk_login = val[0]
                 FConfiguration().vk_password = val[1]
@@ -232,7 +232,10 @@ class Vkontakte:
     def convert_vk_songs_to_beans(self, vk_songs):
         beans = []
         for vk_song in vk_songs:
+            
+            
             bean = CommonBean(name=vk_song.album + " - " + vk_song.track, path=vk_song.path, type=CommonBean.TYPE_MUSIC_URL);
+            bean.name = bean.name.replace("&#39;", "'")
             bean.time = vk_song.time
             beans.append(bean)
         return beans
@@ -297,7 +300,7 @@ class Vkontakte:
             result = unicode(result)
         except:
             result = result
-            LOG.error("VK connectino error, try other user")
+      
         reg_all = "([^{<}]*)"
         result_url = re.findall(ur"http:([\\/.0-9A-Z]*)", result, re.IGNORECASE)
         result_artist = re.findall(u"q]=" + reg_all + "'", result, re.IGNORECASE | re.UNICODE)
@@ -363,9 +366,9 @@ def get_group_id(str):
     
     
 #vk = Vkontakte("qax@bigmir.net", "foobnix")
-#print vk.find_most_relative_song("Максим На радиоволнах")
-#open = urllib.urlopen("http://cs4816.vkontakte.ru/u248745/audio/dacb9e02d033.mp3")
-#print open.info().getheaders("Content-Length")[0]
+#for song in  vk.get_songs_by_url("http://vkontakte.ru/audio.php?gid=0&album_id=0&id=14775382&offset=0"):
+#    print song.name
+
 
 
 

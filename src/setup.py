@@ -3,6 +3,7 @@
 import sys, os, glob, shutil
 from distutils.core import setup
 from foobnix.util.configuration import VERSION, FOOBNIX_TMP, FOOBNIX_TMP_RADIO
+    
 
 root_dir = ''
 for a in sys.argv[1:]:
@@ -148,8 +149,3 @@ try:
     os.remove("foobnix/version.py")
 except:
     pass
-try:
-    os.remove(os.getenv("HOME") + "/foobnix_conf.pkl")
-except:
-    pass
-
