@@ -160,21 +160,25 @@
                                   </widget>
                                 </child>
                                 <child>
-                                  <widget class="GtkRadioMenuItem" id="shuffle_menu">
-                                    <property name="visible">True</property>
-                                    <property name="label" translatable="yes">_Shuffle</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="draw_as_radio">True</property>
-                                    <property name="group">linea_menu</property>
-                                  </widget>
-                                </child>
-                                <child>
                                   <widget class="GtkRadioMenuItem" id="random_menu">
                                     <property name="visible">True</property>
                                     <property name="label" translatable="yes">_Random</property>
                                     <property name="use_underline">True</property>
                                     <property name="draw_as_radio">True</property>
                                     <property name="group">linea_menu</property>
+                                  </widget>
+                                </child>
+                                <child>
+                                  <widget class="GtkImageMenuItem" id="shuffle_menu">
+                                    <property name="label" translatable="yes">Shuffle</property>
+                                    <property name="visible">True</property>
+                                    <property name="use_stock">False</property>
+                                    <child internal-child="image">
+                                      <widget class="GtkImage" id="image6">
+                                        <property name="visible">True</property>
+                                        <property name="stock">gtk-undelete</property>
+                                      </widget>
+                                    </child>
                                   </widget>
                                 </child>
                               </widget>

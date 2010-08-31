@@ -80,7 +80,6 @@ class PlayerWidgetsCntl():
         
         """playback menu"""
         self.set_update_menu_item("linea_menu", "play_ordering", const.ORDER_LINEAR)
-        self.set_update_menu_item("shuffle_menu", "play_ordering", const.ORDER_SHUFFLE)
         self.set_update_menu_item("random_menu", "play_ordering", const.ORDER_RANDOM)
         
         self.set_update_menu_item("loop_all_menu", "play_looping", const.LOPPING_LOOP_ALL)

@@ -5,6 +5,7 @@ Created on Mar 16, 2010
 '''
 from random import randint
 from foobnix.util import LOG
+import random
 '''
 Created on Mar 11, 2010
 
@@ -167,9 +168,13 @@ class OnlineListModel:
             return int(i)
         return None    
 
-    def repopulate(self, played_index):
+    def repopulate(self, played_index, shuffle=False):
         LOG.info("Selected index", played_index)
         list = self.get_all_beans()
+        
+        if shuffle:
+            random.shuffle(list)
+
         self.clear()        
         for i in xrange(len(list)):
             songBean = list[i]

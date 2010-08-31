@@ -15,7 +15,7 @@ from foobnix.online.information_controller import InformationController
 from foobnix.online.online_model import OnlineListModel
 from foobnix.online.search_panel import SearchPanel
 from foobnix.player.player_controller import PlayerController
-from foobnix.util import LOG
+from foobnix.util import LOG, const
 from foobnix.util.configuration import FConfiguration
 from foobnix.util.mouse_utils import is_double_click, is_rigth_click, \
     is_left_click
@@ -47,6 +47,11 @@ class OnlineListCntr(GObject):
         self.index = 0
         
         self.online_notebook = gxMain.get_widget("online_notebook")
+        
+        shuffle_menu = gxMain.get_widget("shuffle_menu")
+        shuffle_menu.connect("activate", self.shuffle)
+        
+        
         self.online_notebook.connect('drag-data-received', self.on_drag_data_received)
         self.online_notebook.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP,
                  dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY)
@@ -565,14 +570,18 @@ class OnlineListCntr(GObject):
     def nextBean(self):
         if not self.current_list_model:
             return None
-        if FConfiguration().isRandom:            
+        
+        if FConfiguration().play_looping == const.LOPPING_SINGLE:
+            return self.current_list_model.getBeenByPosition(self.index)
+        
+        if FConfiguration().play_ordering == const.ORDER_RANDOM:            
             return self.current_list_model.get_random_bean()   
         
         self.index += 1
         
         if self.index >= self.current_list_model.get_size():
                 self.index = 0
-                if not FConfiguration().isRepeat:
+                if FConfiguration().play_looping == const.LOPPING_DONT_LOOP:
                     self.index = self.current_list_model.get_size()
                     return None
             
@@ -581,8 +590,11 @@ class OnlineListCntr(GObject):
     def prevBean(self):
         if not self.current_list_model:
             return None
+        
+        if FConfiguration().play_looping == const.LOPPING_SINGLE:
+            return self.current_list_model.getBeenByPosition(self.index)
 
-        if FConfiguration().isRandom:            
+        if FConfiguration().play_ordering == const.ORDER_RANDOM:           
             return self.current_list_model.get_random_bean()
         
         self.index -= 1        
@@ -609,6 +621,10 @@ class OnlineListCntr(GObject):
         self.current_list_model.repopulate(currentSong.index);
         return currentSong
     
+    def shuffle(self, *a):
+        LOG.info("Shuffle list")
+        self.current_list_model.repopulate(self.index, True);
+
     
     def setState(self, state):
         #TODO
