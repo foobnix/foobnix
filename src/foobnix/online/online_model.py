@@ -70,6 +70,10 @@ class OnlineListModel:
         return beans
     
     def getBeenByPosition(self, position):
+        if position < 0:
+            position = 0
+        if position >= self.get_size():
+            position = 0
         LOG.info("get bean by position", position)
         bean = CommonBean()
         bean.icon = self.current_list_model[position][ self.POS_ICON]

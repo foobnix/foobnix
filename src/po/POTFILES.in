@@ -33,6 +33,7 @@
 ./foobnix/util/LOG.py
 ./foobnix/util/config.py
 ./foobnix/util/configuration.py
+./foobnix/util/const.py
 ./foobnix/util/file_utils.py
 ./foobnix/util/localization.py
 ./foobnix/util/mouse_utils.py
