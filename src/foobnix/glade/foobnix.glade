@@ -188,7 +188,7 @@
                         <child>
                           <widget class="GtkMenuItem" id="looping">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">_Looping</property>
+                            <property name="label" translatable="yes">_Repeat</property>
                             <property name="use_underline">True</property>
                             <child>
                               <widget class="GtkMenu" id="menu4">
@@ -196,7 +196,7 @@
                                 <child>
                                   <widget class="GtkRadioMenuItem" id="loop_all_menu">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Loop _All</property>
+                                    <property name="label" translatable="yes">Repeat _All</property>
                                     <property name="use_underline">True</property>
                                     <property name="draw_as_radio">True</property>
                                   </widget>
@@ -204,7 +204,7 @@
                                 <child>
                                   <widget class="GtkRadioMenuItem" id="loop_single_menu">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Loop _Single Song</property>
+                                    <property name="label" translatable="yes">Repeat _Single</property>
                                     <property name="use_underline">True</property>
                                     <property name="draw_as_radio">True</property>
                                     <property name="group">loop_all_menu</property>
@@ -213,7 +213,7 @@
                                 <child>
                                   <widget class="GtkRadioMenuItem" id="dont_loop_menu">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">_Don't Loop</property>
+                                    <property name="label" translatable="yes">_Don't Repeat</property>
                                     <property name="use_underline">True</property>
                                     <property name="draw_as_radio">True</property>
                                     <property name="group">loop_all_menu</property>
@@ -1162,6 +1162,7 @@
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <widget class="GtkToolbar" id="toolbar3">
             <property name="visible">True</property>
@@ -1171,6 +1172,7 @@
             <child>
               <widget class="GtkToolButton" id="close">
                 <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">Exit player</property>
                 <property name="stock_id">gtk-quit</property>
                 <signal name="clicked" handler="on_close_clicked"/>
               </widget>
@@ -1182,7 +1184,7 @@
             <child>
               <widget class="GtkToolButton" id="prev">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton10</property>
+                <property name="tooltip" translatable="yes">Previous sogn</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-media-previous</property>
                 <signal name="clicked" handler="on_prev_clicked"/>
@@ -1195,7 +1197,7 @@
             <child>
               <widget class="GtkToolButton" id="play">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton8</property>
+                <property name="tooltip" translatable="yes">Play</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-media-play</property>
                 <signal name="clicked" handler="on_play_clicked"/>
@@ -1208,7 +1210,7 @@
             <child>
               <widget class="GtkToolButton" id="pause">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton9</property>
+                <property name="tooltip" translatable="yes">Pause</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-media-pause</property>
                 <signal name="clicked" handler="on_pause_clicked"/>
@@ -1221,7 +1223,7 @@
             <child>
               <widget class="GtkToolButton" id="next">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton11</property>
+                <property name="tooltip" translatable="yes">Next song</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-media-next</property>
                 <signal name="clicked" handler="on_next_clicked"/>
@@ -1234,6 +1236,7 @@
             <child>
               <widget class="GtkToolButton" id="cancel">
                 <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">Close popup</property>
                 <property name="stock_id">gtk-apply</property>
                 <signal name="clicked" handler="on_cancel_clicked"/>
               </widget>
@@ -1252,7 +1255,7 @@
         <child>
           <widget class="GtkLabel" id="text1">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">Foobnix</property>
+            <property name="label" translatable="yes">Foobnix music player</property>
           </widget>
           <packing>
             <property name="fill">False</property>

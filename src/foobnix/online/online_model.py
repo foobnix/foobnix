@@ -43,6 +43,10 @@ class OnlineListModel:
         descriptionColumn.set_resizable(True)
         descriptionColumn.set_expand(True)
         
+        number_column = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.POS_TRACK_NUMBER, background=self.POS_COLOR)
+        number_column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        
+        
         timeColumn = gtk.TreeViewColumn(_('Time'), gtk.CellRendererText(), text=self.POS_TIME, background=self.POS_COLOR)
         timeColumn.set_fixed_width(5)
         timeColumn.set_min_width(5)
@@ -50,7 +54,7 @@ class OnlineListModel:
         #empty = gtk.TreeViewColumn(None, gtk.CellRendererText(), text= -1, background=self.POS_COLOR)
                 
         widget.append_column(iconColumn)
-        #widget.append_column(numbetColumn)
+        widget.append_column(number_column)
         widget.append_column(descriptionColumn)
         widget.append_column(timeColumn)
         #widget.append_column(empty)
@@ -66,6 +70,7 @@ class OnlineListModel:
         return beans
     
     def getBeenByPosition(self, position):
+        LOG.info("get bean by position", position)
         bean = CommonBean()
         bean.icon = self.current_list_model[position][ self.POS_ICON]
         bean.tracknumber = self.current_list_model[position][ self.POS_TRACK_NUMBER]
@@ -84,7 +89,7 @@ class OnlineListModel:
     
     
     def get_random_bean(self):
-        index = randint(0, self.get_size())
+        index = randint(0, self.get_size() - 1)
         return self.getBeenByPosition(index) 
     
     def getModel(self):

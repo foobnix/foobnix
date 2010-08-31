@@ -82,12 +82,10 @@ class WindowController(BaseController):
 
     def toggle_visibility(self, *a):
         visible = self.main_window.get_property('visible')
-        print visible
-        if visible:
-            #self.hide()
-            self.hide()
+        if visible:            
+            self.main_window.hide()
         else:
-            self.show()
+            self.main_window.show()
             
         
 

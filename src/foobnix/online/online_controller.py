@@ -418,6 +418,9 @@ class OnlineListCntr(GObject):
     def _populate_model(self, beans):
         normilized = []
         """first add cue files"""
+        #for i in xrange(len(beans)):
+        #    beans[i].tracknumber = i + 1
+            
         for bean in beans:
             LOG.info("append", bean, bean.path)
             if bean.path and bean.path.lower().endswith(".cue"):
@@ -427,6 +430,7 @@ class OnlineListCntr(GObject):
                     normilized.append(cue)
         
         """end big file to the end"""
+        
         for bean in beans:
             id3 = bean.getMp3TagsName()            
             if id3:
@@ -436,6 +440,8 @@ class OnlineListCntr(GObject):
                 self.current_list_model.append(bean)
                 
                 normilized.append(bean)
+        
+        
         return normilized
 
     def append(self, beans):
