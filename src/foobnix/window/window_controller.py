@@ -4,9 +4,10 @@ Created on Mar 13, 2010
 @author: ivan
 '''
 import gtk
-from foobnix.util.configuration import VERSION
+from foobnix.util.configuration import VERSION, FConfiguration
 from foobnix.base import BaseController
 from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE
+from foobnix.util import const
 
 class WindowController(BaseController):
 
@@ -17,7 +18,9 @@ class WindowController(BaseController):
 
     def __init__(self, gx_main_window, gx_about):
         BaseController.__init__(self)
+        
         self.decorate(gx_main_window)
+        
 
         popup_signals = {
                 "on_gtk-preferences_activate": lambda * a: self.emit('show_preferences'),
@@ -29,10 +32,13 @@ class WindowController(BaseController):
         self.main_window = gx_main_window.get_widget("foobnixWindow")
         self.main_window.connect("delete-event", self.hide)
         self.main_window.set_title("Foobnix " + VERSION)
+        self.main_window.connect("window-state-event", self.window_state_event_cb)
         #self.main_window.maximize()
 
         self.about_window = gx_about.get_widget("aboutdialog")
         self.about_window.connect("delete-event", self.hide_about_window)
+        
+        self.tray_icon = None
 
     def on_song_started(self, sender, song):
         self.main_window.set_title(song.getTitleDescription())
@@ -43,16 +49,35 @@ class WindowController(BaseController):
     def hide_about_window(self, *args):
         self.about_window.hide()
         return True
-
+    
+    def destroy(self):
+        self.main_window.hide()
+        FConfiguration().save()        
+        gtk.main_quit() 
+        
     def maximize(self):
         self.main_window.maximize()
 
     def show(self):
         self.main_window.show()
+        
+    def window_state_event_cb(self, w, event):
+        print event
+        print event.new_window_state
+        print event.changed_mask
+      
 
     def hide(self, *args):
-        self.main_window.set_property('visible', False)
-        self.main_window.hide()
+        
+        if FConfiguration().on_close_window == const.ON_CLOSE_CLOSE:
+            self.destroy()
+
+        elif FConfiguration().on_close_window == const.ON_CLOSE_HIDE:
+            self.main_window.hide()
+            
+        elif FConfiguration().on_close_window == const.ON_CLOSE_MINIMIZE:
+            self.main_window.iconify()
+        
         return True
 
     def toggle_visibility(self, *a):

@@ -112,6 +112,9 @@ class FConfiguration:
         
         self.last_dir = None
         
+        self.on_close_window = const.ON_CLOSE_HIDE;
+        self.show_try_icon = True
+        
         """info panel"""
         
         if gtk.gdk.screen_height() < 800:
@@ -172,6 +175,9 @@ class FConfiguration:
                 
                 self.play_ordering = instance.play_ordering 
                 self.play_looping = instance.play_looping
+                
+                self.on_close_window = instance.on_close_window;
+                self.show_try_icon = instance.show_try_icon
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

@@ -57,13 +57,13 @@ class AppController(BaseController):
         
         
         """show pref window"""
-        self.pref = PreferencesWindow(self.directoryCntr, self.onlineCntr)
-        last_fm_connector.preferences_window = self.pref
+        
         
         menu_preferences = v.gxMain.get_widget("menu_preferences")
         menu_preferences.connect("activate", lambda * a:self.pref.show())
         
         self.tray_icon = TrayIcon(v.gxTrayIcon)
+        self.main_window_controller.tray_icon = self.tray_icon
         self.tray_icon.connect('toggle_window_visibility', self.main_window_controller.toggle_visibility)
         self.tray_icon.connect('exit', self.exit)
         self.tray_icon.connect('play', self.player_controller.play)
@@ -82,6 +82,9 @@ class AppController(BaseController):
         self.search_panel.connect('show_search_results', self.onlineCntr.show_results)
         self.search_panel.connect('show_searching_line', self.onlineCntr.show_searching)
         
+        self.pref = PreferencesWindow(self.directoryCntr, self.onlineCntr, self.tray_icon)
+        last_fm_connector.preferences_window = self.pref
+        
         self.restore_state()
         
         """paly music via arguments"""
@@ -95,10 +98,9 @@ class AppController(BaseController):
         self.onlineCntr.on_play_argumens(args)
         gtk.gdk.threads_leave() 
     
-    def exit(self, sender):
-        self.save_state()
-        self.tray_icon.icon.set_visible(False)
+    def exit(self, *a):
         self.main_window_controller.hide()
+        self.save_state()        
         gtk.main_quit()
     
     def restore_state(self):

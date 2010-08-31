@@ -9,6 +9,7 @@ from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs.vk_conf import VkontakteConfig
 from foobnix.preferences.configs.tabs import TabsConfig
 from foobnix.preferences.configs.info_panel_conf import InfoPagenConfig
+from foobnix.preferences.configs.try_icon import TryIconConfig
 
 class PreferencesWindow:
     configs = []
@@ -17,16 +18,15 @@ class PreferencesWindow:
     
     POS_NAME = 0
     
-    def __init__(self, directory_controller, online_controller):
+    def __init__(self, directory_controller, online_controller, try_icon):
         
         self.configs.append(MusicLibraryConfig(directory_controller))
         self.configs.append(SaveOnlineConfig())
         self.configs.append(TabsConfig(online_controller))
         self.configs.append(LastFmConfig())
         self.configs.append(VkontakteConfig())
-        self.configs.append(InfoPagenConfig())
-        
-        #self.configs.append(TryIconConfig())
+        self.configs.append(InfoPagenConfig())        
+        self.configs.append(TryIconConfig(try_icon))
         #self.configs.append(CategoryInfoConfig())
         
         self.label = None

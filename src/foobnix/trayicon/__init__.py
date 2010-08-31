@@ -9,6 +9,7 @@ import os.path
 from foobnix.base import BaseController
 from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE
 from foobnix.util.mouse_utils import is_mouse_click
+from foobnix.util.configuration import FConfiguration
 
 
 class TrayIcon(BaseController):
@@ -37,7 +38,7 @@ class TrayIcon(BaseController):
         self.text2 = gx_tray_icon.get_widget("text2")
          
         self.icon = gtk.StatusIcon()
-        self.icon.set_tooltip("Foobnix music playerEngine")
+        self.icon.set_tooltip("Foobnix music player")
         # TODO: move the path to config
         icon_path = "/usr/local/share/pixmaps/foobnix.png"
         icon_path2 = "/usr/share/pixmaps/foobnix.png"
@@ -67,6 +68,17 @@ class TrayIcon(BaseController):
         gx_tray_icon.signal_autoconnect(popup_signals)
         
         self.paused = False
+        
+        if FConfiguration().show_try_icon:
+            self.show()
+        else:
+            self.hide()
+    
+    def show(self):
+        self.icon.set_visible(True)
+    
+    def hide(self):
+        self.icon.set_visible(False)
     
     def on_button_press(self, w, e):
         if is_mouse_click(e):

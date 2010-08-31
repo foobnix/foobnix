@@ -20,7 +20,7 @@ from foobnix.util.plsparser import get_radio_source
 
 
 
-class PlayerController(BaseController):
+class  PlayerController(BaseController):
     MODE_RADIO = "RADIO"
     MODE_PLAY_LIST = "PLAY_LIST"
     MODE_ONLINE_LIST = "ONLINE_LIST"
