@@ -193,13 +193,15 @@ class Vkontakte:
         LOG.info("LOG.info(Song time", r_time)
         LOG.info("LOG.info(Count of congs", r_count)
         
-        """
+        
         for song in vkSongs:
             if song.time == r_time:        
                 return song
-        """
+        
         """find songs by path"""
         """find the longest song via 10"""
+        
+        """""it is too slow
         i = 0
         max_len = 0
         max_path = ""
@@ -214,7 +216,7 @@ class Vkontakte:
                 if i > 10:
                     song.path = max_path
                     return song
-                    
+        """""
         return vkSongs[0]
     
     def get_content_len(self, path):
