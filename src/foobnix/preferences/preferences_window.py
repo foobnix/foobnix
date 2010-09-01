@@ -10,6 +10,7 @@ from foobnix.preferences.configs.vk_conf import VkontakteConfig
 from foobnix.preferences.configs.tabs import TabsConfig
 from foobnix.preferences.configs.info_panel_conf import InfoPagenConfig
 from foobnix.preferences.configs.try_icon import TryIconConfig
+from foobnix.preferences.configs.network_conf import NetworkConfig
 
 class PreferencesWindow:
     configs = []
@@ -27,6 +28,7 @@ class PreferencesWindow:
         self.configs.append(VkontakteConfig())
         self.configs.append(InfoPagenConfig())        
         self.configs.append(TryIconConfig(try_icon))
+        self.configs.append(NetworkConfig(try_icon))
         #self.configs.append(CategoryInfoConfig())
         
         self.label = None

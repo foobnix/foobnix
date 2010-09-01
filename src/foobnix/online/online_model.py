@@ -74,7 +74,6 @@ class OnlineListModel:
             position = 0
         if position >= self.get_size():
             position = 0
-        LOG.info("get bean by position", position)
         bean = CommonBean()
         bean.icon = self.current_list_model[position][ self.POS_ICON]
         bean.tracknumber = self.current_list_model[position][ self.POS_TRACK_NUMBER]

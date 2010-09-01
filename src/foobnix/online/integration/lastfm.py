@@ -34,6 +34,16 @@ class LastFmConnector():
 
         try:
             self.network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
+            if FConfiguration().proxy_enable and FConfiguration().proxy_url:
+                proxy_rul = FConfiguration().proxy_url
+                index = proxy_rul.find(":")
+                proxy = proxy_rul[:index]
+                port = proxy_rul[index + 1:]                
+                self.network.enable_proxy(proxy, port)
+                LOG.info("Enable proxy for last fm", proxy, port)
+                
+                
+                    
         
             """scrobler"""
             scrobler_network = pylast.get_lastfm_network(username=username, password_hash=password_hash)

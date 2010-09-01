@@ -19,6 +19,7 @@
 #
 # http://code.google.com/p/pylast/
 import datetime
+from foobnix.util.configuration import FConfiguration
     
 __version__ = '0.4'
 __author__ = 'Amr Hassan'
@@ -790,7 +791,13 @@ class _Request(object):
         (HOST_NAME, HOST_SUBDIR) = self.network.ws_server
         
         if self.network.is_proxy_enabled():
-            conn = httplib.HTTPConnection(host=self._get_proxy()[0], port=self._get_proxy()[1])
+            
+            proxy_rul = FConfiguration().proxy_url
+            index = proxy_rul.find(":")
+            proxy = proxy_rul[:index]
+            port = proxy_rul[index + 1:]                
+            
+            conn = httplib.HTTPConnection(host=proxy, port=port)
             conn.request(method='POST', url="http://" + HOST_NAME + HOST_SUBDIR,
                 body=data, headers=headers)
         else:

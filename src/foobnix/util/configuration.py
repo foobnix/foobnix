@@ -120,6 +120,11 @@ class FConfiguration:
         self.on_close_window = const.ON_CLOSE_HIDE;
         self.show_try_icon = True
         
+        self.proxy_enable = False
+        self.proxy_url = None
+        self.proxy_user = None
+        self.proxy_password = None
+        
         """info panel"""
         
         if gtk.gdk.screen_height() < 800:
@@ -183,6 +188,12 @@ class FConfiguration:
                 
                 self.on_close_window = instance.on_close_window;
                 self.show_try_icon = instance.show_try_icon
+                
+                "proxy"
+                self.proxy_enable = instance.proxy_enable
+                self.proxy_url = instance.proxy_url
+                self.proxy_user = instance.proxy_user
+                self.proxy_password = instance.proxy_password
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

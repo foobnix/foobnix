@@ -20,6 +20,7 @@ from foobnix.online.search_panel import SearchPanel
 from foobnix.preferences.preferences_window import PreferencesWindow
 import sys
 from foobnix.online.integration.lastfm import LastFmConnector
+from foobnix.util.proxy_connect import set_proxy_settings
 
 class AppController(BaseController):
 
@@ -90,7 +91,8 @@ class AppController(BaseController):
         """paly music via arguments"""
         self.play_arguments(sys.argv)
         self.main_window_controller.show()
-    
+        """enable proxy"""        
+
     def play_arguments(self, args):
         #gtk.gdk.threads_leave()     
         gtk.gdk.threads_enter() #@UndefinedVariable

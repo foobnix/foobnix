@@ -18,6 +18,7 @@ from foobnix.model.entity import CommonBean
 from xml.sax.saxutils import unescape
 from setuptools.package_index import htmldecode
 from foobnix.helpers.dialog_entry import show_login_password_error_dialog
+from foobnix.util.proxy_connect import set_proxy_settings
 
 
 
@@ -31,6 +32,7 @@ class Vkontakte:
         return self.get_s_value()
 
     def get_s_value(self):
+        set_proxy_settings()
 
         host = 'http://login.vk.com/?act=login'
         #host = 'http://vkontakte.ru/login.php'
@@ -365,13 +367,22 @@ def get_group_id(str):
     search = "gid="
     index = str.find("gid=")
     return str[index + len(search):]
-    
-    
-#vk = Vkontakte("qax@bigmir.net", "foobnix")
-#for song in  vk.get_songs_by_url("http://vkontakte.ru/audio.php?gid=0&album_id=0&id=14775382&offset=0"):
-#    print song.name
 
 
+"""""
+FConfiguration().proxy_url = "68.68.99.149:3128"    
+FConfiguration().proxy_enable = True
+set_proxy_settings()    
+vk = Vkontakte("qax@bigmir.net", "foobnix")
+for song in  vk.find_song_urls("Madoona"):
+    print song.path
 
+init = time.time()
+f = urllib2.urlopen("http://www.vk.com")
+data = f.read()
+f.close()
+print time.time() - init
+print "finish"
+"""""
 
 
