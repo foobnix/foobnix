@@ -7,13 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sonata\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-31 22:42+0300\n"
+"POT-Creation-Date: 2010-09-03 23:37+0300\n"
 "PO-Revision-Date: 2007-02-09 11:04+0200\n"
 "Last-Translator: Dogmatist Demon <dogmaton@gmail.com>\n"
 "Language-Team: Ukranian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: .././foobnix/application/app_controller.py:113
+msgid "New version is available"
+msgstr ""
 
 #: .././foobnix/directory/directory_controller.py:155
 msgid "New play list"
@@ -73,21 +77,21 @@ msgstr "Название"
 msgid "My play lists"
 msgstr "Мои плей листы"
 
-#: .././foobnix/preferences/preferences_window.py:99
+#: .././foobnix/preferences/preferences_window.py:104
 msgid "Preferences"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:115
+#: .././foobnix/preferences/preferences_window.py:120
 msgid "Categories"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:144
+#: .././foobnix/preferences/preferences_window.py:149
 #: .././foobnix/online/information_controller.py:89
 #: .././foobnix/online/online_controller.py:526
 msgid "Save"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:149
+#: .././foobnix/preferences/preferences_window.py:154
 msgid "Cancel"
 msgstr ""
 
@@ -104,11 +108,13 @@ msgid "Last FM"
 msgstr ""
 
 #: .././foobnix/preferences/configs/last_fm.py:24
+#: .././foobnix/preferences/configs/network_conf.py:58
 #, fuzzy
 msgid "Login"
 msgstr "логин:"
 
 #: .././foobnix/preferences/configs/last_fm.py:38
+#: .././foobnix/preferences/configs/network_conf.py:72
 msgid "Password"
 msgstr ""
 
@@ -155,6 +161,48 @@ msgstr ""
 
 #: .././foobnix/preferences/configs/music_library.py:195
 msgid "Extension should be like '.mp3'"
+msgstr ""
+
+#: .././foobnix/preferences/configs/network_conf.py:16
+msgid "Network Settings"
+msgstr ""
+
+#: .././foobnix/preferences/configs/network_conf.py:23
+msgid "Enable HTTP proxy"
+msgstr ""
+
+#: .././foobnix/preferences/configs/network_conf.py:27
+msgid "Settings"
+msgstr ""
+
+#: .././foobnix/preferences/configs/network_conf.py:39
+msgid "Server"
+msgstr ""
+
+#: .././foobnix/preferences/configs/network_conf.py:46
+msgid "example: 66.42.182.178:3128"
+msgstr ""
+
+#: .././foobnix/preferences/configs/network_conf.py:93
+msgid "Check Connection"
+msgstr ""
+
+#: .././foobnix/preferences/configs/network_conf.py:98
+#: .././foobnix/preferences/configs/network_conf.py:137
+msgid "Result:"
+msgstr ""
+
+#: .././foobnix/preferences/configs/network_conf.py:137
+msgid " OK in seconds: "
+msgstr ""
+
+#: .././foobnix/preferences/configs/notification_conf.py:12
+#, fuzzy
+msgid "Notifications"
+msgstr "Настройки"
+
+#: .././foobnix/preferences/configs/notification_conf.py:19
+msgid "Check for new version on start"
 msgstr ""
 
 #: .././foobnix/preferences/configs/save_online.py:14
@@ -326,11 +374,11 @@ msgstr "Артист - Назва пісні"
 msgid "Time"
 msgstr "Название"
 
-#: .././foobnix/online/vk.py:77
+#: .././foobnix/online/vk.py:79
 msgid "VKontakte connection error"
 msgstr ""
 
-#: .././foobnix/online/vk.py:77
+#: .././foobnix/online/vk.py:79
 msgid "Verify user and password"
 msgstr ""
 
@@ -587,9 +635,6 @@ msgstr ""
 
 #~ msgid "Album List"
 #~ msgstr "Список альбомов"
-
-#~ msgid "Location"
-#~ msgstr "Настройки"
 
 #~ msgid "Lyrics"
 #~ msgstr "Лирика"

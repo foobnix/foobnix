@@ -14,6 +14,8 @@
 ./foobnix/preferences/configs/info_panel_conf.py
 ./foobnix/preferences/configs/last_fm.py
 ./foobnix/preferences/configs/music_library.py
+./foobnix/preferences/configs/network_conf.py
+./foobnix/preferences/configs/notification_conf.py
 ./foobnix/preferences/configs/save_online.py
 ./foobnix/preferences/configs/tabs.py
 ./foobnix/preferences/configs/try_icon.py
@@ -38,6 +40,7 @@
 ./foobnix/util/localization.py
 ./foobnix/util/mouse_utils.py
 ./foobnix/util/plsparser.py
+./foobnix/util/proxy_connect.py
 ./foobnix/util/single_instanse.py
 ./foobnix/util/singleton.py
 ./foobnix/util/time_utils.py

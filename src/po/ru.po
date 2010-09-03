@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-31 22:42+0300\n"
+"POT-Creation-Date: 2010-09-03 23:37+0300\n"
 "PO-Revision-Date: 2009-04-06 21:35+0300\n"
 "Last-Translator: Fomin Denis <fominde@mail.ru>\n"
 "Language-Team: badDron <andrew@infonet.by>\n"
@@ -16,6 +16,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+#: .././foobnix/application/app_controller.py:113
+msgid "New version is available"
+msgstr "Доступна новая версия"
 
 #: .././foobnix/directory/directory_controller.py:155
 msgid "New play list"
@@ -72,21 +76,21 @@ msgstr "Название"
 msgid "My play lists"
 msgstr "Мои плей листы"
 
-#: .././foobnix/preferences/preferences_window.py:99
+#: .././foobnix/preferences/preferences_window.py:104
 msgid "Preferences"
 msgstr "Настройки"
 
-#: .././foobnix/preferences/preferences_window.py:115
+#: .././foobnix/preferences/preferences_window.py:120
 msgid "Categories"
 msgstr "Категории"
 
-#: .././foobnix/preferences/preferences_window.py:144
+#: .././foobnix/preferences/preferences_window.py:149
 #: .././foobnix/online/information_controller.py:89
 #: .././foobnix/online/online_controller.py:526
 msgid "Save"
 msgstr "Сохранить"
 
-#: .././foobnix/preferences/preferences_window.py:149
+#: .././foobnix/preferences/preferences_window.py:154
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -103,10 +107,12 @@ msgid "Last FM"
 msgstr ""
 
 #: .././foobnix/preferences/configs/last_fm.py:24
+#: .././foobnix/preferences/configs/network_conf.py:58
 msgid "Login"
 msgstr "Логин:"
 
 #: .././foobnix/preferences/configs/last_fm.py:38
+#: .././foobnix/preferences/configs/network_conf.py:72
 msgid "Password"
 msgstr "Пароль"
 
@@ -153,6 +159,47 @@ msgstr "Добавте формат музыки"
 msgid "Extension should be like '.mp3'"
 msgstr "Формат должен быть как '.mp3'"
 
+#: .././foobnix/preferences/configs/network_conf.py:16
+msgid "Network Settings"
+msgstr "Настройки Сети"
+
+#: .././foobnix/preferences/configs/network_conf.py:23
+msgid "Enable HTTP proxy"
+msgstr "Вклоючить HTTP прокси"
+
+#: .././foobnix/preferences/configs/network_conf.py:27
+msgid "Settings"
+msgstr "Настройки"
+
+#: .././foobnix/preferences/configs/network_conf.py:39
+msgid "Server"
+msgstr "Сервер"
+
+#: .././foobnix/preferences/configs/network_conf.py:46
+msgid "example: 66.42.182.178:3128"
+msgstr "пример: 66.42.182.178:3128"
+
+#: .././foobnix/preferences/configs/network_conf.py:93
+msgid "Check Connection"
+msgstr "Тест соединения"
+
+#: .././foobnix/preferences/configs/network_conf.py:98
+#: .././foobnix/preferences/configs/network_conf.py:137
+msgid "Result:"
+msgstr "Результат:"
+
+#: .././foobnix/preferences/configs/network_conf.py:137
+msgid " OK in seconds: "
+msgstr "ОК секунд:"
+
+#: .././foobnix/preferences/configs/notification_conf.py:12
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: .././foobnix/preferences/configs/notification_conf.py:19
+msgid "Check for new version on start"
+msgstr "Проверять наличие новой версии при старте"
+
 #: .././foobnix/preferences/configs/save_online.py:14
 msgid "Online Music"
 msgstr "Онлайн Музыка"
@@ -198,7 +245,6 @@ msgid "Try Icon"
 msgstr "Cистемная Иконка"
 
 #: .././foobnix/preferences/configs/try_icon.py:22
-
 msgid "Show try icon"
 msgstr "Показать системную иконку"
 
@@ -313,11 +359,11 @@ msgstr "Артист - Песня"
 msgid "Time"
 msgstr "Время"
 
-#: .././foobnix/online/vk.py:77
+#: .././foobnix/online/vk.py:79
 msgid "VKontakte connection error"
 msgstr "Ошибка подключения к ВКонтакте"
 
-#: .././foobnix/online/vk.py:77
+#: .././foobnix/online/vk.py:79
 msgid "Verify user and password"
 msgstr "Проверте имя пользователя и пароль"
 
@@ -564,9 +610,6 @@ msgstr ""
 
 #~ msgid "Album List"
 #~ msgstr "Список альбомов"
-
-#~ msgid "Location"
-#~ msgstr "Настройки"
 
 #~ msgid "Lyrics"
 #~ msgstr "Лирика"
