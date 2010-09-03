@@ -129,14 +129,13 @@ class SearchPanel(BaseController):
     def perform_search(self, query):
         #self.emit('show_searching_line', query)
         beans = None
-        #try:
-        if query.lower().startswith("http"):                
-            beans = get_songs_by_url(query)                            
-        elif self.search_routine:
-            beans = self.search_routine(query)
-        
-        #except BaseException, ex:
-        #    LOG.error('Error while search for %s: %s' % (query, ex))
+        try:
+            if query.lower().startswith("http"):                
+                beans = get_songs_by_url(query)                            
+            elif self.search_routine:
+                beans = self.search_routine(query)        
+        except BaseException, ex:
+            LOG.error('Error while search for %s: %s' % (query, ex))
             
         self.emit('show_search_results', query, beans)
         self.search_thread = None

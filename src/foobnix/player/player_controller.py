@@ -17,6 +17,7 @@ from foobnix.base import BaseController
 from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE, TYPE_PYOBJECT
 from foobnix.online.dowload_util import dowload_song_thread
 from foobnix.util.plsparser import get_radio_source
+from foobnix.util.configuration import FConfiguration
 
 
 
@@ -111,14 +112,16 @@ class  PlayerController(BaseController):
                 
         elif song.type == CommonBean.TYPE_RADIO_URL:
             LOG.info("URL PLAYING", song.path)
-            self.player = self.playerHTTP()    
-            path = get_radio_source(song.path)                    
-            self.player.set_property("uri", path)
+            path = get_radio_source(song.path)
+            
+            self.get_player(path)            
+            
             self.widgets.seekBar.set_text("Url Playing...")
         elif song.type == CommonBean.TYPE_MUSIC_URL:
             LOG.info("URL PLAYING", song.path)
-            self.player = self.playerHTTP()                        
-            self.player.set_property("uri", song.path)                        
+            
+            self.get_player(song.path)                        
+            
             self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
         else:
             self.widgets.seekBar.set_text("Error playing...")
@@ -136,7 +139,18 @@ class  PlayerController(BaseController):
         
         self.emit('song_playback_started', song)
         
-        
+    
+    def get_player(self, path):
+        if FConfiguration().proxy_enable and FConfiguration().proxy_url:
+            LOG.info("=Proxy player=")
+            self.player = self.playerHTTP_Proxy()     
+            self.player.get_by_name("source").set_property("proxy", FConfiguration().proxy_url)             
+            self.player.get_by_name("source").set_property("location", path)
+        else:
+            LOG.info("=Local player=")
+            self.player = self.playerHTTP()
+            self.player = self.playerHTTP()  
+            self.player.set_property("uri", path)    
         
                 
     
@@ -166,13 +180,41 @@ class  PlayerController(BaseController):
     
     def setVolume(self, volumeValue): 
         self.volume = volumeValue
-        self.player.set_property('volume', volumeValue + 0.0)
+        if FConfiguration().proxy_enable and self.player.get_by_name("volume"):
+            self.player.get_by_name("volume").set_property('volume', volumeValue + 0.0)
+        else:
+            self.player.set_property('volume', volumeValue + 0.0)
     def getVolume(self):
         if self.volume < 0:
             return 0.05
         if self.volume > 1.2:
             return 1.2
         return self.volume
+    
+    
+    def playerHTTP_Proxy(self):
+        LOG.info("Proxy player")
+        self.playbin = gst.Pipeline("player")
+        source = gst.element_factory_make("souphttpsrc", "source")  
+        source.set_property("user-agent", "Fooobnix music player")
+        source.set_property("automatic-redirect", "false")
+              
+        volume = gst.element_factory_make("volume", "volume")
+        #self.equ = gst.element_factory_make("equalizer-10bands")
+
+        mad = gst.element_factory_make("mad", "mad")
+        audioconvert = gst.element_factory_make("audioconvert", "audioconvert")
+        audioresample = gst.element_factory_make("audioresample", "audioresample")
+        alsasink = gst.element_factory_make("alsasink", "alsasink")
+        
+        #self.playbin.add(source, mad, volume, audioconvert, self.equ,audioresample, alsasink)
+        #gst.element_link_many(source, mad, volume,audioconvert, self.equ,audioresample, alsasink)
+        
+        self.playbin.add(source, mad, volume, audioconvert, audioresample, alsasink)
+        gst.element_link_many(source, mad, volume,audioconvert, audioresample, alsasink)
+        
+        
+        return self.playbin
     
     def playerHTTP(self):
         LOG.info("Player For remote files")
