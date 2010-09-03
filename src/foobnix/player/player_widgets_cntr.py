@@ -112,7 +112,7 @@ class PlayerWidgetsCntl():
         current_version = VERSION
         print uuid 
         try:
-            f = urllib2.urlopen("http://localhost:8080/version?uuid="+uuid)
+            f = urllib2.urlopen("http://www.foobnix.com/version?uuid="+uuid)
         except:            
             return None
         
