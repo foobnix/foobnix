@@ -6,14 +6,11 @@ Created on Mar 11, 2010
 '''
 from foobnix.lyric.lyr import get_lyrics
 from foobnix.util import LOG, const
-from foobnix.util.configuration import FConfiguration, VERSION
+from foobnix.util.configuration import FConfiguration
 from foobnix.online.google.translate import translate
 from foobnix.util.mouse_utils import is_double_click
 import time
-from foobnix.preferences.preferences_window import PreferencesWindow
 import gtk
-import urllib2
-
 
 class PlayerWidgetsCntl():
     '''
@@ -104,23 +101,6 @@ class PlayerWidgetsCntl():
         self.show_search_panel(None, FConfiguration().view_search_panel)
         self.show_tree_panel(None, FConfiguration().view_tree_panel)
         self.show_lyric_panel(None, FConfiguration().view_lyric_panel)
-        
-        self.check_version()
-        
-    def check_version(self):        
-        uuid= FConfiguration().uuid
-        current_version = VERSION
-        print uuid 
-        try:
-            f = urllib2.urlopen("http://www.foobnix.com/version?uuid="+uuid)
-        except:            
-            return None
-        
-        new_version = f.read()
-        f.close()
-        if current_version < new_version:
-            self.setStatusText(_("New version ")+new_version+_(" avaliable at www.foobnix.com"));
-             
     
     def set_update_menu_item(self, menu_item, conf_constant, value):
         def set_value(a, b):

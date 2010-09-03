@@ -140,6 +140,8 @@ class FConfiguration:
         
         """random uuis of player"""
         self.uuid = uuid.uuid4().hex
+        
+        self.check_new_version = True
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -200,6 +202,8 @@ class FConfiguration:
                 self.proxy_password = instance.proxy_password
                 
                 self.uuid = instance.uuid
+                
+                self.check_new_version = instance.check_new_version 
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

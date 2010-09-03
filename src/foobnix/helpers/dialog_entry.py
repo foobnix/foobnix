@@ -7,6 +7,25 @@ Created on 24 авг. 2010
 import gtk
 def responseToDialog(entry, dialog, response):
         dialog.response(response)
+        
+        
+def info_dialog_with_link(title, version, link):
+        dialog = gtk.MessageDialog(
+            None,
+            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            gtk.MESSAGE_INFO,
+            gtk.BUTTONS_OK,
+            None)
+        dialog.set_title(title)
+        dialog.set_markup(title)
+        dialog.format_secondary_markup("<b>" + version + "</b>")
+        link = gtk.LinkButton(link, link)
+        link.show()
+        dialog.vbox.pack_end(link, True, True, 0)
+        dialog.show_all()
+        dialog.run()
+        dialog.destroy()        
+    
 
 def show_entry_dialog(title, description):
         dialog = gtk.MessageDialog(
@@ -50,8 +69,8 @@ def show_login_password_error_dialog(title, description, login, password):
         password_entry.show()
         
         hbox = gtk.VBox()
-        hbox.pack_start(login_entry, False, False,0)
-        hbox.pack_start(password_entry, False, False,0)
+        hbox.pack_start(login_entry, False, False, 0)
+        hbox.pack_start(password_entry, False, False, 0)
         dialog.vbox.pack_start(hbox, True, True, 0)
         dialog.show_all()
         dialog.run()
@@ -61,6 +80,6 @@ def show_login_password_error_dialog(title, description, login, password):
         return [login_text, password_text]    
     
 if __name__ == '__main__':
-        print "The name was %s" % show_login_password_error_dialog("Last.fm can't connect with","sdfasdf","valu1","value2")
+        info_dialog_with_link("New version avaliable", "foobnix 0.2.1-8", "http://www.foobnix.com/?page=download")
         gtk.main()        
 

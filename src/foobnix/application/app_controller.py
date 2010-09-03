@@ -15,12 +15,15 @@ from foobnix.online.online_controller import OnlineListCntr
 from foobnix.directory.virtuallist_controller import VirturalLIstCntr
 from foobnix.base import BaseController
 
-from foobnix.util.configuration import FConfiguration
+from foobnix.util.configuration import FConfiguration, VERSION
 from foobnix.online.search_panel import SearchPanel
 from foobnix.preferences.preferences_window import PreferencesWindow
 import sys
 from foobnix.online.integration.lastfm import LastFmConnector
-from foobnix.util.proxy_connect import set_proxy_settings
+from socket import gethostname
+import urllib2
+from foobnix.helpers.dialog_entry import info_dialog_with_link
+from foobnix.util import LOG
 
 class AppController(BaseController):
 
@@ -92,6 +95,26 @@ class AppController(BaseController):
         self.play_arguments(sys.argv)
         self.main_window_controller.show()
         """enable proxy"""        
+      
+        self.check_version()
+        
+    def check_version(self):        
+        uuid = FConfiguration().uuid
+        current_version = VERSION
+        print uuid 
+        
+        try:
+            f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname)
+        except:            
+            return None
+        
+        new_version = f.read()
+        LOG.info("versions", current_version , "|", new_version, "|")
+        f.close()
+        if FConfiguration().check_new_version and current_version < new_version:
+            info_dialog_with_link(_("New version is available"), "foobnix " + new_version, "http://www.foobnix.com/?page=download")
+            #self.setStatusText(_("New version ")+new_version+_(" avaliable at www.foobnix.com"));
+             
 
     def play_arguments(self, args):
         #gtk.gdk.threads_leave()     
