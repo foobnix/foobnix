@@ -143,13 +143,11 @@ class  PlayerController(BaseController):
     def get_player(self, path):
         if FConfiguration().proxy_enable and FConfiguration().proxy_url:
             LOG.info("=Proxy player=")
-            self.player = self.playerHTTP_Proxy()     
-            self.player.get_by_name("source").set_property("proxy", FConfiguration().proxy_url)             
+            self.player = self.playerHTTP_Proxy()    
             self.player.get_by_name("source").set_property("location", path)
         else:
             LOG.info("=Local player=")
-            self.player = self.playerHTTP()
-            self.player = self.playerHTTP()  
+            self.player = self.playerHTTP()              
             self.player.set_property("uri", path)    
         
                 
@@ -198,6 +196,11 @@ class  PlayerController(BaseController):
         source = gst.element_factory_make("souphttpsrc", "source")  
         source.set_property("user-agent", "Fooobnix music player")
         source.set_property("automatic-redirect", "false")
+        source.set_property("proxy", FConfiguration().proxy_url)
+        if FConfiguration().proxy_user:
+            source.set_property("user-id", FConfiguration().proxy_user)
+        if FConfiguration().proxy_password:
+                source.set_property("user-pw", FConfiguration().proxy_password)
               
         volume = gst.element_factory_make("volume", "volume")
         #self.equ = gst.element_factory_make("equalizer-10bands")

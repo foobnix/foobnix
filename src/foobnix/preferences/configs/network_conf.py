@@ -104,8 +104,8 @@ class NetworkConfig(ConfigPlugin):
         
         """global"""
         all.pack_start(proxy_box, False, False, 0)
-        #all.pack_start(lbox, False, False, 0)
-        #all.pack_start(pbox, False, False, 0)        
+        all.pack_start(lbox, False, False, 0)
+        all.pack_start(pbox, False, False, 0)        
         all.pack_start(check, False, False, 0)
         
         
