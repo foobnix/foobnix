@@ -101,10 +101,8 @@ class AppController(BaseController):
     def check_version(self):        
         uuid = FConfiguration().uuid
         current_version = VERSION
-        print uuid 
-        
         try:
-            f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname)
+            f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname())
         except:            
             return None
         
