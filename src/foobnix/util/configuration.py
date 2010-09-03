@@ -12,6 +12,7 @@ import tempfile
 from foobnix.util import const, LOG
 import gtk
 import pickle
+import uuid
 
 FOOBNIX_TMP = "/usr/share/foobnix"
 FOOBNIX_TMP_RADIO = os.path.join(FOOBNIX_TMP, "radio")
@@ -136,6 +137,9 @@ class FConfiguration:
         self.tab_close_element = "label"
         self.play_ordering = const.ORDER_LINEAR 
         self.play_looping = const.LOPPING_LOOP_ALL
+        
+        """random uuis of player"""
+        self.uuid = uuid.uuid4().hex
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -194,6 +198,8 @@ class FConfiguration:
                 self.proxy_url = instance.proxy_url
                 self.proxy_user = instance.proxy_user
                 self.proxy_password = instance.proxy_password
+                
+                self.uuid = instance.uuid
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

@@ -108,15 +108,11 @@ class NetworkConfig(ConfigPlugin):
         all.pack_start(pbox, False, False, 0)        
         all.pack_start(check, False, False, 0)
         
-        
         self.frame.add(all)
-        
-        
-        
+
         frame_box = gtk.HBox(False, 0)
         frame_box.set_border_width(5)
         frame_box.show()
-        
         
         box.pack_start(self.enable_proxy, False, True, 0)
         box.pack_start(self.frame, False, True, 0)
