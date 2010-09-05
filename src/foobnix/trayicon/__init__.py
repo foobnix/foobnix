@@ -69,7 +69,7 @@ class TrayIcon(BaseController):
         
         self.paused = False
         
-        if FConfiguration().show_try_icon:
+        if FConfiguration().show_tray_icon:
             self.show()
         else:
             self.hide()

@@ -9,9 +9,9 @@ from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs.vk_conf import VkontakteConfig
 from foobnix.preferences.configs.tabs import TabsConfig
 from foobnix.preferences.configs.info_panel_conf import InfoPagenConfig
-from foobnix.preferences.configs.try_icon import TryIconConfig
 from foobnix.preferences.configs.network_conf import NetworkConfig
 from foobnix.preferences.configs.notification_conf import NotificationConfig
+from foobnix.preferences.configs.tray_icon import TrayIconConfig
 
 class PreferencesWindow:
     configs = []
@@ -28,7 +28,7 @@ class PreferencesWindow:
         self.configs.append(LastFmConfig())
         self.configs.append(VkontakteConfig())
         self.configs.append(InfoPagenConfig())        
-        self.configs.append(TryIconConfig(try_icon))
+        self.configs.append(TrayIconConfig(try_icon))
         self.configs.append(NetworkConfig(try_icon))
         self.configs.append(NotificationConfig())
         

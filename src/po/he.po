@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sonata\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-03 23:37+0300\n"
+"POT-Creation-Date: 2010-09-05 21:31+0300\n"
 "PO-Revision-Date: 2009-04-06 21:35+0300\n"
 "Last-Translator: Fomin Denis <fominde@mail.ru>\n"
 "Language-Team: badDron <andrew@infonet.by>\n"
@@ -55,7 +55,7 @@ msgid "Add folder"
 msgstr "קובץ"
 
 #: .././foobnix/directory/directory_controller.py:344
-#: .././foobnix/preferences/configs/music_library.py:123
+#: .././foobnix/preferences/configs/music_library.py:122
 #: .././foobnix/online/online_controller.py:219
 #, fuzzy
 msgid "Choose directory with music"
@@ -127,43 +127,43 @@ msgstr ""
 msgid "Music Library"
 msgstr "רשימת השירים"
 
-#: .././foobnix/preferences/configs/music_library.py:33
+#: .././foobnix/preferences/configs/music_library.py:32
 #, fuzzy
 msgid "Music dirs"
 msgstr "תיקיית המוסיקה"
 
-#: .././foobnix/preferences/configs/music_library.py:45
+#: .././foobnix/preferences/configs/music_library.py:44
 msgid "Path"
 msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:49
-#: .././foobnix/preferences/configs/music_library.py:71
+#: .././foobnix/preferences/configs/music_library.py:48
+#: .././foobnix/preferences/configs/music_library.py:70
 msgid "Reload"
 msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:58
-#: .././foobnix/preferences/configs/music_library.py:164
+#: .././foobnix/preferences/configs/music_library.py:57
+#: .././foobnix/preferences/configs/music_library.py:163
 msgid "Add"
 msgstr "הוספה"
 
-#: .././foobnix/preferences/configs/music_library.py:63
-#: .././foobnix/preferences/configs/music_library.py:169
+#: .././foobnix/preferences/configs/music_library.py:62
+#: .././foobnix/preferences/configs/music_library.py:168
 msgid "Remove"
 msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:146
+#: .././foobnix/preferences/configs/music_library.py:145
 msgid "File Types"
 msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:157
+#: .././foobnix/preferences/configs/music_library.py:156
 msgid "Extension"
 msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:195
+#: .././foobnix/preferences/configs/music_library.py:194
 msgid "Please add audio extension"
 msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:195
+#: .././foobnix/preferences/configs/music_library.py:194
 msgid "Extension should be like '.mp3'"
 msgstr ""
 
@@ -251,11 +251,11 @@ msgstr ""
 
 #: .././foobnix/preferences/configs/try_icon.py:14
 #, fuzzy
-msgid "Try Icon"
+msgid "Tray Icon"
 msgstr "איקון"
 
 #: .././foobnix/preferences/configs/try_icon.py:22
-msgid "Show try icon"
+msgid "Show tray icon"
 msgstr ""
 
 #: .././foobnix/preferences/configs/try_icon.py:26

@@ -10,6 +10,7 @@ import logging
 
 
 def init():
+    return None
     LOG_FILENAME = '/tmp/foobnix.log'
     LEVELS = {'debug': logging.DEBUG,
           'info': logging.INFO,

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-03 23:37+0300\n"
+"POT-Creation-Date: 2010-09-05 21:31+0300\n"
 "PO-Revision-Date: 2009-04-06 21:35+0300\n"
 "Last-Translator: Fomin Denis <fominde@mail.ru>\n"
 "Language-Team: badDron <andrew@infonet.by>\n"
@@ -53,7 +53,7 @@ msgid "Add folder"
 msgstr "Добавить папку"
 
 #: .././foobnix/directory/directory_controller.py:344
-#: .././foobnix/preferences/configs/music_library.py:123
+#: .././foobnix/preferences/configs/music_library.py:122
 #: .././foobnix/online/online_controller.py:219
 msgid "Choose directory with music"
 msgstr "Выберите директорию для проигрываниея"
@@ -120,42 +120,42 @@ msgstr "Пароль"
 msgid "Music Library"
 msgstr "Музыкальная Библиотека"
 
-#: .././foobnix/preferences/configs/music_library.py:33
+#: .././foobnix/preferences/configs/music_library.py:32
 msgid "Music dirs"
 msgstr "Папка с музыкой"
 
-#: .././foobnix/preferences/configs/music_library.py:45
+#: .././foobnix/preferences/configs/music_library.py:44
 msgid "Path"
 msgstr "Путь"
 
-#: .././foobnix/preferences/configs/music_library.py:49
-#: .././foobnix/preferences/configs/music_library.py:71
+#: .././foobnix/preferences/configs/music_library.py:48
+#: .././foobnix/preferences/configs/music_library.py:70
 msgid "Reload"
 msgstr "Обновить"
 
-#: .././foobnix/preferences/configs/music_library.py:58
-#: .././foobnix/preferences/configs/music_library.py:164
+#: .././foobnix/preferences/configs/music_library.py:57
+#: .././foobnix/preferences/configs/music_library.py:163
 msgid "Add"
 msgstr "Добавить"
 
-#: .././foobnix/preferences/configs/music_library.py:63
-#: .././foobnix/preferences/configs/music_library.py:169
+#: .././foobnix/preferences/configs/music_library.py:62
+#: .././foobnix/preferences/configs/music_library.py:168
 msgid "Remove"
 msgstr "Удалить"
 
-#: .././foobnix/preferences/configs/music_library.py:146
+#: .././foobnix/preferences/configs/music_library.py:145
 msgid "File Types"
 msgstr "Типы файлов"
 
-#: .././foobnix/preferences/configs/music_library.py:157
+#: .././foobnix/preferences/configs/music_library.py:156
 msgid "Extension"
 msgstr "Расширение"
 
-#: .././foobnix/preferences/configs/music_library.py:195
+#: .././foobnix/preferences/configs/music_library.py:194
 msgid "Please add audio extension"
 msgstr "Добавте формат музыки"
 
-#: .././foobnix/preferences/configs/music_library.py:195
+#: .././foobnix/preferences/configs/music_library.py:194
 msgid "Extension should be like '.mp3'"
 msgstr "Формат должен быть как '.mp3'"
 
@@ -241,11 +241,11 @@ msgid "Close tab sign"
 msgstr "Значек закрытия таба"
 
 #: .././foobnix/preferences/configs/try_icon.py:14
-msgid "Try Icon"
+msgid "Tray Icon"
 msgstr "Cистемная Иконка"
 
 #: .././foobnix/preferences/configs/try_icon.py:22
-msgid "Show try icon"
+msgid "Show tray icon"
 msgstr "Показать системную иконку"
 
 #: .././foobnix/preferences/configs/try_icon.py:26

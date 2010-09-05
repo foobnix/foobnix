@@ -18,12 +18,17 @@ class MusicLibraryConfig(ConfigPlugin):
        
     def __init__(self, directory_controller):
         self.directory_controller = directory_controller
-        print self.name
         
         box = gtk.VBox(False, 0)
         box.hide()
+        
+        
+        self.child_button = gtk.CheckButton(label=_("Get music from child folders"), use_underline=True)
+        self.child_button.show()
+        
  
         box.pack_start(self.dirs(), False, True, 0)
+        box.pack_start(self.child_button, False, True, 0)
         box.pack_start(self.formats(), False, True, 0)
         
         self.widget = box
@@ -90,8 +95,6 @@ class MusicLibraryConfig(ConfigPlugin):
         
         frame_box.pack_start(scrool_tree, True, True, 0)
         frame_box.pack_start(button_box, False, False, 0)
-        
-           
                 
         
         frame.add(frame_box)
@@ -113,10 +116,13 @@ class MusicLibraryConfig(ConfigPlugin):
         self.files_controller.clear()
         for ext in FConfiguration().supportTypes:
             self.files_controller.add_item(ext)
+            
+        self.child_button.set_active(FConfiguration().add_child_folders)
    
     def on_save(self):             
         FConfiguration().media_library_path = self.tree_controller.get_all_items()
         FConfiguration().supportTypes = self.files_controller.get_all_items()
+        FConfiguration().add_child_folders = self.child_button.get_active()
          
     
     def add_dir(self, *a):
@@ -177,7 +183,7 @@ class MusicLibraryConfig(ConfigPlugin):
           
         
         scrool_tree = gtk.ScrolledWindow()
-        scrool_tree.set_size_request(-1, 200)
+        scrool_tree.set_size_request(-1, 160)
         scrool_tree.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scrool_tree.add_with_viewport(dir_tree)
         scrool_tree.show()

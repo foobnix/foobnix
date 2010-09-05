@@ -6,7 +6,6 @@ Created on Feb 27, 2010
 '''
 from __future__ import with_statement
 import os
-import ConfigParser
 from foobnix.util.singleton import Singleton
 import tempfile
 from foobnix.util import const, LOG
@@ -119,7 +118,7 @@ class FConfiguration:
         self.last_dir = None
         
         self.on_close_window = const.ON_CLOSE_HIDE;
-        self.show_try_icon = True
+        self.show_tray_icon = True
         
         self.proxy_enable = False
         self.proxy_url = None
@@ -142,6 +141,8 @@ class FConfiguration:
         self.uuid = uuid.uuid4().hex
         
         self.check_new_version = True
+        
+        self.add_child_folders = True
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -193,7 +194,7 @@ class FConfiguration:
                 self.play_looping = instance.play_looping
                 
                 self.on_close_window = instance.on_close_window;
-                self.show_try_icon = instance.show_try_icon
+                self.show_tray_icon = instance.show_tray_icon
                 
                 "proxy"
                 self.proxy_enable = instance.proxy_enable
@@ -204,6 +205,7 @@ class FConfiguration:
                 self.uuid = instance.uuid
                 
                 self.check_new_version = instance.check_new_version 
+                self.add_child_folders = instance.add_child_folders
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

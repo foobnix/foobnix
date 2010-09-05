@@ -22,8 +22,6 @@ from mutagen.mp3 import MP3
 from foobnix.util.time_utils import normilize_time
 from foobnix.radio.radios import  RadioFolder
 from foobnix.cue.cue_reader import CueReader
-import thread
-import time
 from foobnix.helpers.menu import Popup
 
 
@@ -399,7 +397,10 @@ class DirectoryCntr():
                 self.playlistCntr.append_notebook_page(directoryBean.name)
 
         if directoryBean.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP] :
-            songs = self.current_list_model.getChildSongBySelected()
+            if FConfiguration().add_child_folders:
+                songs = self.get_common_beans_by_folder(directoryBean.path)
+            else:
+                songs = self.current_list_model.getChildSongBySelected()
 
             self.update_songs_time(songs)
             LOG.info("Select songs", songs)
