@@ -214,7 +214,7 @@ class  PlayerController(BaseController):
         #gst.element_link_many(source, mad, volume,audioconvert, self.equ,audioresample, alsasink)
         
         self.playbin.add(source, mad, volume, audioconvert, audioresample, alsasink)
-        gst.element_link_many(source, mad, volume,audioconvert, audioresample, alsasink)
+        gst.element_link_many(source, mad, volume, audioconvert, audioresample, alsasink)
         
         
         return self.playbin

@@ -113,11 +113,40 @@ class AppController(BaseController):
             info_dialog_with_link(_("New version is available"), "foobnix " + new_version, "http://www.foobnix.com/?page=download")
             #self.setStatusText(_("New version ")+new_version+_(" avaliable at www.foobnix.com"));
              
-
+    
+    def action_command(self, args):
+        if args:
+            if len(args) == 1:
+                command = args[0]                
+            elif len(args) == 2:
+                command = args[1]
+            else:
+                return None
+            
+            if "next" == command:
+                self.player_controller.next()
+            elif "prev" == command:
+                self.player_controller.prev()
+            elif "stop" == command:
+                self.player_controller.stopState()    
+            elif "pause" == command:
+                self.player_controller.pauseState()
+            elif "play" == command:
+                self.player_controller.playState()
+            elif "volume-up" == command:
+                self.player_controller.volume_up()             
+            elif "volume-down" == command:
+                self.player_controller.volume_down()
+            elif "show-hide" == command:
+                self.main_window_controller.toggle_visibility()
+            return True
+        return False
+    
     def play_arguments(self, args):
         #gtk.gdk.threads_leave()     
         gtk.gdk.threads_enter() #@UndefinedVariable
-        self.main_window_controller.show()
+        if not self.action_command(args):
+            self.main_window_controller.show()
         self.onlineCntr.on_play_argumens(args)
         gtk.gdk.threads_leave() 
     
