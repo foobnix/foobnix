@@ -159,6 +159,8 @@ class InformationController():
         self.album_image = gx_main.get_widget("image_widget")
         self.lyric_image_widget = gx_main.get_widget("lyric_image_widget")
         self.lyrics_text_widget = gx_main.get_widget("lyric_text")
+        self.lyrics_text_widget.set_size_request(FConfiguration().lyric_panel_image_size, -1)
+        
         
         self.lyric_artist_title = gx_main.get_widget("lyric_artist_title")
         

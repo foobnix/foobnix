@@ -143,6 +143,7 @@ class FConfiguration:
         self.check_new_version = True
         
         self.add_child_folders = True
+        self.lyric_panel_image_size = 250
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -206,6 +207,7 @@ class FConfiguration:
                 
                 self.check_new_version = instance.check_new_version 
                 self.add_child_folders = instance.add_child_folders
+                self.lyric_panel_image_size = instance.lyric_panel_image_size
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")
