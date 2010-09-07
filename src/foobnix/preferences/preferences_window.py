@@ -12,6 +12,7 @@ from foobnix.preferences.configs.info_panel_conf import InfoPagenConfig
 from foobnix.preferences.configs.network_conf import NetworkConfig
 from foobnix.preferences.configs.notification_conf import NotificationConfig
 from foobnix.preferences.configs.tray_icon import TrayIconConfig
+from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
 
 class PreferencesWindow:
     configs = []
@@ -31,6 +32,8 @@ class PreferencesWindow:
         self.configs.append(TrayIconConfig(try_icon))
         self.configs.append(NetworkConfig(try_icon))
         self.configs.append(NotificationConfig())
+        self.configs.append(HotKeysConfig())
+        
         
         #self.configs.append(CategoryInfoConfig())
         

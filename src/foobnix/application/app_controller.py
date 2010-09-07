@@ -123,21 +123,21 @@ class AppController(BaseController):
             else:
                 return None
             
-            if "next" == command:
+            if "--next" == command:
                 self.player_controller.next()
-            elif "prev" == command:
+            elif "--prev" == command:
                 self.player_controller.prev()
-            elif "stop" == command:
+            elif "--stop" == command:
                 self.player_controller.stopState()    
-            elif "pause" == command:
+            elif "--pause" == command:
                 self.player_controller.pauseState()
-            elif "play" == command:
+            elif "--play" == command:
                 self.player_controller.playState()
-            elif "volume-up" == command:
+            elif "--volume-up" == command:
                 self.player_controller.volume_up()             
-            elif "volume-down" == command:
+            elif "--volume-down" == command:
                 self.player_controller.volume_down()
-            elif "show-hide" == command:
+            elif "--show-hide" == command:
                 self.main_window_controller.toggle_visibility()
             return True
         return False

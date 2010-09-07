@@ -29,13 +29,13 @@ def on_mediakey(comes_from, what):
     """
     if what in ['Stop', 'Play', 'Next', 'Previous']:
         if what == 'Stop':
-            os.system('foobnix stop')
+            os.system('foobnix --stop')
         elif what == 'Play':
-            os.system('foobnix play')
+            os.system('foobnix --play')
         elif what == 'Next':
-            os.system('foobnix next')
+            os.system('foobnix --next')
         elif what == 'Previous':
-            os.system('foobnix prev')
+            os.system('foobnix --prev')
     else:
         print ('Got a multimedia key...')
         
