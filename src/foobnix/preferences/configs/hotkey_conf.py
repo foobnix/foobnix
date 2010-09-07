@@ -178,16 +178,16 @@ class HotKeysConfig(ConfigPlugin):
     def on_key_press(self,w,event):
         self.unbind_all() 
         keyname = gtk.gdk.keyval_name(event.keyval)
-        print "Key %s (%d) was pressed" % (keyname, event.keyval)
-        if event.state & gtk.gdk.CONTROL_MASK:
+        print "Key %s (%d) was pressed" % (keyname, event.keyval), event.state
+        if event.state & gtk.gdk.CONTROL_MASK:           
             self.set_hotkey_text("<Control>"+keyname)
-        if event.state & gtk.gdk.MOD1_MASK:
-            self.set_hotkey_text("<Alt>"+keyname)
-        if event.state & gtk.gdk.SHIFT_MASK:
+        elif event.state & gtk.gdk.SHIFT_MASK :
             self.set_hotkey_text("<Shift>"+keyname)
-        if event.state & gtk.gdk.SUPER_MASK:            
+        elif event.state & gtk.gdk.SUPER_MASK:            
             self.set_hotkey_text("<SUPER>"+keyname)
-        else:
+        elif event.state & (gtk.gdk.MOD1_MASK | gtk.gdk.MOD2_MASK):
+            self.set_hotkey_text("<Alt>"+keyname)    
+        else:            
             self.set_hotkey_text(keyname)       
             
     def on_key_release(self,w,event): 
