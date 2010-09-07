@@ -99,6 +99,7 @@ class  PlayerController(BaseController):
         LOG.info("MODE", self.mode)
         LOG.info("Name", song.name)
         
+        self.widgets.setStatusText("")
         if  song.type == CommonBean.TYPE_MUSIC_FILE:
             if song.path != self.prev_path:
                 self.prev_path = song.path
@@ -107,6 +108,7 @@ class  PlayerController(BaseController):
                 if os.name == 'nt':
                     uri = 'file:' + urllib.pathname2url(song.path)
                 
+                self.widgets.setStatusText(song.info)
                 self.player.set_property("uri", uri)
                 self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
                 

@@ -27,7 +27,6 @@ from foobnix.online.song_resource import update_song_path
 from foobnix.cue.cue_reader import CueReader
 from foobnix.helpers.menu import Popup
 from foobnix.util.file_utils import get_file_extenstion
-import sys
 import urllib
 
 TARGET_TYPE_URI_LIST = 80
@@ -432,9 +431,9 @@ class OnlineListCntr(GObject):
         """end big file to the end"""
         
         for bean in beans:
-            id3 = bean.getMp3TagsName()            
-            if id3:
-                bean.id3, bean.name = bean.name, id3
+            bean.getMp3TagsName()            
+            #if id3:
+                #bean.id3, bean.name, bean.info = bean.name, id3, id3.info
                 
             if not bean.path or (bean.path and not bean.path.lower().endswith(".cue")):
                 self.current_list_model.append(bean)

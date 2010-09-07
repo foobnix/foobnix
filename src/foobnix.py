@@ -30,13 +30,13 @@ def on_mediakey(comes_from, what):
     """
     if what in ['Stop', 'Play', 'Next', 'Previous']:
         if what == 'Stop':
-            thread.start_new_thread(os.system,("foobnix --stop",))            
+            thread.start_new_thread(os.system, ("foobnix --stop",))            
         elif what == 'Play':
-            thread.start_new_thread(os.system,("foobnix --play",))
+            thread.start_new_thread(os.system, ("foobnix --play",))
         elif what == 'Next':
-            thread.start_new_thread(os.system,("foobnix --next",))
+            thread.start_new_thread(os.system, ("foobnix --next",))
         elif what == 'Previous':
-            thread.start_new_thread(os.system,("foobnix --prev",))
+            thread.start_new_thread(os.system, ("foobnix --prev",))
     else:
         print ('Got a multimedia key...')
         

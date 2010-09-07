@@ -12,6 +12,7 @@ from foobnix.util.configuration import FConfiguration
 from mutagen.flac import FLAC
 from mutagen.apev2 import APEv2
 from foobnix.util import LOG
+import mutagen.mp3
 class CommonBean():
     TYPE_FOLDER = "TYPE_FOLDER"    
     TYPE_LABEL = "TYPE_LABEL"
@@ -52,6 +53,7 @@ class CommonBean():
         
         self.id3 = None
         self.image = None
+        self.info = ""
     
     def set_name(self, name):
         self.artist = None;
@@ -166,6 +168,7 @@ class CommonBean():
         try:
             if audio and audio.has_key('artist'): artist = audio["artist"][0]
             if audio and audio.has_key('title'): title = audio["title"][0]
+            if audio.info: self.info = audio.info.pprint()
             #if audio and audio.has_key('duration'): self.duration = audio["duration"][0]
             
             if artist and title:
@@ -178,6 +181,7 @@ class CommonBean():
                 except:
                     pass
                 
+                self.id3, self.name = self.name, line
                 return line
         except:
             LOG.error("Get song attribute error")
