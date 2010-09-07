@@ -11,6 +11,7 @@ from dbus.mainloop.glib import DBusGMainLoop
 import sys
 import time
 import os
+import thread
 class Manager(dbus.service.Object):
     def __init__(self, interface, object_path='/org/foobnix_player/FoobnixObject'):
         self.interface = interface
@@ -29,13 +30,13 @@ def on_mediakey(comes_from, what):
     """
     if what in ['Stop', 'Play', 'Next', 'Previous']:
         if what == 'Stop':
-            os.system('foobnix --stop')
+            thread.start_new_thread(os.system,("foobnix --stop",))            
         elif what == 'Play':
-            os.system('foobnix --play')
+            thread.start_new_thread(os.system,("foobnix --play",))
         elif what == 'Next':
-            os.system('foobnix --next')
+            thread.start_new_thread(os.system,("foobnix --next",))
         elif what == 'Previous':
-            os.system('foobnix --prev')
+            thread.start_new_thread(os.system,("foobnix --prev",))
     else:
         print ('Got a multimedia key...')
         
