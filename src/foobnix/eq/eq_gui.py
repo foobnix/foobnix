@@ -42,7 +42,11 @@ class EQ():
         #auto.set_size_request(50,-1)
         auto.show()
         
-        combo = gtk.ComboBoxEntry()
+        combo = gtk.combo_box_entry_new_text()
+        combo.append_text("Will be soon....")
+        combo.set_active(0)
+
+        #combo = gtk.ComboBoxEntry()
         combo.set_size_request(240, -1)
         combo.show()
         
@@ -141,10 +145,16 @@ class EQ():
         lines.pack_start(self.empty_line(), False, False, 0)
         
         return lines
-         
+     
+    def show(self):
+        self.window.show()     
+    
+    def hide(self):
+        self.window.hide()         
     
     def __init__(self):
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.window.set_title("Equalizer")
         self.window.set_position(gtk.WIN_POS_CENTER)
         self.window.set_resizable(False)
         self.window.connect("destroy", lambda *a:gtk.main_quit())
