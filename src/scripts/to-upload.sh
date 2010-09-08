@@ -12,6 +12,8 @@ FILE_DEB_64=foobnix_$VERSION-${RELEASE}_amd64.deb
 
 LIST=($FILE_TAR_GZ $FILE_DEB_32 $FILE_DEB_64) 
 
+wget http://www.foobnix.com/set_version?version=$VERSION-${RELEASE} -O /tmp/out.txt
+
 
 for FILE_NAME in ${LIST[@]}
 do

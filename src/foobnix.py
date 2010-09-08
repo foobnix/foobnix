@@ -32,8 +32,6 @@ class Manager(dbus.service.Object):
         self.interface.play_args(args)
         
 def on_mediakey(comes_from, what):
-    
-    print comes_from, what 
     """
     gets called when multimedia keys are pressed down.
     """
