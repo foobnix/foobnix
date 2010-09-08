@@ -24,8 +24,8 @@ class Manager(dbus.service.Object):
             mm_object = bus.get_object('org.gnome.SettingsDaemon', '/org/gnome/SettingsDaemon/MediaKeys')
             mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
             mm_object.connect_to_signal('MediaPlayerKeyPressed', on_mediakey)
-        except:
-            print "your OS is not GNOME"
+        except Exception, e:
+            print "your OS is not GNOME", e
 
 
     @dbus.service.method('org.foobnix_player.Foobnix')
