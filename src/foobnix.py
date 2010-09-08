@@ -18,6 +18,13 @@ class Manager(dbus.service.Object):
         self.bus = dbus.SessionBus()
         bus_name = dbus.service.BusName("org.foobnix_player.Foobnix", bus=self.bus)
         dbus.service.Object.__init__(self, bus_name, object_path)
+        
+        
+        dbus_interface = 'org.gnome.SettingsDaemon.MediaKeys'
+        mm_object = bus.get_object('org.gnome.SettingsDaemon', '/org/gnome/SettingsDaemon/MediaKeys')
+        mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
+        mm_object.connect_to_signal('MediaPlayerKeyPressed', on_mediakey)
+
 
     @dbus.service.method('org.foobnix_player.Foobnix')
     def interactive_play_args(self, args):
@@ -25,6 +32,8 @@ class Manager(dbus.service.Object):
         self.interface.play_args(args)
         
 def on_mediakey(comes_from, what):
+    
+    print comes_from, what 
     """
     gets called when multimedia keys are pressed down.
     """
@@ -32,7 +41,7 @@ def on_mediakey(comes_from, what):
         if what == 'Stop':
             thread.start_new_thread(os.system, ("foobnix --stop",))            
         elif what == 'Play':
-            thread.start_new_thread(os.system, ("foobnix --play",))
+            thread.start_new_thread(os.system, ("foobnix --play-pause",))
         elif what == 'Next':
             thread.start_new_thread(os.system, ("foobnix --next",))
         elif what == 'Previous':
@@ -79,11 +88,6 @@ else:
     proxy = bus.get_object('org.foobnix_player.Foobnix', '/org/foobnix_player/FoobnixObject')    
     iface = dbus.Interface(proxy, 'org.foobnix_player.Foobnix')
     
-    dbus_interface = 'org.gnome.SettingsDaemon.MediaKeys'
-    mm_object = bus.get_object('org.gnome.SettingsDaemon', '/org/gnome/SettingsDaemon/MediaKeys')
-    mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
-    mm_object.connect_to_signal('MediaPlayerKeyPressed', on_mediakey)
-
     if sys.argv:
         iface.interactive_play_args(str(sys.argv))
 

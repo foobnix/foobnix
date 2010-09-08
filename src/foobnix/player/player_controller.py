@@ -280,6 +280,9 @@ class  PlayerController(BaseController):
     def _isStatusNull(self):
         return self.player.get_state()[1] == gst.STATE_NULL
     
+    def is_state_playing(self):
+        return self.player.get_state()[1] == gst.STATE_PLAYING
+    
     def _get_state(self):
         if self.player:
             return self.player.get_state()[1]
