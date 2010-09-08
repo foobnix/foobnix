@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sonata\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-05 21:31+0300\n"
+"POT-Creation-Date: 2010-09-08 21:49+0300\n"
 "PO-Revision-Date: 2007-02-09 11:04+0200\n"
 "Last-Translator: Dogmatist Demon <dogmaton@gmail.com>\n"
 "Language-Team: Ukranian\n"
@@ -19,51 +19,52 @@ msgstr ""
 msgid "New version is available"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:155
+#: .././foobnix/directory/directory_controller.py:153
 msgid "New play list"
 msgstr "Новый плей лист"
 
 #. menu.add_item(_"Set"), gtk.STOCK_INDEX, func, arg)
-#: .././foobnix/directory/directory_controller.py:174
+#: .././foobnix/directory/directory_controller.py:172
 msgid "Create new"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:175
-#: .././foobnix/directory/directory_controller.py:339
+#: .././foobnix/directory/directory_controller.py:173
+#: .././foobnix/directory/directory_controller.py:337
 msgid "Delete"
 msgstr "Удалить"
 
-#: .././foobnix/directory/directory_controller.py:209
-#: .././foobnix/directory/directory_controller.py:329
+#: .././foobnix/directory/directory_controller.py:207
+#: .././foobnix/directory/directory_controller.py:327
 msgid "Update Music Tree"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:330
-#: .././foobnix/directory/directory_controller.py:338
+#: .././foobnix/directory/directory_controller.py:328
+#: .././foobnix/directory/directory_controller.py:336
+#: .././foobnix/preferences/configs/hotkey_conf.py:120
 #: .././foobnix/online/information_controller.py:88
-#: .././foobnix/online/online_controller.py:525
+#: .././foobnix/online/online_controller.py:524
 #: .././foobnix/glade/foobnix.glade.h:22
 #, fuzzy
 msgid "Play"
 msgstr "Плей листы"
 
-#: .././foobnix/directory/directory_controller.py:331
+#: .././foobnix/directory/directory_controller.py:329
 #, fuzzy
 msgid "Add folder"
 msgstr "_Файл"
 
-#: .././foobnix/directory/directory_controller.py:344
-#: .././foobnix/preferences/configs/music_library.py:122
-#: .././foobnix/online/online_controller.py:219
+#: .././foobnix/directory/directory_controller.py:342
+#: .././foobnix/preferences/configs/music_library.py:129
+#: .././foobnix/online/online_controller.py:218
 msgid "Choose directory with music"
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:476
+#: .././foobnix/directory/directory_controller.py:477
 msgid "Updating music, please wait... "
 msgstr ""
 
-#: .././foobnix/directory/directory_controller.py:483
-#: .././foobnix/directory/directory_controller.py:494
+#: .././foobnix/directory/directory_controller.py:484
+#: .././foobnix/directory/directory_controller.py:495
 #, fuzzy
 msgid "Music not found"
 msgstr "Музыка не найдена в"
@@ -77,22 +78,77 @@ msgstr "Название"
 msgid "My play lists"
 msgstr "Мои плей листы"
 
-#: .././foobnix/preferences/preferences_window.py:104
+#: .././foobnix/preferences/preferences_window.py:107
 msgid "Preferences"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:120
+#: .././foobnix/preferences/preferences_window.py:123
 msgid "Categories"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:149
+#: .././foobnix/preferences/preferences_window.py:152
 #: .././foobnix/online/information_controller.py:89
-#: .././foobnix/online/online_controller.py:526
+#: .././foobnix/online/online_controller.py:525
 msgid "Save"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:154
+#: .././foobnix/preferences/preferences_window.py:157
 msgid "Cancel"
+msgstr ""
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:17
+msgid "Global Hotkeys"
+msgstr ""
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:31
+#, fuzzy
+msgid "Action"
+msgstr "Иконка"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:32
+msgid "Hotkey"
+msgstr ""
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:40
+#: .././foobnix/preferences/configs/music_library.py:63
+#: .././foobnix/preferences/configs/music_library.py:170
+msgid "Add"
+msgstr "Добавить"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:45
+#: .././foobnix/preferences/configs/music_library.py:68
+#: .././foobnix/preferences/configs/music_library.py:175
+msgid "Remove"
+msgstr ""
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:121
+#: .././foobnix/glade/foobnix.glade.h:21
+msgid "Pause"
+msgstr ""
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:122
+msgid "Stop"
+msgstr ""
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:123
+#: .././foobnix/glade/foobnix.glade.h:20
+msgid "Next song"
+msgstr ""
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:124
+msgid "Previous song"
+msgstr ""
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:125
+msgid "Voulume up"
+msgstr ""
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:126
+msgid "Voulume down"
+msgstr ""
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:127
+msgid "Show-Hide"
 msgstr ""
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:12
@@ -101,6 +157,10 @@ msgstr ""
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:23
 msgid "Disc cover size"
+msgstr ""
+
+#: .././foobnix/preferences/configs/info_panel_conf.py:37
+msgid "Lyric panel size"
 msgstr ""
 
 #: .././foobnix/preferences/configs/last_fm.py:13
@@ -123,43 +183,37 @@ msgstr ""
 msgid "Music Library"
 msgstr "Листы музыки"
 
-#: .././foobnix/preferences/configs/music_library.py:32
+#: .././foobnix/preferences/configs/music_library.py:26
+msgid "Get music from child folders"
+msgstr ""
+
+#: .././foobnix/preferences/configs/music_library.py:38
 #, fuzzy
 msgid "Music dirs"
 msgstr "Папку с музыкой"
 
-#: .././foobnix/preferences/configs/music_library.py:44
+#: .././foobnix/preferences/configs/music_library.py:50
 msgid "Path"
 msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:48
-#: .././foobnix/preferences/configs/music_library.py:70
+#: .././foobnix/preferences/configs/music_library.py:54
+#: .././foobnix/preferences/configs/music_library.py:76
 msgid "Reload"
 msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:57
-#: .././foobnix/preferences/configs/music_library.py:163
-msgid "Add"
-msgstr "Добавить"
-
-#: .././foobnix/preferences/configs/music_library.py:62
-#: .././foobnix/preferences/configs/music_library.py:168
-msgid "Remove"
-msgstr ""
-
-#: .././foobnix/preferences/configs/music_library.py:145
+#: .././foobnix/preferences/configs/music_library.py:152
 msgid "File Types"
 msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:156
+#: .././foobnix/preferences/configs/music_library.py:163
 msgid "Extension"
 msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:194
+#: .././foobnix/preferences/configs/music_library.py:201
 msgid "Please add audio extension"
 msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:194
+#: .././foobnix/preferences/configs/music_library.py:201
 msgid "Extension should be like '.mp3'"
 msgstr ""
 
@@ -246,24 +300,24 @@ msgstr ""
 msgid "Close tab sign"
 msgstr ""
 
-#: .././foobnix/preferences/configs/try_icon.py:14
+#: .././foobnix/preferences/configs/tray_icon.py:14
 #, fuzzy
 msgid "Tray Icon"
 msgstr "Иконка"
 
-#: .././foobnix/preferences/configs/try_icon.py:22
+#: .././foobnix/preferences/configs/tray_icon.py:22
 msgid "Show tray icon"
 msgstr ""
 
-#: .././foobnix/preferences/configs/try_icon.py:26
+#: .././foobnix/preferences/configs/tray_icon.py:26
 msgid "On close window - close player"
 msgstr ""
 
-#: .././foobnix/preferences/configs/try_icon.py:29
+#: .././foobnix/preferences/configs/tray_icon.py:29
 msgid "On close window - hide player"
 msgstr ""
 
-#: .././foobnix/preferences/configs/try_icon.py:33
+#: .././foobnix/preferences/configs/tray_icon.py:33
 msgid "On close window - minimize player"
 msgstr ""
 
@@ -277,12 +331,12 @@ msgid "Similar to: "
 msgstr "Схожі пісні"
 
 #: .././foobnix/online/information_controller.py:61
-#: .././foobnix/online/online_controller.py:478
+#: .././foobnix/online/online_controller.py:477
 msgid "Choose directory to save song"
 msgstr ""
 
 #: .././foobnix/online/information_controller.py:90
-#: .././foobnix/online/online_controller.py:527
+#: .././foobnix/online/online_controller.py:526
 msgid "Save as"
 msgstr ""
 
@@ -295,7 +349,7 @@ msgid "Add all to tab"
 msgstr ""
 
 #: .././foobnix/online/information_controller.py:93
-#: .././foobnix/online/online_controller.py:529
+#: .././foobnix/online/online_controller.py:528
 #, fuzzy
 msgid "Delete from list"
 msgstr "по замовчуванню"
@@ -304,72 +358,72 @@ msgstr "по замовчуванню"
 msgid "Info"
 msgstr ""
 
-#: .././foobnix/online/information_controller.py:178
+#: .././foobnix/online/information_controller.py:180
 #, fuzzy
 msgid "Similar Artists"
 msgstr "Схожі виконацві"
 
-#: .././foobnix/online/information_controller.py:182
+#: .././foobnix/online/information_controller.py:184
 #, fuzzy
 msgid "Similar Songs"
 msgstr "Схожі пісні"
 
-#: .././foobnix/online/information_controller.py:186
+#: .././foobnix/online/information_controller.py:188
 #, fuzzy
 msgid "Similar Tags"
 msgstr "Схожі теги"
 
-#: .././foobnix/online/information_controller.py:301
+#: .././foobnix/online/information_controller.py:303
 #, fuzzy
 msgid "Lyric not found"
 msgstr "Музыка не найдена в"
 
-#: .././foobnix/online/online_controller.py:162
+#: .././foobnix/online/online_controller.py:161
 msgid "Choose file to open"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:192
+#: .././foobnix/online/online_controller.py:191
 msgid "Nothing found to play in the file(s)"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:216
+#: .././foobnix/online/online_controller.py:215
 msgid "Nothing found to play in the folder(s)"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:327
+#: .././foobnix/online/online_controller.py:326
 msgid "Close"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:399
+#: .././foobnix/online/online_controller.py:398
 msgid " not found on last.fm, wait for google suggests ..."
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:405
+#: .././foobnix/online/online_controller.py:404
 msgid "Google not found suggests"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:414
+#: .././foobnix/online/online_controller.py:413
 #, fuzzy
 msgid "Searching: "
 msgstr "Поиск"
 
-#: .././foobnix/online/online_controller.py:414
+#: .././foobnix/online/online_controller.py:413
 msgid " ... please wait a second"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:528
+#: .././foobnix/online/online_controller.py:527
 msgid "Add to virtual"
 msgstr ""
 
-#: .././foobnix/online/online_controller.py:530
+#: .././foobnix/online/online_controller.py:529
 msgid "Show info"
 msgstr ""
 
-#: .././foobnix/online/online_model.py:41
+#: .././foobnix/online/online_model.py:42
 msgid "Artist - Title"
 msgstr "Артист - Назва пісні"
 
-#: .././foobnix/online/online_model.py:50
+#: .././foobnix/online/online_model.py:51
 #, fuzzy
 msgid "Time"
 msgstr "Название"
@@ -471,14 +525,6 @@ msgstr ""
 #, fuzzy
 msgid "Music"
 msgstr "Музыка"
-
-#: .././foobnix/glade/foobnix.glade.h:20
-msgid "Next song"
-msgstr ""
-
-#: .././foobnix/glade/foobnix.glade.h:21
-msgid "Pause"
-msgstr ""
 
 #: .././foobnix/glade/foobnix.glade.h:23
 #, fuzzy

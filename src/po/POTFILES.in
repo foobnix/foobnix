@@ -11,6 +11,7 @@
 ./foobnix/preferences/config_plugin.py
 ./foobnix/preferences/preferences_window.py
 ./foobnix/preferences/configs/category_info.py
+./foobnix/preferences/configs/hotkey_conf.py
 ./foobnix/preferences/configs/info_panel_conf.py
 ./foobnix/preferences/configs/last_fm.py
 ./foobnix/preferences/configs/music_library.py
@@ -18,7 +19,7 @@
 ./foobnix/preferences/configs/notification_conf.py
 ./foobnix/preferences/configs/save_online.py
 ./foobnix/preferences/configs/tabs.py
-./foobnix/preferences/configs/try_icon.py
+./foobnix/preferences/configs/tray_icon.py
 ./foobnix/preferences/configs/vk_conf.py
 ./foobnix/online/dowload_util.py
 ./foobnix/online/google_search.py
