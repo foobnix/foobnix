@@ -116,13 +116,15 @@ class  PlayerController(BaseController):
             LOG.info("URL PLAYING", song.path)
             path = get_radio_source(song.path)
             
-            self.get_player(path)            
+            self.get_player(path)   
+            self.widgets.setStatusText(path)         
             
             self.widgets.seekBar.set_text("Url Playing...")
         elif song.type == CommonBean.TYPE_MUSIC_URL:
             LOG.info("URL PLAYING", song.path)
             
-            self.get_player(song.path)                        
+            self.get_player(song.path)      
+            #self.widgets.setStatusText(song.)                  
             
             self.playerThreadId = thread.start_new_thread(self.playThread, (song,))
         else:
