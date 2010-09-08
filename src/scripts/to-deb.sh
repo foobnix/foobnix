@@ -28,7 +28,7 @@ checkinstall \
 --deldesc=yes \
 --delspec=yes \
 --backup=no \
---requires="dbus, python-dbus, gnome-settings-daemon, gstreamer0.10-alsa, python-keybinder, python-chardet, python-gtk2, python-glade2, python-mutagen, python-simplejson, python-setuptools,  gstreamer0.10-plugins-good,  gstreamer0.10-plugins-ugly, gstreamer0.10-ffmpeg, python-gst0.10" \
+--requires="dbus, python-dbus, gstreamer0.10-alsa, python-keybinder, python-chardet, python-gtk2, python-glade2, python-mutagen, python-simplejson, python-setuptools,  gstreamer0.10-plugins-good,  gstreamer0.10-plugins-ugly, gstreamer0.10-ffmpeg, python-gst0.10" \
 --maintainer="Ivan Ivanenko ivan.ivanenko@gmail.com" \
 python setup.py install
 
