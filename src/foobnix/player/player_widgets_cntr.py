@@ -187,7 +187,8 @@ class PlayerWidgetsCntl():
                       
    
     def setStatusText(self, text):
-        self.statusbar.push(0, text)
+        if text:
+            self.statusbar.push(0, text)
    
     def setLiric(self, song):
         pass

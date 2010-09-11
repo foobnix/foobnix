@@ -60,6 +60,8 @@ def get_radio_source(url):
         elif url.endswith(".m3u"):
             content = get_content(url)
             LOG.info("Radio content", content)
+            if not content:
+                return None
             for line in content.rsplit():
                 if line.startswith("http://"):
                     LOG.info("Radio url", line)
