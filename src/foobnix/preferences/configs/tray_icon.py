@@ -33,10 +33,16 @@ class TrayIconConfig(ConfigPlugin):
         self.minimize_button = gtk.RadioButton(self.close_button, label=_("On close window - minimize player"))
         self.minimize_button.show()
         
+        """close on leave popup"""
+        self.tray_icon_auto_hide = gtk.CheckButton(label=_("Automatic hide tray icon popup on mouse leave"), use_underline=True)        
+        self.tray_icon_auto_hide.show()
+        
         box.pack_start(self.tray_icon_button, False, True, 0)
         box.pack_start(self.close_button, False, True, 0)
         box.pack_start(self.hide_button, False, True, 0)
         box.pack_start(self.minimize_button, False, True, 0)
+        box.pack_start(self.tray_icon_auto_hide, False, True, 0)
+        
         
         self.widget = box
 
@@ -54,7 +60,7 @@ class TrayIconConfig(ConfigPlugin):
             
     def on_load(self):
         self.tray_icon_button.set_active(FConfiguration().show_tray_icon)
-        
+        self.tray_icon_auto_hide.set_active(FConfiguration().tray_icon_auto_hide)
         if FConfiguration().on_close_window == const.ON_CLOSE_CLOSE:
             self.close_button.set_active(True)
             
@@ -63,9 +69,12 @@ class TrayIconConfig(ConfigPlugin):
             
         elif FConfiguration().on_close_window == const.ON_CLOSE_MINIMIZE:
             self.minimize_button.set_active(True)
+            
+            
         
     def on_save(self):
         FConfiguration().show_tray_icon = self.tray_icon_button.get_active() 
+        FConfiguration().tray_icon_auto_hide = self.tray_icon_auto_hide.get_active()
         
         if  self.close_button.get_active():
             FConfiguration().on_close_window = const.ON_CLOSE_CLOSE

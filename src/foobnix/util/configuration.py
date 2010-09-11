@@ -145,6 +145,8 @@ class FConfiguration:
         self.add_child_folders = True
         self.lyric_panel_image_size = 250
         
+        self.tray_icon_auto_hide = True
+        
         self.action_hotkey = {'foobnix --volume-up': '<SUPER>Up', 'foobnix --volume-down': '<SUPER>Down', 'foobnix --show-hide': '<SUPER>a', 'foobnix --prev': '<SUPER>Left', 'foobnix --play': '<SUPER>x', 'foobnix --pause': '<SUPER>z', 'foobnix --next': '<SUPER>Right'}
    
         instance = self._loadCfgFromFile(is_load_file)
@@ -212,6 +214,7 @@ class FConfiguration:
                 self.lyric_panel_image_size = instance.lyric_panel_image_size
                 
                 self.action_hotkey = instance.action_hotkey
+                self.tray_icon_auto_hide = instance.tray_icon_auto_hide
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")
