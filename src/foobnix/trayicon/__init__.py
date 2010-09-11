@@ -34,6 +34,11 @@ class TrayIcon(BaseController):
         BaseController.__init__(self)
         
         self.popup = gx_tray_icon.get_widget("popUpWindow")
+        toolbar = gx_tray_icon.get_widget("vbox1")
+        #toolbar.connect("leave-notify-event", self.on_leave_window)        
+        text = gx_tray_icon.get_widget("text1")
+        #text.connect("leave-notify-event", self.on_leave_window)
+        
         self.popup.connect("leave-notify-event", self.on_leave_window)        
         self.text1 = gx_tray_icon.get_widget("text1")
         self.text2 = gx_tray_icon.get_widget("text2")
@@ -74,19 +79,17 @@ class TrayIcon(BaseController):
             self.show()
         else:
             self.hide()
-        
-        self.leave_count = 0
     
     def on_leave_window(self, w, event):
+        max_x, max_y = w.size_request()
+        x, y = event.x, event.y
+        if 0 < x < max_x and 0 < y < max_y:
+            return True
+                
         if not FConfiguration().tray_icon_auto_hide:
-            return None        
-        if self.leave_count > 1:
-            self.leave_count = 0
-            self.popup.hide()
-        else:                
-            self.leave_count += 1
-            
-        #self.popup.hide()
+            return True
+        
+        self.popup.hide()           
         
     
     def show(self):
