@@ -15,6 +15,7 @@ from foobnix.util import LOG
 import mutagen.mp3
 class CommonBean():
     TYPE_FOLDER = "TYPE_FOLDER"    
+    TYPE_RADIO_FOLDER = "TYPE_RADIO_FOLDER"
     TYPE_LABEL = "TYPE_LABEL"
     TYPE_GOOGLE_HELP = "TYPE_GOOGLE_HELP"
     TYPE_MUSIC_FILE = "TYPE_MUSIC_FILE"

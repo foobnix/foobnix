@@ -24,6 +24,8 @@ from socket import gethostname
 import urllib2
 from foobnix.helpers.dialog_entry import info_dialog_with_link
 from foobnix.util import LOG
+import thread
+import time
 
 class AppController(BaseController):
 
@@ -98,6 +100,7 @@ class AppController(BaseController):
       
         self.check_version()
         
+        
     def check_version(self):        
         uuid = FConfiguration().uuid
         current_version = VERSION
@@ -160,7 +163,6 @@ class AppController(BaseController):
         gtk.main_quit()
     
     def restore_state(self):
-        
         if FConfiguration().playlistState:
             self.playlistCntr.setState(FConfiguration().playlistState)
         
@@ -174,10 +176,23 @@ class AppController(BaseController):
         if FConfiguration().radiolistState:
             self.radioListCntr.setState(FConfiguration().radiolistState)
         
-        if FConfiguration().isPlayOnStart:
-            self.player_controller.next()
+        if FConfiguration().save_tabs:
+            self.onlineCntr.append_notebook_page(FConfiguration().last_notebook_page)
+            
+            if FConfiguration().play_on_start:
+                self.onlineCntr.append_and_play(FConfiguration().last_notebook_beans, FConfiguration().last_play_bean)
+            else:
+                self.onlineCntr.append(FConfiguration().last_notebook_beans)
+                
+                
+                    
+        
     
     def save_state(self):
+        FConfiguration().last_notebook_page = self.onlineCntr.last_notebook_page
+        FConfiguration().last_notebook_beans = self.onlineCntr.last_notebook_beans
+        FConfiguration().last_play_bean = self.onlineCntr.index
+        
         FConfiguration().playlistState = self.playlistCntr.getState()
         FConfiguration().virtualListState = self.directoryCntr.getState()
         

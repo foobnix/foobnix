@@ -113,8 +113,8 @@ class TrayIcon(BaseController):
         self.text2.set_text(text)
     
     def on_song_started(self, sender, song):
-        self.setText1(song.name[:100])
-        self.icon.set_tooltip(song.name[:100])
+        self.setText1(song.name[:50])
+        self.icon.set_tooltip(song.name)
 
     def on_mouse_wheel_scrolled(self, w, event):
         if event.direction == gtk.gdk.SCROLL_UP:    #@UndefinedVariable

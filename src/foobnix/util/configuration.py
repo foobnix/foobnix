@@ -64,6 +64,7 @@ class FConfiguration:
     #    return self.config.get(self.FOOBNIX, self.SUPPORTED_AUDIO_FORMATS)
     check_create_cfg_dir()
     def __init__(self, is_load_file=True):
+        import foobnix.util.localization
         
         self.media_library_path = [tempfile.gettempdir()]
         
@@ -83,8 +84,8 @@ class FConfiguration:
         
         ### view panels ###
         self.view_tree_panel = True
-        self.view_search_panel = False
-        self.view_info_panel = False
+        self.view_search_panel = True
+        self.view_info_panel = True
         self.view_lyric_panel = False
         
         self.playlistState = None
@@ -148,6 +149,13 @@ class FConfiguration:
         self.tray_icon_auto_hide = True
         
         self.action_hotkey = {'foobnix --volume-up': '<SUPER>Up', 'foobnix --volume-down': '<SUPER>Down', 'foobnix --show-hide': '<SUPER>a', 'foobnix --prev': '<SUPER>Left', 'foobnix --play': '<SUPER>x', 'foobnix --pause': '<SUPER>z', 'foobnix --next': '<SUPER>Right'}
+        
+        
+        self.last_notebook_page = _("My play list")
+        self.last_notebook_beans = []
+        self.last_play_bean = 0
+        self.save_tabs = True
+        self.play_on_start = True
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -215,6 +223,12 @@ class FConfiguration:
                 
                 self.action_hotkey = instance.action_hotkey
                 self.tray_icon_auto_hide = instance.tray_icon_auto_hide
+                
+                self.last_notebook_page = instance.last_notebook_page
+                self.last_notebook_beans = instance.last_notebook_beans
+                self.play_on_start = instance.play_on_start
+                self.save_tabs = instance.save_tabs
+                self.last_play_bean = instance.last_play_bean
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

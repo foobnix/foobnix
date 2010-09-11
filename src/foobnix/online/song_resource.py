@@ -12,7 +12,8 @@ from foobnix.util.configuration import FConfiguration
 
 try:
     vk = Vkontakte(FConfiguration().vk_login, FConfiguration().vk_password)
-except:
+except Exception, e:    
+    print e
     vk = None
     LOG.error("Vkontakte connection error")
 

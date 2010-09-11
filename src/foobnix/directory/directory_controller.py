@@ -245,7 +245,7 @@ class DirectoryCntr():
         files = self.radio_folder.get_radio_FPLs()
         for fpl in files:
             parent = self.current_list_model.append(None, CommonBean(name=fpl.name, path=None,
-                                                                     font="bold", is_visible=True, type=CommonBean.TYPE_FOLDER))
+                                                                     font="bold", is_visible=True, type=CommonBean.TYPE_RADIO_FOLDER))
             for radio, urls in fpl.urls_dict.iteritems():
                 self.current_list_model.append(parent, CommonBean(name=radio, path=urls[0],
                                                                   font="normal", is_visible=True, type=CommonBean.TYPE_RADIO_URL,
@@ -266,7 +266,7 @@ class DirectoryCntr():
 
         "Displya list title"
         self.current_list_model.append(None, CommonBean(name="[" + self.currentListMap + "]", path=None,
-                                                        font="bold", is_visible=True, type=CommonBean.TYPE_LABEL,
+                                                        font="bold", is_visible=True, type=CommonBean.TYPE_RADIO_FOLDER,
                                                         parent=None, index=0))
 
         if not items:
@@ -396,10 +396,17 @@ class DirectoryCntr():
         if append and not self.playlistCntr.current_list_model:
                 self.playlistCntr.append_notebook_page(directoryBean.name)
 
-        if directoryBean.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP] :
-            if FConfiguration().add_child_folders:
+        
+
+        if directoryBean.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP, CommonBean.TYPE_RADIO_FOLDER] :
+            if directoryBean.type == CommonBean.TYPE_RADIO_FOLDER:
+                LOG.info("Radio folder")
+                songs = self.current_list_model.getChildSongBySelected()
+            elif FConfiguration().add_child_folders:
+                LOG.info("dir folder requrcive folder")
                 songs = self.get_common_beans_by_folder(directoryBean.path)
             else:
+                LOG.info("dir folder NOT requrcive folder")
                 songs = self.current_list_model.getChildSongBySelected()
 
             self.update_songs_time(songs)

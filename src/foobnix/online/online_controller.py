@@ -64,6 +64,8 @@ class OnlineListCntr(GObject):
         self.tab_vboxes = []
         self.tab_hboxes = []
         self.default_angel = 90
+        self.last_notebook_page = ""
+        self.last_notebook_beans = []
     
     def get_file_path_from_dnd_dropped_uri(self, uri):
         # get the path to file
@@ -258,6 +260,7 @@ class OnlineListCntr(GObject):
         return  window    
         
     def append_notebook_page(self, name):
+        self.last_notebook_page = name
         LOG.info("append new tab")
         if name and len(name) > FConfiguration().len_of_tab:
             name = name[:FConfiguration().len_of_tab]
@@ -313,6 +316,7 @@ class OnlineListCntr(GObject):
         
         if self.online_notebook.get_n_pages() > FConfiguration().count_of_tabs:
             self.online_notebook.remove_page(self.online_notebook.get_n_pages() - 1)
+    
         
     
     def on_tab_click(self, w, e):
@@ -440,18 +444,18 @@ class OnlineListCntr(GObject):
                 
                 normilized.append(bean)
         
-        
+        self.last_notebook_beans = normilized
         return normilized
 
     def append(self, beans):
         self._populate_model(beans)
         self.current_list_model.repopulate(-1)
 
-    def append_and_play(self, beans):
+    def append_and_play(self, beans, index=0):
         beans = self._populate_model(beans)
         if not beans:
             return None
-        self.index = 0    
+        self.index = index    
         self.current_list_model.repopulate(self.index)
         song = beans[self.index]
         LOG.info("PLAY", song)

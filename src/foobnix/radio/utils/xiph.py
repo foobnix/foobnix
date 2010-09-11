@@ -7,9 +7,9 @@ import urllib2
 from foobnix.util.plsparser import get_radio_source
 def load_urls_name_page():    
     file = open("XIPH_ORG.fpl", "w")
-    for i in xrange(5):    
+    for i in xrange(7):    
         print "begin"
-        connect = urllib2.urlopen("http://dir.xiph.org/by_format/MP3?search=MP3&page=" + str(i))
+        connect = urllib2.urlopen("http://dir.xiph.org/by_format/MP3?search=mp3&page=" + str(i))
         data = connect.read()
         print "end"  
         
