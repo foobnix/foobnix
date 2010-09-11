@@ -156,6 +156,7 @@ class FConfiguration:
         self.last_play_bean = 0
         self.save_tabs = True
         self.play_on_start = True
+        self.configure_state = None
    
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -229,6 +230,7 @@ class FConfiguration:
                 self.play_on_start = instance.play_on_start
                 self.save_tabs = instance.save_tabs
                 self.last_play_bean = instance.last_play_bean
+                self.configure_state = instance.configure_state
                 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

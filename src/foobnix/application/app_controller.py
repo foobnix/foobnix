@@ -184,7 +184,9 @@ class AppController(BaseController):
             else:
                 self.onlineCntr.append(FConfiguration().last_notebook_beans)
                 
-                
+        
+        self.main_window_controller.on_load()
+        
                     
         
     
@@ -203,6 +205,6 @@ class AppController(BaseController):
         if self.playerWidgets.hpanel.get_position() > 0:
             FConfiguration().hpanelPostition = self.playerWidgets.hpanel.get_position()        
         
-        
+        self.main_window_controller.on_save()
         FConfiguration().save()
 

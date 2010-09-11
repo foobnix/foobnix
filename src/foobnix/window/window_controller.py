@@ -33,12 +33,27 @@ class WindowController(BaseController):
         self.main_window.connect("delete-event", self.hide)
         self.main_window.set_title("Foobnix " + VERSION)
         self.main_window.connect("window-state-event", self.window_state_event_cb)
+        self.main_window.connect("configure-event", self.on_configure_event)
         #self.main_window.maximize()
 
         self.about_window = gx_about.get_widget("aboutdialog")
         self.about_window.connect("delete-event", self.hide_about_window)
         
         self.tray_icon = None
+        self.configure_state = None
+        
+    def on_load(self):
+        cfg = FConfiguration().configure_state
+        if cfg:
+            print cfg
+            self.main_window.move(cfg[0], cfg[1])
+            self.main_window.set_default_size(cfg[2], cfg[3])
+    
+    def on_save(self):
+        FConfiguration().configure_state = self.configure_state
+    
+    def on_configure_event(self, w, e):
+        self.configure_state = [e.x, e.y, e.width, e.height]
 
     def on_song_started(self, sender, song):
         self.main_window.set_title(song.getTitleDescription())

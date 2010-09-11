@@ -348,7 +348,12 @@ class InformationController():
         
         """similar artists"""
         artist = track.get_artist()
-        similar_artists = artist.get_similar(15)
+        try:
+            similar_artists = artist.get_similar(25)
+        except Exception, e:
+            LOG.error(e)            
+            return None
+        
        
         self.similar_artists_cntr.clear()
         for artist in similar_artists:
