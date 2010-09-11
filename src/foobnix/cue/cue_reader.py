@@ -10,6 +10,7 @@ from foobnix.util.time_utils import normilize_time
 from foobnix.util import LOG, file_utils
 import chardet
 import re
+from foobnix.util.image_util import get_image_by_path
 '''
 Created on 4 
 
@@ -118,28 +119,6 @@ class CueReader():
         LOG.info("CUE VALID", self.cue_file, self.is_valid)
         return self.is_valid
     
-    
-    """find image and return full url to it"""
-    def get_image_by_path(self, path):
-        dir = os.path.dirname(path)
-        files = os.listdir(dir)
-        for file in files:
-            if file.lower().endswith(".jpg"):
-                original = file
-                file = file.lower()
-                if file.find("cover") >= 0:
-                    return os.path.join(dir, original)
-                if file.find("face") >= 0:
-                    return os.path.join(dir, original)
-                if file.find("front") >= 0:
-                    return os.path.join(dir, original)
-                if file.find("case") >= 0:
-                    return os.path.join(dir, original)
-                """return any"""
-                return os.path.join(dir, original)
-        return None
-    
-    
     """detect file encoding"""
     def code_detecter(self, filename):
         with open(filename) as codefile:
@@ -161,7 +140,7 @@ class CueReader():
         index = "00:00:00"
         full_file = None
         
-        cue_file.image = self.get_image_by_path(self.cue_file)
+        cue_file.image = get_image_by_path(self.cue_file)
         
         self.files_count = 0
         

@@ -85,7 +85,7 @@ class FConfiguration:
         ### view panels ###
         self.view_tree_panel = True
         self.view_search_panel = True
-        self.view_info_panel = True
+        self.view_info_panel = False
         self.view_lyric_panel = False
         
         self.playlistState = None

@@ -18,6 +18,7 @@ from foobnix.base import SIGNAL_RUN_FIRST, TYPE_NONE, TYPE_PYOBJECT
 from foobnix.online.dowload_util import dowload_song_thread
 from foobnix.util.plsparser import get_radio_source
 from foobnix.util.configuration import FConfiguration
+from foobnix.util.image_util import get_image_by_path
 
 
 
@@ -100,8 +101,9 @@ class  PlayerController(BaseController):
         LOG.info("Name", song.name)
         
         self.widgets.setStatusText("")
-        if  song.type == CommonBean.TYPE_MUSIC_FILE:
+        if  song.type == CommonBean.TYPE_MUSIC_FILE:            
             if song.path != self.prev_path:
+                song.image = get_image_by_path(song.path)
                 self.prev_path = song.path
                 self.player = self.playerLocal()
                 uri = 'file://' + urllib.pathname2url(song.path)
