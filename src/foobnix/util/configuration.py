@@ -64,7 +64,6 @@ class FConfiguration:
     #    return self.config.get(self.FOOBNIX, self.SUPPORTED_AUDIO_FORMATS)
     check_create_cfg_dir()
     def __init__(self, is_load_file=True):
-        import foobnix.util.localization
         
         self.media_library_path = [tempfile.gettempdir()]
         
@@ -151,7 +150,7 @@ class FConfiguration:
         self.action_hotkey = {'foobnix --volume-up': '<SUPER>Up', 'foobnix --volume-down': '<SUPER>Down', 'foobnix --show-hide': '<SUPER>a', 'foobnix --prev': '<SUPER>Left', 'foobnix --play': '<SUPER>x', 'foobnix --pause': '<SUPER>z', 'foobnix --next': '<SUPER>Right'}
         
         
-        self.last_notebook_page = _("My play list")
+        self.last_notebook_page = "Foobnix"
         self.last_notebook_beans = []
         self.last_play_bean = 0
         self.save_tabs = True

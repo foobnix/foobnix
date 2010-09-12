@@ -369,20 +369,9 @@ def get_group_id(str):
     return str[index + len(search):]
 
 
-"""""
-FConfiguration().proxy_url = "68.68.99.149:3128"    
-FConfiguration().proxy_enable = True
-set_proxy_settings()    
-vk = Vkontakte("qax@bigmir.net", "foobnix")
-for song in  vk.find_song_urls("Madoona"):
-    print song.path
-
-init = time.time()
-f = urllib2.urlopen("http://www.vk.com")
-data = f.read()
-f.close()
-print time.time() - init
-print "finish"
-"""""
-
-
+#vk = Vkontakte("qax@bigmir.net", "foobnix")
+#print vk.get_s_value()
+#print vk.get_cookie()
+#print vk.get_page("Madonna")
+#for song in  vk.find_song_urls("Madoona"):
+#    print song.path

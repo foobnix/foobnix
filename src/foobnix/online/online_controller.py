@@ -452,6 +452,8 @@ class OnlineListCntr(GObject):
         self.current_list_model.repopulate(-1)
 
     def append_and_play(self, beans, index=0):
+        if not index:
+            index = 0
         beans = self._populate_model(beans)
         if not beans:
             return None

@@ -535,7 +535,7 @@ class DirectoryCntr():
 
         if not self.direcotory_thread:
             pass
-           # self.direcotory_thread = thread.start_new_thread(self.addAllThread, (reload,))
+            # self.direcotory_thread = thread.start_new_thread(self.addAllThread, (reload,))
             #self.addAllThread(reload)
         else:
             LOG.info("Directory is updating...")
