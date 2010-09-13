@@ -864,8 +864,10 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkHBox" id="hbox3">
+                  <widget class="GtkHPaned" id="hpaned2">
                     <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="position">350</property>
                     <child>
                       <widget class="GtkNotebook" id="online_notebook">
                         <property name="width_request">300</property>
@@ -883,248 +885,265 @@
                         </child>
                       </widget>
                       <packing>
-                        <property name="position">0</property>
+                        <property name="resize">False</property>
+                        <property name="shrink">True</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkFrame" id="lyric_frame">
+                      <widget class="GtkHBox" id="hbox3">
                         <property name="visible">True</property>
-                        <property name="label_xalign">0</property>
-                        <property name="shadow_type">none</property>
+                        <property name="homogeneous">True</property>
                         <child>
-                          <widget class="GtkVBox" id="vbox6">
+                          <widget class="GtkFrame" id="lyric_frame">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
+                            <property name="label_xalign">0</property>
+                            <property name="shadow_type">none</property>
                             <child>
-                              <widget class="GtkImage" id="lyric_image_widget">
+                              <widget class="GtkVBox" id="vbox6">
                                 <property name="visible">True</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkScrolledWindow" id="scrolledwindow2">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="orientation">vertical</property>
                                 <child>
-                                  <widget class="GtkTextView" id="lyric_text">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                  </widget>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkLabel" id="lyric_artist_title">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">&lt;b&gt;Lyric&lt;/b&gt;</property>
-                            <property name="use_markup">True</property>
-                            <property name="wrap">True</property>
-                          </widget>
-                          <packing>
-                            <property name="type">label_item</property>
-                          </packing>
-                        </child>
-                      </widget>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkFrame" id="info_frame">
-                        <property name="visible">True</property>
-                        <property name="label_xalign">0</property>
-                        <property name="shadow_type">none</property>
-                        <child>
-                          <widget class="GtkVBox" id="vbox11">
-                            <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
-                            <child>
-                              <widget class="GtkHBox" id="hbox16">
-                                <property name="visible">True</property>
-                                <child>
-                                  <widget class="GtkImage" id="image_widget">
+                                  <widget class="GtkImage" id="lyric_image_widget">
                                     <property name="visible">True</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </widget>
                                   <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkScrolledWindow" id="scrolledwindow9">
+                                  <widget class="GtkScrolledWindow" id="scrolledwindow2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="hscrollbar_policy">automatic</property>
                                     <property name="vscrollbar_policy">automatic</property>
                                     <child>
-                                      <widget class="GtkTreeView" id="treeview_similart_artists">
+                                      <widget class="GtkTextView" id="lyric_text">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                       </widget>
                                     </child>
                                   </widget>
                                   <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
                               </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
                             </child>
                             <child>
-                              <widget class="GtkHBox" id="hbox7">
+                              <widget class="GtkLabel" id="lyric_artist_title">
                                 <property name="visible">True</property>
-                                <child>
-                                  <widget class="GtkLinkButton" id="wiki_linkbutton">
-                                    <property name="label" translatable="yes">wiki</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="relief">none</property>
-                                    <property name="uri">http://www.foobnix.com</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <widget class="GtkLinkButton" id="lastfm_linkbutton">
-                                    <property name="label" translatable="yes">last.fm</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="relief">none</property>
-                                    <property name="uri">http://www.foobnix.com</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <widget class="GtkLinkButton" id="mb_linkbutton">
-                                    <property name="label" translatable="yes">musicbrainz</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="relief">none</property>
-                                    <property name="uri">http://www.foobnix.com</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="position">2</property>
-                                  </packing>
-                                </child>
+                                <property name="label" translatable="yes">&lt;b&gt;Lyric&lt;/b&gt;</property>
+                                <property name="use_markup">True</property>
+                                <property name="wrap">True</property>
                               </widget>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
+                                <property name="type">label_item</property>
                               </packing>
                             </child>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkFrame" id="info_frame">
+                            <property name="visible">True</property>
+                            <property name="label_xalign">0</property>
+                            <property name="shadow_type">none</property>
                             <child>
-                              <widget class="GtkFrame" id="frame3">
+                              <widget class="GtkVPaned" id="vpaned1">
                                 <property name="visible">True</property>
-                                <property name="label_xalign">0</property>
-                                <property name="shadow_type">none</property>
+                                <property name="can_focus">True</property>
+                                <property name="orientation">vertical</property>
                                 <child>
-                                  <widget class="GtkHBox" id="hbox13">
+                                  <widget class="GtkHBox" id="hbox16">
                                     <property name="visible">True</property>
                                     <child>
-                                      <widget class="GtkScrolledWindow" id="scrolledwindow1">
+                                      <widget class="GtkVBox" id="vbox9">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="hscrollbar_policy">automatic</property>
-                                        <property name="vscrollbar_policy">automatic</property>
+                                        <property name="orientation">vertical</property>
                                         <child>
-                                          <widget class="GtkTreeView" id="treeview_similar_songs">
+                                          <widget class="GtkImage" id="image_widget">
+                                            <property name="width_request">174</property>
+                                            <property name="height_request">174</property>
                                             <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="reorderable">True</property>
+                                            <property name="stock">gtk-missing-image</property>
                                           </widget>
+                                          <packing>
+                                            <property name="padding">2</property>
+                                            <property name="position">0</property>
+                                          </packing>
                                         </child>
-                                      </widget>
-                                      <packing>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkScrolledWindow" id="scrolledwindow8">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="hscrollbar_policy">automatic</property>
-                                        <property name="vscrollbar_policy">automatic</property>
                                         <child>
-                                          <widget class="GtkTreeView" id="treeview_song_tags">
+                                          <widget class="GtkLinkButton" id="wiki_linkbutton">
+                                            <property name="label" translatable="yes">wiki</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="relief">none</property>
+                                            <property name="uri">http://www.foobnix.com</property>
                                           </widget>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <widget class="GtkLinkButton" id="lastfm_linkbutton">
+                                            <property name="label" translatable="yes">last.fm</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="relief">none</property>
+                                            <property name="uri">http://www.foobnix.com</property>
+                                          </widget>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <widget class="GtkLinkButton" id="mb_linkbutton">
+                                            <property name="label" translatable="yes">musicbrainz</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="relief">none</property>
+                                            <property name="uri">http://www.foobnix.com</property>
+                                          </widget>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">3</property>
+                                          </packing>
                                         </child>
                                       </widget>
                                       <packing>
                                         <property name="expand">False</property>
+                                        <property name="padding">2</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkScrolledWindow" id="scrolledwindow9">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="hscrollbar_policy">automatic</property>
+                                        <property name="vscrollbar_policy">automatic</property>
+                                        <child>
+                                          <widget class="GtkTreeView" id="treeview_similart_artists">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                          </widget>
+                                        </child>
+                                      </widget>
+                                      <packing>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
                                   </widget>
+                                  <packing>
+                                    <property name="resize">False</property>
+                                    <property name="shrink">True</property>
+                                  </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkLabel" id="current_song_label">
+                                  <widget class="GtkFrame" id="frame3">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">&lt;b&gt;Current song name&lt;/b&gt;</property>
-                                    <property name="use_markup">True</property>
-                                    <property name="wrap">True</property>
+                                    <property name="label_xalign">0</property>
+                                    <property name="shadow_type">none</property>
+                                    <child>
+                                      <widget class="GtkHBox" id="hbox13">
+                                        <property name="visible">True</property>
+                                        <child>
+                                          <widget class="GtkScrolledWindow" id="scrolledwindow1">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="hscrollbar_policy">automatic</property>
+                                            <property name="vscrollbar_policy">automatic</property>
+                                            <child>
+                                              <widget class="GtkTreeView" id="treeview_similar_songs">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="reorderable">True</property>
+                                              </widget>
+                                            </child>
+                                          </widget>
+                                          <packing>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <widget class="GtkScrolledWindow" id="scrolledwindow8">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="hscrollbar_policy">automatic</property>
+                                            <property name="vscrollbar_policy">automatic</property>
+                                            <child>
+                                              <widget class="GtkTreeView" id="treeview_song_tags">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                              </widget>
+                                            </child>
+                                          </widget>
+                                          <packing>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </widget>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkLabel" id="current_song_label">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">&lt;b&gt;Current song name&lt;/b&gt;</property>
+                                        <property name="use_markup">True</property>
+                                        <property name="wrap">True</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="type">label_item</property>
+                                      </packing>
+                                    </child>
                                   </widget>
                                   <packing>
-                                    <property name="type">label_item</property>
+                                    <property name="resize">True</property>
+                                    <property name="shrink">True</property>
                                   </packing>
                                 </child>
                               </widget>
+                            </child>
+                            <child>
+                              <widget class="GtkLabel" id="label_album_name">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">&lt;b&gt;Album name of this artist&lt;/b&gt;</property>
+                                <property name="use_markup">True</property>
+                                <property name="wrap">True</property>
+                              </widget>
                               <packing>
-                                <property name="position">2</property>
+                                <property name="type">label_item</property>
                               </packing>
                             </child>
                           </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkLabel" id="label_album_name">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">&lt;b&gt;Album name of this artist&lt;/b&gt;</property>
-                            <property name="use_markup">True</property>
-                            <property name="wrap">True</property>
-                          </widget>
                           <packing>
-                            <property name="type">label_item</property>
+                            <property name="expand">False</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                       </widget>
                       <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="pack_type">end</property>
-                        <property name="position">1</property>
+                        <property name="resize">True</property>
+                        <property name="shrink">True</property>
                       </packing>
                     </child>
                   </widget>
                   <packing>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </widget>
