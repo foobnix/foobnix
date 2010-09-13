@@ -46,6 +46,7 @@ class PlayerWidgetsCntl():
         self.vpanel = gxMain.get_widget("vpaned1")
         self.hpanel = gxMain.get_widget("hpaned1")
         self.hpanel2 = gxMain.get_widget("hpaned2")
+        self.hpanel2.max_pos = False
         #self.hpanel.connect("button-press-event", self.on_show_hide_paned);
 
         #self.hpanel.set_property("position-set", True)
@@ -132,10 +133,16 @@ class PlayerWidgetsCntl():
 
             self.vpanel.set_position(FConfiguration().vpanelPostition)
             self.hpanel2.set_position(FConfiguration().hpanel2Postition)
+            self.hpanel2.max_pos = False
             self.info_panel.show()
         else:
             self.info_panel.hide()
-            self.hpanel2.set_position(99999)
+            if not FConfiguration().view_lyric_panel:
+                self.hpanel2.set_position(99999)
+                self.hpanel2.max_pos = True
+            else:
+                self.hpanel2.set_position(FConfiguration().hpanel2Postition)
+                self.hpanel2.max_pos = False
         FConfiguration().view_info_panel = flag
         self.view_info_panel.set_active(flag)
 
@@ -159,11 +166,17 @@ class PlayerWidgetsCntl():
             self.view_info_panel.set_active(False)
 
             self.hpanel2.set_position(FConfiguration().hpanel2Postition)
+            self.hpanel2.max_pos = False
 
             self.lyric_panel.show()
         else:
             self.lyric_panel.hide()
-            self.hpanel2.set_position(99999)
+            if not FConfiguration().view_info_panel:
+                self.hpanel2.set_position(99999)
+                self.hpanel2.max_pos = True
+            else:
+                self.hpanel2.set_position(FConfiguration().hpanel2Postition)
+                self.hpanel2.max_pos = False
         FConfiguration().view_lyric_panel = flag
         self.view_lyric_panel.set_active(flag)
 

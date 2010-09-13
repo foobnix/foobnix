@@ -206,7 +206,7 @@ class AppController(BaseController):
             FConfiguration().vpanelPostition = self.playerWidgets.vpanel.get_position()
         if self.playerWidgets.hpanel.get_position() > 0:
             FConfiguration().hpanelPostition = self.playerWidgets.hpanel.get_position()
-        if self.playerWidgets.hpanel.get_position() > 0:
+        if self.playerWidgets.hpanel2.get_position() > 0 and not self.playerWidgets.hpanel2.max_pos:
             FConfiguration().hpanel2Postition = self.playerWidgets.hpanel2.get_position()
 
         self.main_window_controller.on_save()
