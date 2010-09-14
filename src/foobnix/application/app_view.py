@@ -6,6 +6,7 @@ Created on Mar 14, 2010
 import gtk.glade
 import sys
 from foobnix.util import LOG
+from foobnix.util.configuration import get_version
 import os
 class AppView():
 
@@ -16,6 +17,7 @@ class AppView():
         self.gxTrayIcon = self.glade_XML(self.gladeMain, "popUpWindow")
         self.gxAbout = self.glade_XML(self.gladeMain, "aboutdialog")
         self.about_widget = self.gxAbout.get_widget("aboutdialog")
+        self.about_widget.set_version(get_version())
         self.about_widget.connect("response", lambda * a: self.about_widget.hide())
         self.playlist = self.gxMain.get_widget("playlist_treeview")
 
