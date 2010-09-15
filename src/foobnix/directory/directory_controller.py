@@ -399,7 +399,8 @@ class DirectoryCntr():
         
 
         if directoryBean.type in [CommonBean.TYPE_FOLDER, CommonBean.TYPE_GOOGLE_HELP, CommonBean.TYPE_RADIO_FOLDER] :
-            if directoryBean.type == CommonBean.TYPE_RADIO_FOLDER:
+            LOG.info("Directory Bean type:",directoryBean.type)
+            if directoryBean.type == CommonBean.TYPE_RADIO_FOLDER or directoryBean.path == None:
                 LOG.info("Radio folder")
                 songs = self.current_list_model.getChildSongBySelected()
             elif FConfiguration().add_child_folders:
