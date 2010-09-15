@@ -37,7 +37,7 @@ class  PlayerController(BaseController):
         BaseController.__init__(self)
         
         self.last_fm_scrobler = last_fm_connector
-        
+        self.player = None
         self.player = self.playerLocal()
         
         self.songs = []
@@ -166,7 +166,7 @@ class  PlayerController(BaseController):
     
     def stopState(self):
         if not self.player:
-            self.player = self.playerLocal()    
+            return None    
         self.setSeek(0.0)
         self.widgets.seekBar.set_fraction(0.0)
         self.widgets.seekBar.set_text("00:00 / 00:00")
@@ -197,6 +197,7 @@ class  PlayerController(BaseController):
     
     
     def playerHTTP_Proxy(self):
+        self.stopState()
         LOG.info("Proxy player")
         self.playbin = gst.Pipeline("player")
         source = gst.element_factory_make("souphttpsrc", "source")  
@@ -226,6 +227,7 @@ class  PlayerController(BaseController):
         return self.playbin
     
     def playerHTTP(self):
+        self.stopState()
         LOG.info("Player For remote files")
         
         self.playerThreadId = None
@@ -243,6 +245,7 @@ class  PlayerController(BaseController):
         return self.playbin
 
     def playerLocal(self):
+        self.stopState()
         LOG.info("Player Local Files")
         
         self.playerThreadId = None
