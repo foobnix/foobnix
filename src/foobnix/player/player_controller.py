@@ -457,7 +457,7 @@ class  PlayerController(BaseController):
                     self.prev_title = title
                     LOG.info("show info!", self.song.name)
                     self.onlineCntr.info.show_song_info(self.song)
-                    LOG.info(self.player.get_state()[1])
+                    LOG.info(self.player.get_state()[1])                
             except:
                 LOG.warn("Messege info error appear")
                 pass

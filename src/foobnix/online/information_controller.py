@@ -198,6 +198,12 @@ class InformationController():
         self.last_image = None
         self.none_thead = None
     
+    def clear_all(self):
+        self.similar_artists_cntr.clear()
+        self.similar_songs_cntr.clear()
+        self.song_tags_cntr.clear()
+        
+    
     def show_song_info(self, song):
         if (FConfiguration().view_info_panel or FConfiguration().view_lyric_panel) and not self.info_thread:
             self.info_thread = thread.start_new_thread(self.show_song_info_tread, (song,))

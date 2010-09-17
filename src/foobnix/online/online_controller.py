@@ -533,11 +533,19 @@ class OnlineListCntr(GObject):
             menu.add_item(_("Add to virtual"), gtk.STOCK_ADD, self.add_selected_to_playlist)
             menu.add_item(_("Delete from list"), gtk.STOCK_REMOVE, similar_songs_model.remove_selected)
             menu.add_item(_("Show info"), gtk.STOCK_INFO, self.show_info, songs)
+            menu.add_item(_("I love it"), gtk.STOCK_OK, self.love_track, songs)
             menu.show(e)
             
             
             treeselection.select_all()
-
+    def love_track(self,songs):
+        for song in songs:
+            LOG.debug("I LOVE IT ", song.getArtist(),song.getTitle())
+            track = self.last_fm_connector.network.get_track(song.getArtist(),song.getTitle())
+            if track:
+                track.love()
+                LOG.debug("I LOVE IT SUCCESS")
+            
     def playBean(self, playlistBean):
         if playlistBean.type in [CommonBean.TYPE_MUSIC_URL, CommonBean.TYPE_MUSIC_FILE]:
             self.setSongResource(playlistBean)
