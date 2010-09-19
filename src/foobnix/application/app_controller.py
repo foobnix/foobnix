@@ -26,6 +26,7 @@ from foobnix.helpers.dialog_entry import info_dialog_with_link
 from foobnix.util import LOG
 import thread
 import time
+from foobnix.model.entity import CommonBean
 
 class AppController(BaseController):
 
@@ -179,7 +180,11 @@ class AppController(BaseController):
         if FConfiguration().save_tabs:
             self.onlineCntr.append_notebook_page(FConfiguration().last_notebook_page)
 
-            if FConfiguration().play_on_start:
+            bean = CommonBean(type=CommonBean.TYPE_MUSIC_FILE)
+            if FConfiguration().last_notebook_beans:
+                bean = FConfiguration().last_notebook_beans[FConfiguration().last_play_bean]
+            """auto play last song on start, but do not play radio, it's buggy"""
+            if FConfiguration().play_on_start and bean.type != CommonBean.TYPE_RADIO_URL:               
                 self.onlineCntr.append_and_play(FConfiguration().last_notebook_beans, FConfiguration().last_play_bean)
             else:
                 self.onlineCntr.append(FConfiguration().last_notebook_beans)

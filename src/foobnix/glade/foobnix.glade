@@ -914,6 +914,61 @@
                                   </packing>
                                 </child>
                                 <child>
+                                  <widget class="GtkVBox" id="vbox10">
+                                    <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <widget class="GtkLinkButton" id="wiki_linkbutton">
+                                        <property name="label" translatable="yes">wiki</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="relief">none</property>
+                                        <property name="uri">http://www.foobnix.com</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkLinkButton" id="lastfm_linkbutton">
+                                        <property name="label" translatable="yes">last.fm</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="relief">none</property>
+                                        <property name="uri">http://www.foobnix.com</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkLinkButton" id="mb_linkbutton">
+                                        <property name="label" translatable="yes">musicbrainz</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="relief">none</property>
+                                        <property name="uri">http://www.foobnix.com</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
                                   <widget class="GtkScrolledWindow" id="scrolledwindow2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
@@ -927,7 +982,7 @@
                                     </child>
                                   </widget>
                                   <packing>
-                                    <property name="position">1</property>
+                                    <property name="position">2</property>
                                   </packing>
                                 </child>
                               </widget>
@@ -963,69 +1018,13 @@
                                   <widget class="GtkHBox" id="hbox16">
                                     <property name="visible">True</property>
                                     <child>
-                                      <widget class="GtkVBox" id="vbox9">
+                                      <widget class="GtkImage" id="image_widget">
+                                        <property name="width_request">174</property>
+                                        <property name="height_request">174</property>
                                         <property name="visible">True</property>
-                                        <property name="orientation">vertical</property>
-                                        <child>
-                                          <widget class="GtkImage" id="image_widget">
-                                            <property name="width_request">174</property>
-                                            <property name="height_request">174</property>
-                                            <property name="visible">True</property>
-                                            <property name="stock">gtk-missing-image</property>
-                                          </widget>
-                                          <packing>
-                                            <property name="padding">2</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <widget class="GtkLinkButton" id="wiki_linkbutton">
-                                            <property name="label" translatable="yes">wiki</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">True</property>
-                                            <property name="relief">none</property>
-                                            <property name="uri">http://www.foobnix.com</property>
-                                          </widget>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">False</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <widget class="GtkLinkButton" id="lastfm_linkbutton">
-                                            <property name="label" translatable="yes">last.fm</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">True</property>
-                                            <property name="relief">none</property>
-                                            <property name="uri">http://www.foobnix.com</property>
-                                          </widget>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">False</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <widget class="GtkLinkButton" id="mb_linkbutton">
-                                            <property name="label" translatable="yes">musicbrainz</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">True</property>
-                                            <property name="relief">none</property>
-                                            <property name="uri">http://www.foobnix.com</property>
-                                          </widget>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">False</property>
-                                            <property name="position">3</property>
-                                          </packing>
-                                        </child>
+                                        <property name="stock">gtk-missing-image</property>
                                       </widget>
                                       <packing>
-                                        <property name="expand">False</property>
                                         <property name="padding">2</property>
                                         <property name="position">0</property>
                                       </packing>
