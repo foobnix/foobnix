@@ -586,7 +586,10 @@ class OnlineListCntr(GObject):
             """retrive images and other info"""
             #self.info.show_song_info(playlistBean)
 
-    def nextBean(self):
+    def nextBean(self):  
+        if self.index <= 0:
+            self.index = 0
+                  
         if not self.current_list_model:
             return None
         
@@ -596,7 +599,7 @@ class OnlineListCntr(GObject):
         if FConfiguration().play_ordering == const.ORDER_RANDOM:            
             return self.current_list_model.get_random_bean()   
         
-        self.index += 1
+            self.index += 1
         
         if self.index >= self.current_list_model.get_size():
                 self.index = 0

@@ -352,8 +352,9 @@ class  PlayerController(BaseController):
                 self.widgets.seekBar.set_text("00:00 / " + dur_str)                    
                 gtk.gdk.threads_leave() #@UndefinedVariable
                 break
-            except:
-                LOG.info("Error")
+            except Exception, e:
+                LOG.info("Error",e)
+                time.sleep(1)
                 pass
                 
         time.sleep(0.5)
