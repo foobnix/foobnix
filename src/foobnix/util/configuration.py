@@ -260,6 +260,9 @@ class FConfiguration:
         save_file.close()
         LOG.debug("Save configuration")
 
+    def remove_cfg_file(self):
+        os.remove(CFG_FILE)
+
     def _loadCfgFromFile(self, is_load_file):
         if not is_load_file:
             return

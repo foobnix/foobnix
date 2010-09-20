@@ -24,8 +24,6 @@ from socket import gethostname
 import urllib2
 from foobnix.helpers.dialog_entry import info_dialog_with_link
 from foobnix.util import LOG
-import thread
-import time
 from foobnix.model.entity import CommonBean
 
 class AppController(BaseController):

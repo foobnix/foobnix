@@ -13,6 +13,9 @@ from foobnix.preferences.configs.network_conf import NetworkConfig
 from foobnix.preferences.configs.notification_conf import NotificationConfig
 from foobnix.preferences.configs.tray_icon import TrayIconConfig
 from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
+import thread
+import os
+import time
 
 class PreferencesWindow:
     configs = []
@@ -149,6 +152,12 @@ class PreferencesWindow:
         box = gtk.HBox(False, 0)
         box.show()
         
+        button_restore = gtk.Button(_("Restore Defaults"))        
+        button_restore.connect("clicked", lambda * a:self.restore_defaults())
+        button_restore.show()
+        
+        
+        
         button_save = gtk.Button(_("Save"))
         button_save.set_size_request(100, -1)
         button_save.connect("clicked", lambda * a:self.save())
@@ -163,11 +172,19 @@ class PreferencesWindow:
         empty = gtk.Label("")
         empty.show()
         
+        box.pack_start(button_restore, False, True, 0)
         box.pack_start(empty, True, True, 0)
         box.pack_start(button_save, False, True, 0)        
         box.pack_start(button_cancel, False, True, 0)        
         
-        return box   
+        return box
+
+    def restore_defaults(self):
+        print "restore defaults"
+        gtk.main_quit()
+        FConfiguration().remove_cfg_file()        
+        thread.start_new_thread(os.system, ("foobnix",))
+        
     
     def update_label(self, title):
         self.label.set_markup('<b><i><span  size="x-large" >' + title + '</span></i></b>');
