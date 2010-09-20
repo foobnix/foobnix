@@ -305,10 +305,12 @@ class Vkontakte:
         except:
             result = result
       
+        print result
         reg_all = "([^{<}]*)"
-        result_url = re.findall(ur"http:([\\/.0-9A-Z]*)", result, re.IGNORECASE)
+        result_url = re.findall(ur"http:([\\/.0-9_A-Z]*)", result, re.IGNORECASE)
         result_artist = re.findall(u"q]=" + reg_all + "'", result, re.IGNORECASE | re.UNICODE)
-        result_title = re.findall(u"\"title([0-9]*)\\\\\">" + reg_all + "", result, re.IGNORECASE | re.UNICODE)
+        result_title = re.findall(u"\"title([0-9_]*)\\\\\">" + reg_all + "", result, re.IGNORECASE | re.UNICODE)
+        print result_title 
         result_time = re.findall("duration\\\\\">" + reg_all, result, re.IGNORECASE | re.UNICODE)
         result_lyr = re.findall(ur"showLyrics" + reg_all, result, re.IGNORECASE | re.UNICODE)
         LOG.info("lyr:::", result_lyr)
@@ -369,7 +371,8 @@ def get_group_id(str):
     return str[index + len(search):]
 
 
-#vk = Vkontakte("qax@bigmir.net", "foobnix")
+#vk = Vkontakte("ivan.ivanenko@gmail.com", "")
+#vk.get_songs_by_url("http://vkontakte.ru/audio.php?id=3673898")
 #print vk.get_s_value()
 #print vk.get_cookie()
 #print vk.get_page("Madonna")
