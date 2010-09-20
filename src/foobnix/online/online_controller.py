@@ -599,14 +599,14 @@ class OnlineListCntr(GObject):
         if FConfiguration().play_ordering == const.ORDER_RANDOM:            
             return self.current_list_model.get_random_bean()   
         
-            self.index += 1
+        self.index += 1
         
         if self.index >= self.current_list_model.get_size():
                 self.index = 0
                 if FConfiguration().play_looping == const.LOPPING_DONT_LOOP:
                     self.index = self.current_list_model.get_size()
                     return None
-            
+        LOG.info("PLAY BEAN", self.index)
         return self.current_list_model.getBeenByPosition(self.index)
             
     def prevBean(self):
