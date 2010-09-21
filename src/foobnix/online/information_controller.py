@@ -246,6 +246,8 @@ class InformationController():
             self.info_thread = None
             return None
         
+        self.update_links(song)
+        
         LOG.info("Update song info", song.name, song.getArtist(), song.getTitle())
         try:
             track = self.get_track(song)
@@ -261,11 +263,8 @@ class InformationController():
         else:
             self.update_image_from_url(album)
         
-        self.update_lyrics(song)
-        self.update_links(song)
         self.update_info_panel(song, track, album)
-        
-        
+        self.update_lyrics(song)
         self.info_thread = None
     
     def update_image_from_file(self, song):
