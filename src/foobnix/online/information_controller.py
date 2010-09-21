@@ -205,7 +205,7 @@ class InformationController():
         
     
     def show_song_info(self, song):
-        if (FConfiguration().view_info_panel or FConfiguration().view_lyric_panel) and not self.info_thread:
+        if FConfiguration().view_info_panel or FConfiguration().view_lyric_panel:
             self.info_thread = thread.start_new_thread(self.show_song_info_tread, (song,))
             #self.show_song_info_tread(song)
         else:

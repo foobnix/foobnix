@@ -334,7 +334,7 @@ class  PlayerController(BaseController):
         self.widgets.seekBar.set_text("00:00 / 00:00")
         gtk.gdk.threads_leave() #@UndefinedVariable
         sec = 0;
-
+        count = 0
         while play_thread_id == self.playerThreadId:
             try:
                 song = self.song
@@ -355,7 +355,11 @@ class  PlayerController(BaseController):
             except Exception, e:
                 LOG.info("Error",e)
                 time.sleep(1)
-                pass
+                count += 1
+                if count > 6:
+                    self.stopState()
+                    self.playerThreadId = None
+                    break;
                 
         time.sleep(0.5)
         start_time = str(int(time.time()));
