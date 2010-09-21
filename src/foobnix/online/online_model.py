@@ -103,7 +103,6 @@ class OnlineListModel:
     def get_selected_bean(self):
         selection = self.widget.get_selection()
         model, paths = selection.get_selected_rows()
-
         if not paths:
             return None
         

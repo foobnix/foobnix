@@ -250,6 +250,7 @@ class OnlineListCntr(GObject):
         
         treeview.connect("drag-end", self.on_drag_end)
         treeview.connect("button-press-event", self.onPlaySong, model)
+        treeview.connect("key-press-event", self.on_song_key_press, model)
         
         treeview.show()
         
@@ -467,6 +468,8 @@ class OnlineListCntr(GObject):
         
     def on_play_selected(self, similar_songs_model):
         playlistBean = similar_songs_model.get_selected_bean()
+        self.index = similar_songs_model.get_selected_index()
+        
         if not playlistBean:
             return None
         LOG.info("play", playlistBean)
@@ -505,6 +508,11 @@ class OnlineListCntr(GObject):
     def changed(self, a, type=None):
         if self.paths:
             a.select_range(self.paths[0], self.paths[len(self.paths) - 1])
+
+    def on_song_key_press(self, w,e, model):
+        print w,e, e.keyval
+        if gtk.gdk.keyval_name(e.keyval) == 'Return':
+            self.on_play_selected(model);
 
     def onPlaySong(self, w, e, similar_songs_model): 
         
