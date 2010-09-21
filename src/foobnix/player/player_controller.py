@@ -152,7 +152,7 @@ class  PlayerController(BaseController):
             self.player = self.playerHTTP_Proxy()    
             self.player.get_by_name("source").set_property("location", path)
         else:
-            LOG.info("=Local player=")
+            LOG.info("=Local http player=")
             self.player = self.playerHTTP()              
             self.player.set_property("uri", path)    
         

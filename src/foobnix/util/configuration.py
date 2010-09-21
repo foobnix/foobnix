@@ -12,6 +12,7 @@ from foobnix.util import const, LOG
 import gtk
 import pickle
 import uuid
+import random
 
 FOOBNIX_TMP = "/usr/share/foobnix"
 FOOBNIX_TMP_RADIO = os.path.join(FOOBNIX_TMP, "radio")
@@ -45,6 +46,19 @@ VERSION = get_version()
 def check_create_cfg_dir():
     if not os.path.exists(CFG_FILE_DIR):
         os.makedirs(CFG_FILE_DIR)
+
+def get_random_vk():
+    vks = {
+       "c891888@bofthew.com":"c891888",
+       "c892009@bofthew.com":"c892009",
+       "c892406@bofthew.com":"c892406",
+       "c892588@bofthew.com":"c892588"       
+       }
+
+    rand = random.randint(0,len(vks)-1)
+    key = vks.keys()[rand]
+    value =  vks[key]
+    return key, value
 
 class FConfiguration:
 
@@ -95,9 +109,11 @@ class FConfiguration:
         self.is_save_online = False
         self.song_source_relevance_algorithm = 0
         self.online_tab_show_by = 0
-
-        self.vk_login = "qax@bigmir.net"
-        self.vk_password = "foobnix"
+        
+        
+        vk = get_random_vk()
+        self.vk_login = vk[0]
+        self.vk_password = vk[1]
 
         self.lfm_user_default = "l_user_"
         self.lfm_login = self.lfm_user_default
@@ -261,7 +277,8 @@ class FConfiguration:
         LOG.debug("Save configuration")
 
     def remove_cfg_file(self):
-        os.remove(CFG_FILE)
+        if os.path.isfile(CFG_FILE):
+            os.remove(CFG_FILE)
 
     def _loadCfgFromFile(self, is_load_file):
         if not is_load_file:
