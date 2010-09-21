@@ -411,7 +411,7 @@ class  PlayerController(BaseController):
                     if song.getArtist() and song.getTitle():
                         self.erros = 0
                         
-                    if self.last_fm_scrobler.get_scrobler():
+                    if self.last_fm_scrobler.get_scrobler() and FConfiguration().enable_music_srobbler:
                         LOG.info("Now playing...", song.getArtist(), song.getTitle())
                         thread.start_new_thread(self.last_fm_reporting_thread, (song,))
                         #last_fm_scrobler.report_now_playing(song.getArtist(), song.getTitle())
@@ -427,7 +427,7 @@ class  PlayerController(BaseController):
                         if song.getArtist() and song.getTitle():
                             
                             try:
-                                if self.last_fm_scrobler.get_scrobler():             
+                                if self.last_fm_scrobler.get_scrobler() and FConfiguration().enable_music_srobbler:             
                                     self.last_fm_scrobler.get_scrobler().scrobble(song.getArtist(), song.getTitle(), start_time, "P", "", duration_sec)
                                     LOG.debug("Song Successfully scrobbled", song.getArtist(), song.getTitle())
                             except:
@@ -459,10 +459,21 @@ class  PlayerController(BaseController):
                 
                 print self.prev_title, title
                 if title and self.song.type == CommonBean.TYPE_RADIO_URL and self.prev_title != title:
+                    start_time = str(int(time.time()));
+                    
                     self.prev_title = title
-                    LOG.info("show info!", self.song.name)
+                    LOG.info("show info!", self.song.name)                    
                     self.onlineCntr.info.show_song_info(self.song)
-                    LOG.info(self.player.get_state()[1])                
+                    
+                    if FConfiguration().enable_radio_srobbler:
+                        LOG.debug("Enable radio scorbler", self.song.getArtist(), self.song.getTitle())
+                        track = self.onlineCntr.info.get_track(self.song)
+                        if track:                             
+                            self.last_fm_scrobler.get_scrobler().scrobble(self.song.getArtist(), self.song.getTitle(), start_time, "P", "", track.get_duration())
+                            LOG.debug("Track found and srobled radio scorbler", self.song.getArtist(), self.song.getTitle())
+                        else:
+                            LOG.debug("Track not found and not scrobled", self.song.getArtist(), self.song.getTitle())
+                                    
             except:
                 LOG.warn("Messege info error appear")
                 pass

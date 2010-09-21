@@ -172,6 +172,9 @@ class FConfiguration:
         self.save_tabs = True
         self.play_on_start = True
         self.configure_state = None
+        
+        self.enable_music_srobbler = False
+        self.enable_radio_srobbler = False
 
         instance = self._loadCfgFromFile(is_load_file)
         if instance:
@@ -246,6 +249,9 @@ class FConfiguration:
                 self.save_tabs = instance.save_tabs
                 self.last_play_bean = instance.last_play_bean
                 self.configure_state = instance.configure_state
+                
+                self.enable_music_srobbler = instance.enable_music_srobbler
+                self.enable_radio_srobbler = instance.enable_radio_srobbler
 
             except AttributeError:
                 LOG.debug("Configuraton attributes are changed")

@@ -231,6 +231,13 @@ class InformationController():
     def add_tag(self, tag):
         self.song_tags_cntr.add_item(tag)
     
+    def get_track(self, song):
+        try:
+            return self.last_fm_connector.get_network().get_track(song.getArtist(), song.getTitle())
+        except:    
+            return None
+        
+    
     def show_song_info_tread(self, song):        
         self.song = song
         
@@ -241,7 +248,7 @@ class InformationController():
         
         LOG.info("Update song info", song.name, song.getArtist(), song.getTitle())
         try:
-            track = self.last_fm_connector.get_network().get_track(song.getArtist(), song.getTitle())
+            track = self.get_track(song)
             album = track.get_album()
         except:
             LOG.error("Error getting track and album from last.fm")
