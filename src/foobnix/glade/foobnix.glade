@@ -1304,7 +1304,7 @@
     <property name="copyright" translatable="yes">Developed by Ivan Ivanenko
 ivan.ivanenko@gmail.com</property>
     <property name="comments" translatable="yes">Playing all imaginations</property>
-    <property name="website">http://code.google.com/p/foobnix/</property>
+    <property name="website">http://www.foobnix.com</property>
     <property name="authors">Ivan Ivanenko - Developer
 Vladimir Yashin - Icon Designer
 Roman Novachenko - Code Refactoring, Windows Installer.</property>
