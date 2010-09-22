@@ -3,6 +3,7 @@ import sys
 from foobnix.regui.top import TopWidgets
 from foobnix.regui.controls import StatusbarControls
 from foobnix.regui.left import LeftWidgets
+import time
 class Base():
     
     def __init__(self):
@@ -48,9 +49,10 @@ class Base():
         self.window.set_size_request(400, 300)
         
         #self.window.set_size_request(400,250)
-        
-        gtk.main()
 
 
+init_time = time.time()
 eq = Base()
+print "******Foobnix run in", time.time() - init_time, " seconds******"
 gtk.main()
+    
