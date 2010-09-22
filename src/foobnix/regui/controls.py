@@ -33,7 +33,7 @@ class VolumeControls():
         
         adjustment = gtk.Adjustment(value=1, lower=0, upper=100, step_incr=10, page_incr=50, page_size=0)
         scale = gtk.HScale(adjustment)
-        scale.set_usize(150, -1)
+        scale.set_size_request(150, -1)
         scale.set_update_policy(gtk.UPDATE_CONTINUOUS)
         scale.set_digits(1)        
         scale.set_draw_value(False)

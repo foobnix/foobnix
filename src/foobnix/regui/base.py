@@ -1,8 +1,8 @@
 import gtk
 import sys
-from foobnix.regui.menu import MenuWidget
-from foobnix.regui.controls import PlaybackControls, VolumeControls, \
-    ToolbarSeparator, SeekProgressBarControls, StatusbarControls
+from foobnix.regui.top import TopWidgets
+from foobnix.regui.controls import StatusbarControls
+from foobnix.regui.left import LeftWidgets
 class Base():
     
     def __init__(self):
@@ -15,29 +15,32 @@ class Base():
         vbox = gtk.VBox(False, 0)
         vbox.show()
         
-        hbox = gtk.HBox(False, 0)
-        hbox.show()
+        top = TopWidgets().widget
         
-        menu = MenuWidget().widget
-        buttons = PlaybackControls().widget
-        volume = VolumeControls().widget
-        sep = ToolbarSeparator().widget
-        seek = SeekProgressBarControls().widget
         
-        hbox.pack_start(menu, False, False)
-        hbox.pack_start(buttons, False, False)
-        hbox.pack_start(volume, False, False)
-        hbox.pack_start(sep, False, False)
-        hbox.pack_start(seek, True, True)
+        vbox.pack_start(top, False, False)
         
-        vbox.pack_start(hbox, False, False)
-        
-        space = gtk.Label("")
+        space = gtk.Button("hi")
         space.show()
+        
+        
+        
+        left = LeftWidgets().widget
+        
+        hpaned = gtk.HPaned()
+        #hpaned.add1(left)
+        #hpaned.add2(space)
+        
+        hpaned.pack1(child=left, resize=True, shrink=True)
+        hpaned.pack2(child=space, resize=True, shrink=True)
+    
+        hpaned.show_all()
+        
+        
         
         statusbar = StatusbarControls().widget
         
-        vbox.pack_start(space, True, True)        
+        vbox.pack_start(hpaned, True, True)        
         vbox.pack_start(statusbar, False, True)
         
         self.window.add(vbox)
