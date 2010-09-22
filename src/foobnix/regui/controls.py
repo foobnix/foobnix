@@ -65,6 +65,13 @@ class SeekProgressBarControls():
         
         self.widget = aligment
 
+class StatusbarControls():
+    def __init__(self):
+        statusbar = gtk.Statusbar()
+        statusbar.show()
+        
+        self.widget = statusbar
+
 
 class MyToolbar(gtk.Toolbar):
     def __init__(self):

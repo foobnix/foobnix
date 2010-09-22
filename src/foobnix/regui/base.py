@@ -2,7 +2,7 @@ import gtk
 import sys
 from foobnix.regui.menu import MenuWidget
 from foobnix.regui.controls import PlaybackControls, VolumeControls, \
-    ToolbarSeparator, SeekProgressBarControls
+    ToolbarSeparator, SeekProgressBarControls, StatusbarControls
 class Base():
     
     def __init__(self):
@@ -32,14 +32,17 @@ class Base():
         
         vbox.pack_start(hbox, False, False)
         
-        button = gtk.Button("asdf")
-        button.show()
+        space = gtk.Label("")
+        space.show()
         
-        vbox.pack_start(button, False, False)
+        statusbar = StatusbarControls().widget
+        
+        vbox.pack_start(space, True, True)        
+        vbox.pack_start(statusbar, False, True)
         
         self.window.add(vbox)
         self.window.show()
-        self.window.set_size_request(800, 300)
+        self.window.set_size_request(400, 300)
         
         #self.window.set_size_request(400,250)
         
