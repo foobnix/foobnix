@@ -513,6 +513,8 @@ class OnlineListCntr(GObject):
         print w,e, e.keyval
         if gtk.gdk.keyval_name(e.keyval) == 'Return':
             self.on_play_selected(model);
+        if gtk.gdk.keyval_name(e.keyval) == 'Delete':
+            model.remove_selected()
 
     def onPlaySong(self, w, e, similar_songs_model): 
         
