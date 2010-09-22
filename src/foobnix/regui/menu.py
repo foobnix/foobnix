@@ -6,6 +6,7 @@ Created on Sep 22, 2010
 import gtk
 from foobnix.util import LOG
 import sys
+from foobnix.util.configuration import FConfiguration
 class MenuWidget():
     def __init__(self):
         """TOP menu constructor"""
@@ -16,12 +17,12 @@ class MenuWidget():
         file.add_image_item("Add File(s)", gtk.STOCK_OPEN)
         file.add_image_item("Add Folder(s)", gtk.STOCK_OPEN)     
         file.separator()   
-        file.add_image_item("Quit", gtk.STOCK_QUIT, sys.exit,1)
+        file.add_image_item("Quit", gtk.STOCK_QUIT, self.on_save)
         
         
         """View"""
         view = top.append("View")
-        view.add_ckeck_item("Music Tree",True)
+        self.view_music_tree = view.add_ckeck_item("Music Tree")
         view.add_ckeck_item("Search Panel",True)
         view.separator()
         view.add_ckeck_item("Lyric Panel",True)
@@ -53,6 +54,18 @@ class MenuWidget():
         top.decorate()        
         self.widget = top.widget
         
+        self.on_load()
+    
+    def on_load(self):
+        self.view_music_tree.set_active(FConfiguration().view_tree_panel)
+    
+    def on_save(self):
+        FConfiguration().view_tree_panel = self.view_music_tree.get_active()
+        FConfiguration().save()
+        sys.exit(1)
+        
+        
+        
 
 """My custom menu class for helping buildings"""
 class MyMenu(gtk.Menu):
@@ -65,7 +78,7 @@ class MyMenu(gtk.Menu):
         img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
         item.set_image(img) 
         
-        LOG.debug("Menu-Activate",title,gtk_stock, func, param)
+        LOG.debug("Menu-Image-Activate",title,gtk_stock, func, param)
         if param:             
             item.connect("activate", lambda * a: func(param))
         else:
@@ -78,11 +91,12 @@ class MyMenu(gtk.Menu):
         separator.show()
         self.append(separator)
     
-    def add_ckeck_item(self, title,active):
+    def add_ckeck_item(self, title,active=False):
         check = gtk.CheckMenuItem(title)
         check.show()
         check.set_active(active)
-        self.append(check)        
+        self.append(check)
+        return check        
     
     def add_radio_item(self, title,group, active):
         check = gtk.RadioMenuItem(group,title)
