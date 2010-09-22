@@ -4,6 +4,8 @@ Created on Sep 22, 2010
 @author: ivan
 '''
 import gtk
+from foobnix.util import LOG
+import sys
 class MenuWidget():
     def __init__(self):
         """TOP menu constructor"""
@@ -14,7 +16,7 @@ class MenuWidget():
         file.add_image_item("Add File(s)", gtk.STOCK_OPEN)
         file.add_image_item("Add Folder(s)", gtk.STOCK_OPEN)     
         file.separator()   
-        file.add_image_item("Quit", gtk.STOCK_QUIT)
+        file.add_image_item("Quit", gtk.STOCK_QUIT, sys.exit,1)
         
         
         """View"""
@@ -57,11 +59,17 @@ class MyMenu(gtk.Menu):
     def __init__(self):
         gtk.Menu.__init__(self)
     
-    def add_image_item(self, title, gtk_stock):
+    def add_image_item(self, title, gtk_stock, func=None, param=None):
         item = gtk.ImageMenuItem(title)
         item.show()
         img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
         item.set_image(img) 
+        
+        LOG.debug("Menu-Activate",title,gtk_stock, func, param)
+        if param:             
+            item.connect("activate", lambda * a: func(param))
+        else:
+            item.connect("activate", lambda * a: func())            
                 
         self.append(item)
     
@@ -105,8 +113,7 @@ class TopMenu():
             class "GtkMenuBar" style "menubar-style"
         '''
         gtk.rc_parse_string(rc_st)
-        
-        
+                
         self.menu_bar = gtk.MenuBar()
         self.menu_bar.show()
        
