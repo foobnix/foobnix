@@ -420,7 +420,7 @@ class OnlineListCntr(GObject):
 
     
     def _populate_model(self, beans):
-        normilized = []
+        normilized = self.current_list_model.get_all_beans()
         """first add cue files"""
         #for i in xrange(len(beans)):
         #    beans[i].tracknumber = i + 1
