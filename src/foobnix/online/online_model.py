@@ -39,7 +39,7 @@ class OnlineListModel:
         iconColumn = gtk.TreeViewColumn(None, cellpb, stock_id=0, cell_background=4)
         iconColumn.set_fixed_width(5)
         
-        descriptionColumn = gtk.TreeViewColumn(_('Artist - Title'), gtk.CellRendererText(), text=self.POS_NAME, background=self.POS_COLOR)
+        descriptionColumn = gtk.TreeViewColumn('Artist - Title', gtk.CellRendererText(), text=self.POS_NAME, background=self.POS_COLOR)
         descriptionColumn.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         descriptionColumn.set_resizable(True)
         descriptionColumn.set_expand(True)
@@ -48,12 +48,10 @@ class OnlineListModel:
         number_column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         
         
-        timeColumn = gtk.TreeViewColumn(_('Time'), gtk.CellRendererText(), text=self.POS_TIME, background=self.POS_COLOR)
+        timeColumn = gtk.TreeViewColumn('Time', gtk.CellRendererText(), text=self.POS_TIME, background=self.POS_COLOR)
         timeColumn.set_fixed_width(5)
         timeColumn.set_min_width(5)
         
-        #empty = gtk.TreeViewColumn(None, gtk.CellRendererText(), text= -1, background=self.POS_COLOR)
-                
         widget.append_column(iconColumn)
         widget.append_column(number_column)
         widget.append_column(descriptionColumn)

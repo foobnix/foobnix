@@ -5,7 +5,7 @@ from foobnix.regui.controls import StatusbarControls
 from foobnix.regui.left import LeftWidgets
 import time
 from foobnix.regui.search import SearchControls
-from foobnix.regui.center import InfoPanelWidget
+from foobnix.regui.infopanel import InfoPanelWidget
 from foobnix.regui.notebook import NotebookControls
 class Base():
     
