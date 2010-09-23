@@ -5,9 +5,9 @@ Created on Sep 23, 2010
 '''
 import gtk
 from foobnix.util import LOG
-from foobnix.util.configuration import FConfiguration
 from foobnix.helpers.my_widgets import tab_close_button, tab_close_label
 from foobnix.online.online_model import OnlineListModel
+from foobnix.util.fc import FC
 class NotebookControls():
     def __init__(self):
         self.notebook = gtk.Notebook()
@@ -27,8 +27,8 @@ class NotebookControls():
     def append_tab(self, name):
         self.last_notebook_page = name
         LOG.info("append new tab")
-        if name and len(name) > FConfiguration().len_of_tab:
-            name = name[:FConfiguration().len_of_tab]
+        if name and len(name) > FC().len_of_tab:
+            name = name[:FC().len_of_tab]
 
         tab_content = self.create_notebook_tab()
         def label():
@@ -40,8 +40,8 @@ class NotebookControls():
             return label
         
         def button():
-            print "ELEMENT", FConfiguration().tab_close_element
-            if FConfiguration().tab_close_element == "button":            
+            print "ELEMENT", FC().tab_close_element
+            if FC().tab_close_element == "button":            
                 return tab_close_button(func=self.on_delete_tab, arg=tab_content)
             else:
                 return tab_close_label(func=self.on_delete_tab, arg=tab_content, angel=self.default_angel)
@@ -72,7 +72,7 @@ class NotebookControls():
         self.notebook.prepend_page(tab_content, both)
         self.notebook.set_current_page(0)
         
-        if self.notebook.get_n_pages() > FConfiguration().count_of_tabs:
+        if self.notebook.get_n_pages() > FC().count_of_tabs:
             self.notebook.remove_page(self.notebook.get_n_pages() - 1)
     
     def create_notebook_tab(self):

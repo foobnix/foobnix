@@ -13,16 +13,22 @@ class TopWidgets():
         hbox = gtk.HBox(False, 0)
         hbox.show()
         
-        menu = MenuWidget().widget
+        self.menu = MenuWidget()
         buttons = PlaybackControls().widget
-        volume = VolumeControls().widget
+        self.volume = VolumeControls()
         sep = ToolbarSeparator().widget
         seek = SeekProgressBarControls().widget
         
-        hbox.pack_start(menu, False, False)
+        hbox.pack_start(self.menu.widget, False, False)
         hbox.pack_start(buttons, False, False)
-        hbox.pack_start(volume, False, False)
+        hbox.pack_start(self.volume.widget, False, False)
         hbox.pack_start(sep, False, False)
         hbox.pack_start(seek, True, True)
         
         self.widget = hbox
+        
+    def on_save(self):        
+        self.volume.on_save()
+        
+    def on_load(self):
+        self.volume.on_load()

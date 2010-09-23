@@ -5,7 +5,6 @@ Created on Sep 23, 2010
 '''
 import gtk
 from foobnix.base.base_list_controller import BaseListController
-from foobnix.util.configuration import FConfiguration
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.util import LOG
 from foobnix.helpers.tree import ScrolledTreeView
@@ -20,8 +19,8 @@ class InfoPanelWidget():
         paned = gtk.VPaned()
         
         """image and similar artists"""
-        ibox = gtk.HBox(False,0)
-        image =gtk.Image()
+        ibox = gtk.HBox(False, 0)
+        image = gtk.Image()
         self.set_no_image_album(image)
         
         artists = ScrolledTreeView(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)        
@@ -34,14 +33,14 @@ class InfoPanelWidget():
         
         
         """image and similar artists"""
-        sbox = gtk.HBox(False,0)
+        sbox = gtk.HBox(False, 0)
         
         songs = ScrolledTreeView(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)        
         songsControll = SimilartArtistsController(songs)
         songsControll.set_title("Similar songs")
         
         
-        tags =ScrolledTreeView(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        tags = ScrolledTreeView(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         tagsControll = SimilartArtistsController(tags)
         tagsControll.set_title("Similar tags")
         
@@ -50,8 +49,8 @@ class InfoPanelWidget():
         
         
         
-        paned.pack1(ibox,False,False)
-        paned.pack2(sbox,True,True)
+        paned.pack1(ibox, False, False)
+        paned.pack2(sbox, True, True)
         
                 
         info_frame.add(paned)
@@ -60,7 +59,7 @@ class InfoPanelWidget():
         
         info_frame.show_all()
                
-        self.widget= info_frame
+        self.widget = info_frame
     
     def set_no_image_album(self, image):
       
@@ -74,16 +73,13 @@ class InfoPanelWidget():
             except:    
                 pix = gtk.gdk.pixbuf_new_from_file("foobnix/pixmaps/" + image_name) #@UndefinedVariable
 
-        size = FConfiguration().info_panel_image_size
-        pix = pix.scale_simple(size, size, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
-        
+        pix = pix.scale_simple(100, 100, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
         image.set_from_pixbuf(pix)
         
         
         
 class SimilartArtistsController(BaseListController):
     def __init__(self, widget):
-        widget.set_size_request(FConfiguration().info_panel_image_size, -1)
         BaseListController.__init__(self, widget)
     
     def on_button_press(self, w, e):

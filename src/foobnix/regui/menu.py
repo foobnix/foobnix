@@ -6,7 +6,7 @@ Created on Sep 22, 2010
 import gtk
 from foobnix.util import LOG
 import sys
-from foobnix.util.configuration import FConfiguration
+from foobnix.util.fc import FC
 class MenuWidget():
     def __init__(self):
         """TOP menu constructor"""
@@ -57,12 +57,12 @@ class MenuWidget():
         self.on_load()
     
     def on_load(self):
-        self.view_music_tree.set_active(FConfiguration().view_tree_panel)
+        self.view_music_tree.set_active(FC().is_view_music_tree_panel)
     
     def on_save(self):
-        FConfiguration().view_tree_panel = self.view_music_tree.get_active()
-        FConfiguration().save()
-        sys.exit(1)        
+        FC().is_view_music_tree_panel = self.view_music_tree.get_active()
+        #FConfiguration().save()
+        #sys.exit(1)        
         
         
 
