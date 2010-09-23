@@ -6,6 +6,7 @@ Created on 22 сент. 2010
 '''
 import gtk
 from foobnix.base.base_list_controller import BaseListController
+from foobnix.helpers.toggled import OneActiveToggledButton
 class LeftWidgets(BaseListController):
     def __init__(self):
         vbox = gtk.VBox(False, 0)
@@ -40,11 +41,11 @@ class LeftWidgets(BaseListController):
 class PerspectiveButtonControlls():
     def __init__(self):
         hbox = gtk.HBox(False, 0)
-        
+               
         music = self.custom_button("Music", gtk.STOCK_HARDDISK)
         radio = self.custom_button("Radio", gtk.STOCK_NETWORK)
-        lists = self.custom_button("Network", gtk.STOCK_INDEX)
-        
+        lists = self.custom_button("Lists", gtk.STOCK_INDEX)
+        OneActiveToggledButton([music, radio,lists])
         
         hbox.pack_start(music, False, False)
         hbox.pack_start(radio, False, False)
@@ -53,9 +54,18 @@ class PerspectiveButtonControlls():
         hbox.show_all()
         
         self.widget = hbox
+    
+   
+                    
         
-    def custom_button(self, title, gtk_stock):
+    def custom_button(self, title, gtk_stock, func=None, param=None):
         button = gtk.ToggleButton(title)
+
+        if param and func:             
+            button.connect("toggled", lambda * a: func(param))
+        elif func:
+            button.connect("toggled", lambda * a: func())         
+                
         button.set_relief(gtk.RELIEF_NONE)
         label = button.get_child()
         button.remove(label)
@@ -67,5 +77,4 @@ class PerspectiveButtonControlls():
         vbox.show_all()
         
         button.add(vbox)
-        
-        return button 
+        return button

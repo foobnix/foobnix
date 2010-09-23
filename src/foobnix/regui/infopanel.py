@@ -11,7 +11,11 @@ from foobnix.util import LOG
 from foobnix.helpers.tree import ScrolledTreeView
 class InfoPanelWidget():    
     def __init__(self): 
-        info_frame = gtk.Frame("Madonna - Album (2009)")        
+        info_frame = gtk.Frame()
+        label = gtk.Label()
+        label.set_markup("<b>Madonna - Album (2009)</b>")
+        info_frame.set_label_widget(label)                                
+        info_frame.set_shadow_type(gtk.SHADOW_NONE)
         
         paned = gtk.VPaned()
         

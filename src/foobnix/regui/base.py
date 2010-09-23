@@ -11,7 +11,7 @@ class Base():
     
     def __init__(self):
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        self.window.set_title("Foobnix")
+        self.window.set_title("Foobnix Music Player")
         self.window.set_position(gtk.WIN_POS_CENTER)
         self.window.set_resizable(True)
         self.window.connect("destroy", lambda * a:sys.exit(1))
@@ -61,7 +61,6 @@ class Base():
         self.window.add(vbox)
         self.window.show()
         self.window.set_size_request(400, 300)
-
 
 init_time = time.time()
 eq = Base()

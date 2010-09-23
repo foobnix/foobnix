@@ -1,7 +1,11 @@
 import gtk
+from foobnix.helpers.toggled import OneActiveToggledButton
 class SearchControls():
     def __init__(self):
-        frame = gtk.Frame("Online Music Search")
+        frame = gtk.Frame()
+        label = gtk.Label()
+        label.set_markup("<b>Search music online:</b>")
+        frame.set_label_widget(label)
         frame.set_border_width(0)
         
         vbox = gtk.VBox(False, 0)
@@ -18,7 +22,12 @@ class SearchControls():
         
         
         """Top searches"""
-        top_frame = gtk.Frame("Top by Artist")
+        top_frame = gtk.Frame()
+        label = gtk.Label()
+        label.set_markup("<b>Top by artist</b>")
+        top_frame.set_label_widget(label)                                
+        top_frame.set_shadow_type(gtk.SHADOW_NONE)
+
         hbox = gtk.HBox(False, 0)
         
         songs = gtk.ToggleButton("Songs")        
@@ -32,7 +41,11 @@ class SearchControls():
         top_frame.add(hbox)
         
         """Other searches"""
-        other_frame = gtk.Frame("Other")
+        other_frame = gtk.Frame()
+        label = gtk.Label()
+        label.set_markup("<b>Other</b>")
+        other_frame.set_label_widget(label)    
+        other_frame.set_shadow_type(gtk.SHADOW_NONE)
         hbox = gtk.HBox(False, 0)
         
         tags = gtk.ToggleButton("Tag")        
@@ -49,6 +62,9 @@ class SearchControls():
         h_line_box.pack_start(other_frame, True, True, 0)
         
         h_line_box.show_all()
+        
+        OneActiveToggledButton([songs,albums,similars,tags,all])
+        
         return h_line_box
                   
      
