@@ -5,7 +5,8 @@ from foobnix.regui.controls import StatusbarControls
 from foobnix.regui.left import LeftWidgets
 import time
 from foobnix.regui.search import SearchControls
-from foobnix.regui.center import PlaylistControls, InfoPanelWidget
+from foobnix.regui.center import InfoPanelWidget
+from foobnix.regui.notebook import NotebookControls
 class Base():
     
     def __init__(self):
@@ -28,10 +29,9 @@ class Base():
         
         leftPaned = gtk.HPaned()
         
-        leftPaned.pack1(child=PlaylistControls().widget, resize=True, shrink=True)
+        leftPaned.pack1(child=NotebookControls().widget, resize=True, shrink=True)
         leftPaned.pack2(child=InfoPanelWidget().widget, resize=True, shrink=True)
-        
-       
+               
         
         searchPanel = SearchControls().widget
         
@@ -61,8 +61,6 @@ class Base():
         self.window.add(vbox)
         self.window.show()
         self.window.set_size_request(400, 300)
-        
-        #self.window.set_size_request(400,250)
 
 
 init_time = time.time()
