@@ -32,7 +32,7 @@ class SearchControls():
         
         songs = gtk.ToggleButton("Songs")        
         albums = gtk.ToggleButton("Albums")
-        similars = gtk.ToggleButton("Similars")
+        similars = gtk.ToggleButton("Similar")
         
         hbox.pack_start(songs, True, True, 0)
         hbox.pack_start(albums, True, True, 0)
