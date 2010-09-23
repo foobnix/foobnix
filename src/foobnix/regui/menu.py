@@ -62,8 +62,7 @@ class MenuWidget():
     def on_save(self):
         FConfiguration().view_tree_panel = self.view_music_tree.get_active()
         FConfiguration().save()
-        sys.exit(1)
-        
+        sys.exit(1)        
         
         
 

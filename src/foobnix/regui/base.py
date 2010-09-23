@@ -4,6 +4,8 @@ from foobnix.regui.top import TopWidgets
 from foobnix.regui.controls import StatusbarControls
 from foobnix.regui.left import LeftWidgets
 import time
+from foobnix.regui.search import SearchControls
+from foobnix.regui.center import PlaylistControls, InfoPanelWidget
 class Base():
     
     def __init__(self):
@@ -21,10 +23,22 @@ class Base():
         
         vbox.pack_start(top, False, False)
         
-        space = gtk.Button("hi")
-        space.show()
+       
+        center_box =gtk.VBox(False,0)
+        
+        leftPaned = gtk.HPaned()
+        
+        leftPaned.pack1(child=PlaylistControls().widget, resize=True, shrink=True)
+        leftPaned.pack2(child=InfoPanelWidget().widget, resize=True, shrink=True)
+        
+       
+        
+        searchPanel = SearchControls().widget
         
         
+        center_box.pack_start(searchPanel, False, False)
+        center_box.pack_start(leftPaned, True, True)
+        center_box.show_all()
         
         left = LeftWidgets().widget
         
@@ -33,7 +47,7 @@ class Base():
         #hpaned.add2(space)
         
         hpaned.pack1(child=left, resize=True, shrink=True)
-        hpaned.pack2(child=space, resize=True, shrink=True)
+        hpaned.pack2(child=center_box, resize=True, shrink=True)
     
         hpaned.show_all()
         
