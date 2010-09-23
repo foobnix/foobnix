@@ -180,7 +180,11 @@ class AppController(BaseController):
 
             bean = CommonBean(type=CommonBean.TYPE_MUSIC_FILE)
             if FConfiguration().last_notebook_beans and FConfiguration().last_play_bean:
-                bean = FConfiguration().last_notebook_beans[FConfiguration().last_play_bean]
+                try:
+                    bean = FConfiguration().last_notebook_beans[FConfiguration().last_play_bean]
+                except IndexError:
+                    bean = FConfiguration().last_notebook_beans[0]
+                    FConfiguration().last_play_bean = 0
             """auto play last song on start, but do not play radio, it's buggy"""
             if FConfiguration().play_on_start and bean.type != CommonBean.TYPE_RADIO_URL:               
                 self.onlineCntr.append_and_play(FConfiguration().last_notebook_beans, FConfiguration().last_play_bean)
