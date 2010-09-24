@@ -19,6 +19,7 @@ from foobnix.lyric.lyr import get_lyrics
 import os
 import time
 from foobnix.helpers.menu import Popup
+from cgi import escape
 
 class SimilartSongsController(BaseListController):
     
@@ -314,16 +315,17 @@ class InformationController():
             else:
                 self.lyrics_buffer.set_text(_("Lyric not found"))
                 
-            self.lyric_artist_title.set_markup("<b>" + song.getArtist() + " - " + song.getTitle() + "</b>")
+            self.lyric_artist_title.set_markup("<b>" + escape(song.getArtist()) + 
+                                               " - " + escape(song.getTitle()) + "</b>")
                
-            self.current_song_label.set_markup("<b>" + song.getTitle() + "</b>")
+            self.current_song_label.set_markup("<b>" + escape(song.getTitle()) + "</b>")
 
     def update_links(self, song):
         """set urls"""
         """TODO TypeError: cannot concatenate 'str' and 'NoneType' objects """
-        self.lastfm_url.set_uri("http://www.lastfm.ru/search?q=" + song.getArtist() + "&type=artist")
-        self.wiki_linkbutton.set_uri("http://en.wikipedia.org/w/index.php?search=" + song.getArtist())
-        self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query=" + song.getArtist())
+        self.lastfm_url.set_uri("http://www.lastfm.ru/search?q=" + song.getArtist().replace('&','%26') + "&type=artist")
+        self.wiki_linkbutton.set_uri("http://en.wikipedia.org/w/index.php?search=" + song.getArtist().replace('&','%26'))
+        self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query=" + song.getArtist().replace('&','%26'))
     
     def update_info_panel(self, song, track, album):
         self.similar_songs_cntr.parent = song.getArtist() + " - " + song.getTitle()
