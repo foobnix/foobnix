@@ -23,51 +23,53 @@ class OnlineListModel:
     POS_TYPE = 6
     POS_PARENT = 7
     POS_TIME = 8
-    
+
     POS_START_AT = 9
     POS_DURATION = 10
     POS_ID3 = 11
     POS_IMAGE = 12
     POS_INFO = 13
-    
+
     def __init__(self, widget):
         self.widget = widget
         self.current_list_model = gtk.ListStore(str, str, str, str, str, int, str, str, str, str, str, str, str, str)
-               
+        self.random_list = []
+
         cellpb = gtk.CellRendererPixbuf()
         cellpb.set_property('cell-background', 'yellow')
         iconColumn = gtk.TreeViewColumn(None, cellpb, stock_id=0, cell_background=4)
         iconColumn.set_fixed_width(5)
-        
+
         descriptionColumn = gtk.TreeViewColumn('Artist - Title', gtk.CellRendererText(), text=self.POS_NAME, background=self.POS_COLOR)
         descriptionColumn.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         descriptionColumn.set_resizable(True)
         descriptionColumn.set_expand(True)
-        
+
         number_column = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.POS_TRACK_NUMBER, background=self.POS_COLOR)
         number_column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        
-        
+
+
         timeColumn = gtk.TreeViewColumn('Time', gtk.CellRendererText(), text=self.POS_TIME, background=self.POS_COLOR)
         timeColumn.set_fixed_width(5)
         timeColumn.set_min_width(5)
-        
+
         widget.append_column(iconColumn)
         widget.append_column(number_column)
         widget.append_column(descriptionColumn)
         widget.append_column(timeColumn)
         #widget.append_column(empty)
-        
+
         widget.set_model(self.current_list_model)
+
     def get_size(self):
         return len(self.current_list_model)
-    
+
     def get_all_beans(self):
         beans = []
         for i in xrange(self.get_size()):
             beans.append(self.getBeenByPosition(i))
         return beans
-    
+
     def getBeenByPosition(self, position):
         if position < 0:
             position = 0
@@ -88,13 +90,17 @@ class OnlineListModel:
         bean.id3 = self.current_list_model[position][ self.POS_ID3]
         bean.image = self.current_list_model[position][ self.POS_IMAGE]
         bean.info = self.current_list_model[position][ self.POS_INFO]
-        return bean  
-    
-    
+        return bean
+
+
     def get_random_bean(self):
-        index = randint(0, self.get_size() - 1)
-        return self.getBeenByPosition(index) 
-    
+        if not self.random_list:
+            self.random_list = [x for x in xrange(self.get_size())]
+        index = random.choice(self.random_list)
+        self.random_list.remove(index)
+        LOG.info('random_list:',self.random_list,'Choice',index)
+        return self.getBeenByPosition(index)
+
     def getModel(self):
         return self.current_list_model
 
@@ -103,21 +109,21 @@ class OnlineListModel:
         model, paths = selection.get_selected_rows()
         if not paths:
             return None
-        
+
         return self._get_bean_by_path(paths[0])
-    
+
     def get_all_selected_beans(self):
         selection = self.widget.get_selection()
         model, paths = selection.get_selected_rows()
         if not paths:
             return None
         beans = []
-        for path in paths:       
-            selection.select_path(path)     
+        for path in paths:
+            selection.select_path(path)
             bean = self._get_bean_by_path(path)
             beans.append(bean)
-        return beans    
-    
+        return beans
+
     def _get_bean_by_path(self, path):
         model = self.current_list_model
         iter = model.get_iter(path)
@@ -139,11 +145,12 @@ class OnlineListModel:
             bean.info = model.get_value(iter, self.POS_INFO)
             return bean
         return None
-                
-    
+
+
     def clear(self):
+        self.random_list = []
         self.current_list_model.clear()
-    
+
     def remove_selected(self):
         selection = self.widget.get_selection()
         model, selected = selection.get_selected_rows()
@@ -151,17 +158,19 @@ class OnlineListModel:
         LOG.debug("REMOVE:", iters)
         for iter in iters:
             model.remove(iter)
-    
+        self.random_list = [x for x in xrange(self.get_size())]
+
     def append(self, bean):
-        """teplorary disable colors"""        
+        """teplorary disable colors"""
+        self.random_list.append(self.get_size())
         self.current_list_model.append([bean.icon, bean.tracknumber, bean.name, bean.path, bean.color, bean.index, bean.type, bean.parent, bean.time, bean.start_at, bean.duration, bean.id3, bean.image, bean.info])
 
     def __del__(self, *a):
         LOG.info("del")
-        
-        
+
+
     def get_selected_index(self):
-        
+
         selection = self.widget.get_selection()
         #model, selected = selection.get_selected()
         model, selected = selection.get_selected_rows()
@@ -169,23 +178,24 @@ class OnlineListModel:
             return None
         iter = self.current_list_model.get_iter(selected[0])
         if iter:
-            i = model.get_string_from_iter(iter)  
-            #LOG.info("!!I", i      
+            i = model.get_string_from_iter(iter)
+            #LOG.info("!!I", i
             #if i.find(":") == -1:
             #return int(i)
             return int(i)
-        return None    
+        return None
 
     def repopulate(self, played_index, shuffle=False):
         LOG.info("Selected index", played_index)
-        list = self.get_all_beans()
-        
-        if shuffle:
-            random.shuffle(list)
+        beanslist = self.get_all_beans()
+        random_list = self.random_list[:]
 
-        self.clear()        
-        for i in xrange(len(list)):
-            songBean = list[i]
+        if shuffle:
+            random.shuffle(beanslist)
+
+        self.clear()
+        for i in xrange(len(beanslist)):
+            songBean = beanslist[i]
 
             if not songBean.color:
                 songBean.color = self.get_bg_color(i)
@@ -199,6 +209,7 @@ class OnlineListModel:
             else:
                 songBean.setIconNone()
                 self.append(songBean)
+        self.random_list = random_list
 
     def get_bg_color(self, i):
         """temp no color"""
@@ -206,4 +217,4 @@ class OnlineListModel:
         if i % 2 :
             return "#F2F2F2"
         else:
-            return "#FFFFE5"        
+            return "#FFFFE5"
