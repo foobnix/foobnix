@@ -98,7 +98,6 @@ class OnlineListModel:
             self.random_list = [x for x in xrange(self.get_size())]
         index = random.choice(self.random_list)
         self.random_list.remove(index)
-        LOG.info('random_list:',self.random_list,'Choice',index)
         return self.getBeenByPosition(index)
 
     def getModel(self):
