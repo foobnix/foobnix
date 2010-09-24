@@ -23,7 +23,7 @@ class TreeViewControl(gtk.TreeView):
         filter.set_visible_column(self.POS_VISIBLE)
         self.set_model(filter)    
     
-    def append(self, level, POS_TEXT, POS_VISIBLE, POS_FONT):        
+    def append(self, level=None, POS_TEXT="", POS_VISIBLE=True, POS_FONT="normal"):        
         return self.model.append(level, [POS_TEXT, POS_VISIBLE, POS_FONT])
    
     def clear(self):
@@ -52,4 +52,14 @@ class TreeViewControl(gtk.TreeView):
             else:
                 line[self.POS_VISIBLE] = False
                     
+    def populate_from_scanner(self, scanner_beans):
+        self.model.clear()
+        hash = {None:None}
+        for bean in scanner_beans:
+            if hash.has_key(bean.parent):
+                iter = hash[bean.parent]
+            else:
+                iter = None
 
+            new_iter = self.append(iter, bean.name)
+            hash[bean.path] = new_iter

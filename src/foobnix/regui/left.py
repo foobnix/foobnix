@@ -7,6 +7,7 @@ Created on 22 сент. 2010
 import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.treeview import TreeViewControl
+from foobnix.regui.treeview.scanner import DirectoryScanner
 class LeftWidgets():
     def __init__(self):
         vbox = gtk.VBox(False, 0)
@@ -24,6 +25,9 @@ class LeftWidgets():
         self.tree.append(l, "madonna", True, "normal")
         self.tree.append(l, "madonna", True, "normal")
         self.tree.append(l, "madonna", True, "normal")
+        
+        scan = DirectoryScanner("/home/ivan/Музыка")
+        self.tree.populate_from_scanner(scan.get_results())
         
         scrool_tree = gtk.ScrolledWindow()        
         scrool_tree.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)

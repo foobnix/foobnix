@@ -1,5 +1,4 @@
 import gtk
-import sys
 from foobnix.regui.top import TopWidgets
 from foobnix.regui.controls import StatusbarControls
 from foobnix.regui.left import LeftWidgets
