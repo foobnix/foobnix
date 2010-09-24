@@ -5,26 +5,33 @@ Created on 22 сент. 2010
 @author: ivan
 '''
 import gtk
-from foobnix.base.base_list_controller import BaseListController
 from foobnix.helpers.toggled import OneActiveToggledButton
-class LeftWidgets(BaseListController):
+from foobnix.regui.treeview import TreeViewControl
+class LeftWidgets():
     def __init__(self):
         vbox = gtk.VBox(False, 0)
         
-        tree = gtk.TreeView()        
+        self.tree = TreeViewControl("Music Lybrary")      
+        l = self.tree.append(None, "1madonna", True, "bold") 
+        self.tree.append(l, "1madonna", True, "normal")
+        self.tree.append(l, "1madonna", True, "normal")
+        self.tree.append(l, "1madonna", True, "normal")
+        self.tree.append(l, "1madonna", True, "normal")
+        self.tree.append(l, "1madonna", True, "normal")
+        l = self.tree.append(None, "madonna", True, "bold") 
+        self.tree.append(l, "madonna", True, "normal")
+        self.tree.append(l, "madonna", True, "normal")
+        self.tree.append(l, "madonna", True, "normal")
+        self.tree.append(l, "madonna", True, "normal")
+        self.tree.append(l, "madonna", True, "normal")
         
-        BaseListController.__init__(self, tree)
-        self.set_title("Music Lybrary Tree")
-        for i in xrange(30):
-            self.add_item("Artist - Title %s" % i)
-            
-        scrool_tree = gtk.ScrolledWindow()
-        #scrool_tree.set_size_request(-1, 170)
+        scrool_tree = gtk.ScrolledWindow()        
         scrool_tree.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        scrool_tree.add_with_viewport(tree)
+        scrool_tree.add_with_viewport(self.tree)
         scrool_tree.show()    
                 
-        filter = gtk.Entry()
+        filter = gtk.Entry()        
+        filter.connect("key-release-event", self.on_filter)
         filter.set_text("hi")
         
         buttons = PerspectiveButtonControlls().widget
@@ -37,6 +44,9 @@ class LeftWidgets(BaseListController):
         vbox.show_all()
                 
         self.widget = vbox
+    def on_filter(self, w, e):
+        value = w.get_text()
+        self.tree.filter(value)
 
 class PerspectiveButtonControlls():
     def __init__(self):
@@ -45,7 +55,7 @@ class PerspectiveButtonControlls():
         music = self.custom_button("Music", gtk.STOCK_HARDDISK)
         radio = self.custom_button("Radio", gtk.STOCK_NETWORK)
         lists = self.custom_button("Lists", gtk.STOCK_INDEX)
-        OneActiveToggledButton([music, radio,lists])
+        OneActiveToggledButton([music, radio, lists])
         
         hbox.pack_start(music, False, False)
         hbox.pack_start(radio, False, False)

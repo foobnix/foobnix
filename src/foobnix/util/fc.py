@@ -27,10 +27,10 @@ class FC:
         self.count_of_tabs = 5
         
         """main window controls"""
-        self.main_window_size = [0, 0, 500, 500]
-        self.hpaned_left = 10;
-        self.hpaned_right = 10;
-        self.vpaned_small = 10;
+        self.main_window_size = [119, 154, 884, 479]
+        self.hpaned_left = 248;
+        self.hpaned_right = 320;
+        self.vpaned_small = 100;
         
         self = self._load();
         
