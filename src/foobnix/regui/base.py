@@ -30,35 +30,35 @@ class Base(LoadSave):
        
         center_box = gtk.VBox(False, 0)
         
-        leftPaned = gtk.HPaned()
+        self.hpaned_right = gtk.HPaned()
         
-        leftPaned.pack1(child=NotebookControls().widget, resize=True, shrink=True)
-        leftPaned.pack2(child=InfoPanelWidget().widget, resize=True, shrink=True)
+        self.info_panel = InfoPanelWidget()
+        
+        self.hpaned_right.pack1(child=NotebookControls().widget, resize=True, shrink=True)
+        self.hpaned_right.pack2(child=self.info_panel.widget, resize=True, shrink=True)
                
         
         searchPanel = SearchControls().widget
         
         
         center_box.pack_start(searchPanel, False, False)
-        center_box.pack_start(leftPaned, True, True)
+        center_box.pack_start(self.hpaned_right, True, True)
         center_box.show_all()
         
         left = LeftWidgets().widget
         
-        hpaned = gtk.HPaned()
-        #hpaned.add1(left)
-        #hpaned.add2(space)
+        self.hpaned_left = gtk.HPaned()     
         
-        hpaned.pack1(child=left, resize=True, shrink=True)
-        hpaned.pack2(child=center_box, resize=True, shrink=True)
+        self.hpaned_left.pack1(child=left, resize=True, shrink=True)
+        self.hpaned_left.pack2(child=center_box, resize=True, shrink=True)
     
-        hpaned.show_all()
+        self.hpaned_left.show_all()
         
         
         
         statusbar = StatusbarControls().widget
         
-        vbox.pack_start(hpaned, True, True)        
+        vbox.pack_start(self.hpaned_left, True, True)        
         vbox.pack_start(statusbar, False, True)
         self.window.add(vbox)
         
@@ -70,17 +70,25 @@ class Base(LoadSave):
 
     def on_save(self, *a):
         self.top.on_save()
+        self.info_panel.on_save()
+        
+        FC().hpaned_left = self.hpaned_left.get_position()
+        FC().hpaned_right = self.hpaned_right.get_position()
         gtk.main_quit()
         FC().save()
     
     def on_load(self):
+        self.hpaned_left.set_position(FC().hpaned_left)
+        self.hpaned_right.set_position(FC().hpaned_right)
+         
         cfg = FC().main_window_size
         if cfg:
-            self.window.set_default_size(cfg[2],cfg[3])            
+            self.window.set_default_size(cfg[2], cfg[3])            
             self.window.move(cfg[0], cfg[1])
             self.window.show()
             
         self.top.on_load()
+        self.info_panel.on_load()
         
         
 

@@ -8,7 +8,9 @@ from foobnix.base.base_list_controller import BaseListController
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.util import LOG
 from foobnix.helpers.tree import ScrolledTreeView
-class InfoPanelWidget():    
+from foobnix.regui.state import LoadSave
+from foobnix.util.fc import FC
+class InfoPanelWidget(LoadSave):    
     def __init__(self): 
         info_frame = gtk.Frame()
         label = gtk.Label()
@@ -16,7 +18,7 @@ class InfoPanelWidget():
         info_frame.set_label_widget(label)                                
         info_frame.set_shadow_type(gtk.SHADOW_NONE)
         
-        paned = gtk.VPaned()
+        self.vpaned_small = gtk.VPaned()
         
         """image and similar artists"""
         ibox = gtk.HBox(False, 0)
@@ -49,11 +51,11 @@ class InfoPanelWidget():
         
         
         
-        paned.pack1(ibox, False, False)
-        paned.pack2(sbox, True, True)
+        self.vpaned_small.pack1(ibox, False, False)
+        self.vpaned_small.pack2(sbox, True, True)
         
                 
-        info_frame.add(paned)
+        info_frame.add(self.vpaned_small)
         
 
         
@@ -75,7 +77,12 @@ class InfoPanelWidget():
 
         pix = pix.scale_simple(100, 100, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
         image.set_from_pixbuf(pix)
-        
+     
+    def on_load(self):
+        self.vpaned_small.set_position(FC().vpaned_small) 
+         
+    def on_save(self):
+        FC().vpaned_small = self.vpaned_small.get_position()
         
         
 class SimilartArtistsController(BaseListController):
