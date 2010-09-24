@@ -22,12 +22,12 @@ class FC:
         self.volume = 10
         
         """tabs"""
-        self.len_of_tab = 30
+        self.len_of_tab = 30    
         self.tab_close_element = "label"
         self.count_of_tabs = 5
         
         """main window controls"""
-        self.main_window_size = None
+        self.main_window_size = [0,0,500,500]
         
         self = self._load();
         
@@ -37,18 +37,13 @@ class FC:
     def _load(self):
         """restore from file"""
         object = FCHelper().load()
-        
-        object.__dict__.update(object.__dict__)
-        return object
-        
         if object:
             dict = object.__dict__
+            keys = self.__dict__.keys()
             for i in dict:
                 try:
-                    if self.__dict__[i]:                 
-                        #self.__dict__[i] = dict[i]
+                    if i in keys:
                         setattr(self, i, dict[i])
-                        print "SET", i, dict[i]
                 except Exception, e:
                     LOG.warn("Value not found", e)
                     return False
@@ -106,9 +101,12 @@ class FCHelper():
         for i in object.__dict__:
             LOG.debug(i, str(dict[i])[:500]);
 
-c = FC()
-print c.main_window_size
-c.info()
-#setattr(a, all, [1, 2, 3], typecast=typecast)
-#a.__setattr__['all'] = [1, 2, 3]
-#print a.__dict__
+
+"""""
+class A():
+    def __init__(self):
+        line = [1,2,3]
+a = A()        
+setattr(a, "line", [3, 2, 1])
+print a.line
+"""""

@@ -60,30 +60,25 @@ class Base(LoadSave):
         
         vbox.pack_start(hpaned, True, True)        
         vbox.pack_start(statusbar, False, True)
-        
         self.window.add(vbox)
-        self.window.show()
         
-        self.main_window_size = None
+        
         
     
     def on_configure_event(self, w, e):
-        self.main_window_size = [e.x, e.y, e.width, e.height]
-    
+        FC().main_window_size = [e.x, e.y, e.width, e.height]
+
     def on_save(self, *a):
         self.top.on_save()
-        FC().main_window_size = self.main_window_size
-                        
         gtk.main_quit()
         FC().save()
     
     def on_load(self):
         cfg = FC().main_window_size
-        print "CFG", cfg
-        FC().info()        
         if cfg:
+            self.window.set_default_size(cfg[2],cfg[3])            
             self.window.move(cfg[0], cfg[1])
-            self.window.set_default_size(cfg[2], cfg[3])
+            self.window.show()
             
         self.top.on_load()
         
