@@ -4,20 +4,22 @@ Created on 24 сент. 2010
 
 @author: ivan
 '''
+from foobnix.regui.treeview import FModel
 """common system bean"""
-class FBean():
+
+class FBean(FModel):
     TYPE_SONG = "SONG"
     TYPE_FOLDER = "FOLDER"
     
     def __init__(self, text=None, path=None):
+        FModel.__init__(self)
+        self._clean_model()
         self.text = text        
         self.path = path
-        self.type = None
-        self.play_icon = None
-        self.time = None
-        self.level = None
-        self.font = None
-        self.is_file = None
+    
+    def _clean_model(self):
+        for i in self.__dict__:
+            self.__dict__[i] = None
     
     def add_level(self, level):
         self.level = level

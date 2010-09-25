@@ -12,12 +12,12 @@ class MusicTreeControl(TreeViewControl):
         self.set_reorderable(False)
         
         """column config"""
-        column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=self.POS_TEXT, font=self.POS_FONT)
+        column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=self.text, font=self.font)
         column.set_resizable(True)
         self.append_column(column)
     
     def append(self, bean):           
-        return super(MusicTreeControl, self).append(level=bean.level, POS_TEXT=bean.text, POS_VISIBLE=True, POS_FONT=bean.font, POS_PLAY_ICON=None, POS_TIME=bean.time)
+        return super(MusicTreeControl, self).append(level=bean.level, text=bean.text, visible=True, font=bean.font, play_icon=None, time=bean.time)
   
     
     def populate_from_scanner(self, beans):
