@@ -11,7 +11,8 @@ from foobnix.util.fc import FC
 from foobnix.regui.treeview.playlist import PlaylistControl
 from foobnix.regui.model import FBean
 from foobnix.regui.model.signal import FSignal
-class NoteTabControl(gtk.Notebook, FSignal):
+from foobnix.regui.state import LoadSave
+class NoteTabControl(gtk.Notebook, FSignal, LoadSave):
     def __init__(self, controls):
         gtk.Notebook.__init__(self)
         FSignal.__init__(self, controls)
@@ -100,3 +101,9 @@ class NoteTabControl(gtk.Notebook, FSignal):
             LOG.info("Remove current page")
             page = self.get_current_page()            
         self.remove_page(page)
+    
+    def on_load(self):
+        pass
+    
+    def on_save(self):
+        pass

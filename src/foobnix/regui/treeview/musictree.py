@@ -8,7 +8,8 @@ from foobnix.regui.treeview import TreeViewControl
 import gtk
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.regui.model.signal import FSignal
-class MusicTreeControl(TreeViewControl, FSignal):
+from foobnix.regui.state import LoadSave
+class MusicTreeControl(TreeViewControl, FSignal, LoadSave):
     def __init__(self, controls):
         FSignal.__init__(self, controls)
         TreeViewControl.__init__(self)
@@ -44,3 +45,8 @@ class MusicTreeControl(TreeViewControl, FSignal):
                 child_level = self.append(bean.add_font("bold").add_level(level))
                 
             hash[bean.path] = child_level
+    def on_load(self):
+        pass
+    
+    def on_save(self):
+        pass
