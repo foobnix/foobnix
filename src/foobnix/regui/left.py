@@ -7,12 +7,11 @@ Created on 22 сент. 2010
 import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.treeview.scanner import DirectoryScanner
-from foobnix.regui.treeview.musictree import MusicTreeControl
 class LeftWidgets():
-    def __init__(self):
+    def __init__(self, tree):
         vbox = gtk.VBox(False, 0)
         
-        self.tree = MusicTreeControl()      
+        self.tree = tree      
 
         scan = DirectoryScanner("/home/ivan/Музыка")
         self.tree.populate_from_scanner(scan.get_music_results())

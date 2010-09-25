@@ -6,9 +6,13 @@ Created on 25 сент. 2010
 '''
 from foobnix.regui.treeview import TreeViewControl
 import gtk
-class MusicTreeControl(TreeViewControl):
-    def __init__(self):
+from foobnix.util.mouse_utils import is_double_left_click
+from foobnix.regui.model.signal import FSignal
+class MusicTreeControl(TreeViewControl, FSignal):
+    def __init__(self, controls):
+        FSignal.__init__(self, controls)
         TreeViewControl.__init__(self)
+        
         self.set_reorderable(False)
         
         """column config"""
@@ -20,6 +24,11 @@ class MusicTreeControl(TreeViewControl):
         return super(MusicTreeControl, self).append(level=bean.level, text=bean.text, visible=True, font=bean.font, play_icon=None, time=bean.time)
   
     
+    def on_button_press(self, w, e):
+        if is_double_left_click(e):
+            self.controls.append_to_notebook("asdf")
+            print "double left"
+      
     def populate_from_scanner(self, beans):
         self.model.clear()
         hash = {None:None}

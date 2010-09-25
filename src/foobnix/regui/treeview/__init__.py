@@ -27,12 +27,22 @@ class TreeViewControl(gtk.TreeView, FModel):
         filter = self.model.filter_new()
         filter.set_visible_column(self.visible)
         self.set_model(filter)    
-    
+        
+        """connectors"""
+        self.connect("button-press-event", self.on_button_press)
+        self.connect("key-release-event", self.on_key_release)
+        
     def append(self, level=None, text=None, visible=True, font="normal", play_icon=None, time=None):        
         return self.model.append(level, [text, visible, font, play_icon, time])
    
     def clear(self):
-        self.model.clear() 
+        self.model.clear()
+        
+    def  on_button_press(self, w, e):
+        pass
+    
+    def  on_key_release(self, w, e):
+        pass
     
     def filter(self, query):
         LOG.info("Filter", query)

@@ -10,9 +10,11 @@ from foobnix.online.online_model import OnlineListModel
 from foobnix.util.fc import FC
 from foobnix.regui.treeview.playlist import PlaylistControl
 from foobnix.regui.model import FBean
-class NoteTabControl(gtk.Notebook):
-    def __init__(self):
+from foobnix.regui.model.signal import FSignal
+class NoteTabControl(gtk.Notebook, FSignal):
+    def __init__(self, controls):
         gtk.Notebook.__init__(self)
+        FSignal.__init__(self, controls)
 
         self.default_angel = 0
         self.tab_labes = []

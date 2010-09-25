@@ -8,9 +8,27 @@ from foobnix.regui.infopanel import InfoPanelWidget
 from foobnix.util.fc import FC
 from foobnix.regui.state import LoadSave
 from foobnix.regui.notetab import NoteTabControl
+from foobnix.regui.base_layout import BaseFoobnixLayout
+from foobnix.regui.base_controls import BaseFoobnixControls
+from foobnix.regui.treeview.musictree import MusicTreeControl
 class Base(LoadSave):
     
     def __init__(self):
+        
+        controls = BaseFoobnixControls()
+        
+        notetabs = NoteTabControl(controls)
+        tree = MusicTreeControl(controls)
+        
+        controls.notetabs = notetabs
+        controls.tree = tree
+        
+        
+        layout = BaseFoobnixLayout()
+        layout.notetabs = notetabs
+        layout.tree = tree
+                                
+        
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.set_title("Foobnix Music Player")
         self.window.set_position(gtk.WIN_POS_CENTER)
@@ -32,7 +50,7 @@ class Base(LoadSave):
         self.hpaned_right = gtk.HPaned()
         
         self.info_panel = InfoPanelWidget()
-        notetabs = NoteTabControl()
+        
         self.hpaned_right.pack1(child=notetabs, resize=True, shrink=True)
         self.hpaned_right.pack2(child=self.info_panel.widget, resize=True, shrink=True)
                
@@ -44,7 +62,7 @@ class Base(LoadSave):
         center_box.pack_start(self.hpaned_right, True, True)
         center_box.show_all()
         
-        left = LeftWidgets().widget
+        left = LeftWidgets(tree).widget
         
         self.hpaned_left = gtk.HPaned()     
         
