@@ -32,6 +32,9 @@ class FC:
         self.hpaned_right = 320;
         self.vpaned_small = 100;
         
+        """support file formats"""
+        self.support_formats = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".cue", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp" ]
+        
         self = self._load();
         
     def save(self):

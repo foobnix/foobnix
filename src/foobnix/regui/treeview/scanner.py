@@ -5,6 +5,9 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import os
+from foobnix.util.fc import FC
+from foobnix.util.file_utils import file_extenstion
+from foobnix.util import LOG
 """Music directory scanner"""
 class DirectoryScanner():
        
@@ -12,7 +15,7 @@ class DirectoryScanner():
         self.path = path
         self.results = []
     
-    def get_results(self):
+    def get_music_results(self):
         self._scanner(self.path, None)
         return self.results
     
@@ -23,9 +26,15 @@ class DirectoryScanner():
 
         for file in list:
             full_path = os.path.join(path, file)
-            self.results.append(ScannerBean(file, full_path, level))
-            if os.path.isdir(full_path):
+            
+            if os.path.isfile(full_path) and file_extenstion(file) not in FC().support_formats:
+                continue;
+            
+            if self.is_dir_with_music(full_path):
+                self.results.append(ScannerBean(file, full_path, level))
                 self._scanner(full_path, full_path)
+            elif os.path.isfile(full_path):
+                self.results.append(ScannerBean(file, full_path, level))
 
     def sort_by_name(self, path, list):
         files = []
@@ -38,6 +47,28 @@ class DirectoryScanner():
                 files.append(file)
 
         return sorted(directories) + sorted(files)
+    
+    def is_dir_with_music(self, path):
+        if os.path.isdir(path):
+            list = None
+            try:
+                list = os.listdir(path)
+            except OSError, e:
+                LOG.info("Can'r get list of dir", e)
+
+            if not list:
+                return False
+
+            for file in list:
+                full_path = os.path.join(path, file)
+                if os.path.isdir(full_path):
+                    if self.is_dir_with_music(full_path):
+                        return True
+                else:
+                    if file_extenstion(file) in FC().support_formats:
+                        return True
+        return False    
+    
 
 class ScannerBean():
     def __init__(self, name, path, parent):

@@ -27,7 +27,7 @@ class LeftWidgets():
         self.tree.append(l, "madonna", True, "normal")
         
         scan = DirectoryScanner("/home/ivan/Музыка")
-        self.tree.populate_from_scanner(scan.get_results())
+        self.tree.populate_from_scanner(scan.get_music_results())
         
         scrool_tree = gtk.ScrolledWindow()        
         scrool_tree.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)

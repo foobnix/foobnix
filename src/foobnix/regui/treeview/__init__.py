@@ -57,9 +57,9 @@ class TreeViewControl(gtk.TreeView):
         hash = {None:None}
         for bean in scanner_beans:
             if hash.has_key(bean.parent):
-                iter = hash[bean.parent]
+                level = hash[bean.parent]
             else:
-                iter = None
+                level = None
 
-            new_iter = self.append(iter, bean.name)
-            hash[bean.path] = new_iter
+            child_level = self.append(level, bean.name)
+            hash[bean.path] = child_level
