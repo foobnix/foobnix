@@ -8,6 +8,7 @@ class TreeViewControl(gtk.TreeView):
     
     def __init__(self, title):
         gtk.TreeView.__init__(self)
+        self.set_enable_tree_lines(True)
         
         """model config"""
         self.model = gtk.TreeStore(str, gobject.TYPE_BOOLEAN, str)
@@ -61,5 +62,9 @@ class TreeViewControl(gtk.TreeView):
             else:
                 level = None
 
-            child_level = self.append(level, bean.name)
+            if bean.is_file:
+                child_level = self.append(level, bean.name, True, "normal")
+            else:
+                child_level = self.append(level, bean.name, True, "bold")
+                
             hash[bean.path] = child_level

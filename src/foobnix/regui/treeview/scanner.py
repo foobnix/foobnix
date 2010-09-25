@@ -31,10 +31,10 @@ class DirectoryScanner():
                 continue;
             
             if self.is_dir_with_music(full_path):
-                self.results.append(ScannerBean(file, full_path, level))
+                self.results.append(ScannerBean(file, full_path, level, False))
                 self._scanner(full_path, full_path)
             elif os.path.isfile(full_path):
-                self.results.append(ScannerBean(file, full_path, level))
+                self.results.append(ScannerBean(file, full_path, level, True))
 
     def sort_by_name(self, path, list):
         files = []
@@ -71,7 +71,8 @@ class DirectoryScanner():
     
 
 class ScannerBean():
-    def __init__(self, name, path, parent):
+    def __init__(self, name, path, parent, is_file):
         self.name = name
         self.path = path
         self.parent = parent
+        self.is_file = is_file
