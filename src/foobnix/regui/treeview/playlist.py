@@ -13,7 +13,6 @@ class PlaylistControl(TreeViewControl):
 
         """Column icon"""                
         icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.POS_PLAY_ICON)
-        icon.set_fixed_width(5)
         
         """conlumt artist title"""
         description = gtk.TreeViewColumn('Artist - Title', gtk.CellRendererText(), text=self.POS_TEXT)
@@ -21,12 +20,16 @@ class PlaylistControl(TreeViewControl):
         description.set_resizable(True)
         description.set_expand(True)
         
-        
+        """time text"""
         time = gtk.TreeViewColumn('Time', gtk.CellRendererText(), text=self.POS_TIME)
         time.set_fixed_width(5)
         time.set_min_width(5)
         
-        
         self.append_column(icon)
         self.append_column(description)
         self.append_column(time)
+   
+    def append(self, bean):        
+        super(PlaylistControl, self).append(None, POS_TEXT=bean.text, POS_PLAY_ICON=bean.play_icon, POS_TIME=bean.time)
+
+   

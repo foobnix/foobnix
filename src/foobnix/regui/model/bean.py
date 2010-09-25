@@ -9,15 +9,9 @@ class FBean():
     TYPE_SONG = "SONG"
     TYPE_FOLDER = "FOLDER"
     
-    def __init__(self):
-        self.path = None
-        self.type = None 
-    
-    def song(self, path):
-        self.type = self.TYPE_SONG
+    def __init__(self, text=None, path=None, type=TYPE_SONG, play_icon=None, time=None):
+        self.text = text        
         self.path = path
-        
-        
-    def folder(self, path):
-        self.type = self.TYPE_FOLDER
-        self.path = path
+        self.type = type
+        self.play_icon = play_icon
+        self.time = time

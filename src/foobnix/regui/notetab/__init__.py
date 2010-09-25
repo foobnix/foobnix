@@ -9,6 +9,7 @@ from foobnix.helpers.my_widgets import tab_close_button, tab_close_label
 from foobnix.online.online_model import OnlineListModel
 from foobnix.util.fc import FC
 from foobnix.regui.treeview.playlist import PlaylistControl
+from foobnix.regui.model.bean import FBean
 class NoteTabControl(gtk.Notebook):
     def __init__(self):
         gtk.Notebook.__init__(self)
@@ -76,6 +77,11 @@ class NoteTabControl(gtk.Notebook):
     
     def create_notebook_tab(self):
         treeview = PlaylistControl() 
+        bean = FBean(text="asdfsdf", path="/asd", play_icon=gtk.STOCK_GO_FORWARD)
+        treeview.append(bean)
+        treeview.append(bean)
+        treeview.append(bean)
+        
         
         window = gtk.ScrolledWindow()
         window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
