@@ -20,7 +20,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.tree = MusicTreeControl(self)
         
         """layout"""        
-        BaseFoobnixLayout(self)
+        self.layout = BaseFoobnixLayout(self)
         
         self.on_load()
         
