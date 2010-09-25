@@ -8,7 +8,8 @@ import os
 from foobnix.util.fc import FC
 from foobnix.util.file_utils import file_extenstion
 from foobnix.util import LOG
-from foobnix.regui.model.bean import FBean
+from foobnix.regui.model import FBean
+
 """Music directory scanner"""
 class DirectoryScanner():
        

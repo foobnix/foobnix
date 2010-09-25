@@ -9,7 +9,7 @@ from foobnix.helpers.my_widgets import tab_close_button, tab_close_label
 from foobnix.online.online_model import OnlineListModel
 from foobnix.util.fc import FC
 from foobnix.regui.treeview.playlist import PlaylistControl
-from foobnix.regui.model.bean import FBean
+from foobnix.regui.model import FBean
 class NoteTabControl(gtk.Notebook):
     def __init__(self):
         gtk.Notebook.__init__(self)
