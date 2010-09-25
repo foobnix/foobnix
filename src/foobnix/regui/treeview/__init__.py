@@ -39,20 +39,20 @@ class TreeViewControl(gtk.TreeView, FModel):
         if not query:
             """show alll"""
             for line in self.model:                
-                line[self.VISIBLE] = True
+                line[self.visible] = True
                 for child in line.iterchildren():
-                    child[self.VISIBLE] = True
+                    child[self.visible] = True
             self.collapse_all()
             return True
 
         """filter selected"""        
         query = query.lower()       
         for line in self.model:
-            name = line[self.TEXT].lower()
+            name = line[self.text].lower()
 
             if name.find(query) >= 0:
                 LOG.info("FILTER FIND PARENT:", name, query)
-                line[self.VISIBLE] = True
+                line[self.visible] = True
                 self.expand_all()                    
             else:
-                line[self.VISIBLE] = False
+                line[self.visible] = False
