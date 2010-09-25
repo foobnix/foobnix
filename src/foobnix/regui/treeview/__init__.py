@@ -3,13 +3,20 @@ import gobject
 from deluge.log import LOG
 
 class FModel():
-    def __init__(self):        
+    def __init__(self, none=False):        
         self.text = 0
         self.visible = 1
         self.font = 2
         self.play_icon = 3
         self.time = 4
         self.path = 5
+        
+        if none:
+            self._none()
+    
+    def _none(self):
+        for i in self.__dict__:
+            self.__dict__[i] = None
 
 class TreeViewControl(gtk.TreeView, FModel):
     
@@ -43,6 +50,35 @@ class TreeViewControl(gtk.TreeView, FModel):
     
     def  on_key_release(self, w, e):
         pass
+    
+    def get_selected_bean(self):
+        selection = self.get_selection()
+        model, paths = selection.get_selected_rows()
+        if not paths:
+            return None
+        
+        return self._get_bean_by_path(paths[0])
+    
+    def _get_bean_by_path(self, path):
+        model = self.model
+        iter = model.get_iter(path)
+        if iter:
+            bean = FModel(True)
+            bean.text = model.get_value(iter, self.text)            
+            return bean
+        return None
+    
+    def get_all_selected_beans(self):
+        selection = self.widget.get_selection()
+        model, paths = selection.get_selected_rows()
+        if not paths:
+            return None
+        beans = []
+        for path in paths:       
+            selection.select_path(path)     
+            bean = self._get_bean_by_path(path)
+            beans.append(bean)
+        return beans
     
     def filter(self, query):
         LOG.info("Filter", query)

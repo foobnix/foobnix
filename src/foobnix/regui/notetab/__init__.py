@@ -10,12 +10,12 @@ from foobnix.online.online_model import OnlineListModel
 from foobnix.util.fc import FC
 from foobnix.regui.treeview.playlist import PlaylistControl
 from foobnix.regui.model import FBean
-from foobnix.regui.model.signal import FSignal
+from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
-class NoteTabControl(gtk.Notebook, FSignal, LoadSave):
+class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     def __init__(self, controls):
         gtk.Notebook.__init__(self)
-        FSignal.__init__(self, controls)
+        FControl.__init__(self, controls)
 
         self.default_angel = 0
         self.tab_labes = []
@@ -24,16 +24,15 @@ class NoteTabControl(gtk.Notebook, FSignal, LoadSave):
         self.last_notebook_page = ""
         self.last_notebook_beans = []
         
-        self.append_tab("Madonna")
-        self.append_tab("Shakira")        
+        self.append_tab("Foobnix", None)                        
         
-    def append_tab(self, name):
+    def append_tab(self, name, beans=None):
         self.last_notebook_page = name
         LOG.info("append new tab")
         if name and len(name) > FC().len_of_tab:
             name = name[:FC().len_of_tab]
 
-        tab_content = self.create_notebook_tab()
+        tab_content = self.create_notebook_tab(beans)
         def label():
             """label"""                        
             label = gtk.Label(name + " ")
@@ -78,18 +77,18 @@ class NoteTabControl(gtk.Notebook, FSignal, LoadSave):
         if self.get_n_pages() > FC().count_of_tabs:
             self.remove_page(self.get_n_pages() - 1)
     
-    def create_notebook_tab(self):
+    def create_notebook_tab(self, beans):
         treeview = PlaylistControl() 
-        bean = FBean(text="asdfsdf", path="/asd").add_play_icon(gtk.STOCK_MEDIA_FORWARD)
-        treeview.append(bean)
-        treeview.append(bean)
-        treeview.append(bean)
         
+        if beans:   
+            for bean in beans:
+                treeview.append(bean)
         
         window = gtk.ScrolledWindow()
         window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         window.add_with_viewport(treeview)
-        window.show()
+        window.show_all()
+
         return  window
     
     def on_delete_tab(self, widget, event, child):

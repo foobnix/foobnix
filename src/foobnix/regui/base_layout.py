@@ -9,11 +9,14 @@ from foobnix.regui.top import TopWidgets
 from foobnix.regui.infopanel import InfoPanelWidget
 from foobnix.regui.search import SearchControls
 from foobnix.regui.left import LeftWidgets
-from foobnix.regui.controls import StatusbarControls
+from foobnix.regui.all_controls import StatusbarControls
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
-class BaseFoobnixLayout(LoadSave):
-    def __init__(self, window, notetabs, tree):        
+from foobnix.regui.model.signal import FControl
+class BaseFoobnixLayout(LoadSave, FControl):
+    def __init__(self, controls):
+        FControl.__init__(self, controls)
+         
         vbox = gtk.VBox(False, 0)
         vbox.show()
         
@@ -28,7 +31,7 @@ class BaseFoobnixLayout(LoadSave):
         
         self.info_panel = InfoPanelWidget()
         
-        self.hpaned_right.pack1(child=notetabs, resize=True, shrink=True)
+        self.hpaned_right.pack1(child=controls.notetabs, resize=True, shrink=True)
         self.hpaned_right.pack2(child=self.info_panel.widget, resize=True, shrink=True)
                
         
@@ -39,7 +42,7 @@ class BaseFoobnixLayout(LoadSave):
         center_box.pack_start(self.hpaned_right, True, True)
         center_box.show_all()
         
-        left = LeftWidgets(tree).widget
+        left = LeftWidgets(controls).widget
         
         self.hpaned_left = gtk.HPaned()     
         
@@ -55,7 +58,7 @@ class BaseFoobnixLayout(LoadSave):
         vbox.pack_start(self.hpaned_left, True, True)        
         vbox.pack_start(statusbar, False, True)
         
-        window.add(vbox)
+        controls.window.add(vbox)
         
     def on_save(self, *a):
         FC().hpaned_left = self.hpaned_left.get_position()

@@ -7,11 +7,13 @@ Created on 22 сент. 2010
 import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.treeview.scanner import DirectoryScanner
-class LeftWidgets():
-    def __init__(self, tree):
+from foobnix.regui.model.signal import FControl
+class LeftWidgets(FControl):
+    def __init__(self, controls):
+        FControl.__init__(self, controls)
         vbox = gtk.VBox(False, 0)
         
-        self.tree = tree      
+        self.tree = controls.tree      
 
         scan = DirectoryScanner("/home/ivan/Музыка")
         self.tree.populate_from_scanner(scan.get_music_results())
@@ -21,23 +23,18 @@ class LeftWidgets():
         scrool_tree.add_with_viewport(self.tree)
         scrool_tree.show()    
                 
-        filter = gtk.Entry()        
-        filter.connect("key-release-event", self.on_filter)
-        filter.set_text("hi")
+        
         
         buttons = PerspectiveButtonControlls().widget
         
         vbox.pack_start(scrool_tree, True, True)
-        vbox.pack_start(filter, False, False)
+        vbox.pack_start(controls.filter, False, False)
         vbox.pack_start(buttons, False, False)
-        
         
         vbox.show_all()
                 
         self.widget = vbox
-    def on_filter(self, w, e):
-        value = w.get_text()
-        self.tree.filter(value)
+   
 
 class PerspectiveButtonControlls():
     def __init__(self):

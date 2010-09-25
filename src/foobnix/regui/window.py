@@ -5,12 +5,12 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
-from foobnix.regui.model.signal import FSignal
+from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
-class MainWindow(gtk.Window, FSignal, LoadSave):
+class MainWindow(gtk.Window, FControl, LoadSave):
     def __init__(self, controls):
-        FSignal.__init__(self, controls)
+        FControl.__init__(self, controls)
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
         
         self.set_title("Foobnix Music Player")

@@ -12,8 +12,11 @@ class BaseFoobnixControls(LoadSave):
     def __init__(self):
         pass
         
-    def append_to_notebook(self, text):
-        self.notetabs.append_tab(text)
+    def append_to_notebook(self, text, beans):
+        self.notetabs.append_tab(text, beans)
+    
+    def filter_tree(self, value):
+        self.tree.filter(value)
     
     def quit(self, *a):
         LOG.info("Controls - Quit")

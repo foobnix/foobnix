@@ -6,8 +6,9 @@ Created on 22 сент. 2010
 '''
 import gtk
 from foobnix.regui.menu import MenuWidget
-from foobnix.regui.controls import PlaybackControls, VolumeControls, \
+from foobnix.regui.all_controls import PlaybackControls, VolumeControls, \
     ToolbarSeparator, SeekProgressBarControls
+
 class TopWidgets():
     def __init__(self):
         hbox = gtk.HBox(False, 0)

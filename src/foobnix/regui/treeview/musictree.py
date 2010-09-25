@@ -7,17 +7,17 @@ Created on 25 сент. 2010
 from foobnix.regui.treeview import TreeViewControl
 import gtk
 from foobnix.util.mouse_utils import is_double_left_click
-from foobnix.regui.model.signal import FSignal
+from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
-class MusicTreeControl(TreeViewControl, FSignal, LoadSave):
+class MusicTreeControl(TreeViewControl, FControl, LoadSave):
     def __init__(self, controls):
-        FSignal.__init__(self, controls)
+        FControl.__init__(self, controls)
         TreeViewControl.__init__(self)
         
         self.set_reorderable(False)
         
         """column config"""
-        column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=self.text, font=self.font)
+        column = gtk.TreeViewColumn("Music Lybrary", gtk.CellRendererText(), text=self.text, font=self.font)
         column.set_resizable(True)
         self.append_column(column)
     
@@ -27,7 +27,8 @@ class MusicTreeControl(TreeViewControl, FSignal, LoadSave):
     
     def on_button_press(self, w, e):
         if is_double_left_click(e):
-            self.controls.append_to_notebook("asdf")
+            bean = self.get_selected_bean()
+            self.controls.append_to_notebook(bean.text, [bean])
             print "double left"
       
     def populate_from_scanner(self, beans):

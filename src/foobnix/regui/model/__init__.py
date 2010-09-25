@@ -6,14 +6,9 @@ class FBean(FModel):
     TYPE_FOLDER = "FOLDER"
     
     def __init__(self, text=None, path=None):
-        FModel.__init__(self)
-        self._clean_model()
+        FModel.__init__(self, True)
         self.text = text        
         self.path = path
-    
-    def _clean_model(self):
-        for i in self.__dict__:
-            self.__dict__[i] = None
     
     def add_level(self, level):
         self.level = level
