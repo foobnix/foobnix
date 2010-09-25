@@ -21,6 +21,8 @@ class FoobnixCore(BaseFoobnixControls):
                                         self.notetabs,
                                         self.tree)
         
+        self.on_load()
+        
 init_time = time.time()
 eq = FoobnixCore()
 print "******Foobnix run in", time.time() - init_time, " seconds******"

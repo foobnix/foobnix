@@ -56,7 +56,6 @@ class BaseFoobnixLayout(LoadSave):
         vbox.pack_start(statusbar, False, True)
         
         window.add(vbox)
-        window.show()
         
     def on_save(self, *a):
         FC().hpaned_left = self.hpaned_left.get_position()

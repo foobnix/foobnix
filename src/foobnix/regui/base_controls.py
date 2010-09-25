@@ -26,6 +26,7 @@ class BaseFoobnixControls(LoadSave):
     def on_load(self):
         for element in self.__dict__:
             self.__dict__[element].on_load()
+        self.window.show()
             
     def on_save(self):
         for element in self.__dict__:
