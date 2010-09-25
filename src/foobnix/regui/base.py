@@ -5,9 +5,9 @@ from foobnix.regui.left import LeftWidgets
 import time
 from foobnix.regui.search import SearchControls
 from foobnix.regui.infopanel import InfoPanelWidget
-from foobnix.regui.notebook import NotebookControls
 from foobnix.util.fc import FC
 from foobnix.regui.state import LoadSave
+from foobnix.regui.notetab import NoteTabControl
 class Base(LoadSave):
     
     def __init__(self):
@@ -32,8 +32,8 @@ class Base(LoadSave):
         self.hpaned_right = gtk.HPaned()
         
         self.info_panel = InfoPanelWidget()
-        
-        self.hpaned_right.pack1(child=NotebookControls().widget, resize=True, shrink=True)
+        notetabs = NoteTabControl()
+        self.hpaned_right.pack1(child=notetabs, resize=True, shrink=True)
         self.hpaned_right.pack2(child=self.info_panel.widget, resize=True, shrink=True)
                
         

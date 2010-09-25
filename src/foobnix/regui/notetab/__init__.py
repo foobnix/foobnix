@@ -8,9 +8,11 @@ from foobnix.util import LOG
 from foobnix.helpers.my_widgets import tab_close_button, tab_close_label
 from foobnix.online.online_model import OnlineListModel
 from foobnix.util.fc import FC
-class NotebookControls():
+from foobnix.regui.treeview.playlist import PlaylistControl
+class NoteTabControl(gtk.Notebook):
     def __init__(self):
-        self.notebook = gtk.Notebook()
+        gtk.Notebook.__init__(self)
+
         self.default_angel = 0
         self.tab_labes = []
         self.tab_vboxes = []
@@ -21,9 +23,6 @@ class NotebookControls():
         self.append_tab("Madonna")
         self.append_tab("Shakira")        
         
-        self.widget = self.notebook
-        
-    
     def append_tab(self, name):
         self.last_notebook_page = name
         LOG.info("append new tab")
@@ -69,26 +68,14 @@ class NotebookControls():
         both.pack_start(hbox, False, False, 0)
         
         """append tab"""        
-        self.notebook.prepend_page(tab_content, both)
-        self.notebook.set_current_page(0)
+        self.prepend_page(tab_content, both)
+        self.set_current_page(0)
         
-        if self.notebook.get_n_pages() > FC().count_of_tabs:
-            self.notebook.remove_page(self.notebook.get_n_pages() - 1)
+        if self.get_n_pages() > FC().count_of_tabs:
+            self.remove_page(self.get_n_pages() - 1)
     
     def create_notebook_tab(self):
-        treeview = gtk.TreeView()
-        treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
-        treeview.set_rubber_banding(True)
-        
-        treeview.set_reorderable(True)
-        model = OnlineListModel(treeview)
-        self.current_list_model = model
-        
-        #treeview.connect("drag-end", self.on_drag_end)
-        #treeview.connect("button-press-event", self.onPlaySong, model)
-        #treeview.connect("key-press-event", self.on_song_key_press, model)
-        
-        treeview.show()
+        treeview = PlaylistControl() 
         
         window = gtk.ScrolledWindow()
         window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -98,10 +85,10 @@ class NotebookControls():
     
     def on_delete_tab(self, widget, event, child):
         if event.type == gtk.gdk.BUTTON_PRESS: #@UndefinedVariable
-            n = self.notebook.page_num(child)
+            n = self.page_num(child)
             self.delete_tab(n)
     def delete_tab(self, page=None):
         if not page:
             LOG.info("Remove current page")
-            page = self.notebook.get_current_page()            
-        self.notebook.remove_page(page)
+            page = self.get_current_page()            
+        self.remove_page(page)

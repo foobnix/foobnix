@@ -6,26 +6,14 @@ Created on 22 сент. 2010
 '''
 import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
-from foobnix.regui.treeview import TreeViewControl
 from foobnix.regui.treeview.scanner import DirectoryScanner
+from foobnix.regui.treeview.musictree import MusicTreeControl
 class LeftWidgets():
     def __init__(self):
         vbox = gtk.VBox(False, 0)
         
-        self.tree = TreeViewControl("Music Lybrary")      
-        l = self.tree.append(None, "1madonna", True, "bold") 
-        self.tree.append(l, "1madonna", True, "normal")
-        self.tree.append(l, "1madonna", True, "normal")
-        self.tree.append(l, "1madonna", True, "normal")
-        self.tree.append(l, "1madonna", True, "normal")
-        self.tree.append(l, "1madonna", True, "normal")
-        l = self.tree.append(None, "madonna", True, "bold") 
-        self.tree.append(l, "madonna", True, "normal")
-        self.tree.append(l, "madonna", True, "normal")
-        self.tree.append(l, "madonna", True, "normal")
-        self.tree.append(l, "madonna", True, "normal")
-        self.tree.append(l, "madonna", True, "normal")
-        
+        self.tree = MusicTreeControl()      
+
         scan = DirectoryScanner("/home/ivan/Музыка")
         self.tree.populate_from_scanner(scan.get_music_results())
         

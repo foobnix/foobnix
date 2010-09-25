@@ -2,30 +2,28 @@ import gtk
 import gobject
 from deluge.log import LOG
 class TreeViewControl(gtk.TreeView):
+    i = -1
     POS_TEXT = 0
     POS_VISIBLE = 1
     POS_FONT = 2
+    POS_PLAY_ICON = 3
+    POS_TIME = 4
     
-    def __init__(self, title):
-        gtk.TreeView.__init__(self)
+    def __init__(self):
+        gtk.TreeView.__init__(self)        
+        self.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.set_enable_tree_lines(True)
         
         """model config"""
-        self.model = gtk.TreeStore(str, gobject.TYPE_BOOLEAN, str)
-        renderer = gtk.CellRendererText()
+        self.model = gtk.TreeStore(str, gobject.TYPE_BOOLEAN, str, str, str)
         
-        """column config"""
-        column = gtk.TreeViewColumn(title, renderer, text=self.POS_TEXT, font=self.POS_FONT)
-        column.set_resizable(True)
-        self.append_column(column)
-
         """filter config"""
         filter = self.model.filter_new()
         filter.set_visible_column(self.POS_VISIBLE)
         self.set_model(filter)    
     
-    def append(self, level=None, POS_TEXT="", POS_VISIBLE=True, POS_FONT="normal"):        
-        return self.model.append(level, [POS_TEXT, POS_VISIBLE, POS_FONT])
+    def append(self, level=None, POS_TEXT=None, POS_VISIBLE=True, POS_FONT="normal", POS_PLAY_ICON=None, POS_TIME=None):        
+        return self.model.append(level, [POS_TEXT, POS_VISIBLE, POS_FONT, POS_PLAY_ICON, POS_TIME])
    
     def clear(self):
         self.model.clear() 
