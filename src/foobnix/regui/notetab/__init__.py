@@ -77,7 +77,7 @@ class NoteTabControl(gtk.Notebook):
     
     def create_notebook_tab(self):
         treeview = PlaylistControl() 
-        bean = FBean(text="asdfsdf", path="/asd", play_icon=gtk.STOCK_GO_FORWARD)
+        bean = FBean(text="asdfsdf", path="/asd").add_play_icon(gtk.STOCK_MEDIA_FORWARD)
         treeview.append(bean)
         treeview.append(bean)
         treeview.append(bean)

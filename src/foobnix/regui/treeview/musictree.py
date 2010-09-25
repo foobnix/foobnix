@@ -15,4 +15,23 @@ class MusicTreeControl(TreeViewControl):
         column = gtk.TreeViewColumn("Title", gtk.CellRendererText(), text=self.POS_TEXT, font=self.POS_FONT)
         column.set_resizable(True)
         self.append_column(column)
-        
+    
+    def append(self, bean):           
+        return super(MusicTreeControl, self).append(level=bean.level, POS_TEXT=bean.text, POS_VISIBLE=True, POS_FONT=bean.font, POS_PLAY_ICON=None, POS_TIME=bean.time)
+  
+    
+    def populate_from_scanner(self, beans):
+        self.model.clear()
+        hash = {None:None}
+        for bean in beans:
+            if hash.has_key(bean.level):
+                level = hash[bean.level]
+            else:
+                level = None
+
+            if bean.is_file:
+                child_level = self.append(bean.add_font("normal").add_level(level))
+            else:
+                child_level = self.append(bean.add_font("bold").add_level(level))
+                
+            hash[bean.path] = child_level

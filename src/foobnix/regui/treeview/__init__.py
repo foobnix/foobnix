@@ -50,19 +50,3 @@ class TreeViewControl(gtk.TreeView):
                 self.expand_all()                    
             else:
                 line[self.POS_VISIBLE] = False
-                    
-    def populate_from_scanner(self, scanner_beans):
-        self.model.clear()
-        hash = {None:None}
-        for bean in scanner_beans:
-            if hash.has_key(bean.parent):
-                level = hash[bean.parent]
-            else:
-                level = None
-
-            if bean.is_file:
-                child_level = self.append(level, bean.name, True, "normal")
-            else:
-                child_level = self.append(level, bean.name, True, "bold")
-                
-            hash[bean.path] = child_level

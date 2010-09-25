@@ -8,6 +8,7 @@ import os
 from foobnix.util.fc import FC
 from foobnix.util.file_utils import file_extenstion
 from foobnix.util import LOG
+from foobnix.regui.model.bean import FBean
 """Music directory scanner"""
 class DirectoryScanner():
        
@@ -31,10 +32,10 @@ class DirectoryScanner():
                 continue;
             
             if self.is_dir_with_music(full_path):
-                self.results.append(ScannerBean(file, full_path, level, False))
+                self.results.append(FBean(file, full_path).add_level(level).add_is_file(False))
                 self._scanner(full_path, full_path)
             elif os.path.isfile(full_path):
-                self.results.append(ScannerBean(file, full_path, level, True))
+                self.results.append(FBean(file, full_path).add_level(level).add_is_file(True))
 
     def sort_by_name(self, path, list):
         files = []
@@ -67,12 +68,4 @@ class DirectoryScanner():
                 else:
                     if file_extenstion(file) in FC().support_formats:
                         return True
-        return False    
-    
-
-class ScannerBean():
-    def __init__(self, name, path, parent, is_file):
-        self.name = name
-        self.path = path
-        self.parent = parent
-        self.is_file = is_file
+        return False  
