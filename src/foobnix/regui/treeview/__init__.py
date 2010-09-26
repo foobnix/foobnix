@@ -1,47 +1,66 @@
+#-*- coding: utf-8 -*-
 import gtk
 import gobject
 from deluge.log import LOG
+from foobnix.regui.treeview.scanner import DirectoryScanner
+from foobnix.regui.model import FTreeModel, FModel
+from numpy.distutils.system_info import show_all
 
-class FModel():
-    def __init__(self, none=False):        
-        self.text = 0
-        self.visible = 1
-        self.font = 2
-        self.play_icon = 3
-        self.time = 4
-        self.path = 5
-        
-        if none:
-            self._none()
-    
-    def _none(self):
-        for i in self.__dict__:
-            self.__dict__[i] = None
-
-class TreeViewControl(gtk.TreeView, FModel):
+class TreeViewControl(gtk.TreeView, FTreeModel):
     
     def __init__(self):
         gtk.TreeView.__init__(self)   
-        FModel.__init__(self)
+        FTreeModel.__init__(self)
              
         self.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.set_enable_tree_lines(True)
         
         """model config"""
-        self.model = gtk.TreeStore(str, gobject.TYPE_BOOLEAN, str, str, str)
+        print "types", FTreeModel().types()
+        self.model = gtk.TreeStore(*FTreeModel().types())
         
         """filter config"""
         filter = self.model.filter_new()
-        filter.set_visible_column(self.visible)
+        print "visible", self.visible[0]
+        filter.set_visible_column(self.visible[0])
         self.set_model(filter)    
         
         """connectors"""
         self.connect("button-press-event", self.on_button_press)
         self.connect("key-release-event", self.on_key_release)
         
-    def append(self, level=None, text=None, visible=True, font="normal", play_icon=None, time=None):        
-        return self.model.append(level, [text, visible, font, play_icon, time])
-   
+        #self.append(FModel("1", "2"))
+        #scan = DirectoryScanner("/home/ivan/Музыка")
+        #self.populate_from_scanner(scan.get_music_results())
+        
+    def append(self, bean):        
+        bean.visible = True
+        attributes = []
+        m_dict = FTreeModel().cut().__dict__
+        new_dict = dict (zip(m_dict.values(), m_dict.keys()))
+        
+        for key in new_dict.values():
+            value = getattr(bean, key)
+            attributes.append(value)        
+        return self.model.append(bean.level, attributes)
+    
+    def populate_from_scanner(self, beans):
+        self.model.clear()
+        hash = {None:None}
+        for bean in beans:
+            bean.visible = True
+            if hash.has_key(bean.level):
+                level = hash[bean.level]
+            else:
+                level = None
+
+            if bean.is_file:
+                child_level = self.append(bean.add_font("normal").add_level(level))
+            else:
+                child_level = self.append(bean.add_font("bold").add_level(level))
+                
+            hash[bean.path] = child_level
+    
     def clear(self):
         self.model.clear()
         
@@ -63,8 +82,10 @@ class TreeViewControl(gtk.TreeView, FModel):
         model = self.model
         iter = model.get_iter(path)
         if iter:
-            bean = FModel(True)
-            bean.text = model.get_value(iter, self.text)            
+            bean = FModel()
+            dt = FTreeModel().__dict__
+            for key in dt.keys():
+                setattr(bean, key, model.get_value(iter, dt[key][0]))            
             return bean
         return None
     

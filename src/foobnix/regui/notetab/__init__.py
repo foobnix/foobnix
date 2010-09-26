@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 '''
 Created on Sep 23, 2010
 
@@ -9,9 +10,11 @@ from foobnix.helpers.my_widgets import tab_close_button, tab_close_label
 from foobnix.online.online_model import OnlineListModel
 from foobnix.util.fc import FC
 from foobnix.regui.treeview.playlist import PlaylistControl
-from foobnix.regui.model import FBean
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
+from foobnix.regui.model import FModel
+from foobnix.regui.treeview.scanner import DirectoryScanner
+from foobnix.regui.treeview.musictree import MusicTreeControl
 class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     def __init__(self, controls):
         gtk.Notebook.__init__(self)
@@ -24,7 +27,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.last_notebook_page = ""
         self.last_notebook_beans = []
         
-        self.append_tab("Foobnix", None)                        
+        self.append_tab("Foobnix", [])                        
         
     def append_tab(self, name, beans=None):
         self.last_notebook_page = name
@@ -78,11 +81,10 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
             self.remove_page(self.get_n_pages() - 1)
     
     def create_notebook_tab(self, beans):
-        treeview = PlaylistControl() 
+         
+        treeview = PlaylistControl()
         
-        if beans:   
-            for bean in beans:
-                treeview.append(bean)
+        treeview.populate_from_scanner(beans)
         
         window = gtk.ScrolledWindow()
         window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)

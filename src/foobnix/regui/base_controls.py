@@ -8,12 +8,17 @@ import gtk
 from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.state import LoadSave
+from foobnix.regui.treeview.scanner import DirectoryScanner
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
         pass
         
     def append_to_notebook(self, text, beans):
-        self.notetabs.append_tab(text, beans)
+        
+        scanner = DirectoryScanner(beans[0].path)
+        results = scanner.get_music_results()
+        
+        self.notetabs.append_tab(text, results)
     
     def filter_tree(self, value):
         self.tree.filter(value)

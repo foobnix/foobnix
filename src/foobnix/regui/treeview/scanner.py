@@ -8,7 +8,7 @@ import os
 from foobnix.util.fc import FC
 from foobnix.util.file_utils import file_extenstion
 from foobnix.util import LOG
-from foobnix.regui.model import FBean
+from foobnix.regui.model import FModel
 
 """Music directory scanner"""
 class DirectoryScanner():
@@ -33,10 +33,10 @@ class DirectoryScanner():
                 continue;
             
             if self.is_dir_with_music(full_path):
-                self.results.append(FBean(file, full_path).add_level(level).add_is_file(False))
+                self.results.append(FModel(file, full_path).add_level(level).add_is_file(False))
                 self._scanner(full_path, full_path)
             elif os.path.isfile(full_path):
-                self.results.append(FBean(file, full_path).add_level(level).add_is_file(True))
+                self.results.append(FModel(file, full_path).add_level(level).add_is_file(True))
 
     def sort_by_name(self, path, list):
         files = []

@@ -23,8 +23,6 @@ class LeftWidgets(FControl):
         scrool_tree.add_with_viewport(self.tree)
         scrool_tree.show()    
                 
-        
-        
         buttons = PerspectiveButtonControlls().widget
         
         vbox.pack_start(scrool_tree, True, True)
