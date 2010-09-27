@@ -14,7 +14,7 @@ class FoobnixCore(BaseFoobnixControls):
         BaseFoobnixControls.__init__(self)
 
         """elements"""   
-        self.playback = PlaybackControls()     
+        self.playback = PlaybackControls(self)     
         self.window = MainWindow(self)
         self.notetabs = NoteTabControl(self)
           

@@ -27,7 +27,8 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.last_notebook_page = ""
         self.last_notebook_beans = []
         
-        self.append_tab("Foobnix", [])                        
+        self.append_tab("Foobnix", [])
+        self.active_tree = None                        
         
     def append_tab(self, name, beans=None):
         self.last_notebook_page = name
@@ -80,10 +81,16 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         if self.get_n_pages() > FC().count_of_tabs:
             self.remove_page(self.get_n_pages() - 1)
     
+    def next(self):
+        self.active_tree.next()
+        
+    def prev(self):
+        self.active_tree.prev()
+    
     def create_notebook_tab(self, beans):
          
         treeview = PlaylistControl()
-        
+        self.active_tree = treeview
         treeview.populate_from_scanner(beans)
         
         window = gtk.ScrolledWindow()

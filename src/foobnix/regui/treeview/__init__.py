@@ -32,13 +32,13 @@ class TreeViewControl(gtk.TreeView, FTreeModel):
         #self.append(FModel("1", "2"))
         #scan = DirectoryScanner("/home/ivan/Музыка")
         #self.populate_from_scanner(scan.get_music_results())
-        self.cur_index = 0
+        self.count_index = 0
         
     def append(self, bean):        
         bean.visible = True
         
-        self.cur_index +=1
-        bean.index = self.cur_index
+        self.count_index +=1
+        bean.index = self.count_index
         #bean.play_icon = gtk.STOCK_MEDIA_PLAY
         attributes = []
         m_dict = FTreeModel().cut().__dict__

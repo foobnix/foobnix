@@ -11,7 +11,7 @@ class FTreeModel():
         self.path = 5, str
         self.level = 6, str
         self.tracknumber = 7, str
-        self.index = 8, str
+        self.index = 8, int
         
     
     def cut(self):

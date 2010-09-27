@@ -34,18 +34,19 @@ class PlaylistControl(TreeViewControl):
         self.append_column(tracknumber)
         self.append_column(description)
         self.append_column(time)
+        
+        self.index = 0
    
-    def next(self):
-        current = self.get_selected_bean()
-        current.index =+1
-        self.repopulate(current.index)
+    def next(self):  
+        self.index +=1        
+        self.repopulate(self.index)
     
-    def prev(self):
-        current = self.get_selected_bean()
-        current.index =-1
-        self.repopulate(current.index)
+    def prev(self):        
+        self.index -=1
+        self.repopulate(self.index)
      
     def repopulate(self, index):
+        self.count_index = 0
         all = self.get_all_beans()
         self.clear()
         for bean in all:
@@ -58,6 +59,5 @@ class PlaylistControl(TreeViewControl):
     def on_button_press(self,w,e):
         if is_double_left_click(e):
             current = self.get_selected_bean()
+            self.index = current.index            
             self.repopulate(current.index)
-            
-        

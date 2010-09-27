@@ -22,6 +22,12 @@ class BaseFoobnixControls(LoadSave):
         print results
         self.notetabs.append_tab(text, results)
     
+    def next(self):
+        self.notetabs.next()
+    
+    def prev(self):
+        self.notetabs.prev()
+    
     def filter_tree(self, value):
         self.tree.filter(value)
     
