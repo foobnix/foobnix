@@ -12,6 +12,12 @@ from foobnix.util.singleton import Singleton
 """Foobnix configuration"""
 class FC:
     __metaclass__ = Singleton
+
+    API_KEY = "bca6866edc9bdcec8d5e8c32f709bea1"
+    API_SECRET = "800adaf46e237805a4ec2a81404b3ff2"
+    LASTFM_USER = "l_user_"
+    LASTFM_PASSWORD = "l_pass_"
+    
     def __init__(self):        
         """init default values"""                    
         self.is_view_info_panel = False
@@ -35,6 +41,16 @@ class FC:
         """support file formats"""
         self.support_formats = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".cue", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp" ]
         
+        """last fm"""
+        self.lfm_login = self.LASTFM_USER
+        self.lfm_password = self.LASTFM_PASSWORD
+        
+        """proxy"""
+        self.proxy_enable = False 
+        self.proxy_url = None
+        
+        
+                
         self = self._load();
         
     def save(self):

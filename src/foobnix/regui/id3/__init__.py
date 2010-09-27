@@ -18,9 +18,9 @@ def udpate_id3(bean):
             if audio.info: bean.info = audio.info.pprint()
             
             if bean.artist and bean.title:
-                bean.text = bean.artist + " - "+ bean.title
+                bean.text = bean.artist + " - " + bean.title
             
-            if bean.tracknumber and bean.tracknumber.find("/") >=0:
+            if bean.tracknumber and bean.tracknumber.find("/") >= 0:
                 bean.tracknumber = bean.tracknumber[:bean.tracknumber.find("/")]
             
             if bean.tracknumber and bean.tracknumber.startswith("0"):

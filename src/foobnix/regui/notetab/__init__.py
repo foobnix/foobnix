@@ -28,7 +28,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.last_notebook_page = ""
         self.last_notebook_beans = []
         
-        self.append_tab("Foobnix",[])
+        self.append_tab("Foobnix", [])
         self.active_tree = None
      
     def append_tab(self, name, beans=None):
@@ -95,6 +95,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         
         #treeview.populate_from_scanner(beans)
         for bean in beans:
+            bean.level = None
             treeview.append(bean)
         window = gtk.ScrolledWindow()
         window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)

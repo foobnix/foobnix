@@ -7,7 +7,6 @@ Created on 25 сент. 2010
 import gtk
 from foobnix.regui.top import TopWidgets
 from foobnix.regui.infopanel import InfoPanelWidget
-from foobnix.regui.search import SearchControls
 from foobnix.regui.left import LeftWidgets
 from foobnix.regui.all_controls import StatusbarControls
 from foobnix.regui.state import LoadSave
@@ -35,10 +34,7 @@ class BaseFoobnixLayout(LoadSave, FControl):
         self.hpaned_right.pack2(child=self.info_panel.widget, resize=True, shrink=True)
                
         
-        searchPanel = SearchControls().widget
-        
-        
-        center_box.pack_start(searchPanel, False, False)
+        center_box.pack_start(controls.searchPanel, False, False)
         center_box.pack_start(self.hpaned_right, True, True)
         center_box.show_all()
         
@@ -66,6 +62,7 @@ class BaseFoobnixLayout(LoadSave, FControl):
         
     
     def on_load(self):
+        self.controls.search_progress.hide()
         self.hpaned_left.set_position(FC().hpaned_left)
         self.hpaned_right.set_position(FC().hpaned_right)
                              

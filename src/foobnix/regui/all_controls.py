@@ -5,11 +5,8 @@ Created on 22 сент. 2010
 @author: ivan
 '''
 import gtk
-from foobnix.util import LOG
 from foobnix.util.fc import FC
 from foobnix.regui.state import LoadSave
-
-
 
 class VolumeControls(LoadSave):
     def __init__(self):

@@ -14,6 +14,9 @@ class FTreeModel():
         self.index = 8, int
         self.is_file = 9, gobject.TYPE_BOOLEAN
         
+        self.artist = 10, str
+        self.title = 11, str
+        self.image = 12, str
     
     def cut(self):
         for i in self.__dict__:
@@ -41,8 +44,15 @@ class FModel(FTreeModel):
             self.__dict__[i] = None
         self.text = text
         self.path = path
-   
     
+    def add_artist(self, artist):
+        self.aritst = artist
+        return self
+    
+    def add_title(self, title):
+        self.title = title
+        return self
+        
     def add_level(self, level):
         self.level = level
         return self 
@@ -57,4 +67,7 @@ class FModel(FTreeModel):
     
     def add_play_icon(self, play_icon):
         self.play_icon = play_icon
-        return self        
+        return self     
+    
+    def __str__(self):
+        return "FModel: " + str(self.__dict__)

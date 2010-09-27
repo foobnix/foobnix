@@ -1,21 +1,47 @@
 import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
-class SearchControls():
-    def __init__(self):
-        frame = gtk.Frame()
+from foobnix.regui.model.signal import FControl
+class SearchControls(FControl, gtk.Frame):
+    def __init__(self, controls):        
+        FControl.__init__(self, controls)  
+        gtk.Frame.__init__(self)
         label = gtk.Label()
         label.set_markup("<b>Search music online:</b>")
-        frame.set_label_widget(label)
-        frame.set_border_width(0)
+        self.set_label_widget(label)
+        self.set_border_width(0)
         
         vbox = gtk.VBox(False, 0)
         vbox.pack_start(self.search_line(), False, False, 0)
         vbox.pack_start(self.search_buttons(), False, False, 0)
         
-        frame.add(vbox)
+        vbox.pack_start(controls.search_progress, False, False, 0)
+           
+        self.add(vbox)
         
-        frame.show_all()
-        self.widget = frame
+        self.show_all()
+        
+    
+    def on_search(self, *args):
+        query = self.entry.get_text()
+        if query:
+            self.controls.search_top_tracks(query)
+        
+    def search_line(self):
+        hbox = gtk.HBox(False, 0)
+        
+        self.entry = gtk.Entry()
+        self.entry.set_text("Madonna")
+        button = gtk.Button("Search")
+        button.connect("clicked", self.on_search)
+        
+        hbox = gtk.HBox(False, 0)
+        
+        hbox.pack_start(self.entry, True, True, 0)
+        hbox.pack_start(button, False, False, 0)
+        
+        hbox.show_all()
+        
+        return hbox    
     
     def search_buttons(self):
         h_line_box = gtk.HBox(False, 0)
@@ -63,25 +89,12 @@ class SearchControls():
         
         h_line_box.show_all()
         
-        OneActiveToggledButton([songs,albums,similars,tags,all])
+        OneActiveToggledButton([songs, albums, similars, tags, all])
         
         return h_line_box
                   
      
-    def search_line(self):
-        hbox = gtk.HBox(False,0)
-        
-        entry = gtk.Entry()
-        button = gtk.Button("Search")
-        
-        hbox = gtk.HBox(False,0)
-        
-        hbox.pack_start(entry, True, True, 0)
-        hbox.pack_start(button, False, False, 0)
-        
-        hbox.show_all()
-        
-        return hbox
+   
             
         
         
