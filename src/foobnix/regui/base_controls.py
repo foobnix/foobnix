@@ -13,32 +13,20 @@ from foobnix.regui.id3 import update_all_id3
 import os
 from foobnix.regui.model import FModel
 from foobnix.regui.service.lastfm_service import LastFmService
-import thread
-from threading import Lock
+from foobnix.util.singe_thread import SingreThread
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
         
         self.lastfm = LastFmService()
-        self.lock = Lock()
+        
         pass
     
     def search_top_tracks(self, query):
         def in_thread(query):
             results = self.lastfm.search_top_tracks(query)
             self.notetabs.append_tab(query, results)
-            self.lock.release()
-            self.search_progress.stop()
         
-        if self.lock.locked():
-            LOG.info("SEARCH NOT FINISHED")
-        else:
-            self.lock.acquire()
-            self.search_progress.start(query)
-            thread.start_new_thread(in_thread, (query,))
-            
-            
-            #in_thread(query)
-
+        self.singre_thread.run_with_text(in_thread, query, "Searching: " + query)
         
     def append_to_notebook(self, text, beans):
         path = beans[0].path
@@ -76,6 +64,7 @@ class BaseFoobnixControls(LoadSave):
                 self.__dict__[element].on_load()
             else:
                 LOG.debug("NOT LOAD", self.__dict__[element])
+        self.singre_thread = SingreThread(self.search_progress)
         self.window.show()
             
     def on_save(self):
