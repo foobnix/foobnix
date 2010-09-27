@@ -11,6 +11,9 @@ from foobnix.regui.state import LoadSave
 from foobnix.regui.treeview.scanner import DirectoryScanner
 from foobnix.regui.id3 import update_all_id3
 import os
+from foobnix.regui.model import FModel
+import thread
+import time
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
         pass
@@ -24,7 +27,13 @@ class BaseFoobnixControls(LoadSave):
             self.notetabs.append_tab(text, results)
         else:
             self.notetabs.append_tab(text, [beans[0]])
-    
+        
+        for i in xrange(10):
+            thread.start_new_thread(self.ass,(str(i),))                        
+                
+    def ass(self,i):
+        self.notetabs.append(FModel(i,"3").add_level(None))
+        
     def next(self):
         self.notetabs.next()
     

@@ -8,6 +8,7 @@ from foobnix.regui.treeview.musictree import MusicTreeControl
 from foobnix.regui.window import MainWindow
 from foobnix.regui.controls.filter import FilterControl
 from foobnix.regui.controls.playback import PlaybackControls
+import gobject
 class FoobnixCore(BaseFoobnixControls):
     
     def __init__(self):       
@@ -21,12 +22,16 @@ class FoobnixCore(BaseFoobnixControls):
         self.filter = FilterControl(self)
         self.tree = MusicTreeControl(self)
         
+        
+        
         """layout"""        
         self.layout = BaseFoobnixLayout(self)
         
         self.on_load()
         
 init_time = time.time()
+gobject.threads_init()
+#gtk.gdk.threads_enter()
 eq = FoobnixCore()
 print "******Foobnix run in", time.time() - init_time, " seconds******"
 gtk.main()

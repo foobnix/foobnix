@@ -8,6 +8,7 @@ from foobnix.regui.treeview import TreeViewControl
 import gtk
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.cue.cue_reader import CueReader
+from foobnix.regui.model import FModel
 class PlaylistControl(TreeViewControl):
     def __init__(self):
         TreeViewControl.__init__(self)
@@ -47,7 +48,7 @@ class PlaylistControl(TreeViewControl):
         self.repopulate(self.index)
      
     def append(self, bean):
-        if bean.path.endswith(".cue"):
+        if bean.path and bean.path.endswith(".cue"):
             reader = CueReader(bean.path)
             beans = reader.get_common_beans()
             for bean in beans:

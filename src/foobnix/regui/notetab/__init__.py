@@ -15,6 +15,7 @@ from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.scanner import DirectoryScanner
 from foobnix.regui.treeview.musictree import MusicTreeControl
+import thread
 class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     def __init__(self, controls):
         gtk.Notebook.__init__(self)
@@ -27,9 +28,9 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.last_notebook_page = ""
         self.last_notebook_beans = []
         
-        self.append_tab("Foobnix", [])
-        self.active_tree = None                        
-        
+        self.append_tab("Foobnix",[])
+        self.active_tree = None
+     
     def append_tab(self, name, beans=None):
         self.last_notebook_page = name
         LOG.info("append new tab")
@@ -91,14 +92,19 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
          
         treeview = PlaylistControl()
         self.active_tree = treeview
-        treeview.populate_from_scanner(beans)
         
+        #treeview.populate_from_scanner(beans)
+        for bean in beans:
+            treeview.append(bean)
         window = gtk.ScrolledWindow()
         window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         window.add_with_viewport(treeview)
         window.show_all()
 
         return  window
+    
+    def append(self, bean):
+        self.active_tree.append(bean)
     
     def on_delete_tab(self, widget, event, child):
         if event.type == gtk.gdk.BUTTON_PRESS: #@UndefinedVariable
