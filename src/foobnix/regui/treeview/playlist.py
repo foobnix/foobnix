@@ -12,7 +12,10 @@ class PlaylistControl(TreeViewControl):
         self.set_reorderable(True)
 
         """Column icon"""                
-        icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
+        icon = gtk.TreeViewColumn('', gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
+        
+        """track number"""
+        tracknumber = gtk.TreeViewColumn('', gtk.CellRendererText(), text=self.tracknumber[0])
         
         """conlumt artist title"""
         description = gtk.TreeViewColumn('Artist - Title', gtk.CellRendererText(), text=self.text[0])
@@ -26,5 +29,6 @@ class PlaylistControl(TreeViewControl):
         time.set_min_width(5)
         
         self.append_column(icon)
+        self.append_column(tracknumber)
         self.append_column(description)
         self.append_column(time)

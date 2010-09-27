@@ -15,7 +15,7 @@ class LeftWidgets(FControl):
         
         self.tree = controls.tree      
 
-        scan = DirectoryScanner("/home/ivan/Музыка")
+        scan = DirectoryScanner("/home/ivan/Music")
         self.tree.populate_from_scanner(scan.get_music_results())
         
         scrool_tree = gtk.ScrolledWindow()        

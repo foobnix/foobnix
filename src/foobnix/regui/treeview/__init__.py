@@ -1,10 +1,9 @@
 #-*- coding: utf-8 -*-
 import gtk
 import gobject
-from deluge.log import LOG
 from foobnix.regui.treeview.scanner import DirectoryScanner
 from foobnix.regui.model import FTreeModel, FModel
-from numpy.distutils.system_info import show_all
+from foobnix.util import LOG
 
 class TreeViewControl(gtk.TreeView, FTreeModel):
     
@@ -35,6 +34,7 @@ class TreeViewControl(gtk.TreeView, FTreeModel):
         
     def append(self, bean):        
         bean.visible = True
+        #bean.play_icon = gtk.STOCK_MEDIA_PLAY
         attributes = []
         m_dict = FTreeModel().cut().__dict__
         new_dict = dict (zip(m_dict.values(), m_dict.keys()))

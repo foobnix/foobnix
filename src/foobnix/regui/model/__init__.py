@@ -10,6 +10,7 @@ class FTreeModel():
         self.time = 4, str
         self.path = 5, str
         self.level = 6, str
+        self.tracknumber = 7, str
         
     
     def cut(self):
