@@ -53,6 +53,8 @@ class TreeViewControl(gtk.TreeView, FTreeModel):
         self.model.clear()
         hash = {None:None}
         for bean in beans:
+            if bean is None:
+                continue
             bean.visible = True
             if hash.has_key(bean.level):
                 level = hash[bean.level]

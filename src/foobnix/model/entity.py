@@ -13,7 +13,8 @@ from mutagen.flac import FLAC
 from mutagen.apev2 import APEv2
 from foobnix.util import LOG
 import mutagen.mp3
-class CommonBean():
+from foobnix.regui.model import FModel
+class CommonBean(FModel):
     TYPE_FOLDER = "TYPE_FOLDER"
     TYPE_RADIO_FOLDER = "TYPE_RADIO_FOLDER"
     TYPE_LABEL = "TYPE_LABEL"
@@ -30,6 +31,7 @@ class CommonBean():
     tracknumber = ""
 
     def __init__(self, name=None, path=None, type=None, is_visible=True, color=None, font="normal", index= -1, parent=None, id3=None):
+        FModel.__init__(self)
         self.name = name
         self.path = path
         self.type = type
@@ -55,6 +57,7 @@ class CommonBean():
         self.id3 = None
         self.image = None
         self.info = ""
+        
 
     def set_name(self, name):
         self.artist = None;

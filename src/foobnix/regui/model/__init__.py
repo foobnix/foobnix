@@ -12,6 +12,7 @@ class FTreeModel():
         self.level = 6, str
         self.tracknumber = 7, str
         self.index = 8, int
+        self.is_file = 9, gobject.TYPE_BOOLEAN
         
     
     def cut(self):
