@@ -20,7 +20,7 @@ class BaseFoobnixLayout(LoadSave, FControl):
         vbox = gtk.VBox(False, 0)
         vbox.show()
         
-        self.top = TopWidgets()
+        self.top = TopWidgets(controls.playback)
                 
         vbox.pack_start(self.top.widget, False, False)
         

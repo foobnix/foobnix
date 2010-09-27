@@ -7,12 +7,14 @@ from foobnix.regui.base_controls import BaseFoobnixControls
 from foobnix.regui.treeview.musictree import MusicTreeControl
 from foobnix.regui.window import MainWindow
 from foobnix.regui.controls.filter import FilterControl
+from foobnix.regui.controls.playback import PlaybackControls
 class FoobnixCore(BaseFoobnixControls):
     
     def __init__(self):       
         BaseFoobnixControls.__init__(self)
 
-        """elements"""        
+        """elements"""   
+        self.playback = PlaybackControls()     
         self.window = MainWindow(self)
         self.notetabs = NoteTabControl(self)
           

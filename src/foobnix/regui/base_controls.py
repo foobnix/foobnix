@@ -19,6 +19,7 @@ class BaseFoobnixControls(LoadSave):
         scanner = DirectoryScanner(beans[0].path)
         results = scanner.get_music_results()
         results = update_all_id3(results)
+        print results
         self.notetabs.append_tab(text, results)
     
     def filter_tree(self, value):

@@ -9,24 +9,7 @@ from foobnix.util import LOG
 from foobnix.util.fc import FC
 from foobnix.regui.state import LoadSave
 
-class ToolbarSeparator():
-    def __init__(self):
-        toolbar = MyToolbar()
-        toolbar.add_separator()
-        self.widget = toolbar.widget
 
-class PlaybackControls():
-    def __init__(self):
-        toolbar = MyToolbar()
-        toolbar.add_separator()
-        toolbar.add_button("Stop", gtk.STOCK_MEDIA_STOP, None, None)   
-        toolbar.add_button("Play", gtk.STOCK_MEDIA_PLAY, None, None)
-        toolbar.add_button("Pause", gtk.STOCK_MEDIA_PAUSE, None, None)
-        toolbar.add_button("Previous", gtk.STOCK_MEDIA_PREVIOUS, None, None)
-        toolbar.add_button("Next", gtk.STOCK_MEDIA_NEXT, None, None)
-        toolbar.add_separator()
-        
-        self.widget = toolbar.widget
 
 class VolumeControls(LoadSave):
     def __init__(self):
@@ -80,36 +63,3 @@ class StatusbarControls():
         
         self.widget = statusbar
 
-
-class MyToolbar(gtk.Toolbar):
-    def __init__(self):
-        gtk.Toolbar.__init__(self)            
-        self.toolbar = gtk.Toolbar()
-        self.toolbar.show()
-        self.toolbar.set_style(gtk.TOOLBAR_ICONS)
-        self.toolbar.set_show_arrow(False)
-        self.toolbar.set_icon_size(gtk.ICON_SIZE_SMALL_TOOLBAR)
-         
-        self.i = 0
-        
-        self.widget = self.toolbar
-    
-    def add_button(self, tooltip, gtk_stock, func, param):
-        button = gtk.ToolButton(gtk_stock)
-        button.show()  
-        button.set_tooltip_text(tooltip)
-        
-        LOG.debug("Button-Controls-Clicked", tooltip, gtk_stock, func, param)
-        if param:             
-            button.connect("clicked", lambda * a: func(param))
-        else:
-            button.connect("clicked", lambda * a: func())     
-                
-        self.toolbar.insert(button, self.i)
-        self.i += 1        
-    
-    def add_separator(self):
-        sep = gtk.SeparatorToolItem()
-        sep.show()        
-        self.toolbar.insert(sep, self.i)
-        self.i += 1

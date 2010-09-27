@@ -44,6 +44,8 @@ def normilize_time(length):
         if min < 10:
             min = "0" + str(min)
         result += str(min) + ":"
+    else:
+        result += "00:"
     
     sec = length - int(min) * 60 - int(hour) * 3600
     if sec < 10:

@@ -4,6 +4,7 @@ import gobject
 from foobnix.regui.treeview.scanner import DirectoryScanner
 from foobnix.regui.model import FTreeModel, FModel
 from foobnix.util import LOG
+import uuid
 
 class TreeViewControl(gtk.TreeView, FTreeModel):
     
@@ -31,9 +32,13 @@ class TreeViewControl(gtk.TreeView, FTreeModel):
         #self.append(FModel("1", "2"))
         #scan = DirectoryScanner("/home/ivan/Музыка")
         #self.populate_from_scanner(scan.get_music_results())
+        self.cur_index = 0
         
     def append(self, bean):        
         bean.visible = True
+        
+        self.cur_index +=1
+        bean.index = self.cur_index
         #bean.play_icon = gtk.STOCK_MEDIA_PLAY
         attributes = []
         m_dict = FTreeModel().cut().__dict__
@@ -89,8 +94,22 @@ class TreeViewControl(gtk.TreeView, FTreeModel):
             return bean
         return None
     
+    def get_bean_by_position(self, position):
+        bean = FModel()
+        dt = FTreeModel().__dict__
+        for key in dt.keys():
+            setattr(bean, key, self.model[position][dt[key][0]])
+        
+        return bean       
+
+    def get_all_beans(self):
+        beans = []
+        for i in xrange(len(self.model)):
+            beans.append(self.get_bean_by_position(i))
+        return beans
+            
     def get_all_selected_beans(self):
-        selection = self.widget.get_selection()
+        selection = self.get_selection()
         model, paths = selection.get_selected_rows()
         if not paths:
             return None
