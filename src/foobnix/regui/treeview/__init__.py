@@ -36,7 +36,7 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         
        
     
-    def set_scrolled(self,policy_horizontal,policy_vertical):        
+    def set_scrolled(self, policy_horizontal, policy_vertical):        
         self.scroll = gtk.ScrolledWindow()        
         self.scroll.set_policy(policy_horizontal, policy_vertical)
         self.scroll.add_with_viewport(self)
@@ -53,9 +53,9 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         bean.visible = True        
         """ check append add title and artist"""
         #bean.text = bean.text + " ["+str(bean.artist)+ " - " +str(bean.title) + "]"+str(bean.font)
-        
-        self.count_index +=1
+               
         bean.index = self.count_index
+        self.count_index += 1
         #bean.play_icon = gtk.STOCK_MEDIA_PLAY
         attributes = []
         m_dict = FTreeModel().cut().__dict__

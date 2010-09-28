@@ -24,7 +24,10 @@ class BaseFoobnixControls(LoadSave):
     
     def notify_playing(self, pos_sec, dur_sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
-        
+    
+    def notify_eos(self):
+        self.next()
+            
     def player_seek(self, percent):
         self.media_engine.seek(percent)
         
@@ -113,10 +116,12 @@ class BaseFoobnixControls(LoadSave):
         self.notetabs.append(FModel(i, "3").add_level(None))
         
     def next(self):
-        self.notetabs.next()
+        bean = self.notetabs.next()
+        self.media_engine.play(bean.path)
     
     def prev(self):
-        self.notetabs.prev()
+        bean = self.notetabs.prev()
+        self.media_engine.play(bean.path)
     
     def filter_tree(self, value):
         self.tree.filter(value)

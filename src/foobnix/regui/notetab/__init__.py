@@ -83,10 +83,11 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
             self.remove_page(self.get_n_pages() - 1)
     
     def next(self):
-        self.active_tree.next()
+        return self.active_tree.next()
+        
         
     def prev(self):
-        self.active_tree.prev()
+        return self.active_tree.prev()
     
     def create_notebook_tab(self, beans):
          

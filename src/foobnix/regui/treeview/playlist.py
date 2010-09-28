@@ -42,10 +42,12 @@ class PlaylistControl(TreeViewControl):
     def next(self):  
         self.index += 1        
         self.repopulate(self.index)
+        return self.get_bean_by_position(self.index)
     
     def prev(self):        
         self.index -= 1
         self.repopulate(self.index)
+        return self.get_bean_by_position(self.index)
      
     def append(self, bean):
         if bean.path and bean.path.endswith(".cue"):

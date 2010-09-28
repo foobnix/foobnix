@@ -50,6 +50,8 @@ class GStreamerEngine(MediaPlayerEngine):
     
     def notify_eos(self):
         LOG.debug("Notify eos")
+        self.controls.notify_eos()
+        
     
     def notify_error(self):
         LOG.debug("Notify error")
