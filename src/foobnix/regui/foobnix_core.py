@@ -11,6 +11,7 @@ from foobnix.regui.controls.playback import PlaybackControls
 import gobject
 from foobnix.regui.search import SearchControls
 from foobnix.regui.controls.seach_progress import SearchProgressBar
+from foobnix.regui.infopanel import InfoPanelWidget
 class FoobnixCore(BaseFoobnixControls):
     
     def __init__(self):       
@@ -19,6 +20,8 @@ class FoobnixCore(BaseFoobnixControls):
         """elements"""
         
         self.search_progress = SearchProgressBar(self)
+        
+        self.info_panel = InfoPanelWidget(self)
         
         self.searchPanel = SearchControls(self)   
         self.playback = PlaybackControls(self)     

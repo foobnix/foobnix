@@ -5,12 +5,14 @@ from foobnix.regui.treeview.scanner import DirectoryScanner
 from foobnix.regui.model import FTreeModel, FModel
 from foobnix.util import LOG
 import uuid
+from foobnix.regui.model.signal import FControl
 
-class TreeViewControl(gtk.TreeView, FTreeModel):
+class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
     
-    def __init__(self):
-        gtk.TreeView.__init__(self)   
+    def __init__(self, controls):
+        gtk.TreeView.__init__(self)           
         FTreeModel.__init__(self)
+        FControl.__init__(self, controls)
              
         self.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.set_enable_tree_lines(True)
@@ -33,10 +35,23 @@ class TreeViewControl(gtk.TreeView, FTreeModel):
         #scan = DirectoryScanner("/home/ivan/Музыка")
         #self.populate_from_scanner(scan.get_music_results())
         self.count_index = 0
-        
+    
+    def set_scrolled(self,policy_horizontal,policy_vertical):        
+        self.scroll = gtk.ScrolledWindow()        
+        self.scroll.set_policy(policy_horizontal, policy_vertical)
+        self.scroll.add_with_viewport(self)
+        self.scroll.show_all()
+        return self
+    
+    def populate(self, beans):
+        self.model.clear()
+        for bean in beans:
+            self.append(bean)
+                
     def append(self, bean):        
         bean.visible = True
-        
+        """ check append add title and artist"""
+        bean.text = bean.text + " ["+str(bean.artist)+ " - " +str(bean.title) + "]"
         self.count_index +=1
         bean.index = self.count_index
         #bean.play_icon = gtk.STOCK_MEDIA_PLAY

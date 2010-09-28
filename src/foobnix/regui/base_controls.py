@@ -14,6 +14,7 @@ import os
 from foobnix.regui.model import FModel
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.util.singe_thread import SingreThread
+import time
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
         
@@ -47,11 +48,13 @@ class BaseFoobnixControls(LoadSave):
     
     def search_all(self, query):
         pass
-        #def inline(query):            
-            #results = self.lastfm.search_top_tags(query)            
-            #self.notetabs.append_tab(query, results)        
-        #self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+        def inline(query):            
+            print query            
+        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
    
+    def update_info_panel(self, bean):
+        #self.info_panel.update(bean)
+        self.singre_thread.run_with_text(self.info_panel.update, bean, "Updating info panel")        
         
     def append_to_notebook(self, text, beans):
         path = beans[0].path

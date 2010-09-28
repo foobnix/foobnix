@@ -103,6 +103,8 @@ class CueReader():
         cue = self.parse()
         for track  in cue.tracks:
             bean = CommonBean(name=track.performer + " - " + track.title, path=track.path, type=CommonBean.TYPE_MUSIC_FILE)
+            bean.aritst = track.performer
+            bean.title = track.title 
             bean.text = bean.name
             bean.start_at = track.get_start_time_sec()
             bean.duration = track.duration        

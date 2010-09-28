@@ -12,7 +12,7 @@ class ScrolledTreeView(gtk.TreeView):
         scrool.add_with_viewport(self)
         scrool.show_all()
         
-        self.scroll = scrool
-        self.tree = self
-    
+        
+        
+        
         

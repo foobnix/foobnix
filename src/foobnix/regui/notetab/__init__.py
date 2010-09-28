@@ -90,7 +90,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     
     def create_notebook_tab(self, beans):
          
-        treeview = PlaylistControl()
+        treeview = PlaylistControl(self.controls)
         self.active_tree = treeview
         
         #treeview.populate_from_scanner(beans)

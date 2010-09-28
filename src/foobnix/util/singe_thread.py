@@ -7,6 +7,7 @@ Created on 27 сент. 2010
 import thread
 from threading import Lock
 from foobnix.util import LOG
+import time
 
 class SingreThread():
     def __init__(self, progressbar):
@@ -30,6 +31,7 @@ class SingreThread():
                 method(args)
             else:
                 method()
+            time.sleep(0.1)
         except Exception, e:
             LOG.error(e)
         finally:

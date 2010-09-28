@@ -28,10 +28,8 @@ class BaseFoobnixLayout(LoadSave, FControl):
         
         self.hpaned_right = gtk.HPaned()
         
-        self.info_panel = InfoPanelWidget()
-        
         self.hpaned_right.pack1(child=controls.notetabs, resize=True, shrink=True)
-        self.hpaned_right.pack2(child=self.info_panel.widget, resize=True, shrink=True)
+        self.hpaned_right.pack2(child=controls.info_panel, resize=True, shrink=True)
                
         
         center_box.pack_start(controls.searchPanel, False, False)

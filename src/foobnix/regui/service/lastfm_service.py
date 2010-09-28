@@ -94,6 +94,9 @@ class LastFmService():
     
     def search_top_tags(self, tag):
         self.connect()
+        if not tag:
+            LOG.warn("search_top_tags TAG is empty")
+            return []
         tag = translate(tag, src="ru", to="en")
         print tag
         beans = [] 
@@ -109,12 +112,12 @@ class LastFmService():
         self.connect()  
         artist = self.network.get_artist(artist_name)
         if not artist:
-            return None
+            return []
         try:
             tracks = artist.get_top_tracks()
         except WSError:
             LOG.info("No artist with that name")
-            return None
+            return []
         
         beans = []    
             
@@ -139,12 +142,15 @@ class LastFmService():
             
         return beans
     
-    def search_top_similar_artist(self, artist_name, count=15):
+    def search_top_similar_artist(self, artist_name, count=45):
         self.connect()
+        if not artist_name:
+            LOG.warn("search_top_similar_artist, Artist name is empty")
+            return []
         
         artist = self.network.get_artist(artist_name)
         if not artist:
-            return None
+            return []
         
         artists = artist.get_similar(count)
         beans = []   
@@ -159,3 +165,88 @@ class LastFmService():
             
             beans.append(bean)
         return beans
+    
+    def search_top_similar_tracks(self, artist, title):
+        self.connect()
+        
+        if not artist or not title:
+            LOG.warn("search_top_similar_tags artist or title is empty")
+            return []
+        
+        track = self.network.get_track(artist, title)
+        
+        similars = track.get_similar()
+        beans = []
+        for tsong in similars:
+            try:            
+                tsong_item = tsong.item
+            except AttributeError:
+                tsong_item = tsong['item']
+            
+            artist = tsong_item.get_artist().get_name()
+            title  =  tsong_item.get_title()
+            model = FModel(artist + " - " + title).add_artist(artist).add_title(title)
+            beans.append(model)
+        
+        return beans
+   
+    def search_top_similar_tags(self, artist, title):
+        self.connect()
+        
+        if not artist or not title:
+            LOG.warn("search_top_similar_tags artist or title is empty")
+            return []
+        
+        track = self.network.get_track(artist, title)
+               
+        tags = track.get_top_tags()
+        beans = []
+        for tag in tags:
+            try:            
+                tag_item = tag.item
+            except AttributeError:
+                tag_item = tag['item']
+            
+            tag_name = tag_item.get_name()
+            model = FModel(tag_name).add_genre(tag_name)
+            beans.append(model)        
+        return beans 
+    
+    def get_album_name(self, artist, title):
+        self.connect()
+        album = self.get_album(artist, title);
+        if album:
+            return album.get_name()
+    
+    def get_album_year(self, artist, title):
+        self.connect()
+        album = self.get_album(artist, title);
+        if album:
+            return album.get_release_year()
+    
+    def get_album_image_url(self, artist, title, size=pylast.COVER_LARGE):
+        self.connect()
+        if not artist or not title:
+            LOG.warn("get_album_image_url no artist or title",artist, title)
+            return None
+        self.connect()
+        track = self.network.get_track(artist, title)
+        album = track.get_album()
+        if not album:
+            return None
+        return album.get_cover_image(size)      
+    
+    def get_track(self, artist, title):
+        self.connect()
+        if not artist or not title:
+            LOG.warn("get_album_image_url no artist or title",artist, title)
+            return None
+        self.connect()
+        return self.network.get_track(artist, title)
+    
+    def get_album(self, artist, title):
+        self.connect()
+        track = self.get_track(artist, title)
+        if track:
+            album = track.get_album();
+            return album

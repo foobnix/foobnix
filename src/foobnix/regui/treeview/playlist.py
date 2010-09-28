@@ -10,8 +10,8 @@ from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.cue.cue_reader import CueReader
 from foobnix.regui.model import FModel
 class PlaylistControl(TreeViewControl):
-    def __init__(self):
-        TreeViewControl.__init__(self)
+    def __init__(self, controls):
+        TreeViewControl.__init__(self,controls)
         self.set_reorderable(True)
 
         """Column icon"""                
@@ -63,6 +63,7 @@ class PlaylistControl(TreeViewControl):
         for bean in all:
             if bean.index == index:                    
                 bean.play_icon = gtk.STOCK_MEDIA_PLAY
+                                
             else:
                 bean.play_icon = None
             self.append(bean)
@@ -72,3 +73,6 @@ class PlaylistControl(TreeViewControl):
             current = self.get_selected_bean()
             self.index = current.index            
             self.repopulate(current.index)
+            
+            """update song info"""
+            self.controls.update_info_panel(current)

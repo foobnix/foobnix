@@ -48,7 +48,7 @@ class FModel(FTreeModel):
         self.path = path
     
     def add_artist(self, artist):
-        self.aritst = artist
+        self.artist = artist
         return self
     
     def add_title(self, title):

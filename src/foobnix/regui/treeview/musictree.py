@@ -7,12 +7,10 @@ Created on 25 сент. 2010
 from foobnix.regui.treeview import TreeViewControl
 import gtk
 from foobnix.util.mouse_utils import is_double_left_click
-from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
-class MusicTreeControl(TreeViewControl, FControl, LoadSave):
+class MusicTreeControl(TreeViewControl, LoadSave):
     def __init__(self, controls):
-        FControl.__init__(self, controls)
-        TreeViewControl.__init__(self)
+        TreeViewControl.__init__(self, controls)
         
         self.set_reorderable(False)
         

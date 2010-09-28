@@ -283,8 +283,8 @@ class InformationController():
     def update_image_from_url(self, album):        
             
         image_url = self.get_album_image_url(album)            
-     
         if not image_url:
+     
             LOG.info("Image not found, load empty.")
             self.set_no_image_album()
             self.info_thread = None

@@ -4,50 +4,43 @@ Created on Sep 23, 2010
 @author: ivan
 '''
 import gtk
-from foobnix.base.base_list_controller import BaseListController
-from foobnix.util.mouse_utils import is_double_left_click
-from foobnix.util import LOG
-from foobnix.helpers.tree import ScrolledTreeView
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
-class InfoPanelWidget(LoadSave):    
-    def __init__(self): 
-        info_frame = gtk.Frame()
-        label = gtk.Label()
-        label.set_markup("<b>Madonna - Album (2009)</b>")
-        info_frame.set_label_widget(label)                                
-        info_frame.set_shadow_type(gtk.SHADOW_NONE)
+from foobnix.regui.model.signal import FControl
+from foobnix.regui.treeview.simple import SimpleTreeControl
+from foobnix.helpers.image import CoverImage
+
+class InfoPanelWidget(gtk.Frame, LoadSave, FControl):    
+    def __init__(self, controls): 
+        gtk.Frame.__init__(self)
+        FControl.__init__(self, controls)
+        self.almum_label = gtk.Label()
+        self.almum_label.set_line_wrap(True)
+        self.almum_label.set_markup("<b></b>")
+        self.set_label_widget(self.almum_label)                                
+        self.set_shadow_type(gtk.SHADOW_NONE)
         
         self.vpaned_small = gtk.VPaned()
         
         """image and similar artists"""
         ibox = gtk.HBox(False, 0)
-        image = gtk.Image()
-        self.set_no_image_album(image)
+        self.image = CoverImage()
         
-        artists = ScrolledTreeView(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)        
-        songsControll = SimilartArtistsController(artists)
-        songsControll.set_title("Similar artists")
+        self.artists = SimpleTreeControl("Similar Artist",controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)  
         
-        ibox.pack_start(image, False, False)
-        ibox.pack_start(artists.scroll, True, True)
+        ibox.pack_start(self.image, False, False)
+        ibox.pack_start(self.artists.scroll, True, True)
         
         
         
         """image and similar artists"""
         sbox = gtk.HBox(False, 0)
         
-        songs = ScrolledTreeView(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)        
-        songsControll = SimilartArtistsController(songs)
-        songsControll.set_title("Similar songs")
+        self.tracks = SimpleTreeControl("Similar Songs",controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)        
+        self.tags = SimpleTreeControl("Similar Tags",controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)      
         
-        
-        tags = ScrolledTreeView(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        tagsControll = SimilartArtistsController(tags)
-        tagsControll.set_title("Similar tags")
-        
-        sbox.pack_start(songs.scroll, True, True)
-        sbox.pack_start(tags.scroll, True, True)
+        sbox.pack_start(self.tracks.scroll, True, True)
+        sbox.pack_start(self.tags.scroll, True, True)
         
         
         
@@ -55,41 +48,43 @@ class InfoPanelWidget(LoadSave):
         self.vpaned_small.pack2(sbox, True, True)
         
                 
-        info_frame.add(self.vpaned_small)
+        self.add(self.vpaned_small)
         
+        self.show_all()
 
+    def update(self, bean):
+        print "update info panel", bean
         
-        info_frame.show_all()
-               
-        self.widget = info_frame
+        """update info"""
+        album_name = self.controls.lastfm.get_album_name(bean.artist, bean.title)
+        album_year = self.controls.lastfm.get_album_year(bean.artist, bean.title)
+        self.almum_label.set_markup("<b>%s - %s (%s) - %s</b>" % (bean.artist,album_name, album_year, bean.title ))
+        
+        """update image"""
+        if bean.image:
+            self.image.set_image_from_path(bean.image)
+        else:
+            url = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
+            if url:
+                self.image.set_image_from_url(url)
+            else:
+                self.image.set_no_image()
+            
+        """similar  artists"""
+        similar_artists = self.controls.lastfm.search_top_similar_artist(bean.artist)        
+        self.artists.populate(similar_artists)
+        
+        """similar  songs"""
+        similar_tracks = self.controls.lastfm.search_top_similar_tracks(bean.artist, bean.title)
+        self.tracks.populate(similar_tracks)
+        
+        """similar  tags"""
+        similar_tags = self.controls.lastfm.search_top_similar_tags(bean.artist, bean.title)
+        self.tags.populate(similar_tags)       
     
-    def set_no_image_album(self, image):
-      
-        image_name = "blank-disc-cut.jpg"
-        
-        try:
-            pix = gtk.gdk.pixbuf_new_from_file("/usr/local/share/pixmaps/" + image_name) #@UndefinedVariable
-        except:
-            try:
-                pix = gtk.gdk.pixbuf_new_from_file("/usr/share/pixmaps/" + image_name) #@UndefinedVariable
-            except:    
-                pix = gtk.gdk.pixbuf_new_from_file("foobnix/pixmaps/" + image_name) #@UndefinedVariable
-
-        pix = pix.scale_simple(100, 100, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
-        image.set_from_pixbuf(pix)
      
     def on_load(self):
         self.vpaned_small.set_position(FC().vpaned_small) 
          
     def on_save(self):
-        FC().vpaned_small = self.vpaned_small.get_position()
-        
-        
-class SimilartArtistsController(BaseListController):
-    def __init__(self, widget):
-        BaseListController.__init__(self, widget)
-    
-    def on_button_press(self, w, e):
-        if is_double_left_click(e):
-            artist = self.get_selected_item()
-            LOG.debug("Clicked Similar Artist:", artist)            
+        FC().vpaned_small = self.vpaned_small.get_position()    
