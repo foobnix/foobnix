@@ -93,10 +93,11 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         treeview = PlaylistControl(self.controls)
         self.active_tree = treeview
         
-        #treeview.populate_from_scanner(beans)
-        for bean in beans:
-            bean.level = None
-            treeview.append(bean)
+        treeview.populate_from_scanner(beans)
+        
+        #for bean in beans:
+            #bean.level = None
+        #    treeview.append(bean)
         window = gtk.ScrolledWindow()
         window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         window.add_with_viewport(treeview)

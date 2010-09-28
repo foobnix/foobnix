@@ -59,14 +59,15 @@ class PlaylistControl(TreeViewControl):
     def repopulate(self, index):
         self.count_index = 0
         all = self.get_all_beans()
-        self.clear()
+        beans =[]
         for bean in all:
+            print "REPOP",bean
             if bean.index == index:                    
                 bean.play_icon = gtk.STOCK_MEDIA_PLAY
-                                
             else:
                 bean.play_icon = None
-            self.append(bean)
+            beans.append(bean)
+        self.populate(beans)
          
     def on_button_press(self,w,e):
         if is_double_left_click(e):

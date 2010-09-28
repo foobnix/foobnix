@@ -53,8 +53,8 @@ class BaseFoobnixControls(LoadSave):
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
    
     def update_info_panel(self, bean):
-        #self.info_panel.update(bean)
-        self.singre_thread.run_with_text(self.info_panel.update, bean, "Updating info panel")        
+        self.info_panel.update(bean)        
+        #self.singre_thread.run_with_text(self.info_panel.update, bean, "Updating info panel")        
         
     def append_to_notebook(self, text, beans):
         path = beans[0].path

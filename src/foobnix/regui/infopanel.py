@@ -58,7 +58,10 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         """update info"""
         album_name = self.controls.lastfm.get_album_name(bean.artist, bean.title)
         album_year = self.controls.lastfm.get_album_year(bean.artist, bean.title)
-        self.almum_label.set_markup("<b>%s - %s (%s) - %s</b>" % (bean.artist,album_name, album_year, bean.title ))
+        if album_year:
+            self.almum_label.set_markup("<b>%s - %s (%s) - %s</b>" % (bean.artist,album_name, album_year, bean.title ))
+        else:
+            self.almum_label.set_markup("<b>%s - %s - %s</b>" % (bean.artist,album_name, bean.title ))
         
         """update image"""
         if bean.image:

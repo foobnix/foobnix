@@ -15,7 +15,59 @@ from foobnix.helpers.dialog_entry import show_login_password_error_dialog
 from foobnix.regui.model import FModel
 
 API_KEY = FC().API_KEY
-API_SECRET = FC().API_SECRET        
+API_SECRET = FC().API_SECRET    
+
+class Cache():
+    def __init__(self,  network):
+        self.network = network
+        self.cache_tracks = {}
+        self.cache_albums = {}
+        self.cache_images = {}
+    
+    def get_key(self,artist, title):
+        return artist+"-"+title
+    
+    def get_track(self, artist, title):
+        if not artist or not title:
+            return None
+        if self.cache_tracks.has_key(self.get_key(artist, title)):
+            track =  self.cache_tracks[self.get_key(artist, title)]
+            LOG.debug("Get track from cache", track)
+            return track
+        else:
+            track = self.network.get_track(artist, title)
+            self.cache_tracks[self.get_key(artist, title)] = track
+            return track
+    
+    def get_album(self, artist, title):
+        if not artist or not title:
+            return None
+        track = self.get_track(artist, title)
+        if track:
+            if self.cache_albums.has_key(self.get_key(artist, title)):
+                LOG.debug("Get album from cache", track)
+                return self.cache_albums[self.get_key(artist, title)]
+            else:
+                album =  track.get_album()
+                if album:                   
+                    self.cache_albums[self.get_key(artist, title)] = album
+                    return album
+        return None
+    
+    def get_album_image_url(self, artist, title, size=pylast.COVER_LARGE):
+        if not artist or not title:
+            return None
+        if self.cache_images.has_key(self.get_key(artist, title)):
+            LOG.info("Get image from cache")
+            return self.cache_images[self.get_key(artist, title)]        
+        else:            
+            album = self.get_album(artist, title)
+            image  = album.get_cover_image(size)
+            self.cache_images[self.get_key(artist, title)] = image
+            return image
+        
+    
+    
 
 class LastFmService():
     def __init__(self):
@@ -24,6 +76,8 @@ class LastFmService():
         self.preferences_window = None
         
         #thread.start_new_thread(self.init_thread, ())
+        
+        
         
          
     
@@ -38,6 +92,7 @@ class LastFmService():
 
         try:
             self.network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
+            self.cache = Cache(self.network)
             if FC().proxy_enable and FC().proxy_url:
                 proxy_rul = FC().proxy_url
                 index = proxy_rul.find(":")
@@ -173,7 +228,10 @@ class LastFmService():
             LOG.warn("search_top_similar_tags artist or title is empty")
             return []
         
-        track = self.network.get_track(artist, title)
+        track =  self.cache.get_track(artist, title)
+        if not track:
+            LOG.warn("search_top_similar_tracks track not found")
+            return []
         
         similars = track.get_similar()
         beans = []
@@ -197,7 +255,11 @@ class LastFmService():
             LOG.warn("search_top_similar_tags artist or title is empty")
             return []
         
-        track = self.network.get_track(artist, title)
+        track = self.cache.get_track(artist, title)
+        
+        if not track:
+            LOG.warn("search_top_similar_tags track not found")
+            return []
                
         tags = track.get_top_tags()
         beans = []
@@ -214,39 +276,16 @@ class LastFmService():
     
     def get_album_name(self, artist, title):
         self.connect()
-        album = self.get_album(artist, title);
+        album = self.cache.get_album(artist, title);
         if album:
             return album.get_name()
     
     def get_album_year(self, artist, title):
         self.connect()
-        album = self.get_album(artist, title);
+        album = self.cache.get_album(artist, title);
         if album:
             return album.get_release_year()
     
-    def get_album_image_url(self, artist, title, size=pylast.COVER_LARGE):
-        self.connect()
-        if not artist or not title:
-            LOG.warn("get_album_image_url no artist or title",artist, title)
-            return None
-        self.connect()
-        track = self.network.get_track(artist, title)
-        album = track.get_album()
-        if not album:
-            return None
-        return album.get_cover_image(size)      
+    def get_album_image_url(self, artist, title, size=pylast.COVER_LARGE):        
+        return self.cache.get_album_image_url(artist, title);
     
-    def get_track(self, artist, title):
-        self.connect()
-        if not artist or not title:
-            LOG.warn("get_album_image_url no artist or title",artist, title)
-            return None
-        self.connect()
-        return self.network.get_track(artist, title)
-    
-    def get_album(self, artist, title):
-        self.connect()
-        track = self.get_track(artist, title)
-        if track:
-            album = track.get_album();
-            return album
