@@ -26,7 +26,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         ibox = gtk.HBox(False, 0)
         self.image = CoverImage()
         
-        self.artists = SimpleTreeControl("Similar Artist",controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)  
+        self.artists = SimpleTreeControl("Similar Artist", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)  
         
         ibox.pack_start(self.image, False, False)
         ibox.pack_start(self.artists.scroll, True, True)
@@ -36,8 +36,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         """image and similar artists"""
         sbox = gtk.HBox(False, 0)
         
-        self.tracks = SimpleTreeControl("Similar Songs",controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)        
-        self.tags = SimpleTreeControl("Similar Tags",controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)      
+        self.tracks = SimpleTreeControl("Similar Songs", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)        
+        self.tags = SimpleTreeControl("Similar Tags", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)      
         
         sbox.pack_start(self.tracks.scroll, True, True)
         sbox.pack_start(self.tags.scroll, True, True)
@@ -60,9 +60,9 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         album_name = self.controls.lastfm.get_album_name(bean.artist, bean.title)
         album_year = self.controls.lastfm.get_album_year(bean.artist, bean.title)
         if album_year:
-            self.almum_label.set_markup("<b>%s - %s (%s) - %s</b>" % (bean.artist,album_name, album_year, bean.title ))
+            self.almum_label.set_markup("<b>%s - %s (%s) - %s</b>" % (bean.artist, album_name, album_year, bean.title))
         else:
-            self.almum_label.set_markup("<b>%s - %s - %s</b>" % (bean.artist,album_name, bean.title ))
+            self.almum_label.set_markup("<b>%s - %s - %s</b>" % (bean.artist, album_name, bean.title))
         
         """update image"""
         if bean.image:

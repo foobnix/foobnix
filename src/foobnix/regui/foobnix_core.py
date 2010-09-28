@@ -12,6 +12,8 @@ import gobject
 from foobnix.regui.search import SearchControls
 from foobnix.regui.controls.seach_progress import SearchProgressBar
 from foobnix.regui.infopanel import InfoPanelWidget
+from foobnix.regui.engine.gstreamer import GStreamerEngine
+from foobnix.regui.controls.seekbar import SeekProgressBarControls
 class FoobnixCore(BaseFoobnixControls):
     
     def __init__(self):       
@@ -19,6 +21,8 @@ class FoobnixCore(BaseFoobnixControls):
 
         """elements"""
         
+        self.seek_bar = SeekProgressBarControls(self)
+        self.media_engine = GStreamerEngine(self)
         self.search_progress = SearchProgressBar(self)
         
         self.info_panel = InfoPanelWidget(self)

@@ -14,18 +14,28 @@ import os
 from foobnix.regui.model import FModel
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.util.singe_thread import SingreThread
-import time
 class BaseFoobnixControls(LoadSave):
-    def __init__(self):
-        
-        self.lastfm = LastFmService()
-        
+    def __init__(self):        
+        self.lastfm = LastFmService()        
         pass
+    
+    def play(self, path):
+        self.media_engine.play(path)
+    
+    def notify_playing(self, pos_sec, dur_sec):
+        self.seek_bar.update_seek_status(pos_sec, dur_sec)
+        
+    def player_seek(self, percent):
+        self.media_engine.seek(percent)
     
     def search_top_tracks(self, query):
         def inline(query):            
-            results = self.lastfm.search_top_tracks(query)            
-            self.notetabs.append_tab(query, results)        
+            results = self.lastfm.search_top_tracks(query)
+            all = []
+            for i, bean in enumerate(results):
+                bean.tracknumber = i + 1
+                all.append(bean)            
+            self.notetabs.append_tab(query, all)        
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
     
     def search_top_albums(self, query):
@@ -37,7 +47,8 @@ class BaseFoobnixControls(LoadSave):
                 album.add_font("bold")
                 all.append(album)            
                 tracks = self.lastfm.search_album_tracks(album.artist, album.album)
-                for track in tracks:
+                for i, track in enumerate(tracks):
+                    track.tracknumber = i + 1
                     all.append(track)
                 self.notetabs.append(all)                
         #inline(query)        
@@ -52,7 +63,8 @@ class BaseFoobnixControls(LoadSave):
                 artist.add_font("bold")
                 all.append(artist)            
                 tracks = self.lastfm.search_top_tracks(artist.artist)
-                for track in tracks:
+                for i, track in enumerate(tracks):
+                    track.tracknumber = i + 1
                     all.append(track)
                 self.notetabs.append(all)            
         #inline(query)         
@@ -67,7 +79,8 @@ class BaseFoobnixControls(LoadSave):
                 tag.add_font("bold")
                 all.append(tag)            
                 tracks = self.lastfm.search_top_tag_tracks(tag.text)
-                for track in tracks:
+                for i, track in enumerate(tracks):
+                    track.tracknumber = i + 1
                     all.append(track)
                 self.notetabs.append(all)
         #inline(query)     

@@ -36,23 +36,6 @@ class VolumeControls(LoadSave):
     def on_load(self):
         self.volume_scale.set_value(FC().volume)
         
-class SeekProgressBarControls():
-    def __init__(self):
-        aligment = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=1.0, yscale=1.0)
-        aligment.set_padding(padding_top=7, padding_bottom=7, padding_left=0, padding_right=7)
-        
-        progresbar = gtk.ProgressBar()
-        progresbar.set_text("00:00 / 00:00")
-        
-        event = gtk.EventBox()
-        event.add(progresbar)
-        
-        aligment.add(event)
-        
-        aligment.show_all()
-        
-        self.widget = aligment
-
 class StatusbarControls():
     def __init__(self):
         statusbar = gtk.Statusbar()

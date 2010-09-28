@@ -11,7 +11,7 @@ from foobnix.cue.cue_reader import CueReader
 from foobnix.regui.model import FModel
 class PlaylistControl(TreeViewControl):
     def __init__(self, controls):
-        TreeViewControl.__init__(self,controls)
+        TreeViewControl.__init__(self, controls)
         self.set_reorderable(True)
 
         """Column icon"""                
@@ -40,11 +40,11 @@ class PlaylistControl(TreeViewControl):
         self.index = 0
    
     def next(self):  
-        self.index +=1        
+        self.index += 1        
         self.repopulate(self.index)
     
     def prev(self):        
-        self.index -=1
+        self.index -= 1
         self.repopulate(self.index)
      
     def append(self, bean):
@@ -52,16 +52,16 @@ class PlaylistControl(TreeViewControl):
             reader = CueReader(bean.path)
             beans = reader.get_common_beans()
             for bean in beans:
-                super(PlaylistControl,self).append(bean)
+                super(PlaylistControl, self).append(bean)
         else:
-            return super(PlaylistControl,self).append(bean)     
+            return super(PlaylistControl, self).append(bean)     
      
     def repopulate(self, index):
         self.count_index = 0
         all = self.get_all_beans()
-        beans =[]
+        beans = []
         for bean in all:
-            print "REPOP",bean
+            print "REPOP", bean
             if bean.index == index:                    
                 bean.play_icon = gtk.STOCK_MEDIA_PLAY
             else:
@@ -69,12 +69,15 @@ class PlaylistControl(TreeViewControl):
             beans.append(bean)
         self.populate(beans)
          
-    def on_button_press(self,w,e):
+    def on_button_press(self, w, e):
         if is_double_left_click(e):
 
             current = self.get_selected_bean()
             self.index = current.index            
             self.repopulate(current.index)
+            
+            """play song"""
+            self.controls.play(current.path)
             
             """update song info"""
             self.controls.update_info_panel(current)

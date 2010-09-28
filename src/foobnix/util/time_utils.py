@@ -27,6 +27,29 @@ def convert_ns(time_int):
         
     return time_str
 
+def convert_seconds_to_text(time_sec):    
+        time_str = ""
+        if time_sec >= 3600:
+            _hours = time_sec / 3600
+            time_sec = time_sec - (_hours * 3600)
+            time_str = str(_hours) + ":"
+        if time_sec >= 600:
+            _mins = time_sec / 60
+            time_sec = time_sec - (_mins * 60)
+            time_str = time_str + str(_mins) + ":"
+        elif time_sec >= 60:
+            _mins = time_sec / 60
+            time_sec = time_sec - (_mins * 60)
+            time_str = time_str + "0" + str(_mins) + ":"
+        else:
+            time_str = time_str + "00:"
+        if time_sec > 9:
+            time_str = time_str + str(time_sec)
+        else:
+            time_str = time_str + "0" + str(time_sec)
+            
+        return time_str
+
 
 def normilize_time(length):
     if length < 0:
