@@ -6,11 +6,9 @@ Created on 22 сент. 2010
 '''
 import gtk
 from foobnix.regui.menu import MenuWidget
-from foobnix.regui.all_controls import  VolumeControls
-     
 from foobnix.helpers.toolbar import ToolbarSeparator
-from foobnix.regui.controls.seekbar import SeekProgressBarControls
 from foobnix.regui.model.signal import FControl
+from foobnix.regui.controls.volume import VolumeControls
 
 class TopWidgets(FControl):
     def __init__(self, controls):
@@ -18,12 +16,11 @@ class TopWidgets(FControl):
         hbox.show()
         
         self.menu = MenuWidget()
-        self.volume = VolumeControls()
         sep = ToolbarSeparator()
         
         hbox.pack_start(self.menu.widget, False, False)
         hbox.pack_start(controls.playback, False, False)
-        hbox.pack_start(self.volume.widget, False, False)
+        hbox.pack_start(controls.volume, False, False)
         hbox.pack_start(sep, False, False)
         hbox.pack_start(controls.seek_bar, True, True)
         

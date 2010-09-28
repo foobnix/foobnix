@@ -27,6 +27,9 @@ class BaseFoobnixControls(LoadSave):
         
     def player_seek(self, percent):
         self.media_engine.seek(percent)
+        
+    def player_volue(self, percent):
+        self.media_engine.volume(percent)
     
     def search_top_tracks(self, query):
         def inline(query):            

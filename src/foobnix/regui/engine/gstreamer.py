@@ -19,7 +19,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.local_player = self.init_local()
         self.http_player = self.init_http()
         
-        self.player = None
+        self.player = self.init_local()
         self.position_sec = 0
         self.duration_sec = 0
     
@@ -90,8 +90,7 @@ class GStreamerEngine(MediaPlayerEngine):
         time.sleep(0.2)
                     
         while thread_id == self.play_thread_id:            
-            try:                
-                #duration = self.player.query_duration(gst.Format(gst.FORMAT_TIME, None))[0]
+            try:               
                 position_int = self.player.query_position(gst.Format(gst.FORMAT_TIME), None)[0]
                 gtk.gdk.threads_enter() #@UndefinedVariable
                 self.notify_playing(position_int, duraction_int)
@@ -104,6 +103,9 @@ class GStreamerEngine(MediaPlayerEngine):
     def seek(self, percent):
         seek_ns = self.duration_sec * percent / 100 * 1000000000;
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
+    
+    def volume(self, percent):
+        self.player.set_property('volume', percent / 100.0)
     
     def state_play(self):
         self.player.set_state(gst.STATE_PLAYING)
