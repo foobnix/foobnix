@@ -30,6 +30,8 @@ class SingreThread():
                 method(args)
             else:
                 method()
-            self.progressbar.stop()
-        finally:        
+        except Exception, e:
+            LOG.error(e)
+        finally:
+            self.progressbar.stop()        
             self.lock.release()

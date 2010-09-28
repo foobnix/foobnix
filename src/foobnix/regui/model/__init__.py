@@ -17,6 +17,8 @@ class FTreeModel():
         self.artist = 10, str
         self.title = 11, str
         self.image = 12, str
+        self.album = 13, str
+        self.genre = 14, str
     
     def cut(self):
         for i in self.__dict__:
@@ -64,10 +66,17 @@ class FModel(FTreeModel):
     def add_is_file(self, is_file):
         self.is_file = is_file
         return self
+    def add_album(self, album):
+        self.album = album
+        return self
     
     def add_play_icon(self, play_icon):
         self.play_icon = play_icon
-        return self     
+        return self  
+    
+    def add_genre(self, genre):
+        self.genre = genre
+        return self   
     
     def __str__(self):
         return "FModel: " + str(self.__dict__)

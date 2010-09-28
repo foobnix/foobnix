@@ -22,11 +22,36 @@ class BaseFoobnixControls(LoadSave):
         pass
     
     def search_top_tracks(self, query):
-        def in_thread(query):
-            results = self.lastfm.search_top_tracks(query)
-            self.notetabs.append_tab(query, results)
-        
-        self.singre_thread.run_with_text(in_thread, query, "Searching: " + query)
+        def inline(query):            
+            results = self.lastfm.search_top_tracks(query)            
+            self.notetabs.append_tab(query, results)        
+        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+    
+    def search_top_albums(self, query):
+        def inline(query):            
+            results = self.lastfm.search_top_albums(query)            
+            self.notetabs.append_tab(query, results)        
+        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+    
+    def search_top_similar(self, query):
+        def inline(query):            
+            results = self.lastfm.search_top_similar_artist(query)            
+            self.notetabs.append_tab(query, results)        
+        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+    
+    def search_top_tags(self, query):
+        def inline(query):            
+            results = self.lastfm.search_top_tags(query)            
+            self.notetabs.append_tab(query, results)        
+        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+    
+    def search_all(self, query):
+        pass
+        #def inline(query):            
+            #results = self.lastfm.search_top_tags(query)            
+            #self.notetabs.append_tab(query, results)        
+        #self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+   
         
     def append_to_notebook(self, text, beans):
         path = beans[0].path

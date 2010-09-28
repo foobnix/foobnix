@@ -1,14 +1,21 @@
 import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.model.signal import FControl
+from foobnix.util import LOG
 class SearchControls(FControl, gtk.Frame):
     def __init__(self, controls):        
-        FControl.__init__(self, controls)  
         gtk.Frame.__init__(self)
+        FControl.__init__(self, controls)
+        self.controls = controls
+        
         label = gtk.Label()
         label.set_markup("<b>Search music online:</b>")
         self.set_label_widget(label)
         self.set_border_width(0)
+        
+        """default search function"""
+        self.search_function = self.controls.search_top_tracks
+        
         
         vbox = gtk.VBox(False, 0)
         vbox.pack_start(self.search_line(), False, False, 0)
@@ -20,11 +27,18 @@ class SearchControls(FControl, gtk.Frame):
         
         self.show_all()
         
+        
     
-    def on_search(self, *args):
-        query = self.entry.get_text()
-        if query:
-            self.controls.search_top_tracks(query)
+    def set_search_function(self,w, search_function):
+        LOG.info("Set search fucntion", search_function)
+        self.search_function = search_function    
+    
+    def on_search(self,*w):
+        if self.get_query():
+            self.search_function(self.get_query())
+    
+    def get_query(self):
+        return self.entry.get_text()
         
     def search_line(self):
         hbox = gtk.HBox(False, 0)
@@ -56,9 +70,14 @@ class SearchControls(FControl, gtk.Frame):
 
         hbox = gtk.HBox(False, 0)
         
-        songs = gtk.ToggleButton("Songs")        
+        songs = gtk.ToggleButton("Songs")
+        songs.connect("toggled", self.set_search_function,self.controls.search_top_tracks)        
+        
         albums = gtk.ToggleButton("Albums")
+        albums.connect("toggled", self.set_search_function, self.controls.search_top_albums)        
+        
         similars = gtk.ToggleButton("Similar")
+        similars.connect("toggled", self.set_search_function,self.controls.search_top_similar)
         
         hbox.pack_start(songs, True, True, 0)
         hbox.pack_start(albums, True, True, 0)
@@ -75,7 +94,10 @@ class SearchControls(FControl, gtk.Frame):
         hbox = gtk.HBox(False, 0)
         
         tags = gtk.ToggleButton("Tag")        
+        tags.connect("toggled", self.set_search_function, self.controls.search_top_tags)
+        
         all = gtk.ToggleButton("All")
+        all.connect("toggled", self.set_search_function ,self.controls.search_all)
         
         hbox.pack_start(tags, True, True, 0)
         hbox.pack_start(all, True, True, 0)
@@ -89,7 +111,8 @@ class SearchControls(FControl, gtk.Frame):
         
         h_line_box.show_all()
         
-        OneActiveToggledButton([songs, albums, similars, tags, all])
+        #OneActiveToggledButton([songs, albums, similars, tags, all])
+        
         
         return h_line_box
                   
