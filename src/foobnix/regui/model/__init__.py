@@ -19,6 +19,7 @@ class FTreeModel():
         self.image = 12, str
         self.album = 13, str
         self.genre = 14, str
+        self.year = 15, str
     
     def cut(self):
         for i in self.__dict__:
@@ -68,6 +69,9 @@ class FModel(FTreeModel):
         return self
     def add_album(self, album):
         self.album = album
+        return self
+    def add_year(self, year):
+        self.year = year
         return self
     
     def add_play_icon(self, play_icon):

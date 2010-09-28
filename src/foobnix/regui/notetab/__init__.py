@@ -93,8 +93,9 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         treeview = PlaylistControl(self.controls)
         self.active_tree = treeview
         
-        treeview.populate_from_scanner(beans)
-        
+        #treeview.populate_from_scanner(beans)
+        if beans:
+            treeview.populate(beans)
         #for bean in beans:
             #bean.level = None
         #    treeview.append(bean)
@@ -105,8 +106,9 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
         return  window
     
-    def append(self, bean):
-        self.active_tree.append(bean)
+    def append(self, beans):
+        for bean in beans:            
+            self.active_tree.append(bean)
     
     def on_delete_tab(self, widget, event, child):
         if event.type == gtk.gdk.BUTTON_PRESS: #@UndefinedVariable

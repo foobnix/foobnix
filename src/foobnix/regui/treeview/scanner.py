@@ -21,6 +21,14 @@ class DirectoryScanner():
         self._scanner(self.path, None)
         return self.results
     
+    def get_music_file_results(self):
+        self._scanner(self.path, None)
+        all = []
+        for file in self.results:
+            if file.is_file:
+                all.append(file)
+        return all
+    
     def _scanner(self, path, level):
         dir = os.path.abspath(path)
         list = os.listdir(dir)

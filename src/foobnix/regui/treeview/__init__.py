@@ -31,10 +31,10 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         self.connect("button-press-event", self.on_button_press)
         self.connect("key-release-event", self.on_key_release)
         
-        #self.append(FModel("1", "2"))
-        #scan = DirectoryScanner("/home/ivan/Музыка")
-        #self.populate_from_scanner(scan.get_music_results())
         self.count_index = 0
+        #self.append(FModel("text", "path").add_font("bold"))
+        
+       
     
     def set_scrolled(self,policy_horizontal,policy_vertical):        
         self.scroll = gtk.ScrolledWindow()        
@@ -46,12 +46,14 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
     def populate(self, beans):
         self.model.clear()
         for bean in beans:
+            bean.level = None
             self.append(bean)
                 
     def append(self, bean):        
-        bean.visible = True
+        bean.visible = True        
         """ check append add title and artist"""
-        bean.text = bean.text + " ["+str(bean.artist)+ " - " +str(bean.title) + "]"
+        #bean.text = bean.text + " ["+str(bean.artist)+ " - " +str(bean.title) + "]"+str(bean.font)
+        
         self.count_index +=1
         bean.index = self.count_index
         #bean.play_icon = gtk.STOCK_MEDIA_PLAY

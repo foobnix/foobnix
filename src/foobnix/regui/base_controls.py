@@ -29,21 +29,48 @@ class BaseFoobnixControls(LoadSave):
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
     
     def search_top_albums(self, query):
-        def inline(query):            
-            results = self.lastfm.search_top_albums(query)            
-            self.notetabs.append_tab(query, results)        
+        def inline(query):
+            results = self.lastfm.search_top_albums(query)
+            self.notetabs.append_tab(query, None)
+            for album in results[:5]:
+                all = []
+                album.add_font("bold")
+                all.append(album)            
+                tracks = self.lastfm.search_album_tracks(album.artist, album.album)
+                for track in tracks:
+                    all.append(track)
+                self.notetabs.append(all)                
+        #inline(query)        
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
     
     def search_top_similar(self, query):
         def inline(query):            
-            results = self.lastfm.search_top_similar_artist(query)            
-            self.notetabs.append_tab(query, results)        
+            results = self.lastfm.search_top_similar_artist(query)
+            self.notetabs.append_tab(query, None)
+            for artist in results[:5]:
+                all = []
+                artist.add_font("bold")
+                all.append(artist)            
+                tracks = self.lastfm.search_top_tracks(artist.artist)
+                for track in tracks:
+                    all.append(track)
+                self.notetabs.append(all)            
+        #inline(query)         
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
     
     def search_top_tags(self, query):
         def inline(query):            
-            results = self.lastfm.search_top_tags(query)            
-            self.notetabs.append_tab(query, results)        
+            results = self.lastfm.search_top_tags(query)           
+            self.notetabs.append_tab(query, None)
+            for tag in results[:5]:
+                all = []
+                tag.add_font("bold")
+                all.append(tag)            
+                tracks = self.lastfm.search_top_tag_tracks(tag.text)
+                for track in tracks:
+                    all.append(track)
+                self.notetabs.append(all)
+        #inline(query)     
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
     
     def search_all(self, query):
@@ -53,14 +80,14 @@ class BaseFoobnixControls(LoadSave):
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
    
     def update_info_panel(self, bean):
-        self.info_panel.update(bean)        
-        #self.singre_thread.run_with_text(self.info_panel.update, bean, "Updating info panel")        
+        #self.info_panel.update(bean)        
+        self.singre_thread.run_with_text(self.info_panel.update, bean, "Updating info panel")        
         
     def append_to_notebook(self, text, beans):
         path = beans[0].path
         if os.path.isdir(path):
             scanner = DirectoryScanner(beans[0].path)
-            results = scanner.get_music_results()
+            results = scanner.get_music_file_results()
             results = update_all_id3(results)        
             self.notetabs.append_tab(text, results)
         else:

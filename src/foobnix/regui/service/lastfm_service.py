@@ -7,7 +7,7 @@ Created on 27 сент. 2010
 
 from foobnix.model.entity import CommonBean
 from foobnix.thirdparty import pylast
-from foobnix.thirdparty.pylast import WSError
+from foobnix.thirdparty.pylast import WSError, Tag
 from foobnix.util import LOG
 from foobnix.online.google.translate import translate
 from foobnix.util.fc import FC
@@ -142,10 +142,31 @@ class LastFmService():
                 album_txt = album['item']
             
             name = album_txt.get_name()
-            bean = FModel(name).add_album(name)
+            #year = album_txt.get_release_year()
+            year = None
+            if year:
+                bean = FModel(name + "("+year+")").add_album(name).add_artist(aritst_name).add_year(year)
+            else:
+                bean = FModel(name).add_album(name).add_artist(aritst_name).add_year(year)
+            
             beans.append(bean)
         return beans
     
+    def search_album_tracks(self, artist_name, album_name):
+        if not artist_name or not album_name:
+            LOG.warn("search_album_tracks artist and album is empty")
+            return []
+        self.connect()
+        album = self.network.get_album(artist_name, album_name)
+        tracks  = album.get_tracks()
+        results = []
+        for track in tracks:
+            artist = track.get_artist().get_name()
+            title = track.get_title()
+            print artist, title
+            bean = FModel(artist + " - "+ title).add_artist(artist).add_title(title)
+            results.append(bean)            
+        return results
     
     def search_top_tags(self, tag):
         self.connect()
@@ -161,6 +182,38 @@ class LastFmService():
                 tag_name = tag.get_name()
                 bean = FModel(tag_name).add_genre(tag_name)
                 beans.append(bean)        
+        return beans
+    
+    def search_top_tag_tracks(self, tag_name):
+        self.connect()
+        if not tag_name:
+            LOG.warn("search_top_tags TAG is empty")
+            return []
+        
+        tag = Tag(tag_name,self.network)
+        tracks = tag.get_top_tracks()
+
+        beans = []    
+            
+        for track in tracks:
+            
+            try:            
+                track_item = track.item
+            except AttributeError:
+                track_item = track['item']
+            
+            #LOG.info(track_item.get_duration())
+            
+            #bean = CommonBean(name=str(track_item), path="", type=CommonBean.TYPE_MUSIC_URL, parent=query);
+            artist = track_item.get_artist().get_name()
+            title = track_item.get_title()
+            text = artist + " - " + title 
+            bean = FModel(text).add_artist(artist).add_title(title)
+            #norm_duration = track_item.get_duration() / 1000
+            #LOG.info(track_item.get_duration(), norm_duration
+            #bean.time = normilize_time(norm_duration)
+            beans.append(bean)
+            
         return beans
     
     def search_top_tracks(self, artist_name): 

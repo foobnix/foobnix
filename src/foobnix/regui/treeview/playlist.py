@@ -22,7 +22,7 @@ class PlaylistControl(TreeViewControl):
         tracknumber = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.tracknumber[0])
         
         """conlumt artist title"""
-        description = gtk.TreeViewColumn('Artist - Title', gtk.CellRendererText(), text=self.text[0])
+        description = gtk.TreeViewColumn('Artist - Title', gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         description.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         description.set_resizable(True)
         description.set_expand(True)
@@ -71,6 +71,7 @@ class PlaylistControl(TreeViewControl):
          
     def on_button_press(self,w,e):
         if is_double_left_click(e):
+
             current = self.get_selected_bean()
             self.index = current.index            
             self.repopulate(current.index)
