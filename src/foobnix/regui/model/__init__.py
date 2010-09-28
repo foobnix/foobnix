@@ -20,6 +20,7 @@ class FTreeModel():
         self.album = 13, str
         self.genre = 14, str
         self.year = 15, str
+        self.info = 16, str
     
     def cut(self):
         for i in self.__dict__:

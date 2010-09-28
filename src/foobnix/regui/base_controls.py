@@ -19,8 +19,10 @@ class BaseFoobnixControls(LoadSave):
         self.lastfm = LastFmService()        
         pass
     
-    def play(self, path):
-        self.media_engine.play(path)
+    def play(self, bean):
+        self.media_engine.play(bean.path)
+        print "!!!!!!", bean.info
+        self.statusbar.set_text(bean.info)
     
     def notify_playing(self, pos_sec, dur_sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
@@ -117,11 +119,11 @@ class BaseFoobnixControls(LoadSave):
         
     def next(self):
         bean = self.notetabs.next()
-        self.media_engine.play(bean.path)
+        self.play(bean)
     
     def prev(self):
         bean = self.notetabs.prev()
-        self.media_engine.play(bean.path)
+        self.media_engine.play(bean)
     
     def filter_tree(self, value):
         self.tree.filter(value)

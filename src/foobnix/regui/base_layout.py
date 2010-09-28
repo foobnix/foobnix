@@ -6,9 +6,7 @@ Created on 25 сент. 2010
 '''
 import gtk
 from foobnix.regui.top import TopWidgets
-from foobnix.regui.infopanel import InfoPanelWidget
 from foobnix.regui.left import LeftWidgets
-from foobnix.regui.all_controls import StatusbarControls
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
@@ -47,10 +45,10 @@ class BaseFoobnixLayout(LoadSave, FControl):
         
         
         
-        statusbar = StatusbarControls().widget
+        
         
         vbox.pack_start(self.hpaned_left, True, True)        
-        vbox.pack_start(statusbar, False, True)
+        vbox.pack_start(controls.statusbar, False, True)
         
         controls.window.add(vbox)
         

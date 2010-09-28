@@ -8,7 +8,6 @@ from foobnix.regui.treeview import TreeViewControl
 import gtk
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.cue.cue_reader import CueReader
-from foobnix.regui.model import FModel
 class PlaylistControl(TreeViewControl):
     def __init__(self, controls):
         TreeViewControl.__init__(self, controls)
@@ -20,6 +19,10 @@ class PlaylistControl(TreeViewControl):
         icon.set_min_width(5)
         """track number"""
         tracknumber = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.tracknumber[0])
+        #tracknumber.set_sort_indicator(True)
+        #tracknumber.set_sort_order(gtk.SORT_DESCENDING)
+        #tracknumber.set_sort_column_id(2)
+         
         
         """conlumt artist title"""
         description = gtk.TreeViewColumn('Artist - Title', gtk.CellRendererText(), text=self.text[0], font=self.font[0])
@@ -79,7 +82,7 @@ class PlaylistControl(TreeViewControl):
             self.repopulate(current.index)
             
             """play song"""
-            self.controls.play(current.path)
+            self.controls.play(current)
             
             """update song info"""
             self.controls.update_info_panel(current)
