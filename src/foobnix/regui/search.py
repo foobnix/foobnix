@@ -15,6 +15,7 @@ class SearchControls(FControl, gtk.Frame):
         
         """default search function"""
         self.search_function = self.controls.search_top_tracks
+        self.buttons = []
         
         
         vbox = gtk.VBox(False, 0)
@@ -26,12 +27,13 @@ class SearchControls(FControl, gtk.Frame):
         self.add(vbox)
         
         self.show_all()
-        
+        OneActiveToggledButton(self.buttons)
         
     
     def set_search_function(self,w, search_function):
         LOG.info("Set search fucntion", search_function)
         self.search_function = search_function    
+        
     
     def on_search(self,*w):
         if self.get_query():
@@ -71,6 +73,7 @@ class SearchControls(FControl, gtk.Frame):
         hbox = gtk.HBox(False, 0)
         
         songs = gtk.ToggleButton("Songs")
+        songs.set_active(True)
         songs.connect("toggled", self.set_search_function,self.controls.search_top_tracks)        
         
         albums = gtk.ToggleButton("Albums")
@@ -111,9 +114,7 @@ class SearchControls(FControl, gtk.Frame):
         
         h_line_box.show_all()
         
-        #OneActiveToggledButton([songs, albums, similars, tags, all])
-        
-        
+        self.buttons = [songs, albums, similars, tags, all]
         return h_line_box
                   
      
