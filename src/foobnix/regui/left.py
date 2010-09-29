@@ -17,7 +17,7 @@ class LeftWidgets(FControl, LoadSave):
         vbox = gtk.VBox(False, 0)
         
         #scan = DirectoryScanner("/home/ivan/Music")
-        scan = DirectoryScanner("/home/ivan/Музыка")
+        scan = DirectoryScanner(["/home/ivan/Музыка", "/mnt/1tb_2/music"])
         #thread.start_new_thread(self.tree.populate_from_scanner, scan.get_music_results())
         self.controls.tree.populate_from_scanner(scan.get_music_results())
 
