@@ -22,10 +22,10 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         self.model = gtk.TreeStore(*FTreeModel().types())
         
         """filter config"""
-        filter = self.model.filter_new()
+        self.filter_model = self.model.filter_new()
         print "visible", self.visible[0]
-        filter.set_visible_column(self.visible[0])
-        self.set_model(filter)    
+        self.filter_model.set_visible_column(self.visible[0])
+        self.set_model(self.filter_model)    
         
         """connectors"""
         self.connect("button-press-event", self.on_button_press)
@@ -128,7 +128,12 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
     
     def _get_bean_by_path(self, path):
         model = self.model
+        LOG.info("Selecte bean path", path)
+        
+        path = self.filter_model.convert_path_to_child_path(path)
+        LOG.info("Selecte bean path", path)        
         iter = model.get_iter(path)
+        
         if iter:
             bean = FModel()
             dt = FTreeModel().__dict__
