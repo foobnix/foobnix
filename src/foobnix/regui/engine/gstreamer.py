@@ -51,7 +51,9 @@ class GStreamerEngine(MediaPlayerEngine):
     def notify_eos(self):
         LOG.debug("Notify eos")
         self.controls.notify_eos()
-        
+    
+    def notify_title(self, text):
+        self.controls.notify_title(text)
     
     def notify_error(self):
         LOG.debug("Notify error")
@@ -144,9 +146,15 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.set_state(gst.STATE_PAUSED)
     
     def on_message(self, bus, message):
-        print bus, message
+        #print bus, message
         type = message.type
-        if type == gst.MESSAGE_EOS:            
+        
+        if type == gst.MESSAGE_TAG  and message.parse_tag():
+            if message.structure.has_field("title"):                                
+                title = message.structure['title']
+                self.notify_title(title)
+            
+        elif type == gst.MESSAGE_EOS:            
             LOG.info("MESSAGE_EOS")            
             self.notify_eos()
         elif type == gst.MESSAGE_ERROR:

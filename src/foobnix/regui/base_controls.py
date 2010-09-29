@@ -58,6 +58,9 @@ class BaseFoobnixControls(LoadSave):
     def notify_playing(self, pos_sec, dur_sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
     
+    def notify_title(self, text):
+        self.seek_bar.set_text(text)
+    
     def notify_eos(self):
         self.next()
             
