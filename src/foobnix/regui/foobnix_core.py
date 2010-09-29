@@ -16,6 +16,8 @@ from foobnix.regui.engine.gstreamer import GStreamerEngine
 from foobnix.regui.controls.seekbar import SeekProgressBarControls
 from foobnix.regui.controls.volume import VolumeControls
 from foobnix.regui.controls.status_bar import StatusbarControls
+from foobnix.regui.treeview.radiotree import RadioTreeControl
+from foobnix.regui.treeview.virtualtree import VirtualTreeControl
 class FoobnixCore(BaseFoobnixControls):
     
     def __init__(self):       
@@ -38,7 +40,10 @@ class FoobnixCore(BaseFoobnixControls):
         self.notetabs = NoteTabControl(self)
           
         self.filter = FilterControl(self)
+        
         self.tree = MusicTreeControl(self)
+        self.radio = RadioTreeControl(self)
+        self.virtual = VirtualTreeControl(self)
         
         
         

@@ -8,52 +8,75 @@ import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.treeview.scanner import DirectoryScanner
 from foobnix.regui.model.signal import FControl
-class LeftWidgets(FControl):
+from foobnix.regui.state import LoadSave
+class LeftWidgets(FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         vbox = gtk.VBox(False, 0)
         
-        self.tree = controls.tree      
-
         scan = DirectoryScanner("/home/ivan/Music")
         #scan = DirectoryScanner("/home/ivan/Музыка")
         #thread.start_new_thread(self.tree.populate_from_scanner, scan.get_music_results())
-        self.tree.populate_from_scanner(scan.get_music_results())
+        self.controls.tree.populate_from_scanner(scan.get_music_results())
+
+        controls.tree.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        controls.radio.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        controls.virtual.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+               
         
-        scrool_tree = gtk.ScrolledWindow()        
-        scrool_tree.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        scrool_tree.add_with_viewport(self.tree)
-        scrool_tree.show()    
                 
-        buttons = PerspectiveButtonControlls().widget
+        buttons = PerspectiveButtonControlls(controls).widget
         
-        vbox.pack_start(scrool_tree, True, True)
+        vbox.pack_start(controls.tree.scroll, True, True)
+        vbox.pack_start(controls.radio.scroll, True, True)
+        vbox.pack_start(controls.virtual.scroll, True, True)
+        
         vbox.pack_start(controls.filter, False, False)
         vbox.pack_start(buttons, False, False)
         
         vbox.show_all()
                 
         self.widget = vbox
+    
+    def on_load(self):            
+        pass
    
+    def on_save(self):
+        pass
 
-class PerspectiveButtonControlls():
-    def __init__(self):
+class PerspectiveButtonControlls(FControl):
+    def __init__(self, controls):
+        FControl.__init__(self, controls)
         hbox = gtk.HBox(False, 0)
                
-        music = self.custom_button("Music", gtk.STOCK_HARDDISK)
-        radio = self.custom_button("Radio", gtk.STOCK_NETWORK)
-        lists = self.custom_button("Lists", gtk.STOCK_INDEX)
-        OneActiveToggledButton([music, radio, lists])
+        musics = self.custom_button("Music", gtk.STOCK_HARDDISK)
+        musics.connect("clicked", self.on_change_perspective, controls.tree)
+        musics.set_active(True)
         
-        hbox.pack_start(music, False, False)
-        hbox.pack_start(radio, False, False)
-        hbox.pack_start(lists, False, False)
+        
+        radios = self.custom_button("Radio", gtk.STOCK_NETWORK)
+        radios.connect("clicked", self.on_change_perspective, controls.radio)
+        
+        virtuals = self.custom_button("Lists", gtk.STOCK_INDEX)
+        virtuals.connect("clicked", self.on_change_perspective, controls.virtual)
+        
+        list = [musics, radios, virtuals]
+        OneActiveToggledButton(list)
+        
+        hbox.pack_start(musics, False, False)
+        hbox.pack_start(radios, False, False)
+        hbox.pack_start(virtuals, False, False)
         
         hbox.show_all()
         
         self.widget = hbox
     
    
+    def on_change_perspective(self, w, perspective):
+        self.controls.tree.scroll.hide()
+        self.controls.radio.scroll.hide()
+        self.controls.virtual.scroll.hide()
+        perspective.scroll.show()
                     
         
     def custom_button(self, title, gtk_stock, func=None, param=None):

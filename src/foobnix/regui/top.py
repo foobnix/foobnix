@@ -8,9 +8,9 @@ import gtk
 from foobnix.regui.menu import MenuWidget
 from foobnix.helpers.toolbar import ToolbarSeparator
 from foobnix.regui.model.signal import FControl
-from foobnix.regui.controls.volume import VolumeControls
+from foobnix.regui.state import LoadSave
 
-class TopWidgets(FControl):
+class TopWidgets(FControl, LoadSave):
     def __init__(self, controls):
         hbox = gtk.HBox(False, 0)
         hbox.show()
@@ -27,7 +27,7 @@ class TopWidgets(FControl):
         self.widget = hbox
         
     def on_save(self):        
-        self.volume.on_save()
+        self.controls.volume.on_save()
         
     def on_load(self):
-        self.volume.on_load()
+        self.controls.volume.on_load()
