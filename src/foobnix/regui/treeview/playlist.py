@@ -40,7 +40,12 @@ class PlaylistControl(TreeViewControl):
         self.append_column(description)
         self.append_column(time)
         
+        self.connect("key-press-event", self.on_key_press)
         self.index = 0
+   
+    def on_key_press(self, w,e):        
+        if gtk.gdk.keyval_name(e.keyval) == 'Return':
+            self.active_current_song()
    
     def next(self):  
         self.index += 1        
@@ -73,16 +78,21 @@ class PlaylistControl(TreeViewControl):
                 bean.play_icon = None
             beans.append(bean)
         self.populate(beans)
+    
+    def active_current_song(self):
+        current = self.get_selected_bean()
+        self.index = current.index            
+        self.repopulate(current.index)
+        
+        """play song"""
+        self.controls.play(current)
+        
+        """update song info"""
+        self.controls.update_info_panel(current)
+
          
     def on_button_press(self, w, e):
         if is_double_left_click(e):
+            self.active_current_song()
 
-            current = self.get_selected_bean()
-            self.index = current.index            
-            self.repopulate(current.index)
             
-            """play song"""
-            self.controls.play(current)
-            
-            """update song info"""
-            self.controls.update_info_panel(current)

@@ -64,8 +64,13 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         
         for key in new_dict.values():
             value = getattr(bean, key)
-            attributes.append(value)        
-        return self.model.append(bean.level, attributes)
+            attributes.append(value)   
+        
+        #gtk.gdk.threads_enter() #@UndefinedVariable
+        with gtk.gdk.lock:
+            value =self.model.append(bean.level, attributes)
+        #gtk.gdk.threads_leave() #@UndefinedVariable 
+        return value
     
     def populate_from_scanner(self, beans):
         self.model.clear()

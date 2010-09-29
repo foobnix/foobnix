@@ -27,6 +27,11 @@ class SearchControls(FControl, gtk.Frame):
         self.add(vbox)
         
         self.show_all()
+        """search on enter"""
+        for button in self.buttons:
+            button.connect("key-press-event", self.on_search_key_press)
+        
+        """only one button active"""    
         OneActiveToggledButton(self.buttons)
         
     
@@ -46,6 +51,8 @@ class SearchControls(FControl, gtk.Frame):
         hbox = gtk.HBox(False, 0)
         
         self.entry = gtk.Entry()
+        self.entry.connect("key-press-event", self.on_search_key_press)
+        
         self.entry.set_text("Madonna")
         button = gtk.Button("Search")
         button.connect("clicked", self.on_search)
@@ -58,6 +65,10 @@ class SearchControls(FControl, gtk.Frame):
         hbox.show_all()
         
         return hbox    
+    
+    def on_search_key_press(self, w,e):        
+        if gtk.gdk.keyval_name(e.keyval) == 'Return':
+            self.on_search();
     
     def search_buttons(self):
         h_line_box = gtk.HBox(False, 0)
@@ -74,7 +85,7 @@ class SearchControls(FControl, gtk.Frame):
         
         songs = gtk.ToggleButton("Songs")
         songs.set_active(True)
-        songs.connect("toggled", self.set_search_function,self.controls.search_top_tracks)        
+        songs.connect("toggled", self.set_search_function,self.controls.search_top_tracks)
         
         albums = gtk.ToggleButton("Albums")
         albums.connect("toggled", self.set_search_function, self.controls.search_top_albums)        
