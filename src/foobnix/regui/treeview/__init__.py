@@ -54,7 +54,7 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         """ check append add title and artist"""
         #bean.text = bean.text + " ["+str(bean.artist)+ " - " +str(bean.title) + "]"+str(bean.font)
         #bean.text = bean.text + " !" + str(bean.info)
-        bean.text = bean.text + " !" + str(bean.start_sec)+ "=" + str(bean.duration_sec) 
+        bean.text = bean.text + " !" + str(bean.start_sec) + "=" + str(bean.duration_sec) 
                
         bean.index = self.count_index
         self.count_index += 1
@@ -69,7 +69,7 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         
         #gtk.gdk.threads_enter() #@UndefinedVariable
         with gtk.gdk.lock:
-            value =self.model.append(bean.level, attributes)
+            value = self.model.append(bean.level, attributes)
         #gtk.gdk.threads_leave() #@UndefinedVariable 
         return value
     
@@ -109,6 +109,23 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         
         return self._get_bean_by_path(paths[0])
     
+    def get_children_beans_by_selected(self):
+        selection = self.get_selection()
+        model, paths = selection.get_selected_rows()
+        selected = model.get_iter(paths[0])
+        n = model.iter_n_children(selected)
+        iterch = model.iter_children(selected)
+        
+        results = []
+        
+        for i in xrange(n):
+            path = model.get_path(iterch)
+            bean = self._get_bean_by_path(path)
+            results.append(bean)            
+            iterch = model.iter_next(iterch)
+        
+        return results
+    
     def _get_bean_by_path(self, path):
         model = self.model
         iter = model.get_iter(path)
@@ -146,25 +163,38 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
             beans.append(bean)
         return beans
     
-    def filter(self, query):
-        LOG.info("Filter", query)
-        if not query:
-            """show alll"""
+    def filter(self, query):        
+        if len(query.strip()) > 0:
+            query = query.strip().decode("utf-8").lower()
+            
+            for line in self.model:
+                name = line[self.text[0]].lower()
+
+                if name.find(query) >= 0:
+                    #LOG.info("FIND PARENT:", name, query)
+                    line[self.visible[0]] = True                    
+                else:
+                    find = False
+                    child_count = 0;
+                    for child in line.iterchildren():
+                        name = str(child[self.text[0]]).decode("utf-8").lower()
+                        #name = child[self.text[0]]
+                        if name.find(query) >= 0:
+                            child_count += 1
+                            #LOG.info("FIND CHILD :", name, query)
+                            child[self.visible[0]] = True
+                            line[self.visible[0]] = True
+                            #line[self.POS_FILTER_CHILD_COUNT] = child_count 
+                            find = True                            
+                        else:
+                            child[self.visible[0]] = False
+                    if not find:
+                        line[self.visible[0]] = False
+                    else:
+                        self.expand_all()                                           
+        else:
+            self.collapse_all()
             for line in self.model:                
                 line[self.visible[0]] = True
                 for child in line.iterchildren():
                     child[self.visible[0]] = True
-            self.collapse_all()
-            return True
-
-        """filter selected"""        
-        query = query.lower()       
-        for line in self.model:
-            name = line[self.text[0]].lower()
-
-            if name.find(query) >= 0:
-                LOG.info("FILTER FIND PARENT:", name, query)
-                line[self.visible[0]] = True
-                self.expand_all()                    
-            else:
-                line[self.visible[0]] = False

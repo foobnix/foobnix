@@ -17,6 +17,7 @@ from foobnix.util.singe_thread import SingreThread
 from foobnix.regui.service.vk_service import VKService
 import threading
 import time
+from foobnix.util.plsparser import get_radio_source
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):        
@@ -37,15 +38,16 @@ class BaseFoobnixControls(LoadSave):
     
     def play(self, bean):
         if not bean.path:
-            vk = self.vk.find_one_track(bean.artist + " - " +bean.title)
+            vk = self.vk.find_one_track(bean.artist + " - " + bean.title)
             if vk:            
                 bean.path = vk.path
                 bean.time = vk.time
             else:
                 if self.count_errors < 4:
                     self.next()
-                self.count_errors+=1
-                
+                self.count_errors += 1
+        else:
+            bean.path = get_radio_source(bean.path)
             
         if bean.start_sec > 0:
             self.media_engine.play(bean.path, bean.start_sec)            
@@ -164,6 +166,7 @@ class BaseFoobnixControls(LoadSave):
     
     def filter_tree(self, value):
         self.tree.filter(value)
+        self.radio.filter(value)
     
     def quit(self, *a):
         LOG.info("Controls - Quit")

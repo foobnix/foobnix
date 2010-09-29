@@ -50,14 +50,14 @@ def getStations(data, urls):
 
 def get_radio_source(url):
     if url:          
-        if url.endswith(".pls"):                
+        if url.lower().endswith(".pls"):                
             source_url = getStationPath(url)
             LOG.info("Radio content", source_url)
             if source_url :          
                 LOG.info("Radio url", source_url)      
                 return  source_url                   
                 
-        elif url.endswith(".m3u"):
+        elif url.lower().endswith(".m3u"):
             content = get_content(url)
             LOG.info("Radio content", content)
             if not content:

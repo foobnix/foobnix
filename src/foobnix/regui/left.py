@@ -16,8 +16,8 @@ class LeftWidgets(FControl, LoadSave):
         FControl.__init__(self, controls)
         vbox = gtk.VBox(False, 0)
         
-        scan = DirectoryScanner("/home/ivan/Music")
-        #scan = DirectoryScanner("/home/ivan/Музыка")
+        #scan = DirectoryScanner("/home/ivan/Music")
+        scan = DirectoryScanner("/home/ivan/Музыка")
         #thread.start_new_thread(self.tree.populate_from_scanner, scan.get_music_results())
         self.controls.tree.populate_from_scanner(scan.get_music_results())
 
@@ -62,10 +62,10 @@ class PerspectiveButtonControlls(FControl):
         self.radio_folder = RadioFolder()          
         files = self.radio_folder.get_radio_FPLs()
         for fpl in files:
-            parent = FModel(fpl.name).add_font("bold")
+            parent = FModel(fpl.name).add_font("bold").add_is_file(False)
             parentIter = controls.radio.append(parent)            
             for radio, urls in fpl.urls_dict.iteritems():
-                child = FModel(radio, urls[0]).add_font("").add_level(parentIter)
+                child = FModel(radio, urls[0]).add_font("").add_level(parentIter).add_is_file(True)
                 controls.radio.append(child)
         
         

@@ -17,20 +17,16 @@ class RadioTreeControl(TreeViewControl, LoadSave):
         column.set_resizable(True)
         self.append_column(column)
     
-    def active_current_song(self):
-        current = self.get_selected_bean()
-        self.index = current.index            
-
-        """play song"""
-        self.controls.play(current)
-        
-        """update song info"""
-        self.controls.update_info_panel(current)
-
-         
+             
     def on_button_press(self, w, e):
         if is_double_left_click(e):
-            self.active_current_song()
+            current = self.get_selected_bean()
+            if current.is_file:
+                self.controls.notetabs.append_tab(current.text, [current])
+            else:
+                beans = self.get_children_beans_by_selected()
+                self.controls.notetabs.append_tab(current.text, beans)
+                
       
     def on_load(self):
         self.scroll.hide()

@@ -15,7 +15,7 @@ class FilterControl(gtk.Entry, FControl, LoadSave):
     
     def on_filter(self, w, e):
         value = w.get_text()
-        self.controls.filter_tree(value)
+        self.controls.filter_tree(value)        
     
     def on_load(self):
         pass

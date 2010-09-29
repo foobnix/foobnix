@@ -75,7 +75,8 @@ class GStreamerEngine(MediaPlayerEngine):
                 uri = 'file:' + urllib.pathname2url(path)
         
         print path
-        self.player.set_property("uri", uri)            
+        self.player.set_property("uri", uri)
+        LOG.info("Gstreamer try to play", uri)            
         self.state_play()    
         
         self.play_thread_id = thread.start_new_thread(self.playing_thread, (start_sec,))
@@ -103,7 +104,7 @@ class GStreamerEngine(MediaPlayerEngine):
                     self.state_stop()
                     time.sleep(1)                                       
                     self.state_play()
-                error_count +=1
+                error_count += 1
 
         time.sleep(0.2)
                     
@@ -124,7 +125,7 @@ class GStreamerEngine(MediaPlayerEngine):
     
     def seek_seconds(self, seconds):
         LOG.info("Start with seconds", seconds)
-        seek_ns = (float(seconds)+0.123)  * 1000000000       
+        seek_ns = (float(seconds) + 0.123) * 1000000000       
         LOG.info("SEC SEEK SEC", seek_ns)         
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
     
@@ -158,5 +159,10 @@ class GStreamerEngine(MediaPlayerEngine):
             LOG.info("MESSAGE_EOS")            
             self.notify_eos()
         elif type == gst.MESSAGE_ERROR:
-            LOG.info("MESSAGE_ERROR")
+            err, debug = message.parse_error()
+            LOG.warn("Error: %s" % err, debug, err.domain, err.code)
+            
+            if err.code != 1:
+                self.notify_title(str(err))
+            
             self.notify_error()
