@@ -16,7 +16,7 @@ class PopupWindowMenu(gtk.Window, FControl):
         gtk.Window. __init__(self, gtk.WINDOW_POPUP)
         
         self.set_position(gtk.WIN_POS_MOUSE)
-        self.set_resizable(True)
+        
         self.connect("leave-notify-event", self.on_leave_window)
         
         vbox = gtk.VBox(False, 0)
@@ -33,10 +33,10 @@ class PopupWindowMenu(gtk.Window, FControl):
         toolbar.add_button("Close Popup", gtk.STOCK_OK, lambda * a:self.hide(), None)
         
         self.poopup_text = gtk.Label("Foobnix")
-        #self.poopup_text.set_line_wrap(True)
+        self.poopup_text.set_line_wrap(True)
         
-        vbox.pack_start(toolbar, True, True)
-        vbox.pack_start(self.poopup_text, True, True)
+        vbox.pack_start(toolbar, False, False)
+        vbox.pack_start(self.poopup_text, False, False)
         self.add(vbox)
         self.show_all()
         self.hide()

@@ -147,7 +147,7 @@ class BaseFoobnixControls(LoadSave):
     def append_to_notebook(self, text, beans):
         path = beans[0].path
         if os.path.isdir(path):
-            scanner = DirectoryScanner([beans[0].path])
+            scanner = DirectoryScanner(beans[0].path)
             results = scanner.get_music_file_results()
             results = update_all_id3(results)        
             self.notetabs.append_tab(text, results)

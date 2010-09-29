@@ -54,7 +54,7 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         """ check append add title and artist"""
         #bean.text = bean.text + " ["+str(bean.artist)+ " - " +str(bean.title) + "]"+str(bean.font)
         #bean.text = bean.text + " !" + str(bean.info)
-        bean.text = bean.text + " !" + str(bean.start_sec) + "=" + str(bean.duration_sec) 
+        #bean.text = bean.text + " !" + str(bean.start_sec) + "=" + str(bean.duration_sec) 
                
         bean.index = self.count_index
         self.count_index += 1
@@ -73,8 +73,8 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         #gtk.gdk.threads_leave() #@UndefinedVariable 
         return value
     
-    def populate_from_scanner(self, beans):
-        self.model.clear()
+    def append_from_scanner(self, beans):
+        
         hash = {None:None}
         for bean in beans:
             if bean is None:
@@ -91,6 +91,10 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
                 child_level = self.append(bean.add_font("bold").add_level(level))
                 
             hash[bean.path] = child_level
+    
+    def populate_from_scanner(self, beans):
+        self.model.clear()
+        self.append_from_scanner(beans)
     
     def clear(self):
         self.model.clear()

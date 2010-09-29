@@ -14,17 +14,15 @@ from foobnix.regui.model import FModel
 class DirectoryScanner():
        
     def __init__(self, path):
-        self.path = [x for x in path if self.is_dir_with_music(x)] 
+        self.path = path 
         self.results = []
     
     def get_music_results(self):
-        for path in self.path:
-            self._scanner(path, None)
+        self._scanner(self.path, None)
         return self.results
     
-    def get_music_file_results(self):
-        for path in self.path:
-            self._scanner(self.path, None)
+    def get_music_file_results(self):        
+        self._scanner(self.path, None)
         all = []
         for file in self.results:
             if file.is_file:
@@ -32,6 +30,8 @@ class DirectoryScanner():
         return all
     
     def _scanner(self, path, level):
+        if not os.path.exists(path):
+            return None
         dir = os.path.abspath(path)
         list = os.listdir(dir)
         list = self.sort_by_name(path, list)

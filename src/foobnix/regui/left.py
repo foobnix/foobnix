@@ -17,9 +17,13 @@ class LeftWidgets(FControl, LoadSave):
         vbox = gtk.VBox(False, 0)
         
         #scan = DirectoryScanner("/home/ivan/Music")
-        scan = DirectoryScanner(["/home/ivan/Музыка", "/mnt/1tb_2/music"])
-        #thread.start_new_thread(self.tree.populate_from_scanner, scan.get_music_results())
-        self.controls.tree.populate_from_scanner(scan.get_music_results())
+        
+        self.controls.tree.clear()
+        for path in ["/home/ivan/Музыка", "/mnt/1tb_2/music"]:
+            scan = DirectoryScanner(path)
+            all = scan.get_music_results()       
+            self.controls.tree.append_from_scanner(all)
+            
 
         controls.tree.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         controls.radio.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
