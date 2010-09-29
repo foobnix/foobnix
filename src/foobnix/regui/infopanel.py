@@ -53,7 +53,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.show_all()
 
     def update(self, bean):
-        return
+        #return
         print "update info panel", bean
         
         """update info"""

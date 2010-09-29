@@ -33,8 +33,11 @@ class BaseFoobnixControls(LoadSave):
     def play(self, bean):
         if bean.path == None:
             vk = self.vk.find_one_track(bean.text)
-            bean.path = vk.path
-            bean.time = vk.time
+            if vk:            
+                bean.path = vk.path
+                bean.time = vk.time
+            else:
+                self.next()
             
         self.media_engine.play(bean.path)
         print "!!!!!!", bean.info

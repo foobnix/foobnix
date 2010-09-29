@@ -74,6 +74,7 @@ class GStreamerEngine(MediaPlayerEngine):
     
     def playing_thread(self):
         thread_id = self.play_thread_id
+        error_count = 0
         while thread_id == self.play_thread_id:
             try:
                 time.sleep(0.2)
@@ -86,7 +87,14 @@ class GStreamerEngine(MediaPlayerEngine):
                 break                                                      
             except Exception, e:
                 LOG.info("Init playing thread", e)
-                time.sleep(2)
+                time.sleep(1)
+                if error_count > 3:
+                    LOG.warn("shit happens")
+                    self.state_stop()
+                    time.sleep(1)                                       
+                    self.state_play()
+                error_count +=1
+                
         
         time.sleep(0.2)
                     
@@ -114,6 +122,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.set_state(gst.STATE_PLAYING)
         
     def state_stop(self):
+        self.play_thread_id = None
         self.player.set_state(gst.STATE_NULL)
         
     def state_pause(self):
