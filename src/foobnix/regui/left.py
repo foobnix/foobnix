@@ -9,6 +9,8 @@ from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.treeview.scanner import DirectoryScanner
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
+from foobnix.radio.radios import RadioFolder
+from foobnix.regui.model import FModel
 class LeftWidgets(FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -56,6 +58,16 @@ class PerspectiveButtonControlls(FControl):
         
         radios = self.custom_button("Radio", gtk.STOCK_NETWORK)
         radios.connect("clicked", self.on_change_perspective, controls.radio)
+        
+        self.radio_folder = RadioFolder()          
+        files = self.radio_folder.get_radio_FPLs()
+        for fpl in files:
+            parent = FModel(fpl.name).add_font("bold")
+            parentIter = controls.radio.append(parent)            
+            for radio, urls in fpl.urls_dict.iteritems():
+                child = FModel(radio, urls[0]).add_font("").add_level(parentIter)
+                controls.radio.append(child)
+        
         
         virtuals = self.custom_button("Lists", gtk.STOCK_INDEX)
         virtuals.connect("clicked", self.on_change_perspective, controls.virtual)
