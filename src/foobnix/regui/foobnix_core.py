@@ -48,8 +48,7 @@ class FoobnixCore(BaseFoobnixControls):
         
         self.trayicon = TrayIconControls(self)
         self.trayicon.show()
-        
-        
+               
         
         """layout"""        
         self.layout = BaseFoobnixLayout(self)
