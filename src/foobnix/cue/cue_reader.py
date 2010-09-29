@@ -106,8 +106,8 @@ class CueReader():
             bean.aritst = track.performer
             bean.title = track.title 
             bean.text = bean.name
-            bean.start_at = track.get_start_time_sec()
-            bean.duration = track.duration        
+            bean.start_sec = track.get_start_time_sec()
+            bean.duration_sec = track.duration        
             bean.time = normilize_time(track.duration)
             bean.parent = cue.performer + " - " + cue.title
             bean.image = cue.image

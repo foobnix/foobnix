@@ -54,6 +54,7 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         """ check append add title and artist"""
         #bean.text = bean.text + " ["+str(bean.artist)+ " - " +str(bean.title) + "]"+str(bean.font)
         #bean.text = bean.text + " !" + str(bean.info)
+        bean.text = bean.text + " !" + str(bean.start_sec)+ "=" + str(bean.duration_sec) 
                
         bean.index = self.count_index
         self.count_index += 1

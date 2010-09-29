@@ -20,6 +20,8 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player = self.init_local()
         self.position_sec = 0
         self.duration_sec = 0
+        
+        self.prev_path = None
     
     def init_local(self):         
         playbin = gst.element_factory_make("playbin2", "player")
@@ -54,12 +56,13 @@ class GStreamerEngine(MediaPlayerEngine):
     def notify_error(self):
         LOG.debug("Notify error")
     
-    def play(self, path):     
+    def play(self, path, start_sec=0):     
         if not path:
             LOG.error("Can't play empty path!!!")
             return None   
         
         self.state_stop()
+        
         if path.startswith("http://"):
             self.player = self.init_http()
             uri = path
@@ -68,15 +71,20 @@ class GStreamerEngine(MediaPlayerEngine):
             uri = 'file://' + urllib.pathname2url(path)
             if os.name == 'nt':
                 uri = 'file:' + urllib.pathname2url(path)
-        self.player.set_property("uri", uri)    
-        self.state_play()
-        self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
+        
+        print path
+        self.player.set_property("uri", uri)            
+        self.state_play()    
+        
+        self.play_thread_id = thread.start_new_thread(self.playing_thread, (start_sec,))
+            
     
-    def playing_thread(self):
+    def playing_thread(self, start_sec):
         thread_id = self.play_thread_id
         error_count = 0
+        
         while thread_id == self.play_thread_id:
-            try:
+            try:                
                 time.sleep(0.2)
                 duraction_int = self.player.query_duration(gst.Format(gst.FORMAT_TIME), None)[0]
                 if duraction_int == -1:
@@ -94,8 +102,7 @@ class GStreamerEngine(MediaPlayerEngine):
                     time.sleep(1)                                       
                     self.state_play()
                 error_count +=1
-                
-        
+
         time.sleep(0.2)
                     
         while thread_id == self.play_thread_id:            
@@ -113,6 +120,12 @@ class GStreamerEngine(MediaPlayerEngine):
         seek_ns = self.duration_sec * percent / 100 * 1000000000;
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
     
+    def seek_seconds(self, seconds):
+        LOG.info("Start with seconds", seconds)
+        seek_ns = (float(seconds)+0.123)  * 1000000000       
+        LOG.info("SEC SEEK SEC", seek_ns)         
+        self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
+    
     def volume(self, percent):
         value = percent / 100.0
         LOG.info("Set volume", value)
@@ -126,6 +139,8 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.set_state(gst.STATE_NULL)
         
     def state_pause(self):
+        
+        #self.player.set_state(gst.STATE_VOID_PENDING)
         self.player.set_state(gst.STATE_PAUSED)
     
     def on_message(self, bus, message):

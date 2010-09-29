@@ -15,10 +15,15 @@ from foobnix.regui.model import FModel
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.util.singe_thread import SingreThread
 from foobnix.regui.service.vk_service import VKService
+import threading
+import time
+
 class BaseFoobnixControls(LoadSave):
     def __init__(self):        
         self.lastfm = LastFmService()    
-        self.vk = VKService()    
+        self.vk = VKService()
+        
+        self.count_errors = 0    
         pass
     
     def state_play(self):
@@ -31,16 +36,23 @@ class BaseFoobnixControls(LoadSave):
         self.media_engine.state_stop()
     
     def play(self, bean):
-        if bean.path == None:
-            vk = self.vk.find_one_track(bean.text)
+        if not bean.path:
+            vk = self.vk.find_one_track(bean.artist + " - " +bean.title)
             if vk:            
                 bean.path = vk.path
                 bean.time = vk.time
             else:
-                self.next()
+                if self.count_errors < 4:
+                    self.next()
+                self.count_errors+=1
+                
             
-        self.media_engine.play(bean.path)
+        if bean.start_sec > 0:
+            self.media_engine.play(bean.path, bean.start_sec)            
+        else:
+            self.media_engine.play(bean.path)
         print "!!!!!!", bean.info
+        self.count_errors = 0
         self.statusbar.set_text(bean.info)
     
     def notify_playing(self, pos_sec, dur_sec):
@@ -65,6 +77,8 @@ class BaseFoobnixControls(LoadSave):
             self.notetabs.append_tab(query, all)        
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
     
+   
+            
     def search_top_albums(self, query):
         def inline(query):
             results = self.lastfm.search_top_albums(query)
@@ -76,9 +90,10 @@ class BaseFoobnixControls(LoadSave):
                 tracks = self.lastfm.search_album_tracks(album.artist, album.album)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
-                    all.append(track)
-                self.notetabs.append(all)                
+                    all.append(track)       
+                self.notetabs.append(all)
         #inline(query)        
+        #self.singre_thread.run(inline, query)
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
     
     def search_top_similar(self, query):
