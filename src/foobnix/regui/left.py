@@ -19,7 +19,7 @@ class LeftWidgets(FControl, LoadSave):
         #scan = DirectoryScanner("/home/ivan/Music")
         
         self.controls.tree.clear()
-        for path in ["/home/ivan/Музыка", "/mnt/1tb_2/music"]:
+        for path in ["/mnt/1tb_2/music", "/home/ivan/Музыка", "/home/ivan/Music"]:
             scan = DirectoryScanner(path)
             all = scan.get_music_results()       
             self.controls.tree.append_from_scanner(all)
