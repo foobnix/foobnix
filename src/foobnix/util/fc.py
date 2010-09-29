@@ -44,6 +44,10 @@ class FC:
         """last fm"""
         self.lfm_login = self.LASTFM_USER
         self.lfm_password = self.LASTFM_PASSWORD
+        """vk"""
+        self.vk_login = "c891888@bofthew.com"
+        self.vk_password = "c891888"
+        self.vk_cookie = None
         
         """proxy"""
         self.proxy_enable = False 

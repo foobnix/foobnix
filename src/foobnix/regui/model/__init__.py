@@ -83,5 +83,9 @@ class FModel(FTreeModel):
         self.genre = genre
         return self   
     
+    def add_time(self, time):
+        self.time = time
+        return self
+    
     def __str__(self):
         return "FModel: " + str(self.__dict__)

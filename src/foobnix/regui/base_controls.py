@@ -14,12 +14,28 @@ import os
 from foobnix.regui.model import FModel
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.util.singe_thread import SingreThread
+from foobnix.regui.service.vk_service import VKService
 class BaseFoobnixControls(LoadSave):
     def __init__(self):        
-        self.lastfm = LastFmService()        
+        self.lastfm = LastFmService()    
+        self.vk = VKService()    
         pass
     
+    def state_play(self):
+        self.media_engine.state_play()
+    
+    def state_pause(self):
+        self.media_engine.state_pause()
+    
+    def state_stop(self):
+        self.media_engine.state_stop()
+    
     def play(self, bean):
+        if bean.path == None:
+            vk = self.vk.find_one_track(bean.text)
+            bean.path = vk.path
+            bean.time = vk.time
+            
         self.media_engine.play(bean.path)
         print "!!!!!!", bean.info
         self.statusbar.set_text(bean.info)
