@@ -56,6 +56,7 @@ class BaseFoobnixControls(LoadSave):
         print "!!!!!!", bean.info
         self.count_errors = 0
         self.statusbar.set_text(bean.info)
+        self.trayicon.set_text(bean.text)
     
     def notify_playing(self, pos_sec, dur_sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)

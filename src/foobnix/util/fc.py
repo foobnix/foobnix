@@ -53,6 +53,9 @@ class FC:
         self.proxy_enable = False 
         self.proxy_url = None
         
+        """try icon"""
+        self.show_tray_icon = True
+        
         
                 
         self = self._load();

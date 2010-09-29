@@ -18,6 +18,7 @@ from foobnix.regui.controls.volume import VolumeControls
 from foobnix.regui.controls.status_bar import StatusbarControls
 from foobnix.regui.treeview.radiotree import RadioTreeControl
 from foobnix.regui.treeview.virtualtree import VirtualTreeControl
+from foobnix.regui.controls.tray_icon import TrayIconControls
 class FoobnixCore(BaseFoobnixControls):
     
     def __init__(self):       
@@ -44,6 +45,9 @@ class FoobnixCore(BaseFoobnixControls):
         self.tree = MusicTreeControl(self)
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
+        
+        self.trayicon = TrayIconControls(self)
+        self.trayicon.show()
         
         
         
