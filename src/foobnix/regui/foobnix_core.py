@@ -56,11 +56,3 @@ class FoobnixCore(BaseFoobnixControls):
         self.layout = BaseFoobnixLayout(self)
         
         self.on_load()
-        
-init_time = time.time()
-gobject.threads_init()
-#gtk.gdk.threads_enter()
-eq = FoobnixCore()
-print "******Foobnix run in", time.time() - init_time, " seconds******"
-gtk.main()
-    
