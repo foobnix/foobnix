@@ -16,8 +16,7 @@ class MusicLibraryConfig(ConfigPlugin):
     name = _("Music Library")
     enable = True
        
-    def __init__(self, directory_controller):
-        self.directory_controller = directory_controller
+    def __init__(self, controls):
         
         box = gtk.VBox(False, 0)
         box.hide()

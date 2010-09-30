@@ -15,7 +15,7 @@ class TopWidgets(FControl, LoadSave):
         hbox = gtk.HBox(False, 0)
         hbox.show()
         
-        self.menu = MenuWidget()
+        self.menu = MenuWidget(controls)
         sep = ToolbarSeparator()
         
         hbox.pack_start(self.menu.widget, False, False)

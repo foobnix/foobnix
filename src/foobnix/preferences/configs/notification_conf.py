@@ -11,7 +11,7 @@ class NotificationConfig(ConfigPlugin):
     
     name = _("Notifications")
     
-    def __init__(self):
+    def __init__(self,controls):
         print "Create notificatino conf"
         box = gtk.VBox(False, 0)        
         box.hide()

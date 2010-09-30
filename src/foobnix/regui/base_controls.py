@@ -43,6 +43,9 @@ class BaseFoobnixControls(LoadSave):
     def state_play(self):
         self.media_engine.state_play()
     
+    def show_preferences(self):
+        self.preferences.show()
+    
     def state_pause(self):
         self.media_engine.state_pause()
     

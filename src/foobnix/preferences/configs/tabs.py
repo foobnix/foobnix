@@ -12,8 +12,7 @@ class TabsConfig(ConfigPlugin):
     
     name = _("Tabs")
     
-    def __init__(self, online_controller):
-        self.online_controller = online_controller
+    def __init__(self, controls):
         print "Create try icon conf"
         box = gtk.VBox(False, 0)        
         box.hide()

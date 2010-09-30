@@ -7,8 +7,10 @@ import gtk
 from foobnix.util import LOG
 import sys
 from foobnix.util.fc import FC
-class MenuWidget():
-    def __init__(self):
+from foobnix.regui.model.signal import FControl
+class MenuWidget(FControl):
+    def __init__(self, controls):
+        FControl.__init__(self, controls)
         """TOP menu constructor"""
         
         top = TopMenu()
@@ -28,7 +30,7 @@ class MenuWidget():
         view.add_ckeck_item("Lyric Panel", True)
         view.add_ckeck_item("Info Panel", False)
         view.separator()
-        view.add_image_item("Preferences", gtk.STOCK_PREFERENCES)        
+        view.add_image_item("Preferences", gtk.STOCK_PREFERENCES, self.controls.show_preferences)        
         
         """Playback"""
         playback = top.append("Playback")      

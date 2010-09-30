@@ -15,8 +15,8 @@ class NetworkConfig(ConfigPlugin):
     
     name = _("Network Settings")
     
-    def __init__(self, try_icon):
-        self.try_icon = try_icon        
+    def __init__(self, controls):
+                
         box = gtk.VBox(False, 0)        
         box.hide()
         

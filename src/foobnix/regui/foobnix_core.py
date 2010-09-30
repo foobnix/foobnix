@@ -19,6 +19,7 @@ from foobnix.regui.controls.status_bar import StatusbarControls
 from foobnix.regui.treeview.radiotree import RadioTreeControl
 from foobnix.regui.treeview.virtualtree import VirtualTreeControl
 from foobnix.regui.controls.tray_icon import TrayIconControls
+from foobnix.preferences.preferences_window import PreferencesWindow
 class FoobnixCore(BaseFoobnixControls):
     
     def __init__(self):       
@@ -26,6 +27,7 @@ class FoobnixCore(BaseFoobnixControls):
 
         """elements"""
         
+        self.preferences = PreferencesWindow(self)
         self.statusbar = StatusbarControls(self)
         self.volume = VolumeControls(self)
         self.seek_bar = SeekProgressBarControls(self)

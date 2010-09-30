@@ -11,7 +11,7 @@ class InfoPagenConfig(ConfigPlugin):
     
     name = _("Info panel")
     
-    def __init__(self):
+    def __init__(self, controls):
         print "Create try icon conf"
         box = gtk.VBox(False, 0)        
         box.hide()

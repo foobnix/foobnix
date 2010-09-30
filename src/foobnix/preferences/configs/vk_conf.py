@@ -11,8 +11,8 @@ class VkontakteConfig(LastFmConfig):
     
     name = _("Vkontakte")
     
-    def __init__(self):
-        LastFmConfig.__init__(self)
+    def __init__(self, controls):
+        LastFmConfig.__init__(self, controls)
         
     def on_load(self):
         self.login_text.set_text(FConfiguration().vk_login)

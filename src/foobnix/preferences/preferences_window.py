@@ -15,27 +15,31 @@ from foobnix.preferences.configs.tray_icon import TrayIconConfig
 from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
 import thread
 import os
-import time
+from foobnix.regui.state import LoadSave
+from foobnix.regui.model.signal import FControl
+from foobnix.util.fc import FC
 
-class PreferencesWindow:
+class PreferencesWindow(FControl, LoadSave):
+    
     configs = []
     
     
     
     POS_NAME = 0
     
-    def __init__(self, directory_controller, online_controller, try_icon):
+    def __init__(self, controls):
+        FControl.__init__(self, controls)
         
-        self.configs.append(MusicLibraryConfig(directory_controller))
-        self.configs.append(SaveOnlineConfig())
-        self.configs.append(TabsConfig(online_controller))
-        self.configs.append(LastFmConfig())
-        self.configs.append(VkontakteConfig())
-        self.configs.append(InfoPagenConfig())        
-        self.configs.append(TrayIconConfig(try_icon))
-        self.configs.append(NetworkConfig(try_icon))
-        self.configs.append(NotificationConfig())
-        self.configs.append(HotKeysConfig())
+        self.configs.append(MusicLibraryConfig(controls))
+        self.configs.append(SaveOnlineConfig(controls))
+        self.configs.append(TabsConfig(controls))
+        self.configs.append(LastFmConfig(controls))
+        self.configs.append(VkontakteConfig(controls))
+        self.configs.append(InfoPagenConfig(controls))        
+        self.configs.append(TrayIconConfig(controls))
+        self.configs.append(NetworkConfig(controls))
+        self.configs.append(NotificationConfig(controls))
+        self.configs.append(HotKeysConfig(controls))
         
         
         #self.configs.append(CategoryInfoConfig())
@@ -74,10 +78,10 @@ class PreferencesWindow:
         #self.show()
         
         self.populate_config_category(self.configs[0].name)
-        self.load()
+        self.on_load()
     
     def show(self):
-        self.load()
+        self.on_load()
         self.window.show() 
         
     def hide(self):
@@ -87,14 +91,14 @@ class PreferencesWindow:
         #gtk.main_quit()    
         return True    
     
-    def load(self):
+    def on_load(self):
         for plugin in self.configs:
             plugin.on_load()
     
-    def save(self):
+    def on_save(self):
         for plugin in self.configs:
             plugin.on_save()
-        FConfiguration().save()
+        FC().save()
         self.hide()
         
         
@@ -160,7 +164,7 @@ class PreferencesWindow:
         
         button_save = gtk.Button(_("Save"))
         button_save.set_size_request(100, -1)
-        button_save.connect("clicked", lambda * a:self.save())
+        button_save.connect("clicked", lambda * a:self.on_save())
         button_save.show()
         
         button_cancel = gtk.Button(_("Cancel"))
