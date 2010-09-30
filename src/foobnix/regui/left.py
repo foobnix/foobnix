@@ -49,20 +49,10 @@ class PerspectiveButtonControlls(FControl, gtk.HBox):
         musics = self.custom_button("Music", gtk.STOCK_HARDDISK)
         musics.connect("clicked", self.on_change_perspective, controls.tree)
         musics.set_active(True)
-        
-        
+                
         radios = self.custom_button("Radio", gtk.STOCK_NETWORK)
         radios.connect("clicked", self.on_change_perspective, controls.radio)
-        
-        self.radio_folder = RadioFolder()          
-        files = self.radio_folder.get_radio_FPLs()
-        for fpl in files:
-            parent = FModel(fpl.name).add_font("bold").add_is_file(False)
-            parentIter = controls.radio.append(parent)            
-            for radio, urls in fpl.urls_dict.iteritems():
-                child = FModel(radio, urls[0]).add_font("").add_level(parentIter).add_is_file(True)
-                controls.radio.append(child)
-        
+        radios.connect("clicked", lambda * a: controls.update_radio_tree())
         
         virtuals = self.custom_button("Lists", gtk.STOCK_INDEX)
         virtuals.connect("clicked", self.on_change_perspective, controls.virtual)
@@ -73,7 +63,7 @@ class PerspectiveButtonControlls(FControl, gtk.HBox):
         self.pack_start(musics, False, False, 0)
         self.pack_start(radios, False, False, 0)
         self.pack_start(virtuals, False, False, 0)
-   
+    
     def on_change_perspective(self, w, perspective):
         self.controls.tree.scroll.hide()
         self.controls.radio.scroll.hide()

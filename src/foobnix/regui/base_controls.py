@@ -16,6 +16,7 @@ from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.util.singe_thread import SingreThread
 from foobnix.regui.service.vk_service import VKService
 from foobnix.util.plsparser import get_radio_source
+from foobnix.radio.radios import RadioFolder
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):        
@@ -23,14 +24,31 @@ class BaseFoobnixControls(LoadSave):
         self.vk = VKService()
         
         self.count_errors = 0    
+        
+        self.is_radio_populated = False
         pass
     
     def update_music_tree(self):
+        LOG.info("Update music tree")
         self.tree.clear()
         for path in FC().music_paths:
             scan = DirectoryScanner(path)
             all = scan.get_music_results()       
             self.tree.append_from_scanner(all)
+    
+    def update_radio_tree(self):
+        if self.is_radio_populated:
+            return True
+        LOG.info("Update radio tree")
+        self.radio_folder = RadioFolder()          
+        files = self.radio_folder.get_radio_FPLs()
+        for fpl in files:
+            parent = FModel(fpl.name).add_font("bold").add_is_file(False)
+            parentIter = self.radio.append(parent)            
+            for radio, urls in fpl.urls_dict.iteritems():
+                child = FModel(radio, urls[0]).add_font("").add_level(parentIter).add_is_file(True)
+                self.radio.append(child)
+        self.is_radio_populated = True
     
     def set_visible_search_panel(self, flag):
         self.layout.set_visible_search_panel(flag)
