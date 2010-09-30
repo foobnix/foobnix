@@ -10,21 +10,20 @@ from foobnix.helpers.toolbar import ToolbarSeparator
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 
-class TopWidgets(FControl, LoadSave):
+class TopWidgets(FControl, LoadSave,gtk.HBox):
     def __init__(self, controls):
-        hbox = gtk.HBox(False, 0)
-        hbox.show()
+        gtk.HBox.__init__(self,False, 0)
         
         self.menu = MenuWidget(controls)
         sep = ToolbarSeparator()
         
-        hbox.pack_start(self.menu.widget, False, False)
-        hbox.pack_start(controls.playback, False, False)
-        hbox.pack_start(controls.volume, False, False)
-        hbox.pack_start(sep, False, False)
-        hbox.pack_start(controls.seek_bar, True, True)
+        self.pack_start(self.menu.widget, False, False)
+        self.pack_start(controls.playback, False, False)
+        self.pack_start(controls.volume, False, False)
+        self.pack_start(sep, False, False)
+        self.pack_start(controls.seek_bar, True, True)
         
-        self.widget = hbox
+        self.show_all()
         
     def on_save(self):        
         self.controls.volume.on_save()

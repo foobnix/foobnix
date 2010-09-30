@@ -7,6 +7,7 @@ import time
 import gobject
 from foobnix.regui.foobnix_core import FoobnixCore
 import gtk
+
 init_time = time.time()
 gobject.threads_init() #@UndefinedVariable
 #gtk.gdk.threads_enter()

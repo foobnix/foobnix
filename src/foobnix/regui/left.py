@@ -11,10 +11,11 @@ from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.radio.radios import RadioFolder
 from foobnix.regui.model import FModel
-class LeftWidgets(FControl, LoadSave):
+from foobnix.util.fc import FC
+class LeftWidgets(FControl, LoadSave, gtk.VBox):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        vbox = gtk.VBox(False, 0)
+        gtk.VBox.__init__(self,False, 0)
         
         #scan = DirectoryScanner("/home/ivan/Music")
         
@@ -34,19 +35,19 @@ class LeftWidgets(FControl, LoadSave):
         buttons = PerspectiveButtonControlls(controls)
         buttons.show_all()
         
-        vbox.pack_start(controls.tree.scroll, True, True)
-        vbox.pack_start(controls.radio.scroll, True, True)
-        vbox.pack_start(controls.virtual.scroll, True, True)
+        self.pack_start(controls.tree.scroll, True, True)
+        self.pack_start(controls.radio.scroll, True, True)
+        self.pack_start(controls.virtual.scroll, True, True)
         
-        vbox.pack_start(controls.filter, False, False)
-        vbox.pack_start(buttons, False, False)
+        self.pack_start(controls.filter, False, False)
+        self.pack_start(buttons, False, False)
         
-        vbox.show_all()
-                
-        self.widget = vbox
+        self.show_all()
+        
     
     def on_load(self):            
         pass
+            
    
     def on_save(self):
         pass

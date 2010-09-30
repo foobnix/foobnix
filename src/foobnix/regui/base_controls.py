@@ -27,6 +27,9 @@ class BaseFoobnixControls(LoadSave):
         self.count_errors = 0    
         pass
     
+    def set_visible_search_panel(self, flag):
+        self.layout.set_visible_search_panel(flag)
+    
     def volume_up(self):
         pass
     

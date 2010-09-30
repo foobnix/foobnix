@@ -25,7 +25,8 @@ class MenuWidget(FControl):
         """View"""
         view = top.append("View")
         self.view_music_tree = view.add_ckeck_item("Music Tree")
-        view.add_ckeck_item("Search Panel", True)
+        s_checked = view.add_ckeck_item("Search Panel", True)
+        s_checked.connect("activate", lambda w: controls.set_visible_search_panel(w.get_active()))
         view.separator()
         view.add_ckeck_item("Lyric Panel", True)
         view.add_ckeck_item("Info Panel", False)
@@ -92,8 +93,14 @@ class MyMenu(gtk.Menu):
         separator.show()
         self.append(separator)
     
-    def add_ckeck_item(self, title, active=False):
+    def add_ckeck_item(self, title, active=False, func=None, param=None):
         check = gtk.CheckMenuItem(title)
+        
+        if param and func:             
+            check.connect("activate", lambda * a: func(param))
+        elif func:
+            check.connect("activate", lambda * a: func())   
+        
         check.show()
         check.set_active(active)
         self.append(check)
