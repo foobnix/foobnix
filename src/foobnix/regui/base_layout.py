@@ -68,11 +68,14 @@ class BaseFoobnixLayout(LoadSave, FControl):
         if flag:
             self.hpaned_right.set_position(FC().hpaned_right)
         else:            
+            FC().hpaned_right = 9999
             self.hpaned_right.set_position(9999)
         
     def on_load(self):        
-        self.controls.search_progress.hide()
-        self.hpaned_left.set_position(FC().hpaned_left)        
+        self.controls.search_progress.hide()        
+        self.hpaned_left.set_position(FC().hpaned_left)
+        
+        #if FC().hpaned_right < 9000:        
         self.hpaned_right.set_position(FC().hpaned_right)
         
         self.set_visible_musictree_panel(FC().is_view_music_tree_panel)

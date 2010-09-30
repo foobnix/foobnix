@@ -20,10 +20,10 @@ class FC:
     
     def __init__(self):        
         """init default values"""                    
-        self.is_view_info_panel = False
-        self.is_view_search_panel = False
-        self.is_view_music_tree_panel = False
-        self.is_view_lyric_panel = False
+        self.is_view_info_panel = True
+        self.is_view_search_panel = True
+        self.is_view_music_tree_panel = True
+        self.is_view_lyric_panel = True
         
         """player controls"""
         self.volume = 10

@@ -27,7 +27,8 @@ def convert_ns(time_int):
         
     return time_str
 
-def convert_seconds_to_text(time_sec):    
+def convert_seconds_to_text(time_sec):
+        time_sec = int(time_sec)    
         time_str = ""
         if time_sec >= 3600:
             _hours = time_sec / 3600

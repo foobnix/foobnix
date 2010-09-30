@@ -15,6 +15,7 @@ import thread
 from foobnix.util.fc import FC
 
 class GStreamerEngine(MediaPlayerEngine):
+    NANO_SECONDS = 1000000000
     def __init__(self, controls):
         MediaPlayerEngine.__init__(self, controls)        
         
@@ -23,6 +24,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.duration_sec = 0
         
         self.prev_path = None
+        self.bean = None
     
     def init_local(self):         
         playbin = gst.element_factory_make("playbin2", "player")
@@ -45,8 +47,8 @@ class GStreamerEngine(MediaPlayerEngine):
     
     def notify_playing(self, position_int, duration_int):
         #LOG.debug("Notify playing", position_int)
-        self.position_sec = position_int / 1000000000 
-        self.duration_sec = duration_int / 1000000000 
+        self.position_sec = position_int / self.NANO_SECONDS 
+        self.duration_sec = duration_int / self.NANO_SECONDS 
         self.controls.notify_playing(self.position_sec, self.duration_sec)
     
     def notify_eos(self):
@@ -59,32 +61,42 @@ class GStreamerEngine(MediaPlayerEngine):
     def notify_error(self):
         LOG.debug("Notify error")
     
-    def play(self, path, start_sec=0):     
+    def play(self, bean):
+        self.bean = bean
+        path = bean.path 
+             
         if not path:
             LOG.error("Can't play empty path!!!")
             return None   
         
-        self.state_stop()
+        if self.prev_path != path:
+            
+            if path.startswith("http://"):
+                self.player = self.init_http()
+                uri = path
+            else:
+                self.player = self.init_local()
+                uri = 'file://' + urllib.pathname2url(path)
+                if os.name == 'nt':
+                    uri = 'file:' + urllib.pathname2url(path)
+            
+            LOG.debug("Set new path to play", uri) 
+            self.state_stop()
+            self.player.set_property("uri", uri)
+            LOG.info("Gstreamer try to play", uri)
+            self.prev_path = path
+                
+        #self.player.set_state(gst.STATE_READY)        
+        self.state_pause()
+        time.sleep(0.1)
+        self.seek_seconds(bean.start_sec)
+        self.state_play()
+        self.volume(FC().volume)        
+        self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
         
-        if path.startswith("http://"):
-            self.player = self.init_http()
-            uri = path
-        else:
-            self.player = self.init_local()
-            uri = 'file://' + urllib.pathname2url(path)
-            if os.name == 'nt':
-                uri = 'file:' + urllib.pathname2url(path)
-        
-        print path
-        self.player.set_property("uri", uri)
-        LOG.info("Gstreamer try to play", uri)            
-        self.state_play()   
-        self.volume(FC().volume) 
-        
-        self.play_thread_id = thread.start_new_thread(self.playing_thread, (start_sec,))
             
     
-    def playing_thread(self, start_sec):
+    def playing_thread(self):
         thread_id = self.play_thread_id
         error_count = 0
         
@@ -109,25 +121,42 @@ class GStreamerEngine(MediaPlayerEngine):
                 error_count += 1
 
         time.sleep(0.2)
+        
+        if self.bean.duration_sec > 0:
+            duraction_int = float(self.bean.duration_sec) * self.NANO_SECONDS
                     
         while thread_id == self.play_thread_id:            
             try:               
                 position_int = self.player.query_position(gst.Format(gst.FORMAT_TIME), None)[0]
+                
+                if self.bean.start_sec > 0:
+                    position_int = position_int - float(self.bean.start_sec) * self.NANO_SECONDS
+                    if position_int > duraction_int:
+                        gtk.gdk.threads_enter() #@UndefinedVariable
+                        self.notify_eos()
+                        gtk.gdk.threads_leave()                #@UndefinedVariable
+                
                 gtk.gdk.threads_enter() #@UndefinedVariable
                 self.notify_playing(position_int, duraction_int)
                 gtk.gdk.threads_leave()                #@UndefinedVariable
             except Exception, e: 
-                LOG.info("Playing thread error...")
+                LOG.info("Playing thread error..." ,e)
                
             time.sleep(1)    
     
-    def seek(self, percent):
-        seek_ns = self.duration_sec * percent / 100 * 1000000000;
+    def seek(self, percent):       
+        seek_ns = self.duration_sec * percent / 100 * self.NANO_SECONDS;
+        
+        if self.bean.start_sec > 0:
+            seek_ns =seek_ns+ float(self.bean.start_sec)* self.NANO_SECONDS     
+        
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
     
     def seek_seconds(self, seconds):
+        if not seconds:
+            return                
         LOG.info("Start with seconds", seconds)
-        seek_ns = (float(seconds) + 0.123) * 1000000000       
+        seek_ns = (float(seconds) +0.0) * self.NANO_SECONDS       
         LOG.info("SEC SEEK SEC", seek_ns)         
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
     

@@ -72,10 +72,9 @@ class BaseFoobnixControls(LoadSave):
         else:
             bean.path = get_radio_source(bean.path)
             
-        if bean.start_sec > 0:
-            self.media_engine.play(bean.path, bean.start_sec)            
-        else:
-            self.media_engine.play(bean.path)
+        
+        self.media_engine.play(bean)            
+        
         print "!!!!!!", bean.info
         self.count_errors = 0
         self.statusbar.set_text(bean.info)

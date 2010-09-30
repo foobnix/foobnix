@@ -19,7 +19,7 @@ class MenuWidget(FControl):
         file.add_image_item("Add File(s)", gtk.STOCK_OPEN)
         file.add_image_item("Add Folder(s)", gtk.STOCK_OPEN)     
         file.separator()   
-        file.add_image_item("Quit", gtk.STOCK_QUIT, self.on_save)
+        file.add_image_item("Quit", gtk.STOCK_QUIT, self.controls.quit)
         
         
         """View"""
@@ -27,13 +27,13 @@ class MenuWidget(FControl):
         self.view_music_tree = view.add_ckeck_item("Music Tree", FC().is_view_music_tree_panel)
         self.view_music_tree.connect("activate", lambda w: controls.set_visible_musictree_panel(w.get_active()))
         
-        s_checked = view.add_ckeck_item("Search Panel", FC().is_view_info_panel)
-        s_checked.connect("activate", lambda w: controls.set_visible_search_panel(w.get_active()))
+        self.view_search_panel = view.add_ckeck_item("Search Panel", FC().is_view_info_panel)
+        self.view_search_panel.connect("activate", lambda w: controls.set_visible_search_panel(w.get_active()))
         
         view.separator()
         #view.add_ckeck_item("Lyric Panel", FC().is_view_lyric_panel)
-        s_info = view.add_ckeck_item("Info Panel", FC().is_view_info_panel)
-        s_info.connect("activate", lambda w: controls.set_visible_info_panel(w.get_active()))
+        self.view_info_panel = view.add_ckeck_item("Info Panel", FC().is_view_info_panel)
+        self.view_info_panel.connect("activate", lambda w: controls.set_visible_info_panel(w.get_active()))
         
         
         view.separator()
@@ -67,9 +67,12 @@ class MenuWidget(FControl):
     
     def on_load(self):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
+        self.view_search_panel.set_active(FC().is_view_search_panel)
+        self.view_info_panel.set_active(FC().is_view_info_panel)
     
     def on_save(self):
-        FC().is_view_music_tree_panel = self.view_music_tree.get_active()
+        pass
+        #FC().is_view_music_tree_panel = self.view_music_tree.get_active()
         #FConfiguration().save()
         #sys.exit(1)        
         
