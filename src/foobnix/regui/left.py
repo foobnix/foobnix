@@ -31,7 +31,8 @@ class LeftWidgets(FControl, LoadSave):
                
         
                 
-        buttons = PerspectiveButtonControlls(controls).widget
+        buttons = PerspectiveButtonControlls(controls)
+        buttons.show_all()
         
         vbox.pack_start(controls.tree.scroll, True, True)
         vbox.pack_start(controls.radio.scroll, True, True)
@@ -50,10 +51,10 @@ class LeftWidgets(FControl, LoadSave):
     def on_save(self):
         pass
 
-class PerspectiveButtonControlls(FControl):
+class PerspectiveButtonControlls(FControl, gtk.HBox):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        hbox = gtk.HBox(False, 0)
+        gtk.HBox.__init__(self,False,0)
                
         musics = self.custom_button("Music", gtk.STOCK_HARDDISK)
         musics.connect("clicked", self.on_change_perspective, controls.tree)
@@ -76,17 +77,12 @@ class PerspectiveButtonControlls(FControl):
         virtuals = self.custom_button("Lists", gtk.STOCK_INDEX)
         virtuals.connect("clicked", self.on_change_perspective, controls.virtual)
         
-        list = [musics, radios, virtuals]
-        OneActiveToggledButton(list)
+        self.button_list = [musics, radios, virtuals]
+        OneActiveToggledButton(self.button_list)
         
-        hbox.pack_start(musics, False, False)
-        hbox.pack_start(radios, False, False)
-        hbox.pack_start(virtuals, False, False)
-        
-        hbox.show_all()
-        
-        self.widget = hbox
-    
+        self.pack_start(musics, False, False,0)
+        self.pack_start(radios, False, False,0)
+        self.pack_start(virtuals, False, False,0)
    
     def on_change_perspective(self, w, perspective):
         self.controls.tree.scroll.hide()
