@@ -8,7 +8,6 @@ from foobnix.regui.treeview.musictree import MusicTreeControl
 from foobnix.regui.window import MainWindow
 from foobnix.regui.controls.filter import FilterControl
 from foobnix.regui.controls.playback import PlaybackControls
-import gobject
 from foobnix.regui.search import SearchControls
 from foobnix.regui.controls.seach_progress import SearchProgressBar
 from foobnix.regui.infopanel import InfoPanelWidget

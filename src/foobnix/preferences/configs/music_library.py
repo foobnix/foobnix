@@ -7,16 +7,18 @@ Created on 24 авг. 2010
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
 from foobnix.base.base_list_controller import BaseListController
-from foobnix.util.configuration import FConfiguration
 from foobnix.helpers.dialog_entry import show_entry_dialog
 import foobnix.util.localization 
 from foobnix.util import LOG
+from foobnix.util.fc import FC
+from foobnix.regui.model.signal import FControl
 
-class MusicLibraryConfig(ConfigPlugin):
+class MusicLibraryConfig(ConfigPlugin, FControl):
     name = _("Music Library")
     enable = True
        
     def __init__(self, controls):
+        FControl.__init__(self, controls)
         
         box = gtk.VBox(False, 0)
         box.hide()
@@ -104,37 +106,35 @@ class MusicLibraryConfig(ConfigPlugin):
         return frame
    
     def reload_dir(self, *a):
-        FConfiguration().media_library_path = self.tree_controller.get_all_items()
-        self.directory_controller.updateDirectoryByPath()
+        FC().music_paths = self.tree_controller.get_all_items()
+        self.controls.update_music_tree()
    
     def on_load(self):
         self.tree_controller.clear()
-        for path in FConfiguration().media_library_path:
+        for path in FC().music_paths:
             self.tree_controller.add_item(path)
             
         self.files_controller.clear()
-        for ext in FConfiguration().supportTypes:
+        for ext in FC().support_formats:
             self.files_controller.add_item(ext)
             
-        self.child_button.set_active(FConfiguration().add_child_folders)
-   
     def on_save(self):             
-        FConfiguration().media_library_path = self.tree_controller.get_all_items()
-        FConfiguration().supportTypes = self.files_controller.get_all_items()
-        FConfiguration().add_child_folders = self.child_button.get_active()
+        FC().music_paths = self.tree_controller.get_all_items()
+        FC().support_formats = self.files_controller.get_all_items()
+        
          
     
     def add_dir(self, *a):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(True)
-        if FConfiguration().last_dir:
-                chooser.set_current_folder(FConfiguration().last_dir)
+        if FC().last_music_path:
+                chooser.set_current_folder(FC().last_music_path)
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
             path = paths[0]  
-            FConfiguration().last_dir = path[:path.rfind("/")]          
+            FC().last_music_path = path[:path.rfind("/")]          
             for path in paths:            
                 if path not in self.tree_controller.get_all_items():
                     self.tree_controller.add_item(path)

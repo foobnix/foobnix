@@ -6,26 +6,15 @@ Created on 22 сент. 2010
 '''
 import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
-from foobnix.regui.treeview.scanner import DirectoryScanner
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.radio.radios import RadioFolder
 from foobnix.regui.model import FModel
-from foobnix.util.fc import FC
 class LeftWidgets(FControl, LoadSave, gtk.VBox):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        gtk.VBox.__init__(self,False, 0)
+        gtk.VBox.__init__(self, False, 0)
         
-        #scan = DirectoryScanner("/home/ivan/Music")
-        
-        self.controls.tree.clear()
-        for path in ["/mnt/1tb_2/music", "/home/ivan/Музыка", "/home/ivan/Music"]:
-            scan = DirectoryScanner(path)
-            all = scan.get_music_results()       
-            self.controls.tree.append_from_scanner(all)
-            
-
         controls.tree.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         controls.radio.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         controls.virtual.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -55,7 +44,7 @@ class LeftWidgets(FControl, LoadSave, gtk.VBox):
 class PerspectiveButtonControlls(FControl, gtk.HBox):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        gtk.HBox.__init__(self,False,0)
+        gtk.HBox.__init__(self, False, 0)
                
         musics = self.custom_button("Music", gtk.STOCK_HARDDISK)
         musics.connect("clicked", self.on_change_perspective, controls.tree)
@@ -81,9 +70,9 @@ class PerspectiveButtonControlls(FControl, gtk.HBox):
         self.button_list = [musics, radios, virtuals]
         OneActiveToggledButton(self.button_list)
         
-        self.pack_start(musics, False, False,0)
-        self.pack_start(radios, False, False,0)
-        self.pack_start(virtuals, False, False,0)
+        self.pack_start(musics, False, False, 0)
+        self.pack_start(radios, False, False, 0)
+        self.pack_start(virtuals, False, False, 0)
    
     def on_change_perspective(self, w, perspective):
         self.controls.tree.scroll.hide()

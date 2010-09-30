@@ -25,6 +25,13 @@ class BaseFoobnixControls(LoadSave):
         self.count_errors = 0    
         pass
     
+    def update_music_tree(self):
+        self.tree.clear()
+        for path in FC().music_paths:
+            scan = DirectoryScanner(path)
+            all = scan.get_music_results()       
+            self.tree.append_from_scanner(all)
+    
     def set_visible_search_panel(self, flag):
         self.layout.set_visible_search_panel(flag)
     
@@ -207,6 +214,8 @@ class BaseFoobnixControls(LoadSave):
                 LOG.debug("NOT LOAD", self.__dict__[element])
         self.singre_thread = SingreThread(self.search_progress)
         self.main_window.show()
+        
+        self.update_music_tree()
             
     def on_save(self):
         for element in self.__dict__:

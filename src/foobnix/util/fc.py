@@ -43,6 +43,8 @@ class FC:
         self.on_close_window = const.ON_CLOSE_HIDE
         
         """support file formats"""
+        self.last_music_path = None
+        self.music_paths = ["/tmp"]
         self.support_formats = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".cue", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp" ]
         
         """last fm"""
