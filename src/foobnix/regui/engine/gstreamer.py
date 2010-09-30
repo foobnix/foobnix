@@ -70,6 +70,7 @@ class GStreamerEngine(MediaPlayerEngine):
             return None   
         
         if self.prev_path != path:
+            self.state_stop()
             
             if path.startswith("http://"):
                 self.player = self.init_http()
@@ -80,13 +81,11 @@ class GStreamerEngine(MediaPlayerEngine):
                 if os.name == 'nt':
                     uri = 'file:' + urllib.pathname2url(path)
             
-            LOG.debug("Set new path to play", uri) 
-            self.state_stop()
+            LOG.debug("Set new path to play", uri)
             self.player.set_property("uri", uri)
             LOG.info("Gstreamer try to play", uri)
             self.prev_path = path
                 
-        #self.player.set_state(gst.STATE_READY)        
         self.state_pause()
         time.sleep(0.1)
         self.seek_seconds(bean.start_sec)
