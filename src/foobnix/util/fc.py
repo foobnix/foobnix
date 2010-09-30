@@ -23,6 +23,7 @@ class FC:
         self.is_view_info_panel = False
         self.is_view_search_panel = False
         self.is_view_music_tree_panel = False
+        self.is_view_lyric_panel = False
         
         """player controls"""
         self.volume = 10

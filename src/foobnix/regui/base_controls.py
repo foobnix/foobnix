@@ -15,8 +15,6 @@ from foobnix.regui.model import FModel
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.util.singe_thread import SingreThread
 from foobnix.regui.service.vk_service import VKService
-import threading
-import time
 from foobnix.util.plsparser import get_radio_source
 
 class BaseFoobnixControls(LoadSave):
@@ -29,6 +27,12 @@ class BaseFoobnixControls(LoadSave):
     
     def set_visible_search_panel(self, flag):
         self.layout.set_visible_search_panel(flag)
+    
+    def set_visible_musictree_panel(self, flag):
+        self.layout.set_visible_musictree_panel(flag)
+        
+    def set_visible_info_panel(self, flag):
+        self.layout.set_visible_info_panel(flag)
     
     def volume_up(self):
         pass

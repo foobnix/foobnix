@@ -24,14 +24,20 @@ class MenuWidget(FControl):
         
         """View"""
         view = top.append("View")
-        self.view_music_tree = view.add_ckeck_item("Music Tree")
-        s_checked = view.add_ckeck_item("Search Panel", True)
+        self.view_music_tree = view.add_ckeck_item("Music Tree", FC().is_view_music_tree_panel)
+        self.view_music_tree.connect("activate", lambda w: controls.set_visible_musictree_panel(w.get_active()))
+        
+        s_checked = view.add_ckeck_item("Search Panel", FC().is_view_info_panel)
         s_checked.connect("activate", lambda w: controls.set_visible_search_panel(w.get_active()))
+        
         view.separator()
-        view.add_ckeck_item("Lyric Panel", True)
-        view.add_ckeck_item("Info Panel", False)
+        #view.add_ckeck_item("Lyric Panel", FC().is_view_lyric_panel)
+        s_info = view.add_ckeck_item("Info Panel", FC().is_view_info_panel)
+        s_info.connect("activate", lambda w: controls.set_visible_info_panel(w.get_active()))
+        
+        
         view.separator()
-        view.add_image_item("Preferences", gtk.STOCK_PREFERENCES, self.controls.show_preferences)        
+        view.add_image_item("Preferences", gtk.STOCK_PREFERENCES, self.controls.show_preferences)
         
         """Playback"""
         playback = top.append("Playback")      
