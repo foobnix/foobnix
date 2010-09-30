@@ -101,9 +101,10 @@ class CueReader():
     def get_common_beans(self):
         beans = []
         cue = self.parse()
-        for track  in cue.tracks:
+        for i, track  in enumerate(cue.tracks):
             bean = CommonBean(name=track.performer + " - " + track.title, path=track.path, type=CommonBean.TYPE_MUSIC_FILE)
             bean.aritst = track.performer
+            bean.tracknumber = i + 1
             bean.title = track.title 
             bean.text = bean.name
             bean.start_sec = track.get_start_time_sec()

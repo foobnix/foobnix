@@ -87,7 +87,7 @@ class GStreamerEngine(MediaPlayerEngine):
             self.prev_path = path
                 
         self.state_pause()
-        time.sleep(0.1)
+        time.sleep(0.2)
         self.seek_seconds(bean.start_sec)
         self.state_play()
         self.volume(FC().volume)        
@@ -139,7 +139,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 self.notify_playing(position_int, duraction_int)
                 gtk.gdk.threads_leave()                #@UndefinedVariable
             except Exception, e: 
-                LOG.info("Playing thread error..." ,e)
+                LOG.info("Playing thread error..." , e)
                
             time.sleep(1)    
     
@@ -147,7 +147,7 @@ class GStreamerEngine(MediaPlayerEngine):
         seek_ns = self.duration_sec * percent / 100 * self.NANO_SECONDS;
         
         if self.bean.start_sec > 0:
-            seek_ns =seek_ns+ float(self.bean.start_sec)* self.NANO_SECONDS     
+            seek_ns = seek_ns + float(self.bean.start_sec) * self.NANO_SECONDS     
         
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
     
@@ -155,7 +155,7 @@ class GStreamerEngine(MediaPlayerEngine):
         if not seconds:
             return                
         LOG.info("Start with seconds", seconds)
-        seek_ns = (float(seconds) +0.0) * self.NANO_SECONDS       
+        seek_ns = (float(seconds) + 0.0) * self.NANO_SECONDS       
         LOG.info("SEC SEEK SEC", seek_ns)         
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
     
