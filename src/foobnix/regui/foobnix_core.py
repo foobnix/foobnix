@@ -37,7 +37,7 @@ class FoobnixCore(BaseFoobnixControls):
         
         self.searchPanel = SearchControls(self)   
         self.playback = PlaybackControls(self)     
-        self.window = MainWindow(self)
+        self.main_window = MainWindow(self)
         self.notetabs = NoteTabControl(self)
           
         self.filter = FilterControl(self)

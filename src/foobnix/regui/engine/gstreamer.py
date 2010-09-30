@@ -12,6 +12,7 @@ from foobnix.util import LOG
 import time
 import gtk
 import thread
+from foobnix.util.fc import FC
 
 class GStreamerEngine(MediaPlayerEngine):
     def __init__(self, controls):
@@ -77,7 +78,8 @@ class GStreamerEngine(MediaPlayerEngine):
         print path
         self.player.set_property("uri", uri)
         LOG.info("Gstreamer try to play", uri)            
-        self.state_play()    
+        self.state_play()   
+        self.volume(FC().volume) 
         
         self.play_thread_id = thread.start_new_thread(self.playing_thread, (start_sec,))
             
@@ -130,8 +132,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
     
     def volume(self, percent):
-        value = percent / 100.0
-        LOG.info("Set volume", value)
+        value = percent / 100.0        
         self.player.set_property('volume', value)
     
     def state_play(self):

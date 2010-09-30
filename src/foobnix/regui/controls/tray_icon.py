@@ -9,6 +9,7 @@ import gtk
 import os
 from foobnix.util.fc import FC
 from foobnix.helpers.toolbar import MyToolbar
+from foobnix.util.mouse_utils import is_mouse_click
 
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
@@ -71,18 +72,29 @@ class TrayIconControls(FControl):
         else:
             self.icon.set_from_stock("gtk-media-play")
             
-        #self.icon.connect("activate", self.on_activate)
+        self.icon.connect("activate", self.on_activate)
         self.icon.connect("popup-menu", self.on_popup_menu)
-        try:
-            self.icon.connect("button-press-event", self.on_button_press)
-            self.icon.connect("scroll-event", self.on_mouse_wheel_scrolled)
-        except:
-            pass
+        
+        self.icon.connect("button-press-event", self.on_button_press)
+        self.icon.connect("scroll-event", self.controls.volume.on_scroll_event)
         
         if FC().show_tray_icon:
             self.show()
         else:
             self.hide()
+            
+        self.paused = False
+    
+    def on_activate(self,*a):
+        self.controls.windows_visibility()        
+    
+    def on_button_press(self, w, e):
+        if is_mouse_click(e):
+            self.paused = not self.paused
+            if self.paused:
+                self.controls.state_play()
+            else:
+                self.controls.state_pause()
     
     def hide(self):
         self.icon.set_visible(False)

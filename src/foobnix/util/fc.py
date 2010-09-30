@@ -5,7 +5,7 @@ Created on 23 сент. 2010
 @author: ivan
 '''
 import pickle
-from foobnix.util import LOG
+from foobnix.util import LOG, const
 import os
 from foobnix.util.singleton import Singleton
 
@@ -38,6 +38,9 @@ class FC:
         self.hpaned_right = 320;
         self.vpaned_small = 100;
         
+        """main window action"""
+        self.on_close_window = const.ON_CLOSE_HIDE
+        
         """support file formats"""
         self.support_formats = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".cue", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp" ]
         
@@ -55,7 +58,6 @@ class FC:
         
         """try icon"""
         self.show_tray_icon = True
-        
         
                 
         self = self._load();

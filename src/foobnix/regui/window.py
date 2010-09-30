@@ -8,6 +8,7 @@ import gtk
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
+from foobnix.util import const
 class MainWindow(gtk.Window, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -15,8 +16,8 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         
         self.set_title("Foobnix Music Player")
         self.set_position(gtk.WIN_POS_CENTER)
-        self.set_resizable(True)
-        self.connect("destroy", controls.quit)
+        self.set_resizable(True)        
+        self.connect("delete-event", self.hide_window)
         self.connect("configure-event", self.on_configure_event)
     
     def on_configure_event(self, w, e):
@@ -32,3 +33,15 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             self.move(cfg[0], cfg[1])         
             
         
+    def hide_window(self, *args):       
+        
+        if FC().on_close_window == const.ON_CLOSE_CLOSE:
+            self.destroy()
+
+        elif FC().on_close_window == const.ON_CLOSE_HIDE:
+            self.hide()
+            
+        elif FC().on_close_window == const.ON_CLOSE_MINIMIZE:
+            self.iconify()
+        
+        return True

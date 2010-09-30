@@ -50,7 +50,7 @@ class BaseFoobnixLayout(LoadSave, FControl):
         vbox.pack_start(self.hpaned_left, True, True)        
         vbox.pack_start(controls.statusbar, False, True)
         
-        controls.window.add(vbox)
+        controls.main_window.add(vbox)
         
     def on_save(self, *a):
         FC().hpaned_left = self.hpaned_left.get_position()

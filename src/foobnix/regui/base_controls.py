@@ -27,6 +27,19 @@ class BaseFoobnixControls(LoadSave):
         self.count_errors = 0    
         pass
     
+    def volume_up(self):
+        pass
+    
+    def volume_down(self):
+        pass
+    
+    def windows_visibility(self):
+        visible = self.main_window.get_property('visible')
+        if visible:            
+            self.main_window.hide()
+        else:
+            self.main_window.show()
+    
     def state_play(self):
         self.media_engine.state_play()
     
@@ -184,7 +197,7 @@ class BaseFoobnixControls(LoadSave):
             else:
                 LOG.debug("NOT LOAD", self.__dict__[element])
         self.singre_thread = SingreThread(self.search_progress)
-        self.window.show()
+        self.main_window.show()
             
     def on_save(self):
         for element in self.__dict__:
