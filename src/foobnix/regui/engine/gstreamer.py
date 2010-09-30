@@ -130,7 +130,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 
                 if self.bean.start_sec > 0:
                     position_int = position_int - float(self.bean.start_sec) * self.NANO_SECONDS
-                    if position_int > duraction_int:
+                    if position_int + self.NANO_SECONDS > duraction_int:
                         gtk.gdk.threads_enter() #@UndefinedVariable
                         self.notify_eos()
                         gtk.gdk.threads_leave()                #@UndefinedVariable
