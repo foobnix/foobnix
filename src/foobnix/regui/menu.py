@@ -71,10 +71,9 @@ class MenuWidget(FControl):
         self.view_info_panel.set_active(FC().is_view_info_panel)
     
     def on_save(self):
-        pass
-        #FC().is_view_music_tree_panel = self.view_music_tree.get_active()
-        #FConfiguration().save()
-        #sys.exit(1)        
+        FC().is_view_music_tree_panel = self.view_music_tree.get_active()
+        FC().is_view_search_panel = self.view_search_panel.get_active()
+        FC().is_view_info_panel = self.view_info_panel.get_active()        
         
         
 

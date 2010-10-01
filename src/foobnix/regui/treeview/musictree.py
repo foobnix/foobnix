@@ -50,8 +50,10 @@ class MusicTreeControl(TreeViewControl, LoadSave):
             for path in paths:
                 if path in FC().music_paths:
                     pass
-                else:
+                else:                                       
                     FC().music_paths.append(path)
+                    self.controls.preferences.on_load()                     
+                    LOG.info("News music paths", FC().music_paths)
 
             self.controls.update_music_tree()
 
@@ -60,6 +62,7 @@ class MusicTreeControl(TreeViewControl, LoadSave):
         chooser.destroy()        
       
     def on_load(self):
+        self.controls.update_music_tree()
         pass
     
     def on_save(self):

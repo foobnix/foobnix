@@ -233,8 +233,6 @@ class BaseFoobnixControls(LoadSave):
         self.singre_thread = SingreThread(self.search_progress)
         self.main_window.show()
         
-        self.update_music_tree()
-            
     def on_save(self):
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):

@@ -10,15 +10,16 @@ from foobnix.regui.left import LeftWidgets
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
+from foobnix.util import LOG
 class BaseFoobnixLayout(LoadSave, FControl):
     def __init__(self, controls):
         FControl.__init__(self, controls)
          
         vbox = gtk.VBox(False, 0)
         
-        self.top = TopWidgets(controls)
+        
                 
-        vbox.pack_start(self.top, False, False)
+        vbox.pack_start(controls.top_panel, False, False)
         
        
         center_box = gtk.VBox(False, 0)
@@ -47,37 +48,39 @@ class BaseFoobnixLayout(LoadSave, FControl):
         
         controls.main_window.add(vbox)        
         
-    def on_save(self, *a):
-        FC().hpaned_left = self.hpaned_left.get_position()
-        FC().hpaned_right = self.hpaned_right.get_position()
+   
     
-    def set_visible_search_panel(self, visible=True):
-        if visible:
+    def set_visible_search_panel(self, flag=True):
+        LOG.info("set_visible_search_panel", flag)
+        if flag:
             self.controls.searchPanel.show_all()
             self.controls.search_progress.hide()
         else:
             self.controls.searchPanel.hide()   
     
     def set_visible_musictree_panel(self, flag):
+        LOG.info("set_visible_musictree_panel", flag)
         if flag:
             self.hpaned_left.set_position(FC().hpaned_left)            
         else:
             self.hpaned_left.set_position(0)
         
     def set_visible_info_panel(self, flag):
+        LOG.info("set_visible_info_panel", flag)
         if flag:
             self.hpaned_right.set_position(FC().hpaned_right)
-        else:            
-            FC().hpaned_right = 9999
+        else:           
             self.hpaned_right.set_position(9999)
-        
-    def on_load(self):        
+
+    def on_save(self, *a):
+        if FC().is_view_music_tree_panel:
+            FC().hpaned_left = self.hpaned_left.get_position()
+        if FC().is_view_info_panel:
+            FC().hpaned_right = self.hpaned_right.get_position()        
+    def on_load(self):   
         self.controls.search_progress.hide()        
         self.hpaned_left.set_position(FC().hpaned_left)
-        
-        #if FC().hpaned_right < 9000:        
         self.hpaned_right.set_position(FC().hpaned_right)
-        
         self.set_visible_musictree_panel(FC().is_view_music_tree_panel)
         self.set_visible_info_panel(FC().is_view_info_panel)  
         self.set_visible_search_panel(FC().is_view_search_panel)

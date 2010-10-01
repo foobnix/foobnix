@@ -12,6 +12,7 @@ from foobnix.regui.state import LoadSave
 
 class TopWidgets(FControl, LoadSave,gtk.HBox):
     def __init__(self, controls):
+        FControl.__init__(self, controls)
         gtk.HBox.__init__(self,False, 0)
         
         self.menu = MenuWidget(controls)
@@ -27,6 +28,8 @@ class TopWidgets(FControl, LoadSave,gtk.HBox):
         
     def on_save(self):        
         self.controls.volume.on_save()
+        self.menu.on_save()
         
-    def on_load(self):
+    def on_load(self):        
         self.controls.volume.on_load()
+        self.menu.on_load()

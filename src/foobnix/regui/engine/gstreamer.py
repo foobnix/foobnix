@@ -81,7 +81,6 @@ class GStreamerEngine(MediaPlayerEngine):
                 if os.name == 'nt':
                     uri = 'file:' + urllib.pathname2url(path)
             
-            LOG.debug("Set new path to play", uri)
             self.player.set_property("uri", uri)
             LOG.info("Gstreamer try to play", uri)
             self.prev_path = path
