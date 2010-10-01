@@ -28,13 +28,29 @@ class BaseFoobnixControls(LoadSave):
         self.is_radio_populated = False
         pass
     
+    def load_music_tree(self):
+        if FC().cache_music_tree_beans:            
+            self.tree.populate_from_scanner(FC().cache_music_tree_beans)
+            LOG.info("Tree loaded from cache")
+        else:            
+            self.update_music_tree()
+            LOG.info("Tree updated")
+    
     def update_music_tree(self):
-        LOG.info("Update music tree")
+        LOG.info("Update music tree",  FC().music_paths)
         self.tree.clear()
+        FC().cache_music_tree_beans = []    
         for path in FC().music_paths:
             scan = DirectoryScanner(path)
-            all = scan.get_music_results()       
+            all = scan.get_music_results()
+            
+            for bean in all:
+                FC().cache_music_tree_beans.append(bean)
+            
             self.tree.append_from_scanner(all)
+            
+                        
+            
     
     def update_radio_tree(self):
         if self.is_radio_populated:

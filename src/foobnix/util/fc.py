@@ -46,6 +46,7 @@ class FC:
         self.last_music_path = None
         self.music_paths = ["/tmp"]
         self.support_formats = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".cue", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp" ]
+        self.cache_music_tree_beans = []
         
         """last fm"""
         self.lfm_login = self.LASTFM_USER

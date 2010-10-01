@@ -26,7 +26,8 @@ class FoobnixCore(BaseFoobnixControls):
     def __init__(self):       
         BaseFoobnixControls.__init__(self)
 
-        """elements"""        
+        """elements"""
+        self.preferences = PreferencesWindow(self)        
         self.statusbar = StatusbarControls(self)
         self.volume = VolumeControls(self)
         self.seek_bar = SeekProgressBarControls(self)
@@ -49,8 +50,6 @@ class FoobnixCore(BaseFoobnixControls):
         
         self.trayicon = TrayIconControls(self)
         self.trayicon.show()
-        
-        self.preferences = PreferencesWindow(self)
         
         """layout panels"""
         self.top_panel = TopWidgets(self)       

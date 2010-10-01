@@ -62,7 +62,7 @@ class MusicTreeControl(TreeViewControl, LoadSave):
         chooser.destroy()        
       
     def on_load(self):
-        self.controls.update_music_tree()
+        self.controls.load_music_tree()
         pass
     
     def on_save(self):

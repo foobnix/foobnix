@@ -6,6 +6,7 @@ from foobnix.regui.model import FTreeModel, FModel
 from foobnix.util import LOG
 import uuid
 from foobnix.regui.model.signal import FControl
+import copy
 
 class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
     
@@ -73,7 +74,9 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         #gtk.gdk.threads_leave() #@UndefinedVariable 
         return value
     
-    def append_from_scanner(self, beans):
+    def append_from_scanner(self, all):
+        """copy beans"""
+        beans = copy.deepcopy(all)
         
         hash = {None:None}
         for bean in beans:
