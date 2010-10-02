@@ -40,10 +40,9 @@ class PlaylistControl(TreeViewControl):
         self.append_column(description)
         self.append_column(time)
 
-        self.connect("key-press-event", self.on_key_press)
         self.index = 0
 
-    def on_key_press(self, w,e):
+    def on_key_release(self, w,e):
         if gtk.gdk.keyval_name(e.keyval) == 'Return':
             self.active_current_song()
 
@@ -108,9 +107,10 @@ class PlaylistControl(TreeViewControl):
         """update song info"""
         self.controls.update_info_panel(current)
 
+        """set active tree"""
+        self.controls.notetabs.active_tree = self
 
     def on_button_press(self, w, e):
         if is_double_left_click(e):
             self.active_current_song()
 
-            

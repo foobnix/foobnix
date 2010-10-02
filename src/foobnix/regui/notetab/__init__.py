@@ -24,13 +24,13 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.default_angel = 0
         self.tab_labes = []
         self.tab_vboxes = []
-        self.tab_hboxes = []        
+        self.tab_hboxes = []
         self.last_notebook_page = ""
         self.last_notebook_beans = []
-        
+
         self.append_tab("Foobnix", [])
         self.active_tree = None
-     
+
     def append_tab(self, name, beans=None):
         self.last_notebook_page = name
         LOG.info("append new tab")
@@ -39,60 +39,60 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
         tab_content = self.create_notebook_tab(beans)
         def label():
-            """label"""                        
+            """label"""
             label = gtk.Label(name + " ")
             label.show()
             label.set_angle(self.default_angel)
             self.tab_labes.append(label)
             return label
-        
+
         def button():
             print "ELEMENT", FC().tab_close_element
-            if FC().tab_close_element == "button":            
+            if FC().tab_close_element == "button":
                 return tab_close_button(func=self.on_delete_tab, arg=tab_content)
             else:
                 return tab_close_label(func=self.on_delete_tab, arg=tab_content, angel=self.default_angel)
-        
-        """container Vertical Tab"""                
+
+        """container Vertical Tab"""
         vbox = gtk.VBox(False, 0)
-        if  self.default_angel == 90:        
-            vbox.show()        
+        if  self.default_angel == 90:
+            vbox.show()
         vbox.pack_start(button(), False, False, 0)
         vbox.pack_start(label(), False, False, 0)
         self.tab_vboxes.append(vbox)
-        
-        """container Horizontal Tab"""                
-        hbox = gtk.HBox(False, 0)    
-        if  self.default_angel == 0:    
-            hbox.show()        
+
+        """container Horizontal Tab"""
+        hbox = gtk.HBox(False, 0)
+        if  self.default_angel == 0:
+            hbox.show()
         hbox.pack_start(label(), False, False, 0)
         hbox.pack_start(button(), False, False, 0)
         self.tab_hboxes.append(hbox)
-        
+
         """container BOTH"""
         both = gtk.HBox(False, 0)
         both.show()
         both.pack_start(vbox, False, False, 0)
         both.pack_start(hbox, False, False, 0)
-        
-        """append tab"""        
+
+        """append tab"""
         self.prepend_page(tab_content, both)
         self.set_current_page(0)
-        
+
         if self.get_n_pages() > FC().count_of_tabs:
             self.remove_page(self.get_n_pages() - 1)
-    
+
     def next(self):
         return self.active_tree.next()
-        
+
     def prev(self):
         return self.active_tree.prev()
-    
+
     def create_notebook_tab(self, beans):
-         
+
         treeview = PlaylistControl(self.controls)
         self.active_tree = treeview
-        
+
         #treeview.populate_from_scanner(beans)
         if beans:
             treeview.populate(beans)
@@ -106,11 +106,11 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         window.show_all()
 
         return  window
-    
+
     def append(self, beans):
-        for bean in beans:            
+        for bean in beans:
             self.active_tree.append(bean)
-    
+
     def on_delete_tab(self, widget, event, child):
         if event.type == gtk.gdk.BUTTON_PRESS: #@UndefinedVariable
             n = self.page_num(child)
@@ -118,11 +118,11 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     def delete_tab(self, page=None):
         if not page:
             LOG.info("Remove current page")
-            page = self.get_current_page()            
+            page = self.get_current_page()
         self.remove_page(page)
-    
+
     def on_load(self):
         pass
-    
+
     def on_save(self):
         pass
