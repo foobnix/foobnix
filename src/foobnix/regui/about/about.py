@@ -63,6 +63,7 @@ class FoobnixPlayerWindow(gtk.Window):
     def __init__(self):
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
         self.set_title ("It is Foobnix player")
+        self.set_default_size(450, 400) 
         self.set_position(gtk.WIN_POS_CENTER)
         self.connect("destroy", lambda * a:gtk.main_quit())
         button = gtk.Button("Show about")   
