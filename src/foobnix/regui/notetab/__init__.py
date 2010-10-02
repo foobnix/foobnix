@@ -84,11 +84,8 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     
     def next(self):
         return self.active_tree.next()
-        pass
-        
         
     def prev(self):
-        pass
         return self.active_tree.prev()
     
     def create_notebook_tab(self, beans):

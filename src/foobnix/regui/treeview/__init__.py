@@ -45,7 +45,7 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         return self
     
     def populate(self, beans):
-        self.model.clear()
+        self.clear()
         for bean in beans:
             bean.level = None
             self.append(bean)
@@ -96,10 +96,11 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
             hash[bean.path] = child_level
     
     def populate_from_scanner(self, beans):
-        self.model.clear()
+        self.clear()
         self.append_from_scanner(beans)
     
     def clear(self):
+        self.count_index = 0
         self.model.clear()
         
     def  on_button_press(self, w, e):
