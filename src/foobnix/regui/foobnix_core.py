@@ -22,39 +22,39 @@ from foobnix.preferences.preferences_window import PreferencesWindow
 from foobnix.regui import controls
 from foobnix.regui.top import TopWidgets
 class FoobnixCore(BaseFoobnixControls):
-    
-    def __init__(self):       
+
+    def __init__(self):
         BaseFoobnixControls.__init__(self)
 
         """elements"""
-        self.preferences = PreferencesWindow(self)        
+        self.preferences = PreferencesWindow(self)
         self.statusbar = StatusbarControls(self)
         self.volume = VolumeControls(self)
         self.seek_bar = SeekProgressBarControls(self)
-        
+
         self.media_engine = GStreamerEngine(self)
         self.search_progress = SearchProgressBar(self)
-        
+
         self.info_panel = InfoPanelWidget(self)
-        
-        self.searchPanel = SearchControls(self)   
-        self.playback = PlaybackControls(self)     
+
+        self.trayicon = TrayIconControls(self)
+        self.trayicon.show()
+
+        self.searchPanel = SearchControls(self)
+        self.playback = PlaybackControls(self)
         self.main_window = MainWindow(self)
         self.notetabs = NoteTabControl(self)
-          
+
         self.filter = FilterControl(self)
-        
+
         self.tree = MusicTreeControl(self)
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
-        
-        self.trayicon = TrayIconControls(self)
-        self.trayicon.show()
-        
+
         """layout panels"""
-        self.top_panel = TopWidgets(self)       
-        
-        """layout"""        
+        self.top_panel = TopWidgets(self)
+
+        """layout"""
         self.layout = BaseFoobnixLayout(self)
-        
+
         self.on_load()

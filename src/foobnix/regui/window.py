@@ -19,6 +19,7 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         self.set_resizable(True)        
         self.connect("delete-event", self.hide_window)
         self.connect("configure-event", self.on_configure_event)
+        self.set_icon(self.controls.trayicon.get_pixbuf())
     
     def on_configure_event(self, w, e):
         FC().main_window_size = [e.x, e.y, e.width, e.height]
