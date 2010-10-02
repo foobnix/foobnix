@@ -41,7 +41,7 @@ class PlaylistControl(TreeViewControl):
         self.append_column(description)
         self.append_column(time)
 
-        self.index = 0
+        self.index = -1
         
         list = []
         list.append(FModel("Madonna").add_font("bold"))
@@ -109,13 +109,15 @@ class PlaylistControl(TreeViewControl):
         return self.get_bean_by_position(self.index)
 
     def append(self, bean):
+        value = None        
         if bean.path and bean.path.endswith(".cue"):
             reader = CueReader(bean.path)
             beans = reader.get_common_beans()
             for bean in beans:
-                super(PlaylistControl, self).append(bean)
+                value = super(PlaylistControl, self).append(bean)
         else:
-            return super(PlaylistControl, self).append(bean)
+            value = super(PlaylistControl, self).append(bean)
+        return value
 
     def repopulate(self, index):
         self.count_index = 0

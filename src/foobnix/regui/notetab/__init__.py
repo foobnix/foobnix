@@ -81,6 +81,10 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
         if self.get_n_pages() > FC().count_of_tabs:
             self.remove_page(self.get_n_pages() - 1)
+        
+        """autostart play"""
+        if beans:
+            self.controls.next()
 
     def next(self):
         return self.active_tree.next()
