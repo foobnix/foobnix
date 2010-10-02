@@ -5,7 +5,7 @@ Created on Oct 2, 2010
 '''
 import gtk
 
-def close_application( widget,event,gpointer ): 
+def close_application(widget, event, gpointer): 
     gtk.main_quit()
     return False
 
@@ -23,7 +23,7 @@ def about():
     image = gtk.image_new_from_file("/usr/share/pixmaps/foobnix.png");
     table.attach(image, 0, 2, 0, 1)
     
-    label = gtk.Label( "Foobnix" )
+    label = gtk.Label("Foobnix")
     label.set_markup ("\n<big><big><b><b>Foobnix\n</b></b></big></big>\nPlaying all imaginations\n\n<small>Developed by Ivan Ivanenko\nivan.ivanenko@gmail.com\n\n</small><a href=\"http://code.google.com/p/foobnix/\">Page of development</a>\n");
     label.set_justify(gtk.JUSTIFY_CENTER)
     table.attach(label, 0, 2, 1, 2)
@@ -33,8 +33,8 @@ def about():
     
     box = gtk.HBox(False, 0)
     box.set_border_width (2)
-    box.pack_end (label,  True, False, 0)
-    box.pack_end (image,  True, False, 0)
+    box.pack_end (label, True, False, 0)
+    box.pack_end (image, True, False, 0)
     
     button = gtk.Button()
     button.add(box)
@@ -45,17 +45,33 @@ def about():
     
     box = gtk.HBox(False, 0)
     box.set_border_width (2)
-    box.pack_end (label,  True, False, 0)
-    box.pack_end (image,  True, False, 0)
+    box.pack_end (label, True, False, 0)
+    box.pack_end (image, True, False, 0)
     button = gtk.Button()
     button.add(box)
     table.attach(button, 1, 2, 2, 3)
     
-    window.connect("destroy", lambda *a:gtk.main_quit())
-    button.connect("clicked", lambda *a:gtk.main_quit())
+    window.connect("destroy", lambda * a:gtk.main_quit())
+    button.connect("clicked", lambda * a:gtk.main_quit())
     button.grab_focus ()
     window.add(table)
     window.show_all()
-    gtk.main()
     
-about()
+
+
+class FoobnixPlayerWindow(gtk.Window):
+    def __init__(self):
+        gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
+        self.set_title ("It is Foobnix player")
+        self.set_position(gtk.WIN_POS_CENTER)
+        self.connect("destroy", lambda * a:gtk.main_quit())
+        button = gtk.Button("Show about")   
+        button.connect("clicked", self.show_about)     
+        self.add(button)        
+        self.show_all()    
+    def show_about(self, *a):
+        about()
+        
+FoobnixPlayerWindow()
+gtk.main() 
+
