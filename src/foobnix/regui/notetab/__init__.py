@@ -27,9 +27,9 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.tab_hboxes = []
         self.last_notebook_page = ""
         self.last_notebook_beans = []
+        self.active_tree = None
 
         self.append_tab("Foobnix", [])
-        self.active_tree = None
 
     def append_tab(self, name, beans=None):
         self.last_notebook_page = name
@@ -91,7 +91,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     def create_notebook_tab(self, beans):
 
         treeview = PlaylistControl(self.controls)
-        self.active_tree = treeview
+        self.switch_tree(treeview)
 
         #treeview.populate_from_scanner(beans)
         if beans:
@@ -115,6 +115,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         if event.type == gtk.gdk.BUTTON_PRESS: #@UndefinedVariable
             n = self.page_num(child)
             self.delete_tab(n)
+
     def delete_tab(self, page=None):
         if not page:
             LOG.info("Remove current page")
@@ -126,3 +127,8 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
     def on_save(self):
         pass
+
+    def switch_tree(self, tree):
+        if self.active_tree and self.active_tree != tree:
+            self.active_tree.repopulate(-1)
+        self.active_tree = tree

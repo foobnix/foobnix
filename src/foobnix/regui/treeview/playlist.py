@@ -108,7 +108,7 @@ class PlaylistControl(TreeViewControl):
         self.controls.update_info_panel(current)
 
         """set active tree"""
-        self.controls.notetabs.active_tree = self
+        self.controls.notetabs.switch_tree(self)
 
     def on_button_press(self, w, e):
         if is_double_left_click(e):
