@@ -8,6 +8,7 @@ from foobnix.regui.treeview import TreeViewControl
 import gtk
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.cue.cue_reader import CueReader
+from foobnix.regui.model import FModel
 class PlaylistControl(TreeViewControl):
     def __init__(self, controls):
         TreeViewControl.__init__(self, controls)
@@ -27,7 +28,7 @@ class PlaylistControl(TreeViewControl):
         """conlumt artist title"""
         description = gtk.TreeViewColumn('Artist - Title', gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         description.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        description.set_resizable(True)
+        #description.set_resizable(True)
         description.set_expand(True)
 
         """time text"""
@@ -41,8 +42,19 @@ class PlaylistControl(TreeViewControl):
         self.append_column(time)
 
         self.index = 0
+        
+        list = []
+        list.append(FModel("Madonna").add_font("bold"))
+        list.append(FModel("Madonna - Song1").add_font("normal").add_parent("Madonna"))
+        list.append(FModel("Madonna - Song2").add_font("normal").add_parent("Madonna"))
+        for line in list:
+            self.append(line)
+        
+        #self.set_grid_lines(True)
+        self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
+        self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
 
-    def on_key_release(self, w,e):
+    def on_key_release(self, w, e):
         if gtk.gdk.keyval_name(e.keyval) == 'Return':
             self.active_current_song()
 
@@ -65,8 +77,8 @@ class PlaylistControl(TreeViewControl):
         #if All:
         #    if Linear:
         self.index -= 1
-        if self.index<0:
-            self.index = self.count_index-1
+        if self.index < 0:
+            self.index = self.count_index - 1
         #if Single:
         #    pass
         #if Disable:

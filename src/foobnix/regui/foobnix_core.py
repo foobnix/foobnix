@@ -1,5 +1,3 @@
-import gtk
-import time
 
 from foobnix.regui.notetab import NoteTabControl
 from foobnix.regui.base_layout import BaseFoobnixLayout
@@ -19,7 +17,6 @@ from foobnix.regui.treeview.radiotree import RadioTreeControl
 from foobnix.regui.treeview.virtualtree import VirtualTreeControl
 from foobnix.regui.controls.tray_icon import TrayIconControls
 from foobnix.preferences.preferences_window import PreferencesWindow
-from foobnix.regui import controls
 from foobnix.regui.top import TopWidgets
 class FoobnixCore(BaseFoobnixControls):
 

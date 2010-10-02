@@ -18,6 +18,7 @@ class SimpleTreeControl(TreeViewControl, LoadSave):
         column = gtk.TreeViewColumn(title_name, gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.append_column(column)
+        self.set_headers_visible(True)
         
     def on_load(self):
         pass

@@ -37,7 +37,7 @@ class BaseFoobnixControls(LoadSave):
             LOG.info("Tree updated")
     
     def update_music_tree(self):
-        LOG.info("Update music tree",  FC().music_paths)
+        LOG.info("Update music tree", FC().music_paths)
         self.tree.clear()
         FC().cache_music_tree_beans = []    
         for path in FC().music_paths:
@@ -140,6 +140,7 @@ class BaseFoobnixControls(LoadSave):
         def inline(query):            
             results = self.lastfm.search_top_tracks(query)
             all = []
+            all.append(FModel(query).add_font("bold"))
             for i, bean in enumerate(results):
                 bean.tracknumber = i + 1
                 all.append(bean)            

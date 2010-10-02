@@ -7,6 +7,24 @@ Created on 24 авг. 2010
 import gtk
 def responseToDialog(entry, dialog, response):
         dialog.response(response)
+
+def one_line_dialog(dialog_title, text=None):
+        dialog = gtk.MessageDialog(
+            None,
+            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            gtk.MESSAGE_INFO,
+            gtk.BUTTONS_OK,
+            None)
+        dialog.set_title(dialog_title)
+        dialog.set_markup(dialog_title)        
+        entry = gtk.Entry()
+        if text:
+            entry.set_text(text)
+        dialog.vbox.pack_end(entry, True, True, 0)
+        dialog.show_all()
+        dialog.run()
+        dialog.destroy()    
+        return entry.get_text()    
         
         
 def info_dialog_with_link(title, version, link):

@@ -31,7 +31,13 @@ def udpate_id3(bean):
             
             if bean.tracknumber and bean.tracknumber.startswith("0"):
                 bean.tracknumber = bean.tracknumber[1:]    
-                
+            
+            if bean.tracknumber:
+                try:
+                    bean.tracknumber = int(bean.tracknumber)
+                except:
+                    bean.tracknumber = ""
+            
             bean.time = normilize_time(bean.length)        
             
     return bean    

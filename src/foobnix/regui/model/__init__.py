@@ -62,6 +62,10 @@ class FModel(FTreeModel):
         
     def add_level(self, level):
         self.level = level
+        return self
+    
+    def add_parent(self, level):
+        self.level = level
         return self 
     
     def add_font(self, font):
@@ -71,9 +75,11 @@ class FModel(FTreeModel):
     def add_is_file(self, is_file):
         self.is_file = is_file
         return self
+    
     def add_album(self, album):
         self.album = album
         return self
+    
     def add_year(self, year):
         self.year = year
         return self
