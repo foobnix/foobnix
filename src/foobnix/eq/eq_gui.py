@@ -5,6 +5,7 @@ Created on Sep 8, 2010
 @author: ivan
 '''
 import gtk
+from foobnix.regui.model.signal import FControl
 
 def label(): 
     label = gtk.Label("–")
@@ -21,7 +22,7 @@ def text(text):
     label.show()
     return label
  
-class EQ():
+class EQContols(gtk.Window, FControl):
     
     def top_row(self):
         
@@ -146,18 +147,13 @@ class EQ():
         
         return lines
      
-    def show(self):
-        self.window.show()     
-    
-    def hide(self):
-        self.window.hide()         
-    
-    def __init__(self):
-        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        self.window.set_title("Equalizer")
-        self.window.set_position(gtk.WIN_POS_CENTER)
-        self.window.set_resizable(False)
-        self.window.connect("destroy", lambda * a:gtk.main_quit())
+    def __init__(self, controls):
+        FControl.__init__(self, controls)        
+        gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
+        self.set_title("Equalizer")
+        self.set_position(gtk.WIN_POS_CENTER)
+        self.set_resizable(False)
+        self.connect("delete-event", self.hide_window)
        
         lbox = gtk.VBox(False, 0)
         lbox.show()
@@ -166,19 +162,27 @@ class EQ():
         lbox.pack_start(self.top_row(), False, False, 0)
         lbox.pack_start(self.middle_lines(), False, False, 0)
         
-        self.window.add(lbox)
-        self.window.show()
-        
-        #self.window.set_size_request(400,250)
-        
-        gtk.main()
+        self.add(lbox)
+
+   
+    def destroy(self):
+        self.hide()
+        return True
+    
+    def show(self):
+        self.show_all()
+
+   
+    def hide_window(self, *a):
+        self.hide()
+        return True
+    
+
+if __name__ == '__main__':
+    eq = EQContols(None)
+    eq.connect("destroy", lambda * a:gtk.main_quit())
+    eq.show()
+    gtk.main()
 
 
-eq = EQ()
-eq.show()
-gtk.main()
 
-class About():
-    def __init__(self):
-        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        self.window.show()

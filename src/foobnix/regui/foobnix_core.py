@@ -18,6 +18,7 @@ from foobnix.regui.treeview.virtualtree import VirtualTreeControl
 from foobnix.regui.controls.tray_icon import TrayIconControls
 from foobnix.preferences.preferences_window import PreferencesWindow
 from foobnix.regui.top import TopWidgets
+from foobnix.eq.eq_gui import EQContols
 class FoobnixCore(BaseFoobnixControls):
 
     def __init__(self):
@@ -47,6 +48,8 @@ class FoobnixCore(BaseFoobnixControls):
         self.tree = MusicTreeControl(self)
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
+        
+        self.eq = EQContols(self)
 
         """layout panels"""
         self.top_panel = TopWidgets(self)

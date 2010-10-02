@@ -37,6 +37,7 @@ class MenuWidget(FControl):
         
         
         view.separator()
+        view.add_image_item("Equalizer", None, self.controls.eq.show)
         view.add_image_item("Preferences", gtk.STOCK_PREFERENCES, self.controls.show_preferences)
         
         """Playback"""
@@ -85,8 +86,9 @@ class MyMenu(gtk.Menu):
     def add_image_item(self, title, gtk_stock, func=None, param=None):
         item = gtk.ImageMenuItem(title)
         item.show()
-        img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
-        item.set_image(img) 
+        if gtk_stock:
+            img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
+            item.set_image(img) 
         
         LOG.debug("Menu-Image-Activate", title, gtk_stock, func, param)
         if param:             
