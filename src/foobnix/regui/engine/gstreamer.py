@@ -178,9 +178,12 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.set_state(gst.STATE_NULL)
 
     def state_pause(self):
-        self.status.setPause()
-        #self.player.set_state(gst.STATE_VOID_PENDING)
-        self.player.set_state(gst.STATE_PAUSED)
+        if self.status.isPause:
+            self.state_play()
+        else:
+            self.status.setPause()
+            #self.player.set_state(gst.STATE_VOID_PENDING)
+            self.player.set_state(gst.STATE_PAUSED)
 
     def on_message(self, bus, message):
         #print bus, message
