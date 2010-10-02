@@ -101,7 +101,8 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         #    treeview.append(bean)
         window = gtk.ScrolledWindow()
         window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        window.add_with_viewport(treeview)
+        #window.add_with_viewport(treeview)
+        window.add(treeview)
         window.show_all()
 
         return  window
