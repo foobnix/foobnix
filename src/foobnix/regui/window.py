@@ -34,7 +34,8 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             self.move(cfg[0], cfg[1])         
             
         
-    def hide_window(self, *args):       
+    def hide_window(self, *args):
+        gtk.main_quit()       
         
         if FC().on_close_window == const.ON_CLOSE_CLOSE:
             self.destroy()

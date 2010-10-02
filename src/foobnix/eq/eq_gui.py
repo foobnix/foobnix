@@ -93,7 +93,7 @@ class EQ():
         vbox = gtk.VBox(False, 0)
         vbox.show()
         
-        adjustment = gtk.Adjustment(value=0, lower=-12, upper=12, step_incr=1, page_incr=2, page_size=0)
+        adjustment = gtk.Adjustment(value=0, lower= -12, upper=12, step_incr=1, page_incr=2, page_size=0)
         scale = gtk.VScale(adjustment)
         scale.set_size_request(-1, 140)  
         scale.set_draw_value(False)      
@@ -157,7 +157,7 @@ class EQ():
         self.window.set_title("Equalizer")
         self.window.set_position(gtk.WIN_POS_CENTER)
         self.window.set_resizable(False)
-        self.window.connect("destroy", lambda *a:gtk.main_quit())
+        self.window.connect("destroy", lambda * a:gtk.main_quit())
        
         lbox = gtk.VBox(False, 0)
         lbox.show()
@@ -177,3 +177,8 @@ class EQ():
 eq = EQ()
 eq.show()
 gtk.main()
+
+class About():
+    def __init__(self):
+        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.window.show()

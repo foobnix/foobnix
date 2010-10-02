@@ -53,6 +53,28 @@ class PlaylistControl(TreeViewControl):
         #self.set_grid_lines(True)
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
         self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
+        
+        self.connect("drag-data-received", self.drag_data_received_data)
+        self.connect("drag-data-get", self.drag_data_received_get)
+        self.connect("drag-drop", self.on_drag_drop)
+    
+    def on_drag_drop(self, treeview, drag_context, x, y, selection):
+        print "on_drag_drop"
+        print treeview, drag_context, x, y, selection
+        control = drag_context.get_source_widget()
+        bean = control.get_selected_bean()
+        print "get_source_widget",
+        self.controls.append_to_current_notebook([bean])
+         
+
+    def drag_data_received_get(self, *a):
+        print "drag_data_received_get"
+        print a
+         
+    def drag_data_received_data(self, treeview, drag_context, x, y, selection, info, eventtime):
+        print treeview, drag_context, x, y, selection, info, eventtime
+        
+        
 
     def on_key_release(self, w, e):
         if gtk.gdk.keyval_name(e.keyval) == 'Return':
