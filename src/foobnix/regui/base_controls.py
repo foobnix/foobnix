@@ -235,7 +235,7 @@ class BaseFoobnixControls(LoadSave):
     
     def prev(self):
         bean = self.notetabs.prev()
-        self.media_engine.play(bean)
+        self.play(bean)
     
     def filter_tree(self, value):
         self.tree.filter(value)
