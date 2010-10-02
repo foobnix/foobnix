@@ -52,8 +52,8 @@ def about():
     button.add(box)
     table.attach(button, 1, 2, 2, 3)
     
-    window.connect("destroy", lambda * a:gtk.main_quit())
-    button.connect("clicked", lambda * a:gtk.main_quit())
+    window.connect("destroy", lambda * a:window.hide())
+    button.connect("clicked", lambda * a:window.hide())
     button.grab_focus ()
     window.add(table)
     window.show_all()
