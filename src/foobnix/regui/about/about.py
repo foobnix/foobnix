@@ -4,6 +4,7 @@ Created on Oct 2, 2010
 @author: dimitry
 '''
 import gtk
+from foobnix.eq.eq_gui import EQContols
 
 def close_application(widget, event, gpointer): 
     gtk.main_quit()
@@ -60,16 +61,33 @@ def about():
 
 
 class FoobnixPlayerWindow(gtk.Window):
-    def __init__(self):
+    def __init__(self):        
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
+        
+        self.eq = EQContols(None)
+        
         self.set_title ("It is Foobnix player")
         self.set_default_size(450, 400) 
         self.set_position(gtk.WIN_POS_CENTER)
         self.connect("destroy", lambda * a:gtk.main_quit())
-        button = gtk.Button("Show about")   
-        button.connect("clicked", self.show_about)     
-        self.add(button)        
-        self.show_all()    
+        vbox = gtk.VBox(False, 0)
+        
+        button = gtk.Button("Show about")
+        button.connect("clicked", self.show_about)   
+        
+        eq = gtk.Button("Show EQualizer")
+        eq.connect("clicked", self.show_eq)
+        
+        vbox.pack_start(button)
+        vbox.pack_start(eq)
+             
+        
+        self.add(vbox)        
+        self.show_all()   
+         
+    def show_eq(self, *a):
+        self.eq.show()
+        
     def show_about(self, *a):
         about()
         
