@@ -87,10 +87,10 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
             self.controls.next()
 
     def next(self):
-        return self.active_tree.next()
+        return self.active_tree.next(rnd=self.isRandom)
 
     def prev(self):
-        return self.active_tree.prev()
+        return self.active_tree.prev(rnd=self.isRandom)
 
     def create_notebook_tab(self, beans):
 
@@ -126,8 +126,11 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
             page = self.get_current_page()
         self.remove_page(page)
 
+    def set_random(self, flag):
+        self.isRandom = flag
+
     def on_load(self):
-        pass
+        self.isRandom = FC().is_order_random
 
     def on_save(self):
         pass

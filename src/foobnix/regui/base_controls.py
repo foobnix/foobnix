@@ -251,6 +251,8 @@ class BaseFoobnixControls(LoadSave):
 
         gtk.main_quit()
 
+    def set_playback_random(self, flag):
+        self.notetabs.set_random(flag)
 
     def on_load(self):
         for element in self.__dict__:

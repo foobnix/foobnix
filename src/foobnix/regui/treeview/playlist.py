@@ -6,6 +6,7 @@ Created on 25 сент. 2010
 '''
 from foobnix.regui.treeview import TreeViewControl
 import gtk
+from random import randint
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.cue.cue_reader import CueReader
 from foobnix.regui.model import FModel
@@ -80,13 +81,15 @@ class PlaylistControl(TreeViewControl):
         if gtk.gdk.keyval_name(e.keyval) == 'Return':
             self.active_current_song()
 
-    def next(self):
+    def next(self, rnd=False):
         #TODO from config use Repeat state
         #if All:
-        #    if Linear:
-        self.index += 1
-        if self.index == self.count_index:
-            self.index = 0
+        if not rnd:
+            self.index += 1
+            if self.index == self.count_index:
+                self.index = 0
+        else:
+            self.index = randint(0, self.count_index)
         #if Single:
         #    pass
         #if Disable:
@@ -94,13 +97,15 @@ class PlaylistControl(TreeViewControl):
         self.repopulate(self.index)
         return self.get_bean_by_position(self.index)
 
-    def prev(self):
+    def prev(self, rnd=False):
         #TODO from config use Repeat state
         #if All:
-        #    if Linear:
-        self.index -= 1
-        if self.index < 0:
-            self.index = self.count_index - 1
+        if not rnd:
+            self.index -= 1
+            if self.index < 0:
+                self.index = self.count_index - 1
+        else:
+            self.index = randint(0, self.count_index)
         #if Single:
         #    pass
         #if Disable:

@@ -45,8 +45,9 @@ class MenuWidget(FControl):
         
         """Playback - Order"""
         order = playback.add_text_item("Order")
-        linear = order.add_radio_item("Linear", None, True)
-        order.add_radio_item("Random", linear, True)
+        self.playback_order_linear = order.add_radio_item("Linear", None, not FC().is_order_random)
+        self.playback_order_random = order.add_radio_item("Random", self.playback_order_linear, FC().is_order_random)
+        self.playback_order_random.connect("activate", lambda w: controls.set_playback_random(w.get_active()))
         order.separator()
         order.add_image_item("Shuffle", gtk.STOCK_UNDELETE)
         
@@ -70,11 +71,14 @@ class MenuWidget(FControl):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
         self.view_search_panel.set_active(FC().is_view_search_panel)
         self.view_info_panel.set_active(FC().is_view_info_panel)
+        self.playback_order_linear.set_active(not FC().is_order_random)
+        self.playback_order_random.set_active(FC().is_order_random)
     
     def on_save(self):
         FC().is_view_music_tree_panel = self.view_music_tree.get_active()
         FC().is_view_search_panel = self.view_search_panel.get_active()
-        FC().is_view_info_panel = self.view_info_panel.get_active()        
+        FC().is_view_info_panel = self.view_info_panel.get_active()   
+        FC().is_order_random = self.playback_order_random.get_active()
         
         
 
