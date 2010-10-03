@@ -33,14 +33,14 @@ def about():
     Playing all imaginations\n
     <small>Developed by Ivan Ivanenko</small>
     <small>ivan.ivanenko@gmail.com</small>\n   
-    <a href="www.foobnix.com">www.foobnix.com</a>
+    <a href="http://www.foobnix.com">www.foobnix.com</a>
     """);
     
     label.set_justify(gtk.JUSTIFY_CENTER)
     table.attach(label, 0, 2, 1, 2)
     
     label = gtk.Label("Credits")
-    image = gtk.image_new_from_stock(gtk.STOCK_INFO,2)
+    image = gtk.image_new_from_stock(gtk.STOCK_INFO, 2)
     
     box = gtk.HBox(False, 0)
     box.set_border_width (2)
@@ -53,7 +53,7 @@ def about():
     table.attach(button, 0, 1, 2, 3)
     
     label = gtk.Label("Close")
-    image = gtk.image_new_from_stock(gtk.STOCK_STOP,2)
+    image = gtk.image_new_from_stock(gtk.STOCK_STOP, 2)
     
     box = gtk.HBox(False, 0)
     box.set_border_width (2)
