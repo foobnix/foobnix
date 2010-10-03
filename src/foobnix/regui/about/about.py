@@ -4,10 +4,7 @@ Created on Oct 2, 2010
 @author: dimitry
 '''
 import gtk
-
-def close_application(widget, event, gpointer): 
-    gtk.main_quit()
-    return False
+from foobnix.regui.service.image_service import get_foobnix_pixmap_path_by_name
 
 def about():
     window = gtk.Window(gtk.WINDOW_TOPLEVEL)
@@ -15,12 +12,16 @@ def about():
     window.set_position(gtk.WIN_POS_CENTER)
     window.set_border_width(10)
     window.set_default_size(250, 200) 
-    window.set_icon_from_file ("/usr/share/pixmaps/foobnix.png")
+    
+    """ get foobnix icon path"""
+    foobnix_image_path = get_foobnix_pixmap_path_by_name("foobnix.png")
+    
+    window.set_icon_from_file (foobnix_image_path)
     
     table = gtk.Table(2, 3, False)
     table.set_col_spacing(0, 50)
     
-    image = gtk.image_new_from_file("/usr/share/pixmaps/foobnix.png");
+    image = gtk.image_new_from_file(foobnix_image_path);
     table.attach(image, 0, 2, 0, 1)
     
     label = gtk.Label("Foobnix")
@@ -59,8 +60,8 @@ def about():
     button.add(box)
     table.attach(button, 1, 2, 2, 3)
     
-    window.connect("destroy", lambda * a:window.hide())
-    button.connect("clicked", lambda * a:window.hide())
+    window.connect("destroy", lambda * x:gtk.main_quit())
+    button.connect("clicked", lambda * x:gtk.main_quit())
     button.grab_focus ()
     window.add(table)
     window.show_all()

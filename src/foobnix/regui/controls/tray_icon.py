@@ -10,6 +10,7 @@ import os
 from foobnix.util.fc import FC
 from foobnix.helpers.toolbar import MyToolbar
 from foobnix.util.mouse_utils import is_mouse_click
+from foobnix.regui.service.image_service import get_foobnix_pixmap_path_by_name
 
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
@@ -63,12 +64,10 @@ class TrayIconControls(FControl):
 
         self.popup_menu = PopupWindowMenu(self.controls)
 
-        icon_path = "/usr/local/share/pixmaps/foobnix.png"
-        icon_path2 = "/usr/share/pixmaps/foobnix.png"
-        if os.path.exists(icon_path):
-            self.icon.set_from_file(icon_path)
-        elif os.path.exists(icon_path2):
-            self.icon.set_from_file(icon_path2)
+        path = get_foobnix_pixmap_path_by_name("foobnix.png")
+        
+        if path:
+            self.icon.set_from_file(path)        
         else:
             self.icon.set_from_stock("gtk-media-play")
 
@@ -85,7 +84,7 @@ class TrayIconControls(FControl):
 
         self.paused = False
 
-    def on_activate(self,*a):
+    def on_activate(self, *a):
         self.controls.windows_visibility()
 
     def on_button_press(self, w, e):
