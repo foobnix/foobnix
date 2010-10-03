@@ -104,6 +104,8 @@ class BaseFoobnixControls(LoadSave):
         self.media_engine.state_play_pause()
 
     def play(self, bean):
+        if not bean:
+            return None
         if not bean.path:
             vk = self.vk.find_one_track(bean.artist + " - " + bean.title)
             if vk:
@@ -253,6 +255,15 @@ class BaseFoobnixControls(LoadSave):
 
     def set_playback_random(self, flag):
         self.notetabs.set_random(flag)
+
+    def set_lopping_all(self):
+        self.notetabs.set_lopping_all()
+
+    def set_lopping_single(self):
+        self.notetabs.set_lopping_single()
+
+    def set_lopping_disable(self):
+        self.notetabs.set_lopping_disable()
 
     def on_load(self):
         for element in self.__dict__:

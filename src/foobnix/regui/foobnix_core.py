@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 
 from foobnix.regui.notetab import NoteTabControl
 from foobnix.regui.base_layout import BaseFoobnixLayout
@@ -25,13 +26,14 @@ class FoobnixCore(BaseFoobnixControls):
     def __init__(self):
         BaseFoobnixControls.__init__(self)
 
+        self.media_engine = GStreamerEngine(self)
+
         """elements"""
         self.preferences = PreferencesWindow(self)
         self.statusbar = StatusbarControls(self)
         self.volume = VolumeControls(self)
         self.seek_bar = SeekProgressBarControls(self)
 
-        self.media_engine = GStreamerEngine(self)
         self.search_progress = SearchProgressBar(self)
 
         self.info_panel = InfoPanelWidget(self)
@@ -49,7 +51,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.tree = MusicTreeControl(self)
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
-        
+
         self.eq = EQContols(self)
 
         """layout panels"""
@@ -57,7 +59,7 @@ class FoobnixCore(BaseFoobnixControls):
 
         """layout"""
         self.layout = BaseFoobnixLayout(self)
-        
+
         """D-Bus"""
         self.dbus = DBusManager(self)
 

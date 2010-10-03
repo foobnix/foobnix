@@ -71,9 +71,10 @@ class GStreamerEngine(MediaPlayerEngine):
             LOG.error("Can't play empty path!!!")
             return None
 
-        if self.prev_path != path:
-            self.state_stop()
+        
+        self.state_stop()
 
+        if self.prev_path != path:
             if path.startswith("http://"):
                 self.player = self.init_http()
                 uri = path

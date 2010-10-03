@@ -7,6 +7,7 @@ Created on 25 сент. 2010
 from foobnix.regui.treeview import TreeViewControl
 import gtk
 from random import randint
+from foobnix.util import const
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.cue.cue_reader import CueReader
 from foobnix.regui.model import FModel
@@ -43,22 +44,22 @@ class PlaylistControl(TreeViewControl):
         self.append_column(time)
 
         self.index = -1
-        
+
         list = []
         list.append(FModel("Madonna").add_font("bold"))
         list.append(FModel("Madonna - Song1").add_font("normal").add_parent("Madonna"))
         list.append(FModel("Madonna - Song2").add_font("normal").add_parent("Madonna"))
         for line in list:
             self.append(line)
-        
+
         #self.set_grid_lines(True)
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
         self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
-        
+
         self.connect("drag-data-received", self.drag_data_received_data)
         self.connect("drag-data-get", self.drag_data_received_get)
         self.connect("drag-drop", self.on_drag_drop)
-    
+
     def on_drag_drop(self, treeview, drag_context, x, y, selection):
         print "on_drag_drop"
         print treeview, drag_context, x, y, selection
@@ -66,55 +67,49 @@ class PlaylistControl(TreeViewControl):
         bean = control.get_selected_bean()
         print "get_source_widget",
         self.controls.append_to_current_notebook([bean])
-         
+
 
     def drag_data_received_get(self, *a):
         print "drag_data_received_get"
         print a
-         
+
     def drag_data_received_data(self, treeview, drag_context, x, y, selection, info, eventtime):
         print treeview, drag_context, x, y, selection, info, eventtime
-        
-        
+
+
 
     def on_key_release(self, w, e):
         if gtk.gdk.keyval_name(e.keyval) == 'Return':
             self.active_current_song()
 
-    def next(self, rnd=False):
-        #TODO from config use Repeat state
-        #if All:
-        if not rnd:
-            self.index += 1
-            if self.index == self.count_index:
-                self.index = 0
-        else:
-            self.index = randint(0, self.count_index)
-        #if Single:
-        #    pass
-        #if Disable:
-        #    return None
+    def next(self, rnd=False, lopping=const.LOPPING_LOOP_ALL):
+        if lopping == const.LOPPING_LOOP_ALL:
+            if not rnd:
+                self.index += 1
+                if self.index == self.count_index:
+                    self.index = 0
+            else:
+                self.index = randint(0, self.count_index)
+        elif lopping == const.LOPPING_DONT_LOOP:
+            return None
         self.repopulate(self.index)
         return self.get_bean_by_position(self.index)
 
-    def prev(self, rnd=False):
-        #TODO from config use Repeat state
-        #if All:
-        if not rnd:
-            self.index -= 1
-            if self.index < 0:
-                self.index = self.count_index - 1
-        else:
-            self.index = randint(0, self.count_index)
-        #if Single:
-        #    pass
-        #if Disable:
-        #    return None
+    def prev(self, rnd=False, lopping=const.LOPPING_LOOP_ALL):
+        if lopping == const.LOPPING_LOOP_ALL:
+            if not rnd:
+                self.index -= 1
+                if self.index < 0:
+                    self.index = self.count_index - 1
+            else:
+                self.index = randint(0, self.count_index)
+        elif lopping == const.LOPPING_DONT_LOOP:
+            return None
         self.repopulate(self.index)
         return self.get_bean_by_position(self.index)
 
     def append(self, bean):
-        value = None        
+        value = None
         if bean.path and bean.path.endswith(".cue"):
             reader = CueReader(bean.path)
             beans = reader.get_common_beans()

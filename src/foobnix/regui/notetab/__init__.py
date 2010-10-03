@@ -5,7 +5,7 @@ Created on Sep 23, 2010
 @author: ivan
 '''
 import gtk
-from foobnix.util import LOG
+from foobnix.util import LOG, const
 from foobnix.helpers.my_widgets import tab_close_button, tab_close_label
 from foobnix.online.online_model import OnlineListModel
 from foobnix.util.fc import FC
@@ -81,16 +81,16 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
         if self.get_n_pages() > FC().count_of_tabs:
             self.remove_page(self.get_n_pages() - 1)
-        
+
         """autostart play"""
         if beans:
             self.controls.next()
 
     def next(self):
-        return self.active_tree.next(rnd=self.isRandom)
+        return self.active_tree.next(rnd=self.isRandom, lopping=self.lopping)
 
     def prev(self):
-        return self.active_tree.prev(rnd=self.isRandom)
+        return self.active_tree.prev(rnd=self.isRandom, lopping=self.lopping)
 
     def create_notebook_tab(self, beans):
 
@@ -129,11 +129,25 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     def set_random(self, flag):
         self.isRandom = flag
 
+    def set_lopping_all(self):
+        self.lopping = const.LOPPING_LOOP_ALL
+        print self.lopping
+
+    def set_lopping_single(self):
+        self.lopping = const.LOPPING_SINGLE
+        print self.lopping
+
+    def set_lopping_disable(self):
+        self.lopping = const.LOPPING_DONT_LOOP
+        print self.lopping
+
     def on_load(self):
         self.isRandom = FC().is_order_random
+        self.lopping = FC().lopping
 
     def on_save(self):
-        pass
+        FC().is_order_random = self.isRandom
+        FC().lopping = self.lopping
 
     def switch_tree(self, tree):
         if self.active_tree and self.active_tree != tree:
