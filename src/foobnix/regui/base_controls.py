@@ -140,6 +140,17 @@ class BaseFoobnixControls(LoadSave):
 
     def player_volue(self, percent):
         self.media_engine.volume(percent)
+        
+    def search_all_tracks(self, query):
+        def inline(query):
+            results = self.vk.find_tracks_by_query(query)
+            all = []
+            all.append(FModel(query).add_font("bold"))
+            for i, bean in enumerate(results):
+                bean.tracknumber = i + 1
+                all.append(bean)
+            self.notetabs.append_tab(query, all)
+        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
 
     def search_top_tracks(self, query):
         def inline(query):
@@ -201,12 +212,6 @@ class BaseFoobnixControls(LoadSave):
                     all.append(track)
                 self.notetabs.append(all)
         #inline(query)
-        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
-
-    def search_all(self, query):
-        pass
-        def inline(query):
-            print query
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
 
     def update_info_panel(self, bean):

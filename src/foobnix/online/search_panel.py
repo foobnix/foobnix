@@ -8,12 +8,9 @@ from __future__ import with_statement
 import gtk
 from gobject import TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING #@UnresolvedImport
 from foobnix.util import LOG
-import foobnix.online.integration.lastfm as lastfm
 from foobnix.base import BaseController, SIGNAL_RUN_FIRST
 from threading import Thread
 from foobnix.online.song_resource import get_songs_by_url, find_song_urls
-from foobnix.util.configuration import FConfiguration
-from foobnix.helpers.dialog_entry import show_login_password_error_dialog
 
 class SearchResults(Thread):
     def __init__ (self, query, function):

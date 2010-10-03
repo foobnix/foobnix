@@ -35,12 +35,12 @@ class SearchControls(FControl, gtk.Frame):
         OneActiveToggledButton(self.buttons)
         
     
-    def set_search_function(self,w, search_function):
+    def set_search_function(self, w, search_function):
         LOG.info("Set search fucntion", search_function)
         self.search_function = search_function    
         
     
-    def on_search(self,*w):
+    def on_search(self, *w):
         if self.get_query():
             self.search_function(self.get_query())
     
@@ -66,7 +66,7 @@ class SearchControls(FControl, gtk.Frame):
         
         return hbox    
     
-    def on_search_key_press(self, w,e):        
+    def on_search_key_press(self, w, e):        
         if gtk.gdk.keyval_name(e.keyval) == 'Return':
             self.on_search();
     
@@ -85,13 +85,13 @@ class SearchControls(FControl, gtk.Frame):
         
         songs = gtk.ToggleButton("Songs")
         songs.set_active(True)
-        songs.connect("toggled", self.set_search_function,self.controls.search_top_tracks)
+        songs.connect("toggled", self.set_search_function, self.controls.search_top_tracks)
         
         albums = gtk.ToggleButton("Albums")
         albums.connect("toggled", self.set_search_function, self.controls.search_top_albums)        
         
         similars = gtk.ToggleButton("Similar")
-        similars.connect("toggled", self.set_search_function,self.controls.search_top_similar)
+        similars.connect("toggled", self.set_search_function, self.controls.search_top_similar)
         
         hbox.pack_start(songs, True, True, 0)
         hbox.pack_start(albums, True, True, 0)
@@ -111,7 +111,7 @@ class SearchControls(FControl, gtk.Frame):
         tags.connect("toggled", self.set_search_function, self.controls.search_top_tags)
         
         all = gtk.ToggleButton("All")
-        all.connect("toggled", self.set_search_function ,self.controls.search_all)
+        all.connect("toggled", self.set_search_function , self.controls.search_all_tracks)
         
         hbox.pack_start(tags, True, True, 0)
         hbox.pack_start(all, True, True, 0)
