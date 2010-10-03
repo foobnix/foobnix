@@ -4,7 +4,6 @@ Created on Oct 2, 2010
 @author: dimitry
 '''
 import gtk
-from foobnix.eq.eq_gui import EQContols
 
 def close_application(widget, event, gpointer): 
     gtk.main_quit()
@@ -25,7 +24,15 @@ def about():
     table.attach(image, 0, 2, 0, 1)
     
     label = gtk.Label("Foobnix")
-    label.set_markup ("\n<big><big><b><b>Foobnix\n</b></b></big></big>\nPlaying all imaginations\n\n<small>Developed by Ivan Ivanenko\nivan.ivanenko@gmail.com\n\n</small><a href=\"http://code.google.com/p/foobnix/\">Page of development</a>\n");
+    
+    label.set_markup ("""
+    <big><big><b><b>Foobnix</b></b></big></big>
+    Playing all imaginations\n
+    <small>Developed by Ivan Ivanenko</small>
+    <small>ivan.ivanenko@gmail.com</small>\n   
+    <a href="www.foobnix.com">www.foobnix.com</a>
+    """);
+    
     label.set_justify(gtk.JUSTIFY_CENTER)
     table.attach(label, 0, 2, 1, 2)
     
@@ -60,37 +67,6 @@ def about():
     
 
 
-class FoobnixPlayerWindow(gtk.Window):
-    def __init__(self):        
-        gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
-        
-        self.eq = EQContols(None)
-        
-        self.set_title ("It is Foobnix player")
-        self.set_default_size(450, 400) 
-        self.set_position(gtk.WIN_POS_CENTER)
-        self.connect("destroy", lambda * a:gtk.main_quit())
-        vbox = gtk.VBox(False, 0)
-        
-        button = gtk.Button("Show about")
-        button.connect("clicked", self.show_about)   
-        
-        eq = gtk.Button("Show EQualizer")
-        eq.connect("clicked", self.show_eq)
-        
-        vbox.pack_start(button)
-        vbox.pack_start(eq)
-             
-        
-        self.add(vbox)        
-        self.show_all()   
-         
-    def show_eq(self, *a):
-        self.eq.show()
-        
-    def show_about(self, *a):
-        about()
-        
-FoobnixPlayerWindow()
-gtk.main() 
+about()
+gtk.main()
 
