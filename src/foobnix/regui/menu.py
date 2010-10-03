@@ -8,6 +8,8 @@ from foobnix.util import LOG, const
 import sys
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
+from foobnix.regui.about import about
+
 class MenuWidget(FControl):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -64,7 +66,7 @@ class MenuWidget(FControl):
 
         """Help"""
         help = top.append("Help")
-        help.add_image_item("About", gtk.STOCK_ABOUT)
+        help.add_image_item("About", gtk.STOCK_ABOUT,self.show_about)
         help.add_image_item("Help", gtk.STOCK_HELP)
 
         top.decorate()
@@ -72,6 +74,8 @@ class MenuWidget(FControl):
 
         self.on_load()
 
+    def show_about(self, *a):
+        about.about()
     def on_load(self):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
         self.view_search_panel.set_active(FC().is_view_search_panel)
