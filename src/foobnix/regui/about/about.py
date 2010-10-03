@@ -1,7 +1,7 @@
 '''
 Created on Oct 2, 2010
 
-@author: dimitry
+@author: dimitry (zavlab1)
 '''
 import gtk
 from foobnix.regui.service.image_service import get_foobnix_pixmap_path_by_name
@@ -11,7 +11,9 @@ def about():
     window.set_title ("About Foobnix")
     window.set_position(gtk.WIN_POS_CENTER)
     window.set_border_width(10)
-    window.set_default_size(250, 200) 
+    window.set_geometry_hints(window, min_width=270, min_height=300)
+    gtk.window_set_default_icon_from_file ("/usr/share/pixmaps/foobnix.png")
+    window.set_resizable(False)
     
     """ get foobnix icon path"""
     foobnix_image_path = get_foobnix_pixmap_path_by_name("foobnix.png")
@@ -38,7 +40,7 @@ def about():
     table.attach(label, 0, 2, 1, 2)
     
     label = gtk.Label("Credits")
-    image = gtk.image_new_from_file ("/usr/share/icons/oxygen/16x16/actions/help-about.png")
+    image = gtk.image_new_from_stock(gtk.STOCK_INFO,2)
     
     box = gtk.HBox(False, 0)
     box.set_border_width (2)
@@ -46,17 +48,20 @@ def about():
     box.pack_end (image, True, False, 0)
     
     button = gtk.Button()
+    button.set_border_width (5)
     button.add(box)
     table.attach(button, 0, 1, 2, 3)
     
     label = gtk.Label("Close")
-    image = gtk.image_new_from_file ("/usr/share/icons/oxygen/16x16/actions/dialog-close.png")
+    image = gtk.image_new_from_stock(gtk.STOCK_STOP,2)
     
     box = gtk.HBox(False, 0)
     box.set_border_width (2)
     box.pack_end (label, True, False, 0)
     box.pack_end (image, True, False, 0)
+    
     button = gtk.Button()
+    button.set_border_width (5)
     button.add(box)
     table.attach(button, 1, 2, 2, 3)
     
