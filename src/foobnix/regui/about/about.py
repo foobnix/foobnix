@@ -12,7 +12,7 @@ def about():
     window.set_position(gtk.WIN_POS_CENTER)
     window.set_border_width(10)
     window.set_geometry_hints(window, min_width=270, min_height=300)
-    gtk.window_set_default_icon_from_file ("/usr/share/pixmaps/foobnix.png")
+    gtk.window_set_default_icon_from_file (get_foobnix_pixmap_path_by_name("foobnix.png"))
     window.set_resizable(False)
     
     """ get foobnix icon path"""
