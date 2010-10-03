@@ -19,6 +19,7 @@ from foobnix.regui.controls.tray_icon import TrayIconControls
 from foobnix.preferences.preferences_window import PreferencesWindow
 from foobnix.regui.top import TopWidgets
 from foobnix.eq.eq_gui import EQContols
+from foobnix.regui.controls.dbus_manager import DBusManager
 class FoobnixCore(BaseFoobnixControls):
 
     def __init__(self):
@@ -56,5 +57,8 @@ class FoobnixCore(BaseFoobnixControls):
 
         """layout"""
         self.layout = BaseFoobnixLayout(self)
+        
+        """D-Bus"""
+        self.dbus = DBusManager(self)
 
         self.on_load()

@@ -24,26 +24,29 @@ class MediaPlayerEngine(FControl):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         self.status = MediaPlayerStatus()
-        
+
     def state_play(self):
         pass
-    
+
     def state_pause(self):
         pass
-    
+
     def state_stop(self):
         pass
-    
+
     def play(self, path):
         pass
-    
+
+    def state_play_pause(self):
+        pass
+
     #0-100
     def volume_up(self, value):
         pass
-    
+
     #0-100
     def volume_down(self, value):
         pass
-    
-    
-        
+
+
+
