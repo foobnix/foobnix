@@ -18,7 +18,7 @@ def credits():
     buffer=gtk.TextBuffer()
     buffer_content="""\t\t\tDevelopers:
 Ivan Ivanenko <ivan.ivanenko@gmail.com>
-Anton.Komolov <anton.komolov@gmail.com>
+Anton Komolov <anton.komolov@gmail.com>
 Dmitry Kozhura <Dmitry-Kogura@yandex.ru>"""
     buffer.set_text(buffer_content)
     text=gtk.TextView(buffer)
