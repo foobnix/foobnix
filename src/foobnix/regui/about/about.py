@@ -5,6 +5,7 @@ Created on Oct 2, 2010
 '''
 import gtk
 from foobnix.regui.service.image_service import get_foobnix_pixmap_path_by_name
+from foobnix.regui.about import credits, changelog
 
 def CreateButton_with_label_and_icon(image,label): 
     box = gtk.HBox(False, 0)
@@ -31,9 +32,7 @@ def about():
     window.set_icon_from_file (foobnix_image_path)
     
     table = gtk.Table(3, 3, False)
-    #table.set_border_width(0)
-    #table.set_col_spacing(0, 50)
-    
+        
     image = gtk.image_new_from_file(foobnix_image_path);
     table.attach(image, 0, 3, 0, 1)
     
@@ -72,10 +71,18 @@ Playing all imaginations\n
     
     window.connect("destroy", lambda * x:window.hide())
     button_close.connect("clicked", lambda * x:window.hide())
+    button_credits.connect("clicked", lambda * x:credits.credits())
+    button_changelog.connect("clicked", lambda * x:changelog.changelog())
+    
     button_close.grab_focus ()
     window.add(table)
     window.show_all()
     
+
+
+
+
+
 
 
 

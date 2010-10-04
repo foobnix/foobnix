@@ -1,6 +1,7 @@
 import gtk
 from foobnix.regui.service.image_service import get_foobnix_pixmap_path_by_name
 
+
 def credits():
     window = gtk.Window(gtk.WINDOW_TOPLEVEL)
     window.set_title ("Credits")
@@ -14,15 +15,18 @@ def credits():
     window.connect("destroy", lambda * x:window.hide())
     
     buffer=gtk.TextBuffer()
-    buffer_content=""
-    buffer_content.set_makeup("""\t\t\tDevelopers:
+    buffer_content="""\t\t\tDevelopers:
 Ivan Ivanenko <ivan.ivanenko@gmail.com>
 Anton.Komolov <anton.komolov@gmail.com>
-Dmitry Kozhura <Dmitry-Kogura@yandex.ru>""")
+Dmitry Kozhura <Dmitry-Kogura@yandex.ru>"""
     buffer.set_text(buffer_content)
     text=gtk.TextView(buffer)
+    text.set_editable(False)
+    text.set_cursor_visible(False)
     scrolled_window.add(text)
+    
     button=gtk.Button("Close",gtk.STOCK_CLOSE)
+    
     
     button.connect("clicked", lambda * x:window.hide())
     
@@ -33,10 +37,10 @@ Dmitry Kozhura <Dmitry-Kogura@yandex.ru>""")
     vbox.pack_start (scrolled_window, True, True, 0)
     vbox.pack_start (hbox, False, False, 0)
     
+    button.grab_focus ()
     window.add(vbox)
     window.show_all()
     
     
-credits()
-gtk.main()
+
     

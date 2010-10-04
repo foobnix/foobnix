@@ -9,6 +9,7 @@ def changelog():
     window.set_border_width(10)
     window.set_default_size(500,200)
     gtk.window_set_default_icon_from_file (get_foobnix_pixmap_path_by_name("foobnix.png"))
+    
     scrolled_window = gtk.ScrolledWindow()
     scrolled_window.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
     
@@ -25,6 +26,7 @@ def changelog():
     
     text=gtk.TextView(buffer)
     text.set_editable(False)
+    text.set_cursor_visible(False)
     scrolled_window.add(text)
     button=gtk.Button("Close",gtk.STOCK_CLOSE)
     
@@ -35,11 +37,9 @@ def changelog():
     
     vbox=gtk.VBox(False, 10)
     vbox.pack_start (scrolled_window, True, True, 0)
+    
     vbox.pack_start (hbox, False, False, 0)
+    button.grab_focus ()
     
     window.add(vbox)
     window.show_all()
-    
-    
-changelog()
-gtk.main()
