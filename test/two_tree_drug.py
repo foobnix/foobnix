@@ -48,10 +48,11 @@ class CoreTree(gtk.ScrolledWindow):
          
       
     def iter_copy(self, to_pos, to_model, to_iter, from_model, from_iter):
-        to_model = to_model.get_model()
         data_column_0 = from_model.get_value(from_iter, 0)
-        data_column_1 = from_model.get_value(from_iter, 1)
-        
+        data_column_1 = from_model.get_value(from_iter, 1)        
+        print to_model
+        print to_iter
+
         if (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):            
             new_iter = to_model.prepend(to_iter, None)
         elif to_pos == gtk.TREE_VIEW_DROP_BEFORE:            
@@ -61,6 +62,7 @@ class CoreTree(gtk.ScrolledWindow):
       
         to_model.set_value(new_iter, 0, data_column_0)
         to_model.set_value(new_iter, 1, data_column_1)
+        to_model.set_value(new_iter, 2, True)
                 
         if from_model.iter_has_child(from_iter):
             for i in xrange(0, from_model.iter_n_children(from_iter)):
@@ -77,19 +79,23 @@ class CoreTree(gtk.ScrolledWindow):
         
         
         """to model"""                
-        to_model = to_tree.get_model()        
+        to_filter_model = to_tree.get_model()
+        to_real_model = to_filter_model.get_model()         
         if not to_tree.get_dest_row_at_pos(x, y):
             data_column_0 = from_model.get_value(from_iter, 0)
             data_column_1 = from_model.get_value(from_iter, 1)
-            to_model.append(None, [data_column_0, data_column_1, True])
+            to_real_model.append(None, [data_column_0, data_column_1, True])
             return None
         
         to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)        
         #to_model = to_tree.get_model()
-        to_iter = to_model.get_iter(to_path)        
+        to_path = to_filter_model.convert_path_to_child_path(to_path)
+        to_iter = to_real_model.get_iter(to_path)  
+        
+        print "to is valid", to_real_model.iter_is_valid(to_iter)      
            
         """iter copy"""        
-        self.iter_copy(to_pos, to_model, to_iter, from_model, from_iter)        
+        self.iter_copy(to_pos, to_real_model, to_iter, from_model, from_iter)        
         to_tree.expand_to_path(to_path)
         
 class TreeOne(CoreTree):
