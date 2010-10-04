@@ -11,8 +11,8 @@ except:
     pass
 import gtk
 
-data = [[0,"zero"],[1,"one"],[2,"two"],[3,"three"],[4,"four"],[5,"five"],[6,"six"]]
-data1 = [[10,"1zero"],[11,"1one"],[12,"1two"],[13,"1three"],[14,"1four"],[15,"1five"],[16,"1six"]]
+data = [[0, "zero"], [1, "one"], [2, "two"], [3, "three"], [4, "four"], [5, "five"], [6, "six"]]
+data1 = [[10, "1zero"], [11, "1one"], [12, "1two"], [13, "1three"], [14, "1four"], [15, "1five"], [16, "1six"]]
 
 class CoreTree(gtk.ScrolledWindow):
     def __init__(self):
@@ -40,30 +40,12 @@ class CoreTree(gtk.ScrolledWindow):
         column = gtk.TreeViewColumn("String", renderer, text=1)
         self.treeview.append_column(column)
     
-    
-    def on_drag_drop(self, to_tree, drag_context, x, y, selection):
-        print to_tree, drag_context, x, y, selection
-     
-        """to current """
-        print to_tree, x, y        
-        to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)
-        #to_model, to_paths = to_tree.get_selection().get_selected_rows()
-        to_model = to_tree.get_model()
-        to_iter = to_model.get_iter(to_path)        
-        print "to model:", to_model.get_value(to_iter,1)   
-        
-        """from widget selected"""                
-        from_tree = drag_context.get_source_widget()
-        from_model, from_paths = from_tree.get_selection().get_selected_rows()
-        from_iter = from_model.get_iter(from_paths[0])
-        print "from model:", from_model.get_value(from_iter,1)
-        
-        
+         
+      
+    def iter_copy(self, to_pos, to_model, to_iter, from_model, from_iter):
         data_column_0 = from_model.get_value(from_iter, 0)
         data_column_1 = from_model.get_value(from_iter, 1)
         
-        print "get value ", data_column_0, data_column_1
-
         if (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
             print "to parrent"
             new_iter = to_model.prepend(to_iter, None)
@@ -83,10 +65,39 @@ class CoreTree(gtk.ScrolledWindow):
         to_model.set_value(new_iter, 0, data_column_0)
         to_model.set_value(new_iter, 1, data_column_1)
         
+        
         if from_model.iter_has_child(from_iter):
-            for i in range(0, from_model.iter_n_children(from_iter)):
-                next_iter_to_copy = from_model.iter_nth_child(from_iter, i)
-                #self.iter_copy(to_tree, to_model, next_iter_to_copy, new_iter, gtk.TREE_VIEW_DROP_INTO_OR_BEFORE)
+            for i in xrange(0, from_model.iter_n_children(from_iter)):
+                next_from_iter = from_model.iter_nth_child(from_iter, i)
+                self.iter_copy(gtk.TREE_VIEW_DROP_INTO_OR_BEFORE, to_model, new_iter, from_model, next_from_iter)
+                
+    
+    def on_drag_drop(self, to_tree, drag_context, x, y, selection):
+        print to_tree, drag_context, x, y, selection
+     
+        """from widget selected"""                
+        from_tree = drag_context.get_source_widget()
+        from_model, from_paths = from_tree.get_selection().get_selected_rows()
+        from_iter = from_model.get_iter(from_paths[0])
+        print "from model:", from_model.get_value(from_iter, 1)
+        
+        
+        """to current """
+        print to_tree, x, y        
+        to_model = to_tree.get_model()
+        if not to_tree.get_dest_row_at_pos(x, y):
+            to_model.append(None, from_iter)
+            return None
+        
+        to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)
+        #to_model, to_paths = to_tree.get_selection().get_selected_rows()
+        to_model = to_tree.get_model()
+        to_iter = to_model.get_iter(to_path)        
+        print "to model:", to_model.get_value(to_iter, 1)   
+        
+        self.iter_copy(to_pos, to_model, to_iter, from_model, from_iter)        
+        to_tree.expand_to_path(to_path)
+        
                 
         pass
         
@@ -114,10 +125,10 @@ class TreeDNDExample:
         window.connect("delete_event", gtk.main_quit)
         window.set_default_size(250, 350)
         
-        hbox = gtk.HBox(False,0)
+        hbox = gtk.HBox(False, 0)
         
-        one =TreeOne()
-        two =TreeTwo()
+        one = TreeOne()
+        two = TreeTwo()
         
         
         hbox.pack_start(one)
