@@ -4,6 +4,7 @@ Created on Oct 4, 2010
 @author: ivan
 '''
 #!/usr/bin/env python
+import gobject
 
 try:
     import pygtk; pygtk.require("2.0")
@@ -21,7 +22,7 @@ class CoreTree(gtk.ScrolledWindow):
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
        
         
-        self.model = gtk.TreeStore(int, str)
+        self.model = gtk.TreeStore(int, str, gobject.TYPE_BOOLEAN)
         
         self.treeview = gtk.TreeView(self.model)
         self.treeview.connect("drag-drop", self.on_drag_drop)
@@ -35,37 +36,32 @@ class CoreTree(gtk.ScrolledWindow):
         
         
         renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Integer", renderer, text=0)
+        column = gtk.TreeViewColumn("Integer", renderer, text=0, visible=2)
         self.treeview.append_column(column)
-        column = gtk.TreeViewColumn("String", renderer, text=1)
+        column = gtk.TreeViewColumn("String", renderer, text=1, visible=2)
         self.treeview.append_column(column)
+        
+        self.filter_model = self.model.filter_new()        
+        self.filter_model.set_visible_column(2)
+        self.treeview.set_model(self.filter_model)  
     
          
       
     def iter_copy(self, to_pos, to_model, to_iter, from_model, from_iter):
+        to_model = to_model.get_model()
         data_column_0 = from_model.get_value(from_iter, 0)
         data_column_1 = from_model.get_value(from_iter, 1)
         
-        if (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
-            print "to parrent"
+        if (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):            
             new_iter = to_model.prepend(to_iter, None)
-        elif to_pos == gtk.TREE_VIEW_DROP_BEFORE:
-            print "insert before"
-            new_iter = to_model.insert_before(None, to_iter)
-            pass
-        elif to_pos == gtk.TREE_VIEW_DROP_AFTER:
-            print "insert after"
+        elif to_pos == gtk.TREE_VIEW_DROP_BEFORE:            
+            new_iter = to_model.insert_before(None, to_iter)            
+        elif to_pos == gtk.TREE_VIEW_DROP_AFTER:            
             new_iter = to_model.insert_after(None, to_iter)
-            pass
-        
-        
-        print "TO", to_model.iter_is_valid(new_iter)
-        print "FROM", from_model.iter_is_valid(new_iter)
-        
+      
         to_model.set_value(new_iter, 0, data_column_0)
         to_model.set_value(new_iter, 1, data_column_1)
-        
-        
+                
         if from_model.iter_has_child(from_iter):
             for i in xrange(0, from_model.iter_n_children(from_iter)):
                 next_from_iter = from_model.iter_nth_child(from_iter, i)
@@ -73,49 +69,44 @@ class CoreTree(gtk.ScrolledWindow):
                 
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
-        print to_tree, drag_context, x, y, selection
-     
         """from widget selected"""                
         from_tree = drag_context.get_source_widget()
         from_model, from_paths = from_tree.get_selection().get_selected_rows()
-        from_iter = from_model.get_iter(from_paths[0])
-        print "from model:", from_model.get_value(from_iter, 1)
+        from_path = from_model.convert_path_to_child_path(from_paths[0])
+        from_iter = from_model.get_iter(from_path)
         
         
-        """to current """
-        print to_tree, x, y        
-        to_model = to_tree.get_model()
+        """to model"""                
+        to_model = to_tree.get_model()        
         if not to_tree.get_dest_row_at_pos(x, y):
-            to_model.append(None, from_iter)
+            data_column_0 = from_model.get_value(from_iter, 0)
+            data_column_1 = from_model.get_value(from_iter, 1)
+            to_model.append(None, [data_column_0, data_column_1, True])
             return None
         
-        to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)
-        #to_model, to_paths = to_tree.get_selection().get_selected_rows()
-        to_model = to_tree.get_model()
+        to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)        
+        #to_model = to_tree.get_model()
         to_iter = to_model.get_iter(to_path)        
-        print "to model:", to_model.get_value(to_iter, 1)   
-        
+           
+        """iter copy"""        
         self.iter_copy(to_pos, to_model, to_iter, from_model, from_iter)        
         to_tree.expand_to_path(to_path)
         
-                
-        pass
-        
-    
 class TreeOne(CoreTree):
     def __init__(self):
         CoreTree.__init__(self)
         for item in data:
-            iter = self.model.append(None)
-            self.model.set(iter, 0, item[0], 1, item[1])
+            self.model.append(None, [item[0], item[1], True])
+            #self.model.set(iter, 0, item[0], 1, item[1], 2, 1)
     
    
 class TreeTwo(CoreTree):
     def __init__(self):
         CoreTree.__init__(self)
         for item in data1:
-            iter = self.model.append(None)
-            self.model.set(iter, 0, item[0], 1, item[1])
+            self.model.append(None, [item[0], item[1], True])
+            #iter = self.model.append(None)
+            #self.model.set(iter, 0, item[0], 1, item[1])
 
 class TreeDNDExample:
 
