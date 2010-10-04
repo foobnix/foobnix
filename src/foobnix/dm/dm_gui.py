@@ -9,11 +9,7 @@ from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.regui.model import FModel
-
-class DMBean(gtk.ProgressBar):
-    def __init__(self, bean):
-        gtk.ProgressBar.__init__(self)
-        self.set_text(bean.path)
+from foobnix.dm.dm_bean import DMBean
 
 class DownloadManager(gtk.Window, FControl, LoadSave):
     def __init__(self, controls):
@@ -37,6 +33,21 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
 
         self.add(vbox)
 
+    def _add_button(self, text='Ok', stock=None, func=None, param=None):
+        bt = gtk.Button(text)
+        if stock:
+            image = gtk.Image()
+            image.set_from_stock(stock, gtk.ICON_SIZE_BUTTON)
+            bt.set_image(image)
+        if func:
+            if param:
+                bt.connect("clicked", lambda * a: func(param))
+            else:
+                bt.connect("clicked", lambda * a: func())
+        bt.show()
+        return bt
+
+
     def line_add(self):
         hbox = gtk.HBox(False, 0)
         hbox.show()
@@ -44,9 +55,7 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         self.entry = gtk.Entry()
         self.entry.show()
 
-        bt_add = gtk.Button("Add")
-        bt_add.show()
-        bt_add.connect("clicked", self.add_click)
+        bt_add = self._add_button("Add", gtk.STOCK_ADD, self.add_click)
 
         hbox.pack_start(self.entry, True, True, 0)
         hbox.pack_start(bt_add, False, False, 0)
@@ -57,19 +66,13 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         hbox = gtk.HBox(True, 0)
         hbox.show()
 
-        bt_start = gtk.Button("Start")
-        bt_start.show()
-        bt_stop = gtk.Button("Stop All")
-        bt_stop.show()
-        bt_clear = gtk.Button("Clear list")
-        bt_clear.show()
-        bt_pref = gtk.Button("Preferences")
-        bt_pref.show()
-
-        hbox.pack_start(bt_start, False, True, 0)
-        hbox.pack_start(bt_stop, False, True, 0)
-        hbox.pack_start(bt_clear, False, True, 0)
-        hbox.pack_start(bt_pref, False, True, 0)
+        _buttons = [["Start All", gtk.STOCK_MEDIA_PLAY, self.start_all],
+                   ["Stop All", gtk.STOCK_MEDIA_STOP, self.stop_all],
+                   ["Clear list", gtk.STOCK_OK, self.clear_all],
+                   ["Preferences", gtk.STOCK_PREFERENCES, self.controls.show_preferences]]
+        for b in _buttons:
+            bt = self._add_button(*b)
+            hbox.pack_start(bt, False, True, 0)
 
         return hbox
 
@@ -86,15 +89,33 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
 
         return swin
 
-    def add_click(self, *a):
-        bean = FModel(path=self.entry.get_text())
+    def start_all(self):
+        for dmbean in self.beans:
+            dmbean.start()
+
+    def stop_all(self):
+        for dmbean in self.beans:
+            dmbean.stop()
+
+    def clear_all(self):
+        beans = self.beans[:]
+        for dmbean in beans:
+            dmbean.clear()
+
+    def add_click(self):
+        bean = FModel(text = self.entry.get_text(), path = self.entry.get_text())
         self.add_bean(bean)
 
     def add_bean(self, bean):
-        dmbean = DMBean(bean)
+        dmbean = DMBean(bean, self.on_clear_dmbean)
         dmbean.show()
         self.beans.append(dmbean)
         self.dm_list.pack_start(dmbean, False, False, 0)
+
+    def on_clear_dmbean(self, dmbean):
+        self.beans.remove(dmbean)
+        print 'ACTIVE BEANS', self.beans
+        dmbean.destroy()
 
     def hide_window(self, *a):
         self.hide()
