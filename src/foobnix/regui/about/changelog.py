@@ -7,11 +7,11 @@ def changelog():
     window.set_title ("Changelog")
     window.set_position(gtk.WIN_POS_CENTER)
     window.set_border_width(10)
-    window.set_default_size(500, 200)
+    window.set_size_request(500, 200)
     gtk.window_set_default_icon_from_file (get_foobnix_pixmap_path_by_name("foobnix.png"))
-    
     scrolled_window = gtk.ScrolledWindow()
     scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+    window.set_resizable(False)
     
     window.connect("destroy", lambda * x:window.hide())
     
