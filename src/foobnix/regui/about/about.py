@@ -46,6 +46,7 @@ def CreateButton_with_label_and_icon(image,label):
 
 Это важная задача на улучшение кода и понимания ООП.
 
+посказки внизу
 """""""""
 
 class BaseParentWindow(gtk.Window):
