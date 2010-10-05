@@ -37,17 +37,21 @@ class BaseTree(gtk.TreeView):
                 next_iter_to_copy = from_model.iter_nth_child(from_iter, i)
                 self.iterCopy(from_model, next_iter_to_copy,to_model,  new_iter, gtk.TREE_VIEW_DROP_INTO_OR_BEFORE)
     
-    def on_drag_drop(self, treeview, drag_context, x, y, selection):    
-        to_path, to_pos = treeview.get_dest_row_at_pos(x, y)      
-        to_model = treeview.get_model()
+    def on_drag_drop(self, to_tree, drag_context, x, y, selection):    
+        to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)      
+        to_model = to_tree.get_model()
         to_iter = to_model.get_iter(to_path)
         
-        from_model, from_iter = drag_context.get_source_widget().get_selection().get_selected()
+        from_tree = drag_context.get_source_widget()
+        from_model, from_iter = from_tree.get_selection().get_selected()
         
         self.iterCopy(from_model, from_iter, to_model, to_iter, to_pos)
-        drag_context.finish(True, True)
         
-        treeview.expand_to_path(to_path)
+        if to_tree == from_tree:
+            """move element in the save tree"""
+            drag_context.finish(True, True)
+        
+        to_tree.expand_to_path(to_path)
 
 
 class TreeOne(BaseTree):
