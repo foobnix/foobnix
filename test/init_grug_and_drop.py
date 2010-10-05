@@ -1,79 +1,87 @@
-try:
-    import pygtk; pygtk.require("2.0")
-except:
-    pass
 import gtk
 
-data = [[0,"zero"],[1,"one"],[2,"two"],[3,"three"],[4,"four"],[5,"five"],[6,"six"]]
-
-class TreeDNDExample:
-
-    def checkSanity(self, model, iter_to_copy, target_iter):
+class BaseTree(gtk.TreeView):
+    def __init__(self):
+        gtk.TreeView.__init__(self)
+        
+        self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example", 0, 0)], gtk.gdk.ACTION_COPY)
+        self.enable_model_drag_dest([("example", 0, 0)], gtk.gdk.ACTION_COPY)
+        
+        self.connect("drag_data_received", self.onDragDataReceived)
+        
+        renderer = gtk.CellRendererText()
+        column = gtk.TreeViewColumn("Integer", renderer, text=0)
+        self.append_column(column)
+        column = gtk.TreeViewColumn("String", renderer, text=1)
+        self.append_column(column)
     
-        path_of_iter_to_copy = model.get_path(iter_to_copy)
-        path_of_target_iter = model.get_path(target_iter)
-        if path_of_target_iter[0:len(path_of_iter_to_copy)] == path_of_iter_to_copy:
-            return False
-        else:
-            return True
-    
-    def iterCopy(self, model, iter_to_copy, target_iter, pos):   
+    def iterCopy(self, from_model, from_iter,to_model, to_iter, pos):   
 
-        row = [model.get_value(iter_to_copy, 0),model.get_value(iter_to_copy, 1)]
+        row = [from_model.get_value(from_iter, 0),from_model.get_value(from_iter, 1)]
         
         if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
-            new_iter = model.prepend(target_iter, row)
+            new_iter = to_model.prepend(to_iter, row)
         elif pos == gtk.TREE_VIEW_DROP_BEFORE:
-            new_iter = model.insert_before(None, target_iter, row)
+            new_iter = to_model.insert_before(None, to_iter, row)
         elif pos == gtk.TREE_VIEW_DROP_AFTER:
-            new_iter = model.insert_after(None, target_iter,row)
+            new_iter = to_model.insert_after(None, to_iter,row)
         
-        if model.iter_has_child(iter_to_copy):
-            for i in range(0, model.iter_n_children(iter_to_copy)):
-                next_iter_to_copy = model.iter_nth_child(iter_to_copy, i)
-                self.iterCopy(model, next_iter_to_copy, new_iter, gtk.TREE_VIEW_DROP_INTO_OR_BEFORE)
+        if from_model.iter_has_child(from_iter):
+            for i in range(0, from_model.iter_n_children(from_iter)):
+                next_iter_to_copy = from_model.iter_nth_child(from_iter, i)
+                self.iterCopy(from_model, next_iter_to_copy,to_model,  new_iter, gtk.TREE_VIEW_DROP_INTO_OR_BEFORE)
     
     def onDragDataReceived(self, treeview, drag_context, x, y, selection, info, eventtime):    
-        path, pos = treeview.get_dest_row_at_pos(x, y)      
+        to_path, to_pos = treeview.get_dest_row_at_pos(x, y)      
+        to_model = treeview.get_model()
+        to_iter = to_model.get_iter(to_path)
         
-        model, iter_to_copy = treeview.get_selection().get_selected()
-        target_iter = model.get_iter(path)
+        from_model, from_iter = drag_context.get_source_widget().get_selection().get_selected()
         
-        
-        self.iterCopy(model, iter_to_copy, target_iter, pos)
+        self.iterCopy(from_model, from_iter, to_model, to_iter, to_pos)
         drag_context.finish(True, True, eventtime)
         
-        treeview.expand_to_path(path)
-      
-    
+        treeview.expand_to_path(to_path)
+
+
+class TreeOne(BaseTree):
+    def __init__(self):
+        BaseTree.__init__(self)
+        model = gtk.TreeStore(int, str)
+        data = [[0,"zero"],[1,"one"],[2,"two"],[3,"three"],[4,"four"],[5,"five"],[6,"six"]]
+        for item in data:
+            row = [item[0], item[1]]
+            iter = model.append(None, row)
+        self.set_model(model)
+        
+
+class TreeTwo(BaseTree):
+    def __init__(self):
+        BaseTree.__init__(self)
+        model = gtk.TreeStore(int, str)
+        data = [[0,"zero"],[1,"one"],[2,"two"],[3,"three"],[4,"four"],[5,"five"],[6,"six"]]
+        for item in data:
+            row = [item[0]+10, "2"+item[1]]
+            iter = model.append(None, row)
+        self.set_model(model)
+
+class TreeDNDExample:
     def __init__(self):
     
         window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         window.connect("delete_event", gtk.mainquit)
         window.set_default_size(250, 350)
         
-        scrolledwin = gtk.ScrolledWindow()
-        scrolledwin.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        window.add(scrolledwin)
+        one = TreeOne()
+        two = TreeTwo()
         
-        model = gtk.TreeStore(int, str)
-        for item in data:
-            iter = model.append(None)
-            model.set(iter, 0, item[0], 1, item[1])
+        hbox = gtk.HBox(False,0)
         
-        treeview = gtk.TreeView(model)
-        scrolledwin.add(treeview)
+        hbox.pack_start(one)
+        hbox.pack_start(two)
         
-        treeview.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example", 0, 0)], gtk.gdk.ACTION_COPY)
-        treeview.enable_model_drag_dest([("example", 0, 0)], gtk.gdk.ACTION_COPY)
-        
-        treeview.connect("drag_data_received", self.onDragDataReceived)
-        
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Integer", renderer, text=0)
-        treeview.append_column(column)
-        column = gtk.TreeViewColumn("String", renderer, text=1)
-        treeview.append_column(column)
+
+        window.add(hbox)
         
         window.show_all()
 
