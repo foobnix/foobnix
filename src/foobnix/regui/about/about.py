@@ -47,6 +47,39 @@ def CreateButton_with_label_and_icon(image,label):
 Это важная задача на улучшение кода и понимания ООП.
 
 """""""""
+
+class BaseParentWindow(gtk.Window):
+    def __init__(self):
+        gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
+        self.set_position(gtk.WIN_POS_CENTER)        
+        self.set_resizable(False)
+        
+        
+    def add_content(self, content):
+        self.add(content)
+        
+class AboutWindow(BaseParentWindow):
+    def __init__(self):
+        BaseParentWindow.__init__(self)
+        self.set_title("About Foobnix")
+        self.set_size_request(200, 200)
+        
+        """add new content to display in parent"""
+        content = gtk.Label("Hello About Label")
+        self.add_content(content)     
+
+class ChangeLogWindow(BaseParentWindow):
+    def __init__(self):
+        BaseParentWindow.__init__(self)
+        self.set_title("Changelog")
+        self.set_size_request(100, 100)        
+        
+        """add new content to display in parent"""
+        content = gtk.Label("Hello About Changelog")
+        self.add_content(content)
+
+#........        
+
     
 def about():
     window = gtk.Window(gtk.WINDOW_TOPLEVEL)    
