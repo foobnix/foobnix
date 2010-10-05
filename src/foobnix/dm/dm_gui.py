@@ -17,7 +17,8 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
         self.set_title("Download Manager")
         self.set_position(gtk.WIN_POS_CENTER)
-        self.set_resizable(True)
+        self.set_geometry_hints(self, min_width=700, min_height=400)
+        self.set_resizable(False)
         self.connect("delete-event", self.hide_window)
         self.connect("configure-event", self.on_configure_event)
         self.set_icon(self.controls.trayicon.get_pixbuf())
@@ -78,7 +79,7 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
 
     def line_list(self):
         swin = gtk.ScrolledWindow()
-        swin.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        swin.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         swin.show()
 
         vbox = gtk.VBox(False, 0)
@@ -126,13 +127,15 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         return True
 
     def on_configure_event(self, w, e):
-        FC().dm_window_size = [e.x, e.y, e.width, e.height]
+        pass
+        #~ FC().dm_window_size = [e.x, e.y, e.width, e.height]
 
     def on_save(self, *a):
         pass
 
     def on_load(self):
-        cfg = FC().dm_window_size
-        if cfg:
-            self.set_default_size(cfg[2], cfg[3])
-            self.move(cfg[0], cfg[1])
+        pass
+        #~ cfg = FC().dm_window_size
+        #~ if cfg:
+            #~ self.set_default_size(cfg[2], cfg[3])
+            #~ self.move(cfg[0], cfg[1])

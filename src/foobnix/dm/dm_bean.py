@@ -19,7 +19,7 @@ class DMBean(gtk.HBox):
         self._on_clear = on_clear
         self.bean = bean
 
-        """for test doenload"""
+        """for test download"""
         self.total_size = random.randrange(5*1024*1024, 15*10124*1024, 1024)
         self.speed = random.randrange(500, 1024)*1024
         self.ping = random.random()*2
@@ -60,6 +60,7 @@ class DMBean(gtk.HBox):
         label_vis = [self.label.show, self.label.hide, self.label.show, self.label.hide]
         progr_vis = [self.progressbar.hide, self.progressbar.show, self.progressbar.hide, self.progressbar.show]
         if self._state != state:
+            gtk.gdk.threads_enter()
             if state == self.STATE_READY:
                 self.toolbutton_clear.show()
             else:
@@ -69,6 +70,7 @@ class DMBean(gtk.HBox):
             label_vis[state]()
             progr_vis[state]()
             self._state = state
+            gtk.gdk.threads_leave()
 
     def on_start_stop(self, *a):
         if self._state == self.STATE_READY:
@@ -125,11 +127,22 @@ class DMBean(gtk.HBox):
             return"""
 
         """update info"""
+        gtk.gdk.threads_enter()
         if total_size<=0:
             persent = 0.5
             total_size = "NaN"
         else:
-            persent = block_count * block_size * 1.0 / total_size 
-        self.progressbar.set_text("%s | %s / %s (%.2f%%)" % (self.bean.text, block_count * block_size ,
-                                                           total_size, persent * 100))
+            persent = block_count * block_size * 1.0 / total_size
+        self.progressbar.set_text("%s | %s / %s (%.2f%%)" % (self.bean.text, size2text(block_count * block_size),
+                                                             size2text(total_size), persent * 100))
         self.progressbar.set_fraction(persent)
+        gtk.gdk.threads_leave()
+
+def size2text(size):
+    if size > 1024*1024*1024:
+        return "%.2f Gb" % (size / (1024*1024*1024.0))
+    if size > 1024*1024:
+        return "%.2f Mb" % (size / (1024*1024.0))
+    if size > 1024:
+        return "%.2f Kb" % (size / 1024.0)
+    return size
