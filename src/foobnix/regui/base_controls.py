@@ -106,10 +106,12 @@ class BaseFoobnixControls(LoadSave):
     def play(self, bean):
         if not bean:
             return None
-        if not bean.artist or not bean.title:
-            return None
+        
         if not bean.path:
-            vk = self.vk.find_one_track(bean.artist + " - " + bean.title)
+            if not bean.artist or not bean.title:            
+                vk = self.vk.find_one_track(bean.artist + " - " + bean.title)
+            else:
+                vk = self.vk.find_one_track(bean.text)
             if vk:
                 bean.path = vk.path
                 bean.time = vk.time

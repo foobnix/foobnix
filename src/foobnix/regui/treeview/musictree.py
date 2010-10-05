@@ -24,11 +24,10 @@ class MusicTreeControl(TreeViewControl, LoadSave):
         #self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
     
     def on_button_press(self, w, e):
+        
         if is_double_left_click(e):
             bean = self.get_selected_bean()
-            print bean
             self.controls.append_to_new_notebook(bean.text, [bean])
-            self.controls.play(bean)
             
         if is_rigth_click(e):            
                 menu = Popup()

@@ -90,6 +90,7 @@ class PlaylistControl(TreeViewControl):
 
     def active_current_song(self):
         current = self.get_selected_bean()
+        print current
         self.index = current.index
         if current.is_file:
             self.set_play_icon_to_selected_bean()
