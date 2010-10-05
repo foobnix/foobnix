@@ -106,6 +106,8 @@ class BaseFoobnixControls(LoadSave):
     def play(self, bean):
         if not bean:
             return None
+        if not bean.artist or not bean.title:
+            return None
         if not bean.path:
             vk = self.vk.find_one_track(bean.artist + " - " + bean.title)
             if vk:

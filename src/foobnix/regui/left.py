@@ -8,8 +8,6 @@ import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
-from foobnix.radio.radios import RadioFolder
-from foobnix.regui.model import FModel
 class LeftWidgets(FControl, LoadSave, gtk.VBox):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -56,6 +54,9 @@ class PerspectiveButtonControlls(FControl, gtk.HBox):
         
         virtuals = self.custom_button("Lists", gtk.STOCK_INDEX)
         virtuals.connect("clicked", self.on_change_perspective, controls.virtual)
+        
+        
+       
         
         self.button_list = [musics, radios, virtuals]
         OneActiveToggledButton(self.button_list)

@@ -33,7 +33,6 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         self.connect("key-release-event", self.on_key_release)
         
         self.connect("drag-drop", self.on_drag_drop)
-        #self.connect("drag-data-received", self.on_drag_data_received)
         
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
         self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
@@ -46,9 +45,9 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         
         """ Madonna """
         list = []
-        list.append(FModel("Madonna").add_font("bold"))
-        list.append(FModel("Madonna - Song1").add_font("normal").add_parent("Madonna"))
-        list.append(FModel("Madonna - Song2").add_font("normal").add_parent("Madonna"))
+        list.append(FModel("Madonna").add_is_file(False))
+        list.append(FModel("Madonna - Song1").add_parent("Madonna").add_is_file(True))
+        list.append(FModel("Madonna - Song2").add_parent("Madonna").add_is_file(True))
         for line in list:
             self.append(line)
             
@@ -60,57 +59,56 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         self.append(FModel('TEXT').add_font("bold"))
         self.append(FModel('TEXT').add_font("bold"))
             
-            
+     
+        self.prev_iter_play_icon = None
         
 
-    def on_drag_data_received(self, *a):
-        pass
-         
-        
-    def iter_copy(self, to_pos, to_model, to_iter, from_model, from_iter):
-        
+    def iter_copy(self, from_model, from_iter, to_model, to_iter, pos):   
+
+        #row = [from_model.get_value(from_iter, 0), from_model.get_value(from_iter, 1), True]
         row = self.get_row_from_model_iter(from_model, from_iter)
-
-        if (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):            
-            new_iter = to_model.prepend(to_iter, row)
-        elif to_pos == gtk.TREE_VIEW_DROP_BEFORE:            
-            new_iter = to_model.insert_before(to_iter,None, row)            
-        elif to_pos == gtk.TREE_VIEW_DROP_AFTER:            
-            new_iter = to_model.insert_after(to_iter,None, row)
-        elif to_pos == "append":
-            new_iter = to_model.append(to_iter, row)
         
-                
-        if from_model.iter_has_child(from_iter):            
-            for i in xrange(0, from_model.iter_n_children(from_iter)):
-                next_from_iter = from_model.iter_nth_child(from_iter, i)
-                self.iter_copy(gtk.TREE_VIEW_DROP_INTO_OR_BEFORE, to_model, new_iter, from_model, next_from_iter)
-                
+        if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+            new_iter = to_model.prepend(to_iter, row)
+        elif pos == gtk.TREE_VIEW_DROP_BEFORE:
+            new_iter = to_model.insert_before(None, to_iter, row)
+        elif pos == gtk.TREE_VIEW_DROP_AFTER:
+            new_iter = to_model.insert_after(None, to_iter, row)
+        else:
+            new_iter = to_model.append(None, row)
+        
+        if from_model.iter_has_child(from_iter):
+            for i in range(0, from_model.iter_n_children(from_iter)):
+                next_iter_to_copy = from_model.iter_nth_child(from_iter, i)
+                self.iter_copy(from_model, next_iter_to_copy, to_model, new_iter, gtk.TREE_VIEW_DROP_INTO_OR_BEFORE)
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
-        """from widget selected"""                
+        to_filter_model = to_tree.get_model()
+        to_model = to_filter_model.get_model()
+        if to_tree.get_dest_row_at_pos(x, y):
+            to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)
+            to_path = to_filter_model.convert_path_to_child_path(to_path)      
+            to_iter = to_model.get_iter(to_path)
+        else:
+            to_path = None
+            to_pos = None     
+            to_iter = None
+            
+        
         from_tree = drag_context.get_source_widget()
-        from_model, from_paths = from_tree.get_selection().get_selected_rows()
-        from_path = from_model.convert_path_to_child_path(from_paths[0])
+        from_filter_model, from_paths = from_tree.get_selection().get_selected_rows()
+        from_model = from_filter_model.get_model()
+        from_path = from_filter_model.convert_path_to_child_path(from_paths[0]) 
         from_iter = from_model.get_iter(from_path)
         
+        self.iter_copy(from_model, from_iter, to_model, to_iter, to_pos)
         
-        """to model"""                
-        to_filter_model = to_tree.get_model()
-        to_real_model = to_filter_model.get_model()         
-        if not to_tree.get_dest_row_at_pos(x, y):
-            to_iter = None
-            to_pos = "append"
-            self.iter_copy(to_pos, to_real_model, to_iter, from_model, from_iter)
-            return None
+        if to_tree == from_tree:
+            """move element in the save tree"""
+            drag_context.finish(True, True)
         
-        to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)       
-        to_path = to_filter_model.convert_path_to_child_path(to_path)
-        to_iter = to_real_model.get_iter(to_path)  
-        
-        """iter copy"""        
-        self.iter_copy(to_pos, to_real_model, to_iter, from_model, from_iter)        
-        to_tree.expand_to_path(to_path)
+        if to_path:
+            to_tree.expand_to_path(to_path)
         
 
     def set_scrolled(self, policy_horizontal, policy_vertical):        
@@ -127,7 +125,11 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
             self.append(bean)
                 
     def append(self, bean):        
-        bean.visible = True        
+        bean.visible = True
+        if bean.is_file == True:
+            bean.font = "normal"
+        else:
+            bean.font = "bold"
         #bean.text = bean.text + " !" + str(bean.start_sec) + "=" + str(bean.duration_sec) 
                
         bean.index = self.count_index
@@ -141,7 +143,7 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
             value = self.model.append(None, row)
         return value
     
-    def get_row_from_bean(self,bean):
+    def get_row_from_bean(self, bean):
         attributes = []
         m_dict = FTreeModel().cut().__dict__
         new_dict = dict (zip(m_dict.values(), m_dict.keys()))
@@ -151,7 +153,7 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
             attributes.append(value)
         return attributes
     
-    def get_row_from_model_iter(self,model, iter):
+    def get_row_from_model_iter(self, model, iter):
         attributes = []
         size = len(FTreeModel().__dict__)
         for i in xrange(size):  
@@ -206,9 +208,21 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         selection = self.get_selection()
         model, paths = selection.get_selected_rows()
         if not paths:
-            return None
-        
+            return None        
         return self._get_bean_by_path(paths[0])
+    
+    def set_play_icon_to_selected_bean(self):
+        selection = self.get_selection()
+        filter_model, paths = selection.get_selected_rows()
+        if not paths:
+            return None
+        path = filter_model.convert_path_to_child_path(paths[0])
+        model = filter_model.get_model()
+        iter = model.get_iter(path)                
+        model.set_value(iter, self.play_icon[0], gtk.STOCK_MEDIA_PLAY)
+        if self.prev_iter_play_icon:
+            model.set_value(self.prev_iter_play_icon, self.play_icon[0], None)               
+        self.prev_iter_play_icon = iter
     
     def get_children_beans_by_selected(self):
         selection = self.get_selection()

@@ -59,7 +59,8 @@ class PlaylistControl(TreeViewControl):
                 self.index = randint(0, self.count_index)
         elif lopping == const.LOPPING_DONT_LOOP:
             return None
-        self.repopulate(self.index)
+        #self.repopulate(self.index)
+        self.set_play_icon_to_selected_bean()
         return self.get_bean_by_position(self.index)
 
     def prev(self, rnd=False, lopping=const.LOPPING_LOOP_ALL):
@@ -72,7 +73,7 @@ class PlaylistControl(TreeViewControl):
                 self.index = randint(0, self.count_index)
         elif lopping == const.LOPPING_DONT_LOOP:
             return None
-        self.repopulate(self.index)
+        self.set_play_icon_to_selected_bean()
         return self.get_bean_by_position(self.index)
 
     def append(self, bean):
@@ -86,23 +87,13 @@ class PlaylistControl(TreeViewControl):
             value = super(PlaylistControl, self).append(bean)
         return value
 
-    def repopulate(self, index):
-        self.count_index = 0
-        all = self.get_all_beans()
-        beans = []
-        for bean in all:
-            print "REPOP", bean
-            if bean.index == index:
-                bean.play_icon = gtk.STOCK_MEDIA_PLAY
-            else:
-                bean.play_icon = None
-            beans.append(bean)
-        self.populate(beans)
 
     def active_current_song(self):
         current = self.get_selected_bean()
         self.index = current.index
-        self.repopulate(current.index)
+        if current.is_file:
+            self.set_play_icon_to_selected_bean()
+            
 
         """play song"""
         self.controls.play(current)

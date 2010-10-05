@@ -150,6 +150,4 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         FC().lopping = self.lopping
 
     def switch_tree(self, tree):
-        if self.active_tree and self.active_tree != tree:
-            self.active_tree.repopulate(-1)
         self.active_tree = tree
