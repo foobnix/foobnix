@@ -19,28 +19,6 @@ class VirtualTreeControl(TreeViewControl, LoadSave):
         column.set_resizable(True)
         self.append_column(column)
         
-        
-        bean = FModel('TEXT').add_font("bold")        
-        parent = self.append(bean)
-        self.append(FModel('TEXT1').add_font("normal").add_level(parent))
-        self.append(FModel('TEXT2').add_font("normal").add_level(parent))
-        self.append(FModel('TEXT2').add_font("normal").add_level(parent))
-        self.append(FModel('TEXT').add_font("bold"))
-        self.append(FModel('TEXT').add_font("bold"))
-        
-        self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
-        self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
-        
-        self.connect("drag-drop", self.on_drag_drop)
-    
-    def on_drag_drop(self, treeview, drag_context, x, y, selection):        
-        print treeview, drag_context, x, y, selection
-        control = drag_context.get_source_widget()
-        bean = control.get_selected_bean()
-        bean.is_file = True        
-        self.append(bean)
-        
-    
     def on_button_press(self, w, e):
         if is_double_left_click(e):
             bean = self.get_selected_bean()

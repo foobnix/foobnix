@@ -14,7 +14,6 @@ from foobnix.regui.model import FModel
 class PlaylistControl(TreeViewControl):
     def __init__(self, controls):
         TreeViewControl.__init__(self, controls)
-        self.set_reorderable(True)
 
         """Column icon"""
         icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
@@ -44,38 +43,6 @@ class PlaylistControl(TreeViewControl):
         self.append_column(time)
 
         self.index = -1
-
-        list = []
-        list.append(FModel("Madonna").add_font("bold"))
-        list.append(FModel("Madonna - Song1").add_font("normal").add_parent("Madonna"))
-        list.append(FModel("Madonna - Song2").add_font("normal").add_parent("Madonna"))
-        for line in list:
-            self.append(line)
-
-        #self.set_grid_lines(True)
-        self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
-        self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
-
-        self.connect("drag-data-received", self.drag_data_received_data)
-        self.connect("drag-data-get", self.drag_data_received_get)
-        self.connect("drag-drop", self.on_drag_drop)
-
-    def on_drag_drop(self, treeview, drag_context, x, y, selection):
-        print "on_drag_drop"
-        print treeview, drag_context, x, y, selection
-        control = drag_context.get_source_widget()
-        bean = control.get_selected_bean()
-        print "get_source_widget",
-        self.controls.append_to_current_notebook([bean])
-
-
-    def drag_data_received_get(self, *a):
-        print "drag_data_received_get"
-        print a
-
-    def drag_data_received_data(self, treeview, drag_context, x, y, selection, info, eventtime):
-        print treeview, drag_context, x, y, selection, info, eventtime
-
 
 
     def on_key_release(self, w, e):

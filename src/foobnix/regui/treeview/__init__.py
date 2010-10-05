@@ -32,22 +32,85 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         self.connect("button-press-event", self.on_button_press)
         self.connect("key-release-event", self.on_key_release)
         
-        #self.connect("drag-data-get", self.drag_data_get_data)
-        #self.connect("drag-data-received", self.drag_data_received_data)
+        self.connect("drag-drop", self.on_drag_drop)
+        #self.connect("drag-data-received", self.on_drag_data_received)
+        
+        self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
+        self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
         
         
         self.count_index = 0
         
-        #self.set_reorderable(True) 
+        self.set_reorderable(False) 
         self.set_headers_visible(False)
         
-        self.set_drag_dest_row((0), 0)
-        #self.append(FModel("text", "path").add_font("bold"))
-    
-        #self.connect("drag-data-get", self.on_drag_drop_get)
-        #self.connect("drag-drop", self.on_drag_drop)        
-        #self.connect("drag-data-received", self.on_drag_received)
+        """ Madonna """
+        list = []
+        list.append(FModel("Madonna").add_font("bold"))
+        list.append(FModel("Madonna - Song1").add_font("normal").add_parent("Madonna"))
+        list.append(FModel("Madonna - Song2").add_font("normal").add_parent("Madonna"))
+        for line in list:
+            self.append(line)
+            
+        bean = FModel('TEXT').add_font("bold")        
+        parent = self.append(bean)
+        self.append(FModel('TEXT1').add_font("normal").add_level(parent))
+        self.append(FModel('TEXT2').add_font("normal").add_level(parent))
+        self.append(FModel('TEXT2').add_font("normal").add_level(parent))
+        self.append(FModel('TEXT').add_font("bold"))
+        self.append(FModel('TEXT').add_font("bold"))
+            
+            
         
+
+    def on_drag_data_received(self, *a):
+        pass
+         
+        
+    def iter_copy(self, to_pos, to_model, to_iter, from_model, from_iter):
+        
+        row = self.get_row_from_model_iter(from_model, from_iter)
+
+        if (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):            
+            new_iter = to_model.prepend(to_iter, row)
+        elif to_pos == gtk.TREE_VIEW_DROP_BEFORE:            
+            new_iter = to_model.insert_before(to_iter,None, row)            
+        elif to_pos == gtk.TREE_VIEW_DROP_AFTER:            
+            new_iter = to_model.insert_after(to_iter,None, row)
+        elif to_pos == "append":
+            new_iter = to_model.append(to_iter, row)
+        
+                
+        if from_model.iter_has_child(from_iter):            
+            for i in xrange(0, from_model.iter_n_children(from_iter)):
+                next_from_iter = from_model.iter_nth_child(from_iter, i)
+                self.iter_copy(gtk.TREE_VIEW_DROP_INTO_OR_BEFORE, to_model, new_iter, from_model, next_from_iter)
+                
+    
+    def on_drag_drop(self, to_tree, drag_context, x, y, selection):
+        """from widget selected"""                
+        from_tree = drag_context.get_source_widget()
+        from_model, from_paths = from_tree.get_selection().get_selected_rows()
+        from_path = from_model.convert_path_to_child_path(from_paths[0])
+        from_iter = from_model.get_iter(from_path)
+        
+        
+        """to model"""                
+        to_filter_model = to_tree.get_model()
+        to_real_model = to_filter_model.get_model()         
+        if not to_tree.get_dest_row_at_pos(x, y):
+            to_iter = None
+            to_pos = "append"
+            self.iter_copy(to_pos, to_real_model, to_iter, from_model, from_iter)
+            return None
+        
+        to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)       
+        to_path = to_filter_model.convert_path_to_child_path(to_path)
+        to_iter = to_real_model.get_iter(to_path)  
+        
+        """iter copy"""        
+        self.iter_copy(to_pos, to_real_model, to_iter, from_model, from_iter)        
+        to_tree.expand_to_path(to_path)
         
 
     def set_scrolled(self, policy_horizontal, policy_vertical):        
@@ -65,26 +128,36 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
                 
     def append(self, bean):        
         bean.visible = True        
-        """ check append add title and artist"""
-        #bean.text = bean.text + " ["+str(bean.artist)+ " - " +str(bean.title) + "]"+str(bean.font)
-        #bean.text = bean.text + " !" + str(bean.info)
         #bean.text = bean.text + " !" + str(bean.start_sec) + "=" + str(bean.duration_sec) 
                
         bean.index = self.count_index
         self.count_index += 1
-        #bean.play_icon = gtk.STOCK_MEDIA_PLAY
+        
+        row = self.get_row_from_bean(bean)
+        
+        if isinstance(bean.level, gtk.TreeIter):            
+            value = self.model.append(bean.level, row)
+        else:
+            value = self.model.append(None, row)
+        return value
+    
+    def get_row_from_bean(self,bean):
         attributes = []
         m_dict = FTreeModel().cut().__dict__
         new_dict = dict (zip(m_dict.values(), m_dict.keys()))
         
         for key in new_dict.values():
             value = getattr(bean, key)
-            attributes.append(value)   
-        if isinstance(bean.level, gtk.TreeIter):            
-            value = self.model.append(bean.level, attributes)
-        else:
-            value = self.model.append(None, attributes)
-        return value
+            attributes.append(value)
+        return attributes
+    
+    def get_row_from_model_iter(self,model, iter):
+        attributes = []
+        size = len(FTreeModel().__dict__)
+        for i in xrange(size):  
+            value = model.get_value(iter, i)
+            attributes.append(value)
+        return attributes
     
     def append_from_scanner(self, all):
         """copy beans"""
