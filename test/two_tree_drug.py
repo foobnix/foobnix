@@ -48,22 +48,28 @@ class CoreTree(gtk.ScrolledWindow):
          
       
     def iter_copy(self, to_pos, to_model, to_iter, from_model, from_iter):
+        print "has child3", from_model.iter_has_child(from_iter)
         data_column_0 = from_model.get_value(from_iter, 0)
-        data_column_1 = from_model.get_value(from_iter, 1)        
-        print to_model
-        print to_iter
+        data_column_1 = from_model.get_value(from_iter, 1)
+        data_column_2 = from_model.get_value(from_iter, 2)
+        
+        row = [data_column_0,data_column_1, data_column_2]
+        
+        print "has child4", from_model.iter_has_child(from_iter)
 
         if (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (to_pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):            
-            new_iter = to_model.prepend(to_iter, None)
+            new_iter = to_model.prepend(to_iter, row)
         elif to_pos == gtk.TREE_VIEW_DROP_BEFORE:            
-            new_iter = to_model.insert_before(None, to_iter)            
+            new_iter = to_model.insert_before(to_iter,None,row)            
         elif to_pos == gtk.TREE_VIEW_DROP_AFTER:            
-            new_iter = to_model.insert_after(None, to_iter)
-      
-        to_model.set_value(new_iter, 0, data_column_0)
-        to_model.set_value(new_iter, 1, data_column_1)
-        to_model.set_value(new_iter, 2, True)
-                
+            new_iter = to_model.insert_after(to_iter,None, row)
+        elif to_pos == "append":
+            print "has child5", from_model.iter_has_child(from_iter)            
+            #new_iter = to_model.insert_before(iter,None, row)
+            print "has child6", from_model.iter_has_child(from_iter)
+        
+        print "has child100", from_model.iter_has_child(from_iter)
+         
         if from_model.iter_has_child(from_iter):
             for i in xrange(0, from_model.iter_n_children(from_iter)):
                 next_from_iter = from_model.iter_nth_child(from_iter, i)
@@ -76,23 +82,23 @@ class CoreTree(gtk.ScrolledWindow):
         from_model, from_paths = from_tree.get_selection().get_selected_rows()
         from_path = from_model.convert_path_to_child_path(from_paths[0])
         from_iter = from_model.get_iter(from_path)
-        
+
+        print "has child1", from_model.iter_has_child(from_iter)
         
         """to model"""                
         to_filter_model = to_tree.get_model()
         to_real_model = to_filter_model.get_model()         
         if not to_tree.get_dest_row_at_pos(x, y):
-            data_column_0 = from_model.get_value(from_iter, 0)
-            data_column_1 = from_model.get_value(from_iter, 1)
-            to_real_model.append(None, [data_column_0, data_column_1, True])
+            to_iter = None
+            to_pos = "append"
+            print "has child2", from_model.iter_has_child(from_iter)
+            self.iter_copy(to_pos, to_real_model, to_iter, from_model, from_iter)
             return None
         
         to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)        
         #to_model = to_tree.get_model()
         to_path = to_filter_model.convert_path_to_child_path(to_path)
         to_iter = to_real_model.get_iter(to_path)  
-        
-        print "to is valid", to_real_model.iter_is_valid(to_iter)      
            
         """iter copy"""        
         self.iter_copy(to_pos, to_real_model, to_iter, from_model, from_iter)        
