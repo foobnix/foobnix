@@ -53,7 +53,11 @@ class BaseParentWindow(gtk.Window):
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
         self.set_position(gtk.WIN_POS_CENTER)        
         self.set_resizable(False)
-        
+        self.connect("destroy", self.on_destroy)
+            
+    def on_destroy(self,*a):
+        self.hide()
+        return True
         
     def add_content(self, content):
         self.add(content)
@@ -66,7 +70,8 @@ class AboutWindow(BaseParentWindow):
         
         """add new content to display in parent"""
         content = gtk.Label("Hello About Label")
-        self.add_content(content)     
+        self.add_content(content)
+         
 
 class ChangeLogWindow(BaseParentWindow):
     def __init__(self):
