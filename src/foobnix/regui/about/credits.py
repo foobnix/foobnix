@@ -5,6 +5,7 @@ from foobnix.regui.service.image_service import get_foobnix_pixmap_path_by_name
 def credits():
     window = gtk.Window(gtk.WINDOW_TOPLEVEL)
     window.set_title ("Credits")
+    print "Credits, every time I am creating new instance of Credits when open it."
     window.set_position(gtk.WIN_POS_CENTER)
     window.set_border_width(10)
     #window.set_default_size(500,200)

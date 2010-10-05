@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on Oct 2, 2010
 
@@ -6,6 +7,8 @@ Created on Oct 2, 2010
 import gtk
 from foobnix.regui.service.image_service import get_foobnix_pixmap_path_by_name
 from foobnix.regui.about import credits, changelog
+
+
 
 def CreateButton_with_label_and_icon(image,label): 
     box = gtk.HBox(False, 0)
@@ -16,10 +19,39 @@ def CreateButton_with_label_and_icon(image,label):
     button = gtk.Button()
     button.add(box)
     return button
+
+
+"""""""""
+Три окна about, changelog, credits имеют похожий функционал.
+1) все они не изменяемого размера
+2) все они прячуться при нажатии заркыть окно.
+3) у всех есть тайтл
+
+!!!Тоесть нет необходимости дублировать код создания одних и тех же окон три раза, 
+а можно использовать ООП
+
+Создать базовый класс например BaseParentWindow
+который будет
+1) не измеряем,
+2) закрываем
+3) опледелено действие скрыть
+4) принимать title окна
+5) принимать размер окна
+6) принимать содержание.
+
+Создать три подкласса AboutWindow, ChangelogWindow, CreditWindow
+которые наслудются от главного но имеют свои особенности.
+
+Тоесть они переиспользуют родителя с добавлением своих особенностей реализации контента.
+
+Это важная задача на улучшение кода и понимания ООП.
+
+"""""""""
     
 def about():
-    window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-    window.set_title ("About Foobnix")
+    window = gtk.Window(gtk.WINDOW_TOPLEVEL)    
+    window.set_title ("About Foobnix, every time I am creating new instance on window")
+    print "About Foobnix, every time I am creating new instance on window when open it."
     window.set_position(gtk.WIN_POS_CENTER)
     window.set_border_width(5)
     window.set_geometry_hints(window, min_width=270, min_height=270)

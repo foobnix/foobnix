@@ -4,7 +4,9 @@ from foobnix.regui.service.image_service import get_foobnix_pixmap_path_by_name
 
 def changelog():
     window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-    window.set_title ("Changelog")
+    window.set_title ("Changelog")    
+    print "Changelog, every time I am creating new instance of Changelog when open it."
+    print "Changelog, every time I will read file with change log"
     window.set_position(gtk.WIN_POS_CENTER)
     window.set_border_width(10)
     window.set_size_request(500, 200)
