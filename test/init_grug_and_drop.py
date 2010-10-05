@@ -17,34 +17,34 @@ class TreeDNDExample:
         else:
             return True
     
-    def iterCopy(self, treeview, model, iter_to_copy, target_iter, pos):
-    
-        data_column_0 = model.get_value(iter_to_copy, 0)
-        data_column_1 = model.get_value(iter_to_copy, 1)
+    def iterCopy(self, model, iter_to_copy, target_iter, pos):   
+
+        row = [model.get_value(iter_to_copy, 0),model.get_value(iter_to_copy, 1)]
+        
         if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
-            new_iter = model.prepend(target_iter, None)
+            new_iter = model.prepend(target_iter, row)
         elif pos == gtk.TREE_VIEW_DROP_BEFORE:
-            new_iter = model.insert_before(None, target_iter)
+            new_iter = model.insert_before(None, target_iter, row)
         elif pos == gtk.TREE_VIEW_DROP_AFTER:
-            new_iter = model.insert_after(None, target_iter)
-        model.set_value(new_iter, 0, data_column_0)
-        model.set_value(new_iter, 1, data_column_1)
+            new_iter = model.insert_after(None, target_iter,row)
+        
         if model.iter_has_child(iter_to_copy):
             for i in range(0, model.iter_n_children(iter_to_copy)):
                 next_iter_to_copy = model.iter_nth_child(iter_to_copy, i)
-                self.iterCopy(treeview, model, next_iter_to_copy, new_iter, gtk.TREE_VIEW_DROP_INTO_OR_BEFORE)
+                self.iterCopy(model, next_iter_to_copy, new_iter, gtk.TREE_VIEW_DROP_INTO_OR_BEFORE)
     
-    def onDragDataReceived(self, treeview, drag_context, x, y, selection, info, eventtime):
-    
-        path, pos = treeview.get_dest_row_at_pos(x, y)
+    def onDragDataReceived(self, treeview, drag_context, x, y, selection, info, eventtime):    
+        path, pos = treeview.get_dest_row_at_pos(x, y)      
+        
         model, iter_to_copy = treeview.get_selection().get_selected()
         target_iter = model.get_iter(path)
-        if self.checkSanity(model, iter_to_copy, target_iter):
-            self.iterCopy(treeview, model, iter_to_copy, target_iter, pos)
-            drag_context.finish(gtk.TRUE, gtk.TRUE, eventtime)
-            treeview.expand_all()
-        else:
-            drag_context.finish(gtk.FALSE, gtk.FALSE, eventtime)
+        
+        
+        self.iterCopy(model, iter_to_copy, target_iter, pos)
+        drag_context.finish(True, True, eventtime)
+        
+        treeview.expand_to_path(path)
+      
     
     def __init__(self):
     
