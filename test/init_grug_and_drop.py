@@ -6,14 +6,14 @@ class BaseTree(gtk.TreeView):
         column = gtk.TreeViewColumn("id",  gtk.CellRendererText(), text=0)
         self.append_column(column)
         
-        column = gtk.TreeViewColumn("Value",  gtk.CellRendererText(), text=1)
+        column = gtk.TreeViewColumn("value",  gtk.CellRendererText(), text=1)
         self.append_column(column)
         
         model = gtk.TreeStore(int, str)
-        data = [[0,"zero"],[1,"one"],[2,"two"],[3,"three"],[4,"four"],[5,"five"],[6,"six"]]
-        for item in data:
-            row = [item[0], item[1]]
-            iter = model.append(None, row)
+
+        for i, item in enumerate(["zero","one","two","three","four","five","six"]):
+            model.append(None, [i, item])
+        
         self.set_model(model)
         
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example", 0, 0)], gtk.gdk.ACTION_COPY)
@@ -21,7 +21,7 @@ class BaseTree(gtk.TreeView):
         
         self.connect("drag_drop", self.on_drag_drop)
         
-    def iterCopy(self, from_model, from_iter,to_model, to_iter, pos):   
+    def iter_copy(self, from_model, from_iter,to_model, to_iter, pos):   
 
         row = [from_model.get_value(from_iter, 0),from_model.get_value(from_iter, 1)]
         
@@ -35,7 +35,7 @@ class BaseTree(gtk.TreeView):
         if from_model.iter_has_child(from_iter):
             for i in range(0, from_model.iter_n_children(from_iter)):
                 next_iter_to_copy = from_model.iter_nth_child(from_iter, i)
-                self.iterCopy(from_model, next_iter_to_copy,to_model,  new_iter, gtk.TREE_VIEW_DROP_INTO_OR_BEFORE)
+                self.iter_copy(from_model, next_iter_to_copy,to_model,  new_iter, gtk.TREE_VIEW_DROP_INTO_OR_BEFORE)
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):    
         to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)      
@@ -45,7 +45,7 @@ class BaseTree(gtk.TreeView):
         from_tree = drag_context.get_source_widget()
         from_model, from_iter = from_tree.get_selection().get_selected()
         
-        self.iterCopy(from_model, from_iter, to_model, to_iter, to_pos)
+        self.iter_copy(from_model, from_iter, to_model, to_iter, to_pos)
         
         if to_tree == from_tree:
             """move element in the save tree"""
