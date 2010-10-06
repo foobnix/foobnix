@@ -13,12 +13,13 @@ class BaseParentWindow(gtk.Window):
         self.set_position(gtk.WIN_POS_CENTER)        
         self.set_resizable(False)        
         self.set_title(title)
+        self.set_border_width(10)
         
         """ get foobnix icon path"""                
         self.set_icon_from_file (self.get_fobnix_logo())
         
         self.connect("destroy", self.on_destroy)
-        gtk.window_set_default_icon_from_file (get_foobnix_pixmap_path_by_name("foobnix.png"))    
+        gtk.window_set_default_icon_from_file (self.get_fobnix_logo())    
     
     def get_fobnix_logo(self):
         return get_foobnix_pixmap_path_by_name("foobnix.png")
@@ -33,7 +34,6 @@ class AboutWindow(BaseParentWindow):
         BaseParentWindow.__init__(self, "About Window")
 
         """init About window"""
-        self.set_border_width(10)
         self.set_size_request(400,400)
     
     
@@ -64,7 +64,7 @@ class AboutWindow(BaseParentWindow):
         image = gtk.image_new_from_stock(gtk.STOCK_STOP, gtk.ICON_SIZE_MENU)
         
         button_close = self.create_button_with_label_and_icon(image,label)
-        button_close.connect("clicked", lambda *a: self.hide())
+        button_close.connect("clicked", lambda *a: self.on_destroy())
         button_close.set_border_width (9)
         table.attach(button_close, 2, 3, 2, 3)
         
@@ -109,7 +109,6 @@ class WindowWithBuffer(BaseParentWindow):
         BaseParentWindow.__init__(self, title)
        
         """init CreditsWindow"""
-        self.set_border_width(10)
         self.set_size_request(300,300)
         
         
