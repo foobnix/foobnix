@@ -43,6 +43,12 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         self.set_reorderable(False) 
         self.set_headers_visible(False)
         
+        self.prev_iter_play_icon = None
+        
+        self.init_data_tree()
+    
+    def init_data_tree(self):
+        self.get_model().get_model().clear()
         """ Madonna """
         list = []
         list.append(FModel("Madonna").add_is_file(False))
@@ -59,9 +65,6 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         self.append(FModel('TEXT').add_font("bold"))
         self.append(FModel('TEXT').add_font("bold"))
             
-     
-        self.prev_iter_play_icon = None
-        
 
     def iter_copy(self, from_model, from_iter, to_model, to_iter, pos):   
 
@@ -142,6 +145,15 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         else:
             value = self.model.append(None, row)
         return value
+    
+    def get_bean_from_row(self, row):      
+        bean = FModel()        
+        id_dict = FTreeModel().cut().__dict__
+        for key in id_dict.keys():
+            num = id_dict[key]
+            setattr(bean, key, row[num])            
+        return bean
+
     
     def get_row_from_bean(self, bean):
         attributes = []

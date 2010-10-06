@@ -151,3 +151,10 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
     def switch_tree(self, tree):
         self.active_tree = tree
+    
+    def set_playlist_tree(self):
+        self.active_tree.set_playlist_tree()
+    
+    def set_playlist_plain(self):
+        self.active_tree.set_playlist_plain()
+

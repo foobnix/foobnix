@@ -28,6 +28,12 @@ class BaseFoobnixControls(LoadSave):
         self.is_radio_populated = False
         pass
 
+    def set_playlist_tree(self):
+        self.notetabs.set_playlist_tree()
+    
+    def set_playlist_plain(self):
+        self.notetabs.set_playlist_plain()
+    
     def load_music_tree(self):
         if FC().cache_music_tree_beans:
             self.tree.populate_from_scanner(FC().cache_music_tree_beans)

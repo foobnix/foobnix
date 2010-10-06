@@ -24,7 +24,7 @@ class BaseParentWindow(gtk.Window):
     def get_fobnix_logo(self):
         return get_foobnix_pixmap_path_by_name("foobnix.png")
         
-    def on_destroy(self,*a):
+    def on_destroy(self,*a):    
         self.hide()
         return True
     
