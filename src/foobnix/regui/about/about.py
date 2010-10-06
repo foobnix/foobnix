@@ -6,48 +6,7 @@ Created on Oct 2, 2010
 '''
 import gtk
 from foobnix.regui.service.image_service import get_foobnix_pixmap_path_by_name
-from foobnix.regui.about import credits, changelog
 
-
-
-def CreateButton_with_label_and_icon(image,label): 
-    box = gtk.HBox(False, 0)
-    box.set_border_width (2)
-    box.pack_end (label, True, False, 0)
-    box.pack_end (image, True, False, 0)
-    
-    button = gtk.Button()
-    button.add(box)
-    return button
-
-
-"""""""""
-Три окна about, changelog, credits имеют похожий функционал.
-1) все они не изменяемого размера
-2) все они прячуться при нажатии заркыть окно.
-3) у всех есть тайтл
-
-!!!Тоесть нет необходимости дублировать код создания одних и тех же окон три раза, 
-а можно использовать ООП
-
-Создать базовый класс например BaseParentWindow
-который будет
-1) не измеряем,
-2) закрываем
-3) опледелено действие скрыть
-4) принимать title окна
-5) принимать размер окна
-6) принимать содержание.
-
-Создать три подкласса AboutWindow, ChangelogWindow, CreditWindow
-которые наслудются от главного но имеют свои особенности.
-
-Тоесть они переиспользуют родителя с добавлением своих особенностей реализации контента.
-
-Это важная задача на улучшение кода и понимания ООП.
-
-посказки внизу
-"""""""""
 
 class BaseParentWindow(gtk.Window):
     def __init__(self):
@@ -55,6 +14,7 @@ class BaseParentWindow(gtk.Window):
         self.set_position(gtk.WIN_POS_CENTER)        
         self.set_resizable(False)
         self.connect("destroy", self.on_destroy)
+        gtk.window_set_default_icon_from_file (get_foobnix_pixmap_path_by_name("foobnix.png"))
             
     def on_destroy(self,*a):
         self.hide()
@@ -62,40 +22,46 @@ class BaseParentWindow(gtk.Window):
         
     def add_content(self, content):
         self.add(content)
-        
+
+       
 class AboutWindow(BaseParentWindow):
-    def __init__(self):
+    def __init__(self, title, border_width, width_window, high_window):
         BaseParentWindow.__init__(self)
-        self.set_title("About Foobnix")
-        self.set_size_request(200, 200)
+        self.set_title(title)
+        self.set_border_width(border_width)
+        self.set_size_request(width_window, high_window)
+               
         
-        """add new content to display in parent"""
-        content = gtk.Label("Hello About Label")
-        self.add_content(content)
-         
-
-class ChangeLogWindow(BaseParentWindow):
-    def __init__(self):
-        BaseParentWindow.__init__(self)
-        self.set_title("Changelog")
-        self.set_size_request(100, 100)        
+class Window_with_Scrollbars (AboutWindow, gtk.TextBuffer):
+       
+    def __init__(self, title, border_width, width_window, high_window, buffer_content):
+        AboutWindow.__init__(self, title, border_width, width_window, high_window)
+        gtk.TextBuffer.__init__(self)
+        self.buffer = gtk.TextBuffer()
+        self.buffer.set_text(buffer_content)
+        self.text=gtk.TextView(self.buffer)
+        self.text.set_editable(False)
+        #self.text.set_cursor_visible(False)
+        self.scrolled_window = gtk.ScrolledWindow()
+        self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)        
+        self.scrolled_window.add(self.text)
+        self.scrolled_window.show()
         
-        """add new content to display in parent"""
-        content = gtk.Label("Hello About Changelog")
-        self.add_content(content)
 
-#........        
-
+def create_button_with_label_and_icon(image,label): 
+    box = gtk.HBox(False, 0)
+    box.set_border_width (2)
+    box.pack_end (label, True, False, 0)
+    box.pack_end (image, True, False, 0)
     
+    button = gtk.Button()
+    button.add(box)
+    return button        
+        
+   
 def about():
-    window = gtk.Window(gtk.WINDOW_TOPLEVEL)    
-    window.set_title ("About Foobnix, every time I am creating new instance on window")
-    print "About Foobnix, every time I am creating new instance on window when open it."
-    window.set_position(gtk.WIN_POS_CENTER)
-    window.set_border_width(5)
-    window.set_geometry_hints(window, min_width=270, min_height=270)
-    gtk.window_set_default_icon_from_file (get_foobnix_pixmap_path_by_name("foobnix.png"))
-    window.set_resizable(False)
+    
+    window = AboutWindow("About Foobnix", 5, 310, 270)
     
     """ get foobnix icon path"""
     foobnix_image_path = get_foobnix_pixmap_path_by_name("foobnix.png")
@@ -108,49 +74,76 @@ def about():
     table.attach(image, 0, 3, 0, 1)
     
     label = gtk.Label("Foobnix")
-    
     label.set_markup ("""
 <big><big><b><b>Foobnix</b></b></big></big>
 Playing all imaginations\n
 <small>Developed by Ivan Ivanenko</small>
 <small>ivan.ivanenko@gmail.com</small>\n   
 <a href="http://www.foobnix.com">www.foobnix.com</a>\n""");
-    
     label.set_justify(gtk.JUSTIFY_CENTER)
     table.attach(label, 0, 3, 1, 2)
     
     label = gtk.Label("Credits")
     image = gtk.image_new_from_stock(gtk.STOCK_INFO, gtk.ICON_SIZE_MENU)
     
-    button_credits = CreateButton_with_label_and_icon(image,label)
+    button_credits = create_button_with_label_and_icon(image,label)
     button_credits.set_border_width (9)
     table.attach(button_credits, 0, 1, 2, 3)
     
     label = gtk.Label("Close")
     image = gtk.image_new_from_stock(gtk.STOCK_STOP, gtk.ICON_SIZE_MENU)
     
-    button_close = CreateButton_with_label_and_icon(image,label)
+    button_close = create_button_with_label_and_icon(image,label)
     button_close.set_border_width (9)
     table.attach(button_close, 2, 3, 2, 3)
     
     label = gtk.Label("Changelog")
     image = gtk.image_new_from_stock(gtk.STOCK_DND, gtk.ICON_SIZE_MENU)
     
-    button_changelog = CreateButton_with_label_and_icon(image,label)
+    button_changelog = create_button_with_label_and_icon(image,label)
     button_changelog.set_border_width (9)
     table.attach(button_changelog, 1, 2, 2, 3)
     
-    window.connect("destroy", lambda * x:window.hide())
-    button_close.connect("clicked", lambda * x:window.hide())
-    button_credits.connect("clicked", lambda * x:credits.credits())
-    button_changelog.connect("clicked", lambda * x:changelog.changelog())
+    buffer_content_credits = """\t\t\tDevelopers:
+Ivan Ivanenko <ivan.ivanenko@gmail.com>
+Anton Komolov <anton.komolov@gmail.com>
+Dmitry Kozhura <Dmitry-Kogura@yandex.ru>"""
+    
+    buffer_content_changelog = """\t\t\tChangelog of Foobnix (since 2.0.9 version)\t\t"""
+    
+    window.connect("destroy", lambda * x:window.on_destroy())
+    button_close.connect("clicked", lambda * x:window.on_destroy())
+    button_credits.connect("clicked", lambda * x:credits_and_changelog (buffer_content_credits, "Credits"))
+    button_changelog.connect("clicked", lambda * x:credits_and_changelog (buffer_content_changelog, "Changelog"))
     
     button_close.grab_focus ()
-    window.add(table)
+    window.add_content(table)
     window.show_all()
     
 
-
+def credits_and_changelog (buffer_content, title):
+    
+    window = Window_with_Scrollbars (title, 10, 500, 200, buffer_content)
+    window.connect("destroy", lambda * x:window.hide())
+        
+    button=gtk.Button("Close", gtk.STOCK_CLOSE)
+    button.connect("clicked", lambda * x:window.hide())
+    
+    hbox=gtk.HBox(True, 0)
+    hbox.pack_start (button, False, False, 0)
+    
+    vbox=gtk.VBox(False, 10)
+    vbox.pack_start (window.scrolled_window, True, True, 0)
+    vbox.pack_start (hbox, False, False, 0)
+    
+    button.grab_focus ()
+    window.add(vbox)
+    window.show_all()
+    
+    
+if __name__ == '__main__':
+    about()
+    gtk.main()
 
 
 
