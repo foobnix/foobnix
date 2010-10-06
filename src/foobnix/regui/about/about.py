@@ -34,7 +34,7 @@ class AboutWindow(BaseParentWindow):
         BaseParentWindow.__init__(self, "About Window")
 
         """init About window"""
-        self.set_size_request(400,400)
+        self.set_size_request(320,275)
     
     
         """Content Begin"""
@@ -44,12 +44,11 @@ class AboutWindow(BaseParentWindow):
         table.attach(image, 0, 3, 0, 1)
         
         label = gtk.Label("Foobnix")
-        label.set_markup ("""
-    <big><big><b><b>Foobnix</b></b></big></big>
-    Playing all imaginations\n
-    <small>Developed by Ivan Ivanenko</small>
-    <small>ivan.ivanenko@gmail.com</small>\n   
-    <a href="http://www.foobnix.com">www.foobnix.com</a>\n""");
+        label.set_markup ("""<big><big><b><b>Foobnix</b></b></big></big>
+Playing all imaginations\n
+<small>Developed by Ivan Ivanenko</small>
+<small>ivan.ivanenko@gmail.com</small>\n   
+<a href="http://www.foobnix.com">www.foobnix.com</a>\n""")
         label.set_justify(gtk.JUSTIFY_CENTER)
         table.attach(label, 0, 3, 1, 2)
         
@@ -82,7 +81,7 @@ class AboutWindow(BaseParentWindow):
     Dmitry Kozhura <Dmitry-Kogura@yandex.ru>"""
     
         creaditsWindow.set_text(text)
-        
+                
         changeLog = WindowWithBuffer("Change LOG")
         changelog_text = """\t\t\tChangelog of Foobnix (since 2.0.9 version)\t\t"""
         changeLog.set_text(changelog_text)
@@ -109,7 +108,7 @@ class WindowWithBuffer(BaseParentWindow):
         BaseParentWindow.__init__(self, title)
        
         """init CreditsWindow"""
-        self.set_size_request(300,300)
+        self.set_size_request(500, 200)
         
         
         self.buffer = gtk.TextBuffer()
