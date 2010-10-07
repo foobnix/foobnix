@@ -75,9 +75,7 @@ Playing all imaginations\n
         table.attach(button_changelog, 1, 2, 2, 3)
         
         creaditsWindow = WindowWithBuffer("Credential")
-        
-        changelog = open("./../../../CHANGELOG", 'r')
-                
+           
         text = """\t\t\tDevelopers:
     Ivan Ivanenko <ivan.ivanenko@gmail.com>
     Anton Komolov <anton.komolov@gmail.com>
