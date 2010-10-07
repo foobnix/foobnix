@@ -7,10 +7,11 @@ Created on 3 окт. 2010
 import os.path
 
 def get_foobnix_resourse_path_by_name(filename):
-    path_tuple = ("/usr/local/share/pixmaps/",\
-                  "/usr/share/pixmaps/",\
-                  "pixmaps/")
-    for x in path_tuple:
-        if os.path.exists (x+filename):
-            return x+filename
-               
+    paths = ("/usr/local/share/pixmaps",\
+             "/usr/share/pixmaps",\
+             "pixmaps",\
+             "./../../..")
+    for path in paths:
+        full_path = os.path.join(path, filename)
+        if os.path.exists (full_path):
+            return full_path

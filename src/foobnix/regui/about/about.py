@@ -84,7 +84,7 @@ Playing all imaginations\n
         creaditsWindow.set_text(text)
                 
         changeLog = WindowWithBuffer("Change LOG")
-        changelog_text = open("./../../../CHANGELOG", 'r').read()
+        changelog_text = open(get_foobnix_resourse_path_by_name("CHANGELOG"), 'r').read()
         changeLog.set_text(changelog_text)
         
         button_credits.connect("clicked", lambda *a: creaditsWindow.show_all())        
