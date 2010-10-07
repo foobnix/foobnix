@@ -10,7 +10,7 @@ import os
 from foobnix.util.fc import FC
 from foobnix.helpers.toolbar import MyToolbar
 from foobnix.util.mouse_utils import is_mouse_click
-from foobnix.regui.service.image_service import get_foobnix_pixmap_path_by_name
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
@@ -64,7 +64,7 @@ class TrayIconControls(FControl):
 
         self.popup_menu = PopupWindowMenu(self.controls)
 
-        path = get_foobnix_pixmap_path_by_name("foobnix.png")
+        path = get_foobnix_resourse_path_by_name("foobnix.png")
         
         if path:
             self.icon.set_from_file(path)        
