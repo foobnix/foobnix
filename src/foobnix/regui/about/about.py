@@ -94,8 +94,7 @@ Playing all imaginations\n
         
         button_close.grab_focus ()
         self.add(table)
-        self.connect("delete-event", lambda * a: self.on_destroy())
-        self.connect("destroy", lambda *a: self.on_destroy())
+        
         
     def create_button_with_label_and_icon(self, image,label): 
         box = gtk.HBox(False, 0)
@@ -132,7 +131,7 @@ class WindowWithBuffer(BaseParentWindow):
     
 
 about = AboutWindow()
-about.connect("destroy", lambda *a: about.on_destroy())
+
 
 
 
