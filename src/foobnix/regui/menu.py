@@ -83,7 +83,8 @@ class MenuWidget(FControl):
         self.on_load()
 
     def show_about(self, *a):
-        about.about()
+        about.about.show_all()
+        
     def on_load(self):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
         self.view_search_panel.set_active(FC().is_view_search_panel)

@@ -20,7 +20,9 @@ class BaseParentWindow(gtk.Window):
         
         self.connect("destroy", self.on_destroy)
         gtk.window_set_default_icon_from_file (self.get_fobnix_logo())    
-    
+        self.connect("delete-event", lambda * a: self.on_destroy())
+        self.connect("destroy", lambda *a: self.on_destroy())
+        
     def get_fobnix_logo(self):
         return get_foobnix_resourse_path_by_name("foobnix.png")
         
@@ -92,7 +94,9 @@ Playing all imaginations\n
         
         button_close.grab_focus ()
         self.add(table)
-
+        self.connect("delete-event", lambda * a: self.on_destroy())
+        self.connect("destroy", lambda *a: self.on_destroy())
+        
     def create_button_with_label_and_icon(self, image,label): 
         box = gtk.HBox(False, 0)
         box.set_border_width (2)
@@ -126,11 +130,9 @@ class WindowWithBuffer(BaseParentWindow):
     def set_text(self, text):
         self.buffer.set_text(text)
     
-if __name__ == '__main__':
-    about = AboutWindow()
-    about.connect("destroy", lambda *a: gtk.main_quit())
-    about.show_all()
-    gtk.main()
+
+about = AboutWindow()
+about.connect("destroy", lambda *a: about.on_destroy())
 
 
 
