@@ -75,6 +75,9 @@ Playing all imaginations\n
         table.attach(button_changelog, 1, 2, 2, 3)
         
         creaditsWindow = WindowWithBuffer("Credential")
+        
+        changelog = open("./../../../CHANGELOG", 'r')
+                
         text = """\t\t\tDevelopers:
     Ivan Ivanenko <ivan.ivanenko@gmail.com>
     Anton Komolov <anton.komolov@gmail.com>
@@ -83,7 +86,7 @@ Playing all imaginations\n
         creaditsWindow.set_text(text)
                 
         changeLog = WindowWithBuffer("Change LOG")
-        changelog_text = """\t\t\tChangelog of Foobnix (since 2.0.9 version)\t\t"""
+        changelog_text = open("./../../../CHANGELOG", 'r').read()
         changeLog.set_text(changelog_text)
         
         button_credits.connect("clicked", lambda *a: creaditsWindow.show_all())        
