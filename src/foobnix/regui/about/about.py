@@ -5,7 +5,7 @@ Created on Oct 2, 2010
 @author: dimitry (zavlab1)
 '''
 import gtk
-from foobnix.regui.service.image_service import get_foobnix_pixmap_path_by_name
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 class BaseParentWindow(gtk.Window):
     def __init__(self, title):
@@ -22,7 +22,7 @@ class BaseParentWindow(gtk.Window):
         gtk.window_set_default_icon_from_file (self.get_fobnix_logo())    
     
     def get_fobnix_logo(self):
-        return get_foobnix_pixmap_path_by_name("foobnix.png")
+        return get_foobnix_resourse_path_by_name("foobnix.png")
         
     def on_destroy(self,*a):    
         self.hide()
