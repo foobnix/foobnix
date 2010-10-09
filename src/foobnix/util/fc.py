@@ -68,6 +68,7 @@ class FC:
 
         """download manager controls"""
         self.dm_window_size = [119, 154, 200, 200]
+        self.online_music_path = '/tmp'
 
         self = self._load();
 

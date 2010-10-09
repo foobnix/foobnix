@@ -15,7 +15,7 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
-        self.set_title("Download Manager")
+        self.set_title(_("Download Manager"))
         self.set_position(gtk.WIN_POS_CENTER)
         self.set_geometry_hints(self, min_width=700, min_height=400)
         self.set_resizable(False)
@@ -24,6 +24,7 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         self.set_icon(self.controls.trayicon.get_pixbuf())
 
         self.beans = []
+        self.stat = {'active': 0, 'complite': 0}
 
         vbox = gtk.VBox(False, 0)
         vbox.show()
@@ -55,9 +56,9 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
 
         self.entry = gtk.Entry()
         self.entry.show()
-        self.entry.set_text('http://.mp3')
+        #self.entry.set_text('http://.mp3')
 
-        bt_add = self._add_button("Add", gtk.STOCK_ADD, self.add_click)
+        bt_add = self._add_button(_("Add"), gtk.STOCK_ADD, self.add_click)
 
         hbox.pack_start(self.entry, True, True, 0)
         hbox.pack_start(bt_add, False, False, 0)
@@ -68,10 +69,10 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         hbox = gtk.HBox(True, 0)
         hbox.show()
 
-        _buttons = [["Start All", gtk.STOCK_MEDIA_PLAY, self.start_all],
-                   ["Stop All", gtk.STOCK_MEDIA_STOP, self.stop_all],
-                   ["Clear list", gtk.STOCK_OK, self.clear_all],
-                   ["Preferences", gtk.STOCK_PREFERENCES, self.controls.show_preferences]]
+        _buttons = [[_("Start All"), gtk.STOCK_MEDIA_PLAY, self.start_all],
+                   [_("Stop All"), gtk.STOCK_MEDIA_STOP, self.stop_all],
+                   [_("Clear list"), gtk.STOCK_OK, self.clear_all],
+                   [_("Preferences"), gtk.STOCK_PREFERENCES, self.controls.show_preferences]]
         for b in _buttons:
             bt = self._add_button(*b)
             hbox.pack_start(bt, False, True, 0)
@@ -105,22 +106,55 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
             dmbean.clear()
 
     def add_click(self):
-        bean = FModel(text = self.entry.get_text(), path = self.entry.get_text())
+        bean_path = None
+        bean_text = self.entry.get_text()
+        if bean_text.lower().startswith('http://') and bean_text.lower().endswith('.mp3'):
+            bean_path = bean_text
+        bean = FModel(text = bean_text, path = bean_path)
         self.add_bean(bean)
 
     def add_bean(self, bean):
-        dmbean = DMBean(bean, self.save_path, self.on_clear_dmbean, self.controls.fill_bean_from_vk)
+        dmbean = DMBean(bean, self.save_path, self.controls.fill_bean_from_vk)
+        dmbean.on_clear = self.on_clear_dmbean
+        dmbean.on_start = self.on_start_dmbean
+        dmbean.on_stopped = self.on_stopped_dmbean
+        dmbean.on_complite = self.on_complite_dmbean
         dmbean.show()
         self.beans.append(dmbean)
         self.dm_list.pack_start(dmbean, False, False, 0)
+        self.update_status()
 
     def add_beans(self, beans):
         for bean in beans:
             self.add_bean(bean)
 
-    def on_clear_dmbean(self, dmbean):
+    def on_clear_dmbean(self, dmbean, wait):
+        if not wait:
+            self.stat['complite'] -= 1
         self.beans.remove(dmbean)
         dmbean.destroy()
+        self.update_status()
+
+    def on_start_dmbean(self, dmbean):
+        self.stat['active'] += 1
+        self.update_status()
+
+    def on_stopped_dmbean(self, dmbean):
+        self.stat['active'] -= 1
+        self.update_status()
+
+    def on_complite_dmbean(self, dmbean):
+        self.stat['active'] -= 1
+        self.stat['complite'] += 1
+        self.update_status()
+
+    def update_status(self):
+        total = len(self.beans)
+        active =  self.stat['active']
+        complite = self.stat['complite']
+        wait = total - active - complite
+        self.controls.statusbar.set_text(_('Downloads - Total: %s Active: %s Wait: %s Complite: %s') %
+                                         (total, active, wait, complite))
 
     def hide_window(self, *a):
         self.hide()
@@ -132,15 +166,9 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
 
     def on_configure_event(self, w, e):
         pass
-        #~ FC().dm_window_size = [e.x, e.y, e.width, e.height]
 
     def on_save(self, *a):
         pass
 
     def on_load(self):
-        self.save_path = '/tmp'
-        pass
-        #~ cfg = FC().dm_window_size
-        #~ if cfg:
-            #~ self.set_default_size(cfg[2], cfg[3])
-            #~ self.move(cfg[0], cfg[1])
+        self.save_path = FC().online_music_path

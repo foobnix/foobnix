@@ -40,7 +40,11 @@ class DMThread(threading.Thread):
                     self.dmbean.url_report(block_count, block_size, remote_size)
             self.remote_handler.close()
             file_handler.close()
-        except Exception, e:
+        except IOError, e:
+            self.dmbean.set_error(e.strerror)
+            self.dmbean.state_ready()
+        except DMThreadError, e :
+            self.dmbean.set_error(e.message)
             self.dmbean.state_ready()
         else:
             if not self._stop.isSet():
@@ -60,9 +64,8 @@ class DMBean(gtk.HBox):
     STATE_DOWNLOAD = 1
     STATE_COMPLITE = 2
     STATE_STOP_THREAD = 3
-    def __init__(self, bean, save_path, on_clear, vk_search):
+    def __init__(self, bean, save_path, vk_search):
         gtk.HBox.__init__(self, False, 0)
-        self._on_clear = on_clear
         self._vk_search = vk_search
         self.bean = bean
         self.save_path = os.path.join(save_path, bean.artist if bean.artist else '',
@@ -88,12 +91,12 @@ class DMBean(gtk.HBox):
         self._state = None
         self.start_stop = gtk.ToolButton(gtk.STOCK_MEDIA_PLAY)
         self.start_stop.show()
-        self.start_stop.set_tooltip_text('Start download')
+        self.start_stop.set_tooltip_text(_('Start download'))
         self.start_stop.connect("clicked", self.on_start_stop)
         self.toolbutton_clear = gtk.ToolButton(gtk.STOCK_CLOSE)
         self.toolbutton_clear.show()
-        self.toolbutton_clear.set_tooltip_text('Delete download')
-        self.toolbutton_clear.connect("clicked", self.on_clear)
+        self.toolbutton_clear.set_tooltip_text(_('Delete download'))
+        self.toolbutton_clear.connect("clicked", self.on_clear_click)
         toolbar.insert(self.toolbutton_clear, 0)
         toolbar.insert(self.start_stop, 1)
         self.state_ready()
@@ -105,16 +108,20 @@ class DMBean(gtk.HBox):
     def state_ready(self):
         if self.thread and not self.thread.stopped():
             self.thread.stop()
+        if self.thread:
+            self.on_stopped(self)
         self.thread = DMThread(self)
         self.set_state(self.STATE_READY)
 
     def state_download(self):
         self.set_state(self.STATE_DOWNLOAD)
+        self.on_start(self)
         self.thread.start()
 
     def state_complite(self):
         self.set_state(self.STATE_COMPLITE)
         self.thread = None
+        self.on_complite(self)
 
     def state_stop_thread(self):
         self.set_state(self.STATE_STOP_THREAD)
@@ -122,7 +129,7 @@ class DMBean(gtk.HBox):
 
     def set_state(self, state):
         stocks = [gtk.STOCK_MEDIA_PLAY, gtk.STOCK_MEDIA_STOP, gtk.STOCK_OK, gtk.STOCK_CANCEL]
-        tooltips = ['Start download', 'Stop download', 'Clear download', 'Stopping']
+        tooltips = [_('Start download'), _('Stop download'), _('Clear download'), _('Stopping')]
         label_vis = [self.label.show, self.label.hide, self.label.show, self.label.hide]
         progr_vis = [self.progressbar.hide, self.progressbar.show, self.progressbar.hide, self.progressbar.show]
         if self._state != state:
@@ -153,16 +160,16 @@ class DMBean(gtk.HBox):
         if self._state == self.STATE_READY:
             if not self.bean.path:
                 if not self._vk_search(self.bean):
-                    self.label.set_text(self.bean.text + ' (Error: VK search failed)')
+                    self.label.set_text(self.bean.text + _(' (Error: VK search failed)'))
                     return False
             if (not self.bean.path.lower().startswith('http://')
                 or not self.bean.path.lower().endswith('.mp3')):
-                self.label.set_text(self.bean.text + ' (Error: wrong URL)')
+                self.label.set_text(self.bean.text + _(' (Error: wrong URL)'))
                 return False
             if self.bean.title:
                 self.save_name = self.bean.title + '.mp3'
             else:
-                self.save_name = os.path.basename(urllib.url2pathname(url))
+                self.save_name = os.path.basename(urllib.url2pathname(self.bean.path))
             self.state_download()
 
     def get_url(self):
@@ -175,23 +182,27 @@ class DMBean(gtk.HBox):
     def clear(self):
         if self._state == self.STATE_COMPLITE:
             self.hide()
-            if self._on_clear:
-                self._on_clear(self)
+            self.on_clear(self, False)
 
-    def on_clear(self, *a):
+    def on_clear_click(self, *a):
         if self._state == self.STATE_READY:
             self.hide()
-            if self._on_clear:
-                self._on_clear(self)
+            self.on_clear(self, True)
+
+    def on_clear(self, dmbean, wait):
+        pass
+
+    def on_complite(self, dmbean):
+        pass
+
+    def on_stopped(self, dmbean):
+        pass
+
+    def on_start(self, dmbean):
+        pass
 
     def url_report(self, block_count, block_size, total_size):
         """Hook function for urllib.urlretrieve()"""
-
-        """stop download
-        if self._state == self.STATE_STOP_THREAD:
-            thread.exit()
-            self.set_state(self.STATE_READY)
-            return"""
 
         """update info"""
         gtk.gdk.threads_enter()
@@ -206,18 +217,18 @@ class DMBean(gtk.HBox):
         self.progressbar.set_fraction(persent)
         gtk.gdk.threads_leave()
 
-    def set_http_error(self, id):
+    def set_error(self, error):
         gtk.gdk.threads_enter()
-        self.label.set_text(self.bean.text + ' (HTTP Error: %s)' % id)
+        self.label.set_text(self.bean.text + ' (%s)' % error)
         gtk.gdk.threads_leave()
 
 def size2text(size):
     if size > 1024*1024*1024:
-        return "%.2f Gb" % (size / (1024*1024*1024.0))
+        return _("%.2f Gb") % (size / (1024*1024*1024.0))
     if size > 1024*1024:
-        return "%.2f Mb" % (size / (1024*1024.0))
+        return _("%.2f Mb") % (size / (1024*1024.0))
     if size > 1024:
-        return "%.2f Kb" % (size / 1024.0)
+        return _("%.2f Kb") % (size / 1024.0)
     return size
 
 class Range_url_opener(urllib.FancyURLopener):
@@ -231,28 +242,53 @@ class Range_url_opener(urllib.FancyURLopener):
 
 	def http_error_401(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		self.dmbean.set_http_error(401)
+		raise DMThreadHTTPError(401)
 
 	def http_error_403(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		self.dmbean.set_http_error(403)
+		raise DMThreadHTTPError(403)
 
 	def http_error_404(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		self.dmbean.set_http_error(404)
+		raise DMThreadHTTPError(404)
 
 	def http_error_405(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		self.dmbean.set_http_error(405)
+		raise DMThreadHTTPError(405)
 
 	def http_error_408(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		self.dmbean.set_http_error(408)
+		raise DMThreadHTTPError(408)
 
 	def http_error_500(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		self.dmbean.set_http_error(500)
+		raise DMThreadHTTPError(500)
 
 	def http_error_503(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		self.dmbean.set_http_error(503)
+		raise DMThreadHTTPError(503)
+
+class DMThreadError(Exception):
+    def _get_message(self):
+        return self._message
+
+    def _set_message(self, message):
+        self._message = message
+
+    message = property(_get_message, _set_message)
+
+class DMThreadHTTPError(DMThreadError):
+    def __init__(self, id):
+        DMThreadError.__init__(self)
+        self.id = id
+        errors = {401: _("[401] Unauthorized"),
+                  403: _("[403] Forbidden"),
+                  404: _("[404] Not found"),
+                  405: _("[405] Method not allowed"),
+                  408: _("[408] Request time-out"),
+                  500: _("[500] Internal Server Error"),
+                  503: _("[503] Service unavailable")}
+        if id in errors:
+            self._set_message(errors[id])
+        else:
+            self._set_message(_('[%d] HTTP Error') % id)
