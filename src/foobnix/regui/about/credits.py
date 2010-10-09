@@ -1,6 +1,4 @@
 import gtk
-from foobnix.regui.service.image_service import get_foobnix_pixmap_path_by_name
-
 
 def credits():
     window = gtk.Window(gtk.WINDOW_TOPLEVEL)
