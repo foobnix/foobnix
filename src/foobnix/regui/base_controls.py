@@ -30,10 +30,10 @@ class BaseFoobnixControls(LoadSave):
 
     def set_playlist_tree(self):
         self.notetabs.set_playlist_tree()
-    
+
     def set_playlist_plain(self):
         self.notetabs.set_playlist_plain()
-    
+
     def load_music_tree(self):
         if FC().cache_music_tree_beans:
             self.tree.populate_from_scanner(FC().cache_music_tree_beans)
@@ -109,19 +109,24 @@ class BaseFoobnixControls(LoadSave):
     def state_play_pause(self):
         self.media_engine.state_play_pause()
 
+    def fill_bean_from_vk(self, bean):
+        if not bean.artist or not bean.title:
+            vk = self.vk.find_one_track(bean.artist + " - " + bean.title)
+        else:
+            vk = self.vk.find_one_track(bean.text)
+        if vk:
+            bean.path = vk.path
+            bean.time = vk.time
+            return True
+        else:
+            return False
+
     def play(self, bean):
         if not bean:
             return None
-        
+
         if not bean.path:
-            if not bean.artist or not bean.title:            
-                vk = self.vk.find_one_track(bean.artist + " - " + bean.title)
-            else:
-                vk = self.vk.find_one_track(bean.text)
-            if vk:
-                bean.path = vk.path
-                bean.time = vk.time
-            else:
+            if not self.fill_bean_from_vk(bean):
                 if self.count_errors < 4:
                     self.next()
                 self.count_errors += 1
@@ -150,7 +155,7 @@ class BaseFoobnixControls(LoadSave):
 
     def player_volue(self, percent):
         self.media_engine.volume(percent)
-        
+
     def search_all_tracks(self, query):
         def inline(query):
             results = self.vk.find_tracks_by_query(query)

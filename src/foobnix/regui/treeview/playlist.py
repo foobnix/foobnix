@@ -8,9 +8,11 @@ from foobnix.regui.treeview import TreeViewControl
 import gtk
 from random import randint
 from foobnix.util import const
-from foobnix.util.mouse_utils import is_double_left_click
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 from foobnix.cue.cue_reader import CueReader
 from foobnix.regui.model import FModel
+from foobnix.helpers.menu import Popup
+
 class PlaylistControl(TreeViewControl):
     def __init__(self, controls):
         TreeViewControl.__init__(self, controls)
@@ -46,26 +48,26 @@ class PlaylistControl(TreeViewControl):
 
     def set_playlist_tree(self):
         self.init_data_tree()
-    
+
     def recursion(self, row, plain):
-        for child in row.iterchildren():                
+        for child in row.iterchildren():
                 plain.append(child)
                 self.recursion(child, plain)
-    
-    def set_playlist_plain(self):        
+
+    def set_playlist_plain(self):
         filter_model = self.get_model()
-        model = filter_model.get_model()        
+        model = filter_model.get_model()
         plain = []
-        for row in filter_model:                    
-            plain.append(row)           
+        for row in filter_model:
+            plain.append(row)
             self.recursion(row, plain)
-        
+
         copy_plain = []
-        for row in plain:            
+        for row in plain:
             copy_plain.append(self.get_bean_from_row(row))
-            
+
         model.clear()
-        
+
         print "================"
         for bean in copy_plain:
             #self.print_row(bean)
@@ -122,7 +124,7 @@ class PlaylistControl(TreeViewControl):
         self.index = current.index
         if current.is_file:
             self.set_play_icon_to_selected_bean()
-            
+
 
         """play song"""
         self.controls.play(current)
@@ -136,4 +138,7 @@ class PlaylistControl(TreeViewControl):
     def on_button_press(self, w, e):
         if is_double_left_click(e):
             self.active_current_song()
-
+        if is_rigth_click(e):
+            menu = Popup()
+            menu.add_item('Add to DM', gtk.STOCK_ADD, self.controls.dm.add_beans, self.get_all_selected_beans())
+            menu.show(e)

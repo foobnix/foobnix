@@ -55,6 +55,7 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
 
         self.entry = gtk.Entry()
         self.entry.show()
+        self.entry.set_text('http://.mp3')
 
         bt_add = self._add_button("Add", gtk.STOCK_ADD, self.add_click)
 
@@ -108,14 +109,17 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         self.add_bean(bean)
 
     def add_bean(self, bean):
-        dmbean = DMBean(bean, self.on_clear_dmbean)
+        dmbean = DMBean(bean, self.save_path, self.on_clear_dmbean, self.controls.fill_bean_from_vk)
         dmbean.show()
         self.beans.append(dmbean)
         self.dm_list.pack_start(dmbean, False, False, 0)
 
+    def add_beans(self, beans):
+        for bean in beans:
+            self.add_bean(bean)
+
     def on_clear_dmbean(self, dmbean):
         self.beans.remove(dmbean)
-        print 'ACTIVE BEANS', self.beans
         dmbean.destroy()
 
     def hide_window(self, *a):
@@ -134,6 +138,7 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         pass
 
     def on_load(self):
+        self.save_path = '/tmp'
         pass
         #~ cfg = FC().dm_window_size
         #~ if cfg:
