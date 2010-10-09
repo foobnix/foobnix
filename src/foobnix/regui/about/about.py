@@ -21,12 +21,12 @@ class BaseParentWindow(gtk.Window):
         self.connect("destroy", self.on_destroy)
         gtk.window_set_default_icon_from_file (self.get_fobnix_logo())    
         self.connect("delete-event", lambda * a: self.on_destroy())
-        self.connect("destroy", lambda *a: self.on_destroy())
+        self.connect("destroy", lambda * a: self.on_destroy())
         
     def get_fobnix_logo(self):
         return get_foobnix_resourse_path_by_name("foobnix.png")
         
-    def on_destroy(self,*a):    
+    def on_destroy(self, *a):    
         self.hide()
         return True
     
@@ -36,7 +36,7 @@ class AboutWindow(BaseParentWindow):
         BaseParentWindow.__init__(self, "About Window")
 
         """init About window"""
-        self.set_size_request(320,275)
+        self.set_size_request(320, 275)
     
     
         """Content Begin"""
@@ -57,22 +57,22 @@ Playing all imaginations\n
         label = gtk.Label("Credits")
         image = gtk.image_new_from_stock(gtk.STOCK_INFO, gtk.ICON_SIZE_MENU)
         
-        button_credits = self.create_button_with_label_and_icon(image,label)
+        button_credits = self.create_button_with_label_and_icon(image, label)
         button_credits.set_border_width (9)
         table.attach(button_credits, 0, 1, 2, 3)
         
         label = gtk.Label("Close")
         image = gtk.image_new_from_stock(gtk.STOCK_STOP, gtk.ICON_SIZE_MENU)
         
-        button_close = self.create_button_with_label_and_icon(image,label)
-        button_close.connect("clicked", lambda *a: self.on_destroy())
+        button_close = self.create_button_with_label_and_icon(image, label)
+        button_close.connect("clicked", lambda * a: self.on_destroy())
         button_close.set_border_width (9)
         table.attach(button_close, 2, 3, 2, 3)
         
         label = gtk.Label("Changelog")
         image = gtk.image_new_from_stock(gtk.STOCK_DND, gtk.ICON_SIZE_MENU)
         
-        button_changelog = self.create_button_with_label_and_icon(image,label)
+        button_changelog = self.create_button_with_label_and_icon(image, label)
         button_changelog.set_border_width (9)
         table.attach(button_changelog, 1, 2, 2, 3)
         
@@ -89,14 +89,14 @@ Playing all imaginations\n
         changelog_text = open(get_foobnix_resourse_path_by_name("CHANGELOG"), 'r').read()
         changeLog.set_text(changelog_text)
         
-        button_credits.connect("clicked", lambda *a: creaditsWindow.show_all())        
+        button_credits.connect("clicked", lambda * a: creaditsWindow.show_all())        
         button_changelog.connect("clicked", lambda * x:changeLog.show_all())
         
         button_close.grab_focus ()
         self.add(table)
         
         
-    def create_button_with_label_and_icon(self, image,label): 
+    def create_button_with_label_and_icon(self, image, label): 
         box = gtk.HBox(False, 0)
         box.set_border_width (2)
         box.pack_end (label, True, False, 0)
@@ -117,7 +117,7 @@ class WindowWithBuffer(BaseParentWindow):
         
         self.buffer = gtk.TextBuffer()
         
-        text=gtk.TextView(self.buffer)
+        text = gtk.TextView(self.buffer)
         text.set_editable(False)
 
         scrolled_window = gtk.ScrolledWindow()
@@ -130,7 +130,7 @@ class WindowWithBuffer(BaseParentWindow):
         self.buffer.set_text(text)
     
 
-about = AboutWindow()
+#about = AboutWindow()
 
 
 
