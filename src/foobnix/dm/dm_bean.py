@@ -15,17 +15,27 @@ class DMThread(threading.Thread):
     def __init__(self, dmbean):
         threading.Thread.__init__(self)
         self.dmbean = dmbean
+        self.bean = dmbean.bean
         self._stop = threading.Event()
 
     def run(self):
         block_size = 4096
         block_count = 0
         try:
+            if not self.bean.path and not self.dmbean.do_fill_from_vk():
+                raise DMThreadVKException()
+            if (not self.bean.path.lower().startswith('http://')
+                or not self.bean.path.lower().endswith('.mp3')):
+                raise DMThreadURLException()
+            if self.bean.title:
+                save_name = self.bean.title + '.mp3'
+            else:
+                save_name = os.path.basename(urllib.url2pathname(self.bean.path))
             remote_size = -1
             self.loader = Range_url_opener(self.dmbean, self)
             if not os.path.exists(self.dmbean.save_path):
                 os.makedirs(self.dmbean.save_path)
-            fname = os.path.join(self.dmbean.save_path, self.dmbean.save_name)
+            fname = os.path.join(self.dmbean.save_path, save_name)
             file_handler = open(fname + '.tmp',"wb")
             local_size = 0
             self.remote_handler = self.loader.open(self.dmbean.get_url())
@@ -43,7 +53,7 @@ class DMThread(threading.Thread):
         except IOError, e:
             self.dmbean.set_error(e.strerror)
             self.dmbean.state_ready()
-        except DMThreadError, e :
+        except DMThreadException, e :
             self.dmbean.set_error(e.message)
             self.dmbean.state_ready()
         else:
@@ -64,18 +74,21 @@ class DMBean(gtk.HBox):
     STATE_DOWNLOAD = 1
     STATE_COMPLITE = 2
     STATE_STOP_THREAD = 3
-    def __init__(self, bean, save_path, vk_search):
+    def __init__(self, bean, save_path):
         gtk.HBox.__init__(self, False, 0)
-        self._vk_search = vk_search
         self.bean = bean
-        self.save_path = os.path.join(save_path, bean.artist if bean.artist else '',
+        self.save_path = os.path.join(save_path,
+            bean.artist if bean.artist else '',
             bean.album if bean.album else '')
         self.save_name = None
         self.thread = None
+        self.lock = threading.RLock()
         self.label = gtk.Label(bean.text)
         self.label.show()
 
         self.progressbar = gtk.ProgressBar()
+        self.pb_text = ''
+        self.pb_fraction = 0.0
         if bean.path:
             self.progressbar.set_text(bean.path)
         else:
@@ -158,18 +171,6 @@ class DMBean(gtk.HBox):
 
     def start(self):
         if self._state == self.STATE_READY:
-            if not self.bean.path:
-                if not self._vk_search(self.bean):
-                    self.label.set_text(self.bean.text + _(' (Error: VK search failed)'))
-                    return False
-            if (not self.bean.path.lower().startswith('http://')
-                or not self.bean.path.lower().endswith('.mp3')):
-                self.label.set_text(self.bean.text + _(' (Error: wrong URL)'))
-                return False
-            if self.bean.title:
-                self.save_name = self.bean.title + '.mp3'
-            else:
-                self.save_name = os.path.basename(urllib.url2pathname(self.bean.path))
             self.state_download()
 
     def get_url(self):
@@ -201,21 +202,40 @@ class DMBean(gtk.HBox):
     def on_start(self, dmbean):
         pass
 
+    def fill_bean_from_vk(self, bean):
+        return False
+
+    def do_fill_from_vk(self):
+        return self.fill_bean_from_vk(self.bean)
+
+    def is_download(self):
+        return self._state == self.STATE_DOWNLOAD
+
+    def is_complite(self):
+        return self._state == self.STATE_COMPLITE
+
     def url_report(self, block_count, block_size, total_size):
         """Hook function for urllib.urlretrieve()"""
-
-        """update info"""
-        gtk.gdk.threads_enter()
         if total_size<=0:
             persent = 0.5
             total_size = "NaN"
         else:
             persent = block_count * block_size * 1.0 / total_size
             if persent > 1.0: persent = 1.0
-        self.progressbar.set_text("%s | %s / %s (%.2f%%)" % (self.bean.text, size2text(block_count * block_size),
-                                                             size2text(total_size), persent * 100))
-        self.progressbar.set_fraction(persent)
+        self.lock.acquire()
+        self.pb_text = "%s | %s / %s (%.2f%%)" % (self.bean.text, size2text(block_count * block_size),
+                                                  size2text(total_size), persent * 100)
+        self.pb_fraction = persent
+        self.lock.release()
+
+    def update(self):
+        """update info"""
+        self.lock.acquire()
+        gtk.gdk.threads_enter()
+        self.progressbar.set_text(self.pb_text)
+        self.progressbar.set_fraction(self.pb_fraction)
         gtk.gdk.threads_leave()
+        self.lock.release()
 
     def set_error(self, error):
         gtk.gdk.threads_enter()
@@ -242,33 +262,33 @@ class Range_url_opener(urllib.FancyURLopener):
 
 	def http_error_401(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		raise DMThreadHTTPError(401)
+		raise DMThreadHTTPException(401)
 
 	def http_error_403(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		raise DMThreadHTTPError(403)
+		raise DMThreadHTTPException(403)
 
 	def http_error_404(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		raise DMThreadHTTPError(404)
+		raise DMThreadHTTPException(404)
 
 	def http_error_405(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		raise DMThreadHTTPError(405)
+		raise DMThreadHTTPException(405)
 
 	def http_error_408(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		raise DMThreadHTTPError(408)
+		raise DMThreadHTTPException(408)
 
 	def http_error_500(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		raise DMThreadHTTPError(500)
+		raise DMThreadHTTPException(500)
 
 	def http_error_503(self, url, fp, errcode, errmsg, headers, data=None):
 		self.thread.stop()
-		raise DMThreadHTTPError(503)
+		raise DMThreadHTTPException(503)
 
-class DMThreadError(Exception):
+class DMThreadException(Exception):
     def _get_message(self):
         return self._message
 
@@ -277,7 +297,7 @@ class DMThreadError(Exception):
 
     message = property(_get_message, _set_message)
 
-class DMThreadHTTPError(DMThreadError):
+class DMThreadHTTPException(DMThreadException):
     def __init__(self, id):
         DMThreadError.__init__(self)
         self.id = id
@@ -292,3 +312,11 @@ class DMThreadHTTPError(DMThreadError):
             self._set_message(errors[id])
         else:
             self._set_message(_('[%d] HTTP Error') % id)
+
+class DMThreadVKException(DMThreadException):
+    def __init__(self):
+        self._set_message(_('Error: VK search failed'))
+
+class DMThreadURLException(DMThreadException):
+    def __init__(self):
+        self._set_message(_('Error: wrong URL'))

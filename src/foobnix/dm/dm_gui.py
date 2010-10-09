@@ -10,11 +10,17 @@ from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.regui.model import FModel
 from foobnix.dm.dm_bean import DMBean
+import threading
+import time
 
 class DownloadManager(gtk.Window, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
+
+        self.lock = threading.RLock()
+        self.updater = DMUpdateThread(self)
+
         self.set_title(_("Download Manager"))
         self.set_position(gtk.WIN_POS_CENTER)
         self.set_geometry_hints(self, min_width=700, min_height=400)
@@ -93,15 +99,34 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         return swin
 
     def start_all(self):
+        i = self.stat['active']
+        print 'Start_All', i, self.max_active_count
+        self.lock.acquire()
         for dmbean in self.beans:
+            if dmbean.is_complite():
+                continue
             dmbean.start()
+            i += 1
+            if self.max_active_count > 0 and i >= self.max_active_count:
+                break
+        self.lock.release()
+
+    def auto_start(self):
+        if self.auto_start_donwload:
+            self.start_all()
+            #t = Timer(0.5, self.start_all)
+            #t.start()
 
     def stop_all(self):
+        self.lock.acquire()
         for dmbean in self.beans:
             dmbean.stop()
+        self.lock.release()
 
     def clear_all(self):
+        self.lock.acquire()
         beans = self.beans[:]
+        self.lock.release()
         for dmbean in beans:
             dmbean.clear()
 
@@ -113,26 +138,38 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         bean = FModel(text = bean_text, path = bean_path)
         self.add_bean(bean)
 
-    def add_bean(self, bean):
-        dmbean = DMBean(bean, self.save_path, self.controls.fill_bean_from_vk)
+    def _add_bean(self, bean):
+        dmbean = DMBean(bean, self.save_path)
+        dmbean.fill_bean_from_vk = self.controls.fill_bean_from_vk
         dmbean.on_clear = self.on_clear_dmbean
         dmbean.on_start = self.on_start_dmbean
         dmbean.on_stopped = self.on_stopped_dmbean
         dmbean.on_complite = self.on_complite_dmbean
         dmbean.show()
+        self.lock.acquire()
         self.beans.append(dmbean)
+        self.lock.release()
         self.dm_list.pack_start(dmbean, False, False, 0)
+
+    def add_bean(self, bean):
+        print 'Add_Bean'
+        self._add_bean(bean)
         self.update_status()
+        self.auto_start()
 
     def add_beans(self, beans):
+        print 'Add_Beans'
         for bean in beans:
-            self.add_bean(bean)
+            self._add_bean(bean)
+        self.update_status()
+        self.auto_start()
 
     def on_clear_dmbean(self, dmbean, wait):
         if not wait:
             self.stat['complite'] -= 1
+        self.lock.acquire()
         self.beans.remove(dmbean)
-        dmbean.destroy()
+        self.lock.release()
         self.update_status()
 
     def on_start_dmbean(self, dmbean):
@@ -142,14 +179,18 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
     def on_stopped_dmbean(self, dmbean):
         self.stat['active'] -= 1
         self.update_status()
+        self.auto_start()
 
     def on_complite_dmbean(self, dmbean):
         self.stat['active'] -= 1
         self.stat['complite'] += 1
         self.update_status()
+        self.auto_start()
 
     def update_status(self):
+        self.lock.acquire()
         total = len(self.beans)
+        self.lock.release()
         active =  self.stat['active']
         complite = self.stat['complite']
         wait = total - active - complite
@@ -168,7 +209,34 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         pass
 
     def on_save(self, *a):
+        self.updater.stop()
+        while not self.updater.stopped():
+            time.slep(1)
         pass
 
     def on_load(self):
         self.save_path = FC().online_music_path
+        self.max_active_count = 2
+        self.auto_start_donwload = True
+        self.updater.start()
+
+class DMUpdateThread(threading.Thread):
+    def __init__(self, dmanager):
+        threading.Thread.__init__(self)
+        self.dm = dmanager
+        self._stop = threading.Event()
+
+    def run(self):
+        while not self._stop.isSet():
+            time.sleep(1)
+            self.dm.lock.acquire()
+            for dmbean in self.dm.beans:
+                if dmbean.is_download:
+                    dmbean.update()
+            self.dm.lock.release()
+
+    def stop(self):
+        self._stop.set()
+
+    def stopped(self):
+        return self._stop.isSet()

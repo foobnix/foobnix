@@ -111,7 +111,7 @@ class BaseFoobnixControls(LoadSave):
 
     def fill_bean_from_vk(self, bean):
         if not bean.artist or not bean.title:
-            vk = self.vk.find_one_track(bean.artist + " - " + bean.title)
+            vk = self.vk.find_one_track(" - ".join([x for x in [bean.artist, bean.title] if x]))
         else:
             vk = self.vk.find_one_track(bean.text)
         if vk:
