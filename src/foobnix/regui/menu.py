@@ -8,7 +8,6 @@ from foobnix.util import LOG, const
 import sys
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
-from foobnix.regui.about import about
 
 class MenuWidget(FControl):
     def __init__(self, controls):
@@ -68,13 +67,13 @@ class MenuWidget(FControl):
         playlist = playback.add_text_item("Playlist")
         self.playlist_plain = playlist.add_radio_item("Plain (normal style)", None, FC().playlist_type == const.PLAYLIST_PLAIN)
         self.playlist_tree = playlist.add_radio_item("Tree (apollo style)", self.playlist_plain , FC().playlist_type == const.PLAYLIST_TREE)
-        
+
         self.playlist_plain.connect("activate", lambda w: w.get_active() and controls.set_playlist_plain())
         self.playlist_tree.connect("activate", lambda w: w.get_active() and controls.set_playlist_tree())
 
         """Help"""
         help = top.append("Help")
-        help.add_image_item("About", gtk.STOCK_ABOUT,self.show_about)
+        help.add_image_item("About", gtk.STOCK_ABOUT,self.controls.about.show_all)
         help.add_image_item("Help", gtk.STOCK_HELP)
 
         top.decorate()
@@ -82,9 +81,6 @@ class MenuWidget(FControl):
 
         self.on_load()
 
-    def show_about(self, *a):
-        about.about.show_all()
-        
     def on_load(self):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
         self.view_search_panel.set_active(FC().is_view_search_panel)
@@ -95,10 +91,8 @@ class MenuWidget(FControl):
         FC().is_view_search_panel = self.view_search_panel.get_active()
         FC().is_view_info_panel = self.view_info_panel.get_active()
 
-
-
-"""My custom menu class for helping buildings"""
 class MyMenu(gtk.Menu):
+    """My custom menu class for helping buildings"""
     def __init__(self):
         gtk.Menu.__init__(self)
 

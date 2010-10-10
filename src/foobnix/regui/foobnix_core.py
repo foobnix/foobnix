@@ -22,6 +22,8 @@ from foobnix.regui.top import TopWidgets
 from foobnix.eq.eq_gui import EQContols
 from foobnix.regui.controls.dbus_manager import DBusManager
 from foobnix.dm.dm_gui import DownloadManager
+from foobnix.regui.about.about import AboutWindow
+
 class FoobnixCore(BaseFoobnixControls):
 
     def __init__(self):
@@ -55,6 +57,7 @@ class FoobnixCore(BaseFoobnixControls):
 
         self.eq = EQContols(self)
         self.dm = DownloadManager(self)
+        self.about = AboutWindow()
 
         """layout panels"""
         self.top_panel = TopWidgets(self)
