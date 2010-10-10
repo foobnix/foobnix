@@ -7,6 +7,7 @@ Created on Oct 2, 2010
 import gtk
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
+
 class BaseParentWindow(gtk.Window):
     def __init__(self, title):
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
