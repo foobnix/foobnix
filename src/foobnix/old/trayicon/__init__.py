@@ -16,9 +16,9 @@ class TrayIcon(BaseController):
     """
     A class that represents tray icon and a widget that pops up when the icon is right-clicked.
     """
-    
+
     _BASIC_SIGNAL = (SIGNAL_RUN_FIRST, TYPE_NONE, ())
-    
+
     __gsignals__ = {
         'exit'  : _BASIC_SIGNAL,
         'toggle_window_visibility' : _BASIC_SIGNAL,
@@ -29,20 +29,20 @@ class TrayIcon(BaseController):
         'volume_up'   : _BASIC_SIGNAL,
         'volume_down' : _BASIC_SIGNAL
     }
-    
+
     def __init__(self, gx_tray_icon):
         BaseController.__init__(self)
-        
+
         self.popup = gx_tray_icon.get_widget("popUpWindow")
         toolbar = gx_tray_icon.get_widget("vbox1")
-        #toolbar.connect("leave-notify-event", self.on_leave_window)        
+        #toolbar.connect("leave-notify-event", self.on_leave_window)
         text = gx_tray_icon.get_widget("text1")
         #text.connect("leave-notify-event", self.on_leave_window)
-        
-        self.popup.connect("leave-notify-event", self.on_leave_window)        
+
+        self.popup.connect("leave-notify-event", self.on_leave_window)
         self.text1 = gx_tray_icon.get_widget("text1")
         self.text2 = gx_tray_icon.get_widget("text2")
-         
+
         self.icon = gtk.StatusIcon()
         self.icon.set_tooltip("Foobnix music player")
         # TODO: move the path to config
@@ -54,7 +54,7 @@ class TrayIcon(BaseController):
             self.icon.set_from_file(icon_path2)
         else:
             self.icon.set_from_stock("gtk-media-play")
-        
+
         self.icon.connect("activate", lambda * a: self.emit('toggle_window_visibility'))
         self.icon.connect("popup-menu", lambda * a: self.popup.show())
         try:
@@ -72,46 +72,46 @@ class TrayIcon(BaseController):
                 "on_cancel_clicked": lambda * a: self.popup.hide()
         }
         gx_tray_icon.signal_autoconnect(popup_signals)
-        
+
         self.paused = False
-        
+
         if FConfiguration().show_tray_icon:
             self.show()
         else:
             self.hide()
-    
+
     def on_leave_window(self, w, event):
         max_x, max_y = w.size_request()
         x, y = event.x, event.y
         if 0 < x < max_x and 0 < y < max_y:
             return True
-                
+
         if not FConfiguration().tray_icon_auto_hide:
             return True
-        
-        self.popup.hide()           
-        
-    
+
+        self.popup.hide()
+
+
     def show(self):
         self.icon.set_visible(True)
-    
+
     def hide(self):
         self.icon.set_visible(False)
-    
+
     def on_button_press(self, w, e):
-        if is_mouse_click(e):
+        if is_middle_click(e):
             self.paused = not self.paused
             if self.paused:
                 self.emit('pause')
             else:
                 self.emit('play')
-        
+
     def setText1(self, text):
         self.text1.set_text(text)
-    
+
     def setText2(self, text):
         self.text2.set_text(text)
-    
+
     def on_song_started(self, sender, song):
         self.setText1(song.name[:50])
         self.icon.set_tooltip(song.name)
@@ -121,6 +121,6 @@ class TrayIcon(BaseController):
             self.emit('volume_up')
         else:
             self.emit('volume_down')
-        # TODO: move next line to player_controller 
+        # TODO: move next line to player_controller
         # self.playerWidgets.volume.set_value(volume * 100)
 

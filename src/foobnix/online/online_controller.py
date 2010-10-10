@@ -17,7 +17,7 @@ from foobnix.online.search_panel import SearchPanel
 from foobnix.player.player_controller import PlayerController
 from foobnix.util import LOG, const
 from foobnix.util.configuration import FConfiguration
-from foobnix.util.mouse_utils import is_double_click, is_rigth_click, \
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, \
     is_left_click
 from foobnix.online.google_utils import google_search_resutls
 from foobnix.online.dowload_util import  get_file_store_path, \
@@ -37,36 +37,36 @@ class OnlineListCntr(GObject):
         self.gx_main = gxMain
         self.directoryCntr = None
         self.playerCntr = playerCntr
-        self.current_list_model = None 
+        self.current_list_model = None
         self.last_fm_connector = last_fm_connector
 
         self.search_panel = SearchPanel(gxMain, last_fm_connector)
-        
+
         self.count = 0
         self.index = 0
-        
+
         self.online_notebook = gxMain.get_widget("online_notebook")
-        
+
         shuffle_menu = gxMain.get_widget("shuffle_menu")
         shuffle_menu.connect("activate", self.shuffle)
-        
-        
+
+
         self.online_notebook.connect('drag-data-received', self.on_drag_data_received)
         self.online_notebook.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP,
                  dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY)
-        
+
         add_file_menu = gxMain.get_widget("add-file")
         add_file_menu.connect("activate", self.on_add_file)
         add_folder_menu = gxMain.get_widget("add-folder")
         add_folder_menu.connect("activate", self.on_add_folder)
-        
+
         self.tab_labes = []
         self.tab_vboxes = []
         self.tab_hboxes = []
         self.default_angel = 90
         self.last_notebook_page = ""
         self.last_notebook_beans = []
-    
+
     def get_file_path_from_dnd_dropped_uri(self, uri):
         # get the path to file
         path = ""
@@ -76,16 +76,16 @@ class OnlineListCntr(GObject):
             path = uri[7:] # 7 is len('file://')
         elif uri.startswith('file:'): # xffm
             path = uri[5:] # 5 is len('file:')
-        
+
         path = urllib.url2pathname(path) # escape special chars
         path = path.strip('\r\n\x00') # remove \r\n and NULL
-        
+
         return path
-    
+
     def on_drag_data_received(self, widget, context, x, y, selection, target_type, timestamp):
         TARGET_TYPE_URI_LIST = 80
         dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
-        
+
         if target_type == TARGET_TYPE_URI_LIST:
             uri = selection.data.strip('\r\n\x00')
             print 'uri', uri
@@ -93,11 +93,11 @@ class OnlineListCntr(GObject):
             paths = []
             for uri in uri_splitted:
                 path = self.get_file_path_from_dnd_dropped_uri(uri)
-                
+
                 paths.append(path)
-                
-            self.on_play_argumens(paths)         
-    
+
+            self.on_play_argumens(paths)
+
     def on_play_argumens(self, args):
         if not args:
             print "no args"
@@ -114,12 +114,12 @@ class OnlineListCntr(GObject):
             self.populate_from_dirs(dirs)
         else:
             self.populate_from_files(files)
-             
-        
+
+
     def update_label_angel(self, angle):
         for label in self.tab_labes:
             label.set_angle(angle)
-    
+
     def set_tab_left(self):
         LOG.info("Set tabs Left")
         self.online_notebook.set_tab_pos(gtk.POS_LEFT)
@@ -127,13 +127,13 @@ class OnlineListCntr(GObject):
         self.default_angel = 90
         self.online_notebook.set_show_tabs(True)
         FConfiguration().tab_position = "left"
-        
+
         for box in self.tab_hboxes:
             box.hide()
-        
+
         for box in self.tab_vboxes:
             box.show()
-    
+
     def set_tab_top(self):
         LOG.info("Set tabs top")
         self.online_notebook.set_tab_pos(gtk.POS_TOP)
@@ -143,22 +143,22 @@ class OnlineListCntr(GObject):
         FConfiguration().tab_position = "top"
         for box in self.tab_hboxes:
             box.show()
-        
+
         for box in self.tab_vboxes:
             box.hide()
-    
-        
+
+
     def set_tab_no(self):
         LOG.info("Set tabs no")
         self.online_notebook.set_show_tabs(False)
         FConfiguration().tab_position = "no"
         for box in self.tab_hboxes:
             box.hide()
-        
+
         for box in self.tab_vboxes:
             box.hide()
-   
-    
+
+
     def on_add_file(self, *a):
         chooser = gtk.FileChooserDialog(title=_("Choose file to open"), action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
@@ -169,49 +169,49 @@ class OnlineListCntr(GObject):
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
             self.populate_from_files(paths)
-            
+
         elif response == gtk.RESPONSE_CANCEL:
             LOG.info('Closed, no files selected')
         chooser.destroy()
-        print "add file"  
-    
+        print "add file"
+
     def populate_from_files(self, paths):
         if not paths:
             return None
         path = paths[0]
         list = paths[0].split("/")
-        
+
         FConfiguration().last_dir = path[:path.rfind("/")]
         self.append_notebook_page(list[len(list) - 2])
         beans = []
         for path in paths:
             bean = self.directoryCntr.get_common_bean_by_file(path)
             beans.append(bean)
-        if beans:            
+        if beans:
             self.append_and_play(beans)
         else:
             self.append([self.SearchCriteriaBeen(_("Nothing found to play in the file(s)") + paths[0])])
-    
+
     def populate_from_dirs(self, paths):
         if not paths :
             return None
-        
+
         path = paths[0]
-        
+
         list = path.split("/")
         FConfiguration().last_dir = path[:path.rfind("/")]
         self.append_notebook_page(list[len(list) - 1])
-        
+
         all_beans = []
         for path in paths:
             if path == "/":
                 LOG.info("Skip root folder")
-                continue;            
+                continue;
             beans = self.directoryCntr.get_common_beans_by_folder(path)
             for bean in beans:
                 all_beans.append(bean)
-            
-        if all_beans:            
+
+        if all_beans:
             self.append_and_play(all_beans)
         else:
             self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
@@ -226,40 +226,40 @@ class OnlineListCntr(GObject):
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
             self.populate_from_dirs(paths)
-            
+
         elif response == gtk.RESPONSE_CANCEL:
             LOG.info('Closed, no files selected')
         chooser.destroy()
         print "add folder"
-    
+
     def register_directory_cntr(self, directoryCntr):
         self.directoryCntr = directoryCntr
         self.info = InformationController(self.gx_main, self.playerCntr, directoryCntr, self.search_panel, self, self.last_fm_connector)
-    
+
     def none(self, *a):
         return False
-    
+
     def create_notebook_tab(self):
         treeview = gtk.TreeView()
         treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         treeview.set_rubber_banding(True)
-        
+
         treeview.set_reorderable(True)
         model = OnlineListModel(treeview)
         self.current_list_model = model
-        
+
         treeview.connect("drag-end", self.on_drag_end)
         treeview.connect("button-press-event", self.onPlaySong, model)
         treeview.connect("key-press-event", self.on_song_key_press, model)
-        
+
         treeview.show()
-        
+
         window = gtk.ScrolledWindow()
         window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         window.add_with_viewport(treeview)
         window.show()
-        return  window    
-        
+        return  window
+
     def append_notebook_page(self, name):
         self.last_notebook_page = name
         LOG.info("append new tab")
@@ -268,58 +268,58 @@ class OnlineListCntr(GObject):
 
         tab_content = self.create_notebook_tab()
         def label():
-            """label"""                        
+            """label"""
             label = gtk.Label(name + " ")
             label.show()
             label.set_angle(self.default_angel)
             self.tab_labes.append(label)
-            
+
             #event = gtk.EventBox()
             #event.show()
-            #event.add(label)            
+            #event.add(label)
             #return event
-            
+
             return label
-        
+
         def button():
             print "ELEMENT", FConfiguration().tab_close_element
-            if FConfiguration().tab_close_element == "button":            
+            if FConfiguration().tab_close_element == "button":
                 return tab_close_button(func=self.on_delete_tab, arg=tab_content)
             else:
                 return tab_close_label(func=self.on_delete_tab, arg=tab_content, angel=self.default_angel)
-        
-        """container Vertical Tab"""                
+
+        """container Vertical Tab"""
         vbox = gtk.VBox(False, 0)
-        if  self.default_angel == 90:        
-            vbox.show()        
+        if  self.default_angel == 90:
+            vbox.show()
         vbox.pack_start(button(), False, False, 0)
         vbox.pack_start(label(), False, False, 0)
         self.tab_vboxes.append(vbox)
-        
-        """container Horizontal Tab"""                
-        hbox = gtk.HBox(False, 0)    
-        if  self.default_angel == 0:    
-            hbox.show()        
+
+        """container Horizontal Tab"""
+        hbox = gtk.HBox(False, 0)
+        if  self.default_angel == 0:
+            hbox.show()
         hbox.pack_start(label(), False, False, 0)
         hbox.pack_start(button(), False, False, 0)
         self.tab_hboxes.append(hbox)
         #hbox.set_size_request(-1, 16)
-        
+
         """container BOTH"""
         both = gtk.HBox(False, 0)
         both.show()
         both.pack_start(vbox, False, False, 0)
         both.pack_start(hbox, False, False, 0)
-        
-        """append tab"""        
+
+        """append tab"""
         self.online_notebook.prepend_page(tab_content, both)
         self.online_notebook.set_current_page(0)
-        
+
         if self.online_notebook.get_n_pages() > FConfiguration().count_of_tabs:
             self.online_notebook.remove_page(self.online_notebook.get_n_pages() - 1)
-    
-        
-    
+
+
+
     def on_tab_click(self, w, e):
         print w, e
         """ double left or whell pressed"""
@@ -327,26 +327,26 @@ class OnlineListCntr(GObject):
             LOG.info("Close Current TAB")
             self.delete_tab()
         if is_rigth_click(e):
-            menu = Popup()            
+            menu = Popup()
             menu.add_item(_("Close"), gtk.STOCK_DELETE, self.delete_tab, None)
             menu.show(e)
-    
+
     def on_delete_tab(self, widget, event, child):
         if event.type == gtk.gdk.BUTTON_PRESS:
             print "Button press event", child
             n = self.online_notebook.page_num(child)
-            #self.online_notebook.set_current_page(n)            
+            #self.online_notebook.set_current_page(n)
             self.delete_tab(n)
-            
+
 
 #        self.delete_tab(tab_num)
-    
+
     def delete_tab(self, page=None):
         if not page:
             LOG.info("Remove current page")
-            page = self.online_notebook.get_current_page()            
+            page = self.online_notebook.get_current_page()
         self.online_notebook.remove_page(page)
-        
+
 
     def add_selected_to_playlist(self):
         selected = self.current_list_model.get_selected_bean()
@@ -368,7 +368,7 @@ class OnlineListCntr(GObject):
                     results.append(searchBean)
                 else:
                     LOG.info(str(searchBean.parent) + " != " + str(selected.name))
-            
+
             self.directoryCntr.append_virtual(results)
         LOG.info("drug")
 
@@ -379,16 +379,16 @@ class OnlineListCntr(GObject):
         self.append_notebook_page(query)
         self.append([self.SearchingCriteriaBean(query)])
         pass
-    
+
     def show_results(self, sender, query, beans, criteria=True):
         #time.sleep(0.1)
         #self.online_notebook.remove_page(0)
         #self.append([self.SearchingCriteriaBean(query)])
-        self.append_notebook_page(query)                
+        self.append_notebook_page(query)
         #self.append_notebook_page(query)
         #time.sleep(0.1)
         #self.current_list_model.clear()
-        
+
         LOG.debug("Showing search results")
         if beans:
             if criteria:
@@ -403,7 +403,7 @@ class OnlineListCntr(GObject):
         self.append([self.TextBeen(query + _(" not found on last.fm, wait for google suggests ..."))])
         suggests = google_search_resutls(query, 15)
         if suggests:
-            for line in suggests:            
+            for line in suggests:
                 self.append([self.TextBeen(line, color="YELLOW", type=CommonBean.TYPE_GOOGLE_HELP)])
         else :
             self.append([self.TextBeen(_("Google not found suggests"))])
@@ -418,33 +418,33 @@ class OnlineListCntr(GObject):
         return CommonBean(name=_("Searching: ") + name + _(" ... please wait a second"), path=None, color="GREEN", type=CommonBean.TYPE_FOLDER)
 
 
-    
+
     def _populate_model(self, beans):
         normilized = self.current_list_model.get_all_beans()
         """first add cue files"""
         #for i in xrange(len(beans)):
         #    beans[i].tracknumber = i + 1
-            
+
         for bean in beans:
             LOG.info("append", bean, bean.path)
             if bean.path and bean.path.lower().endswith(".cue"):
                 cues = CueReader(bean.path).get_common_beans()
-                for cue in cues:                
+                for cue in cues:
                     self.current_list_model.append(cue)
                     normilized.append(cue)
-        
+
         """end big file to the end"""
-        
+
         for bean in beans:
-            bean.getMp3TagsName()            
+            bean.getMp3TagsName()
             #if id3:
                 #bean.id3, bean.name, bean.info = bean.name, id3, id3.info
-                
+
             if not bean.path or (bean.path and not bean.path.lower().endswith(".cue")):
                 self.current_list_model.append(bean)
-                
+
                 normilized.append(bean)
-        
+
         self.last_notebook_beans = normilized
         return normilized
 
@@ -458,18 +458,18 @@ class OnlineListCntr(GObject):
         beans = self._populate_model(beans)
         if not beans:
             return None
-        self.index = index    
+        self.index = index
         self.current_list_model.repopulate(self.index)
         song = beans[self.index]
         LOG.info("PLAY", song)
         self.playerCntr.playSong(song)
-    
-        
-        
+
+
+
     def on_play_selected(self, similar_songs_model):
         playlistBean = similar_songs_model.get_selected_bean()
         self.index = similar_songs_model.get_selected_index()
-        
+
         if not playlistBean:
             return None
         LOG.info("play", playlistBean)
@@ -480,9 +480,9 @@ class OnlineListCntr(GObject):
             self.search_panel.set_text(playlistBean.name)
         else:
             self.playBean(playlistBean)
-    
+
     def show_save_as_dialog(self, songs):
-        LOG.debug("Show Save As Song dialog", songs)    
+        LOG.debug("Show Save As Song dialog", songs)
         chooser = gtk.FileChooserDialog(title=_("Choose directory to save song"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         response = chooser.run()
@@ -492,11 +492,11 @@ class OnlineListCntr(GObject):
         elif response == gtk.RESPONSE_CANCEL:
             LOG.info('Closed, no files selected')
         chooser.destroy()
-        
+
     def show_info(self, songs):
         if not songs:
             return None
-    
+
         result = ""
         for song in songs:
             result += song.getArtist() + " - " + song.getTitle() + "\n"
@@ -516,26 +516,26 @@ class OnlineListCntr(GObject):
         if gtk.gdk.keyval_name(e.keyval) == 'Delete':
             model.remove_selected()
 
-    def onPlaySong(self, w, e, similar_songs_model): 
-        
+    def onPlaySong(self, w, e, similar_songs_model):
+
         self.current_list_model = similar_songs_model
-        songs = similar_songs_model.get_all_selected_beans()    
+        songs = similar_songs_model.get_all_selected_beans()
         self.index = similar_songs_model.get_selected_index()
-        
+
         #selected rows
         treeselection = similar_songs_model.widget.get_selection()
         model, self.paths = treeselection.get_selected_rows()
-        
+
         #LOG.debug("Seletected index", self.index, songs)
         if is_left_click(e):
             self.paths = None
             LOG.debug("SAVE SELECTED", self.paths)
-        elif is_double_click(e):
+        elif is_double_left_click(e):
             self.paths = None
             self.on_play_selected(similar_songs_model);
         elif is_rigth_click(e):
             treeselection.connect('changed', self.changed, True)
-            
+
             menu = Popup()
             menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.on_play_selected, similar_songs_model)
             menu.add_item(_("Save"), gtk.STOCK_SAVE, save_song_thread, songs)
@@ -545,8 +545,8 @@ class OnlineListCntr(GObject):
             menu.add_item(_("Show info"), gtk.STOCK_INFO, self.show_info, songs)
             menu.add_item(_("I love it"), gtk.STOCK_OK, self.love_track, songs)
             menu.show(e)
-            
-            
+
+
             treeselection.select_all()
     def love_track(self,songs):
         for song in songs:
@@ -555,7 +555,7 @@ class OnlineListCntr(GObject):
             if track:
                 track.love()
                 LOG.debug("I LOVE IT SUCCESS")
-            
+
     def playBean(self, playlistBean):
         if playlistBean.type in [CommonBean.TYPE_MUSIC_URL, CommonBean.TYPE_MUSIC_FILE]:
             self.setSongResource(playlistBean)
@@ -572,7 +572,7 @@ class OnlineListCntr(GObject):
 
         self.playerCntr.set_mode(PlayerController.MODE_ONLINE_LIST)
         self.playerCntr.playSong(playlistBean)
-                 
+
         self.current_list_model.repopulate(self.index)
 
 
@@ -596,21 +596,21 @@ class OnlineListCntr(GObject):
             """retrive images and other info"""
             #self.info.show_song_info(playlistBean)
 
-    def nextBean(self):  
+    def nextBean(self):
         if self.index <= 0:
             self.index = 0
-                  
+
         if not self.current_list_model:
             return None
-        
+
         if FConfiguration().play_looping == const.LOPPING_SINGLE:
             return self.current_list_model.getBeenByPosition(self.index)
-        
-        if FConfiguration().play_ordering == const.ORDER_RANDOM:            
-            return self.current_list_model.get_random_bean()   
-        
+
+        if FConfiguration().play_ordering == const.ORDER_RANDOM:
+            return self.current_list_model.get_random_bean()
+
         self.index += 1
-        
+
         if self.index >= self.current_list_model.get_size():
                 self.index = 0
                 if FConfiguration().play_looping == const.LOPPING_DONT_LOOP:
@@ -618,20 +618,20 @@ class OnlineListCntr(GObject):
                     return None
         LOG.info("PLAY BEAN", self.index)
         return self.current_list_model.getBeenByPosition(self.index)
-            
+
     def prevBean(self):
         if not self.current_list_model:
             return None
-        
+
         if FConfiguration().play_looping == const.LOPPING_SINGLE:
             return self.current_list_model.getBeenByPosition(self.index)
 
-        if FConfiguration().play_ordering == const.ORDER_RANDOM:           
+        if FConfiguration().play_ordering == const.ORDER_RANDOM:
             return self.current_list_model.get_random_bean()
-        
-        self.index -= 1        
+
+        self.index -= 1
         list = self.current_list_model.get_all_beans()
-        
+
         if self.index <= 0:
             self.index = self.current_list_model.get_size()
 
@@ -649,23 +649,23 @@ class OnlineListCntr(GObject):
 
         self.setSongResource(currentSong)
         LOG.info("PATH", currentSong.path)
-        
+
         self.current_list_model.repopulate(currentSong.index);
         return currentSong
-    
+
     def shuffle(self, *a):
         LOG.info("Shuffle list")
         self.current_list_model.repopulate(self.index, True);
 
-    
+
     def setState(self, state):
         #TODO
         pass
-        
+
     def getState(self):
         #TODO
         pass
-    
+
     def getPrevSong(self):
         playlistBean = self.prevBean()
 
@@ -676,4 +676,4 @@ class OnlineListCntr(GObject):
 
         self.current_list_model.repopulate(playlistBean.index);
         return playlistBean
- 
+
