@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 import gtk
-import gobject
+#import gobject
 from foobnix.regui.treeview.scanner import DirectoryScanner
 from foobnix.regui.model import FTreeModel, FModel
 from foobnix.util import LOG

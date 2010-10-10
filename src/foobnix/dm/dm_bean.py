@@ -22,8 +22,16 @@ class DMThread(threading.Thread):
         block_size = 4096
         block_count = 0
         try:
+            gtk.gdk.threads_enter()
+            self.dmbean.set_error('VK search...')
+            self.dmbean.update()
+            gtk.gdk.threads_leave()
             if not self.bean.path and not self.dmbean.do_fill_from_vk():
                 raise DMThreadVKException()
+            gtk.gdk.threads_enter()
+            self.dmbean.set_error('')
+            self.dmbean.update()
+            gtk.gdk.threads_leave()
             if (not self.bean.path.lower().startswith('http://')
                 or not self.bean.path.lower().endswith('.mp3')):
                 raise DMThreadURLException()
@@ -47,21 +55,36 @@ class DMThread(threading.Thread):
                 if data:
                     block_count += 1
                     file_handler.write(data)
+                    gtk.gdk.threads_enter()
                     self.dmbean.url_report(block_count, block_size, remote_size)
+                    gtk.gdk.threads_leave()
             self.remote_handler.close()
             file_handler.close()
         except IOError, e:
+            if os.path.isfile(fname + '.tmp'):
+                os.unlink(fname + '.tmp')
+            gtk.gdk.threads_enter()
             self.dmbean.set_error(e.strerror)
             self.dmbean.state_ready()
-        except DMThreadException, e :
+            gtk.gdk.threads_leave()
+        except DMThreadException, e:
+            if os.path.isfile(fname + '.tmp'):
+                os.unlink(fname + '.tmp')
+            gtk.gdk.threads_enter()
             self.dmbean.set_error(e.message)
             self.dmbean.state_ready()
+            gtk.gdk.threads_leave()
         else:
             if not self._stop.isSet():
                 os.rename(fname + '.tmp', fname)
+                gtk.gdk.threads_enter()
                 self.dmbean.state_complite()
+                gtk.gdk.threads_leave()
             else:
+                os.unlink(fname + '.tmp')
+                gtk.gdk.threads_enter()
                 self.dmbean.state_ready()
+                gtk.gdk.threads_leave()
 
     def stop(self):
         self._stop.set()
@@ -82,7 +105,6 @@ class DMBean(gtk.HBox):
             bean.album if bean.album else '')
         self.save_name = None
         self.thread = None
-        self.lock = threading.RLock()
         self.label = gtk.Label(bean.text)
         self.label.show()
         self.error = ''
@@ -143,10 +165,9 @@ class DMBean(gtk.HBox):
         self.thread.stop()
 
     def set_state(self, state):
-        self.lock.acquire()
         if self._state != state:
             self._state = state
-        self.lock.release()
+        self.update()
 
     def on_start_stop(self, *a):
         if self._state == self.STATE_READY:
@@ -213,16 +234,13 @@ class DMBean(gtk.HBox):
         else:
             persent = block_count * block_size * 1.0 / total_size
             if persent > 1.0: persent = 1.0
-        self.lock.acquire()
         self.pb_text = "%s | %s / %s (%.2f%%)" % (self.bean.text, size2text(block_count * block_size),
                                                   size2text(total_size), persent * 100)
         self.pb_fraction = persent
-        self.lock.release()
+        self.update()
 
     def update(self):
         """update info"""
-        gtk.gdk.threads_enter()
-        self.lock.acquire()
         stocks = [gtk.STOCK_MEDIA_PLAY, gtk.STOCK_MEDIA_STOP, gtk.STOCK_OK, gtk.STOCK_CANCEL]
         tooltips = [_('Start download'), _('Stop download'), _('Clear download'), _('Stopping')]
         label_vis = [self.label.show, self.label.hide, self.label.show, self.label.hide]
@@ -231,24 +249,23 @@ class DMBean(gtk.HBox):
             self.toolbutton_clear.show()
         else:
             self.toolbutton_clear.hide()
-        if self.enable:
-            self.start_stop.set_stock_id(stocks[self._state])
-            self.start_stop.set_tooltip_text(tooltips[self._state])
-            self.start_stop.show()
+        self.start_stop.set_stock_id(stocks[self._state])
+        self.start_stop.set_tooltip_text(tooltips[self._state])
+        if self._state == self.STATE_READY:
+            if self.enable:
+                self.start_stop.show()
+            else:
+                self.start_stop.hide()
         else:
-            self.start_stop.hide()
+            self.start_stop.show()
         label_vis[self._state]()
         progr_vis[self._state]()
         self.progressbar.set_text(self.pb_text)
         self.progressbar.set_fraction(self.pb_fraction)
         self.label.set_text(self.bean.text + self.error)
-        self.lock.release()
-        gtk.gdk.threads_leave()
 
     def set_error(self, error):
-        self.lock.acquire()
         self.error = ' (%s)' % error
-        self.lock.release()
 
 def size2text(size):
     if size > 1024*1024*1024:
