@@ -85,6 +85,8 @@ class DMBean(gtk.HBox):
         self.lock = threading.RLock()
         self.label = gtk.Label(bean.text)
         self.label.show()
+        self.error = ''
+        self.enable = True
 
         self.progressbar = gtk.ProgressBar()
         self.pb_text = ''
@@ -141,22 +143,10 @@ class DMBean(gtk.HBox):
         self.thread.stop()
 
     def set_state(self, state):
-        stocks = [gtk.STOCK_MEDIA_PLAY, gtk.STOCK_MEDIA_STOP, gtk.STOCK_OK, gtk.STOCK_CANCEL]
-        tooltips = [_('Start download'), _('Stop download'), _('Clear download'), _('Stopping')]
-        label_vis = [self.label.show, self.label.hide, self.label.show, self.label.hide]
-        progr_vis = [self.progressbar.hide, self.progressbar.show, self.progressbar.hide, self.progressbar.show]
+        self.lock.acquire()
         if self._state != state:
-            gtk.gdk.threads_enter()
-            if state == self.STATE_READY:
-                self.toolbutton_clear.show()
-            else:
-                self.toolbutton_clear.hide()
-            self.start_stop.set_stock_id(stocks[state])
-            self.start_stop.set_tooltip_text(tooltips[state])
-            label_vis[state]()
-            progr_vis[state]()
             self._state = state
-            gtk.gdk.threads_leave()
+        self.lock.release()
 
     def on_start_stop(self, *a):
         if self._state == self.STATE_READY:
@@ -170,7 +160,7 @@ class DMBean(gtk.HBox):
             self.clear()
 
     def start(self):
-        if self._state == self.STATE_READY:
+        if self._state == self.STATE_READY and self.enable:
             self.state_download()
 
     def get_url(self):
@@ -182,12 +172,10 @@ class DMBean(gtk.HBox):
 
     def clear(self):
         if self._state == self.STATE_COMPLITE:
-            self.hide()
             self.on_clear(self, False)
 
     def on_clear_click(self, *a):
         if self._state == self.STATE_READY:
-            self.hide()
             self.on_clear(self, True)
 
     def on_clear(self, dmbean, wait):
@@ -207,6 +195,9 @@ class DMBean(gtk.HBox):
 
     def do_fill_from_vk(self):
         return self.fill_bean_from_vk(self.bean)
+
+    def is_ready(self):
+        return self._state == self.STATE_READY
 
     def is_download(self):
         return self._state == self.STATE_DOWNLOAD
@@ -230,17 +221,34 @@ class DMBean(gtk.HBox):
 
     def update(self):
         """update info"""
-        self.lock.acquire()
         gtk.gdk.threads_enter()
+        self.lock.acquire()
+        stocks = [gtk.STOCK_MEDIA_PLAY, gtk.STOCK_MEDIA_STOP, gtk.STOCK_OK, gtk.STOCK_CANCEL]
+        tooltips = [_('Start download'), _('Stop download'), _('Clear download'), _('Stopping')]
+        label_vis = [self.label.show, self.label.hide, self.label.show, self.label.hide]
+        progr_vis = [self.progressbar.hide, self.progressbar.show, self.progressbar.hide, self.progressbar.show]
+        if self._state == self.STATE_READY:
+            self.toolbutton_clear.show()
+        else:
+            self.toolbutton_clear.hide()
+        if self.enable:
+            self.start_stop.set_stock_id(stocks[self._state])
+            self.start_stop.set_tooltip_text(tooltips[self._state])
+            self.start_stop.show()
+        else:
+            self.start_stop.hide()
+        label_vis[self._state]()
+        progr_vis[self._state]()
         self.progressbar.set_text(self.pb_text)
         self.progressbar.set_fraction(self.pb_fraction)
-        gtk.gdk.threads_leave()
+        self.label.set_text(self.bean.text + self.error)
         self.lock.release()
+        gtk.gdk.threads_leave()
 
     def set_error(self, error):
-        gtk.gdk.threads_enter()
-        self.label.set_text(self.bean.text + ' (%s)' % error)
-        gtk.gdk.threads_leave()
+        self.lock.acquire()
+        self.error = ' (%s)' % error
+        self.lock.release()
 
 def size2text(size):
     if size > 1024*1024*1024:

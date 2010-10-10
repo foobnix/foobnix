@@ -98,37 +98,40 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
 
         return swin
 
-    def start_all(self):
-        i = self.stat['active']
-        print 'Start_All', i, self.max_active_count
+    def _start_all(self):
         self.lock.acquire()
-        for dmbean in self.beans:
-            if dmbean.is_complite():
-                continue
-            dmbean.start()
-            i += 1
-            if self.max_active_count > 0 and i >= self.max_active_count:
-                break
+        i = self.stat['active']
+        if i < self.max_active_count:
+            for dmbean in self.beans:
+                if dmbean.is_ready() and dmbean.enable:
+                    dmbean.start()
+                    i += 1
+                    if i >= self.max_active_count:
+                        break
         self.lock.release()
 
     def auto_start(self):
         if self.auto_start_donwload:
-            self.start_all()
-            #t = Timer(0.5, self.start_all)
-            #t.start()
+            self._start_all()
+
+    def start_all(self):
+        self.lock.acquire()
+        self.auto_start_donwload = True
+        self._start_all()
+        self.lock.release()
 
     def stop_all(self):
         self.lock.acquire()
+        self.auto_start_donwload = False
         for dmbean in self.beans:
             dmbean.stop()
         self.lock.release()
 
     def clear_all(self):
         self.lock.acquire()
-        beans = self.beans[:]
-        self.lock.release()
-        for dmbean in beans:
+        for dmbean in self.beans:
             dmbean.clear()
+        self.lock.release()
 
     def add_click(self):
         bean_path = None
@@ -139,6 +142,8 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         self.add_bean(bean)
 
     def _add_bean(self, bean):
+        gtk.gdk.threads_enter()
+        self.lock.acquire()
         dmbean = DMBean(bean, self.save_path)
         dmbean.fill_bean_from_vk = self.controls.fill_bean_from_vk
         dmbean.on_clear = self.on_clear_dmbean
@@ -146,10 +151,10 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         dmbean.on_stopped = self.on_stopped_dmbean
         dmbean.on_complite = self.on_complite_dmbean
         dmbean.show()
-        self.lock.acquire()
         self.beans.append(dmbean)
-        self.lock.release()
         self.dm_list.pack_start(dmbean, False, False, 0)
+        self.lock.release()
+        gtk.gdk.threads_leave()
 
     def add_bean(self, bean):
         print 'Add_Bean'
@@ -165,37 +170,53 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
         self.auto_start()
 
     def on_clear_dmbean(self, dmbean, wait):
+        gtk.gdk.threads_enter()
+        self.lock.acquire()
         if not wait:
             self.stat['complite'] -= 1
-        self.lock.acquire()
         self.beans.remove(dmbean)
+        dmbean.hide()
         self.lock.release()
+        gtk.gdk.threads_leave()
         self.update_status()
 
     def on_start_dmbean(self, dmbean):
+        self.lock.acquire()
         self.stat['active'] += 1
+        self.lock.release()
         self.update_status()
 
     def on_stopped_dmbean(self, dmbean):
+        self.lock.acquire()
         self.stat['active'] -= 1
+        self.lock.release()
         self.update_status()
         self.auto_start()
 
     def on_complite_dmbean(self, dmbean):
+        self.lock.acquire()
         self.stat['active'] -= 1
         self.stat['complite'] += 1
+        self.lock.release()
         self.update_status()
         self.auto_start()
 
     def update_status(self):
         self.lock.acquire()
         total = len(self.beans)
-        self.lock.release()
         active =  self.stat['active']
         complite = self.stat['complite']
         wait = total - active - complite
-        self.controls.statusbar.set_text(_('Downloads - Total: %s Active: %s Wait: %s Complite: %s') %
-                                         (total, active, wait, complite))
+        if total:
+            gtk.gdk.threads_enter()
+            self.controls.statusbar.set_text(_('Downloads - Total: %s Active: %s Wait: %s Complite: %s') %
+                                            (total, active, wait, complite))
+            gtk.gdk.threads_leave()
+        for dmbean in self.beans:
+            dmbean.enable = active < self.max_active_count
+            dmbean.update()
+        self.lock.release()
+
 
     def hide_window(self, *a):
         self.hide()
@@ -216,7 +237,7 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
 
     def on_load(self):
         self.save_path = FC().online_music_path
-        self.max_active_count = 2
+        self.max_active_count = 3
         self.auto_start_donwload = True
         self.updater.start()
 
@@ -228,12 +249,8 @@ class DMUpdateThread(threading.Thread):
 
     def run(self):
         while not self._stop.isSet():
+            self.dm.update_status()
             time.sleep(1)
-            self.dm.lock.acquire()
-            for dmbean in self.dm.beans:
-                if dmbean.is_download:
-                    dmbean.update()
-            self.dm.lock.release()
 
     def stop(self):
         self._stop.set()
