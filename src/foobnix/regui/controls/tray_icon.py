@@ -9,7 +9,7 @@ import gtk
 import os
 from foobnix.util.fc import FC
 from foobnix.helpers.toolbar import MyToolbar
-from foobnix.util.mouse_utils import is_mouse_click
+from foobnix.util.mouse_utils import is_middle_click
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 class PopupWindowMenu(gtk.Window, FControl):
@@ -24,16 +24,16 @@ class PopupWindowMenu(gtk.Window, FControl):
         vbox = gtk.VBox(False, 0)
 
         toolbar = MyToolbar()
-        toolbar.add_button("Exit", gtk.STOCK_QUIT, self.controls.quit, None)   
+        toolbar.add_button("Exit", gtk.STOCK_QUIT, self.controls.quit, None)
         toolbar.add_separator()
-        toolbar.add_button("Stop", gtk.STOCK_MEDIA_STOP, self.controls.state_stop, None)   
+        toolbar.add_button("Stop", gtk.STOCK_MEDIA_STOP, self.controls.state_stop, None)
         toolbar.add_button("Play", gtk.STOCK_MEDIA_PLAY, self.controls.state_play, None)
         toolbar.add_button("Pause", gtk.STOCK_MEDIA_PAUSE, self.controls.state_pause, None)
         toolbar.add_button("Previous", gtk.STOCK_MEDIA_PREVIOUS, self.controls.prev, None)
         toolbar.add_button("Next", gtk.STOCK_MEDIA_NEXT, self.controls.next, None)
         toolbar.add_separator()
         toolbar.add_button("Close Popup", gtk.STOCK_OK, lambda * a:self.hide(), None)
-        
+
         self.poopup_text = gtk.Label("Foobnix")
         self.poopup_text.set_line_wrap(True)
 
@@ -47,7 +47,7 @@ class PopupWindowMenu(gtk.Window, FControl):
         self.poopup_text.set_text(text)
 
     def on_leave_window(self, w, event):
-        print w, event 
+        print w, event
         max_x, max_y = w.size_request()
         x, y = event.x, event.y
         if 0 < x < max_x and 0 < y < max_y:
@@ -65,9 +65,9 @@ class TrayIconControls(FControl):
         self.popup_menu = PopupWindowMenu(self.controls)
 
         path = get_foobnix_resourse_path_by_name("foobnix.png")
-        
+
         if path:
-            self.icon.set_from_file(path)        
+            self.icon.set_from_file(path)
         else:
             self.icon.set_from_stock("gtk-media-play")
 
@@ -88,7 +88,7 @@ class TrayIconControls(FControl):
         self.controls.windows_visibility()
 
     def on_button_press(self, w, e):
-        if is_mouse_click(e):
+        if is_middle_click(e):
             self.paused = not self.paused
             if self.paused:
                 self.controls.state_play()
