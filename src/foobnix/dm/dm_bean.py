@@ -23,14 +23,11 @@ class DMThread(threading.Thread):
         block_count = 0
         try:
             gtk.gdk.threads_enter()
-            self.dmbean.set_error('VK search...')
+            self.dmbean.pb_text = _('VK search...')
             self.dmbean.update()
             gtk.gdk.threads_leave()
             if not self.bean.path and not self.dmbean.do_fill_from_vk():
                 raise DMThreadVKException()
-            gtk.gdk.threads_enter()
-            self.dmbean.set_error('')
-            self.dmbean.update()
             gtk.gdk.threads_leave()
             if (not self.bean.path.lower().startswith('http://')
                 or not self.bean.path.lower().endswith('.mp3')):
@@ -265,7 +262,10 @@ class DMBean(gtk.HBox):
         self.label.set_text(self.bean.text + self.error)
 
     def set_error(self, error):
-        self.error = ' (%s)' % error
+        if error:
+            self.error = ' (%s)' % error
+        else:
+            self.error = ''
 
 def size2text(size):
     if size > 1024*1024*1024:
