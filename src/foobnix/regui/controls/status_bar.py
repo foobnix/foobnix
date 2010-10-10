@@ -11,7 +11,7 @@ class StatusbarControls(gtk.Statusbar, FControl):
         gtk.Statusbar.__init__(self)
         FControl.__init__(self, controls)
         self.show()
+
     def set_text(self, text):
-        print "set TEXT"          
         if text:
             self.push(0, text)

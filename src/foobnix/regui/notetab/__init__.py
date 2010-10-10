@@ -7,7 +7,7 @@ Created on Sep 23, 2010
 import gtk
 from foobnix.util import LOG, const
 from foobnix.helpers.my_widgets import tab_close_button, tab_close_label
-from foobnix.online.online_model import OnlineListModel
+#from foobnix.online.online_model import OnlineListModel
 from foobnix.util.fc import FC
 from foobnix.regui.treeview.playlist import PlaylistControl
 from foobnix.regui.model.signal import FControl
@@ -87,10 +87,10 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
             self.controls.next()
 
     def next(self):
-        return self.active_tree.next(rnd=self.isRandom, lopping=self.lopping)
+        return self.active_tree.next(rnd=self.is_random, lopping=self.lopping)
 
     def prev(self):
-        return self.active_tree.prev(rnd=self.isRandom, lopping=self.lopping)
+        return self.active_tree.prev(rnd=self.is_random, lopping=self.lopping)
 
     def create_notebook_tab(self, beans):
 
@@ -127,7 +127,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.remove_page(page)
 
     def set_random(self, flag):
-        self.isRandom = flag
+        self.is_random = flag
 
     def set_lopping_all(self):
         self.lopping = const.LOPPING_LOOP_ALL
@@ -142,19 +142,19 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         print self.lopping
 
     def on_load(self):
-        self.isRandom = FC().is_order_random
+        self.is_random = FC().is_order_random
         self.lopping = FC().lopping
 
     def on_save(self):
-        FC().is_order_random = self.isRandom
+        FC().is_order_random = self.is_random
         FC().lopping = self.lopping
 
     def switch_tree(self, tree):
         self.active_tree = tree
-    
+
     def set_playlist_tree(self):
         self.active_tree.set_playlist_tree()
-    
+
     def set_playlist_plain(self):
         self.active_tree.set_playlist_plain()
 
