@@ -11,7 +11,7 @@ init_time = time.time()
 iface = foobnixDBusInterface()
 
 if not iface:
-    print "start server my 1"
+    print "start server my"
     #import gobject
     from foobnix.regui.foobnix_core import FoobnixCore
     import gtk
