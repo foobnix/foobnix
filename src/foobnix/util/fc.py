@@ -67,7 +67,8 @@ class FC:
         self.show_tray_icon = True
 
         """download manager controls"""
-        self.dm_window_size = [119, 154, 200, 200]
+        self.auto_start_donwload = True
+        self.max_active_count = 3
         self.online_music_path = '/tmp'
 
         self = self._load();

@@ -8,7 +8,7 @@ from foobnix.lyric.lyr import get_lyrics
 from foobnix.util import LOG, const
 from foobnix.util.configuration import FConfiguration
 from foobnix.online.google.translate import translate
-from foobnix.util.mouse_utils import is_double_click
+from foobnix.util.mouse_utils import is_double_left_click
 import time
 import gtk
 
@@ -193,7 +193,7 @@ class PlayerWidgetsCntl():
 
     def on_show_hide_paned(self, w, e):
         #TODO: Matik, could you view, this signal rise on any paned double click.
-        if is_double_click(e):
+        if is_double_left_click(e):
             LOG.debug("double click", w)
             if w.get_position() == 0:
                 self.on_full_view(w, e)

@@ -45,27 +45,6 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
 
         self.prev_iter_play_icon = None
 
-        self.init_data_tree()
-
-    def init_data_tree(self):
-        self.get_model().get_model().clear()
-        """ Madonna """
-        list = []
-        list.append(FModel("Madonna").add_is_file(False))
-        list.append(FModel("Madonna - Song1").add_parent("Madonna").add_is_file(True))
-        list.append(FModel("Madonna - Song2").add_parent("Madonna").add_is_file(True))
-        for line in list:
-            self.append(line)
-
-        bean = FModel('TEXT').add_font("bold")
-        parent = self.append(bean)
-        self.append(FModel('TEXT1').add_font("normal").add_level(parent))
-        self.append(FModel('TEXT2').add_font("normal").add_level(parent))
-        self.append(FModel('TEXT2').add_font("normal").add_level(parent))
-        self.append(FModel('TEXT').add_font("bold"))
-        self.append(FModel('TEXT').add_font("bold"))
-
-
     def iter_copy(self, from_model, from_iter, to_model, to_iter, pos):
 
         #row = [from_model.get_value(from_iter, 0), from_model.get_value(from_iter, 1), True]

@@ -204,5 +204,5 @@ class DownloadManager(gtk.Window, FControl, LoadSave):
 
     def on_load(self):
         self.save_path = FC().online_music_path
-        self.max_active_count = 3
-        self.auto_start_donwload = True
+        self.max_active_count = FC().max_active_count
+        self.auto_start_donwload = FC().auto_start_donwload

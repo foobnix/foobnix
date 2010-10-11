@@ -7,7 +7,7 @@ Created on Sep 23, 2010
 import gtk
 from foobnix.util import LOG, const
 from foobnix.helpers.my_widgets import tab_close_button, tab_close_label
-from foobnix.online.online_model import OnlineListModel
+#from foobnix.online.online_model import OnlineListModel
 from foobnix.util.fc import FC
 from foobnix.regui.treeview.playlist import PlaylistControl
 from foobnix.regui.model.signal import FControl
