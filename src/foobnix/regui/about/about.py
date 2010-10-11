@@ -4,6 +4,7 @@ Created on Oct 2, 2010
 
 @author: dimitry (zavlab1)
 '''
+
 import gtk
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
