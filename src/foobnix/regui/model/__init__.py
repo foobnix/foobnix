@@ -1,4 +1,5 @@
 import gobject
+import uuid
 
 class FTreeModel():   
     
@@ -24,6 +25,9 @@ class FTreeModel():
         
         self.start_sec = 17, str
         self.duration_sec = 18, str
+        
+        self.UUID = 19, str
+        self.parent_level = 20, str 
     
     def cut(self):
         for i in self.__dict__:
@@ -51,6 +55,11 @@ class FModel(FTreeModel):
             self.__dict__[i] = None
         self.text = text
         self.path = path
+        self.visible = True
+        self.UUID = uuid.uuid4().hex
+    
+    def get_uuid(self):
+        return self.UUID
     
     def add_artist(self, artist):
         self.artist = artist
@@ -64,9 +73,17 @@ class FModel(FTreeModel):
         self.level = level
         return self
     
-    def add_parent(self, level):
-        self.level = level
+    def get_level(self):
+        return self.level
+    
+    def add_parent(self, parent):
+        self.parent_level = parent
         return self 
+    def set_parent(self, parent):
+        self.parent_level = parent
+    
+    def get_parent(self):
+        return self.parent_level
     
     def add_font(self, font):
         self.font = font
