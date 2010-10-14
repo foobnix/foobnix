@@ -177,7 +177,7 @@ class BaseFoobnixControls(LoadSave):
                 bean.parent(parent_bean)                
                 all.append(bean)
             self.notetabs.append_tab(query, all)
-        self.singre_thread.run_with_text(inline, query, "Searching: " + query, True)
+        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
 
 
 
