@@ -30,7 +30,10 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.active_tree = None
 
         self.append_tab("Foobnix", [])
-
+    
+    def get_active_tree(self):
+        return self.active_tree
+    
     def append_tab(self, name, beans=None):
         self.last_notebook_page = name
         LOG.info("append new tab")
@@ -98,11 +101,12 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.switch_tree(treeview)
 
         #treeview.populate_from_scanner(beans)
+        #if beans:
+        #    treeview.populate(beans)
         if beans:
-            treeview.populate(beans)
-        #for bean in beans:
-            #bean.level = None
-        #    treeview.append(bean)
+            for bean in beans:         
+                treeview.append(bean)
+            
         window = gtk.ScrolledWindow()
         window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         #window.add_with_viewport(treeview)
@@ -114,6 +118,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     def append(self, beans):
         for bean in beans:
             self.active_tree.append(bean)
+        self.get_active_tree().expand_all() 
 
     def on_delete_tab(self, widget, event, child):
         if event.type == gtk.gdk.BUTTON_PRESS: #@UndefinedVariable

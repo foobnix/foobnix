@@ -57,6 +57,7 @@ class FModel(FTreeModel):
         self.path = path
         self.visible = True
         self.UUID = uuid.uuid4().hex
+        self.level = uuid.uuid4().hex
     
     def get_uuid(self):
         return self.UUID
@@ -79,6 +80,11 @@ class FModel(FTreeModel):
     def add_parent(self, parent):
         self.parent_level = parent
         return self 
+    
+    def parent(self, parent_bean):
+        self.parent_level = parent_bean.level
+        self.is_file = True
+        return self
     def set_parent(self, parent):
         self.parent_level = parent
     

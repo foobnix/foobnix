@@ -36,7 +36,7 @@ class BaseFoobnixControls(LoadSave):
 
     def load_music_tree(self):
         if FC().cache_music_tree_beans:
-            self.tree.populate_from_scanner(FC().cache_music_tree_beans)
+            self.tree.append_all(FC().cache_music_tree_beans)
             LOG.info("Tree loaded from cache")
         else:
             self.update_music_tree()
@@ -53,10 +53,7 @@ class BaseFoobnixControls(LoadSave):
             for bean in all:
                 FC().cache_music_tree_beans.append(bean)
 
-            self.tree.append_from_scanner(all)
-
-
-
+            self.tree.append_all(all)
 
     def update_radio_tree(self):
         if self.is_radio_populated:
@@ -65,10 +62,11 @@ class BaseFoobnixControls(LoadSave):
         self.radio_folder = RadioFolder()
         files = self.radio_folder.get_radio_FPLs()
         for fpl in files:
-            parent = FModel(fpl.name).add_font("bold").add_is_file(False)
-            parentIter = self.radio.append(parent)
+            print fpl, fpl.name
+            parent = FModel(fpl.name).add_is_file(False)
+            self.radio.append(parent)
             for radio, urls in fpl.urls_dict.iteritems():
-                child = FModel(radio, urls[0]).add_font("").add_level(parentIter).add_is_file(True)
+                child = FModel(radio, urls[0]).parent(parent)
                 self.radio.append(child)
         self.is_radio_populated = True
 
@@ -160,9 +158,11 @@ class BaseFoobnixControls(LoadSave):
         def inline(query):
             results = self.vk.find_tracks_by_query(query)
             all = []
-            all.append(FModel(query).add_font("bold"))
+            p_bean = FModel(query).add_font("bold")
+            all.append(p_bean)
             for i, bean in enumerate(results):
                 bean.tracknumber = i + 1
+                bean.parent(p_bean)
                 all.append(bean)
             self.notetabs.append_tab(query, all)
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
@@ -171,9 +171,11 @@ class BaseFoobnixControls(LoadSave):
         def inline(query):
             results = self.lastfm.search_top_tracks(query)
             all = []
-            all.append(FModel(query).add_font("bold"))
+            parent_bean = FModel(query)
+            all.append(parent_bean)
             for i, bean in enumerate(results):
                 bean.tracknumber = i + 1
+                bean.parent(parent_bean)                
                 all.append(bean)
             self.notetabs.append_tab(query, all)
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
@@ -186,15 +188,14 @@ class BaseFoobnixControls(LoadSave):
             self.notetabs.append_tab(query, None)
             for album in results[:5]:
                 all = []
-                album.add_font("bold")
+                album.is_file = False
                 all.append(album)
                 tracks = self.lastfm.search_album_tracks(album.artist, album.album)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
+                    track.parent(album)                    
                     all.append(track)
-                self.notetabs.append(all)
-        #inline(query)
-        #self.singre_thread.run(inline, query)
+                self.notetabs.append(all)                       
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
 
     def search_top_similar(self, query):
@@ -203,11 +204,12 @@ class BaseFoobnixControls(LoadSave):
             self.notetabs.append_tab(query, None)
             for artist in results[:5]:
                 all = []
-                artist.add_font("bold")
+                artist.is_file = False
                 all.append(artist)
                 tracks = self.lastfm.search_top_tracks(artist.artist)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
+                    track.parent(artist)
                     all.append(track)
                 self.notetabs.append(all)
         #inline(query)
@@ -219,11 +221,12 @@ class BaseFoobnixControls(LoadSave):
             self.notetabs.append_tab(query, None)
             for tag in results[:5]:
                 all = []
-                tag.add_font("bold")
+                tag.is_file = False
                 all.append(tag)
                 tracks = self.lastfm.search_top_tag_tracks(tag.text)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
+                    track.parent(tag)
                     all.append(track)
                 self.notetabs.append(all)
         #inline(query)

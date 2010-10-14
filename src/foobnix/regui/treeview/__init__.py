@@ -7,11 +7,14 @@ from foobnix.util import LOG
 import uuid
 from foobnix.regui.model.signal import FControl
 import copy
+from foobnix.regui.treeview.drug_tree import DrugDropTree
 
-class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
 
-    def __init__(self, controls):
-        gtk.TreeView.__init__(self)
+class TreeViewControl(DrugDropTree, FTreeModel, FControl):
+
+    def __init__(self, controls):        
+        DrugDropTree.__init__(self)
+        
         FTreeModel.__init__(self)
         FControl.__init__(self, controls)
 
@@ -32,65 +35,14 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         self.connect("button-press-event", self.on_button_press)
         self.connect("key-release-event", self.on_key_release)
 
-        self.connect("drag-drop", self.on_drag_drop)
-
-        self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
-        self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
-
-
         self.count_index = 0
 
         self.set_reorderable(False)
         self.set_headers_visible(False)
 
         self.prev_iter_play_icon = None
-
-    def iter_copy(self, from_model, from_iter, to_model, to_iter, pos):
-
-        #row = [from_model.get_value(from_iter, 0), from_model.get_value(from_iter, 1), True]
-        row = self.get_row_from_model_iter(from_model, from_iter)
-
-        if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
-            new_iter = to_model.prepend(to_iter, row)
-        elif pos == gtk.TREE_VIEW_DROP_BEFORE:
-            new_iter = to_model.insert_before(None, to_iter, row)
-        elif pos == gtk.TREE_VIEW_DROP_AFTER:
-            new_iter = to_model.insert_after(None, to_iter, row)
-        else:
-            new_iter = to_model.append(None, row)
-
-        if from_model.iter_has_child(from_iter):
-            for i in range(0, from_model.iter_n_children(from_iter)):
-                next_iter_to_copy = from_model.iter_nth_child(from_iter, i)
-                self.iter_copy(from_model, next_iter_to_copy, to_model, new_iter, gtk.TREE_VIEW_DROP_INTO_OR_BEFORE)
-
-    def on_drag_drop(self, to_tree, drag_context, x, y, selection):
-        to_filter_model = to_tree.get_model()
-        to_model = to_filter_model.get_model()
-        if to_tree.get_dest_row_at_pos(x, y):
-            to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)
-            to_path = to_filter_model.convert_path_to_child_path(to_path)
-            to_iter = to_model.get_iter(to_path)
-        else:
-            to_path = None
-            to_pos = None
-            to_iter = None
-
-
-        from_tree = drag_context.get_source_widget()
-        from_filter_model, from_paths = from_tree.get_selection().get_selected_rows()
-        from_model = from_filter_model.get_model()
-        from_path = from_filter_model.convert_path_to_child_path(from_paths[0])
-        from_iter = from_model.get_iter(from_path)
-
-        self.iter_copy(from_model, from_iter, to_model, to_iter, to_pos)
-
-        if to_tree == from_tree:
-            """move element in the save tree"""
-            drag_context.finish(True, True)
-
-        if to_path:
-            to_tree.expand_to_path(to_path)
+        
+        self.set_type_plain()
 
 
     def set_scrolled(self, policy_horizontal, policy_vertical):
@@ -99,31 +51,6 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
         self.scroll.add_with_viewport(self)
         self.scroll.show_all()
         return self
-
-    def populate(self, beans):
-        self.clear()
-        for bean in beans:
-            bean.level = None
-            self.append(bean)
-
-    def append(self, bean):
-        bean.visible = True
-        if bean.is_file == True:
-            bean.font = "normal"
-        else:
-            bean.font = "bold"
-        #bean.text = bean.text + " !" + str(bean.start_sec) + "=" + str(bean.duration_sec)
-
-        bean.index = self.count_index
-        self.count_index += 1
-
-        row = self.get_row_from_bean(bean)
-
-        if isinstance(bean.level, gtk.TreeIter):
-            value = self.model.append(bean.level, row)
-        else:
-            value = self.model.append(None, row)
-        return value
 
     def get_bean_from_row(self, row):
         bean = FModel()
@@ -151,31 +78,6 @@ class TreeViewControl(gtk.TreeView, FTreeModel, FControl):
             value = model.get_value(iter, i)
             attributes.append(value)
         return attributes
-
-    def append_from_scanner(self, all):
-        """copy beans"""
-        beans = copy.deepcopy(all)
-
-        hash = {None:None}
-        for bean in beans:
-            if bean is None:
-                continue
-            bean.visible = True
-            if hash.has_key(bean.level):
-                level = hash[bean.level]
-            else:
-                level = None
-
-            if bean.is_file:
-                child_level = self.append(bean.add_font("normal").add_level(level))
-            else:
-                child_level = self.append(bean.add_font("bold").add_level(level))
-
-            hash[bean.path] = child_level
-
-    def populate_from_scanner(self, beans):
-        self.clear()
-        self.append_from_scanner(beans)
 
     def clear(self):
         self.count_index = 0

@@ -16,6 +16,7 @@ class RadioTreeControl(TreeViewControl, LoadSave):
         column = gtk.TreeViewColumn("Radio Lybrary", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.append_column(column)
+        self.set_type_tree()
     
              
     def on_button_press(self, w, e):

@@ -43,10 +43,11 @@ class DirectoryScanner():
                 continue;
             
             if self.is_dir_with_music(full_path):
-                self.results.append(FModel(file, full_path).add_level(level).add_is_file(False))
-                self._scanner(full_path, full_path)
+                b_bean = FModel(file, full_path).add_parent(level).add_is_file(False)
+                self.results.append(b_bean)
+                self._scanner(full_path, b_bean.get_level())
             elif os.path.isfile(full_path):
-                self.results.append(FModel(file, full_path).add_level(level).add_is_file(True))
+                self.results.append(FModel(file, full_path).add_parent(level).add_is_file(True))
 
     def sort_by_name(self, path, list):
         files = []

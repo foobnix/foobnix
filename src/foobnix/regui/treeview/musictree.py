@@ -20,8 +20,7 @@ class MusicTreeControl(TreeViewControl, LoadSave):
         column.set_resizable(True)
         self.append_column(column)
         
-        #self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
-        #self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
+        self.set_type_tree()
     
     def on_button_press(self, w, e):
         

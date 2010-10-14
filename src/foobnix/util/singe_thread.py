@@ -21,9 +21,16 @@ class SingreThread():
         else:
             LOG.warn("Thread not finished", method, args)
     
-    def run_with_text(self, method, args, text):
-        self.progressbar.start(text)
-        self.run(method, args)
+    def run_with_text(self, method, args, text, no_thread=False):
+        if no_thread:
+            if method and args:
+                method(args)
+            if method:
+                method()                            
+        else:
+            self.progressbar.start(text)
+            self.run(method, args)
+        
     
     def thread_task(self, method, args):
         try:
