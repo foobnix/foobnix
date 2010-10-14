@@ -55,8 +55,6 @@ class DrugDropTree(gtk.TreeView):
                 self.update_tree_structure_row_requrcive(child)
    
     def iter_copy(self, from_model, from_iter, to_model, to_iter, pos,to_type, from_type):
-        print "iter copy"
-        
         row = self.get_row_from_model_iter(from_model, from_iter)
 
         if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
@@ -121,9 +119,6 @@ class DrugDropTree(gtk.TreeView):
         from_model = from_filter_model.get_model()
         from_path = from_filter_model.convert_path_to_child_path(from_paths[0]) 
         from_iter = from_model.get_iter(from_path)
-        
-        print "FROM TYPE", from_tree.current_view
-        print "TO TY", to_tree.current_view
         
         """do not copy to himself"""
         if to_tree == from_tree and from_path == to_path:
