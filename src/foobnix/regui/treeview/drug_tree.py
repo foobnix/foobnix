@@ -23,6 +23,13 @@ class DrugDropTree(gtk.TreeView):
         self.hash = {None:None}
         self.current_view = None
     
+    def append_all(self, beans):
+        if self.plain_append_all == VIEW_PLAIN:
+            self.plain_append_all(beans)            
+        else:
+            #self.plain_append_all(beans)
+            self.tree_append_all(beans)
+    
     def append(self, bean):
         if self.current_view == VIEW_PLAIN:
             self.plain_append(bean)

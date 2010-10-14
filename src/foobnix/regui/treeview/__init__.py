@@ -52,32 +52,6 @@ class TreeViewControl(DrugDropTree, FTreeModel, FControl):
         self.scroll.show_all()
         return self
 
-    def populate(self, beans):
-        self.clear()
-        for bean in beans:
-            bean.level = None
-            self.append(bean)
-
-    def append1(self, bean):
-        
-        bean.visible = True
-        if bean.is_file:
-            bean.font = "normal"
-        else:
-            bean.font = "bold"
-        #bean.text = bean.text + " !" + str(bean.start_sec) + "=" + str(bean.duration_sec)
-
-        bean.index = self.count_index
-        self.count_index += 1
-
-        row = self.get_row_from_bean(bean)
-
-        if isinstance(bean.level, gtk.TreeIter):
-            value = self.model.append(bean.level, row)
-        else:
-            value = self.model.append(None, row)
-        return value
-
     def get_bean_from_row(self, row):
         bean = FModel()
         id_dict = FTreeModel().cut().__dict__
@@ -104,31 +78,6 @@ class TreeViewControl(DrugDropTree, FTreeModel, FControl):
             value = model.get_value(iter, i)
             attributes.append(value)
         return attributes
-
-    def append_from_scanner(self, all):
-        """copy beans"""
-        beans = copy.deepcopy(all)
-
-        hash = {None:None}
-        for bean in beans:
-            if bean is None:
-                continue
-            bean.visible = True
-            if hash.has_key(bean.level):
-                level = hash[bean.level]
-            else:
-                level = None
-
-            if bean.is_file:
-                child_level = self.append(bean.add_font("normal").add_level(level))
-            else:
-                child_level = self.append(bean.add_font("bold").add_level(level))
-
-            hash[bean.path] = child_level
-
-    def populate_from_scanner(self, beans):
-        self.clear()
-        self.append_from_scanner(beans)
 
     def clear(self):
         self.count_index = 0

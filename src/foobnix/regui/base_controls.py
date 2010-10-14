@@ -36,7 +36,7 @@ class BaseFoobnixControls(LoadSave):
 
     def load_music_tree(self):
         if FC().cache_music_tree_beans:
-            self.tree.populate_from_scanner(FC().cache_music_tree_beans)
+            self.tree.append_all(FC().cache_music_tree_beans)
             LOG.info("Tree loaded from cache")
         else:
             self.update_music_tree()
@@ -53,7 +53,7 @@ class BaseFoobnixControls(LoadSave):
             for bean in all:
                 FC().cache_music_tree_beans.append(bean)
 
-            self.tree.append_from_scanner(all)
+            self.tree.append_all(all)
 
     def update_radio_tree(self):
         if self.is_radio_populated:
