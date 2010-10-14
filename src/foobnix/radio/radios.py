@@ -21,7 +21,7 @@ class FPL():
         self.urls_dict = urls_dict;
         
     def __str__(self):
-        return self.name + "radios" + str(self.lines_dict)
+        return self.name + "radios" + str(self.urls_dict)
 
 class RadioFolder():
     
