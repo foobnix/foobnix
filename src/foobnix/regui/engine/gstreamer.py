@@ -89,6 +89,7 @@ class GStreamerEngine(MediaPlayerEngine):
             self.prev_path = path
 
         self.state_pause()
+        self.seek(0)
         time.sleep(0.2)
         self.seek_seconds(bean.start_sec)
         self.state_play()

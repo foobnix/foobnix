@@ -20,6 +20,8 @@ class SimpleTreeControl(TreeViewControl, LoadSave):
         self.append_column(column)
         self.set_headers_visible(True)
         
+        self.set_type_plain()
+        
     def on_load(self):
         pass
     

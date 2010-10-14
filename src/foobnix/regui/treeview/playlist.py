@@ -45,36 +45,13 @@ class PlaylistControl(TreeViewControl):
         self.append_column(time)
 
         self.index = -1
-
+        self.set_playlist_tree()
+        
     def set_playlist_tree(self):
-        self.init_data_tree()
-
-    def recursion(self, row, plain):
-        for child in row.iterchildren():
-                plain.append(child)
-                self.recursion(child, plain)
-
+        self.rebuild_as_tree()
     def set_playlist_plain(self):
-        filter_model = self.get_model()
-        model = filter_model.get_model()
-        plain = []
-        for row in filter_model:
-            plain.append(row)
-            self.recursion(row, plain)
-
-        copy_plain = []
-        for row in plain:
-            copy_plain.append(self.get_bean_from_row(row))
-
-        model.clear()
-
-        print "================"
-        for bean in copy_plain:
-            #self.print_row(bean)
-            bean.visible = True
-            if bean.is_file:
-                model.append(None,self.get_row_from_bean(bean))
-
+        self.rebuild_as_plain()
+        
     def on_key_release(self, w, e):
         if gtk.gdk.keyval_name(e.keyval) == 'Return':
             self.active_current_song()
