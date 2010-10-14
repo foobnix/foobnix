@@ -4,8 +4,10 @@ Created on Oct 2, 2010
 
 @author: dimitry (zavlab1)
 '''
+
 import gtk
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+
 
 class BaseParentWindow(gtk.Window):
     def __init__(self, title):
@@ -86,9 +88,11 @@ Playing all imaginations\n
         creaditsWindow.set_text(text)
 
         changeLog = WindowWithBuffer("Change LOG")
-        changelog_text = open(get_foobnix_resourse_path_by_name("CHANGELOG"), 'r').read()
-        changeLog.set_text(changelog_text)
-
+        try:
+            changelog_text = open(get_foobnix_resourse_path_by_name("CHANGELOG"), 'r').read()
+            changeLog.set_text(changelog_text)
+        except TypeError, error_messege:
+            print error_messege
         button_credits.connect("clicked", lambda * a: creaditsWindow.show_all())
         button_changelog.connect("clicked", lambda * x:changeLog.show_all())
 
