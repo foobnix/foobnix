@@ -17,9 +17,8 @@ def tab_close_button(func=None, arg=None):
     button.show()
     return button
 
-def tab_close_label(func=None, arg=None, angel=0):
+def notetab_label(func=None, arg=None, angel=0, symbol = "×"):
     """label"""
-    symbol = "×"
     label = gtk.Label(symbol)
     label.show()
     label.set_angle(angel)
@@ -30,7 +29,9 @@ def tab_close_label(func=None, arg=None, angel=0):
             
     event.connect("enter-notify-event", lambda w, e:w.get_child().set_markup("<u>" + symbol + "</u>"))
     event.connect("leave-notify-event", lambda w, e:w.get_child().set_markup(symbol))
-    if func:                    
-        event.connect("event", func, arg)
+    if func and arg:                    
+        event.connect("button-press-event", lambda *a: func(arg))
+    elif func:
+        event.connect("button-press-event", lambda *a: func())
     event.show()
     return event

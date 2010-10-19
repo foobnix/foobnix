@@ -6,7 +6,7 @@ Created on Sep 23, 2010
 '''
 import gtk
 from foobnix.util import LOG, const
-from foobnix.helpers.my_widgets import tab_close_button, tab_close_label
+from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 #from foobnix.online.online_model import OnlineListModel
 from foobnix.util.fc import FC
 from foobnix.regui.treeview.playlist import PlaylistControl
@@ -29,6 +29,19 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.last_notebook_beans = []
         self.active_tree = None
 
+       
+        self.append_tab("Foobnix",[])
+        
+    
+    def create_plus_tab(self):
+        append_label = notetab_label(func=self.empty_tab, arg=None, angel=0, symbol="+")
+        l = gtk.Label()
+        l.show()
+        self.prepend_page(l, append_label)
+        
+    def empty_tab(self):
+        #print "push"
+        #pass
         self.append_tab("Foobnix", [])
     
     def get_active_tree(self):
@@ -54,7 +67,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
             if FC().tab_close_element == "button":
                 return tab_close_button(func=self.on_delete_tab, arg=tab_content)
             else:
-                return tab_close_label(func=self.on_delete_tab, arg=tab_content, angel=self.default_angel)
+                return notetab_label(func=self.on_delete_tab, arg=tab_content, angel=self.default_angel)
 
         """container Vertical Tab"""
         vbox = gtk.VBox(False, 0)
@@ -80,11 +93,20 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
         """append tab"""
         self.prepend_page(tab_content, both)
-        self.set_current_page(0)
+        self.create_plus_tab()
+        if self.get_n_pages()>=2:
+            self.remove_page(2)
+        
+        self.set_current_page(1)
+        
 
         if self.get_n_pages() > FC().count_of_tabs:
             self.remove_page(self.get_n_pages() - 1)
-
+        
+        
+        #
+        
+        
         """autostart play"""
         if beans:
             self.controls.next()
@@ -120,9 +142,9 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
             self.active_tree.append(bean)
         self.get_active_tree().expand_all() 
 
-    def on_delete_tab(self, widget, event, child):
-        if event.type == gtk.gdk.BUTTON_PRESS: #@UndefinedVariable
-            n = self.page_num(child)
+    def on_delete_tab(self, child):
+        n = self.page_num(child)    
+        if n > 0:    
             self.delete_tab(n)
 
     def delete_tab(self, page=None):

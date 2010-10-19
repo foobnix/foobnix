@@ -22,7 +22,7 @@ from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, \
 from foobnix.online.google_utils import google_search_resutls
 from foobnix.online.dowload_util import  get_file_store_path, \
     save_as_song_thread, save_song_thread
-from foobnix.helpers.my_widgets import tab_close_button, tab_close_label
+from foobnix.helpers.my_widgets import tab_close_button, tab_label
 from foobnix.online.song_resource import update_song_path
 from foobnix.cue.cue_reader import CueReader
 from foobnix.helpers.menu import Popup
@@ -286,7 +286,7 @@ class OnlineListCntr(GObject):
             if FConfiguration().tab_close_element == "button":
                 return tab_close_button(func=self.on_delete_tab, arg=tab_content)
             else:
-                return tab_close_label(func=self.on_delete_tab, arg=tab_content, angel=self.default_angel)
+                return tab_label(func=self.on_delete_tab, arg=tab_content, angel=self.default_angel)
 
         """container Vertical Tab"""
         vbox = gtk.VBox(False, 0)

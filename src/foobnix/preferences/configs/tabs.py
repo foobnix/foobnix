@@ -7,7 +7,7 @@ Created on 24 авг. 2010
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
 from foobnix.util.configuration import FConfiguration
-from foobnix.helpers.my_widgets import tab_close_label, tab_close_button
+from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 class TabsConfig(ConfigPlugin):
     
     name = _("Tabs")
@@ -93,7 +93,7 @@ class TabsConfig(ConfigPlugin):
         
         close_label_box.pack_start(close_label, False, False, 0)
         close_label_box.pack_start(self.radio_tab_label, False, False, 0)
-        close_label_box.pack_start(tab_close_label(), False, False, 0)        
+        close_label_box.pack_start(notetab_label(), False, False, 0)        
         close_label_box.pack_start(self.radio_tab_button, False, True, 0)
         close_label_box.pack_start(tab_close_button(), False, False, 0)
         
