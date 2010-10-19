@@ -20,6 +20,8 @@ class MusicTreeControl(TreeViewControl, LoadSave):
         column.set_resizable(True)
         self.append_column(column)
         
+        self.configure_send_drug()
+        
         self.set_type_tree()
     
     def on_button_press(self, w, e):

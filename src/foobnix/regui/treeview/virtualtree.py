@@ -18,6 +18,10 @@ class VirtualTreeControl(TreeViewControl, LoadSave):
         column = gtk.TreeViewColumn("Virtual Lybrary", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.append_column(column)
+        
+        self.configure_send_drug()
+        self.configure_recive_drug()
+        
         self.set_type_tree()
         
     def on_button_press(self, w, e):
