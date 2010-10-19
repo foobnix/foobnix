@@ -23,8 +23,9 @@ def one_line_dialog(dialog_title, text=None):
         dialog.vbox.pack_end(entry, True, True, 0)
         dialog.show_all()
         dialog.run()
+        text = entry.get_text()
         dialog.destroy()    
-        return entry.get_text()    
+        return text
         
         
 def info_dialog_with_link(title, version, link):

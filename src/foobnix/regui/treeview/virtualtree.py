@@ -51,7 +51,6 @@ class VirtualTreeControl(TreeViewControl, LoadSave):
         path = paths[0]
         path = self.filter_model.convert_path_to_child_path(path)        
         iter = self.model.get_iter(path)
-        
         self.model.set_value(iter, self.text[0], text)
         
     
