@@ -52,6 +52,15 @@ class TreeViewControl(DrugDropTree, FTreeModel, FControl):
         self.scroll.show_all()
         return self
 
+    def get_bean_from_iter(self, model, iter):
+        bean = FModel()
+        id_dict = FTreeModel().cut().__dict__
+        for key in id_dict.keys():
+            num = id_dict[key]
+            val = model.get_value(iter, num)
+            setattr(bean, key, val)
+        return bean
+    
     def get_bean_from_row(self, row):
         bean = FModel()
         id_dict = FTreeModel().cut().__dict__
@@ -102,7 +111,9 @@ class TreeViewControl(DrugDropTree, FTreeModel, FControl):
         model, paths = selection.get_selected_rows()
         if not paths:
             return None
-        return self._get_bean_by_path(paths[0])
+        selected_bean = self._get_bean_by_path(paths[0])
+        print "Selected bean", selected_bean
+        return selected_bean
 
     def set_play_icon_to_selected_bean(self):
         selection = self.get_selection()
@@ -117,7 +128,7 @@ class TreeViewControl(DrugDropTree, FTreeModel, FControl):
             model.set_value(self.prev_iter_play_icon, self.play_icon[0], None)
         self.prev_iter_play_icon = iter
 
-    def get_children_beans_by_selected(self):
+    def get_child_level1_beans_by_selected(self):
         selection = self.get_selection()
         model, paths = selection.get_selected_rows()
         selected = model.get_iter(paths[0])
@@ -157,7 +168,31 @@ class TreeViewControl(DrugDropTree, FTreeModel, FControl):
             setattr(bean, key, self.model[position][dt[key][0]])
 
         return bean
-
+    
+    def get_all_child_beans_by_selected(self):
+            filter_model, paths = self.get_selection().get_selected_rows()
+            model = filter_model.get_model()
+            iter = model.get_iter(paths[0])
+            
+            result = self.get_child_iters_by_parent(iter)
+            beans = []
+            for iter_cur in result:
+                print iter_cur
+                beans.append(self.get_bean_from_iter(model,iter_cur))
+            return beans
+    
+    def get_child_iters_by_parent(self, iter):
+        list = []
+        if self.model.iter_has_child(iter):
+            for i in range(0, self.model.iter_n_children(iter)):
+                next_iter = self.model.iter_nth_child(iter, i)
+                list.append(next_iter) 
+                res = self.get_child_iters_by_parent(next_iter)
+                if res:                    
+                    list.extend(res) 
+        return list
+                
+    
     def get_all_beans(self):
         beans = []
         for i in xrange(len(self.model)):

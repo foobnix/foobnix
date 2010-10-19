@@ -30,6 +30,7 @@ class FTreeModel():
         self.parent_level = 20, str 
     
     def cut(self):
+    
         for i in self.__dict__:
             self.__dict__[i] = self.__dict__[i][0]
         return self

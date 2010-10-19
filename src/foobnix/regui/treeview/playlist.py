@@ -45,10 +45,11 @@ class PlaylistControl(TreeViewControl):
         self.append_column(time)
 
         self.index = -1
-        self.set_playlist_tree()
+        self.set_playlist_plain()
         
     def set_playlist_tree(self):
         self.rebuild_as_tree()
+        
     def set_playlist_plain(self):
         self.rebuild_as_plain()
         

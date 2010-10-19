@@ -236,25 +236,11 @@ class BaseFoobnixControls(LoadSave):
         #self.info_panel.update(bean)
         self.singre_thread.run_with_text(self.info_panel.update, bean, "Updating info panel")
 
-    def append_to_new_notebook(self, text, beans):
-        path = beans[0].path
-        if os.path.isdir(path):
-            scanner = DirectoryScanner(beans[0].path)
-            results = scanner.get_music_file_results()
-            results = update_all_id3(results)
-            self.notetabs.append_tab(text, results)
-        else:
-            self.notetabs.append_tab(text, [beans[0]])
+    def append_to_new_notebook(self, text, beans):        
+        self.notetabs.append_tab(text, beans)
 
-    def append_to_current_notebook(self, beans):
-        bean = beans[0]
-        if bean.is_file:
-            self.notetabs.append([beans[0]])
-        else:
-            scanner = DirectoryScanner(beans[0].path)
-            results = scanner.get_music_file_results()
-            results = update_all_id3(results)
-            self.notetabs.append(results)
+    def append_to_current_notebook(self, beans):        
+        self.notetabs.append(beans)
 
 
     def next(self):

@@ -64,12 +64,12 @@ class MenuWidget(FControl):
         self.lopping_disable.connect("activate", lambda w: w.get_active() and controls.set_lopping_disable())
 
         """Playlist View"""
-        playlist = playback.add_text_item("Playlist")
-        self.playlist_plain = playlist.add_radio_item("Plain (normal style)", None, FC().playlist_type == const.PLAYLIST_PLAIN)
-        self.playlist_tree = playlist.add_radio_item("Tree (apollo style)", self.playlist_plain , FC().playlist_type == const.PLAYLIST_TREE)
+        #playlist = playback.add_text_item("Playlist")
+        #self.playlist_plain = playlist.add_radio_item("Plain (normal style)", None, FC().playlist_type == const.PLAYLIST_PLAIN)
+        #self.playlist_tree = playlist.add_radio_item("Tree (apollo style)", self.playlist_plain , FC().playlist_type == const.PLAYLIST_TREE)
 
-        self.playlist_plain.connect("activate", lambda w: w.get_active() and controls.set_playlist_plain())
-        self.playlist_tree.connect("activate", lambda w: w.get_active() and controls.set_playlist_tree())
+        #self.playlist_plain.connect("activate", lambda w: w.get_active() and controls.set_playlist_plain())
+        #self.playlist_tree.connect("activate", lambda w: w.get_active() and controls.set_playlist_tree())
 
         """Help"""
         help = top.append("Help")

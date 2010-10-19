@@ -25,8 +25,11 @@ class MusicTreeControl(TreeViewControl, LoadSave):
     def on_button_press(self, w, e):
         
         if is_double_left_click(e):
-            bean = self.get_selected_bean()
-            self.controls.append_to_new_notebook(bean.text, [bean])
+            selected = self.get_selected_bean()
+            beans = self.get_all_child_beans_by_selected()         
+            res = [selected]+beans
+                 
+            self.controls.append_to_new_notebook(selected.text, [selected]+beans)
             
         if is_rigth_click(e):            
                 menu = Popup()
