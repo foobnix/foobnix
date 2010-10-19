@@ -31,11 +31,13 @@ class VirtualTreeControl(TreeViewControl, LoadSave):
             beans = self.get_all_child_beans_by_selected()         
             self.controls.append_to_new_notebook(selected.text, [selected]+beans)
             
-        if is_rigth_click(e):            
+        if is_rigth_click(e): 
                 menu = Popup()
                 menu.add_item(_("Add playlist"), gtk.STOCK_ADD, self.create_playlist, None)
                 menu.add_item(_("Rename playlist"), gtk.STOCK_EDIT, self.rename_playlist, None)
                 menu.add_item(_("Delete playlist"), gtk.STOCK_DELETE, self.delete_playlist, None)
+                menu.add_item(_("Save as"), gtk.STOCK_SAVE_AS, None, None)
+                menu.add_item(_("Open as"), gtk.STOCK_OPEN, None, None)
                 menu.show(e)
     
     def create_playlist(self):

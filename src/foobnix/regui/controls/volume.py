@@ -20,7 +20,7 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
         self.volume_scale = gtk.HScale(adjustment)
         self.volume_scale.connect("value-changed", self.on_value_changed)
         self.volume_scale.connect("scroll-event", self.on_scroll_event)
-        self.volume_scale.set_size_request(150, -1)
+        self.volume_scale.set_size_request(200, -1)
         self.volume_scale.set_update_policy(gtk.UPDATE_CONTINUOUS)
         self.volume_scale.set_digits(1)        
         self.volume_scale.set_draw_value(False)
