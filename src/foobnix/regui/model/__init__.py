@@ -60,6 +60,12 @@ class FModel(FTreeModel):
         self.UUID = uuid.uuid4().hex
         self.level = uuid.uuid4().hex
     
+    def get_display_name(self):
+        if self.artist and self.title:
+            return self.artist +" - "+ self.title
+        else:
+            return self.text
+     
     def get_uuid(self):
         return self.UUID
     

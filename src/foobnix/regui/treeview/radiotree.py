@@ -27,7 +27,7 @@ class RadioTreeControl(TreeViewControl, LoadSave):
             else:
                 """folder"""
                 beans = self.get_child_level1_beans_by_selected()
-                self.controls.notetabs.append_tab(current.text, beans)
+                self.controls.notetabs.append_tab(current.text, [current]+beans)
                 
       
     def on_load(self):

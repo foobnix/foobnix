@@ -24,10 +24,10 @@ class DrugDropTree(gtk.TreeView):
         self.current_view = None
     
     def append_all(self, beans):
-        if self.plain_append_all == VIEW_PLAIN:
+        print "append view type",self.current_view
+        if self.current_view == VIEW_PLAIN:
             self.plain_append_all(beans)            
         else:
-            #self.plain_append_all(beans)
             self.tree_append_all(beans)
     
     def append(self, bean):
@@ -184,13 +184,13 @@ class DrugDropTree(gtk.TreeView):
         
     def tree_append_all(self, beans):
         self.current_view = VIEW_TREE
-        print "append all"
+        print "append all as tree"
         for bean in beans:
             self.tree_append(bean)
     
     def plain_append_all(self, beans):
         self.current_view = VIEW_PLAIN
-        print "append all"
+        print "append all as plain"
         for bean in beans:
             self.plain_append(bean)
             

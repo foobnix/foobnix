@@ -27,8 +27,6 @@ class MusicTreeControl(TreeViewControl, LoadSave):
         if is_double_left_click(e):
             selected = self.get_selected_bean()
             beans = self.get_all_child_beans_by_selected()         
-            res = [selected]+beans
-                 
             self.controls.append_to_new_notebook(selected.text, [selected]+beans)
             
         if is_rigth_click(e):            

@@ -44,7 +44,15 @@ class TreeViewControl(DrugDropTree, FTreeModel, FControl):
         
         self.set_type_plain()
 
-
+    def populate(self, bean):
+        self.clear()
+        self.append(bean)
+        
+    def populate_all(self, beans):
+        print "populate all", self.current_view
+        self.clear()
+        self.append_all(beans)
+        
     def set_scrolled(self, policy_horizontal, policy_vertical):
         self.scroll = gtk.ScrolledWindow()
         self.scroll.set_policy(policy_horizontal, policy_vertical)

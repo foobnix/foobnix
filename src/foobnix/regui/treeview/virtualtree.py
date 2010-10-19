@@ -22,9 +22,11 @@ class VirtualTreeControl(TreeViewControl, LoadSave):
         
     def on_button_press(self, w, e):
         if is_double_left_click(e):
-            bean = self.get_selected_bean()
-            self.controls.append_to_new_notebook(bean.text, [bean])
-            print "double left"
+            
+            selected = self.get_selected_bean()
+            beans = self.get_all_child_beans_by_selected()         
+            self.controls.append_to_new_notebook(selected.text, [selected]+beans)
+            
         if is_rigth_click(e):            
                 menu = Popup()
                 menu.add_item(_("Add playlist"), gtk.STOCK_ADD, self.create_playlist, None)

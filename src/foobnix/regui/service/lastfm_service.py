@@ -269,7 +269,7 @@ class LastFmService():
                 artist_txt = artist['item']
 
             artist_name = artist_txt.get_name()
-            bean = FModel(artist_name).add_artist(artist_name)
+            bean = FModel(artist_name).add_artist(artist_name).add_is_file(True)
 
             beans.append(bean)
         return beans
@@ -296,7 +296,7 @@ class LastFmService():
 
             artist = tsong_item.get_artist().get_name()
             title  =  tsong_item.get_title()
-            model = FModel(artist + " - " + title).add_artist(artist).add_title(title)
+            model = FModel(artist + " - " + title).add_artist(artist).add_title(title).add_is_file(True)
             beans.append(model)
 
         return beans
@@ -323,7 +323,7 @@ class LastFmService():
                 tag_item = tag['item']
 
             tag_name = tag_item.get_name()
-            model = FModel(tag_name).add_genre(tag_name)
+            model = FModel(tag_name).add_genre(tag_name).add_is_file(True)
             beans.append(model)
         return beans
 
