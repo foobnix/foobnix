@@ -15,6 +15,7 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
         """column config"""
         column = gtk.TreeViewColumn("Radio Lybrary", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
+        self.set_headers_visible(True)
         self.append_column(column)
         
         self.configure_send_drug()

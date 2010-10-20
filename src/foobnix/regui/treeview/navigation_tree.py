@@ -31,7 +31,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             selected = self.get_selected_bean()
             print selected
             beans = self.get_all_child_beans_by_selected()  
-            update_parent_for_beans(beans, selected)                   
             self.controls.append_to_new_notebook(selected.text, [selected] + beans)
             
         if is_rigth_click(e):            

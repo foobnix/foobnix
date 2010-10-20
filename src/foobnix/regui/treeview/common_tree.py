@@ -183,23 +183,24 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
             filter_model, paths = self.get_selection().get_selected_rows()
             model = filter_model.get_model()
             iter = model.get_iter(paths[0])
+            return self.get_child_iters_by_parent(iter)
             
-            result = self.get_child_iters_by_parent(iter)
-            beans = []
-            for iter_cur in result:                
-                child = self.get_bean_from_iter(model, iter_cur)
-                beans.append(child)
-            return beans
     
     def get_child_iters_by_parent(self, iter):
         list = []
         if self.model.iter_has_child(iter):
             for i in range(0, self.model.iter_n_children(iter)):
                 next_iter = self.model.iter_nth_child(iter, i)
-                list.append(next_iter) 
-                res = self.get_child_iters_by_parent(next_iter)
-                if res:                    
-                    list.extend(res) 
+                
+                parent = self.get_bean_from_iter(self.model, next_iter)                
+                list.append(parent)
+                 
+                beans = self.get_child_iters_by_parent(next_iter)
+                
+                for bean in beans:
+                    bean.parent(parent)                
+                    list.append(bean)
+                
         return list
                 
     

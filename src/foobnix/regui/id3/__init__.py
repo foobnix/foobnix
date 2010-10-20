@@ -7,6 +7,7 @@ from foobnix.util import LOG
 from foobnix.util.fc import FC
 from foobnix.util.file_utils import file_extenstion
 from foobnix.cue.cue_reader import CueReader
+from foobnix.util.image_util import get_image_by_path
 
 def decode_cp866(text):
     try:
@@ -96,11 +97,17 @@ def update_id3_for_cue(beans):
         else:
             result.append(bean)
     return result
-        
+
+def add_upadte_image_paths(beans):
+    for bean in beans:
+        if bean.path:
+            bean.image = get_image_by_path(bean.path)
+    return beans
 
 def update_id3_wind_filtering(beans):
     beans = get_support_music_beans_from_all(beans)
     beans = update_id3_for_cue(beans)
+    beans = add_upadte_image_paths(beans)
     result = []
     for bean in beans:
         result.append(udpate_id3(bean))
