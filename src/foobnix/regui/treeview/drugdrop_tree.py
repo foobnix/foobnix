@@ -9,6 +9,7 @@ import uuid
 import urllib
 from foobnix.regui.model import FModel
 from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
+from foobnix.regui.id3 import update_id3_wind_filtering
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -228,8 +229,12 @@ class DrugDropTree(gtk.TreeView):
             
         bean.visible = True
         bean.index = self.count_index + 1
-        row = self.get_row_from_bean(bean)
-        self.model.append(None, row)
+        beans = update_id3_wind_filtering([bean])
+        for one in beans:    
+            row = self.get_row_from_bean(one)
+            self.model.append(None, row)
+        
+        
         
     def tree_append(self, bean):
         if bean.is_file == True:
