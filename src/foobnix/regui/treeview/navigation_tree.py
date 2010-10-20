@@ -4,16 +4,16 @@ Created on 25 сент. 2010
 
 @author: ivan
 '''
-from foobnix.regui.treeview import TreeViewControl
 import gtk
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
 from foobnix.util.fc import FC
 from foobnix.util import LOG
-class MusicTreeControl(TreeViewControl, LoadSave):
+from foobnix.regui.treeview.common_tree import CommonTreeControl
+class NavigationTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
-        TreeViewControl.__init__(self, controls)
+        CommonTreeControl.__init__(self, controls)
         
         """column config"""
         column = gtk.TreeViewColumn("Music Lybrary", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
@@ -29,7 +29,7 @@ class MusicTreeControl(TreeViewControl, LoadSave):
         if is_double_left_click(e):
             selected = self.get_selected_bean()
             beans = self.get_all_child_beans_by_selected()         
-            self.controls.append_to_new_notebook(selected.text, [selected]+beans)
+            self.controls.append_to_new_notebook(selected.text, [selected] + beans)
             
         if is_rigth_click(e):            
                 menu = Popup()

@@ -9,13 +9,12 @@ from foobnix.util import LOG, const
 from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 #from foobnix.online.online_model import OnlineListModel
 from foobnix.util.fc import FC
-from foobnix.regui.treeview.playlist import PlaylistControl
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.scanner import DirectoryScanner
-from foobnix.regui.treeview.musictree import MusicTreeControl
 import thread
+from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
 class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     def __init__(self, controls):
         gtk.Notebook.__init__(self)
@@ -122,7 +121,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
     def create_notebook_tab(self, beans):
 
-        treeview = PlaylistControl(self.controls)
+        treeview = PlaylistTreeControl(self.controls)
         self.switch_tree(treeview)
 
         #treeview.populate_from_scanner(beans)

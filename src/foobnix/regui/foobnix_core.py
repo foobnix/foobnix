@@ -3,7 +3,6 @@
 from foobnix.regui.notetab import NoteTabControl
 from foobnix.regui.base_layout import BaseFoobnixLayout
 from foobnix.regui.base_controls import BaseFoobnixControls
-from foobnix.regui.treeview.musictree import MusicTreeControl
 from foobnix.regui.window import MainWindow
 from foobnix.regui.controls.filter import FilterControl
 from foobnix.regui.controls.playback import PlaybackControls
@@ -14,8 +13,6 @@ from foobnix.regui.engine.gstreamer import GStreamerEngine
 from foobnix.regui.controls.seekbar import SeekProgressBarControls
 from foobnix.regui.controls.volume import VolumeControls
 from foobnix.regui.controls.status_bar import StatusbarControls
-from foobnix.regui.treeview.radiotree import RadioTreeControl
-from foobnix.regui.treeview.virtualtree import VirtualTreeControl
 from foobnix.regui.controls.tray_icon import TrayIconControls
 from foobnix.preferences.preferences_window import PreferencesWindow
 from foobnix.regui.top import TopWidgets
@@ -23,6 +20,9 @@ from foobnix.eq.eq_gui import EQContols
 from foobnix.regui.controls.dbus_manager import DBusManager
 from foobnix.dm.dm_gui import DownloadManager
 from foobnix.regui.about.about import AboutWindow
+from foobnix.regui.treeview.radio_tree import RadioTreeControl
+from foobnix.regui.treeview.virtual_tree import VirtualTreeControl
+from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 
 class FoobnixCore(BaseFoobnixControls):
 
@@ -51,7 +51,7 @@ class FoobnixCore(BaseFoobnixControls):
 
         self.filter = FilterControl(self)
 
-        self.tree = MusicTreeControl(self)
+        self.tree = NavigationTreeControl(self)
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
 

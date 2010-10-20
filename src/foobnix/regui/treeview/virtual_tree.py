@@ -4,15 +4,15 @@ Created on Sep 29, 2010
 @author: ivan
 '''
 from foobnix.regui.state import LoadSave
-from foobnix.regui.treeview import TreeViewControl
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 import gtk
 from foobnix.helpers.menu import Popup
 from foobnix.helpers.dialog_entry import one_line_dialog
 from foobnix.regui.model import FModel
-class VirtualTreeControl(TreeViewControl, LoadSave):
+from foobnix.regui.treeview.common_tree import CommonTreeControl
+class VirtualTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
-        TreeViewControl.__init__(self, controls)
+        CommonTreeControl.__init__(self, controls)
         
         """column config"""
         column = gtk.TreeViewColumn("Virtual Lybrary", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
@@ -29,7 +29,7 @@ class VirtualTreeControl(TreeViewControl, LoadSave):
             
             selected = self.get_selected_bean()
             beans = self.get_all_child_beans_by_selected()         
-            self.controls.append_to_new_notebook(selected.text, [selected]+beans)
+            self.controls.append_to_new_notebook(selected.text, [selected] + beans)
             
         if is_rigth_click(e): 
                 menu = Popup()

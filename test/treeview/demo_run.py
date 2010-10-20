@@ -5,15 +5,12 @@ Created on 10 окт. 2010
 @author: ivan
 '''
 import gtk
-from foobnix.regui.treeview import TreeViewControl
 from foobnix.regui.model import FModel
-import copy
-import uuid
-from sets import Set
+from foobnix.regui.treeview.common_tree import CommonTreeControl
 
-class BaseTree(TreeViewControl):
+class BaseTree(CommonTreeControl):
     def __init__(self, title):            
-        TreeViewControl.__init__(self, title)
+        CommonTreeControl.__init__(self, title)
         
         """column config"""
         self.column = gtk.TreeViewColumn("Left Renderer", gtk.CellRendererText(), text=self.text[0], font=self.font[0])

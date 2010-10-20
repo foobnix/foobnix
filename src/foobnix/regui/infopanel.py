@@ -7,9 +7,9 @@ import gtk
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
-from foobnix.regui.treeview.simple import SimpleTreeControl
 from foobnix.helpers.image import CoverImage
 from foobnix.regui.model import FModel
+from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 
 class InfoPanelWidget(gtk.Frame, LoadSave, FControl):    
     def __init__(self, controls): 
@@ -81,20 +81,20 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         """similar  artists"""
         similar_artists = self.controls.lastfm.search_top_similar_artist(bean.artist)
-        parent = FModel("Similar Artists: "+bean.artist)
-        update_parent(parent,similar_artists)
-        self.artists.populate_all([parent]+similar_artists)
+        parent = FModel("Similar Artists: " + bean.artist)
+        update_parent(parent, similar_artists)
+        self.artists.populate_all([parent] + similar_artists)
         
         """similar  songs"""
         similar_tracks = self.controls.lastfm.search_top_similar_tracks(bean.artist, bean.title)
-        parent = FModel("Similar Tracks: "+bean.title)
-        update_parent(parent,similar_tracks)
-        self.tracks.populate_all([parent]+similar_tracks)
+        parent = FModel("Similar Tracks: " + bean.title)
+        update_parent(parent, similar_tracks)
+        self.tracks.populate_all([parent] + similar_tracks)
         
         """similar  tags"""
         similar_tags = self.controls.lastfm.search_top_similar_tags(bean.artist, bean.title)
-        parent = FModel("Similar Tags: "+bean.title)
-        update_parent(parent,similar_tags)
+        parent = FModel("Similar Tags: " + bean.title)
+        update_parent(parent, similar_tags)
         self.tags.populate_all([parent] + similar_tags)       
     
      

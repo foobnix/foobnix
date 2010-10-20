@@ -4,13 +4,12 @@ Created on Sep 28, 2010
 @author: ivan
 '''
 from foobnix.regui.state import LoadSave
-from foobnix.regui.treeview import TreeViewControl
-from foobnix.regui.model.signal import FControl
 import gtk
+from foobnix.regui.treeview.common_tree import CommonTreeControl
 
-class SimpleTreeControl(TreeViewControl, LoadSave):
+class SimpleTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, title_name, controls):        
-        TreeViewControl.__init__(self, controls)
+        CommonTreeControl.__init__(self, controls)
         
         self.set_reorderable(False)
         

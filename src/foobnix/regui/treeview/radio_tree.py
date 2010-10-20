@@ -4,12 +4,12 @@ Created on Sep 29, 2010
 @author: ivan
 '''
 from foobnix.regui.state import LoadSave
-from foobnix.regui.treeview import TreeViewControl
 from foobnix.util.mouse_utils import is_double_left_click
 import gtk
-class RadioTreeControl(TreeViewControl, LoadSave):
+from foobnix.regui.treeview.common_tree import CommonTreeControl
+class RadioTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
-        TreeViewControl.__init__(self, controls)
+        CommonTreeControl.__init__(self, controls)
         self.set_reorderable(False)
         
         """column config"""
@@ -30,7 +30,7 @@ class RadioTreeControl(TreeViewControl, LoadSave):
             else:
                 """folder"""
                 beans = self.get_child_level1_beans_by_selected()
-                self.controls.notetabs.append_tab(current.text, [current]+beans)
+                self.controls.notetabs.append_tab(current.text, [current] + beans)
                 
       
     def on_load(self):

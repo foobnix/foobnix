@@ -4,18 +4,17 @@ Created on 25 сент. 2010
 
 @author: ivan
 '''
-from foobnix.regui.treeview import TreeViewControl
 import gtk
 from random import randint
 from foobnix.util import const
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 from foobnix.cue.cue_reader import CueReader
-from foobnix.regui.model import FModel
 from foobnix.helpers.menu import Popup
+from foobnix.regui.treeview.common_tree import CommonTreeControl
 
-class PlaylistControl(TreeViewControl):
+class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
-        TreeViewControl.__init__(self, controls)
+        CommonTreeControl.__init__(self, controls)
 
         """Column icon"""
         icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
@@ -94,9 +93,9 @@ class PlaylistControl(TreeViewControl):
             reader = CueReader(bean.path)
             beans = reader.get_common_beans()
             for bean in beans:
-                value = super(PlaylistControl, self).append(bean)
+                value = super(PlaylistTreeControl, self).append(bean)
         else:
-            value = super(PlaylistControl, self).append(bean)
+            value = super(PlaylistTreeControl, self).append(bean)
         return value
 
 
