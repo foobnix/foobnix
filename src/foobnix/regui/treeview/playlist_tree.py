@@ -89,16 +89,7 @@ class PlaylistTreeControl(CommonTreeControl):
         return self.get_bean_by_position(self.index)
 
     def append(self, bean):
-        value = None
-        if bean.path and bean.path.endswith(".cue"):
-            reader = CueReader(bean.path)
-            beans = reader.get_common_beans()
-            for bean in beans:
-                value = super(PlaylistTreeControl, self).append(bean)
-        else:
-            value = super(PlaylistTreeControl, self).append(bean)
-        return value
-
+        return super(PlaylistTreeControl, self).append(bean)
 
     def active_current_song(self):
         current = self.get_selected_bean()

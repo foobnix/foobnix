@@ -6,6 +6,7 @@ from foobnix.util.time_utils import normilize_time
 from foobnix.util import LOG
 from foobnix.util.fc import FC
 from foobnix.util.file_utils import file_extenstion
+from foobnix.cue.cue_reader import CueReader
 
 def decode_cp866(text):
     try:
@@ -84,8 +85,22 @@ def get_support_music_beans_from_all(beans):
             result.append(bean)
     return result
 
+def update_id3_for_cue(beans):
+    result = []
+    for bean in beans:
+        if bean.path and bean.path.lower().endswith(".cue"):
+                reader = CueReader(bean.path)
+                cue_beans = reader.get_common_beans()
+                for cue in cue_beans:
+                    result.append(cue)
+        else:
+            result.append(bean)
+    return result
+        
+
 def update_id3_wind_filtering(beans):
     beans = get_support_music_beans_from_all(beans)
+    beans = update_id3_for_cue(beans)
     result = []
     for bean in beans:
         result.append(udpate_id3(bean))

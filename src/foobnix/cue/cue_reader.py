@@ -105,13 +105,14 @@ class CueReader():
         for i, track  in enumerate(cue.tracks):
             #bean = CommonBean(name=track.performer + " - " + track.title, path=track.path, type=CommonBean.TYPE_MUSIC_FILE)
             bean = FModel(text=track.performer + " - " + track.title, path=track.path)
-            bean.aritst = track.performer
+            bean.artist = track.performer
             bean.tracknumber = i + 1
             bean.title = track.title
             bean.name = bean.text
             bean.start_sec = track.get_start_time_sec()
             bean.duration_sec = track.duration
             bean.time = normilize_time(track.duration)
+            bean.is_file = True
             #bean.parent = cue.performer + " - " + cue.title
             #bean.image = cue.image
 
