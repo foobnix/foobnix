@@ -6,9 +6,15 @@ Created on Oct 14, 2010
 import gtk
 import copy
 import uuid
+import urllib
+from foobnix.regui.model import FModel
+from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
+
+TARGET_TYPE_URI_LIST = 80
+dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
 
 class DrugDropTree(gtk.TreeView):
     def __init__(self):
@@ -19,16 +25,29 @@ class DrugDropTree(gtk.TreeView):
         """init values"""
         self.hash = {None:None}
         self.current_view = None
+        
+    def configure_recive_system_drug(self):
+        self.connect('drag-data-received', self.on_system_drag_data_received)
+        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP, dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY)
     
     def configure_recive_drug(self):
         self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
     
     def configure_send_drug(self):
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
-        
+    
+    def on_system_drag_data_received(self, widget, context, x, y, selection, target_type, timestamp):
+        if target_type == TARGET_TYPE_URI_LIST:
+            uri = selection.data.strip('\r\n\x00')
+            uri_splitted = uri.split() # we may have more than one file dropped
+            beans = []
+            for uri in uri_splitted:
+                path = get_file_path_from_dnd_dropped_uri(uri)
+                beans.append(FModel(path, path))
+            self.append_all(beans)
     
     def append_all(self, beans):
-        print "append view type",self.current_view
+        print "append view type", self.current_view
         if self.current_view == VIEW_PLAIN:
             self.plain_append_all(beans)            
         else:
@@ -58,7 +77,7 @@ class DrugDropTree(gtk.TreeView):
                 child[self.level[0]] = uuid.uuid4().hex   
                 self.update_tree_structure_row_requrcive(child)
    
-    def iter_copy(self, from_model, from_iter, to_model, to_iter, pos,to_type, from_type):
+    def iter_copy(self, from_model, from_iter, to_model, to_iter, pos, to_type, from_type):
         row = self.get_row_from_model_iter(from_model, from_iter)
 
         if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
@@ -119,6 +138,9 @@ class DrugDropTree(gtk.TreeView):
             to_iter = None
         
         from_tree = drag_context.get_source_widget()
+        if not from_tree:
+            """it is possible drug from file system"""
+            return None
         from_filter_model, from_paths = from_tree.get_selection().get_selected_rows()
         from_model = from_filter_model.get_model()
         from_path = from_filter_model.convert_path_to_child_path(from_paths[0]) 
@@ -132,7 +154,7 @@ class DrugDropTree(gtk.TreeView):
         
         
         """do not copy to child"""        
-        result = self.iter_copy(from_model, from_iter, to_model, to_iter, to_pos,to_tree.current_view, from_tree.current_view)
+        result = self.iter_copy(from_model, from_iter, to_model, to_iter, to_pos, to_tree.current_view, from_tree.current_view)
         
         if result and to_tree == from_tree:
             """move element in the save tree"""
