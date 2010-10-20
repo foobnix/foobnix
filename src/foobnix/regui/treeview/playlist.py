@@ -71,7 +71,7 @@ class PlaylistControl(TreeViewControl):
                 self.index = randint(0, self.count_index)
         elif lopping == const.LOPPING_DONT_LOOP:
             return None
-        #self.repopulate(self.index)
+        
         self.set_play_icon_to_selected_bean()
         return self.get_bean_by_position(self.index)
 

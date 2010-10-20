@@ -159,7 +159,7 @@ class OnlineListCntr(GObject):
             box.hide()
 
 
-    def on_add_file(self, *a):
+    def on_add_files(self, *a):
         chooser = gtk.FileChooserDialog(title=_("Choose file to open"), action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(True)
@@ -509,8 +509,8 @@ class OnlineListCntr(GObject):
         if self.paths:
             a.select_range(self.paths[0], self.paths[len(self.paths) - 1])
 
-    def on_song_key_press(self, w,e, model):
-        print w,e, e.keyval
+    def on_song_key_press(self, w, e, model):
+        print w, e, e.keyval
         if gtk.gdk.keyval_name(e.keyval) == 'Return':
             self.on_play_selected(model);
         if gtk.gdk.keyval_name(e.keyval) == 'Delete':
@@ -548,10 +548,10 @@ class OnlineListCntr(GObject):
 
 
             treeselection.select_all()
-    def love_track(self,songs):
+    def love_track(self, songs):
         for song in songs:
-            LOG.debug("I LOVE IT ", song.getArtist(),song.getTitle())
-            track = self.last_fm_connector.network.get_track(song.getArtist(),song.getTitle())
+            LOG.debug("I LOVE IT ", song.getArtist(), song.getTitle())
+            track = self.last_fm_connector.network.get_track(song.getArtist(), song.getTitle())
             if track:
                 track.love()
                 LOG.debug("I LOVE IT SUCCESS")

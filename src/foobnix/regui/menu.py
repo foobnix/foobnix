@@ -17,8 +17,8 @@ class MenuWidget(FControl):
         top = TopMenu()
         """File"""
         file = top.append("File")
-        file.add_image_item("Add File(s)", gtk.STOCK_OPEN)
-        file.add_image_item("Add Folder(s)", gtk.STOCK_OPEN)
+        file.add_image_item("Add File(s)", gtk.STOCK_OPEN, self.controls.on_add_files)
+        file.add_image_item("Add Folder(s)", gtk.STOCK_OPEN, self.controls.on_add_folders)
         file.separator()
         file.add_image_item("Quit", gtk.STOCK_QUIT, self.controls.quit)
 
@@ -73,7 +73,7 @@ class MenuWidget(FControl):
 
         """Help"""
         help = top.append("Help")
-        help.add_image_item("About", gtk.STOCK_ABOUT,self.controls.about.show_all)
+        help.add_image_item("About", gtk.STOCK_ABOUT, self.controls.about.show_all)
         help.add_image_item("Help", gtk.STOCK_HELP)
 
         top.decorate()

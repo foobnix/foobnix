@@ -71,6 +71,8 @@ class FC:
         self.max_active_count = 3
         self.online_music_path = '/tmp'
 
+        self.last_dir = None
+        
         self = self._load();
 
     def save(self):

@@ -30,7 +30,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.active_tree = None
 
        
-        self.append_tab("Foobnix",[])
+        self.append_tab("Foobnix", [])
         
     
     def create_plus_tab(self):
@@ -94,7 +94,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         """append tab"""
         self.prepend_page(tab_content, both)
         self.create_plus_tab()
-        if self.get_n_pages()>=2:
+        if self.get_n_pages() >= 2:
             self.remove_page(2)
         
         self.set_current_page(1)
@@ -107,10 +107,18 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
             self.controls.next()
 
     def next(self):
-        return self.active_tree.next(rnd=self.is_random, lopping=self.lopping)
+        bean = self.active_tree.next(rnd=self.is_random, lopping=self.lopping)
+        print "Next notetab", bean
+        if not bean.is_file:
+            return self.next()
+        return bean
 
     def prev(self):
-        return self.active_tree.prev(rnd=self.is_random, lopping=self.lopping)
+        bean = self.active_tree.prev(rnd=self.is_random, lopping=self.lopping)
+        print "Prev notetab", bean
+        if not bean.is_file:
+            return self.prev()
+        return bean
 
     def create_notebook_tab(self, beans):
 

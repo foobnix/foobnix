@@ -9,8 +9,6 @@ from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.state import LoadSave
 from foobnix.regui.treeview.scanner import DirectoryScanner
-from foobnix.regui.id3 import update_all_id3
-import os
 from foobnix.regui.model import FModel
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.util.singe_thread import SingreThread
@@ -27,7 +25,86 @@ class BaseFoobnixControls(LoadSave):
 
         self.is_radio_populated = False
         pass
+    
+   
+    def on_add_folders(self):
+        chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        chooser.set_default_response(gtk.RESPONSE_OK)
+        chooser.set_select_multiple(True)
+        if FC().last_dir:
+            chooser.set_current_folder(FC().last_dir)
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK:
+            paths = chooser.get_filenames()
+            self.populate_from_dirs(paths)
 
+        elif response == gtk.RESPONSE_CANCEL:
+            LOG.info('Closed, no files selected')
+        chooser.destroy()
+        
+    def populate_from_dirs(self, paths):
+        if not paths :
+            return None
+
+        path = paths[0]
+
+        list = path.split("/")
+        FC().last_dir = path[:path.rfind("/")]
+        name = list[len(list) - 1]
+        parent = FModel(name)
+        self.append_to_new_notebook(name, [])
+
+        all_beans = []
+        for path in paths:
+            if path == "/":
+                LOG.info("Skip root folder")
+                continue;
+            beans = DirectoryScanner(path).get_music_results()
+            for bean in beans:
+                all_beans.append(bean)
+
+        if all_beans:
+            self.append_to_current_notebook(all_beans)
+        else:
+            self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
+    
+    def on_add_files(self):       
+        chooser = gtk.FileChooserDialog(title=_("Choose file to open"), action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        chooser.set_default_response(gtk.RESPONSE_OK)
+        chooser.set_select_multiple(True)
+        if FC().last_dir:
+                chooser.set_current_folder(FC().last_dir)
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK:
+            paths = chooser.get_filenames()
+            self.populate_from_files(paths)
+
+        elif response == gtk.RESPONSE_CANCEL:
+            LOG.info('Closed, no files selected')
+        chooser.destroy()
+        print "add file"
+        
+    def populate_from_files(self, paths):
+        if not paths:
+            return None
+        path = paths[0]
+        list = paths[0].split("/")
+
+        FC().last_dir = path[:path.rfind("/")]
+        
+        name = list[len(list) - 2]
+        self.append_to_new_notebook(name, [])
+        parent = FModel(name)
+        self.append_to_current_notebook([parent])
+        beans = []
+        for path in paths:
+            bean = FModel(path, path).parent(parent)
+            beans.append(bean)
+        if not beans:
+            self.append_to_current_notebook([FModel("Nothing found to play in the file(s) " + paths[0])])
+        else:
+            self.append_to_current_notebook(beans)
+       
     def set_playlist_tree(self):
         self.notetabs.set_playlist_tree()
 
@@ -131,10 +208,9 @@ class BaseFoobnixControls(LoadSave):
         else:
             bean.path = get_radio_source(bean.path)
 
-
+        
         self.media_engine.play(bean)
-
-        print "!!!!!!", bean.info
+        
         self.count_errors = 0
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
@@ -243,8 +319,8 @@ class BaseFoobnixControls(LoadSave):
         self.notetabs.append(beans)
 
 
-    def next(self):
-        bean = self.notetabs.next()
+    def next(self):        
+        bean = self.notetabs.next()        
         self.play(bean)
 
     def prev(self):
