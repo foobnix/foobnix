@@ -15,6 +15,8 @@ from foobnix.util.singe_thread import SingreThread
 from foobnix.regui.service.vk_service import VKService
 from foobnix.util.plsparser import get_radio_source
 from foobnix.radio.radios import RadioFolder
+from foobnix.helpers.dialog_entry import file_chooser_dialog, \
+    directory_chooser_dialog
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
@@ -28,82 +30,53 @@ class BaseFoobnixControls(LoadSave):
     
    
     def on_add_folders(self):
-        chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-        chooser.set_default_response(gtk.RESPONSE_OK)
-        chooser.set_select_multiple(True)
-        if FC().last_dir:
-            chooser.set_current_folder(FC().last_dir)
-        response = chooser.run()
-        if response == gtk.RESPONSE_OK:
-            paths = chooser.get_filenames()
-            self.populate_from_dirs(paths)
-
-        elif response == gtk.RESPONSE_CANCEL:
-            LOG.info('Closed, no files selected')
-        chooser.destroy()
-        
-    def populate_from_dirs(self, paths):
-        if not paths :
-            return None
-
-        path = paths[0]
-
-        list = path.split("/")
-        FC().last_dir = path[:path.rfind("/")]
-        name = list[len(list) - 1]
-        parent = FModel(name)
-        self.append_to_new_notebook(name, [])
-
-        all_beans = []
-        for path in paths:
-            if path == "/":
-                LOG.info("Skip root folder")
-                continue;
-            beans = DirectoryScanner(path).get_music_results()
-            for bean in beans:
-                all_beans.append(bean)
-
-        if all_beans:
-            self.append_to_current_notebook(all_beans)
-        else:
-            self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
+        paths = directory_chooser_dialog("Choose folders to open", FC().last_dir)
+        if paths:
+            path = paths[0]
+            list = path.split("/")
+            FC().last_dir = path[:path.rfind("/")]
+            name = list[len(list) - 1]
+            parent = FModel(name)
+            self.append_to_new_notebook(name, [])
+    
+            all_beans = []
+            all_beans.append(parent)
+            for path in paths:
+                if path == "/":
+                    LOG.info("Skip root folder")
+                    continue;
+                beans = DirectoryScanner(path).get_music_results()
+                
+                for bean in beans:
+                    if not bean.is_file:
+                        bean.parent(parent).add_is_file(False)
+                    all_beans.append(bean)
+    
+            if all_beans:
+                self.append_to_current_notebook(all_beans)
+            else:
+                self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
     
     def on_add_files(self):       
-        chooser = gtk.FileChooserDialog(title=_("Choose file to open"), action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-        chooser.set_default_response(gtk.RESPONSE_OK)
-        chooser.set_select_multiple(True)
-        if FC().last_dir:
-                chooser.set_current_folder(FC().last_dir)
-        response = chooser.run()
-        if response == gtk.RESPONSE_OK:
-            paths = chooser.get_filenames()
-            self.populate_from_files(paths)
-
-        elif response == gtk.RESPONSE_CANCEL:
-            LOG.info('Closed, no files selected')
-        chooser.destroy()
-        print "add file"
-        
-    def populate_from_files(self, paths):
-        if not paths:
-            return None
-        path = paths[0]
-        list = paths[0].split("/")
-
-        FC().last_dir = path[:path.rfind("/")]
-        
-        name = list[len(list) - 2]
-        self.append_to_new_notebook(name, [])
-        parent = FModel(name)
-        self.append_to_current_notebook([parent])
-        beans = []
-        for path in paths:
-            bean = FModel(path, path).parent(parent)
-            beans.append(bean)
-        if not beans:
-            self.append_to_current_notebook([FModel("Nothing found to play in the file(s) " + paths[0])])
-        else:
-            self.append_to_current_notebook(beans)
+        paths = file_chooser_dialog("Choose file to open", FC().last_dir)
+        if paths:            
+            path = paths[0]
+            list = paths[0].split("/")
+    
+            FC().last_dir = path[:path.rfind("/")]
+            
+            name = list[len(list) - 2]
+            self.append_to_new_notebook(name, [])
+            parent = FModel(name)
+            self.append_to_current_notebook([parent])
+            beans = []
+            for path in paths:
+                bean = FModel(path, path).parent(parent)
+                beans.append(bean)
+            if not beans:
+                self.append_to_current_notebook([FModel("Nothing found to play in the file(s) " + paths[0])])
+            else:
+                self.append_to_current_notebook(beans)
        
     def set_playlist_tree(self):
         self.notetabs.set_playlist_tree()

@@ -13,3 +13,4 @@ def get_file_extenstion(fileName):
 
 def file_extenstion(file_name):    
     return os.path.splitext(file_name)[1].lower()               
+

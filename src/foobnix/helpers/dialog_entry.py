@@ -5,8 +5,37 @@ Created on 24 авг. 2010
 @author: ivan
 '''
 import gtk
+from foobnix.util import LOG
 def responseToDialog(entry, dialog, response):
         dialog.response(response)
+        
+def file_chooser_dialog(title, current_folder=None):
+    chooser = gtk.FileChooserDialog(title, action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+    chooser.set_default_response(gtk.RESPONSE_OK)
+    chooser.set_select_multiple(True)
+    if current_folder:
+        chooser.set_current_folder(current_folder)
+    response = chooser.run()
+    if response == gtk.RESPONSE_OK:
+        paths = chooser.get_filenames()
+    elif response == gtk.RESPONSE_CANCEL:
+        LOG.info('Closed, no files selected')
+    chooser.destroy()
+    return paths
+
+def directory_chooser_dialog(title, current_folder=None):
+    chooser = gtk.FileChooserDialog(title, action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+    chooser.set_default_response(gtk.RESPONSE_OK)
+    chooser.set_select_multiple(True)
+    if current_folder:
+        chooser.set_current_folder(current_folder)
+    response = chooser.run()
+    if response == gtk.RESPONSE_OK:
+        paths = chooser.get_filenames()
+    elif response == gtk.RESPONSE_CANCEL:
+        LOG.info('Closed, no directory selected')
+    chooser.destroy()
+    return paths
 
 def one_line_dialog(dialog_title, text=None):
         dialog = gtk.MessageDialog(
