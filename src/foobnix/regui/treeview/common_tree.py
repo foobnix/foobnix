@@ -186,9 +186,9 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
             
             result = self.get_child_iters_by_parent(iter)
             beans = []
-            for iter_cur in result:
-                print iter_cur
-                beans.append(self.get_bean_from_iter(model, iter_cur))
+            for iter_cur in result:                
+                child = self.get_bean_from_iter(model, iter_cur)
+                beans.append(child)
             return beans
     
     def get_child_iters_by_parent(self, iter):

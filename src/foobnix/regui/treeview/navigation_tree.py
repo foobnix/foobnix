@@ -11,6 +11,7 @@ from foobnix.helpers.menu import Popup
 from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.treeview.common_tree import CommonTreeControl
+from foobnix.util.bean_utils import update_parent_for_beans
 class NavigationTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
@@ -28,7 +29,9 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         if is_double_left_click(e):
             selected = self.get_selected_bean()
-            beans = self.get_all_child_beans_by_selected()         
+            print selected
+            beans = self.get_all_child_beans_by_selected()  
+            update_parent_for_beans(beans, selected)                   
             self.controls.append_to_new_notebook(selected.text, [selected] + beans)
             
         if is_rigth_click(e):            

@@ -4,6 +4,8 @@ from mutagen.easyid3 import EasyID3
 import os
 from foobnix.util.time_utils import normilize_time
 from foobnix.util import LOG
+from foobnix.util.fc import FC
+from foobnix.util.file_utils import file_extenstion
 
 def decode_cp866(text):
     try:
@@ -73,7 +75,17 @@ def udpate_id3(bean):
 
     return bean
 
-def update_all_id3(beans):
+def get_support_music_beans_from_all(beans):
+    result = []
+    for bean in beans:
+        if bean.path and os.path.isdir(bean.path):
+            result.append(bean)
+        if bean.path and os.path.isfile(bean.path) and file_extenstion(bean.path) in FC().support_formats:
+            result.append(bean)
+    return result
+
+def update_id3_wind_filtering(beans):
+    beans = get_support_music_beans_from_all(beans)
     result = []
     for bean in beans:
         result.append(udpate_id3(bean))

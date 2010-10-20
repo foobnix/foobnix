@@ -47,7 +47,7 @@ class PlaylistTreeControl(CommonTreeControl):
         
         self.configure_send_drug()
         self.configure_recive_drug()
-        self.configure_recive_system_drug()
+        #self.configure_recive_system_drug()
         
         self.set_playlist_plain()
         

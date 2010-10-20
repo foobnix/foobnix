@@ -12,7 +12,7 @@ def isDirectory(path):
 def get_file_extenstion(fileName):    
     return os.path.splitext(fileName)[1].lower()
 
-def file_extenstion(file_name):    
+def file_extenstion(file_name):
     return os.path.splitext(file_name)[1].lower()               
 
 def get_file_path_from_dnd_dropped_uri(uri):

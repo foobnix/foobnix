@@ -17,6 +17,8 @@ from foobnix.util.plsparser import get_radio_source
 from foobnix.radio.radios import RadioFolder
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog
+from foobnix.regui.service.music_service import get_all_music_by_path
+from foobnix.regui.id3 import update_id3_wind_filtering
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
@@ -45,7 +47,7 @@ class BaseFoobnixControls(LoadSave):
                 if path == "/":
                     LOG.info("Skip root folder")
                     continue;
-                beans = DirectoryScanner(path).get_music_results()
+                beans = get_all_music_by_path(path)
                 
                 for bean in beans:
                     if not bean.is_file:
@@ -97,8 +99,8 @@ class BaseFoobnixControls(LoadSave):
         self.tree.clear()
         FC().cache_music_tree_beans = []
         for path in FC().music_paths:
-            scan = DirectoryScanner(path)
-            all = scan.get_music_results()
+            
+            all = get_all_music_by_path(path)
 
             for bean in all:
                 FC().cache_music_tree_beans.append(bean)
@@ -285,10 +287,12 @@ class BaseFoobnixControls(LoadSave):
         #self.info_panel.update(bean)
         self.singre_thread.run_with_text(self.info_panel.update, bean, "Updating info panel")
 
-    def append_to_new_notebook(self, text, beans):        
+    def append_to_new_notebook(self, text, beans):
+        beans = update_id3_wind_filtering(beans)        
         self.notetabs.append_tab(text, beans)
 
-    def append_to_current_notebook(self, beans):        
+    def append_to_current_notebook(self, beans):  
+        beans = update_id3_wind_filtering(beans)              
         self.notetabs.append(beans)
 
 
