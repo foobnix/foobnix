@@ -8,7 +8,6 @@ import gtk
 from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.state import LoadSave
-from foobnix.regui.treeview.scanner import DirectoryScanner
 from foobnix.regui.model import FModel
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.util.singe_thread import SingreThread

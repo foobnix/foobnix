@@ -7,6 +7,8 @@ Created on 11 сент. 2010
 import os
 def get_image_by_path(path):
     dir = os.path.dirname(path)
+    if not os.path.isdir(dir):
+        return None            
     files = os.listdir(dir)
     for file in files:
         if file.lower().endswith(".jpg"):

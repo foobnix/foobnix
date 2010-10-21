@@ -12,7 +12,6 @@ from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel
-from foobnix.regui.treeview.scanner import DirectoryScanner
 import thread
 from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
 class NoteTabControl(gtk.Notebook, FControl, LoadSave):
