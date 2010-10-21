@@ -6,7 +6,7 @@ Created on 24 авг. 2010
 '''
 import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
-from foobnix.util.configuration import FConfiguration
+from foobnix.util.fc import FC
 
 class LastFmConfig(ConfigPlugin):
     
@@ -57,23 +57,23 @@ class LastFmConfig(ConfigPlugin):
         box.pack_start(lbox, False, True, 0)
         box.pack_start(pbox, False, True, 0)
         box.pack_start(self.music_srobbler, False, True, 0)
-        box.pack_start(self.radio_srobbler, False, True, 0)
+        #box.pack_start(self.radio_srobbler, False, True, 0)
         
         self.widget = box
     
     def on_load(self):
-        self.login_text.set_text(FConfiguration().lfm_login)
-        self.password_text.set_text(FConfiguration().lfm_password)
-        self.music_srobbler.set_active(FConfiguration().enable_music_srobbler)
-        self.radio_srobbler.set_active(FConfiguration().enable_radio_srobbler)
+        self.login_text.set_text(FC().lfm_login)
+        self.password_text.set_text(FC().lfm_password)
+        self.music_srobbler.set_active(FC().enable_music_srobbler)
+        self.radio_srobbler.set_active(FC().enable_radio_srobbler)
     
     def on_save(self):
-        if FConfiguration().lfm_login !=  self.login_text.get_text() or FConfiguration().lfm_password != self.password_text.get_text():
-            FConfiguration().cookie = None
+        if FC().lfm_login != self.login_text.get_text() or FC().lfm_password != self.password_text.get_text():
+            FC().cookie = None
         
-        FConfiguration().lfm_login = self.login_text.get_text()
-        FConfiguration().lfm_password = self.password_text.get_text() 
+        FC().lfm_login = self.login_text.get_text()
+        FC().lfm_password = self.password_text.get_text() 
         
-        FConfiguration().enable_music_srobbler = self.music_srobbler.get_active()
-        FConfiguration().enable_radio_srobbler = self.radio_srobbler.get_active()
+        FC().enable_music_srobbler = self.music_srobbler.get_active()
+        FC().enable_radio_srobbler = self.radio_srobbler.get_active()
         

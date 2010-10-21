@@ -49,7 +49,7 @@ class GStreamerEngine(MediaPlayerEngine):
         #LOG.debug("Notify playing", position_int)
         self.position_sec = position_int / self.NANO_SECONDS
         self.duration_sec = duration_int / self.NANO_SECONDS
-        self.controls.notify_playing(self.position_sec, self.duration_sec)
+        self.controls.notify_playing(self.position_sec, self.duration_sec, self.bean)
 
     def notify_eos(self):
         LOG.debug("Notify eos")
@@ -84,8 +84,9 @@ class GStreamerEngine(MediaPlayerEngine):
                 if os.name == 'nt':
                     uri = 'file:' + urllib.pathname2url(path)
 
-            self.player.set_property("uri", uri)
             LOG.info("Gstreamer try to play", uri)
+            self.player.set_property("uri", uri)
+            
             self.prev_path = path
 
         self.state_pause()

@@ -62,6 +62,9 @@ class FC:
         self.vk_login = "c891888@bofthew.com"
         self.vk_password = "c891888"
         self.vk_cookie = None
+        
+        self.enable_music_srobbler = True
+        self.enable_radio_srobbler = True
 
         """proxy"""
         self.proxy_enable = False
@@ -69,6 +72,7 @@ class FC:
 
         """try icon"""
         self.show_tray_icon = True
+        self.tray_icon_auto_hide = True
 
         """download manager controls"""
         self.auto_start_donwload = True

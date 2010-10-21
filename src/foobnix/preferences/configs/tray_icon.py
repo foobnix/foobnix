@@ -7,7 +7,7 @@ Created on 24 авг. 2010
 import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util import const
-from foobnix.util.configuration import FConfiguration
+from foobnix.util.fc import FC
 
 class TrayIconConfig(ConfigPlugin):
     
@@ -59,28 +59,28 @@ class TrayIconConfig(ConfigPlugin):
             self.hide_button.set_sensitive(True)
             
     def on_load(self):
-        self.tray_icon_button.set_active(FConfiguration().show_tray_icon)
-        self.tray_icon_auto_hide.set_active(FConfiguration().tray_icon_auto_hide)
-        if FConfiguration().on_close_window == const.ON_CLOSE_CLOSE:
+        self.tray_icon_button.set_active(FC().show_tray_icon)
+        self.tray_icon_auto_hide.set_active(FC().tray_icon_auto_hide)
+        if FC().on_close_window == const.ON_CLOSE_CLOSE:
             self.close_button.set_active(True)
             
-        elif FConfiguration().on_close_window == const.ON_CLOSE_HIDE:
+        elif FC().on_close_window == const.ON_CLOSE_HIDE:
             self.hide_button.set_active(True)
             
-        elif FConfiguration().on_close_window == const.ON_CLOSE_MINIMIZE:
+        elif FC().on_close_window == const.ON_CLOSE_MINIMIZE:
             self.minimize_button.set_active(True)
             
             
         
     def on_save(self):
-        FConfiguration().show_tray_icon = self.tray_icon_button.get_active() 
-        FConfiguration().tray_icon_auto_hide = self.tray_icon_auto_hide.get_active()
+        FC().show_tray_icon = self.tray_icon_button.get_active() 
+        FC().tray_icon_auto_hide = self.tray_icon_auto_hide.get_active()
         
         if  self.close_button.get_active():
-            FConfiguration().on_close_window = const.ON_CLOSE_CLOSE
+            FC().on_close_window = const.ON_CLOSE_CLOSE
         
         elif self.hide_button.get_active():
-            FConfiguration().on_close_window = const.ON_CLOSE_HIDE
+            FC().on_close_window = const.ON_CLOSE_HIDE
         
         elif self.minimize_button.get_active():
-            FConfiguration().on_close_window = const.ON_CLOSE_MINIMIZE
+            FC().on_close_window = const.ON_CLOSE_MINIMIZE

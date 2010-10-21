@@ -19,6 +19,7 @@ from foobnix.helpers.dialog_entry import file_chooser_dialog, \
 from foobnix.regui.service.music_service import get_all_music_by_path
 from foobnix.regui.id3 import update_id3_wind_filtering
 import os
+import time
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
@@ -26,6 +27,8 @@ class BaseFoobnixControls(LoadSave):
         self.vk = VKService()
 
         self.count_errors = 0
+        self.is_scrobled = False
+        self.start_time = None
    
     def on_add_folders(self):
         paths = directory_chooser_dialog("Choose folders to open", FC().last_dir)
@@ -157,7 +160,7 @@ class BaseFoobnixControls(LoadSave):
         if not bean:
             return None
         
-        if os.path.isdir(bean.path):
+        if not bean.is_file:
             return None
         
         if not bean.path:
@@ -167,7 +170,9 @@ class BaseFoobnixControls(LoadSave):
                 self.count_errors += 1
         else:
             bean.path = get_radio_source(bean.path)
-
+            
+        self.is_scrobled = False
+        self.start_time = False
         
         self.media_engine.play(bean)
         
@@ -176,13 +181,29 @@ class BaseFoobnixControls(LoadSave):
         self.trayicon.set_text(bean.text)
         self.main_window.set_title(bean.text)
 
-    def notify_playing(self, pos_sec, dur_sec):
+    def notify_playing(self, pos_sec, dur_sec, bean):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
+                
+        if pos_sec % 10 == 0:
+            self.lastfm.report_now_playting(bean)
+            
+        if not self.start_time:
+            self.start_time = str(int(time.time()))
+            print "Start time", self.start_time
+
+        if not self.is_scrobled  and (pos_sec >= dur_sec / 2 or (pos_sec >= 45)):
+            self.lastfm.report_scrobled(bean, self.start_time, dur_sec)
+            self.is_scrobled = True
+            
+                
+            
 
     def notify_title(self, text):
         self.seek_bar.set_text(text)
 
     def notify_eos(self):
+        self.start_time = None
+        self.is_scrobled = False
         self.next()
 
     def player_seek(self, percent):
@@ -301,7 +322,7 @@ class BaseFoobnixControls(LoadSave):
     def quit(self, *a):
         LOG.info("Controls - Quit")
         self.main_window.hide()
-        self.on_save()
+        self.on_save()                
         FC().save()
         gtk.main_quit()
 

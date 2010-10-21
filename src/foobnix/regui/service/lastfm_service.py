@@ -13,25 +13,26 @@ from foobnix.online.google.translate import translate
 from foobnix.util.fc import FC
 from foobnix.helpers.dialog_entry import show_login_password_error_dialog
 from foobnix.regui.model import FModel
+import thread
 
 API_KEY = FC().API_KEY
 API_SECRET = FC().API_SECRET
 
 class Cache():
-    def __init__(self,  network):
+    def __init__(self, network):
         self.network = network
         self.cache_tracks = {}
         self.cache_albums = {}
         self.cache_images = {}
 
-    def get_key(self,artist, title):
-        return artist+"-"+title
+    def get_key(self, artist, title):
+        return artist + "-" + title
 
     def get_track(self, artist, title):
         if not artist or not title:
             return None
         if self.cache_tracks.has_key(self.get_key(artist, title)):
-            track =  self.cache_tracks[self.get_key(artist, title)]
+            track = self.cache_tracks[self.get_key(artist, title)]
             LOG.debug("Get track from cache", track)
             return track
         else:
@@ -48,7 +49,7 @@ class Cache():
                 LOG.debug("Get album from cache", track)
                 return self.cache_albums[self.get_key(artist, title)]
             else:
-                album =  track.get_album()
+                album = track.get_album()
                 if album:
                     self.cache_albums[self.get_key(artist, title)] = album
                     return album
@@ -62,7 +63,7 @@ class Cache():
             return self.cache_images[self.get_key(artist, title)]
         else:
             album = self.get_album(artist, title)
-            image  = album.get_cover_image(size)
+            image = album.get_cover_image(size)
             self.cache_images[self.get_key(artist, title)] = image
             return image
 
@@ -119,7 +120,39 @@ class LastFmService():
 
     def get_scrobler(self):
         return self.scrobler
-
+    
+    def report_now_playting(self, bean):
+        if not FC().enable_music_srobbler:
+            LOG.debug("Last.fm scrobbler not enabled")
+            return None    
+        def task(song):
+            if bean.artist and bean.title:
+                try:
+                    self.get_scrobler().report_now_playing(bean.artist, bean.title)
+                    LOG.debug("notify", bean.artist, bean.title)
+                except Exception, e:       
+                    LOG.error(e, "Error reporting now playing last.fm", bean.artist, bean.title, "A", bean.album)
+            else:
+                print "Bean title or artist not difined"
+                
+        thread.start_new_thread(task, (bean,))
+    
+    def report_scrobled(self, bean, start_time, duration_sec):
+        if not FC().enable_music_srobbler:
+            LOG.debug("Last.fm scrobbler not enabled")
+            return None
+        def task(bean):
+            if bean.artist and bean.title:
+                try:
+                    self.get_scrobler().scrobble(bean.artist, bean.title, start_time, "P", "", duration_sec)
+                except Exception, e:       
+                    LOG.error(e, "Error reporting now playing last.fm", bean.artist, bean.title, "A", bean.album)
+            else:
+                print "Bean title or artist not difined"
+        
+        thread.start_new_thread(task, (bean,))
+        
+    
     def connected(self):
         return self.network is not None
 
@@ -145,7 +178,7 @@ class LastFmService():
             #year = album_txt.get_release_year()
             year = None
             if year:
-                bean = FModel(name + "("+year+")").add_album(name).add_artist(aritst_name).add_year(year)
+                bean = FModel(name + "(" + year + ")").add_album(name).add_artist(aritst_name).add_year(year)
             else:
                 bean = FModel(name).add_album(name).add_artist(aritst_name).add_year(year)
 
@@ -158,13 +191,13 @@ class LastFmService():
             return []
         self.connect()
         album = self.network.get_album(artist_name, album_name)
-        tracks  = album.get_tracks()
+        tracks = album.get_tracks()
         results = []
         for track in tracks:
             artist = track.get_artist().get_name()
             title = track.get_title()
             print artist, title
-            bean = FModel(artist + " - "+ title).add_artist(artist).add_title(title)
+            bean = FModel(artist + " - " + title).add_artist(artist).add_title(title)
             results.append(bean)
         return results
 
@@ -190,7 +223,7 @@ class LastFmService():
             LOG.warn("search_top_tags TAG is empty")
             return []
 
-        tag = Tag(tag_name,self.network)
+        tag = Tag(tag_name, self.network)
         tracks = tag.get_top_tracks()
 
         beans = []
@@ -281,7 +314,7 @@ class LastFmService():
             LOG.warn("search_top_similar_tags artist or title is empty")
             return []
 
-        track =  self.cache.get_track(artist, title)
+        track = self.cache.get_track(artist, title)
         if not track:
             LOG.warn("search_top_similar_tracks track not found")
             return []
@@ -295,7 +328,7 @@ class LastFmService():
                 tsong_item = tsong['item']
 
             artist = tsong_item.get_artist().get_name()
-            title  =  tsong_item.get_title()
+            title = tsong_item.get_title()
             model = FModel(artist + " - " + title).add_artist(artist).add_title(title).add_is_file(True)
             beans.append(model)
 
