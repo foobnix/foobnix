@@ -35,6 +35,8 @@ class FC:
         self.len_of_tab = 30
         self.tab_close_element = "label"
         self.count_of_tabs = 5
+        self.tab_position = "left"
+        
 
         """main window controls"""
         self.main_window_size = [119, 154, 884, 479]
@@ -50,6 +52,8 @@ class FC:
         self.music_paths = ["/tmp"]
         self.support_formats = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".cue", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp" ]
         self.cache_music_tree_beans = []
+        self.cache_virtual_tree_beans = []
+        self.cache_radio_tree_beans = []
 
         """last fm"""
         self.lfm_login = self.LASTFM_USER

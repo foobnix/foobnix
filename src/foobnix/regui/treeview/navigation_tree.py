@@ -29,9 +29,9 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         if is_double_left_click(e):
             selected = self.get_selected_bean()
-            print selected
-            beans = self.get_all_child_beans_by_selected()  
-            self.controls.append_to_new_notebook(selected.text, [selected] + beans)
+            if selected:
+                beans = self.get_all_child_beans_by_selected()  
+                self.controls.append_to_new_notebook(selected.text, [selected] + beans)
             
         if is_rigth_click(e):            
                 menu = Popup()

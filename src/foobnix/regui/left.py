@@ -50,7 +50,7 @@ class PerspectiveButtonControlls(FControl, gtk.HBox):
                 
         radios = self.custom_button("Radio", gtk.STOCK_NETWORK)
         radios.connect("clicked", self.on_change_perspective, controls.radio)
-        radios.connect("clicked", lambda * a: controls.update_radio_tree())
+        #radios.connect("clicked", lambda * a: controls.update_radio_tree())
         
         virtuals = self.custom_button("Lists", gtk.STOCK_INDEX)
         virtuals.connect("clicked", self.on_change_perspective, controls.virtual)

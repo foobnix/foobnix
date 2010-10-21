@@ -20,7 +20,9 @@ if not iface:
     gtk.gdk.threads_enter()
     eq = FoobnixCore()
     print "******Foobnix run in", time.time() - init_time, " seconds******"
+    
     gtk.main()
+    
     gtk.gdk.threads_leave()
 else:
     print "start client"

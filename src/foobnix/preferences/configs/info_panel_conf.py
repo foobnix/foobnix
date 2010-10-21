@@ -44,10 +44,6 @@ class InfoPagenConfig(ConfigPlugin):
         lbox.pack_start(lyric_label, False, False, 0)
         lbox.pack_start(self.lyric_size_spin, False, True, 0)
         
-        
-       
-        
-        
         box.pack_start(cbox, False, True, 0)
         box.pack_start(lbox, False, True, 0)
         self.widget = box

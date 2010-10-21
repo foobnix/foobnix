@@ -6,13 +6,14 @@ Created on 24 авг. 2010
 '''
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
-from foobnix.util.configuration import FConfiguration
 from foobnix.helpers.my_widgets import tab_close_button, notetab_label
+from foobnix.util.fc import FC
 class TabsConfig(ConfigPlugin):
     
     name = _("Tabs")
     
     def __init__(self, controls):
+        self.controls = controls
         print "Create try icon conf"
         box = gtk.VBox(False, 0)        
         box.hide()
@@ -108,49 +109,49 @@ class TabsConfig(ConfigPlugin):
     
     def on_chage_tab_position(self, *args):
         if self.radio_tab_left.get_active():
-            self.online_controller.set_tab_left()
+            self.controls.notetabs.set_tab_left()
         
         elif self.radio_tab_top.get_active():
-            self.online_controller.set_tab_top()
+            self.controls.notetabs.set_tab_top()
         
         elif self.radio_tab_no.get_active():
-            self.online_controller.set_tab_no()    
+            self.controls.notetabs.set_tab_no()    
         
     
     def on_chage_count_tabs(self, w):
         val = w.get_value_as_int()
-        FConfiguration().count_of_tabs = val
+        FC().count_of_tabs = val
    
     def on_chage_len_tab(self, w):
         val = w.get_value_as_int()
-        FConfiguration().len_of_tab = val
+        FC().len_of_tab = val
     
     def on_load(self):
-        self.tabs_count.set_value(FConfiguration().count_of_tabs)
-        self.tab_len.set_value(FConfiguration().len_of_tab)
+        self.tabs_count.set_value(FC().count_of_tabs)
+        self.tab_len.set_value(FC().len_of_tab)
         
-        if  FConfiguration().tab_position == "left":
+        if  FC().tab_position == "left":
             self.radio_tab_left.set_active(True)
         
-        elif  FConfiguration().tab_position == "top":
+        elif  FC().tab_position == "top":
             self.radio_tab_top.set_active(True)
         
-        elif FConfiguration().tab_position == "no":
+        elif FC().tab_position == "no":
             self.radio_tab_no.set_active(True)
             
-        if  FConfiguration().tab_close_element == "label":
+        if  FC().tab_close_element == "label":
             self.radio_tab_label.set_active(True)
             
-        elif FConfiguration().tab_close_element == "button":
+        elif FC().tab_close_element == "button":
             self.radio_tab_button.set_active(True)
             
     def on_save(self):
-        FConfiguration().count_of_tabs = self.tabs_count.get_value_as_int() 
-        FConfiguration().len_of_tab = self.tab_len.get_value_as_int()
+        FC().count_of_tabs = self.tabs_count.get_value_as_int() 
+        FC().len_of_tab = self.tab_len.get_value_as_int()
         
         if self.radio_tab_label.get_active():
-            FConfiguration().tab_close_element = "label"
+            FC().tab_close_element = "label"
         elif self.radio_tab_button.get_active():
-            FConfiguration().tab_close_element = "button"
+            FC().tab_close_element = "button"
             
      

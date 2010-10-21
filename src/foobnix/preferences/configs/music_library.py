@@ -24,12 +24,12 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         box.hide()
         
         
-        self.child_button = gtk.CheckButton(label=_("Get music from child folders"), use_underline=True)
-        self.child_button.show()
+        #self.child_button = gtk.CheckButton(label=_("Get music from child folders"), use_underline=True)
+        #$self.child_button.show()
         
  
         box.pack_start(self.dirs(), False, True, 0)
-        box.pack_start(self.child_button, False, True, 0)
+        #box.pack_start(self.child_button, False, True, 0)
         box.pack_start(self.formats(), False, True, 0)
         
         self.widget = box

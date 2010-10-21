@@ -55,6 +55,34 @@ def one_line_dialog(dialog_title, text=None):
         text = entry.get_text()
         dialog.destroy()    
         return text
+def two_line_dialog(title, description, line1, line2):
+        dialog = gtk.MessageDialog(
+            None,
+            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            gtk.MESSAGE_QUESTION,
+            gtk.BUTTONS_OK,
+            title)
+        dialog.set_markup(title)
+        dialog.format_secondary_markup(description)
+        
+        login_entry = gtk.Entry()
+        login_entry.set_text(line1)
+        login_entry.show()
+        
+        password_entry = gtk.Entry()
+        password_entry.set_text(line2)
+        password_entry.show()
+        
+        hbox = gtk.VBox()
+        hbox.pack_start(login_entry, False, False, 0)
+        hbox.pack_start(password_entry, False, False, 0)
+        dialog.vbox.pack_start(hbox, True, True, 0)
+        dialog.show_all()
+        dialog.run()
+        login_text = login_entry.get_text()
+        password_text = password_entry.get_text()
+        dialog.destroy()
+        return [login_text, password_text]      
         
         
 def info_dialog_with_link(title, version, link):

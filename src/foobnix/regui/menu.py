@@ -28,12 +28,12 @@ class MenuWidget(FControl):
         self.view_music_tree = view.add_ckeck_item("Music Tree", FC().is_view_music_tree_panel)
         self.view_music_tree.connect("activate", lambda w: controls.set_visible_musictree_panel(w.get_active()))
 
-        self.view_search_panel = view.add_ckeck_item("Search Panel", FC().is_view_info_panel)
+        self.view_search_panel = view.add_ckeck_item("Search Panel")
         self.view_search_panel.connect("activate", lambda w: controls.set_visible_search_panel(w.get_active()))
 
         view.separator()
         #view.add_ckeck_item("Lyric Panel", FC().is_view_lyric_panel)
-        self.view_info_panel = view.add_ckeck_item("Info Panel", FC().is_view_info_panel)
+        self.view_info_panel = view.add_ckeck_item("Info Panel")
         self.view_info_panel.connect("activate", lambda w: controls.set_visible_info_panel(w.get_active()))
 
 
@@ -74,7 +74,7 @@ class MenuWidget(FControl):
         """Help"""
         help = top.append("Help")
         help.add_image_item("About", gtk.STOCK_ABOUT, self.controls.about.show_all)
-        help.add_image_item("Help", gtk.STOCK_HELP)
+        #help.add_image_item("Help", gtk.STOCK_HELP)
 
         top.decorate()
         self.widget = top.widget
@@ -104,9 +104,9 @@ class MyMenu(gtk.Menu):
             item.set_image(img)
 
         LOG.debug("Menu-Image-Activate", title, gtk_stock, func, param)
-        if param:
+        if func and param:
             item.connect("activate", lambda * a: func(param))
-        else:
+        elif func:
             item.connect("activate", lambda * a: func())
 
         self.append(item)

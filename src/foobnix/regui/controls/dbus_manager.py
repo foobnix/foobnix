@@ -52,43 +52,6 @@ class MprisPlayer(dbus.service.Object, FControl):
     def PlayPause(self):
         self.controls.state_play_pause()
 
-    #TODO
-    #Repeat ( b: State )
-    """State − b
-       TRUE to repeat the current track, FALSE to stop repeating."""
-    #GetStatus ( ) → (iiii)
-    """Return the status of media player as a struct of 4 ints.
-       Returns
-       Status − (iiii) (Status_Struct)
-       Status_Struct − ( i: Playback_State, i: Shuffle_State, i: Repeat_Current_State, i: Endless_State )
-       Playback_State − i
-        0 = Playing, 1 = Paused, 2 = Stopped.
-       Shuffle_State − i
-        0 = Playing linearly, 1 = Playing randomly.
-       Repeat_Current_State − i
-        0 = Go to the next element once the current has finished playing, 1 = Repeat the current element.
-       Endless_State − i
-        0 = Stop playing once the last element has been played, 1 = Never give up playing"""
-    #GetMetadata ( ) → a{sv}
-    """Gives all meta data available for the currently played element.
-       Guidelines for field names are at http://wiki.xmms2.xmms.se/wiki/MPRIS_Metadata .
-       Returns Metadata − a{sv} (String_Variant_Map)"""
-    #GetCaps ( ) → i
-    """Return the "media player"'s current capabilities.
-       Returns Capabilities − i (Caps_Flags)"""
-    #VolumeSet ( i: Volume )
-    #VolumeGet ( ) → i
-    #PositionSet ( i: Position )
-    """Track position between [0;<track_length>] in ms."""
-    #PositionGet ( ) → i
-    """Track position between [0;<track_length>] in ms."""
-
-    #Signals:
-    #TrackChange ( a{sv}: Metadata )
-    #StatusChange ( (iiii): Status )
-    #CapsChange ( i: Capabilities )
-
-
 class DBusManager(dbus.service.Object, FControl):
     def __init__(self, controls, object_path=MPRIS_ROOT_PATH):
         self.bus = dbus.SessionBus()

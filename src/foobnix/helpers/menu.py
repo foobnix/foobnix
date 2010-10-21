@@ -4,13 +4,15 @@ Created on Aug 26, 2010
 @author: ivan
 '''
 import gtk
-class Popup():
+class Popup(gtk.Menu):
     
     def __init__(self):        
-        self.menu = gtk.Menu()
+        gtk.Menu.__init__(self)
     
-    def get_menu(self):
-        return self.menu    
+    def add_separator(self):
+        separator = gtk.SeparatorMenuItem()
+        separator.show()
+        self.append(separator)
     
     def add_item(self, text, gtk_stock, func, arg=None):            
         item = gtk.ImageMenuItem(text)
@@ -20,9 +22,9 @@ class Popup():
             item.connect("activate", lambda * a: func(arg))
         else:
             item.connect("activate", lambda * a: func())
-        self.menu.add(item)
+        self.add(item)
     
     def show(self, event):
-        self.menu.show_all()
-        self.menu.popup(None, None, None, event.button, event.time) 
+        self.show_all()
+        self.popup(None, None, None, event.button, event.time) 
 

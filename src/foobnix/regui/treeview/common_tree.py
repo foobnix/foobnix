@@ -10,6 +10,7 @@ from foobnix.regui.model import FTreeModel, FModel
 from foobnix.util import LOG
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.treeview.drugdrop_tree import DrugDropTree
+from random import randint
 
 
 class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
@@ -42,10 +43,16 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         self.set_reorderable(False)
         self.set_headers_visible(False)
 
-        self.prev_iter_play_icon = None
-        
         self.set_type_plain()
-
+    
+    def rename_selected(self, text):
+        selection = self.get_selection()
+        fm, paths = selection.get_selected_rows()
+        path = paths[0]
+        path = self.filter_model.convert_path_to_child_path(path)        
+        iter = self.model.get_iter(path)
+        self.model.set_value(iter, self.text[0], text)
+    
     def populate(self, bean):
         self.clear()
         self.append(bean)
@@ -62,7 +69,10 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         self.scroll.show_all()
         return self
 
-    def get_bean_from_iter(self, model, iter):
+    def get_bean_from_iter(self, iter):
+        return self.get_bean_from_model_iter(self.model, iter)
+
+    def get_bean_from_model_iter(self, model, iter):
         bean = FModel()
         id_dict = FTreeModel().cut().__dict__
         for key in id_dict.keys():
@@ -111,10 +121,15 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
     def delete_selected(self):
         selection = self.get_selection()
         fm, paths = selection.get_selected_rows()
-        path = paths[0]
-        path = self.filter_model.convert_path_to_child_path(path)
-        iter = self.model.get_iter(path)
-        self.model.remove(iter)
+        
+        to_delete=[]
+        for path in paths:
+            path = self.filter_model.convert_path_to_child_path(path)
+            iter = self.model.get_iter(path)
+            to_delete.append(iter)
+        
+        for iter in to_delete: 
+            self.model.remove(iter)
 
     def get_selected_bean(self):
         selection = self.get_selection()
@@ -125,18 +140,12 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         print "Selected bean", selected_bean
         return selected_bean
 
-    def set_play_icon_to_selected_bean(self):
-        selection = self.get_selection()
-        filter_model, paths = selection.get_selected_rows()
-        if not paths:
-            return None
-        path = filter_model.convert_path_to_child_path(paths[0])
-        model = filter_model.get_model()
-        iter = model.get_iter(path)
-        model.set_value(iter, self.play_icon[0], gtk.STOCK_MEDIA_PLAY)
-        if self.prev_iter_play_icon:
-            model.set_value(self.prev_iter_play_icon, self.play_icon[0], None)
-        self.prev_iter_play_icon = iter
+    def set_play_icon_to_bean(self, bean):
+        for row in self.model:
+            if row[self.UUID[0]] == bean.UUID:
+                row[self.play_icon[0]] = gtk.STOCK_MEDIA_PLAY
+            else:
+                row[self.play_icon[0]] = None
 
     def get_child_level1_beans_by_selected(self):
         selection = self.get_selection()
@@ -171,20 +180,63 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
             return bean
         return None
 
-    def get_bean_by_position(self, position):
-        bean = FModel()
-        dt = FTreeModel().__dict__
-        for key in dt.keys():
-            setattr(bean, key, self.model[position][dt[key][0]])
+    def get_bean_by_UUID(self, UUID):
+        for row in self.model:
+            if row[self.UUID[0]] == UUID:
+                return self.get_bean_from_row(row)        
 
-        return bean
+    def get_next_bean_by_UUID(self, UUID):
+        for i, row in enumerate(self.model):
+            if row[self.UUID[0]] == UUID:
+                if i+1 < len(self.model):
+                    next_row = self.model[i+1]
+                    return self.get_bean_from_row(next_row)                
+        return self.get_bean_from_row(self.model[0])
+    
+    def get_prev_bean_by_UUID(self, UUID):
+        for i, row in enumerate(self.model):
+            if row[self.UUID[0]] == UUID:
+                return self.get_bean_from_row(self.model[i-1])
+        return self.get_bean_from_row(self.model[0])
+    
+    def get_random_bean(self):        
+        return self.get_bean_from_row(self.model[randint(0, len(self.model))])
     
     def get_all_child_beans_by_selected(self):
             filter_model, paths = self.get_selection().get_selected_rows()
             model = filter_model.get_model()
             iter = model.get_iter(paths[0])
             return self.get_child_iters_by_parent(iter)
+     
+    def get_all_beans(self):
+        results = []
+        next = self.model.get_iter_first()
+        
+        if next:
+            parent = self.get_bean_from_iter(next) 
+            results += [parent] +self.get_child_iters_by_parent(next)
+        
+        flag=True
+
+        while flag:
+            next =self.model.iter_next(next)
+            if not next:
+                flag = False
+            else:
+                parent = self.get_bean_from_iter(next) 
+                results += [parent] +self.get_child_iters_by_parent(next)
+                
+        return results
+                
+        
             
+        
+        
+        
+        
+        
+            
+       
     
     def get_child_iters_by_parent(self, iter):
         list = []
@@ -192,7 +244,7 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
             for i in range(0, self.model.iter_n_children(iter)):
                 next_iter = self.model.iter_nth_child(iter, i)
                 
-                parent = self.get_bean_from_iter(self.model, next_iter)                
+                parent = self.get_bean_from_iter(next_iter)                
                 list.append(parent)
                  
                 beans = self.get_child_iters_by_parent(next_iter)
@@ -203,13 +255,6 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
                 
         return list
                 
-    
-    def get_all_beans(self):
-        beans = []
-        for i in xrange(len(self.model)):
-            beans.append(self.get_bean_by_position(i))
-        return beans
-
     def get_all_selected_beans(self):
         selection = self.get_selection()
         model, paths = selection.get_selected_rows()

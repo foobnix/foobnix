@@ -14,6 +14,7 @@ from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel
 import thread
 from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
+from foobnix.util.mouse_utils import is_double_left_click
 class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     def __init__(self, controls):
         gtk.Notebook.__init__(self)
@@ -26,21 +27,27 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.last_notebook_page = ""
         self.last_notebook_beans = []
         self.active_tree = None
-
-       
-        self.append_tab("Foobnix", [])
         
-    
+        #self.connect("button-press-event", self.on_button_press)
+       
+        self.empty_tab()
+    """
+    def on_select_page(self,tab, pointer, num):
+        current = self.get_current_page()
+        if current >0:
+            self.active_tree = self.get_children()[current].get_children()[0]
+    """
+    def on_button_press(self,w,e):
+        if is_double_left_click(e):
+            self.empty_tab()
+            
     def create_plus_tab(self):
         append_label = notetab_label(func=self.empty_tab, arg=None, angel=0, symbol="+")
-        l = gtk.Label()
-        l.show()
+        l = notetab_label(func=self.empty_tab, arg=None, angel=0, symbol="Click me")
         self.prepend_page(l, append_label)
         
-    def empty_tab(self):
-        #print "push"
-        #pass
-        self.append_tab("Foobnix", [])
+    def empty_tab(self,*a):
+        self.append_tab("Foobnix tab", [])
     
     def get_active_tree(self):
         return self.active_tree
@@ -103,9 +110,52 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         """autostart play"""
         if beans:
             self.controls.next()
+    
+    def update_label_angel(self, angle):
+        for label in self.tab_labes:
+            label.set_angle(angle)
+    
+    def set_tab_left(self):
+        LOG.info("Set tabs Left")
+        self.set_tab_pos(gtk.POS_LEFT)
+        self.update_label_angel(90)
+        self.default_angel = 90
+        self.set_show_tabs(True)
+        FC().tab_position = "left"
 
+        for box in self.tab_hboxes:
+            box.hide()
+
+        for box in self.tab_vboxes:
+            box.show()
+
+    def set_tab_top(self):
+        LOG.info("Set tabs top")
+        self.set_tab_pos(gtk.POS_TOP)
+        self.update_label_angel(0)
+        self.default_angel = 0
+        self.set_show_tabs(True)
+        FC().tab_position = "top"
+        for box in self.tab_hboxes:
+            box.show()
+
+        for box in self.tab_vboxes:
+            box.hide()
+
+
+    def set_tab_no(self):
+        LOG.info("Set tabs no")
+        self.set_show_tabs(False)
+        FC().tab_position = "no"
+        for box in self.tab_hboxes:
+            box.hide()
+
+        for box in self.tab_vboxes:
+            box.hide()
+
+    
     def next(self):
-        bean = self.active_tree.next(rnd=self.is_random, lopping=self.lopping)
+        bean = self.active_tree.next(random=self.is_random, lopping=self.lopping)
         print "Next notetab", bean
         if not bean.is_file:
             return self.next()

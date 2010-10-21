@@ -10,6 +10,8 @@ from foobnix.helpers.menu import Popup
 from foobnix.helpers.dialog_entry import one_line_dialog
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.common_tree import CommonTreeControl
+from foobnix.util.fc import FC
+from foobnix.util.key_utils import KEY_DELETE, is_key
 class VirtualTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
@@ -24,7 +26,11 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         self.configure_recive_drug()
         
         self.set_type_tree()
-        
+   
+    def on_key_release(self, w, e):
+        if is_key(e, KEY_DELETE):
+            self.delete_playlist()
+         
     def on_button_press(self, w, e):
         if is_double_left_click(e):
             
@@ -37,8 +43,8 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
                 menu.add_item(_("Add playlist"), gtk.STOCK_ADD, self.create_playlist, None)
                 menu.add_item(_("Rename playlist"), gtk.STOCK_EDIT, self.rename_playlist, None)
                 menu.add_item(_("Delete playlist"), gtk.STOCK_DELETE, self.delete_playlist, None)
-                menu.add_item(_("Save as"), gtk.STOCK_SAVE_AS, None, None)
-                menu.add_item(_("Open as"), gtk.STOCK_OPEN, None, None)
+                #menu.add_item(_("Save as"), gtk.STOCK_SAVE_AS, None, None)
+                #menu.add_item(_("Open as"), gtk.STOCK_OPEN, None, None)
                 menu.show(e)
     
     def create_playlist(self):
@@ -55,17 +61,14 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         text = one_line_dialog("Rename playlist", bean.text)
         if not text:
             return
-        selection = self.get_selection()
-        fm, paths = selection.get_selected_rows()
-        path = paths[0]
-        path = self.filter_model.convert_path_to_child_path(path)        
-        iter = self.model.get_iter(path)
-        self.model.set_value(iter, self.text[0], text)
+        self.rename_selected(text)
+  
         
     
     def on_load(self):
         self.scroll.hide()
-        pass
+        self.populate_all(FC().cache_virtual_tree_beans)
     
-    def on_save(self):
-        pass
+    def on_save(self):        
+        FC().cache_virtual_tree_beans = self.get_all_beans()
+        

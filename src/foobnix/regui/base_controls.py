@@ -18,6 +18,7 @@ from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog
 from foobnix.regui.service.music_service import get_all_music_by_path
 from foobnix.regui.id3 import update_id3_wind_filtering
+import os
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
@@ -25,10 +26,6 @@ class BaseFoobnixControls(LoadSave):
         self.vk = VKService()
 
         self.count_errors = 0
-
-        self.is_radio_populated = False
-        pass
-    
    
     def on_add_folders(self):
         paths = directory_chooser_dialog("Choose folders to open", FC().last_dir)
@@ -106,21 +103,6 @@ class BaseFoobnixControls(LoadSave):
 
             self.tree.append_all(all)
 
-    def update_radio_tree(self):
-        if self.is_radio_populated:
-            return True
-        LOG.info("Update radio tree")
-        self.radio_folder = RadioFolder()
-        files = self.radio_folder.get_radio_FPLs()
-        for fpl in files:
-            print fpl, fpl.name
-            parent = FModel(fpl.name).add_is_file(False)
-            self.radio.append(parent)
-            for radio, urls in fpl.urls_dict.iteritems():
-                child = FModel(radio, urls[0]).parent(parent)
-                self.radio.append(child)
-        self.is_radio_populated = True
-
     def set_visible_search_panel(self, flag):
         self.layout.set_visible_search_panel(flag)
 
@@ -128,6 +110,7 @@ class BaseFoobnixControls(LoadSave):
         self.layout.set_visible_musictree_panel(flag)
 
     def set_visible_info_panel(self, flag):
+        FC().is_view_info_panel = flag
         self.layout.set_visible_info_panel(flag)
 
     def volume_up(self):
@@ -173,7 +156,10 @@ class BaseFoobnixControls(LoadSave):
     def play(self, bean):
         if not bean:
             return None
-
+        
+        if os.path.isdir(bean.path):
+            return None
+        
         if not bean.path:
             if not self.fill_bean_from_vk(bean):
                 if self.count_errors < 4:
@@ -188,6 +174,7 @@ class BaseFoobnixControls(LoadSave):
         self.count_errors = 0
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
+        self.main_window.set_title(bean.text)
 
     def notify_playing(self, pos_sec, dur_sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
@@ -296,11 +283,15 @@ class BaseFoobnixControls(LoadSave):
 
 
     def next(self):        
-        bean = self.notetabs.next()        
+        bean = self.notetabs.next() 
+        if bean.path and os.path.isdir(bean.path):
+            return self.next()        
         self.play(bean)
 
     def prev(self):
         bean = self.notetabs.prev()
+        if bean.path and os.path.isdir(bean.path):
+            return self.prev()
         self.play(bean)
 
     def filter_tree(self, value):
@@ -309,9 +300,9 @@ class BaseFoobnixControls(LoadSave):
 
     def quit(self, *a):
         LOG.info("Controls - Quit")
+        self.main_window.hide()
         self.on_save()
         FC().save()
-
         gtk.main_quit()
 
     def set_playback_random(self, flag):

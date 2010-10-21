@@ -11,6 +11,7 @@ from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 from foobnix.cue.cue_reader import CueReader
 from foobnix.helpers.menu import Popup
 from foobnix.regui.treeview.common_tree import CommonTreeControl
+from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 
 class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
@@ -43,7 +44,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.append_column(description)
         self.append_column(time)
 
-        self.index = -1
+        self.active_UUID = None
         
         self.configure_send_drug()
         self.configure_recive_drug()
@@ -58,47 +59,53 @@ class PlaylistTreeControl(CommonTreeControl):
         self.rebuild_as_plain()
         
     def on_key_release(self, w, e):
-        if gtk.gdk.keyval_name(e.keyval) == 'Return':
+        if is_key(e, KEY_RETURN):
             self.active_current_song()
+        elif is_key(e, KEY_DELETE):
+            self.delete_selected()     
 
-    def next(self, rnd=False, lopping=const.LOPPING_LOOP_ALL):
-        if lopping == const.LOPPING_LOOP_ALL:
-            if not rnd:
-                self.index += 1
-                if self.index == self.count_index:
-                    self.index = 0
-            else:
-                self.index = randint(0, self.count_index)
-        elif lopping == const.LOPPING_DONT_LOOP:
-            return None
+    def next(self, random=False, lopping=const.LOPPING_LOOP_ALL):
         
-        self.set_play_icon_to_selected_bean()
-        return self.get_bean_by_position(self.index)
+        if lopping == const.LOPPING_SINGLE:
+            return self.get_bean_by_UUID(self.active_UUID)
+        
+        if random:               
+            bean = self.get_random_bean()
+            self.set_play_icon_to_bean(bean)
+            return bean
+    
+        bean = self.get_next_bean_by_UUID(self.active_UUID)
+        self.active_UUID = bean.UUID
+        
+        self.set_play_icon_to_bean(bean)
+        return bean
 
     def prev(self, rnd=False, lopping=const.LOPPING_LOOP_ALL):
         if lopping == const.LOPPING_LOOP_ALL:
             if not rnd:
-                self.index -= 1
-                if self.index < 0:
-                    self.index = self.count_index - 1
+                pass
             else:
-                self.index = randint(0, self.count_index)
+                bean = self.get_random_bean()
+                self.set_play_icon_to_bean(bean)
+                return bean
         elif lopping == const.LOPPING_DONT_LOOP:
             return None
-        self.set_play_icon_to_selected_bean()
-        return self.get_bean_by_position(self.index)
+        
+        bean = self.get_prev_bean_by_UUID(self.active_UUID)
+        self.active_UUID = bean.UUID
+        
+        self.set_play_icon_to_bean(bean)
+        return bean
 
     def append(self, bean):
         return super(PlaylistTreeControl, self).append(bean)
 
     def active_current_song(self):
         current = self.get_selected_bean()
-        print current
-        self.index = current.index
+        self.active_UUID = current.UUID
         if current.is_file:
-            self.set_play_icon_to_selected_bean()
-
-
+            self.set_play_icon_to_bean(current)
+        
         """play song"""
         self.controls.play(current)
 

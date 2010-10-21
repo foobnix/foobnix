@@ -19,6 +19,7 @@ import os
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
 from foobnix.util.fc import FC
+from foobnix.util.key_utils import is_key
 
 class PreferencesWindow(FControl, LoadSave):
 
@@ -106,10 +107,13 @@ class PreferencesWindow(FControl, LoadSave):
 
     def craete_window(self):
         window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        
+        
 
         window.connect("delete-event", lambda * a: self.hide())
         window.connect("destroy", lambda * a: self.hide())
-
+        window.connect("key-press-event", self.on_key_press)
+    
         window.set_border_width(10)
 
         window.set_title("Foobnix " + get_version() + " - " + _  ("Preferences"))
@@ -118,7 +122,10 @@ class PreferencesWindow(FControl, LoadSave):
 
         window.set_size_request(800, 500)
         return window
-
+    
+    def on_key_press(self,w,e):
+        if is_key(e,'Escape'):
+            self.hide()
 
     def create_left_menu(self):
         model = gtk.ListStore(str)
