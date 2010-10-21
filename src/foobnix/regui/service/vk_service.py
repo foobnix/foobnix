@@ -197,7 +197,7 @@ class VKService:
         f.close()
        
         beans = []
-        urls = re.findall(ur'showVideoBoxCommon([{}(\\"\a-z:0-9,/);.% _A-Zа-яА-Я+-]*)' , page)
+        urls = re.findall(ur'showVideoBoxCommon([{}(\\"\a-z:0-9,/);.% _A-Zа-яА-Я+-]*)' , page, re.UNICODE)
         for url in urls:
             res = {}
             for line in url.split(","):
@@ -210,12 +210,26 @@ class VKService:
                     key = key.replace('"', '')
                     value = value.replace('"', '')
                     value = value.replace('+', ' ')
-                    #print key, value
+                    print key, value
                     res[key] = value
+                
+            host = res["host"]
+                
+            if "http://" in host:
+                if res["no_flv"] == "0":
+                    link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".flv"
+                else:
+                    link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".360.mp4"
+            else:
+                link = "http://" + host + "/assets/videos/" + res["vtag"] + res["vkid"] + ".vk.flv"
             
-            link = res["host"] + "u" + res["uid"] + "/video/" + res["vtag"] + ".360.mp4"
-            beans.append(FModel(res["md_title"], link)) 
+            text = res["md_title"]
+            text = urllib.unquote(text)
+            text = self.to_good_chars(text)
+            beans.append(FModel(text, link)) 
         return beans
+    
+    "http://v525.vkadre.ru/assets/videos/adda2e950c01-105202975.vk.flv"
     
     def find_tracks_by_query(self, query):
         LOG.info("start search songs", query)
@@ -323,7 +337,12 @@ class VKService:
         return vkSongs[0]
 
 vk = VKService()
-#list = vk.find_video_by_query("music")
-#for i in list:
-#    print i.path
+list = vk.find_video_by_query("Мадона")
+for i, bean in enumerate(list):
+    print i, bean.path, bean.text
+    
+
+#a = "%D0%9C%D0%90%D0%94%D0%9E%D0%9D%D0%9D%D0%90%21%21%21%21%21"
+#print urllib.unquote(a)
+#print a.encode("ASCII")
 
