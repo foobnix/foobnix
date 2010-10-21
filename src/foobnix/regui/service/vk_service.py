@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on Sep 29, 2010
 
@@ -98,16 +99,16 @@ class VKService:
         FC().vk_cookie = self.vk_cookie 
         return self.cookie
     
-    def get_page(self, query):
+    def get_page(self, query, section="audio"):
         if not query:
             return None
         
         #GET /gsearch.php?section=audio&q=madonna&name=1
 
-        host = 'http://vkontakte.ru/gsearch.php?section=audio&q=vasya#c[q]=some%20id&c[section]=audio&name=1'
+        host = 'http://vkontakte.ru/gsearch.php?section=' + section + '&q=vasya#c[q]=some%20id&c[section]=audio&name=1'
         post = urllib.urlencode({
                                  "c[q]" : query,
-                                 "c[section]":"audio"
+                                 "c[section]":section
                                 })
         headers = {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; uk; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.0',
                    'Host' : 'vkontakte.ru',
@@ -189,17 +190,41 @@ class VKService:
                 return i
         return None 
     
+    def find_video_by_query(self, query):        
+        page = self.get_page(query, "video")
+        f = open("video.txt", "w")
+        f.write(page)
+        f.close()
+       
+        beans = []
+        urls = re.findall(ur'showVideoBoxCommon([{}(\\"\a-z:0-9,/);.% _A-Zа-яА-Я+-]*)' , page)
+        for url in urls:
+            res = {}
+            for line in url.split(","):
+                line = line.replace("\\", '')
+                line = line.replace('(', '')
+                line = line.replace('{', '')
+                line = line.replace('}', '')
+                if line and '":' in line:
+                    key, value = line.split('":')
+                    key = key.replace('"', '')
+                    value = value.replace('"', '')
+                    value = value.replace('+', ' ')
+                    #print key, value
+                    res[key] = value
+            
+            link = res["host"] + "u" + res["uid"] + "/video/" + res["vtag"] + ".360.mp4"
+            beans.append(FModel(res["md_title"], link)) 
+        return beans
+    
     def find_tracks_by_query(self, query):
         LOG.info("start search songs", query)
         page = self.get_page(query)
-        #page = page.decode('cp1251')
-        #page = page.decode("cp1251")
-        #unicode(page, "cp1251")
-        
+                        
                 
         reg_all = "([^<>]*)"
         resultall = re.findall("return operate\(([\w() ,']*)\);", page, re.IGNORECASE)
-        result_album = re.findall(u"<b id=\\\\\"performer([0-9]*)\\\\\">" + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
+        result_album = re.findall(u" < b id = \\\\\"performer([0-9]*)\\\\\">" + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
         result_track = re.findall(u"<span id=\\\\\"title([0-9]*)\\\\\">" + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
         result_time = re.findall("<div class=\\\\\"duration\\\\\">" + reg_all + "<", page, re.IGNORECASE)
         
@@ -298,6 +323,7 @@ class VKService:
         return vkSongs[0]
 
 vk = VKService()
-list = vk.find_tracks_by_url("http://vkontakte.ru/audio.php?gid=20356036")
-print list
+#list = vk.find_video_by_query("music")
+#for i in list:
+#    print i.path
 

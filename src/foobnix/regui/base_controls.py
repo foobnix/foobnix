@@ -226,6 +226,19 @@ class BaseFoobnixControls(LoadSave):
             self.notetabs.append_tab(vk_ulr, all)
         self.singre_thread.thread_task(inline, vk_ulr)
     
+    def search_all_videos(self, query):
+        def inline(query):
+            results = self.vk.find_video_by_query(query)
+            all = []
+            p_bean = FModel(query).add_font("bold")
+            all.append(p_bean)
+            for i, bean in enumerate(results):
+                bean.tracknumber = i + 1
+                bean.parent(p_bean)
+                all.append(bean)
+            self.notetabs.append_tab(query, all)
+        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+    
     def search_all_tracks(self, query):
         def inline(query):
             results = self.vk.find_tracks_by_query(query)

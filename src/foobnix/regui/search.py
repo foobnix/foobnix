@@ -116,8 +116,12 @@ class SearchControls(FControl, gtk.Frame):
         all = gtk.ToggleButton("All")
         all.connect("toggled", self.set_search_function , self.controls.search_all_tracks)
         
+        video = gtk.ToggleButton("Video")
+        video.connect("toggled", self.set_search_function , self.controls.search_all_videos)
+        
         hbox.pack_start(tags, True, True, 0)
         hbox.pack_start(all, True, True, 0)
+        hbox.pack_start(video, True, True, 0)
         
         
         other_frame.add(hbox)
