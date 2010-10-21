@@ -28,6 +28,9 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.last_notebook_beans = []
         self.active_tree = None
         
+        self.set_show_border(True)
+        self.set_scrollable(True)
+        
         #self.connect("button-press-event", self.on_button_press)
        
         self.empty_tab()
@@ -37,7 +40,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         if current >0:
             self.active_tree = self.get_children()[current].get_children()[0]
     """
-    def on_button_press(self,w,e):
+    def on_button_press(self, w, e):
         if is_double_left_click(e):
             self.empty_tab()
             
@@ -46,7 +49,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         l = notetab_label(func=self.empty_tab, arg=None, angel=0, symbol="Click me")
         self.prepend_page(l, append_label)
         
-    def empty_tab(self,*a):
+    def empty_tab(self, *a):
         self.append_tab("Foobnix tab", [])
     
     def get_active_tree(self):
@@ -108,8 +111,8 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
             self.remove_page(self.get_n_pages() - 1)
         
         """autostart play"""
-        if beans:
-            self.controls.next()
+        #if beans:
+        #    self.controls.next()
     
     def update_label_angel(self, angle):
         for label in self.tab_labes:

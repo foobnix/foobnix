@@ -212,6 +212,20 @@ class BaseFoobnixControls(LoadSave):
     def player_volue(self, percent):
         self.media_engine.volume(percent)
 
+
+    def search_vk_page_tracks(self, vk_ulr):
+        def inline(vk_ulr):
+            results = self.vk.find_tracks_by_url(vk_ulr)
+            all = []
+            p_bean = FModel(vk_ulr).add_font("bold")
+            all.append(p_bean)
+            for i, bean in enumerate(results):
+                bean.tracknumber = i + 1
+                bean.parent(p_bean)
+                all.append(bean)
+            self.notetabs.append_tab(vk_ulr, all)
+        self.singre_thread.thread_task(inline, vk_ulr)
+    
     def search_all_tracks(self, query):
         def inline(query):
             results = self.vk.find_tracks_by_query(query)

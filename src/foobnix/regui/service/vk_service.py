@@ -265,11 +265,11 @@ class VKService:
                     j += 1                
             artist = self.to_good_chars(artist)
             #song = VKSong(path, artist, title, result_time[i]);
-            text = artist +" - " + title            
-            song = FModel(text, path).add_artist(artist).add_title(title).add_time(result_time)
+            text = artist + " - " + title            
+            song = FModel(text, path).add_artist(artist).add_title(title).add_time(result_time[i])
             songs.append(song)        
         LOG.info(len(songs))
-        return self.convert_vk_songs_to_beans(songs)    
+        return songs    
     
     def find_one_track(self, query):
         vkSongs = self.find_tracks_by_query(query)
@@ -297,8 +297,7 @@ class VKService:
 
         return vkSongs[0]
 
-#vk = VKService()
-#list = vk.find_one_track("Madonna - Sorry")
-#list = vk.find_tracks_by_query("Madonna - Sorry")
-#print "RES", list
+vk = VKService()
+list = vk.find_tracks_by_url("http://vkontakte.ru/audio.php?gid=20356036")
+print list
 
