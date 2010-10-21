@@ -109,9 +109,6 @@ class PlaylistTreeControl(CommonTreeControl):
         """play song"""
         self.controls.play(current)
 
-        """update song info"""
-        self.controls.update_info_panel(current)
-
         """set active tree"""
         self.controls.notetabs.switch_tree(self)
 

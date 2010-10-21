@@ -13,7 +13,6 @@ from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.util.singe_thread import SingreThread
 from foobnix.regui.service.vk_service import VKService
 from foobnix.util.plsparser import get_radio_source
-from foobnix.radio.radios import RadioFolder
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog
 from foobnix.regui.service.music_service import get_all_music_by_path
@@ -180,6 +179,7 @@ class BaseFoobnixControls(LoadSave):
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
         self.main_window.set_title(bean.text)
+        self.update_info_panel(bean)
 
     def notify_playing(self, pos_sec, dur_sec, bean):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
