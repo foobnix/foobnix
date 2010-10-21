@@ -82,8 +82,13 @@ def get_support_music_beans_from_all(beans):
     for bean in beans:
         if bean.path and os.path.isdir(bean.path):
             result.append(bean)
-        if bean.path and os.path.isfile(bean.path) and file_extenstion(bean.path) in FC().support_formats:
+        elif bean.path and os.path.isfile(bean.path) and file_extenstion(bean.path) in FC().support_formats:
             result.append(bean)
+        elif bean.path and bean.path.startswith("http://"):
+            result.append(bean)
+        else:
+            result.append(bean)
+    
     return result
 
 def update_id3_for_cue(beans):
