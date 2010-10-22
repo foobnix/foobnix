@@ -220,6 +220,7 @@ class VKService:
                     link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".flv"
                 else:
                     link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".360.mp4"
+                    #link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".flv"
             else:
                 link = "http://" + host + "/assets/videos/" + res["vtag"] + res["vkid"] + ".vk.flv"
             
@@ -336,10 +337,10 @@ class VKService:
 
         return vkSongs[0]
 
-vk = VKService()
-list = vk.find_video_by_query("Мадона")
-for i, bean in enumerate(list):
-    print i, bean.path, bean.text
+#vk = VKService()
+#list = vk.find_video_by_query("Мадона")
+#for i, bean in enumerate(list):
+#    print i, bean.path, bean.text
     
 
 #a = "%D0%9C%D0%90%D0%94%D0%9E%D0%9D%D0%9D%D0%90%21%21%21%21%21"

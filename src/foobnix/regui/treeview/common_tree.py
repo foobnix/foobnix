@@ -122,7 +122,7 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         selection = self.get_selection()
         fm, paths = selection.get_selected_rows()
         
-        to_delete=[]
+        to_delete = []
         for path in paths:
             path = self.filter_model.convert_path_to_child_path(path)
             iter = self.model.get_iter(path)
@@ -188,15 +188,15 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
     def get_next_bean_by_UUID(self, UUID):
         for i, row in enumerate(self.model):
             if row[self.UUID[0]] == UUID:
-                if i+1 < len(self.model):
-                    next_row = self.model[i+1]
+                if i + 1 < len(self.model):
+                    next_row = self.model[i + 1]
                     return self.get_bean_from_row(next_row)                
         return self.get_bean_from_row(self.model[0])
     
     def get_prev_bean_by_UUID(self, UUID):
         for i, row in enumerate(self.model):
             if row[self.UUID[0]] == UUID:
-                return self.get_bean_from_row(self.model[i-1])
+                return self.get_bean_from_row(self.model[i - 1])
         return self.get_bean_from_row(self.model[0])
     
     def get_random_bean(self):        
@@ -214,30 +214,22 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         
         if next:
             parent = self.get_bean_from_iter(next) 
-            results += [parent] +self.get_child_iters_by_parent(next)
+            results += [parent] + self.get_child_iters_by_parent(next)
+        else:
+            return None
         
-        flag=True
-
+        flag = True
+                
         while flag:
-            next =self.model.iter_next(next)
+            next = self.model.iter_next(next)
             if not next:
                 flag = False
             else:
                 parent = self.get_bean_from_iter(next) 
-                results += [parent] +self.get_child_iters_by_parent(next)
+                results += [parent] + self.get_child_iters_by_parent(next)
                 
         return results
                 
-        
-            
-        
-        
-        
-        
-        
-            
-       
-    
     def get_child_iters_by_parent(self, iter):
         list = []
         if self.model.iter_has_child(iter):

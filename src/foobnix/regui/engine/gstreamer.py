@@ -30,15 +30,19 @@ class GStreamerEngine(MediaPlayerEngine):
         playbin = gst.element_factory_make("playbin2", "player")
         bus = playbin.get_bus()
         bus.add_signal_watch()
+        bus.enable_sync_message_emission()
         bus.connect("message", self.on_message)
+        bus.connect("sync-message::element", self.on_sync_message)
         LOG.debug("LOCAL gstreamer")
         return playbin
 
     def init_http(self):
         playbin = gst.element_factory_make("playbin", "player")
         bus = playbin.get_bus()
-        bus.add_signal_watch()
+        bus.add_signal_watch()        
+        bus.enable_sync_message_emission()
         bus.connect("message", self.on_message)
+        bus.connect("sync-message::element", self.on_sync_message)
         LOG.debug("HTTP gstreamer")
         return playbin
 
@@ -193,6 +197,16 @@ class GStreamerEngine(MediaPlayerEngine):
             self.state_pause()
         else:
             self.state_play()
+
+    def on_sync_message(self, bus, message):
+        if message.structure is None:
+            return
+        message_name = message.structure.get_name()
+        if message_name == "prepare-xwindow-id":
+            imagesink = message.src
+            imagesink.set_property("force-aspect-ratio", True)
+            self.controls.movie_window.set_size_request(-1, 400)
+            imagesink.set_xwindow_id(self.controls.movie_window.window.xid)
 
     def on_message(self, bus, message):
         #print bus, message

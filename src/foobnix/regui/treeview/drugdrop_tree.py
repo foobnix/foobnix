@@ -210,18 +210,24 @@ class DrugDropTree(gtk.TreeView):
         self.plain_append_all(copy_beans)
         
     def tree_append_all(self, beans):
+        if not beans:
+            return
         self.current_view = VIEW_TREE
         print "append all as tree"
         for bean in beans:
             self.tree_append(bean)
     
     def plain_append_all(self, beans):
+        if not beans:
+            return
         self.current_view = VIEW_PLAIN
         print "append all as plain"
         for bean in beans:
             self.plain_append(bean)
             
     def plain_append(self, bean):
+        if not bean:
+            return
         if bean.is_file == True:
             bean.font = "normal"
         else:
@@ -237,6 +243,8 @@ class DrugDropTree(gtk.TreeView):
         
         
     def tree_append(self, bean):
+        if not bean:
+            return
         if bean.is_file == True:
             bean.font = "normal"
         else:

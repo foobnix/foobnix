@@ -26,7 +26,12 @@ class BaseFoobnixLayout(LoadSave, FControl):
         
         self.hpaned_right = gtk.HPaned()
         
-        self.hpaned_right.pack1(child=controls.notetabs, resize=True, shrink=True)
+        bbox = gtk.VBox(False, 0)
+        
+        bbox.pack_start(controls.notetabs, True, True)        
+        bbox.pack_start(controls.movie_window, False, False)
+        
+        self.hpaned_right.pack1(child=bbox, resize=True, shrink=True)
         self.hpaned_right.pack2(child=controls.info_panel, resize=True, shrink=True)
                
         

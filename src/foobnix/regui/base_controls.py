@@ -114,6 +114,13 @@ class BaseFoobnixControls(LoadSave):
     def set_visible_info_panel(self, flag):
         FC().is_view_info_panel = flag
         self.layout.set_visible_info_panel(flag)
+        
+    def set_visible_video_panel(self, flag):
+        FC().is_view_video_panel = flag
+        if flag:
+            self.movie_window.show()
+        else:
+            self.movie_window.hide()
 
     def volume_up(self):
         pass

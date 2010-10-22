@@ -23,6 +23,15 @@ from foobnix.regui.about.about import AboutWindow
 from foobnix.regui.treeview.radio_tree import RadioTreeControl
 from foobnix.regui.treeview.virtual_tree import VirtualTreeControl
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
+import gtk
+from foobnix.regui.model.signal import FControl
+
+
+class MovieDrawingArea(FControl, gtk.DrawingArea):
+    def __init__(self, controls):
+        FControl.__init__(self, controls)
+        gtk.DrawingArea.__init__(self)
+        
 
 class FoobnixCore(BaseFoobnixControls):
 
@@ -44,10 +53,14 @@ class FoobnixCore(BaseFoobnixControls):
         self.trayicon = TrayIconControls(self)
         self.trayicon.show()
 
+
+        self.movie_window = MovieDrawingArea(self)
+
         self.searchPanel = SearchControls(self)
         self.playback = PlaybackControls(self)
         self.main_window = MainWindow(self)
         self.notetabs = NoteTabControl(self)
+        
 
         self.filter = FilterControl(self)
 
