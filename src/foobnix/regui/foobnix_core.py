@@ -68,7 +68,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
 
-        self.eq = EQContols(self)
+        self.eq = EQContols(self, None)
         self.dm = DownloadManager(self)
         self.about = AboutWindow()
 

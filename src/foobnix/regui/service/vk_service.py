@@ -192,10 +192,7 @@ class VKService:
     
     def find_video_by_query(self, query):        
         page = self.get_page(query, "video")
-        f = open("video.txt", "w")
-        f.write(page)
-        f.close()
-       
+        
         beans = []
         urls = re.findall(ur'showVideoBoxCommon([{}(\\"\a-z:0-9,/);.% _A-Zа-яА-Я+-]*)' , page, re.UNICODE)
         for url in urls:
