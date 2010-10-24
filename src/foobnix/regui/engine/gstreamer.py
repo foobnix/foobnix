@@ -26,30 +26,23 @@ class GStreamerEngine(MediaPlayerEngine):
         self.prev_path = None
         self.bean = None
 
-    
-    def init_general(self):
-        player = gst.Pipeline("player")
-        source = gst.element_factory_make("souphttpsrc", "source")
-        decoder = gst.element_factory_make("mad", "mp3-decoder")
-        conv = gst.element_factory_make("audioconvert", "converter")
-        sink = gst.element_factory_make("alsasink", "alsa-output")
-        self.equalizer = gst.element_factory_make("equalizer-10bands")
-        volume = gst.element_factory_make("volume", "volume")
-        
-        player.add(source, decoder, conv, volume, self.equalizer, sink)
-        gst.element_link_many(source, decoder, conv, volume, self.equalizer, sink)
-
-        bus = player.get_bus()
-        bus.add_signal_watch()
-        bus.enable_sync_message_emission()
-        bus.connect("message", self.on_message)
-        bus.connect("sync-message::element", self.on_sync_message)
-        LOG.debug("LOCAL gstreamer")
-        return player
-
     def init_local(self):
-        return self.init_general()
         playbin = gst.element_factory_make("playbin2", "player")
+        
+        audiobin = gst.Bin('audiobin')
+        audiosink = gst.element_factory_make('autoaudiosink', 'audiosink')
+
+        audiobin.add(audiosink)
+        audiobin.add_pad(gst.GhostPad('sink', audiosink.get_pad('sink')))
+        playbin.set_property('audio-sink', audiobin)
+        
+        self.equalizer = gst.element_factory_make('equalizer-10bands', 'equalizer')
+        audiobin.add(self.equalizer)
+
+        
+        audiobin.get_pad('sink').set_target(self.equalizer.get_pad('sink'))
+        self.equalizer.link(audiosink)
+        
         bus = playbin.get_bus()
         bus.add_signal_watch()
         bus.enable_sync_message_emission()
@@ -58,28 +51,9 @@ class GStreamerEngine(MediaPlayerEngine):
         LOG.debug("LOCAL gstreamer")
         return playbin
 
-    def init_re_http(self):
-        player = gst.Pipeline("player")
-        #conv = gst.element_factory_make("audioconvert", "converter")
-        playbin = gst.element_factory_make("playbin", "player")
-        sink = gst.element_factory_make("alsasink", "alsa-output")
-        self.equalizer = gst.element_factory_make("equalizer-10bands")
-        volume = gst.element_factory_make("volume", "volume")
-        
-        player.add(playbin, self.equalizer, sink)
-        gst.element_link_many(playbin, self.equalizer, sink)
-        
-        bus = player.get_bus()
-        bus.add_signal_watch()        
-        bus.enable_sync_message_emission()
-        bus.connect("message", self.on_message)
-        bus.connect("sync-message::element", self.on_sync_message)
-        LOG.debug("HTTP gstreamer")
-        return player
-
     def init_http(self):
         #return self.init_re_http()
-        return self.init_general()
+        return self.init_local()
         playbin = gst.element_factory_make("playbin", "player")
         bus = playbin.get_bus()
         bus.add_signal_watch()        
@@ -123,17 +97,17 @@ class GStreamerEngine(MediaPlayerEngine):
 
         if self.prev_path != path:
             if path.startswith("http://"):
-                self.player = self.init_http()
+                #self.player = self.init_http()
                 uri = path
             else:
-                self.player = self.init_local()
+                #self.player = self.init_local()
                 uri = 'file://' + urllib.pathname2url(path)
                 if os.name == 'nt':
                     uri = 'file:' + urllib.pathname2url(path)
 
             LOG.info("Gstreamer try to play", uri)
-            #self.player.set_property("uri", uri)
-            self.player.get_by_name("source").set_property("location", uri)
+            self.player.set_property("uri", uri)
+            #self.player.get_by_name("source").set_property("location", uri)
             
             self.prev_path = path
 
@@ -217,8 +191,8 @@ class GStreamerEngine(MediaPlayerEngine):
 
     def volume(self, percent):
         value = percent / 100.0
-        #self.player.set_property('volume', value)
-        self.player.get_by_name("volume").set_property('volume', value + 0.0)
+        self.player.set_property('volume', value)
+        #self.player.get_by_name("volume").set_property('volume', value + 0.0)
 
     def state_play(self):
         if self.status.isPause:
