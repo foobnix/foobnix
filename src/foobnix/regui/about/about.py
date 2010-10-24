@@ -24,7 +24,7 @@ class BaseParentWindow(gtk.Window):
         gtk.window_set_default_icon_from_file (self.get_fobnix_logo())
         self.connect("delete-event", lambda * a: self.on_destroy())
         self.connect("destroy", lambda * a: self.on_destroy())
-
+        
     def get_fobnix_logo(self):
         return get_foobnix_resourse_path_by_name("foobnix.png")
 
@@ -88,13 +88,15 @@ Playing all imaginations\n
         creaditsWindow.set_text(text)
 
         changeLog = WindowWithBuffer("Change LOG")
+        
         try:
             changelog_text = open(get_foobnix_resourse_path_by_name("CHANGELOG"), 'r').read()
             changeLog.set_text(changelog_text)
-        except TypeError, error_messege:
-            print error_messege
+        except TypeError, error_message:
+            print error_message
+          
         button_credits.connect("clicked", lambda * a: creaditsWindow.show_all())
-        button_changelog.connect("clicked", lambda * x:changeLog.show_all())
+        button_changelog.connect("clicked", lambda * x: changeLog.show_all())
 
         button_close.grab_focus ()
         self.add(table)

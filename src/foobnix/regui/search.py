@@ -132,7 +132,7 @@ class SearchControls(FControl, gtk.Frame):
         
         h_line_box.show_all()
         
-        self.buttons = [songs, albums, similars, tags, all]
+        self.buttons = [songs, albums, similars, tags, all, video]
         return h_line_box
                   
      
