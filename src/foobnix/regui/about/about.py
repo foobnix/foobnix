@@ -24,12 +24,19 @@ class BaseParentWindow(gtk.Window):
         gtk.window_set_default_icon_from_file (self.get_fobnix_logo())
         self.connect("delete-event", lambda * a: self.on_destroy())
         self.connect("destroy", lambda * a: self.on_destroy())
+        self.connect("key_press_event", self.key_press_event)
         
     def get_fobnix_logo(self):
         return get_foobnix_resourse_path_by_name("foobnix.png")
 
     def on_destroy(self, *a):
         self.hide()
+        return True
+    
+    '''Closing of window on Escape'''
+    def key_press_event(self, widget, event):
+        if event.keyval == gtk.keysyms.Escape:
+            self.hide()
         return True
 
 class AboutWindow(BaseParentWindow):
