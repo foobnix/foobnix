@@ -102,8 +102,6 @@ class VKService:
     def get_page(self, query, section="audio"):
         if not query:
             return None
-        
-        #GET /gsearch.php?section=audio&q=madonna&name=1
 
         host = 'http://vkontakte.ru/gsearch.php?section=' + section + '&q=vasya#c[q]=some%20id&c[section]=audio&name=1'
         post = urllib.urlencode({
@@ -236,10 +234,9 @@ class VKService:
                 
         reg_all = "([^<>]*)"
         resultall = re.findall("return operate\(([\w() ,']*)\);", page, re.IGNORECASE)
-        result_album = re.findall(u" < b id = \\\\\"performer([0-9]*)\\\\\">" + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
-        result_track = re.findall(u"<span id=\\\\\"title([0-9]*)\\\\\">" + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
+        result_album = re.findall(ur'<b id=\\"performer([_0-9]*)\\">' + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
+        result_track = re.findall(u"<span id=\\\\\"title([_0-9]*)\\\\\">" + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
         result_time = re.findall("<div class=\\\\\"duration\\\\\">" + reg_all + "<", page, re.IGNORECASE)
-        
         
         urls = []
         ids = []
@@ -266,7 +263,6 @@ class VKService:
             album = self.get_name_by(id, result_album)
             track = self.get_name_by(id, result_track)
             time = result_time[i] 
-            
             text = album + " - " + track
             vkSong = FModel(text, path).add_artist(album).add_title(track).add_time(time)
             vkSongs.append(vkSong)            
