@@ -67,7 +67,10 @@ class SearchControls(FControl, gtk.Frame):
         
         hbox.show_all()
         
-        return hbox    
+        return hbox 
+    
+    def set_search_text(self, text):
+        self.entry.set_text(text)
     
     def on_search_key_press(self, w, e):        
         if gtk.gdk.keyval_name(e.keyval) == 'Return':

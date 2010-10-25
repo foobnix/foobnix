@@ -118,4 +118,7 @@ class PlaylistTreeControl(CommonTreeControl):
         if is_rigth_click(e):
             menu = Popup()
             menu.add_item('Add to DM', gtk.STOCK_ADD, self.controls.dm.add_beans, self.get_all_selected_beans())
+            menu.add_separator()
+            text = self.get_selected_bean().text
+            menu.add_item('Copy to Search Line', gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
             menu.show(e)

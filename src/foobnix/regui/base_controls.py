@@ -19,6 +19,7 @@ from foobnix.regui.service.music_service import get_all_music_by_path
 from foobnix.regui.id3 import update_id3_wind_filtering
 import os
 import time
+from foobnix.regui.service.google_service import google_search_resutls
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
@@ -28,6 +29,16 @@ class BaseFoobnixControls(LoadSave):
         self.count_errors = 0
         self.is_scrobled = False
         self.start_time = None
+    
+    def show_google_results(self, query):
+        beans = []
+        beans.append(FModel('"%s" not found try Google results' % query))
+        g_results = google_search_resutls(query)
+        for line in g_results:
+            beans.append(FModel(line).add_is_file(True))
+        return beans
+            
+        
    
     def on_add_folders(self):
         paths = directory_chooser_dialog("Choose folders to open", FC().last_dir)
@@ -218,7 +229,7 @@ class BaseFoobnixControls(LoadSave):
 
     def player_volue(self, percent):
         self.media_engine.volume(percent)
-
+        
 
     def search_vk_page_tracks(self, vk_ulr):
         def inline(vk_ulr):
@@ -229,7 +240,8 @@ class BaseFoobnixControls(LoadSave):
             for i, bean in enumerate(results):
                 bean.tracknumber = i + 1
                 bean.parent(p_bean)
-                all.append(bean)
+                all.append(bean)            
+                
             self.notetabs.append_tab(vk_ulr, all)
         self.singre_thread.thread_task(inline, vk_ulr)
     
@@ -243,6 +255,10 @@ class BaseFoobnixControls(LoadSave):
                 bean.tracknumber = i + 1
                 bean.parent(p_bean)
                 all.append(bean)
+            
+            if not results:
+                all = self.show_google_results(query)
+                
             self.notetabs.append_tab(query, all)
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
     
@@ -256,6 +272,10 @@ class BaseFoobnixControls(LoadSave):
                 bean.tracknumber = i + 1
                 bean.parent(p_bean)
                 all.append(bean)
+                
+            if not results:
+                all = self.show_google_results(query)
+            
             self.notetabs.append_tab(query, all)
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
 
@@ -269,6 +289,10 @@ class BaseFoobnixControls(LoadSave):
                 bean.tracknumber = i + 1
                 bean.parent(parent_bean)                
                 all.append(bean)
+            
+            if not results:
+                all = self.show_google_results(query)
+                
             self.notetabs.append_tab(query, all)
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
 
@@ -287,6 +311,10 @@ class BaseFoobnixControls(LoadSave):
                     track.tracknumber = i + 1
                     track.parent(album)                    
                     all.append(track)
+                
+                if not results:
+                    all = self.show_google_results(query)
+                    
                 self.notetabs.append(all)                       
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
 
@@ -303,6 +331,10 @@ class BaseFoobnixControls(LoadSave):
                     track.tracknumber = i + 1
                     track.parent(artist)
                     all.append(track)
+                
+                if not results:
+                    all = self.show_google_results(query)
+                     
                 self.notetabs.append(all)
         #inline(query)
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
@@ -320,6 +352,8 @@ class BaseFoobnixControls(LoadSave):
                     track.tracknumber = i + 1
                     track.parent(tag)
                     all.append(track)
+                if not results:
+                    all = self.show_google_results(query)
                 self.notetabs.append(all)
         #inline(query)
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
