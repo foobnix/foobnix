@@ -7,14 +7,7 @@ Created on 24 окт. 2010
 from foobnix.eq.eq_gui import EqWindow
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
-
-
-class EqModel():
-    def __init__(self, id, name, preamp, values):
-        self.id = id
-        self.name = name
-        self.preamp = preamp
-        self.values = values
+from foobnix.regui.model.eq_model import EqModel
 
 class EqController(FControl, LoadSave):
     def __init__(self, controls):

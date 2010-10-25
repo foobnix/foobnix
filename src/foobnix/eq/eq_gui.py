@@ -7,6 +7,7 @@ Created on Sep 8, 2010
 import gtk
 from foobnix.regui.model.signal import FControl
 from foobnix.util.const import EQUALIZER_LABLES
+from foobnix.regui.model.eq_model import EqModel
 
 def label(): 
     label = gtk.Label("–")
@@ -53,11 +54,25 @@ class EqWindow(gtk.Window, FControl):
         
         self.models = []
     
-
+    def on_save(self, *args):
+        text = self.combo.get_active_text()
+        find = False
+        for model in self.models:
+            if model.name == text:               
+                model.set_values(self.get_active_values()[1:])
+                find = True
+                break
+        
+        if not find:
+            print self.get_active_values()[1:]
+            self.models.append(EqModel(text, text, 0, self.get_active_values()[1:]))
+            self.combo.append_text(text)
+            
+        
     def get_active_values(self):
         result = []
         for line in self.eq_lines:
-            result.append(line.get_value())
+            result.append(float(line.get_value()))
         
         return result
 
@@ -77,10 +92,11 @@ class EqWindow(gtk.Window, FControl):
         
     def on_combo_chage(self, *a):        
         num = self.combo.get_active()
-        model = self.models[num]
-        self.set_all_eq_span_values([model.preamp] + model.values)
-        print self.get_active_values()
-        self.collback()
+        if num >=0:        
+            model = self.models[num]
+            self.set_all_eq_span_values([model.preamp] + model.values)
+            print num, model.name, self.get_active_values()
+            self.collback()
         
     def populate(self, models):
         for model in models:
@@ -114,7 +130,8 @@ class EqWindow(gtk.Window, FControl):
         #self.combo.set_size_request(240, -1)
         self.combo.show()
         
-        save = gtk.Button("Save")        
+        save = gtk.Button("Save") 
+        save.connect("clicked", self.on_save)       
         save.show()
         
         box.pack_start(on, False, False, 0)
