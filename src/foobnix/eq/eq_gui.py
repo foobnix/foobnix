@@ -39,7 +39,8 @@ class EqWindow(gtk.Window, FControl):
         
         self.eq_lines = []
         for label in EQUALIZER_LABLES:
-            self.eq_lines.append(EqLine(label, collback))
+            self.eq_lines.append(EqLine(label, self.on_collback))
+            
        
         lbox = gtk.VBox(False, 0)
         lbox.show()
@@ -54,6 +55,14 @@ class EqWindow(gtk.Window, FControl):
         self.add(lbox)
         
         self.models = []
+    
+    def on_collback(self):
+        pre = self.eq_lines[0].get_value()
+        if float(pre)>=0:
+            pre = "+"+pre
+            
+        self.db_text.set_text(pre+"db")
+        self.collback()
     
     def on_enable_eq(self, w):
         FC().is_eq_enable = w.get_active()
@@ -159,7 +168,10 @@ class EqWindow(gtk.Window, FControl):
         lables = gtk.VBox(False, 0)
         lables.show()
         lables.pack_start(text("+12db"), False, False, 0)
-        lables.pack_start(text("+0db"), True, False, 0)
+        
+        self.db_text = text("0db")
+        
+        lables.pack_start(self.db_text, True, False, 0)
         lables.pack_start(text("-12db"), False, False, 0)
         lables.pack_start(empty(), False, False, 0)
         return lables
@@ -256,7 +268,6 @@ class EqLine(gtk.VBox):
             self.pack_start(text, False, False, 0)
         
         def on_change_value(self, *args):
-            print "chaged", self.text
             self.callback()
             
         

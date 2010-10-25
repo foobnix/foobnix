@@ -24,8 +24,9 @@ class EqController(FControl, LoadSave):
         self.eq_view.hide()
     
     def on_eq_chaged(self):
-        self.controls.media_engine.set_all_bands(self.eq_view.get_active_values()[1:])
-        print self.eq_view.get_active_values()[1:]
+        pre = self.eq_view.get_active_values()[0]
+        self.controls.media_engine.set_all_bands(pre, self.eq_view.get_active_values()[1:])
+        
     
     def on_load(self):
         self.eq_view.append_all_models(self.default_models())

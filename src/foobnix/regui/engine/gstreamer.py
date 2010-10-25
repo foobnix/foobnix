@@ -123,11 +123,16 @@ class GStreamerEngine(MediaPlayerEngine):
         self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
 
     
-    def set_all_bands(self, values):
+    def set_all_bands(self, pre, values):
         print "Engine", values
         if self.equalizer:
             for i, value in enumerate(values):      
-                self.equalizer.set_property("band%s" % i, float(value))
+                real =float(value) + pre
+                if real>=12:
+                    real = 12
+                if real <=-12:
+                    real = -12
+                self.equalizer.set_property("band%s" % i, real)
 
     def playing_thread(self):
         thread_id = self.play_thread_id

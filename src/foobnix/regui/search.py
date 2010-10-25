@@ -110,7 +110,7 @@ class SearchControls(FControl, gtk.Frame):
         other_frame.set_shadow_type(gtk.SHADOW_NONE)
         hbox = gtk.HBox(False, 0)
         
-        tags = gtk.ToggleButton("Tag")        
+        tags = gtk.ToggleButton("Genre")        
         tags.connect("toggled", self.set_search_function, self.controls.search_top_tags)
         
         all = gtk.ToggleButton("All")
