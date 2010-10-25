@@ -19,7 +19,7 @@ class GStreamerEngine(MediaPlayerEngine):
     def __init__(self, controls):
         MediaPlayerEngine.__init__(self, controls)
 
-        self.player = self.init_local()
+        self.player = self.gstreamer_player()
         self.position_sec = 0
         self.duration_sec = 0
 
@@ -27,7 +27,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.bean = None
         self.equalizer = None
 
-    def init_local(self):
+    def gstreamer_player(self):
         playbin = gst.element_factory_make("playbin2", "player")
         
         
@@ -54,18 +54,6 @@ class GStreamerEngine(MediaPlayerEngine):
         LOG.debug("LOCAL gstreamer")
         return playbin
     
-    def init_http(self):
-        #return self.init_re_http()
-        return self.init_local()
-        playbin = gst.element_factory_make("playbin", "player")
-        bus = playbin.get_bus()
-        bus.add_signal_watch()        
-        bus.enable_sync_message_emission()
-        bus.connect("message", self.on_message)
-        bus.connect("sync-message::element", self.on_sync_message)
-        LOG.debug("HTTP gstreamer")
-        return playbin
-
     def notify_init(self, duraction_int):
         LOG.debug("Pre init thread", duraction_int)
 
@@ -98,7 +86,13 @@ class GStreamerEngine(MediaPlayerEngine):
         
         self.state_stop()
         
-        self.player = self.init_local()
+        self.player = self.gstreamer_player()
+        
+        """equlizer settings"""
+        if FC().is_eq_enable:
+            pre = self.controls.eq.get_preamp()
+            bands = self.controls.eq.get_bands()
+            self.set_all_bands(pre, bands)
         
         if self.prev_path != path:
             if path.startswith("http://"):
@@ -113,7 +107,7 @@ class GStreamerEngine(MediaPlayerEngine):
             #self.player.get_by_name("source").set_property("location", uri)
             
             self.prev_path = path
-
+        
         self.state_pause()
         self.seek(0)
         time.sleep(0.2)

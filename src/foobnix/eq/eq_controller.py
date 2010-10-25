@@ -23,6 +23,12 @@ class EqController(FControl, LoadSave):
         
     def hide(self):
         self.eq_view.hide()
+        
+    def get_preamp(self):
+        return self.eq_view.get_active_values()[0]
+    
+    def get_bands(self):
+        return self.eq_view.get_active_values()[1:]
     
     def on_eq_chaged(self):
         pre = self.eq_view.get_active_values()[0]
@@ -37,6 +43,7 @@ class EqController(FControl, LoadSave):
         self.eq_view.default_models = self.default_models()
         self.eq_view.set_active(FC().eq_presets_default)
         self.eq_view.on_load()
+        
     
     def on_save(self):
         self.eq_view.on_save()
