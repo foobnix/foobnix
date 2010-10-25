@@ -32,6 +32,8 @@ class FC:
         """player controls"""
         self.volume = 10
         self.is_eq_enable = False
+        self.eq_presets = None
+        self.eq_presets_default = "CUSTOM"
 
         """tabs"""
         self.len_of_tab = 30

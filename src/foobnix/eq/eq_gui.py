@@ -9,6 +9,8 @@ from foobnix.regui.model.signal import FControl
 from foobnix.util.const import EQUALIZER_LABLES
 from foobnix.regui.model.eq_model import EqModel
 from foobnix.util.fc import FC
+from foobnix.util.mouse_utils import is_rigth_click
+from foobnix.helpers.menu import Popup
 
 def label(): 
     label = gtk.Label("–")
@@ -37,9 +39,12 @@ class EqWindow(gtk.Window, FControl):
         self.set_resizable(False)
         self.connect("delete-event", self.hide_window)
         
+        
         self.eq_lines = []
         for label in EQUALIZER_LABLES:
             self.eq_lines.append(EqLine(label, self.on_collback))
+            
+            
             
        
         lbox = gtk.VBox(False, 0)
@@ -55,6 +60,14 @@ class EqWindow(gtk.Window, FControl):
         self.add(lbox)
         
         self.models = []
+        
+    def on_button_press(self,w,e):
+        print "click"
+        if is_rigth_click(e):
+            print "r click"
+            menu = Popup()
+            menu.add_item('Restore Defaults', gtk.STOCK_REFRESH,None)
+            menu.show(e)
     
     def on_collback(self):
         pre = self.eq_lines[0].get_value()
@@ -70,17 +83,21 @@ class EqWindow(gtk.Window, FControl):
     def on_save(self, *args):
         text = self.combo.get_active_text()
         find = False
+        text_id = None 
         for model in self.models:
             if model.name == text:               
                 model.set_values(self.get_active_values()[1:])
                 find = True
+                text_id = model.id
                 break
         
         if not find:
             print self.get_active_values()[1:]
             self.models.append(EqModel(text, text, 0, self.get_active_values()[1:]))
             self.combo.append_text(text)
-            
+            text_id = text
+        
+        FC().eq_presets_default = text_id   
         
     def get_active_values(self):
         result = []
@@ -144,8 +161,8 @@ class EqWindow(gtk.Window, FControl):
         #self.combo.set_size_request(240, -1)
         self.combo.show()
         
-        save = gtk.Button("Save") 
-        save.connect("clicked", self.on_save)       
+        save = gtk.Button("Save")
+        save.connect("clicked", self.on_save)
         save.show()
         
         box.pack_start(self.on, False, False, 0)

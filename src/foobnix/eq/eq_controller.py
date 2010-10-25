@@ -8,6 +8,7 @@ from foobnix.eq.eq_gui import EqWindow
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model.eq_model import EqModel
+from foobnix.util.fc import FC
 
 class EqController(FControl, LoadSave):
     def __init__(self, controls):
@@ -26,15 +27,18 @@ class EqController(FControl, LoadSave):
     def on_eq_chaged(self):
         pre = self.eq_view.get_active_values()[0]
         self.controls.media_engine.set_all_bands(pre, self.eq_view.get_active_values()[1:])
-        
     
     def on_load(self):
-        self.eq_view.append_all_models(self.default_models())
-        self.eq_view.set_active("DANCE")
+        if FC().eq_presets:
+            self.eq_view.append_all_models(FC().eq_presets)
+        else:
+            self.eq_view.append_all_models(self.default_models())
+        self.eq_view.set_active(FC().eq_presets_default)
         self.eq_view.on_load()
     
     def on_save(self):
         self.eq_view.on_save()
+        FC().eq_presets = self.eq_view.models
     
     def default_models(self):
         models = []
