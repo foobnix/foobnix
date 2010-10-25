@@ -11,6 +11,8 @@ from foobnix.regui.model.eq_model import EqModel
 from foobnix.util.fc import FC
 from foobnix.util.mouse_utils import is_rigth_click
 from foobnix.helpers.menu import Popup
+from foobnix.helpers.my_widgets import ImageButton
+import copy
 
 def label(): 
     label = gtk.Label("–")
@@ -60,6 +62,13 @@ class EqWindow(gtk.Window, FControl):
         self.add(lbox)
         
         self.models = []
+        self.default_models = []
+        
+    def on_restore_defaults(self,*a):
+        self.models = []
+        self.combo.get_model().clear()        
+        self.append_all_models(copy.deepcopy(self.default_models))
+        self.on_combo_chage()
         
     def on_button_press(self,w,e):
         print "click"
@@ -163,13 +172,22 @@ class EqWindow(gtk.Window, FControl):
         
         save = gtk.Button("Save")
         save.connect("clicked", self.on_save)
+        
         save.show()
+        
+        
+        resButton = ImageButton(gtk.STOCK_REFRESH)
+        resButton.connect("clicked", self.on_restore_defaults)
+        resButton.set_tooltip_text("Restore defaults presets")
         
         box.pack_start(self.on, False, False, 0)
         #box.pack_start(auto, False, True, 0)
         box.pack_start(empt, False, True, 0)        
         box.pack_start(self.combo, False, True, 0)        
         box.pack_start(save, False, True, 0)
+        box.pack_start(gtk.Label(), True, True, 0)
+        box.pack_start(resButton, False, True, 0)
+        
         return box
     
     def dash_line(self):

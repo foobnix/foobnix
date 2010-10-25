@@ -33,6 +33,8 @@ class EqController(FControl, LoadSave):
             self.eq_view.append_all_models(FC().eq_presets)
         else:
             self.eq_view.append_all_models(self.default_models())
+        
+        self.eq_view.default_models = self.default_models()
         self.eq_view.set_active(FC().eq_presets_default)
         self.eq_view.on_load()
     

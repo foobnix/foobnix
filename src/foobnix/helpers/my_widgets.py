@@ -6,6 +6,13 @@ Created on 30 авг. 2010
 '''
 import gtk
 
+class ImageButton(gtk.Button):
+    def __init__(self, stock_image):
+        gtk.Button.__init__(self)
+        self.set_relief(gtk.RELIEF_NONE)
+        img = gtk.image_new_from_stock(stock_image, gtk.ICON_SIZE_MENU)
+        self.set_image(img)
+
 def tab_close_button(func=None, arg=None):
     """button"""
     button = gtk.Button()
