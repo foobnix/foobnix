@@ -25,7 +25,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         """image and similar artists"""
         ibox = gtk.HBox(False, 0)
-        self.image = CoverImage()
+        self.image = CoverImage(FC().info_panel_image_size)
         
         self.artists = SimpleTreeControl("Similar Artist", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)  
         
@@ -41,9 +41,9 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.tags = SimpleTreeControl("Similar Tags", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)      
         
         sbox.pack_start(self.tracks.scroll, True, True)
-        sbox.pack_start(self.tags.scroll, True, True)
         
-        
+        if FC().is_info_panel_show_tags:
+            sbox.pack_start(self.tags.scroll, True, True)
         
         self.vpaned_small.pack1(ibox, False, False)
         self.vpaned_small.pack2(sbox, True, True)

@@ -79,6 +79,11 @@ class FC:
         self.auto_start_donwload = True
         self.max_active_count = 3
         self.online_music_path = '/tmp'
+        
+        """info panel"""
+        self.info_panel_image_size = 250
+        self.is_info_panel_show_tags = False
+        
 
         self.last_dir = None
         

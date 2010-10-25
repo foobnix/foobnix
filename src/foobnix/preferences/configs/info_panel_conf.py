@@ -6,7 +6,7 @@ Created on 29 авг. 2010
 '''
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
-from foobnix.util.configuration import FConfiguration
+from foobnix.util.fc import FC
 class InfoPagenConfig(ConfigPlugin):
     
     name = _("Info panel")
@@ -44,16 +44,23 @@ class InfoPagenConfig(ConfigPlugin):
         lbox.pack_start(lyric_label, False, False, 0)
         lbox.pack_start(self.lyric_size_spin, False, True, 0)
         
+        
+        self.show_tags = gtk.CheckButton(label=_("Show Tags list"), use_underline=True)
+        self.show_tags.show()
+        
+        
         box.pack_start(cbox, False, True, 0)
-        box.pack_start(lbox, False, True, 0)
+        #box.pack_start(lbox, False, True, 0)
+        box.pack_start( self.show_tags, False, True, 0)
         self.widget = box
     
     def on_load(self):
-        self.image_size_spin.set_value(FConfiguration().info_panel_image_size)
-        self.lyric_size_spin.set_value(FConfiguration().lyric_panel_image_size)
+        self.image_size_spin.set_value(FC().info_panel_image_size)
+        self.show_tags.set_active(FC().is_info_panel_show_tags)
         
     
-    def on_save(self):
-        FConfiguration().lyric_panel_image_size = self.lyric_size_spin.get_value_as_int()
+    def on_save(self):        
+        FC().info_panel_image_size= self.image_size_spin.get_value_as_int()
+        FC().is_info_panel_show_tags = self.show_tags.get_active()
          
         

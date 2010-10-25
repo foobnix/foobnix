@@ -7,9 +7,9 @@ import gtk
 import urllib
 from foobnix.util import LOG
 class CoverImage(gtk.Image):
-    def __init__(self):
+    def __init__(self, size=150):
         gtk.Image.__init__(self)
-        self.size = 150;
+        self.size = size
         self.set_no_image()
         
     def set_no_image(self):
