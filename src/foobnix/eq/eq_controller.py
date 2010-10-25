@@ -30,9 +30,10 @@ class EqController(FControl, LoadSave):
     def on_load(self):
         self.eq_view.append_all_models(self.default_models())
         self.eq_view.set_active("DANCE")
+        self.eq_view.on_load()
     
     def on_save(self):
-        pass
+        self.eq_view.on_save()
     
     def default_models(self):
         models = []

@@ -8,6 +8,7 @@ import gtk
 from foobnix.regui.model.signal import FControl
 from foobnix.util.const import EQUALIZER_LABLES
 from foobnix.regui.model.eq_model import EqModel
+from foobnix.util.fc import FC
 
 def label(): 
     label = gtk.Label("–")
@@ -53,6 +54,9 @@ class EqWindow(gtk.Window, FControl):
         self.add(lbox)
         
         self.models = []
+    
+    def on_enable_eq(self, w):
+        FC().is_eq_enable = w.get_active()
     
     def on_save(self, *args):
         text = self.combo.get_active_text()
@@ -111,9 +115,10 @@ class EqWindow(gtk.Window, FControl):
         box = gtk.HBox(False, 0)
         box.show()
         
-        on = gtk.ToggleButton("On")
+        self.on = gtk.ToggleButton("On")
+        self.on.connect("toggled",self.on_enable_eq)
         #on.set_size_request(30,-1)        
-        on.show()
+        self.on.show()
         
         auto = gtk.ToggleButton("Auto")
         #auto.set_size_request(50,-1)
@@ -134,8 +139,8 @@ class EqWindow(gtk.Window, FControl):
         save.connect("clicked", self.on_save)       
         save.show()
         
-        box.pack_start(on, False, False, 0)
-        box.pack_start(auto, False, True, 0)
+        box.pack_start(self.on, False, False, 0)
+        #box.pack_start(auto, False, True, 0)
         box.pack_start(empt, False, True, 0)        
         box.pack_start(self.combo, False, True, 0)        
         box.pack_start(save, False, True, 0)
@@ -214,7 +219,7 @@ class EqWindow(gtk.Window, FControl):
             eq_scale.set_value(values[i])
         
     def on_load(self):
-        pass
+        self.on.set_active(FC().is_eq_enable)
    
     def destroy(self):
         self.hide()

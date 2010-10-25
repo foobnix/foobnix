@@ -25,24 +25,27 @@ class GStreamerEngine(MediaPlayerEngine):
 
         self.prev_path = None
         self.bean = None
+        self.equalizer = None
 
     def init_local(self):
         playbin = gst.element_factory_make("playbin2", "player")
         
-        audiobin = gst.Bin('audiobin')
-        audiosink = gst.element_factory_make('autoaudiosink', 'audiosink')
-
-        audiobin.add(audiosink)
-        audiobin.add_pad(gst.GhostPad('sink', audiosink.get_pad('sink')))
-        playbin.set_property('audio-sink', audiobin)
         
-        self.equalizer = gst.element_factory_make('equalizer-10bands', 'equalizer')
-        audiobin.add(self.equalizer)
-
-        
-        audiobin.get_pad('sink').set_target(self.equalizer.get_pad('sink'))
-        self.equalizer.link(audiosink)
-        
+        if FC().is_eq_enable:
+            self.audiobin = gst.Bin('audiobin')
+            audiosink = gst.element_factory_make('autoaudiosink', 'audiosink')
+    
+            self.audiobin.add(audiosink)
+            self.audiobin.add_pad(gst.GhostPad('sink', audiosink.get_pad('sink')))
+            playbin.set_property('audio-sink', self.audiobin)
+            
+            self.equalizer = gst.element_factory_make('equalizer-10bands', 'equalizer')
+            self.audiobin.add(self.equalizer)
+    
+            
+            self.audiobin.get_pad('sink').set_target(self.equalizer.get_pad('sink'))
+            self.equalizer.link(audiosink)
+    
         bus = playbin.get_bus()
         bus.add_signal_watch()
         bus.enable_sync_message_emission()
@@ -50,7 +53,7 @@ class GStreamerEngine(MediaPlayerEngine):
         bus.connect("sync-message::element", self.on_sync_message)
         LOG.debug("LOCAL gstreamer")
         return playbin
-
+    
     def init_http(self):
         #return self.init_re_http()
         return self.init_local()
@@ -94,13 +97,13 @@ class GStreamerEngine(MediaPlayerEngine):
 
         
         self.state_stop()
-
+        
+        self.player = self.init_local()
+        
         if self.prev_path != path:
             if path.startswith("http://"):
-                #self.player = self.init_http()
                 uri = path
             else:
-                #self.player = self.init_local()
                 uri = 'file://' + urllib.pathname2url(path)
                 if os.name == 'nt':
                     uri = 'file:' + urllib.pathname2url(path)
@@ -122,8 +125,9 @@ class GStreamerEngine(MediaPlayerEngine):
     
     def set_all_bands(self, values):
         print "Engine", values
-        for i, value in enumerate(values):      
-            self.equalizer.set_property("band%s" % i, float(value))
+        if self.equalizer:
+            for i, value in enumerate(values):      
+                self.equalizer.set_property("band%s" % i, float(value))
 
     def playing_thread(self):
         thread_id = self.play_thread_id
