@@ -119,10 +119,7 @@ setup(name='foobnix',
                     ('/usr/share/locale/he/LC_MESSAGES', ['mo/he/foobnix.mo']),
                     ('/usr/share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo'])
                     ]
-                    
         )
-
-
 # Cleanup (remove /build, /mo, and *.pyc files:
 
 print "Cleaning up..."
