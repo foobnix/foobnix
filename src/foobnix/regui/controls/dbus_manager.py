@@ -100,24 +100,11 @@ class DBusManager(dbus.service.Object, FControl):
         elif "--play-pause" == command:
             self.controls.play_pause()
     
-    def check_for_media(self, args):         
-        dirs = []
-        files = []
-        for arg in args:            
-            if os.path.isdir(arg):
-                dirs.append(arg)
-            elif os.path.isfile(arg) and get_file_extenstion(arg) in FC().support_formats:
-                files.append(arg)
-        if dirs:
-            self.controls.on_add_folders(dirs)
-        elif files:            
-            self.controls.on_add_files(files)
-    
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
     def parse_arguments(self, args):
         if args and len(args)>0:
             self.check_for_commands(args)
-            self.check_for_media(args)
+            self.controls.check_for_media(args)
         
                 
     def on_mediakey(self, comes_from, what):

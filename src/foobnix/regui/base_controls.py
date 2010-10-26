@@ -20,6 +20,7 @@ from foobnix.regui.id3 import update_id3_wind_filtering
 import os
 import time
 from foobnix.regui.service.google_service import google_search_resutls
+from foobnix.util.file_utils import get_file_extenstion
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
@@ -29,6 +30,19 @@ class BaseFoobnixControls(LoadSave):
         self.count_errors = 0
         self.is_scrobled = False
         self.start_time = None
+        
+    def check_for_media(self, args):         
+        dirs = []
+        files = []
+        for arg in args:            
+            if os.path.isdir(arg):
+                dirs.append(arg)
+            elif os.path.isfile(arg) and get_file_extenstion(arg) in FC().support_formats:
+                files.append(arg)
+        if dirs:
+            self.on_add_folders(dirs)
+        elif files:            
+            self.on_add_files(files)
     
     def show_google_results(self, query):
         beans = []

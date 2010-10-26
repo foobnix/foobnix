@@ -16,7 +16,7 @@ from random import randint
 class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
 
     def __init__(self, controls):        
-        DrugDropTree.__init__(self)
+        DrugDropTree.__init__(self,controls)
         
         FTreeModel.__init__(self)
         FControl.__init__(self, controls)

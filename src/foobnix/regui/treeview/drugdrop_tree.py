@@ -18,7 +18,8 @@ TARGET_TYPE_URI_LIST = 80
 dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
 
 class DrugDropTree(gtk.TreeView):
-    def __init__(self):
+    def __init__(self, controls):
+        self.controls = controls
         gtk.TreeView.__init__(self)
         
         self.connect("drag-drop", self.on_drag_drop)
@@ -41,11 +42,12 @@ class DrugDropTree(gtk.TreeView):
         if target_type == TARGET_TYPE_URI_LIST:
             uri = selection.data.strip('\r\n\x00')
             uri_splitted = uri.split() # we may have more than one file dropped
-            beans = []
+            paths = []
             for uri in uri_splitted:
                 path = get_file_path_from_dnd_dropped_uri(uri)
-                beans.append(FModel(path, path))
-            self.append_all(beans)
+                paths.append(path)
+            
+            self.controls.check_for_media(paths)
     
     def append_all(self, beans):
         print "append view type", self.current_view
