@@ -51,7 +51,10 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         path = paths[0]
         path = self.filter_model.convert_path_to_child_path(path)        
         iter = self.model.get_iter(path)
+        
+        gtk.gdk.threads_enter()
         self.model.set_value(iter, self.text[0], text)
+        gtk.gdk.threads_leave()
     
     def populate(self, bean):
         self.clear()
@@ -110,7 +113,10 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
 
     def clear(self):
         self.count_index = 0
+        
+        gtk.gdk.threads_enter()
         self.model.clear()
+        gtk.gdk.threads_leave()
 
     def on_button_press(self, w, e):
         pass
@@ -129,7 +135,9 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
             to_delete.append(iter)
         
         for iter in to_delete: 
+            gtk.gdk.threads_enter()
             self.model.remove(iter)
+            gtk.gdk.threads_leave()
 
     def get_selected_bean(self):
         selection = self.get_selection()
