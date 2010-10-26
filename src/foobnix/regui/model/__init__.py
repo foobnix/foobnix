@@ -27,7 +27,7 @@ class FTreeModel():
         self.duration_sec = 17 , str
         
         self.UUID = 18 , str
-        self.parent_level = 19 , str 
+        self.parent_level = 19 , str
     
     def cut(self):
     

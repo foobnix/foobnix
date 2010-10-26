@@ -8,6 +8,7 @@ import gtk
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.mouse_utils import is_rigth_click, is_double_left_click
 from foobnix.helpers.menu import Popup
+from foobnix.regui.model import FModel
 
 class SimpleTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, title_name, controls):        
@@ -24,16 +25,21 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
         self.configure_send_drug()
         
         self.set_type_plain()
+        self.append(FModel("Madonna").add_is_file(True))
     
     def on_button_press(self, w, e):
         active = self.get_selected_bean()
         
         if is_double_left_click(e):
-            self.controls.play(active)
-                
+            self.controls.play(active, False)
+        
         if is_rigth_click(e):
+            def task():
+                print active
+                self.controls.play(active, False)
+                
             menu = Popup()
-            menu.add_item('Play', gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
+            menu.add_item('Play', gtk.STOCK_MEDIA_PLAY, task)
             menu.add_item('Copy to Search Line', gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)
             menu.show(e)
         

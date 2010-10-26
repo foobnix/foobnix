@@ -190,10 +190,7 @@ class BaseFoobnixControls(LoadSave):
         self.media_engine.state_play_pause()
 
     def fill_bean_from_vk(self, bean):
-        if not bean.artist or not bean.title:
-            vk = self.vk.find_one_track(" - ".join([x for x in [bean.artist, bean.title] if x]))
-        else:
-            vk = self.vk.find_one_track(bean.text)
+        vk = self.vk.find_one_track(bean.get_display_name())
         if vk:
             bean.path = vk.path
             bean.time = vk.time
@@ -228,6 +225,7 @@ class BaseFoobnixControls(LoadSave):
         self.media_engine.play(bean)        
 
         if update_info_panel:
+            print "updation info panel"
             self.update_info_panel(bean)
 
     def notify_playing(self, pos_sec, dur_sec, bean):
@@ -249,11 +247,11 @@ class BaseFoobnixControls(LoadSave):
 
     def notify_title(self, text):
         self.seek_bar.set_text(text)       
-        bean = FModel(text).create_from_text(text)
-        print bean
-        self.update_info_panel(bean)
+        #bean = FModel(text).create_from_text(text)        
+        #self.update_info_panel(bean)
     
     def notify_error(self,msg):
+        print "notify error"
         self.seek_bar.set_text(msg)
         self.info_panel.clear()
         

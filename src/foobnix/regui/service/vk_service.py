@@ -304,7 +304,7 @@ class VKService:
         LOG.info(len(songs))
         return songs    
     
-    def find_one_track(self, query):
+    def find_one_track(self, query):        
         vkSongs = self.find_tracks_by_query(query)
         if not vkSongs:
             return None

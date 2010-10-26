@@ -80,7 +80,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if album_name and album_year:
             info_line = bean.artist + " - " + album_name + "(" +album_year+ ")" +" - " + bean.title
         
-            self.almum_label.set_markup("<b>%s</b>" % info_line)
+        self.almum_label.set_markup("<b>%s</b>" % info_line)
         
         """update image"""
         if bean.image:
