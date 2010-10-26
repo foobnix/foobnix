@@ -11,7 +11,6 @@ from foobnix.regui.controls.dbus_manager import foobnixDBusInterface
 init_time = time.time()
 
 iface = foobnixDBusInterface()
-print iface
 
 if not iface:
     print "start server"
