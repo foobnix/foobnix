@@ -40,8 +40,9 @@ class BaseFoobnixControls(LoadSave):
             
         
    
-    def on_add_folders(self):
-        paths = directory_chooser_dialog("Choose folders to open", FC().last_dir)
+    def on_add_folders(self, paths=None):
+        if not paths:
+            paths = directory_chooser_dialog("Choose folders to open", FC().last_dir)
         if paths:
             path = paths[0]
             list = path.split("/")
@@ -68,8 +69,9 @@ class BaseFoobnixControls(LoadSave):
             else:
                 self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
     
-    def on_add_files(self):       
-        paths = file_chooser_dialog("Choose file to open", FC().last_dir)
+    def on_add_files(self, paths=None):
+        if not paths:       
+            paths = file_chooser_dialog("Choose file to open", FC().last_dir)
         if paths:            
             path = paths[0]
             list = paths[0].split("/")
@@ -173,7 +175,7 @@ class BaseFoobnixControls(LoadSave):
         else:
             return False
 
-    def play(self, bean):
+    def play(self, bean, update_info_panel=True):
         if not bean:
             return None
         
@@ -197,7 +199,8 @@ class BaseFoobnixControls(LoadSave):
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
         self.main_window.set_title(bean.text)
-        self.update_info_panel(bean)
+        if update_info_panel:
+            self.update_info_panel(bean)
 
     def notify_playing(self, pos_sec, dur_sec, bean):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)

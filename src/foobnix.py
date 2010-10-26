@@ -5,26 +5,25 @@ Created on Sep 30, 2010
 @author: ivan
 '''
 import time
+import sys
 from foobnix.regui.controls.dbus_manager import foobnixDBusInterface
 
 init_time = time.time()
 
 iface = foobnixDBusInterface()
+print iface
 
 if not iface:
-    print "start server my1"
-    #import gobject
+    print "start server"
     from foobnix.regui.foobnix_core import FoobnixCore
     import gtk
-    #gobject.threads_init() #@UndefinedVariable
-    gtk.gdk.threads_init()
-    gtk.gdk.threads_enter()
+    gtk.gdk.threads_init()    #@UndefinedVariable
     eq = FoobnixCore()
+    eq.dbus.parse_arguments(sys.argv)
     print "******Foobnix run in", time.time() - init_time, " seconds******"
-    
     gtk.main()
-    
-    gtk.gdk.threads_leave()
 else:
     print "start client"
+    if sys.argv:
+        iface.parse_arguments(sys.argv)
 

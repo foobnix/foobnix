@@ -7,6 +7,8 @@ Created on 28 сент. 2010
 import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
 from foobnix.util.configuration import get_version
+import os
+import thread
 
 DBusGMainLoop(set_as_default=True)
 

@@ -8,6 +8,9 @@ import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
 from foobnix.util.configuration import get_version
 from foobnix.regui.model.signal import FControl
+import os
+from foobnix.util.file_utils import get_file_extenstion
+from foobnix.util.fc import FC
 
 DBusGMainLoop(set_as_default=True)
 
@@ -54,8 +57,8 @@ class MprisPlayer(dbus.service.Object, FControl):
 
 class DBusManager(dbus.service.Object, FControl):
     def __init__(self, controls, object_path=MPRIS_ROOT_PATH):
-        self.bus = dbus.SessionBus()
-        bus_name = dbus.service.BusName(DBUS_NAME, bus=self.bus)
+        bus = dbus.SessionBus()
+        bus_name = dbus.service.BusName(DBUS_NAME, bus=bus)
         dbus.service.Object.__init__(self, bus_name, object_path)
         FControl.__init__(self, controls)
 
@@ -68,7 +71,55 @@ class DBusManager(dbus.service.Object, FControl):
             mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
         except Exception, e:
             print "your OS is not GNOME", e
-
+    
+    def check_for_commands(self, args):
+        if len(args) == 1:
+            command = args[0]
+            
+        elif len(args) == 2:
+            command = args[1]
+        else:
+            return True
+          
+        if "--next" == command:
+            self.controls.next()
+        elif "--prev" == command:
+            self.controls.prev()
+        elif "--stop" == command:
+            self.controls.state_stop()
+        elif "--pause" == command:
+            self.controls.state_pause()
+        elif "--play" == command:
+            self.controls.playState()
+        elif "--volume-up" == command:
+            self.controls.volume_up()
+        elif "--volume-down" == command:
+            self.controls.volume_down()
+        elif "--show-hide" == command:
+            self.controls.show_hide()
+        elif "--play-pause" == command:
+            self.controls.play_pause()
+    
+    def check_for_media(self, args):         
+        dirs = []
+        files = []
+        for arg in args:            
+            if os.path.isdir(arg):
+                dirs.append(arg)
+            elif os.path.isfile(arg) and get_file_extenstion(arg) in FC().support_formats:
+                files.append(arg)
+        if dirs:
+            self.controls.on_add_folders(dirs)
+        elif files:            
+            self.controls.on_add_files(files)
+    
+    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
+    def parse_arguments(self, args):
+        if args and len(args)>0:
+            self.check_for_commands(args)
+            self.check_for_media(args)
+        
+                
     def on_mediakey(self, comes_from, what):
         """
         gets called when multimedia keys are pressed down.

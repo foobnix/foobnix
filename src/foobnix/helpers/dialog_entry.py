@@ -13,6 +13,7 @@ def file_chooser_dialog(title, current_folder=None):
     chooser = gtk.FileChooserDialog(title, action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
     chooser.set_default_response(gtk.RESPONSE_OK)
     chooser.set_select_multiple(True)
+    paths = None
     if current_folder:
         chooser.set_current_folder(current_folder)
     response = chooser.run()
@@ -27,6 +28,7 @@ def directory_chooser_dialog(title, current_folder=None):
     chooser = gtk.FileChooserDialog(title, action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
     chooser.set_default_response(gtk.RESPONSE_OK)
     chooser.set_select_multiple(True)
+    paths = None
     if current_folder:
         chooser.set_current_folder(current_folder)
     response = chooser.run()
