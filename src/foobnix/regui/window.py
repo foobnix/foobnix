@@ -39,7 +39,13 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         if cfg:
             self.set_default_size(cfg[2], cfg[3])            
             self.move(cfg[0], cfg[1])         
-            
+   
+    def show_hide(self):
+        visible = self.get_property('visible')
+        if visible:            
+            self.hide_window()
+        else:
+            self.show()
         
     def hide_window(self, *args):
         

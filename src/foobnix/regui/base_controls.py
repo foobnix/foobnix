@@ -21,6 +21,7 @@ import os
 import time
 from foobnix.regui.service.google_service import google_search_resutls
 from foobnix.util.file_utils import get_file_extenstion
+from foobnix.util.const import STATE_PLAY
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
@@ -150,11 +151,22 @@ class BaseFoobnixControls(LoadSave):
             self.movie_window.hide()
 
     def volume_up(self):
-        pass
+        self.volume.volume_up()
 
     def volume_down(self):
-        pass
-
+        self.volume.volume_down()
+    
+    def show_hide(self):
+        self.main_window.show_hide()
+    
+    def play_pause(self):
+        print self.media_engine.get_state()        
+        if self.media_engine.get_state() == STATE_PLAY:
+            self.media_engine.state_pause()            
+        else:
+            self.media_engine.state_play()
+            
+    
     def windows_visibility(self):
         visible = self.main_window.get_property('visible')
         if visible:

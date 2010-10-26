@@ -40,6 +40,15 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
     def set_value(self,value):
         self.volume_scale.set_value(value)
     
+    def volume_up(self):
+        value = self.volume_scale.get_value()
+        self.volume_scale.set_value(value + 3)
+    
+    def volume_down(self):
+        value = self.volume_scale.get_value()
+        self.volume_scale.set_value(value - 3)
+    
+    
     def on_scroll_event(self, button, event):
         value = self.volume_scale.get_value()
         if event.direction == gtk.gdk.SCROLL_UP: #@UndefinedVariable

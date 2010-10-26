@@ -13,6 +13,7 @@ import time
 import gtk
 import thread
 from foobnix.util.fc import FC
+from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE
 
 class GStreamerEngine(MediaPlayerEngine):
     NANO_SECONDS = 1000000000
@@ -26,6 +27,11 @@ class GStreamerEngine(MediaPlayerEngine):
         self.prev_path = None
         self.bean = None
         self.equalizer = None
+        
+        self.current_state = STATE_STOP
+        
+    def get_state(self):
+        return self.current_state
 
     def gstreamer_player(self):
         playbin = gst.element_factory_make("playbin2", "player")
@@ -66,12 +72,14 @@ class GStreamerEngine(MediaPlayerEngine):
     def notify_eos(self):
         LOG.debug("Notify eos")
         self.controls.notify_eos()
+        self.current_state = STATE_STOP
 
     def notify_title(self, text):
         self.controls.notify_title(text)
 
     def notify_error(self):
         LOG.debug("Notify error")
+        self.current_state = STATE_STOP
 
     def play(self, bean):
         self.bean = bean
@@ -198,25 +206,19 @@ class GStreamerEngine(MediaPlayerEngine):
         #self.player.get_by_name("volume").set_property('volume', value + 0.0)
 
     def state_play(self):
-        if self.status.isPause:
-            self.status.setPlay()
-            self.player.set_state(gst.STATE_PLAYING)
-        else:
-            self.state_stop()
-            self.play(self.bean)
+        print "PLAY"
+        self.player.set_state(gst.STATE_PLAYING)
+        self.current_state = STATE_PLAY
 
     def state_stop(self):
-        self.status.setStop()
         self.play_thread_id = None
         self.player.set_state(gst.STATE_NULL)
+        self.current_state = STATE_STOP
 
     def state_pause(self):
-        if self.status.isPause:
-            self.state_play()
-        else:
-            self.status.setPause()
-            #self.player.set_state(gst.STATE_VOID_PENDING)
-            self.player.set_state(gst.STATE_PAUSED)
+        print "PAUSE"
+        self.player.set_state(gst.STATE_PAUSED)
+        self.current_state = STATE_PAUSE
 
     def state_play_pause(self):
         if self.status.isPlay:

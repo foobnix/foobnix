@@ -88,12 +88,8 @@ class TrayIconControls(FControl):
         self.controls.windows_visibility()
 
     def on_button_press(self, w, e):
-        if is_middle_click(e):
-            self.paused = not self.paused
-            if self.paused:
-                self.controls.state_play()
-            else:
-                self.controls.state_pause()
+        if is_middle_click(e):            
+            self.controls.play_pause()
 
     def hide(self):
         self.icon.set_visible(False)
