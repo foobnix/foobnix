@@ -247,11 +247,9 @@ class DrugDropTree(gtk.TreeView):
             parent_iter_exists = None
         row = self.get_row_from_bean(bean)
         
-        
-        gtk.gdk.threads_enter()
         parent_iter = self.model.append(parent_iter_exists, row)
         self.hash[bean.level] = parent_iter
-        gtk.gdk.threads_leave()
+        
         
             
         

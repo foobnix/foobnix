@@ -113,8 +113,8 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
     def clear(self):
         print "clean"
         self.count_index = 0
-        
         self.model.clear()
+
         
 
     def on_button_press(self, w, e):

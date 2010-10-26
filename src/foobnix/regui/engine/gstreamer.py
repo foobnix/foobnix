@@ -97,7 +97,7 @@ class GStreamerEngine(MediaPlayerEngine):
         
         self.state_stop()
         time.sleep(0.2)
-        self.player = self.gstreamer_player()
+        #self.player = self.gstreamer_player()
         
         """equlizer settings"""
         if FC().is_eq_enable:
@@ -131,10 +131,10 @@ class GStreamerEngine(MediaPlayerEngine):
         print "Engine", values
         if self.equalizer:
             for i, value in enumerate(values):      
-                real =float(value) + pre
-                if real>=12:
+                real = float(value) + pre
+                if real >= 12:
                     real = 12
-                if real <=-12:
+                if real <= -12:
                     real = -12
                 self.equalizer.set_property("band%s" % i, real)
 
