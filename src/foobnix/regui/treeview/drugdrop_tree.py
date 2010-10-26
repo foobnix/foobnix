@@ -6,9 +6,6 @@ Created on Oct 14, 2010
 import gtk
 import copy
 import uuid
-import urllib
-from foobnix.regui.model import FModel
-from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
 from foobnix.regui.id3 import update_id3_wind_filtering
 
 VIEW_PLAIN = 0
@@ -33,6 +30,7 @@ class DrugDropTree(gtk.TreeView):
     
     def append_all(self, beans):
         print "append view type", self.current_view
+        
         if self.current_view == VIEW_PLAIN:
             self.plain_append_all(beans)            
         else:
@@ -43,6 +41,7 @@ class DrugDropTree(gtk.TreeView):
             self.plain_append(bean)
         else:
             self.tree_append(bean)
+        
         
     def set_type_plain(self):
         self.current_view = VIEW_PLAIN
@@ -138,10 +137,8 @@ class DrugDropTree(gtk.TreeView):
             return None
         
         
-        """do not copy to child"""
-        gtk.gdk.threads_enter()        
+        """do not copy to child"""        
         result = self.iter_copy(from_model, from_iter, to_model, to_iter, to_pos, to_tree.current_view, from_tree.current_view)
-        gtk.gdk.threads_leave()
         
         if result and to_tree == from_tree:
             """move element in the save tree"""
@@ -220,14 +217,14 @@ class DrugDropTree(gtk.TreeView):
             bean.font = "bold"
             
         bean.visible = True
-        bean.index = self.count_index + 1
+        
         beans = update_id3_wind_filtering([bean])
         for one in beans:    
             row = self.get_row_from_bean(one)
             
-            gtk.gdk.threads_enter()
+            #gtk.gdk.threads_enter()
             self.model.append(None, row)
-            gtk.gdk.threads_leave()
+            #gtk.gdk.threads_leave()
         
         
         
@@ -242,7 +239,6 @@ class DrugDropTree(gtk.TreeView):
         """copy beans"""
         bean = copy.copy(bean)
         bean.visible = True
-        bean.index = self.count_index + 1
 
         if self.hash.has_key(bean.get_parent()):
             parent_iter_exists = self.hash[bean.get_parent()]
@@ -250,8 +246,11 @@ class DrugDropTree(gtk.TreeView):
             parent_iter_exists = None
         row = self.get_row_from_bean(bean)
         
+        
         gtk.gdk.threads_enter()
         parent_iter = self.model.append(parent_iter_exists, row)
-        gtk.gdk.threads_leave()
-            
         self.hash[bean.level] = parent_iter
+        gtk.gdk.threads_leave()
+        
+            
+        

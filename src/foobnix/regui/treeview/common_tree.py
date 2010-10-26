@@ -16,7 +16,7 @@ from random import randint
 class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
 
     def __init__(self, controls):        
-        DrugDropTree.__init__(self,controls)
+        DrugDropTree.__init__(self, controls)
         
         FTreeModel.__init__(self)
         FControl.__init__(self, controls)
@@ -52,9 +52,8 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         path = self.filter_model.convert_path_to_child_path(path)        
         iter = self.model.get_iter(path)
         
-        gtk.gdk.threads_enter()
         self.model.set_value(iter, self.text[0], text)
-        gtk.gdk.threads_leave()
+        
     
     def populate(self, bean):
         self.clear()
@@ -115,9 +114,8 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         print "clean"
         self.count_index = 0
         
-        gtk.gdk.threads_enter()
         self.model.clear()
-        gtk.gdk.threads_leave()
+        
 
     def on_button_press(self, w, e):
         pass
@@ -135,10 +133,8 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
             iter = self.model.get_iter(path)
             to_delete.append(iter)
         
-        for iter in to_delete: 
-            gtk.gdk.threads_enter()
+        for iter in to_delete:
             self.model.remove(iter)
-            gtk.gdk.threads_leave()
 
     def get_selected_bean(self):
         selection = self.get_selection()
