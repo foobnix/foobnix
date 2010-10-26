@@ -54,8 +54,8 @@ class MenuWidget(FControl):
         self.playback_order_linear = order.add_radio_item("Linear", None, not FC().is_order_random)
         self.playback_order_random = order.add_radio_item("Random", self.playback_order_linear, FC().is_order_random)
         self.playback_order_random.connect("activate", lambda w: controls.set_playback_random(w.get_active()))
-        order.separator()
-        order.add_image_item("Shuffle", gtk.STOCK_UNDELETE)
+        #order.separator()
+        #order.add_image_item("Shuffle", gtk.STOCK_UNDELETE)
 
         """Playback - Repeat"""
         repeat = playback.add_text_item("Repeat")

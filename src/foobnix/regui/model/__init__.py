@@ -59,6 +59,13 @@ class FModel(FTreeModel):
         self.visible = True
         self.UUID = uuid.uuid4().hex
         self.level = uuid.uuid4().hex
+        
+    def create_from_text(self, text):
+        self.text = text
+        if " - " in text:
+            list = text.split(" - ")
+            self.add_artist(list[0].strip()).add_title(list[1].strip())
+        return self
     
     def get_display_name(self):
         if self.artist and self.title:

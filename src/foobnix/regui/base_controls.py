@@ -246,7 +246,10 @@ class BaseFoobnixControls(LoadSave):
             
 
     def notify_title(self, text):
-        self.seek_bar.set_text(text)
+        self.seek_bar.set_text(text)       
+        bean = FModel(text).create_from_text(text)
+        print bean
+        self.update_info_panel(bean)
 
     def notify_eos(self):
         self.start_time = None
