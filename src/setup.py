@@ -104,6 +104,7 @@ setup(name='foobnix',
                 "foobnix.regui.treeview",
                 "foobnix.thirdparty",
                 "foobnix.thirdparty.google",
+                "foobnix.thirdparty.google",
                 "foobnix.util",
                 ],
         package_data={'foobnix': ['glade/*.glade', 'glade/*.png']},
@@ -119,10 +120,7 @@ setup(name='foobnix',
                     ('/usr/share/locale/he/LC_MESSAGES', ['mo/he/foobnix.mo']),
                     ('/usr/share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo'])
                     ]
-                    
         )
-
-
 # Cleanup (remove /build, /mo, and *.pyc files:
 
 print "Cleaning up..."
