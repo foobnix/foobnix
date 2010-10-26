@@ -80,7 +80,9 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         if name and len(name) > FC().len_of_tab:
             name = name[:FC().len_of_tab]
 
+        print "create content begin"
         tab_content = self.create_notebook_tab(beans)
+        print "create content end"
         def label():
             """label"""
             label = gtk.Label(name + " ")

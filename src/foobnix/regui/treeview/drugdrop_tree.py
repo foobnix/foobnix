@@ -138,8 +138,10 @@ class DrugDropTree(gtk.TreeView):
             return None
         
         
-        """do not copy to child"""        
+        """do not copy to child"""
+        gtk.gdk.threads_enter()        
         result = self.iter_copy(from_model, from_iter, to_model, to_iter, to_pos, to_tree.current_view, from_tree.current_view)
+        gtk.gdk.threads_leave()
         
         if result and to_tree == from_tree:
             """move element in the save tree"""
@@ -222,6 +224,7 @@ class DrugDropTree(gtk.TreeView):
         beans = update_id3_wind_filtering([bean])
         for one in beans:    
             row = self.get_row_from_bean(one)
+            
             gtk.gdk.threads_enter()
             self.model.append(None, row)
             gtk.gdk.threads_leave()
@@ -246,6 +249,7 @@ class DrugDropTree(gtk.TreeView):
         else:
             parent_iter_exists = None
         row = self.get_row_from_bean(bean)
+        
         gtk.gdk.threads_enter()
         parent_iter = self.model.append(parent_iter_exists, row)
         gtk.gdk.threads_leave()

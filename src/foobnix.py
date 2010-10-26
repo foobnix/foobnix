@@ -16,11 +16,12 @@ if not iface:
     print "start server"
     from foobnix.regui.foobnix_core import FoobnixCore
     import gtk
-    gtk.gdk.threads_init()    #@UndefinedVariable
+    gtk.gdk.threads_init()
     eq = FoobnixCore()
     eq.dbus.parse_arguments(sys.argv)
     print "******Foobnix run in", time.time() - init_time, " seconds******"
     gtk.main()
+    
 else:
     print "start client"
     if sys.argv:

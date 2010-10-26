@@ -112,6 +112,7 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         return attributes
 
     def clear(self):
+        print "clean"
         self.count_index = 0
         
         gtk.gdk.threads_enter()
