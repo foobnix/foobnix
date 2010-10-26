@@ -53,19 +53,34 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         self.show_all()
 
+    def clear(self):
+        self.image.set_no_image()
+        self.tracks.clear()
+        self.tags.clear()
+        self.artists.clear()
+        self.almum_label.set_markup("")
+        
     def update(self, bean):
+        self.clear()
         if not FC().is_view_info_panel:
             print "Info panel disabled"  
             return      
-        print "update info panel", bean
+        
+        if not bean.artist or not bean.title:
+            print "artist and title not defined"
+            return None        
         
         """update info"""
         album_name = self.controls.lastfm.get_album_name(bean.artist, bean.title)
         album_year = self.controls.lastfm.get_album_year(bean.artist, bean.title)
-        if album_year:
-            self.almum_label.set_markup("<b>%s - %s (%s) - %s</b>" % (bean.artist, album_name, album_year, bean.title))
-        else:
-            self.almum_label.set_markup("<b>%s - %s - %s</b>" % (bean.artist, album_name, bean.title))
+        
+        info_line = bean.artist + " - " + bean.title
+        if album_name:
+            info_line = bean.artist + " - " + album_name + " - " + bean.title
+        if album_name and album_year:
+            info_line = bean.artist + " - " + album_name + "(" +album_year+ ")" +" - " + bean.title
+        
+            self.almum_label.set_markup("<b>%s</b>" % info_line)
         
         """update image"""
         if bean.image:

@@ -77,9 +77,10 @@ class GStreamerEngine(MediaPlayerEngine):
     def notify_title(self, text):
         self.controls.notify_title(text)
 
-    def notify_error(self):
+    def notify_error(self, msg):
         LOG.debug("Notify error")
         self.current_state = STATE_STOP
+        self.controls.notify_error(msg)
 
     def play(self, bean):
         self.bean = bean
@@ -105,6 +106,7 @@ class GStreamerEngine(MediaPlayerEngine):
         if self.prev_path != path:
             if path.startswith("http://"):
                 uri = path
+                self.notify_title(uri)
             else:
                 uri = 'file://' + urllib.pathname2url(path)
                 if os.name == 'nt':
@@ -116,9 +118,8 @@ class GStreamerEngine(MediaPlayerEngine):
             
             self.prev_path = path
         
-        self.state_pause()
-        self.seek(0)
-        time.sleep(0.2)
+        self.state_pause()        
+        time.sleep(0.2)        
         self.seek_seconds(bean.start_sec)
         self.state_play()
         self.volume(FC().volume)
@@ -253,6 +254,6 @@ class GStreamerEngine(MediaPlayerEngine):
             LOG.warn("Error: %s" % err, debug, err.domain, err.code)
 
             if err.code != 1:
-                self.notify_title(str(err))
+                self.notify_error(str(err))
 
-            self.notify_error()
+            

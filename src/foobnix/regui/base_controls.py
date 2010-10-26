@@ -225,6 +225,7 @@ class BaseFoobnixControls(LoadSave):
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
         self.main_window.set_title(bean.text)
+        self.seek_bar.clear()
         if update_info_panel:
             self.update_info_panel(bean)
 
@@ -250,7 +251,11 @@ class BaseFoobnixControls(LoadSave):
         bean = FModel(text).create_from_text(text)
         print bean
         self.update_info_panel(bean)
-
+    
+    def notify_error(self,msg):
+        self.seek_bar.set_text(msg)
+        self.info_panel.clear()
+        
     def notify_eos(self):
         self.start_time = None
         self.is_scrobled = False

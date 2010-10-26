@@ -63,9 +63,11 @@ class Cache():
             return self.cache_images[self.get_key(artist, title)]
         else:
             album = self.get_album(artist, title)
-            image = album.get_cover_image(size)
-            self.cache_images[self.get_key(artist, title)] = image
-            return image
+            if album:
+                image = album.get_cover_image(size)
+                self.cache_images[self.get_key(artist, title)] = image
+                return image            
+                
 
 
 
