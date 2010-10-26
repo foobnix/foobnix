@@ -12,6 +12,7 @@ from foobnix.radio.radios import RadioFolder
 from foobnix.regui.model import FModel
 from foobnix.helpers.dialog_entry import one_line_dialog, two_line_dialog
 from foobnix.helpers.menu import Popup
+from foobnix.util.const import FTYPE_RADIO
 class RadioTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
@@ -66,7 +67,7 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
             parent = FModel(fpl.name).add_is_file(False)
             self.append(parent)
             for radio, urls in fpl.urls_dict.iteritems():
-                child = FModel(radio, urls[0]).parent(parent)
+                child = FModel(radio, urls[0]).parent(parent).add_type(FTYPE_RADIO)
                 self.append(child)
         self.is_radio_populated = True            
     

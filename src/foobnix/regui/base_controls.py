@@ -198,7 +198,7 @@ class BaseFoobnixControls(LoadSave):
         else:
             return False
 
-    def play(self, bean, update_info_panel=True):
+    def play(self, bean):
         if not bean:
             return None
         
@@ -224,9 +224,9 @@ class BaseFoobnixControls(LoadSave):
         
         self.media_engine.play(bean)        
 
-        if update_info_panel:
-            print "updation info panel"
-            self.update_info_panel(bean)
+        
+        #print "updation info panel"
+        self.update_info_panel(bean)
 
     def notify_playing(self, pos_sec, dur_sec, bean):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
@@ -247,8 +247,8 @@ class BaseFoobnixControls(LoadSave):
 
     def notify_title(self, text):
         self.seek_bar.set_text(text)       
-        #bean = FModel(text).create_from_text(text)        
-        #self.update_info_panel(bean)
+        t_bean = FModel(text).create_from_text(text)                       
+        self.update_info_panel(t_bean)
     
     def notify_error(self,msg):
         print "notify error"

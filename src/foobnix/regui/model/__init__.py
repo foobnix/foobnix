@@ -28,6 +28,7 @@ class FTreeModel():
         
         self.UUID = 18 , str
         self.parent_level = 19 , str
+        self.type = 20 , str
     
     def cut(self):
     
@@ -75,6 +76,10 @@ class FModel(FTreeModel):
      
     def get_uuid(self):
         return self.UUID
+    
+    def add_type(self, type):
+        self.type = type
+        return self
     
     def add_artist(self, artist):
         self.artist = artist

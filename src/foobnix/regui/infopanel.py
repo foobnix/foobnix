@@ -10,6 +10,7 @@ from foobnix.regui.model.signal import FControl
 from foobnix.helpers.image import CoverImage
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
+from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL
 
 class InfoPanelWidget(gtk.Frame, LoadSave, FControl):    
     def __init__(self, controls): 
@@ -61,7 +62,12 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.almum_label.set_markup("")
         
     def update(self, bean):
-        self.clear()
+        
+        if bean.type == FTYPE_NOT_UPDATE_INFO_PANEL:
+            return False
+        
+        self.clear()    
+        
         if not FC().is_view_info_panel:
             print "Info panel disabled"  
             return      

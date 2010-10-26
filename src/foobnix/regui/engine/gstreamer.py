@@ -13,7 +13,7 @@ import time
 import gtk
 import thread
 from foobnix.util.fc import FC
-from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE
+from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
 
 class GStreamerEngine(MediaPlayerEngine):
     NANO_SECONDS = 1000000000
@@ -75,7 +75,9 @@ class GStreamerEngine(MediaPlayerEngine):
         self.current_state = STATE_STOP
 
     def notify_title(self, text):
-        self.controls.notify_title(text)
+        if self.bean.type == FTYPE_RADIO:
+            "print notify radio playing"
+            self.controls.notify_title(text)
 
     def notify_error(self, msg):
         LOG.debug("Notify error")
@@ -214,6 +216,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.play_thread_id = None
         self.player.set_state(gst.STATE_NULL)
         self.current_state = STATE_STOP
+        
 
     def state_pause(self):
         print "PAUSE"
