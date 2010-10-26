@@ -10,9 +10,7 @@ from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.regui.model import FModel
 from foobnix.dm.dm_bean import DMBean
-import threading
-import time
-
+    
 class DownloadManager(gtk.Window, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)

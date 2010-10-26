@@ -96,7 +96,7 @@ class GStreamerEngine(MediaPlayerEngine):
 
         
         self.state_stop()
-        
+        time.sleep(0.2)
         self.player = self.gstreamer_player()
         
         """equlizer settings"""

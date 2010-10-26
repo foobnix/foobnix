@@ -63,7 +63,6 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
         self.radio_folder = RadioFolder()
         files = self.radio_folder.get_radio_FPLs()        
         for fpl in files:
-            print fpl, fpl.name
             parent = FModel(fpl.name).add_is_file(False)
             self.append(parent)
             for radio, urls in fpl.urls_dict.iteritems():
