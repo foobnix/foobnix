@@ -222,6 +222,7 @@ class DrugDropTree(gtk.TreeView):
         for one in beans:    
             row = self.get_row_from_bean(one)
             
+            
             #gtk.gdk.threads_enter()
             self.model.append(None, row)
             #gtk.gdk.threads_leave()
