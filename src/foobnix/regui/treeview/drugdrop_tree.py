@@ -14,9 +14,6 @@ from foobnix.regui.id3 import update_id3_wind_filtering
 VIEW_PLAIN = 0
 VIEW_TREE = 1
 
-TARGET_TYPE_URI_LIST = 80
-dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
-
 class DrugDropTree(gtk.TreeView):
     def __init__(self, controls):
         self.controls = controls
@@ -27,27 +24,12 @@ class DrugDropTree(gtk.TreeView):
         """init values"""
         self.hash = {None:None}
         self.current_view = None
-        
-    def configure_recive_system_drug(self):
-        self.connect('drag-data-received', self.on_system_drag_data_received)
-        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP, dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY)
     
     def configure_recive_drug(self):
         self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
     
     def configure_send_drug(self):
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
-    
-    def on_system_drag_data_received(self, widget, context, x, y, selection, target_type, timestamp):
-        if target_type == TARGET_TYPE_URI_LIST:
-            uri = selection.data.strip('\r\n\x00')
-            uri_splitted = uri.split() # we may have more than one file dropped
-            paths = []
-            for uri in uri_splitted:
-                path = get_file_path_from_dnd_dropped_uri(uri)
-                paths.append(path)
-            
-            self.controls.check_for_media(paths)
     
     def append_all(self, beans):
         print "append view type", self.current_view

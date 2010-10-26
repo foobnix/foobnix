@@ -15,6 +15,11 @@ from foobnix.regui.model import FModel
 import thread
 from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
 from foobnix.util.mouse_utils import is_double_left_click
+from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
+
+TARGET_TYPE_URI_LIST = 80
+dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
+
 class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     def __init__(self, controls):
         gtk.Notebook.__init__(self)
@@ -31,9 +36,23 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.set_show_border(True)
         self.set_scrollable(True)
         
+        self.connect('drag-data-received', self.on_system_drag_data_received)
+        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP, dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY)
+        
         #self.connect("button-press-event", self.on_button_press)
        
         self.empty_tab()
+        
+    def on_system_drag_data_received(self, widget, context, x, y, selection, target_type, timestamp):
+        if target_type == TARGET_TYPE_URI_LIST:
+            uri = selection.data.strip('\r\n\x00')
+            uri_splitted = uri.split() # we may have more than one file dropped
+            paths = []
+            for uri in uri_splitted:
+                path = get_file_path_from_dnd_dropped_uri(uri)
+                paths.append(path)
+            
+            self.controls.check_for_media(paths)
     """
     def on_select_page(self,tab, pointer, num):
         current = self.get_current_page()
