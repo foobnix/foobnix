@@ -219,13 +219,14 @@ class BaseFoobnixControls(LoadSave):
         self.is_scrobled = False
         self.start_time = False
         
-        self.media_engine.play(bean)
-        
+        self.seek_bar.clear()
         self.count_errors = 0
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
         self.main_window.set_title(bean.text)
-        self.seek_bar.clear()
+        
+        self.media_engine.play(bean)        
+
         if update_info_panel:
             self.update_info_panel(bean)
 

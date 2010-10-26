@@ -114,7 +114,6 @@ class GStreamerEngine(MediaPlayerEngine):
 
             LOG.info("Gstreamer try to play", uri)
             self.player.set_property("uri", uri)
-            #self.player.get_by_name("source").set_property("location", uri)
             
             self.prev_path = path
         
