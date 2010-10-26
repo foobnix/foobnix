@@ -97,15 +97,17 @@ class GStreamerEngine(MediaPlayerEngine):
         
         self.state_stop()
         time.sleep(0.2)
-        #self.player = self.gstreamer_player()
         
-        """equlizer settings"""
-        if FC().is_eq_enable:
-            pre = self.controls.eq.get_preamp()
-            bands = self.controls.eq.get_bands()
-            self.set_all_bands(pre, bands)
+        
         
         if self.prev_path != path:
+            self.player = self.gstreamer_player()
+            """equlizer settings"""
+            if FC().is_eq_enable:
+                pre = self.controls.eq.get_preamp()
+                bands = self.controls.eq.get_bands()
+                self.set_all_bands(pre, bands)
+            
             if path.startswith("http://"):
                 uri = path
                 self.notify_title(uri)
