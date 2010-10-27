@@ -6,24 +6,22 @@ Created on Oct 26, 2010
 import gtk
 import threading
 from foobnix.regui.treeview.dm_tree import DownloadManagerTreeControl
-from foobnix.util.const import DOWNLOAD_STATUS_INACTIVE, DOWNLOAD_STATUS_ACTIVE,\
+from foobnix.util.const import DOWNLOAD_STATUS_INACTIVE, DOWNLOAD_STATUS_ACTIVE, \
     DOWNLOAD_STATUS_COMPLETED, DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_ALL
 from foobnix.regui.treeview.dm_nav_tree import DMNavigationTreeControl
 import thread
 import time
 from foobnix.regui.model import FDModel, FModel
 from foobnix.dm.dm_dowloader import Dowloader
+from foobnix.helpers.window import ChildTopWindow
 
-class DM(gtk.Window):
+class DM(ChildTopWindow):
     def __init__(self, controls):
-        self.controls = controls
-        gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
-        self.set_title("Download Manager")
-        self.set_position(gtk.WIN_POS_CENTER)
-        self.set_geometry_hints(self, min_width=900, min_height=800)
-        self.set_resizable(False)
-        vbox = gtk.VBox(False,0)
-         
+        self.controls = controls        
+        ChildTopWindow.__init__(self, "Dowload Manager")
+        self.set_size_request(900, 700)
+        
+        vbox = gtk.VBox(False, 0)
         
         #playback = PlaybackControls(None)        
         
@@ -44,10 +42,10 @@ class DM(gtk.Window):
         paned.pack2(self.dm_list.scroll)
         
         #vbox.pack_start(playback, False,True)
-        vbox.pack_start(paned,True, True)
+        vbox.pack_start(paned, True, True)
                 
         self.add(vbox)
-        thread.start_new_thread(self.dowloader,(self.dm_list,))
+        thread.start_new_thread(self.dowloader, (self.dm_list,))
        
     
     def demo_tasks(self):
@@ -65,8 +63,8 @@ class DM(gtk.Window):
         for bean in beans:
             self.append_task(bean)
     
-    def dowloader(self,dm_list):
-        semaphore =threading.Semaphore(5)
+    def dowloader(self, dm_list):
+        semaphore = threading.Semaphore(5)
         while True:
             #print "check"
             time.sleep(2)
@@ -82,7 +80,7 @@ class DM(gtk.Window):
                     self.navigation.update_statistics()                    
                     semaphore.release()
                     
-                thread = Dowloader(dm_list.update_bean_info, bean,notify_finish)                
+                thread = Dowloader(dm_list.update_bean_info, bean, notify_finish)                
                 thread.start()
             else:
                 time.sleep(1)

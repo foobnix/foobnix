@@ -6,6 +6,8 @@ Created on 24  2010
 '''
 import gettext
 
-APP_NAME = "foobnix"
-gettext.install(APP_NAME, unicode=True)
-gettext.textdomain(APP_NAME)
+def foobnix_localization():
+    APP_NAME = "foobnix"
+    gettext.install(APP_NAME, unicode=True)
+    gettext.textdomain(APP_NAME)
+

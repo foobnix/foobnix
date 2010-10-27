@@ -7,37 +7,21 @@ Created on Oct 2, 2010
 
 import gtk
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.helpers.window import ChildTopWindow
 
 
-class BaseParentWindow(gtk.Window):
+class BaseParentWindow(ChildTopWindow):
     def __init__(self, title):
-        gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
-        self.set_position(gtk.WIN_POS_CENTER)
-        self.set_resizable(False)
-        self.set_title(title)
+        ChildTopWindow.__init__(self, title)
         self.set_border_width(10)
 
         """ get foobnix icon path"""
         self.set_icon_from_file (self.get_fobnix_logo())
-
-        self.connect("destroy", self.on_destroy)
         gtk.window_set_default_icon_from_file (self.get_fobnix_logo())
-        self.connect("delete-event", lambda * a: self.on_destroy())
-        self.connect("destroy", lambda * a: self.on_destroy())
-        self.connect("key_press_event", self.key_press_event)
+        
         
     def get_fobnix_logo(self):
         return get_foobnix_resourse_path_by_name("foobnix.png")
-
-    def on_destroy(self, *a):
-        self.hide()
-        return True
-    
-    '''Closing of window on Escape'''
-    def key_press_event(self, widget, event):
-        if event.keyval == gtk.keysyms.Escape:
-            self.hide()
-        return True
 
 class AboutWindow(BaseParentWindow):
     """class About Window to show foobnix information"""
@@ -74,7 +58,7 @@ Playing all imaginations\n
         image = gtk.image_new_from_stock(gtk.STOCK_STOP, gtk.ICON_SIZE_MENU)
 
         button_close = self.create_button_with_label_and_icon(image, label)
-        button_close.connect("clicked", lambda * a: self.on_destroy())
+        button_close.connect("clicked", self.hide_window)
         button_close.set_border_width (9)
         table.attach(button_close, 2, 3, 2, 3)
 

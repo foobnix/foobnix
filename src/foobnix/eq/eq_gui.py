@@ -13,6 +13,7 @@ from foobnix.util.mouse_utils import is_rigth_click
 from foobnix.helpers.menu import Popup
 from foobnix.helpers.my_widgets import ImageButton
 import copy
+from foobnix.helpers.window import ChildTopWindow
 
 def label(): 
     label = gtk.Label("–")
@@ -29,18 +30,12 @@ def text(text):
     label.show()
     return label
  
-class EqWindow(gtk.Window, FControl):
+class EqWindow(ChildTopWindow, FControl):
     
     def __init__(self, controls, collback):
         self.collback = collback 
         FControl.__init__(self, controls)        
-        gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
-        
-        self.set_title("Equalizer")
-        self.set_position(gtk.WIN_POS_CENTER)
-        self.set_resizable(False)
-        self.connect("delete-event", self.hide_window)
-        
+        ChildTopWindow.__init__(self, _("Equalizer"))
         
         self.eq_lines = []
         for label in EQUALIZER_LABLES:
@@ -64,26 +59,26 @@ class EqWindow(gtk.Window, FControl):
         self.models = []
         self.default_models = []
         
-    def on_restore_defaults(self,*a):
+    def on_restore_defaults(self, *a):
         self.models = []
         self.combo.get_model().clear()        
         self.append_all_models(copy.deepcopy(self.default_models))
         self.on_combo_chage()
         
-    def on_button_press(self,w,e):
+    def on_button_press(self, w, e):
         print "click"
         if is_rigth_click(e):
             print "r click"
             menu = Popup()
-            menu.add_item('Restore Defaults', gtk.STOCK_REFRESH,None)
+            menu.add_item('Restore Defaults', gtk.STOCK_REFRESH, None)
             menu.show(e)
     
     def on_collback(self):
         pre = self.eq_lines[0].get_value()
-        if float(pre)>=0:
-            pre = "+"+pre
+        if float(pre) >= 0:
+            pre = "+" + pre
             
-        self.db_text.set_text(pre+"db")
+        self.db_text.set_text(pre + "db")
         self.collback()
     
     def on_enable_eq(self, w):
@@ -131,7 +126,7 @@ class EqWindow(gtk.Window, FControl):
         
     def on_combo_chage(self, *a):        
         num = self.combo.get_active()
-        if num >=0:        
+        if num >= 0:        
             model = self.models[num]
             self.set_all_eq_span_values([model.preamp] + model.values)
             print num, model.name, self.get_active_values()
@@ -151,7 +146,7 @@ class EqWindow(gtk.Window, FControl):
         box.show()
         
         self.on = gtk.ToggleButton("On")
-        self.on.connect("toggled",self.on_enable_eq)
+        self.on.connect("toggled", self.on_enable_eq)
         #on.set_size_request(30,-1)        
         self.on.show()
         
@@ -267,19 +262,7 @@ class EqWindow(gtk.Window, FControl):
         
     def on_load(self):
         self.on.set_active(FC().is_eq_enable)
-   
-    def destroy(self):
-        self.hide()
-        return True
-    
-    def show(self):
-        self.show_all()
-
-   
-    def hide_window(self, *a):
-        self.hide()
-        return True
-    
+        
 class EqLine(gtk.VBox):
         def __init__(self, text, callback, def_value=0):
             self.callback = callback
