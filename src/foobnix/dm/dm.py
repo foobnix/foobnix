@@ -67,7 +67,6 @@ class DM(gtk.Window):
     
     def dowloader(self,dm_list):
         semaphore =threading.Semaphore(5)
-        bean = None   
         while True:
             print "check"
             time.sleep(2)
@@ -85,4 +84,5 @@ class DM(gtk.Window):
                 thread = Dowloader(dm_list.update_bean_info, bean,notify_finish)                
                 thread.start()
             else:
+                time.sleep(1)
                 semaphore.release()
