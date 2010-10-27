@@ -234,12 +234,8 @@ class GStreamerEngine(MediaPlayerEngine):
     def on_sync_message(self, bus, message):
         if message.structure is None:
             return
-        message_name = message.structure.get_name()
-        if message_name == "prepare-xwindow-id":
-            imagesink = message.src
-            imagesink.set_property("force-aspect-ratio", True)
-            self.controls.movie_window.set_size_request(-1, 400)
-            imagesink.set_xwindow_id(self.controls.movie_window.window.xid)
+        self.controls.movie_window.draw_video(message)
+        
 
     def on_message(self, bus, message):
         #print bus, message

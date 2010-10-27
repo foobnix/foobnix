@@ -21,17 +21,9 @@ from foobnix.regui.about.about import AboutWindow
 from foobnix.regui.treeview.radio_tree import RadioTreeControl
 from foobnix.regui.treeview.virtual_tree import VirtualTreeControl
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
-import gtk
-from foobnix.regui.model.signal import FControl
 from foobnix.eq.eq_controller import EqController
 from foobnix.dm.dm import DM
-
-
-class MovieDrawingArea(FControl, gtk.DrawingArea):
-    def __init__(self, controls):
-        FControl.__init__(self, controls)
-        gtk.DrawingArea.__init__(self)
-        
+from foobnix.regui.controls.movie_area import MovieDrawingArea
 
 class FoobnixCore(BaseFoobnixControls):
 

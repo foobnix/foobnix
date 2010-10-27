@@ -25,7 +25,7 @@ class HotKeysConfig(ConfigPlugin):
         self.tree_widget.connect("button-press-event", self.on_populate_click)
         
         self.tree_widget.show()
-        self.model = gtk.ListStore(str,str)
+        self.model = gtk.ListStore(str, str)
         
         self.title = None
         self.column1 = gtk.TreeViewColumn(_("Action"), gtk.CellRendererText(), text=0)
@@ -105,7 +105,7 @@ class HotKeysConfig(ConfigPlugin):
         except:
             pass 
     
-    def on_populate_click(self,w,event):
+    def on_populate_click(self, w, event):
         if is_double_left_click(event):            
             selection = self.tree_widget.get_selection()
             model, selected = selection.get_selected()
@@ -115,7 +115,7 @@ class HotKeysConfig(ConfigPlugin):
             self.action_text.set_text(command)
             self.hotkey_text.set_text(keystring)
         
-    def on_mouse_click(self,w, event):
+    def on_mouse_click(self, w, event):
         menu = Popup()
         menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.set_action_text, "--play")
         menu.add_item(_("Pause"), gtk.STOCK_MEDIA_PAUSE, self.set_action_text, "--pause")
@@ -125,6 +125,7 @@ class HotKeysConfig(ConfigPlugin):
         menu.add_item(_("Voulume up"), gtk.STOCK_GO_UP, self.set_action_text, "--volume-up")
         menu.add_item(_("Voulume down"), gtk.STOCK_GO_DOWN, self.set_action_text, "--volume-down")
         menu.add_item(_("Show-Hide"), gtk.STOCK_FULLSCREEN, self.set_action_text, "--show-hide")
+        menu.add_item(_("Play-Pause"), gtk.STOCK_MEDIA_RECORD, self.set_action_text, "--play-pause")
         menu.show(event)     
    
     def on_load(self):
@@ -133,7 +134,7 @@ class HotKeysConfig(ConfigPlugin):
         for key in items:
             command = key
             hotkey = items[key]            
-            self.model.append([command,hotkey])  
+            self.model.append([command, hotkey])  
             
         self.bind_all(items)
        
@@ -145,8 +146,8 @@ class HotKeysConfig(ConfigPlugin):
             print hotkey, e
     
     def activate_hot_key(self, command):
-        LOG.debug("Run command: "+command)         
-        thread.start_new_thread(os.system,(command,))
+        LOG.debug("Run command: " + command)         
+        thread.start_new_thread(os.system, (command,))
         
     def on_save(self):
         FConfiguration().action_hotkey = self.get_all_items()
@@ -161,7 +162,7 @@ class HotKeysConfig(ConfigPlugin):
             except:
                 pass
                               
-    def bind_all(self,items):
+    def bind_all(self, items):
         for key in items:
             command = key
             hotkey = items[key]
@@ -172,24 +173,24 @@ class HotKeysConfig(ConfigPlugin):
         for item in self.model:              
             action = item[0]
             hotkey = item[1]
-            items[action]=hotkey       
+            items[action] = hotkey       
         return items      
         
-    def on_key_press(self,w,event):
+    def on_key_press(self, w, event):
         self.unbind_all() 
         keyname = gtk.gdk.keyval_name(event.keyval)
         print "Key %s (%d) was pressed" % (keyname, event.keyval), event.state
         if event.state & gtk.gdk.CONTROL_MASK:           
-            self.set_hotkey_text("<Control>"+keyname)
+            self.set_hotkey_text("<Control>" + keyname)
         elif event.state & gtk.gdk.SHIFT_MASK :
-            self.set_hotkey_text("<Shift>"+keyname)
+            self.set_hotkey_text("<Shift>" + keyname)
         elif event.state & gtk.gdk.SUPER_MASK:            
-            self.set_hotkey_text("<SUPER>"+keyname)
+            self.set_hotkey_text("<SUPER>" + keyname)
         elif event.state & (gtk.gdk.MOD1_MASK | gtk.gdk.MOD2_MASK):
-            self.set_hotkey_text("<Alt>"+keyname)    
+            self.set_hotkey_text("<Alt>" + keyname)    
         else:            
             self.set_hotkey_text(keyname)       
             
-    def on_key_release(self,w,event): 
+    def on_key_release(self, w, event): 
         keyname = gtk.gdk.keyval_name(event.keyval)
         print "Key release %s (%d) was pressed" % (keyname, event.keyval)        
