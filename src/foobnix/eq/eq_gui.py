@@ -15,6 +15,7 @@ from foobnix.helpers.my_widgets import ImageButton
 import copy
 from foobnix.helpers.window import ChildTopWindow
 
+
 def label(): 
     label = gtk.Label("–")
     label.show()
@@ -29,7 +30,7 @@ def text(text):
     label = gtk.Label(text)
     label.show()
     return label
- 
+
 class EqWindow(ChildTopWindow, FControl):
     
     def __init__(self, controls, collback):
