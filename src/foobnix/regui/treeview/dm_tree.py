@@ -65,7 +65,7 @@ class DownloadManagerTreeControl(CommonTreeControl):
         #gtk.gdk.threads_enter()     
         self.update_bean(bean)
         self.navigation.update_statistics()
-        self.navigation.use_filter()
+        #self.navigation.use_filter()
         #gtk.gdk.threads_leave()
         
         
