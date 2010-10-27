@@ -6,9 +6,12 @@ Created on Sep 28, 2010
 from foobnix.regui.state import LoadSave
 import gtk
 from foobnix.regui.treeview.common_tree import CommonTreeControl
-from foobnix.util.mouse_utils import is_rigth_click, is_double_left_click
+from foobnix.util.mouse_utils import is_rigth_click, is_double_left_click,\
+    is_left_click
 from foobnix.helpers.menu import Popup
-from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL
+from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL,\
+    DOWNLOAD_STATUS_ACTIVE, DOWNLOAD_STATUS_ALL
+from foobnix.regui.model import FTreeModel
 
 class SimpleTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, title_name, controls):        
@@ -33,7 +36,15 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
             active.type = FTYPE_NOT_UPDATE_INFO_PANEL
         else:
             return None
-            
+        
+        if is_left_click(e):
+            print "select", active.get_status()
+            if active.get_status():
+                if active.get_status() == DOWNLOAD_STATUS_ALL:
+                    self.controls.dm.filter(None, FTreeModel().status[0])
+                else:
+                    self.controls.dm.filter(active.get_status(), FTreeModel().status[0])
+                
         if is_double_left_click(e):
             self.controls.play(active)
         

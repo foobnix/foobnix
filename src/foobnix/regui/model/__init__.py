@@ -29,6 +29,9 @@ class FTreeModel():
         self.UUID = 18 , str
         self.parent_level = 19 , str
         self.type = 20 , str
+        self.status = 21, str
+        self.progress = 22, str
+        self.save_to = 23, str
     
     def cut(self):
     
@@ -46,7 +49,7 @@ class FTreeModel():
                     types.append(type) 
                     break;
         return types
-        
+
 class FModel(FTreeModel):             
     TYPE_SONG = "SONG"
     TYPE_FOLDER = "FOLDER"
@@ -73,7 +76,10 @@ class FModel(FTreeModel):
             return self.artist + " - " + self.title
         else:
             return self.text
-     
+    
+    def get_save_to(self):
+        return self.save_to
+    
     def get_uuid(self):
         return self.UUID
     
@@ -138,5 +144,17 @@ class FModel(FTreeModel):
         self.time = time
         return self
     
+    def add_status(self, status):
+        self.status = status
+        return self    
+    
+    def get_status(self):
+        return self.status
+    
     def __str__(self):
         return "FModel: " + str(self.__dict__)
+    
+class FDModel(FModel):
+    def __init__(self,text=None, path=None):
+        FModel.__init__(self,text,path)
+        self.is_file = True    

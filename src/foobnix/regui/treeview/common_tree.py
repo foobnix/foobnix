@@ -145,10 +145,18 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         print "Selected bean", selected_bean
         return selected_bean
 
+    def set_bean_column_value(self, bean, colum_num, value):
+        for row in self.model:
+            if row[self.UUID[0]] == bean.UUID:
+                row[colum_num] = value
+                break
+            
+        
+        
     def set_play_icon_to_bean(self, bean):
         for row in self.model:
             if row[self.UUID[0]] == bean.UUID:
-                row[self.play_icon[0]] = gtk.STOCK_MEDIA_PLAY
+                row[self.play_icon[0]] = gtk.STOCK_MEDIA_PLAY                
             else:
                 row[self.play_icon[0]] = None
 
@@ -264,12 +272,13 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
             beans.append(bean)
         return beans
 
-    def filter(self, query):
-        if len(query.strip()) > 0:
+    """0 - self.text[0]"""
+    def filter(self, query, column_num=FTreeModel().text[0]):
+        if query and len(query.strip()) > 0:
             query = query.strip().decode("utf-8").lower()
 
             for line in self.model:
-                name = line[self.text[0]].lower()
+                name = line[column_num].lower()
 
                 if name.find(query) >= 0:
                     #LOG.info("FIND PARENT:", name, query)
@@ -278,8 +287,8 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
                     find = False
                     child_count = 0;
                     for child in line.iterchildren():
-                        name = str(child[self.text[0]]).decode("utf-8").lower()
-                        #name = child[self.text[0]]
+                        name = str(child[column_num]).decode("utf-8").lower()
+                        #name = child[column_num]
                         if name.find(query) >= 0:
                             child_count += 1
                             #LOG.info("FIND CHILD :", name, query)
