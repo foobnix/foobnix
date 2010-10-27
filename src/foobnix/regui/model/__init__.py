@@ -32,6 +32,8 @@ class FTreeModel():
         self.status = 21, str
         self.progress = 22, str
         self.save_to = 23, str
+        self.persent = 24,int
+        self.size = 25,str
     
     def cut(self):
     
@@ -63,6 +65,7 @@ class FModel(FTreeModel):
         self.visible = True
         self.UUID = uuid.uuid4().hex
         self.level = uuid.uuid4().hex
+        self.persent = 0
         
     def create_from_text(self, text):
         self.text = text

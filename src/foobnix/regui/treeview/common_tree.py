@@ -151,6 +151,15 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
                 row[colum_num] = value
                 break
             
+    def update_bean(self, bean):
+        for row in self.model:
+            if row[self.UUID[0]] == bean.UUID:
+                dict = FTreeModel().__dict__
+                for key in dict:
+                    value = getattr(bean, key)
+                    row_num = dict[key][0]
+                    row[row_num] = value
+                break
         
         
     def set_play_icon_to_bean(self, bean):

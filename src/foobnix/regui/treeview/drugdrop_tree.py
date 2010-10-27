@@ -224,6 +224,7 @@ class DrugDropTree(gtk.TreeView):
             
             
             #gtk.gdk.threads_enter()
+            print row
             self.model.append(None, row)
             #gtk.gdk.threads_leave()
         
