@@ -26,7 +26,6 @@ class DM(gtk.Window):
          
         
         #playback = PlaybackControls(None)        
-        #statusbar = StatusbarControls(controls)
         
         paned = gtk.HPaned()
         paned.set_position(200)
@@ -46,15 +45,10 @@ class DM(gtk.Window):
         
         #vbox.pack_start(playback, False,True)
         vbox.pack_start(paned,True, True)
-        #vbox.pack_start(statusbar,False, True)
                 
         self.add(vbox)
         thread.start_new_thread(self.dowloader,(self.dm_list,))
-        
-        #time.sleep(2)
-        #self.demo_tasks()
-        #time.sleep(2)
-        #self.demo_tasks()
+       
     
     def demo_tasks(self):
         self.append_task(FModel("Madonna - Sorry"))
@@ -91,9 +85,4 @@ class DM(gtk.Window):
                 thread = Dowloader(dm_list.update_bean_info, bean,notify_finish)                
                 thread.start()
             else:
-                semaphore.release() 
-            
-if __name__ == '__main__':
-    dm = DM()
-    gtk.gdk.threads_init()
-    gtk.main()
+                semaphore.release()

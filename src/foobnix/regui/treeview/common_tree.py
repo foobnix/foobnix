@@ -138,6 +138,8 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
 
     def get_selected_bean(self):
         selection = self.get_selection()
+        if not selection:
+            return None
         model, paths = selection.get_selected_rows()
         if not paths:
             return None

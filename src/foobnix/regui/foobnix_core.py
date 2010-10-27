@@ -17,7 +17,6 @@ from foobnix.regui.controls.tray_icon import TrayIconControls
 from foobnix.preferences.preferences_window import PreferencesWindow
 from foobnix.regui.top import TopWidgets
 from foobnix.regui.controls.dbus_manager import DBusManager
-from foobnix.dm.dm_gui import DownloadManager
 from foobnix.regui.about.about import AboutWindow
 from foobnix.regui.treeview.radio_tree import RadioTreeControl
 from foobnix.regui.treeview.virtual_tree import VirtualTreeControl
