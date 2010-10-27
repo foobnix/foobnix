@@ -5,7 +5,8 @@ Created on Oct 27, 2010
 '''
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 import gtk
-from foobnix.util.const import DOWNLOAD_STATUS_ALL
+from foobnix.util.const import DOWNLOAD_STATUS_ALL, DOWNLOAD_STATUS_ACTIVE,\
+    DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_LOCK
 from foobnix.regui.model import FTreeModel
 class DownloadManagerTreeControl(CommonTreeControl):
     def __init__(self, controls):
@@ -48,6 +49,14 @@ class DownloadManagerTreeControl(CommonTreeControl):
         
 
         self.set_type_plain()
+        
+    def get_next_bean_to_dowload(self):
+        all = self.get_all_beans()
+        for bean in all:
+            if bean.get_status() == DOWNLOAD_STATUS_ACTIVE:
+                self.set_bean_column_value(bean, FTreeModel().status[0], DOWNLOAD_STATUS_LOCK)
+                return bean
+        
     
     def update_bean_info(self, bean):
         self.update_bean(bean)
