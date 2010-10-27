@@ -84,7 +84,7 @@ class FC:
         self.online_music_path = '/tmp'
         
         """info panel"""
-        self.info_panel_image_size = 250
+        self.info_panel_image_size = 150
         self.is_info_panel_show_tags = False
         
 

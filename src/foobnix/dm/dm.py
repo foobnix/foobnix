@@ -68,8 +68,9 @@ class DM(gtk.Window):
     def dowloader(self,dm_list):
         semaphore =threading.Semaphore(5)
         while True:
-            print "check"
+            #print "check"
             time.sleep(2)
+            #self.navigation.use_filter()
             
             semaphore.acquire()            
             bean = dm_list.get_next_bean_to_dowload()
@@ -78,7 +79,7 @@ class DM(gtk.Window):
                 bean.path = vk.path
                          
                 def notify_finish():
-                    self.navigation.update_statistics()
+                    self.navigation.update_statistics()                    
                     semaphore.release()
                     
                 thread = Dowloader(dm_list.update_bean_info, bean,notify_finish)                
