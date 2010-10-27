@@ -52,7 +52,9 @@ class PreferencesWindow(FControl, LoadSave):
         mainVBox = gtk.VBox(False, 0)
 
 
-        self.window = self.craete_window()
+        title = "Foobnix " + get_version() + " - " + _  ("Preferences")
+        self.window = ChildTopWindow(title, 800, 500)
+        
 
         paned = gtk.HPaned()
         paned.set_position(200)
@@ -104,15 +106,6 @@ class PreferencesWindow(FControl, LoadSave):
         FC().save()
         self.hide()
 
-
-
-    def craete_window(self):
-        window = ChildTopWindow(_("Preferences"))
-        window.set_border_width(10)
-        window.set_title("Foobnix " + get_version() + " - " + _  ("Preferences"))
-        window.set_size_request(800, 500)
-        return window
-    
     def on_key_press(self, w, e):
         if is_key(e, 'Escape'):
             self.hide()

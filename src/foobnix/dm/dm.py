@@ -18,9 +18,8 @@ from foobnix.helpers.window import ChildTopWindow
 class DM(ChildTopWindow):
     def __init__(self, controls):
         self.controls = controls        
-        ChildTopWindow.__init__(self, "Dowload Manager")
-        self.set_size_request(900, 700)
-        
+        ChildTopWindow.__init__(self, "Dowload Manager", 900, 700)
+
         vbox = gtk.VBox(False, 0)
         
         #playback = PlaybackControls(None)        

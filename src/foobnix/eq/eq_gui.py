@@ -42,7 +42,6 @@ class EqWindow(ChildTopWindow, FControl):
             self.eq_lines.append(EqLine(label, self.on_collback))
             
             
-            
        
         lbox = gtk.VBox(False, 0)
         lbox.show()

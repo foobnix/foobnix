@@ -13,7 +13,6 @@ from foobnix.helpers.window import ChildTopWindow
 class BaseParentWindow(ChildTopWindow):
     def __init__(self, title):
         ChildTopWindow.__init__(self, title)
-        self.set_border_width(10)
 
         """ get foobnix icon path"""
         self.set_icon_from_file (self.get_fobnix_logo())
