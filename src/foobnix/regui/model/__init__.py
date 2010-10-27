@@ -160,4 +160,4 @@ class FModel(FTreeModel):
 class FDModel(FModel):
     def __init__(self,text=None, path=None):
         FModel.__init__(self,text,path)
-        self.is_file = True    
+        self.is_file = True 

@@ -142,7 +142,6 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         if not paths:
             return None
         selected_bean = self._get_bean_by_path(paths[0])
-        print "Selected bean", selected_bean
         return selected_bean
 
     def set_bean_column_value(self, bean, colum_num, value):
@@ -188,10 +187,7 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
 
     def _get_bean_by_path(self, path):
         model = self.model
-        LOG.info("Selecte bean path", path)
-
         path = self.filter_model.convert_path_to_child_path(path)
-        LOG.info("Selecte bean path", path)
         iter = model.get_iter(path)
 
         if iter:

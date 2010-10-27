@@ -16,7 +16,6 @@ from foobnix.regui.controls.status_bar import StatusbarControls
 from foobnix.regui.controls.tray_icon import TrayIconControls
 from foobnix.preferences.preferences_window import PreferencesWindow
 from foobnix.regui.top import TopWidgets
-from foobnix.eq.eq_gui import EqWindow
 from foobnix.regui.controls.dbus_manager import DBusManager
 from foobnix.dm.dm_gui import DownloadManager
 from foobnix.regui.about.about import AboutWindow
@@ -26,6 +25,7 @@ from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 import gtk
 from foobnix.regui.model.signal import FControl
 from foobnix.eq.eq_controller import EqController
+from foobnix.dm.dm import DM
 
 
 class MovieDrawingArea(FControl, gtk.DrawingArea):
@@ -70,7 +70,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.virtual = VirtualTreeControl(self)
 
         self.eq = EqController(self)
-        self.dm = DownloadManager(self)
+        self.dm = DM(self)
         self.about = AboutWindow()
 
         """layout panels"""

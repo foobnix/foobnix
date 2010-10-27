@@ -9,8 +9,9 @@ from foobnix.util.const import DOWNLOAD_STATUS_ALL, DOWNLOAD_STATUS_ACTIVE,\
     DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_LOCK
 from foobnix.regui.model import FTreeModel
 class DownloadManagerTreeControl(CommonTreeControl):
-    def __init__(self, controls):
-        CommonTreeControl.__init__(self, controls)
+    def __init__(self, navigation):
+        self.navigation = navigation
+        CommonTreeControl.__init__(self, None)
         self.set_reorderable(False)
         self.set_headers_visible(True)
         
@@ -52,6 +53,8 @@ class DownloadManagerTreeControl(CommonTreeControl):
         
     def get_next_bean_to_dowload(self):
         all = self.get_all_beans()
+        if not all:
+            return None
         for bean in all:
             if bean.get_status() == DOWNLOAD_STATUS_ACTIVE:
                 self.set_bean_column_value(bean, FTreeModel().status[0], DOWNLOAD_STATUS_LOCK)
@@ -59,7 +62,14 @@ class DownloadManagerTreeControl(CommonTreeControl):
         
     
     def update_bean_info(self, bean):
+        #gtk.gdk.threads_enter()     
         self.update_bean(bean)
+        self.navigation.update_statistics()
+        self.navigation.use_filter()
+        #gtk.gdk.threads_leave()
+        
+        
+        
     
     def get_status_statisctics(self):
         all = self.get_all_beans()
