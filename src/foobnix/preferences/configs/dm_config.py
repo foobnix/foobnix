@@ -6,12 +6,12 @@ Created on 24 авг. 2010
 '''
 import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
-from foobnix.util.configuration import FConfiguration
 from foobnix.util import LOG
+from foobnix.util.fc import FC
 
-class SaveOnlineConfig(ConfigPlugin):
+class DMConfig(ConfigPlugin):
     
-    name = _("Online Music")
+    name = _("Download Manager")
     
     def __init__(self, controls):
         print "Create try icon conf"
@@ -47,17 +47,16 @@ class SaveOnlineConfig(ConfigPlugin):
         else:
             self.online_dir.set_sensitive(False)
                 
-        FConfiguration().is_save_online = value              
+        FC().is_save_online = value              
         
     def on_change_folder(self, *a):
         path = self.online_dir.get_filename()       
-        FConfiguration().onlineMusicPath = path
+        FC().online_save_to_folder = path
         
         LOG.info("Change music online folder", path)  
                 
     
     def on_load(self):
-        self.is_save.set_active(FConfiguration().is_save_online)
-        
-        self.online_dir.set_current_folder(FConfiguration().onlineMusicPath)
-        self.online_dir.set_sensitive(FConfiguration().is_save_online)
+        self.is_save.set_active(FC().is_save_online)
+        self.online_dir.set_current_folder(FC().online_save_to_folder)
+        self.online_dir.set_sensitive(FC().is_save_online)

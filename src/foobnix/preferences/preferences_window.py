@@ -5,7 +5,6 @@ import gtk
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
 #from foobnix.util.configuration import FConfiguration, get_version
 from foobnix.util.configuration import get_version
-from foobnix.preferences.configs.save_online import SaveOnlineConfig
 from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs.vk_conf import VkontakteConfig
 from foobnix.preferences.configs.tabs import TabsConfig
@@ -21,6 +20,7 @@ from foobnix.regui.model.signal import FControl
 from foobnix.util.fc import FC
 from foobnix.util.key_utils import is_key
 from foobnix.helpers.window import ChildTopWindow
+from foobnix.preferences.configs.dm_config import DMConfig
 
 class PreferencesWindow(FControl, LoadSave):
 
@@ -34,7 +34,7 @@ class PreferencesWindow(FControl, LoadSave):
         FControl.__init__(self, controls)
 
         self.configs.append(MusicLibraryConfig(controls))
-        self.configs.append(SaveOnlineConfig(controls))
+        self.configs.append(DMConfig(controls))
         self.configs.append(TabsConfig(controls))
         self.configs.append(LastFmConfig(controls))
         self.configs.append(VkontakteConfig(controls))

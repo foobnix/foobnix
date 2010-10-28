@@ -2,6 +2,7 @@ import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.model.signal import FControl
 from foobnix.util import LOG
+from foobnix.util.text_utils import capitilize_query
 class SearchControls(FControl, gtk.Frame):
     def __init__(self, controls):        
         gtk.Frame.__init__(self)
@@ -48,7 +49,8 @@ class SearchControls(FControl, gtk.Frame):
                 self.search_function(self.get_query())
     
     def get_query(self):
-        return self.entry.get_text()
+        query = self.entry.get_text()
+        return capitilize_query(query)
         
     def search_line(self):
         hbox = gtk.HBox(False, 0)

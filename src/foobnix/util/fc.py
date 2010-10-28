@@ -81,7 +81,8 @@ class FC:
         """download manager controls"""
         self.auto_start_donwload = True
         self.max_active_count = 3
-        self.online_music_path = '/tmp'
+        self.online_save_to_folder = "/tmp"
+        self.is_save_online = True
         
         """info panel"""
         self.info_panel_image_size = 150

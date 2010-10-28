@@ -65,7 +65,7 @@ class DM(ChildTopWindow):
     def dowloader(self, dm_list):
         semaphore = threading.Semaphore(5)
         while True:
-            #print "check"
+            print "check"
             time.sleep(2)
             #self.navigation.use_filter()
             
