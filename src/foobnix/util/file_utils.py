@@ -9,11 +9,12 @@ import urllib
 def isDirectory(path):
     return os.path.isdir(path)
 
+"""extentsion linke .mp3, .mp4"""
 def get_file_extenstion(fileName):    
-    return os.path.splitext(fileName)[1].lower()
+    return os.path.splitext(fileName)[1].lower().strip()
 
 def file_extenstion(file_name):
-    return os.path.splitext(file_name)[1].lower()               
+    return get_file_extenstion(file_name)
 
 def get_file_path_from_dnd_dropped_uri(uri):
     path = ""

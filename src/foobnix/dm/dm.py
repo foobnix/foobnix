@@ -71,9 +71,10 @@ class DM(ChildTopWindow):
             
             semaphore.acquire()            
             bean = dm_list.get_next_bean_to_dowload()
-            if bean:                 
-                vk = self.controls.vk.find_one_track(bean.get_display_name())
-                bean.path = vk.path
+            if bean:
+                if not bean.path:                 
+                    vk = self.controls.vk.find_one_track(bean.get_display_name())
+                    bean.path = vk.path
                          
                 def notify_finish():
                     self.navigation.update_statistics()                    

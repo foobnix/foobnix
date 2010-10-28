@@ -32,8 +32,8 @@ class FTreeModel():
         self.status = 21, str
         self.progress = 22, str
         self.save_to = 23, str
-        self.persent = 24,int
-        self.size = 25,str
+        self.persent = 24, int
+        self.size = 25, str
     
     def cut(self):
     
@@ -76,9 +76,11 @@ class FModel(FTreeModel):
     
     def get_display_name(self):
         if self.artist and self.title:
-            return self.artist + " - " + self.title
+            text = self.artist + " - " + self.title
+            return text.strip()
         else:
-            return self.text
+            text = "" + self.text
+            return text.strip()
     
     def get_save_to(self):
         return self.save_to
@@ -158,6 +160,6 @@ class FModel(FTreeModel):
         return "FModel: " + str(self.__dict__)
     
 class FDModel(FModel):
-    def __init__(self,text=None, path=None):
-        FModel.__init__(self,text,path)
+    def __init__(self, text=None, path=None):
+        FModel.__init__(self, text, path)
         self.is_file = True 

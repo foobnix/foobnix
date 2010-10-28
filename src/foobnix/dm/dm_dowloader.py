@@ -10,8 +10,8 @@ from foobnix.util.const import DOWNLOAD_STATUS_COMPLETED, \
     DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_INACTIVE
 import os
 from foobnix.util.time_utils import size2text
-import time
 from foobnix.util.fc import FC
+from foobnix.util.file_utils import get_file_extenstion
 
 class Dowloader(threading.Thread):
     def __init__(self, update, bean, notify_finish):
@@ -33,7 +33,7 @@ class Dowloader(threading.Thread):
     def download(self):
         bean = self.bean 
         update = self.update 
-        if not bean:
+        if not bean or not bean.path:            
             return None
          
         opener = FancyURLopener()
@@ -47,14 +47,32 @@ class Dowloader(threading.Thread):
         block_size = 4096
         block_count = 0
         
-        if bean.artist:
-            to_file = os.path.join(FC().online_save_to_folder, bean.artist, bean.get_display_name() + ".mp3")            
-        else:
-            to_file = os.path.join(FC().online_save_to_folder, bean.get_display_name() + ".mp3")
+        ext = get_file_extenstion(bean.path)
         
-        os.makedirs(to_file)
+        if bean.artist:
+            path = FC().online_save_to_folder + "/" + bean.artist 
+            to_file = os.path.join(path, bean.get_display_name() + ext)            
+        else:
+            path = FC().online_save_to_folder
+            to_file = os.path.join(path, bean.get_display_name() + ext)        
+        
+        if not os.path.exists(path):
+            os.makedirs(path)
         
         to_file_tmp = to_file + ".tmp"
+        
+        if os.path.exists(to_file_tmp):
+            bean.status = DOWNLOAD_STATUS_INACTIVE
+            bean.to_file = to_file
+            update(bean)
+            return  None
+        
+        if os.path.exists(to_file):
+            bean.status = DOWNLOAD_STATUS_COMPLETED
+            bean.to_file = to_file
+            update(bean)
+            return None
+        
         bean.save_to = to_file        
         file = open(to_file_tmp, "wb")
         
