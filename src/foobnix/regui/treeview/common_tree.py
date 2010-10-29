@@ -172,7 +172,7 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
     def set_play_icon_to_bean(self, bean):
         for row in self.model:
             if row[self.UUID[0]] == bean.UUID:
-                row[self.play_icon[0]] = gtk.STOCK_MEDIA_PLAY                
+                row[self.play_icon[0]] = gtk.STOCK_GO_FORWARD                
             else:
                 row[self.play_icon[0]] = None
 

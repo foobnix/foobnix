@@ -6,7 +6,7 @@ Created on 3 сент. 2010
 '''
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
-from foobnix.util.configuration import FConfiguration
+from foobnix.util.fc import FC
 class NotificationConfig(ConfigPlugin):
     
     name = _("Notifications")
@@ -24,10 +24,10 @@ class NotificationConfig(ConfigPlugin):
         self.widget = box
     
     def on_load(self):
-        self.check_new_version.set_active(FConfiguration().check_new_version)
+        self.check_new_version.set_active(FC().check_new_version)
     
     def on_save(self):        
-        FConfiguration().check_new_version = self.check_new_version.get_active()
+        FC().check_new_version = self.check_new_version.get_active()
         
         
     

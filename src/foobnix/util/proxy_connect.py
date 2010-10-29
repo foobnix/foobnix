@@ -5,8 +5,8 @@ Created on 1 сент. 2010
 @author: ivan
 '''
 import urllib2
-from foobnix.util.configuration import FConfiguration
 from foobnix.util import LOG
+from foobnix.util.fc import FC
 class ProxyPasswordMgr:
     def __init__(self):
         self.user = self.passwd = None
@@ -17,11 +17,11 @@ class ProxyPasswordMgr:
         return self.user, self.passwd
 
 def set_proxy_settings():
-    if FConfiguration().proxy_enable and FConfiguration().proxy_url:
+    if FC().proxy_enable and FC().proxy_url:
         #http://spys.ru/proxylist/
-        proxy = FConfiguration().proxy_url
-        user = FConfiguration().proxy_user
-        password = FConfiguration().proxy_password
+        proxy = FC().proxy_url
+        user = FC().proxy_user
+        password = FC().proxy_password
         
         LOG.info("Proxy enable:", proxy, user, password)
         

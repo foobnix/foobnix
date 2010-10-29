@@ -19,7 +19,6 @@
 #
 # http://code.google.com/p/pylast/
 import datetime
-from foobnix.util.configuration import FConfiguration
     
 __version__ = '0.4'
 __author__ = 'Amr Hassan'

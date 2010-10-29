@@ -6,11 +6,11 @@ Created on 1 сент. 2010
 '''
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
-from foobnix.util.configuration import FConfiguration
 from foobnix.util.proxy_connect import set_proxy_settings
 import time
 import urllib2
 from foobnix.util import LOG
+from foobnix.util.fc import FC
 class NetworkConfig(ConfigPlugin):
     
     name = _("Network Settings")
@@ -139,38 +139,38 @@ class NetworkConfig(ConfigPlugin):
     def on_enable_http_proxy(self, *a):
         if  self.enable_proxy.get_active():
             self.frame.set_sensitive(True)
-            FConfiguration().proxy_enable = True
+            FC().proxy_enable = True
         else:
             self.frame.set_sensitive(False)
-            FConfiguration().proxy_enable = False
+            FC().proxy_enable = False
 
     def on_load(self):
-        self.enable_proxy.set_active(FConfiguration().proxy_enable)
-        self.frame.set_sensitive(FConfiguration().proxy_enable)
+        self.enable_proxy.set_active(FC().proxy_enable)
+        self.frame.set_sensitive(FC().proxy_enable)
         
         if  self.enable_proxy.get_active():
-            FConfiguration().cookie = None
+            FC().cookie = None
         
-        if FConfiguration().proxy_url:
-            self.proxy_server.set_text(FConfiguration().proxy_url)
-        if FConfiguration().proxy_user:
-            self.login_text.set_text(FConfiguration().proxy_user)
-        if FConfiguration().proxy_password:
-            self.password_text.set_text(FConfiguration().proxy_password)
+        if FC().proxy_url:
+            self.proxy_server.set_text(FC().proxy_url)
+        if FC().proxy_user:
+            self.login_text.set_text(FC().proxy_user)
+        if FC().proxy_password:
+            self.password_text.set_text(FC().proxy_password)
             
             
     def on_save(self):
         if self.proxy_server.get_text():
-            FConfiguration().proxy_url = self.proxy_server.get_text()
+            FC().proxy_url = self.proxy_server.get_text()
         else:
-            FConfiguration().proxy_url = None
+            FC().proxy_url = None
         
         if self.login_text.get_text():
-            FConfiguration().proxy_user = self.login_text.get_text()
+            FC().proxy_user = self.login_text.get_text()
         else:
-            FConfiguration().proxy_user = None
+            FC().proxy_user = None
         
         if self.password_text.get_text():     
-            FConfiguration().proxy_password = self.password_text.get_text()
+            FC().proxy_password = self.password_text.get_text()
         else:     
-            FConfiguration().proxy_password = None
+            FC().proxy_password = None

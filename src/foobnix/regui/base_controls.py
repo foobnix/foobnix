@@ -14,7 +14,7 @@ from foobnix.util.singe_thread import SingreThread
 from foobnix.regui.service.vk_service import VKService
 from foobnix.util.plsparser import get_radio_source
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
-    directory_chooser_dialog
+    directory_chooser_dialog, info_dialog_with_link
 from foobnix.regui.service.music_service import get_all_music_by_path
 from foobnix.regui.id3 import update_id3_wind_filtering
 import os
@@ -22,6 +22,8 @@ import time
 from foobnix.regui.service.google_service import google_search_resutls
 from foobnix.util.file_utils import get_file_extenstion
 from foobnix.util.const import STATE_PLAY
+import urllib2
+from foobnix.util.configuration import VERSION
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
@@ -442,6 +444,23 @@ class BaseFoobnixControls(LoadSave):
     def set_lopping_disable(self):
         self.notetabs.set_lopping_disable()
 
+
+    def check_version(self):
+        uuid = FC().uuid
+        current_version = VERSION        
+        try:
+            from socket import gethostname
+            f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname())
+        except:
+            return None
+
+        new_version = f.read()
+        LOG.info("version", current_version , "|", new_version, "|", uuid)
+        f.close()
+        if FC().check_new_version and current_version < new_version:
+            info_dialog_with_link(_("New version is available"), "foobnix " + new_version, "http://www.foobnix.com/?page=download")            
+
+
     def on_load(self):
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):
@@ -450,6 +469,7 @@ class BaseFoobnixControls(LoadSave):
                 LOG.debug("NOT LOAD", self.__dict__[element])
         self.singre_thread = SingreThread(self.search_progress)
         self.main_window.show()
+        self.check_version()
 
     def on_save(self):
         for element in self.__dict__:

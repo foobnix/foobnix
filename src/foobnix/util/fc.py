@@ -8,6 +8,7 @@ import pickle
 from foobnix.util import LOG, const
 import os
 from foobnix.util.singleton import Singleton
+import uuid
 
 """Foobnix configuration"""
 class FC:
@@ -88,8 +89,18 @@ class FC:
         self.info_panel_image_size = 150
         self.is_info_panel_show_tags = False
         
+        self.uuid = uuid.uuid4().hex
+        self.check_new_version = True
 
         self.last_dir = None
+        
+        self.proxy_enable = False
+        self.proxy_url = None
+        self.proxy_user = None
+        self.proxy_password = None
+        
+        self.action_hotkey = {'foobnix --volume-up': '<SUPER>Up', 'foobnix --volume-down': '<SUPER>Down', 'foobnix --show-hide': '<SUPER>a', 'foobnix --prev': '<SUPER>Left', 'foobnix --play': '<SUPER>x', 'foobnix --pause': '<SUPER>z', 'foobnix --next': '<SUPER>Right'}
+
         
         self = self._load();
 

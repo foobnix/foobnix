@@ -6,12 +6,12 @@ Created on Sep 7, 2010
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
 from foobnix.helpers.menu import Popup
-from foobnix.util.configuration import FConfiguration
 import keybinder
 import os
 from foobnix.util import LOG
 import thread
 from foobnix.util.mouse_utils import is_double_left_click
+from foobnix.util.fc import FC
 class HotKeysConfig(ConfigPlugin):
     
     name = _("Global Hotkeys")
@@ -129,7 +129,7 @@ class HotKeysConfig(ConfigPlugin):
         menu.show(event)     
    
     def on_load(self):
-        items = FConfiguration().action_hotkey
+        items = FC().action_hotkey
         self.model.clear()
         for key in items:
             command = key
@@ -150,7 +150,7 @@ class HotKeysConfig(ConfigPlugin):
         thread.start_new_thread(os.system, (command,))
         
     def on_save(self):
-        FConfiguration().action_hotkey = self.get_all_items()
+        FC().action_hotkey = self.get_all_items()
         self.bind_all(self.get_all_items())
     
     def unbind_all(self):
