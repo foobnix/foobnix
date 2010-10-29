@@ -11,6 +11,7 @@ from foobnix.helpers.image import CoverImage
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL
+from foobnix.helpers.my_widgets import notetab_label
 
 class InfoPanelWidget(gtk.Frame, LoadSave, FControl):    
     def __init__(self, controls): 
@@ -34,21 +35,31 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         ibox.pack_start(self.artists.scroll, True, True)
         
         
+        vvbox = gtk.HBox(False,0)
+        
+                
+        
         
         """image and similar artists"""
-        sbox = gtk.HBox(False, 0)
+        sbox = gtk.VBox(False, 0)
         
         self.tracks = SimpleTreeControl("Similar Songs", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)        
         self.tags = SimpleTreeControl("Similar Tags", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)      
         
         sbox.pack_start(self.tracks.scroll, True, True)
-        
-        if FC().is_info_panel_show_tags:
-            sbox.pack_start(self.tags.scroll, True, True)
-        
         self.vpaned_small.pack1(ibox, False, False)
-        self.vpaned_small.pack2(sbox, True, True)
         
+        lbox = gtk.HBox(False, 0)
+        
+        lbox.pack_start(notetab_label(func=None, symbol="similars"))
+        lbox.pack_start(notetab_label(func=None, symbol="lyric"))
+        lbox.pack_start(notetab_label(func=None, symbol="genres"))
+        lbox.pack_start(notetab_label(func=None, symbol="wiki"))
+        lbox.pack_start(notetab_label(func=None, symbol="info"))
+        
+        sbox.pack_start(lbox,False,False)
+        
+        self.vpaned_small.pack2(sbox, True, True)
                 
         self.add(self.vpaned_small)
         
