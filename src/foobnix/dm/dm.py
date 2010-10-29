@@ -69,8 +69,9 @@ class DM(ChildTopWindow):
             time.sleep(2)
             #self.navigation.use_filter()
             
-            semaphore.acquire()            
-            bean = dm_list.get_next_bean_to_dowload()
+            
+            semaphore.acquire()
+            bean = dm_list.get_next_bean_to_dowload()            
             if bean:
                 if not bean.path:                 
                     vk = self.controls.vk.find_one_track(bean.get_display_name())

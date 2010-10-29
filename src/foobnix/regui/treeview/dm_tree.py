@@ -59,16 +59,11 @@ class DownloadManagerTreeControl(CommonTreeControl):
             if bean.get_status() == DOWNLOAD_STATUS_ACTIVE:
                 self.set_bean_column_value(bean, FTreeModel().status[0], DOWNLOAD_STATUS_LOCK)
                 return bean
-        
     
     def update_bean_info(self, bean):
-        #gtk.gdk.threads_enter()     
         self.update_bean(bean)
         self.navigation.update_statistics()
         #self.navigation.use_filter()
-        #gtk.gdk.threads_leave()
-        
-        
         
     
     def get_status_statisctics(self):

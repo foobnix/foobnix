@@ -19,7 +19,6 @@ if not iface:
     import gtk
     
     gobject.threads_init()
-    gtk.gdk.threads_init()
     
     eq = FoobnixCore()
     eq.dbus.parse_arguments(sys.argv)

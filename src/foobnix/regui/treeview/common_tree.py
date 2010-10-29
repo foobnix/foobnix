@@ -11,6 +11,7 @@ from foobnix.util import LOG
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.treeview.drugdrop_tree import DrugDropTree
 from random import randint
+import gobject
 
 
 class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
@@ -112,8 +113,8 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
 
     def clear(self):
         print "clean"
-        self.count_index = 0
-        self.model.clear()
+        gobject.idle_add(self.model.clear)
+        #self.model.clear()
 
         
 
@@ -134,7 +135,8 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
             to_delete.append(iter)
         
         for iter in to_delete:
-            self.model.remove(iter)
+            #self.model.remove(iter)
+            gobject.idle_add(self.model.remove,iter)
 
     def get_selected_bean(self):
         selection = self.get_selection()
@@ -147,20 +149,24 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         return selected_bean
 
     def set_bean_column_value(self, bean, colum_num, value):
-        for row in self.model:
-            if row[self.UUID[0]] == bean.UUID:
-                row[colum_num] = value
-                break
+        def task():
+            for row in self.model:
+                if row[self.UUID[0]] == bean.UUID:
+                    row[colum_num] = value
+                    break
+        gobject.idle_add(task)
             
     def update_bean(self, bean):
-        for row in self.model:
-            if row[self.UUID[0]] == bean.UUID:
-                dict = FTreeModel().__dict__
-                for key in dict:
-                    value = getattr(bean, key)
-                    row_num = dict[key][0]
-                    row[row_num] = value
-                break
+        def task():
+            for row in self.model:
+                if row[self.UUID[0]] == bean.UUID:
+                    dict = FTreeModel().__dict__
+                    for key in dict:
+                        value = getattr(bean, key)
+                        row_num = dict[key][0]
+                        row[row_num] = value
+                    break
+        gobject.idle_add(task)
         
         
     def set_play_icon_to_bean(self, bean):

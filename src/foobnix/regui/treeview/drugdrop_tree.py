@@ -7,6 +7,7 @@ import gtk
 import copy
 import uuid
 from foobnix.regui.id3 import update_id3_wind_filtering
+import gobject
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -221,35 +222,34 @@ class DrugDropTree(gtk.TreeView):
         beans = update_id3_wind_filtering([bean])
         for one in beans:    
             row = self.get_row_from_bean(one)
-            
-            
-            #gtk.gdk.threads_enter()
-            print row
-            self.model.append(None, row)
-            #gtk.gdk.threads_leave()
-        
-        
+            def task():
+                self.model.append(None, row)
+            gobject.idle_add(task)
         
     def tree_append(self, bean):
-        if not bean:
-            return
-        if bean.is_file == True:
-            bean.font = "normal"
-        else:
-            bean.font = "bold"
+        def task(bean):
+            if not bean:
+                return
+            if bean.is_file == True:
+                bean.font = "normal"
+            else:
+                bean.font = "bold"
+            
+            """copy beans"""
+            bean = copy.copy(bean)
+            bean.visible = True
         
-        """copy beans"""
-        bean = copy.copy(bean)
-        bean.visible = True
-
-        if self.hash.has_key(bean.get_parent()):
-            parent_iter_exists = self.hash[bean.get_parent()]
-        else:
-            parent_iter_exists = None
-        row = self.get_row_from_bean(bean)
+            if self.hash.has_key(bean.get_parent()):
+                parent_iter_exists = self.hash[bean.get_parent()]
+            else:
+                parent_iter_exists = None
+            row = self.get_row_from_bean(bean)
+            
+          
+            parent_iter = self.model.append(parent_iter_exists, row)
+            self.hash[bean.level] = parent_iter
         
-        parent_iter = self.model.append(parent_iter_exists, row)
-        self.hash[bean.level] = parent_iter
+        gobject.idle_add(task,bean)
         
         
             

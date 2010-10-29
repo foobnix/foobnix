@@ -150,9 +150,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 duraction_int = self.player.query_duration(gst.Format(gst.FORMAT_TIME), None)[0]
                 if duraction_int == -1:
                     continue
-                gtk.gdk.threads_enter()                #@UndefinedVariable
                 self.notify_init(duraction_int)
-                gtk.gdk.threads_leave() #@UndefinedVariable
                 break
             except Exception, e:
                 LOG.info("Init playing thread", e)
@@ -176,13 +174,9 @@ class GStreamerEngine(MediaPlayerEngine):
                 if self.bean.start_sec > 0:
                     position_int = position_int - float(self.bean.start_sec) * self.NANO_SECONDS
                     if position_int + self.NANO_SECONDS > duraction_int:
-                        gtk.gdk.threads_enter() #@UndefinedVariable
                         self.notify_eos()
-                        gtk.gdk.threads_leave()                #@UndefinedVariable
 
-                gtk.gdk.threads_enter() #@UndefinedVariable
                 self.notify_playing(position_int, duraction_int)
-                gtk.gdk.threads_leave()                #@UndefinedVariable
             except Exception, e:
                 LOG.info("Playing thread error..." , e)
 
