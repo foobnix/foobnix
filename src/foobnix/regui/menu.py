@@ -36,8 +36,8 @@ class MenuWidget(FControl):
         self.view_info_panel = view.add_ckeck_item("Info Panel")
         self.view_info_panel.connect("activate", lambda w: controls.set_visible_info_panel(w.get_active()))
         
-        self.view_video_panel = view.add_ckeck_item("Video Panel")
-        self.view_video_panel.connect("activate", lambda w: controls.set_visible_video_panel(w.get_active()))
+        #self.view_video_panel = view.add_ckeck_item("Video Panel")
+        #self.view_video_panel.connect("activate", lambda w: controls.set_visible_video_panel(w.get_active()))
 
 
         view.separator()
@@ -88,13 +88,13 @@ class MenuWidget(FControl):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
         self.view_search_panel.set_active(FC().is_view_search_panel)
         self.view_info_panel.set_active(FC().is_view_info_panel)
-        self.view_video_panel.set_active(FC().is_view_video_panel)
+        #self.view_video_panel.set_active(FC().is_view_video_panel)
 
     def on_save(self):
         FC().is_view_music_tree_panel = self.view_music_tree.get_active()
         FC().is_view_search_panel = self.view_search_panel.get_active()
         FC().is_view_info_panel = self.view_info_panel.get_active()
-        FC().is_view_video_panel = self.view_video_panel.get_active()
+        #FC().is_view_video_panel = self.view_video_panel.get_active()
 
 class MyMenu(gtk.Menu):
     """My custom menu class for helping buildings"""
