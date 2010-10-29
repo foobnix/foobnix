@@ -18,5 +18,6 @@ class TextArea(gtk.ScrolledWindow):
         self.add(text)
 
     def set_text(self, text):
-        if text:
-            gobject.idle_add(self.buffer.set_text, text)
+        if not text:
+            text = ""
+        gobject.idle_add(self.buffer.set_text, text)
