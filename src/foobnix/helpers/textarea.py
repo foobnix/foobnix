@@ -4,6 +4,7 @@ Created on Oct 29, 2010
 @author: ivan
 '''
 import gtk
+import gobject
 class TextArea(gtk.ScrolledWindow):
     def __init__(self):
         gtk.ScrolledWindow.__init__(self)
@@ -17,4 +18,4 @@ class TextArea(gtk.ScrolledWindow):
         self.add(text)
 
     def set_text(self, text):
-        self.buffer.set_text(text)
+        gobject.idle_add(self.buffer.set_text, text)
