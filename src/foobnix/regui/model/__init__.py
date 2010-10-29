@@ -74,6 +74,20 @@ class FModel(FTreeModel):
             self.add_artist(list[0].strip()).add_title(list[1].strip())
         return self
     
+    def get_artist_from_text(self):
+        if " - " in self.text:
+            list = self.text.split(" - ")
+            return list[0].strip() 
+        else:
+            return None;
+    
+    def get_title_from_text(self):
+        if " - " in self.text:
+            list = self.text.split(" - ")
+            return list[1].strip() 
+        else:
+            return None;
+    
     def get_display_name(self):
         if self.artist and self.title:
             text = self.artist + " - " + self.title

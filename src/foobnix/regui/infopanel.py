@@ -89,10 +89,17 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if not FC().is_view_info_panel:
             print "Info panel disabled"  
             return      
+
+        if not bean.artist or not bean.title:
+            text_artist = bean.get_artist_from_text()
+            text_title = bean.get_title_from_text()  
+            if text_artist and text_title:
+                bean.artist, bean.title = text_artist, text_title
         
         if not bean.artist or not bean.title:
-            print "artist and title not defined"
-            return None        
+            print """Artist and title no difined"""
+            return None
+        
         
         """update info"""
         album_name = self.controls.lastfm.get_album_name(bean.artist, bean.title)
