@@ -12,6 +12,8 @@ from foobnix.regui.model import FModel
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL
 from foobnix.helpers.my_widgets import notetab_label
+from foobnix.helpers.textarea import TextArea
+from foobnix.thirdparty.lyr import get_lyrics
 
 class InfoPanelWidget(gtk.Frame, LoadSave, FControl):    
     def __init__(self, controls): 
@@ -38,18 +40,23 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         sbox = gtk.VBox(False, 0)
         
         self.tracks = SimpleTreeControl("Similar Songs", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)        
-        self.tags = SimpleTreeControl("Similar Tags", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)      
+        self.tags = SimpleTreeControl("Similar Tags", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.lyrics = TextArea()
+        
+        self.left_widget = [self.tracks.scroll, self.tags.scroll, self.lyrics]
         
         sbox.pack_start(self.tracks.scroll, True, True)
+        sbox.pack_start(self.lyrics, True, True)
+        sbox.pack_start(self.tags.scroll, True, True)
+        
+        
         self.vpaned_small.pack1(ibox, False, False)
         
         lbox = gtk.HBox(False, 0)
         
-        lbox.pack_start(notetab_label(func=None, symbol="similars"))
-        lbox.pack_start(notetab_label(func=None, symbol="lyric"))
-        lbox.pack_start(notetab_label(func=None, symbol="genres"))
-        lbox.pack_start(notetab_label(func=None, symbol="wiki"))
-        lbox.pack_start(notetab_label(func=None, symbol="info"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tracks.scroll, symbol="similars"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.lyrics,symbol="lyric"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tags.scroll, symbol="tags"))
         
         sbox.pack_start(lbox,False,False)
         
@@ -58,7 +65,13 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.add(self.vpaned_small)
         
         self.show_all()
-
+    
+    def show_current(self, widget):
+        for w in self.left_widget:
+            w.hide()
+        widget.show_all()
+        
+    
     def clear(self):
         self.image.set_no_image()
         self.tracks.clear()
@@ -124,10 +137,17 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         parent = FModel("Similar Tags: " + bean.title)
         update_parent(parent, similar_tags)
         self.tags.populate_all([parent] + similar_tags)       
-    
+        
+        """lyrics"""
+        text = get_lyrics(bean.artist, bean.title)
+        self.lyrics.set_text(text)
      
     def on_load(self):
-        self.vpaned_small.set_position(FC().vpaned_small) 
+        self.vpaned_small.set_position(FC().vpaned_small)
+        for i, w in enumerate(self.left_widget):
+            if i >0:
+                w.hide()
+            
          
     def on_save(self):
         FC().vpaned_small = self.vpaned_small.get_position()    

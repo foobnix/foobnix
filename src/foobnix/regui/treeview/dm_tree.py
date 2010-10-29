@@ -14,24 +14,11 @@ class DownloadManagerTreeControl(CommonTreeControl):
         CommonTreeControl.__init__(self, None)
         self.set_reorderable(False)
         self.set_headers_visible(True)
-        
-        """column config"""
-        #column = gtk.TreeViewColumn("N", gtk.CellRendererText(), text=self.tracknumber[0], font=self.font[0])
-        #column.set_resizable(True)
-        #self.append_column(column)
-        
-        
+
         """column config"""
         column = gtk.TreeViewColumn("Name", gtk.CellRendererText(), text=self.text[0])
         column.set_resizable(True)
         self.append_column(column)
-        
-        """column config"""
-        column = gtk.TreeViewColumn("Path", gtk.CellRendererText(), text=self.save_to[0])
-        column.set_resizable(True)
-        column.set_expand(True)
-        self.append_column(column)
-        
         
         """column config"""
         column = gtk.TreeViewColumn("Progress", gtk.CellRendererProgress(), text=self.persent[0], value=self.persent[0])
@@ -46,6 +33,12 @@ class DownloadManagerTreeControl(CommonTreeControl):
         """status"""
         column = gtk.TreeViewColumn("Status", gtk.CellRendererText(), text=self.status[0])
         column.set_resizable(True)
+        self.append_column(column)
+        
+        """column config"""
+        column = gtk.TreeViewColumn("Path", gtk.CellRendererText(), text=self.save_to[0])
+        column.set_resizable(True)
+        column.set_expand(True)
         self.append_column(column)
         
 

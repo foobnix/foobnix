@@ -14,7 +14,7 @@ from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL,\
 from foobnix.regui.model import FTreeModel
 
 class SimpleTreeControl(CommonTreeControl, LoadSave):
-    def __init__(self, title_name, controls):        
+    def __init__(self, title_name, controls,  head_visible=False):        
         CommonTreeControl.__init__(self, controls)
         
         self.set_reorderable(False)
@@ -23,7 +23,7 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
         column = gtk.TreeViewColumn(title_name, gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.append_column(column)
-        self.set_headers_visible(False)
+        self.set_headers_visible(head_visible)
         
         self.configure_send_drug()
         

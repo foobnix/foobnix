@@ -469,6 +469,7 @@ class BaseFoobnixControls(LoadSave):
                 LOG.debug("NOT LOAD", self.__dict__[element])
         self.singre_thread = SingreThread(self.search_progress)
         self.main_window.show()
+        self.movie_window.hide_all()
         self.check_version()
 
     def on_save(self):
