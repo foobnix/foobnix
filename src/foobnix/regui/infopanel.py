@@ -34,12 +34,6 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         ibox.pack_start(self.image, False, False)
         ibox.pack_start(self.artists.scroll, True, True)
         
-        
-        vvbox = gtk.HBox(False,0)
-        
-                
-        
-        
         """image and similar artists"""
         sbox = gtk.VBox(False, 0)
         
