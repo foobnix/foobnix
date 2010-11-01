@@ -167,8 +167,34 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         paths = self.get_selected_bean_paths()
         if not paths:
             return None
+        return paths
+        
+    
+    def get_selected_bean(self):
+        paths = self.get_selected_bean_paths()
+        if not paths:
+            return None
         selected_bean = self._get_bean_by_path(paths[0])
         return selected_bean
+    
+    def set_play_icon_to_bean_to_selected(self):
+        def task():
+            for row in self.model:
+                row[self.play_icon[0]] = None
+            
+            paths = self.get_selected_bean_paths()
+            if not paths:
+                return None
+            
+            path = paths[0]  
+                     
+            iter = self.model.get_iter(path)
+            self.model.set_value(iter, FTreeModel().play_icon[0], gtk.STOCK_GO_FORWARD)
+            self.active_UUID = self.model.get_value(iter, FTreeModel().UUID[0])
+        
+        gobject.idle_add(task)
+        
+        
     
     def set_play_icon_to_bean_to_selected(self):
         def task():
