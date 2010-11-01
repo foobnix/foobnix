@@ -90,7 +90,7 @@ class Dowloader(threading.Thread):
                 file.write(data)
                 #time.sleep(0.1)
                 persent = block_count * block_size * 100.0 / remote_size
-                if int(persent) % 2 == 0:
+                if block_count % 50 == 0:
                     bean.persent = persent
                     update(bean)
                     
@@ -99,4 +99,5 @@ class Dowloader(threading.Thread):
         os.rename(to_file_tmp, to_file)
         bean.status = DOWNLOAD_STATUS_COMPLETED
         bean.to_file = to_file
+        bean.persent = 100
         update(bean)

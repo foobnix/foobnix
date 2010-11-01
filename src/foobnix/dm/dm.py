@@ -59,6 +59,7 @@ class DM(ChildTopWindow):
         self.dm_list.append(bean)
     
     def append_tasks(self, beans):
+        self.show()
         for bean in beans:
             self.append_task(bean)
     

@@ -47,6 +47,29 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         self.set_type_plain()
         
         self.active_UUID = -1
+        
+        self.connect('button_press_event', self.on_multi_button_press)
+        self.connect('button_release_event', self.on_multi_button_release)
+        self.defer_select = False
+        
+    def on_multi_button_press(self, widget, event):
+        target = self.get_path_at_pos(int(event.x), int(event.y))
+        if (target and event.type == gtk.gdk.BUTTON_PRESS and not (event.state & (gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)) 
+            and self.get_selection().path_is_selected(target[0])):
+            # disable selection
+            self.get_selection().set_select_function(lambda * ignore: False)
+            self.defer_select = target[0]
+        
+    def on_multi_button_release(self, widget, event):
+        self.get_selection().set_select_function(lambda * ignore: True)
+        
+        target = self.get_path_at_pos(int(event.x), int(event.y))
+        if (self.defer_select and target
+        and self.defer_select == target[0]
+        and not (event.x == 0 and event.y == 0)): # certain drag and drop
+            self.set_cursor(target[0], target[1], False)
+        
+        self.defer_select = False
     
     def rename_selected(self, text):
         selection = self.get_selection()
@@ -130,7 +153,7 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         
         for iter in to_delete:
             #self.model.remove(iter)
-            gobject.idle_add(self.model.remove,iter)
+            gobject.idle_add(self.model.remove, iter)
 
     def get_selected_bean(self):
         selection = self.get_selection()

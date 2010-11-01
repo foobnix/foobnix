@@ -138,31 +138,32 @@ class DrugDropTree(gtk.TreeView):
             return None
         from_filter_model, from_paths = from_tree.get_selection().get_selected_rows()
         from_model = from_filter_model.get_model()
-        from_path = from_filter_model.convert_path_to_child_path(from_paths[0]) 
-        from_iter = from_model.get_iter(from_path)
-        
-        """do not copy to himself"""
-        if to_tree == from_tree and from_path == to_path:
-            "do not copy to himself"
-            drag_context.finish(False, False)
-            return None
-        
-        
-        """do not copy to child"""        
-        result = self.iter_copy(from_model, from_iter, to_model, to_iter, to_pos, to_tree.current_view, from_tree.current_view)
-        
-        if result and to_tree == from_tree:
-            """move element in the save tree"""
-            drag_context.finish(True, True)
-        
-        if to_path:
-            to_tree.expand_to_path(to_path)
-        
-        if to_tree.current_view == VIEW_TREE:             
-            self.updates_tree_structure()
+        for current_path  in from_paths:
+            from_path = from_filter_model.convert_path_to_child_path(current_path) 
+            from_iter = from_model.get_iter(from_path)
             
-        if to_tree.current_view == VIEW_PLAIN:             
-            self.rebuild_as_plain()
+            """do not copy to himself"""
+            if to_tree == from_tree and from_path == to_path:
+                "do not copy to himself"
+                drag_context.finish(False, False)
+                return None
+            
+            
+            """do not copy to child"""        
+            result = self.iter_copy(from_model, from_iter, to_model, to_iter, to_pos, to_tree.current_view, from_tree.current_view)
+            
+            if result and to_tree == from_tree:
+                """move element in the save tree"""
+                drag_context.finish(True, True)
+            
+            if to_path:
+                to_tree.expand_to_path(to_path)
+            
+            if to_tree.current_view == VIEW_TREE:             
+                self.updates_tree_structure()
+                
+            if to_tree.current_view == VIEW_PLAIN:             
+                self.rebuild_as_plain()
     
     def child_by_recursion(self, row, plain):
         for child in row.iterchildren():
@@ -259,7 +260,7 @@ class DrugDropTree(gtk.TreeView):
             parent_iter = self.model.append(parent_iter_exists, row)
             self.hash[bean.level] = parent_iter
         
-        gobject.idle_add(task,bean)
+        gobject.idle_add(task, bean)
         
         
             
