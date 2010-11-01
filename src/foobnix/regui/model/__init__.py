@@ -66,7 +66,10 @@ class FModel(FTreeModel):
         self.UUID = uuid.uuid4().hex
         self.level = uuid.uuid4().hex
         self.persent = 0
-        
+     
+    def update_uuid(self):
+        self.UUID = uuid.uuid4().hex
+           
     def create_from_text(self, text):
         self.text = text
         if " - " in text:

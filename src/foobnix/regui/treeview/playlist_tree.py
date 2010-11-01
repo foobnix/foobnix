@@ -5,10 +5,8 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
-from random import randint
 from foobnix.util import const
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
-from foobnix.cue.cue_reader import CueReader
 from foobnix.helpers.menu import Popup
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE

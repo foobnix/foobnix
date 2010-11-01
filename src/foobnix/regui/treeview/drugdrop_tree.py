@@ -231,7 +231,8 @@ class DrugDropTree(gtk.TreeView):
         bean.visible = True
         
         beans = update_id3_wind_filtering([bean])
-        for one in beans:    
+        for one in beans:
+            one.update_uuid()    
             row = self.get_row_from_bean(one)
             def task():
                 self.model.append(None, row)
