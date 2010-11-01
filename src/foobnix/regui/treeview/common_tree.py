@@ -148,10 +148,11 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
             path = self.filter_model.convert_path_to_child_path(path)
             iter = self.model.get_iter(path)
             to_delete.append(iter)
-        
-        for iter in to_delete:
-            #self.model.remove(iter)
-            gobject.idle_add(self.model.remove, iter)
+
+        def task():        
+            for iter in to_delete:
+                self.model.remove(iter)
+        gobject.idle_add(task)
 
     def get_selected_bean_paths(self):
         selection = self.get_selection()
