@@ -1,9 +1,10 @@
+#-*- coding: utf-8 -*-
 '''
 Created on 20 окт. 2010
 
 @author: ivan
 '''
-#-*- coding: utf-8 -*-
+
 import gtk
 from foobnix.regui.model import FTreeModel, FModel
 from foobnix.util import LOG
