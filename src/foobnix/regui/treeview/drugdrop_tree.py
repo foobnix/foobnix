@@ -8,6 +8,7 @@ import copy
 import uuid
 from foobnix.regui.id3 import update_id3_wind_filtering
 import gobject
+from foobnix.regui.model import FModel, FTreeModel
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -62,6 +63,15 @@ class DrugDropTree(gtk.TreeView):
                 child[self.level[0]] = uuid.uuid4().hex   
                 self.update_tree_structure_row_requrcive(child)
    
+    def get_bean_from_model_iter(self, model, iter):
+        bean = FModel()
+        id_dict = FTreeModel().cut().__dict__
+        for key in id_dict.keys():
+            num = id_dict[key]
+            val = model.get_value(iter, num)
+            setattr(bean, key, val)
+        return bean
+    
     def iter_copy(self, from_model, from_iter, to_model, to_iter, pos, to_type, from_type):
         row = self.get_row_from_model_iter(from_model, from_iter)
 
@@ -82,14 +92,14 @@ class DrugDropTree(gtk.TreeView):
         
         if ((to_type == VIEW_TREE and from_type == VIEW_TREE) or
             (to_type == VIEW_PLAIN and from_type == VIEW_TREE)):            
-            """3)tree to tree, plain to tree"""
+            print """3)tree to tree, tree to plain"""
             if from_model.iter_has_child(from_iter):
                 for i in range(0, from_model.iter_n_children(from_iter)):
                     next_iter_to_copy = from_model.iter_nth_child(from_iter, i)
-                    self.iter_copy(from_model, next_iter_to_copy, to_model, new_iter, gtk.TREE_VIEW_DROP_INTO_OR_BEFORE, to_type, from_type)
+                    self.iter_copy(from_model, next_iter_to_copy, to_model, new_iter, pos, to_type, from_type)
         else:
             
-            """3)plain to tree, plain to plain"""
+            print """3)plain to tree, plain to plain"""
             parent_row = self.get_row_from_model_iter(from_model, from_iter)
             parent_level = parent_row[self.level[0]]
             self.add_reqursive_plain(from_model, from_iter, to_model, new_iter, parent_level)

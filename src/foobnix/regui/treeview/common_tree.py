@@ -77,14 +77,6 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
     def get_bean_from_iter(self, iter):
         return self.get_bean_from_model_iter(self.model, iter)
 
-    def get_bean_from_model_iter(self, model, iter):
-        bean = FModel()
-        id_dict = FTreeModel().cut().__dict__
-        for key in id_dict.keys():
-            num = id_dict[key]
-            val = model.get_value(iter, num)
-            setattr(bean, key, val)
-        return bean
     
     def get_bean_from_row(self, row):
         bean = FModel()

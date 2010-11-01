@@ -11,6 +11,7 @@ from foobnix.util.fc import FC
 from foobnix.helpers.toolbar import MyToolbar
 from foobnix.util.mouse_utils import is_middle_click
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.regui.state import LoadSave
 
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
@@ -56,7 +57,7 @@ class PopupWindowMenu(gtk.Window, FControl):
         self.hide()
 
 
-class TrayIconControls(FControl):
+class TrayIconControls(FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         self.icon = gtk.StatusIcon()
@@ -77,13 +78,17 @@ class TrayIconControls(FControl):
         self.icon.connect("button-press-event", self.on_button_press)
         self.icon.connect("scroll-event", self.controls.volume.on_scroll_event)
 
+        self.paused = False
+    
+    def on_load(self):
         if FC().show_tray_icon:
             self.show()
         else:
             self.hide()
-
-        self.paused = False
-
+            
+    def on_save(self):
+        pass
+    
     def on_activate(self, *a):
         self.controls.windows_visibility()
 

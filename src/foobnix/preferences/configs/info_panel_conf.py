@@ -23,7 +23,7 @@ class InfoPagenConfig(ConfigPlugin):
         tab_label = gtk.Label(_("Disc cover size"))
         tab_label.show()
         
-        adjustment = gtk.Adjustment(value=1, lower=100, upper=500, step_incr=20, page_incr=50, page_size=0)
+        adjustment = gtk.Adjustment(value=1, lower=100, upper=350, step_incr=20, page_incr=50, page_size=0)
         self.image_size_spin = gtk.SpinButton(adjustment)
         self.image_size_spin.show()
         
@@ -51,7 +51,7 @@ class InfoPagenConfig(ConfigPlugin):
         
         box.pack_start(cbox, False, True, 0)
         #box.pack_start(lbox, False, True, 0)
-        box.pack_start( self.show_tags, False, True, 0)
+        #box.pack_start( self.show_tags, False, True, 0)
         self.widget = box
     
     def on_load(self):
