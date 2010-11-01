@@ -8,7 +8,7 @@ import gtk
 from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.state import LoadSave
-from foobnix.regui.model import FModel
+from foobnix.regui.model import FModel, FTreeModel
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.util.singe_thread import SingreThread
 from foobnix.regui.service.vk_service import VKService
@@ -58,7 +58,7 @@ class BaseFoobnixControls(LoadSave):
     def play_selected_song(self):    
         current = self.notetabs.get_active_tree().get_selected_bean()
         if current.is_file:
-            self.notetabs.get_active_tree().set_play_icon_to_bean(current)
+            self.notetabs.get_active_tree().set_play_icon_to_bean_to_selected()
         
         """play song"""
         self.play(current)
@@ -268,7 +268,7 @@ class BaseFoobnixControls(LoadSave):
         t_bean = FModel(text).create_from_text(text)                       
         self.update_info_panel(t_bean)
     
-    def notify_error(self,msg):
+    def notify_error(self, msg):
         print "notify error"
         self.seek_bar.set_text(msg)
         self.info_panel.clear()

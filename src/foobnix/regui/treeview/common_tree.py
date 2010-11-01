@@ -64,9 +64,7 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         self.get_selection().set_select_function(lambda * ignore: True)
         
         target = self.get_path_at_pos(int(event.x), int(event.y))
-        if (self.defer_select and target
-        and self.defer_select == target[0]
-        and not (event.x == 0 and event.y == 0)): # certain drag and drop
+        if (self.defer_select and target and self.defer_select == target[0] and not (event.x == 0 and event.y == 0)): # certain drag and drop
             self.set_cursor(target[0], target[1], False)
         
         self.defer_select = False
@@ -155,15 +153,41 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
             #self.model.remove(iter)
             gobject.idle_add(self.model.remove, iter)
 
-    def get_selected_bean(self):
+    def get_selected_bean_paths(self):
         selection = self.get_selection()
         if not selection:
             return None
         model, paths = selection.get_selected_rows()
         if not paths:
             return None
+        return paths
+        
+    
+    def get_selected_bean(self):
+        paths = self.get_selected_bean_paths()
+        if not paths:
+            return None
         selected_bean = self._get_bean_by_path(paths[0])
         return selected_bean
+    
+    def set_play_icon_to_bean_to_selected(self):
+        def task():
+            for row in self.model:
+                row[self.play_icon[0]] = None
+            
+            paths = self.get_selected_bean_paths()
+            if not paths:
+                return None
+            
+            path = paths[0]  
+                     
+            iter = self.model.get_iter(path)
+            self.model.set_value(iter, FTreeModel().play_icon[0], gtk.STOCK_GO_FORWARD)
+            self.active_UUID = self.model.get_value(iter, FTreeModel().UUID[0])
+        
+        gobject.idle_add(task)
+        
+        
 
     def set_bean_column_value(self, bean, colum_num, value):
         def task():
