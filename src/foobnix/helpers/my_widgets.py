@@ -19,12 +19,14 @@ def tab_close_button(func=None, arg=None):
     button.set_relief(gtk.RELIEF_NONE)
     img = gtk.image_new_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
     button.set_image(img)
-    if func:           
-        button.connect("event", func, arg)
+    if func and arg:           
+        button.connect("button-press-event", lambda * a: func(arg))
+    elif func:
+        button.connect("button-press-event", lambda * a: func())
     button.show()
     return button
 
-def notetab_label(func=None, arg=None, angel=0, symbol = "×"):
+def notetab_label(func=None, arg=None, angel=0, symbol="×"):
     """label"""
     label = gtk.Label(symbol)
     label.show()
@@ -37,8 +39,8 @@ def notetab_label(func=None, arg=None, angel=0, symbol = "×"):
     event.connect("enter-notify-event", lambda w, e:w.get_child().set_markup("<u>" + symbol + "</u>"))
     event.connect("leave-notify-event", lambda w, e:w.get_child().set_markup(symbol))
     if func and arg:                    
-        event.connect("button-press-event", lambda *a: func(arg))
+        event.connect("button-press-event", lambda * a: func(arg))
     elif func:
-        event.connect("button-press-event", lambda *a: func())
+        event.connect("button-press-event", lambda * a: func())
     event.show()
     return event
