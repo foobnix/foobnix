@@ -164,14 +164,15 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         
         
     def set_play_icon_to_bean(self, bean):
+        def task():
+            for row in self.model:
+                if row[self.UUID[0]] == bean.UUID:
+                    row[self.play_icon[0]] = gtk.STOCK_GO_FORWARD
+                    self.active_UUID = bean.UUID                
+                else:
+                    row[self.play_icon[0]] = None
+        gobject.idle_add(task)
         
-        for row in self.model:
-            if row[self.UUID[0]] == bean.UUID:
-                row[self.play_icon[0]] = gtk.STOCK_GO_FORWARD
-                self.active_UUID = bean.UUID                
-            else:
-                row[self.play_icon[0]] = None
-
     def get_child_level1_beans_by_selected(self):
         selection = self.get_selection()
         model, paths = selection.get_selected_rows()

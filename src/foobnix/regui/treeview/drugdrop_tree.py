@@ -92,14 +92,14 @@ class DrugDropTree(gtk.TreeView):
         
         if ((to_type == VIEW_TREE and from_type == VIEW_TREE) or
             (to_type == VIEW_PLAIN and from_type == VIEW_TREE)):            
-            print """3)tree to tree, tree to plain"""
+            """3)tree to tree, tree to plain"""
             if from_model.iter_has_child(from_iter):
                 for i in range(0, from_model.iter_n_children(from_iter)):
                     next_iter_to_copy = from_model.iter_nth_child(from_iter, i)
                     self.iter_copy(from_model, next_iter_to_copy, to_model, new_iter, pos, to_type, from_type)
         else:
             
-            print """3)plain to tree, plain to plain"""
+            """3)plain to tree, plain to plain"""
             parent_row = self.get_row_from_model_iter(from_model, from_iter)
             parent_level = parent_row[self.level[0]]
             self.add_reqursive_plain(from_model, from_iter, to_model, new_iter, parent_level)
@@ -143,7 +143,7 @@ class DrugDropTree(gtk.TreeView):
         
         """do not copy to himself"""
         if to_tree == from_tree and from_path == to_path:
-            print "do not copy to himself"
+            "do not copy to himself"
             drag_context.finish(False, False)
             return None
         
