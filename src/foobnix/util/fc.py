@@ -75,10 +75,11 @@ class FC:
         self.proxy_enable = False
         self.proxy_url = None
 
-        """try icon"""
+        """tray icon"""
         self.show_tray_icon = True
         self.tray_icon_auto_hide = True
-
+        self.change_tray_icon = False
+        
         """download manager controls"""
         self.auto_start_donwload = True
         self.max_active_count = 3
