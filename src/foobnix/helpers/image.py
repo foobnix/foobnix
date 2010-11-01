@@ -6,6 +6,7 @@ Created on Sep 28, 2010
 import gtk
 import urllib
 from foobnix.util import LOG
+import gobject
 class CoverImage(gtk.Image):
     def __init__(self, size=150):
         gtk.Image.__init__(self)
@@ -25,6 +26,12 @@ class CoverImage(gtk.Image):
         
         pix = pix.scale_simple(self.size, self.size, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
         self.set_from_pixbuf(pix)
+    
+    def set_from_pixbuf(self,pix):
+        def task():
+            super(CoverImage, self).set_from_pixbuf(pix)            
+        gobject.idle_add(task)
+        
         
     def set_image_from_url(self, url):
         if not url:

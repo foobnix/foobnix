@@ -33,9 +33,10 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         self.controls.player_seek(seek_percent);
     
     def set_text(self, text):
-        if text:
-            self.progresbar.set_text(text[:200])    
-    
+        def task():
+            if text:
+                self.progresbar.set_text(text[:200])    
+        gobject.idle_add(task)
     def clear(self):
         self.progresbar.set_text("00:00 / 00:00")
         self.progresbar.set_fraction(0)

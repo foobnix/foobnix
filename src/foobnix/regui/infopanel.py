@@ -14,6 +14,7 @@ from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL
 from foobnix.helpers.my_widgets import notetab_label
 from foobnix.helpers.textarea import TextArea
 from foobnix.thirdparty.lyr import get_lyrics
+import gobject
 
 class InfoPanelWidget(gtk.Frame, LoadSave, FControl):    
     def __init__(self, controls): 
@@ -111,7 +112,9 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if album_name and album_year:
             info_line = bean.artist + " - " + album_name + "(" +album_year+ ")" +" - " + bean.title
         
-        self.almum_label.set_markup("<b>%s</b>" % info_line)
+        def task():
+            self.almum_label.set_markup("<b>%s</b>" % info_line)
+        gobject.idle_add(task)
         
         """update image"""
         if bean.image:

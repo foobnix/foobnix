@@ -12,6 +12,7 @@ from foobnix.helpers.toolbar import MyToolbar
 from foobnix.util.mouse_utils import is_middle_click
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.regui.state import LoadSave
+import gobject
 
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
@@ -115,8 +116,10 @@ class TrayIconControls(FControl, LoadSave):
         self.show_window()
 
     def set_text(self, text):
-        self.popup_menu.set_text(text)
-        self.icon.set_tooltip(text)
+        def task():
+            self.popup_menu.set_text(text)
+            self.icon.set_tooltip(text)
+        gobject.idle_add(task)
 
     def get_pixbuf(self):
         return self.icon.get_pixbuf()
