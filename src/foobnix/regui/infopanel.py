@@ -81,7 +81,6 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.almum_label.set_markup("")
         
     def update(self, bean):
-        
         if bean.type == FTYPE_NOT_UPDATE_INFO_PANEL:
             return False
         
@@ -100,8 +99,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if not bean.artist or not bean.title:
             print """Artist and title no difined"""
             return None
-        
-        
+                
         """update info"""
         album_name = self.controls.lastfm.get_album_name(bean.artist, bean.title)
         album_year = self.controls.lastfm.get_album_year(bean.artist, bean.title)
@@ -119,6 +117,9 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         """update image"""
         if bean.image:
             self.image.set_image_from_path(bean.image)
+            if FC().change_tray_icon:
+                self.controls.trayicon.set_image_from_path(bean.image)
+            self.controls.trayicon.icon.connect("query-tooltip", self.controls.trayicon.on_query_tooltip, bean)
         else:
             url = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
             if url:

@@ -11,7 +11,7 @@ from foobnix.util.fc import FC
 
 class TrayIconConfig(ConfigPlugin):
     
-    name = _("Tray Icon")
+    name = ("Tray Icon")
     
     def __init__(self, controls):
         
@@ -37,12 +37,17 @@ class TrayIconConfig(ConfigPlugin):
         self.tray_icon_auto_hide = gtk.CheckButton(label=_("Automatic hide tray icon popup on mouse leave"), use_underline=True)        
         self.tray_icon_auto_hide.show()
         
+        """change tray icon to cover icon"""
+        self.change_tray_icon = gtk.CheckButton(label=_("Change tray icon to cover icon"), use_underline=True)
+        
+        self.change_tray_icon.show()
+        
         box.pack_start(self.tray_icon_button, False, True, 0)
         box.pack_start(self.close_button, False, True, 0)
         box.pack_start(self.hide_button, False, True, 0)
         box.pack_start(self.minimize_button, False, True, 0)
         box.pack_start(self.tray_icon_auto_hide, False, True, 0)
-        
+        box.pack_start(self.change_tray_icon,False, True, 0)
         
         self.widget = box
 
@@ -61,6 +66,8 @@ class TrayIconConfig(ConfigPlugin):
     def on_load(self):
         self.tray_icon_button.set_active(FC().show_tray_icon)
         self.tray_icon_auto_hide.set_active(FC().tray_icon_auto_hide)
+        self.change_tray_icon.set_active(FC().change_tray_icon)
+        
         if FC().on_close_window == const.ON_CLOSE_CLOSE:
             self.close_button.set_active(True)
             
@@ -75,6 +82,7 @@ class TrayIconConfig(ConfigPlugin):
     def on_save(self):
         FC().show_tray_icon = self.tray_icon_button.get_active() 
         FC().tray_icon_auto_hide = self.tray_icon_auto_hide.get_active()
+        FC().change_tray_icon = self.change_tray_icon.get_active()
         
         if  self.close_button.get_active():
             FC().on_close_window = const.ON_CLOSE_CLOSE

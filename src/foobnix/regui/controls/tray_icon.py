@@ -6,7 +6,6 @@ Created on 29 сент. 2010
 '''
 from foobnix.regui.model.signal import FControl
 import gtk
-import os
 from foobnix.util.fc import FC
 from foobnix.helpers.toolbar import MyToolbar
 from foobnix.util.mouse_utils import is_middle_click
@@ -44,7 +43,7 @@ class PopupWindowMenu(gtk.Window, FControl):
         self.add(vbox)
         self.show_all()
         self.hide()
-
+        
     def set_text(self, text):
         self.poopup_text.set_text(text)
 
@@ -62,17 +61,14 @@ class TrayIconControls(FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         self.icon = gtk.StatusIcon()
+        self.icon.set_has_tooltip(True)
+        self.tooltip = gtk.Tooltip()
         self.icon.set_tooltip("Foobnix music player")
-
-        self.popup_menu = PopupWindowMenu(self.controls)
-
+        
         path = get_foobnix_resourse_path_by_name("foobnix.png")
-
-        if path:
-            self.icon.set_from_file(path)
-        else:
-            self.icon.set_from_stock("gtk-media-play")
-
+        self.icon.set_from_file(path)
+        self.popup_menu = PopupWindowMenu(self.controls)
+        
         self.icon.connect("activate", self.on_activate)
         self.icon.connect("popup-menu", self.on_popup_menu)
 
@@ -89,6 +85,43 @@ class TrayIconControls(FControl, LoadSave):
             
     def on_save(self):
         pass
+
+        self.paused = False
+        
+    def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip, bean):
+        vbox = gtk.VBox()
+        hbox = gtk.HBox()       
+        image = gtk.Image()
+        image.set_from_stock(gtk.STOCK_DIALOG_INFO, gtk.ICON_SIZE_DND)
+        hbox.pack_start(image, False, False, 5)
+        label = gtk.Label("*** INFO ***")
+        hbox.pack_start(label, True, False, 0)
+        vbox.pack_start(hbox, False, False, 10)
+        
+        hbox = gtk.HBox()
+        label = gtk.Label("Artist:")
+        hbox.pack_start(label, False, False, 5)
+        label = gtk.Label(bean.artist)
+        hbox.pack_start(label, False, False, 5)
+        vbox.pack_start(hbox, False, False, 10)
+        
+        hbox = gtk.HBox()
+        label = gtk.Label("Title:")
+        hbox.pack_start(label, False, False, 5)
+        label = gtk.Label(bean.title)
+        hbox.pack_start(label, False, False, 5)
+        vbox.pack_start(hbox, False, False, 10)
+        vbox.show_all()
+        #bean = self.controls.common_tree_control.get_selected_bean()
+        pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(bean.image, 150, 150)
+        tooltip.set_icon(pixbuf)
+        tooltip.set_custom(vbox)
+        return True
+    
+    def set_image_from_path(self, path):
+        pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+        #scaled_buf = pixbuf.scale_simple(self.size, self.size, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
+        self.icon.set_from_pixbuf(pixbuf)
     
     def on_activate(self, *a):
         self.controls.windows_visibility()
