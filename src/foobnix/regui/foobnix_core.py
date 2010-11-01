@@ -31,7 +31,6 @@ class FoobnixCore(BaseFoobnixControls):
         BaseFoobnixControls.__init__(self)
 
         self.media_engine = GStreamerEngine(self)
-
         """elements"""
         self.preferences = PreferencesWindow(self)
         self.statusbar = StatusbarControls(self)

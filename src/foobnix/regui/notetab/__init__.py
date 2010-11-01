@@ -179,14 +179,14 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
     
     def next(self):
-        bean = self.active_tree.next(random=self.is_random, lopping=self.lopping)
+        bean = self.active_tree.next()
         print "Next notetab", bean
         if not bean.is_file:
             return self.next()
         return bean
 
     def prev(self):
-        bean = self.active_tree.prev(rnd=self.is_random, lopping=self.lopping)
+        bean = self.active_tree.prev()
         print "Prev notetab", bean
         if not bean.is_file:
             return self.prev()

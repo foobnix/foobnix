@@ -17,7 +17,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         CommonTreeControl.__init__(self, controls)
         
         """column config"""
-        column = gtk.TreeViewColumn("Virtual Lybrary", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = gtk.TreeViewColumn("Virtual Library", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)

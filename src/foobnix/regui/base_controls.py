@@ -21,7 +21,7 @@ import os
 import time
 from foobnix.regui.service.google_service import google_search_resutls
 from foobnix.util.file_utils import get_file_extenstion
-from foobnix.util.const import STATE_PLAY
+from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 import urllib2
 from foobnix.util.configuration import VERSION
 
@@ -54,8 +54,20 @@ class BaseFoobnixControls(LoadSave):
         for line in g_results:
             beans.append(FModel(line).add_is_file(True))
         return beans
-            
+    
+    def play_selected_song(self):    
+        current = self.notetabs.get_active_tree().get_selected_bean()
+        if current.is_file:
+            self.notetabs.get_active_tree().set_play_icon_to_bean(current)
         
+        """play song"""
+        self.play(current)
+
+        """set active tree"""
+        #self.notetabs.switch_tree(self)
+    
+    def save_beans_to(self, beans):
+        return None    
    
     def on_add_folders(self, paths=None):
         if not paths:
@@ -177,8 +189,12 @@ class BaseFoobnixControls(LoadSave):
             self.main_window.show()
 
     def state_play(self):
-        self.media_engine.state_play()
-
+        if self.media_engine.get_state() == STATE_PAUSE:
+            self.media_engine.state_play()
+        else:
+            self.play_selected_song()
+        
+    
     def show_preferences(self):
         self.preferences.show()
 

@@ -44,8 +44,6 @@ class PlaylistTreeControl(CommonTreeControl):
         self.append_column(description)
         self.append_column(time)
 
-        self.active_UUID = None
-        
         self.configure_send_drug()
         self.configure_recive_drug()
         
@@ -73,8 +71,7 @@ class PlaylistTreeControl(CommonTreeControl):
             self.set_play_icon_to_bean(bean)
             return bean
     
-        bean = self.get_next_bean_by_UUID(self.active_UUID)
-        self.active_UUID = bean.UUID
+        bean = self.get_next_bean_by_UUID()
         
         self.set_play_icon_to_bean(bean)
         return bean
@@ -90,8 +87,8 @@ class PlaylistTreeControl(CommonTreeControl):
         elif lopping == const.LOPPING_DONT_LOOP:
             return None
         
-        bean = self.get_prev_bean_by_UUID(self.active_UUID)
-        self.active_UUID = bean.UUID
+        bean = self.get_prev_bean_by_UUID()
+        
         
         self.set_play_icon_to_bean(bean)
         return bean
@@ -99,24 +96,15 @@ class PlaylistTreeControl(CommonTreeControl):
     def append(self, bean):
         return super(PlaylistTreeControl, self).append(bean)
 
-    def active_current_song(self):
-        current = self.get_selected_bean()
-        self.active_UUID = current.UUID
-        if current.is_file:
-            self.set_play_icon_to_bean(current)
-        
-        """play song"""
-        self.controls.play(current)
-
-        """set active tree"""
-        self.controls.notetabs.switch_tree(self)
-
+    
     def on_button_press(self, w, e):
         if is_double_left_click(e):
-            self.active_current_song()
+            self.controls.play_selected_song()
         if is_rigth_click(e):
             menu = Popup()
-            menu.add_item('Add to DM', gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
+            menu.add_item('Play', gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
+            menu.add_item('Download', gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
+            menu.add_item('Save as', gtk.STOCK_SAVE_AS, self.controls.save_beans_to, self.get_all_selected_beans())
             menu.add_separator()
             text = self.get_selected_bean().text
             menu.add_item('Copy to Search Line', gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)

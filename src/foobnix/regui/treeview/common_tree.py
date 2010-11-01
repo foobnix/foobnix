@@ -45,6 +45,8 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         self.set_headers_visible(False)
 
         self.set_type_plain()
+        
+        self.active_UUID = -1
     
     def rename_selected(self, text):
         selection = self.get_selection()
@@ -170,9 +172,11 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         
         
     def set_play_icon_to_bean(self, bean):
+        
         for row in self.model:
             if row[self.UUID[0]] == bean.UUID:
-                row[self.play_icon[0]] = gtk.STOCK_GO_FORWARD                
+                row[self.play_icon[0]] = gtk.STOCK_GO_FORWARD
+                self.active_UUID = bean.UUID                
             else:
                 row[self.play_icon[0]] = None
 
@@ -211,15 +215,19 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
             if row[self.UUID[0]] == UUID:
                 return self.get_bean_from_row(row)        
 
-    def get_next_bean_by_UUID(self, UUID):
+    def get_next_bean_by_UUID(self):
+        UUID = self.active_UUID
         for i, row in enumerate(self.model):
             if row[self.UUID[0]] == UUID:
                 if i + 1 < len(self.model):
                     next_row = self.model[i + 1]
-                    return self.get_bean_from_row(next_row)                
+                    return self.get_bean_from_row(next_row)
+                        
         return self.get_bean_from_row(self.model[0])
+        
     
-    def get_prev_bean_by_UUID(self, UUID):
+    def get_prev_bean_by_UUID(self):
+        UUID = self.active_UUID
         for i, row in enumerate(self.model):
             if row[self.UUID[0]] == UUID:
                 return self.get_bean_from_row(self.model[i - 1])
