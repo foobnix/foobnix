@@ -42,8 +42,6 @@ class FoobnixCore(BaseFoobnixControls):
         self.info_panel = InfoPanelWidget(self)
 
         self.trayicon = TrayIconControls(self)
-        self.trayicon.show()
-
 
         self.movie_window = MovieDrawingArea(self)
 
