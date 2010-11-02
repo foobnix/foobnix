@@ -10,12 +10,13 @@ from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.util import const
 from foobnix.util.key_utils import is_key
+from foobnix.util.configuration import VERSION
 class MainWindow(gtk.Window, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
         
-        self.set_title("Foobnix Music Player")
+        self.set_title("Foobnix Music Player "+VERSION)
         self.set_position(gtk.WIN_POS_CENTER)
         self.set_resizable(True)        
         self.connect("delete-event", self.hide_window)
