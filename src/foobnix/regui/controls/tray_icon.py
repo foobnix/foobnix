@@ -57,25 +57,27 @@ class PopupWindowMenu(gtk.Window, FControl):
         self.hide()
 
 
-class TrayIconControls(FControl, LoadSave):
+class TrayIconControls(gtk.StatusIcon,FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        self.icon = gtk.StatusIcon()
-        self.icon.set_has_tooltip(True)
+        gtk.StatusIcon.__init__(self)
+        self.set_has_tooltip(True)
         self.tooltip = gtk.Tooltip()
-        self.icon.set_tooltip("Foobnix music player")
+        self.set_tooltip("Foobnix music player")
         
         path = get_foobnix_resourse_path_by_name("foobnix.png")
-        self.icon.set_from_file(path)
+        self.set_from_file(path)
         self.popup_menu = PopupWindowMenu(self.controls)
         
-        self.icon.connect("activate", self.on_activate)
-        self.icon.connect("popup-menu", self.on_popup_menu)
+        self.connect("activate", self.on_activate)
+        self.connect("popup-menu", self.on_popup_menu)
 
-        self.icon.connect("button-press-event", self.on_button_press)
-        self.icon.connect("scroll-event", self.controls.volume.on_scroll_event)
+        self.connect("button-press-event", self.on_button_press)
+        self.connect("scroll-event", self.controls.volume.on_scroll_event)
+        self.connect("query-tooltip", self.on_query_tooltip)
 
         self.paused = False
+        self.current_bean = None
     
     def on_load(self):
         if FC().show_tray_icon:
@@ -87,8 +89,13 @@ class TrayIconControls(FControl, LoadSave):
         pass
 
         self.paused = False
+    
+    
+    def set_current_bean(self, bean):
+        self.current_bean = bean
         
-    def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip, bean):
+    def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip):
+        bean = self.current_bean
         vbox = gtk.VBox()
         hbox = gtk.HBox()       
         image = gtk.Image()
@@ -121,7 +128,7 @@ class TrayIconControls(FControl, LoadSave):
     def set_image_from_path(self, path):
         pixbuf = gtk.gdk.pixbuf_new_from_file(path)
         #scaled_buf = pixbuf.scale_simple(self.size, self.size, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
-        self.icon.set_from_pixbuf(pixbuf)
+        self.set_from_pixbuf(pixbuf)
     
     def on_activate(self, *a):
         self.controls.windows_visibility()
@@ -131,10 +138,10 @@ class TrayIconControls(FControl, LoadSave):
             self.controls.play_pause()
 
     def hide(self):
-        self.icon.set_visible(False)
+        self.set_visible(False)
 
     def show(self):
-        self.icon.set_visible(True)
+        self.set_visible(True)
 
     def show_window(self, *a):
         self.popup_menu.reshow_with_initial_size()
@@ -151,8 +158,5 @@ class TrayIconControls(FControl, LoadSave):
     def set_text(self, text):
         def task():
             self.popup_menu.set_text(text)
-            self.icon.set_tooltip(text)
-        gobject.idle_add(task)
-
-    def get_pixbuf(self):
-        return self.icon.get_pixbuf()
+            self.set_tooltip(text)
+        gobject.idle_add(task)   

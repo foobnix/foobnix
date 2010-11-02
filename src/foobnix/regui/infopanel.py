@@ -119,7 +119,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             self.image.set_image_from_path(bean.image)
             if FC().change_tray_icon:
                 self.controls.trayicon.set_image_from_path(bean.image)
-            self.controls.trayicon.icon.connect("query-tooltip", self.controls.trayicon.on_query_tooltip, bean)
+            self.controls.trayicon.set_current_bean(bean)
         else:
             url = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
             if url:
