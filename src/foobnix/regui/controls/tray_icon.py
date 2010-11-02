@@ -12,6 +12,7 @@ from foobnix.util.mouse_utils import is_middle_click
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.regui.state import LoadSave
 import gobject
+from foobnix.helpers.image import CoverImage
 
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
@@ -65,8 +66,8 @@ class TrayIconControls(gtk.StatusIcon,FControl, LoadSave):
         self.tooltip = gtk.Tooltip()
         self.set_tooltip("Foobnix music player")
         
-        path = get_foobnix_resourse_path_by_name("foobnix.png")
-        self.set_from_file(path)
+        self.path = get_foobnix_resourse_path_by_name("foobnix.png")
+        self.set_from_file(self.path)
         self.popup_menu = PopupWindowMenu(self.controls)
         
         self.connect("activate", self.on_activate)
@@ -96,6 +97,9 @@ class TrayIconControls(gtk.StatusIcon,FControl, LoadSave):
         
     def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip):
         bean = self.current_bean
+        print type(bean)
+        if type(bean) == type(None):
+            return False
         vbox = gtk.VBox()
         hbox = gtk.HBox()       
         image = gtk.Image()
@@ -108,19 +112,33 @@ class TrayIconControls(gtk.StatusIcon,FControl, LoadSave):
         hbox = gtk.HBox()
         label = gtk.Label("Artist:")
         hbox.pack_start(label, False, False, 5)
-        label = gtk.Label(bean.artist)
+        if bean.artist:
+            label = gtk.Label(bean.artist)
+        else:
+            label = gtk.Label("Unknown artist")
         hbox.pack_start(label, False, False, 5)
         vbox.pack_start(hbox, False, False, 10)
         
         hbox = gtk.HBox()
         label = gtk.Label("Title:")
         hbox.pack_start(label, False, False, 5)
-        label = gtk.Label(bean.title)
+        if bean.title:
+            label = gtk.Label(bean.title)
+        else:
+            label = gtk.Label("Unknown title")
         hbox.pack_start(label, False, False, 5)
         vbox.pack_start(hbox, False, False, 10)
         vbox.show_all()
         #bean = self.controls.common_tree_control.get_selected_bean()
-        pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(bean.image, 150, 150)
+        url = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
+        if bean.image:
+            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(bean.image, 150, 150)
+        elif url:
+            image_for_tooltip = CoverImage()
+            image_pix_buf = image_for_tooltip._create_pbuf_image_from_url(url)
+            pixbuf = image_pix_buf.scale_simple(150, 150, gtk.gdk.INTERP_BILINEAR)
+        else:
+            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(self.path, 150, 150)
         tooltip.set_icon(pixbuf)
         tooltip.set_custom(vbox)
         return True
