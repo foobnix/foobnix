@@ -100,40 +100,24 @@ class TrayIconControls(gtk.StatusIcon,FControl, LoadSave):
         if type(bean) == type(None):
             return False
         vbox = gtk.VBox()
-        hbox = gtk.HBox()       
-        image = gtk.Image()
-        image.set_from_stock(gtk.STOCK_DIALOG_INFO, gtk.ICON_SIZE_DND)
-        hbox.pack_start(image, False, False, 5)
-        label = gtk.Label("*** INFO ***")
-        hbox.pack_start(label, True, False, 0)
-        vbox.pack_start(hbox, False, False, 10)
-        
-        hbox = gtk.HBox()
-        label = gtk.Label("Artist:")
-        hbox.pack_start(label, False, False, 5)
         if bean.artist:
-            label = gtk.Label(bean.artist)
+            label = gtk.Label()
+            label.set_markup("<b>"+bean.artist+"</b>")
         else:
             label = gtk.Label("Unknown artist")
-        hbox.pack_start(label, False, False, 5)
-        vbox.pack_start(hbox, False, False, 10)
-        
-        hbox = gtk.HBox()
-        label = gtk.Label("Title:")
-        hbox.pack_start(label, False, False, 5)
+        vbox.pack_start(label, False, False, 30)
         if bean.title:
             label = gtk.Label(bean.title)
         else:
             label = gtk.Label("Unknown title")
-        hbox.pack_start(label, False, False, 5)
-        vbox.pack_start(hbox, False, False, 10)
+        vbox.pack_start(label, False, False, 0)
         vbox.show_all()
         if bean.image:
             pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(bean.image, 150, 150)
         elif self.controls.info_panel.url:
             pixbuf = cover.image_from_url.scale_simple(150, 150, gtk.gdk.INTERP_BILINEAR)
         else:
-            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(self.path, 150, 150)
+            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(self.path, 110, 110)
         tooltip.set_icon(pixbuf)
         tooltip.set_custom(vbox)
         return True
