@@ -7,12 +7,15 @@ import gtk
 import urllib
 from foobnix.util import LOG
 import gobject
+
+image_from_url = None #variable gets value from set_image_from_url function
+
 class CoverImage(gtk.Image):
     def __init__(self, size=150):
         gtk.Image.__init__(self)
         self.size = size
         self.set_no_image()
-        
+                
     def set_no_image(self):
         image_name = "blank-disc-cut.jpg"
         
@@ -37,8 +40,9 @@ class CoverImage(gtk.Image):
         if not url:
             LOG.warn("set_image_from_url URL is empty")
             return None
-        image = self._create_pbuf_image_from_url(url)
-        image_pix_buf = image.scale_simple(self.size, self.size, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
+        global image_from_url
+        image_from_url = self._create_pbuf_image_from_url(url)
+        image_pix_buf = image_from_url.scale_simple(self.size, self.size, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
         self.set_from_pixbuf(image_pix_buf)
     
     def set_image_from_path(self, path):

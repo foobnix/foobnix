@@ -121,9 +121,9 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             if FC().change_tray_icon:
                 self.controls.trayicon.set_image_from_path(bean.image)
         else:
-            url = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
-            if url:
-                self.image.set_image_from_url(url)
+            self.url = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
+            if self.url:
+                self.image.set_image_from_url(self.url)
             else:
                 self.image.set_no_image()
         
