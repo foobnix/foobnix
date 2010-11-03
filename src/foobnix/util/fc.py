@@ -55,7 +55,10 @@ class FC:
         """support file formats"""
         self.last_music_path = None
         self.music_paths = ["/tmp"]
-        self.support_formats = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".cue", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp" ]
+        audio = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".cue", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp"]
+        video = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mp4", ".mpg", ".rm", ".swf", ".vob", ".wmv"]
+        self.support_formats = audio + video
+        
         self.cache_music_tree_beans = []
         self.cache_virtual_tree_beans = []
         self.cache_radio_tree_beans = []
