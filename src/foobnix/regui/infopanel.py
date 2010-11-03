@@ -124,10 +124,12 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             self.url = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
             if self.url:
                 self.image.set_image_from_url(self.url)
+                if FC().change_tray_icon:
+                    self.controls.trayicon.set_image_from_url()
             else:
                 self.image.set_no_image()
-            if FC().change_tray_icon:
-                self.controls.trayicon.set_image_from_url()
+                if FC().change_tray_icon:
+                    self.controls.trayicon.set_no_image()
                 
         
         def update_parent(parent_bean, beans):    

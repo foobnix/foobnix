@@ -129,7 +129,11 @@ class TrayIconControls(gtk.StatusIcon,FControl, LoadSave):
     def set_image_from_path(self, path):
         pixbuf = gtk.gdk.pixbuf_new_from_file(path)
         self.set_from_pixbuf(pixbuf)
-    
+        
+    def set_no_image(self):
+        pixbuf = gtk.gdk.pixbuf_new_from_file(self.path)
+        self.set_from_pixbuf(pixbuf)
+        
     def on_activate(self, *a):
         self.controls.windows_visibility()
 
