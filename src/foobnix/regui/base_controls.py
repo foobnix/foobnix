@@ -172,6 +172,9 @@ class BaseFoobnixControls(LoadSave):
     
     def show_hide(self):
         self.main_window.show_hide()
+        
+    def show(self):
+        self.main_window.show()
     
     def play_pause(self):
         print self.media_engine.get_state()        

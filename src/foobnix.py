@@ -27,6 +27,5 @@ if not iface:
     
 else:
     print "start client"
-    if sys.argv:
-        iface.parse_arguments(sys.argv)
+    iface.parse_arguments(sys.argv)
 
