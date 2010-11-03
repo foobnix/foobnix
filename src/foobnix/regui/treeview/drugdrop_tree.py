@@ -74,20 +74,25 @@ class DrugDropTree(gtk.TreeView):
     
     def iter_copy(self, from_model, from_iter, to_model, to_iter, pos, to_type, from_type):
         row = self.get_row_from_model_iter(from_model, from_iter)
-
+        
+        if to_iter:
+            to_iter = to_model.convert_iter_to_child_iter(to_iter)
+        
         if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
             if to_iter:
-                is_file = to_model.get_value(to_iter, self.is_file[0])
+                is_file = to_model.get_model().get_value(to_iter, self.is_file[0])
                 if is_file == True:
                     return False
             
-            new_iter = to_model.prepend(to_iter, row)               
+            new_iter = to_model.get_model().prepend(to_iter, row)               
         elif pos == gtk.TREE_VIEW_DROP_BEFORE:
-            new_iter = to_model.insert_before(None, to_iter, row)
+            new_iter = to_model.get_model().insert_before(None, to_iter, row)
         elif pos == gtk.TREE_VIEW_DROP_AFTER:
-            new_iter = to_model.insert_after(None, to_iter, row)
+            new_iter = to_model.get_model().insert_after(None, to_iter, row)
+            
+            
         else:
-            new_iter = to_model.append(None, row)
+            new_iter = to_model.get_model().append(None, row)
         
         
         if ((to_type == VIEW_TREE and from_type == VIEW_TREE) or
@@ -109,7 +114,7 @@ class DrugDropTree(gtk.TreeView):
     
     def add_reqursive_plain(self, from_model, from_iter, to_model, to_iter, parent_level):
         for child_row in self.get_child_rows(from_model, parent_level):            
-            new_iter = to_model.append(to_iter, child_row)
+            new_iter = to_model.get_model().append(to_iter, child_row)
             child_level = child_row[self.level[0]]
             self.add_reqursive_plain(from_model, from_iter, to_model, new_iter, child_level)
     
@@ -122,11 +127,11 @@ class DrugDropTree(gtk.TreeView):
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
         to_filter_model = to_tree.get_model()
-        to_model = to_filter_model.get_model()
+        #to_model = to_filter_model.get_model()
         if to_tree.get_dest_row_at_pos(x, y):
             to_path, to_pos = to_tree.get_dest_row_at_pos(x, y)
-            to_path = to_filter_model.convert_path_to_child_path(to_path)      
-            to_iter = to_model.get_iter(to_path)
+            #to_path = to_filter_model.convert_path_to_child_path(to_path)      
+            to_iter = to_filter_model.get_iter(to_path)
         else:
             to_path = None
             to_pos = None     
@@ -137,20 +142,20 @@ class DrugDropTree(gtk.TreeView):
             """it is possible drug from file system"""
             return None
         from_filter_model, from_paths = from_tree.get_selection().get_selected_rows()
-        from_model = from_filter_model.get_model()
+        #from_model = from_filter_model.get_model()
         for current_path  in from_paths:
-            from_path = from_filter_model.convert_path_to_child_path(current_path) 
-            from_iter = from_model.get_iter(from_path)
+            #from_path = from_filter_model.convert_path_to_child_path(current_path) 
+            from_iter = from_filter_model.get_iter(current_path)
             
             """do not copy to himself"""
-            if to_tree == from_tree and from_path == to_path:
+            if to_tree == from_tree and current_path == to_path:
                 "do not copy to himself"
                 drag_context.finish(False, False)
                 return None
             
             
             """do not copy to child"""        
-            result = self.iter_copy(from_model, from_iter, to_model, to_iter, to_pos, to_tree.current_view, from_tree.current_view)
+            result = self.iter_copy(from_filter_model, from_iter, to_filter_model, to_iter, to_pos, to_tree.current_view, from_tree.current_view)
             
             if result and to_tree == from_tree:
                 """move element in the save tree"""

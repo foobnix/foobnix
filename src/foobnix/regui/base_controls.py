@@ -440,6 +440,7 @@ class BaseFoobnixControls(LoadSave):
     def filter_tree(self, value):
         self.tree.filter(value)
         self.radio.filter(value)
+        self.virtual.filter(value)
 
     def quit(self, *a):
         LOG.info("Controls - Quit")
