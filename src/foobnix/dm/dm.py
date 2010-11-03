@@ -19,6 +19,7 @@ class DM(ChildTopWindow):
     def __init__(self, controls):
         self.controls = controls        
         ChildTopWindow.__init__(self, "Dowload Manager", 900, 700)
+        self.set_resizable(True)
 
         vbox = gtk.VBox(False, 0)
         

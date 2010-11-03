@@ -43,7 +43,7 @@ class MenuWidget(FControl):
 
         view.separator()
         view.add_image_item("Equalizer", None, self.controls.eq.show)
-        view.add_image_item("Download", None, self.controls.dm.show)
+        view.add_image_item("Download Manager", None, self.controls.dm.show)
         view.separator()
         view.add_image_item("Preferences", gtk.STOCK_PREFERENCES, self.controls.show_preferences)
 
