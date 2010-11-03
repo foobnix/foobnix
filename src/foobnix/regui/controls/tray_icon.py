@@ -122,9 +122,12 @@ class TrayIconControls(gtk.StatusIcon,FControl, LoadSave):
         tooltip.set_custom(vbox)
         return True
     
+    def set_image_from_url(self):
+        pixbuf = cover.image_from_url
+        self.set_from_pixbuf(pixbuf)
+        
     def set_image_from_path(self, path):
         pixbuf = gtk.gdk.pixbuf_new_from_file(path)
-        #scaled_buf = pixbuf.scale_simple(self.size, self.size, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
         self.set_from_pixbuf(pixbuf)
     
     def on_activate(self, *a):
