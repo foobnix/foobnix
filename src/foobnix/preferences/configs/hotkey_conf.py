@@ -59,17 +59,19 @@ class HotKeysConfig(ConfigPlugin):
         self.action_text = gtk.Entry()      
         self.action_text.set_size_request(150, -1)
         self.action_text.connect("button-press-event", self.on_mouse_click) 
-        self.action_text.show()
         
         self.hotkey_text = gtk.Entry()
         self.hotkey_text.set_editable(False)
         self.hotkey_text.connect("key-press-event", self.on_key_press)
-        #self.hotkey_text.connect("key-release-event", self.on_key_release)
         self.hotkey_text.set_size_request(150, -1)
-        self.hotkey_text.show()
+        
+        self.hotkey_auto = gtk.CheckButton("Auto key")
+        self.hotkey_auto.set_active(True)        
+        
         
         hotbox.pack_start(self.action_text, False, True, 0)
         hotbox.pack_start(self.hotkey_text, False, True, 0)
+        hotbox.pack_start(self.hotkey_auto, False, True, 0)
         
         
         box.pack_start(self.tree_widget, False, True, 0)
@@ -177,6 +179,11 @@ class HotKeysConfig(ConfigPlugin):
         return items      
         
     def on_key_press(self, w, event):
+        if not self.hotkey_auto.get_active():
+            self.hotkey_text.set_editable(True)
+            return None 
+        self.hotkey_text.set_editable(False)
+        
         self.unbind_all() 
         keyname = gtk.gdk.keyval_name(event.keyval)
         print "Key %s (%d) was pressed" % (keyname, event.keyval), event.state
