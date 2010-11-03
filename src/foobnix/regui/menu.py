@@ -8,6 +8,7 @@ from foobnix.util import LOG, const
 import sys
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
+from foobnix.helpers.my_widgets import open_link_in_browser
 
 class MenuWidget(FControl):
     def __init__(self, controls):
@@ -77,13 +78,16 @@ class MenuWidget(FControl):
         """Help"""
         help = top.append("Help")
         help.add_image_item("About", gtk.STOCK_ABOUT, self.controls.about.show_all)
+        help.add_text_item("Project page", lambda * a:open_link_in_browser("http://www.foobnix.com"), None, False)
+        help.add_image_item("Issue report", gtk.STOCK_DIALOG_WARNING, lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
+        
         #help.add_image_item("Help", gtk.STOCK_HELP)
 
         top.decorate()
         self.widget = top.widget
 
         self.on_load()
-
+    
     def on_load(self):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
         self.view_search_panel.set_active(FC().is_view_search_panel)
@@ -141,16 +145,22 @@ class MyMenu(gtk.Menu):
         self.append(check)
         return check
 
-    def add_text_item(self, title):
+    def add_text_item(self, title, func=None, param=None, sub_menu=True):
         sub = gtk.MenuItem(title)
         sub.show()
         self.append(sub)
+        
+        if param and func:
+            sub.connect("activate", lambda * a: func(param))
+        elif func:
+            sub.connect("activate", lambda * a: func())
 
-        menu = MyMenu()
-        menu.show()
-        sub.set_submenu(menu)
-
-        return menu
+        if sub_menu:
+            menu = MyMenu()
+            menu.show()
+            sub.set_submenu(menu)
+            return menu
+        
 
 """My top menu bar helper"""
 class TopMenu():
