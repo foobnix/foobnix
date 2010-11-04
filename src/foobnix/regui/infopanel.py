@@ -7,7 +7,6 @@ import gtk
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
-from foobnix.helpers.image import CoverImage
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL
@@ -15,6 +14,7 @@ from foobnix.helpers.my_widgets import notetab_label
 from foobnix.helpers.textarea import TextArea
 from foobnix.thirdparty.lyr import get_lyrics
 import gobject
+from foobnix.helpers.image import ImageBase
 
 class InfoPanelWidget(gtk.Frame, LoadSave, FControl):    
     def __init__(self, controls): 
@@ -30,7 +30,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         """image and similar artists"""
         ibox = gtk.HBox(False, 0)
-        self.image = CoverImage(FC().info_panel_image_size)
+        self.image = ImageBase("blank-disc-cut.jpg",FC().info_panel_image_size)
         
         self.artists = SimpleTreeControl("Similar Artist", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)  
         
@@ -115,22 +115,12 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         gobject.idle_add(task)
         
         """update image"""
-        self.controls.trayicon.set_current_bean(bean)
-        if bean.image:
-            self.image.set_image_from_path(bean.image)
-            if FC().change_tray_icon:
-                self.controls.trayicon.set_image_from_path(bean.image)
-        else:
-            self.url = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
-            if self.url:
-                self.image.set_image_from_url(self.url)
-                if FC().change_tray_icon:
-                    self.controls.trayicon.set_image_from_url()
-            else:
-                self.image.set_no_image()
-                if FC().change_tray_icon:
-                    self.controls.trayicon.set_no_image()
-                
+        if not bean.image:
+            bean.image = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
+        
+        self.image.update_info_from(bean)
+        self.controls.trayicon.update_info_from(bean)
+        
         
         def update_parent(parent_bean, beans):    
             for bean in beans:

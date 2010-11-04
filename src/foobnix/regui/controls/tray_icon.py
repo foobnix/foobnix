@@ -12,7 +12,8 @@ from foobnix.util.mouse_utils import is_middle_click
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.regui.state import LoadSave
 import gobject
-import foobnix.helpers.image as cover
+from foobnix.helpers.image import ImageBase
+from foobnix.regui.model import FModel
 
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
@@ -58,10 +59,11 @@ class PopupWindowMenu(gtk.Window, FControl):
         self.hide()
 
 
-class TrayIconControls(gtk.StatusIcon,FControl, LoadSave):
+class TrayIconControls(gtk.StatusIcon,ImageBase, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         gtk.StatusIcon.__init__(self)
+        ImageBase.__init__(self,"foobnix.png")
         self.set_has_tooltip(True)
         self.tooltip = gtk.Tooltip()
         self.set_tooltip("Foobnix music player")
@@ -78,8 +80,10 @@ class TrayIconControls(gtk.StatusIcon,FControl, LoadSave):
         self.connect("query-tooltip", self.on_query_tooltip)
 
         self.paused = False
-        self.current_bean = None
-    
+        self.current_bean = FModel().add_artist("").add_title("")
+        self.pixbuf = None
+        self.update_info_from(self.current_bean)
+  
     def on_load(self):
         if FC().show_tray_icon:
             self.show()
@@ -87,18 +91,22 @@ class TrayIconControls(gtk.StatusIcon,FControl, LoadSave):
             self.hide()
             
     def on_save(self):
-        pass
-
         self.paused = False
     
-    
-    def set_current_bean(self, bean):
+    def update_info_from(self, bean):
         self.current_bean = bean
-        
+        image = ImageBase("foobnix.png",FC().tooltip_image_size)
+        image.update_info_from(bean)
+        self.pixbuf = image.get_pixbuf()
+        super(TrayIconControls, self).update_info_from(bean)
+      
+    
     def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip):
         bean = self.current_bean
-        if type(bean) == type(None):
-            return False
+        if not bean:
+            return None
+        
+        
         vbox = gtk.VBox()
         if bean.artist:
             label = gtk.Label()
@@ -112,27 +120,10 @@ class TrayIconControls(gtk.StatusIcon,FControl, LoadSave):
             label = gtk.Label("Unknown title")
         vbox.pack_start(label, False, False, 0)
         vbox.show_all()
-        if bean.image:
-            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(bean.image, 150, 150)
-        elif self.controls.info_panel.url:
-            pixbuf = cover.image_from_url.scale_simple(150, 150, gtk.gdk.INTERP_BILINEAR)
-        else:
-            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(self.path, 110, 110)
-        tooltip.set_icon(pixbuf)
+            
+        tooltip.set_icon(self.pixbuf)
         tooltip.set_custom(vbox)
         return True
-    
-    def set_image_from_url(self):
-        pixbuf = cover.image_from_url
-        self.set_from_pixbuf(pixbuf)
-        
-    def set_image_from_path(self, path):
-        pixbuf = gtk.gdk.pixbuf_new_from_file(path)
-        self.set_from_pixbuf(pixbuf)
-        
-    def set_no_image(self):
-        pixbuf = gtk.gdk.pixbuf_new_from_file(self.path)
-        self.set_from_pixbuf(pixbuf)
         
     def on_activate(self, *a):
         self.controls.windows_visibility()

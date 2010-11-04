@@ -91,6 +91,7 @@ class FC:
         
         """info panel"""
         self.info_panel_image_size = 150
+        self.tooltip_image_size = 150
         self.is_info_panel_show_tags = False
         
         self.uuid = uuid.uuid4().hex

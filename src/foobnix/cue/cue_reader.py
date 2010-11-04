@@ -4,7 +4,6 @@ Created on 7  2010
 @author: ivan
 '''
 from __future__ import with_statement
-#from foobnix.model.entity import CommonBean
 from foobnix.regui.model import FModel
 import os
 from foobnix.util.time_utils import normilize_time
