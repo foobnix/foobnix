@@ -32,7 +32,7 @@ class BaseFoobnixLayout(LoadSave, FControl):
         bbox.pack_start(controls.movie_window, False, False)
         
         self.hpaned_right.pack1(child=bbox, resize=True, shrink=True)
-        self.hpaned_right.pack2(child=controls.info_panel, resize=True, shrink=True)
+        #self.hpaned_right.pack2(child=controls.info_panel, resize=True, shrink=True)
                
         
         center_box.pack_start(controls.searchPanel, False, False)

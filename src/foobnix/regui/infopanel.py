@@ -24,7 +24,13 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.almum_label.set_line_wrap(True)
         self.almum_label.set_markup("<b></b>")
         self.set_label_widget(self.almum_label)                                
-        self.set_shadow_type(gtk.SHADOW_NONE)
+        #self.set_shadow_type(gtk.SHADOW_)
+        
+        self.artists = SimpleTreeControl("Similar Artist", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.tracks = SimpleTreeControl("Similar Songs", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)        
+        self.tags = SimpleTreeControl("Similar Tags", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.lyrics = TextArea()
+        
         
         self.vpaned_small = gtk.VPaned()
         
@@ -32,40 +38,41 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         ibox = gtk.HBox(False, 0)
         self.image = ImageBase("blank-disc-cut.jpg",FC().info_panel_image_size)
         
-        self.artists = SimpleTreeControl("Similar Artist", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)  
+        
+        lbox = gtk.VBox(False, 0)
+        
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.artists.scroll, symbol="Similars Artist"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tracks.scroll, symbol="Similars Sons"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.lyrics,symbol="Lyric"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tags.scroll, symbol="Tags"))
+          
         
         ibox.pack_start(self.image, False, False)
-        ibox.pack_start(self.artists.scroll, True, True)
+        #ibox.pack_start(self.artists.scroll, True, True)
+        ibox.pack_start(lbox, True, True)
+        
         
         """image and similar artists"""
         sbox = gtk.VBox(False, 0)
         
-        self.tracks = SimpleTreeControl("Similar Songs", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)        
-        self.tags = SimpleTreeControl("Similar Tags", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        self.lyrics = TextArea()
         
-        self.left_widget = [self.tracks.scroll, self.tags.scroll, self.lyrics]
+        
+        self.left_widget = [self.tracks.scroll, self.tags.scroll, self.lyrics, self.artists.scroll]
         
         sbox.pack_start(self.tracks.scroll, True, True)
         sbox.pack_start(self.lyrics, True, True)
         sbox.pack_start(self.tags.scroll, True, True)
+        sbox.pack_start(self.artists.scroll, True, True)
         
         
         self.vpaned_small.pack1(ibox, False, False)
         
-        lbox = gtk.HBox(False, 0)
-        
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tracks.scroll, symbol="similars"))
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.lyrics,symbol="lyric"))
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tags.scroll, symbol="tags"))
-        
-        sbox.pack_start(lbox,False,False)
         
         self.vpaned_small.pack2(sbox, True, True)
                 
         self.add(self.vpaned_small)
         
-        self.show_all()
+        self.hide_all()
     
     def show_current(self, widget):
         for w in self.left_widget:
@@ -99,16 +106,19 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if not bean.artist or not bean.title:
             print """Artist and title no difined"""
             return None
-                
+        
+        info_line = bean.artist
+        
         """update info"""
+        
         album_name = self.controls.lastfm.get_album_name(bean.artist, bean.title)
         album_year = self.controls.lastfm.get_album_year(bean.artist, bean.title)
-        
-        info_line = bean.artist + " - " + bean.title
+                
         if album_name:
-            info_line = bean.artist + " - " + album_name + " - " + bean.title
+            info_line = album_name
         if album_name and album_year:
-            info_line = bean.artist + " - " + album_name + "(" +album_year+ ")" +" - " + bean.title
+            info_line = album_name + "(" +album_year+ ")"
+        
         
         def task():
             self.almum_label.set_markup("<b>%s</b>" % info_line)

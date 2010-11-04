@@ -492,6 +492,7 @@ class BaseFoobnixControls(LoadSave):
         self.main_window.show()
         self.movie_window.hide_all()
         self.check_version()
+        self.info_panel.hide()
 
     def on_save(self):
         for element in self.__dict__:
