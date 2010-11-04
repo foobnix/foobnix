@@ -63,13 +63,11 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         gtk.StatusIcon.__init__(self)
-        ImageBase.__init__(self, "foobnix-nix.gif")
+        ImageBase.__init__(self, "foobnix_icon.svg")
         self.set_has_tooltip(True)
         self.tooltip = gtk.Tooltip()
         self.set_tooltip("Foobnix music player")
         
-        self.path = get_foobnix_resourse_path_by_name("foobnix.png")
-        self.set_from_file(self.path)
         self.popup_menu = PopupWindowMenu(self.controls)
         
         self.connect("activate", self.on_activate)
