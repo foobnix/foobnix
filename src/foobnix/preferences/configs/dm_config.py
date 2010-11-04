@@ -16,11 +16,8 @@ class DMConfig(ConfigPlugin):
     def __init__(self, controls):
         print "Create try icon conf"
         box = gtk.VBox(False, 0)        
-        box.hide()
-        
-        
+
         hbox = gtk.HBox(False, 0)
-        hbox.show()
         
         self.is_save = gtk.CheckButton(label=_("Save online music"), use_underline=True)
         self.is_save.connect("clicked", self.on_save_online)

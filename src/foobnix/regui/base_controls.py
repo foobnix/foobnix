@@ -234,7 +234,6 @@ class BaseFoobnixControls(LoadSave):
         else:
             bean.path = get_radio_source(bean.path)
             
-        self.is_scrobled = False
         self.start_time = False
         
         self.seek_bar.clear()
@@ -243,7 +242,8 @@ class BaseFoobnixControls(LoadSave):
         self.trayicon.set_text(bean.text)
         self.main_window.set_title(bean.text)
         
-        self.media_engine.play(bean)        
+        self.media_engine.play(bean)  
+        self.is_scrobled = False      
 
         
         #print "updation info panel"
@@ -259,9 +259,11 @@ class BaseFoobnixControls(LoadSave):
             self.start_time = str(int(time.time()))
             print "Start time", self.start_time
 
-        if not self.is_scrobled  and (pos_sec >= dur_sec / 2 or (pos_sec >= 45)):
-            self.lastfm.report_scrobled(bean, self.start_time, dur_sec)
-            self.is_scrobled = True
+        if not self.is_scrobled:            
+            if (pos_sec >= dur_sec / 2) or (pos_sec >= 45):
+                self.is_scrobled = True
+                self.lastfm.report_scrobled(bean, self.start_time, dur_sec)
+            
             
                 
             
@@ -278,7 +280,6 @@ class BaseFoobnixControls(LoadSave):
         
     def notify_eos(self):
         self.start_time = None
-        self.is_scrobled = False
         self.next()
 
     def player_seek(self, percent):
