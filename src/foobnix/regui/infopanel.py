@@ -26,29 +26,28 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.set_label_widget(self.almum_label)                                
         #self.set_shadow_type(gtk.SHADOW_)
         
-        self.artists = SimpleTreeControl("Similar Artist", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        self.tracks = SimpleTreeControl("Similar Songs", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)        
-        self.tags = SimpleTreeControl("Similar Tags", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.artists = SimpleTreeControl("Similar Artist", controls)
+        self.tracks = SimpleTreeControl("Similar Songs", controls)        
+        self.tags = SimpleTreeControl("Similar Tags", controls)
         self.lyrics = TextArea()
         
         
-        self.vpaned_small = gtk.VPaned()
+        self.vpaned_small = gtk.VBox(False, 0)
         
         """image and similar artists"""
         ibox = gtk.HBox(False, 0)
-        self.image = ImageBase("blank-disc-cut.jpg",FC().info_panel_image_size)
+        self.image = ImageBase("blank-disc-cut.jpg", FC().info_panel_image_size)
         
         
         lbox = gtk.VBox(False, 0)
         
         lbox.pack_start(notetab_label(func=self.show_current, arg=self.artists.scroll, symbol="Similars Artist"))
         lbox.pack_start(notetab_label(func=self.show_current, arg=self.tracks.scroll, symbol="Similars Sons"))
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.lyrics,symbol="Lyric"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.lyrics, symbol="Lyric"))
         lbox.pack_start(notetab_label(func=self.show_current, arg=self.tags.scroll, symbol="Tags"))
           
         
         ibox.pack_start(self.image, False, False)
-        #ibox.pack_start(self.artists.scroll, True, True)
         ibox.pack_start(lbox, True, True)
         
         
@@ -65,10 +64,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         sbox.pack_start(self.artists.scroll, True, True)
         
         
-        self.vpaned_small.pack1(ibox, False, False)
-        
-        
-        self.vpaned_small.pack2(sbox, True, True)
+        self.vpaned_small.pack_start(ibox, False, False)
+        self.vpaned_small.pack_start(sbox, True, True)
                 
         self.add(self.vpaned_small)
         
@@ -117,7 +114,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if album_name:
             info_line = album_name
         if album_name and album_year:
-            info_line = album_name + "(" +album_year+ ")"
+            info_line = album_name + "(" + album_year + ")"
         
         
         def task():
@@ -159,11 +156,10 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.lyrics.set_text(text)
      
     def on_load(self):
-        self.vpaned_small.set_position(FC().vpaned_small)
         for i, w in enumerate(self.left_widget):
-            if i >0:
+            if i > 0:
                 w.hide()
             
          
     def on_save(self):
-        FC().vpaned_small = self.vpaned_small.get_position()    
+        pass    

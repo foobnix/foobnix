@@ -24,19 +24,19 @@ class BaseFoobnixLayout(LoadSave, FControl):
        
         center_box = gtk.VBox(False, 0)
         
-        self.hpaned_right = gtk.HPaned()
+        #self.hpaned_right = gtk.HPaned()
         
         bbox = gtk.VBox(False, 0)
         
         bbox.pack_start(controls.notetabs, True, True)        
         bbox.pack_start(controls.movie_window, False, False)
         
-        self.hpaned_right.pack1(child=bbox, resize=True, shrink=True)
+        #self.hpaned_right.pack1(child=bbox, resize=True, shrink=True)
         #self.hpaned_right.pack2(child=controls.info_panel, resize=True, shrink=True)
                
         
         center_box.pack_start(controls.searchPanel, False, False)
-        center_box.pack_start(self.hpaned_right, True, True)
+        center_box.pack_start(bbox, True, True)
         
         self.left = LeftWidgets(controls)
         
@@ -70,24 +70,16 @@ class BaseFoobnixLayout(LoadSave, FControl):
         else:
             self.hpaned_left.set_position(0)
         
-    def set_visible_info_panel(self, flag):
-        LOG.info("set_visible_info_panel", flag)
-        if flag:
-            self.hpaned_right.set_position(FC().hpaned_right)
-        else:           
-            self.hpaned_right.set_position(9999)
+    
 
     def on_save(self, *a):
         if FC().is_view_music_tree_panel:
             FC().hpaned_left = self.hpaned_left.get_position()
-        if FC().is_view_info_panel:
-            FC().hpaned_right = self.hpaned_right.get_position()        
+            
     def on_load(self):   
         self.controls.search_progress.hide()        
         self.hpaned_left.set_position(FC().hpaned_left)
-        self.hpaned_right.set_position(FC().hpaned_right)
         self.set_visible_musictree_panel(FC().is_view_music_tree_panel)
-        self.set_visible_info_panel(FC().is_view_info_panel)  
         self.set_visible_search_panel(FC().is_view_search_panel)
         
         

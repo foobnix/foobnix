@@ -5,7 +5,6 @@ Created on Sep 22, 2010
 '''
 import gtk
 from foobnix.util import LOG, const
-import sys
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import open_link_in_browser
@@ -26,20 +25,13 @@ class MenuWidget(FControl):
 
         """View"""
         view = top.append("View")
-        self.view_music_tree = view.add_ckeck_item("Music Tree", FC().is_view_music_tree_panel)
+        self.view_music_tree = view.add_ckeck_item("Left Panel", FC().is_view_music_tree_panel)
         self.view_music_tree.connect("activate", lambda w: controls.set_visible_musictree_panel(w.get_active()))
 
         self.view_search_panel = view.add_ckeck_item("Search Panel")
         self.view_search_panel.connect("activate", lambda w: controls.set_visible_search_panel(w.get_active()))
 
         view.separator()
-        #view.add_ckeck_item("Lyric Panel", FC().is_view_lyric_panel)
-        self.view_info_panel = view.add_ckeck_item("Info Panel")
-        self.view_info_panel.connect("activate", lambda w: controls.set_visible_info_panel(w.get_active()))
-        
-        #self.view_video_panel = view.add_ckeck_item("Video Panel")
-        #self.view_video_panel.connect("activate", lambda w: controls.set_visible_video_panel(w.get_active()))
-
 
         view.separator()
         view.add_image_item("Equalizer", None, self.controls.eq.show)
@@ -91,14 +83,11 @@ class MenuWidget(FControl):
     def on_load(self):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
         self.view_search_panel.set_active(FC().is_view_search_panel)
-        self.view_info_panel.set_active(FC().is_view_info_panel)
-        #self.view_video_panel.set_active(FC().is_view_video_panel)
-
+        
     def on_save(self):
         FC().is_view_music_tree_panel = self.view_music_tree.get_active()
         FC().is_view_search_panel = self.view_search_panel.get_active()
-        FC().is_view_info_panel = self.view_info_panel.get_active()
-        #FC().is_view_video_panel = self.view_video_panel.get_active()
+        
 
 class MyMenu(gtk.Menu):
     """My custom menu class for helping buildings"""

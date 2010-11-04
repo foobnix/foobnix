@@ -13,9 +13,9 @@ class LeftWidgets(FControl, LoadSave, gtk.VBox):
         FControl.__init__(self, controls)
         gtk.VBox.__init__(self, False, 0)
         
-        controls.tree.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        controls.radio.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        controls.virtual.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        controls.tree
+        controls.radio
+        controls.virtual
                
         
                 

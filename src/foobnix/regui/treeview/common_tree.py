@@ -52,6 +52,10 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         self.connect('button_release_event', self.on_multi_button_release)
         self.defer_select = False
         
+        self.scroll = gtk.ScrolledWindow()
+        self.scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.scroll.add(self)
+        
     def on_multi_button_press(self, widget, event):
         target = self.get_path_at_pos(int(event.x), int(event.y))
         if (target and event.type == gtk.gdk.BUTTON_PRESS and not (event.state & (gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)) 
@@ -87,14 +91,6 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         print "populate all", self.current_view
         self.clear()
         self.append_all(beans)
-        
-    def set_scrolled(self, policy_horizontal, policy_vertical):
-        self.scroll = gtk.ScrolledWindow()
-        self.scroll.set_policy(policy_horizontal, policy_vertical)
-        self.scroll.add_with_viewport(self)
-        self.scroll.show_all()
-        return self
-
     
     def get_bean_from_iter(self, iter):
         return self.get_bean_from_model_iter(self.model, iter)

@@ -193,24 +193,12 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         return bean
 
     def create_notebook_tab(self, beans):
-
         treeview = PlaylistTreeControl(self.controls)
         self.switch_tree(treeview)
-
-        #treeview.populate_from_scanner(beans)
-        #if beans:
-        #    treeview.populate(beans)
-        if beans:
-            for bean in beans:         
-                treeview.append(bean)
-            
-        window = gtk.ScrolledWindow()
-        window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        #window.add_with_viewport(treeview)
-        window.add(treeview)
-        window.show_all()
-
-        return  window
+                 
+        treeview.append_all(beans)
+        treeview.scroll.show_all()
+        return  treeview.scroll
 
     def append(self, beans):
         for bean in beans:

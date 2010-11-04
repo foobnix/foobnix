@@ -59,11 +59,11 @@ class PopupWindowMenu(gtk.Window, FControl):
         self.hide()
 
 
-class TrayIconControls(gtk.StatusIcon,ImageBase, FControl, LoadSave):
+class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         gtk.StatusIcon.__init__(self)
-        ImageBase.__init__(self,"foobnix.png")
+        ImageBase.__init__(self, "foobnix-nix.gif")
         self.set_has_tooltip(True)
         self.tooltip = gtk.Tooltip()
         self.set_tooltip("Foobnix music player")
@@ -95,7 +95,7 @@ class TrayIconControls(gtk.StatusIcon,ImageBase, FControl, LoadSave):
     
     def update_info_from(self, bean):
         self.current_bean = bean
-        image = ImageBase("foobnix.png",FC().tooltip_image_size)
+        image = ImageBase("foobnix.png", FC().tooltip_image_size)
         image.update_info_from(bean)
         self.pixbuf = image.get_pixbuf()
         super(TrayIconControls, self).update_info_from(bean)
@@ -110,7 +110,7 @@ class TrayIconControls(gtk.StatusIcon,ImageBase, FControl, LoadSave):
         vbox = gtk.VBox()
         if bean.artist:
             label = gtk.Label()
-            label.set_markup("<b>"+bean.artist+"</b>")
+            label.set_markup("<b>" + bean.artist + "</b>")
         else:
             label = gtk.Label("Unknown artist")
         vbox.pack_start(label, False, False, 30)
