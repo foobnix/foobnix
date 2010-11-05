@@ -21,7 +21,12 @@ def resize_pixbuf(pixbuf, size):
         return pixbuf
 
 def create_pixbuf_from_path(path, size):
-    pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+    try:
+        pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+    except Exception, e:
+        print e
+        return None
+    
     if size:
         return resize_pixbuf(pixbuf,size)
     else:
@@ -29,7 +34,6 @@ def create_pixbuf_from_path(path, size):
 
 def create_pixbuf_from_resource(name, size):
     path = get_foobnix_resourse_path_by_name(name);
-    print "res path", path
     return create_pixbuf_from_path(path, size)
 
 def create_origin_pixbuf_from_url(url):

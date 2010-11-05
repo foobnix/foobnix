@@ -40,7 +40,7 @@ class FC:
         self.len_of_tab = 30
         self.tab_close_element = "label"
         self.count_of_tabs = 5
-        self.tab_position = "left"
+        self.tab_position = "top"
         
 
         """main window controls"""

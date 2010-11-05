@@ -8,6 +8,8 @@ import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util import const
 from foobnix.util.fc import FC
+from foobnix.helpers.pref_widgets import FrameDecorator, IconBlock,\
+    VBoxDecorator, ChooseDecorator
 
 class TrayIconConfig(ConfigPlugin):
     
@@ -21,26 +23,32 @@ class TrayIconConfig(ConfigPlugin):
         
         self.tray_icon_button = gtk.CheckButton(label=_("Show tray icon"), use_underline=True)
         self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
-        self.tray_icon_button.show()
         
         self.close_button = gtk.RadioButton(None, label=_("On close window - close player"))
-        self.close_button.show()
-        
+
         self.hide_button = gtk.RadioButton(self.close_button, label=_("On close window - hide player"))
         self.hide_button.connect("toggled", self.on_show_tray_icon)
-        self.hide_button.show()
         
         self.minimize_button = gtk.RadioButton(self.close_button, label=_("On close window - minimize player"))
-        self.minimize_button.show()
         
         """close on leave popup"""
         self.tray_icon_auto_hide = gtk.CheckButton(label=_("Automatic hide tray icon popup on mouse leave"), use_underline=True)        
-        self.tray_icon_auto_hide.show()
         
         """change tray icon to cover icon"""
         self.change_tray_icon = gtk.CheckButton(label=_("Change tray icon to cover icon"), use_underline=True)
         
-        self.change_tray_icon.show()
+       
+        tray_icon = ChooseDecorator(None,FrameDecorator("System Icon Static", IconBlock("Icon")))
+        
+        init_icon = IconBlock("Init")
+        play_icon = IconBlock("Play")
+        pause_icon = IconBlock("Pause")
+        stop_icon = IconBlock("Stop")
+        radio_icon = IconBlock("Radio")
+        
+        line = VBoxDecorator(init_icon, play_icon, pause_icon, stop_icon, radio_icon)
+        controls = ChooseDecorator(tray_icon.get_radio_button(),FrameDecorator("System Icons Dynamic", line))
+        
         
         box.pack_start(self.tray_icon_button, False, True, 0)
         box.pack_start(self.close_button, False, True, 0)
@@ -48,6 +56,9 @@ class TrayIconConfig(ConfigPlugin):
         box.pack_start(self.minimize_button, False, True, 0)
         box.pack_start(self.tray_icon_auto_hide, False, True, 0)
         box.pack_start(self.change_tray_icon,False, True, 0)
+        
+        box.pack_start(tray_icon,False, True, 0)
+        box.pack_start(controls,False, True, 0)
         
         self.widget = box
 
