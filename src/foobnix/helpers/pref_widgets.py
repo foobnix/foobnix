@@ -16,6 +16,7 @@ class IconBlock(gtk.HBox):
         
         self.combobox = gtk.ComboBox()
         self.entry = gtk.Entry()
+        self.entry.set_size_request(350, -1)
         
         self.combobox.connect("changed", self.on_change_icon)
         self.model = gtk.ListStore(gobject.TYPE_OBJECT, str)
@@ -35,7 +36,7 @@ class IconBlock(gtk.HBox):
         button.connect("clicked",self.on_file_choose)
         
         label = gtk.Label(text)
-        label.set_size_request(100, -1)
+        label.set_size_request(80, -1)
         
         
         self.pack_start(label, False, False)
@@ -67,12 +68,12 @@ class FrameDecorator(gtk.Frame):
         
 class ChooseDecorator(gtk.HBox):
     def __init__(self, parent, widget):
-        gtk.HBox.__init__(self)
+        gtk.HBox.__init__(self,False,0)
         self.widget = widget
         self.button = gtk.RadioButton(parent)
         self.button.connect("toggled", self.on_toggle)
         box = HBoxDecorator(self.button, self.widget)
-        self.pack_start(box)
+        self.pack_start(box, False, True)
     
     def on_toggle(self, *a):
         if self.button.get_active():
