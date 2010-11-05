@@ -9,7 +9,7 @@ from foobnix.helpers.dialog_entry import file_chooser_dialog
 from foobnix.util.pix_buffer import create_pixbuf_from_resource
 class IconBlock(gtk.HBox):
     ICON_SIZE = 24
-    ICON_LIST = ["foobnix.png", "foobnix_icon.svg", "blank-disc.jpg"]
+    ICON_LIST = ["foobnix.png", "foobnix_icon.svg", "foobnix-pause.jpg","foobnix-radio.jpg", "foobnix-stop.jpg"]
     
     def __init__(self, text):
         gtk.HBox.__init__(self, False, 0)
@@ -89,6 +89,7 @@ class VBoxDecorator(gtk.VBox):
         gtk.VBox.__init__(self, False, 0)
         for widget in args:
             self.pack_start(widget, False, False) 
+        self.show_all()
 
 class HBoxDecorator(gtk.HBox):
     def __init__(self, *args):

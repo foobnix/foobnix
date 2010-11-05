@@ -9,7 +9,6 @@ import gtk
 from foobnix.util.fc import FC
 from foobnix.helpers.toolbar import MyToolbar
 from foobnix.util.mouse_utils import is_middle_click
-from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.regui.state import LoadSave
 import gobject
 from foobnix.helpers.image import ImageBase
@@ -77,8 +76,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.connect("button-press-event", self.on_button_press)
         self.connect("scroll-event", self.controls.volume.on_scroll_event)
         self.connect("query-tooltip", self.on_query_tooltip)
-
-        self.paused = False
+        
         self.current_bean = FModel().add_artist("Artist").add_title("Title")
         self.tooltip_image = ImageBase("foobnix-big.png", 150)
   
@@ -105,9 +103,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         alabel.set_markup("<b>%s</b>" % artist)
                 
         vbox = VBoxDecorator(gtk.Label(),alabel,gtk.Label(),gtk.Label(title))        
-        vbox.show_all()
         
-        self.tooltip_image.show_all()
         tooltip.set_icon(self.tooltip_image.get_pixbuf())
         tooltip.set_custom(vbox)
         return True
