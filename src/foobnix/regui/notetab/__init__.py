@@ -39,8 +39,6 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.connect('drag-data-received', self.on_system_drag_data_received)
         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP, dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY)
         
-        #self.connect("button-press-event", self.on_button_press)
-       
         self.empty_tab()
         
     def on_system_drag_data_received(self, widget, context, x, y, selection, target_type, timestamp):
@@ -53,12 +51,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
                 paths.append(path)
             
             self.controls.check_for_media(paths)
-    """
-    def on_select_page(self,tab, pointer, num):
-        current = self.get_current_page()
-        if current >0:
-            self.active_tree = self.get_children()[current].get_children()[0]
-    """
+   
     def on_button_press(self, w, e):
         if is_double_left_click(e):
             self.empty_tab()
@@ -130,10 +123,6 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
         if self.get_n_pages() > FC().count_of_tabs:
             self.remove_page(self.get_n_pages() - 1)
-        
-        """autostart play"""
-        #if beans:
-        #    self.controls.next()
     
     def update_label_angel(self, angle):
         for label in self.tab_labes:
@@ -194,7 +183,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
     def create_notebook_tab(self, beans):
         treeview = PlaylistTreeControl(self.controls)
-        self.switch_tree(treeview)
+        self.set_active_tree(treeview)
                  
         treeview.append_all(beans)
         treeview.scroll.show_all()
@@ -239,7 +228,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         FC().is_order_random = self.is_random
         FC().lopping = self.lopping
 
-    def switch_tree(self, tree):
+    def set_active_tree(self, tree):
         self.active_tree = tree
 
     def set_playlist_tree(self):

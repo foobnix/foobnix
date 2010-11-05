@@ -26,7 +26,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.set_type_tree()
     
     def on_button_press(self, w, e):
-        
         if is_double_left_click(e):
             selected = self.get_selected_bean()
             if selected:

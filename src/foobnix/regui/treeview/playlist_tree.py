@@ -96,6 +96,7 @@ class PlaylistTreeControl(CommonTreeControl):
 
     
     def on_button_press(self, w, e):
+        self.controls.notetabs.set_active_tree(self)
         if is_double_left_click(e):
             self.controls.play_selected_song()
         if is_rigth_click(e):
