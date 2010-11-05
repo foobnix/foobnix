@@ -58,9 +58,9 @@ class TrayIconConfig(ConfigPlugin):
             self.hide_button.set_sensitive(False) 
             if self.hide_button.get_active():
                 self.minimize_button.set_active(True)
-            self.tray_icon.hide()
+            self.trayicon.hide()
         else:
-            self.tray_icon.show()
+            self.trayicon.show()
             self.hide_button.set_sensitive(True)
             
     def on_load(self):

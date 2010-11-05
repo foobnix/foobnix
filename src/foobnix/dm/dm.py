@@ -19,6 +19,7 @@ class DM(ChildTopWindow):
     def __init__(self, controls):
         self.controls = controls        
         ChildTopWindow.__init__(self, "Dowload Manager", 900, 700)
+        self.set_resizable(True)
 
         vbox = gtk.VBox(False, 0)
         
@@ -27,7 +28,7 @@ class DM(ChildTopWindow):
         paned = gtk.HPaned()
         paned.set_position(200)
         
-        self.navigation = DMNavigationTreeControl().set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.navigation = DMNavigationTreeControl()
         
         self.navigation.append(FDModel("All").add_artist("All").add_status(DOWNLOAD_STATUS_ALL))
         self.navigation.append(FDModel("Downloading").add_artist("Downloading").add_status(DOWNLOAD_STATUS_DOWNLOADING))
@@ -35,7 +36,7 @@ class DM(ChildTopWindow):
         self.navigation.append(FDModel("Active").add_artist("Active").add_status(DOWNLOAD_STATUS_ACTIVE))
         self.navigation.append(FDModel("Inactive").add_artist("Inactive").add_status(DOWNLOAD_STATUS_INACTIVE))
         
-        self.dm_list = DownloadManagerTreeControl(self.navigation).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.dm_list = DownloadManagerTreeControl(self.navigation)
         self.navigation.dm_list = self.dm_list
         paned.pack1(self.navigation.scroll)
         paned.pack2(self.dm_list.scroll)

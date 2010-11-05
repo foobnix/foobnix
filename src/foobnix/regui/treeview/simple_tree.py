@@ -14,7 +14,7 @@ from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL,\
 from foobnix.regui.model import FTreeModel
 
 class SimpleTreeControl(CommonTreeControl, LoadSave):
-    def __init__(self, title_name, controls,  head_visible=False):        
+    def __init__(self, title_name, controls,  head_visible=True):        
         CommonTreeControl.__init__(self, controls)
         
         self.set_reorderable(False)

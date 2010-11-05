@@ -6,6 +6,10 @@ Created on 30 авг. 2010
 '''
 import gtk
 
+def open_link_in_browser(uri):
+    link = gtk.LinkButton(uri)
+    link.clicked()
+
 class ImageButton(gtk.Button):
     def __init__(self, stock_image):
         gtk.Button.__init__(self)

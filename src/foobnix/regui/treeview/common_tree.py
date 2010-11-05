@@ -52,6 +52,10 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         self.connect('button_release_event', self.on_multi_button_release)
         self.defer_select = False
         
+        self.scroll = gtk.ScrolledWindow()
+        self.scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.scroll.add(self)
+        
     def on_multi_button_press(self, widget, event):
         target = self.get_path_at_pos(int(event.x), int(event.y))
         if (target and event.type == gtk.gdk.BUTTON_PRESS and not (event.state & (gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)) 
@@ -87,14 +91,7 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         print "populate all", self.current_view
         self.clear()
         self.append_all(beans)
-        
-    def set_scrolled(self, policy_horizontal, policy_vertical):
-        self.scroll = gtk.ScrolledWindow()
-        self.scroll.set_policy(policy_horizontal, policy_vertical)
-        self.scroll.add_with_viewport(self)
-        self.scroll.show_all()
-        return self
-
+    
     def get_bean_from_iter(self, iter):
         return self.get_bean_from_model_iter(self.model, iter)
 
@@ -159,13 +156,6 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         if not selection:
             return None
         model, paths = selection.get_selected_rows()
-        if not paths:
-            return None
-        return paths
-        
-    
-    def get_selected_bean(self):
-        paths = self.get_selected_bean_paths()
         if not paths:
             return None
         return paths
@@ -247,23 +237,6 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
                     row[self.play_icon[0]] = None
         gobject.idle_add(task)
         
-    def get_child_level1_beans_by_selected(self):
-        selection = self.get_selection()
-        model, paths = selection.get_selected_rows()
-        selected = model.get_iter(paths[0])
-        n = model.iter_n_children(selected)
-        iterch = model.iter_children(selected)
-
-        results = []
-
-        for i in xrange(n):
-            path = model.get_path(iterch)
-            bean = self._get_bean_by_path(path)
-            results.append(bean)
-            iterch = model.iter_next(iterch)
-
-        return results
-
     def _get_bean_by_path(self, path):
         model = self.model
         path = self.filter_model.convert_path_to_child_path(path)
@@ -303,11 +276,28 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
     def get_random_bean(self):        
         return self.get_bean_from_row(self.model[randint(0, len(self.model))])
     
+    def get_child_level1_beans_by_selected(self):
+        selection = self.get_selection()
+        model, paths = selection.get_selected_rows()
+        selected = model.get_iter(paths[0])
+        n = model.iter_n_children(selected)
+        iterch = model.iter_children(selected)
+
+        results = []
+
+        for i in xrange(n):
+            path = model.get_path(iterch)
+            bean = self._get_bean_by_path(path)
+            results.append(bean)
+            iterch = model.iter_next(iterch)
+
+        return results
+    
     def get_all_child_beans_by_selected(self):
-            filter_model, paths = self.get_selection().get_selected_rows()
-            model = filter_model.get_model()
+            model, paths = self.get_selection().get_selected_rows()
+            #to_path = model.convert_path_to_child_path(paths[0])
             iter = model.get_iter(paths[0])
-            return self.get_child_iters_by_parent(iter)
+            return self.get_child_iters_by_parent(model, iter)
      
     def get_all_beans(self):
         results = []
@@ -315,7 +305,7 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         
         if next:
             parent = self.get_bean_from_iter(next) 
-            results += [parent] + self.get_child_iters_by_parent(next)
+            results += [parent] + self.get_child_iters_by_parent(self.model, next)
         else:
             return None
         
@@ -327,20 +317,20 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
                 flag = False
             else:
                 parent = self.get_bean_from_iter(next) 
-                results += [parent] + self.get_child_iters_by_parent(next)
+                results += [parent] + self.get_child_iters_by_parent(self.model, next)
                 
         return results
                 
-    def get_child_iters_by_parent(self, iter):
+    def get_child_iters_by_parent(self, model, iter):
         list = []
-        if self.model.iter_has_child(iter):
-            for i in range(0, self.model.iter_n_children(iter)):
-                next_iter = self.model.iter_nth_child(iter, i)
+        if model.iter_has_child(iter):
+            for i in xrange(model.iter_n_children(iter)):
+                next_iter = model.iter_nth_child(iter, i)
                 
-                parent = self.get_bean_from_iter(next_iter)                
+                parent = self.get_bean_from_model_iter(model, next_iter)                
                 list.append(parent)
                  
-                beans = self.get_child_iters_by_parent(next_iter)
+                beans = self.get_child_iters_by_parent(model, next_iter)
                 
                 for bean in beans:
                     bean.parent(parent)                

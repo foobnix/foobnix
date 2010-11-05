@@ -13,9 +13,9 @@ class LeftWidgets(FControl, LoadSave, gtk.VBox):
         FControl.__init__(self, controls)
         gtk.VBox.__init__(self, False, 0)
         
-        controls.tree.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        controls.radio.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        controls.virtual.set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        controls.tree
+        controls.radio
+        controls.virtual
                
         
                 
@@ -25,13 +25,11 @@ class LeftWidgets(FControl, LoadSave, gtk.VBox):
         self.pack_start(controls.tree.scroll, True, True)
         self.pack_start(controls.radio.scroll, True, True)
         self.pack_start(controls.virtual.scroll, True, True)
+        self.pack_start(controls.info_panel, True, True)
         
         self.pack_start(controls.filter, False, False)
         self.pack_start(buttons, False, False)
         
-        self.show_all()
-        
-    
     def on_load(self):            
         pass
             
@@ -45,31 +43,40 @@ class PerspectiveButtonControlls(FControl, gtk.HBox):
         gtk.HBox.__init__(self, False, 0)
                
         musics = self.custom_button("Music", gtk.STOCK_HARDDISK)
-        musics.connect("clicked", self.on_change_perspective, controls.tree)
+        musics.connect("clicked", self.on_change_perspective, controls.tree.scroll)
         musics.set_active(True)
                 
         radios = self.custom_button("Radio", gtk.STOCK_NETWORK)
-        radios.connect("clicked", self.on_change_perspective, controls.radio)
+        radios.connect("clicked", self.on_change_perspective, controls.radio.scroll)
         #radios.connect("clicked", lambda * a: controls.update_radio_tree())
         
         virtuals = self.custom_button("Lists", gtk.STOCK_INDEX)
-        virtuals.connect("clicked", self.on_change_perspective, controls.virtual)
+        virtuals.connect("clicked", self.on_change_perspective, controls.virtual.scroll)
+        
+        info = self.custom_button("Info", gtk.STOCK_INFO)
+        info.connect("clicked", self.on_change_perspective, controls.info_panel)
         
         
        
         
-        self.button_list = [musics, radios, virtuals]
+        self.button_list = [musics, radios, virtuals, info]
         OneActiveToggledButton(self.button_list)
         
         self.pack_start(musics, False, False, 0)
         self.pack_start(radios, False, False, 0)
         self.pack_start(virtuals, False, False, 0)
+        self.pack_start(info, False, False, 0)
     
     def on_change_perspective(self, w, perspective):
         self.controls.tree.scroll.hide()
         self.controls.radio.scroll.hide()
         self.controls.virtual.scroll.hide()
-        perspective.scroll.show()
+        self.controls.info_panel.hide()
+        if perspective == self.controls.info_panel:
+            self.controls.filter.hide()
+        else:
+            self.controls.filter.show()
+        perspective.show()
                     
         
     def custom_button(self, title, gtk_stock, func=None, param=None):

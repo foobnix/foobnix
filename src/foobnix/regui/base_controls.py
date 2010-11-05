@@ -172,6 +172,9 @@ class BaseFoobnixControls(LoadSave):
     
     def show_hide(self):
         self.main_window.show_hide()
+        
+    def show(self):
+        self.main_window.show()
     
     def play_pause(self):
         print self.media_engine.get_state()        
@@ -231,7 +234,6 @@ class BaseFoobnixControls(LoadSave):
         else:
             bean.path = get_radio_source(bean.path)
             
-        self.is_scrobled = False
         self.start_time = False
         
         self.seek_bar.clear()
@@ -240,7 +242,8 @@ class BaseFoobnixControls(LoadSave):
         self.trayicon.set_text(bean.text)
         self.main_window.set_title(bean.text)
         
-        self.media_engine.play(bean)        
+        self.media_engine.play(bean)  
+        self.is_scrobled = False      
 
         
         #print "updation info panel"
@@ -256,9 +259,11 @@ class BaseFoobnixControls(LoadSave):
             self.start_time = str(int(time.time()))
             print "Start time", self.start_time
 
-        if not self.is_scrobled  and (pos_sec >= dur_sec / 2 or (pos_sec >= 45)):
-            self.lastfm.report_scrobled(bean, self.start_time, dur_sec)
-            self.is_scrobled = True
+        if not self.is_scrobled:            
+            if (pos_sec >= dur_sec / 2) or (pos_sec >= 45):
+                self.is_scrobled = True
+                self.lastfm.report_scrobled(bean, self.start_time, dur_sec)
+            
             
                 
             
@@ -275,7 +280,6 @@ class BaseFoobnixControls(LoadSave):
         
     def notify_eos(self):
         self.start_time = None
-        self.is_scrobled = False
         self.next()
 
     def player_seek(self, percent):
@@ -440,6 +444,7 @@ class BaseFoobnixControls(LoadSave):
     def filter_tree(self, value):
         self.tree.filter(value)
         self.radio.filter(value)
+        self.virtual.filter(value)
 
     def quit(self, *a):
         LOG.info("Controls - Quit")
@@ -487,6 +492,7 @@ class BaseFoobnixControls(LoadSave):
         self.main_window.show()
         self.movie_window.hide_all()
         self.check_version()
+        self.info_panel.hide()
 
     def on_save(self):
         for element in self.__dict__:

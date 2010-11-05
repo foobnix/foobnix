@@ -5,9 +5,9 @@ Created on Sep 22, 2010
 '''
 import gtk
 from foobnix.util import LOG, const
-import sys
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
+from foobnix.helpers.my_widgets import open_link_in_browser
 
 class MenuWidget(FControl):
     def __init__(self, controls):
@@ -25,24 +25,17 @@ class MenuWidget(FControl):
 
         """View"""
         view = top.append("View")
-        self.view_music_tree = view.add_ckeck_item("Music Tree", FC().is_view_music_tree_panel)
+        self.view_music_tree = view.add_ckeck_item("Left Panel", FC().is_view_music_tree_panel)
         self.view_music_tree.connect("activate", lambda w: controls.set_visible_musictree_panel(w.get_active()))
 
         self.view_search_panel = view.add_ckeck_item("Search Panel")
         self.view_search_panel.connect("activate", lambda w: controls.set_visible_search_panel(w.get_active()))
 
         view.separator()
-        #view.add_ckeck_item("Lyric Panel", FC().is_view_lyric_panel)
-        self.view_info_panel = view.add_ckeck_item("Info Panel")
-        self.view_info_panel.connect("activate", lambda w: controls.set_visible_info_panel(w.get_active()))
-        
-        #self.view_video_panel = view.add_ckeck_item("Video Panel")
-        #self.view_video_panel.connect("activate", lambda w: controls.set_visible_video_panel(w.get_active()))
-
 
         view.separator()
         view.add_image_item("Equalizer", None, self.controls.eq.show)
-        view.add_image_item("Download", None, self.controls.dm.show)
+        view.add_image_item("Download Manager", None, self.controls.dm.show)
         view.separator()
         view.add_image_item("Preferences", gtk.STOCK_PREFERENCES, self.controls.show_preferences)
 
@@ -77,24 +70,24 @@ class MenuWidget(FControl):
         """Help"""
         help = top.append("Help")
         help.add_image_item("About", gtk.STOCK_ABOUT, self.controls.about.show_all)
+        help.add_text_item("Project page", lambda * a:open_link_in_browser("http://www.foobnix.com"), None, False)
+        help.add_image_item("Issue report", gtk.STOCK_DIALOG_WARNING, lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
+        
         #help.add_image_item("Help", gtk.STOCK_HELP)
 
         top.decorate()
         self.widget = top.widget
 
         self.on_load()
-
+    
     def on_load(self):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
         self.view_search_panel.set_active(FC().is_view_search_panel)
-        self.view_info_panel.set_active(FC().is_view_info_panel)
-        #self.view_video_panel.set_active(FC().is_view_video_panel)
-
+        
     def on_save(self):
         FC().is_view_music_tree_panel = self.view_music_tree.get_active()
         FC().is_view_search_panel = self.view_search_panel.get_active()
-        FC().is_view_info_panel = self.view_info_panel.get_active()
-        #FC().is_view_video_panel = self.view_video_panel.get_active()
+        
 
 class MyMenu(gtk.Menu):
     """My custom menu class for helping buildings"""
@@ -141,16 +134,22 @@ class MyMenu(gtk.Menu):
         self.append(check)
         return check
 
-    def add_text_item(self, title):
+    def add_text_item(self, title, func=None, param=None, sub_menu=True):
         sub = gtk.MenuItem(title)
         sub.show()
         self.append(sub)
+        
+        if param and func:
+            sub.connect("activate", lambda * a: func(param))
+        elif func:
+            sub.connect("activate", lambda * a: func())
 
-        menu = MyMenu()
-        menu.show()
-        sub.set_submenu(menu)
-
-        return menu
+        if sub_menu:
+            menu = MyMenu()
+            menu.show()
+            sub.set_submenu(menu)
+            return menu
+        
 
 """My top menu bar helper"""
 class TopMenu():

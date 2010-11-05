@@ -79,7 +79,7 @@ class DBusManager(dbus.service.Object, FControl):
         elif len(args) == 2:
             command = args[1]
         else:
-            return True
+            return False
           
         if "--next" == command:
             self.controls.next()
@@ -99,12 +99,18 @@ class DBusManager(dbus.service.Object, FControl):
             self.controls.show_hide()
         elif "--play-pause" == command:
             self.controls.play_pause()
+        else:
+            return False
+        return True
     
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
     def parse_arguments(self, args):
-        if args and len(args)>0:
-            self.check_for_commands(args)
+        print args
+        if args and len(args) > 0:            
             self.controls.check_for_media(args)
+            if not self.check_for_commands(args):                
+                self.controls.show()
+        
         
                 
     def on_mediakey(self, comes_from, what):

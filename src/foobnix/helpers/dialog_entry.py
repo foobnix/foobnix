@@ -49,12 +49,22 @@ def one_line_dialog(dialog_title, text=None):
         dialog.set_title(dialog_title)
         dialog.set_markup(dialog_title)        
         entry = gtk.Entry()
+        
         if text:
             entry.set_text(text)
         dialog.vbox.pack_end(entry, True, True, 0)
         dialog.show_all()
+        
+        entry.connect("key-release-event", on_key)
         dialog.run()
+        def on_key(w, e):
+            if is_key(e, KEY_RETURN):
+                text = entry.get_text()
+                dialog.destroy()    
+                return text
+        
         text = entry.get_text()
+        
         dialog.destroy()    
         return text
 def two_line_dialog(title, description, line1, line2):

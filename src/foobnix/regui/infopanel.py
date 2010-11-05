@@ -7,7 +7,6 @@ import gtk
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
-from foobnix.helpers.image import CoverImage
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL
@@ -15,6 +14,7 @@ from foobnix.helpers.my_widgets import notetab_label
 from foobnix.helpers.textarea import TextArea
 from foobnix.thirdparty.lyr import get_lyrics
 import gobject
+from foobnix.helpers.image import ImageBase
 
 class InfoPanelWidget(gtk.Frame, LoadSave, FControl):    
     def __init__(self, controls): 
@@ -24,48 +24,52 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.almum_label.set_line_wrap(True)
         self.almum_label.set_markup("<b></b>")
         self.set_label_widget(self.almum_label)                                
-        self.set_shadow_type(gtk.SHADOW_NONE)
+        #self.set_shadow_type(gtk.SHADOW_)
         
-        self.vpaned_small = gtk.VPaned()
+        self.artists = SimpleTreeControl("Similar Artist", controls)
+        self.tracks = SimpleTreeControl("Similar Songs", controls)        
+        self.tags = SimpleTreeControl("Similar Tags", controls)
+        self.lyrics = TextArea()
+        
+        
+        self.vpaned_small = gtk.VBox(False, 0)
         
         """image and similar artists"""
         ibox = gtk.HBox(False, 0)
-        self.image = CoverImage(FC().info_panel_image_size)
+        self.image = ImageBase("blank-disc-cut.jpg", FC().info_panel_image_size)
         
-        self.artists = SimpleTreeControl("Similar Artist", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)  
+        
+        lbox = gtk.VBox(False, 0)
+        
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.artists.scroll, symbol="Similars Artist"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tracks.scroll, symbol="Similars Sons"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.lyrics, symbol="Lyric"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tags.scroll, symbol="Tags"))
+          
         
         ibox.pack_start(self.image, False, False)
-        ibox.pack_start(self.artists.scroll, True, True)
+        ibox.pack_start(lbox, True, True)
+        
         
         """image and similar artists"""
         sbox = gtk.VBox(False, 0)
         
-        self.tracks = SimpleTreeControl("Similar Songs", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)        
-        self.tags = SimpleTreeControl("Similar Tags", controls).set_scrolled(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        self.lyrics = TextArea()
         
-        self.left_widget = [self.tracks.scroll, self.tags.scroll, self.lyrics]
+        
+        self.left_widget = [self.tracks.scroll, self.tags.scroll, self.lyrics, self.artists.scroll]
         
         sbox.pack_start(self.tracks.scroll, True, True)
         sbox.pack_start(self.lyrics, True, True)
         sbox.pack_start(self.tags.scroll, True, True)
+        sbox.pack_start(self.artists.scroll, True, True)
         
         
-        self.vpaned_small.pack1(ibox, False, False)
-        
-        lbox = gtk.HBox(False, 0)
-        
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tracks.scroll, symbol="similars"))
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.lyrics,symbol="lyric"))
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tags.scroll, symbol="tags"))
-        
-        sbox.pack_start(lbox,False,False)
-        
-        self.vpaned_small.pack2(sbox, True, True)
+        self.vpaned_small.pack_start(ibox, False, False)
+        self.vpaned_small.pack_start(sbox, True, True)
                 
         self.add(self.vpaned_small)
         
-        self.show_all()
+        self.hide_all()
     
     def show_current(self, widget):
         for w in self.left_widget:
@@ -99,38 +103,31 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if not bean.artist or not bean.title:
             print """Artist and title no difined"""
             return None
-                
+        
+        info_line = bean.artist
+        
         """update info"""
+        
         album_name = self.controls.lastfm.get_album_name(bean.artist, bean.title)
         album_year = self.controls.lastfm.get_album_year(bean.artist, bean.title)
-        
-        info_line = bean.artist + " - " + bean.title
+                
         if album_name:
-            info_line = bean.artist + " - " + album_name + " - " + bean.title
+            info_line = album_name
         if album_name and album_year:
-            info_line = bean.artist + " - " + album_name + "(" +album_year+ ")" +" - " + bean.title
+            info_line = album_name + "(" + album_year + ")"
+        
         
         def task():
             self.almum_label.set_markup("<b>%s</b>" % info_line)
         gobject.idle_add(task)
         
         """update image"""
-        self.controls.trayicon.set_current_bean(bean)
-        if bean.image:
-            self.image.set_image_from_path(bean.image)
-            if FC().change_tray_icon:
-                self.controls.trayicon.set_image_from_path(bean.image)
-        else:
-            self.url = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
-            if self.url:
-                self.image.set_image_from_url(self.url)
-                if FC().change_tray_icon:
-                    self.controls.trayicon.set_image_from_url()
-            else:
-                self.image.set_no_image()
-                if FC().change_tray_icon:
-                    self.controls.trayicon.set_no_image()
-                
+        if not bean.image:
+            bean.image = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
+        
+        self.image.update_info_from(bean)
+        self.controls.trayicon.update_info_from(bean)
+        
         
         def update_parent(parent_bean, beans):    
             for bean in beans:
@@ -159,11 +156,10 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.lyrics.set_text(text)
      
     def on_load(self):
-        self.vpaned_small.set_position(FC().vpaned_small)
         for i, w in enumerate(self.left_widget):
-            if i >0:
+            if i > 0:
                 w.hide()
             
          
     def on_save(self):
-        FC().vpaned_small = self.vpaned_small.get_position()    
+        pass    
