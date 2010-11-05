@@ -35,7 +35,7 @@ class ImageBase(gtk.Image):
         self.set_from_pixbuf(self.pixbuf)
     
     def get_pixbuf(self):
-        self.pixbuf
+        return self.pixbuf
         
     def update_info_from(self, bean):
         if not bean or not bean.image:

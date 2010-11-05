@@ -14,6 +14,7 @@ from foobnix.regui.state import LoadSave
 import gobject
 from foobnix.helpers.image import ImageBase
 from foobnix.regui.model import FModel
+from foobnix.helpers.pref_widgets import VBoxDecorator
 
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
@@ -63,7 +64,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         gtk.StatusIcon.__init__(self)
-        ImageBase.__init__(self, "foobnix_icon.svg")
+        ImageBase.__init__(self, "foobnix_icon.svg", 150)
         self.set_has_tooltip(True)
         self.tooltip = gtk.Tooltip()
         self.set_tooltip("Foobnix music player")
@@ -78,48 +79,36 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.connect("query-tooltip", self.on_query_tooltip)
 
         self.paused = False
-        self.current_bean = FModel().add_artist("").add_title("")
-        self.pixbuf = None
-        self.update_info_from(self.current_bean)
+        self.current_bean = FModel().add_artist("Artist").add_title("Title")
+        self.tooltip_image = ImageBase("foobnix-big.png", 150)
   
     def on_load(self):
         if FC().show_tray_icon:
             self.show()
         else:
             self.hide()
-            
-    def on_save(self):
-        self.paused = False
     
     def update_info_from(self, bean):
         self.current_bean = bean
-        image = ImageBase("foobnix.png", FC().tooltip_image_size)
-        image.update_info_from(bean)
-        self.pixbuf = image.get_pixbuf()
+        self.tooltip_image.update_info_from(bean)
         super(TrayIconControls, self).update_info_from(bean)
       
     
     def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip):
-        bean = self.current_bean
-        if not bean:
-            return None
+        artist = "Artist"
+        title = "Title"
+        if self.current_bean:
+            artist = self.current_bean.artist
+            title = self.current_bean.title
         
-        
-        vbox = gtk.VBox()
-        if bean.artist:
-            label = gtk.Label()
-            label.set_markup("<b>" + bean.artist + "</b>")
-        else:
-            label = gtk.Label("Unknown artist")
-        vbox.pack_start(label, False, False, 30)
-        if bean.title:
-            label = gtk.Label(bean.title)
-        else:
-            label = gtk.Label("Unknown title")
-        vbox.pack_start(label, False, False, 0)
+        alabel = gtk.Label()
+        alabel.set_markup("<b>%s</b>" % artist)
+                
+        vbox = VBoxDecorator(gtk.Label(),alabel,gtk.Label(),gtk.Label(title))        
         vbox.show_all()
-            
-        tooltip.set_icon(self.pixbuf)
+        
+        self.tooltip_image.show_all()
+        tooltip.set_icon(self.tooltip_image.get_pixbuf())
         tooltip.set_custom(vbox)
         return True
         
