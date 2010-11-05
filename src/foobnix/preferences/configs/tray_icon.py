@@ -47,7 +47,7 @@ class TrayIconConfig(ConfigPlugin):
         controls = ChooseDecorator(tray_icon.get_radio_button(),FrameDecorator("System Icons Dynamic", line))
         
         """disc image icon"""        
-        image = ImageBase("foobnix.png", 30)
+        image = ImageBase("blank-disc.jpg", 30)
         change_tray_icon = ChooseDecorator(tray_icon.get_radio_button(),FrameDecorator("Disc cover image",image))
         
         
@@ -59,7 +59,6 @@ class TrayIconConfig(ConfigPlugin):
         box.pack_start(tray_icon,True, True, 0)
         box.pack_start(controls,True, True, 0)
         box.pack_start(change_tray_icon,False, False, 0)
-        box.pack_start(gtk.Label("1"),True, True, 0)
         
         self.widget = box
 
