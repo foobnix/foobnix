@@ -12,11 +12,11 @@ from foobnix.util import LOG, file_utils
 import chardet
 import re
 from foobnix.util.image_util import get_image_by_path
-'''
-Created on 4
-
-@author: ivan
-'''
+from mutagen.flac import FLAC
+from mutagen.monkeysaudio import MonkeysAudio
+from mutagen.mp3 import MP3 
+from mutagen.wavpack import WavPack
+from mutagen.ogg import OggFileType
 
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
@@ -45,21 +45,20 @@ class CueTrack():
 
         if not times or len(times) < 2:
             return 0
-
+    
         min = times[0]
         sec = times[1]
         starts = int(min) * 60 + int(sec)
         return starts
-
+    
 class CueFile():
     def __init__(self):
         self.title = None
         self.performer = None
         self.file = ""
         self.image = None
-
         self.tracks = []
-
+        
     def append_track(self, track):
         self.tracks.append(track)
 
@@ -83,14 +82,31 @@ class CueReader():
         first = str.find('"') or str.find("'")
         end = str.find('"', first + 1) or str.find("'", first + 1)
         return str[first + 1:end]
-
+    
+    def get_full_duration (self, cue_file):
+        ext = file_utils.get_file_extenstion(cue_file.file)
+        if ext.lower() == ".flac":
+            audio = FLAC(cue_file.file)
+        if ext.lower() == ".ape":
+            audio = MonkeysAudio(cue_file.file)
+        if ext.lower() == ".mp3":
+            audio = MP3(cue_file.file)
+        if ext.lower() == ".wv":
+            audio = WavPack(cue_file.file)
+        if ext.lower() == ".ogg":
+            audio = OggFileType(cue_file.file)
+        return audio.info.length
+    
     def normalize(self, cue_file):
         duration_tracks = []
         tracks = cue_file.tracks
-        for i in xrange(len(tracks) - 1):
+        for i in xrange(len(tracks)):
             track = tracks[i]
-            next_track = tracks[i + 1]
-            duration = next_track.get_start_time_sec() - track. get_start_time_sec()
+            if i == len(tracks)-1:
+                duration = self.get_full_duration(cue_file) - track.get_start_time_sec()
+            else:                
+                next_track = tracks[i + 1]
+                duration = next_track.get_start_time_sec() - track.get_start_time_sec()
             track.duration = duration
             if not track.path:
                 track.path = cue_file.file
@@ -104,6 +120,7 @@ class CueReader():
         cue = self.parse()
         for i, track  in enumerate(cue.tracks):
             #bean = CommonBean(name=track.performer + " - " + track.title, path=track.path, type=CommonBean.TYPE_MUSIC_FILE)
+            print i
             bean = FModel(text=track.performer + " - " + track.title, path=track.path)
             bean.artist = track.performer
             bean.tracknumber = i + 1
@@ -115,10 +132,8 @@ class CueReader():
             bean.is_file = True
             #bean.parent = cue.performer + " - " + cue.title
             #bean.image = cue.image
-
             beans.append(bean)
-
-
+        
         return beans
 
     def is_cue_valid(self):
@@ -152,7 +167,6 @@ class CueReader():
         self.files_count = 0
 
         for line in file:
-
             try:
                 line = unicode(line, code)
             except:
@@ -160,9 +174,6 @@ class CueReader():
                 pass
 
             line = str(line).strip()
-
-
-
             if not line:
                 continue
 
@@ -219,7 +230,10 @@ class CueReader():
                 if not is_title:
                     cue_track = CueTrack(title, performer, index, full_file)
                     cue_file.append_track(cue_track)
-
+                    print cue_track.title
                 is_title = False
-
+        
+        cue_track = CueTrack(title, performer, index, full_file)
+        cue_file.append_track(cue_track)
+        
         return self.normalize(cue_file)
