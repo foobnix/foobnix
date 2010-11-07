@@ -6,15 +6,15 @@ Created on Sep 28, 2010
 from foobnix.regui.state import LoadSave
 import gtk
 from foobnix.regui.treeview.common_tree import CommonTreeControl
-from foobnix.util.mouse_utils import is_rigth_click, is_double_left_click,\
+from foobnix.util.mouse_utils import is_rigth_click, is_double_left_click, \
     is_left_click
 from foobnix.helpers.menu import Popup
-from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL,\
-    DOWNLOAD_STATUS_ACTIVE, DOWNLOAD_STATUS_ALL
+from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
+     DOWNLOAD_STATUS_ALL
 from foobnix.regui.model import FTreeModel
 
 class SimpleTreeControl(CommonTreeControl, LoadSave):
-    def __init__(self, title_name, controls,  head_visible=True):        
+    def __init__(self, title_name, controls, head_visible=True):        
         CommonTreeControl.__init__(self, controls)
         
         self.set_reorderable(False)
@@ -59,3 +59,33 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
     
     def on_save(self):
         pass
+
+class SimpleListTreeControl(SimpleTreeControl):
+    def __init__(self, title_name, controls, head_visible=True):
+        SimpleTreeControl.__init__(self, title_name, controls, head_visible)
+        
+        self.left_click_func = None
+        self.left_click_arg = None
+        
+        self.connect("cursor-changed", lambda * a:self.on_func())
+    
+    def set_left_click_func(self, func=None, arg=None):
+        self.left_click_func = func
+        self.left_click_arg = arg
+    
+    def on_func(self):
+        if self.left_click_func and self.left_click_arg:
+            self.left_click_func(self.left_click_arg)
+        elif self.left_click_func:
+            self.left_click_func()  
+    
+    def on_button_press(self, w, e):
+        if is_left_click(e):            
+            self.on_func()                         
+        if is_double_left_click(e):
+            pass
+        
+        if is_rigth_click(e):
+            pass
+
+

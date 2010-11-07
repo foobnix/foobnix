@@ -4,7 +4,6 @@
 import gtk
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
 #from foobnix.util.configuration import FConfiguration, get_version
-from foobnix.util.configuration import get_version
 from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs.vk_conf import VkontakteConfig
 from foobnix.preferences.configs.tabs import TabsConfig
@@ -18,16 +17,14 @@ import os
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
 from foobnix.util.fc import FC
-from foobnix.util.key_utils import is_key
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.preferences.configs.dm_config import DMConfig
+from foobnix.regui.model import FModel
+from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
 
-class PreferencesWindow(FControl, LoadSave):
+class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
     configs = []
-
-
-
     POS_NAME = 0
 
     def __init__(self, controls):
@@ -43,61 +40,54 @@ class PreferencesWindow(FControl, LoadSave):
         self.configs.append(NetworkConfig(controls))
         self.configs.append(NotificationConfig(controls))
         self.configs.append(HotKeysConfig(controls))
-
-
-        #self.configs.append(CategoryInfoConfig())
+        
 
         self.label = None
 
         mainVBox = gtk.VBox(False, 0)
 
-
-        title = "Foobnix " + get_version() + " - " + _  ("Preferences")
-        self.window = ChildTopWindow(title, 800, 500)
+        ChildTopWindow.__init__(self, _("Preferences"), 800, 500)
         
 
         paned = gtk.HPaned()
         paned.set_position(200)
-        paned.show()
+        
+        def func():
+            bean = self.navigation.get_selected_bean()            
+            if bean:
+                self.populate_config_category(bean.text)
+        
+        self.navigation = SimpleListTreeControl(_("Categories"), controls, True)        
+        
+        for plugin in self.configs:
+            self.navigation.append(FModel(plugin.name))
+            
+        self.navigation.set_left_click_func(func)
 
-        paned.add1(self.create_left_menu())
+        paned.add1(self.navigation.scroll)
 
         cbox = gtk.VBox(False, 0)
-        cbox.show()
         for plugin in self.configs:
-            cbox.pack_start(plugin.widget, False, True, 0)
+            cbox.pack_start(plugin.widget, False, True)
 
-        cbox.show()
 
         self.container = self.create_container(cbox)
         paned.add2(self.container)
 
-
-
         mainVBox.pack_start(paned, True, True, 0)
         mainVBox.pack_start(self.create_save_cancel_buttons(), False, False, 0)
-
-        mainVBox.show()
-
-        self.window.add(mainVBox)
-        #self.show()
-
-        self.populate_config_category(self.configs[0].name)
+        
+        self.add(mainVBox)
         self.on_load()
-
+        
+    
     def show(self):
-        self.on_load()
-        self.window.show()
-
-    def hide(self):
-        print "hide preferences"
-        self.window.hide()
-        #TEMP
-        #gtk.main_quit()
-        return True
-
+        self.show_all()
+        self.populate_config_category(self.configs[0].name)
+        
+    
     def on_load(self):
-        for plugin in self.configs:
+        for plugin in self.configs:            
             plugin.on_load()
 
     def on_save(self):
@@ -106,42 +96,13 @@ class PreferencesWindow(FControl, LoadSave):
         FC().save()
         self.hide()
 
-    def on_key_press(self, w, e):
-        if is_key(e, 'Escape'):
-            self.hide()
-
-    def create_left_menu(self):
-        model = gtk.ListStore(str)
-
-        for plugin in self.configs:
-            model.append([plugin.name])
-
-        treeview = gtk.TreeView()
-
-        column_name = gtk.TreeViewColumn(_("Categories"), gtk.CellRendererText(), text=self.POS_NAME)
-        treeview.append_column(column_name)
-
-        treeview.set_model(model)
-        treeview.connect("cursor-changed", self.on_change_category)
-
-        treeview.show()
-        return treeview
-
     def populate_config_category(self, name):
         for plugin in self.configs:
             if plugin.name == name:
-                plugin.show()
+                plugin.widget.show()
                 self.update_label(name)
             else:
-                plugin.hide()
-
-    def on_change_category(self, w):
-        selection = w.get_selection()
-        model, selected = selection.get_selected()
-        if selected:
-            name = model.get_value(selected, self.POS_NAME)
-            self.populate_config_category(name)
-
+                plugin.widget.hide()
 
     def create_save_cancel_buttons(self):
         box = gtk.HBox(False, 0)
@@ -178,7 +139,6 @@ class PreferencesWindow(FControl, LoadSave):
         print "restore defaults"
         gtk.main_quit()
         FC().delete()
-        #FConfiguration().remove_cfg_file()
         thread.start_new_thread(os.system, ("foobnix",))
 
 
@@ -201,11 +161,7 @@ class PreferencesWindow(FControl, LoadSave):
 
         return box
 
-def main():
-    gtk.main()
-    return 0
-
 if __name__ == "__main__":
-    w = PreferencesWindow(None, None)
+    w = PreferencesWindow(None)    
     w.show()
-    main()
+    gtk.main()

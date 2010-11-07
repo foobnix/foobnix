@@ -6,8 +6,7 @@ Created on 24 авг. 2010
 '''
 class ConfigPlugin():
     name = 'undefined'
-    widget = None
-    enable = False
+    widget = "error"
     
     def show(self):
         self.widget.show()
