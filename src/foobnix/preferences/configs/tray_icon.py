@@ -44,11 +44,11 @@ class TrayIconConfig(ConfigPlugin):
         radio_icon = IconBlock("Radio")
         
         line = VBoxDecorator(init_icon, play_icon, pause_icon, stop_icon, radio_icon)
-        controls = ChooseDecorator(tray_icon.get_radio_button(),FrameDecorator("System Icons Dynamic", line))
+        self.controls = ChooseDecorator(tray_icon.get_radio_button(),FrameDecorator("System Icons Dynamic", line))
         
         """disc image icon"""        
         image = ImageBase("blank-disc.jpg", 30)
-        change_tray_icon = ChooseDecorator(tray_icon.get_radio_button(),FrameDecorator("Disc cover image",image))
+        self.change_tray_icon = ChooseDecorator(tray_icon.get_radio_button(),FrameDecorator("Disc cover image",image))
         
         
         box.pack_start(self.tray_icon_button, False, True, 0)
@@ -57,8 +57,8 @@ class TrayIconConfig(ConfigPlugin):
         box.pack_start(self.minimize_button, False, True, 0)
         
         box.pack_start(tray_icon,True, True, 0)
-        box.pack_start(controls,True, True, 0)
-        box.pack_start(change_tray_icon,False, False, 0)
+        box.pack_start(self.controls,True, True, 0)
+        box.pack_start(self.change_tray_icon,False, False, 0)
         
         self.widget = box
 
@@ -76,8 +76,8 @@ class TrayIconConfig(ConfigPlugin):
             
     def on_load(self):
         self.tray_icon_button.set_active(FC().show_tray_icon)
-        #self.tray_icon_auto_hide.set_active(FC().tray_icon_auto_hide)
-        #self.change_tray_icon.set_active(FC().change_tray_icon)
+        self.controls.button.set_active(FC().system_icons_dinamic)
+        self.change_tray_icon.button.set_active(FC().change_tray_icon)
         
         if FC().on_close_window == const.ON_CLOSE_CLOSE:
             self.close_button.set_active(True)
@@ -88,12 +88,10 @@ class TrayIconConfig(ConfigPlugin):
         elif FC().on_close_window == const.ON_CLOSE_MINIMIZE:
             self.minimize_button.set_active(True)
             
-            
-        
     def on_save(self):
         FC().show_tray_icon = self.tray_icon_button.get_active() 
-        #FC().tray_icon_auto_hide = self.tray_icon_auto_hide.get_active()
-        #FC().change_tray_icon = self.change_tray_icon.get_active()
+        FC().system_icons_dinamic = self.controls.button.get_active()
+        FC().change_tray_icon = self.change_tray_icon.button.get_active()
         
         if  self.close_button.get_active():
             FC().on_close_window = const.ON_CLOSE_CLOSE

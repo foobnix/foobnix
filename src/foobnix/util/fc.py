@@ -82,6 +82,7 @@ class FC:
         self.show_tray_icon = True
         self.tray_icon_auto_hide = True
         self.change_tray_icon = False
+        self.system_icons_dinamic = False
         
         """download manager controls"""
         self.auto_start_donwload = True
