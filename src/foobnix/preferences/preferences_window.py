@@ -46,11 +46,11 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
         mainVBox = gtk.VBox(False, 0)
 
-        ChildTopWindow.__init__(self, _("Preferences"), 800, 500)
+        ChildTopWindow.__init__(self, _("Preferences"), 900, 500)
         
 
         paned = gtk.HPaned()
-        paned.set_position(200)
+        paned.set_position(250)
         
         def func():
             bean = self.navigation.get_selected_bean()            
