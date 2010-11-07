@@ -17,16 +17,16 @@ class DMNavigationTreeControl(SimpleTreeControl):
             active = self.get_selected_bean()
             if active:
                 if active.get_status() == DOWNLOAD_STATUS_ALL:
-                    self.dm_list.filter(None, FTreeModel().status[0])
+                    self.dm_list.filter_by_file(None, FTreeModel().status[0])
                 else:
-                    self.dm_list.filter(active.get_status(), FTreeModel().status[0])
+                    self.dm_list.filter_by_file(active.get_status(), FTreeModel().status[0])
     def use_filter(self):
         active = self.get_selected_bean()
         if active:
             if active.get_status() == DOWNLOAD_STATUS_ALL:
-                self.dm_list.filter(None, FTreeModel().status[0])
+                self.dm_list.filter_by_file(None, FTreeModel().status[0])
             else:
-                self.dm_list.filter(active.get_status(), FTreeModel().status[0])
+                self.dm_list.filter_by_file(active.get_status(), FTreeModel().status[0])
         
     """statistics in {DOWNLOAD_TYPE:count}"""
     def update_statistics(self):
@@ -37,7 +37,7 @@ class DMNavigationTreeControl(SimpleTreeControl):
             num = 0
             if status in statisctics:
                 num = statisctics[status]
-            value = bean.artist + " (%s)"%num
+            value = bean.artist + " (%s)" % num
             self.set_bean_column_value(bean, FTreeModel().text[0], value)
         
     def on_load(self):
