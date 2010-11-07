@@ -9,7 +9,11 @@ from foobnix.helpers.dialog_entry import file_chooser_dialog
 from foobnix.util.pix_buffer import create_pixbuf_from_resource
 class IconBlock(gtk.HBox):
     ICON_SIZE = 24
-    ICON_LIST = ["foobnix.png", "foobnix_icon.svg", "foobnix-pause.jpg","foobnix-radio.jpg", "foobnix-stop.jpg"]
+    ICON_LIST = ["foobnix.png", "foobnix_icon.svg", "foobnix-pause.jpg", "foobnix-radio.jpg", "foobnix-stop.jpg",
+                 "design_1/foobnix_stop.svg",
+                 "design_1/foobnix_play.svg",
+                 "design_1/foobnix_pause.svg"
+                 ]
     
     def __init__(self, text):
         gtk.HBox.__init__(self, False, 0)
@@ -33,7 +37,7 @@ class IconBlock(gtk.HBox):
         
         
         button = gtk.Button("Choose")
-        button.connect("clicked",self.on_file_choose)
+        button.connect("clicked", self.on_file_choose)
         
         label = gtk.Label(text)
         label.set_size_request(80, -1)
@@ -49,12 +53,12 @@ class IconBlock(gtk.HBox):
         if pixbuf:        
             self.model.append([pixbuf, icon_name])
             if active:
-                self.combobox.set_active(len(self.model)-1)
+                self.combobox.set_active(len(self.model) - 1)
     
     def on_file_choose(self, *a):
         file = file_chooser_dialog("Choose icon")
         self.entry.set_text(file[0])
-        self.apeend_icon(file[0],True)
+        self.apeend_icon(file[0], True)
     
     def on_change_icon(self, *a):        
         active_id = self.combobox.get_active()
@@ -68,7 +72,7 @@ class FrameDecorator(gtk.Frame):
         
 class ChooseDecorator(gtk.HBox):
     def __init__(self, parent, widget):
-        gtk.HBox.__init__(self,False,0)
+        gtk.HBox.__init__(self, False, 0)
         self.widget = widget
         self.button = gtk.RadioButton(parent)
         self.button.connect("toggled", self.on_toggle)
