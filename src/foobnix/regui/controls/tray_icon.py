@@ -79,6 +79,9 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         
         self.current_bean = FModel().add_artist("Artist").add_title("Title")
         self.tooltip_image = ImageBase("foobnix-big.png", 150)
+        
+    def on_save(self):
+        pass
   
     def on_load(self):
         if FC().show_tray_icon:
@@ -102,7 +105,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         alabel = gtk.Label()
         alabel.set_markup("<b>%s</b>" % artist)
                 
-        vbox = VBoxDecorator(gtk.Label(),alabel,gtk.Label(),gtk.Label(title))        
+        vbox = VBoxDecorator(gtk.Label(), alabel, gtk.Label(), gtk.Label(title))        
         
         tooltip.set_icon(self.tooltip_image.get_pixbuf())
         tooltip.set_custom(vbox)
