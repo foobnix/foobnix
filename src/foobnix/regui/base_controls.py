@@ -441,10 +441,15 @@ class BaseFoobnixControls(LoadSave):
             return self.prev()
         self.play(bean)
 
-    def filter_tree(self, value):
-        self.tree.filter(value)
-        self.radio.filter(value)
-        self.virtual.filter(value)
+    def filter_by_folder(self, value):
+        self.tree.filter_by_folder(value)
+        self.radio.filter_by_folder(value)
+        self.virtual.filter_by_folder(value)
+        
+    def filter_by_file(self, value):
+        self.tree.filter_by_file(value)
+        self.radio.filter_by_file(value)
+        self.virtual.filter_by_file(value)
 
     def quit(self, *a):
         LOG.info("Controls - Quit")

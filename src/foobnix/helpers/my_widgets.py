@@ -17,11 +17,24 @@ class ImageButton(gtk.Button):
         img = gtk.image_new_from_stock(stock_image, gtk.ICON_SIZE_MENU)
         self.set_image(img)
 
-def tab_close_button(func=None, arg=None):
+class ToggleImageButton(gtk.ToggleButton):
+    def __init__(self, gtk_stock, func=None, param=None):
+        gtk.ToggleButton.__init__(self)
+
+        if param and func:             
+            self.connect("toggled", lambda * a: func(param))
+        elif func:
+            self.connect("toggled", lambda * a: func())         
+                
+        self.set_relief(gtk.RELIEF_NONE)
+        img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
+        self.add(img)
+
+def tab_close_button(func=None, arg=None, stock=gtk.STOCK_CLOSE):
     """button"""
     button = gtk.Button()
     button.set_relief(gtk.RELIEF_NONE)
-    img = gtk.image_new_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
+    img = gtk.image_new_from_stock(stock, gtk.ICON_SIZE_MENU)
     button.set_image(img)
     if func and arg:           
         button.connect("button-press-event", lambda * a: func(arg))

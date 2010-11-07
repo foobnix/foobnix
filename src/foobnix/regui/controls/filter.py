@@ -7,15 +7,45 @@ Created on 25 сент. 2010
 from foobnix.regui.model.signal import FControl
 import gtk
 from foobnix.regui.state import LoadSave
-class FilterControl(gtk.Entry, FControl, LoadSave):
+from foobnix.helpers.my_widgets import tab_close_button, ToggleImageButton
+from foobnix.helpers.toggled import OneActiveToggledButton
+from foobnix.util.key_utils import is_key
+class FilterControl(gtk.HBox, FControl, LoadSave):
     def __init__(self, controls):
-        gtk.Entry.__init__(self)
+        gtk.HBox.__init__(self, False, 0)
         FControl.__init__(self, controls)
-        self.connect("key-release-event", self.on_filter)
+        
+        self.entry = gtk.Entry()        
+        self.entry.connect("key-release-event", self.on_key_press)
+        
+        self.search_func = self.controls.filter_by_file
+        
+        file_search = ToggleImageButton(gtk.STOCK_FILE, func=self.set_search_by, param=self.controls.filter_by_file)
+        file_search.set_active(True)
+        folder_search = ToggleImageButton(gtk.STOCK_DIRECTORY, func=self.set_search_by, param=self.controls.filter_by_folder)
+        
+        self.list = [file_search, folder_search]
+        OneActiveToggledButton(self.list)
+        
+        """search button"""
+        search = tab_close_button(func=self.on_filter, stock=gtk.STOCK_FIND)
+        
+        self.pack_start(file_search, False, False)
+        self.pack_start(folder_search, False, False)
+        self.pack_start(self.entry, True, True)
+        self.pack_start(search, False, False)
+        
     
-    def on_filter(self, w, e):
-        value = w.get_text()
-        self.controls.filter_tree(value)        
+    def set_search_by(self, search_func):
+        self.search_func = search_func
+    
+    def on_key_press(self, w, e):
+        if is_key(e, 'Return'):
+            self.on_filter()
+                
+    def on_filter(self, *a):
+        value = self.entry.get_text()
+        self.search_func(value)        
     
     def on_load(self):
         pass

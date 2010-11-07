@@ -12,9 +12,10 @@ from foobnix.regui.model.signal import FControl
 from foobnix.regui.treeview.drugdrop_tree import DrugDropTree
 from random import randint
 import gobject
+from foobnix.regui.treeview.filter_tree import FilterTreeControls
 
 
-class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
+class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
 
     def __init__(self, controls):        
         DrugDropTree.__init__(self, controls)
@@ -185,27 +186,6 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
         
         gobject.idle_add(task)
         
-        
-    
-    def set_play_icon_to_bean_to_selected(self):
-        def task():
-            for row in self.model:
-                row[self.play_icon[0]] = None
-            
-            paths = self.get_selected_bean_paths()
-            if not paths:
-                return None
-            
-            path = paths[0]  
-                     
-            iter = self.model.get_iter(path)
-            self.model.set_value(iter, FTreeModel().play_icon[0], gtk.STOCK_GO_FORWARD)
-            self.active_UUID = self.model.get_value(iter, FTreeModel().UUID[0])
-        
-        gobject.idle_add(task)
-        
-        
-
     def set_bean_column_value(self, bean, colum_num, value):
         def task():
             for row in self.model:
@@ -348,41 +328,4 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl):
             selection.select_path(path)
             bean = self._get_bean_by_path(path)
             beans.append(bean)
-        return beans
-
-    """0 - self.text[0]"""
-    def filter(self, query, column_num=FTreeModel().text[0]):
-        if query and len(query.strip()) > 0:
-            query = query.strip().decode("utf-8").lower()
-
-            for line in self.model:
-                name = line[column_num].lower()
-
-                if name.find(query) >= 0:
-                    #LOG.info("FIND PARENT:", name, query)
-                    line[self.visible[0]] = True
-                else:
-                    find = False
-                    child_count = 0;
-                    for child in line.iterchildren():
-                        name = str(child[column_num]).decode("utf-8").lower()
-                        #name = child[column_num]
-                        if name.find(query) >= 0:
-                            child_count += 1
-                            #LOG.info("FIND CHILD :", name, query)
-                            child[self.visible[0]] = True
-                            line[self.visible[0]] = True
-                            #line[self.POS_FILTER_CHILD_COUNT] = child_count
-                            find = True
-                        else:
-                            child[self.visible[0]] = False
-                    if not find:
-                        line[self.visible[0]] = False
-                    else:
-                        self.expand_all()
-        else:
-            self.collapse_all()
-            for line in self.model:
-                line[self.visible[0]] = True
-                for child in line.iterchildren():
-                    child[self.visible[0]] = True
+        return beans                         
