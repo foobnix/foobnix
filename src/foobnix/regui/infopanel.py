@@ -41,9 +41,9 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         lbox = gtk.VBox(False, 0)
         
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.artists.scroll, symbol="Similars Artist"))
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tracks.scroll, symbol="Similars Sons"))
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.lyrics, symbol="Lyric"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.artists.scroll, symbol="Similar Artist"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tracks.scroll, symbol="Similar Songs"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.lyrics, symbol="Lyrics"))
         lbox.pack_start(notetab_label(func=self.show_current, arg=self.tags.scroll, symbol="Tags"))
           
         
