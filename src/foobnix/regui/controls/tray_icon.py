@@ -85,6 +85,9 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
             self.show()
         else:
             self.hide()
+            
+    def on_save(self):
+        return
     
     def update_info_from(self, bean):
         self.current_bean = bean
