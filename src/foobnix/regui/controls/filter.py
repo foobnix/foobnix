@@ -42,6 +42,10 @@ class FilterControl(gtk.HBox, FControl, LoadSave):
     def on_key_press(self, w, e):
         if is_key(e, 'Return'):
             self.on_filter()
+        
+        if not self.entry.get_text():
+            self.on_filter()
+                
                 
     def on_filter(self, *a):
         value = self.entry.get_text()
