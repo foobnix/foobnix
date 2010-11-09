@@ -5,11 +5,12 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
-from foobnix.util import const
+from foobnix.util import const, LOG
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 from foobnix.helpers.menu import Popup
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
+from foobnix.util.fc import FC
 
 class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
@@ -58,34 +59,39 @@ class PlaylistTreeControl(CommonTreeControl):
             self.active_current_song()
         elif is_key(e, KEY_DELETE):
             self.delete_selected()     
-
-    def next(self, random=False, lopping=const.LOPPING_LOOP_ALL):
+    
+    def common_signle_random(self):
+        LOG.debug("Repeat state", FC().repeat_state)
+        if FC().repeat_state == const.REPEAT_SINGLE:
+            return self.get_current_bean_by_UUID();
         
-        if lopping == const.LOPPING_SINGLE:
-            return self.get_bean_by_UUID(self.active_UUID)
-        
-        if random:               
+        if FC().is_order_random:               
             bean = self.get_random_bean()
             self.set_play_icon_to_bean(bean)
             return bean
     
-        bean = self.get_next_bean_by_UUID()
+    def next(self):
+        bean  = self.common_signle_random()       
+        if bean:
+            return bean
+    
+        bean = self.get_next_bean_by_UUID(FC().repeat_state == const.REPEAT_ALL)
+        
+        if not bean:
+            return
         
         self.set_play_icon_to_bean(bean)
         return bean
 
-    def prev(self, rnd=False, lopping=const.LOPPING_LOOP_ALL):
-        if lopping == const.LOPPING_LOOP_ALL:
-            if not rnd:
-                pass
-            else:
-                bean = self.get_random_bean()
-                self.set_play_icon_to_bean(bean)
-                return bean
-        elif lopping == const.LOPPING_DONT_LOOP:
-            return None
+    def prev(self):
+        bean  = self.common_signle_random()       
+        if bean:
+            return bean
+    
+        bean = self.get_prev_bean_by_UUID(FC().repeat_state == const.REPEAT_ALL)
         
-        bean = self.get_prev_bean_by_UUID()
+        if not bean:
+            return
         
         
         self.set_play_icon_to_bean(bean)

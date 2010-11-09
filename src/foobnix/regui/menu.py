@@ -42,22 +42,42 @@ class MenuWidget(FControl):
         """Playback"""
         playback = top.append("Playback")
 
+        def set_random(flag=True):            
+            FC().is_order_random = flag
+            LOG.debug("set random", flag)
+
         """Playback - Order"""
         order = playback.add_text_item("Order")
         self.playback_order_linear = order.add_radio_item("Linear", None, not FC().is_order_random)
+        self.playback_order_linear.connect("activate", lambda w: set_random(False))
+        
         self.playback_order_random = order.add_radio_item("Random", self.playback_order_linear, FC().is_order_random)
-        self.playback_order_random.connect("activate", lambda w: controls.set_playback_random(w.get_active()))
+        self.playback_order_random.connect("activate", lambda w: set_random(True))
+        
         #order.separator()
         #order.add_image_item("Shuffle", gtk.STOCK_UNDELETE)
 
         """Playback - Repeat"""
         repeat = playback.add_text_item("Repeat")
-        self.lopping_all = repeat.add_radio_item("All", None, FC().lopping == const.LOPPING_LOOP_ALL)
-        self.lopping_single = repeat.add_radio_item("Single", self.lopping_all, FC().lopping == const.LOPPING_SINGLE)
-        self.lopping_disable = repeat.add_radio_item("Disable", self.lopping_all, FC().lopping == const.LOPPING_DONT_LOOP)
-        self.lopping_all.connect("activate", lambda w: w.get_active() and controls.set_lopping_all())
-        self.lopping_single.connect("activate", lambda w: w.get_active() and controls.set_lopping_single())
-        self.lopping_disable.connect("activate", lambda w: w.get_active() and controls.set_lopping_disable())
+        self.lopping_all = repeat.add_radio_item("All", None, FC().repeat_state == const.REPEAT_ALL)
+        self.lopping_single = repeat.add_radio_item("Single", self.lopping_all, FC().repeat_state == const.REPEAT_SINGLE)
+        self.lopping_disable = repeat.add_radio_item("Disable", self.lopping_all, FC().repeat_state == const.REPEAT_NO)
+        
+        def repeat_all():
+            FC().repeat_state = const.REPEAT_ALL
+            LOG.debug("set repeat_all")
+        
+        def repeat_sigle():
+            FC().repeat_state = const.REPEAT_SINGLE
+            LOG.debug("set repeat_sigle")
+        
+        def repeat_no():
+            FC().repeat_state = const.REPEAT_NO
+            LOG.debug("set repeat_no")
+            
+        self.lopping_all.connect("activate", lambda *a:repeat_all())
+        self.lopping_single.connect("activate", lambda *a:repeat_sigle())
+        self.lopping_disable.connect("activate", lambda *a:repeat_no())
 
         """Playlist View"""
         #playlist = playback.add_text_item("Playlist")

@@ -27,7 +27,7 @@ class FC:
         self.is_view_lyric_panel = True
         self.is_view_video_panel = True
         self.is_order_random = False
-        self.lopping = const.LOPPING_LOOP_ALL
+        self.repeat_state = const.REPEAT_ALL
         self.playlist_type = const.PLAYLIST_TREE
 
         """player controls"""

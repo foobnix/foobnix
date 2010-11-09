@@ -169,16 +169,10 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     
     def next(self):
         bean = self.active_tree.next()
-        print "Next notetab", bean
-        if not bean.is_file:
-            return self.next()
         return bean
 
     def prev(self):
         bean = self.active_tree.prev()
-        print "Prev notetab", bean
-        if not bean.is_file:
-            return self.prev()
         return bean
 
     def create_notebook_tab(self, beans):
@@ -204,29 +198,12 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
             LOG.info("Remove current page")
             page = self.get_current_page()
         self.remove_page(page)
-
-    def set_random(self, flag):
-        self.is_random = flag
-
-    def set_lopping_all(self):
-        self.lopping = const.LOPPING_LOOP_ALL
-        print self.lopping
-
-    def set_lopping_single(self):
-        self.lopping = const.LOPPING_SINGLE
-        print self.lopping
-
-    def set_lopping_disable(self):
-        self.lopping = const.LOPPING_DONT_LOOP
-        print self.lopping
-
+    
     def on_load(self):
-        self.is_random = FC().is_order_random
-        self.lopping = FC().lopping
+        pass
 
     def on_save(self):
-        FC().is_order_random = self.is_random
-        FC().lopping = self.lopping
+        pass
 
     def set_active_tree(self, tree):
         self.active_tree = tree

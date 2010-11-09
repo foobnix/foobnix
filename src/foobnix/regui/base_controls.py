@@ -221,9 +221,11 @@ class BaseFoobnixControls(LoadSave):
 
     def play(self, bean):
         if not bean:
+            self.state_stop()
             return None
         
-        if not bean.is_file:
+        if not bean.is_file: 
+            self.state_stop()
             return None
         
         if not bean.path:
@@ -233,6 +235,11 @@ class BaseFoobnixControls(LoadSave):
                 self.count_errors += 1
         else:
             bean.path = get_radio_source(bean.path)
+        
+        
+        if bean.path and os.path.isdir(bean.path):
+            self.state_stop()
+            return None
             
         self.start_time = False
         
@@ -428,17 +435,20 @@ class BaseFoobnixControls(LoadSave):
         beans = update_id3_wind_filtering(beans)              
         self.notetabs.append(beans)
 
-
     def next(self):        
-        bean = self.notetabs.next() 
-        if bean.path and os.path.isdir(bean.path):
-            return self.next()        
+        bean = self.notetabs.next()
+         
+        if bean and bean.path and os.path.isdir(bean.path):
+            return None
+            
         self.play(bean)
 
     def prev(self):
         bean = self.notetabs.prev()
-        if bean.path and os.path.isdir(bean.path):
-            return self.prev()
+        
+        if bean and  bean.path and os.path.isdir(bean.path):
+            return None
+        
         self.play(bean)
 
     def filter_by_folder(self, value):
@@ -457,19 +467,6 @@ class BaseFoobnixControls(LoadSave):
         self.on_save()                
         FC().save()
         gtk.main_quit()
-
-    def set_playback_random(self, flag):
-        self.notetabs.set_random(flag)
-
-    def set_lopping_all(self):
-        self.notetabs.set_lopping_all()
-
-    def set_lopping_single(self):
-        self.notetabs.set_lopping_single()
-
-    def set_lopping_disable(self):
-        self.notetabs.set_lopping_disable()
-
 
     def check_version(self):
         uuid = FC().uuid

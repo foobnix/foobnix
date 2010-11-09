@@ -234,27 +234,56 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
         for row in self.model:
             if row[self.UUID[0]] == UUID:
                 return self.get_bean_from_row(row)        
+            
+    def get_current_bean_by_UUID(self):
+        UUID = self.active_UUID
+        for row in self.model:
+            if row[self.UUID[0]] == UUID:               
+                return self.get_bean_from_row(row)
+                        
+        return None
+        
 
-    def get_next_bean_by_UUID(self):
+    def get_next_bean_by_UUID(self, repeat_all=False):
         UUID = self.active_UUID
         for i, row in enumerate(self.model):
-            if row[self.UUID[0]] == UUID:
+            if row[self.is_file[0]] and row[self.UUID[0]] == UUID:
                 if i + 1 < len(self.model):
                     next_row = self.model[i + 1]
-                    return self.get_bean_from_row(next_row)
-                        
-        return self.get_bean_from_row(self.model[0])
+                    if next_row[self.is_file[0]]:
+                        return self.get_bean_from_row(next_row)
         
+        if repeat_all:
+            for row in self.model:
+                if not row[self.is_file[0]]:
+                    continue
+                return self.get_bean_from_row(row)
+        else:
+            return None
     
-    def get_prev_bean_by_UUID(self):
+    def get_prev_bean_by_UUID(self, repeat_all=False):
         UUID = self.active_UUID
         for i, row in enumerate(self.model):
-            if row[self.UUID[0]] == UUID:
-                return self.get_bean_from_row(self.model[i - 1])
-        return self.get_bean_from_row(self.model[0])
+            if row[self.is_file[0]] and row[self.UUID[0]] == UUID:
+                prev_row = self.model[i - 1]
+                if prev_row[self.is_file[0]]: 
+                    return self.get_bean_from_row(prev_row)
+        
+        if repeat_all:
+            last_row = None
+            for row in self.model:
+                if row[self.is_file[0]]:                                    
+                    last_row = row
+            return self.get_bean_from_row(last_row)
+        else:
+            return None
     
     def get_random_bean(self):        
-        return self.get_bean_from_row(self.model[randint(0, len(self.model))])
+        rows =[]
+        for row in self.model:
+            if row[self.is_file[0]]:
+                rows.append(row)
+        return self.get_bean_from_row(rows[randint(0, len(rows))])
     
     def get_child_level1_beans_by_selected(self):
         selection = self.get_selection()
