@@ -143,7 +143,7 @@ def show_login_password_error_dialog(title, description, login, password):
             gtk.MESSAGE_ERROR,
             gtk.BUTTONS_OK,
             title)
-        dialog.set_markup(title)
+        dialog.set_markup(str(title))
         dialog.format_secondary_markup(description)
         
         login_entry = gtk.Entry()

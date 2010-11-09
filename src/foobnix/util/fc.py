@@ -9,6 +9,21 @@ from foobnix.util import LOG, const
 import os
 from foobnix.util.singleton import Singleton
 import uuid
+import random
+
+def get_random_vk():
+    vks = {
+       "c891888@bofthew.com":"c891888",
+       "c892009@bofthew.com":"c892009",
+       "c892406@bofthew.com":"c892406",
+       "c892588@bofthew.com":"c892588"       
+       }
+
+    rand = random.randint(0, len(vks) - 1)
+    key = vks.keys()[rand]
+    value = vks[key]
+    return key, value
+
 
 """Foobnix configuration"""
 class FC:
@@ -67,8 +82,9 @@ class FC:
         self.lfm_login = self.LASTFM_USER
         self.lfm_password = self.LASTFM_PASSWORD
         """vk"""
-        self.vk_login = "c891888@bofthew.com"
-        self.vk_password = "c891888"
+        vk = get_random_vk()
+        self.vk_login = vk[0]
+        self.vk_password = vk[1]
         self.vk_cookie = None
         
         self.enable_music_srobbler = True

@@ -21,7 +21,7 @@ class SingreThread():
         else:
             LOG.warn("Thread not finished", method, args)
     
-    def run_with_text(self, method, args, text, no_thread=False):
+    def run_with_text(self, method, args, text=None, no_thread=False):
         if no_thread:
             if method and args:
                 method(args)

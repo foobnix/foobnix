@@ -15,9 +15,6 @@ from setuptools.package_index import htmldecode
 from setuptools.command.sdist import unescape
 from string import replace
 from foobnix.regui.model import FModel
-
-def _(*a):
-    print a
     
 class VKService:
     def __init__(self, email=None, password=None):
@@ -74,11 +71,13 @@ class VKService:
             FC().vk_cookie = None    
             val = show_login_password_error_dialog(_("VKontakte connection error"), _("Verify user and password"), FC().vk_login, FC().vk_password)
             if val:
+                FC().vk_cookie = None
                 FC().vk_login = val[0]
                 FC().vk_password = val[1]
             return None 
         
-        if self.vk_cookie: return self.vk_cookie
+        if self.vk_cookie: 
+            return self.vk_cookie
         
         
         host = 'http://vkontakte.ru/login.php?op=slogin'
@@ -157,7 +156,11 @@ class VKService:
             time.sleep(0.8)        
         self.execute_time = time.time()
         
-        data = urllib2.urlopen(conn);
+        try:
+            data = urllib2.urlopen(conn);
+        except Exception, e:
+            LOG.error("VK Connection Erorr", e)
+            return None
         result = data.read()
         return result
     
