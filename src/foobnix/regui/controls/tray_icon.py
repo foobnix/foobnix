@@ -13,8 +13,10 @@ from foobnix.regui.state import LoadSave
 import gobject
 from foobnix.helpers.image import ImageBase
 from foobnix.regui.model import FModel
-from foobnix.helpers.pref_widgets import VBoxDecorator
-
+from foobnix.helpers.pref_widgets import VBoxDecorator, IconBlock
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
+ 
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -64,11 +66,19 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         FControl.__init__(self, controls)
         gtk.StatusIcon.__init__(self)
         ImageBase.__init__(self, "foobnix_icon.svg", 150)
+                
         self.set_has_tooltip(True)
         self.tooltip = gtk.Tooltip()
         self.set_tooltip("Foobnix music player")
         
         self.popup_menu = PopupWindowMenu(self.controls)
+        
+        """dynamic icons"""
+        self.init_icon = IconBlock("Init")
+        self.play_icon = IconBlock("Play")
+        self.pause_icon = IconBlock("Pause")
+        self.stop_icon = IconBlock("Stop")
+        self.radio_icon = IconBlock("Radio")
         
         self.connect("activate", self.on_activate)
         self.connect("popup-menu", self.on_popup_menu)
@@ -88,16 +98,33 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
             self.show()
         else:
             self.hide()
-            
-    def on_save(self):
-        return
-    
+        
     def update_info_from(self, bean):
         self.current_bean = bean
         self.tooltip_image.update_info_from(bean)
-        super(TrayIconControls, self).update_info_from(bean)
+        if not FC().system_icons_dinamic: 
+            if FC().change_tray_icon:
+                super(TrayIconControls, self).update_info_from(bean)
+            else:
+                self.set_no_image()
       
-    
+    def on_dynamic_icons(self, state):
+        if state == STATE_PLAY:
+            self.check_active_dynamic_icon(self.play_icon)
+        elif state == STATE_PAUSE:
+            self.check_active_dynamic_icon(self.pause_icon)
+        elif state == STATE_STOP:
+            self.check_active_dynamic_icon(self.stop_icon)
+        elif state == FTYPE_RADIO:
+            self.check_active_dynamic_icon(self.radio_icon)
+        else:
+            self.check_active_dynamic_icon(self.init_icon)
+            
+    def check_active_dynamic_icon(self, icon_object):
+        icon_name = icon_object.entry.get_text()
+        path = get_foobnix_resourse_path_by_name(icon_name)
+        self.controls.trayicon.set_image_from_path(path)
+        
     def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip):
         artist = "Artist"
         title = "Title"

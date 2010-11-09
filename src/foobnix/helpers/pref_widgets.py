@@ -7,6 +7,7 @@ import gtk
 import gobject
 from foobnix.helpers.dialog_entry import file_chooser_dialog
 from foobnix.util.pix_buffer import create_pixbuf_from_resource
+
 class IconBlock(gtk.HBox):
     ICON_SIZE = 24
     ICON_LIST = ["foobnix.png", "foobnix_icon.svg", "foobnix-pause.jpg","foobnix-radio.jpg", "foobnix-stop.jpg"]
@@ -60,7 +61,7 @@ class IconBlock(gtk.HBox):
         active_id = self.combobox.get_active()
         icon_name = self.combobox.get_model()[active_id][1]
         self.entry.set_text(icon_name)
-
+        
 class FrameDecorator(gtk.Frame):
     def __init__(self, text, widget):
         gtk.Frame.__init__(self, text)

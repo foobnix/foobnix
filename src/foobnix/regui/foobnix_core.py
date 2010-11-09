@@ -32,7 +32,7 @@ class FoobnixCore(BaseFoobnixControls):
 
         self.media_engine = GStreamerEngine(self)
         """elements"""
-        self.preferences = PreferencesWindow(self)
+        
         self.statusbar = StatusbarControls(self)
         self.volume = VolumeControls(self)
         self.seek_bar = SeekProgressBarControls(self)
@@ -71,3 +71,5 @@ class FoobnixCore(BaseFoobnixControls):
         self.dbus = DBusManager(self)
 
         self.on_load()
+        
+        self.preferences = PreferencesWindow(self)

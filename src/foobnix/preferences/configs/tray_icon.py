@@ -11,7 +11,7 @@ from foobnix.util.fc import FC
 from foobnix.helpers.pref_widgets import FrameDecorator, IconBlock,\
     VBoxDecorator, ChooseDecorator, HBoxDecorator
 from foobnix.helpers.image import ImageBase
-from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+
 
 class TrayIconConfig(ConfigPlugin):
     
@@ -37,19 +37,17 @@ class TrayIconConfig(ConfigPlugin):
         tray_icon = ChooseDecorator(None,FrameDecorator("System Icon Static", IconBlock("Icon")))
         
         """dynamic icons"""
-        init_icon = IconBlock("Init")
-        play_icon = IconBlock("Play")
-        pause_icon = IconBlock("Pause")
-        stop_icon = IconBlock("Stop")
-        radio_icon = IconBlock("Radio")
+        line = VBoxDecorator(controls.trayicon.init_icon,
+                             controls.trayicon.play_icon,
+                             controls.trayicon.pause_icon, 
+                             controls.trayicon.stop_icon, 
+                             controls.trayicon.radio_icon)
         
-        line = VBoxDecorator(init_icon, play_icon, pause_icon, stop_icon, radio_icon)
-        self.controls = ChooseDecorator(tray_icon.get_radio_button(),FrameDecorator("System Icons Dynamic", line))
+        self.icon_controls = ChooseDecorator(tray_icon.get_radio_button(),FrameDecorator("System Icons Dynamic", line))
         
         """disc image icon"""        
         image = ImageBase("blank-disc.jpg", 30)
         self.change_tray_icon = ChooseDecorator(tray_icon.get_radio_button(),FrameDecorator("Disc cover image",image))
-        
         
         box.pack_start(self.tray_icon_button, False, True, 0)
         box.pack_start(self.close_button, False, True, 0)
@@ -57,14 +55,14 @@ class TrayIconConfig(ConfigPlugin):
         box.pack_start(self.minimize_button, False, True, 0)
         
         box.pack_start(tray_icon,True, True, 0)
-        box.pack_start(self.controls,True, True, 0)
+        box.pack_start(self.icon_controls,True, True, 0)
         box.pack_start(self.change_tray_icon,False, False, 0)
         
         self.widget = box
-
+        
     
+                        
     def on_show_tray_icon(self, *args):
-        print "action" , self.tray_icon_button.get_active()
         if not self.tray_icon_button.get_active():
             self.hide_button.set_sensitive(False) 
             if self.hide_button.get_active():
@@ -76,7 +74,7 @@ class TrayIconConfig(ConfigPlugin):
             
     def on_load(self):
         self.tray_icon_button.set_active(FC().show_tray_icon)
-        self.controls.button.set_active(FC().system_icons_dinamic)
+        self.icon_controls.button.set_active(FC().system_icons_dinamic)
         self.change_tray_icon.button.set_active(FC().change_tray_icon)
         
         if FC().on_close_window == const.ON_CLOSE_CLOSE:
@@ -90,7 +88,7 @@ class TrayIconConfig(ConfigPlugin):
             
     def on_save(self):
         FC().show_tray_icon = self.tray_icon_button.get_active() 
-        FC().system_icons_dinamic = self.controls.button.get_active()
+        FC().system_icons_dinamic = self.icon_controls.button.get_active()
         FC().change_tray_icon = self.change_tray_icon.button.get_active()
         
         if  self.close_button.get_active():
