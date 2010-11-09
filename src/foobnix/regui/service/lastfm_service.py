@@ -79,7 +79,7 @@ class LastFmService():
         self.preferences_window = None
 
         #thread.start_new_thread(self.init_thread, ())
-
+        self.init_thread()
 
 
 
@@ -87,13 +87,14 @@ class LastFmService():
     def connect(self):
         if self.network and self.scrobler:
             return True
-        return self.init_thread()
+        return False
 
     def init_thread(self):
         username = FC().lfm_login
         password_hash = pylast.md5(FC().lfm_password)
-
+        self.cache = None
         try:
+            
             self.network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
             self.cache = Cache(self.network)
             if FC().proxy_enable and FC().proxy_url:
@@ -109,6 +110,8 @@ class LastFmService():
             scrobler_network = pylast.get_lastfm_network(username=username, password_hash=password_hash)
             self.scrobler = scrobler_network.get_scrobbler("fbx", "1.0")
         except:
+            self.network = None
+            self.scrobler = None
             LOG.error("Invalid last fm login or password or network problems", username, FC().lfm_password)
             val = show_login_password_error_dialog(_("Last.fm connection error"), _("Verify user and password"), username, FC().lfm_password)
             if val:
@@ -126,7 +129,9 @@ class LastFmService():
     def report_now_playting(self, bean):
         if not FC().enable_music_srobbler:
             LOG.debug("Last.fm scrobbler not enabled")
-            return None    
+            return None 
+        if not self.get_scrobler():
+            return None   
         def task(song):
             if bean.artist and bean.title:
                 try:
@@ -143,6 +148,10 @@ class LastFmService():
         if not FC().enable_music_srobbler:
             LOG.debug("Last.fm scrobbler not enabled")
             return None
+       
+        if not self.get_scrobler():
+            return None
+        
         def task(bean):
             if bean.artist and bean.title:
                 try:
@@ -160,7 +169,8 @@ class LastFmService():
         return self.network is not None
 
     def search_top_albums(self, aritst_name):
-        self.connect()
+        if not self.connect():
+            return None
         artist = self.network.get_artist(aritst_name)
         if not artist:
             return None
@@ -192,7 +202,8 @@ class LastFmService():
         if not artist_name or not album_name:
             LOG.warn("search_album_tracks artist and album is empty")
             return []
-        self.connect()
+        if not self.connect():
+            return None
         album = self.network.get_album(artist_name, album_name)
         tracks = album.get_tracks()
         results = []
@@ -205,7 +216,8 @@ class LastFmService():
         return results
 
     def search_top_tags(self, tag):
-        self.connect()
+        if not self.connect():
+            return None
         if not tag:
             LOG.warn("search_top_tags TAG is empty")
             return []
@@ -221,7 +233,8 @@ class LastFmService():
         return beans
 
     def search_top_tag_tracks(self, tag_name):
-        self.connect()
+        if not self.connect():
+            return None
         if not tag_name:
             LOG.warn("search_top_tags TAG is empty")
             return []
@@ -253,7 +266,8 @@ class LastFmService():
         return beans
 
     def search_top_tracks(self, artist_name):
-        self.connect()
+        if not self.connect():
+            return None
         artist = self.network.get_artist(artist_name)
         if not artist:
             return []
@@ -287,7 +301,8 @@ class LastFmService():
         return beans
 
     def search_top_similar_artist(self, artist_name, count=45):
-        self.connect()
+        if not self.connect():
+            return None
         if not artist_name:
             LOG.warn("search_top_similar_artist, Artist name is empty")
             return []
@@ -311,7 +326,8 @@ class LastFmService():
         return beans
 
     def search_top_similar_tracks(self, artist, title):
-        self.connect()
+        if not self.connect():
+            return None
 
         if not artist or not title:
             LOG.warn("search_top_similar_tags artist or title is empty")
@@ -338,7 +354,8 @@ class LastFmService():
         return beans
 
     def search_top_similar_tags(self, artist, title):
-        self.connect()
+        if not self.connect():
+            return None
 
         if not artist or not title:
             LOG.warn("search_top_similar_tags artist or title is empty")
@@ -364,17 +381,21 @@ class LastFmService():
         return beans
 
     def get_album_name(self, artist, title):
-        self.connect()
+        if not self.connect():
+            return None
         album = self.cache.get_album(artist, title);
         if album:
             return album.get_name()
 
     def get_album_year(self, artist, title):
-        self.connect()
+        if not self.connect():
+            return None
         album = self.cache.get_album(artist, title);
         if album:
             return album.get_release_year()
 
     def get_album_image_url(self, artist, title, size=pylast.COVER_LARGE):
+        if not self.connect():
+            return None
         return self.cache.get_album_image_url(artist, title);
 

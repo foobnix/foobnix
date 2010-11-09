@@ -92,7 +92,19 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         if not FC().is_view_info_panel:
             print "Info panel disabled"  
-            return      
+            return
+        
+        """update image"""
+        if not bean.image:
+            bean.image = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
+        
+        self.image.update_info_from(bean)
+        self.controls.trayicon.update_info_from(bean)
+        
+        """check connection"""
+        if not self.controls.lastfm.connect():
+            return
+              
 
         if not bean.artist or not bean.title:
             text_artist = bean.get_artist_from_text()
@@ -120,13 +132,6 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         def task():
             self.almum_label.set_markup("<b>%s</b>" % info_line)
         gobject.idle_add(task)
-        
-        """update image"""
-        if not bean.image:
-            bean.image = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
-        
-        self.image.update_info_from(bean)
-        self.controls.trayicon.update_info_from(bean)
         
         
         def update_parent(parent_bean, beans):    

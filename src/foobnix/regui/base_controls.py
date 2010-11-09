@@ -49,10 +49,13 @@ class BaseFoobnixControls(LoadSave):
     
     def show_google_results(self, query):
         beans = []
-        beans.append(FModel('"%s" not found try Google results' % query))
+        beans.append(FModel('"%s" not found trying Google search' % query))
         g_results = google_search_resutls(query)
         for line in g_results:
             beans.append(FModel(line).add_is_file(True))
+        if not g_results:
+            beans.append(FModel('Google not found %s' % query))
+            
         return beans
     
     def play_selected_song(self):    
@@ -305,7 +308,7 @@ class BaseFoobnixControls(LoadSave):
             for i, bean in enumerate(results):
                 bean.tracknumber = i + 1
                 bean.parent(p_bean)
-                all.append(bean)            
+                all.append(bean)        
                 
             self.notetabs.append_tab(vk_ulr, all)
         self.singre_thread.thread_task(inline, vk_ulr)
@@ -330,6 +333,8 @@ class BaseFoobnixControls(LoadSave):
     def search_all_tracks(self, query):
         def inline(query):
             results = self.vk.find_tracks_by_query(query)
+            if not results:
+                results = []
             all = []
             p_bean = FModel(query).add_font("bold")
             all.append(p_bean)
@@ -347,6 +352,8 @@ class BaseFoobnixControls(LoadSave):
     def search_top_tracks(self, query):
         def inline(query):
             results = self.lastfm.search_top_tracks(query)
+            if not results:
+                results = []
             all = []
             parent_bean = FModel(query)
             all.append(parent_bean)
@@ -366,6 +373,8 @@ class BaseFoobnixControls(LoadSave):
     def search_top_albums(self, query):
         def inline(query):
             results = self.lastfm.search_top_albums(query)
+            if not results:
+                results = []
             self.notetabs.append_tab(query, None)
             for album in results[:5]:
                 all = []
@@ -377,15 +386,17 @@ class BaseFoobnixControls(LoadSave):
                     track.parent(album)                    
                     all.append(track)
                 
-                if not results:
-                    all = self.show_google_results(query)
-                    
+            if not results:
+                all = self.show_google_results(query)
+                
                 self.notetabs.append(all)                       
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
 
     def search_top_similar(self, query):
         def inline(query):
             results = self.lastfm.search_top_similar_artist(query)
+            if not results:
+                results = []
             self.notetabs.append_tab(query, None)
             for artist in results[:5]:
                 all = []
@@ -397,8 +408,8 @@ class BaseFoobnixControls(LoadSave):
                     track.parent(artist)
                     all.append(track)
                 
-                if not results:
-                    all = self.show_google_results(query)
+            if not results:
+                all = self.show_google_results(query)
                      
                 self.notetabs.append(all)
         #inline(query)
@@ -407,6 +418,8 @@ class BaseFoobnixControls(LoadSave):
     def search_top_tags(self, query):
         def inline(query):
             results = self.lastfm.search_top_tags(query)
+            if not results:
+                results = []
             self.notetabs.append_tab(query, None)
             for tag in results[:5]:
                 all = []
@@ -417,8 +430,8 @@ class BaseFoobnixControls(LoadSave):
                     track.tracknumber = i + 1
                     track.parent(tag)
                     all.append(track)
-                if not results:
-                    all = self.show_google_results(query)
+            if not results:
+                all = self.show_google_results(query)
                 self.notetabs.append(all)
         #inline(query)
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
