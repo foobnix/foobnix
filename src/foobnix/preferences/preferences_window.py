@@ -84,8 +84,6 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
     def show(self, current=CONFIG_MUSIC_LIBRARY):
         self.show_all()
         self.populate_config_category(current)
-        self.navigation.set_selected_row()
-        
     
     def on_load(self):
         for plugin in self.configs:            
