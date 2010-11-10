@@ -52,8 +52,9 @@ def udpate_id3(bean):
         if audio and audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])
         if audio and audio.has_key('title'): bean.title = decode_cp866(audio["title"][0])
         if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
+        duration_sec = bean.duration_sec
         if not bean.duration_sec:
-            if audio.info and audio.info.length: bean.duration_sec = int(audio.info.length)
+            if audio.info and audio.info.length: duration_sec = int(audio.info.length)
 
         if audio.info:
             bean.info = audio.info.pprint()
@@ -73,7 +74,7 @@ def udpate_id3(bean):
             except:
                 bean.tracknumber = ""
 
-        bean.time = normilize_time(bean.duration_sec)
+        bean.time = normilize_time(duration_sec)
 
     return bean
 

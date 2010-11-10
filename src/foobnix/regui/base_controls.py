@@ -259,7 +259,7 @@ class BaseFoobnixControls(LoadSave):
         #print "updation info panel"
         self.update_info_panel(bean)
 
-    def notify_playing(self, pos_sec, dur_sec, bean):
+    def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
                         
         if int(pos_sec) % 10 == 0:
@@ -267,11 +267,9 @@ class BaseFoobnixControls(LoadSave):
             
         if not self.start_time:
             self.start_time = str(int(time.time()))
-            print "Start time", self.start_time
-
-        print pos_sec, dur_sec
+        
         if not self.is_scrobled:            
-            if (pos_sec >= dur_sec / 2) or (pos_sec >= 45):
+            if sec > dur_sec / 2:
                 self.is_scrobled = True
                 self.lastfm.report_scrobled(bean, self.start_time, dur_sec)
             
