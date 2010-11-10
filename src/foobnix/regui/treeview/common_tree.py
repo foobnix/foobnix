@@ -246,28 +246,29 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
 
     def get_next_bean_by_UUID(self, repeat_all=False):
         UUID = self.active_UUID
-        
         rows = self.get_all_file_rows()
+        
         for i, row in enumerate(rows):
-            if row[self.is_file[0]] and row[self.UUID[0]] == UUID:
-                if i + 1 < len(rows):
-                    next_row = rows[i + 1]
-                    if next_row:
-                        return self.get_bean_from_row(next_row)
+            if row[self.UUID[0]] == UUID and i + 1 < len(rows):
+                next_row = rows[i + 1]
+                if next_row:
+                    return self.get_bean_from_row(next_row)
         
-        
-        return self.get_bean_from_row(rows[0])
+        if repeat_all:
+            return self.get_bean_from_row(rows[0])
         
     def get_prev_bean_by_UUID(self, repeat_all=False):
-        UUID = self.active_UUID
+        UUID = self.active_UUID        
         rows = self.get_all_file_rows() 
+        
         for i, row in enumerate(rows):
-            if row[self.UUID[0]] == UUID:
+            if row[self.UUID[0]] == UUID and i > 0:
                 prev_row = rows[i - 1]
                 if prev_row: 
                     return self.get_bean_from_row(prev_row)
         
-        return self.get_bean_from_row(rows[len(rows)-1])
+        if repeat_all:
+            return self.get_bean_from_row(rows[len(rows)-1])
         
 
     def get_all_file_rows(self):
