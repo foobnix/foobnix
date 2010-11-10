@@ -8,6 +8,8 @@ from foobnix.util.fc import FC
 from foobnix.util.file_utils import file_extenstion
 from foobnix.cue.cue_reader import CueReader
 from foobnix.util.image_util import get_image_by_path
+from mutagen.flac import FLAC
+from foobnix.regui.id3.audio import get_mutagen_audio
 
 def decode_cp866(text):
     try:
@@ -41,39 +43,37 @@ def decode_cp866(text):
 
 def udpate_id3(bean):
     if bean and bean.path and os.path.isfile(bean.path):
-        path_lower = bean.path.lower()
-        audio = None
-        if path_lower.endswith(".mp3"):
+        try:
+            audio = get_mutagen_audio(bean.path)            
+        except Exception, e:
+            LOG.error("ID3 NOT MP3", e, bean.path)
+            return bean
+
+        if audio and audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])
+        if audio and audio.has_key('title'): bean.title = decode_cp866(audio["title"][0])
+        if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
+        if not bean.duration_sec:
+            if audio.info and audio.info.length: bean.duration_sec = int(audio.info.length)
+
+        if audio.info:
+            bean.info = audio.info.pprint()
+
+        if bean.artist and bean.title:
+            bean.text = bean.artist + " - " + bean.title
+        """
+        if bean.tracknumber and "/" in bean.tracknumber:
+            bean.tracknumber = bean.tracknumber[:bean.tracknumber.find("/")]
+
+        if bean.tracknumber and bean.tracknumber.startswith("0"):
+            bean.tracknumber = bean.tracknumber[1:]
+        """
+        if bean.tracknumber:
             try:
-                audio = MP3(bean.path, ID3=EasyID3)
-            except Exception, e:
-                LOG.error("ID3 NOT MP3", e, bean.path)
-                return bean
+                bean.tracknumber = int(bean.tracknumber)
+            except:
+                bean.tracknumber = ""
 
-            if audio and audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])
-            if audio and audio.has_key('title'): bean.title = decode_cp866(audio["title"][0])
-            if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
-            if audio.info and audio.info.length: bean.length = int(audio.info.length)
-
-            if audio.info:
-                bean.info = audio.info.pprint()
-
-            if bean.artist and bean.title:
-                bean.text = bean.artist + " - " + bean.title
-
-            if bean.tracknumber and bean.tracknumber.find("/") >= 0:
-                bean.tracknumber = bean.tracknumber[:bean.tracknumber.find("/")]
-
-            if bean.tracknumber and bean.tracknumber.startswith("0"):
-                bean.tracknumber = bean.tracknumber[1:]
-
-            if bean.tracknumber:
-                try:
-                    bean.tracknumber = int(bean.tracknumber)
-                except:
-                    bean.tracknumber = ""
-
-            bean.time = normilize_time(bean.length)
+        bean.time = normilize_time(bean.duration_sec)
 
     return bean
 
@@ -117,6 +117,3 @@ def update_id3_wind_filtering(beans):
     for bean in beans:
         result.append(udpate_id3(bean))
     return result
-
-
-

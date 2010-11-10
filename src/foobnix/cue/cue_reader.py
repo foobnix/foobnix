@@ -16,6 +16,7 @@ from mutagen.monkeysaudio import MonkeysAudio
 from mutagen.mp3 import MP3 
 from mutagen.wavpack import WavPack
 from mutagen.ogg import OggFileType
+from foobnix.regui.id3.audio import get_mutagen_audio
 
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
@@ -82,18 +83,8 @@ class CueReader():
         end = str.find('"', first + 1) or str.find("'", first + 1)
         return str[first + 1:end]
     
-    def get_full_duration (self, cue_file):
-        ext = file_utils.get_file_extenstion(cue_file.file)
-        if ext.lower() == ".flac":
-            audio = FLAC(cue_file.file)
-        if ext.lower() == ".ape":
-            audio = MonkeysAudio(cue_file.file)
-        if ext.lower() == ".mp3":
-            audio = MP3(cue_file.file)
-        if ext.lower() == ".wv":
-            audio = WavPack(cue_file.file)
-        if ext.lower() == ".ogg":
-            audio = OggFileType(cue_file.file)
+    def get_full_duration (self, cue_file):        
+        audio = get_mutagen_audio(cue_file.file)
         return audio.info.length
     
     def normalize(self, cue_file):

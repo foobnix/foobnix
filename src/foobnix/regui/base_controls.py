@@ -269,6 +269,7 @@ class BaseFoobnixControls(LoadSave):
             self.start_time = str(int(time.time()))
             print "Start time", self.start_time
 
+        print pos_sec, dur_sec
         if not self.is_scrobled:            
             if (pos_sec >= dur_sec / 2) or (pos_sec >= 45):
                 self.is_scrobled = True
