@@ -29,8 +29,7 @@ class GStreamerEngine(MediaPlayerEngine):
         
         self.current_state = STATE_STOP
         self.remembered_seek_position = 0
-        self.current_position_int = 0
-        
+
     def get_state(self):
         return self.current_state
 
@@ -142,7 +141,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 self.equalizer.set_property("band%s" % i, real)
     
     def get_current_position(self):
-        return self.current_position_int
+        return self.player.query_position(gst.Format(gst.FORMAT_TIME), None)[0]
     
     def playing_thread(self):
         thread_id = self.play_thread_id
@@ -175,7 +174,6 @@ class GStreamerEngine(MediaPlayerEngine):
         while thread_id == self.play_thread_id:
             try:
                 position_int = self.player.query_position(gst.Format(gst.FORMAT_TIME), None)[0]
-                self.current_position_int = position_int
                 if self.bean.start_sec > 0:
                     position_int = position_int - float(self.bean.start_sec) * self.NANO_SECONDS
                     if position_int + self.NANO_SECONDS > duraction_int:
@@ -218,13 +216,15 @@ class GStreamerEngine(MediaPlayerEngine):
         
     
     def restore_seek_ns(self):
-        time.sleep(0.3)        
+        time.sleep(1)        
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
         print "restore", self.remembered_seek_position
             
 
     def state_stop(self, remeber_position=False):
         if remeber_position:
+            self.player.set_state(gst.STATE_PAUSED)
+            time.sleep(0.1)
             self.remembered_seek_position = self.get_current_position();
             print "remember ", self.remembered_seek_position
                         

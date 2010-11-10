@@ -3,7 +3,6 @@ import gtk
 from foobnix.helpers.my_widgets import notetab_label
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.util.mouse_utils import is_double_left_click
-import time
 
 class EventDecorator(gtk.EventBox):
     def __init__(self, widget, func=None, arg=None):
@@ -28,6 +27,7 @@ class FullScreanArea(ChildTopWindow):
             self.set_border_width(0)
             
             event = EventDecorator(self.drow, self.on_hide_callback)
+            
             self.add(event)
 
         def get_draw(self):
@@ -52,7 +52,8 @@ class MovieDrawingArea(FControl, gtk.Frame):
         
         
         self.smallscree_area = gtk.DrawingArea()
-        self.add(EventDecorator(self.smallscree_area, self.on_full_screen))
+        event = EventDecorator(self.smallscree_area, self.on_full_screen)
+        self.add(event)
         
         self.fullscrean_area = FullScreanArea(self.on_small_screen)
         
