@@ -7,13 +7,35 @@ import gtk
 import threading
 from foobnix.regui.treeview.dm_tree import DownloadManagerTreeControl
 from foobnix.util.const import DOWNLOAD_STATUS_INACTIVE, DOWNLOAD_STATUS_ACTIVE, \
-    DOWNLOAD_STATUS_COMPLETED, DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_ALL
+    DOWNLOAD_STATUS_COMPLETED, DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_ALL,\
+    DOWNLOAD_STATUS_STOP
 from foobnix.regui.treeview.dm_nav_tree import DMNavigationTreeControl
 import thread
 import time
 from foobnix.regui.model import FDModel, FModel
 from foobnix.dm.dm_dowloader import Dowloader
 from foobnix.helpers.window import ChildTopWindow
+from foobnix.helpers.toolbar import MyToolbar
+from foobnix.preferences.configs import CONFIG_DOWNLOAD_MANAGER
+
+class DMControls(MyToolbar):
+    def __init__(self,controls, dm_tree): 
+        MyToolbar.__init__(self)   
+        
+        self.add_button("Preferences", gtk.STOCK_PREFERENCES, controls.preferences.show, CONFIG_DOWNLOAD_MANAGER)
+        self.add_separator()   
+        self.add_button("Start", gtk.STOCK_MEDIA_PLAY, dm_tree.update_status_for_selected, DOWNLOAD_STATUS_ACTIVE)
+        self.add_button("Stop", gtk.STOCK_MEDIA_PAUSE, dm_tree.update_status_for_selected, DOWNLOAD_STATUS_STOP)
+        self.add_separator()   
+        self.add_button("Start All", gtk.STOCK_MEDIA_FORWARD,  dm_tree.update_status_for_all, DOWNLOAD_STATUS_ACTIVE)
+        self.add_button("Stop All", gtk.STOCK_STOP, dm_tree.update_status_for_all, DOWNLOAD_STATUS_STOP)
+        self.add_separator()   
+        self.add_button("Delete", gtk.STOCK_DELETE, dm_tree.delete_all_selected, None)
+        self.add_button("Delete All", gtk.STOCK_CLEAR, dm_tree.delete_all, None)
+        self.add_separator()
+        
+    def on_load(self): pass
+    def on_save(self): pass
 
 class DM(ChildTopWindow):
     def __init__(self, controls):
@@ -23,12 +45,14 @@ class DM(ChildTopWindow):
 
         vbox = gtk.VBox(False, 0)
         
-        #playback = PlaybackControls(None)        
+                
         
         paned = gtk.HPaned()
         paned.set_position(200)
         
         self.navigation = DMNavigationTreeControl()
+        
+        
         
         self.navigation.append(FDModel("All").add_artist("All").add_status(DOWNLOAD_STATUS_ALL))
         self.navigation.append(FDModel("Downloading").add_artist("Downloading").add_status(DOWNLOAD_STATUS_DOWNLOADING))
@@ -41,16 +65,35 @@ class DM(ChildTopWindow):
         paned.pack1(self.navigation.scroll)
         paned.pack2(self.dm_list.scroll)
         
-        #vbox.pack_start(playback, False,True)
+        
+        playback = DMControls(controls, self.dm_list)
+        
+        vbox.pack_start(playback, False,True)
         vbox.pack_start(paned, True, True)
                 
         self.add(vbox)
         thread.start_new_thread(self.dowloader, (self.dm_list,))
        
+        #self.demo_tasks()
+       
     
     def demo_tasks(self):
         self.append_task(FModel("Madonna - Sorry"))
         self.append_task(FModel("Madonna - Frozen"))
+        self.append_task(FModel("Madonna - Sorry"))
+        self.append_task(FModel("Madonna - Frozen"))
+        self.append_task(FModel("Madonna - Sorry"))
+        self.append_task(FModel("Madonna - Frozen"))
+        
+        self.append_task(FModel("Madonna - Sorry"))
+        self.append_task(FModel("Madonna - Frozen"))
+        self.append_task(FModel("Madonna - Sorry"))
+        self.append_task(FModel("Madonna - Frozen"))
+        self.append_task(FModel("Madonna - Sorry"))
+        self.append_task(FModel("Madonna - Frozen"))
+        self.append_task(FModel("Madonna - Sorry"))
+        self.append_task(FModel("Madonna - Frozen"))
+        
         
     def show(self):
         self.show_all()
@@ -87,3 +130,17 @@ class DM(ChildTopWindow):
             else:
                 time.sleep(1)
                 semaphore.release()
+if __name__ == '__main__':
+    class FakePref():
+            def show(self):
+                pass
+    class Fake():        
+        def __init__(self):
+            self.preferences = FakePref()
+        def show(self):
+            pass
+        
+    controls = Fake()
+    dm = DM(controls)
+    dm.show()            
+    gtk.main()

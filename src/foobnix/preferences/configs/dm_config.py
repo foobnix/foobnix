@@ -8,10 +8,11 @@ import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util import LOG
 from foobnix.util.fc import FC
+from foobnix.preferences.configs import CONFIG_DOWNLOAD_MANAGER
 
 class DMConfig(ConfigPlugin):
     
-    name = _("Download Manager")
+    name = CONFIG_DOWNLOAD_MANAGER
     
     def __init__(self, controls):
         print "Create try icon conf"

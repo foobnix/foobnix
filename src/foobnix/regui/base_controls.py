@@ -433,10 +433,13 @@ class BaseFoobnixControls(LoadSave):
                     track.tracknumber = i + 1
                     track.parent(tag)
                     all.append(track)
+                
+                self.notetabs.append(all)
+            
             if not results:
                 all = self.show_google_results(query)
                 self.notetabs.append(all)
-        #inline(query)
+        
         self.singre_thread.run_with_text(inline, query, "Searching: " + query)
 
     def update_info_panel(self, bean):

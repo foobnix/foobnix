@@ -21,9 +21,9 @@ class MyToolbar(gtk.Toolbar):
         button.set_tooltip_text(tooltip)
         
         LOG.debug("Button-Controls-Clicked", tooltip, gtk_stock, func, param)
-        if param:             
+        if func and param:             
             button.connect("clicked", lambda * a: func(param))
-        else:
+        elif func:
             button.connect("clicked", lambda * a: func())     
                 
         self.insert(button, self.i)

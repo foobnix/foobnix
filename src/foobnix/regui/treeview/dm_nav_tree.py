@@ -27,7 +27,7 @@ class DMNavigationTreeControl(SimpleTreeControl):
                 self.dm_list.filter_by_file(None, FTreeModel().status[0])
             else:
                 self.dm_list.filter_by_file(active.get_status(), FTreeModel().status[0])
-        
+    
     """statistics in {DOWNLOAD_TYPE:count}"""
     def update_statistics(self):
         statisctics = self.dm_list.get_status_statisctics()  

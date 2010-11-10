@@ -57,6 +57,9 @@ class FoobnixCore(BaseFoobnixControls):
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
 
+        """preferences"""
+        self.preferences = PreferencesWindow(self)
+
         self.eq = EqController(self)
         self.dm = DM(self)
         self.about = AboutWindow()
@@ -70,7 +73,4 @@ class FoobnixCore(BaseFoobnixControls):
         """D-Bus"""
         self.dbus = DBusManager(self)
         
-        """preferences"""
-        self.preferences = PreferencesWindow(self)
-
         self.on_load()

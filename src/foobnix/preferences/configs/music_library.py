@@ -12,9 +12,10 @@ import foobnix.util.localization
 from foobnix.util import LOG
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
+from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 
 class MusicLibraryConfig(ConfigPlugin, FControl):
-    name = _("Music Library")
+    name = CONFIG_MUSIC_LIBRARY
     enable = True
        
     def __init__(self, controls):

@@ -3,7 +3,6 @@
 # example packbox.py
 import gtk
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
-#from foobnix.util.configuration import FConfiguration, get_version
 from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs.vk_conf import VkontakteConfig
 from foobnix.preferences.configs.tabs import TabsConfig
@@ -21,6 +20,7 @@ from foobnix.helpers.window import ChildTopWindow
 from foobnix.preferences.configs.dm_config import DMConfig
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
+from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
@@ -81,9 +81,10 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.on_load()
         
     
-    def show(self):
+    def show(self, current=CONFIG_MUSIC_LIBRARY):
         self.show_all()
-        self.populate_config_category(self.configs[0].name)
+        self.populate_config_category(current)
+        self.navigation.set_selected_row()
         
     
     def on_load(self):

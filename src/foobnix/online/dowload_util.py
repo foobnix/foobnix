@@ -3,7 +3,6 @@ Created on Jun 10, 2010
 
 @author: ivan
 '''
-from foobnix.util.configuration import FConfiguration
 from foobnix.util import LOG
 import os
 import urllib
