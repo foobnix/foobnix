@@ -10,7 +10,6 @@ import os
 from foobnix.regui.engine import MediaPlayerEngine
 from foobnix.util import LOG
 import time
-import gtk
 import thread
 from foobnix.util.fc import FC
 from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
@@ -29,6 +28,8 @@ class GStreamerEngine(MediaPlayerEngine):
         self.equalizer = None
         
         self.current_state = STATE_STOP
+        self.remembered_seek_position = 0
+        self.current_position_int = 0
         
     def get_state(self):
         return self.current_state
@@ -139,7 +140,10 @@ class GStreamerEngine(MediaPlayerEngine):
                 if real <= -12:
                     real = -12
                 self.equalizer.set_property("band%s" % i, real)
-
+    
+    def get_current_position(self):
+        return self.current_position_int
+    
     def playing_thread(self):
         thread_id = self.play_thread_id
         error_count = 0
@@ -171,14 +175,14 @@ class GStreamerEngine(MediaPlayerEngine):
         while thread_id == self.play_thread_id:
             try:
                 position_int = self.player.query_position(gst.Format(gst.FORMAT_TIME), None)[0]
-
+                self.current_position_int = position_int
                 if self.bean.start_sec > 0:
                     position_int = position_int - float(self.bean.start_sec) * self.NANO_SECONDS
                     if position_int + self.NANO_SECONDS > duraction_int:
                         self.notify_eos()
                 
                 if self.get_state() == STATE_PLAY:
-                    sec +=1 
+                    sec += 1 
                     
                 self.notify_playing(position_int, duraction_int, sec)
             except Exception, e:
@@ -211,11 +215,23 @@ class GStreamerEngine(MediaPlayerEngine):
         print "PLAY"
         self.player.set_state(gst.STATE_PLAYING)
         self.current_state = STATE_PLAY
+        
+    
+    def restore_seek_ns(self):
+        time.sleep(0.3)        
+        self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
+        print "restore", self.remembered_seek_position
+            
 
-    def state_stop(self):
-        self.play_thread_id = None
+    def state_stop(self, remeber_position=False):
+        if remeber_position:
+            self.remembered_seek_position = self.get_current_position();
+            print "remember ", self.remembered_seek_position
+                        
+        self.play_thread_id = None        
         self.player.set_state(gst.STATE_NULL)
         self.current_state = STATE_STOP
+        
         
 
     def state_pause(self):

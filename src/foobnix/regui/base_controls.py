@@ -194,11 +194,16 @@ class BaseFoobnixControls(LoadSave):
         else:
             self.main_window.show()
 
-    def state_play(self):
+    def state_play(self, remeber_position=False):
         if self.media_engine.get_state() == STATE_PAUSE:
             self.media_engine.state_play()
         else:
             self.play_selected_song()
+        
+        if remeber_position:
+            self.media_engine.restore_seek_ns()
+            
+            
         
     
     def show_preferences(self):
@@ -207,8 +212,8 @@ class BaseFoobnixControls(LoadSave):
     def state_pause(self):
         self.media_engine.state_pause()
 
-    def state_stop(self):
-        self.media_engine.state_stop()
+    def state_stop(self, remeber_position=False):
+        self.media_engine.state_stop(remeber_position)
 
     def state_play_pause(self):
         self.media_engine.state_play_pause()

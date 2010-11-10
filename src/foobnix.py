@@ -25,6 +25,7 @@ if True or not iface:
     print "******Foobnix run in", time.time() - init_time, " seconds******"
     gtk.main()
     
+    
 else:
     print "start client"
     iface.parse_arguments(sys.argv)

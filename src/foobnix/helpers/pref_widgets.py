@@ -99,4 +99,5 @@ class HBoxDecorator(gtk.HBox):
     def __init__(self, *args):
         gtk.HBox.__init__(self, False, 0)
         for widget in args:
-            self.pack_start(widget, False, False)             
+            self.pack_start(widget, True, True)   
+        self.show_all()          
