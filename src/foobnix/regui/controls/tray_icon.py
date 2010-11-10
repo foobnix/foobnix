@@ -74,7 +74,6 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.popup_menu = PopupWindowMenu(self.controls)
         
         """dynamic icons"""
-        self.init_icon = IconBlock("Init")
         self.play_icon = IconBlock("Play")
         self.pause_icon = IconBlock("Pause")
         self.stop_icon = IconBlock("Stop")
@@ -109,16 +108,16 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
                 self.set_no_image()
       
     def on_dynamic_icons(self, state):
-        if state == STATE_PLAY:
+        if state == FTYPE_RADIO:
+            self.check_active_dynamic_icon(self.radio_icon)
+        elif state == STATE_PLAY:
             self.check_active_dynamic_icon(self.play_icon)
         elif state == STATE_PAUSE:
             self.check_active_dynamic_icon(self.pause_icon)
         elif state == STATE_STOP:
             self.check_active_dynamic_icon(self.stop_icon)
-        elif state == FTYPE_RADIO:
-            self.check_active_dynamic_icon(self.radio_icon)
-        else:
-            self.check_active_dynamic_icon(self.init_icon)
+       
+        
             
     def check_active_dynamic_icon(self, icon_object):
         icon_name = icon_object.entry.get_text()

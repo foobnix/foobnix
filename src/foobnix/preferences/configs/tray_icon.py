@@ -37,8 +37,7 @@ class TrayIconConfig(ConfigPlugin):
         tray_icon = ChooseDecorator(None,FrameDecorator("System Icon Static", IconBlock("Icon")))
         
         """dynamic icons"""
-        line = VBoxDecorator(controls.trayicon.init_icon,
-                             controls.trayicon.play_icon,
+        line = VBoxDecorator(controls.trayicon.play_icon,
                              controls.trayicon.pause_icon, 
                              controls.trayicon.stop_icon, 
                              controls.trayicon.radio_icon)
