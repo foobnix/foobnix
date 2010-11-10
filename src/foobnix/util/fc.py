@@ -84,6 +84,11 @@ class FC:
         self.change_tray_icon = False
         self.system_icons_dinamic = False
         
+        self.play_icon_entry = "foobnix.png", 0
+        self.pause_icon_entry = "foobnix-pause.jpg", 1
+        self.stop_icon_entry = "foobnix-stop.jpg", 2
+        self.radio_icon_entry = "foobnix-radio.jpg", 3
+        
         """download manager controls"""
         self.auto_start_donwload = True
         self.max_active_count = 3

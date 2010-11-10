@@ -10,7 +10,7 @@ from foobnix.util.pix_buffer import create_pixbuf_from_resource
 
 class IconBlock(gtk.HBox):
     ICON_SIZE = 24
-    ICON_LIST = ["foobnix.png", "foobnix_icon.svg", "foobnix-pause.jpg","foobnix-radio.jpg", "foobnix-stop.jpg"]
+    ICON_LIST = ["foobnix.png", "foobnix-pause.jpg", "foobnix-stop.jpg", "foobnix-radio.jpg", "foobnix_icon.svg"]
     
     def __init__(self, text):
         gtk.HBox.__init__(self, False, 0)
@@ -26,19 +26,18 @@ class IconBlock(gtk.HBox):
             self.apeend_icon(icon_name)
             
         self.combobox.set_model(self.model)
+        
         self.combobox.set_active(0)
                 
         pix_render = gtk.CellRendererPixbuf()
         self.combobox.pack_start(pix_render)        
         self.combobox.add_attribute(pix_render, 'pixbuf', 0)
         
-        
         button = gtk.Button("Choose")
         button.connect("clicked",self.on_file_choose)
         
         label = gtk.Label(text)
         label.set_size_request(80, -1)
-        
         
         self.pack_start(label, False, False)
         self.pack_start(self.combobox, False, False)
