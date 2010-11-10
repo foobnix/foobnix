@@ -246,43 +246,40 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
 
     def get_next_bean_by_UUID(self, repeat_all=False):
         UUID = self.active_UUID
-        for i, row in enumerate(self.model):
+        
+        rows = self.get_all_file_rows()
+        for i, row in enumerate(rows):
             if row[self.is_file[0]] and row[self.UUID[0]] == UUID:
-                if i + 1 < len(self.model):
-                    next_row = self.model[i + 1]
-                    if next_row[self.is_file[0]]:
+                if i + 1 < len(rows):
+                    next_row = rows[i + 1]
+                    if next_row:
                         return self.get_bean_from_row(next_row)
         
-        if repeat_all:
-            for row in self.model:
-                if not row[self.is_file[0]]:
-                    continue
-                return self.get_bean_from_row(row)
-        else:
-            return None
-    
+        
+        return self.get_bean_from_row(rows[0])
+        
     def get_prev_bean_by_UUID(self, repeat_all=False):
         UUID = self.active_UUID
-        for i, row in enumerate(self.model):
-            if row[self.is_file[0]] and row[self.UUID[0]] == UUID:
-                prev_row = self.model[i - 1]
-                if prev_row[self.is_file[0]]: 
+        rows = self.get_all_file_rows() 
+        for i, row in enumerate(rows):
+            if row[self.UUID[0]] == UUID:
+                prev_row = rows[i - 1]
+                if prev_row: 
                     return self.get_bean_from_row(prev_row)
         
-        if repeat_all:
-            last_row = None
-            for row in self.model:
-                if row[self.is_file[0]]:                                    
-                    last_row = row
-            return self.get_bean_from_row(last_row)
-        else:
-            return None
-    
-    def get_random_bean(self):        
-        rows =[]
+        return self.get_bean_from_row(rows[len(rows)-1])
+        
+
+    def get_all_file_rows(self):
+        rows = []
         for row in self.model:
             if row[self.is_file[0]]:
                 rows.append(row)
+        
+        return rows
+
+    def get_random_bean(self):        
+        rows = self.get_all_file_rows()
         return self.get_bean_from_row(rows[randint(0, len(rows))])
     
     def get_child_level1_beans_by_selected(self):
