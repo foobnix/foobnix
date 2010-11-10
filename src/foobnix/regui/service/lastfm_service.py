@@ -155,8 +155,8 @@ class LastFmService():
         def task(bean):
             if bean.artist and bean.title:
                 try:
-                    self.get_scrobler().scrobble(bean.artist, bean.title, start_time, "P", "", duration_sec)
-                    LOG.debug("Song Scrobled", bean.artist, bean.title, start_time, "P", "", duration_sec)
+                    self.get_scrobler().scrobble(bean.artist, bean.title, start_time, "P", "", int(duration_sec))
+                    LOG.debug("Song Scrobled", bean.artist, bean.title, start_time, "P", "", int(duration_sec))
                 except Exception, e:       
                     LOG.error(e, "Error reporting now playing last.fm", bean.artist, bean.title, "A", bean.album)
             else:
