@@ -26,7 +26,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.set_label_widget(self.almum_label)                                
         #self.set_shadow_type(gtk.SHADOW_)
         
-        self.artists = SimpleTreeControl("Similar Artist", controls)
+        self.artists = SimpleTreeControl("Similar Artists", controls)
         self.tracks = SimpleTreeControl("Similar Songs", controls)        
         self.tags = SimpleTreeControl("Similar Tags", controls)
         self.lyrics = TextArea()
@@ -41,7 +41,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         lbox = gtk.VBox(False, 0)
         
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.artists.scroll, symbol="Similar Artist"))
+        lbox.pack_start(notetab_label(func=self.show_current, arg=self.artists.scroll, symbol="Similar Artists"))
         lbox.pack_start(notetab_label(func=self.show_current, arg=self.tracks.scroll, symbol="Similar Songs"))
         lbox.pack_start(notetab_label(func=self.show_current, arg=self.lyrics, symbol="Lyrics"))
         lbox.pack_start(notetab_label(func=self.show_current, arg=self.tags.scroll, symbol="Tags"))
