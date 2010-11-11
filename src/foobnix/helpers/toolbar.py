@@ -5,9 +5,21 @@ Created on Sep 27, 2010
 '''
 import gtk
 from foobnix.util import LOG
+
+
+
 class MyToolbar(gtk.Toolbar):
     def __init__(self):
-        gtk.Toolbar.__init__(self)            
+        rc_st = '''
+        style "toolbar-style" {
+            GtkToolbar::shadow_type = none                
+            }
+        class "GtkToolbar" style "toolbar-style"
+        '''
+        gtk.rc_parse_string(rc_st)
+        
+        gtk.Toolbar.__init__(self) 
+           
         self.show()
         self.set_style(gtk.TOOLBAR_ICONS)
         self.set_show_arrow(False)

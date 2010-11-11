@@ -189,17 +189,27 @@ class TopMenu():
         self.widget = self.menu_bar
 
     def decorate(self):
-        label = gtk.Label()
+        label = gtk.Button()
         style = label.get_style()
-        background_color = style.bg[gtk.STATE_NORMAL]
-        text_color = style.fg[gtk.STATE_NORMAL]
-
-        self.menu_bar.modify_bg(gtk.STATE_NORMAL, background_color)
-
+        base = style.base[gtk.STATE_NORMAL]
+        fg = style.fg[gtk.STATE_NORMAL]
+        bg = style.bg[gtk.STATE_NORMAL]
+        
+        #fg =  gtk.gdk.color_parse("BLUE")
+        #bg =  gtk.gdk.color_parse("RED")
+        #base =  gtk.gdk.color_parse("GREEN")
+        
+        #self.menu_bar.modify_base(gtk.STATE_NORMAL, base)
+        self.menu_bar.modify_fg(gtk.STATE_NORMAL, fg)
+        self.menu_bar.modify_bg(gtk.STATE_NORMAL, bg)
+        
         # making main menu look a bit better
         for item in self.menu_bar.get_children():
             current = item.get_children()[0]
-            current.modify_fg(gtk.STATE_NORMAL, text_color)
+
+            current.modify_fg(gtk.STATE_NORMAL, fg)
+            current.modify_bg(gtk.STATE_NORMAL, bg)
+            
 
     def append(self, title):
         menu = MyMenu()
