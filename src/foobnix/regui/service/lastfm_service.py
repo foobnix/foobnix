@@ -79,7 +79,7 @@ class LastFmService():
         self.preferences_window = None
 
         #thread.start_new_thread(self.init_thread, ())
-        self.init_thread()
+        #self.init_thread()
 
 
 
@@ -87,9 +87,10 @@ class LastFmService():
     def connect(self):
         if self.network and self.scrobler:
             return True
-        return False
+        return self.init_thread()
 
     def init_thread(self):
+        LOG.debug("RUN INIT LAST.FM")
         username = FC().lfm_login
         password_hash = pylast.md5(FC().lfm_password)
         self.cache = None

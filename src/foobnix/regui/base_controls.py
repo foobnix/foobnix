@@ -24,6 +24,7 @@ from foobnix.util.file_utils import get_file_extenstion
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 import urllib2
 from foobnix.util.configuration import VERSION
+import thread
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
@@ -496,8 +497,9 @@ class BaseFoobnixControls(LoadSave):
         current_version = VERSION        
         try:
             from socket import gethostname
-            f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname())
-        except:
+            f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname()+"&version="+current_version)
+        except Exception,e:
+            LOG.error("Check version error",e)
             return None
 
         new_version = f.read()
@@ -516,7 +518,7 @@ class BaseFoobnixControls(LoadSave):
         self.singre_thread = SingreThread(self.search_progress)
         self.main_window.show()
         self.movie_window.hide_all()
-        self.check_version()
+        thread.start_new_thread(self.check_version, ())
         self.info_panel.hide()
 
     def on_save(self):
