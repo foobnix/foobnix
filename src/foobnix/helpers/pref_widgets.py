@@ -10,7 +10,7 @@ from foobnix.util.pix_buffer import create_pixbuf_from_resource
 
 class IconBlock(gtk.HBox):
     ICON_SIZE = 24
-    ICON_LIST = ["foobnix.png", "foobnix-pause.jpg", "foobnix-stop.jpg", "foobnix-radio.jpg", "foobnix_icon.svg"]
+    ICON_LIST = ["foobnix_icon.svg", "foobnix.png", "foobnix-pause.jpg", "foobnix-stop.jpg", "foobnix-radio.jpg"]
     
     def __init__(self, text):
         gtk.HBox.__init__(self, False, 0)

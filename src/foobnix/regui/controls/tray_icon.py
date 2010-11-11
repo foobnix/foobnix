@@ -73,6 +73,9 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         
         self.popup_menu = PopupWindowMenu(self.controls)
         
+        '''static_icon'''
+        self.static_icon = IconBlock("Icon")
+        
         """dynamic icons"""
         self.play_icon = IconBlock("Play")
         self.pause_icon = IconBlock("Pause")
@@ -90,6 +93,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.tooltip_image = ImageBase("foobnix-big.png", 150)
         
     def on_save(self):
+        FC().static_icon_entry = self.static_icon.entry.get_text(), self.static_icon.combobox.get_active()
         FC().play_icon_entry = self.play_icon.entry.get_text(), self.play_icon.combobox.get_active()
         FC().pause_icon_entry = self.pause_icon.entry.get_text(), self.pause_icon.combobox.get_active()
         FC().stop_icon_entry = self.stop_icon.entry.get_text(), self.stop_icon.combobox.get_active()
@@ -102,6 +106,8 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         else:
             self.hide()
         
+        self.static_icon.entry.set_text(FC().static_icon_entry[0])
+        self.static_icon.combobox.set_active(FC().static_icon_entry[1])
         self.play_icon.entry.set_text(FC().play_icon_entry[0])
         self.play_icon.combobox.set_active(FC().play_icon_entry[1])
         self.pause_icon.entry.set_text(FC().pause_icon_entry[0])
@@ -114,22 +120,22 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
     def update_info_from(self, bean):
         self.current_bean = bean
         self.tooltip_image.update_info_from(bean)
-        if not FC().system_icons_dinamic: 
-            if FC().change_tray_icon:
-                super(TrayIconControls, self).update_info_from(bean)
-            else:
-                self.set_no_image()
-      
+        if FC().change_tray_icon:
+            super(TrayIconControls, self).update_info_from(bean)
+            
     def on_dynamic_icons(self, state):
-        if state == FTYPE_RADIO:
-            self.check_active_dynamic_icon(self.radio_icon)
-        elif state == STATE_PLAY:
-            self.check_active_dynamic_icon(self.play_icon)
-        elif state == STATE_PAUSE:
-            self.check_active_dynamic_icon(self.pause_icon)
-        elif state == STATE_STOP:
-            self.check_active_dynamic_icon(self.stop_icon)
-       
+        if FC().static_tray_icon:
+            self.check_active_dynamic_icon(self.static_icon)
+        if FC().system_icons_dinamic:
+            if state == FTYPE_RADIO:
+                self.check_active_dynamic_icon(self.radio_icon)
+            elif state == STATE_PLAY:
+                self.check_active_dynamic_icon(self.play_icon)
+            elif state == STATE_PAUSE:
+                self.check_active_dynamic_icon(self.pause_icon)
+            elif state == STATE_STOP:
+                self.check_active_dynamic_icon(self.stop_icon)
+               
     def check_active_dynamic_icon(self, icon_object):
         icon_name = icon_object.entry.get_text()
         path = get_foobnix_resourse_path_by_name(icon_name)

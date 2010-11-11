@@ -208,25 +208,25 @@ class GStreamerEngine(MediaPlayerEngine):
         print "PLAY"
         self.player.set_state(gst.STATE_PLAYING)
         self.current_state = STATE_PLAY
-        if FC().system_icons_dinamic:
-            if self.bean.type == FTYPE_RADIO:
-                self.controls.trayicon.on_dynamic_icons(FTYPE_RADIO)
-            else:
-                self.controls.trayicon.on_dynamic_icons(self.current_state)
+        #if FC().system_icons_dinamic:
+        if self.bean.type == FTYPE_RADIO:
+            self.controls.trayicon.on_dynamic_icons(FTYPE_RADIO)
+        else:
+            self.controls.trayicon.on_dynamic_icons(self.current_state)
         
     def state_stop(self):
         self.play_thread_id = None
         self.player.set_state(gst.STATE_NULL)
         self.current_state = STATE_STOP
-        if FC().system_icons_dinamic:
-            self.controls.trayicon.on_dynamic_icons(self.current_state)
+        #if FC().system_icons_dinamic:
+        self.controls.trayicon.on_dynamic_icons(self.current_state)
 
     def state_pause(self):
         print "PAUSE"
         self.player.set_state(gst.STATE_PAUSED)
         self.current_state = STATE_PAUSE
-        if FC().system_icons_dinamic:
-            self.controls.trayicon.on_dynamic_icons(self.current_state)
+        #if FC().system_icons_dinamic:
+        self.controls.trayicon.on_dynamic_icons(self.current_state)
         
     def state_play_pause(self):
         if self.status.isPlay:
