@@ -74,13 +74,13 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.popup_menu = PopupWindowMenu(self.controls)
         
         '''static_icon'''
-        self.static_icon = IconBlock("Icon")
+        self.static_icon = IconBlock("Icon", controls)
         
         """dynamic icons"""
-        self.play_icon = IconBlock("Play")
-        self.pause_icon = IconBlock("Pause")
-        self.stop_icon = IconBlock("Stop")
-        self.radio_icon = IconBlock("Radio")
+        self.play_icon = IconBlock("Play", controls)
+        self.pause_icon = IconBlock("Pause", controls)
+        self.stop_icon = IconBlock("Stop", controls)
+        self.radio_icon = IconBlock("Radio", controls)
         
         self.connect("activate", self.on_activate)
         self.connect("popup-menu", self.on_popup_menu)

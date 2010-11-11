@@ -12,8 +12,10 @@ class IconBlock(gtk.HBox):
     ICON_SIZE = 24
     ICON_LIST = ["foobnix_icon.svg", "foobnix.png", "foobnix-pause.jpg", "foobnix-stop.jpg", "foobnix-radio.jpg"]
     
-    def __init__(self, text):
+    def __init__(self, text, controls):
         gtk.HBox.__init__(self, False, 0)
+        
+        self.controls = controls
         
         self.combobox = gtk.ComboBox()
         self.entry = gtk.Entry()
@@ -60,6 +62,7 @@ class IconBlock(gtk.HBox):
         active_id = self.combobox.get_active()
         icon_name = self.combobox.get_model()[active_id][1]
         self.entry.set_text(icon_name)
+        self.controls.trayicon.on_dynamic_icons(None)
         
 class FrameDecorator(gtk.Frame):
     def __init__(self, text, widget):
