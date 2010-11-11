@@ -72,15 +72,15 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.set_tooltip("Foobnix music player")
         
         self.popup_menu = PopupWindowMenu(self.controls)
-        
+        print "IN TRAYICON"
         '''static_icon'''
-        self.static_icon = IconBlock("Icon", controls)
+        self.static_icon = IconBlock("Icon", controls, FC().static_icon_entry)
         
         """dynamic icons"""
-        self.play_icon = IconBlock("Play", controls)
-        self.pause_icon = IconBlock("Pause", controls)
-        self.stop_icon = IconBlock("Stop", controls)
-        self.radio_icon = IconBlock("Radio", controls)
+        self.play_icon = IconBlock("Play", controls, FC().play_icon_entry)
+        self.pause_icon = IconBlock("Pause", controls, FC().pause_icon_entry)
+        self.stop_icon = IconBlock("Stop", controls, FC().stop_icon_entry)
+        self.radio_icon = IconBlock("Radio", controls, FC().radio_icon_entry)
         
         self.connect("activate", self.on_activate)
         self.connect("popup-menu", self.on_popup_menu)
@@ -93,11 +93,11 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.tooltip_image = ImageBase("foobnix-big.png", 150)
         
     def on_save(self):
-        FC().static_icon_entry = self.static_icon.entry.get_text(), self.static_icon.combobox.get_active()
-        FC().play_icon_entry = self.play_icon.entry.get_text(), self.play_icon.combobox.get_active()
-        FC().pause_icon_entry = self.pause_icon.entry.get_text(), self.pause_icon.combobox.get_active()
-        FC().stop_icon_entry = self.stop_icon.entry.get_text(), self.stop_icon.combobox.get_active()
-        FC().radio_icon_entry = self.radio_icon.entry.get_text(), self.radio_icon.combobox.get_active()
+        FC().static_icon_entry = self.static_icon.entry.get_text()
+        FC().play_icon_entry = self.play_icon.entry.get_text()
+        FC().pause_icon_entry = self.pause_icon.entry.get_text()
+        FC().stop_icon_entry = self.stop_icon.entry.get_text()
+        FC().radio_icon_entry = self.radio_icon.entry.get_text()
         
   
     def on_load(self):
@@ -106,16 +106,16 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         else:
             self.hide()
         
-        self.static_icon.entry.set_text(FC().static_icon_entry[0])
-        self.static_icon.combobox.set_active(FC().static_icon_entry[1])
-        self.play_icon.entry.set_text(FC().play_icon_entry[0])
-        self.play_icon.combobox.set_active(FC().play_icon_entry[1])
-        self.pause_icon.entry.set_text(FC().pause_icon_entry[0])
-        self.pause_icon.combobox.set_active(FC().pause_icon_entry[1])
-        self.stop_icon.entry.set_text(FC().stop_icon_entry[0])
-        self.stop_icon.combobox.set_active(FC().stop_icon_entry[1])
-        self.radio_icon.entry.set_text(FC().radio_icon_entry[0])
-        self.radio_icon.combobox.set_active(FC().radio_icon_entry[1])
+        self.static_icon.entry.set_text(FC().static_icon_entry)
+        #self.static_icon.combobox.set_active(FC().static_icon_entry[1])
+        self.play_icon.entry.set_text(FC().play_icon_entry)
+        #self.play_icon.combobox.set_active(FC().play_icon_entry[1])
+        self.pause_icon.entry.set_text(FC().pause_icon_entry)
+        #self.pause_icon.combobox.set_active(FC().pause_icon_entry[1])
+        self.stop_icon.entry.set_text(FC().stop_icon_entry)
+        #self.stop_icon.combobox.set_active(FC().stop_icon_entry[1])
+        self.radio_icon.entry.set_text(FC().radio_icon_entry)
+        #self.radio_icon.combobox.set_active(FC().radio_icon_entry[1])
         
     def update_info_from(self, bean):
         self.current_bean = bean
@@ -135,7 +135,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
                 self.check_active_dynamic_icon(self.pause_icon)
             elif state == STATE_STOP:
                 self.check_active_dynamic_icon(self.stop_icon)
-               
+
     def check_active_dynamic_icon(self, icon_object):
         icon_name = icon_object.entry.get_text()
         path = get_foobnix_resourse_path_by_name(icon_name)

@@ -29,14 +29,16 @@ class FoobnixCore(BaseFoobnixControls):
 
     def __init__(self):
         BaseFoobnixControls.__init__(self)
-
+        
         self.media_engine = GStreamerEngine(self)
         """elements"""
         
         self.statusbar = StatusbarControls(self)
+        
         self.volume = VolumeControls(self)
+        
         self.seek_bar = SeekProgressBarControls(self)
-
+        
         self.search_progress = SearchProgressBar(self)
 
         self.info_panel = InfoPanelWidget(self)
