@@ -14,6 +14,7 @@ import thread
 from foobnix.util.fc import FC
 from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
 
+
 class GStreamerEngine(MediaPlayerEngine):
     NANO_SECONDS = 1000000000
     def __init__(self, controls):
@@ -220,7 +221,12 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
         print "restore", self.remembered_seek_position
             
-
+        #if FC().system_icons_dinamic:
+        if self.bean.type == FTYPE_RADIO:
+            self.controls.trayicon.on_dynamic_icons(FTYPE_RADIO)
+        else:
+            self.controls.trayicon.on_dynamic_icons(self.current_state)
+        
     def state_stop(self, remeber_position=False):
         if remeber_position:
             self.player.set_state(gst.STATE_PAUSED)
@@ -232,13 +238,16 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.set_state(gst.STATE_NULL)
         self.current_state = STATE_STOP
         
-        
+        #if FC().system_icons_dinamic:
+        self.controls.trayicon.on_dynamic_icons(self.current_state)
 
     def state_pause(self):
         print "PAUSE"
         self.player.set_state(gst.STATE_PAUSED)
         self.current_state = STATE_PAUSE
-
+        #if FC().system_icons_dinamic:
+        self.controls.trayicon.on_dynamic_icons(self.current_state)
+        
     def state_play_pause(self):
         if self.status.isPlay:
             self.state_pause()

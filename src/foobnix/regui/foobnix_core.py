@@ -73,4 +73,5 @@ class FoobnixCore(BaseFoobnixControls):
         """D-Bus"""
         self.dbus = DBusManager(self)
         
-        self.on_load()
+        self.on_load()       
+        

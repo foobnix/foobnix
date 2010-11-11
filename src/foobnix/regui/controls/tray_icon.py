@@ -13,8 +13,10 @@ from foobnix.regui.state import LoadSave
 import gobject
 from foobnix.helpers.image import ImageBase
 from foobnix.regui.model import FModel
-from foobnix.helpers.pref_widgets import VBoxDecorator
-
+from foobnix.helpers.pref_widgets import VBoxDecorator, IconBlock
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
+ 
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -64,11 +66,21 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         FControl.__init__(self, controls)
         gtk.StatusIcon.__init__(self)
         ImageBase.__init__(self, "foobnix_icon.svg", 150)
+                
         self.set_has_tooltip(True)
         self.tooltip = gtk.Tooltip()
         self.set_tooltip("Foobnix music player")
         
         self.popup_menu = PopupWindowMenu(self.controls)
+        
+        '''static_icon'''
+        self.static_icon = IconBlock("Icon", controls)
+        
+        """dynamic icons"""
+        self.play_icon = IconBlock("Play", controls)
+        self.pause_icon = IconBlock("Pause", controls)
+        self.stop_icon = IconBlock("Stop", controls)
+        self.radio_icon = IconBlock("Radio", controls)
         
         self.connect("activate", self.on_activate)
         self.connect("popup-menu", self.on_popup_menu)
@@ -81,20 +93,54 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.tooltip_image = ImageBase("foobnix-big.png", 150)
         
     def on_save(self):
-        pass
+        FC().static_icon_entry = self.static_icon.entry.get_text(), self.static_icon.combobox.get_active()
+        FC().play_icon_entry = self.play_icon.entry.get_text(), self.play_icon.combobox.get_active()
+        FC().pause_icon_entry = self.pause_icon.entry.get_text(), self.pause_icon.combobox.get_active()
+        FC().stop_icon_entry = self.stop_icon.entry.get_text(), self.stop_icon.combobox.get_active()
+        FC().radio_icon_entry = self.radio_icon.entry.get_text(), self.radio_icon.combobox.get_active()
+        
   
     def on_load(self):
         if FC().show_tray_icon:
             self.show()
         else:
             self.hide()
-    
+        
+        self.static_icon.entry.set_text(FC().static_icon_entry[0])
+        self.static_icon.combobox.set_active(FC().static_icon_entry[1])
+        self.play_icon.entry.set_text(FC().play_icon_entry[0])
+        self.play_icon.combobox.set_active(FC().play_icon_entry[1])
+        self.pause_icon.entry.set_text(FC().pause_icon_entry[0])
+        self.pause_icon.combobox.set_active(FC().pause_icon_entry[1])
+        self.stop_icon.entry.set_text(FC().stop_icon_entry[0])
+        self.stop_icon.combobox.set_active(FC().stop_icon_entry[1])
+        self.radio_icon.entry.set_text(FC().radio_icon_entry[0])
+        self.radio_icon.combobox.set_active(FC().radio_icon_entry[1])
+        
     def update_info_from(self, bean):
         self.current_bean = bean
         self.tooltip_image.update_info_from(bean)
-        super(TrayIconControls, self).update_info_from(bean)
-      
-    
+        if FC().change_tray_icon:
+            super(TrayIconControls, self).update_info_from(bean)
+            
+    def on_dynamic_icons(self, state):
+        if FC().static_tray_icon:
+            self.check_active_dynamic_icon(self.static_icon)
+        if FC().system_icons_dinamic:
+            if state == FTYPE_RADIO:
+                self.check_active_dynamic_icon(self.radio_icon)
+            elif state == STATE_PLAY:
+                self.check_active_dynamic_icon(self.play_icon)
+            elif state == STATE_PAUSE:
+                self.check_active_dynamic_icon(self.pause_icon)
+            elif state == STATE_STOP:
+                self.check_active_dynamic_icon(self.stop_icon)
+               
+    def check_active_dynamic_icon(self, icon_object):
+        icon_name = icon_object.entry.get_text()
+        path = get_foobnix_resourse_path_by_name(icon_name)
+        self.controls.trayicon.set_image_from_path(path)
+        
     def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip):
         artist = "Artist"
         title = "Title"

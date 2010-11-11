@@ -7,16 +7,17 @@ import gtk
 import gobject
 from foobnix.helpers.dialog_entry import file_chooser_dialog
 from foobnix.util.pix_buffer import create_pixbuf_from_resource
+
 class IconBlock(gtk.HBox):
     ICON_SIZE = 24
-    ICON_LIST = ["foobnix.png", "foobnix_icon.svg", "foobnix-pause.jpg", "foobnix-radio.jpg", "foobnix-stop.jpg",
-                 "design_1/foobnix_stop.svg",
-                 "design_1/foobnix_play.svg",
-                 "design_1/foobnix_pause.svg"
-                 ]
+
+    ICON_LIST = ["foobnix_icon.svg", "foobnix.png", "foobnix-pause.jpg", "foobnix-stop.jpg", "foobnix-radio.jpg"]
+
     
-    def __init__(self, text):
+    def __init__(self, text, controls):
         gtk.HBox.__init__(self, False, 0)
+        
+        self.controls = controls
         
         self.combobox = gtk.ComboBox()
         self.entry = gtk.Entry()
@@ -29,19 +30,18 @@ class IconBlock(gtk.HBox):
             self.apeend_icon(icon_name)
             
         self.combobox.set_model(self.model)
+        
         self.combobox.set_active(0)
                 
         pix_render = gtk.CellRendererPixbuf()
         self.combobox.pack_start(pix_render)        
         self.combobox.add_attribute(pix_render, 'pixbuf', 0)
         
-        
         button = gtk.Button("Choose")
         button.connect("clicked", self.on_file_choose)
         
         label = gtk.Label(text)
         label.set_size_request(80, -1)
-        
         
         self.pack_start(label, False, False)
         self.pack_start(self.combobox, False, False)
@@ -64,7 +64,8 @@ class IconBlock(gtk.HBox):
         active_id = self.combobox.get_active()
         icon_name = self.combobox.get_model()[active_id][1]
         self.entry.set_text(icon_name)
-
+        self.controls.trayicon.on_dynamic_icons(None)
+        
 class FrameDecorator(gtk.Frame):
     def __init__(self, text, widget):
         gtk.Frame.__init__(self, text)

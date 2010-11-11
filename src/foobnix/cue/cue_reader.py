@@ -110,7 +110,6 @@ class CueReader():
         cue = self.parse()
         for i, track  in enumerate(cue.tracks):
             #bean = CommonBean(name=track.performer + " - " + track.title, path=track.path, type=CommonBean.TYPE_MUSIC_FILE)
-            print i
             bean = FModel(text=track.performer + " - " + track.title, path=track.path)
             bean.artist = track.performer
             bean.tracknumber = i + 1
@@ -220,7 +219,6 @@ class CueReader():
                 if not is_title:
                     cue_track = CueTrack(title, performer, index, full_file)
                     cue_file.append_track(cue_track)
-                    print cue_track.title
                 is_title = False
         
         cue_track = CueTrack(title, performer, index, full_file)

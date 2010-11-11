@@ -97,7 +97,16 @@ class FC:
         """tray icon"""
         self.show_tray_icon = True
         self.tray_icon_auto_hide = True
+        self.static_tray_icon = True
+        self.system_icons_dinamic = False
         self.change_tray_icon = False
+        
+        self.static_icon_entry = "foobnix-icon.svg", 0
+        self.play_icon_entry = "foobnix.png", 1
+        self.pause_icon_entry = "foobnix-pause.jpg", 2
+        self.stop_icon_entry = "foobnix-stop.jpg", 3
+        self.radio_icon_entry = "foobnix-radio.jpg", 4
+        
         
         """download manager controls"""
         self.auto_start_donwload = True
