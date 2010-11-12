@@ -8,7 +8,7 @@ import gobject
 from foobnix.helpers.dialog_entry import file_chooser_dialog
 from foobnix.util.pix_buffer import create_pixbuf_from_resource
 from foobnix.util.fc import FC
-
+from foobnix.helpers.window import ChildTopWindow
 class IconBlock(gtk.HBox):
      
     def __init__(self, text, controls, filename):
@@ -24,7 +24,10 @@ class IconBlock(gtk.HBox):
         
         self.combobox.set_model(self.controls.modconst.model)
         
-        self.combobox.set_active(FC().all_icons.index(filename))
+        if FC().all_icons.count(filename):
+            self.combobox.set_active(FC().all_icons.index(filename))
+        else:
+            self.combobox.set_active(0)
         
         pix_render = gtk.CellRendererPixbuf()
         self.combobox.pack_start(pix_render)        
@@ -33,6 +36,9 @@ class IconBlock(gtk.HBox):
         button = gtk.Button("Choose")
         button.connect("clicked", self.on_file_choose)
         
+        button_2 = gtk.Button("Delete", gtk.STOCK_DELETE)
+        button_2.connect("clicked", self.on_delete)
+        
         label = gtk.Label(text)
         label.set_size_request(80, -1)
         
@@ -40,6 +46,7 @@ class IconBlock(gtk.HBox):
         self.pack_start(self.combobox, False, False)
         self.pack_start(self.entry, True, True)
         self.pack_start(button, False, False)
+        self.pack_start(button_2, False, False)
         
         self.combobox.connect("changed", self.on_change_icon)
         
@@ -54,6 +61,25 @@ class IconBlock(gtk.HBox):
         icon_name = self.combobox.get_model()[active_id][1]
         self.entry.set_text(icon_name)
         self.controls.trayicon.on_dynamic_icons(None)
+        
+    def on_delete(self, *a):
+        
+        active_id = self.combobox.get_active()
+        rem_icon = self.entry.get_text()
+        iter = self.controls.modconst.model.get_iter(active_id)
+        try:
+            if FC().all_icons.index(rem_icon) > 4:
+                FC().all_icons.remove(rem_icon)
+                self.controls.modconst.delete_icon(iter)
+                self.combobox.set_active(0)
+            else:
+                error_window = ChildTopWindow("Error")
+                label = gtk.Label("You can not remove a standard icon")
+                error_window.add(label)
+                error_window.show()
+        except ValueError:
+            print "There is not such icon in the list"
+        
         
 class FrameDecorator(gtk.Frame):
     def __init__(self, text, widget):
@@ -109,3 +135,6 @@ class ModelConstructor():
             self.model.append([pixbuf, icon_name])
             if active:
                 calling_object.combobox.set_active(len(self.model) - 1)
+                
+    def delete_icon(self, iter):
+        self.model.remove(iter)

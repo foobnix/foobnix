@@ -20,7 +20,7 @@ class BaseParentWindow(ChildTopWindow):
         
         
     def get_fobnix_logo(self):
-        return get_foobnix_resourse_path_by_name("foobnix.png")
+        return get_foobnix_resourse_path_by_name("foobnix_icon.svg")
 
 class AboutWindow(BaseParentWindow):
     """class About Window to show foobnix information"""
