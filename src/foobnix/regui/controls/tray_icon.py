@@ -107,15 +107,13 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
             self.hide()
         
         self.static_icon.entry.set_text(FC().static_icon_entry)
-        #self.static_icon.combobox.set_active(FC().static_icon_entry[1])
+        if FC().static_tray_icon:
+            self.on_dynamic_icons(None)
         self.play_icon.entry.set_text(FC().play_icon_entry)
-        #self.play_icon.combobox.set_active(FC().play_icon_entry[1])
         self.pause_icon.entry.set_text(FC().pause_icon_entry)
-        #self.pause_icon.combobox.set_active(FC().pause_icon_entry[1])
         self.stop_icon.entry.set_text(FC().stop_icon_entry)
-        #self.stop_icon.combobox.set_active(FC().stop_icon_entry[1])
         self.radio_icon.entry.set_text(FC().radio_icon_entry)
-        #self.radio_icon.combobox.set_active(FC().radio_icon_entry[1])
+        
         
     def update_info_from(self, bean):
         self.current_bean = bean

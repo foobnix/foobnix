@@ -24,6 +24,7 @@ from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.eq.eq_controller import EqController
 from foobnix.dm.dm import DM
 from foobnix.regui.controls.movie_area import MovieDrawingArea
+from foobnix.helpers.pref_widgets import ModelConstructor
 
 class FoobnixCore(BaseFoobnixControls):
 
@@ -42,7 +43,9 @@ class FoobnixCore(BaseFoobnixControls):
         self.search_progress = SearchProgressBar(self)
 
         self.info_panel = InfoPanelWidget(self)
-
+        
+        self.modconst = ModelConstructor()
+        
         self.trayicon = TrayIconControls(self)
 
         self.movie_window = MovieDrawingArea(self)

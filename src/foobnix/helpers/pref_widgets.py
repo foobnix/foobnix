@@ -10,11 +10,7 @@ from foobnix.util.pix_buffer import create_pixbuf_from_resource
 from foobnix.util.fc import FC
 
 class IconBlock(gtk.HBox):
-    ICON_SIZE = 24
-
-    #ICON_LIST = ["foobnix_icon.svg", "foobnix.png", "foobnix-pause.jpg", "foobnix-stop.jpg", "foobnix-radio.jpg"]
-
-    
+     
     def __init__(self, text, controls, filename):
         gtk.HBox.__init__(self, False, 0)
         
@@ -25,12 +21,8 @@ class IconBlock(gtk.HBox):
         self.entry.set_size_request(350, -1)
         
         
-        self.model = gtk.ListStore(gobject.TYPE_OBJECT, str)
         
-        for icon_name in FC().all_icons:
-            self.apeend_icon(icon_name)
-           
-        self.combobox.set_model(self.model)
+        self.combobox.set_model(self.controls.modconst.model)
         
         self.combobox.set_active(FC().all_icons.index(filename))
         
@@ -51,17 +43,11 @@ class IconBlock(gtk.HBox):
         
         self.combobox.connect("changed", self.on_change_icon)
         
-    def apeend_icon(self, icon_name, active=False):
-        pixbuf = create_pixbuf_from_resource(icon_name, self.ICON_SIZE)
-        if pixbuf:        
-            self.model.append([pixbuf, icon_name])
-            if active:
-                self.combobox.set_active(len(self.model) - 1)
-    
     def on_file_choose(self, *a):
         file = file_chooser_dialog("Choose icon")
         self.entry.set_text(file[0])
-        self.apeend_icon(file[0], True)
+        self.controls.modconst.apeend_icon(self, file[0], True)
+        FC().all_icons.append(file[0])
     
     def on_change_icon(self, *a):        
         active_id = self.combobox.get_active()
@@ -104,4 +90,22 @@ class HBoxDecorator(gtk.HBox):
         gtk.HBox.__init__(self, False, 0)
         for widget in args:
             self.pack_start(widget, True, True)   
-        self.show_all()          
+        self.show_all()
+        
+class ModelConstructor():
+    
+    ICON_SIZE = 24
+    
+    def __init__(self):
+        
+        self.model = gtk.ListStore(gobject.TYPE_OBJECT, str)
+        
+        for icon_name in FC().all_icons:
+            self.apeend_icon(None, icon_name)          
+
+    def apeend_icon(self, calling_object, icon_name, active=False):
+        pixbuf = create_pixbuf_from_resource(icon_name, self.ICON_SIZE)
+        if pixbuf:        
+            self.model.append([pixbuf, icon_name])
+            if active:
+                calling_object.combobox.set_active(len(self.model) - 1)
