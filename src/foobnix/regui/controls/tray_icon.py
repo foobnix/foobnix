@@ -136,8 +136,11 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
 
     def check_active_dynamic_icon(self, icon_object):
         icon_name = icon_object.entry.get_text()
-        path = get_foobnix_resourse_path_by_name(icon_name)
-        self.controls.trayicon.set_image_from_path(path)
+        try:
+            path = get_foobnix_resourse_path_by_name(icon_name)
+            self.controls.trayicon.set_image_from_path(path)
+        except TypeError, error_message:
+            print error_message
         
     def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip):
         artist = "Artist"

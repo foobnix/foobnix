@@ -28,12 +28,14 @@ class IconBlock(gtk.HBox):
             self.combobox.set_active(FC().all_icons.index(filename))
         else:
             self.combobox.set_active(0)
+            self.on_change_icon()
+            print "*** WARNING *** : Icon "+filename+" is absent in list of icons"
         
         pix_render = gtk.CellRendererPixbuf()
         self.combobox.pack_start(pix_render)        
         self.combobox.add_attribute(pix_render, 'pixbuf', 0)
         
-        button = gtk.Button("Choose")
+        button = gtk.Button("Choose", gtk.STOCK_OPEN)
         button.connect("clicked", self.on_file_choose)
         
         button_2 = gtk.Button("Delete", gtk.STOCK_DELETE)
