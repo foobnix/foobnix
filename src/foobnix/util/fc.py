@@ -93,7 +93,7 @@ class FC:
         """proxy"""
         self.proxy_enable = False
         self.proxy_url = None
-
+        
         """tray icon"""
         self.show_tray_icon = True
         self.tray_icon_auto_hide = True
@@ -101,13 +101,15 @@ class FC:
         self.system_icons_dinamic = False
         self.change_tray_icon = False
         
-        self.static_icon_entry = "foobnix_icon.svg", 0
-        self.play_icon_entry = "foobnix.png", 1
-        self.pause_icon_entry = "foobnix-pause.jpg", 2
-        self.stop_icon_entry = "foobnix-stop.jpg", 3
-        self.radio_icon_entry = "foobnix-radio.jpg", 4
-        
-        
+
+        self.all_icons = ["foobnix_icon.svg", "foobnix.png", "foobnix-pause.jpg", "foobnix-stop.jpg", "foobnix-radio.jpg"]
+                
+        self.static_icon_entry = "foobnix_icon.svg"
+        self.play_icon_entry = "foobnix.png"
+        self.pause_icon_entry = "foobnix-pause.jpg"
+        self.stop_icon_entry = "foobnix-stop.jpg"
+        self.radio_icon_entry = "foobnix-radio.jpg"
+                
         """download manager controls"""
         self.auto_start_donwload = True
         self.max_active_count = 3
