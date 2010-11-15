@@ -101,7 +101,7 @@ class FC:
         self.system_icons_dinamic = False
         self.change_tray_icon = False
         
-        self.static_icon_entry = "foobnix-icon.svg", 0
+        self.static_icon_entry = "foobnix_icon.svg", 0
         self.play_icon_entry = "foobnix.png", 1
         self.pause_icon_entry = "foobnix-pause.jpg", 2
         self.stop_icon_entry = "foobnix-stop.jpg", 3
