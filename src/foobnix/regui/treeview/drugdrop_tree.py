@@ -151,6 +151,7 @@ class DrugDropTree(gtk.TreeView):
             from_iter = from_filter_model.get_iter(current_path)
             
             """do not copy to himself"""
+            
             if to_tree == from_tree and current_path == to_path:
                 "do not copy to himself"
                 drag_context.finish(False, False)
