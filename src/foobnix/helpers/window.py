@@ -7,6 +7,7 @@ Created on 27 окт. 2010
 import gtk
 from foobnix.util.key_utils import is_key
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.util.const import ICON_FOOBNIX
 
 class ChildTopWindow(gtk.Window):
     def __init__(self, title=None, width=None, height=None):         
@@ -22,7 +23,7 @@ class ChildTopWindow(gtk.Window):
         self.connect("key-press-event", self.on_key_press)
     
     def get_fobnix_logo(self):
-        return get_foobnix_resourse_path_by_name("foobnix_icon.svg")
+        return get_foobnix_resourse_path_by_name(ICON_FOOBNIX)
     
     def on_key_press(self, w, e):
         if is_key(e, 'Escape'):

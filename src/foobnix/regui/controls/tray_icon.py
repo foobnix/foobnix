@@ -15,7 +15,8 @@ from foobnix.helpers.image import ImageBase
 from foobnix.regui.model import FModel
 from foobnix.helpers.pref_widgets import VBoxDecorator, IconBlock
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
-from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
+from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO, \
+    ICON_FOOBNIX
  
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
@@ -65,7 +66,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         gtk.StatusIcon.__init__(self)
-        ImageBase.__init__(self, "foobnix_icon.svg", 150)
+        ImageBase.__init__(self, ICON_FOOBNIX, 150)
                 
         self.set_has_tooltip(True)
         self.tooltip = gtk.Tooltip()

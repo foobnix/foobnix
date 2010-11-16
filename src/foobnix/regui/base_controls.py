@@ -517,7 +517,7 @@ class BaseFoobnixControls(LoadSave):
                 LOG.debug("NOT LOAD", self.__dict__[element])
         self.main_window.show()
         self.movie_window.hide_all()
-        thread.start_new_thread(self.check_version, ())
+        #thread.start_new_thread(self.check_version, ())
         self.info_panel.hide()
 
     def on_save(self):

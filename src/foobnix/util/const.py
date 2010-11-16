@@ -46,4 +46,12 @@ DOWNLOAD_STATUS_ERROR = _("Error")
 
 LEFT_PERSPECTIVE_INFO = "info"
 LEFT_PERSPECTIVE_NOT_INFO = "not info"
+
+ICON_FOOBNIX = "foobnix.png"
+
+ICON_FOOBNIX_PLAY = "foobnix-play.svg"
+ICON_FOOBNIX_PAUSE = "foobnix-pause.svg"
+ICON_FOOBNIX_STOP = "foobnix-stop.svg"
+ICON_FOOBNIX_RADIO = "foobnix-radio.jpg"
+ICON_BLANK_DISK = "blank-disc.jpg"
       

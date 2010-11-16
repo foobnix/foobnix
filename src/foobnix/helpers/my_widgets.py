@@ -64,23 +64,19 @@ class EventLabel(gtk.EventBox):
             self.connect("button-press-event", lambda * a: func())
         
         self.func1 = func1
-        #if func1:
-        #    self.connect("button-press-event", lambda * a: func1())
-        
+
         self.add(self.label)
         self.show_all()
         
         
         
     def set_underline(self):
-        print "set_underline", self.selected, self.text   
         if self.selected:
             self.label.set_markup("<b><u>" + self.text + "</u></b>")
         else:           
             self.label.set_markup("<u>" + self.text + "</u>")
     
     def set_not_underline(self):
-        print "set_not_underline", self.selected, self.text
         if self.selected:              
             self.label.set_markup("<b>" + self.text + "</b>")
         else:
