@@ -38,12 +38,12 @@ class PlaylistTreeControl(CommonTreeControl):
         """conlumt artist title"""
         artist = gtk.TreeViewColumn('Artist', gtk.CellRendererText(), text=self.artist[0])
         artist.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        self.append_column(artist)
+        #self.append_column(artist)
         
         """conlumt artist title"""
         title = gtk.TreeViewColumn('Title', gtk.CellRendererText(), text=self.title[0])
         title.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        self.append_column(title)
+        #self.append_column(title)
 
         """time text"""
         time = gtk.TreeViewColumn('Time', gtk.CellRendererText(), text=self.time[0])

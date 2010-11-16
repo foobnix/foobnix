@@ -12,6 +12,7 @@ import uuid
 import random
 from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
+import thread
 
 def get_random_vk():
     vks = {
@@ -142,8 +143,8 @@ class FC:
         
 
     def save(self):
-        FCHelper().save(self)
-
+        thread.start_new_thread(FCHelper().save, (self,))
+        
     def _load(self):
         """restore from file"""
         object = FCHelper().load()

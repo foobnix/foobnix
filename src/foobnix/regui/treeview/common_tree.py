@@ -7,7 +7,6 @@ Created on 20 окт. 2010
 
 import gtk
 from foobnix.regui.model import FTreeModel, FModel
-from foobnix.util import LOG
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.treeview.drugdrop_tree import DrugDropTree
 from random import randint
@@ -268,7 +267,7 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
                     return self.get_bean_from_row(prev_row)
         
         if repeat_all:
-            return self.get_bean_from_row(rows[len(rows)-1])
+            return self.get_bean_from_row(rows[len(rows) - 1])
         
 
     def get_all_file_rows(self):

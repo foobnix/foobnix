@@ -112,6 +112,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.artists.clear()
         
     def update_info_panel(self):
+        if not self.bean:
+            return None
         def task():
             self.show_disc_cover()
             

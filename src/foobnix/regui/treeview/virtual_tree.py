@@ -30,6 +30,10 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
     def on_key_release(self, w, e):
         if is_key(e, KEY_DELETE):
             self.delete_playlist()
+    
+    def on_drag_drop_finish(self):
+        FC().cache_virtual_tree_beans = self.get_all_beans()
+        FC().save()        
          
     def on_button_press(self, w, e):
         if is_double_left_click(e):

@@ -61,13 +61,7 @@ def udpate_id3(bean):
 
         if bean.artist and bean.title:
             bean.text = bean.artist + " - " + bean.title
-        """
-        if bean.tracknumber and "/" in bean.tracknumber:
-            bean.tracknumber = bean.tracknumber[:bean.tracknumber.find("/")]
 
-        if bean.tracknumber and bean.tracknumber.startswith("0"):
-            bean.tracknumber = bean.tracknumber[1:]
-        """
         if bean.tracknumber:
             try:
                 bean.tracknumber = int(bean.tracknumber)
