@@ -29,7 +29,7 @@ class IconBlock(gtk.HBox):
         else:
             self.combobox.set_active(0)
             self.on_change_icon()
-            print "*** WARNING *** : Icon "+filename+" is absent in list of icons"
+            print "*** WARNING *** : Icon " + filename + " is absent in list of icons"
         
         pix_render = gtk.CellRendererPixbuf()
         self.combobox.pack_start(pix_render)        
@@ -62,7 +62,7 @@ class IconBlock(gtk.HBox):
         active_id = self.combobox.get_active()
         icon_name = self.combobox.get_model()[active_id][1]
         self.entry.set_text(icon_name)
-        self.controls.trayicon.on_dynamic_icons(None)
+        #self.controls.trayicon.on_dynamic_icons(None)
         
     def on_delete(self, *a):
         
