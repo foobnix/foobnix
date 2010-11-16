@@ -29,6 +29,8 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
         
         self.set_type_plain()
         #self.populate_all([FModel("Madonna").add_is_file(True)])
+        
+        self.line_title = None
     
     def on_button_press(self, w, e):
         active = self.get_selected_bean()

@@ -55,14 +55,7 @@ def one_line_dialog(dialog_title, text=None):
         dialog.vbox.pack_end(entry, True, True, 0)
         dialog.show_all()
         
-        entry.connect("key-release-event", on_key)
         dialog.run()
-        def on_key(w, e):
-            if is_key(e, KEY_RETURN):
-                text = entry.get_text()
-                dialog.destroy()    
-                return text
-        
         text = entry.get_text()
         
         dialog.destroy()    

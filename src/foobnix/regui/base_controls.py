@@ -142,14 +142,22 @@ class BaseFoobnixControls(LoadSave):
         LOG.info("Update music tree", FC().music_paths)
         self.tree.clear()
         FC().cache_music_tree_beans = []
-        for path in FC().music_paths:
-            
-            all = get_all_music_by_path(path)
-
-            for bean in all:
-                FC().cache_music_tree_beans.append(bean)
-
-            self.tree.append_all(all)
+        all = []
+        for path in FC().music_paths:            
+            all_in_folder = get_all_music_by_path(path)
+            for bean in all_in_folder:
+                all.append(bean)
+        
+        for bean in all:
+            FC().cache_music_tree_beans.append(bean)
+        
+        if not all:
+            all.append(FModel("Music not found in folder(s):"))
+        
+        for path in FC().music_paths:            
+            all.append(FModel(path).add_is_file(True))
+        
+        self.tree.append_all(all)
 
     def set_visible_search_panel(self, flag):
         self.layout.set_visible_search_panel(flag)
@@ -269,7 +277,7 @@ class BaseFoobnixControls(LoadSave):
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
                         
-        if sec % 10 == 0:
+        if sec > 10 and sec % 11 == 0:
             self.lastfm.report_now_playting(bean)
             
         if not self.start_time:
@@ -331,7 +339,7 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
                 
             self.notetabs.append_tab(query, all)
-        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
     
     def search_all_tracks(self, query):
         def inline(query):
@@ -350,7 +358,7 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
             
             self.notetabs.append_tab(query, all)
-        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
 
     def search_top_tracks(self, query):
         def inline(query):
@@ -369,7 +377,7 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
                 
             self.notetabs.append_tab(query, all)
-        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
 
 
 
@@ -396,7 +404,7 @@ class BaseFoobnixControls(LoadSave):
                 
             
                                    
-        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
 
     def search_top_similar(self, query):
         def inline(query):
@@ -421,7 +429,7 @@ class BaseFoobnixControls(LoadSave):
                      
             
         #inline(query)
-        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
 
     def search_top_tags(self, query):
         def inline(query):
@@ -445,11 +453,10 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
                 self.notetabs.append(all)
         
-        self.singre_thread.run_with_text(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
 
     def update_info_panel(self, bean):
-        #self.info_panel.update(bean)
-        self.singre_thread.run_with_text(self.info_panel.update, bean, "Updating info panel")
+        self.info_panel.update(bean)
 
     def append_to_new_notebook(self, text, beans):
         beans = update_id3_wind_filtering(beans)        
@@ -486,10 +493,11 @@ class BaseFoobnixControls(LoadSave):
         self.virtual.filter_by_file(value)
 
     def quit(self, *a):
+        
         LOG.info("Controls - Quit")
         self.main_window.hide()
-        self.on_save()                
-        FC().save()
+        self.on_save()
+        FC().save(False)                        
         gtk.main_quit()
 
     def check_version(self):
@@ -497,9 +505,10 @@ class BaseFoobnixControls(LoadSave):
         current_version = VERSION        
         try:
             from socket import gethostname
-            f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname()+"&version="+current_version)
-        except Exception,e:
-            LOG.error("Check version error",e)
+            #f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname()+"&version="+current_version)
+            f = urllib2.urlopen("http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version)
+        except Exception, e:
+            LOG.error("Check version error", e)
             return None
 
         new_version = f.read()
@@ -515,10 +524,9 @@ class BaseFoobnixControls(LoadSave):
                 self.__dict__[element].on_load()
             else:
                 LOG.debug("NOT LOAD", self.__dict__[element])
-        self.singre_thread = SingreThread(self.search_progress)
         self.main_window.show()
         self.movie_window.hide_all()
-        thread.start_new_thread(self.check_version, ())
+        #thread.start_new_thread(self.check_version, ())
         self.info_panel.hide()
 
     def on_save(self):

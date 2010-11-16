@@ -9,14 +9,29 @@ from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
-from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL
-from foobnix.helpers.my_widgets import notetab_label
+from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
+    LEFT_PERSPECTIVE_INFO
+from foobnix.helpers.my_widgets import EventLabel
 from foobnix.helpers.textarea import TextArea
 from foobnix.thirdparty.lyr import get_lyrics
 import gobject
 from foobnix.helpers.image import ImageBase
+from foobnix.util.bean_utils import update_parent_for_beans, \
+    update_bean_from_normilized_text
+from foobnix.regui.id3.audio import normilize_text
+from foobnix.util import LOG
 
-class InfoPanelWidget(gtk.Frame, LoadSave, FControl):    
+class InfoCache():
+    def __init__(self):
+        self.best_songs_bean = None
+        self.similar_tracks_bean = None
+        self.similar_artists_bean = None
+        self.similar_tags_bean = None
+        self.lyric_bean = None
+        
+        self.active_method = None
+
+class InfoPanelWidget(gtk.Frame, LoadSave, FControl):   
     def __init__(self, controls): 
         gtk.Frame.__init__(self)
         FControl.__init__(self, controls)
@@ -24,12 +39,23 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.almum_label.set_line_wrap(True)
         self.almum_label.set_markup("<b></b>")
         self.set_label_widget(self.almum_label)                                
-        #self.set_shadow_type(gtk.SHADOW_)
+        
+        self.best_songs = SimpleTreeControl("Best Songs", controls)
+        self.best_songs.line_title = EventLabel("Best Songs", func=self.show_current, arg=self.best_songs, func1=self.show_best_songs)
         
         self.artists = SimpleTreeControl("Similar Artists", controls)
-        self.tracks = SimpleTreeControl("Similar Songs", controls)        
+        self.artists.line_title = EventLabel("Similar Artists", func=self.show_current, arg=self.artists, func1=self.show_similar_artists)
+        
+        self.tracks = SimpleTreeControl("Similar Songs", controls)
+        self.tracks.line_title = EventLabel("Similar Songs", func=self.show_current, arg=self.tracks, func1=self.show_similar_tracks)
+                
         self.tags = SimpleTreeControl("Similar Tags", controls)
+        self.tags.line_title = EventLabel("Similar Tags", func=self.show_current, arg=self.tags, func1=self.show_similar_tags)
+        
+        
         self.lyrics = TextArea()
+        self.lyrics.set_text("", "Lyrics")
+        self.lyrics.line_title = EventLabel("Lyrics", func=self.show_current, arg=self.lyrics, func1=self.show_similar_lyrics)
         
         
         self.vpaned_small = gtk.VBox(False, 0)
@@ -41,11 +67,13 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         lbox = gtk.VBox(False, 0)
         
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.artists.scroll, symbol="Similar Artists"))
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tracks.scroll, symbol="Similar Songs"))
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.lyrics, symbol="Lyrics"))
-        lbox.pack_start(notetab_label(func=self.show_current, arg=self.tags.scroll, symbol="Tags"))
-          
+        
+        self.left_widget = [self.artists, self.tracks, self.tags, self.lyrics, self.best_songs]
+        
+        for l_widget in self.left_widget:        
+            lbox.pack_start(l_widget.line_title)
+        
+
         
         ibox.pack_start(self.image, False, False)
         ibox.pack_start(lbox, True, True)
@@ -54,15 +82,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         """image and similar artists"""
         sbox = gtk.VBox(False, 0)
         
-        
-        
-        self.left_widget = [self.tracks.scroll, self.tags.scroll, self.lyrics, self.artists.scroll]
-        
-        sbox.pack_start(self.tracks.scroll, True, True)
-        sbox.pack_start(self.lyrics, True, True)
-        sbox.pack_start(self.tags.scroll, True, True)
-        sbox.pack_start(self.artists.scroll, True, True)
-        
+        for l_widget in self.left_widget:        
+            sbox.pack_start(l_widget.scroll, True, True)
         
         self.vpaned_small.pack_start(ibox, False, False)
         self.vpaned_small.pack_start(sbox, True, True)
@@ -70,11 +91,20 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.add(self.vpaned_small)
         
         self.hide_all()
+        
+        self.bean = None
+        self.info_cache = InfoCache()
     
     def show_current(self, widget):
         for w in self.left_widget:
-            w.hide()
-        widget.show_all()
+            w.scroll.hide()
+            w.line_title.set_not_active()
+            
+        widget.scroll.show_all()
+        widget.line_title.set_active()
+        
+        self.info_cache.active_method = widget.line_title.func1
+        self.controls.in_thread.run_with_progressbar(widget.line_title.func1)
         
     
     def clear(self):
@@ -82,9 +112,22 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.tracks.clear()
         self.tags.clear()
         self.artists.clear()
-        self.almum_label.set_markup("")
         
-    def update(self, bean):
+    def update_info_panel(self):
+        if not self.bean:
+            return None
+        def task():
+            self.show_disc_cover()
+            
+            if FC().left_perspective == LEFT_PERSPECTIVE_INFO:
+                self.show_album_title()
+                self.info_cache.active_method()
+    
+        self.controls.in_thread.run_with_progressbar(task)
+        
+    def update(self, bean):        
+        self.bean = bean
+        
         if bean.type == FTYPE_NOT_UPDATE_INFO_PANEL:
             return False
         
@@ -94,35 +137,30 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             print "Info panel disabled"  
             return
         
-        """update image"""
-        if not bean.image:
-            bean.image = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
-        
-        self.image.update_info_from(bean)
-        self.controls.trayicon.update_info_from(bean)
-        
         """check connection"""
         if not self.controls.lastfm.connect():
             return
-              
 
-        if not bean.artist or not bean.title:
-            text_artist = bean.get_artist_from_text()
-            text_title = bean.get_title_from_text()  
-            if text_artist and text_title:
-                bean.artist, bean.title = text_artist, text_title
+        """update bean info form text if possible"""
+        bean = update_bean_from_normilized_text(bean)
         
+                
         if not bean.artist or not bean.title:
             print """Artist and title no difined"""
             return None
         
-        info_line = bean.artist
+        self.bean = bean
         
-        """update info"""
+        self.update_info_panel()
+        
+    
+    def show_album_title(self):
+        bean = self.bean
+        """update info album and year"""
         
         album_name = self.controls.lastfm.get_album_name(bean.artist, bean.title)
         album_year = self.controls.lastfm.get_album_year(bean.artist, bean.title)
-                
+        info_line = bean.artist        
         if album_name:
             info_line = album_name
         if album_name and album_year:
@@ -132,39 +170,73 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         def task():
             self.almum_label.set_markup("<b>%s</b>" % info_line)
         gobject.idle_add(task)
+    
+    def show_disc_cover(self):
+        bean = self.bean
         
+        """update image"""
+        if not bean.image:
+            bean.image = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
         
-        def update_parent(parent_bean, beans):    
-            for bean in beans:
-                bean.parent(parent_bean)
+        self.image.update_info_from(bean)
+        self.controls.trayicon.update_info_from(bean)
         
-        """similar  artists"""
-        similar_artists = self.controls.lastfm.search_top_similar_artist(bean.artist)
-        parent = FModel("Similar Artists: " + bean.artist)
-        update_parent(parent, similar_artists)
-        self.artists.populate_all([parent] + similar_artists)
-        
-        """similar  songs"""
-        similar_tracks = self.controls.lastfm.search_top_similar_tracks(bean.artist, bean.title)
-        parent = FModel("Similar Tracks: " + bean.title)
-        update_parent(parent, similar_tracks)
-        self.tracks.populate_all([parent] + similar_tracks)
-        
-        """similar  tags"""
-        similar_tags = self.controls.lastfm.search_top_similar_tags(bean.artist, bean.title)
-        parent = FModel("Similar Tags: " + bean.title)
-        update_parent(parent, similar_tags)
-        self.tags.populate_all([parent] + similar_tags)       
+    def show_similar_lyrics(self):
+        if self.info_cache.lyric_bean == self.bean:
+            return None
+        self.info_cache.lyric_bean = self.bean
         
         """lyrics"""
-        text = get_lyrics(bean.artist, bean.title)
-        self.lyrics.set_text(text)
-     
+        text = get_lyrics(self.bean.artist, self.bean.title)
+        lyrics_title = "*** %s - %s *** \n" % (self.bean.artist, self.bean.title)
+        self.lyrics.set_text(text, lyrics_title)
+    
+    def show_similar_tags(self):
+        if self.info_cache.similar_tags_bean == self.bean:
+            return None
+        self.info_cache.similar_tags_bean = self.bean
+        
+        """similar  tags"""
+        similar_tags = self.controls.lastfm.search_top_similar_tags(self.bean.artist, self.bean.title)
+        parent = FModel("Similar Tags: " + self.bean.title)
+        update_parent_for_beans(similar_tags, parent)
+        self.tags.populate_all([parent] + similar_tags)
+    
+    def show_similar_tracks(self):
+        if self.info_cache.similar_tracks_bean == self.bean:
+            return None
+        self.info_cache.similar_tracks_bean = self.bean
+        
+        """similar  songs"""
+        similar_tracks = self.controls.lastfm.search_top_similar_tracks(self.bean.artist, self.bean.title)
+        parent = FModel("Similar Tracks: " + self.bean.title)
+        update_parent_for_beans(similar_tracks, parent)
+        self.tracks.populate_all([parent] + similar_tracks)
+    
+    def show_similar_artists(self):
+        if self.info_cache.similar_artists_bean == self.bean:
+            return None
+        self.info_cache.similar_artists_bean = self.bean
+        
+        """similar  artists"""
+        similar_artists = self.controls.lastfm.search_top_similar_artist(self.bean.artist)
+        parent = FModel("Similar Artists: " + self.bean.artist)
+        update_parent_for_beans(similar_artists, parent)
+        self.artists.populate_all([parent] + similar_artists)
+    
+    def show_best_songs(self):         
+        if self.info_cache.best_songs_bean == self.bean:
+            return None
+        
+        self.info_cache.best_songs_bean = self.bean
+        
+        best_songs = self.controls.lastfm.search_top_tracks(self.bean.artist)
+        parent = FModel("Best Songs: " + self.bean.artist)
+        update_parent_for_beans(best_songs, parent)
+        self.best_songs.populate_all([parent] + best_songs)
+        
     def on_load(self):
-        for i, w in enumerate(self.left_widget):
-            if i > 0:
-                w.hide()
-            
+        self.show_current(self.left_widget[0])
          
     def on_save(self):
         pass    

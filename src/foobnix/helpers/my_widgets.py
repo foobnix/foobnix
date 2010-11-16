@@ -5,6 +5,7 @@ Created on 30 авг. 2010
 @author: ivan
 '''
 import gtk
+from desktopcouch.replication_services.example import is_active
 
 def open_link_in_browser(uri):
     link = gtk.LinkButton(uri)
@@ -42,6 +43,55 @@ def tab_close_button(func=None, arg=None, stock=gtk.STOCK_CLOSE):
         button.connect("button-press-event", lambda * a: func())
     button.show()
     return button
+
+class EventLabel(gtk.EventBox):
+    def __init__(self, text="×", angel=0, func=None, arg=None, func1=None):        
+        gtk.EventBox.__init__(self)
+        self.text = text
+        
+        self.selected = False
+        
+        self.label = gtk.Label()
+        self.set_not_underline()
+        
+        self.label.set_angle(angel)
+        
+        self.connect("enter-notify-event", lambda * a : self.set_underline())
+        self.connect("leave-notify-event", lambda * a: self.set_not_underline())
+        if func and arg:                    
+            self.connect("button-press-event", lambda * a: func(arg))
+        elif func:
+            self.connect("button-press-event", lambda * a: func())
+        
+        self.func1 = func1
+
+        self.add(self.label)
+        self.show_all()
+        
+        
+        
+    def set_underline(self):
+        if self.selected:
+            self.label.set_markup("<b><u>" + self.text + "</u></b>")
+        else:           
+            self.label.set_markup("<u>" + self.text + "</u>")
+    
+    def set_not_underline(self):
+        if self.selected:              
+            self.label.set_markup("<b>" + self.text + "</b>")
+        else:
+            self.label.set_markup(self.text)
+        
+    def set_active(self):
+        self.selected = True
+        self.set_underline()
+    
+    def set_not_active(self):
+        self.selected = False
+        self.set_not_underline()
+    
+    
+        
 
 def notetab_label(func=None, arg=None, angel=0, symbol="×"):
     """label"""

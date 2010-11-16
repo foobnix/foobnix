@@ -66,27 +66,34 @@ class FModel(FTreeModel):
         self.UUID = uuid.uuid4().hex
         self.level = uuid.uuid4().hex
         self.persent = 0
-     
+    
+    def __hash__(self):
+        return self.get_uuid()
+    
+    def __eq__(self, o):
+        return o.__hash__() == self.__hash__()
+
     def update_uuid(self):
         self.UUID = uuid.uuid4().hex
            
     def create_from_text(self, text):
         self.text = text
-        if " - " in text:
-            list = text.split(" - ")
+        if "-" in text:
+            list = text.split("-")
             self.add_artist(list[0].strip()).add_title(list[1].strip())
         return self
     
+    
     def get_artist_from_text(self):
-        if " - " in self.text:
-            list = self.text.split(" - ")
+        if  "-" in self.text:
+            list = self.text.split("-")
             return list[0].strip() 
         else:
             return None;
     
     def get_title_from_text(self):
-        if " - " in self.text:
-            list = self.text.split(" - ")
+        if "-" in self.text:
+            list = self.text.split("-")
             return list[1].strip() 
         else:
             return None;

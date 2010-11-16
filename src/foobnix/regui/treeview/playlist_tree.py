@@ -15,32 +15,39 @@ from foobnix.util.fc import FC
 class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
-
+        #self.set_headers_visible(True)
+        
         """Column icon"""
         icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         icon.set_fixed_width(5)
         icon.set_min_width(5)
+        self.append_column(icon)
+        
         """track number"""
         tracknumber = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.tracknumber[0])
-        #tracknumber.set_sort_indicator(True)
-        #tracknumber.set_sort_order(gtk.SORT_DESCENDING)
-        #tracknumber.set_sort_column_id(2)
+        self.append_column(tracknumber)
 
 
         """conlumt artist title"""
-        description = gtk.TreeViewColumn('Artist - Title', gtk.CellRendererText(), text=self.text[0], font=self.font[0])
-        description.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        #description.set_resizable(True)
+        description = gtk.TreeViewColumn('Track', gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        #description.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         description.set_expand(True)
+        self.append_column(description)
+        
+        
+        """conlumt artist title"""
+        artist = gtk.TreeViewColumn('Artist', gtk.CellRendererText(), text=self.artist[0])
+        artist.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        #self.append_column(artist)
+        
+        """conlumt artist title"""
+        title = gtk.TreeViewColumn('Title', gtk.CellRendererText(), text=self.title[0])
+        title.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        #self.append_column(title)
 
         """time text"""
         time = gtk.TreeViewColumn('Time', gtk.CellRendererText(), text=self.time[0])
-        time.set_fixed_width(5)
-        time.set_min_width(5)
-
-        self.append_column(icon)
-        self.append_column(tracknumber)
-        self.append_column(description)
+        
         self.append_column(time)
 
         self.configure_send_drug()
@@ -71,7 +78,7 @@ class PlaylistTreeControl(CommonTreeControl):
             return bean
     
     def next(self):
-        bean  = self.common_signle_random()       
+        bean = self.common_signle_random()       
         if bean:
             return bean
     
@@ -84,7 +91,7 @@ class PlaylistTreeControl(CommonTreeControl):
         return bean
 
     def prev(self):
-        bean  = self.common_signle_random()       
+        bean = self.common_signle_random()       
         if bean:
             return bean
     

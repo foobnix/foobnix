@@ -29,7 +29,7 @@ class IconBlock(gtk.HBox):
         else:
             self.combobox.set_active(0)
             self.on_change_icon()
-            print "*** WARNING *** : Icon "+filename+" is absent in list of icons"
+            print "*** WARNING *** : Icon " + filename + " is absent in list of icons"
         
         pix_render = gtk.CellRendererPixbuf()
         self.combobox.pack_start(pix_render)        

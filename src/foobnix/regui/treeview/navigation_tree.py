@@ -61,14 +61,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                     LOG.info("News music paths", FC().music_paths)
 
             self.controls.update_music_tree()
-
+            FC().save()
         elif response == gtk.RESPONSE_CANCEL:
             LOG.info('Closed, no files selected')
         chooser.destroy()        
       
     def on_load(self):
         self.controls.load_music_tree()
-        pass
     
     def on_save(self):
         pass

@@ -8,6 +8,8 @@ import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
+from foobnix.util.fc import FC
+from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_NOT_INFO
 class LeftWidgets(FControl, LoadSave, gtk.VBox):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -55,8 +57,7 @@ class PerspectiveButtonControlls(FControl, gtk.HBox):
         
         info = self.custom_button("Info", gtk.STOCK_INFO)
         info.connect("clicked", self.on_change_perspective, controls.info_panel)
-        
-        
+                
        
         
         self.button_list = [musics, radios, virtuals, info]
@@ -73,8 +74,11 @@ class PerspectiveButtonControlls(FControl, gtk.HBox):
         self.controls.virtual.scroll.hide()
         self.controls.info_panel.hide()
         if perspective == self.controls.info_panel:
+            FC().left_perspective = LEFT_PERSPECTIVE_INFO
             self.controls.filter.hide()
+            self.controls.info_panel.update_info_panel()
         else:
+            FC().left_perspective = LEFT_PERSPECTIVE_NOT_INFO
             self.controls.filter.show()
         perspective.show()
                     

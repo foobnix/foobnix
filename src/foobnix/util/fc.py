@@ -10,6 +10,9 @@ import os
 from foobnix.util.singleton import Singleton
 import uuid
 import random
+from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
+    ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
+import thread
 
 def get_random_vk():
     vks = {
@@ -102,13 +105,14 @@ class FC:
         self.change_tray_icon = False
         
 
-        self.all_icons = ["foobnix_icon.svg", "foobnix.png", "foobnix-pause.jpg", "foobnix-stop.jpg", "foobnix-radio.jpg"]
+        self.all_icons = [ICON_FOOBNIX, ICON_FOOBNIX_PLAY, ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO, "other/foobnix-tux.gif"]
                 
-        self.static_icon_entry = "foobnix_icon.svg"
-        self.play_icon_entry = "foobnix.png"
-        self.pause_icon_entry = "foobnix-pause.jpg"
-        self.stop_icon_entry = "foobnix-stop.jpg"
-        self.radio_icon_entry = "foobnix-radio.jpg"
+        self.static_icon_entry = ICON_FOOBNIX
+        
+        self.play_icon_entry = ICON_FOOBNIX_PLAY
+        self.pause_icon_entry = ICON_FOOBNIX_PAUSE
+        self.stop_icon_entry = ICON_FOOBNIX_STOP
+        self.radio_icon_entry = ICON_FOOBNIX_RADIO
                 
         """download manager controls"""
         self.auto_start_donwload = True
@@ -133,12 +137,17 @@ class FC:
         
         self.action_hotkey = {'foobnix --volume-up': '<SUPER>Up', 'foobnix --volume-down': '<SUPER>Down', 'foobnix --show-hide': '<SUPER>a', 'foobnix --prev': '<SUPER>Left', 'foobnix --play': '<SUPER>x', 'foobnix --pause': '<SUPER>z', 'foobnix --next': '<SUPER>Right'}
 
-        
+        self.left_perspective = "info"        
         self = self._load();
+        
+        
 
-    def save(self):
-        FCHelper().save(self)
-
+    def save(self, in_thread=True):
+        if in_thread:
+            thread.start_new_thread(FCHelper().save, (self,))
+        else:
+            FCHelper().save(self)
+        
     def _load(self):
         """restore from file"""
         object = FCHelper().load()

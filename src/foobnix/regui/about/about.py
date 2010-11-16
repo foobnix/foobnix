@@ -8,6 +8,7 @@ Created on Oct 2, 2010
 import gtk
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.helpers.window import ChildTopWindow
+from foobnix.util.const import ICON_FOOBNIX
 
 
 class BaseParentWindow(ChildTopWindow):
@@ -20,7 +21,7 @@ class BaseParentWindow(ChildTopWindow):
         
         
     def get_fobnix_logo(self):
-        return get_foobnix_resourse_path_by_name("foobnix_icon.svg")
+        return get_foobnix_resourse_path_by_name(ICON_FOOBNIX)
 
 class AboutWindow(BaseParentWindow):
     """class About Window to show foobnix information"""

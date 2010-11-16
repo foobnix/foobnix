@@ -125,6 +125,9 @@ class DrugDropTree(gtk.TreeView):
                 result.append(child_row)        
         return result
     
+    def on_drag_drop_finish(self):
+        pass
+    
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
         to_filter_model = to_tree.get_model()
         #to_model = to_filter_model.get_model()
@@ -169,6 +172,8 @@ class DrugDropTree(gtk.TreeView):
                 
             if to_tree.current_view == VIEW_PLAIN:             
                 self.rebuild_as_plain()
+        
+        self.on_drag_drop_finish()
     
     def child_by_recursion(self, row, plain):
         for child in row.iterchildren():
