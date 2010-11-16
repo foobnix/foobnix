@@ -1,4 +1,4 @@
-# ~*~ coding:utf-8 ~*~ #
+# -*- coding: utf-8 -*-
 from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3
 import os
@@ -9,7 +9,8 @@ from foobnix.util.file_utils import file_extenstion
 from foobnix.cue.cue_reader import CueReader
 from foobnix.util.image_util import get_image_by_path
 from mutagen.flac import FLAC
-from foobnix.regui.id3.audio import get_mutagen_audio
+from foobnix.regui.id3.audio import get_mutagen_audio, normilize_text
+from foobnix.util.bean_utils import update_bean_from_normilized_text
 
 def decode_cp866(text):
     try:
@@ -41,6 +42,7 @@ def decode_cp866(text):
         pass
     return text
 
+
 def udpate_id3(bean):
     if bean and bean.path and os.path.isfile(bean.path):
         try:
@@ -67,7 +69,9 @@ def udpate_id3(bean):
                 bean.tracknumber = int(bean.tracknumber)
             except:
                 bean.tracknumber = ""
-
+        
+        bean = update_bean_from_normilized_text(bean)        
+        
         bean.time = normilize_time(duration_sec)
 
     return bean

@@ -68,7 +68,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
       
     def on_load(self):
         self.controls.load_music_tree()
-        pass
     
     def on_save(self):
         pass

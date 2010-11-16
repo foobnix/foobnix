@@ -4,18 +4,11 @@ Created on 24 Apr 2010
 @author: Matik
 '''
 
-from foobnix.model.entity import CommonBean
 from foobnix.thirdparty import pylast
 from foobnix.thirdparty.pylast import WSError
 from foobnix.util import LOG
-from foobnix.util.configuration import FConfiguration
 from foobnix.online.google.translate import translate
 import thread
-import time
-import gtk
-from foobnix.helpers.dialog_entry import show_entry_dialog, \
-    show_login_password_error_dialog
-
 
 API_KEY = FConfiguration().API_KEY
 API_SECRET = FConfiguration().API_SECRET        

@@ -142,14 +142,22 @@ class BaseFoobnixControls(LoadSave):
         LOG.info("Update music tree", FC().music_paths)
         self.tree.clear()
         FC().cache_music_tree_beans = []
-        for path in FC().music_paths:
-            
-            all = get_all_music_by_path(path)
-
-            for bean in all:
-                FC().cache_music_tree_beans.append(bean)
-
-            self.tree.append_all(all)
+        all = []
+        for path in FC().music_paths:            
+            all_in_folder = get_all_music_by_path(path)
+            for bean in all_in_folder:
+                all.append(bean)
+        
+        for bean in all:
+            FC().cache_music_tree_beans.append(bean)
+        
+        if not all:
+            all.append(FModel("Music not found in folder(s):"))
+        
+        for path in FC().music_paths:            
+            all.append(FModel(path).add_is_file(True))
+        
+        self.tree.append_all(all)
 
     def set_visible_search_panel(self, flag):
         self.layout.set_visible_search_panel(flag)
@@ -485,10 +493,11 @@ class BaseFoobnixControls(LoadSave):
         self.virtual.filter_by_file(value)
 
     def quit(self, *a):
+        
         LOG.info("Controls - Quit")
         self.main_window.hide()
-        self.on_save()                
-        FC().save()
+        self.on_save()
+        FC().save()                        
         gtk.main_quit()
 
     def check_version(self):

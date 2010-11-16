@@ -16,7 +16,10 @@ from foobnix.helpers.textarea import TextArea
 from foobnix.thirdparty.lyr import get_lyrics
 import gobject
 from foobnix.helpers.image import ImageBase
-from foobnix.util.bean_utils import update_parent_for_beans
+from foobnix.util.bean_utils import update_parent_for_beans, \
+    update_bean_from_normilized_text
+from foobnix.regui.id3.audio import normilize_text
+from foobnix.util import LOG
 
 class InfoCache():
     def __init__(self):
@@ -36,7 +39,6 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.almum_label.set_line_wrap(True)
         self.almum_label.set_markup("<b></b>")
         self.set_label_widget(self.almum_label)                                
-        #self.set_shadow_type(gtk.SHADOW_)
         
         self.best_songs = SimpleTreeControl("Best Songs", controls)
         self.best_songs.line_title = EventLabel("Best Songs", func=self.show_current, arg=self.best_songs, func1=self.show_best_songs)
@@ -66,7 +68,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         lbox = gtk.VBox(False, 0)
         
         
-        self.left_widget = [self.lyrics, self.artists, self.tracks, self.tags, self.best_songs]
+        self.left_widget = [self.artists, self.tracks, self.tags, self.lyrics, self.best_songs]
         
         for l_widget in self.left_widget:        
             lbox.pack_start(l_widget.line_title)
@@ -139,12 +141,10 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if not self.controls.lastfm.connect():
             return
 
-        if not bean.artist or not bean.title:
-            text_artist = bean.get_artist_from_text()
-            text_title = bean.get_title_from_text()  
-            if text_artist and text_title:
-                bean.artist, bean.title = text_artist, text_title
+        """update bean info form text if possible"""
+        bean = update_bean_from_normilized_text(bean)
         
+                
         if not bean.artist or not bean.title:
             print """Artist and title no difined"""
             return None
