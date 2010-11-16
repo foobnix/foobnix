@@ -277,7 +277,7 @@ class BaseFoobnixControls(LoadSave):
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
                         
-        if sec % 10 == 0:
+        if sec > 10 and sec % 11 == 0:
             self.lastfm.report_now_playting(bean)
             
         if not self.start_time:
@@ -497,7 +497,7 @@ class BaseFoobnixControls(LoadSave):
         LOG.info("Controls - Quit")
         self.main_window.hide()
         self.on_save()
-        FC().save()                        
+        FC().save(False)                        
         gtk.main_quit()
 
     def check_version(self):

@@ -142,8 +142,11 @@ class FC:
         
         
 
-    def save(self):
-        thread.start_new_thread(FCHelper().save, (self,))
+    def save(self, in_thread=True):
+        if in_thread:
+            thread.start_new_thread(FCHelper().save, (self,))
+        else:
+            FCHelper().save(self)
         
     def _load(self):
         """restore from file"""
