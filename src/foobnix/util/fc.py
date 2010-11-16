@@ -131,8 +131,10 @@ class FC:
         
         self.action_hotkey = {'foobnix --volume-up': '<SUPER>Up', 'foobnix --volume-down': '<SUPER>Down', 'foobnix --show-hide': '<SUPER>a', 'foobnix --prev': '<SUPER>Left', 'foobnix --play': '<SUPER>x', 'foobnix --pause': '<SUPER>z', 'foobnix --next': '<SUPER>Right'}
 
-        
+        self.left_perspective = "info"        
         self = self._load();
+        
+        
 
     def save(self):
         FCHelper().save(self)

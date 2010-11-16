@@ -66,7 +66,13 @@ class FModel(FTreeModel):
         self.UUID = uuid.uuid4().hex
         self.level = uuid.uuid4().hex
         self.persent = 0
-     
+    
+    def __hash__(self):
+        return self.get_uuid()
+    
+    def __eq__(self, o):
+        return o.__hash__() == self.__hash__()
+
     def update_uuid(self):
         self.UUID = uuid.uuid4().hex
            

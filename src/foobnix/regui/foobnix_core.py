@@ -24,6 +24,7 @@ from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.eq.eq_controller import EqController
 from foobnix.dm.dm import DM
 from foobnix.regui.controls.movie_area import MovieDrawingArea
+from foobnix.util.singe_thread import SingreThread
 
 class FoobnixCore(BaseFoobnixControls):
 
@@ -38,6 +39,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.seek_bar = SeekProgressBarControls(self)
 
         self.search_progress = SearchProgressBar(self)
+        self.in_thread = SingreThread(self.search_progress)
 
         self.info_panel = InfoPanelWidget(self)
 
