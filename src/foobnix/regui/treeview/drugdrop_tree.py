@@ -239,14 +239,13 @@ class DrugDropTree(gtk.TreeView):
             bean.font = "bold"
             
         bean.visible = True
-        
-        beans = update_id3_wind_filtering([bean])
-        for one in beans:
-            one.update_uuid()    
-            row = self.get_row_from_bean(one)
-            def task():
+        def task():
+            beans = update_id3_wind_filtering([bean])
+            for one in beans:
+                one.update_uuid()    
+                row = self.get_row_from_bean(one)            
                 self.model.append(None, row)
-            gobject.idle_add(task)
+        gobject.idle_add(task)
         
     def tree_append(self, bean):
         def task(bean):

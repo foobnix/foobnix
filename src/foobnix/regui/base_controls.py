@@ -459,11 +459,11 @@ class BaseFoobnixControls(LoadSave):
         self.info_panel.update(bean)
 
     def append_to_new_notebook(self, text, beans):
-        beans = update_id3_wind_filtering(beans)        
+        #beans = update_id3_wind_filtering(beans)        
         self.notetabs.append_tab(text, beans)
 
     def append_to_current_notebook(self, beans):  
-        beans = update_id3_wind_filtering(beans)              
+        #beans = update_id3_wind_filtering(beans)              
         self.notetabs.append(beans)
 
     def next(self):        

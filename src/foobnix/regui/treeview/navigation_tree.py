@@ -11,7 +11,6 @@ from foobnix.helpers.menu import Popup
 from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.treeview.common_tree import CommonTreeControl
-from foobnix.util.bean_utils import update_parent_for_beans
 class NavigationTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)

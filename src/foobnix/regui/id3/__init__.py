@@ -42,6 +42,10 @@ def decode_cp866(text):
         pass
     return text
 
+def udpate_id3_for_beans(beans):
+    for bean in beans:
+        udpate_id3(bean)
+    return beans
 
 def udpate_id3(bean):
     if bean and bean.path and os.path.isfile(bean.path):
@@ -110,9 +114,10 @@ def add_upadte_image_paths(beans):
 
 def update_id3_wind_filtering(beans):
     beans = get_support_music_beans_from_all(beans)
+    beans = udpate_id3_for_beans(beans)
     beans = update_id3_for_cue(beans)
     beans = add_upadte_image_paths(beans)
     result = []
     for bean in beans:
-        result.append(udpate_id3(bean))
+        result.append(bean)
     return result

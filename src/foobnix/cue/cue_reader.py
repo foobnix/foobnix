@@ -11,11 +11,7 @@ from foobnix.util import LOG, file_utils
 import chardet
 import re
 from foobnix.util.image_util import get_image_by_path
-from mutagen.flac import FLAC
-from mutagen.monkeysaudio import MonkeysAudio
-from mutagen.mp3 import MP3 
-from mutagen.wavpack import WavPack
-from mutagen.ogg import OggFileType
+
 from foobnix.regui.id3.audio import get_mutagen_audio
 
 TITLE = "TITLE"
@@ -92,7 +88,7 @@ class CueReader():
         tracks = cue_file.tracks
         for i in xrange(len(tracks)):
             track = tracks[i]
-            if i == len(tracks)-1:
+            if i == len(tracks) - 1:
                 duration = self.get_full_duration(cue_file) - track.get_start_time_sec()
             else:                
                 next_track = tracks[i + 1]
@@ -109,7 +105,6 @@ class CueReader():
         beans = []
         cue = self.parse()
         for i, track  in enumerate(cue.tracks):
-            #bean = CommonBean(name=track.performer + " - " + track.title, path=track.path, type=CommonBean.TYPE_MUSIC_FILE)
             bean = FModel(text=track.performer + " - " + track.title, path=track.path)
             bean.artist = track.performer
             bean.tracknumber = i + 1
@@ -119,8 +114,6 @@ class CueReader():
             bean.duration_sec = track.duration
             bean.time = normilize_time(track.duration)
             bean.is_file = True
-            #bean.parent = cue.performer + " - " + cue.title
-            #bean.image = cue.image
             beans.append(bean)
         
         return beans
