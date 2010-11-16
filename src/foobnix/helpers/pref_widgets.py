@@ -93,6 +93,7 @@ class ChooseDecorator(gtk.HBox):
         gtk.HBox.__init__(self, False, 0)
         self.widget = widget
         self.button = gtk.RadioButton(parent)
+        self.on_toggle()
         self.button.connect("toggled", self.on_toggle)
         box = HBoxDecorator(self.button, self.widget)
         self.pack_start(box, False, True)

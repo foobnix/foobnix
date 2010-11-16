@@ -84,7 +84,7 @@ Playing all imaginations\n
             changeLog.set_text(changelog_text)
         except TypeError, error_message:
             print error_message
-          
+            
         button_credits.connect("clicked", lambda * a: creaditsWindow.show_all())
         button_changelog.connect("clicked", lambda * x: changeLog.show_all())
 
