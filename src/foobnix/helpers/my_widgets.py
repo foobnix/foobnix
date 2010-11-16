@@ -5,7 +5,7 @@ Created on 30 авг. 2010
 @author: ivan
 '''
 import gtk
-from desktopcouch.replication_services.example import is_active
+#from desktopcouch.replication_services.example import is_active
 
 def open_link_in_browser(uri):
     link = gtk.LinkButton(uri)

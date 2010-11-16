@@ -64,7 +64,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.tree = NavigationTreeControl(self)
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
-
+        
         
         """preferences"""
         self.preferences = PreferencesWindow(self)
@@ -77,7 +77,7 @@ class FoobnixCore(BaseFoobnixControls):
 
         """layout panels"""
         self.top_panel = TopWidgets(self)
-
+        
         """layout"""
         self.layout = BaseFoobnixLayout(self)
 
