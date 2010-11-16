@@ -58,7 +58,7 @@ class SearchControls(FControl, gtk.Frame):
         self.entry = gtk.Entry()
         self.entry.connect("key-press-event", self.on_search_key_press)
         
-        self.entry.set_text("Madonna")
+        self.entry.set_text("")
         button = gtk.Button("Search")
         button.connect("clicked", self.on_search)
         
@@ -139,13 +139,4 @@ class SearchControls(FControl, gtk.Frame):
         
         self.buttons = [songs, albums, similars, tags, all, video]
         return h_line_box
-                  
-     
-   
-            
-        
-        
-        
-        
-        
-        
+    

@@ -25,24 +25,29 @@ from foobnix.eq.eq_controller import EqController
 from foobnix.dm.dm import DM
 from foobnix.regui.controls.movie_area import MovieDrawingArea
 from foobnix.util.singe_thread import SingreThread
+from foobnix.helpers.pref_widgets import ModelConstructor
 
 class FoobnixCore(BaseFoobnixControls):
 
     def __init__(self):
         BaseFoobnixControls.__init__(self)
-
+        
         self.media_engine = GStreamerEngine(self)
         """elements"""
         
         self.statusbar = StatusbarControls(self)
+        
         self.volume = VolumeControls(self)
+        
         self.seek_bar = SeekProgressBarControls(self)
-
+        
         self.search_progress = SearchProgressBar(self)
         self.in_thread = SingreThread(self.search_progress)
 
         self.info_panel = InfoPanelWidget(self)
-
+        
+        self.modconst = ModelConstructor()
+        
         self.trayicon = TrayIconControls(self)
 
         self.movie_window = MovieDrawingArea(self)
