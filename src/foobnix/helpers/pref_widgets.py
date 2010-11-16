@@ -62,7 +62,8 @@ class IconBlock(gtk.HBox):
         active_id = self.combobox.get_active()
         icon_name = self.combobox.get_model()[active_id][1]
         self.entry.set_text(icon_name)
-        self.controls.trayicon.on_dynamic_icons(None)
+        #FC().static_tray_icon = True
+        #self.controls.trayicon.on_dynamic_icons(None)
         
     def on_delete(self, *a):
         

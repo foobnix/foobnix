@@ -91,6 +91,7 @@ class TrayIconConfig(ConfigPlugin):
     def on_save(self):
         FC().show_tray_icon = self.tray_icon_button.get_active() 
         FC().static_tray_icon = self.static_tray_icon.button.get_active()
+        if FC().static_tray_icon: self.controls.trayicon.on_dynamic_icons(None)
         FC().system_icons_dinamic = self.icon_controls.button.get_active()
         FC().change_tray_icon = self.change_tray_icon.button.get_active()
                 
