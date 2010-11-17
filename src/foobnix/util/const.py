@@ -53,5 +53,5 @@ ICON_FOOBNIX_PLAY = "foobnix-play.svg"
 ICON_FOOBNIX_PAUSE = "foobnix-pause.svg"
 ICON_FOOBNIX_STOP = "foobnix-stop.svg"
 ICON_FOOBNIX_RADIO = "foobnix-radio.jpg"
-ICON_BLANK_DISK = "blank-disc.jpg"
+ICON_BLANK_DISK = "foobnix-blank-disc.jpg"
       

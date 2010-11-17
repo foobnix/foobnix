@@ -15,6 +15,8 @@ def create_pixbuf_from_url(url, size):
         return pixbuf
 
 def resize_pixbuf(pixbuf, size):
+    if not pixbuf:
+        return None
     if size:
         return pixbuf.scale_simple(size, size, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
     else:
@@ -28,7 +30,7 @@ def create_pixbuf_from_path(path, size):
         return None
     
     if size:
-        return resize_pixbuf(pixbuf,size)
+        return resize_pixbuf(pixbuf, size)
     else:
         return pixbuf
 
