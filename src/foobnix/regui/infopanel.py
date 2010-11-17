@@ -10,7 +10,7 @@ from foobnix.regui.model.signal import FControl
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
-    LEFT_PERSPECTIVE_INFO
+    LEFT_PERSPECTIVE_INFO, ICON_BLANK_DISK
 from foobnix.helpers.my_widgets import EventLabel
 from foobnix.helpers.textarea import TextArea
 from foobnix.thirdparty.lyr import get_lyrics
@@ -62,7 +62,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         """image and similar artists"""
         ibox = gtk.HBox(False, 0)
-        self.image = ImageBase("blank-disc-cut.jpg", FC().info_panel_image_size)
+        self.image = ImageBase(ICON_BLANK_DISK, FC().info_panel_image_size)
         
         
         lbox = gtk.VBox(False, 0)

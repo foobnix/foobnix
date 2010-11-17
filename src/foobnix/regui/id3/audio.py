@@ -11,6 +11,7 @@ from mutagen.wavpack import WavPack
 from mutagen.ogg import OggFileType
 from mutagen.easyid3 import EasyID3
 import re
+from foobnix.util.text_utils import capitilize_query, capitilize_string
 def get_mutagen_audio (path):
     ext = get_file_extenstion(path)
     if ext == ".flac":
@@ -28,8 +29,11 @@ def get_mutagen_audio (path):
 def normilize_text(line):
     """find in extension"""
     dot_index = line.rfind(".")
+    flag = False
+    
     if dot_index >= 0:
         line = line[:dot_index]
+        flag = True
         
     dot_index = line.rfind("(")
     if dot_index >= 0:
@@ -42,5 +46,8 @@ def normilize_text(line):
     """find in prefix"""
     prefix_index = re.search('^([ 0-9.-]*)', line).end()   
     line = line[prefix_index:]
+    
+    if flag:
+        line = capitilize_string(line)
     
     return line.strip()

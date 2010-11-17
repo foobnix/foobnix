@@ -11,6 +11,7 @@ from foobnix.util.fc import FC
 from foobnix.helpers.pref_widgets import FrameDecorator, IconBlock, \
     VBoxDecorator, ChooseDecorator
 from foobnix.helpers.image import ImageBase
+from foobnix.util.const import ICON_BLANK_DISK
 
 class TrayIconConfig(ConfigPlugin):
     
@@ -34,20 +35,20 @@ class TrayIconConfig(ConfigPlugin):
         
 
         """system icon"""
-        self.static_tray_icon = ChooseDecorator(None,FrameDecorator("System Icon Static", controls.trayicon.static_icon))
+        self.static_tray_icon = ChooseDecorator(None, FrameDecorator("System Icon Static", controls.trayicon.static_icon))
         
         """dynamic icons"""
         line = VBoxDecorator(controls.trayicon.play_icon,
-                             controls.trayicon.pause_icon, 
-                             controls.trayicon.stop_icon, 
+                             controls.trayicon.pause_icon,
+                             controls.trayicon.stop_icon,
                              controls.trayicon.radio_icon)
         
 
-        self.icon_controls = ChooseDecorator(self.static_tray_icon.get_radio_button(),FrameDecorator("System Icons Dynamic", line))
+        self.icon_controls = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator("System Icons Dynamic", line))
         
         """disc image icon"""        
-        image = ImageBase("blank-disc.jpg", 30)
-        self.change_tray_icon = ChooseDecorator(self.static_tray_icon.get_radio_button(),FrameDecorator("Disc cover image",image))
+        image = ImageBase(ICON_BLANK_DISK, 30)
+        self.change_tray_icon = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator("Disc cover image", image))
         
         box.pack_start(self.tray_icon_button, False, True, 0)
         box.pack_start(self.close_button, False, True, 0)
@@ -55,9 +56,9 @@ class TrayIconConfig(ConfigPlugin):
         box.pack_start(self.minimize_button, False, True, 0)
         
 
-        box.pack_start(self.static_tray_icon,True, True, 0)
-        box.pack_start(self.icon_controls,True, True, 0)
-        box.pack_start(self.change_tray_icon,False, False, 0)
+        box.pack_start(self.static_tray_icon, True, True, 0)
+        box.pack_start(self.icon_controls, True, True, 0)
+        box.pack_start(self.change_tray_icon, False, False, 0)
         
         self.widget = box
         

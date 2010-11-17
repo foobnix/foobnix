@@ -20,6 +20,7 @@ import os
 import time
 from foobnix.helpers.menu import Popup
 from cgi import escape
+from foobnix.util.const import ICON_BLANK_DISK
 
 class SimilartSongsController(BaseListController):
     
@@ -137,7 +138,7 @@ class InformationController():
     def set_no_image_album(self):
         
       
-        image_name = "blank-disc-cut.jpg"
+        image_name = ICON_BLANK_DISK
         
         try:
             pix = gtk.gdk.pixbuf_new_from_file("/usr/local/share/pixmaps/" + image_name) #@UndefinedVariable
@@ -323,9 +324,9 @@ class InformationController():
     def update_links(self, song):
         """set urls"""
         """TODO TypeError: cannot concatenate 'str' and 'NoneType' objects """
-        self.lastfm_url.set_uri("http://www.lastfm.ru/search?q=" + song.getArtist().replace('&','%26') + "&type=artist")
-        self.wiki_linkbutton.set_uri("http://en.wikipedia.org/w/index.php?search=" + song.getArtist().replace('&','%26'))
-        self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query=" + song.getArtist().replace('&','%26'))
+        self.lastfm_url.set_uri("http://www.lastfm.ru/search?q=" + song.getArtist().replace('&', '%26') + "&type=artist")
+        self.wiki_linkbutton.set_uri("http://en.wikipedia.org/w/index.php?search=" + song.getArtist().replace('&', '%26'))
+        self.mb_linkbutton.set_uri("http://musicbrainz.org/search/textsearch.html?type=artist&query=" + song.getArtist().replace('&', '%26'))
     
     def update_info_panel(self, song, track, album):
         self.similar_songs_cntr.parent = song.getArtist() + " - " + song.getTitle()
