@@ -4,4 +4,4 @@ if [ "$(whoami)" != "root" ]; then
 	exit 1
 fi
 
-python setup.py install
+sudo make install

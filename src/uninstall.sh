@@ -4,6 +4,4 @@ if [ "$(whoami)" != "root" ]; then
 	exit 1
 fi
 
-python setup.py install --record files.txt
-cat files.txt | xargs rm -rf
-rm files.txt
+sudo make uninstall

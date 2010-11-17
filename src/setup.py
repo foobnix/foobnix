@@ -67,7 +67,7 @@ versionfile.close()
 
 setup(name='foobnix',
         version=VERSION,
-        description='GTK+ client for the Music Player Daemon (MPD).',
+        description='Foobnix GTK+ music player',
         author='Ivan Ivanenko',
         author_email='ivan.ivanenko@gmail.com',
         url='www.foobnix.com',
@@ -112,17 +112,17 @@ setup(name='foobnix',
         scripts=['foobnix/foobnix'],
         data_files=[('share/foobnix', ['README']),
                     (FOOBNIX_TMP, ['version']),
-                    ('/usr/share/applications', ['foobnix.desktop']),
-                    ('/usr/share/pixmaps/other', glob.glob('foobnix/pixmaps/other/*')),
-                    ('/usr/share/pixmaps', glob.glob('foobnix/pixmaps/*.png')),
-                    ('/usr/share/pixmaps', glob.glob('foobnix/pixmaps/*.jpg')),
-                    ('/usr/share/pixmaps', glob.glob('foobnix/pixmaps/*.gif')),
-                    ('/usr/share/pixmaps', glob.glob('foobnix/pixmaps/*.svg')),
+                    ('share/applications', ['foobnix.desktop']),
+                    ('share/pixmaps/other', glob.glob('foobnix/pixmaps/other/*')),
+                    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.png')),
+                    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.jpg')),
+                    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.gif')),
+                    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.svg')),
                     (FOOBNIX_TMP_RADIO, glob.glob('radio/*')),
                     ('share/man/man1', ['foobnix.1']),
-                    ('/usr/share/locale/uk/LC_MESSAGES', ['mo/uk/foobnix.mo']),
-                    ('/usr/share/locale/he/LC_MESSAGES', ['mo/he/foobnix.mo']),
-                    ('/usr/share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo'])
+                    ('share/locale/uk/LC_MESSAGES', ['mo/uk/foobnix.mo']),
+                    ('share/locale/he/LC_MESSAGES', ['mo/he/foobnix.mo']),
+                    ('share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo'])
                     ]
         )
 # Cleanup (remove /build, /mo, and *.pyc files:
