@@ -206,16 +206,6 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
         gobject.idle_add(task)
         
         
-    def set_play_icon_to_bean(self, bean):
-        def task():
-            for row in self.model:
-                if row[self.UUID[0]] == bean.UUID:
-                    row[self.play_icon[0]] = gtk.STOCK_GO_FORWARD
-                    self.active_UUID = bean.UUID                
-                else:
-                    row[self.play_icon[0]] = None
-        gobject.idle_add(task)
-        
     def _get_bean_by_path(self, path):
         model = self.model
         path = self.filter_model.convert_path_to_child_path(path)
@@ -241,7 +231,17 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
                 return self.get_bean_from_row(row)
                         
         return None
-        
+    
+    def set_play_icon_to_bean(self, bean):
+        def task():
+            for row in self.model:
+                if row[self.UUID[0]] == bean.UUID:
+                    row[self.play_icon[0]] = gtk.STOCK_GO_FORWARD
+                    self.active_UUID = bean.UUID                
+                else:
+                    row[self.play_icon[0]] = None
+        #gobject.idle_add(task)
+        task()
 
     def get_next_bean_by_UUID(self, repeat_all=False):
         UUID = self.active_UUID

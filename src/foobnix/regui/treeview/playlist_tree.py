@@ -88,6 +88,9 @@ class PlaylistTreeControl(CommonTreeControl):
             return
         
         self.set_play_icon_to_bean(bean)
+        
+        LOG.debug("Next bean", bean, bean.text)
+        
         return bean
 
     def prev(self):

@@ -10,13 +10,11 @@ from foobnix.util import LOG
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel
 from foobnix.regui.service.lastfm_service import LastFmService
-from foobnix.util.singe_thread import SingreThread
 from foobnix.regui.service.vk_service import VKService
 from foobnix.util.plsparser import get_radio_source
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link
 from foobnix.regui.service.music_service import get_all_music_by_path
-from foobnix.regui.id3 import update_id3_wind_filtering
 import os
 import time
 from foobnix.regui.service.google_service import google_search_resutls
@@ -24,7 +22,6 @@ from foobnix.util.file_utils import get_file_extenstion
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 import urllib2
 from foobnix.util.configuration import VERSION
-import thread
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
@@ -228,6 +225,7 @@ class BaseFoobnixControls(LoadSave):
         self.media_engine.state_play_pause()
 
     def fill_bean_from_vk(self, bean):
+        
         vk = self.vk.find_one_track(bean.get_display_name())
         if vk:
             bean.path = vk.path
@@ -248,6 +246,8 @@ class BaseFoobnixControls(LoadSave):
         if not bean.path:
             if not self.fill_bean_from_vk(bean):
                 if self.count_errors < 4:
+                    LOG.debug("Error happen", self.count_errors)
+                    time.sleep(0.5)
                     self.next()
                 self.count_errors += 1
         else:

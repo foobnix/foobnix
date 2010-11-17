@@ -18,7 +18,6 @@ install:
 clean:
 	python setup.py clean
 	rm -rf ./build
-	rm msgfmt.pyc
 	find . -name *.pyc -exec rm {} \;
 
 uninstall:

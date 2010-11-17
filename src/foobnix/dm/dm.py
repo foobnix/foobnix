@@ -7,8 +7,8 @@ import gtk
 import threading
 from foobnix.regui.treeview.dm_tree import DownloadManagerTreeControl
 from foobnix.util.const import DOWNLOAD_STATUS_INACTIVE, DOWNLOAD_STATUS_ACTIVE, \
-    DOWNLOAD_STATUS_COMPLETED, DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_ALL,\
-    DOWNLOAD_STATUS_STOP
+    DOWNLOAD_STATUS_COMPLETED, DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_ALL, \
+    DOWNLOAD_STATUS_STOP, DOWNLOAD_STATUS_ERROR
 from foobnix.regui.treeview.dm_nav_tree import DMNavigationTreeControl
 import thread
 import time
@@ -17,9 +17,10 @@ from foobnix.dm.dm_dowloader import Dowloader
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.helpers.toolbar import MyToolbar
 from foobnix.preferences.configs import CONFIG_DOWNLOAD_MANAGER
+from foobnix.util import LOG
 
 class DMControls(MyToolbar):
-    def __init__(self,controls, dm_tree): 
+    def __init__(self, controls, dm_tree): 
         MyToolbar.__init__(self)   
         
         self.add_button("Preferences", gtk.STOCK_PREFERENCES, controls.preferences.show, CONFIG_DOWNLOAD_MANAGER)
@@ -27,7 +28,7 @@ class DMControls(MyToolbar):
         self.add_button("Start", gtk.STOCK_MEDIA_PLAY, dm_tree.update_status_for_selected, DOWNLOAD_STATUS_ACTIVE)
         self.add_button("Stop", gtk.STOCK_MEDIA_PAUSE, dm_tree.update_status_for_selected, DOWNLOAD_STATUS_STOP)
         self.add_separator()   
-        self.add_button("Start All", gtk.STOCK_MEDIA_FORWARD,  dm_tree.update_status_for_all, DOWNLOAD_STATUS_ACTIVE)
+        self.add_button("Start All", gtk.STOCK_MEDIA_FORWARD, dm_tree.update_status_for_all, DOWNLOAD_STATUS_ACTIVE)
         self.add_button("Stop All", gtk.STOCK_STOP, dm_tree.update_status_for_all, DOWNLOAD_STATUS_STOP)
         self.add_separator()   
         self.add_button("Delete", gtk.STOCK_DELETE, dm_tree.delete_all_selected, None)
@@ -68,7 +69,7 @@ class DM(ChildTopWindow):
         
         playback = DMControls(controls, self.dm_list)
         
-        vbox.pack_start(playback, False,True)
+        vbox.pack_start(playback, False, True)
         vbox.pack_start(paned, True, True)
                 
         self.add(vbox)
@@ -119,6 +120,13 @@ class DM(ChildTopWindow):
             if bean:
                 if not bean.path:                 
                     vk = self.controls.vk.find_one_track(bean.get_display_name())
+                    if not vk:
+                        bean.status = DOWNLOAD_STATUS_ERROR
+                        dm_list.update_bean_info(bean)
+                        LOG.debug("Source for song not found", bean.text)
+                        semaphore.release()
+                        continue
+                        
                     bean.path = vk.path
                          
                 def notify_finish():
