@@ -37,7 +37,10 @@ class AboutWindow(BaseParentWindow):
         """Content Begin"""
         table = gtk.Table(3, 3, False)
         try:
-            image = gtk.image_new_from_file(self.get_fobnix_logo())
+            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(self.get_fobnix_logo(), 100, 100)
+            image = gtk.image_new_from_pixbuf(pixbuf)
+            #image = gtk.image_new_from_file(self.get_fobnix_logo())
+            #image.set_pixel_size(10)
         except TypeError:
             image = gtk.image_new_from_stock(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_INVALID)
         table.attach(image, 0, 3, 0, 1)
@@ -85,7 +88,7 @@ Playing all imaginations\n
         changeLog = WindowWithBuffer("Change LOG")
         
         try:
-            changelog_text = open(get_foobnix_resourse_path_by_name("CHANGE1LOG"), 'r').read()
+            changelog_text = open(get_foobnix_resourse_path_by_name("CHANGELOG"), 'r').read()
             changeLog.set_text(changelog_text)
         except TypeError, error_message:
             print error_message
