@@ -326,7 +326,7 @@ class BaseFoobnixControls(LoadSave):
         self.notetabs.append_tab(vk_ulr, all)
     
     def search_all_videos(self, query):
-        def inline(query):
+        def inline():
             results = self.vk.find_video_by_query(query)
             all = []
             p_bean = FModel(query).add_font("bold")
@@ -340,7 +340,7 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
                 
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
+        inline()
     
     def search_all_tracks(self, query):
         def inline(query):

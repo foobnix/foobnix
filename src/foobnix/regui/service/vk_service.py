@@ -195,6 +195,11 @@ class VKService:
         page = self.get_page(query, "video")
         
         beans = []
+        file = open("out.txt", "w")
+        file.write(page)
+        file.close()
+        #page = self.to_good_chars(page)
+        page = page.replace("&quot;", '"')
         urls = re.findall(ur'showVideoBoxCommon([{}(\\"\a-z:0-9,/);.% _A-Zа-яА-Я+-]*)' , page, re.UNICODE)
         for url in urls:
             res = {}
@@ -210,7 +215,7 @@ class VKService:
                     value = value.replace('+', ' ')
                     print key, value
                     res[key] = value
-                
+            
             host = res["host"]
                 
             if "http://" in host:
@@ -336,10 +341,5 @@ class VKService:
 #vk = VKService()
 #list = vk.find_video_by_query("Мадона")
 #for i, bean in enumerate(list):
-#    print i, bean.path, bean.text
-    
-
-#a = "%D0%9C%D0%90%D0%94%D0%9E%D0%9D%D0%9D%D0%90%21%21%21%21%21"
-#print urllib.unquote(a)
-#print a.encode("ASCII")
+#    print i, bean.path, bean.text 
 
