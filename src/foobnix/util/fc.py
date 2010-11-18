@@ -111,7 +111,7 @@ class FC:
         self.change_tray_icon = False
         
 
-        self.all_icons = [ICON_FOOBNIX, ICON_FOOBNIX_PLAY, ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO, "other/foobnix-tux.gif"]
+        self.all_icons = [ICON_FOOBNIX, ICON_FOOBNIX_PLAY, ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO, "standart_icons/foobnix-tux.gif"]
                 
         self.static_icon_entry = ICON_FOOBNIX
         

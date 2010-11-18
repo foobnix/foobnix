@@ -140,8 +140,8 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         try:
             path = get_foobnix_resourse_path_by_name(icon_name)
             self.controls.trayicon.set_image_from_path(path)
-        except TypeError, error_message:
-            print error_message
+        except TypeError:
+            pass
         
     def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip):
         artist = "Artist"

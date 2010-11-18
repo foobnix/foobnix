@@ -16,8 +16,10 @@ class BaseParentWindow(ChildTopWindow):
         ChildTopWindow.__init__(self, title)
 
         """ get foobnix icon path"""
-        self.set_icon_from_file (self.get_fobnix_logo())
-        gtk.window_set_default_icon_from_file (self.get_fobnix_logo())
+        try:
+            self.set_icon_from_file (self.get_fobnix_logo())
+            gtk.window_set_default_icon_from_file (self.get_fobnix_logo())
+        except TypeError: pass
         
         
     def get_fobnix_logo(self):
@@ -34,8 +36,13 @@ class AboutWindow(BaseParentWindow):
 
         """Content Begin"""
         table = gtk.Table(3, 3, False)
-
-        image = gtk.image_new_from_file(self.get_fobnix_logo());
+        try:
+            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(self.get_fobnix_logo(), 100, 100)
+            image = gtk.image_new_from_pixbuf(pixbuf)
+            #image = gtk.image_new_from_file(self.get_fobnix_logo())
+            #image.set_pixel_size(10)
+        except TypeError:
+            image = gtk.image_new_from_stock(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_INVALID)
         table.attach(image, 0, 3, 0, 1)
 
         label = gtk.Label("Foobnix")
