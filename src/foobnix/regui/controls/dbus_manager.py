@@ -6,11 +6,8 @@ Created on 28 сент. 2010
 '''
 import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
-from foobnix.util.configuration import get_version
 from foobnix.regui.model.signal import FControl
-import os
-from foobnix.util.file_utils import get_file_extenstion
-from foobnix.util.fc import FC
+from foobnix.version import FOOBNIX_VERSION
 
 DBusGMainLoop(set_as_default=True)
 
@@ -131,7 +128,7 @@ class DBusManager(dbus.service.Object, FControl):
 
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='s')
     def Identity(self):
-        return "foobnix %s" % get_version()
+        return "foobnix %s" % FOOBNIX_VERSION
 
     @dbus.service.method (DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='(qq)')
     def MprisVersion (self):

@@ -21,7 +21,6 @@ from foobnix.regui.service.google_service import google_search_resutls
 from foobnix.util.file_utils import get_file_extenstion
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 import urllib2
-from foobnix.util.configuration import VERSION
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
