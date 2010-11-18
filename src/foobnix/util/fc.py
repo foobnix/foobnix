@@ -14,6 +14,12 @@ from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
 import thread
 
+CONFIG_DIR = os.path.expanduser("~") + "/.config/foobnix/"
+if not os.path.exists(CONFIG_DIR):
+    os.mkdir(CONFIG_DIR)
+CONFIG_FILE = CONFIG_DIR + "foobnix.pkl"
+
+
 def get_random_vk():
     vks = {
        "c891888@bofthew.com":"c891888",
@@ -168,9 +174,6 @@ class FC:
 
     def delete(self):
         FCHelper().delete()
-
-CONFIG_FILE = "/tmp/foobnix.pkl"
-
 
 class FCHelper():
     def __init__(self):
