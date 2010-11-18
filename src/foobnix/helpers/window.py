@@ -16,7 +16,9 @@ class ChildTopWindow(gtk.Window):
         self.set_position(gtk.WIN_POS_CENTER)
         self.set_resizable(False)
         self.set_border_width(5)
-        self.set_icon_from_file (self.get_fobnix_logo())
+        try:
+            self.set_icon_from_file (self.get_fobnix_logo())
+        except TypeError: pass
         if width and height:
             self.set_size_request(width, height)
         self.connect("delete-event", self.hide_window)
