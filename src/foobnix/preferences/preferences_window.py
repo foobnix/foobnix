@@ -41,11 +41,11 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.configs.append(NotificationConfig(controls))
         self.configs.append(HotKeysConfig(controls))
         
-
+        
         self.label = None
 
         mainVBox = gtk.VBox(False, 0)
-
+        
         ChildTopWindow.__init__(self, _("Preferences"), 900, 500)
         
 
@@ -80,7 +80,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.add(mainVBox)
         self.on_load()
         
-    
+            
     def show(self, current=CONFIG_MUSIC_LIBRARY):
         self.show_all()
         self.populate_config_category(current)
@@ -93,8 +93,13 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         for plugin in self.configs:
             plugin.on_save()
         FC().save()
+        self.hide_window()
+                
+    def hide_window(self, *a):
         self.hide()
-
+        self.navigation.set_cursor_on_cell(0)
+        return True
+        
     def populate_config_category(self, name):
         for plugin in self.configs:
             if plugin.name == name:
@@ -120,9 +125,9 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
         button_cancel = gtk.Button(_("Cancel"))
         button_cancel.set_size_request(100, -1)
-        button_cancel.connect("clicked", lambda * a:self.hide())
+        button_cancel.connect("clicked", self.hide_window)
         button_cancel.show()
-
+        
 
         empty = gtk.Label("")
         empty.show()
