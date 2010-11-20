@@ -12,7 +12,7 @@ from foobnix.radio.radios import RadioFolder
 from foobnix.regui.model import FModel
 from foobnix.helpers.dialog_entry import one_line_dialog, two_line_dialog
 from foobnix.helpers.menu import Popup
-from foobnix.util.const import FTYPE_RADIO
+from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
 class RadioTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
@@ -27,6 +27,9 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
         self.configure_send_drug()
 
         self.set_type_tree()
+    
+    def activate_perspective(self):
+        FC().left_perspective = LEFT_PERSPECTIVE_RADIO
     
     def on_button_press(self, w, e):
         if is_double_left_click(e):

@@ -11,7 +11,11 @@ from foobnix.helpers.menu import Popup
 from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.treeview.common_tree import CommonTreeControl
-class NavigationTreeControl(CommonTreeControl, LoadSave):
+from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
+from foobnix.regui.perspective import Perspective
+    
+    
+class NavigationTreeControl(CommonTreeControl, LoadSave, Perspective):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
         
@@ -23,6 +27,9 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.configure_send_drug()
         
         self.set_type_tree()
+    
+    def activate_perspective(self):
+        FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
     
     def on_button_press(self, w, e):
         if is_double_left_click(e):

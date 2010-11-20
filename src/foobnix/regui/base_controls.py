@@ -32,7 +32,7 @@ class BaseFoobnixControls(LoadSave):
         self.count_errors = 0
         self.is_scrobled = False
         self.start_time = None
-        
+    
     def check_for_media(self, args):         
         dirs = []
         files = []

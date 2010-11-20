@@ -9,8 +9,10 @@ from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.util import const
-from foobnix.util.key_utils import is_key
+from foobnix.util.key_utils import is_key, is_key_alt
 from foobnix.version import FOOBNIX_VERSION
+from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION, \
+    LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_VIRTUAL, LEFT_PERSPECTIVE_INFO
 class MainWindow(gtk.Window, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -27,8 +29,16 @@ class MainWindow(gtk.Window, FControl, LoadSave):
     def on_key_press(self, w, e):
         if is_key(e, 'Escape'):
             self.hide_window()
-            
-    
+        elif is_key_alt(e) and is_key(e, "1"):
+            self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_NAVIGATION)
+        elif is_key_alt(e) and is_key(e, "2"):
+            self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_RADIO)
+        elif is_key_alt(e) and is_key(e, "3"):
+            self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_VIRTUAL)
+        elif is_key_alt(e) and is_key(e, "4"):
+            self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_INFO)
+        
+                    
     def on_configure_event(self, w, e):
         FC().main_window_size = [e.x, e.y, e.width, e.height]
         

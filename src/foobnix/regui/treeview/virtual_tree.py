@@ -12,6 +12,7 @@ from foobnix.regui.model import FModel
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.fc import FC
 from foobnix.util.key_utils import KEY_DELETE, is_key
+from foobnix.util.const import LEFT_PERSPECTIVE_VIRTUAL
 class VirtualTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
@@ -27,6 +28,9 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         
         self.set_type_tree()
    
+    def activate_perspective(self):
+   
+        FC().left_perspective = LEFT_PERSPECTIVE_VIRTUAL
     def on_key_release(self, w, e):
         if is_key(e, KEY_DELETE):
             self.delete_playlist()

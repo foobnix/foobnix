@@ -95,6 +95,9 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.bean = None
         self.info_cache = InfoCache()
     
+    def activate_perspective(self):
+        FC().left_perspective = LEFT_PERSPECTIVE_INFO
+    
     def show_current(self, widget):
         for w in self.left_widget:
             w.scroll.hide()

@@ -5,8 +5,6 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
-from foobnix.regui.top import TopWidgets
-from foobnix.regui.left import LeftWidgets
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
@@ -38,11 +36,9 @@ class BaseFoobnixLayout(LoadSave, FControl):
         center_box.pack_start(controls.searchPanel, False, False)
         center_box.pack_start(bbox, True, True)
         
-        self.left = LeftWidgets(controls)
-        
         self.hpaned_left = gtk.HPaned()     
         
-        self.hpaned_left.pack1(child=self.left, resize=True, shrink=True)
+        self.hpaned_left.pack1(child=controls.perspective, resize=True, shrink=True)
         self.hpaned_left.pack2(child=center_box, resize=True, shrink=True)
     
         self.hpaned_left.show_all()

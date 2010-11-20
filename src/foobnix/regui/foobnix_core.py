@@ -26,6 +26,7 @@ from foobnix.dm.dm import DM
 from foobnix.regui.controls.movie_area import MovieDrawingArea
 from foobnix.util.singe_thread import SingreThread
 from foobnix.helpers.pref_widgets import ModelConstructor
+from foobnix.regui.perspectives import PerspectiveControls
 
 class FoobnixCore(BaseFoobnixControls):
 
@@ -48,6 +49,8 @@ class FoobnixCore(BaseFoobnixControls):
         
         self.modconst = ModelConstructor()
         
+        
+        
         self.movie_window = MovieDrawingArea(self)
 
         self.searchPanel = SearchControls(self)
@@ -65,6 +68,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
         
+        self.perspective = PerspectiveControls(self)
         
         """preferences"""
         self.preferences = PreferencesWindow(self)
