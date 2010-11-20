@@ -30,7 +30,7 @@ from foobnix.regui.perspectives import PerspectiveControls
 
 
 class FoobnixCore(BaseFoobnixControls):
-    def __init__(self):
+    def __init__(self, DEBUG=False):
         BaseFoobnixControls.__init__(self)
         
         self.media_engine = GStreamerEngine(self)
@@ -86,7 +86,13 @@ class FoobnixCore(BaseFoobnixControls):
         self.layout = BaseFoobnixLayout(self)
 
         """D-Bus"""
-        self.dbus = DBusManager(self)
+        if DEBUG:
+            self.dbus = DBusManager(self)
+        else:
+            class FakeDbus():
+                def parse_arguments(self, *a):
+                    pass
+            self.dbus = FakeDbus()
         
         self.on_load()       
         

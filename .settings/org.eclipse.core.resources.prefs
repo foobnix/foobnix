@@ -1,4 +1,4 @@
-#Sat Nov 20 17:09:43 EET 2010
+#Sat Nov 20 22:45:55 EET 2010
 eclipse.preferences.version=1
 encoding//src/foobnix/helpers/dialog_entry.py=utf-8
 encoding//src/foobnix/helpers/my_widgets.py=utf-8
@@ -18,6 +18,7 @@ encoding//src/foobnix/regui/controls/dbus_manager.py=utf-8
 encoding//src/foobnix/regui/controls/filter.py=utf-8
 encoding//src/foobnix/regui/controls/seekbar.py=utf-8
 encoding//src/foobnix/regui/controls/tray_icon.py=utf-8
+encoding//src/foobnix/regui/controls/volume.py=utf-8
 encoding//src/foobnix/regui/engine/gstreamer.py=utf-8
 encoding//src/foobnix/regui/foobnix_core.py=utf-8
 encoding//src/foobnix/regui/id3/__init__.py=utf-8
@@ -38,3 +39,5 @@ encoding//src/foobnix/util/dbus_utils.py=utf-8
 encoding//src/foobnix/util/fc.py=utf-8
 encoding//src/foobnix/util/image_util.py=utf-8
 encoding//src/foobnix/util/singe_thread.py=utf-8
+encoding//src/test/all.py=utf-8
+encoding//src/test/test_core.py=utf-8

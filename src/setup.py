@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import os, glob
-from distutils.core import setup
 import shutil
+from distutils.core import setup, Command
+from test.all import run_all_tests
 
 VERSION = "0.2.2"
 RELEASE = "alpha_1"
@@ -25,6 +26,21 @@ FOOBNIX_RELEASE = "%s"
 version.close()
 
 shutil.copyfile("foobnix.py", "foobnix/foobnix")
+
+
+class test_cmd(Command):
+    description = "run automated tests"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):        
+        if not run_all_tests():
+            raise SystemExit("Test failures are listed above.")
 
 setup(name='foobnix',
         version=VERSION,
@@ -63,6 +79,7 @@ setup(name='foobnix',
                 "foobnix.util",
                 ],
         scripts=['foobnix/foobnix'],
+        cmdclass={"test": test_cmd},
         data_files=[('share/foobnix', ['README']),
                     ('share/applications', ['foobnix.desktop']),
                     ('share/pixmaps/other', glob.glob('foobnix/pixmaps/other/*')),
@@ -79,5 +96,7 @@ setup(name='foobnix',
         )
 
 os.remove("foobnix/foobnix")
-shutil.rmtree("mo")
-shutil.rmtree("build")
+if os.path.exists("mo"):
+    shutil.rmtree("mo")
+if os.path.exists("build"):
+    shutil.rmtree("build")

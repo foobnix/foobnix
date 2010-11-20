@@ -6,6 +6,7 @@ PREFIX ?= /usr/local
 DESTDIR ?= ./
 
 all:
+	python setup.py test
 	python setup.py build
 
 tarball:
@@ -13,6 +14,7 @@ tarball:
 	mv dist/foobnix-*.tar.gz $(DESTDIR)
 
 install:
+	python setup.py test
 	python setup.py install --prefix=$(PREFIX)
 
 clean:
