@@ -1,0 +1,14 @@
+./foobnix/cue/foobnix.py
+./foobnix/cue/setup.py
+./foobnix/dm/foobnix.py
+./foobnix/dm/setup.py
+./foobnix/eq/foobnix.py
+./foobnix/eq/setup.py
+./foobnix/helpers/foobnix.py
+./foobnix/helpers/setup.py
+./foobnix/requi/foobnix.py
+./foobnix/requi/setup.py
+./foobnix/thirdparty/foobnix.py
+./foobnix/thirdparty/setup.py
+./foobnix/util/foobnix.py
+./foobnix/util/setup.py
