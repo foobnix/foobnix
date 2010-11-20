@@ -152,18 +152,18 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         
         def split_string(str, length):
             i = length - 1
-            splitter = None
+            separator = None
             while i > -1:
-                for c in (" " , "-" , "," , "/" , "_"):
-                    if str[i] == c:
-                        splitter = str[i]
+                for simbol in (" " , "-" , "," , "/" , "_"):
+                    if str[i] == simbol:
+                        separator = str[i]
                         break
-                if not splitter:
+                if not separator:
                     i -= 1
                 else: break    
-            if not splitter:
-                splitter = str[length - 1]
-            split_index = str.rfind(splitter , 0, 39)
+            if not separator:
+                separator = str[length - 1]
+            split_index = str.rfind(separator , 0, length - 1)
             substr1 = str[: split_index]
             substr2 = str[(split_index + 1) :]
             if len(substr2) > length:
