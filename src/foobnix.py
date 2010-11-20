@@ -14,7 +14,7 @@ init_time = time.time()
 
 iface = foobnixDBusInterface()
 
-if True or not iface:
+if not iface:
     print "start server"
 
     from foobnix.regui.foobnix_core import FoobnixCore
