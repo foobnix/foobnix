@@ -1,0 +1,3 @@
+
+FOOBNIX_VERSION = "0.2.2-alpha_1"
+FOOBNIX_RELEASE = "alpha_1"

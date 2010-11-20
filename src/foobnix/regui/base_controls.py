@@ -21,7 +21,8 @@ from foobnix.regui.service.google_service import google_search_resutls
 from foobnix.util.file_utils import get_file_extenstion
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 import urllib2
-from foobnix.util.configuration import VERSION
+from foobnix.version import FOOBNIX_VERSION
+import thread
 
 class BaseFoobnixControls(LoadSave):
     def __init__(self):
@@ -325,7 +326,7 @@ class BaseFoobnixControls(LoadSave):
         self.notetabs.append_tab(vk_ulr, all)
     
     def search_all_videos(self, query):
-        def inline(query):
+        def inline():
             results = self.vk.find_video_by_query(query)
             all = []
             p_bean = FModel(query).add_font("bold")
@@ -339,7 +340,7 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
                 
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
+        inline()
     
     def search_all_tracks(self, query):
         def inline(query):
@@ -502,11 +503,11 @@ class BaseFoobnixControls(LoadSave):
 
     def check_version(self):
         uuid = FC().uuid
-        current_version = VERSION        
+        current_version = FOOBNIX_VERSION        
         try:
             from socket import gethostname
-            #f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname()+"&version="+current_version)
-            f = urllib2.urlopen("http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version)
+            f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname() + "&version=" + current_version)
+            #f = urllib2.urlopen("http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version)
         except Exception, e:
             LOG.error("Check version error", e)
             return None
@@ -526,7 +527,7 @@ class BaseFoobnixControls(LoadSave):
                 LOG.debug("NOT LOAD", self.__dict__[element])
         self.main_window.show()
         self.movie_window.hide_all()
-        #thread.start_new_thread(self.check_version, ())
+        thread.start_new_thread(self.check_version, ())
         self.info_panel.hide()
 
     def on_save(self):

@@ -171,6 +171,30 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
             str = substr1 + "\n" + substr2
             return str
         
+        def split_string(str, length):
+            i = length - 1
+            splitter = None
+            while i > -1:
+                for c in (" " , "-" , "," , "/" , "_"):
+                    if str[i] == c:
+                        splitter = str[i]
+                        break
+                if not splitter:
+                    i -= 1
+                else: break    
+            if not splitter:
+                splitter = str[length - 1]
+            split_index = str.rfind(splitter , 0, 39)
+            substr1 = str[: split_index]
+            substr2 = str[(split_index + 1) :]
+            if len(substr2) > length:
+                substr2 = split_string(substr2, length)
+            str = substr1 + "\n" + substr2
+            return str
+        
+        max_str_len = 40
+        if len(title) > max_str_len:
+            title = split_string(title, max_str_len)
         max_str_len = 40
         if len(title) > max_str_len:
             title = split_string(title, max_str_len)
