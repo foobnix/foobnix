@@ -55,4 +55,4 @@ def load_urls_name_page():
                 genres.append(genre)
             
     file.close();
-load_urls_name_page()   
+#load_urls_name_page()   

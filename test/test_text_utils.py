@@ -9,6 +9,7 @@ class TestCapitalizeFunctions(unittest.TestCase):
         
     def test_capitilize(self):
         self.assertEquals(u"Madonna Music", capitilize_string("MaDoNna MUSIC"))
+        self.assertEquals(u"Madonna", capitilize_string("MaDoNna"))
 
 class TestCapitalizeQueryFunctions(unittest.TestCase):
     def test_capitilize_None(self):
@@ -21,6 +22,7 @@ class TestCapitalizeQueryFunctions(unittest.TestCase):
     def test_capitilize_sring(self):
         self.assertEquals(u"Ddt", capitilize_query("ddt"))
         self.assertEquals(u"DDT", capitilize_query("DDT"))
+        self.assertEquals(u"DDT Music", capitilize_query("DDT music"))
 
 class TestSplitterFunctions(unittest.TestCase):
     def setUp(self):

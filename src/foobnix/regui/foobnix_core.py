@@ -28,8 +28,8 @@ from foobnix.util.singe_thread import SingreThread
 from foobnix.helpers.pref_widgets import ModelConstructor
 from foobnix.regui.perspectives import PerspectiveControls
 
-class FoobnixCore(BaseFoobnixControls):
 
+class FoobnixCore(BaseFoobnixControls):
     def __init__(self):
         BaseFoobnixControls.__init__(self)
         

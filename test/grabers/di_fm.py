@@ -19,9 +19,7 @@ def load_urls_name_page():
             LOG.info(url)
             name = url[url.rfind("/") + 1:]
             name = name[:-4]
-            LOG.info(
             file.write(name + " = " + url + "\n")
             
-    file.close()
-        
-load_urls_name_page()
+    file.close()       
+

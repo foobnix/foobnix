@@ -20,7 +20,6 @@ def get_foobnix_resourse_path_by_name(filename):
              filename)
     for path in paths:
         full_path = os.path.join(path, filename)
-        print full_path
         if os.path.isfile(full_path):
             return full_path
     

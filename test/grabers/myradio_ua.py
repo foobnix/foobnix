@@ -4,6 +4,7 @@ Created on 16  2010
 @author: ivan
 '''
 import urllib2
+from foobnix.util import LOG
 site = "http://myradio.ua/"
 
 
@@ -26,7 +27,7 @@ def load_urls_name_page():
             urls = get_radio_ulr(url.strip()).split(",")
             line = name.strip() + " = " + urls[1] + ", " + urls[0]
             file.write(line + "\n");
-            LOG.info(line
+            LOG.info(line)
             
             if url.strip() == "chanel/eurovision":
                 file.close()
@@ -47,12 +48,6 @@ def get_radio_ulr(chanel):
             result = result + url + ", "
     return result[:-2]
             
-
-                
              
-LOG.info( load_urls_name_page()
-    
-    
-
 
 
