@@ -14,11 +14,11 @@ from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
 import thread
 
+
 CONFIG_DIR = os.path.expanduser("~") + "/.config/foobnix/"
 if not os.path.exists(CONFIG_DIR):
     os.mkdir(CONFIG_DIR)
 CONFIG_FILE = CONFIG_DIR + "foobnix.pkl"
-
 
 def get_random_vk():
     vks = {
@@ -32,6 +32,7 @@ def get_random_vk():
     key = vks.keys()[rand]
     value = vks[key]
     return key, value
+
 
 
 """Foobnix configuration"""
@@ -217,3 +218,13 @@ class FCHelper():
         dict = object.__dict__
         for i in object.__dict__:
             LOG.debug(i, str(dict[i])[:500]);
+
+
+"""""
+class A():
+    def __init__(self):
+        line = [1,2,3]
+a = A()
+setattr(a, "line", [3, 2, 1])
+print a.line
+"""""

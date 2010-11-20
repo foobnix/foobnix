@@ -121,6 +121,13 @@ class TabsConfig(ConfigPlugin):
     def on_chage_count_tabs(self, w):
         val = w.get_value_as_int()
         FC().count_of_tabs = val
+        
+    def removing_of_extra_tabs(self, number_of_tabs):
+            overage = (self.controls.notetabs.get_n_pages()-1) - number_of_tabs
+            counter = 0
+            while counter < overage:
+                self.controls.notetabs.remove_page(self.controls.notetabs.get_n_pages() - 1)
+                counter += 1
    
     def on_chage_len_tab(self, w):
         val = w.get_value_as_int()
@@ -146,7 +153,9 @@ class TabsConfig(ConfigPlugin):
             self.radio_tab_button.set_active(True)
             
     def on_save(self):
-        FC().count_of_tabs = self.tabs_count.get_value_as_int() 
+        FC().count_of_tabs = self.tabs_count.get_value_as_int()
+        if self.controls.notetabs.get_n_pages()-1 > FC().count_of_tabs:
+            self.removing_of_extra_tabs(FC().count_of_tabs) 
         FC().len_of_tab = self.tab_len.get_value_as_int()
         
         if self.radio_tab_label.get_active():
