@@ -1,58 +1,58 @@
-#!/bin/sh
+#!/bin/bash
 
 writelines() {
+   cd $2
    for i in *.py 
      do
      if [ ${i} != "__init__.py" ]
-     then
+     then     
        echo $2${i} >> $1
      fi
     done
+    cd -
 }
 
-cd $(dirname "$0")
-
-echo
-echo Updating POTFILES.in...
-
-rm ../po/POTFILES.in
-touch ../po/POTFILES.in
-cd ..
-writelines po/POTFILES.in ./
-
-cd foobnix/application
-writelines ../../po/POTFILES.in ./foobnix/application/
-
-cd ../directory
-writelines ../../po/POTFILES.in ./foobnix/directory/
-
-cd ../lyric
-writelines ../../po/POTFILES.in ./foobnix/lyric/
-
-cd ../preferences
-writelines ../../po/POTFILES.in ./foobnix/preferences/
-
-cd ../preferences/configs
-writelines ../../../po/POTFILES.in ./foobnix/preferences/configs/
 cd ../
+BASE=`pwd`
+echo $BASE
 
-cd ../online
-writelines ../../po/POTFILES.in ./foobnix/online/
+POF=`pwd`/po/POTFILES.in
 
-cd ../playlist
-writelines ../../po/POTFILES.in ./foobnix/playlist/
+rm $POF
+touch $POF
 
-cd ../util
-writelines ../../po/POTFILES.in ./foobnix/util/
+LIST=(
+"foobnix"
+"foobnix.cue"
+"foobnix.dm"
+"foobnix.eq"
+"foobnix.helpers"
+"foobnix.preferences"
+"foobnix.preferences.configs"
+"foobnix.regui"
+"foobnix.regui.about"
+"foobnix.regui.controls"
+"foobnix.regui.engine"
+"foobnix.regui.id3"
+"foobnix.regui.model"
+"foobnix.regui.notetab"
+"foobnix.regui.service"
+"foobnix.regui.treeview"
+"foobnix.thirdparty"
+"foobnix.thirdparty.google"
+"foobnix.util"
+)
 
-cd ../glade
-intltool-extract --type=gettext/glade foobnix.glade
-echo ./foobnix/glade/foobnix.glade.h >> ../../po/POTFILES.in
 
-cd ../../po
+for NAME in ${LIST[@]}
+do
+	writelines $POF ./${NAME//.//}/
+done
 
-echo Update messages.po...
-echo
+writelines $POF ./foobnix/util/
+
+
+cd $BASE/po
 
 intltool-update -p
 mv untitled.pot messages.po
@@ -69,6 +69,5 @@ for i in *.po
 done
 
 echo Cleaning up...
-echo
 
 rm untitled.pot
