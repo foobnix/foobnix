@@ -326,6 +326,18 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
                 results += [parent] + self.get_child_iters_by_parent(self.model, next)
                 
         return results
+    
+    def get_all_beans_text(self):
+        result = []
+        beans = self.get_all_beans()
+        
+        if not beans:
+            return result
+        
+        for bean in beans:
+            result.append(bean.text)
+                            
+        return result
                 
     def get_child_iters_by_parent(self, model, iter):
         list = []

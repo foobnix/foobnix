@@ -8,11 +8,11 @@ from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 import gtk
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.fc import FC
-from foobnix.radio.radios import RadioFolder
 from foobnix.regui.model import FModel
 from foobnix.helpers.dialog_entry import one_line_dialog, two_line_dialog
 from foobnix.helpers.menu import Popup
 from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
+from foobnix.regui.service.radio_service import RadioFolder
 class RadioTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)

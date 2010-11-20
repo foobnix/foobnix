@@ -8,8 +8,7 @@ import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util import const
 from foobnix.util.fc import FC
-from foobnix.helpers.pref_widgets import FrameDecorator, IconBlock, \
-    VBoxDecorator, ChooseDecorator
+from foobnix.helpers.pref_widgets import FrameDecorator, VBoxDecorator, ChooseDecorator
 from foobnix.helpers.image import ImageBase
 from foobnix.util.const import ICON_BLANK_DISK
 

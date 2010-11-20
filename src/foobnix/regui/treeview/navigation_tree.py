@@ -12,10 +12,9 @@ from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
-from foobnix.regui.perspective import Perspective
     
     
-class NavigationTreeControl(CommonTreeControl, LoadSave, Perspective):
+class NavigationTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
         

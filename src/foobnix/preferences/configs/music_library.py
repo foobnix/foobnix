@@ -6,13 +6,13 @@ Created on 24 авг. 2010
 '''
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
-from foobnix.base.base_list_controller import BaseListController
 from foobnix.helpers.dialog_entry import show_entry_dialog
-import foobnix.util.localization 
 from foobnix.util import LOG
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
+from foobnix.regui.treeview.simple_tree import  SimpleListTreeControl
+from foobnix.regui.model import FDModel
 
 class MusicLibraryConfig(ConfigPlugin, FControl):
     name = CONFIG_MUSIC_LIBRARY
@@ -45,12 +45,8 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         frame_box.set_border_width(5)
         frame_box.show()
         
-                
-        dir_tree = gtk.TreeView()
-        dir_tree.show()
-        self.tree_controller = BaseListController(dir_tree)
-        self.tree_controller.set_title(_("Path"))
         
+        self.tree_controller = SimpleListTreeControl("Paths", None)
         
         """reload button"""
         reload_button = gtk.Button(_("Reload"))
@@ -88,14 +84,8 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         
         
         
-        scrool_tree = gtk.ScrolledWindow()
-        scrool_tree.set_size_request(-1, 170)
-        scrool_tree.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        scrool_tree.add_with_viewport(dir_tree)
-        scrool_tree.show()
         
-        
-        frame_box.pack_start(scrool_tree, True, True, 0)
+        frame_box.pack_start(self.tree_controller.scroll, True, True, 0)
         frame_box.pack_start(button_box, False, False, 0)
                 
         
@@ -107,21 +97,21 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         return frame
    
     def reload_dir(self, *a):
-        FC().music_paths = self.tree_controller.get_all_items()
+        FC().music_paths = self.tree_controller.get_all_beans_text()
         self.controls.update_music_tree()
    
     def on_load(self):
         self.tree_controller.clear()
         for path in FC().music_paths:
-            self.tree_controller.add_item(path)
+            self.tree_controller.append(FDModel(path))
             
         self.files_controller.clear()
         for ext in FC().support_formats:
-            self.files_controller.add_item(ext)
+            self.files_controller.append(FDModel(ext))
             
     def on_save(self):             
-        FC().music_paths = self.tree_controller.get_all_items()
-        FC().support_formats = self.files_controller.get_all_items()
+        FC().music_paths = self.tree_controller.get_all_beans_text()
+        FC().support_formats = self.files_controller.get_all_beans_text()
         
          
     
@@ -137,8 +127,8 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             path = paths[0]  
             FC().last_music_path = path[:path.rfind("/")]          
             for path in paths:            
-                if path not in self.tree_controller.get_all_items():
-                    self.tree_controller.add_item(path)
+                if path not in self.tree_controller.get_all_beans_text():
+                    self.tree_controller.append(FDModel(path))
             
         elif response == gtk.RESPONSE_CANCEL:
             LOG.info('Closed, no files selected')
@@ -146,7 +136,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         print "add folder(s)"
     
     def remove_dir(self, *a):
-        self.tree_controller.remove_selected()
+        self.tree_controller.delete_selected()
     
     def formats(self):
         frame = gtk.Frame(label=_("File Types"))
@@ -157,10 +147,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         frame_box.set_border_width(5)
         frame_box.show()
         
-        dir_tree = gtk.TreeView()
-        dir_tree.show()
-        self.files_controller = BaseListController(dir_tree)
-        self.files_controller.set_title(_("Extension"))
+        self.files_controller = SimpleListTreeControl("Extensions", None)
         
         
         """buttons"""
@@ -185,7 +172,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         scrool_tree = gtk.ScrolledWindow()
         scrool_tree.set_size_request(-1, 160)
         scrool_tree.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        scrool_tree.add_with_viewport(dir_tree)
+        scrool_tree.add_with_viewport(self.files_controller.scroll)
         scrool_tree.show()
         
         
@@ -199,8 +186,8 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
     
     def on_add_file(self, *a):
         val = show_entry_dialog(_("Please add audio extension"), _("Extension should be like '.mp3'"))
-        if val and val.find(".") >= 0 and len(val) <= 5 and val not in self.files_controller.get_all_items():
-            self.files_controller.add_item(val)
+        if val and val.find(".") >= 0 and len(val) <= 5 and val not in self.files_controller.get_all_beans_text():
+            self.files_controller.append(FDModel(val))
         else:
             LOG.info("Can't add your value", val)
         

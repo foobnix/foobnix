@@ -10,8 +10,6 @@
 
 import re
 import urllib
-import random
-from htmlentitydefs import name2codepoint
 from BeautifulSoup import BeautifulSoup
 
 from browser import Browser, BrowserError
@@ -71,7 +69,7 @@ class GoogleSets(object):
         safe_items = [urllib.quote_plus(i) for i in self.items]
         blank_items = 5 - len(safe_items)
         if blank_items > 0:
-            safe_items += ['']*blank_items
+            safe_items += [''] * blank_items
 
         safe_url = url % tuple(safe_items)
 

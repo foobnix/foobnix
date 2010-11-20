@@ -9,11 +9,11 @@ Created on 27 сент. 2010
 from foobnix.thirdparty import pylast
 from foobnix.thirdparty.pylast import WSError, Tag
 from foobnix.util import LOG
-from foobnix.online.google.translate import translate
 from foobnix.util.fc import FC
 from foobnix.helpers.dialog_entry import show_login_password_error_dialog
 from foobnix.regui.model import FModel
 import thread
+from foobnix.thirdparty.google.translate import translate
 
 API_KEY = FC().API_KEY
 API_SECRET = FC().API_SECRET

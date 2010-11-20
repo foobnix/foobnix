@@ -18,8 +18,6 @@ import gobject
 from foobnix.helpers.image import ImageBase
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normilized_text
-from foobnix.regui.id3.audio import normilize_text
-from foobnix.util import LOG
 
 class InfoCache():
     def __init__(self):

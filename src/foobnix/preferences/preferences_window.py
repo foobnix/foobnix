@@ -18,7 +18,7 @@ from foobnix.regui.model.signal import FControl
 from foobnix.util.fc import FC
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.preferences.configs.dm_config import DMConfig
-from foobnix.regui.model import FModel
+from foobnix.regui.model import FDModel
 from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 
@@ -60,7 +60,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.navigation = SimpleListTreeControl(_("Categories"), controls, True)        
         
         for plugin in self.configs:
-            self.navigation.append(FModel(plugin.name))
+            self.navigation.append(FDModel(plugin.name))
             
         self.navigation.set_left_click_func(func)
 

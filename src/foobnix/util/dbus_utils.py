@@ -6,9 +6,9 @@ Created on 28 сент. 2010
 '''
 import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
-from foobnix.util.configuration import get_version
 import os
 import thread
+from foobnix.version import FOOBNIX_VERSION
 
 DBusGMainLoop(set_as_default=True)
 
@@ -27,7 +27,7 @@ class MprisRoot(dbus.service.Object):
 
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='s')
     def Identity(self):
-        return "foobnix %s" % get_version()
+        return "foobnix %s" % FOOBNIX_VERSION
 
     @dbus.service.method (DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='(qq)')
     def MprisVersion (self):
@@ -116,7 +116,7 @@ class DBusManager(dbus.service.Object):
 
         try:
             dbus_interface = 'org.gnome.SettingsDaemon.MediaKeys'
-            mm_object = bus.get_object('org.gnome.SettingsDaemon', '/org/gnome/SettingsDaemon/MediaKeys')
+            mm_object = self.bus.get_object('org.gnome.SettingsDaemon', '/org/gnome/SettingsDaemon/MediaKeys')
             mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
             mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
         except Exception, e:

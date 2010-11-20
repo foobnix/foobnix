@@ -53,9 +53,6 @@ class FTreeModel():
         return types
 
 class FModel(FTreeModel):             
-    TYPE_SONG = "SONG"
-    TYPE_FOLDER = "FOLDER"
-    
     def __init__(self, text=None, path=None):
         FTreeModel.__init__(self)
         for i in self.__dict__:

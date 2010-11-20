@@ -19,6 +19,7 @@
 #
 # http://code.google.com/p/pylast/
 import datetime
+from foobnix.util.fc import FC
     
 __version__ = '0.4'
 __author__ = 'Amr Hassan'
@@ -791,7 +792,7 @@ class _Request(object):
         
         if self.network.is_proxy_enabled():
             
-            proxy_rul = FConfiguration().proxy_url
+            proxy_rul = FC().proxy_url
             index = proxy_rul.find(":")
             proxy = proxy_rul[:index]
             port = proxy_rul[index + 1:]                

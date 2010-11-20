@@ -11,7 +11,7 @@ from mutagen.wavpack import WavPack
 from mutagen.ogg import OggFileType
 from mutagen.easyid3 import EasyID3
 import re
-from foobnix.util.text_utils import capitilize_query, capitilize_string
+from foobnix.util.text_utils import capitilize_string
 def get_mutagen_audio (path):
     ext = get_file_extenstion(path)
     if ext == ".flac":
