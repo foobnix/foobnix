@@ -8,6 +8,7 @@ import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
 from foobnix.regui.model.signal import FControl
 from foobnix.version import FOOBNIX_VERSION
+from foobnix.util import LOG
 
 DBusGMainLoop(set_as_default=True)
 
@@ -67,7 +68,7 @@ class DBusManager(dbus.service.Object, FControl):
             mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
             mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
         except Exception, e:
-            print "your OS is not GNOME", e
+            LOG.error("your OS is not GNOME", e)
     
     def check_for_commands(self, args):
         if len(args) == 1:
@@ -102,7 +103,6 @@ class DBusManager(dbus.service.Object, FControl):
     
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
     def parse_arguments(self, args):
-        print args
         if args and len(args) > 0:            
             self.controls.check_for_media(args)
             if not self.check_for_commands(args):                
@@ -124,7 +124,7 @@ class DBusManager(dbus.service.Object, FControl):
             elif what == 'Previous':
                 self.controls.prev()
         else:
-            print('Got a multimedia key:', what)
+            LOG.debug('Got a multimedia key:', what)
 
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='s')
     def Identity(self):
@@ -138,7 +138,7 @@ class DBusManager(dbus.service.Object, FControl):
     def Quit(self):
         self.controls.quit()
 
-def foobnixDBusInterface():
+def foobnix_dbus_interface():
     bus = dbus.SessionBus()
     dbus_objects = dbus.Interface(bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'), 'org.freedesktop.DBus').ListNames()
     if not DBUS_NAME in dbus_objects:

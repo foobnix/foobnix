@@ -180,6 +180,9 @@ class BaseFoobnixControls(LoadSave):
     def volume_down(self):
         self.volume.volume_down()
     
+    def hide(self):
+        self.main_window.hide()
+    
     def show_hide(self):
         self.main_window.show_hide()
         
@@ -187,7 +190,6 @@ class BaseFoobnixControls(LoadSave):
         self.main_window.show()
     
     def play_pause(self):
-        print self.media_engine.get_state()        
         if self.media_engine.get_state() == STATE_PLAY:
             self.media_engine.state_pause()            
         else:
@@ -270,9 +272,7 @@ class BaseFoobnixControls(LoadSave):
         self.media_engine.play(bean)  
         self.is_scrobled = False
         self.start_time = False      
-
         
-        #print "updation info panel"
         self.update_info_panel(bean)
 
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
@@ -299,7 +299,7 @@ class BaseFoobnixControls(LoadSave):
         self.update_info_panel(t_bean)
     
     def notify_error(self, msg):
-        print "notify error"
+        LOG.error("notify error", msg)
         self.seek_bar.set_text(msg)
         self.info_panel.clear()
         
@@ -518,13 +518,13 @@ class BaseFoobnixControls(LoadSave):
         if FC().check_new_version and current_version < new_version:
             info_dialog_with_link(_("New version is available"), "foobnix " + new_version, "http://www.foobnix.com/?page=download")            
 
-
     def on_load(self):
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):
                 self.__dict__[element].on_load()
             else:
                 LOG.debug("NOT LOAD", self.__dict__[element])
+                
         self.main_window.show()
         self.movie_window.hide_all()
         thread.start_new_thread(self.check_version, ())

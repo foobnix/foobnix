@@ -9,6 +9,7 @@ import gtk
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.util.const import ICON_FOOBNIX
+from foobnix.util import LOG
 
 
 class BaseParentWindow(ChildTopWindow):
@@ -91,7 +92,7 @@ Playing all imaginations\n
             changelog_text = open(get_foobnix_resourse_path_by_name("CHANGELOG"), 'r').read()
             changeLog.set_text(changelog_text)
         except TypeError, error_message:
-            print error_message
+            LOG.error(error_message)
             
         button_credits.connect("clicked", lambda * a: creaditsWindow.show_all())
         button_changelog.connect("clicked", lambda * x: changeLog.show_all())

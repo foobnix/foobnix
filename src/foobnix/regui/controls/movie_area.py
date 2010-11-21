@@ -70,7 +70,6 @@ class MovieDrawingArea(FControl, gtk.Frame):
         return self.smallscree_area
      
     def on_full_screen(self):
-        print "full"
         self.controls.state_stop(True)
         self.fullscrean_area.show_window()        
         self.set_out(self.fullscrean_area.get_draw())      
@@ -78,7 +77,6 @@ class MovieDrawingArea(FControl, gtk.Frame):
         
     
     def on_small_screen(self):
-        print "small"        
         self.controls.state_stop(True)
         self.set_out(self.smallscree_area)
         self.fullscrean_area.hide_window()

@@ -27,7 +27,6 @@ class CueTrack():
         self.index = index
         self.duration = 0
         self.path = path
-        print _("hello")
 
     def __str__(self):
         return "Track: " + self.title + " " + self.performer + " " + self.index

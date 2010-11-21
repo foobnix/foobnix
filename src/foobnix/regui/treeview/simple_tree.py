@@ -40,7 +40,6 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
             return None
         
         if is_left_click(e):
-            print "select", active.get_status()
             if active.get_status():
                 if active.get_status() == DOWNLOAD_STATUS_ALL:
                     self.controls.dm.filter(None, FTreeModel().status[0])

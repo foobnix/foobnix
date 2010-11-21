@@ -9,7 +9,6 @@ from foobnix.preferences.config_plugin import ConfigPlugin
 class CategoryInfoConfig(ConfigPlugin):
     name = "Category Info"
     def __init__(self):
-        print "Craete Category info conf"
         box = gtk.VBox(False, 0)
         box.hide()
         

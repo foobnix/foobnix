@@ -66,9 +66,7 @@ class EqWindow(ChildTopWindow, FControl):
         self.on_combo_chage()
         
     def on_button_press(self, w, e):
-        print "click"
         if is_rigth_click(e):
-            print "r click"
             menu = Popup()
             menu.add_item('Restore Defaults', gtk.STOCK_REFRESH, None)
             menu.show(e)
@@ -96,7 +94,6 @@ class EqWindow(ChildTopWindow, FControl):
                 break
         
         if not find:
-            print self.get_active_values()[1:]
             self.models.append(EqModel(text, text, 0, self.get_active_values()[1:]))
             self.combo.append_text(text)
             text_id = text
@@ -112,7 +109,6 @@ class EqWindow(ChildTopWindow, FControl):
 
     def notify_chage_eq_line(self):
         self.get_active_values()    
-        print self.get_active_values() 
     
     def append_all_models(self, models):
         self.models = models
@@ -129,7 +125,6 @@ class EqWindow(ChildTopWindow, FControl):
         if num >= 0:        
             model = self.models[num]
             self.set_all_eq_span_values([model.preamp] + model.values)
-            print num, model.name, self.get_active_values()
             self.collback()
         
     def populate(self, models):

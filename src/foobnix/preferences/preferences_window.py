@@ -21,6 +21,7 @@ from foobnix.preferences.configs.dm_config import DMConfig
 from foobnix.regui.model import FDModel
 from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
+from foobnix.util import LOG
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
@@ -140,7 +141,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         return box
 
     def restore_defaults(self):
-        print "restore defaults"
+        LOG.debug("restore defaults settings")
         gtk.main_quit()
         FC().delete()
         thread.start_new_thread(os.system, ("foobnix",))

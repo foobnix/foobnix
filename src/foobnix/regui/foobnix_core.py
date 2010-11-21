@@ -16,7 +16,6 @@ from foobnix.regui.controls.status_bar import StatusbarControls
 from foobnix.regui.controls.tray_icon import TrayIconControls
 from foobnix.preferences.preferences_window import PreferencesWindow
 from foobnix.regui.top import TopWidgets
-from foobnix.regui.controls.dbus_manager import DBusManager
 from foobnix.regui.about.about import AboutWindow
 from foobnix.regui.treeview.radio_tree import RadioTreeControl
 from foobnix.regui.treeview.virtual_tree import VirtualTreeControl
@@ -27,10 +26,11 @@ from foobnix.regui.controls.movie_area import MovieDrawingArea
 from foobnix.util.singe_thread import SingreThread
 from foobnix.helpers.pref_widgets import ModelConstructor
 from foobnix.regui.perspectives import PerspectiveControls
+from foobnix.regui.controls.dbus_manager import DBusManager
 
 
 class FoobnixCore(BaseFoobnixControls):
-    def __init__(self, DEBUG=False):
+    def __init__(self):
         BaseFoobnixControls.__init__(self)
         
         self.media_engine = GStreamerEngine(self)
@@ -85,14 +85,11 @@ class FoobnixCore(BaseFoobnixControls):
         """layout"""
         self.layout = BaseFoobnixLayout(self)
 
-        """D-Bus"""
-        if DEBUG:
-            self.dbus = DBusManager(self)
-        else:
-            class FakeDbus():
-                def parse_arguments(self, *a):
-                    pass
-            self.dbus = FakeDbus()
         
-        self.on_load()       
+        self.dbus = DBusManager(self)
+        
+        self.on_load()
+            
+        
+               
         

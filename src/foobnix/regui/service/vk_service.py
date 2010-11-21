@@ -213,7 +213,6 @@ class VKService:
                     key = key.replace('"', '')
                     value = value.replace('"', '')
                     value = value.replace('+', ' ')
-                    print key, value
                     res[key] = value
             
             host = res["host"]
@@ -337,9 +336,3 @@ class VKService:
                 return song
 
         return vkSongs[0]
-
-#vk = VKService()
-#list = vk.find_video_by_query("Мадона")
-#for i, bean in enumerate(list):
-#    print i, bean.path, bean.text 
-

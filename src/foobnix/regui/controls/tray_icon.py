@@ -53,12 +53,10 @@ class PopupWindowMenu(gtk.Window, FControl):
         self.poopup_text.set_text(text)
 
     def on_leave_window(self, w, event):
-        print w, event
         max_x, max_y = w.size_request()
         x, y = event.x, event.y
         if 0 < x < max_x and 0 < y < max_y:
             return True
-        print "hide"
         self.hide()
 
 
@@ -73,7 +71,6 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.set_tooltip("Foobnix music player")
         
         self.popup_menu = PopupWindowMenu(self.controls)
-        print "IN TRAYICON"
         '''static_icon'''
         self.static_icon = IconBlock("Icon", controls, FC().static_icon_entry)
         
@@ -92,6 +89,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         
         self.current_bean = FModel().add_artist("Artist").add_title("Title")
         self.tooltip_image = ImageBase(ICON_FOOBNIX, 150)
+        self.hide()
         
     def on_save(self):
         FC().static_icon_entry = self.static_icon.entry.get_text()
@@ -199,11 +197,9 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
     def show_window(self, *a):
         self.popup_menu.reshow_with_initial_size()
         self.popup_menu.show()
-        print "show"
 
     def hide_window(self, *a):
         self.popup_menu.hide()
-        print "hide"
 
     def on_popup_menu(self, *a):
         self.show_window()
