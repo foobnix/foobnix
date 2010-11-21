@@ -228,10 +228,14 @@ class DrugDropTree(gtk.TreeView):
             return
         self.current_view = VIEW_PLAIN
         print "append all as plain"
+        counter = 0
         for bean in beans:
-            self.plain_append(bean)
+            if bean.is_file:
+                counter += 1
+            else: counter = 0
+            self.plain_append(bean, counter)
             
-    def plain_append(self, bean):
+    def plain_append(self, bean, counter=None):
         if not bean:
             return
         if bean.is_file == True:
@@ -240,13 +244,13 @@ class DrugDropTree(gtk.TreeView):
             bean.font = "bold"
             
         bean.visible = True
-        def task():
-            beans = update_id3_wind_filtering([bean])
+        def task(counter=None):
+            beans = update_id3_wind_filtering([bean], counter)
             for one in beans:
                 one.update_uuid()    
                 row = self.get_row_from_bean(one)            
                 self.model.append(None, row)
-        gobject.idle_add(task)
+        gobject.idle_add(lambda : task(counter))
         
     def tree_append(self, bean):
         def task(bean):
