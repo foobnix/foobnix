@@ -6,8 +6,7 @@ Created on 20 нояб. 2010
 '''
 import unittest
 from foobnix.regui.foobnix_core import FoobnixCore
-class TestFoobnixCore(unittest.TestCase):
-    
+class TestFoobnixCore(unittest.TestCase):    
     def test_main_window(self):
         self.w = FoobnixCore()
         self.assertTrue(True)
