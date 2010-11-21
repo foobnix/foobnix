@@ -9,15 +9,14 @@ if sys.argv and "debug" in sys.argv:
     if not result:        
         raise SystemExit("Test failures are listed above.")
 
-from foobnix.regui.controls.dbus_manager import foobnixDBusInterface
+from foobnix.regui.controls.dbus_manager import foobnix_dbus_interface
 from foobnix.regui.foobnix_core import FoobnixCore
 import time
 import gobject
 import gtk
 
-iface = foobnixDBusInterface()
-
 init_time = time.time()
+iface = foobnix_dbus_interface()
 if not iface:
     print "start server"
     

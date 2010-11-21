@@ -138,7 +138,7 @@ class DBusManager(dbus.service.Object, FControl):
     def Quit(self):
         self.controls.quit()
 
-def foobnixDBusInterface():
+def foobnix_dbus_interface():
     bus = dbus.SessionBus()
     dbus_objects = dbus.Interface(bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'), 'org.freedesktop.DBus').ListNames()
     if not DBUS_NAME in dbus_objects:
