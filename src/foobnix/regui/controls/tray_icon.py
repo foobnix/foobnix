@@ -92,6 +92,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         
         self.current_bean = FModel().add_artist("Artist").add_title("Title")
         self.tooltip_image = ImageBase(ICON_FOOBNIX, 150)
+        self.hide()
         
     def on_save(self):
         FC().static_icon_entry = self.static_icon.entry.get_text()
