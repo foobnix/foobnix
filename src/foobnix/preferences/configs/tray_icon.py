@@ -18,7 +18,6 @@ class TrayIconConfig(ConfigPlugin):
     
     def __init__(self, controls):
         self.controls = controls
-        print "Create tray icon conf"
         box = gtk.VBox(False, 0)        
         box.hide()
         

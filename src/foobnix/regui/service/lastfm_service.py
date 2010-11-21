@@ -141,7 +141,7 @@ class LastFmService():
                 except Exception, e:       
                     LOG.error(e, "Error reporting now playing last.fm", bean.artist, bean.title, "A", bean.album)
             else:
-                print "Bean title or artist not difined"
+                LOG.warn("Bean title or artist not difined")
                 
         thread.start_new_thread(task, (bean,))
     
@@ -161,7 +161,7 @@ class LastFmService():
                 except Exception, e:       
                     LOG.error(e, "Error reporting now playing last.fm", bean.artist, bean.title, "A", bean.album)
             else:
-                print "Bean title or artist not difined"
+                LOG.warn("Bean title or artist not difined")
         
         thread.start_new_thread(task, (bean,))
         
@@ -211,7 +211,6 @@ class LastFmService():
         for track in tracks:
             artist = track.get_artist().get_name()
             title = track.get_title()
-            print artist, title
             bean = FModel(artist + " - " + title).add_artist(artist).add_title(title)
             results.append(bean)
         return results
@@ -223,10 +222,8 @@ class LastFmService():
             LOG.warn("search_top_tags TAG is empty")
             return []
         tag = translate(tag, src="ru", to="en")
-        print tag
         beans = []
         tags = self.network.search_for_tag(tag)
-        print tags
         for tag in tags.get_next_page():
                 tag_name = tag.get_name()
                 bean = FModel(tag_name).add_genre(tag_name)

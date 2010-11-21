@@ -17,7 +17,6 @@ class HotKeysConfig(ConfigPlugin):
     name = _("Global Hotkeys")
     
     def __init__(self, controls):
-        print "Create try icon conf"
         box = gtk.VBox(False, 0)        
         box.hide()
         
@@ -145,7 +144,7 @@ class HotKeysConfig(ConfigPlugin):
         try:                      
             keybinder.bind(hotkey, self.activate_hot_key, command)
         except Exception, e:
-            print hotkey, e
+            LOG.error("add_key_binder exception", hotkey, e)
     
     def activate_hot_key(self, command):
         LOG.debug("Run command: " + command)         
@@ -156,7 +155,6 @@ class HotKeysConfig(ConfigPlugin):
         self.bind_all(self.get_all_items())
     
     def unbind_all(self):
-        print "unbin all"
         items = self.get_all_items()
         for keystring in items: 
             try:          
@@ -186,7 +184,7 @@ class HotKeysConfig(ConfigPlugin):
         
         self.unbind_all() 
         keyname = gtk.gdk.keyval_name(event.keyval)
-        print "Key %s (%d) was pressed" % (keyname, event.keyval), event.state
+        LOG.debug("Key %s (%d) was pressed" % (keyname, event.keyval), event.state)
         if event.state & gtk.gdk.CONTROL_MASK:           
             self.set_hotkey_text("<Control>" + keyname)
         elif event.state & gtk.gdk.SHIFT_MASK :
@@ -200,4 +198,4 @@ class HotKeysConfig(ConfigPlugin):
             
     def on_key_release(self, w, event): 
         keyname = gtk.gdk.keyval_name(event.keyval)
-        print "Key release %s (%d) was pressed" % (keyname, event.keyval)        
+        LOG.debug("Key release %s (%d) was pressed" % (keyname, event.keyval))        

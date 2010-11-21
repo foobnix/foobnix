@@ -190,7 +190,6 @@ class BaseFoobnixControls(LoadSave):
         self.main_window.show()
     
     def play_pause(self):
-        print self.media_engine.get_state()        
         if self.media_engine.get_state() == STATE_PLAY:
             self.media_engine.state_pause()            
         else:
@@ -273,9 +272,7 @@ class BaseFoobnixControls(LoadSave):
         self.media_engine.play(bean)  
         self.is_scrobled = False
         self.start_time = False      
-
         
-        #print "updation info panel"
         self.update_info_panel(bean)
 
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
@@ -302,7 +299,7 @@ class BaseFoobnixControls(LoadSave):
         self.update_info_panel(t_bean)
     
     def notify_error(self, msg):
-        print "notify error"
+        LOG.error("notify error", msg)
         self.seek_bar.set_text(msg)
         self.info_panel.clear()
         

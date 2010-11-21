@@ -133,7 +133,6 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         elif response == gtk.RESPONSE_CANCEL:
             LOG.info('Closed, no files selected')
         chooser.destroy()
-        print "add folder(s)"
     
     def remove_dir(self, *a):
         self.tree_controller.delete_selected()

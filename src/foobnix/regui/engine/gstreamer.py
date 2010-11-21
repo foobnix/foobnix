@@ -77,7 +77,7 @@ class GStreamerEngine(MediaPlayerEngine):
 
     def notify_title(self, text):
         if self.bean.type == FTYPE_RADIO:
-            "print notify radio playing"
+            "notify radio playing"
             self.controls.notify_title(text)
 
     def notify_error(self, msg):
@@ -131,7 +131,6 @@ class GStreamerEngine(MediaPlayerEngine):
 
     
     def set_all_bands(self, pre, values):
-        print "Engine", values
         if self.equalizer:
             for i, value in enumerate(values):      
                 real = float(value) + pre
@@ -211,7 +210,6 @@ class GStreamerEngine(MediaPlayerEngine):
         #self.player.get_by_name("volume").set_property('volume', value + 0.0)
 
     def state_play(self):
-        print "PLAY"
         self.player.set_state(gst.STATE_PLAYING)
         self.current_state = STATE_PLAY
         #if FC().system_icons_dinamic:
@@ -223,16 +221,12 @@ class GStreamerEngine(MediaPlayerEngine):
     def restore_seek_ns(self):
         time.sleep(1)        
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
-        print "restore", self.remembered_seek_position
-            
-        
         
     def state_stop(self, remeber_position=False):
         if remeber_position:
             self.player.set_state(gst.STATE_PAUSED)
             time.sleep(0.1)
             self.remembered_seek_position = self.get_current_position();
-            print "remember ", self.remembered_seek_position
                         
         self.play_thread_id = None        
         self.player.set_state(gst.STATE_NULL)
@@ -242,7 +236,6 @@ class GStreamerEngine(MediaPlayerEngine):
         self.controls.trayicon.on_dynamic_icons(self.current_state)
 
     def state_pause(self):
-        print "PAUSE"
         self.player.set_state(gst.STATE_PAUSED)
         self.current_state = STATE_PAUSE
         #if FC().system_icons_dinamic:
@@ -261,7 +254,6 @@ class GStreamerEngine(MediaPlayerEngine):
         
 
     def on_message(self, bus, message):
-        #print bus, message
         type = message.type
 
         if type == gst.MESSAGE_TAG  and message.parse_tag():

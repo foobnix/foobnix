@@ -6,6 +6,5 @@
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 2.6</pydev_property>
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
 <path>/foobnix-git/src</path>
-<path>/foobnix-git/test</path>
 </pydev_pathproperty>
 </pydev_project>

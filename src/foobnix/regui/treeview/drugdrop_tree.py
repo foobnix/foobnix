@@ -9,6 +9,7 @@ import uuid
 from foobnix.regui.id3 import update_id3_wind_filtering
 import gobject
 from foobnix.regui.model import FModel, FTreeModel
+from foobnix.util import LOG
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -31,8 +32,6 @@ class DrugDropTree(gtk.TreeView):
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
     
     def append_all(self, beans):
-        print "append view type", self.current_view
-        
         if self.current_view == VIEW_PLAIN:
             self.plain_append_all(beans)            
         else:
@@ -219,7 +218,7 @@ class DrugDropTree(gtk.TreeView):
         if not beans:
             return
         self.current_view = VIEW_TREE
-        print "append all as tree"
+        LOG.debug("append all as tree")
         for bean in beans:
             self.tree_append(bean)
     
@@ -227,7 +226,7 @@ class DrugDropTree(gtk.TreeView):
         if not beans:
             return
         self.current_view = VIEW_PLAIN
-        print "append all as plain"
+        LOG.debug("append all as plain")
         for bean in beans:
             self.plain_append(bean)
             

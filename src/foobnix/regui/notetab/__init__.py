@@ -72,10 +72,9 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         LOG.info("append new tab")
         if name and len(name) > FC().len_of_tab:
             name = name[:FC().len_of_tab]
-
-        print "create content begin"
+        
         tab_content = self.create_notebook_tab(beans)
-        print "create content end"
+        
         def label():
             """label"""
             label = gtk.Label(name + " ")
@@ -85,7 +84,6 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
             return label
 
         def button():
-            print "ELEMENT", FC().tab_close_element
             if FC().tab_close_element == "button":
                 return tab_close_button(func=self.on_delete_tab, arg=tab_content)
             else:
@@ -121,7 +119,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         
         self.set_current_page(1)
         
-        if self.get_n_pages()-1 > FC().count_of_tabs:
+        if self.get_n_pages() - 1 > FC().count_of_tabs:
             self.remove_page(self.get_n_pages() - 1)
     
     def update_label_angel(self, angle):

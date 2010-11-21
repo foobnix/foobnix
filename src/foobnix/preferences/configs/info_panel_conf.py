@@ -12,7 +12,6 @@ class InfoPagenConfig(ConfigPlugin):
     name = _("Info panel")
     
     def __init__(self, controls):
-        print "Create try icon conf"
         box = gtk.VBox(False, 0)        
         box.hide()
         
@@ -60,7 +59,7 @@ class InfoPagenConfig(ConfigPlugin):
         
     
     def on_save(self):        
-        FC().info_panel_image_size= self.image_size_spin.get_value_as_int()
+        FC().info_panel_image_size = self.image_size_spin.get_value_as_int()
         FC().is_info_panel_show_tags = self.show_tags.get_active()
          
         

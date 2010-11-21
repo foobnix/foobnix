@@ -26,12 +26,10 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
         self.set_enable_tree_lines(True)
 
         """model config"""
-        print "types", FTreeModel().types()
         self.model = gtk.TreeStore(*FTreeModel().types())
 
         """filter config"""
         self.filter_model = self.model.filter_new()
-        print "visible", self.visible[0]
         self.filter_model.set_visible_column(self.visible[0])
         self.set_model(self.filter_model)
 
@@ -88,7 +86,6 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
         self.append(bean)
         
     def populate_all(self, beans):
-        print "populate all", self.current_view
         self.clear()
         self.append_all(beans)
     
@@ -124,7 +121,6 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
         return attributes
 
     def clear(self):
-        print "clean"
         gobject.idle_add(self.model.clear)
         #self.model.clear()
 

@@ -9,6 +9,7 @@ from foobnix.helpers.dialog_entry import file_chooser_dialog
 from foobnix.util.pix_buffer import create_pixbuf_from_resource
 from foobnix.util.fc import FC
 from foobnix.helpers.window import ChildTopWindow
+from foobnix.util import LOG
 class IconBlock(gtk.HBox):
      
     def __init__(self, text, controls, filename):
@@ -29,7 +30,7 @@ class IconBlock(gtk.HBox):
         else:
             self.combobox.set_active(0)
             self.on_change_icon()
-            print "*** WARNING *** : Icon " + filename + " is absent in list of icons"
+            LOG.warn("*** WARNING *** : Icon " + filename + " is absent in list of icons")
         
         pix_render = gtk.CellRendererPixbuf()
         self.combobox.pack_start(pix_render)        
@@ -80,9 +81,8 @@ class IconBlock(gtk.HBox):
                 label = gtk.Label("You can not remove a standard icon")
                 error_window.add(label)
                 error_window.show()
-        except ValueError:
-            print "There is not such icon in the list"
-        
+        except ValueError, e:
+            LOG.error("There is not such icon in the list", e)        
         
 class FrameDecorator(gtk.Frame):
     def __init__(self, text, widget):

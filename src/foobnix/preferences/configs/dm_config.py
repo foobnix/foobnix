@@ -15,7 +15,6 @@ class DMConfig(ConfigPlugin):
     name = CONFIG_DOWNLOAD_MANAGER
     
     def __init__(self, controls):
-        print "Create try icon conf"
         box = gtk.VBox(False, 0)
         box.hide()        
 
