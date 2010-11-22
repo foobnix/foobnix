@@ -1,6 +1,6 @@
 import unittest
 from foobnix.util.text_utils import smart_splitter, capitilize_string, \
-    capitilize_query
+    capitilize_query, split_string
 
 class TestCapitalizeFunctions(unittest.TestCase):
     def test_capitilize_None(self):
@@ -24,6 +24,7 @@ class TestCapitalizeQueryFunctions(unittest.TestCase):
         self.assertEquals(u"DDT", capitilize_query("DDT"))
         self.assertEquals(u"DDT Music", capitilize_query("DDT music"))
 
+
 class TestSplitterFunctions(unittest.TestCase):
     def setUp(self):
         self.input = "abcde 1234 w2e3"
@@ -44,5 +45,28 @@ class TestSplitterFunctions(unittest.TestCase):
         result = smart_splitter(self.input, 2)
         self.assertEquals(["abcde", "1234", "w2"], result)
 
+
+class TestSplitStringFunction(unittest.TestCase):
+    def setUp(self):
+        self.input = "abcde,1234 w2    e3fdfd"
+    
+    def test_empty_string(self):
+        result = split_string("", 3)
+        self.assertEquals("", result)
+        
+    def test_empty_len(self):
+        result = split_string("100", 3)
+        self.assertEquals("100\n", result)
+        
+    def test_good_splitter(self):
+        result = split_string(self.input, 10)
+        self.assertEquals("abcde,\n1234 w2\ne3fdfd", result)
+    
+    def test_good_splitter1(self):
+        result = split_string(self.input, 19)
+        self.assertEquals("abcde,1234 w2\ne3fdfd", result)
+
+
 if __name__ == '__main__':
     unittest.main()
+

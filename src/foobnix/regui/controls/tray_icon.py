@@ -17,6 +17,7 @@ from foobnix.helpers.pref_widgets import VBoxDecorator, IconBlock
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO, \
     ICON_FOOBNIX
+from foobnix.util.text_utils import split_string
  
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
@@ -147,27 +148,6 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         if self.current_bean:
             artist = self.current_bean.artist
             title = self.current_bean.title
-        
-        def split_string(str, length):
-            i = length - 1
-            separator = None
-            while i > -1:
-                for simbol in (" " , "-" , "," , "/" , "_"):
-                    if str[i] == simbol:
-                        separator = str[i]
-                        break
-                if not separator:
-                    i -= 1
-                else: break    
-            if not separator:
-                i = length - 1
-                separator = str[i]
-            substr1 = str[: i]
-            substr2 = str[(i + 1) :]
-            if len(substr2) > length:
-                substr2 = split_string(substr2, length)
-            str = substr1 + "\n" + substr2
-            return str
         
         max_str_len = 40
         if len(title) > max_str_len:

@@ -228,6 +228,12 @@ class DrugDropTree(gtk.TreeView):
         self.current_view = VIEW_PLAIN
         LOG.debug("append all as plain")
         counter = 0
+        is_cue = False
+        for bean in beans:
+            if bean.path.lower().endswith(".cue"):
+                self.plain_append(bean)
+                is_cue = True
+        if is_cue: return
         for bean in beans:
             if bean.is_file:
                 counter += 1
