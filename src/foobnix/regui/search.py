@@ -3,6 +3,7 @@ from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.model.signal import FControl
 from foobnix.util import LOG
 from foobnix.util.text_utils import capitilize_query
+from foobnix.util.key_utils import is_key
 class SearchControls(FControl, gtk.Frame):
     def __init__(self, controls):        
         gtk.Frame.__init__(self)
@@ -75,7 +76,7 @@ class SearchControls(FControl, gtk.Frame):
         self.entry.set_text(text)
     
     def on_search_key_press(self, w, e):        
-        if gtk.gdk.keyval_name(e.keyval) == 'Return':
+        if is_key(e, 'Return'):
             self.on_search();
     
     def search_buttons(self):

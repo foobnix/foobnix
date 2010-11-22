@@ -26,10 +26,10 @@ class DrugDropTree(gtk.TreeView):
         self.current_view = None
     
     def configure_recive_drug(self):
-        self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
+        self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY) #@UndefinedVariable
     
     def configure_send_drug(self):
-        self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
+        self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY) #@UndefinedVariable
     
     def append_all(self, beans):
         if self.current_view == VIEW_PLAIN:

@@ -56,7 +56,7 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
         
     def on_multi_button_press(self, widget, event):
         target = self.get_path_at_pos(int(event.x), int(event.y))
-        if (target and event.type == gtk.gdk.BUTTON_PRESS and not (event.state & (gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)) 
+        if (target and event.type == gtk.gdk.BUTTON_PRESS and not (event.state & (gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)) #@UndefinedVariable
             and self.get_selection().path_is_selected(target[0])):
             # disable selection
             self.get_selection().set_select_function(lambda * ignore: False)

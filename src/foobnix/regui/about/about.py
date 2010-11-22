@@ -38,7 +38,7 @@ class AboutWindow(BaseParentWindow):
         """Content Begin"""
         table = gtk.Table(3, 3, False)
         try:
-            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(self.get_fobnix_logo(), 100, 100)
+            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(self.get_fobnix_logo(), 100, 100) #@UndefinedVariable
             image = gtk.image_new_from_pixbuf(pixbuf)
             #image = gtk.image_new_from_file(self.get_fobnix_logo())
             #image.set_pixel_size(10)

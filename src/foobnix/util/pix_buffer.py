@@ -24,7 +24,7 @@ def resize_pixbuf(pixbuf, size):
 
 def create_pixbuf_from_path(path, size):
     try:
-        pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+        pixbuf = gtk.gdk.pixbuf_new_from_file(path) #@UndefinedVariable
     except Exception, e:
         print e
         return None

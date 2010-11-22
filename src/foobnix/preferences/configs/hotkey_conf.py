@@ -12,6 +12,8 @@ from foobnix.util import LOG
 import thread
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.util.fc import FC
+from foobnix.util.key_utils import is_key_control, is_key_shift, is_key_super, \
+    is_key_alt
 class HotKeysConfig(ConfigPlugin):
     
     name = _("Global Hotkeys")
@@ -183,19 +185,19 @@ class HotKeysConfig(ConfigPlugin):
         self.hotkey_text.set_editable(False)
         
         self.unbind_all() 
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
         LOG.debug("Key %s (%d) was pressed" % (keyname, event.keyval), event.state)
-        if event.state & gtk.gdk.CONTROL_MASK:           
+        if is_key_control(event):           
             self.set_hotkey_text("<Control>" + keyname)
-        elif event.state & gtk.gdk.SHIFT_MASK :
+        elif is_key_shift(event) :
             self.set_hotkey_text("<Shift>" + keyname)
-        elif event.state & gtk.gdk.SUPER_MASK:            
+        elif is_key_super(event):            
             self.set_hotkey_text("<SUPER>" + keyname)
-        elif event.state & (gtk.gdk.MOD1_MASK | gtk.gdk.MOD2_MASK):
+        elif is_key_alt(event):
             self.set_hotkey_text("<Alt>" + keyname)    
         else:            
             self.set_hotkey_text(keyname)       
             
     def on_key_release(self, w, event): 
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
         LOG.debug("Key release %s (%d) was pressed" % (keyname, event.keyval))        

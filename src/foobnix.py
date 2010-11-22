@@ -2,9 +2,9 @@
 
 import sys
 
-if sys.argv and "debug" in sys.argv:
+if "test" in sys.argv:
     from test.all import run_all_tests
-    print """DEBUG MODE"""
+    print """TEST MODE"""
     result = run_all_tests(ignore="test_core")
     if not result:        
         raise SystemExit("Test failures are listed above.")
@@ -17,7 +17,7 @@ import gtk
 
 init_time = time.time()
 iface = foobnix_dbus_interface()
-if not iface:
+if "debug" in sys.argv or not iface:
     print "start server"
     
     gobject.threads_init() #@UndefinedVariable
