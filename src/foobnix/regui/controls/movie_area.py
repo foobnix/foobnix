@@ -37,12 +37,14 @@ class AdvancedDrawingArea(gtk.DrawingArea):
             self.controls.volume_up()
         elif is_key(e, 'Down'):
             self.controls.volume_down()
+        
+        self.grab_focus()
             
     def on_button_press(self, w, e):
         if is_double_left_click(e):
             self.action_function()
-        if is_left_click(e):
-            self.grab_focus()
+        
+        self.grab_focus()
 
 class FullScreanArea(ChildTopWindow):
         def __init__(self, controls, on_hide_callback):

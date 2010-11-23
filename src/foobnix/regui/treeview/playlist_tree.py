@@ -66,6 +66,10 @@ class PlaylistTreeControl(CommonTreeControl):
             self.controls.play_selected_song()
         elif is_key(e, KEY_DELETE):
             self.delete_selected()     
+        elif is_key(e, 'Left'):
+            self.controls.seek_down()
+        elif is_key(e, 'Right'):
+            self.controls.seek_up()
     
     def common_signle_random(self):
         LOG.debug("Repeat state", FC().repeat_state)
