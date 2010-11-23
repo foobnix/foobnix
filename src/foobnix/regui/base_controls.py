@@ -148,10 +148,9 @@ class BaseFoobnixControls(LoadSave):
             FC().cache_music_tree_beans.append(bean)
         
         if not all:
-            all.append(FModel(_("Music not found in folder(s):")))
-        
-        for path in FC().music_paths:            
-            all.append(FModel(path).add_is_file(True))
+            all.append(FModel(_("Music not found in folder(s):")))        
+            for path in FC().music_paths:            
+                all.append(FModel(path).add_is_file(True))
         
         self.tree.append_all(all)
 
