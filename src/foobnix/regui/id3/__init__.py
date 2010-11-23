@@ -42,12 +42,12 @@ def decode_cp866(text):
         pass
     return text
 
-def udpate_id3_for_beans(beans):
+def udpate_id3_for_beans(beans, counter=None):
     for bean in beans:
-        udpate_id3(bean)
+        udpate_id3(bean, counter)
     return beans
 
-def udpate_id3(bean):
+def udpate_id3(bean, counter = None):
     if bean and bean.path and os.path.isfile(bean.path):
         try:
             audio = get_mutagen_audio(bean.path)            
@@ -57,7 +57,10 @@ def udpate_id3(bean):
 
         if audio and audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])
         if audio and audio.has_key('title'): bean.title = decode_cp866(audio["title"][0])
-        if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
+        #if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
+        #else: 
+            #if audio and not audio.has_key('tracknumber'): 
+        bean.tracknumber = counter
         duration_sec = bean.duration_sec
         if not bean.duration_sec:
             if audio.info and audio.info.length: duration_sec = int(audio.info.length)
@@ -112,9 +115,9 @@ def add_upadte_image_paths(beans):
             bean.image = get_image_by_path(bean.path)
     return beans
 
-def update_id3_wind_filtering(beans):
+def update_id3_wind_filtering(beans, counter=None):
     beans = get_support_music_beans_from_all(beans)
-    beans = udpate_id3_for_beans(beans)
+    beans = udpate_id3_for_beans(beans, counter)
     beans = update_id3_for_cue(beans)
     beans = add_upadte_image_paths(beans)
     result = []
