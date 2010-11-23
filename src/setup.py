@@ -5,7 +5,7 @@ from distutils.core import setup, Command
 from test.all import run_all_tests
 
 VERSION = "0.2.2"
-RELEASE = "5"
+RELEASE = "6"
 LANGS = ('ru',)
 
 if not os.path.exists("mo/"):
@@ -21,8 +21,8 @@ for lang in LANGS:
 
 version = file("foobnix/version.py", "wt")
 version.write("""
-FOOBNIX_VERSION = "%s-%s"
-FOOBNIX_RELEASE = "%s"
+FOOBNIX_VERSION="%s-%s"
+FOOBNIX_RELEASE="%s"
 """ % (VERSION, RELEASE, RELEASE))
 version.close()
 

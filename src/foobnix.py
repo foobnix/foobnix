@@ -29,4 +29,5 @@ if "debug" in sys.argv or not iface:
     gtk.main()
 
 else:
+    print "client", sys.argv
     print iface.parse_arguments(sys.argv)

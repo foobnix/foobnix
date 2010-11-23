@@ -1,4 +1,6 @@
 0.2.2
+* Fix to works with debian
+* Add Russian Localization
 * Add man help with all commands descriptions (example: man foobnix)
 * Add command line "foobnix --now-playing" display current track
 * Add Keys on Video: F or Alt+Enter - Full Screen, P - Pause, Up,Down - volue, Left,Right - seek 

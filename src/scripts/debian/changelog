@@ -1,0 +1,5 @@
+foobnix (0.2.2-5) maverick; urgency=low
+
+  * Initial release (Closes: #5)  Localization, Debian Integration
+
+ -- Ivan Ivanenko <ivan.ivanenko@gmail.com>  Thu, 25 Nov 2010 17:01:57 +0200
