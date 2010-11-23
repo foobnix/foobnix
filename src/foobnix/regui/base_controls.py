@@ -58,15 +58,13 @@ class BaseFoobnixControls(LoadSave):
         return beans
     
     def play_selected_song(self):    
-        current = self.notetabs.get_active_tree().get_selected_bean()
-        if current.is_file:
+        current = self.notetabs.get_active_tree().get_selected_or_current_bean()
+        if current and current.is_file:
             self.notetabs.get_active_tree().set_play_icon_to_bean_to_selected()
         
-        """play song"""
-        self.play(current)
-
-        """set active tree"""
-        #self.notetabs.switch_tree(self)
+            """play song"""
+            self.play(current)
+        
     
     def save_beans_to(self, beans):
         return None    
@@ -194,7 +192,12 @@ class BaseFoobnixControls(LoadSave):
             self.media_engine.state_pause()            
         else:
             self.media_engine.state_play()
-            
+    
+    def seek_up(self):        
+        self.media_engine.seek_up()
+        
+    def seek_down(self):
+        self.media_engine.seek_down()
     
     def windows_visibility(self):
         visible = self.main_window.get_property('visible')
@@ -337,10 +340,9 @@ class BaseFoobnixControls(LoadSave):
                 all.append(bean)
             
             if not results:
-                all = self.show_google_results(query)
-                
+                all = self.show_google_results(query)                
             self.notetabs.append_tab(query, all)
-        inline()
+        self.in_thread.run_with_progressbar(inline)
     
     def search_all_tracks(self, query):
         def inline(query):
@@ -359,7 +361,7 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
             
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline, query, _("Searching: ") + query)
+        self.in_thread.run_with_progressbar(inline, query)
 
     def search_top_tracks(self, query):
         def inline(query):
@@ -378,9 +380,7 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
                 
             self.notetabs.append_tab(query, all)
-        #self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
-        inline(query)
-
+        self.in_thread.run_with_progressbar(inline, query)
 
 
     def search_top_albums(self, query):
@@ -407,7 +407,7 @@ class BaseFoobnixControls(LoadSave):
                 
             
                                    
-        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query)
 
     def search_top_similar(self, query):
         def inline(query):
@@ -432,7 +432,7 @@ class BaseFoobnixControls(LoadSave):
                      
             
         #inline(query)
-        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query)
 
     def search_top_tags(self, query):
         def inline(query):
@@ -456,7 +456,7 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
                 self.notetabs.append(all)
         
-        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query)
 
     def update_info_panel(self, bean):
         self.info_panel.update(bean)

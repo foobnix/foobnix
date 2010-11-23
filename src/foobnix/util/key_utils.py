@@ -8,7 +8,14 @@ KEY_DELETE = 'Delete'
 KEY_RETURN = 'Return'
 
 def is_key(event, key_const):
-    return gtk.gdk.keyval_name(event.keyval) == key_const #@UndefinedVariable
+    const = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
+    #LOG.debug("KEY", const)
+    return const == key_const
+
+def get_key(event):
+    const = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
+    #LOG.debug("KEY", const)    
+    return const
 
 def is_key_control(event): 
     return event.state == gtk.gdk.CONTROL_MASK #@UndefinedVariable

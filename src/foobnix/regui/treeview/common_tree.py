@@ -164,6 +164,13 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
         selected_bean = self._get_bean_by_path(paths[0])
         return selected_bean
     
+    def get_selected_or_current_bean(self):
+        bean = self.get_selected_bean()  
+        if bean:
+            return bean
+        else:              
+            return self.get_current_bean_by_UUID();
+    
     def set_play_icon_to_bean_to_selected(self):
         def task():
             for row in self.model:

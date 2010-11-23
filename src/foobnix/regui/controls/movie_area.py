@@ -1,34 +1,60 @@
+#-*- coding: utf-8 -*-
+
 from foobnix.regui.model.signal import FControl
 import gtk
 from foobnix.helpers.my_widgets import notetab_label
 from foobnix.helpers.window import ChildTopWindow
-from foobnix.util.mouse_utils import is_double_left_click
+from foobnix.util.mouse_utils import is_double_left_click, is_left_click
+from foobnix.util.key_utils import is_key, is_key_alt, get_key
+from foobnix.util import LOG
 
-class EventDecorator(gtk.EventBox):
-    def __init__(self, widget, func=None, arg=None):
-        gtk.EventBox.__init__(self)
-        self.add(widget)   
-       
-        def task(w, e):
-            if is_double_left_click(e):
-                if func and arg: func(arg)
-                elif func: func()
-                    
-        self.connect("button-press-event", task)
+class AdvancedDrawingArea(gtk.DrawingArea):
+    def __init__(self, controls):  
+        gtk.DrawingArea.__init__(self)
+        self.controls = controls
+        self.set_events(gtk.gdk.ALL_EVENTS_MASK) #@UndefinedVariable
+        self.set_flags(gtk.CAN_FOCUS)
         
+        self.connect("key-release-event", self.on_key_press)
+        self.connect("button-press-event", self.on_button_press)
+        self.connect("scroll-event", self.controls.volume.on_scroll_event)
+    
+    def action_function(self):
+        LOG.debug("Template function not defined")    
+    
+    def on_key_press(self, w, e):            
+        if is_key(e, 'Escape') or get_key(e) in ('F', 'f', 'а', 'А'):                
+            self.action_function()                
+        elif is_key_alt(e) and is_key(e, "Return"):
+            self.action_function()
+        elif get_key(e) in ('P', 'p', 'з', 'З'):
+            self.controls.play_pause()
+        elif is_key(e, 'Left'):
+            self.controls.seek_down()
+        elif is_key(e, 'Right'):
+            self.controls.seek_up()
+        elif is_key(e, 'Up'):
+            self.controls.volume_up()
+        elif is_key(e, 'Down'):
+            self.controls.volume_down()
+            
+    def on_button_press(self, w, e):
+        if is_double_left_click(e):
+            self.action_function()
+        if is_left_click(e):
+            self.grab_focus()
 
 class FullScreanArea(ChildTopWindow):
-        def __init__(self, on_hide_callback):
+        def __init__(self, controls, on_hide_callback):
             ChildTopWindow.__init__(self, "movie")
             self.on_hide_callback = on_hide_callback
             
-            self.drow = gtk.DrawingArea()
+            self.drow = AdvancedDrawingArea(controls)
+            self.drow.action_function = on_hide_callback 
             self.set_resizable(True)
             self.set_border_width(0)
             
-            event = EventDecorator(self.drow, self.on_hide_callback)
-            
-            self.add(event)
+            self.add(self.drow)
 
         def get_draw(self):
             return self.drow
@@ -51,11 +77,11 @@ class MovieDrawingArea(FControl, gtk.Frame):
         self.set_border_width(0)
         
         
-        self.smallscree_area = gtk.DrawingArea()
-        event = EventDecorator(self.smallscree_area, self.on_full_screen)
-        self.add(event)
+        self.smallscree_area = AdvancedDrawingArea(controls)
+        self.smallscree_area.action_function = self.on_full_screen
+        self.add(self.smallscree_area)
         
-        self.fullscrean_area = FullScreanArea(self.on_small_screen)
+        self.fullscrean_area = FullScreanArea(controls, self.on_small_screen)
         
         self.out = None
         self.set_out(self.smallscree_area)
