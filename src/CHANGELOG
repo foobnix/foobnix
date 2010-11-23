@@ -1,5 +1,4 @@
 0.2.2
 * Add man help with all commands descriptions (example: man foobnix)
 * Add command line "foobnix --now-playing" display current track
-* Add Keys on Video: F or Alt+Enter - Full Screen, P - Pause, Up,Down - volue, Left,Right - seek
-  
+* Add Keys on Video: F or Alt+Enter - Full Screen, P - Pause, Up,Down - volue, Left,Right - seek 

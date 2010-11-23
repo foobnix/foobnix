@@ -4,7 +4,7 @@ from foobnix.regui.model.signal import FControl
 import gtk
 from foobnix.helpers.my_widgets import notetab_label
 from foobnix.helpers.window import ChildTopWindow
-from foobnix.util.mouse_utils import is_double_left_click, is_left_click
+from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.util.key_utils import is_key, is_key_alt, get_key
 from foobnix.util import LOG
 
