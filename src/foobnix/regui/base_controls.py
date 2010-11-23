@@ -496,12 +496,17 @@ class BaseFoobnixControls(LoadSave):
         self.virtual.filter_by_file(value)
 
     def quit(self, *a):
+        self.state_stop()
+        self.main_window.hide()
+        self.trayicon.hide()        
         
         LOG.info("Controls - Quit")
-        self.main_window.hide()
-        self.on_save()
-        FC().save(False)                        
-        gtk.main_quit()
+        def task():
+            self.on_save()
+            FC().save(False)                        
+            gtk.main_quit()
+        
+        thread.start_new_thread(task, ())
 
     def check_version(self):
         uuid = FC().uuid
