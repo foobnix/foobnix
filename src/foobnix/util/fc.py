@@ -20,7 +20,7 @@ import thread
 
 CONFIG_DIR = os.path.expanduser("~") + "/.config/foobnix/"
 if not os.path.exists(CONFIG_DIR):
-    os.mkdir(CONFIG_DIR)
+    os.makedirs(CONFIG_DIR)
 CONFIG_FILE = CONFIG_DIR + "foobnix.pkl"
 
 def get_random_vk():
