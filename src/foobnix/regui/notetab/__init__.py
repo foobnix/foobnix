@@ -62,7 +62,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.prepend_page(l, append_label)
         
     def empty_tab(self, *a):
-        self.append_tab("Foobnix tab", [])
+        self.append_tab("Foobnix", [])
     
     def get_active_tree(self):
         return self.active_tree

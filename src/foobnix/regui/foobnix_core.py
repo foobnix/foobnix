@@ -27,7 +27,9 @@ from foobnix.util.singe_thread import SingreThread
 from foobnix.helpers.pref_widgets import ModelConstructor
 from foobnix.regui.perspectives import PerspectiveControls
 from foobnix.regui.controls.dbus_manager import DBusManager
+from foobnix.util.localization import foobnix_localization
 
+foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):
     def __init__(self):

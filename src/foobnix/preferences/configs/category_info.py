@@ -7,7 +7,7 @@ Created on 24 авг. 2010
 import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
 class CategoryInfoConfig(ConfigPlugin):
-    name = "Category Info"
+    name = _("Category Info")
     def __init__(self):
         box = gtk.VBox(False, 0)
         box.hide()

@@ -113,7 +113,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         box = gtk.HBox(False, 0)
         box.show()
 
-        button_restore = gtk.Button(_("Restore Defaults"))
+        button_restore = gtk.Button(_("Restore Defaults Settings"))
         button_restore.connect("clicked", lambda * a:self.restore_defaults())
         button_restore.show()
 

@@ -71,9 +71,7 @@
 ./foobnix/thirdparty/pylast.py
 ./foobnix/thirdparty/google/BeautifulSoup.py
 ./foobnix/thirdparty/google/browser.py
-./foobnix/thirdparty/google/googlesets.py
 ./foobnix/thirdparty/google/search.py
-./foobnix/thirdparty/google/sponsoredlinks.py
 ./foobnix/thirdparty/google/translate.py
 ./foobnix/util/bean_utils.py
 ./foobnix/util/config.py

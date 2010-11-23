@@ -16,52 +16,52 @@ class MenuWidget(FControl):
 
         top = TopMenu()
         """File"""
-        file = top.append("File")
-        file.add_image_item("Add File(s)", gtk.STOCK_OPEN, self.controls.on_add_files)
-        file.add_image_item("Add Folder(s)", gtk.STOCK_OPEN, self.controls.on_add_folders)
+        file = top.append(_("_File"))
+        file.add_image_item(_("Add File(s)"), gtk.STOCK_OPEN, self.controls.on_add_files)
+        file.add_image_item(_("Add Folder(s)"), gtk.STOCK_OPEN, self.controls.on_add_folders)
         file.separator()
-        file.add_image_item("Quit", gtk.STOCK_QUIT, self.controls.quit)
+        file.add_image_item(_("Quit"), gtk.STOCK_QUIT, self.controls.quit)
 
 
         """View"""
-        view = top.append("View")
-        self.view_music_tree = view.add_ckeck_item("Left Panel", FC().is_view_music_tree_panel)
+        view = top.append(_("_View"))
+        self.view_music_tree = view.add_ckeck_item(_("Left Panel"), FC().is_view_music_tree_panel)
         self.view_music_tree.connect("activate", lambda w: controls.set_visible_musictree_panel(w.get_active()))
 
-        self.view_search_panel = view.add_ckeck_item("Search Panel")
+        self.view_search_panel = view.add_ckeck_item(_("Search Panel"))
         self.view_search_panel.connect("activate", lambda w: controls.set_visible_search_panel(w.get_active()))
 
         view.separator()
 
         view.separator()
-        view.add_image_item("Equalizer", None, self.controls.eq.show)
-        view.add_image_item("Download Manager", None, self.controls.dm.show)
+        view.add_image_item(_("Equalizer"), None, self.controls.eq.show)
+        view.add_image_item(_("Download Manager"), None, self.controls.dm.show)
         view.separator()
-        view.add_image_item("Preferences", gtk.STOCK_PREFERENCES, self.controls.show_preferences)
+        view.add_image_item(_("Preferences"), gtk.STOCK_PREFERENCES, self.controls.show_preferences)
 
         """Playback"""
-        playback = top.append("Playback")
+        playback = top.append(_("_Playback"))
 
         def set_random(flag=True):            
             FC().is_order_random = flag
             LOG.debug("set random", flag)
 
         """Playback - Order"""
-        order = playback.add_text_item("Order")
-        self.playback_order_linear = order.add_radio_item("Linear", None, not FC().is_order_random)
+        order = playback.add_text_item(_("Order"))
+        self.playback_order_linear = order.add_radio_item(_("Linear"), None, not FC().is_order_random)
         self.playback_order_linear.connect("activate", lambda w: set_random(False))
         
-        self.playback_order_random = order.add_radio_item("Random", self.playback_order_linear, FC().is_order_random)
+        self.playback_order_random = order.add_radio_item(_("Random"), self.playback_order_linear, FC().is_order_random)
         self.playback_order_random.connect("activate", lambda w: set_random(True))
         
         #order.separator()
         #order.add_image_item("Shuffle", gtk.STOCK_UNDELETE)
 
         """Playback - Repeat"""
-        repeat = playback.add_text_item("Repeat")
-        self.lopping_all = repeat.add_radio_item("All", None, FC().repeat_state == const.REPEAT_ALL)
-        self.lopping_single = repeat.add_radio_item("Single", self.lopping_all, FC().repeat_state == const.REPEAT_SINGLE)
-        self.lopping_disable = repeat.add_radio_item("Disable", self.lopping_all, FC().repeat_state == const.REPEAT_NO)
+        repeat = playback.add_text_item(_("Repeat"))
+        self.lopping_all = repeat.add_radio_item(_("All"), None, FC().repeat_state == const.REPEAT_ALL)
+        self.lopping_single = repeat.add_radio_item(_("Single"), self.lopping_all, FC().repeat_state == const.REPEAT_SINGLE)
+        self.lopping_disable = repeat.add_radio_item(_("Disable"), self.lopping_all, FC().repeat_state == const.REPEAT_NO)
         
         def repeat_all():
             FC().repeat_state = const.REPEAT_ALL
@@ -75,9 +75,9 @@ class MenuWidget(FControl):
             FC().repeat_state = const.REPEAT_NO
             LOG.debug("set repeat_no")
             
-        self.lopping_all.connect("activate", lambda *a:repeat_all())
-        self.lopping_single.connect("activate", lambda *a:repeat_sigle())
-        self.lopping_disable.connect("activate", lambda *a:repeat_no())
+        self.lopping_all.connect("activate", lambda * a:repeat_all())
+        self.lopping_single.connect("activate", lambda * a:repeat_sigle())
+        self.lopping_disable.connect("activate", lambda * a:repeat_no())
 
         """Playlist View"""
         #playlist = playback.add_text_item("Playlist")
@@ -88,10 +88,10 @@ class MenuWidget(FControl):
         #self.playlist_tree.connect("activate", lambda w: w.get_active() and controls.set_playlist_tree())
 
         """Help"""
-        help = top.append("Help")
-        help.add_image_item("About", gtk.STOCK_ABOUT, self.controls.about.show_all)
-        help.add_text_item("Project page", lambda * a:open_link_in_browser("http://www.foobnix.com"), None, False)
-        help.add_image_item("Issue report", gtk.STOCK_DIALOG_WARNING, lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
+        help = top.append(_("_Help"))
+        help.add_image_item(_("About"), gtk.STOCK_ABOUT, self.controls.about.show_all)
+        help.add_text_item(_("Project page"), lambda * a:open_link_in_browser("http://www.foobnix.com"), None, False)
+        help.add_image_item(_("Issue report"), gtk.STOCK_DIALOG_WARNING, lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
         
         #help.add_image_item("Help", gtk.STOCK_HELP)
 

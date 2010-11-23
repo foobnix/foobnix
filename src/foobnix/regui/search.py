@@ -11,7 +11,7 @@ class SearchControls(FControl, gtk.Frame):
         self.controls = controls
         
         label = gtk.Label()
-        label.set_markup("<b>Search music online:</b>")
+        label.set_markup("<b>%s:</b>" % _("Search music online"))
         self.set_label_widget(label)
         self.set_border_width(0)
         
@@ -60,13 +60,21 @@ class SearchControls(FControl, gtk.Frame):
         self.entry.connect("key-press-event", self.on_search_key_press)
         
         self.entry.set_text("")
-        button = gtk.Button("Search")
+        button = gtk.Button(_("_Search"))
         button.connect("clicked", self.on_search)
         
-        hbox = gtk.HBox(False, 0)
+        g = gtk.Button("_G")
+        g.set_tooltip_text(_("Set focus on search line (Alt+G) Google :)"))
+        g.connect("clicked", lambda * a:self.entry.grab_focus())
         
+        hbox = gtk.HBox(False, 0)
+        hbox.pack_start(g, False, False, 0)        
         hbox.pack_start(self.entry, True, True, 0)
         hbox.pack_start(button, False, False, 0)
+        
+        
+        
+        
         
         hbox.show_all()
         
@@ -78,6 +86,7 @@ class SearchControls(FControl, gtk.Frame):
     def on_search_key_press(self, w, e):        
         if is_key(e, 'Return'):
             self.on_search();
+            self.entry.grab_focus()
     
     def search_buttons(self):
         h_line_box = gtk.HBox(False, 0)
@@ -86,20 +95,20 @@ class SearchControls(FControl, gtk.Frame):
         """Top searches"""
         top_frame = gtk.Frame()
         label = gtk.Label()
-        label.set_markup("<b>Top by artist</b>")
+        label.set_markup("<b>%s</b>" % _("Top by artist"))
         top_frame.set_label_widget(label)                                
         top_frame.set_shadow_type(gtk.SHADOW_NONE)
 
         hbox = gtk.HBox(False, 0)
         
-        songs = gtk.ToggleButton("Songs")
+        songs = gtk.ToggleButton(_("_Tracks"))
         songs.set_active(True)
         songs.connect("toggled", self.set_search_function, self.controls.search_top_tracks)
         
-        albums = gtk.ToggleButton("Albums")
+        albums = gtk.ToggleButton(_("_Albums"))
         albums.connect("toggled", self.set_search_function, self.controls.search_top_albums)        
         
-        similars = gtk.ToggleButton("Similar")
+        similars = gtk.ToggleButton(_("Similar"))
         similars.connect("toggled", self.set_search_function, self.controls.search_top_similar)
         
         hbox.pack_start(songs, True, True, 0)
@@ -111,18 +120,18 @@ class SearchControls(FControl, gtk.Frame):
         """Other searches"""
         other_frame = gtk.Frame()
         label = gtk.Label()
-        label.set_markup("<b>Other</b>")
+        label.set_markup("<b>%s</b>" % _("Other"))
         other_frame.set_label_widget(label)    
         other_frame.set_shadow_type(gtk.SHADOW_NONE)
         hbox = gtk.HBox(False, 0)
         
-        tags = gtk.ToggleButton("Genre")        
+        tags = gtk.ToggleButton(_("Genre"))        
         tags.connect("toggled", self.set_search_function, self.controls.search_top_tags)
         
-        all = gtk.ToggleButton("All")
+        all = gtk.ToggleButton(_("All"))
         all.connect("toggled", self.set_search_function , self.controls.search_all_tracks)
         
-        video = gtk.ToggleButton("Video")
+        video = gtk.ToggleButton(_("Video"))
         video.connect("toggled", self.set_search_function , self.controls.search_all_videos)
         
         hbox.pack_start(tags, True, True, 0)

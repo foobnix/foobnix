@@ -63,7 +63,7 @@ class PlaylistTreeControl(CommonTreeControl):
         
     def on_key_release(self, w, e):
         if is_key(e, KEY_RETURN):
-            self.active_current_song()
+            self.controls.play_selected_song()
         elif is_key(e, KEY_DELETE):
             self.delete_selected()     
     

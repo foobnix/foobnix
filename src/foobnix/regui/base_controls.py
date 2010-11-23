@@ -73,7 +73,7 @@ class BaseFoobnixControls(LoadSave):
    
     def on_add_folders(self, paths=None):
         if not paths:
-            paths = directory_chooser_dialog("Choose folders to open", FC().last_dir)
+            paths = directory_chooser_dialog(_("Choose folders to open"), FC().last_dir)
         if paths:
             path = paths[0]
             list = path.split("/")
@@ -102,7 +102,7 @@ class BaseFoobnixControls(LoadSave):
     
     def on_add_files(self, paths=None):
         if not paths:       
-            paths = file_chooser_dialog("Choose file to open", FC().last_dir)
+            paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
         if paths:            
             path = paths[0]
             list = paths[0].split("/")
@@ -118,7 +118,7 @@ class BaseFoobnixControls(LoadSave):
                 bean = FModel(path, path).parent(parent)
                 beans.append(bean)
             if not beans:
-                self.append_to_current_notebook([FModel("Nothing found to play in the file(s) " + paths[0])])
+                self.append_to_current_notebook([FModel(_("Nothing found to play in the file(s)") + paths[0])])
             else:
                 self.append_to_current_notebook(beans)
        
@@ -150,7 +150,7 @@ class BaseFoobnixControls(LoadSave):
             FC().cache_music_tree_beans.append(bean)
         
         if not all:
-            all.append(FModel("Music not found in folder(s):"))
+            all.append(FModel(_("Music not found in folder(s):")))
         
         for path in FC().music_paths:            
             all.append(FModel(path).add_is_file(True))
@@ -359,7 +359,7 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
             
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query, _("Searching: ") + query)
 
     def search_top_tracks(self, query):
         def inline(query):
@@ -378,7 +378,8 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
                 
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
+        #self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
+        inline(query)
 
 
 
@@ -402,6 +403,7 @@ class BaseFoobnixControls(LoadSave):
                 
             if not results:
                 all = self.show_google_results(query)
+                self.notetabs.append(all)
                 
             
                                    
