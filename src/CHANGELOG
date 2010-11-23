@@ -1,31 +1,5 @@
-#будем заполнять после релиза текущей версии, сейчас не нужно
-Release foobnix_0.2.1-8b
-*1
-*2
-*3
-*4
-*5
-Release foobnix 0.2.1-8
-1) Информирование о появлении новых версий
-2) Глобальные клавиши, настраиваются, по умолчанию:
-win-Вверх - Добавить громкости
-win-Вниз - Убавить громкости
-win-Влево - Следующая песня
-win-Вправо - Предыдущая песня
-win-A - Показать спрятать
-3) Мультимедийные клавишы клавиатуры
-4) Команды из консоли:
-foobnix --volume-up
-foobnix --volume-down
-foobnix --show-hide
-foobnix --prev
-foobnix --next
-foobnix --play
-foobnix --pause
-foobnix --play-pause
-fobnix /path/to/file1.mp3 /path/to/file2.mp3 /path/to/file3.mp3
-fobnix /path/to/folder1 /path/to/folder2 /path/to/folder3
-5) Слушать через Http прокси сервер (экспериментально)
-6) Проигрывание подпапок при клике на дереве музыки
-7) Отобрание некоторой информации о песне в статусной строке
- 
+0.2.2
+* Add man file with all commands descriptions
+* Add command line "foobnix --now-playing" display current track
+* Add Keys on Video: F or Alt+Enter - Full Screen, P - Pause, Up,Down - volue, Left,Right - seek
+  
