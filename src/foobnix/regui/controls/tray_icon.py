@@ -83,14 +83,13 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.connect("activate", self.on_activate)
         self.connect("popup-menu", self.on_popup_menu)
 
-        self.connect("scroll-event", self.controls.volume.on_scroll_event)
-        
         try:
             self.set_has_tooltip(True)        
             self.tooltip = gtk.Tooltip()
             self.set_tooltip("Foobnix music player")
             self.connect("query-tooltip", self.on_query_tooltip)
             self.connect("button-press-event", self.on_button_press)
+            self.connect("scroll-event", self.controls.volume.on_scroll_event)
         except Exception, e:
             LOG.warn("On debian it's not works", e)
         
