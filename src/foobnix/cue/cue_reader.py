@@ -79,20 +79,25 @@ class CueReader():
         end = str.find('"', first + 1) or str.find("'", first + 1)
         return str[first + 1:end]
     
-    def get_full_duration (self, cue_file):        
-        audio = get_mutagen_audio(cue_file.file)
+    def get_full_duration (self, file):        
+        audio = get_mutagen_audio(file)
         return audio.info.length
     
-    def normalize(self, cue_file):
+    def normalize(self, cue_file, files_count):
+        '''if files_count > 1: 
+            duration = self.get_full_duration(cue_file)'''
         duration_tracks = []
         tracks = cue_file.tracks
         for i in xrange(len(tracks)):
             track = tracks[i]
-            if i == len(tracks) - 1:
-                duration = self.get_full_duration(cue_file) - track.get_start_time_sec()
-            else:                
-                next_track = tracks[i + 1]
-                duration = next_track.get_start_time_sec() - track.get_start_time_sec()
+            if files_count > 1: 
+                duration = self.get_full_duration(track.path)
+            else:
+                if i == len(tracks) - 1:
+                    duration = self.get_full_duration(cue_file.file) - track.get_start_time_sec()
+                else:                
+                    next_track = tracks[i + 1]
+                    duration = next_track.get_start_time_sec() - track.get_start_time_sec()
             track.duration = duration
             if not track.path:
                 track.path = cue_file.file
@@ -172,11 +177,6 @@ class CueReader():
 
             if line.startswith(FILE):
                 self.files_count += 1
-
-                if self.files_count > 1:
-                        self.is_valid = False
-                        return cue_file
-
                 file = self.get_line_value(line)
                 dir = os.path.dirname(self.cue_file)
                 full_file = os.path.join(dir, file)
@@ -217,4 +217,4 @@ class CueReader():
         cue_track = CueTrack(title, performer, index, full_file)
         cue_file.append_track(cue_track)
         
-        return self.normalize(cue_file)
+        return self.normalize(cue_file, self.files_count)
