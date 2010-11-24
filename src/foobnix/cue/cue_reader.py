@@ -84,20 +84,27 @@ class CueReader():
         return audio.info.length
     
     def normalize(self, cue_file, files_count):
-        '''if files_count > 1: 
-            duration = self.get_full_duration(cue_file)'''
         duration_tracks = []
         tracks = cue_file.tracks
         for i in xrange(len(tracks)):
             track = tracks[i]
-            if files_count > 1: 
+            if files_count > 1 and files_count == len(tracks):
+                #for cue  "each file involve one track"
                 duration = self.get_full_duration(track.path)
-            else:
-                if i == len(tracks) - 1:
+            else: #for cue  "one file -  several tracks"
+                if i == len(tracks) - 1: #for last track in cue
                     duration = self.get_full_duration(cue_file.file) - track.get_start_time_sec()
                 else:                
                     next_track = tracks[i + 1]
-                    duration = next_track.get_start_time_sec() - track.get_start_time_sec()
+                    previous_track = tracks[i - 1]
+                    if next_track.get_start_time_sec() > track.get_start_time_sec():
+                        duration = next_track.get_start_time_sec() - track.get_start_time_sec()
+                    else: #for cue  "several files - each file involve several tracks"
+                        track.path = previous_track.path
+                        duration = self.get_full_duration(track.path) - track.get_start_time_sec()
+                        #use previous_track.path because the last track before the next file
+                        #gets the next file in the track.path
+                        #(a feature of the implementation of the method self.parse)
             track.duration = duration
             if not track.path:
                 track.path = cue_file.file
@@ -214,6 +221,7 @@ class CueReader():
                     cue_file.append_track(cue_track)
                 is_title = False
         
+        """for displaying last track of file""" 
         cue_track = CueTrack(title, performer, index, full_file)
         cue_file.append_track(cue_track)
         
