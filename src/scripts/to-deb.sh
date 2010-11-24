@@ -12,6 +12,9 @@ echo $FOOBNIX_VERSION
 echo "Create folder" ../build/foobnix_$FOOBNIX_VERSION
 cp -r . ../build/foobnix_$FOOBNIX_VERSION
 
+export DEBFULLNAME="Ivan Ivanenko"
+export DEBEMAIL="ivan.ivanenko@gmail.com"
+
 cp -r scripts/debian ../build/foobnix_$FOOBNIX_VERSION/debian
 cd ../build/foobnix_$FOOBNIX_VERSION/
 dch -e
