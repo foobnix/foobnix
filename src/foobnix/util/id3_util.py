@@ -1,17 +1,18 @@
-# -*- coding: utf-8 -*-
-from mutagen.mp3 import MP3
-from mutagen.easyid3 import EasyID3
-import os
-from foobnix.util.time_utils import normilize_time
-from foobnix.util import LOG
-from foobnix.util.fc import FC
-from foobnix.util.file_utils import file_extenstion
-from foobnix.cue.cue_reader import CueReader
-from foobnix.util.image_util import get_image_by_path
-from mutagen.flac import FLAC
-from foobnix.regui.id3.audio import get_mutagen_audio, normilize_text
-from foobnix.util.bean_utils import update_bean_from_normilized_text
+#-*- coding: utf-8 -*-
+'''
+Created on 24 нояб. 2010
 
+@author: ivan
+'''
+from foobnix.cue.cue_reader import update_id3_for_cue
+from foobnix.util.image_util import get_image_by_path
+from foobnix.util.time_utils import normilize_time
+from foobnix.util.bean_utils import update_bean_from_normilized_text
+from foobnix.util.file_utils import file_extenstion
+from foobnix.util.fc import FC
+from foobnix.util import LOG
+from foobnix.util.audio import get_mutagen_audio
+import os
 def decode_cp866(text):
     try:
         decode_text = text.decode("cp866")
@@ -47,7 +48,7 @@ def udpate_id3_for_beans(beans, counter=None):
         udpate_id3(bean, counter)
     return beans
 
-def udpate_id3(bean, counter = None):
+def udpate_id3(bean, counter=None):
     if bean and bean.path and os.path.isfile(bean.path):
         try:
             audio = get_mutagen_audio(bean.path)            
@@ -97,17 +98,6 @@ def get_support_music_beans_from_all(beans):
     
     return result
 
-def update_id3_for_cue(beans):
-    result = []
-    for bean in beans:
-        if bean.path and bean.path.lower().endswith(".cue"):
-                reader = CueReader(bean.path)
-                cue_beans = reader.get_common_beans()
-                for cue in cue_beans:
-                    result.append(cue)
-        else:
-            result.append(bean)
-    return result
 
 def add_upadte_image_paths(beans):
     for bean in beans:

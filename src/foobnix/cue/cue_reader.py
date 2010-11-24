@@ -11,8 +11,8 @@ from foobnix.util import LOG, file_utils
 import chardet
 import re
 from foobnix.util.image_util import get_image_by_path
+from foobnix.util.audio import get_mutagen_audio
 
-from foobnix.regui.id3.audio import get_mutagen_audio
 
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
@@ -218,3 +218,15 @@ class CueReader():
         cue_file.append_track(cue_track)
         
         return self.normalize(cue_file)
+    
+def update_id3_for_cue(beans):
+    result = []
+    for bean in beans:
+        if bean.path and bean.path.lower().endswith(".cue"):
+                reader = CueReader(bean.path)
+                cue_beans = reader.get_common_beans()
+                for cue in cue_beans:
+                    result.append(cue)
+        else:
+            result.append(bean)
+    return result    

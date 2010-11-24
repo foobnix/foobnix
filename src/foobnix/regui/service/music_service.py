@@ -9,7 +9,7 @@ from foobnix.util.fc import FC
 from foobnix.util.file_utils import file_extenstion
 from foobnix.util import LOG
 from foobnix.regui.model import FModel
-from foobnix.regui.id3 import update_id3_wind_filtering
+from foobnix.util.id3_util import update_id3_wind_filtering
     
 def get_all_music_by_path(path):
     return _scanner(path, None) 

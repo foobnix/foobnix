@@ -6,10 +6,10 @@ Created on Oct 14, 2010
 import gtk
 import copy
 import uuid
-from foobnix.regui.id3 import update_id3_wind_filtering
 import gobject
 from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util import LOG
+from foobnix.util.id3_util import update_id3_wind_filtering
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
