@@ -19,6 +19,9 @@ from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO,
     ICON_FOOBNIX
 from foobnix.util.text_utils import split_string
 from foobnix.util import LOG
+from foobnix.util.text_utils import split_string
+from foobnix.util.text_utils import split_string
+from foobnix.util import LOG
  
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):

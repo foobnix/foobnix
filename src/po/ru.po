@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-25 14:00+0200\n"
+"POT-Creation-Date: 2010-11-23 12:50+0200\n"
 "PO-Revision-Date: 2009-04-06 21:35+0300\n"
 "Last-Translator: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
@@ -17,28 +17,29 @@ msgstr ""
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: .././foobnix/eq/eq_gui.py:39 .././foobnix/regui/menu.py:37
+#: .././foobnix/eq/eq_gui.py:39
+#: .././foobnix/regui/menu.py:37
 msgid "Equalizer"
 msgstr "Эквалайзер"
 
-#: .././foobnix/preferences/preferences_window.py:56
+#: .././foobnix/preferences/preferences_window.py:50
 #: .././foobnix/regui/menu.py:40
 msgid "Preferences"
 msgstr "Настройки"
 
-#: .././foobnix/preferences/preferences_window.py:67
+#: .././foobnix/preferences/preferences_window.py:61
 msgid "Categories"
 msgstr "Категории"
 
-#: .././foobnix/preferences/preferences_window.py:122
+#: .././foobnix/preferences/preferences_window.py:116
 msgid "Restore Defaults Settings"
 msgstr "Востановить исходные настройки"
 
-#: .././foobnix/preferences/preferences_window.py:128
+#: .././foobnix/preferences/preferences_window.py:122
 msgid "Save"
 msgstr "Сохранить"
 
-#: .././foobnix/preferences/preferences_window.py:133
+#: .././foobnix/preferences/preferences_window.py:127
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -298,7 +299,11 @@ msgstr "Музыка не найдена в файлах"
 msgid "Music not found in folder(s):"
 msgstr "Музыка не найдена в папках"
 
-#: .././foobnix/regui/base_controls.py:527
+#: .././foobnix/regui/base_controls.py:362
+msgid "Searching: "
+msgstr "Ищу..."
+
+#: .././foobnix/regui/base_controls.py:521
 msgid "New version is available"
 msgstr "Найдена новая версия"
 
@@ -374,7 +379,8 @@ msgstr "Случайный"
 msgid "Repeat"
 msgstr "Повторять"
 
-#: .././foobnix/regui/menu.py:62 .././foobnix/regui/search.py:131
+#: .././foobnix/regui/menu.py:62
+#: .././foobnix/regui/search.py:131
 #: .././foobnix/util/const.py:37
 msgid "All"
 msgstr "Все"
@@ -492,8 +498,8 @@ msgstr "Ошибка подключания к ВКонтакте"
 msgid "Update Music Tree"
 msgstr "Обновить дерево музыки"
 
-#. menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
 #: .././foobnix/regui/treeview/navigation_tree.py:44
+#. menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
 msgid "Add folder"
 msgstr "Добавить папку"
 
@@ -557,5 +563,3 @@ msgstr "Блокированный"
 msgid "Error"
 msgstr "Ошибка"
 
-#~ msgid "Searching: "
-#~ msgstr "Ищу..."

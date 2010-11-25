@@ -33,7 +33,6 @@ LIST=(
 "foobnix.regui.about"
 "foobnix.regui.controls"
 "foobnix.regui.engine"
-"foobnix.regui.id3"
 "foobnix.regui.model"
 "foobnix.regui.notetab"
 "foobnix.regui.service"
@@ -55,7 +54,7 @@ writelines $POF ./foobnix/util/
 cd $BASE/po
 
 intltool-update -p
-mv untitled.pot messages.po
+mv untitled.pot foobnix.pot
 
 for i in *.po 
   do

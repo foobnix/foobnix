@@ -3,6 +3,7 @@ Created on 7  2010
 
 @author: ivan
 '''
+
 from __future__ import with_statement
 from foobnix.regui.model import FModel
 import os
@@ -11,7 +12,9 @@ from foobnix.util import LOG, file_utils
 import chardet
 import re
 from foobnix.util.image_util import get_image_by_path
+
 from foobnix.util.audio import get_mutagen_audio
+
 
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
@@ -133,7 +136,6 @@ class CueReader():
             data = codefile.read()
 
         return chardet.detect(data)['encoding']
-
     def parse(self):
         file = open(self.cue_file, "r")
         code = self.code_detecter(self.cue_file);
@@ -220,4 +222,5 @@ def update_id3_for_cue(beans):
                     result.append(cue)
         else:
             result.append(bean)
-    return result
+    return result  
+
