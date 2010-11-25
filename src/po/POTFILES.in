@@ -48,7 +48,6 @@
 ./foobnix/regui/controls/tray_icon.py
 ./foobnix/regui/controls/volume.py
 ./foobnix/regui/engine/gstreamer.py
-./foobnix/regui/id3/audio.py
 ./foobnix/regui/model/eq_model.py
 ./foobnix/regui/model/signal.py
 ./foobnix/regui/service/google_service.py
@@ -73,6 +72,7 @@
 ./foobnix/thirdparty/google/browser.py
 ./foobnix/thirdparty/google/search.py
 ./foobnix/thirdparty/google/translate.py
+./foobnix/util/audio.py
 ./foobnix/util/bean_utils.py
 ./foobnix/util/config.py
 ./foobnix/util/const.py
@@ -80,6 +80,7 @@
 ./foobnix/util/fc.py
 ./foobnix/util/file_utils.py
 ./foobnix/util/gc.py
+./foobnix/util/id3_util.py
 ./foobnix/util/image_util.py
 ./foobnix/util/key_utils.py
 ./foobnix/util/localization.py
@@ -93,6 +94,7 @@
 ./foobnix/util/singleton.py
 ./foobnix/util/text_utils.py
 ./foobnix/util/time_utils.py
+./foobnix/util/audio.py
 ./foobnix/util/bean_utils.py
 ./foobnix/util/config.py
 ./foobnix/util/const.py
@@ -100,6 +102,7 @@
 ./foobnix/util/fc.py
 ./foobnix/util/file_utils.py
 ./foobnix/util/gc.py
+./foobnix/util/id3_util.py
 ./foobnix/util/image_util.py
 ./foobnix/util/key_utils.py
 ./foobnix/util/localization.py

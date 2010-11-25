@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-23 12:50+0200\n"
+"POT-Creation-Date: 2010-11-25 14:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,24 +20,24 @@ msgstr ""
 msgid "Equalizer"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:50
+#: .././foobnix/preferences/preferences_window.py:56
 #: .././foobnix/regui/menu.py:40
 msgid "Preferences"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:61
+#: .././foobnix/preferences/preferences_window.py:67
 msgid "Categories"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:116
+#: .././foobnix/preferences/preferences_window.py:122
 msgid "Restore Defaults Settings"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:122
+#: .././foobnix/preferences/preferences_window.py:128
 msgid "Save"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:127
+#: .././foobnix/preferences/preferences_window.py:133
 msgid "Cancel"
 msgstr ""
 
@@ -297,11 +297,7 @@ msgstr ""
 msgid "Music not found in folder(s):"
 msgstr ""
 
-#: .././foobnix/regui/base_controls.py:362
-msgid "Searching: "
-msgstr ""
-
-#: .././foobnix/regui/base_controls.py:521
+#: .././foobnix/regui/base_controls.py:527
 msgid "New version is available"
 msgstr ""
 
