@@ -2,7 +2,7 @@ Source: foobnix
 Section: sound
 Priority: extra
 Maintainer: Ivan Ivanenko <ivan.ivanenko@gmail.com>
-Build-Depends: cdbs, debhelper (>= 7), python (>= 2.6), python-support, python-setuptools, gettext
+Build-Depends: cdbs, debhelper (>= 7), python (>= 2.5), python-support, python-setuptools, gettext
 XS-Python-Version: >= 2.5
 Standards-Version: 3.8.1
 Homepage: http://www.foobnix.com

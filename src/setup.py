@@ -5,7 +5,7 @@ from distutils.core import setup, Command
 from test.all import run_all_tests
 
 VERSION = "0.2.2"
-RELEASE = "6"
+RELEASE = "7"
 LANGS = ('ru',)
 
 if not os.path.exists("mo/"):
@@ -21,9 +21,10 @@ for lang in LANGS:
 
 version = file("foobnix/version.py", "wt")
 version.write("""
-FOOBNIX_VERSION="%s-%s"
-FOOBNIX_RELEASE="%s"
-""" % (VERSION, RELEASE, RELEASE))
+FOOBNIX_VERSION="%(VERSION)s-%(RELEASE)s"
+VERSION="%(VERSION)s"
+RELEASE="%(RELEASE)s"
+""" % {'RELEASE':RELEASE, 'VERSION':VERSION})
 version.close()
 
 shutil.copyfile("foobnix.py", "foobnix/foobnix")
@@ -69,7 +70,6 @@ setup(name='foobnix',
                 "foobnix.regui.about",
                 "foobnix.regui.controls",
                 "foobnix.regui.engine",
-                "foobnix.regui.id3",
                 "foobnix.regui.model",
                 "foobnix.regui.notetab",
                 "foobnix.regui.service",
