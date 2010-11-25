@@ -231,7 +231,7 @@ class DrugDropTree(gtk.TreeView):
         counter = 0
         is_cue = False
         for bean in beans:
-            if bean.path and bean.path.lower().endswith(".cue"):
+            if bean.path.lower().endswith(".cue"):
                 self.plain_append(bean)
                 is_cue = True
         if is_cue: return
