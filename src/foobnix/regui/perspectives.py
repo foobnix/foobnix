@@ -61,21 +61,21 @@ class PerspectiveButtonControlls(gtk.HBox):
         
         self.active = None
                
-        musics = self.custom_button("Music", gtk.STOCK_HARDDISK, "Music Navigation (Alt+1)")
+        musics = self.custom_button(_("Music"), gtk.STOCK_HARDDISK, _("Music Navigation (Alt+1)"))
         musics.connect("clicked", lambda * a: activate_perspective(LEFT_PERSPECTIVE_NAVIGATION))        
         musics.set_active(True)
         
                 
-        radios = self.custom_button("Radio", gtk.STOCK_NETWORK, "Radio Stantions (Alt+2)")
+        radios = self.custom_button(_("Radio"), gtk.STOCK_NETWORK, _("Radio Stantions (Alt+2)"))
         radios.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_RADIO))
         
         
         
-        virtuals = self.custom_button("Lists", gtk.STOCK_INDEX, "Virtual Play Lists (Alt+3)")
+        virtuals = self.custom_button(_("Lists"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
         virtuals.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
         
         
-        info = self.custom_button("Info", gtk.STOCK_INFO, "Info Panel (Alt+4)")
+        info = self.custom_button(_("Info"), gtk.STOCK_INFO, _("Info Panel (Alt+4)"))
         info.connect("clicked", lambda * a: activate_perspective(LEFT_PERSPECTIVE_INFO))
                 
         self.button_list = {

@@ -10,6 +10,7 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util import LOG
+from foobnix.version import FOOBNIX_VERSION
 
 
 class BaseParentWindow(ChildTopWindow):
@@ -33,12 +34,12 @@ class AboutWindow(BaseParentWindow):
         """init About window"""
         BaseParentWindow.__init__(self, "About Window")
 
-        self.set_size_request(320, 275)
+        self.set_size_request(320, 300)
 
         """Content Begin"""
         table = gtk.Table(3, 3, False)
         try:
-            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(self.get_fobnix_logo(), 100, 100)
+            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(self.get_fobnix_logo(), 100, 100) #@UndefinedVariable
             image = gtk.image_new_from_pixbuf(pixbuf)
             #image = gtk.image_new_from_file(self.get_fobnix_logo())
             #image.set_pixel_size(10)
@@ -46,7 +47,7 @@ class AboutWindow(BaseParentWindow):
             image = gtk.image_new_from_stock(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_INVALID)
         table.attach(image, 0, 3, 0, 1)
 
-        label = gtk.Label("Foobnix")
+        label = gtk.Label("Foobnix " + FOOBNIX_VERSION)
         label.set_markup ("""<big><big><b><b>Foobnix</b></b></big></big>
 Playing all imaginations\n
 <small>Developed by Ivan Ivanenko</small>

@@ -7,7 +7,7 @@ Created on 20 нояб. 2010
 import glob
 import unittest
 
-def run_all_tests(ignore):
+def run_all_tests(ignore="@"):
     test_file_strings = glob.glob('test/test_*.py')
     if not test_file_strings:      
         test_file_strings = glob.glob('test_*.py')

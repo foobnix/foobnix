@@ -1,16 +1,61 @@
-.TH foobnix 1 "October 20, 2006"
+.TH foobnix 1 "2011"
 .SH NAME
-foobnix \- GTK+ client for the Music Player Daemon
+foobnix \- Music Player For Linux
 .SH SYNOPSIS
 .B foobnix
 [\fIOPTION\fR]
 .SH DESCRIPTION
-foobnix is an elegant GTK+ music client for the Music Player Daemon (MPD).
+Foobnix is rich and elegant music player for Linux.
+
+Foobnix settings in file ~$USER/.config/foobnix/foobnix_conf.pkl  
+
+.SH EXAMPLES
+.TP
+fobnix /path/to/file1.mp3 /path/to/file2.mp3 /path/to/file3.mp3
+.TP
+fobnix /path/to/folder1 /path/to/folder2 /path/to/folder3
+ 
 .SH OPTIONS
 .TP
-.B \-h\fR, \fB\-\-help
-Show this help and exit
+.B \fB\-\-version
+Foobnix version
+
 .TP
-.B \-p\fR, \fB\-\-popup
-Popup song notification (requires D\-Bus)
+.B \fB\-\-volume-up
+Volume Up
+
 .TP
+.B \fB\-\-volume-down
+Volume Down
+
+.TP
+.B \fB\-\-show-hide
+Show or Hide Main window
+
+.TP
+.B \fB\-\-prev
+Play Previous song
+
+.TP
+.B \fB\-\-next
+Play Next song
+
+.TP
+.B \fB\-\-next
+Play Next song
+
+.TP
+.B \fB\-\-play
+Set State playing
+
+.TP
+.B \fB\-\-pause
+Set State paused
+
+.TP
+.B \fB\-\-play-pause
+Set State paused or playing depends on current
+
+.TP
+.B \fB\-\-now-playing
+Display current song playing

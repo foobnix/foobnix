@@ -46,7 +46,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         frame_box.show()
         
         
-        self.tree_controller = SimpleListTreeControl("Paths", None)
+        self.tree_controller = SimpleListTreeControl(_("Paths"), None)
         
         """reload button"""
         reload_button = gtk.Button(_("Reload"))
@@ -146,7 +146,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         frame_box.set_border_width(5)
         frame_box.show()
         
-        self.files_controller = SimpleListTreeControl("Extensions", None)
+        self.files_controller = SimpleListTreeControl(_("Extensions"), None)
         
         
         """buttons"""

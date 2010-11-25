@@ -18,7 +18,7 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         FControl.__init__(self, controls)
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
         
-        self.set_title("Foobnix Music Player " + FOOBNIX_VERSION)
+        self.set_title("Foobnix " + FOOBNIX_VERSION)
         self.set_position(gtk.WIN_POS_CENTER)
         self.set_resizable(True)        
         self.connect("delete-event", self.hide_window)

@@ -4,6 +4,7 @@ Created on 23 сент. 2010
 
 @author: ivan
 '''
+from __future__ import with_statement
 import pickle
 from foobnix.util import LOG, const
 import os
@@ -13,11 +14,13 @@ import random
 from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
 import thread
+ 
+
 
 
 CONFIG_DIR = os.path.expanduser("~") + "/.config/foobnix/"
 if not os.path.exists(CONFIG_DIR):
-    os.mkdir(CONFIG_DIR)
+    os.makedirs(CONFIG_DIR)
 CONFIG_FILE = CONFIG_DIR + "foobnix.pkl"
 
 def get_random_vk():

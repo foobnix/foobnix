@@ -140,8 +140,19 @@ class GStreamerEngine(MediaPlayerEngine):
                     real = -12
                 self.equalizer.set_property("band%s" % i, real)
     
-    def get_current_position(self):
-        return self.player.query_position(gst.Format(gst.FORMAT_TIME), None)[0]
+    def get_position_seek_ns(self):
+        try:
+            return self.player.query_position(gst.Format(gst.FORMAT_TIME), None)[0]
+        except Exception, e:
+            LOG.error("GET CURRETN POSITION ERROR", e)
+            return - 1
+    
+    def get_duration_seek_ns(self):
+        try:
+            return self.player.query_duration(gst.Format(gst.FORMAT_TIME), None)[0]
+        except Exception, e:
+            LOG.error("GET SEEK NS", e)
+            return - 1
     
     def playing_thread(self):
         thread_id = self.play_thread_id
@@ -151,8 +162,9 @@ class GStreamerEngine(MediaPlayerEngine):
         while thread_id == self.play_thread_id:
             try:
                 time.sleep(0.2)
-                duraction_int = self.player.query_duration(gst.Format(gst.FORMAT_TIME), None)[0]
+                duraction_int = self.get_duration_seek_ns()
                 if duraction_int == -1:
+                    time.sleep(1)
                     continue
                 self.notify_init(duraction_int)
                 break
@@ -173,7 +185,7 @@ class GStreamerEngine(MediaPlayerEngine):
 
         while thread_id == self.play_thread_id:
             try:
-                position_int = self.player.query_position(gst.Format(gst.FORMAT_TIME), None)[0]
+                position_int = self.get_position_seek_ns()
                 if self.bean.start_sec > 0:
                     position_int = position_int - float(self.bean.start_sec) * self.NANO_SECONDS
                     if position_int + self.NANO_SECONDS > duraction_int:
@@ -188,14 +200,14 @@ class GStreamerEngine(MediaPlayerEngine):
 
             time.sleep(1)
 
-    def seek(self, percent):
-        seek_ns = self.duration_sec * percent / 100 * self.NANO_SECONDS;
+    def seek(self, percent, offset=0):
+        seek_ns = self.duration_sec * (percent + offset) / 100 * self.NANO_SECONDS;
 
         if self.bean.start_sec > 0:
             seek_ns = seek_ns + float(self.bean.start_sec) * self.NANO_SECONDS
 
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
-
+    
     def seek_seconds(self, seconds):
         if not seconds:
             return
@@ -203,6 +215,12 @@ class GStreamerEngine(MediaPlayerEngine):
         seek_ns = (float(seconds) + 0.0) * self.NANO_SECONDS
         LOG.info("SEC SEEK SEC", seek_ns)
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
+    
+    def seek_ns(self, ns):
+        if not ns:
+            return        
+        LOG.info("SEC ns", ns)
+        self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, ns)
 
     def volume(self, percent):
         value = percent / 100.0
@@ -218,6 +236,19 @@ class GStreamerEngine(MediaPlayerEngine):
         else:
             self.controls.trayicon.on_dynamic_icons(self.current_state)
     
+    def get_current_percent(self):
+        duration = self.get_duration_seek_ns()
+        postion = self.get_position_seek_ns()
+        return postion * 100.0 / duration 
+    
+    def seek_up(self, offset=3):                
+        self.seek(self.get_current_percent(), offset)
+        LOG.debug("SEEK UP")
+    
+    def seek_down(self, offset= -3):
+        self.seek(self.get_current_percent(), offset)
+        LOG.debug("SEEK DOWN")
+    
     def restore_seek_ns(self):
         time.sleep(1)        
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
@@ -226,7 +257,7 @@ class GStreamerEngine(MediaPlayerEngine):
         if remeber_position:
             self.player.set_state(gst.STATE_PAUSED)
             time.sleep(0.1)
-            self.remembered_seek_position = self.get_current_position();
+            self.remembered_seek_position = self.get_position_seek_ns();
                         
         self.play_thread_id = None        
         self.player.set_state(gst.STATE_NULL)

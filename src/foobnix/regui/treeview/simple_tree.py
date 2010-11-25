@@ -16,6 +16,7 @@ from foobnix.regui.model import FTreeModel
 class SimpleTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, title_name, controls, head_visible=True):        
         CommonTreeControl.__init__(self, controls)
+        self.title_name = title_name 
         
         self.set_reorderable(False)
         
@@ -31,6 +32,9 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
         #self.populate_all([FModel("Madonna").add_is_file(True)])
         
         self.line_title = None
+    
+    def get_title(self):
+        return self.title_name
     
     def on_button_press(self, w, e):
         active = self.get_selected_bean()

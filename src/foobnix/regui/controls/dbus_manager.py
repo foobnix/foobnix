@@ -71,6 +71,7 @@ class DBusManager(dbus.service.Object, FControl):
             LOG.error("your OS is not GNOME", e)
     
     def check_for_commands(self, args):
+        print args
         if len(args) == 1:
             command = args[0]
             
@@ -95,19 +96,34 @@ class DBusManager(dbus.service.Object, FControl):
             self.controls.volume_down()
         elif "--show-hide" == command:
             self.controls.show_hide()
+        elif "--show" == command:
+            self.controls.show()
+        elif "--hide" == command:
+            self.controls.hide()
         elif "--play-pause" == command:
             self.controls.play_pause()
+        elif "--version" == command:
+            return FOOBNIX_VERSION
+        elif "--now-playing" == command:
+            print "--now-playing"
+            bean = self.controls.get_active_bean()
+            if bean:
+                return bean.get_display_name()
         else:
             return False
         return True
     
-    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
+    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='s')
     def parse_arguments(self, args):
         if args and len(args) > 0:            
             self.controls.check_for_media(args)
-            if not self.check_for_commands(args):                
+            result = self.check_for_commands(args)
+            if not result:                
                 self.controls.show()
-        
+            print result, type(result)
+            if type(result).__name__ == 'str':        
+                return result
+        return "client"
         
                 
     def on_mediakey(self, comes_from, what):

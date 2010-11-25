@@ -195,10 +195,7 @@ class VKService:
         page = self.get_page(query, "video")
         
         beans = []
-        file = open("out.txt", "w")
-        file.write(page)
-        file.close()
-        #page = self.to_good_chars(page)
+        
         page = page.replace("&quot;", '"')
         urls = re.findall(ur'showVideoBoxCommon([{}(\\"\a-z:0-9,/);.% _A-Zа-яА-Я+-]*)' , page, re.UNICODE)
         for url in urls:

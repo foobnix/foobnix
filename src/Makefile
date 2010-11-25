@@ -6,15 +6,16 @@ PREFIX ?= /usr/local
 DESTDIR ?= ./
 
 all:
-	python setup.py test
 	python setup.py build
 
+test:
+	python setup.py test
+	
 tarball:
 	python setup.py sdist
 	mv dist/foobnix-*.tar.gz $(DESTDIR)
 
 install:
-	python setup.py test
 	python setup.py install --prefix=$(PREFIX)
 
 clean:
@@ -30,3 +31,4 @@ uninstall:
 	-find ${PREFIX}/share/locale -name foobnix.mo -exec rm {} \;
 	-rm $(PREFIX)/share/applications/foobnix.desktop
 	-rm $(PREFIX)/share/pixmaps/foobnix*
+	-rm $(PREFIX)/share/man/man1/foobnix*

@@ -5,11 +5,12 @@ from distutils.core import setup, Command
 from test.all import run_all_tests
 
 VERSION = "0.2.2"
-RELEASE = "alpha_1"
+RELEASE = "6"
+LANGS = ('ru',)
 
 if not os.path.exists("mo/"):
     os.mkdir("mo/")
-for lang in ('ru', 'uk', 'he'):
+for lang in LANGS:
     pofile = "po/" + lang + ".po"
     mofile = "mo/" + lang + "/foobnix.mo"
     if not os.path.exists("mo/" + lang + "/"):
@@ -20,13 +21,12 @@ for lang in ('ru', 'uk', 'he'):
 
 version = file("foobnix/version.py", "wt")
 version.write("""
-FOOBNIX_VERSION = "%s-%s"
-FOOBNIX_RELEASE = "%s"
+FOOBNIX_VERSION="%s-%s"
+FOOBNIX_RELEASE="%s"
 """ % (VERSION, RELEASE, RELEASE))
 version.close()
 
 shutil.copyfile("foobnix.py", "foobnix/foobnix")
-
 
 class test_cmd(Command):
     description = "run automated tests"
@@ -89,9 +89,7 @@ setup(name='foobnix',
                     ('share/pixmaps', glob.glob('foobnix/pixmaps/*.svg')),
                     ('share/foobnix/radio', glob.glob('radio/*')),
                     ('share/man/man1', ['foobnix.1']),
-                    ('share/locale/uk/LC_MESSAGES', ['mo/uk/foobnix.mo']),
-                    ('share/locale/he/LC_MESSAGES', ['mo/he/foobnix.mo']),
-                    ('share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo'])
+                    ('/usr/share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo'])                    
                     ]
         )
 

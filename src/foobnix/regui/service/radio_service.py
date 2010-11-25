@@ -8,7 +8,7 @@ import os
 from foobnix.util import LOG
 
 
-FOOBNIX_DIR_RADIO = "/usr/local/share/foobnix/radio"
+FOOBNIX_RADIO_PATHS = ("/usr/local/share/foobnix/radio", "radio")
 EXTENSION = ".fpl"
 
 
@@ -23,60 +23,56 @@ class FPL():
 class RadioFolder():
     
     def __init__(self):
-        self.results = []
+        pass
     
     """get list of foobnix playlist files in the directory"""
     def get_radio_list(self):
-        if not os.path.isdir(FOOBNIX_DIR_RADIO):
-            LOG.warn("Not a folder ", FOOBNIX_DIR_RADIO)
-            return None
-        
         result = []
-        """read directory files by extestion and size > 0 """
-        for item in os.listdir(FOOBNIX_DIR_RADIO):
-            path = os.path.join(FOOBNIX_DIR_RADIO, item)
-            if item.endswith(EXTENSION) and os.path.isfile(path) and os.path.getsize(path) > 0:
-                LOG.info("Find radio station playlist", item)
-                result.append(item)
+        for cur_path in FOOBNIX_RADIO_PATHS:
+            if os.path.isdir(cur_path):
+                """read directory files by extestion and size > 0 """
+                for item in os.listdir(cur_path):
+                    path = os.path.join(cur_path, item)
+                    if item.endswith(EXTENSION) and os.path.isfile(path) and os.path.getsize(path) > 0:
+                        LOG.info("Find radio station playlist", item)
+                        result.append(item)                    
         return result
     
     """parser playlist by name"""
     def parse_play_list(self, list_name):
-        path = os.path.join(FOOBNIX_DIR_RADIO, list_name)
-        if not os.path.isfile(path):
-            LOG.warn("Not a file ", path)    
-            return None
+        for path in FOOBNIX_RADIO_PATHS:
+            full_path = os.path.join(path, list_name)
+            
+            if not os.path.isfile(full_path):
+                LOG.warn("Not a file ", full_path)    
+                continue
         
-        dict = {}
-        
-        """get name and stations"""
-        with open(path) as file:
-            for line in file:
-                if  line or not line.startswith("#") and "=" in line:                
-                    name_end = line.find("=")
-                    name = line[:name_end].strip()
-                    stations = line[name_end + 1:].split(",")
-                    if stations:
-                        good_stations = []
-                        for url in stations:
-                            good_url = url.strip()
-                            if good_url and (good_url.startswith("http://") or good_url.startswith("file://")):
-                                if not good_url.endswith("wma"):
-                                    if not good_url.endswith("asx"):                                
-                                        if not good_url.endswith("ram"):
-                                            good_stations.append(good_url)
-                                            dict[name] = good_stations
-        return dict
+            dict = {}
+            
+            """get name and stations"""
+            with open(full_path) as file:
+                for line in file:
+                    if  line or not line.startswith("#") and "=" in line:                
+                        name_end = line.find("=")
+                        name = line[:name_end].strip()
+                        stations = line[name_end + 1:].split(",")
+                        if stations:
+                            good_stations = []
+                            for url in stations:
+                                good_url = url.strip()
+                                if good_url and (good_url.startswith("http://") or good_url.startswith("file://")):
+                                    if not good_url.endswith("wma"):
+                                        if not good_url.endswith("asx"):                                
+                                            if not good_url.endswith("ram"):
+                                                good_stations.append(good_url)
+                                                dict[name] = good_stations
+            return dict
         
    
     
     def get_radio_FPLs(self):
-        if self.results:
-            LOG.info("Folder with radio already read")
-            return self.results
-        
         names = self.get_radio_list()
-        
+        print "names", names
         if not names:
             return []
         

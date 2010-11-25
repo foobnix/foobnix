@@ -37,7 +37,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         #self.set_scrollable(True)
         
         self.connect('drag-data-received', self.on_system_drag_data_received)
-        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP, dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY)
+        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP, dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY) #@UndefinedVariable
         
         self.empty_tab()
         
@@ -62,7 +62,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.prepend_page(l, append_label)
         
     def empty_tab(self, *a):
-        self.append_tab("Foobnix tab", [])
+        self.append_tab("Foobnix", [])
     
     def get_active_tree(self):
         return self.active_tree

@@ -10,7 +10,6 @@ from foobnix.preferences.configs.info_panel_conf import InfoPagenConfig
 from foobnix.preferences.configs.network_conf import NetworkConfig
 from foobnix.preferences.configs.notification_conf import NotificationConfig
 from foobnix.preferences.configs.tray_icon import TrayIconConfig
-from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
 import thread
 import os
 from foobnix.regui.state import LoadSave
@@ -40,7 +39,14 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.configs.append(TrayIconConfig(controls))
         self.configs.append(NetworkConfig(controls))
         self.configs.append(NotificationConfig(controls))
-        self.configs.append(HotKeysConfig(controls))
+        try:
+            """check keybinder installed, debian"""
+            import keybinder #@UnresolvedImport @UnusedImport
+            from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
+            self.configs.append(HotKeysConfig(controls))
+        except Exception, e:
+            LOG.warn("Keybinder not instlled", e) 
+        
         
         
         self.label = None
@@ -113,7 +119,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         box = gtk.HBox(False, 0)
         box.show()
 
-        button_restore = gtk.Button(_("Restore Defaults"))
+        button_restore = gtk.Button(_("Restore Defaults Settings"))
         button_restore.connect("clicked", lambda * a:self.restore_defaults())
         button_restore.show()
 

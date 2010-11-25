@@ -134,7 +134,6 @@ class CueReader():
             data = codefile.read()
 
         return chardet.detect(data)['encoding']
-
     def parse(self):
         file = open(self.cue_file, "r")
         code = self.code_detecter(self.cue_file);
@@ -210,3 +209,15 @@ class CueReader():
                 cue_file.append_track(cue_track)
                         
         return self.normalize(cue_file)
+    
+def update_id3_for_cue(beans):
+    result = []
+    for bean in beans:
+        if bean.path and bean.path.lower().endswith(".cue"):
+                reader = CueReader(bean.path)
+                cue_beans = reader.get_common_beans()
+                for cue in cue_beans:
+                    result.append(cue)
+        else:
+            result.append(bean)
+    return result

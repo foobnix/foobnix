@@ -12,6 +12,7 @@ class TestVkService(unittest.TestCase):
     def test_find_videos(self):
         list = self.vk.find_video_by_query("Мадонна")
         for bean in list:
+            print bean.path
             self.assertTrue(bean.path.startswith("http://")) 
     
     def test_find_track(self):

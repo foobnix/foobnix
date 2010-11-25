@@ -39,22 +39,23 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.almum_label.set_markup("<b></b>")
         self.set_label_widget(self.almum_label)                                
         
-        self.best_songs = SimpleTreeControl("Best Songs", controls)
-        self.best_songs.line_title = EventLabel("Best Songs", func=self.show_current, arg=self.best_songs, func1=self.show_best_songs)
+        self.best_songs = SimpleTreeControl(_("Best Songs"), controls)
+        self.best_songs.line_title = EventLabel(self.best_songs.get_title(), func=self.show_current, arg=self.best_songs, func1=self.show_best_songs)
         
-        self.artists = SimpleTreeControl("Similar Artists", controls)
-        self.artists.line_title = EventLabel("Similar Artists", func=self.show_current, arg=self.artists, func1=self.show_similar_artists)
+        self.artists = SimpleTreeControl(_("Similar Artists"), controls)
+        self.artists.line_title = EventLabel(self.artists.get_title(), func=self.show_current, arg=self.artists, func1=self.show_similar_artists)
         
-        self.tracks = SimpleTreeControl("Similar Songs", controls)
-        self.tracks.line_title = EventLabel("Similar Songs", func=self.show_current, arg=self.tracks, func1=self.show_similar_tracks)
+        self.tracks = SimpleTreeControl(_("Similar Songs"), controls)
+        self.tracks.line_title = EventLabel(self.tracks.get_title(), func=self.show_current, arg=self.tracks, func1=self.show_similar_tracks)
                 
-        self.tags = SimpleTreeControl("Similar Tags", controls)
-        self.tags.line_title = EventLabel("Similar Tags", func=self.show_current, arg=self.tags, func1=self.show_similar_tags)
+        self.tags = SimpleTreeControl(_("Similar Tags"), controls)
+        self.tags.line_title = EventLabel(self.tags.get_title(), func=self.show_current, arg=self.tags, func1=self.show_similar_tags)
         
         
         self.lyrics = TextArea()
-        self.lyrics.set_text("", "Lyrics")
-        self.lyrics.line_title = EventLabel("Lyrics", func=self.show_current, arg=self.lyrics, func1=self.show_similar_lyrics)
+        lyric_title = _("Lyrics")
+        self.lyrics.set_text("", lyric_title)
+        self.lyrics.line_title = EventLabel(lyric_title, func=self.show_current, arg=self.lyrics, func1=self.show_similar_lyrics)
         
         
         self.vpaned_small = gtk.VBox(False, 0)

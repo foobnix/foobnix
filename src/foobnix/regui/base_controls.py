@@ -56,24 +56,24 @@ class BaseFoobnixControls(LoadSave):
             beans.append(FModel('Google not found %s' % query))
             
         return beans
-    
+    def get_active_bean(self):
+        return self.notetabs.get_active_tree().get_selected_or_current_bean()
+     
     def play_selected_song(self):    
-        current = self.notetabs.get_active_tree().get_selected_bean()
-        if current.is_file:
+        current = self.get_active_bean()
+        if current and current.is_file:
             self.notetabs.get_active_tree().set_play_icon_to_bean_to_selected()
         
-        """play song"""
-        self.play(current)
-
-        """set active tree"""
-        #self.notetabs.switch_tree(self)
+            """play song"""
+            self.play(current)
+        
     
     def save_beans_to(self, beans):
         return None    
    
     def on_add_folders(self, paths=None):
         if not paths:
-            paths = directory_chooser_dialog("Choose folders to open", FC().last_dir)
+            paths = directory_chooser_dialog(_("Choose folders to open"), FC().last_dir)
         if paths:
             path = paths[0]
             list = path.split("/")
@@ -102,7 +102,7 @@ class BaseFoobnixControls(LoadSave):
     
     def on_add_files(self, paths=None):
         if not paths:       
-            paths = file_chooser_dialog("Choose file to open", FC().last_dir)
+            paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
         if paths:            
             path = paths[0]
             list = paths[0].split("/")
@@ -118,7 +118,7 @@ class BaseFoobnixControls(LoadSave):
                 bean = FModel(path, path).parent(parent)
                 beans.append(bean)
             if not beans:
-                self.append_to_current_notebook([FModel("Nothing found to play in the file(s) " + paths[0])])
+                self.append_to_current_notebook([FModel(_("Nothing found to play in the file(s)") + paths[0])])
             else:
                 self.append_to_current_notebook(beans)
        
@@ -150,10 +150,9 @@ class BaseFoobnixControls(LoadSave):
             FC().cache_music_tree_beans.append(bean)
         
         if not all:
-            all.append(FModel("Music not found in folder(s):"))
-        
-        for path in FC().music_paths:            
-            all.append(FModel(path).add_is_file(True))
+            all.append(FModel(_("Music not found in folder(s):")))        
+            for path in FC().music_paths:            
+                all.append(FModel(path).add_is_file(True))
         
         self.tree.append_all(all)
 
@@ -194,7 +193,12 @@ class BaseFoobnixControls(LoadSave):
             self.media_engine.state_pause()            
         else:
             self.media_engine.state_play()
-            
+    
+    def seek_up(self):        
+        self.media_engine.seek_up()
+        
+    def seek_down(self):
+        self.media_engine.seek_down()
     
     def windows_visibility(self):
         visible = self.main_window.get_property('visible')
@@ -337,10 +341,9 @@ class BaseFoobnixControls(LoadSave):
                 all.append(bean)
             
             if not results:
-                all = self.show_google_results(query)
-                
+                all = self.show_google_results(query)                
             self.notetabs.append_tab(query, all)
-        inline()
+        self.in_thread.run_with_progressbar(inline)
     
     def search_all_tracks(self, query):
         def inline(query):
@@ -359,7 +362,7 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
             
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query)
 
     def search_top_tracks(self, query):
         def inline(query):
@@ -378,8 +381,7 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
                 
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
-
+        self.in_thread.run_with_progressbar(inline, query)
 
 
     def search_top_albums(self, query):
@@ -402,10 +404,11 @@ class BaseFoobnixControls(LoadSave):
                 
             if not results:
                 all = self.show_google_results(query)
+                self.notetabs.append(all)
                 
             
                                    
-        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query)
 
     def search_top_similar(self, query):
         def inline(query):
@@ -430,7 +433,7 @@ class BaseFoobnixControls(LoadSave):
                      
             
         #inline(query)
-        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query)
 
     def search_top_tags(self, query):
         def inline(query):
@@ -454,7 +457,7 @@ class BaseFoobnixControls(LoadSave):
                 all = self.show_google_results(query)
                 self.notetabs.append(all)
         
-        self.in_thread.run_with_progressbar(inline, query, "Searching: " + query)
+        self.in_thread.run_with_progressbar(inline, query)
 
     def update_info_panel(self, bean):
         self.info_panel.update(bean)
@@ -494,12 +497,17 @@ class BaseFoobnixControls(LoadSave):
         self.virtual.filter_by_file(value)
 
     def quit(self, *a):
+        self.state_stop()
+        self.main_window.hide()
+        self.trayicon.hide()        
         
         LOG.info("Controls - Quit")
-        self.main_window.hide()
-        self.on_save()
-        FC().save(False)                        
-        gtk.main_quit()
+        def task():
+            self.on_save()
+            FC().save(False)                        
+            gtk.main_quit()
+        
+        thread.start_new_thread(task, ())
 
     def check_version(self):
         uuid = FC().uuid

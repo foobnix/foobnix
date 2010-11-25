@@ -6,10 +6,10 @@ Created on Oct 14, 2010
 import gtk
 import copy
 import uuid
-from foobnix.regui.id3 import update_id3_wind_filtering
 import gobject
 from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util import LOG
+from foobnix.util.id3_util import update_id3_wind_filtering
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -26,10 +26,10 @@ class DrugDropTree(gtk.TreeView):
         self.current_view = None
     
     def configure_recive_drug(self):
-        self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY)
+        self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY) #@UndefinedVariable
     
     def configure_send_drug(self):
-        self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY)
+        self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY) #@UndefinedVariable
     
     def append_all(self, beans):
         if self.current_view == VIEW_PLAIN:
@@ -128,6 +128,7 @@ class DrugDropTree(gtk.TreeView):
         pass
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
+        print self, to_tree, drag_context, x, y, selection
         to_filter_model = to_tree.get_model()
         #to_model = to_filter_model.get_model()
         if to_tree.get_dest_row_at_pos(x, y):
@@ -227,6 +228,8 @@ class DrugDropTree(gtk.TreeView):
             return
         self.current_view = VIEW_PLAIN
         LOG.debug("append all as plain")
+        counter = 0
+        is_cue = False
         counter = 0
         is_cue = False
         for bean in beans:
