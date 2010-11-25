@@ -11,7 +11,6 @@ from foobnix.util import LOG, file_utils
 import chardet
 import re
 from foobnix.util.image_util import get_image_by_path
-
 from foobnix.regui.id3.audio import get_mutagen_audio
 
 TITLE = "TITLE"
@@ -83,28 +82,21 @@ class CueReader():
         audio = get_mutagen_audio(file)
         return audio.info.length
     
-    def normalize(self, cue_file, files_count):
+    def normalize(self, cue_file):
         duration_tracks = []
         tracks = cue_file.tracks
         for i in xrange(len(tracks)):
             track = tracks[i]
-            if files_count > 1 and files_count == len(tracks):
-                #for cue  "each file involve one track"
-                duration = self.get_full_duration(track.path)
-            else: #for cue  "one file -  several tracks"
-                if i == len(tracks) - 1: #for last track in cue
-                    duration = self.get_full_duration(cue_file.file) - track.get_start_time_sec()
-                else:                
-                    next_track = tracks[i + 1]
-                    previous_track = tracks[i - 1]
-                    if next_track.get_start_time_sec() > track.get_start_time_sec():
-                        duration = next_track.get_start_time_sec() - track.get_start_time_sec()
-                    else: #for cue  "several files - each file involve several tracks"
-                        track.path = previous_track.path
-                        duration = self.get_full_duration(track.path) - track.get_start_time_sec()
-                        #use previous_track.path because the last track before the next file
-                        #gets the next file in the track.path
-                        #(a feature of the implementation of the method self.parse)
+            if i == len(tracks) - 1: #for last track in cue
+                duration = self.get_full_duration(track.path) - track.get_start_time_sec()
+            else:
+                next_track = tracks[i + 1]
+                if next_track.get_start_time_sec() > track.get_start_time_sec():
+                    #for cue "one file - several tracks"
+                    duration = next_track.get_start_time_sec() - track.get_start_time_sec()
+                else: #for cue  "several files - each file involve several tracks"
+                    duration = self.get_full_duration(track.path) - track.get_start_time_sec()
+                        
             track.duration = duration
             if not track.path:
                 track.path = cue_file.file
@@ -142,13 +134,11 @@ class CueReader():
 
         return chardet.detect(data)['encoding']
 
-
     def parse(self):
         file = open(self.cue_file, "r")
         code = self.code_detecter(self.cue_file);
         LOG.debug("File encoding is", code)
 
-        is_title = True
         cue_file = CueFile()
 
         title = ""
@@ -173,13 +163,13 @@ class CueReader():
 
             if line.startswith(TITLE):
                 title = self.get_line_value(line)
-                if is_title:
+                if self.files_count == 0:
                     cue_file.title = title
 
 
             if line.startswith(PERFORMER):
                 performer = self.get_line_value(line)
-                if is_title:
+                if self.files_count == 0:
                     cue_file.performer = performer
 
             if line.startswith(FILE):
@@ -208,21 +198,14 @@ class CueReader():
                         self.is_valid = False
                         return cue_file
 
-                if is_title:
+                if self.files_count == 0:
                     cue_file.file = full_file
-
 
             if line.startswith(INDEX):
                 index = self.get_line_value(line)
 
-            if line.startswith("TRACK") and line.find("AUDIO"):
-                if not is_title:
-                    cue_track = CueTrack(title, performer, index, full_file)
-                    cue_file.append_track(cue_track)
-                is_title = False
-        
-        """for displaying last track of file""" 
-        cue_track = CueTrack(title, performer, index, full_file)
-        cue_file.append_track(cue_track)
-        
-        return self.normalize(cue_file, self.files_count)
+            if line.startswith("INDEX 01"):
+                cue_track = CueTrack(title, performer, index, full_file)
+                cue_file.append_track(cue_track)
+                        
+        return self.normalize(cue_file)
