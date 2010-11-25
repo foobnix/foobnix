@@ -257,9 +257,6 @@ class BaseFoobnixControls(LoadSave):
                     time.sleep(0.5)
                     self.next()
                 self.count_errors += 1
-        else:
-            bean.path = get_radio_source(bean.path)
-        
         
         if bean.path and os.path.isdir(bean.path):
             self.state_stop()

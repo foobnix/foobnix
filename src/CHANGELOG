@@ -1,4 +1,5 @@
 0.2.2
+* Add new "karmic" "lucid" PPA
 * Fix to works with debian
 * Add Russian Localization
 * Add man help with all commands descriptions (example: man foobnix)

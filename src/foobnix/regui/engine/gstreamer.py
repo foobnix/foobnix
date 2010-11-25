@@ -13,6 +13,7 @@ import time
 import thread
 from foobnix.util.fc import FC
 from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
+from foobnix.util.plsparser import get_radio_source
 
 
 class GStreamerEngine(MediaPlayerEngine):
@@ -110,6 +111,8 @@ class GStreamerEngine(MediaPlayerEngine):
                 self.set_all_bands(pre, bands)
             
             if path.startswith("http://"):
+                path = get_radio_source(path)
+                LOG.debug("Try To play path", path)
                 uri = path
                 self.notify_title(uri)
             else:

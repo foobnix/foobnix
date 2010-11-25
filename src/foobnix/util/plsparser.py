@@ -22,7 +22,6 @@ def get_content(url):
     
             
 def getStationPath(url):
-    print "get station"
     
     if not url:
         return None

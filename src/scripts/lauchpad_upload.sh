@@ -19,7 +19,7 @@ cp -r scripts/debian ../build/foobnix_$FOOBNIX_VERSION/debian
 cd ../build
 
 
-LIST=("lucid" "maverick" "natty")
+LIST=("karmic" "lucid" "maverick")
 
 for UBUNTU in ${LIST[@]}
 do
