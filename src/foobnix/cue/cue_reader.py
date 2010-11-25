@@ -3,6 +3,7 @@ Created on 7  2010
 
 @author: ivan
 '''
+
 from __future__ import with_statement
 from foobnix.regui.model import FModel
 import os
