@@ -10,7 +10,6 @@ import gobject
 from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util import LOG
 from foobnix.util.id3_util import update_id3_wind_filtering
-from foobnix.util.id3_util import update_id3_wind_filtering
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -230,14 +229,11 @@ class DrugDropTree(gtk.TreeView):
             return
         self.current_view = VIEW_PLAIN
         LOG.debug("append all as plain")
-        counter = 0
-        is_cue = False
-        counter = 0
-        is_cue = False
+        
         counter = 0
         is_cue = False
         for bean in beans:
-            if bean.path.lower().endswith(".cue"):
+            if bean.path and bean.path.lower().endswith(".cue"):
                 self.plain_append(bean)
                 is_cue = True
         if is_cue: return

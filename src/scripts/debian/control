@@ -2,7 +2,7 @@ Source: foobnix
 Section: sound
 Priority: extra
 Maintainer: Ivan Ivanenko <ivan.ivanenko@gmail.com>
-Build-Depends: cdbs, debhelper (>= 7), python (>= 2.6), python-support
+Build-Depends: cdbs, debhelper (>= 7), python (>= 2.6), python-support, python-setuptools, gettext
 XS-Python-Version: >= 2.5
 Standards-Version: 3.8.1
 Homepage: http://www.foobnix.com
@@ -10,6 +10,6 @@ Homepage: http://www.foobnix.com
 Package: foobnix
 Architecture: any
 Depends: python-chardet, python-gtk2, python-mutagen, python-simplejson, gstreamer0.10-plugins-good, gstreamer0.10-plugins-ugly, gstreamer0.10-ffmpeg, python-gst0.10
-Recommends:gettext, python-keybinder, python-setuptools 
+Recommends: python-keybinder 
 Description: Foobnix GTK+ music player
  Foobnix is very good music player
