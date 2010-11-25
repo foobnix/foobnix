@@ -13,7 +13,6 @@ import re
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.audio import get_mutagen_audio
 
-
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
 FILE = "FILE"
@@ -79,8 +78,8 @@ class CueReader():
         end = str.find('"', first + 1) or str.find("'", first + 1)
         return str[first + 1:end]
     
-    def get_full_duration (self, cue_file):        
-        audio = get_mutagen_audio(cue_file.file)
+    def get_full_duration (self, file):        
+        audio = get_mutagen_audio(file)
         return audio.info.length
     
     def normalize(self, cue_file):
@@ -88,11 +87,16 @@ class CueReader():
         tracks = cue_file.tracks
         for i in xrange(len(tracks)):
             track = tracks[i]
-            if i == len(tracks) - 1:
-                duration = self.get_full_duration(cue_file) - track.get_start_time_sec()
-            else:                
+            if i == len(tracks) - 1: #for last track in cue
+                duration = self.get_full_duration(track.path) - track.get_start_time_sec()
+            else:
                 next_track = tracks[i + 1]
-                duration = next_track.get_start_time_sec() - track.get_start_time_sec()
+                if next_track.get_start_time_sec() > track.get_start_time_sec():
+                    #for cue "one file - several tracks"
+                    duration = next_track.get_start_time_sec() - track.get_start_time_sec()
+                else: #for cue  "several files - each file involve several tracks"
+                    duration = self.get_full_duration(track.path) - track.get_start_time_sec()
+                        
             track.duration = duration
             if not track.path:
                 track.path = cue_file.file
@@ -130,13 +134,11 @@ class CueReader():
 
         return chardet.detect(data)['encoding']
 
-
     def parse(self):
         file = open(self.cue_file, "r")
         code = self.code_detecter(self.cue_file);
         LOG.debug("File encoding is", code)
 
-        is_title = True
         cue_file = CueFile()
 
         title = ""
@@ -161,22 +163,17 @@ class CueReader():
 
             if line.startswith(TITLE):
                 title = self.get_line_value(line)
-                if is_title:
+                if self.files_count == 0:
                     cue_file.title = title
 
 
             if line.startswith(PERFORMER):
                 performer = self.get_line_value(line)
-                if is_title:
+                if self.files_count == 0:
                     cue_file.performer = performer
 
             if line.startswith(FILE):
                 self.files_count += 1
-
-                if self.files_count > 1:
-                        self.is_valid = False
-                        return cue_file
-
                 file = self.get_line_value(line)
                 dir = os.path.dirname(self.cue_file)
                 full_file = os.path.join(dir, file)
@@ -201,22 +198,16 @@ class CueReader():
                         self.is_valid = False
                         return cue_file
 
-                if is_title:
+                if self.files_count == 0:
                     cue_file.file = full_file
-
 
             if line.startswith(INDEX):
                 index = self.get_line_value(line)
 
-            if line.startswith("TRACK") and line.find("AUDIO"):
-                if not is_title:
-                    cue_track = CueTrack(title, performer, index, full_file)
-                    cue_file.append_track(cue_track)
-                is_title = False
-        
-        cue_track = CueTrack(title, performer, index, full_file)
-        cue_file.append_track(cue_track)
-        
+            if line.startswith("INDEX 01"):
+                cue_track = CueTrack(title, performer, index, full_file)
+                cue_file.append_track(cue_track)
+                        
         return self.normalize(cue_file)
     
 def update_id3_for_cue(beans):
@@ -229,4 +220,4 @@ def update_id3_for_cue(beans):
                     result.append(cue)
         else:
             result.append(bean)
-    return result    
+    return result
