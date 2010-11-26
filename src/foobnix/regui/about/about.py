@@ -48,11 +48,11 @@ class AboutWindow(BaseParentWindow):
         table.attach(image, 0, 3, 0, 1)
 
         label = gtk.Label("Foobnix " + FOOBNIX_VERSION)
-        label.set_markup ("""<big><big><b><b>Foobnix</b></b></big></big>
+        label.set_markup ("""<big><big><b><b>Foobnix %s</b></b></big></big>
 Playing all imaginations\n
 <small>Developed by Ivan Ivanenko</small>
 <small>ivan.ivanenko@gmail.com</small>\n
-<a href="http://www.foobnix.com">www.foobnix.com</a>\n""")
+<a href="http://www.foobnix.com">www.foobnix.com</a>\n""" % FOOBNIX_VERSION)
         label.set_justify(gtk.JUSTIFY_CENTER)
         table.attach(label, 0, 3, 1, 2)
 

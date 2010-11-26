@@ -90,8 +90,9 @@ class MenuWidget(FControl):
         """Help"""
         help = top.append(_("_Help"))
         help.add_image_item(_("About"), gtk.STOCK_ABOUT, self.controls.about.show_all)
-        help.add_text_item(_("Project page"), lambda * a:open_link_in_browser("http://www.foobnix.com"), None, False)
+        help.add_text_item(_("Project page"), lambda * a:open_link_in_browser(_("http://www.foobnix.com/news/eng")), None, False)
         help.add_image_item(_("Issue report"), gtk.STOCK_DIALOG_WARNING, lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
+        help.add_image_item(_("Donate Participate"), gtk.STOCK_DIALOG_QUESTION, lambda * a:open_link_in_browser(_("http://www.foobnix.com/donate/eng")))
         
         #help.add_image_item("Help", gtk.STOCK_HELP)
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-25 14:00+0200\n"
+"POT-Creation-Date: 2010-11-26 17:07+0200\n"
 "PO-Revision-Date: 2010-11-26 22:37+0800\n"
 "Last-Translator: Dean Lee <xslidian@gmail.com>\n"
 "Language-Team: Chinese Simplified <xslidian+foobnix@gmail.com>\n"
@@ -16,8 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Chinese\n"
 
-#: .././foobnix/eq/eq_gui.py:39
-#: .././foobnix/regui/menu.py:37
+#: .././foobnix/eq/eq_gui.py:39 .././foobnix/regui/menu.py:37
 msgid "Equalizer"
 msgstr "均衡器"
 
@@ -278,27 +277,27 @@ msgstr "关闭窗口时——最小化播放器"
 msgid "Vkontakte"
 msgstr "Vkontakte"
 
-#: .././foobnix/regui/base_controls.py:76
+#: .././foobnix/regui/base_controls.py:75
 msgid "Choose folders to open"
 msgstr "选择要打开的文件夹"
 
-#: .././foobnix/regui/base_controls.py:101
+#: .././foobnix/regui/base_controls.py:100
 msgid "Nothing found to play in the folder(s)"
 msgstr "文件夹中无可播放文件"
 
-#: .././foobnix/regui/base_controls.py:105
+#: .././foobnix/regui/base_controls.py:104
 msgid "Choose file to open"
 msgstr "选择要打开的文件"
 
-#: .././foobnix/regui/base_controls.py:121
+#: .././foobnix/regui/base_controls.py:120
 msgid "Nothing found to play in the file(s)"
 msgstr "无可播放文件"
 
-#: .././foobnix/regui/base_controls.py:153
+#: .././foobnix/regui/base_controls.py:152
 msgid "Music not found in folder(s):"
 msgstr "文件夹中未找到音乐:"
 
-#: .././foobnix/regui/base_controls.py:527
+#: .././foobnix/regui/base_controls.py:523
 msgid "New version is available"
 msgstr "新版本可用"
 
@@ -374,8 +373,7 @@ msgstr "随机"
 msgid "Repeat"
 msgstr "重复"
 
-#: .././foobnix/regui/menu.py:62
-#: .././foobnix/regui/search.py:131
+#: .././foobnix/regui/menu.py:62 .././foobnix/regui/search.py:131
 #: .././foobnix/util/const.py:37
 msgid "All"
 msgstr "全部"
@@ -400,9 +398,21 @@ msgstr "关于"
 msgid "Project page"
 msgstr "项目主页"
 
+#: .././foobnix/regui/menu.py:93
+msgid "http://www.foobnix.com/news/eng"
+msgstr ""
+
 #: .././foobnix/regui/menu.py:94
 msgid "Issue report"
 msgstr "报告问题"
+
+#: .././foobnix/regui/menu.py:95
+msgid "Donate Participate"
+msgstr ""
+
+#: .././foobnix/regui/menu.py:95
+msgid "http://www.foobnix.com/donate/eng"
+msgstr ""
 
 #: .././foobnix/regui/perspectives.py:64
 msgid "Music"
@@ -557,4 +567,3 @@ msgstr "锁定"
 #: .././foobnix/util/const.py:45
 msgid "Error"
 msgstr "错误"
-

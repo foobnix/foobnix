@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-25 14:00+0200\n"
+"POT-Creation-Date: 2010-11-26 17:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -277,27 +277,27 @@ msgstr ""
 msgid "Vkontakte"
 msgstr ""
 
-#: .././foobnix/regui/base_controls.py:76
+#: .././foobnix/regui/base_controls.py:75
 msgid "Choose folders to open"
 msgstr ""
 
-#: .././foobnix/regui/base_controls.py:101
+#: .././foobnix/regui/base_controls.py:100
 msgid "Nothing found to play in the folder(s)"
 msgstr ""
 
-#: .././foobnix/regui/base_controls.py:105
+#: .././foobnix/regui/base_controls.py:104
 msgid "Choose file to open"
 msgstr ""
 
-#: .././foobnix/regui/base_controls.py:121
+#: .././foobnix/regui/base_controls.py:120
 msgid "Nothing found to play in the file(s)"
 msgstr ""
 
-#: .././foobnix/regui/base_controls.py:153
+#: .././foobnix/regui/base_controls.py:152
 msgid "Music not found in folder(s):"
 msgstr ""
 
-#: .././foobnix/regui/base_controls.py:527
+#: .././foobnix/regui/base_controls.py:523
 msgid "New version is available"
 msgstr ""
 
@@ -398,8 +398,20 @@ msgstr ""
 msgid "Project page"
 msgstr ""
 
+#: .././foobnix/regui/menu.py:93
+msgid "http://www.foobnix.com/news/eng"
+msgstr ""
+
 #: .././foobnix/regui/menu.py:94
 msgid "Issue report"
+msgstr ""
+
+#: .././foobnix/regui/menu.py:95
+msgid "Donate Participate"
+msgstr ""
+
+#: .././foobnix/regui/menu.py:95
+msgid "http://www.foobnix.com/donate/eng"
 msgstr ""
 
 #: .././foobnix/regui/perspectives.py:64

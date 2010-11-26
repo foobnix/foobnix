@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-23 12:50+0200\n"
+"POT-Creation-Date: 2010-11-26 17:07+0200\n"
 "PO-Revision-Date: 2009-04-06 21:35+0300\n"
 "Last-Translator: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
@@ -22,24 +22,24 @@ msgstr ""
 msgid "Equalizer"
 msgstr "Эквалайзер"
 
-#: .././foobnix/preferences/preferences_window.py:50
+#: .././foobnix/preferences/preferences_window.py:56
 #: .././foobnix/regui/menu.py:40
 msgid "Preferences"
 msgstr "Настройки"
 
-#: .././foobnix/preferences/preferences_window.py:61
+#: .././foobnix/preferences/preferences_window.py:67
 msgid "Categories"
 msgstr "Категории"
 
-#: .././foobnix/preferences/preferences_window.py:116
+#: .././foobnix/preferences/preferences_window.py:122
 msgid "Restore Defaults Settings"
 msgstr "Востановить исходные настройки"
 
-#: .././foobnix/preferences/preferences_window.py:122
+#: .././foobnix/preferences/preferences_window.py:128
 msgid "Save"
 msgstr "Сохранить"
 
-#: .././foobnix/preferences/preferences_window.py:127
+#: .././foobnix/preferences/preferences_window.py:133
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -279,31 +279,27 @@ msgstr "При закрытии окна - уменьшать плеер"
 msgid "Vkontakte"
 msgstr "Vkontakte"
 
-#: .././foobnix/regui/base_controls.py:76
+#: .././foobnix/regui/base_controls.py:75
 msgid "Choose folders to open"
 msgstr "Выберите папки для открытия"
 
-#: .././foobnix/regui/base_controls.py:101
+#: .././foobnix/regui/base_controls.py:100
 msgid "Nothing found to play in the folder(s)"
 msgstr "Не найдено музыки в папках"
 
-#: .././foobnix/regui/base_controls.py:105
+#: .././foobnix/regui/base_controls.py:104
 msgid "Choose file to open"
 msgstr "Выберите файлы для открытия"
 
-#: .././foobnix/regui/base_controls.py:121
+#: .././foobnix/regui/base_controls.py:120
 msgid "Nothing found to play in the file(s)"
 msgstr "Музыка не найдена в файлах"
 
-#: .././foobnix/regui/base_controls.py:153
+#: .././foobnix/regui/base_controls.py:152
 msgid "Music not found in folder(s):"
 msgstr "Музыка не найдена в папках"
 
-#: .././foobnix/regui/base_controls.py:362
-msgid "Searching: "
-msgstr "Ищу..."
-
-#: .././foobnix/regui/base_controls.py:521
+#: .././foobnix/regui/base_controls.py:523
 msgid "New version is available"
 msgstr "Найдена новая версия"
 
@@ -405,9 +401,21 @@ msgstr "О программе"
 msgid "Project page"
 msgstr "Страница проекта"
 
+#: .././foobnix/regui/menu.py:93
+msgid "http://www.foobnix.com/news/eng"
+msgstr "http://www.foobnix.com"
+
 #: .././foobnix/regui/menu.py:94
 msgid "Issue report"
 msgstr "Сообщить о неполадке"
+
+#: .././foobnix/regui/menu.py:95
+msgid "Donate Participate"
+msgstr "Поддержать проект"
+
+#: .././foobnix/regui/menu.py:95
+msgid "http://www.foobnix.com/donate/eng"
+msgstr "http://www.foobnix.com/donate"
 
 #: .././foobnix/regui/perspectives.py:64
 msgid "Music"
