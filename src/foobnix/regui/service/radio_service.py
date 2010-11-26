@@ -8,7 +8,7 @@ import os
 from foobnix.util import LOG
 
 
-FOOBNIX_RADIO_PATHS = ("/usr/local/share/foobnix/radio", "radio")
+FOOBNIX_RADIO_PATHS = ("/usr/local/share/foobnix/radio", "radio", "/usr/share/foobnix/radio")
 EXTENSION = ".fpl"
 
 
@@ -35,7 +35,8 @@ class RadioFolder():
                     path = os.path.join(cur_path, item)
                     if item.endswith(EXTENSION) and os.path.isfile(path) and os.path.getsize(path) > 0:
                         LOG.info("Find radio station playlist", item)
-                        result.append(item)                    
+                        if item not in result:
+                            result.append(item)                    
         return result
     
     """parser playlist by name"""

@@ -11,7 +11,6 @@ from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.regui.service.vk_service import VKService
-from foobnix.util.plsparser import get_radio_source
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link
 from foobnix.regui.service.music_service import get_all_music_by_path
