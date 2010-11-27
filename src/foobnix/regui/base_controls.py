@@ -520,7 +520,7 @@ class BaseFoobnixControls(LoadSave):
         LOG.info("version", current_version , "|", new_version, "|", uuid)
         f.close()
         if FC().check_new_version and current_version < new_version:
-            info_dialog_with_link(_("New version is available"), "foobnix " + new_version, "http://www.foobnix.com/?page=download")            
+            info_dialog_with_link(_("New version is available"), "foobnix " + new_version, _("http://www.foobnix.com/download/eng"))            
 
     def on_load(self):
         for element in self.__dict__:
