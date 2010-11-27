@@ -3,7 +3,8 @@ pwd
 rm -rf ../../build/*.*
 cd ../
 
-#python setup.py build
+python setup.py build
+#python setup.py test
 
 pwd
 source foobnix/version.py
@@ -19,15 +20,20 @@ cp -r scripts/debian ../build/foobnix_$FOOBNIX_VERSION/debian
 cd ../build
 
 
-LIST=("karmic" "lucid" "maverick")
+#LIST=("karmic" "lucid" "maverick")
+LIST=("lucid" "maverick", "natty")
 
 for UBUNTU in ${LIST[@]}
 do
-	rm -rf foobnix*_source*
+V_RELEASE=${RELEASE}${UBUNTU:0:1}
+	echo "Deleting content of the folder", $UBUNTU
+	pwd
+	rm -rf foobnix_*_*
 	rm -rf foobnix*.dsc
 	rm -rf foobnix*.tar.gz
-	cd foobnix_$FOOBNIX_VERSION/debian
-	python ../../../src/scripts/changelog_gen.py $VERSION $RELEASE $UBUNTU
+	rm -rf foobnix_$FOOBNIX_VERSION/debian/changelog
+	cd foobnix_$FOOBNIX_VERSION/debian/
+	python ../../../src/scripts/changelog_gen.py $VERSION $V_RELEASE $UBUNTU
 	cd ../
 	
 	#dch -e
@@ -37,5 +43,5 @@ do
 	#debuild -us -uc
 	
 	cd ../	
-	dput ppa:foobnix-player/foobnix foobnix_${FOOBNIX_VERSION}_source.changes
+	dput ppa:foobnix-player/foobnix foobnix_${FOOBNIX_VERSION}${UBUNTU:0:1}_source.changes
 done

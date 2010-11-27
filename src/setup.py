@@ -5,7 +5,7 @@ from distutils.core import setup, Command
 from test.all import run_all_tests
 
 VERSION = "0.2.2"
-RELEASE = "7"
+RELEASE = "8ppa3"
 LANGS = ('ru', 'zh_CN')
 
 if not os.path.exists("mo/"):
