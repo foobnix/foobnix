@@ -309,7 +309,7 @@ msgstr "Лушние песни"
 
 #: .././foobnix/regui/infopanel.py:45
 msgid "Similar Artists"
-msgstr "Похожие Артисты"
+msgstr "Похожие Исполнители"
 
 #: .././foobnix/regui/infopanel.py:48
 msgid "Similar Songs"
@@ -463,7 +463,7 @@ msgstr "Установить фокус на строке поиска (Alt+G) G
 
 #: .././foobnix/regui/search.py:98
 msgid "Top by artist"
-msgstr "Лучшее по артисту"
+msgstr "Лучшее по исполнителю"
 
 #: .././foobnix/regui/search.py:104
 msgid "_Tracks"
