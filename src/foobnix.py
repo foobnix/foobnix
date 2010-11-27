@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import sys
 from foobnix.regui.controls.dbus_manager import foobnix_dbus_interface
 import time

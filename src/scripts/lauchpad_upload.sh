@@ -36,10 +36,10 @@ V_RELEASE=${RELEASE}${UBUNTU:0:1}
 	
 	#dch -e
 	
-	debuild -S -sd -kD2628E50
+	#debuild -S -sd -kD2628E50
 	
-	#debuild -us -uc
+	debuild -us -uc
 	
 	cd ../	
-	dput ppa:foobnix-player/foobnix foobnix_${FOOBNIX_VERSION}${UBUNTU:0:1}_source.changes
+	#dput ppa:foobnix-player/foobnix foobnix_${FOOBNIX_VERSION}${UBUNTU:0:1}_source.changes
 done

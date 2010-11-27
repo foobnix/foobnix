@@ -6,7 +6,7 @@ It was downloaded from:
 
     http://www.foobnix.com
 
-Upstream Author(s):
+Upstream Author:
 
     Ivan Ivanenko <ivan.ivanenko@gmail.com>
 
@@ -37,6 +37,3 @@ The Debian packaging is:
     Copyright (C) 2010 Ivan Ivanenko <ivan.ivanenko@gmail.com>
 
 and is licensed under the GPL version 3, see above.
-
-# Please also look if there are files or directories which have a
-# different copyright/license attached and list them here.
