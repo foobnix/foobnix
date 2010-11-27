@@ -121,10 +121,10 @@ class PlaylistTreeControl(CommonTreeControl):
             self.controls.play_selected_song()
         if is_rigth_click(e):
             menu = Popup()
-            menu.add_item('Play', gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
-            menu.add_item('Download', gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
-            menu.add_item('Save as', gtk.STOCK_SAVE_AS, self.controls.save_beans_to, self.get_all_selected_beans())
+            menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
+            menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
+            #menu.add_item('Save as', gtk.STOCK_SAVE_AS, self.controls.save_beans_to, self.get_all_selected_beans())
             menu.add_separator()
             text = self.get_selected_bean().text
-            menu.add_item('Copy to Search Line', gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
+            menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
             menu.show(e)

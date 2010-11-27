@@ -23,17 +23,17 @@ class DMControls(MyToolbar):
     def __init__(self, controls, dm_tree): 
         MyToolbar.__init__(self)   
         
-        self.add_button("Preferences", gtk.STOCK_PREFERENCES, controls.preferences.show, CONFIG_DOWNLOAD_MANAGER)
+        self.add_button(_("Preferences"), gtk.STOCK_PREFERENCES, controls.preferences.show, CONFIG_DOWNLOAD_MANAGER)
         self.add_separator()   
-        self.add_button("Start", gtk.STOCK_MEDIA_PLAY, dm_tree.update_status_for_selected, DOWNLOAD_STATUS_ACTIVE)
-        self.add_button("Stop", gtk.STOCK_MEDIA_PAUSE, dm_tree.update_status_for_selected, DOWNLOAD_STATUS_STOP)
+        self.add_button(_("Start Downloading"), gtk.STOCK_MEDIA_PLAY, dm_tree.update_status_for_selected, DOWNLOAD_STATUS_ACTIVE)
+        self.add_button(_("Stop Downloading"), gtk.STOCK_MEDIA_PAUSE, dm_tree.update_status_for_selected, DOWNLOAD_STATUS_STOP)
         self.add_separator()   
-        self.add_button("Start All", gtk.STOCK_MEDIA_FORWARD, dm_tree.update_status_for_all, DOWNLOAD_STATUS_ACTIVE)
-        self.add_button("Stop All", gtk.STOCK_STOP, dm_tree.update_status_for_all, DOWNLOAD_STATUS_STOP)
-        self.add_separator()   
-        self.add_button("Delete", gtk.STOCK_DELETE, dm_tree.delete_all_selected, None)
-        self.add_button("Delete All", gtk.STOCK_CLEAR, dm_tree.delete_all, None)
-        self.add_separator()
+        #self.add_button("Start All", gtk.STOCK_MEDIA_FORWARD, dm_tree.update_status_for_all, DOWNLOAD_STATUS_ACTIVE)
+        #self.add_button("Stop All", gtk.STOCK_STOP, dm_tree.update_status_for_all, DOWNLOAD_STATUS_STOP)
+        #self.add_separator()   
+        #self.add_button("Delete", gtk.STOCK_DELETE, dm_tree.delete_all_selected, None)
+        #self.add_button("Delete All", gtk.STOCK_CLEAR, dm_tree.delete_all, None)
+        #self.add_separator()
         
     def on_load(self): pass
     def on_save(self): pass
@@ -41,7 +41,7 @@ class DMControls(MyToolbar):
 class DM(ChildTopWindow):
     def __init__(self, controls):
         self.controls = controls        
-        ChildTopWindow.__init__(self, "Dowload Manager", 900, 700)
+        ChildTopWindow.__init__(self, _("Dowload Manager"), 900, 700)
         self.set_resizable(True)
 
         vbox = gtk.VBox(False, 0)
