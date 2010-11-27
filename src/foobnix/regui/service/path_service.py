@@ -10,6 +10,8 @@ from foobnix.util import LOG
 def get_foobnix_resourse_path_by_name(filename):
     paths = ("/usr/local/share/pixmaps",
              "/usr/share/pixmaps",
+             "/usr/share/foobnix",
+             "/usr/local/share/foobnix",
              "pixmaps",
              "foobnix/pixmaps",
              "./../../..",
