@@ -32,8 +32,6 @@ class MenuWidget(FControl):
         self.view_search_panel.connect("activate", lambda w: controls.set_visible_search_panel(w.get_active()))
 
         view.separator()
-
-        view.separator()
         view.add_image_item(_("Equalizer"), None, self.controls.eq.show)
         view.add_image_item(_("Download Manager"), None, self.controls.dm.show)
         view.separator()
@@ -90,8 +88,10 @@ class MenuWidget(FControl):
         """Help"""
         help = top.append(_("_Help"))
         help.add_image_item(_("About"), gtk.STOCK_ABOUT, self.controls.about.show_all)
+        help.separator()
         help.add_text_item(_("Project page"), lambda * a:open_link_in_browser(_("http://www.foobnix.com/news/eng")), None, False)
         help.add_image_item(_("Issue report"), gtk.STOCK_DIALOG_WARNING, lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
+        help.separator()
         help.add_image_item(_("Donate Participate"), gtk.STOCK_DIALOG_QUESTION, lambda * a:open_link_in_browser(_("http://www.foobnix.com/donate/eng")))
         
         #help.add_image_item("Help", gtk.STOCK_HELP)
@@ -190,26 +190,21 @@ class TopMenu():
         self.widget = self.menu_bar
 
     def decorate(self):
-        label = gtk.Button()
-        style = label.get_style()
-        base = style.base[gtk.STATE_NORMAL]
+        correct_style_element = gtk.Window()
+        correct_style_element.realize()
+        style = correct_style_element.get_style()
+        
         fg = style.fg[gtk.STATE_NORMAL]
         bg = style.bg[gtk.STATE_NORMAL]
         
         #fg =  gtk.gdk.color_parse("BLUE")
-        #bg =  gtk.gdk.color_parse("RED")
-        #base =  gtk.gdk.color_parse("GREEN")
         
-        #self.menu_bar.modify_base(gtk.STATE_NORMAL, base)
-        self.menu_bar.modify_fg(gtk.STATE_NORMAL, fg)
         self.menu_bar.modify_bg(gtk.STATE_NORMAL, bg)
         
-        # making main menu look a bit better
         for item in self.menu_bar.get_children():
             current = item.get_children()[0]
-
             current.modify_fg(gtk.STATE_NORMAL, fg)
-            current.modify_bg(gtk.STATE_NORMAL, bg)
+            
             
 
     def append(self, title):
