@@ -7,6 +7,7 @@ Created on 3 сент. 2010
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
 from foobnix.util.fc import FC
+from foobnix.helpers.dialog_entry import info_dialog_with_link_and_donate
 class NotificationConfig(ConfigPlugin):
     
     name = _("Notifications")
@@ -15,10 +16,16 @@ class NotificationConfig(ConfigPlugin):
         box = gtk.VBox(False, 0)        
         box.hide()
         
-        self.check_new_version = gtk.CheckButton(label=_("Check for new version on start"), use_underline=True)
+        self.check_new_version = gtk.CheckButton(label=_("Check for new foobnix release on start"), use_underline=True)
         self.check_new_version.show()
         
+        demo = gtk.Button(_("Show new foobnix release avaliable demo dialog"))
+        demo.connect("clicked", lambda * a:info_dialog_with_link_and_donate("foobnix [version]"))
+        demo.show()
+        
+        
         box.pack_start(self.check_new_version, False, True, 0)
+        box.pack_start(demo, False, False, 0)
         
         self.widget = box
     
