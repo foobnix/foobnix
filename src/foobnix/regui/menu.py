@@ -8,15 +8,17 @@ from foobnix.util import LOG, const
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import open_link_in_browser
+from foobnix.util.widget_utils import MenuStyleDecorator
 
 class MenuWidget(FControl):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         """TOP menu constructor"""
-
+        
+        decorator = MenuStyleDecorator()
         top = TopMenu()
         """File"""
-        file = top.append(_("_File"))
+        file = top.add_submenu(_("_File"))
         file.add_image_item(_("Add File(s)"), gtk.STOCK_OPEN, self.controls.on_add_files)
         file.add_image_item(_("Add Folder(s)"), gtk.STOCK_OPEN, self.controls.on_add_folders)
         file.separator()
@@ -24,7 +26,7 @@ class MenuWidget(FControl):
 
 
         """View"""
-        view = top.append(_("_View"))
+        view = top.add_submenu(_("_View"))
         self.view_music_tree = view.add_ckeck_item(_("Left Panel"), FC().is_view_music_tree_panel)
         self.view_music_tree.connect("activate", lambda w: controls.set_visible_musictree_panel(w.get_active()))
 
@@ -38,7 +40,7 @@ class MenuWidget(FControl):
         view.add_image_item(_("Preferences"), gtk.STOCK_PREFERENCES, self.controls.show_preferences)
 
         """Playback"""
-        playback = top.append(_("_Playback"))
+        playback = top.add_submenu(_("_Playback"))
 
         def set_random(flag=True):            
             FC().is_order_random = flag
@@ -86,7 +88,7 @@ class MenuWidget(FControl):
         #self.playlist_tree.connect("activate", lambda w: w.get_active() and controls.set_playlist_tree())
 
         """Help"""
-        help = top.append(_("_Help"))
+        help = top.add_submenu(_("_Help"))
         help.add_image_item(_("About"), gtk.STOCK_ABOUT, self.controls.about.show_all)
         help.separator()
         help.add_text_item(_("Project page"), lambda * a:open_link_in_browser(_("http://www.foobnix.com/news/eng")), None, False)
@@ -96,8 +98,16 @@ class MenuWidget(FControl):
         
         #help.add_image_item("Help", gtk.STOCK_HELP)
 
-        top.decorate()
-        self.widget = top.widget
+        #top.decorate()
+        decorator.apply(top)
+        decorator.apply(file)
+        decorator.apply(view)
+        decorator.apply(playback)
+        decorator.apply(repeat)
+        decorator.apply(order)
+        decorator.apply(help)
+        
+        self.widget = top
 
         self.on_load()
     
@@ -117,6 +127,9 @@ class MyMenu(gtk.Menu):
 
     def add_image_item(self, title, gtk_stock, func=None, param=None):
         item = gtk.ImageMenuItem(title)
+        
+        
+        
         item.show()
         if gtk_stock:
             img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
@@ -127,7 +140,7 @@ class MyMenu(gtk.Menu):
             item.connect("activate", lambda * a: func(param))
         elif func:
             item.connect("activate", lambda * a: func())
-
+            
         self.append(item)
 
     def separator(self):
@@ -173,7 +186,7 @@ class MyMenu(gtk.Menu):
         
 
 """My top menu bar helper"""
-class TopMenu():
+class TopMenu(gtk.MenuBar):
     def __init__(self):
         rc_st = '''
             style "menubar-style" {
@@ -184,10 +197,7 @@ class TopMenu():
         '''
         gtk.rc_parse_string(rc_st)
 
-        self.menu_bar = gtk.MenuBar()
-        self.menu_bar.show()
-
-        self.widget = self.menu_bar
+        gtk.MenuBar.__init__(self)
 
     def decorate(self):
         correct_style_element = gtk.Window()
@@ -204,10 +214,9 @@ class TopMenu():
         for item in self.menu_bar.get_children():
             current = item.get_children()[0]
             current.modify_fg(gtk.STATE_NORMAL, fg)
-            
-            
+    
 
-    def append(self, title):
+    def add_submenu(self, title):
         menu = MyMenu()
         menu.show()
 
@@ -215,9 +224,7 @@ class TopMenu():
         file_item.show()
 
         file_item.set_submenu(menu)
-
-        self.menu_bar.append(file_item)
-
+        self.append(file_item)
         return menu
 
 
