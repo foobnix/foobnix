@@ -5,17 +5,17 @@ Created on 22 сент. 2010
 @author: ivan
 '''
 import gtk
-from foobnix.regui.menu import MenuWidget
 from foobnix.helpers.toolbar import ToolbarSeparator
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
+from foobnix.regui.menu import MenuBarWidget
 
-class TopWidgets(FControl, LoadSave,gtk.HBox):
+class TopWidgets(FControl, LoadSave, gtk.HBox):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        gtk.HBox.__init__(self,False, 0)
+        gtk.HBox.__init__(self, False, 0)
         
-        self.menu = MenuWidget(controls)
+        self.menu = MenuBarWidget(controls)
         sep = ToolbarSeparator()
         
         self.pack_start(self.menu.widget, False, False)

@@ -10,13 +10,13 @@ from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import open_link_in_browser
 from foobnix.util.widget_utils import MenuStyleDecorator
 
-class MenuWidget(FControl):
+class MenuBarWidget(FControl):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         """TOP menu constructor"""
         
         decorator = MenuStyleDecorator()
-        top = TopMenu()
+        top = TopMenuBar()
         """File"""
         file = top.add_submenu(_("_File"))
         file.add_image_item(_("Add File(s)"), gtk.STOCK_OPEN, self.controls.on_add_files)
@@ -186,7 +186,7 @@ class MyMenu(gtk.Menu):
         
 
 """My top menu bar helper"""
-class TopMenu(gtk.MenuBar):
+class TopMenuBar(gtk.MenuBar):
     def __init__(self):
         rc_st = '''
             style "menubar-style" {
@@ -196,25 +196,7 @@ class TopMenu(gtk.MenuBar):
             class "GtkMenuBar" style "menubar-style"
         '''
         gtk.rc_parse_string(rc_st)
-
         gtk.MenuBar.__init__(self)
-
-    def decorate(self):
-        correct_style_element = gtk.Window()
-        correct_style_element.realize()
-        style = correct_style_element.get_style()
-        
-        fg = style.fg[gtk.STATE_NORMAL]
-        bg = style.bg[gtk.STATE_NORMAL]
-        
-        #fg =  gtk.gdk.color_parse("BLUE")
-        
-        self.menu_bar.modify_bg(gtk.STATE_NORMAL, bg)
-        
-        for item in self.menu_bar.get_children():
-            current = item.get_children()[0]
-            current.modify_fg(gtk.STATE_NORMAL, fg)
-    
 
     def add_submenu(self, title):
         menu = MyMenu()
