@@ -9,7 +9,7 @@ import gtk
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.fc import FC
 from foobnix.regui.model import FModel
-from foobnix.helpers.dialog_entry import one_line_dialog, two_line_dialog
+from foobnix.helpers.dialog_entry import two_line_dialog
 from foobnix.helpers.menu import Popup
 from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
 from foobnix.regui.service.radio_service import RadioFolder
@@ -40,17 +40,19 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
             menu = Popup()
             menu.add_item(_("Add Station"), gtk.STOCK_ADD, self.on_add_station, None)
             menu.add_item(_("Delete Station"), gtk.STOCK_DELETE, self.on_delete_station, None)
-            menu.add_item(_("Rename Station"), gtk.STOCK_EDIT, self.on_raname, None)
+            menu.add_item(_("Edit Radio"), gtk.STOCK_EDIT, self.on_edit_radio, None)
             menu.add_separator()
             menu.add_item(_("Restore Defaults"), gtk.STOCK_REFRESH, self.update_radio_tree, None)            
             menu.show(e)
     
-    def on_raname(self):
+    def on_edit_radio(self):
         bean = self.get_selected_bean()
-        text = one_line_dialog("Rename Radio", bean.text)
-        if not text:
+        text = two_line_dialog(_("Change Radio Station name and path"), _("Url"), bean.text, bean.path)
+        if not text[0] or not text[1]:
             return
-        self.rename_selected(text)
+        bean.add_text(text[0])
+        bean.add_path(text[1])
+        self.update_bean(bean)
     
     def on_add_station(self):
         name, url = two_line_dialog("Add New Radio Station", "Enter Name and URL", "", "http://")

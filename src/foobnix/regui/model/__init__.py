@@ -177,6 +177,14 @@ class FModel(FTreeModel):
     def get_status(self):
         return self.status
     
+    def add_text(self, text):
+        self.text = text
+        return self
+    
+    def add_path(self, path):
+        self.path = path
+        return self
+    
     def __str__(self):
         return "FModel: " + str(self.__dict__)
     
