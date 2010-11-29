@@ -141,8 +141,9 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
         box.pack_start(button_restore, False, True, 0)
         box.pack_start(empty, True, True, 0)
-        box.pack_start(button_save, False, True, 0)
         box.pack_start(button_cancel, False, True, 0)
+        box.pack_start(button_save, False, True, 0)
+        
 
         return box
 

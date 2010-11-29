@@ -6,6 +6,11 @@ Created on 24 авг. 2010
 '''
 import gtk
 from foobnix.util import LOG
+from foobnix.util.localization import foobnix_localization
+from foobnix.helpers.image import ImageBase
+
+foobnix_localization()
+
 def responseToDialog(entry, dialog, response):
         dialog.response(response)
         
@@ -105,7 +110,41 @@ def info_dialog_with_link(title, version, link):
         dialog.vbox.pack_end(link, True, True, 0)
         dialog.show_all()
         dialog.run()
-        dialog.destroy()        
+        dialog.destroy()      
+        
+def info_dialog_with_link_and_donate(version):
+        dialog = gtk.MessageDialog(
+            None,
+            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            gtk.MESSAGE_INFO,
+            gtk.BUTTONS_OK,
+            None)
+        dialog.set_title(_("New foobnix release avaliable"))
+        dialog.set_markup(_("New foobnix release avaliable"))
+        dialog.format_secondary_markup("<b>" + version + "</b>")
+        
+        
+        
+        card = gtk.LinkButton("http://www.foobnix.com/donate/eng#card", _("Download and Donate by Visa or Master Card"))
+        terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
+        link = gtk.LinkButton(_("http://www.foobnix.com/download/eng"), _("Download"))
+        
+        frame = gtk.Frame("Please donate and download")
+        vbox = gtk.VBox(True, 0)
+        vbox.pack_start(card, True, True)
+        vbox.pack_start(terminal, True, True)
+        vbox.pack_start(link, True, True)
+        frame.add(vbox)
+        
+        image = ImageBase("foobnix-slogan.jpg")
+        
+        dialog.vbox.pack_start(image, True, True)
+        dialog.vbox.pack_start(frame, True, True)
+        dialog.vbox.pack_start(gtk.Label(_("We hope you like the player. We will make it even better.")), True, True)
+        
+        dialog.show_all()
+        dialog.run()
+        dialog.destroy()           
     
 
 def show_entry_dialog(title, description):
@@ -161,6 +200,6 @@ def show_login_password_error_dialog(title, description, login, password):
         return [login_text, password_text]    
     
 if __name__ == '__main__':
-        info_dialog_with_link("New version avaliable", "foobnix 0.2.1-8", "http://www.foobnix.com/?page=download")
+        info_dialog_with_link_and_donate("foobnix 0.2.1-8")
         gtk.main()        
 

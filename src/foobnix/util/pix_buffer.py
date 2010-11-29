@@ -34,7 +34,7 @@ def create_pixbuf_from_path(path, size):
     else:
         return pixbuf
 
-def create_pixbuf_from_resource(name, size):
+def create_pixbuf_from_resource(name, size=None):
     path = get_foobnix_resourse_path_by_name(name);
     return create_pixbuf_from_path(path, size)
 

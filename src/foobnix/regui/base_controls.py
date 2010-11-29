@@ -12,7 +12,7 @@ from foobnix.regui.model import FModel
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.regui.service.vk_service import VKService
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
-    directory_chooser_dialog, info_dialog_with_link
+    directory_chooser_dialog, info_dialog_with_link_and_donate
 from foobnix.regui.service.music_service import get_all_music_by_path
 import os
 import time
@@ -520,7 +520,7 @@ class BaseFoobnixControls(LoadSave):
         LOG.info("version", current_version , "|", new_version, "|", uuid)
         f.close()
         if FC().check_new_version and current_version < new_version:
-            info_dialog_with_link(_("New version is available"), "foobnix " + new_version, _("http://www.foobnix.com/download/eng"))            
+            info_dialog_with_link_and_donate(new_version)            
 
     def on_load(self):
         for element in self.__dict__:
