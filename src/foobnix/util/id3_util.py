@@ -53,7 +53,7 @@ def udpate_id3(bean, counter=None):
         try:
             audio = get_mutagen_audio(bean.path)            
         except Exception, e:
-            LOG.error("ID3 NOT MP3", e, bean.path)
+            LOG.warn("ID3 NOT MP3", e, bean.path)
             return bean
 
         if audio and audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])
