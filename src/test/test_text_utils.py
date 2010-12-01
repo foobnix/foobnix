@@ -1,6 +1,7 @@
+#-*- coding: utf-8 -*-
 import unittest
 from foobnix.util.text_utils import smart_splitter, capitilize_string, \
-    capitilize_query, split_string
+    capitilize_query, split_string, normilize_text
 
 class TestCapitalizeFunctions(unittest.TestCase):
     def test_capitilize_None(self):
@@ -66,6 +67,13 @@ class TestSplitStringFunction(unittest.TestCase):
         result = split_string(self.input, 19)
         self.assertEquals("abcde,1234 w2\ne3fdfd", result)
 
+class TestNormilizeFunctions(unittest.TestCase):
+    def test_normilize_function(self):
+        self.assertEquals(u"Madonna - Music", normilize_text("01 - Madonna - Music.mp3"))
+        self.assertEquals(u"Madonna", normilize_text("Madonna.mp3"))
+        self.assertEquals(u"Madonna", normilize_text("01 - Madonna [music].mp3"))
+        self.assertEquals(u"Madonna - Music", normilize_text("01-Madonna - MUSIC.ogg"))
+        
 
 if __name__ == '__main__':
     unittest.main()

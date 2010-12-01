@@ -1,3 +1,4 @@
+import re
 
 def capitilize_query(line):
     if not line:
@@ -81,3 +82,18 @@ def split_string(str, length):
     #divide the string into substrings on the separator and return the result
     str = substr1 + "\n" + substr2
     return str
+
+def normilize_text(line):
+    """find in extension"""
+    for element in (".", "[", "(", "*"):
+        index = line.find(element)
+        if index >= 0:            
+            line = line[:index]
+        index = -1
+        
+    """find in prefix"""
+    prefix_index = re.search('^([ 0-9.-]*)', line).end()   
+    line = line[prefix_index:]
+    
+    line = capitilize_string(line)
+    return line.strip()
