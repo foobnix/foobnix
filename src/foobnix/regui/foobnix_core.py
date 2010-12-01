@@ -34,6 +34,7 @@ foobnix_localization()
 class FoobnixCore(BaseFoobnixControls):
     def __init__(self):
         BaseFoobnixControls.__init__(self)
+        self.layout = None
         
         self.media_engine = GStreamerEngine(self)
         """elements"""

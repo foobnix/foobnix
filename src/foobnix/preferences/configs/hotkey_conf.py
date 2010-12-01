@@ -132,6 +132,7 @@ class HotKeysConfig(ConfigPlugin):
         menu.show(event)     
    
     def on_load(self):
+        LOG.debug("LOAD HOT KEYS")
         items = FC().action_hotkey
         self.model.clear()
         for key in items:
@@ -154,7 +155,8 @@ class HotKeysConfig(ConfigPlugin):
         
     def on_save(self):
         FC().action_hotkey = self.get_all_items()
-        self.bind_all(self.get_all_items())
+        #self.bind_all(self.get_all_items())
+        self.unbind_all()
     
     def unbind_all(self):
         items = self.get_all_items()

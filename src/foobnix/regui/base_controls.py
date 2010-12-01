@@ -23,7 +23,7 @@ import urllib2
 from foobnix.version import FOOBNIX_VERSION
 import thread
 
-class BaseFoobnixControls(LoadSave):
+class BaseFoobnixControls():
     def __init__(self):
         self.lastfm = LastFmService()
         self.vk = VKService()
@@ -159,7 +159,8 @@ class BaseFoobnixControls(LoadSave):
         self.tree.append_all(all)
 
     def set_visible_search_panel(self, flag):
-        self.layout.set_visible_search_panel(flag)
+        if self.layout:
+            self.layout.set_visible_search_panel(flag)
 
     def set_visible_musictree_panel(self, flag):
         self.layout.set_visible_musictree_panel(flag)
@@ -528,6 +529,7 @@ class BaseFoobnixControls(LoadSave):
     def on_load(self):
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):
+                LOG.debug("LOAD ON START", self.__dict__[element])
                 self.__dict__[element].on_load()
             else:
                 LOG.debug("NOT LOAD", self.__dict__[element])

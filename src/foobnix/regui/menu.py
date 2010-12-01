@@ -31,6 +31,7 @@ class MenuBarWidget(FControl):
         self.view_music_tree.connect("activate", lambda w: controls.set_visible_musictree_panel(w.get_active()))
 
         self.view_search_panel = view.add_ckeck_item(_("Search Panel"))
+            
         self.view_search_panel.connect("activate", lambda w: controls.set_visible_search_panel(w.get_active()))
 
         view.separator()

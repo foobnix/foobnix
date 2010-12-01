@@ -85,14 +85,13 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         mainVBox.pack_start(self.create_save_cancel_buttons(), False, False, 0)
         
         self.add(mainVBox)
-        self.on_load()
-        
             
     def show(self, current=CONFIG_MUSIC_LIBRARY):
         self.show_all()
         self.populate_config_category(current)
     
     def on_load(self):
+        LOG.debug("LOAD PreferencesWindow")
         for plugin in self.configs:            
             plugin.on_load()
 
