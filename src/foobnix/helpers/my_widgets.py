@@ -10,6 +10,46 @@ import gtk
 def open_link_in_browser(uri):
     link = gtk.LinkButton(uri)
     link.clicked()
+    
+class PespectiveToogledButton(gtk.ToggleButton):
+    def __init__(self, title, gtk_stock, tooltip=None):
+        gtk.ToggleButton.__init__(self, title)
+        if not tooltip:
+            tooltip = title
+        
+        self.set_tooltip_text(tooltip)
+                
+        self.set_relief(gtk.RELIEF_NONE)
+        label = self.get_child()
+        self.remove(label)
+        
+        vbox = gtk.VBox(False, 0)
+        img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
+        vbox.add(img)
+        vbox.add(gtk.Label(title))
+        vbox.show_all()
+        
+        self.add(vbox)
+
+class ButtonStockText(gtk.Button):
+    def __init__(self, title, gtk_stock, tooltip=None):
+        gtk.Button.__init__(self, "")
+        if not tooltip:
+            tooltip = title
+        
+        self.set_tooltip_text(tooltip)
+        
+        label = self.get_child()
+        self.remove(label)
+        
+        box = gtk.HBox(False, 0)
+        img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
+        box.add(img)
+        box.add(gtk.Label(title))
+        box.show_all()
+        
+        self.add(box)        
+        
 
 class ImageButton(gtk.Button):
     def __init__(self, stock_image):

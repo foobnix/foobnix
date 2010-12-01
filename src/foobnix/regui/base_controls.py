@@ -128,6 +128,7 @@ class BaseFoobnixControls(LoadSave):
         self.notetabs.set_playlist_plain()
 
     def load_music_tree(self):
+        self.perspective.hide_add_button()
         if FC().cache_music_tree_beans:
             self.tree.append_all(FC().cache_music_tree_beans)
             LOG.info("Tree loaded from cache")
@@ -148,7 +149,9 @@ class BaseFoobnixControls(LoadSave):
         for bean in all:
             FC().cache_music_tree_beans.append(bean)
         
+        self.perspective.hide_add_button()
         if not all:
+            self.perspective.show_add_button()
             all.append(FModel(_("Music not found in folder(s):")))        
             for path in FC().music_paths:            
                 all.append(FModel(path).add_is_file(True))

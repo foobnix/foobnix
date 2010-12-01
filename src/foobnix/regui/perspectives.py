@@ -11,6 +11,7 @@ from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, \
     LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO
+from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
 class PerspectiveControls(FControl, LoadSave, gtk.VBox):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -26,12 +27,24 @@ class PerspectiveControls(FControl, LoadSave, gtk.VBox):
         self.buttons = PerspectiveButtonControlls(self.activate_perspective)
         self.buttons.show_all()
         
+        self.add_button = ButtonStockText(_("Add Music Folder to Lybrary"), gtk.STOCK_ADD)
+        self.add_button.connect("clicked", lambda * a :controls.tree.add_folder())
+        
+        self.pack_start(self.add_button, False, False)
+        
         for widget in self.perspectivs.values():
             self.pack_start(widget, True, True)
                 
         self.pack_start(controls.filter, False, False)
         self.pack_start(self.buttons, False, False)
     
+    def show_add_button(self):
+        print "show add"
+        self.add_button.show()
+    
+    def hide_add_button(self):
+        print "hide add"
+        self.add_button.hide()
     
     def activate_perspective(self, name):
         for widget in self.perspectivs.values():
@@ -61,21 +74,21 @@ class PerspectiveButtonControlls(gtk.HBox):
         
         self.active = None
                
-        musics = self.custom_button(_("Music"), gtk.STOCK_HARDDISK, _("Music Navigation (Alt+1)"))
+        musics = PespectiveToogledButton(_("Music"), gtk.STOCK_HARDDISK, _("Music Navigation (Alt+1)"))
         musics.connect("clicked", lambda * a: activate_perspective(LEFT_PERSPECTIVE_NAVIGATION))        
         musics.set_active(True)
         
                 
-        radios = self.custom_button(_("Radio"), gtk.STOCK_NETWORK, _("Radio Stantions (Alt+2)"))
+        radios = PespectiveToogledButton(_("Radio"), gtk.STOCK_NETWORK, _("Radio Stantions (Alt+2)"))
         radios.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_RADIO))
         
         
         
-        virtuals = self.custom_button(_("Lists"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
+        virtuals = PespectiveToogledButton(_("Lists"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
         virtuals.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
         
         
-        info = self.custom_button(_("Info"), gtk.STOCK_INFO, _("Info Panel (Alt+4)"))
+        info = PespectiveToogledButton(_("Info"), gtk.STOCK_INFO, _("Info Panel (Alt+4)"))
         info.connect("clicked", lambda * a: activate_perspective(LEFT_PERSPECTIVE_INFO))
                 
         self.button_list = {
@@ -93,25 +106,4 @@ class PerspectiveButtonControlls(gtk.HBox):
         self.pack_start(info, False, False, 0)
     
     def activate_button(self, name):
-        self.button_list[name].set_active(True) 
-    
-    def custom_button(self, title, gtk_stock, tooltip=None):
-        button = gtk.ToggleButton(title)
-        
-        if not tooltip:
-            tooltip = title
-        
-        button.set_tooltip_text(tooltip)
-                
-        button.set_relief(gtk.RELIEF_NONE)
-        label = button.get_child()
-        button.remove(label)
-        
-        vbox = gtk.VBox(False, 0)
-        img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
-        vbox.add(img)
-        vbox.add(gtk.Label(title))
-        vbox.show_all()
-        
-        button.add(vbox)
-        return button
+        self.button_list[name].set_active(True)
