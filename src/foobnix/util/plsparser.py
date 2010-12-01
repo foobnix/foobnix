@@ -43,7 +43,6 @@ def getStations(data, urls):
         if line.startswith("file"):                                
                 index = line.find("=")
                 url = line[index + 1 : ]
-                print url
                 urls.append(url)
                 return urls    
 

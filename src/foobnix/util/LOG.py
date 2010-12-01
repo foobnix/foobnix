@@ -36,7 +36,6 @@ def setupLogger(level="error", filename=None):
 
 def set_logger_level(level):
     if level not in levels:
-        print "no log found"
         return
     
     logging.getLogger("foobnix")

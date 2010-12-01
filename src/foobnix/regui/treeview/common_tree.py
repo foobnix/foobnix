@@ -305,8 +305,10 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
     def get_all_child_beans_by_selected(self):
             model, paths = self.get_selection().get_selected_rows()
             #to_path = model.convert_path_to_child_path(paths[0])
-            iter = model.get_iter(paths[0])
-            return self.get_child_iters_by_parent(model, iter)
+            if model and paths:
+                iter = model.get_iter(paths[0])
+                return self.get_child_iters_by_parent(model, iter)
+            return None
      
     def get_all_beans(self):
         results = []

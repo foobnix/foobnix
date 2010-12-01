@@ -220,14 +220,4 @@ class FCHelper():
     def print_info(self, object):
         dict = object.__dict__
         for i in object.__dict__:
-            LOG.debug(i, str(dict[i])[:500]);
-
-
-"""""
-class A():
-    def __init__(self):
-        line = [1,2,3]
-a = A()
-setattr(a, "line", [3, 2, 1])
-print a.line
-"""""
+            LOG.debug(i, str(dict[i])[:500])

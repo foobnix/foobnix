@@ -147,14 +147,14 @@ class GStreamerEngine(MediaPlayerEngine):
         try:
             return self.player.query_position(gst.Format(gst.FORMAT_TIME), None)[0]
         except Exception, e:
-            LOG.error("GET CURRETN POSITION ERROR", e)
+            LOG.warn("GET query_position", e)
             return - 1
     
     def get_duration_seek_ns(self):
         try:
             return self.player.query_duration(gst.Format(gst.FORMAT_TIME), None)[0]
         except Exception, e:
-            LOG.error("GET SEEK NS", e)
+            LOG.warn("GET query_duration", e)
             return - 1
     
     def playing_thread(self):

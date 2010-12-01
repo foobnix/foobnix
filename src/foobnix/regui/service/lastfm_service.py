@@ -161,7 +161,7 @@ class LastFmService():
                 except Exception, e:       
                     LOG.error(e, "Error reporting now playing last.fm", bean.artist, bean.title, "A", bean.album)
             else:
-                LOG.warn("Bean title or artist not difined")
+                LOG.debug("Bean title or artist not difined")
         
         thread.start_new_thread(task, (bean,))
         
