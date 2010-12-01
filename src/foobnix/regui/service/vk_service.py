@@ -179,11 +179,6 @@ class VKService:
         except:
             return unescape(line)
     
-    def get_content_len(self, path):
-        open = urllib.urlopen(path)
-        return open.info().getheaders("Content-Length")[0]
- 
-                
     
     def find_time_value(self, times_count, r_count):
         for i in times_count:
@@ -211,17 +206,19 @@ class VKService:
                     value = value.replace('"', '')
                     value = value.replace('+', ' ')
                     res[key] = value
-            
+            LOG.debug(res)
             host = res["host"]
                 
             if "http://" in host:
                 if res["no_flv"] == "0":
                     link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".flv"
                 else:
-                    link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".360.mp4"
+                    link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".240.mp4"
                     #link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".flv"
             else:
                 link = "http://" + host + "/assets/videos/" + res["vtag"] + res["vkid"] + ".vk.flv"
+            
+            LOG.debug(link)
             
             text = res["md_title"]
             text = urllib.unquote(text)
