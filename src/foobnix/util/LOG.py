@@ -4,44 +4,55 @@ Created on Feb 26, 2010
 @author: ivan
 '''
 
-import sys
-import platform
 import logging
 
+levels = {
+    "info": logging.INFO,
+    "warning": logging.WARNING,
+    "error": logging.ERROR,
+    "none": logging.CRITICAL,
+    "debug": logging.DEBUG
+}
 
-def init():
-    return None
-    LOG_FILENAME = '/tmp/foobnix.log'
-    LEVELS = {'debug': logging.DEBUG,
-          'info': logging.INFO,
-          'warning': logging.WARNING,
-          'error': logging.ERROR,
-          'critical': logging.CRITICAL}
-    logging.basicConfig(filename=LOG_FILENAME, level=logging.NOTSET)
+def setupLogger(level="error", filename=None):
+    """
+    Sets up the basic logger and if `:param:filename` is set, then it will log
+    to that file instead of stdout.
+
+    :param level: str, the level to log
+    :param filename: str, the file to log to
+    """
+
+    if not level or level not in levels:
+        level = "error"
+
+    logging.basicConfig(
+        level=levels[level],
+        format="[%(levelname)-8s] %(asctime)s %(module)s:%(lineno)d %(message)s",
+        datefmt="%H:%M:%S",
+        filename=filename,
+        filemode="w"
+    )
+
+def set_logger_level(level):
+    if level not in levels:
+        print "no log found"
+        return
     
+    logging.getLogger("foobnix")
+    logging.basicConfig(level=levels[level])
 
-def debug(*args):
-    init()
-    print "DEBUG:", args
-    logging.debug(args)
+debug = lambda * a: logging.debug(a)
+info = lambda * a: logging.info(a)
+warning = lambda * a: logging.warning(a)
+warn = lambda * a: logging.warning(a)
+error = lambda * a: logging.error(a)
+critical = lambda * a: logging.critical(a)
 
-def info(*args): 
-    init()   
-    print "INFO:", args
-    logging.info(args)
 
-def warn(*args):
-    init()    
-    print  "WARN:", args
-    logging.warn(args)    
 
-def error(*args):
-    init()    
-    print >> sys.stderr, "ERROR", args
-    logging.error(args)
-
-def print_debug_info():
-    init()
+def print_platform_info():
+    import platform
     debug('*************** PLATFORM INFORMATION ************************')
     
     debug('==Interpreter==')
@@ -68,5 +79,4 @@ def print_debug_info():
     debug('interpreter:', platform.architecture())
     debug('/bin/ls    :', platform.architecture('/bin/ls'))
     debug('*******************************************************')
-    
         

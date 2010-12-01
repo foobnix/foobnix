@@ -1,4 +1,6 @@
 0.2.2-10
+* Configure logging system
+* Starting time optimization 1 sec on my machine.
 * EQ more user friendly, restart not required
 * Widget button to add music to the lybrary at first start
 * HD quality video search and playing

@@ -128,8 +128,6 @@ class DrugDropTree(gtk.TreeView):
         pass
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
-        print self, to_tree, drag_context, x, y, selection
-        print self, to_tree, drag_context, x, y, selection
         to_filter_model = to_tree.get_model()
         #to_model = to_filter_model.get_model()
         if to_tree.get_dest_row_at_pos(x, y):

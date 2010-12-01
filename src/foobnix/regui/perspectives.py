@@ -39,11 +39,9 @@ class PerspectiveControls(FControl, LoadSave, gtk.VBox):
         self.pack_start(self.buttons, False, False)
     
     def show_add_button(self):
-        print "show add"
         self.add_button.show()
     
     def hide_add_button(self):
-        print "hide add"
         self.add_button.hide()
     
     def activate_perspective(self, name):

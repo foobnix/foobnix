@@ -13,7 +13,6 @@ class TestVkService(unittest.TestCase):
     def test_find_videos(self):
         list = self.vk.find_video_by_query("Мадонна")
         for bean in list[:10]:
-            print bean.path
             self.assertNotEquals("text/html", get_url_type(bean.path))
             self.assertTrue(bean.path.startswith("http://")) 
         

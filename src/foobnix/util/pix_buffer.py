@@ -6,6 +6,7 @@ Created on Nov 4, 2010
 import urllib
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 import gtk
+from deluge.log import LOG
 
 def create_pixbuf_from_url(url, size):
     pixbuf = create_origin_pixbuf_from_url(url)
@@ -26,7 +27,7 @@ def create_pixbuf_from_path(path, size):
     try:
         pixbuf = gtk.gdk.pixbuf_new_from_file(path) #@UndefinedVariable
     except Exception, e:
-        print e
+        LOG.error(e)
         return None
     
     if size:

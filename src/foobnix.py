@@ -2,6 +2,7 @@
 import sys
 from foobnix.regui.controls.dbus_manager import foobnix_dbus_interface
 import time
+from foobnix.util import LOG
 
 if "test" in sys.argv:
     from test.all import run_all_tests
@@ -12,6 +13,11 @@ if "test" in sys.argv:
 
 init_time = time.time()
 iface = foobnix_dbus_interface()
+
+if "debug" in sys.argv:
+    LOG.set_logger_level("debug")
+    LOG.print_platform_info()
+    
 if "debug" in sys.argv or not iface:
     print "start server"
 
