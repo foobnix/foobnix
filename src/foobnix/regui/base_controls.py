@@ -386,7 +386,7 @@ class BaseFoobnixControls(LoadSave):
             if not results:
                 results = []
             self.notetabs.append_tab(query, None)
-            for album in results[:5]:
+            for album in results[:15]:
                 all = []
                 album.is_file = False
                 all.append(album)
@@ -412,7 +412,7 @@ class BaseFoobnixControls(LoadSave):
             if not results:
                 results = []
             self.notetabs.append_tab(query, None)
-            for artist in results[:5]:
+            for artist in results[:15]:
                 all = []
                 artist.is_file = False
                 all.append(artist)
@@ -437,7 +437,7 @@ class BaseFoobnixControls(LoadSave):
             if not results:
                 results = []
             self.notetabs.append_tab(query, None)
-            for tag in results[:5]:
+            for tag in results[:15]:
                 all = []
                 tag.is_file = False
                 all.append(tag)

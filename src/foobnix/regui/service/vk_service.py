@@ -101,6 +101,7 @@ class VKService:
     def get_page(self, query, section="audio"):
         if not query:
             return None
+        #offset_values = [0, 40, 80, 120, 160]
 
         host = 'http://vkontakte.ru/gsearch.php?section=' + section + '&q=vasya#c[q]=some%20id&c[section]=audio&name=1'
         post = urllib.urlencode({
@@ -189,6 +190,7 @@ class VKService:
     def find_video_by_query(self, query):        
         page = self.get_page(query, "video")
         
+        uniq = []
         beans = []
         
         page = page.replace("&quot;", '"')
@@ -225,7 +227,9 @@ class VKService:
             text = res["md_title"]
             text = urllib.unquote(text)
             text = self.to_good_chars(text)
-            beans.append(FModel(text, link)) 
+            if text not in uniq:
+                uniq.append(text)
+                beans.append(FModel(text, link)) 
         return beans
     
     "http://v525.vkadre.ru/assets/videos/adda2e950c01-105202975.vk.flv"

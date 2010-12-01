@@ -9,8 +9,8 @@ Homepage: http://www.foobnix.com
 
 Package: foobnix
 Architecture: any
-Depends: ${python:Depends},${misc:Depends}, python-chardet, python-gtk2, python-mutagen, python-simplejson, gstreamer0.10-plugins-good, gstreamer0.10-plugins-bad, gstreamer0.10-plugins-ugly, gstreamer0.10-ffmpeg, python-gst0.10, python-setuptools, gettext
-Recommends: python-keybinder 
+Depends: ${python:Depends},${misc:Depends}, python-chardet, python-gtk2, python-mutagen, python-simplejson, gstreamer0.10-plugins-good, gstreamer0.10-plugins-ugly, gstreamer0.10-ffmpeg, python-gst0.10, python-setuptools, gettext
+Recommends: python-keybinder,  gstreamer0.10-plugins-bad 
 Description: Simple and Powerful music player for Linux
  All best features in one player. Foobnix small, fast, customizable, powerful
  music player with user-friendly interface.
