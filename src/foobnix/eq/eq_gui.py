@@ -38,6 +38,7 @@ class EqWindow(ChildTopWindow, FControl):
         FControl.__init__(self, controls)        
         ChildTopWindow.__init__(self, _("Equalizer"))
         
+        
         self.eq_lines = []
         for label in EQUALIZER_LABLES:
             self.eq_lines.append(EqLine(label, self.on_collback))
@@ -59,6 +60,7 @@ class EqWindow(ChildTopWindow, FControl):
         self.models = []
         self.default_models = []
         
+        
     def on_restore_defaults(self, *a):
         self.models = []
         self.combo.get_model().clear()        
@@ -79,8 +81,15 @@ class EqWindow(ChildTopWindow, FControl):
         self.db_text.set_text(pre + "db")
         self.collback()
     
+    def set_custom_title(self):
+        status = _("Off")
+        if FC().is_eq_enable:
+            status = _("On")        
+        self.set_title(_("Equalizer %s") % status)
+            
     def on_enable_eq(self, w):
         FC().is_eq_enable = w.get_active()
+        self.set_custom_title()
     
     def on_save(self, *args):
         text = self.combo.get_active_text()
@@ -141,6 +150,7 @@ class EqWindow(ChildTopWindow, FControl):
         box.show()
         
         self.on = gtk.ToggleButton("On")
+        self.on.set_tooltip_text(_("To enable EQ set ON"))
         self.on.connect("toggled", self.on_enable_eq)
         #on.set_size_request(30,-1)        
         self.on.show()
