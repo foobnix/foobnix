@@ -212,8 +212,10 @@ class VKService:
             if "http://" in host:
                 if res["no_flv"] == "0":
                     link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".flv"
-                else:
-                    link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".240.mp4"
+                else:                    
+                    quality_list = ("240", "360", "480", "720")
+                    quality = quality_list[int(res["hd"])]                    
+                    link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".%s.mp4" % quality
                     #link = host + "u" + res["uid"] + "/video/" + res["vtag"] + ".flv"
             else:
                 link = "http://" + host + "/assets/videos/" + res["vtag"] + res["vkid"] + ".vk.flv"

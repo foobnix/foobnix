@@ -6,16 +6,18 @@ Created on 21 нояб. 2010
 '''
 import unittest
 from foobnix.regui.service.vk_service import VKService
-import urllib
 from foobnix.util.url_utils import get_url_type
 class TestVkService(unittest.TestCase):
     vk = VKService()
         
     def test_find_videos(self):
         list = self.vk.find_video_by_query("Мадонна")
-        for bean in list:
+        for bean in list[:10]:
             print bean.path
+            self.assertNotEquals("text/html", get_url_type(bean.path))
             self.assertTrue(bean.path.startswith("http://")) 
+        
+        
     
     def test_find_track(self):
         bean = self.vk.find_one_track("Мадонна")        
