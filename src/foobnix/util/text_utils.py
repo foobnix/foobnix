@@ -85,7 +85,7 @@ def split_string(str, length):
 
 def normilize_text(line):
     """find in extension"""
-    for element in (".", "[", "(", "*"):
+    for element in ("[", "(", "*"):
         index = line.find(element)
         if index >= 0:            
             line = line[:index]
@@ -96,4 +96,10 @@ def normilize_text(line):
     line = line[prefix_index:]
     
     line = capitilize_string(line)
+    
+    """remove extension"""
+    index = line.rfind(".")
+    if index >= 0:            
+        line = line[:index]
+    
     return line.strip()

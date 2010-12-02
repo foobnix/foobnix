@@ -6,14 +6,21 @@ Created on 1 дек. 2010
 '''
 import subprocess
 import os
+from foobnix.util import LOG
+from foobnix.regui.service.music_service import get_all_music_by_path
+
+def get_beans_from_iso_wv(path):
+    if path and path.lower().endswith("iso.wv"):
+        mount_path = mount_tmp_iso(path)        
+        return get_all_music_by_path(mount_path)  
+
 def mount_tmp_iso(path):
-    print  path
-    if not os.path.isdir("/tmp/demo"):
-        os.mkdir("/tmp/demo")
-    command = ["mount", "-o", "loop", path, "/tmp/demo"]
-    print command
-    retcode = subprocess.call(["mount", "-o", "loop", path, "/tmp/demo"])
-    print retcode
-
-
-mount_tmp_iso("/home/ivan/Музыка/Joni.Mitchell-2004.The.Beginning.of.Survival.(Compilation.Album).(Geffen.B0002836-02).by.yury_usa.NL+0802.iso.wv")
+    name = os.path.basename(path)
+    tmp_dir = os.path.join("/tmp", name)
+    if os.path.exists(tmp_dir):
+        LOG.debug("tmp dir to mount already exists", tmp_dir)
+        return tmp_dir
+    command = ["fuseiso", "-n", "-p", path, tmp_dir]
+    LOG.debug("Mount iso.wv", command)
+    subprocess.call(command)
+    return tmp_dir

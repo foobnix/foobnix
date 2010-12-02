@@ -73,6 +73,7 @@ class TestNormilizeFunctions(unittest.TestCase):
         self.assertEquals(u"Madonna", normilize_text("Madonna.mp3"))
         self.assertEquals(u"Madonna", normilize_text("01 - Madonna [music].mp3"))
         self.assertEquals(u"Madonna - Music", normilize_text("01-Madonna - MUSIC.ogg"))
+        self.assertEquals(u"Enigma - Sadeness Part", normilize_text("1.ENIGMA - SADENESS PART.mp3"))
         
 
 if __name__ == '__main__':
