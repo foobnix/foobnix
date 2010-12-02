@@ -1180,7 +1180,6 @@ class Album(_BaseObject, _Taggable):
     
     def get_release_year(self):
         st_date = str(self.get_release_date())
-        print st_date
         try:
             dt = datetime.datetime.strptime(st_date, "%d %b %Y, %H:%M")
         except:

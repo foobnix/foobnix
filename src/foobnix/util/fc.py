@@ -83,9 +83,11 @@ class FC:
         """support file formats"""
         self.last_music_path = None
         self.music_paths = ["/tmp"]
-        audio = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".cue", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp"]
-        video = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mp4", ".mpg", ".rm", ".swf", ".vob", ".wmv"]
-        self.support_formats = audio + video
+        
+        audio_container = [".cue", ".iso.wv"]
+        video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mp4", ".mpg", ".rm", ".swf", ".vob", ".wmv"] 
+        self.audio_formats = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp", ".wv"]        
+        self.all_support_formats = self.audio_formats + video_formats + audio_container
         
         self.cache_music_tree_beans = []
         self.cache_virtual_tree_beans = []
@@ -220,14 +222,4 @@ class FCHelper():
     def print_info(self, object):
         dict = object.__dict__
         for i in object.__dict__:
-            LOG.debug(i, str(dict[i])[:500]);
-
-
-"""""
-class A():
-    def __init__(self):
-        line = [1,2,3]
-a = A()
-setattr(a, "line", [3, 2, 1])
-print a.line
-"""""
+            LOG.debug(i, str(dict[i])[:500])

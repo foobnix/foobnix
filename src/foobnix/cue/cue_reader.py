@@ -14,6 +14,7 @@ import re
 from foobnix.util.image_util import get_image_by_path
 
 from foobnix.util.audio import get_mutagen_audio
+from foobnix.util.fc import FC
 
 
 TITLE = "TITLE"
@@ -188,15 +189,17 @@ class CueReader():
                     ext = file_utils.get_file_extenstion(full_file)
                     nor = full_file[:-len(ext)]
                     LOG.info("Normilized path", nor)
-                    if os.path.exists(nor + ".ape"):
-                        full_file = nor + ".ape"
-                    elif os.path.exists(nor + ".flac"):
-                        full_file = nor + ".flac"
-                    elif os.path.exists(nor + ".wav"):
-                        full_file = nor + ".wav"
-                    elif os.path.exists(nor + ".mp3"):
-                        full_file = nor + ".mp3"
-                    else:
+                    
+                    find_source = False
+                    for support_ext in FC().audio_formats:
+                        try_name = nor + support_ext
+                        if os.path.exists(try_name):
+                            full_file = try_name
+                            LOG.debug("Found source for cue file name", try_name)
+                            find_source = True
+                            break;
+                    
+                    if not find_source:    
                         self.is_valid = False
                         return cue_file
 

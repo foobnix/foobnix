@@ -10,6 +10,7 @@ import gobject
 from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util import LOG
 from foobnix.util.id3_util import update_id3_wind_filtering
+from foobnix.util.iso_util import get_beans_from_iso_wv
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -39,7 +40,7 @@ class DrugDropTree(gtk.TreeView):
     
     def append(self, bean):
         if self.current_view == VIEW_PLAIN:
-            self.plain_append(bean)
+            self.plain_append_all([bean])
         else:
             self.tree_append(bean)
         
@@ -128,8 +129,6 @@ class DrugDropTree(gtk.TreeView):
         pass
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
-        print self, to_tree, drag_context, x, y, selection
-        print self, to_tree, drag_context, x, y, selection
         to_filter_model = to_tree.get_model()
         #to_model = to_filter_model.get_model()
         if to_tree.get_dest_row_at_pos(x, y):
@@ -230,20 +229,30 @@ class DrugDropTree(gtk.TreeView):
         self.current_view = VIEW_PLAIN
         LOG.debug("append all as plain")
         
+        normilized = []
+        for model in beans:
+            if model.path and model.path.lower().endswith(".iso.wv"):
+                all = get_beans_from_iso_wv(model.path)
+                for inner in all:
+                    normilized.append(inner)
+            else:
+                normilized.append(model)
+        beans = normilized
+
         counter = 0
         is_cue = False
         for bean in beans:
             if bean.path and bean.path.lower().endswith(".cue"):
-                self.plain_append(bean)
+                self._plain_append(bean)
                 is_cue = True
         if is_cue: return
         for bean in beans:
             if bean.is_file:
                 counter += 1
             else: counter = 0
-            self.plain_append(bean, counter)
+            self._plain_append(bean, counter)
             
-    def plain_append(self, bean, counter=None):
+    def _plain_append(self, bean, counter=None):
         if not bean:
             return
         if bean.is_file == True:

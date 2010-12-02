@@ -32,8 +32,8 @@ def getStationPath(url):
         connect = urllib2.urlopen(url)
         data = connect.read()
         urls = getStations(data, urls)
-    except:
-        print "INCORRECT URL ERROR .... ", url
+    except Exception, e:
+        LOG.error("INCORRECT URL ERROR .... ", url, e)
     if urls:
         return urls[0]
         
@@ -43,7 +43,6 @@ def getStations(data, urls):
         if line.startswith("file"):                                
                 index = line.find("=")
                 url = line[index + 1 : ]
-                print url
                 urls.append(url)
                 return urls    
 

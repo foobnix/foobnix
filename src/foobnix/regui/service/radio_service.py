@@ -73,7 +73,6 @@ class RadioFolder():
     
     def get_radio_FPLs(self):
         names = self.get_radio_list()
-        print "names", names
         if not names:
             return []
         

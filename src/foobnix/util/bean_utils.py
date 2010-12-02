@@ -4,8 +4,7 @@ Created on 20 окт. 2010
 
 @author: ivan
 '''
-from foobnix.util.audio import normilize_text
-
+from foobnix.util.text_utils import normilize_text
 def update_parent_for_beans(beans, parent):
     for bean in beans:
         bean.parent(parent)

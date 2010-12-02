@@ -53,7 +53,7 @@ def udpate_id3(bean, counter=None):
         try:
             audio = get_mutagen_audio(bean.path)            
         except Exception, e:
-            LOG.error("ID3 NOT MP3", e, bean.path)
+            LOG.warn("ID3 NOT MP3", e, bean.path)
             return bean
 
         if audio and audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])
@@ -89,7 +89,7 @@ def get_support_music_beans_from_all(beans):
     for bean in beans:
         if bean.path and os.path.isdir(bean.path):
             result.append(bean)
-        elif bean.path and os.path.isfile(bean.path) and file_extenstion(bean.path) in FC().support_formats:
+        elif bean.path and os.path.isfile(bean.path) and file_extenstion(bean.path) in FC().audio_formats:
             result.append(bean)
         elif bean.path and bean.path.startswith("http://"):
             result.append(bean)
@@ -107,8 +107,8 @@ def add_upadte_image_paths(beans):
 
 def update_id3_wind_filtering(beans, counter=None):
     beans = get_support_music_beans_from_all(beans)
-    beans = udpate_id3_for_beans(beans, counter)
     beans = update_id3_for_cue(beans)
+    beans = udpate_id3_for_beans(beans, counter)
     beans = add_upadte_image_paths(beans)
     result = []
     for bean in beans:

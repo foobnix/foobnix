@@ -71,7 +71,6 @@ class DBusManager(dbus.service.Object, FControl):
             LOG.error("your OS is not GNOME", e)
     
     def check_for_commands(self, args):
-        print args
         if len(args) == 1:
             command = args[0]
             
@@ -105,7 +104,6 @@ class DBusManager(dbus.service.Object, FControl):
         elif "--version" == command:
             return FOOBNIX_VERSION
         elif "--now-playing" == command:
-            print "--now-playing"
             bean = self.controls.get_active_bean()
             if bean:
                 return bean.get_display_name()
@@ -120,7 +118,6 @@ class DBusManager(dbus.service.Object, FControl):
             result = self.check_for_commands(args)
             if not result:                
                 self.controls.show()
-            print result, type(result)
             if type(result).__name__ == 'str':        
                 return result
         return "client"
