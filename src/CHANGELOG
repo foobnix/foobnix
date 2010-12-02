@@ -11,6 +11,7 @@
 * Fixed trash displaying in navigation tree
 * Fixed menu style in the same color as panels
 * Chinese translation Dean Lee <xslidian@gmail.com>
+0.2.2-9
 * Add new "karmic" "lucid" PPA
 * Fix to works with debian
 * Add Russian Localization
