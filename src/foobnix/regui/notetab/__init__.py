@@ -5,6 +5,7 @@ Created on Sep 23, 2010
 @author: ivan
 '''
 import gtk
+import chardet
 from foobnix.util import LOG, const
 from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 #from foobnix.online.online_model import OnlineListModel
@@ -70,6 +71,11 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     def append_tab(self, name, beans=None):
         self.last_notebook_page = name
         LOG.info("append new tab")
+        try:
+            LOG.info("encoding of tab name is ", chardet.detect(name)['encoding'])
+            name = unicode(name) #convert from any encoding in ascii
+        except:
+            LOG.warn("problem of encoding definition for tab name is occured")
         if name and len(name) > FC().len_of_tab:
             name = name[:FC().len_of_tab]
         
