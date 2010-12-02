@@ -37,6 +37,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.set_show_border(True)
         self.set_scrollable(True)
         
+        
         self.connect('drag-data-received', self.on_system_drag_data_received)
         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP, dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY) #@UndefinedVariable
         
@@ -76,7 +77,8 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
             name = unicode(name) #convert from any encoding in ascii
         except:
             LOG.warn("problem of encoding definition for tab name is occured")
-        if name and len(name) > FC().len_of_tab:
+        
+        if name and (FC().len_of_tab > -1) and (len(name) > FC().len_of_tab):
             name = name[:FC().len_of_tab]
         
         tab_content = self.create_notebook_tab(beans)
@@ -94,31 +96,35 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
                 return tab_close_button(func=self.on_delete_tab, arg=tab_content)
             else:
                 return notetab_label(func=self.on_delete_tab, arg=tab_content, angel=self.default_angel)
-
+            
         """container Vertical Tab"""
         vbox = gtk.VBox(False, 0)
         if  self.default_angel == 90:
             vbox.show()
         vbox.pack_start(button(), False, False, 0)
-        vbox.pack_start(label(), False, False, 0)
+        vbox.pack_end(label(), False, False, 0)
         self.tab_vboxes.append(vbox)
 
         """container Horizontal Tab"""
         hbox = gtk.HBox(False, 0)
         if  self.default_angel == 0:
             hbox.show()
+        hbox.pack_end(button(), False, False, 0)
         hbox.pack_start(label(), False, False, 0)
-        hbox.pack_start(button(), False, False, 0)
+        
+                
         self.tab_hboxes.append(hbox)
-
+        
         """container BOTH"""
         both = gtk.HBox(False, 0)
         both.show()
         both.pack_start(vbox, False, False, 0)
         both.pack_start(hbox, False, False, 0)
-
+        
         """append tab"""
         self.prepend_page(tab_content, both)
+        self.set_tab_reorderable(tab_content, True)
+        #self.set_tab_label_packing(tab_content, False, True, gtk.PACK_END)
         self.create_plus_tab()
         if self.get_n_pages() >= 2:
             self.remove_page(2)
@@ -204,7 +210,10 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.remove_page(page)
     
     def on_load(self):
-        pass
+        if FC().tab_position == "no": self.set_tab_no()
+        elif FC().tab_position == "left": self.set_tab_left()
+        else: self.set_tab_top()
+            
 
     def on_save(self):
         pass

@@ -6,7 +6,7 @@ Created on Nov 4, 2010
 import urllib
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 import gtk
-from deluge.log import LOG
+from foobnix.util import LOG
 
 def create_pixbuf_from_url(url, size):
     pixbuf = create_origin_pixbuf_from_url(url)
