@@ -34,7 +34,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.active_tree = None
         
         self.set_show_border(True)
-        #self.set_scrollable(True)
+        self.set_scrollable(True)
         
         self.connect('drag-data-received', self.on_system_drag_data_received)
         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP, dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY) #@UndefinedVariable

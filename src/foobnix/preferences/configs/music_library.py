@@ -106,12 +106,12 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             self.tree_controller.append(FDModel(path))
             
         self.files_controller.clear()
-        for ext in FC().support_formats:
+        for ext in FC().all_support_formats:
             self.files_controller.append(FDModel(ext))
             
     def on_save(self):             
         FC().music_paths = self.tree_controller.get_all_beans_text()
-        FC().support_formats = self.files_controller.get_all_beans_text()
+        FC().all_support_formats = self.files_controller.get_all_beans_text()
         
          
     

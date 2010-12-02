@@ -38,7 +38,7 @@ class BaseFoobnixControls():
         for arg in args:            
             if os.path.isdir(arg):
                 dirs.append(arg)
-            elif os.path.isfile(arg) and get_file_extenstion(arg) in FC().support_formats:
+            elif os.path.isfile(arg) and get_file_extenstion(arg) in FC().all_support_formats:
                 files.append(arg)
         if dirs:
             self.on_add_folders(dirs)

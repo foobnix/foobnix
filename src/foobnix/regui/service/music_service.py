@@ -29,7 +29,7 @@ def _scanner(path, level):
     for file in list:
         full_path = os.path.join(path, file)
         
-        if os.path.isfile(full_path) and file_extenstion(file) not in FC().support_formats:
+        if os.path.isfile(full_path) and file_extenstion(file) not in FC().all_support_formats:
             continue;
         
         if is_dir_with_music(full_path):
@@ -69,6 +69,6 @@ def is_dir_with_music(path):
                 if is_dir_with_music(full_path):
                     return True
             else:
-                if file_extenstion(file) in FC().support_formats:
+                if file_extenstion(file) in FC().all_support_formats:
                     return True
     return False
