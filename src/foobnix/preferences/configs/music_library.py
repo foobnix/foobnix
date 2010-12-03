@@ -32,7 +32,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         box.pack_start(self.dirs(), False, True, 0)
         #box.pack_start(self.child_button, False, True, 0)
         box.pack_start(self.formats(), False, True, 0)
-        
+        box.pack_start(self.gap(), False, True, 0)
         self.widget = box
     
     
@@ -109,9 +109,12 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         for ext in FC().all_support_formats:
             self.files_controller.append(FDModel(ext))
             
+        self.adjustment.set_value(FC().gap_secs)
+            
     def on_save(self):             
         FC().music_paths = self.tree_controller.get_all_beans_text()
         FC().all_support_formats = self.files_controller.get_all_beans_text()
+        FC().gap_secs = self.adjustment.get_value()
         
          
     
@@ -189,4 +192,22 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             self.files_controller.append(FDModel(val))
         else:
             LOG.info("Can't add your value", val)
+            
+    def gap(self):
+        label = gtk.Label(_("Gap between tracks: "))
+                
+        self.adjustment = gtk.Adjustment(value=0, lower=0, upper=5, step_incr=0.5)
+        
+        gap_len = gtk.SpinButton(self.adjustment, climb_rate=0.0, digits=1)
+        gap_len.show()
+        
+        hbox = gtk.HBox(False, 0)
+        hbox.pack_start(label, False, False)
+        hbox.pack_start(gap_len, False, False)
+        hbox.show_all()
+        
+        return hbox
+        
+            
+        
         
