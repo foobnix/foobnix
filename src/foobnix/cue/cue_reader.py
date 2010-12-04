@@ -135,8 +135,11 @@ class CueReader():
     def code_detecter(self, filename):
         with open(filename) as codefile:
             data = codefile.read()
-
-        return chardet.detect(data)['encoding']
+        try:
+            return chardet.detect(data)['encoding']
+        except:
+            return "utf-8" 
+         
     def parse(self):
         file = open(self.cue_file, "r")
         code = self.code_detecter(self.cue_file);
