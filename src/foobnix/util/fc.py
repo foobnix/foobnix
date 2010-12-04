@@ -116,7 +116,6 @@ class FC:
         self.system_icons_dinamic = False
         self.change_tray_icon = False
         
-
         self.all_icons = [ICON_FOOBNIX, ICON_FOOBNIX_PLAY, ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO, "foobnix-tux.gif"]
                 
         self.static_icon_entry = ICON_FOOBNIX
@@ -125,7 +124,7 @@ class FC:
         self.pause_icon_entry = ICON_FOOBNIX_PAUSE
         self.stop_icon_entry = ICON_FOOBNIX_STOP
         self.radio_icon_entry = ICON_FOOBNIX_RADIO
-                
+               
         """download manager controls"""
         self.auto_start_donwload = True
         self.max_active_count = 3
@@ -150,8 +149,11 @@ class FC:
         self.action_hotkey = {'foobnix --volume-up': '<SUPER>Up', 'foobnix --volume-down': '<SUPER>Down', 'foobnix --show-hide': '<SUPER>a', 'foobnix --prev': '<SUPER>Left', 'foobnix --play': '<SUPER>x', 'foobnix --pause': '<SUPER>z', 'foobnix --next': '<SUPER>Right'}
 
         self.left_perspective = "info"        
-        self = self._load();
         
+        self.gap_secs = 0
+         
+        self = self._load();
+                
         
 
     def save(self, in_thread=True):

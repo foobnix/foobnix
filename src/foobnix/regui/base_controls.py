@@ -5,6 +5,11 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
+import thread
+import urllib2
+import os
+import time
+
 from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.state import LoadSave
@@ -14,14 +19,11 @@ from foobnix.regui.service.vk_service import VKService
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
 from foobnix.regui.service.music_service import get_all_music_by_path
-import os
-import time
 from foobnix.regui.service.google_service import google_search_resutls
 from foobnix.util.file_utils import get_file_extenstion
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE
-import urllib2
 from foobnix.version import FOOBNIX_VERSION
-import thread
+
 
 class BaseFoobnixControls():
     def __init__(self):
@@ -472,7 +474,8 @@ class BaseFoobnixControls():
 
     def next(self):        
         bean = self.notetabs.next()
-         
+        gap = FC().gap_secs
+        time.sleep(gap) 
         if bean and bean.path and os.path.isdir(bean.path):
             return None
             
