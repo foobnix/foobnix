@@ -232,13 +232,14 @@ class DrugDropTree(gtk.TreeView):
         normilized = []
         for model in beans:
             if model.path and model.path.lower().endswith(".iso.wv"):
+                LOG.debug("find iso.wv", model.path)
                 all = get_beans_from_iso_wv(model.path)
                 for inner in all:
                     normilized.append(inner)
             else:
                 normilized.append(model)
         beans = normilized
-
+        
         counter = 0
         is_cue = False
         for bean in beans:
@@ -267,7 +268,8 @@ class DrugDropTree(gtk.TreeView):
                 one.update_uuid()    
                 row = self.get_row_from_bean(one)            
                 self.model.append(None, row)
-        gobject.idle_add(lambda : task(counter))
+        #gobject.idle_add(lambda : task(counter))
+        task(counter)
         
     def tree_append(self, bean):
         def task(bean):
