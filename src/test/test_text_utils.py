@@ -71,9 +71,12 @@ class TestNormilizeFunctions(unittest.TestCase):
     def test_normilize_function(self):
         self.assertEquals(u"Madonna - Music", normilize_text("01 - Madonna - Music.mp3"))
         self.assertEquals(u"Madonna", normilize_text("Madonna.mp3"))
-        self.assertEquals(u"Madonna", normilize_text("01 - Madonna [music].mp3"))
+        self.assertEquals(u"Madonna", normilize_text("01 - Madonna [music].MP3"))
         self.assertEquals(u"Madonna - Music", normilize_text("01-Madonna - MUSIC.ogg"))
         self.assertEquals(u"Enigma - Sadeness Part", normilize_text("1.ENIGMA - SADENESS PART.mp3"))
+        self.assertEquals(u"Similar Tracks - Give A Little More", normilize_text("Similar Tracks - Give A Little More *** www.ipmusic.ch ***"))
+        self.assertEquals(u"Similar Feat. Tracks - Give A Little More", normilize_text("Similar feat. Tracks  - Give A Little More *** www.ipmusic.ch ***"))
+        
         
 
 if __name__ == '__main__':

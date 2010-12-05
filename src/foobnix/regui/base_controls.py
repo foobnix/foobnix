@@ -23,6 +23,7 @@ from foobnix.regui.service.google_service import google_search_resutls
 from foobnix.util.file_utils import get_file_extenstion
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 from foobnix.version import FOOBNIX_VERSION
+from foobnix.util.text_utils import normilize_text
 
 
 class BaseFoobnixControls():
@@ -247,6 +248,7 @@ class BaseFoobnixControls():
             return False
 
     def play(self, bean):
+        self.statusbar.set_text("")
         if not bean:
             self.state_stop()
             return None
@@ -300,6 +302,10 @@ class BaseFoobnixControls():
             
 
     def notify_title(self, text):
+        LOG.debug("Notify title", text)
+        
+        self.statusbar.set_text(text)
+        text = normilize_text(text)
         self.seek_bar.set_text(text)       
         t_bean = FModel(text).create_from_text(text)                       
         self.update_info_panel(t_bean)

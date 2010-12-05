@@ -17,4 +17,6 @@ class StatusbarControls(gtk.Statusbar, FControl):
         def task():
             if text:
                 self.push(0, text)
+            else:
+                self.push(0, "")
         gobject.idle_add(task)
