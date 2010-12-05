@@ -25,7 +25,6 @@ from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.text_utils import normilize_text
 
-
 class BaseFoobnixControls():
     def __init__(self):
         self.lastfm = LastFmService()
@@ -269,8 +268,6 @@ class BaseFoobnixControls():
             self.state_stop()
             return None
             
-        
-        
         self.seek_bar.clear()
         self.count_errors = 0
         self.statusbar.set_text(bean.info)

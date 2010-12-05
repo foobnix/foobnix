@@ -19,8 +19,6 @@ from foobnix.helpers.image import ImageBase
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normilized_text
 from foobnix.util import LOG
-from setuptools.package_index import htmldecode
-import urllib
 
 class InfoCache():
     def __init__(self):
@@ -171,7 +169,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                 info_line = album_name
             if album_name and album_year:
                 info_line = album_name + "(" + album_year + ")"
-            info_line = urllib.unquote(info_line)
+                
             self.almum_label.set_markup("<b>%s</b>" % info_line)
         gobject.idle_add(task)
     

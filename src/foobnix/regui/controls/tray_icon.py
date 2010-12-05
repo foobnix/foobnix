@@ -158,6 +158,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         if len(title) > max_str_len:
             title = split_string(title, max_str_len)
         alabel = gtk.Label()
+
         alabel.set_markup("<b>%s</b>" % artist)
                 
         vbox = VBoxDecorator(gtk.Label(), alabel, gtk.Label(), gtk.Label(title))        
