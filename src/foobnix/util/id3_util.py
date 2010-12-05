@@ -45,7 +45,10 @@ def decode_cp866(text):
 
 def udpate_id3_for_beans(beans, counter=None):
     for bean in beans:
-        udpate_id3(bean, counter)
+        try:
+            udpate_id3(bean, counter)
+        except Exception, e:
+            LOG.error("udpate id3 error", e)
     return beans
 
 def udpate_id3(bean, counter=None):
