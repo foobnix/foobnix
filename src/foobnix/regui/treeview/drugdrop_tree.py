@@ -232,13 +232,14 @@ class DrugDropTree(gtk.TreeView):
         normilized = []
         for model in beans:
             if model.path and model.path.lower().endswith(".iso.wv"):
+                LOG.debug("find iso.wv", model.path)
                 all = get_beans_from_iso_wv(model.path)
                 for inner in all:
                     normilized.append(inner)
             else:
                 normilized.append(model)
         beans = normilized
-
+        
         counter = 0
         is_cue = False
         for bean in beans:
@@ -253,18 +254,19 @@ class DrugDropTree(gtk.TreeView):
             self._plain_append(bean, counter)
             
     def _plain_append(self, bean, counter=None):
-        if not bean:
-            return
-        if bean.is_file == True:
-            bean.font = "normal"
-        else:
-            bean.font = "bold"
-            
-        bean.visible = True
         def task(counter=None):
+            if not bean:
+                return
+            if bean.is_file == True:
+                bean.font = "normal"
+            else:
+                bean.font = "bold"
+                
+            bean.visible = True
+        
             beans = update_id3_wind_filtering([bean], counter)
             for one in beans:
-                one.update_uuid()    
+                one.update_uuid() 
                 row = self.get_row_from_bean(one)            
                 self.model.append(None, row)
         gobject.idle_add(lambda : task(counter))

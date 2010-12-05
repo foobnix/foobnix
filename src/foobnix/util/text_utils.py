@@ -1,4 +1,7 @@
 import re
+from foobnix.util.fc import FC
+from foobnix.util.file_utils import get_file_extenstion
+import urllib
 
 def capitilize_query(line):
     if not line:
@@ -84,6 +87,9 @@ def split_string(str, length):
     return str
 
 def normilize_text(line):
+    if not line:
+        return ""
+    line = urllib.unquote(line)
     """find in extension"""
     for element in ("[", "(", "*"):
         index = line.find(element)
@@ -98,8 +104,8 @@ def normilize_text(line):
     line = capitilize_string(line)
     
     """remove extension"""
-    index = line.rfind(".")
-    if index >= 0:            
-        line = line[:index]
+    ext = get_file_extenstion(line)  
+    if ext in FC().all_support_formats:                
+        line = line.replace(ext, "")
     
     return line.strip()

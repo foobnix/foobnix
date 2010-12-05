@@ -13,7 +13,6 @@ from random import randint
 import gobject
 from foobnix.regui.treeview.filter_tree import FilterTreeControls
 
-
 class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
 
     def __init__(self, controls):        
@@ -162,6 +161,7 @@ class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
         if not paths:
             return None
         selected_bean = self._get_bean_by_path(paths[0])
+        
         return selected_bean
     
     def get_selected_or_current_bean(self):
