@@ -8,8 +8,7 @@ import gtk
 from foobnix.regui.model.signal import FControl
 import time
 import thread
-import gobject
-class SearchProgressBar(FControl,  gtk.ProgressBar):
+class SearchProgressBar(FControl, gtk.ProgressBar):
     def __init__(self, controls):
         FControl.__init__(self, controls)  
         gtk.ProgressBar.__init__(self)
@@ -32,7 +31,7 @@ class SearchProgressBar(FControl,  gtk.ProgressBar):
         def pulse_thread(): 
             self.started = True          
             while self.flag:
-                gobject.idle_add(self.pulse)
+                self.pulse()
                 time.sleep(0.1)
             self.started = False
         thread.start_new_thread(pulse_thread, ())
