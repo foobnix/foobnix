@@ -13,10 +13,10 @@ from random import randint
 import gobject
 from foobnix.regui.treeview.filter_tree import FilterTreeControls
 
-class CommonTreeControl(DrugDropTree, FTreeModel, FControl, FilterTreeControls):
+class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
     def __init__(self, controls):        
-        DrugDropTree.__init__(self, controls)
+        FilterTreeControls.__init__(self, controls)
         
         FTreeModel.__init__(self)
         FControl.__init__(self, controls)

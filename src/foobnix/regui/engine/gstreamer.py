@@ -130,6 +130,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.seek_seconds(bean.start_sec)
         self.state_play()
         self.volume(FC().volume)
+        self.current_state = STATE_PLAY
         self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
 
     
@@ -276,10 +277,11 @@ class GStreamerEngine(MediaPlayerEngine):
         self.controls.trayicon.on_dynamic_icons(self.current_state)
         
     def state_play_pause(self):
-        if self.status.isPlay:
+        if self.current_state == STATE_PLAY:
             self.state_pause()
         else:
             self.state_play()
+            
 
     def on_sync_message(self, bus, message):
         if message.structure is None:

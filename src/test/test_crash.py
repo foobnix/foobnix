@@ -15,3 +15,19 @@ def chardecode_crash():
     print s.decode('utf_16')
     
     print "Success"
+
+class A():
+    def __init__(self):
+        print "a"
+    
+    def go(self):
+        print self.param
+    
+class B(A):
+    def __init__(self):
+        A.__init__(self)
+        print "b"
+        self.param = "hi"
+
+b = B()
+b.go()
