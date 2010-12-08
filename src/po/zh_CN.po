@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-08 11:21+0200\n"
+"POT-Creation-Date: 2010-12-08 12:20+0200\n"
 "PO-Revision-Date: 2010-11-26 22:37+0800\n"
 "Last-Translator: Dean Lee <xslidian@gmail.com>\n"
 "Language-Team: Chinese Simplified <xslidian+foobnix@gmail.com>\n"
@@ -63,13 +63,11 @@ msgid "New foobnix release avaliable"
 msgstr "新版本可用"
 
 #: .././foobnix/helpers/dialog_entry.py:128
-msgid "Download and Donate by Visa or Master Card"
-msgstr ""
+#, fuzzy
+msgid "Download and Donate"
+msgstr "下载管理器"
 
-#: .././foobnix/helpers/dialog_entry.py:129
-msgid "Download and Donate by Webmoney or Payment Terminal"
-msgstr ""
-
+#. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:130
 msgid "http://www.foobnix.com/download/eng"
 msgstr ""
@@ -224,7 +222,7 @@ msgid "Reload"
 msgstr "重载"
 
 #: .././foobnix/preferences/configs/music_library.py:122
-#: .././foobnix/regui/treeview/navigation_tree.py:48
+#: .././foobnix/regui/treeview/navigation_tree.py:54
 msgid "Choose directory with music"
 msgstr "选择含音乐的目录"
 
@@ -584,11 +582,15 @@ msgid "VKontakte connection error"
 msgstr "VKontakte 连接错误"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:42
+msgid "Add to current tab"
+msgstr ""
+
+#: .././foobnix/regui/treeview/navigation_tree.py:44
 msgid "Update Music Tree"
 msgstr "更新音乐树"
 
 #. menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
-#: .././foobnix/regui/treeview/navigation_tree.py:44
+#: .././foobnix/regui/treeview/navigation_tree.py:46
 msgid "Add folder"
 msgstr "添加文件夹"
 

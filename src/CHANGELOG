@@ -1,4 +1,5 @@
 0.2.2-10
+* Append by right click button
 * Add support of ISO.wv
 * Configure logging system
 * Starting time optimization 1 sec on my machine.

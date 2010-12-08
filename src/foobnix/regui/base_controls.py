@@ -473,7 +473,7 @@ class BaseFoobnixControls():
 
     def append_to_current_notebook(self, beans):  
         #beans = update_id3_wind_filtering(beans)              
-        self.notetabs.append(beans)
+        self.notetabs.append_all(beans)
 
     def next(self):        
         bean = self.notetabs.next()

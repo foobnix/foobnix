@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-08 11:21+0200\n"
+"POT-Creation-Date: 2010-12-08 12:20+0200\n"
 "PO-Revision-Date: 2009-04-06 21:35+0300\n"
 "Last-Translator: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
@@ -50,6 +50,7 @@ msgid "On"
 msgstr "Включить"
 
 #: .././foobnix/eq/eq_gui.py:88
+#, python-format
 msgid "Equalizer %s"
 msgstr "Equalizer %s"
 
@@ -63,14 +64,11 @@ msgid "New foobnix release avaliable"
 msgstr "Найдена новая версия"
 
 #: .././foobnix/helpers/dialog_entry.py:128
-msgid "Download and Donate by Visa or Master Card"
-msgstr ""
-
-#: .././foobnix/helpers/dialog_entry.py:129
-msgid "Download and Donate by Webmoney or Payment Terminal"
-msgstr ""
+msgid "Download and Donate"
+msgstr "Скачать и дать денег :)"
 
 #: .././foobnix/helpers/dialog_entry.py:130
+#. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 msgid "http://www.foobnix.com/download/eng"
 msgstr "http://www.foobnix.com/download"
 
@@ -81,7 +79,7 @@ msgstr "Скачать"
 
 #: .././foobnix/helpers/dialog_entry.py:143
 msgid "We hope you like the player. We will make it even better."
-msgstr ""
+msgstr "Надеюсь, вам понравился плеер и мы вместе сделаем его лучшим."
 
 #: .././foobnix/preferences/preferences_window.py:67
 msgid "Categories"
@@ -223,7 +221,7 @@ msgid "Reload"
 msgstr "Обновить"
 
 #: .././foobnix/preferences/configs/music_library.py:122
-#: .././foobnix/regui/treeview/navigation_tree.py:48
+#: .././foobnix/regui/treeview/navigation_tree.py:54
 msgid "Choose directory with music"
 msgstr "Выберете директорию с музыкой"
 
@@ -580,10 +578,14 @@ msgid "VKontakte connection error"
 msgstr "Ошибка подключания к ВКонтакте"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:42
+msgid "Add to current tab"
+msgstr "Добавить в очередь"
+
+#: .././foobnix/regui/treeview/navigation_tree.py:44
 msgid "Update Music Tree"
 msgstr "Обновить дерево музыки"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:44
+#: .././foobnix/regui/treeview/navigation_tree.py:46
 #. menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
 msgid "Add folder"
 msgstr "Добавить папку"

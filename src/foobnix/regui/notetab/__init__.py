@@ -192,10 +192,9 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         treeview.scroll.show_all()
         return  treeview.scroll
 
-    def append(self, beans):
-        for bean in beans:
-            self.active_tree.append(bean)
-        self.get_active_tree().expand_all() 
+    def append_all(self, beans):
+        self.active_tree.append_all(beans)
+         
 
     def on_delete_tab(self, child):
         n = self.page_num(child)    
