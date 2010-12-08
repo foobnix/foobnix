@@ -43,15 +43,15 @@ def decode_cp866(text):
         pass
     return text
 
-def udpate_id3_for_beans(beans, counter=None):
+def udpate_id3_for_beans(beans):
     for bean in beans:
         try:
-            udpate_id3(bean, counter)
+            udpate_id3(bean)
         except Exception, e:
             LOG.error("udpate id3 error", e)
     return beans
 
-def udpate_id3(bean, counter=None):
+def udpate_id3(bean):
     if bean and bean.path and os.path.isfile(bean.path):
         try:
             audio = get_mutagen_audio(bean.path)            
@@ -64,7 +64,6 @@ def udpate_id3(bean, counter=None):
         #if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
         #else: 
             #if audio and not audio.has_key('tracknumber'): 
-        bean.tracknumber = counter
         duration_sec = bean.duration_sec
         if not bean.duration_sec:
             if audio and audio.info and audio.info.length: duration_sec = int(audio.info.length)
@@ -108,9 +107,9 @@ def add_upadte_image_paths(beans):
             bean.image = get_image_by_path(bean.path)
     return beans
 
-def update_id3_wind_filtering(beans, counter=None):
+def update_id3_wind_filtering(beans):
     beans = get_support_music_beans_from_all(beans)
-    beans = udpate_id3_for_beans(beans, counter)
+    beans = udpate_id3_for_beans(beans)
     beans = update_id3_for_cue(beans)
     beans = add_upadte_image_paths(beans)
     result = []

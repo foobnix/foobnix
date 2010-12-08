@@ -249,10 +249,10 @@ class DrugDropTree(gtk.TreeView):
                     bean.tracknumber = counter
                 else: 
                     counter = 0
-            self._plain_append(bean, counter)
+            self._plain_append(bean)
             
-    def _plain_append(self, bean, counter=None):
-        def task(counter=None):
+    def _plain_append(self, bean):
+        def task():
             if not bean:
                 return
             if bean.is_file == True:
@@ -262,13 +262,13 @@ class DrugDropTree(gtk.TreeView):
                 
             bean.visible = True
         
-            beans = update_id3_wind_filtering([bean], counter)
+            beans = update_id3_wind_filtering([bean])
             for one in beans:
                 one.update_uuid() 
                 row = self.get_row_from_bean(one)            
                 self.model.append(None, row)
                 LOG.debug("add to tree model", one.text, one.path)
-        gobject.idle_add(lambda : task(counter))
+        gobject.idle_add(lambda : task())
         
     def tree_append(self, bean):
         def task(bean):
