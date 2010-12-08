@@ -72,8 +72,10 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         self.last_notebook_page = name
         LOG.info("append new tab")
         try:
-            LOG.info("encoding of tab name is ")
-            name = unicode(name) #convert from any encoding in ascii
+            LOG.info("encoding of tab name is", name)
+            #name = unicode(name) #convert from any encoding in ascii
+            name = u"" + name
+            LOG.info("encoding finished ", name)
         except:
             LOG.warn("problem of encoding definition for tab name is occured")
         
