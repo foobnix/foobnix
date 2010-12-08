@@ -33,6 +33,7 @@ class DrugDropTree(gtk.TreeView):
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY) #@UndefinedVariable
     
     def append_all(self, beans):
+        LOG.debug("begin apeend all")
         if self.current_view == VIEW_PLAIN:
             self.plain_append_all(beans)            
         else:
@@ -224,21 +225,23 @@ class DrugDropTree(gtk.TreeView):
             self.tree_append(bean)
     
     def plain_append_all(self, beans):
+        LOG.debug("begin plain append all")
         if not beans:
             return
         self.current_view = VIEW_PLAIN
-        LOG.debug("append all as plain")
+        
         
         normilized = []
         for model in beans:
             if model.path and model.path.lower().endswith(".iso.wv"):
-                LOG.debug("find iso.wv", model.path)
+                LOG.debug("begin normalize iso.wv", model.path)
                 all = get_beans_from_iso_wv(model.path)
                 for inner in all:
                     normilized.append(inner)
             else:
                 normilized.append(model)
         beans = normilized
+        
         
         
         counter = 0
@@ -252,7 +255,9 @@ class DrugDropTree(gtk.TreeView):
             self._plain_append(bean)
             
     def _plain_append(self, bean):
-        def task():
+        LOG.debug("Plain append begin", bean.text, bean.path)
+        def task(bean):
+            LOG.debug("Plain append task", bean.text, bean.path)
             if not bean:
                 return
             if bean.is_file == True:
@@ -266,9 +271,10 @@ class DrugDropTree(gtk.TreeView):
             for one in beans:
                 one.update_uuid() 
                 row = self.get_row_from_bean(one)            
+                LOG.debug("before add to tree model", one.text, one.path)
                 self.model.append(None, row)
-                LOG.debug("add to tree model", one.text, one.path)
-        gobject.idle_add(lambda : task())
+                LOG.debug("after add to tree model", one.text, one.path)
+        gobject.idle_add(lambda : task(bean))
         
     def tree_append(self, bean):
         def task(bean):
