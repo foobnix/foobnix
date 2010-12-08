@@ -194,8 +194,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
     def append_all(self, beans):
         self.active_tree.append_all(beans)
-         
-
+    
     def on_delete_tab(self, child):
         n = self.page_num(child)    
         if n > 0:    

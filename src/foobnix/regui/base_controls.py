@@ -405,13 +405,11 @@ class BaseFoobnixControls():
                     track.parent(album)                    
                     all.append(track)
                 
-                self.notetabs.append(all)
+                self.notetabs.append_all(all)
                 
             if not results:
                 all = self.show_google_results(query)
-                self.notetabs.append(all)
-                
-            
+                self.notetabs.append_all(all)
                                    
         self.in_thread.run_with_progressbar(inline, query)
 
@@ -431,7 +429,7 @@ class BaseFoobnixControls():
                     track.parent(artist)
                     all.append(track)
                 
-                self.notetabs.append(all)
+                self.notetabs.append_all(all)
                 
             if not results:
                 all = self.show_google_results(query)
@@ -456,11 +454,11 @@ class BaseFoobnixControls():
                     track.parent(tag)
                     all.append(track)
                 
-                self.notetabs.append(all)
+                self.notetabs.append_all(all)
             
             if not results:
                 all = self.show_google_results(query)
-                self.notetabs.append(all)
+                self.notetabs.append_all(all)
         
         self.in_thread.run_with_progressbar(inline, query)
 
