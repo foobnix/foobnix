@@ -256,25 +256,28 @@ class DrugDropTree(gtk.TreeView):
             
     def _plain_append(self, bean):
         LOG.debug("Plain append begin", bean.text, bean.path)
-        def task(bean):
-            LOG.debug("Plain append task", bean.text, bean.path)
-            if not bean:
-                return
-            if bean.is_file == True:
-                bean.font = "normal"
-            else:
-                bean.font = "bold"
-                
-            bean.visible = True
         
-            beans = update_id3_wind_filtering([bean])
-            for one in beans:
-                one.update_uuid() 
-                row = self.get_row_from_bean(one)            
-                LOG.debug("before add to tree model", one.text, one.path)
+        LOG.debug("Plain append task", bean.text, bean.path)
+        if not bean:
+            return
+        if bean.is_file == True:
+            bean.font = "normal"
+        else:
+            bean.font = "bold"
+            
+        bean.visible = True
+    
+        beans = update_id3_wind_filtering([bean])
+        for one in beans:
+            one.update_uuid() 
+            row = self.get_row_from_bean(one)            
+            LOG.debug("before add to tree model", one.text, one.path)
+            #self.model.append(None, row)
+            def task():
                 self.model.append(None, row)
-                LOG.debug("after add to tree model", one.text, one.path)
-        gobject.idle_add(lambda : task(bean))
+            gobject.idle_add(task)
+            LOG.debug("after add to tree model", one.text, one.path)
+        
         
     def tree_append(self, bean):
         def task(bean):
