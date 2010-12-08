@@ -16,6 +16,7 @@ import thread
 from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
+import gobject
 
 TARGET_TYPE_URI_LIST = 80
 dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
@@ -69,6 +70,12 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         return self.active_tree
     
     def append_tab(self, name, beans=None):
+        def task():
+            self._append_tab(name, beans)
+        gobject.idle_add(task)
+        
+    
+    def _append_tab(self, name, beans=None):
         self.last_notebook_page = name
         LOG.info("append new tab")
         try:

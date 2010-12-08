@@ -21,7 +21,7 @@ class DrugDropTree(gtk.TreeView):
         gtk.TreeView.__init__(self)
         
         self.connect("drag-drop", self.on_drag_drop)
-
+        
         """init values"""
         self.hash = {None:None}
         self.current_view = None
@@ -271,12 +271,12 @@ class DrugDropTree(gtk.TreeView):
         for one in beans:
             one.update_uuid() 
             row = self.get_row_from_bean(one)            
-            LOG.debug("before add to tree model", one.text, one.path)
-            #self.model.append(None, row)
+            """append to tree thread safe"""
             def task():
-                self.model.append(None, row)
+                self.model.append(None, row)            
+            """append to tree thread safe end"""
             gobject.idle_add(task)
-            LOG.debug("after add to tree model", one.text, one.path)
+            
         
         
     def tree_append(self, bean):
@@ -298,7 +298,6 @@ class DrugDropTree(gtk.TreeView):
                 parent_iter_exists = None
             row = self.get_row_from_bean(bean)
             
-          
             parent_iter = self.model.append(parent_iter_exists, row)
             self.hash[bean.level] = parent_iter
         
