@@ -32,7 +32,7 @@ class AboutWindow(BaseParentWindow):
 
     def __init__(self):
         """init About window"""
-        BaseParentWindow.__init__(self, "About Window")
+        BaseParentWindow.__init__(self, _("About Window"))
 
         self.set_size_request(320, 300)
 
@@ -63,7 +63,7 @@ Playing all imaginations\n
         button_credits.set_border_width (9)
         table.attach(button_credits, 0, 1, 2, 3)
 
-        label = gtk.Label("Close")
+        label = gtk.Label(_("Close"))
         image = gtk.image_new_from_stock(gtk.STOCK_STOP, gtk.ICON_SIZE_MENU)
 
         button_close = self.create_button_with_label_and_icon(image, label)
@@ -71,14 +71,14 @@ Playing all imaginations\n
         button_close.set_border_width (9)
         table.attach(button_close, 2, 3, 2, 3)
 
-        label = gtk.Label("Changelog")
+        label = gtk.Label(_("Changelog"))
         image = gtk.image_new_from_stock(gtk.STOCK_DND, gtk.ICON_SIZE_MENU)
 
         button_changelog = self.create_button_with_label_and_icon(image, label)
         button_changelog.set_border_width (9)
         table.attach(button_changelog, 1, 2, 2, 3)
 
-        creaditsWindow = WindowWithBuffer("Credential")
+        creaditsWindow = WindowWithBuffer(_("Credential"))
 
         text = """\t\t\tDevelopers:
     Ivan Ivanenko <ivan.ivanenko@gmail.com>

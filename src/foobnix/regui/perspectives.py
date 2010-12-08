@@ -82,7 +82,7 @@ class PerspectiveButtonControlls(gtk.HBox):
         
         
         
-        virtuals = PespectiveToogledButton(_("Lists"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
+        virtuals = PespectiveToogledButton(_("Play Lists"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
         virtuals.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
         
         

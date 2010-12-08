@@ -110,8 +110,8 @@ def add_upadte_image_paths(beans):
 
 def update_id3_wind_filtering(beans, counter=None):
     beans = get_support_music_beans_from_all(beans)
-    beans = update_id3_for_cue(beans)
     beans = udpate_id3_for_beans(beans, counter)
+    beans = update_id3_for_cue(beans)
     beans = add_upadte_image_paths(beans)
     result = []
     for bean in beans:

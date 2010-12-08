@@ -125,14 +125,14 @@ def info_dialog_with_link_and_donate(version):
         
         
         
-        card = gtk.LinkButton("http://www.foobnix.com/donate/eng#card", _("Download and Donate by Visa or Master Card"))
-        terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
+        card = gtk.LinkButton("http://www.foobnix.com/donate/eng", _("Download and Donate"))
+        #terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
         link = gtk.LinkButton(_("http://www.foobnix.com/download/eng"), _("Download"))
         
         frame = gtk.Frame("Please donate and download")
         vbox = gtk.VBox(True, 0)
         vbox.pack_start(card, True, True)
-        vbox.pack_start(terminal, True, True)
+        #vbox.pack_start(terminal, True, True)
         vbox.pack_start(link, True, True)
         frame.add(vbox)
         

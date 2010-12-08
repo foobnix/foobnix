@@ -240,17 +240,15 @@ class DrugDropTree(gtk.TreeView):
                 normilized.append(model)
         beans = normilized
         
+        
         counter = 0
-        is_cue = False
         for bean in beans:
-            if bean.path and bean.path.lower().endswith(".cue"):
-                self._plain_append(bean)
-                is_cue = True
-        if is_cue: return
-        for bean in beans:
-            if bean.is_file:
-                counter += 1
-            else: counter = 0
+            if bean.path and not bean.path.lower().endswith(".cue"):                                        
+                if bean.is_file:
+                    counter += 1
+                    bean.tracknumber = counter
+                else: 
+                    counter = 0
             self._plain_append(bean, counter)
             
     def _plain_append(self, bean, counter=None):
@@ -269,6 +267,7 @@ class DrugDropTree(gtk.TreeView):
                 one.update_uuid() 
                 row = self.get_row_from_bean(one)            
                 self.model.append(None, row)
+                LOG.debug("add to tree model", one.text, one.path)
         gobject.idle_add(lambda : task(counter))
         
     def tree_append(self, bean):
