@@ -43,7 +43,6 @@ class TabLib(gtk.Notebook, FControl):
             
         vbox.pack_start(button(), False, False)
         vbox.pack_start(self.label, False, False)
-        
         self.prepend_page(tree.scroll, vbox)        
         self.show_all()
         self.set_current_page(0)

@@ -44,7 +44,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, self.controls.update_music_tree, None)
                 #menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
                 menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
-                menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
+                if FC().tabs_mode == "Multi":
+                    menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
                 menu.show(e)
     
     def add_folder(self, in_new_tab = False):
@@ -75,6 +76,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             elif tree.is_empty:
                 tab_name = unicode(path[path.rfind("/")+1:])
                 self.controls.tablib.label.set_label(tab_name + " ")
+                FC().tab_names[0] = tab_name
             for path in paths:
                 if path in FC().music_paths[number_of_tab]:
                     pass

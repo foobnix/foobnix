@@ -154,6 +154,8 @@ class FC:
         self.left_perspective = "info"        
         
         self.gap_secs = 0
+        
+        self.tabs_mode = "Multi"
          
         self = self._load();
                 
