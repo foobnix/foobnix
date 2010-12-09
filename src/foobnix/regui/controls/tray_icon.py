@@ -153,7 +153,9 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         title = "Title"
         if self.current_bean:
             artist = self.current_bean.artist
-            artist = string.join(["&amp;" if x == '&' else x for x in artist], '')
+            #artist = string.join(["&amp;" if x == '&' else x for x in artist], '')
+            
+            artist = artist.replace('&', '&amp;')
             title = self.current_bean.title
         
         max_str_len = 40

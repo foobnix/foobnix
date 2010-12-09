@@ -112,7 +112,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         self.adjustment.set_value(FC().gap_secs)
             
     def on_save(self):             
-        FC().music_paths = self.tree_controller.get_all_beans_text()
+        #FC().music_paths = self.tree_controller.get_all_beans_text()
         FC().all_support_formats = self.files_controller.get_all_beans_text()
         FC().gap_secs = self.adjustment.get_value()
         

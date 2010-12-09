@@ -199,8 +199,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
 
     def on_delete_tab(self, child):
         n = self.page_num(child)    
-        if n > 0:    
-            self.delete_tab(n)
+        self.delete_tab(n)
 
     def delete_tab(self, page=None):
         if not page:

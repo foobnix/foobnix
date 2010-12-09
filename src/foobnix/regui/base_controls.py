@@ -24,6 +24,7 @@ from foobnix.util.file_utils import get_file_extenstion
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.text_utils import normilize_text
+from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 
 class BaseFoobnixControls():
     def __init__(self):
@@ -131,34 +132,46 @@ class BaseFoobnixControls():
 
     def load_music_tree(self):
         self.perspective.hide_add_button()
-        if FC().cache_music_tree_beans:
-            self.tree.append_all(FC().cache_music_tree_beans)
-            LOG.info("Tree loaded from cache")
-        else:
+        if not FC().cache_music_tree_beans[0] and len(FC().cache_music_tree_beans) == 1:
             self.update_music_tree()
             LOG.info("Tree updated")
+        else:
+            tabs = len(FC().cache_music_tree_beans)
+            self.tree.append_all(FC().cache_music_tree_beans[0])
+            self.tablib.label.set_label(FC().tab_names[0] + " ")
+            for tab in xrange(1, tabs):
+                tree = NavigationTreeControl(self)
+                tree.append_all(FC().cache_music_tree_beans[tab])
+                self.tablib.on_append_tab(tree, FC().tab_names[tab])
+                
+            LOG.info("Tree loaded from cache")
 
-    def update_music_tree(self):
-        LOG.info("Update music tree", FC().music_paths)
-        self.tree.clear()
-        FC().cache_music_tree_beans = []
+    def update_music_tree(self,  tree = None, number_of_page = 0):
+        if not tree:
+            tree = self.tree
+        LOG.info("Update music tree", FC().music_paths[number_of_page])
+        tree.clear()
+        FC().cache_music_tree_beans[number_of_page] = []
+               
         all = []
-        for path in FC().music_paths:            
+        
+        for path in FC().music_paths[number_of_page]:
             all_in_folder = get_all_music_by_path(path)
-            for bean in all_in_folder:
-                all.append(bean)
-        
+            if all_in_folder:
+                for bean in all_in_folder:
+                    all.append(bean)
         for bean in all:
-            FC().cache_music_tree_beans.append(bean)
-        
+            FC().cache_music_tree_beans[number_of_page].append(bean)
         self.perspective.hide_add_button()
         if not all:
+            tree.is_empty = True
             self.perspective.show_add_button()
             all.append(FModel(_("Music not found in folder(s):")))        
-            for path in FC().music_paths:            
+            for path in FC().music_paths[number_of_page]:            
                 all.append(FModel(path).add_is_file(True))
+        else: tree.is_empty = False
         
-        self.tree.append_all(all)
+        tree.append_all(all)
 
     def set_visible_search_panel(self, flag):
         if self.layout:
