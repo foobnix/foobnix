@@ -19,6 +19,8 @@ from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO,
     ICON_FOOBNIX
 from foobnix.util.text_utils import split_string
 from foobnix.util import LOG
+from foobnix.regui.controls.playback import PlaybackControls
+from foobnix.helpers.my_widgets import ImageButton
  
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
@@ -31,21 +33,15 @@ class PopupWindowMenu(gtk.Window, FControl):
 
         vbox = gtk.VBox(False, 0)
 
-        toolbar = MyToolbar()
-        toolbar.add_button("Exit", gtk.STOCK_QUIT, self.controls.quit, None)
-        toolbar.add_separator()
-        toolbar.add_button("Stop", gtk.STOCK_MEDIA_STOP, self.controls.state_stop, None)
-        toolbar.add_button("Play", gtk.STOCK_MEDIA_PLAY, self.controls.state_play, None)
-        toolbar.add_button("Pause", gtk.STOCK_MEDIA_PAUSE, self.controls.state_pause, None)
-        toolbar.add_button("Previous", gtk.STOCK_MEDIA_PREVIOUS, self.controls.prev, None)
-        toolbar.add_button("Next", gtk.STOCK_MEDIA_NEXT, self.controls.next, None)
-        toolbar.add_separator()
-        toolbar.add_button("Close Popup", gtk.STOCK_OK, lambda * a:self.hide(), None)
+        
+        playcontrols = PlaybackControls(controls)
+        playcontrols.pack_start(ImageButton(gtk.STOCK_QUIT, controls.quit, _("Exit")))
+        playcontrols.pack_start(ImageButton(gtk.STOCK_OK, self.hide, _("Close Popup")))
 
         self.poopup_text = gtk.Label("Foobnix")
         self.poopup_text.set_line_wrap(True)
 
-        vbox.pack_start(toolbar, False, False)
+        vbox.pack_start(playcontrols, False, False)
         vbox.pack_start(self.poopup_text, False, False)
         self.add(vbox)
         self.show_all()

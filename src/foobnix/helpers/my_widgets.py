@@ -52,11 +52,16 @@ class ButtonStockText(gtk.Button):
         
 
 class ImageButton(gtk.Button):
-    def __init__(self, stock_image):
+    def __init__(self, stock_image, func=None, tooltip_text=None):
         gtk.Button.__init__(self)
         self.set_relief(gtk.RELIEF_NONE)
-        img = gtk.image_new_from_stock(stock_image, gtk.ICON_SIZE_MENU)
+        if tooltip_text:
+            self.set_tooltip_text(tooltip_text)
+        img = gtk.image_new_from_stock(stock_image, gtk.ICON_SIZE_LARGE_TOOLBAR)
         self.set_image(img)
+        if func:
+            self.connect("clicked", lambda * a: func())
+        
 
 class ToggleImageButton(gtk.ToggleButton):
     def __init__(self, gtk_stock, func=None, param=None):

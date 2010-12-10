@@ -90,7 +90,8 @@ class FoobnixCore(BaseFoobnixControls):
 
         
         self.dbus = DBusManager(self)
-        
+    
+    def run(self):    
         self.on_load()
             
         

@@ -7,7 +7,10 @@ from foobnix.regui.state import LoadSave
 from foobnix.helpers.toolbar import MyToolbar
 from foobnix.regui.model.signal import FControl
 import gtk
-class PlaybackControls(FControl,MyToolbar,LoadSave):
+from foobnix.helpers.my_widgets import ImageButton
+
+@DeprecationWarning
+class PlaybackControlsNotUser(FControl, MyToolbar, LoadSave):
     def __init__(self, controls): 
         FControl.__init__(self, controls)    
         MyToolbar.__init__(self)   
@@ -21,3 +24,16 @@ class PlaybackControls(FControl,MyToolbar,LoadSave):
         
     def on_load(self): pass
     def on_save(self): pass
+    
+class PlaybackControls(FControl, gtk.HBox, LoadSave):
+    def __init__(self, controls): 
+        gtk.HBox.__init__(self, False)
+        self.pack_start(gtk.SeparatorToolItem())
+        self.pack_start(ImageButton(gtk.STOCK_MEDIA_STOP, controls.state_stop, _("Stop")))
+        self.pack_start(ImageButton(gtk.STOCK_MEDIA_PLAY, controls.state_play, _("Play")))
+        self.pack_start(ImageButton(gtk.STOCK_MEDIA_PAUSE, controls.state_pause, _("Pause")))
+        self.pack_start(ImageButton(gtk.STOCK_MEDIA_PREVIOUS, controls.prev, _("Previous")))
+        self.pack_start(ImageButton(gtk.STOCK_MEDIA_NEXT, controls.next, _("Next")))
+        self.pack_start(gtk.SeparatorToolItem())
+    def on_load(self): pass
+    def on_save(self): pass    
