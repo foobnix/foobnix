@@ -16,7 +16,6 @@ from foobnix.util.image_util import get_image_by_path
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.fc import FC
 
-
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
 FILE = "FILE"
@@ -31,7 +30,7 @@ class CueTrack():
         self.duration = 0
         self.path = path
 
-    def __str__(self):
+    def __str__(self):        
         return "Track: " + self.title + " " + self.performer + " " + self.index
 
     def get_start_time_str(self):

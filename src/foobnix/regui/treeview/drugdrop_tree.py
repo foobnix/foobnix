@@ -255,27 +255,28 @@ class DrugDropTree(gtk.TreeView):
             self._plain_append(bean)
             
     def _plain_append(self, bean):
-        LOG.debug("Plain append begin", bean.text, bean.path)
-        
-        LOG.debug("Plain append task", bean.text, bean.path)
-        if not bean:
-            return
-        if bean.is_file == True:
-            bean.font = "normal"
-        else:
-            bean.font = "bold"
+        def task():
+            LOG.debug("Plain append begin", bean.text, bean.path)
             
-        bean.visible = True
-    
-        beans = update_id3_wind_filtering([bean])
-        for one in beans:
-            one.update_uuid() 
-            row = self.get_row_from_bean(one)            
-            """append to tree thread safe"""
-            def task():
+            LOG.debug("Plain append task", bean.text, bean.path)
+            if not bean:
+                return
+            if bean.is_file == True:
+                bean.font = "normal"
+            else:
+                bean.font = "bold"
+                
+            bean.visible = True
+        
+            beans = update_id3_wind_filtering([bean])
+            for one in beans:
+                one.update_uuid() 
+                row = self.get_row_from_bean(one)            
+                """append to tree thread safe"""
+                
                 self.model.append(None, row)            
-            """append to tree thread safe end"""
-            gobject.idle_add(task)
+                """append to tree thread safe end"""
+        gobject.idle_add(task)
             
         
         
