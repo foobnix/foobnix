@@ -140,12 +140,14 @@ class BaseFoobnixControls():
             self.tree.append_all(FC().cache_music_tree_beans[tabs-1])
             self.tablib.label.set_label(FC().tab_names[tabs-1] + " ")
             for tab in xrange(tabs-2, -1, -1):
-                print tab
+                
                 tree = NavigationTreeControl(self)
                 tree.append_all(FC().cache_music_tree_beans[tab])
                 self.tablib.on_append_tab(tree, FC().tab_names[tab])
                 
-                if not FC().cache_music_tree_beans[tab]: tree.is_empty = True
+                if not FC().cache_music_tree_beans[tab]: 
+                    tree.is_empty = True
+                    self.perspective.show_add_button()
             
             LOG.info("Tree loaded from cache")
 
@@ -165,10 +167,16 @@ class BaseFoobnixControls():
                     all.append(bean)
         for bean in all:
             FC().cache_music_tree_beans[number_of_page].append(bean)
-        self.perspective.hide_add_button()
+        try:
+            self.perspective.hide_add_button()
+        except AttributeError: 
+            LOG.warn("Object perspective not exist yet")
         if not all:
             tree.is_empty = True
-            self.perspective.show_add_button()
+            try:
+                self.perspective.show_add_button()
+            except AttributeError: 
+                LOG.warn("Object perspective not exist yet")
             all.append(FModel(_("Music not found in folder(s):")))        
             for path in FC().music_paths[number_of_page]:            
                 all.append(FModel(path).add_is_file(True))
