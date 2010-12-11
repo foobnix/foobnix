@@ -364,7 +364,7 @@ msgstr "Музыка не найдена в папках"
 
 #: .././foobnix/regui/infopanel.py:42
 msgid "Best Songs"
-msgstr "Лушние песни"
+msgstr "Лучшие песни"
 
 #: .././foobnix/regui/infopanel.py:45
 msgid "Similar Artists"

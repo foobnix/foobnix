@@ -23,12 +23,17 @@ class ChildTopWindow(gtk.Window):
             self.set_size_request(width, height)
         self.connect("delete-event", self.hide_window)
         self.connect("key-press-event", self.on_key_press)
+        
+        self.hide_on_escape = True
     
+    def set_hide_on_escape(self, hide_on_escape=True):
+        self.hide_on_escape = hide_on_escape
+        
     def get_fobnix_logo(self):
         return get_foobnix_resourse_path_by_name(ICON_FOOBNIX)
     
     def on_key_press(self, w, e):
-        if is_key(e, 'Escape'):
+        if self.hide_on_escape and is_key(e, 'Escape'):
             self.hide()
     
     def hide_window(self, *a):
