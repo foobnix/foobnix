@@ -137,13 +137,16 @@ class BaseFoobnixControls():
             LOG.info("Tree updated")
         else:
             tabs = len(FC().cache_music_tree_beans)
-            self.tree.append_all(FC().cache_music_tree_beans[0])
-            self.tablib.label.set_label(FC().tab_names[0] + " ")
-            for tab in xrange(1, tabs):
+            self.tree.append_all(FC().cache_music_tree_beans[tabs-1])
+            self.tablib.label.set_label(FC().tab_names[tabs-1] + " ")
+            for tab in xrange(tabs-2, -1, -1):
+                print tab
                 tree = NavigationTreeControl(self)
                 tree.append_all(FC().cache_music_tree_beans[tab])
                 self.tablib.on_append_tab(tree, FC().tab_names[tab])
                 
+                if not FC().cache_music_tree_beans[tab]: tree.is_empty = True
+            
             LOG.info("Tree loaded from cache")
 
     def update_music_tree(self,  tree = None, number_of_page = 0):
