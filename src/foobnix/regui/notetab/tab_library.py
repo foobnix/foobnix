@@ -63,10 +63,7 @@ class TabLib(gtk.Notebook, FControl):
         event.add(vbox)
         
         """change style of event"""
-        style = event.get_style().copy()
-        colour = style.bg[gtk.STATE_NORMAL]
-        style.bg[gtk.STATE_ACTIVE] = colour
-        event.set_style(style)
+        event.set_style(self.change_event_style(event))
         
         def on_active(*a):
             n = self.page_num(tree.scroll)
@@ -82,7 +79,12 @@ class TabLib(gtk.Notebook, FControl):
         
         """only after show_all() function"""
         self.set_current_page(0)
-         
+    
+    def change_event_style(self, event):
+        style = event.get_style().copy()
+        colour = style.bg[gtk.STATE_NORMAL]
+        style.bg[gtk.STATE_ACTIVE] = colour
+        return style     
     
     def button(self, tree):
             if FC().tab_close_element == "button":
@@ -114,13 +116,11 @@ class TabLib(gtk.Notebook, FControl):
         window = gtk.Window()
         window.set_decorated(False)
         window.set_position(gtk.WIN_POS_MOUSE)
-        window.set_border_width(10)
+        window.set_border_width(5)
         Entry = gtk.Entry()
-        Entry.set_editable(True)
-        Entry.set_activates_default(True)
-        Entry.set_visibility(True)
         Entry.set_text(old_label)
         Entry.show()
+        
         def on_key_press(w, e):
             if is_key(e, 'Escape'):
                 window.hide()
@@ -131,21 +131,21 @@ class TabLib(gtk.Notebook, FControl):
                 if new_label:
                     label = gtk.Label(new_label + ' ')
                     label.set_angle(90)
-                    label.show()
                     new_vbox = gtk.VBox()
                     if len(old_vbox.get_children()) > 1:
                         new_vbox.pack_start(self.button(scrolled_tree.get_child()), False, False)
                     new_vbox.pack_start(label, False, False)
-                    new_vbox.show_all()
                     event = gtk.EventBox()
-                    event.set_visible_window(False)
                     event.add(new_vbox)
+                    event.set_style(self.change_event_style(event))
                     event.show_all()
                     self.set_tab_label(scrolled_tree, event)
-                    FC().tab_names[self.get_current_page()] = new_label
+                    FC().tab_names[n] = new_label
+        
         def on_focus_out(*a):
             window.hide()
             Entry.set_text(old_label)
+            
         window.connect("key_press_event", on_key_press)
         window.connect("focus-out-event", on_focus_out)
         window.add(Entry)
@@ -169,9 +169,7 @@ class TabLib(gtk.Notebook, FControl):
         n = self.get_current_page()
         tree = self.get_current_tree(n)
         self.controls.update_music_tree(tree, n)
-        
-     
-    
+         
     def get_current_tree(self, number_of_page):
         scrolled_tree = self.get_nth_page(number_of_page)
         tree = scrolled_tree.get_child()
