@@ -44,10 +44,10 @@ V_RELEASE=${RELEASE}${UBUNTU:0:1}
 	#debuild -us -uc
 	
 	cd ../	
-	#dput ppa:foobnix-player/foobnix foobnix_${FOOBNIX_VERSION}${UBUNTU:0:1}_source.changes
+	dput ppa:foobnix-player/foobnix foobnix_${FOOBNIX_VERSION}${UBUNTU:0:1}_source.changes
 done
 
-rm -rf foobnix_*_*
+rm -rf foobnix_*
 rm -rf foobnix*.dsc
 rm -rf foobnix*.tar.gz
 rm -rf foobnix_$FOOBNIX_VERSION/debian/changelog
