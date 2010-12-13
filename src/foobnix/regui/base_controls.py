@@ -133,8 +133,11 @@ class BaseFoobnixControls():
     def load_music_tree(self):
         self.perspective.hide_add_button()
         if not FC().cache_music_tree_beans[0] and len(FC().cache_music_tree_beans) == 1:
-            self.update_music_tree()
-            LOG.info("Tree updated")
+            #self.update_music_tree()
+            #LOG.info("Tree updated")
+            self.perspective.show_add_button()
+            if FC().tab_names[0]:
+                self.tablib.label.set_label(FC().tab_names[0])
         else:
             tabs = len(FC().cache_music_tree_beans)
             self.tree.append_all(FC().cache_music_tree_beans[tabs-1])

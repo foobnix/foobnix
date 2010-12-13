@@ -41,7 +41,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             
         if is_rigth_click(e):            
                 menu = Popup()
-                menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, self.controls.update_music_tree, None)
+                menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, self.controls.tablib.on_update_music_tree, None)
                 #menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
                 menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
                 if FC().tabs_mode == "Multi":
