@@ -40,7 +40,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         self.frame = gtk.Frame(label=_("Music dirs"))
         self.frame.set_border_width(0)
         self.frame.show()
-        
+        self.frame.set_no_show_all(True)
         frame_box = gtk.HBox(False, 0)
         frame_box.set_border_width(5)
         frame_box.show()
@@ -81,11 +81,15 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         button_box.pack_start(empty, True, True, 0)
         button_box.pack_start(bt_reload, False, False, 0)
         
+        self.tree_controller.scroll.show_all()
         frame_box.pack_start(self.tree_controller.scroll, True, True, 0)
         frame_box.pack_start(button_box, False, False, 0)
                 
         self.frame.add(frame_box)
-               
+        
+        if FC().tabs_mode == "Multi":
+            print "!!!!!!!!!!!!!!!!!!!!!!"
+            self.frame.hide()       
         return self.frame
    
     def reload_dir(self, *a):
@@ -180,8 +184,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         frame_box.pack_start(button_box, False, False, 0)
                         
         frame.add(frame_box)
-        if self.singletab_button.get_active():
-            frame.hide()
+        
         return frame
     
     def on_add_file(self, *a):
@@ -217,7 +220,6 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         self.singletab_button = gtk.RadioButton(self.multitabs_button, _("Singletab mode"))
         def on_toggle_singletab(widget, data=None):
             self.frame.show()
-                            
         self.singletab_button.connect("toggled", on_toggle_singletab)
         hbox.pack_end(self.singletab_button, True, False)
         return hbox

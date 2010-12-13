@@ -106,7 +106,6 @@ class TabLib(gtk.Notebook, FControl):
         scrolled_tree = self.get_nth_page(n)
         eventbox = self.get_tab_label(scrolled_tree)
         old_vbox = eventbox.get_child()
-        print old_vbox.get_children()
         if len(old_vbox.get_children()) == 1:
             label_object = old_vbox.get_children()[0]
         else:
@@ -117,17 +116,17 @@ class TabLib(gtk.Notebook, FControl):
         window.set_decorated(False)
         window.set_position(gtk.WIN_POS_MOUSE)
         window.set_border_width(5)
-        Entry = gtk.Entry()
-        Entry.set_text(old_label)
-        Entry.show()
+        entry = gtk.Entry()
+        entry.set_text(old_label)
+        entry.show()
         
         def on_key_press(w, e):
             if is_key(e, 'Escape'):
                 window.hide()
-                Entry.set_text(old_label)
+                entry.set_text(old_label)
             elif is_key(e, 'Return'):
                 window.hide()
-                new_label = Entry.get_text()
+                new_label = entry.get_text()
                 if new_label:
                     label = gtk.Label(new_label + ' ')
                     label.set_angle(90)
@@ -144,11 +143,11 @@ class TabLib(gtk.Notebook, FControl):
         
         def on_focus_out(*a):
             window.hide()
-            Entry.set_text(old_label)
+            entry.set_text(old_label)
             
         window.connect("key_press_event", on_key_press)
         window.connect("focus-out-event", on_focus_out)
-        window.add(Entry)
+        window.add(entry)
         window.show_all()
         
     def on_add_folder(self, in_new_tab = False):
