@@ -124,6 +124,7 @@ class DBusManager(dbus.service.Object, FControl):
         
                 
     def on_mediakey(self, comes_from, what):
+        LOG.debug("Multi media key pressed", what)
         """
         gets called when multimedia keys are pressed down.
         """

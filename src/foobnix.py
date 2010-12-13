@@ -28,6 +28,7 @@ if "debug" in sys.argv or not iface:
     
     gobject.threads_init() #@UndefinedVariable
     core = FoobnixCore()
+    core.run()
     core.dbus.parse_arguments(sys.argv)
 
     print "******Foobnix run in", time.time() - init_time, " seconds******"

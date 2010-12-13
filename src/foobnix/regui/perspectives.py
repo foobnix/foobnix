@@ -27,7 +27,7 @@ class PerspectiveControls(FControl, LoadSave, gtk.VBox):
         self.buttons = PerspectiveButtonControlls(self.activate_perspective)
         self.buttons.show_all()
         
-        self.add_button = ButtonStockText(_("Add Music Folder to Lybrary"), gtk.STOCK_ADD)
+        self.add_button = ButtonStockText(_("Adding Folders of Music"), gtk.STOCK_ADD)
         self.add_button.connect("clicked", lambda * a :controls.tree.add_folder())
         
         self.pack_start(self.add_button, False, False)
@@ -82,7 +82,7 @@ class PerspectiveButtonControlls(gtk.HBox):
         
         
         
-        virtuals = PespectiveToogledButton(_("Lists"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
+        virtuals = PespectiveToogledButton(_("Play Lists"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
         virtuals.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
         
         

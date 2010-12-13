@@ -21,7 +21,7 @@ class DrugDropTree(gtk.TreeView):
         gtk.TreeView.__init__(self)
         
         self.connect("drag-drop", self.on_drag_drop)
-
+        
         """init values"""
         self.hash = {None:None}
         self.current_view = None
@@ -33,6 +33,7 @@ class DrugDropTree(gtk.TreeView):
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY) #@UndefinedVariable
     
     def append_all(self, beans):
+        LOG.debug("begin apeend all")
         if self.current_view == VIEW_PLAIN:
             self.plain_append_all(beans)            
         else:
@@ -225,15 +226,16 @@ class DrugDropTree(gtk.TreeView):
             self.tree_append(bean)
     
     def plain_append_all(self, beans):
+        LOG.debug("begin plain append all")
         if not beans:
             return
         self.current_view = VIEW_PLAIN
-        LOG.debug("append all as plain")
+        
         
         normilized = []
         for model in beans:
             if model.path and model.path.lower().endswith(".iso.wv"):
-                LOG.debug("find iso.wv", model.path)
+                LOG.debug("begin normalize iso.wv", model.path)
                 all = get_beans_from_iso_wv(model.path)
                 for inner in all:
                     normilized.append(inner)
@@ -241,21 +243,23 @@ class DrugDropTree(gtk.TreeView):
                 normilized.append(model)
         beans = normilized
         
+        
+        
         counter = 0
-        is_cue = False
         for bean in beans:
-            if bean.path and bean.path.lower().endswith(".cue"):
-                self._plain_append(bean)
-                is_cue = True
-        if is_cue: return
-        for bean in beans:
-            if bean.is_file:
-                counter += 1
-            else: counter = 0
-            self._plain_append(bean, counter)
+            if bean.path and not bean.path.lower().endswith(".cue"):                                        
+                if bean.is_file:
+                    counter += 1
+                    bean.tracknumber = counter
+                else: 
+                    counter = 0
+            self._plain_append(bean)
             
-    def _plain_append(self, bean, counter=None):
-        def task(counter=None):
+    def _plain_append(self, bean):
+        def task():
+            LOG.debug("Plain append begin", bean.text, bean.path)
+            
+            LOG.debug("Plain append task", bean.text, bean.path)
             if not bean:
                 return
             if bean.is_file == True:
@@ -265,12 +269,17 @@ class DrugDropTree(gtk.TreeView):
                 
             bean.visible = True
         
-            beans = update_id3_wind_filtering([bean], counter)
+            beans = update_id3_wind_filtering([bean])
             for one in beans:
                 one.update_uuid() 
                 row = self.get_row_from_bean(one)            
-                self.model.append(None, row)
-        gobject.idle_add(lambda : task(counter))
+                """append to tree thread safe"""
+                
+                self.model.append(None, row)            
+                """append to tree thread safe end"""
+        gobject.idle_add(task)
+            
+        
         
     def tree_append(self, bean):
         def task(bean):
@@ -291,7 +300,6 @@ class DrugDropTree(gtk.TreeView):
                 parent_iter_exists = None
             row = self.get_row_from_bean(bean)
             
-          
             parent_iter = self.model.append(parent_iter_exists, row)
             self.hash[bean.level] = parent_iter
         

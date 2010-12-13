@@ -49,6 +49,7 @@ class AdvancedDrawingArea(gtk.DrawingArea):
 class FullScreanArea(ChildTopWindow):
         def __init__(self, controls, on_hide_callback):
             ChildTopWindow.__init__(self, "movie")
+            self.set_hide_on_escape(False)
             self.on_hide_callback = on_hide_callback
             
             self.drow = AdvancedDrawingArea(controls)

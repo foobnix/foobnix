@@ -41,12 +41,18 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             
         if is_rigth_click(e):            
                 menu = Popup()
+                menu.add_item(_("Add to current tab"), gtk.STOCK_ADD, self.add_to_current_tab, None)
+                menu.add_separator()
                 menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, self.controls.tablib.on_update_music_tree, None)
                 #menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
                 menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
                 if FC().tabs_mode == "Multi":
                     menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
                 menu.show(e)
+    
+    def add_to_current_tab(self):
+        beans = self.get_all_child_beans_by_selected()  
+        self.controls.append_to_current_notebook(beans)
     
     def add_folder(self, in_new_tab = False):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"),

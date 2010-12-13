@@ -16,7 +16,6 @@ from foobnix.util.image_util import get_image_by_path
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.fc import FC
 
-
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
 FILE = "FILE"
@@ -31,7 +30,7 @@ class CueTrack():
         self.duration = 0
         self.path = path
 
-    def __str__(self):
+    def __str__(self):        
         return "Track: " + self.title + " " + self.performer + " " + self.index
 
     def get_start_time_str(self):
@@ -112,6 +111,8 @@ class CueReader():
     def get_common_beans(self):
         beans = []
         cue = self.parse()
+        if not self.is_cue_valid():
+            return []
         for i, track  in enumerate(cue.tracks):
             bean = FModel(text=track.performer + " - " + track.title, path=track.path)
             bean.artist = track.performer
@@ -158,6 +159,7 @@ class CueReader():
 
         for line in file:
             try:
+                pass
                 line = unicode(line, code)
             except:
                 LOG.error("File encoding is too strange", code)
@@ -215,7 +217,7 @@ class CueReader():
             if line.startswith("INDEX 01"):
                 cue_track = CueTrack(title, performer, index, full_file)
                 cue_file.append_track(cue_track)
-                        
+        LOG.debug("CUE file parsed ", cue_file.file)
         return self.normalize(cue_file)
     
 def update_id3_for_cue(beans):

@@ -31,7 +31,7 @@ class DMControls(MyToolbar):
         #self.add_button("Start All", gtk.STOCK_MEDIA_FORWARD, dm_tree.update_status_for_all, DOWNLOAD_STATUS_ACTIVE)
         #self.add_button("Stop All", gtk.STOCK_STOP, dm_tree.update_status_for_all, DOWNLOAD_STATUS_STOP)
         #self.add_separator()   
-        #self.add_button("Delete", gtk.STOCK_DELETE, dm_tree.delete_all_selected, None)
+        self.add_button("Delete", gtk.STOCK_DELETE, dm_tree.delete_all_selected, None)
         #self.add_button("Delete All", gtk.STOCK_CLEAR, dm_tree.delete_all, None)
         #self.add_separator()
         
@@ -48,8 +48,8 @@ class DM(ChildTopWindow):
         
                 
         
-        paned = gtk.HPaned()
-        paned.set_position(200)
+        #paned = gtk.HPaned()
+        #paned.set_position(200)
         
         self.navigation = DMNavigationTreeControl()
         
@@ -63,14 +63,16 @@ class DM(ChildTopWindow):
         
         self.dm_list = DownloadManagerTreeControl(self.navigation)
         self.navigation.dm_list = self.dm_list
-        paned.pack1(self.navigation.scroll)
-        paned.pack2(self.dm_list.scroll)
+        #paned.pack1(self.navigation.scroll)
+        #paned.pack2(self.dm_list.scroll)
         
         
         playback = DMControls(controls, self.dm_list)
         
         vbox.pack_start(playback, False, True)
-        vbox.pack_start(paned, True, True)
+        #vbox.pack_start(paned, True, True)
+        vbox.pack_start(self.dm_list.scroll, True, True)
+        
                 
         self.add(vbox)
         thread.start_new_thread(self.dowloader, (self.dm_list,))

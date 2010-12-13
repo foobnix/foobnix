@@ -1,4 +1,8 @@
+0.2.2-11
+* Fixes playback controls style for all themes
 0.2.2-10
+* Fixed crashes on Debian and maybe on other system when online search
+* Append by right click button
 * Add support of ISO.wv
 * Configure logging system
 * Starting time optimization 1 sec on my machine.

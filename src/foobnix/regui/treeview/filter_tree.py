@@ -5,7 +5,10 @@ Created on 7 нояб. 2010
 @author: ivan
 '''
 from foobnix.regui.model import FTreeModel
-class FilterTreeControls():
+from foobnix.regui.treeview.drugdrop_tree import DrugDropTree
+class FilterTreeControls(DrugDropTree):
+    def __init__(self, controls):
+        DrugDropTree.__init__(self, controls)
     
     def show_all_lines(self):
         def req(line):

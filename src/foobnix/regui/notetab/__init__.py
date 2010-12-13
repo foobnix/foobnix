@@ -16,6 +16,7 @@ import thread
 from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
+import gobject
 
 TARGET_TYPE_URI_LIST = 80
 dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
@@ -69,11 +70,18 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         return self.active_tree
     
     def append_tab(self, name, beans=None):
+        def task():
+            self._append_tab(name, beans)
+        gobject.idle_add(task)
+        
+    
+    def _append_tab(self, name, beans=None):
         self.last_notebook_page = name
         LOG.info("append new tab")
         try:
-            LOG.info("encoding of tab name is ")
+            LOG.info("encoding of tab name is", name)
             name = unicode(name) #convert from any encoding in ascii
+            LOG.info("encoding finished ", name)
         except:
             LOG.warn("problem of encoding definition for tab name is occured")
         
@@ -192,11 +200,9 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         treeview.scroll.show_all()
         return  treeview.scroll
 
-    def append(self, beans):
-        for bean in beans:
-            self.active_tree.append(bean)
-        self.get_active_tree().expand_all() 
-
+    def append_all(self, beans):
+        self.active_tree.append_all(beans)
+    
     def on_delete_tab(self, child):
         n = self.page_num(child)    
         self.delete_tab(n)
