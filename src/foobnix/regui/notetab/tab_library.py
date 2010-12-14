@@ -27,15 +27,12 @@ class TabLib(gtk.Notebook, FControl):
         self.connect("button-release-event", self.get_page_number)
         
         self.connect("page-reordered", self.reorder_callback)
-          
-        self.connect("button-press-event", self.on_button_press)
-        
         
     def on_button_press(self, w, e):
         if e.button == 3:
-            self.menu.show_all()
-            self.menu.popup(None, None, None, e.button, e.time)
-           
+            w.menu.show_all()
+            w.menu.popup(None, None, None, e.button, e.time)
+          
     def on_delete_tab(self, child):
         n = self.page_num(child)
         if self.get_n_pages() == 1: return
@@ -49,15 +46,9 @@ class TabLib(gtk.Notebook, FControl):
         self.label = gtk.Label(tab_name + " ")
         self.label.set_angle(90)
         self.label.show()
-        
-        self.menu = Popup()
-        self.menu.add_item(_("Rename tab"), "", self.on_rename_tab, None)
-        self.menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, self.on_update_music_tree, None)
-        self.menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.on_add_folder, None)
-        self.menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.on_add_folder(True), None)
-        self.menu.add_item(_("Clear Music Tree"), gtk.STOCK_OPEN, self.clear_tree, None)       
-                   
-        vbox.pack_start(self.button(tree), False, False)
+                
+        if FC().tab_close_element:      
+            vbox.pack_start(self.button(tree), False, False)
         vbox.pack_start(self.label, False, False)
         event = gtk.EventBox()
         event.add(vbox)
@@ -65,11 +56,16 @@ class TabLib(gtk.Notebook, FControl):
         """change style of event"""
         event.set_style(self.change_event_style(event))
         
-        def on_active(*a):
+        event = self.tab_menu_creator(event, tree)
+                
+        """def on_active(*a):
             n = self.page_num(tree.scroll)
-            self.set_current_page(n)
+            self.set_current_page(n)"""
+                
         
-        event.connect("button-press-event", on_active)
+                
+        event.connect("button-press-event", self.on_button_press)        
+        #event.connect("button-press-event", on_active)
         event.show_all()             
                     
         self.prepend_page(tree.scroll, event)
@@ -86,12 +82,22 @@ class TabLib(gtk.Notebook, FControl):
         style.bg[gtk.STATE_ACTIVE] = colour
         return style     
     
+    def tab_menu_creator(self, widget, tab_child):
+        widget.menu = Popup()
+        widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child), None)
+        widget.menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, lambda: self.on_update_music_tree(tab_child), None)
+        widget.menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.on_add_folder, None)
+        widget.menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.on_add_folder(True), None)
+        widget.menu.add_item(_("Clear Music Tree"), gtk.STOCK_CLEAR, lambda : self.clear_tree(tab_child), None)
+        widget.menu.add_item(_("Close tab"), gtk.STOCK_CLOSE, lambda: self.on_delete_tab(tab_child), None)
+        return widget
+    
     def button(self, tree):
             if FC().tab_close_element == "button":
                 return tab_close_button(func=self.on_delete_tab, arg=tree.scroll)
-            else:
+            elif FC().tab_close_element == "label":
                 return notetab_label(func=self.on_delete_tab, arg=tree.scroll, angel=90)
-        
+                    
     def reorder_callback(self, notebook, child, new_page_num):
         for list in [FC().music_paths, FC().tab_names, FC().cache_music_tree_beans]:
             reorderer_list(list, new_page_num, self.page_number, )
@@ -99,10 +105,10 @@ class TabLib(gtk.Notebook, FControl):
     def get_page_number(self, *a):
             self.page_number = self.get_current_page()
               
-    def on_rename_tab(self):
+    def on_rename_tab(self, tree):
         
         """get old label value"""
-        n = self.get_current_page()
+        n = self.page_num(tree)
         scrolled_tree = self.get_nth_page(n)
         eventbox = self.get_tab_label(scrolled_tree)
         old_vbox = eventbox.get_child()
@@ -136,7 +142,9 @@ class TabLib(gtk.Notebook, FControl):
                     new_vbox.pack_start(label, False, False)
                     event = gtk.EventBox()
                     event.add(new_vbox)
+                    event = self.tab_menu_creator(event, tree)
                     event.set_style(self.change_event_style(event))
+                    event.connect("button-press-event", self.on_button_press)
                     event.show_all()
                     self.set_tab_label(scrolled_tree, event)
                     FC().tab_names[n] = new_label
@@ -155,21 +163,18 @@ class TabLib(gtk.Notebook, FControl):
         tree = self.get_current_tree(n)
         tree.add_folder(in_new_tab)
         
-    def clear_tree(self):
-        n = self.get_current_page()
-        tree = self.get_current_tree(n)
+    def clear_tree(self, tree):
+        n = self.page_num(tree)
         tree.clear()
-        
         FC().cache_music_tree_beans[n] = []
         FC().music_paths[n] = []
         self.controls.update_music_tree(tree, n)
     
-    def on_update_music_tree(self):
-        n = self.get_current_page()
-        tree = self.get_current_tree(n)
+    def on_update_music_tree(self, tree):
+        n = self.page_num(tree)
         self.controls.update_music_tree(tree, n)
-         
+        
     def get_current_tree(self, number_of_page):
         scrolled_tree = self.get_nth_page(number_of_page)
         tree = scrolled_tree.get_child()
-        return tree  
+        return tree
