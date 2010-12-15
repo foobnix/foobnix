@@ -89,6 +89,8 @@ def tab_close_button(func=None, arg=None, stock=gtk.STOCK_CLOSE):
     button.show()
     return button
 
+
+
 class EventLabel(gtk.EventBox):
     def __init__(self, text="×", angel=0, func=None, arg=None, func1=None):        
         gtk.EventBox.__init__(self)
@@ -147,7 +149,7 @@ def notetab_label(func=None, arg=None, angel=0, symbol="×"):
     event = gtk.EventBox()
     event.show()
     event.add(label)    
-    
+    event.set_visible_window(False)
     """change style of event"""
     style = event.get_style().copy()
     colour = style.bg[gtk.STATE_NORMAL]
