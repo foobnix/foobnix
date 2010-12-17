@@ -4,6 +4,7 @@ import time
 from foobnix.regui.foobnix_core import FoobnixCore
 import gtk
 import os
+import gobject
 
 if "test" in sys.argv:
     from test.all import run_all_tests
@@ -17,10 +18,10 @@ if "debug" in sys.argv:
     LOG.set_logger_level("debug")
     LOG.print_platform_info()
 
-def kde():
-    print "start server kde"
+def other():
+    print "start server"
     init_time = time.time()
-    gobject.threads_init() #@UndefinedVariable
+    gobject.threads_init()
     core = FoobnixCore()
     core.run()    
     print "******Foobnix run in", time.time() - init_time, " seconds******"
@@ -33,8 +34,7 @@ def gnome():
     
     if "debug" in sys.argv or not iface:
         print "start server gnome"
-        import gobject
-        gobject.threads_init() #@UndefinedVariable
+        gobject.threads_init()
         core = FoobnixCore()
         core.run()
         core.dbus.parse_arguments(sys.argv)
@@ -48,4 +48,4 @@ def gnome():
 if 'gnome' in os.environ.get('DESKTOP_SESSION'):
     gnome()
 else:
-    kde()
+    other()
