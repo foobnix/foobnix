@@ -14,6 +14,7 @@ from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
 import thread
 import cPickle
+from foobnix.version import VERSION
  
 
 
@@ -21,7 +22,7 @@ import cPickle
 CONFIG_DIR = os.path.expanduser("~") + "/.config/foobnix/"
 if not os.path.exists(CONFIG_DIR):
     os.makedirs(CONFIG_DIR)
-CONFIG_FILE = CONFIG_DIR + "foobnix.pkl"
+CONFIG_FILE = CONFIG_DIR + "foobnix_%s.pkl" % VERSION
 
 def get_random_vk():
     vks = {
@@ -88,10 +89,10 @@ class FC:
         self.all_support_formats = self.audio_formats + video_formats + audio_container
         
         """music lybrary"""
-        self.tab_names = [_("Empty tab"),]
+        self.tab_names = [_("Empty tab"), ]
         self.last_music_path = None
-        self.music_paths = [["/tmp",],]
-        self.cache_music_tree_beans = [[],]
+        self.music_paths = [["/tmp", ], ]
+        self.cache_music_tree_beans = [[], ]
         
         self.cache_virtual_tree_beans = []
         self.cache_radio_tree_beans = []
