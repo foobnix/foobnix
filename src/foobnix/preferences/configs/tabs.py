@@ -90,12 +90,16 @@ class TabsConfig(ConfigPlugin):
         self.radio_tab_button.connect("toggled", self.on_chage_tab_position)
         self.radio_tab_button.show()
         
+        self.radio_tab_none = gtk.RadioButton(self.radio_tab_label, None)
+        self.radio_tab_none.show()
         
         close_label_box.pack_start(close_label, False, False, 0)
         close_label_box.pack_start(self.radio_tab_label, False, False, 0)
         close_label_box.pack_start(notetab_label(), False, False, 0)        
         close_label_box.pack_start(self.radio_tab_button, False, True, 0)
         close_label_box.pack_start(tab_close_button(), False, False, 0)
+        close_label_box.pack_start(self.radio_tab_none, False, False, 0)
+        close_label_box.pack_start(gtk.Label(_("None")), False, False, 0)
         
         """global pack"""
         box.pack_start(cbox, False, True, 0)
@@ -151,6 +155,8 @@ class TabsConfig(ConfigPlugin):
         elif FC().tab_close_element == "button":
             self.radio_tab_button.set_active(True)
             
+        else: self.radio_tab_none.set_active(True)
+            
     def on_save(self):
         FC().count_of_tabs = self.tabs_count.get_value_as_int()
         if self.controls.notetabs.get_n_pages() - 1 > FC().count_of_tabs:
@@ -161,5 +167,7 @@ class TabsConfig(ConfigPlugin):
             FC().tab_close_element = "label"
         elif self.radio_tab_button.get_active():
             FC().tab_close_element = "button"
+        else: FC().tab_close_element = None
             
+        
      

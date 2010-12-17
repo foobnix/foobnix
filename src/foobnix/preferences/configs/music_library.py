@@ -28,7 +28,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         #self.child_button = gtk.CheckButton(label=_("Get music from child folders"), use_underline=True)
         #$self.child_button.show()
         
- 
+        box.pack_start(self.tabs_mode(), False, True, 0)
         box.pack_start(self.dirs(), False, True, 0)
         #box.pack_start(self.child_button, False, True, 0)
         box.pack_start(self.formats(), False, True, 0)
@@ -37,10 +37,10 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
     
     
     def dirs(self):
-        frame = gtk.Frame(label=_("Music dirs"))
-        frame.set_border_width(0)
-        frame.show()
-        
+        self.frame = gtk.Frame(label=_("Music dirs"))
+        self.frame.set_border_width(0)
+        self.frame.show()
+        self.frame.set_no_show_all(True)
         frame_box = gtk.HBox(False, 0)
         frame_box.set_border_width(5)
         frame_box.show()
@@ -75,34 +75,30 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         bt_reload.connect("clicked", self.reload_dir)
         bt_reload.set_size_request(80, -1)
         bt_reload.show()
-        
-        
+                
         button_box.pack_start(bt_add, False, False, 0)
         button_box.pack_start(bt_remove, False, False, 0)
         button_box.pack_start(empty, True, True, 0)
         button_box.pack_start(bt_reload, False, False, 0)
         
-        
-        
-        
+        self.tree_controller.scroll.show_all()
         frame_box.pack_start(self.tree_controller.scroll, True, True, 0)
         frame_box.pack_start(button_box, False, False, 0)
                 
+        self.frame.add(frame_box)
         
-        frame.add(frame_box)
-        
-        
-        
-        
-        return frame
+        if FC().tabs_mode == "Multi":
+            print "!!!!!!!!!!!!!!!!!!!!!!"
+            self.frame.hide()       
+        return self.frame
    
     def reload_dir(self, *a):
-        FC().music_paths = self.tree_controller.get_all_beans_text()
+        FC().music_paths[0] = self.tree_controller.get_all_beans_text()
         self.controls.update_music_tree()
    
     def on_load(self):
         self.tree_controller.clear()
-        for path in FC().music_paths:
+        for path in FC().music_paths[0]:
             self.tree_controller.append(FDModel(path))
             
         self.files_controller.clear()
@@ -110,14 +106,25 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             self.files_controller.append(FDModel(ext))
             
         self.adjustment.set_value(FC().gap_secs)
-            
+        if FC().tabs_mode == "Single":
+            self.singletab_button.set_active(True)
+            self.controls.tablib.set_show_tabs(False)
+                
     def on_save(self):             
-        FC().music_paths = self.tree_controller.get_all_beans_text()
+        FC().music_paths[0] = self.tree_controller.get_all_beans_text()
         FC().all_support_formats = self.files_controller.get_all_beans_text()
         FC().gap_secs = self.adjustment.get_value()
+        if self.singletab_button.get_active():
+            for i in xrange(1, len(FC().music_paths)):
+                del FC().music_paths[i]
+                del FC().cache_music_tree_beans[i]
+                del FC().tab_names[i]
+            FC().tabs_mode = "Single"
+            self.controls.tablib.set_show_tabs(False)
+        else:
+            FC().tabs_mode = "Multi"
+            self.controls.tablib.set_show_tabs(True)
         
-         
-    
     def add_dir(self, *a):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
@@ -150,8 +157,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         frame_box.show()
         
         self.files_controller = SimpleListTreeControl(_("Extensions"), None)
-        
-        
+                
         """buttons"""
         button_box = gtk.VBox(False, 0)
         button_box.show()
@@ -167,23 +173,18 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         bt_remove.show()
         button_box.pack_start(bt_add, False, False, 0)
         button_box.pack_start(bt_remove, False, False, 0)
-        
-        
-          
-        
+                
         scrool_tree = gtk.ScrolledWindow()
         scrool_tree.set_size_request(-1, 160)
         scrool_tree.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scrool_tree.add_with_viewport(self.files_controller.scroll)
         scrool_tree.show()
-        
-        
-        
+          
         frame_box.pack_start(scrool_tree, True, True, 0)
         frame_box.pack_start(button_box, False, False, 0)
-                
-        
+                        
         frame.add(frame_box)
+        
         return frame
     
     def on_add_file(self, *a):
@@ -206,6 +207,21 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         hbox.pack_start(gap_len, False, False)
         hbox.show_all()
         
+        return hbox
+        
+    def tabs_mode(self):
+        hbox = gtk.HBox()
+        self.multitabs_button = gtk.RadioButton(None, _("Multitabs mode"))
+        def on_toggle_multitab(widget, data=None):
+            self.frame.hide()
+        self.multitabs_button.connect("toggled", on_toggle_multitab)
+        hbox.pack_start(self.multitabs_button, True, False)
+        
+        self.singletab_button = gtk.RadioButton(self.multitabs_button, _("Singletab mode"))
+        def on_toggle_singletab(widget, data=None):
+            self.frame.show()
+        self.singletab_button.connect("toggled", on_toggle_singletab)
+        hbox.pack_end(self.singletab_button, True, False)
         return hbox
         
             

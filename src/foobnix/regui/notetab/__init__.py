@@ -108,7 +108,8 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         vbox = gtk.VBox(False, 0)
         if  self.default_angel == 90:
             vbox.show()
-        vbox.pack_start(button(), False, False, 0)
+        if FC().tab_close_element:
+            vbox.pack_start(button(), False, False, 0)
         vbox.pack_end(label(), False, False, 0)
         self.tab_vboxes.append(vbox)
 
@@ -116,7 +117,8 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
         hbox = gtk.HBox(False, 0)
         if  self.default_angel == 0:
             hbox.show()
-        hbox.pack_end(button(), False, False, 0)
+        if FC().tab_close_element:
+            hbox.pack_end(button(), False, False, 0)
         hbox.pack_start(label(), False, False, 0)
         
                 
@@ -205,8 +207,7 @@ class NoteTabControl(gtk.Notebook, FControl, LoadSave):
     
     def on_delete_tab(self, child):
         n = self.page_num(child)    
-        if n > 0:    
-            self.delete_tab(n)
+        self.delete_tab(n)
 
     def delete_tab(self, page=None):
         if not page:

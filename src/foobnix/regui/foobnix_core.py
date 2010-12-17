@@ -28,6 +28,7 @@ from foobnix.helpers.pref_widgets import ModelConstructor
 from foobnix.regui.perspectives import PerspectiveControls
 from foobnix.regui.controls.dbus_manager import DBusManager
 from foobnix.util.localization import foobnix_localization
+from foobnix.regui.notetab.tab_library import TabLib
 
 foobnix_localization()
 
@@ -70,7 +71,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.tree = NavigationTreeControl(self)
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
-        
+        self.tablib = TabLib(self)
         self.perspective = PerspectiveControls(self)
         
         """preferences"""

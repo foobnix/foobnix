@@ -218,6 +218,7 @@ class DrugDropTree(gtk.TreeView):
         
     def tree_append_all(self, beans):
         if not beans:
+            print "not beans"
             return
         self.current_view = VIEW_TREE
         LOG.debug("append all as tree")
