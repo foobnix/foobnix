@@ -102,17 +102,21 @@ class BaseFoobnixControls():
             else:
                 self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
     
-    def on_add_files(self, paths=None):
+    def on_add_files(self, paths=None, tab_name = None):
         if not paths:       
             paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
         if paths:            
-            path = paths[0]
-            list = paths[0].split("/")
+            if paths[0]:
+                path = paths[0]
+                list = paths[0].split("/")
+            else:
+                path = paths[1]
+                list = paths[1].split("/")
     
             FC().last_dir = path[:path.rfind("/")]
-            
             name = list[len(list) - 2]
-            self.append_to_new_notebook(name, [])
+            self.append_to_new_notebook(tab_name, [])
+            
             parent = FModel(name)
             self.append_to_current_notebook([parent])
             beans = []
@@ -359,7 +363,7 @@ class BaseFoobnixControls():
             bean.parent(p_bean)
             all.append(bean)        
             
-        self.notetabs.append_tab(vk_ulr, all)
+        self.notetabs.append_tab(vk_ulr, None, all)
     
     def search_all_videos(self, query):
         def inline():
@@ -374,7 +378,7 @@ class BaseFoobnixControls():
             
             if not results:
                 all = self.show_google_results(query)                
-            self.notetabs.append_tab(query, all)
+            self.notetabs.append_tab(query, None, all)
         self.in_thread.run_with_progressbar(inline)
     
     def search_all_tracks(self, query):
@@ -393,7 +397,7 @@ class BaseFoobnixControls():
             if not results:
                 all = self.show_google_results(query)
             
-            self.notetabs.append_tab(query, all)
+            self.notetabs.append_tab(query, None, all)
         self.in_thread.run_with_progressbar(inline, query)
 
     def search_top_tracks(self, query):
@@ -412,7 +416,7 @@ class BaseFoobnixControls():
             if not results:
                 all = self.show_google_results(query)
                 
-            self.notetabs.append_tab(query, all)
+            self.notetabs.append_tab(query, None, all)
         self.in_thread.run_with_progressbar(inline, query)
 
 
@@ -493,8 +497,9 @@ class BaseFoobnixControls():
         self.info_panel.update(bean)
 
     def append_to_new_notebook(self, text, beans):
+        print "in append_to_new_notebook"
         #beans = update_id3_wind_filtering(beans)        
-        self.notetabs.append_tab(text, beans)
+        self.notetabs.append_tab(text, None, beans)
 
     def append_to_current_notebook(self, beans):  
         #beans = update_id3_wind_filtering(beans)              
@@ -538,7 +543,7 @@ class BaseFoobnixControls():
             FC().save(False)                        
             gtk.main_quit()
         
-        thread.start_new_thread(task, ())
+        task()
 
     def check_version(self):
         uuid = FC().uuid

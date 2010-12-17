@@ -12,7 +12,7 @@ from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 from foobnix.util.list_utils import reorderer_list
 from foobnix.helpers.menu import Popup
 from foobnix.util.key_utils import is_key
-
+from foobnix.util.tab_utils import get_text_label_from_tab
 
 class TabLib(gtk.Notebook, FControl):
     def __init__(self, controls):
@@ -97,34 +97,28 @@ class TabLib(gtk.Notebook, FControl):
         
         """get old label value"""
         n = self.page_num(tab_child)
-        eventbox = self.get_tab_label(tab_child)
-        old_vbox = eventbox.get_child()
-        if len(old_vbox.get_children()) == 1:
-            label_object = old_vbox.get_children()[0]
-        else:
-            label_object = old_vbox.get_children()[1]
-        old_label = label_object.get_label()
+        old_label_text, vbox_lenth = get_text_label_from_tab(self, tab_child, True)
         
         window = gtk.Window()
         window.set_decorated(False)
         window.set_position(gtk.WIN_POS_MOUSE)
         window.set_border_width(5)
         entry = gtk.Entry()
-        entry.set_text(old_label)
+        entry.set_text(old_label_text)
         entry.show()
         
         def on_key_press(w, e):
             if is_key(e, 'Escape'):
                 window.hide()
-                entry.set_text(old_label)
+                entry.set_text(old_label_text)
             elif is_key(e, 'Return'):
                 window.hide()
-                new_label = entry.get_text()
-                if new_label:
-                    label = gtk.Label(new_label + ' ')
+                new_label_text = entry.get_text()
+                if new_label_text:
+                    label = gtk.Label(new_label_text + ' ')
                     label.set_angle(90)
                     new_vbox = gtk.VBox()
-                    if len(old_vbox.get_children()) > 1:
+                    if vbox_lenth > 1:
                         new_vbox.pack_start(self.button(tab_child.get_child()), False, False)
                     new_vbox.pack_start(label, False, False)
                     event = gtk.EventBox()
@@ -134,11 +128,11 @@ class TabLib(gtk.Notebook, FControl):
                     event.connect("button-press-event", self.on_button_press)
                     event.show_all()
                     self.set_tab_label(tab_child, event)
-                    FC().tab_names[n] = new_label
+                    FC().tab_names[n] = new_label_text
         
         def on_focus_out(*a):
             window.hide()
-            entry.set_text(old_label)
+            entry.set_text(old_label_text)
             
         window.connect("key_press_event", on_key_press)
         window.connect("focus-out-event", on_focus_out)
@@ -167,3 +161,5 @@ class TabLib(gtk.Notebook, FControl):
         scrolled_tree = self.get_nth_page(number_of_page)
         tree = scrolled_tree.get_child()
         return tree
+    
+    

@@ -156,6 +156,9 @@ class FC:
         self.gap_secs = 0
         
         self.tabs_mode = "Multi"
+        
+        self.tab_pl_names = [_("Empty tab"),]
+        self.cache_pl_tab_contents= []
          
         self = self._load();
                 

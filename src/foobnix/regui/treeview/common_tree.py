@@ -95,6 +95,8 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def get_bean_from_row(self, row):
         bean = FModel()
         id_dict = FTreeModel().cut().__dict__
+        print "FTreeModel().__dict__: ",FTreeModel().__dict__
+        print "FTreeModel().cut().__dict__: ",FTreeModel().cut().__dict__
         for key in id_dict.keys():
             num = id_dict[key]
             setattr(bean, key, row[num])
