@@ -12,6 +12,11 @@ if "test" in sys.argv:
     if not result:        
         raise SystemExit("Test failures are listed above.")
 
+if "debug" in sys.argv:
+    from foobnix.util import LOG
+    LOG.set_logger_level("debug")
+    LOG.print_platform_info()
+
 def kde():
     print "start server kde"
     init_time = time.time()
@@ -26,11 +31,6 @@ def gnome():
     from foobnix.regui.controls.dbus_manager import foobnix_dbus_interface
     iface = foobnix_dbus_interface()
     
-    if "debug" in sys.argv:
-        from foobnix.util import LOG
-        LOG.set_logger_level("debug")
-        LOG.print_platform_info()
-        
     if "debug" in sys.argv or not iface:
         print "start server gnome"
         import gobject
