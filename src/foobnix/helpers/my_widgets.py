@@ -92,7 +92,7 @@ def tab_close_button(func=None, arg=None, stock=gtk.STOCK_CLOSE):
 
 
 class EventLabel(gtk.EventBox):
-    def __init__(self, text="×", angel=0, func=None, arg=None, func1=None):        
+    def __init__(self, text="×", angle=0, func=None, arg=None, func1=None):        
         gtk.EventBox.__init__(self)
         self.text = text
         
@@ -101,7 +101,7 @@ class EventLabel(gtk.EventBox):
         self.label = gtk.Label()
         self.set_not_underline()
         
-        self.label.set_angle(angel)
+        self.label.set_angle(angle)
         
         self.connect("enter-notify-event", lambda * a : self.set_underline())
         self.connect("leave-notify-event", lambda * a: self.set_not_underline())
@@ -140,22 +140,17 @@ class EventLabel(gtk.EventBox):
     
         
 
-def notetab_label(func=None, arg=None, angel=0, symbol="×"):
+def notetab_label(func=None, arg=None, angle=0, symbol="×"):
     """label"""
     label = gtk.Label(symbol)
     label.show()
-    label.set_angle(angel)
+    label.set_angle(angle)
     
     event = gtk.EventBox()
     event.show()
     event.add(label)    
     event.set_visible_window(False)
-    '''"""change style of event"""
-    style = event.get_style().copy()
-    colour = style.bg[gtk.STATE_NORMAL]
-    style.bg[gtk.STATE_ACTIVE] = colour
-    event.set_style(style)'''
-            
+                
     event.connect("enter-notify-event", lambda w, e:w.get_child().set_markup("<u>" + symbol + "</u>"))
     event.connect("leave-notify-event", lambda w, e:w.get_child().set_markup(symbol))
     if func and arg:                    

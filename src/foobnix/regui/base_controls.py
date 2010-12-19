@@ -363,7 +363,7 @@ class BaseFoobnixControls():
             bean.parent(p_bean)
             all.append(bean)        
             
-        self.notetabs.append_tab(vk_ulr, None, all)
+        self.notetabs.append_tab(vk_ulr, all)
     
     def search_all_videos(self, query):
         def inline():
@@ -378,7 +378,7 @@ class BaseFoobnixControls():
             
             if not results:
                 all = self.show_google_results(query)                
-            self.notetabs.append_tab(query, None, all)
+            self.notetabs.append_tab(query, all)
         self.in_thread.run_with_progressbar(inline)
     
     def search_all_tracks(self, query):
@@ -397,7 +397,7 @@ class BaseFoobnixControls():
             if not results:
                 all = self.show_google_results(query)
             
-            self.notetabs.append_tab(query, None, all)
+            self.notetabs.append_tab(query, all)
         self.in_thread.run_with_progressbar(inline, query)
 
     def search_top_tracks(self, query):
@@ -416,7 +416,7 @@ class BaseFoobnixControls():
             if not results:
                 all = self.show_google_results(query)
                 
-            self.notetabs.append_tab(query, None, all)
+            self.notetabs.append_tab(query, all)
         self.in_thread.run_with_progressbar(inline, query)
 
 
@@ -497,9 +497,8 @@ class BaseFoobnixControls():
         self.info_panel.update(bean)
 
     def append_to_new_notebook(self, text, beans):
-        print "in append_to_new_notebook"
         #beans = update_id3_wind_filtering(beans)        
-        self.notetabs.append_tab(text, None, beans)
+        self.notetabs.append_tab(text, beans)
 
     def append_to_current_notebook(self, beans):  
         #beans = update_id3_wind_filtering(beans)              

@@ -70,8 +70,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             path = paths[0]
             FC().last_music_path = path[:path.rfind("/")]
             tree = self
-            number_of_tab = self.controls.tablib.get_current_page()
-            print len(self.model)
+            number_of_tab = self.controls.tablib.page_num(tree.scroll)
+                        
             if in_new_tab:
                 tree = NavigationTreeControl(self.controls)
                 tab_name = unicode(path[path.rfind("/")+1:])
@@ -80,10 +80,9 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 FC().music_paths.insert(0, [])
                 FC().tab_names.insert(0, tab_name)
                 FC().cache_music_tree_beans.insert(0, [])
+            
             elif tree.is_empty:
                 tab_name = unicode(path[path.rfind("/")+1:])
-                #get_text_label_from_tab(self.controls.tablib, self.scroll)
-                #self.controls.tablib.label.set_label(tab_name + " ")
                 vbox = gtk.VBox()
                 label = gtk.Label(tab_name + " ")
                 label.set_angle(90)
@@ -91,8 +90,11 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                     vbox.pack_start(self.controls.tablib.button(tree.scroll), False, False)
                 vbox.pack_end(label, False, False)
                 event = self.controls.notetabs.to_eventbox(vbox)
+                event = self.controls.tablib.tab_menu_creator(event, tree.scroll)
+                event.connect("button-press-event", self.controls.tablib.on_button_press) 
                 self.controls.tablib.set_tab_label(tree.scroll, event)
-                FC().tab_names[0] = tab_name
+                FC().tab_names[number_of_tab] = tab_name
+            
             for path in paths:
                 if path in FC().music_paths[number_of_tab]:
                     pass
