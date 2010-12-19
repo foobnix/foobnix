@@ -5,7 +5,6 @@ Created on 23 сент. 2010
 @author: ivan
 '''
 from __future__ import with_statement
-import pickle
 from foobnix.util import LOG, const
 import os
 from foobnix.util.singleton import Singleton
@@ -14,6 +13,8 @@ import random
 from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
 import thread
+import cPickle
+from foobnix.version import VERSION
  
 
 
@@ -21,7 +22,7 @@ import thread
 CONFIG_DIR = os.path.expanduser("~") + "/.config/foobnix/"
 if not os.path.exists(CONFIG_DIR):
     os.makedirs(CONFIG_DIR)
-CONFIG_FILE = CONFIG_DIR + "foobnix.pkl"
+CONFIG_FILE = CONFIG_DIR + "foobnix_%s.pkl" % VERSION
 
 def get_random_vk():
     vks = {
@@ -88,10 +89,10 @@ class FC:
         self.all_support_formats = self.audio_formats + video_formats + audio_container
         
         """music lybrary"""
-        self.tab_names = [_("Empty tab"),]
+        self.tab_names = [_("Empty tab"), ]
         self.last_music_path = None
-        self.music_paths = [["/tmp",],]
-        self.cache_music_tree_beans = [[],]
+        self.music_paths = [["/tmp", ], ]
+        self.cache_music_tree_beans = [[], ]
         
         self.cache_virtual_tree_beans = []
         self.cache_radio_tree_beans = []
@@ -198,7 +199,7 @@ class FCHelper():
     def save(self, object):
         save_file = file(CONFIG_FILE, 'w')
         try:
-            pickle.dump(object, save_file)
+            cPickle.dump(object, save_file)
         except Exception, e:
             LOG.error("Erorr dumping pickle conf", e)
         save_file.close()
@@ -216,7 +217,7 @@ class FCHelper():
                 load_file = file(CONFIG_FILE, 'r')
                 pickled = load_file.read()
 
-                object = pickle.loads(pickled)
+                object = cPickle.loads(pickled)
                 LOG.debug("Config loaded")
                 self.print_info(object);
                 return object
