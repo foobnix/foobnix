@@ -7,20 +7,20 @@ Created on Dec 7, 2010
 
 import gtk
 from foobnix.util.fc import FC
-from foobnix.regui.model.signal import FControl
-from foobnix.helpers.my_widgets import tab_close_button, notetab_label
+#from foobnix.regui.model.signal import FControl
+#from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 from foobnix.util.list_utils import reorderer_list
 from foobnix.helpers.menu import Popup
-from foobnix.util.tab_utils import get_text_label_from_tab, on_rename_tab
+from foobnix.regui.notetab import TabGeneral
 
-class TabLib(gtk.Notebook, FControl):
+class TabLib(TabGeneral):
     def __init__(self, controls):
-        gtk.Notebook.__init__(self)
-        FControl.__init__(self, controls)
+        #gtk.Notebook.__init__(self)
+        TabGeneral.__init__(self, controls)
         
         self.set_tab_pos(gtk.POS_LEFT)
         self.on_append_tab(self.controls.tree)
-        self.set_scrollable(True)
+        #self.set_scrollable(True)
         
         """the only signal lets get the previous number of moved page"""
         self.connect("button-release-event", self.get_page_number)
@@ -71,7 +71,7 @@ class TabLib(gtk.Notebook, FControl):
         
     def tab_menu_creator(self, widget, tab_child):
         widget.menu = Popup()
-        widget.menu.add_item(_("Rename tab"), "", lambda: on_rename_tab(self, tab_child, 90), None)
+        widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, 90), None)
         widget.menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, lambda: self.on_update_music_tree(tab_child), None)
         widget.menu.add_item(_("Add folder"), gtk.STOCK_OPEN, lambda: self.on_add_folder(tab_child), None)
         widget.menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.on_add_folder(tab_child, True), None)
@@ -79,11 +79,7 @@ class TabLib(gtk.Notebook, FControl):
         widget.menu.add_item(_("Close tab"), gtk.STOCK_CLOSE, lambda: self.on_delete_tab(tab_child), None)
         return widget
     
-    def button(self, tab_child):
-            if FC().tab_close_element == "button":
-                return tab_close_button(func=self.on_delete_tab, arg=tab_child)
-            elif FC().tab_close_element == "label":
-                return notetab_label(func=self.on_delete_tab, arg=tab_child, angle=90)
+    
                     
     def reorder_callback(self, notebook, child, new_page_num):
         for list in [FC().music_paths, FC().tab_names, FC().cache_music_tree_beans]:
