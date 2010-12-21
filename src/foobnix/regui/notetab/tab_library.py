@@ -71,7 +71,7 @@ class TabLib(TabGeneral):
         
     def tab_menu_creator(self, widget, tab_child):
         widget.menu = Popup()
-        widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, 90), None)
+        widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, 90, FC().tab_names), None)
         widget.menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, lambda: self.on_update_music_tree(tab_child), None)
         widget.menu.add_item(_("Add folder"), gtk.STOCK_OPEN, lambda: self.on_add_folder(tab_child), None)
         widget.menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.on_add_folder(tab_child, True), None)

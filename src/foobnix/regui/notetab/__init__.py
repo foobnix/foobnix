@@ -58,7 +58,7 @@ class TabGeneral(gtk.Notebook, FControl):
        
             
     
-    def on_rename_tab(self, tab_child, angle = 0):
+    def on_rename_tab(self, tab_child, angle = 0, name_list = None):
         """get old label value"""
         n = self.page_num(tab_child)
         old_label_text, box_lenth = self.get_text_label_from_tab(tab_child, True)
@@ -82,23 +82,24 @@ class TabGeneral(gtk.Notebook, FControl):
                     label = gtk.Label(new_label_text + ' ')
                     label.set_angle(angle)
                     if angle:
-                        new_vbox = gtk.VBox()
+                        new_box = gtk.VBox()
                         if box_lenth > 1:
-                            new_vbox.pack_start(self.button(tab_child.get_child()), False, False)
-                        new_vbox.pack_end(label, False, False)
+                            new_box.pack_start(self.button(tab_child.get_child()), False, False)
+                        new_box.pack_end(label, False, False)
                     else:
-                        new_vbox = gtk.HBox()
+                        new_box = gtk.HBox()
                         if box_lenth > 1:
-                            new_vbox.pack_end(self.button(tab_child.get_child()), False, False)
-                        new_vbox.pack_start(label, False, False)
-                    event = gtk.EventBox()
+                            new_box.pack_end(self.button(tab_child.get_child()), False, False)
+                        new_box.pack_start(label, False, False)
+                    """event = gtk.EventBox()
                     event.add(new_vbox)
-                    event = self.tab_menu_creator(event, tab_child)
                     event.set_visible_window(False)
+                    event = self.tab_menu_creator(event, tab_child)
+                    event.show_all()"""
+                    event = self.to_eventbox(new_box)
                     event.connect("button-press-event", self.on_button_press)
-                    event.show_all()
                     self.set_tab_label(tab_child, event)
-                    FC().tab_names[n] = new_label_text
+                    name_list[n] = new_label_text
         
         def on_focus_out(*a):
             window.hide()
@@ -352,7 +353,7 @@ class NoteTabControl(TabGeneral, LoadSave):
                 
                 FC().cache_pl_tab_contents.append(beans)
                         
-                FC().tab_pl_names.append(self.get_text_label_from_tab(self, tab_content))
+                FC().tab_pl_names.append(self.get_text_label_from_tab(tab_content))
     
     def empty_tab(self, *a):
         self.append_tab("Foobnix", [])
