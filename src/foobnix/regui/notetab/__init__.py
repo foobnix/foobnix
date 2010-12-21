@@ -36,29 +36,22 @@ class TabGeneral(gtk.Notebook, FControl):
         return event
     
     def button(self, tab_child):
-            if FC().tab_close_element == "button":
-                return tab_close_button(func=self.on_delete_tab, arg=tab_child)
-            elif FC().tab_close_element == "label":
-                return notetab_label(func=self.on_delete_tab, arg=tab_child, angle=90)
+        if FC().tab_close_element == "button":
+            return tab_close_button(func=self.on_delete_tab, arg=tab_child)
+        elif FC().tab_close_element == "label":
+            return notetab_label(func=self.on_delete_tab, arg=tab_child, angle=90)
             
-    def on_delete_tab(self, tab_child):
-        n = self.page_num(tab_child)    
-        self.remove_page(n)
-        
     def get_text_label_from_tab(self, tab_child, need_box_lenth = False):
-        
-            eventbox = self.get_tab_label(tab_child)
-            box = eventbox.get_child()
-            box_lenth = len(box.get_children())
-            if type(box.get_children()[0]) == gtk.Label:
-                label_object = box.get_children()[0]
-            else: label_object = box.get_children()[1]
-            text_of_label = label_object.get_label()
-            if need_box_lenth:
-                return text_of_label, box_lenth
-            else: return text_of_label
-       
-            
+        eventbox = self.get_tab_label(tab_child)
+        box = eventbox.get_child()
+        box_lenth = len(box.get_children())
+        if type(box.get_children()[0]) == gtk.Label:
+            label_object = box.get_children()[0]
+        else: label_object = box.get_children()[1]
+        text_of_label = label_object.get_label()
+        if need_box_lenth:
+            return text_of_label, box_lenth
+        else: return text_of_label
     
     def on_rename_tab(self, tab_child, angle = 0, name_list = None):
         """get old label value"""
@@ -93,8 +86,7 @@ class TabGeneral(gtk.Notebook, FControl):
                         if box_lenth > 1:
                             new_box.pack_end(self.button(tab_child.get_child()), False, False)
                         new_box.pack_start(label, False, False)
-                    event = self.to_eventbox(new_box)
-                    event.connect("button-press-event", self.on_button_press)
+                    event = self.to_eventbox(new_box, tab_child)
                     self.set_tab_label(tab_child, event)
                     if name_list:
                         name_list[n] = new_label_text
@@ -107,6 +99,75 @@ class TabGeneral(gtk.Notebook, FControl):
         window.connect("focus-out-event", on_focus_out)
         window.add(entry)
         window.show_all()
+        
+    def append_tab(self, name = _("Empty tab"), beans=None, navig_tree = None):
+        LOG.info("append new tab")
+        self.last_notebook_page = name
+        try:
+            LOG.info("encoding of tab name is", name)
+            name = unicode(name) #convert from any encoding in ascii
+            LOG.info("encoding finished ", name)
+        except:
+            LOG.warn("problem of encoding definition for tab name is occured")
+        
+        if name and (FC().len_of_tab > -1) and (len(name) > FC().len_of_tab):
+            name = name[:FC().len_of_tab]
+        
+        """label"""
+        if name.endswith(" "):
+            self.label = gtk.Label(name)
+        else:
+            self.label = gtk.Label(name + " ")
+        
+        if navig_tree:
+            self.navig = True
+            tab_content = navig_tree.scroll
+            self.label.set_angle(90)
+        else:
+            self.navig = False
+            tab_content = self.create_notebook_tab(beans)
+            self.label.set_angle(self.default_angle)
+        self.label.show()    
+        
+        if FC().tab_position == "left" or navig_tree:
+            """container Vertical Tab"""
+            box = gtk.VBox(False, 0)
+            box.show()
+            if FC().tab_close_element:
+                box.pack_start(self.button(tab_content), False, False, 0)
+            box.pack_end(self.label, False, False, 0)
+        else: 
+            """container Horizontal Tab"""
+            box = gtk.HBox(False, 0)
+            box.show()
+            if FC().tab_close_element:
+                box.pack_end(self.button(tab_content), False, False, 0)
+            box.pack_start(self.label, False, False, 0)
+            
+        event = self.to_eventbox(box, tab_content)
+                        
+        """append tab"""
+        self.prepend_page(tab_content, event)
+                
+        self.set_tab_reorderable(tab_content, True)
+        
+        if navig_tree:
+            self.show_all()
+            self.set_current_page(0) #only after show_all()
+        else:
+            self.create_plus_tab()
+            self.set_current_page(1)
+            if self.get_n_pages() - 1 > FC().count_of_tabs:
+                self.remove_page(self.get_n_pages() - 1)
+
+    def on_delete_tab(self, child):
+        n = self.page_num(child)
+        if self.get_n_pages() == 1: return
+        self.remove_page(n)
+        if self.navig:
+            del FC().tab_names[n]
+            del FC().music_paths[n]
+            del FC().cache_music_tree_beans[n]
 
 TARGET_TYPE_URI_LIST = 80
 dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
@@ -198,62 +259,7 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.plus_tab_child = notetab_label(func=self.empty_tab, arg=None, angle=0, symbol="Click me")
         self.prepend_page(self.plus_tab_child, append_label)
       
-    def append_tab(self, name, beans=None):
-        LOG.info("append new tab")
-        self.last_notebook_page = name
-        try:
-            LOG.info("encoding of tab name is", name)
-            name = unicode(name) #convert from any encoding in ascii
-            LOG.info("encoding finished ", name)
-        except:
-            LOG.warn("problem of encoding definition for tab name is occured")
-        
-        if name and (FC().len_of_tab > -1) and (len(name) > FC().len_of_tab):
-            name = name[:FC().len_of_tab]
-        
-        tab_content = self.create_notebook_tab(beans)
-        
-        def label():
-            """label"""
-            if name.endswith(" "):
-                label = gtk.Label(name)
-            else:
-                label = gtk.Label(name + " ")
-            label.show()
-            label.set_angle(self.default_angle)
-            #self.tab_labes.append(label)
-            return label
-                    
-        """container Vertical Tab"""
-        vbox = gtk.VBox(False, 0)
-        vbox.show()
-        if FC().tab_close_element:
-            vbox.pack_start(self.button(tab_content), False, False, 0)
-        vbox.pack_end(label(), False, False, 0)
-        
-        """container Horizontal Tab"""
-        hbox = gtk.HBox(False, 0)
-        hbox.show()
-        if FC().tab_close_element:
-            hbox.pack_end(self.button(tab_content), False, False, 0)
-        hbox.pack_start(label(), False, False, 0)
-         
-        """container BOTH"""
-        box = vbox if FC().tab_position == "left" else hbox
-        event = self.to_eventbox(box, tab_content)
-        event.connect("button-press-event", self.on_button_press, tab_content)  
-                
-        """append tab"""
-        self.prepend_page(tab_content, event)
-                
-        self.set_tab_reorderable(tab_content, True)
-        
-        self.create_plus_tab()
-                
-        self.set_current_page(1)
-                
-        if self.get_n_pages() - 1 > FC().count_of_tabs:
-            self.remove_page(self.get_n_pages() - 1)
+    
         
     def set_tab_left(self):
         LOG.info("Set tabs Left")
@@ -318,7 +324,6 @@ class NoteTabControl(TabGeneral, LoadSave):
         FC().tab_pl_names = []
         if number_music_tabs > 0:
             for page in xrange(number_music_tabs, 0, -1):
-                print "page: ", page
                 tab_content = self.get_nth_page(page)
                 pl_tree = tab_content.get_child()
                 beans = pl_tree.get_all_beans()

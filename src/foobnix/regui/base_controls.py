@@ -150,7 +150,7 @@ class BaseFoobnixControls():
                 
                 tree = NavigationTreeControl(self)
                 tree.append_all(FC().cache_music_tree_beans[tab])
-                self.tablib.on_append_tab(tree, FC().tab_names[tab])
+                self.tablib.append_tab(FC().tab_names[tab], navig_tree = tree)
                 
                 if not FC().cache_music_tree_beans[tab]: 
                     tree.is_empty = True
