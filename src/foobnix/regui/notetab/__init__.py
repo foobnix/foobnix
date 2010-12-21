@@ -26,10 +26,12 @@ class TabGeneral(gtk.Notebook, FControl):
         self.controls = controls
         self.set_scrollable(True)
         
-    def to_eventbox(self, widget):
+    def to_eventbox(self, widget, tab_child):
         event = gtk.EventBox()
         event.add(widget)
         event.set_visible_window(False)
+        event.connect("button-press-event", self.on_button_press, tab_child)
+        event = self.tab_menu_creator(event, tab_child)
         event.show_all()
         return event
     
@@ -91,15 +93,11 @@ class TabGeneral(gtk.Notebook, FControl):
                         if box_lenth > 1:
                             new_box.pack_end(self.button(tab_child.get_child()), False, False)
                         new_box.pack_start(label, False, False)
-                    """event = gtk.EventBox()
-                    event.add(new_vbox)
-                    event.set_visible_window(False)
-                    event = self.tab_menu_creator(event, tab_child)
-                    event.show_all()"""
                     event = self.to_eventbox(new_box)
                     event.connect("button-press-event", self.on_button_press)
                     self.set_tab_label(tab_child, event)
-                    name_list[n] = new_label_text
+                    if name_list:
+                        name_list[n] = new_label_text
         
         def on_focus_out(*a):
             window.hide()
@@ -201,9 +199,8 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.prepend_page(self.plus_tab_child, append_label)
       
     def append_tab(self, name, beans=None):
-        
-        self.last_notebook_page = name
         LOG.info("append new tab")
+        self.last_notebook_page = name
         try:
             LOG.info("encoding of tab name is", name)
             name = unicode(name) #convert from any encoding in ascii
@@ -243,11 +240,9 @@ class NoteTabControl(TabGeneral, LoadSave):
          
         """container BOTH"""
         box = vbox if FC().tab_position == "left" else hbox
-        event = self.to_eventbox(box)
-        event = self.tab_menu_creator(event, tab_content)
+        event = self.to_eventbox(box, tab_content)
         event.connect("button-press-event", self.on_button_press, tab_content)  
-        event.show_all
-        
+                
         """append tab"""
         self.prepend_page(tab_content, event)
                 
@@ -260,12 +255,6 @@ class NoteTabControl(TabGeneral, LoadSave):
         if self.get_n_pages() - 1 > FC().count_of_tabs:
             self.remove_page(self.get_n_pages() - 1)
         
-    """def button(self, tab_content):
-        if FC().tab_close_element == "button":
-            return tab_close_button(func=self.on_delete_tab, arg=tab_content)
-        else:
-            return notetab_label(func=self.on_delete_tab, arg=tab_content, angle=self.default_angle)"""
-    
     def set_tab_left(self):
         LOG.info("Set tabs Left")
         self.set_tab_pos(gtk.POS_LEFT)
@@ -273,20 +262,15 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.set_show_tabs(True)
         FC().tab_position = "left"
         for page in xrange(self.get_n_pages()-1, 0, -1):
-            print "cycle"
-            print "page: ", page
             tab_content = self.get_nth_page(page)
             label_text = self.get_text_label_from_tab(tab_content)
             vbox = gtk.VBox()
             label = gtk.Label(label_text)
             label.set_angle(90)
-            print label.get_angle()
             if FC().tab_close_element:
                 vbox.pack_start(self.button(tab_content), False, False, 0)
             vbox.pack_end(label, False, False, 0)
-            event = self.to_eventbox(vbox)
-            event = self.tab_menu_creator(event, tab_content)
-            event.connect("button-press-event", self.on_button_press, tab_content) 
+            event = self.to_eventbox(vbox, tab_content)
             self.set_tab_label(tab_content, event)
         
     def set_tab_top(self):
@@ -296,7 +280,6 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.set_show_tabs(True)
         FC().tab_position = "top"
         for page in xrange(self.get_n_pages()-1, 0, -1):
-            print "page: ", page
             tab_content = self.get_nth_page(page)
             label_text = self.get_text_label_from_tab(tab_content)
             hbox = gtk.HBox()
@@ -305,9 +288,7 @@ class NoteTabControl(TabGeneral, LoadSave):
             if FC().tab_close_element:
                 hbox.pack_end(self.button(tab_content), False, False, 0)
             hbox.pack_start(label, False, False, 0)
-            event = self.to_eventbox(hbox)
-            event = self.tab_menu_creator(event, tab_content)
-            event.connect("button-press-event", self.on_button_press, tab_content) 
+            event = self.to_eventbox(hbox, tab_content)
             self.set_tab_label(tab_content, event)
         
     def set_tab_no(self):
@@ -325,21 +306,14 @@ class NoteTabControl(TabGeneral, LoadSave):
         if FC().tab_position == "no": self.set_tab_no()
         elif FC().tab_position == "left": self.set_tab_left()
         else: self.set_tab_top()
-        print "in on_load"
-        print "FC().cache_pl_tab_contents: ",FC().cache_pl_tab_contents
-        print len(FC().cache_pl_tab_contents)
         for page in xrange(0, len(FC().cache_pl_tab_contents)):
             if FC().cache_pl_tab_contents[page] == []:
                 self.append_tab(FC().tab_pl_names[page], None, None)
                 continue
-            
-            print  "FC().tab_pl_names: ", FC().tab_pl_names 
-            
             self.controls.append_to_new_notebook(FC().tab_pl_names[page], FC().cache_pl_tab_contents[page])
    
     def on_save(self):
         number_music_tabs = self.get_n_pages()-1
-        print "number_music_tabs: ", number_music_tabs
         FC().cache_pl_tab_contents = []
         FC().tab_pl_names = []
         if number_music_tabs > 0:
@@ -348,11 +322,7 @@ class NoteTabControl(TabGeneral, LoadSave):
                 tab_content = self.get_nth_page(page)
                 pl_tree = tab_content.get_child()
                 beans = pl_tree.get_all_beans()
-                
-                print "FC().cache_pl_tab_contents: befor", FC().cache_pl_tab_contents
-                
                 FC().cache_pl_tab_contents.append(beans)
-                        
                 FC().tab_pl_names.append(self.get_text_label_from_tab(tab_content))
     
     def empty_tab(self, *a):

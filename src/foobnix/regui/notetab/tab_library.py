@@ -27,7 +27,7 @@ class TabLib(TabGeneral):
         
         self.connect("page-reordered", self.reorder_callback)
         
-    def on_button_press(self, w, e):
+    def on_button_press(self, w, e, *a):
         if e.button == 3:
             w.menu.show_all()
             w.menu.popup(None, None, None, e.button, e.time)
@@ -49,18 +49,11 @@ class TabLib(TabGeneral):
         if FC().tab_close_element:      
             vbox.pack_start(self.button(tree.scroll), False, False)
         vbox.pack_end(self.label, False, False)
-        event = gtk.EventBox()
-        event.add(vbox)
         
-        event.set_visible_window(False)
+        event = self.to_eventbox(vbox, tree.scroll)
         
-        event = self.tab_menu_creator(event, tree.scroll)
-                
-        event.connect("button-press-event", self.on_button_press)        
-        
-        event.show_all()             
-                    
         self.prepend_page(tree.scroll, event)
+        
         self.set_tab_reorderable(tree.scroll, True)
         
         self.show_all()
