@@ -4,6 +4,7 @@ import time
 from foobnix.regui.foobnix_core import FoobnixCore
 import gtk
 import os
+import gobject
 
 if "test" in sys.argv:
     from test.all import run_all_tests
@@ -12,10 +13,15 @@ if "test" in sys.argv:
     if not result:        
         raise SystemExit("Test failures are listed above.")
 
-def kde():
-    print "start server kde"
+if "debug" in sys.argv:
+    from foobnix.util import LOG
+    LOG.set_logger_level("debug")
+    LOG.print_platform_info()
+
+def other():
+    print "start server other"
     init_time = time.time()
-    gobject.threads_init() #@UndefinedVariable
+    gobject.threads_init() 
     core = FoobnixCore()
     core.run()    
     print "******Foobnix run in", time.time() - init_time, " seconds******"
@@ -25,16 +31,10 @@ def gnome():
     init_time = time.time()
     from foobnix.regui.controls.dbus_manager import foobnix_dbus_interface
     iface = foobnix_dbus_interface()
-    
-    if "debug" in sys.argv:
-        from foobnix.util import LOG
-        LOG.set_logger_level("debug")
-        LOG.print_platform_info()
-        
+
     if "debug" in sys.argv or not iface:
         print "start server gnome"
-        import gobject
-        gobject.threads_init() #@UndefinedVariable
+        gobject.threads_init()
         core = FoobnixCore()
         core.run()
         core.dbus.parse_arguments(sys.argv)
@@ -45,7 +45,7 @@ def gnome():
         print "client", sys.argv
         print iface.parse_arguments(sys.argv)
 
-if 'gnome' in os.environ.get('DESKTOP_SESSION'):
+if 'gnome' != os.environ.get('DESKTOP_SESSION'):
     gnome()
 else:
-    kde()
+    other()
