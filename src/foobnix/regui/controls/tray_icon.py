@@ -6,6 +6,7 @@ Created on 29 сент. 2010
 '''
 from foobnix.regui.model.signal import FControl
 import gtk
+import string
 from foobnix.util.fc import FC
 from foobnix.helpers.toolbar import MyToolbar
 from foobnix.util.mouse_utils import is_middle_click
@@ -148,6 +149,9 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         title = "Title"
         if self.current_bean:
             artist = self.current_bean.artist
+            #artist = string.join(["&amp;" if x == '&' else x for x in artist], '')
+            
+            artist = artist.replace('&', '&amp;')
             title = self.current_bean.title
         
         max_str_len = 40

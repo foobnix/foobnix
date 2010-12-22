@@ -15,8 +15,7 @@ class BaseFoobnixLayout(LoadSave, FControl):
          
         vbox = gtk.VBox(False, 0)
         
-        
-                
+          
         vbox.pack_start(controls.top_panel, False, False)
         
        

@@ -45,7 +45,7 @@ def gnome():
         print "client", sys.argv
         print iface.parse_arguments(sys.argv)
 
-if 'gnome' != os.environ.get('DESKTOP_SESSION'):
+if 'gnome' == os.environ.get('DESKTOP_SESSION'):
     gnome()
 else:
     other()
