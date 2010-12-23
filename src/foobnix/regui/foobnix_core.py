@@ -24,7 +24,6 @@ from foobnix.eq.eq_controller import EqController
 from foobnix.dm.dm import DM
 from foobnix.regui.controls.movie_area import MovieDrawingArea
 from foobnix.util.singe_thread import SingreThread
-from foobnix.helpers.pref_widgets import ModelConstructor
 from foobnix.regui.perspectives import PerspectiveControls
 from foobnix.regui.controls.dbus_manager import DBusManager
 from foobnix.util.localization import foobnix_localization
@@ -50,9 +49,6 @@ class FoobnixCore(BaseFoobnixControls):
         self.in_thread = SingreThread(self.search_progress)
 
         self.info_panel = InfoPanelWidget(self)
-        
-        self.modconst = ModelConstructor()
-        
         
         
         self.movie_window = MovieDrawingArea(self)

@@ -25,6 +25,7 @@ from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.text_utils import normilize_text
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 class BaseFoobnixControls():
     def __init__(self):
@@ -102,7 +103,7 @@ class BaseFoobnixControls():
             else:
                 self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
     
-    def on_add_files(self, paths=None, tab_name = None):
+    def on_add_files(self, paths=None, tab_name=None):
         if not paths:       
             paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
         if paths:            
@@ -144,13 +145,13 @@ class BaseFoobnixControls():
                 self.tablib.label.set_label(FC().tab_names[0] + " ")
         else:
             tabs = len(FC().cache_music_tree_beans)
-            self.tree.append_all(FC().cache_music_tree_beans[tabs-1])
-            self.tablib.label.set_label(FC().tab_names[tabs-1] + " ")
-            for tab in xrange(tabs-2, -1, -1):
+            self.tree.append_all(FC().cache_music_tree_beans[tabs - 1])
+            self.tablib.label.set_label(FC().tab_names[tabs - 1] + " ")
+            for tab in xrange(tabs - 2, -1, -1):
                 
                 tree = NavigationTreeControl(self)
                 tree.append_all(FC().cache_music_tree_beans[tab])
-                self.tablib.append_tab(FC().tab_names[tab], navig_tree = tree)
+                self.tablib.append_tab(FC().tab_names[tab], navig_tree=tree)
                 
                 if not FC().cache_music_tree_beans[tab]: 
                     tree.is_empty = True
@@ -158,7 +159,7 @@ class BaseFoobnixControls():
             
             LOG.info("Tree loaded from cache")
 
-    def update_music_tree(self,  tree = None, number_of_page = 0):
+    def update_music_tree(self, tree=None, number_of_page=0):
         if not tree:
             tree = self.tree
         LOG.info("Update music tree", FC().music_paths[number_of_page])
@@ -573,6 +574,24 @@ class BaseFoobnixControls():
         self.movie_window.hide_all()
         thread.start_new_thread(self.check_version, ())
         self.info_panel.hide()
+        
+        self.change_backgound()
+        
+    
+    
+    def change_backgound(self):
+        win = self.main_window
+        if FC().background_image:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(get_foobnix_resourse_path_by_name(FC().background_image))
+            pixmap, mask = pixbuf.render_pixmap_and_mask()
+            win.set_app_paintable(True)
+            #win.realize()
+            win.window.set_back_pixmap(pixmap, False)
+        else:
+            win.set_app_paintable(False)
+            win.realize()
+            win.window.set_back_pixmap(None, False)            
+    
 
     def on_save(self):
         for element in self.__dict__:

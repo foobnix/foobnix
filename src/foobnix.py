@@ -5,6 +5,8 @@ from foobnix.regui.foobnix_core import FoobnixCore
 import gtk
 import os
 import gobject
+import logging
+
 
 if "test" in sys.argv:
     from test.all import run_all_tests
@@ -12,11 +14,6 @@ if "test" in sys.argv:
     result = run_all_tests(ignore="test_core")
     if not result:        
         raise SystemExit("Test failures are listed above.")
-
-if "debug" in sys.argv:
-    from foobnix.util import LOG
-    LOG.set_logger_level("debug")
-    LOG.print_platform_info()
 
 def other():
     print "start server other"
@@ -31,6 +28,10 @@ def gnome():
     init_time = time.time()
     from foobnix.regui.controls.dbus_manager import foobnix_dbus_interface
     iface = foobnix_dbus_interface()
+    
+    if "debug" in sys.argv:
+        logging.basicConfig(level=logging.INFO)
+
 
     if "debug" in sys.argv or not iface:
         print "start server gnome"

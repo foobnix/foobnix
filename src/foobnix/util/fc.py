@@ -71,12 +71,16 @@ class FC:
         self.count_of_tabs = 5
         self.tab_position = "top"
         
+        
+        
 
         """main window controls"""
         self.main_window_size = [119, 154, 884, 479]
         self.hpaned_left = 248;
         self.hpaned_right = 320;
         self.vpaned_small = 100;
+        self.background_image_themes = ["theme/cat.jpg", "theme/flower.jpg"]
+        self.background_image = "theme/cat.jpg"
 
         """main window action"""
         self.on_close_window = const.ON_CLOSE_HIDE
@@ -158,8 +162,8 @@ class FC:
         
         self.tabs_mode = "Multi"
         
-        self.tab_pl_names = [_("Empty tab"),]
-        self.cache_pl_tab_contents= []
+        self.tab_pl_names = [_("Empty tab"), ]
+        self.cache_pl_tab_contents = []
          
         self = self._load();
                 

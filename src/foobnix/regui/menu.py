@@ -100,6 +100,7 @@ class MenuBarWidget(FControl):
         #help.add_image_item("Help", gtk.STOCK_HELP)
 
         #top.decorate()
+        
         decorator.apply(top)
         decorator.apply(file)
         decorator.apply(view)

@@ -21,6 +21,7 @@ from foobnix.regui.model import FDModel
 from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 from foobnix.util import LOG
+from foobnix.preferences.configs.other_conf import OtherConfig
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
@@ -31,14 +32,16 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         FControl.__init__(self, controls)
 
         self.configs.append(MusicLibraryConfig(controls))
-        self.configs.append(DMConfig(controls))
+        #self.configs.append(DMConfig(controls))
         self.configs.append(TabsConfig(controls))
         self.configs.append(LastFmConfig(controls))
-        self.configs.append(VkontakteConfig(controls))
-        self.configs.append(InfoPagenConfig(controls))
+        self.configs.append(VkontakteConfig(controls))        
+        #self.configs.append(InfoPagenConfig(controls))
         self.configs.append(TrayIconConfig(controls))
-        self.configs.append(NetworkConfig(controls))
-        self.configs.append(NotificationConfig(controls))
+        #self.configs.append(NetworkConfig(controls))
+        #self.configs.append(NotificationConfig(controls))
+        
+        
         try:
             """check keybinder installed, debian"""
             import keybinder #@UnresolvedImport @UnusedImport
@@ -48,6 +51,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
             LOG.warn("Keybinder not instlled", e) 
         
         
+        self.configs.append(OtherConfig(controls))
         
         self.label = None
 

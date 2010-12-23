@@ -40,6 +40,7 @@ def set_logger_level(level):
     
     logging.getLogger("foobnix")
     logging.basicConfig(level=levels[level])
+    print "set debug"
 
 debug = lambda * a: logging.debug(a)
 info = lambda * a: logging.info(a)

@@ -34,7 +34,7 @@ class AboutWindow(BaseParentWindow):
         """init About window"""
         BaseParentWindow.__init__(self, _("About Window"))
 
-        self.set_size_request(320, 300)
+        self.set_size_request(360, 300)
 
         """Content Begin"""
         table = gtk.Table(3, 3, False)
@@ -46,7 +46,7 @@ class AboutWindow(BaseParentWindow):
         except TypeError:
             image = gtk.image_new_from_stock(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_INVALID)
         table.attach(image, 0, 3, 0, 1)
-        label1 = gtk.LinkButton ("http://foobnix.com","http://foobnix.com")
+        label1 = gtk.LinkButton ("http://foobnix.com", "http://foobnix.com")
         label1.set_relief(gtk.RELIEF_NONE)
         label = gtk.Label("Foobnix " + FOOBNIX_VERSION)
         label.set_markup ("""<big><big><b><b>Foobnix %s</b></b></big></big>
