@@ -11,12 +11,16 @@ from foobnix.helpers.my_widgets import open_link_in_browser
 from foobnix.util.widget_utils import MenuStyleDecorator
 
 class MenuBarWidget(FControl):
-    def __init__(self, controls):
+    def __init__(self, controls, parent=None):
         FControl.__init__(self, controls)
         """TOP menu constructor"""
         
         decorator = MenuStyleDecorator()
-        top = TopMenuBar()
+        if not parent:
+            parent = TopMenuBar() 
+        
+        top = parent
+        
         """File"""
         file = top.add_submenu(_("_File"))
         file.add_image_item(_("Add File(s)"), gtk.STOCK_OPEN, self.controls.on_add_files)

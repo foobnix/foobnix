@@ -72,14 +72,42 @@ class OtherConfig(ConfigPlugin):
         catbox.pack_start(self.is_show, False, True, 0)
         catbox.pack_start(self.bg_image, True, True, 0)
         
-                
+        """menu position"""
+        pbox = gtk.HBox(False, 0)
+        pbox.show()
+        
+        label = gtk.Label(_("Menu type"))
+        
+        self.old_style = gtk.RadioButton(None, _("Old Style (Menu Bar)"))
+        self.old_style.connect("toggled", self.on_change_menu_type)
+        
+        self.new_style = gtk.RadioButton(self.old_style, _("New Style (Button)"))
+        self.new_style.connect("toggled", self.on_change_menu_type)
+        
+        
+        pbox.pack_start(label, False, False, 0)
+        pbox.pack_start(self.new_style, False, True, 0)
+        pbox.pack_start(self.old_style, False, False, 0)
+        
+        
+        """packaging"""        
         box.pack_start(hbox, False, True, 0)
         box.pack_start(cbox, False, True, 0)
         box.pack_start(self.check_new_version, False, True, 0)
         box.pack_start(demo, False, False, 0)
         box.pack_start(catbox, False, False, 0)
+        box.pack_start(pbox, False, False, 0)
         
         self.widget = box
+    
+    def on_change_menu_type(self, *a):
+        if self.old_style.get_active():
+            FC().menu_style = "old"
+            
+        elif self.new_style.get_active():
+            FC().menu_style = "new"
+        
+        self.controls.top_panel.update_menu_style()
         
         
     def on_change_folder(self, *a):
@@ -98,7 +126,12 @@ class OtherConfig(ConfigPlugin):
         self.check_new_version.set_active(FC().check_new_version)
         if FC().background_image:
             self.is_show.set_active(True)   
-             
+        
+        """menu style"""
+        if  FC().menu_style == "new":
+            self.new_style.set_active(True)        
+        else: 
+            self.old_style.set_active(True)
     
     def on_save(self):
         if self.is_show.get_active():    

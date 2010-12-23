@@ -81,6 +81,8 @@ class FC:
         self.vpaned_small = 100;
         self.background_image_themes = ["theme/cat.jpg", "theme/flower.jpg"]
         self.background_image = "theme/cat.jpg"
+        
+        self.menu_style = "new"
 
         """main window action"""
         self.on_close_window = const.ON_CLOSE_HIDE
