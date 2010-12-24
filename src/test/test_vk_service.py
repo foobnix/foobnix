@@ -16,8 +16,6 @@ class TestVkService(unittest.TestCase):
             self.assertNotEquals("text/html", get_url_type(bean.path))
             self.assertTrue(bean.path.startswith("http://")) 
         
-        
-    
     def test_find_track(self):
         bean = self.vk.find_one_track("Мадонна")        
         self.assertTrue(bean.path.startswith("http://"))

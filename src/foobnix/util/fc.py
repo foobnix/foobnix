@@ -15,6 +15,7 @@ from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
 import thread
 import cPickle
 from foobnix.version import VERSION
+from foobnix.util.agent import get_ranmom_agent
  
 
 
@@ -72,7 +73,7 @@ class FC:
         self.tab_position = "top"
         
         
-        
+        self.agent_line = get_ranmom_agent()
 
         """main window controls"""
         self.main_window_size = [119, 154, 884, 479]
