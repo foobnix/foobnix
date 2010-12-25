@@ -45,7 +45,6 @@ class Popup(gtk.Menu):
     
     def show(self, event):
         self.show_all()
-        print event.button, event.time
         self.popup(None, None, None, event.button, event.time) 
     
     def show_widget(self, w):

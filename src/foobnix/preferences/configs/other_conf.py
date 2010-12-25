@@ -6,10 +6,10 @@ Created on 23 дек. 2010
 '''
 import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
-from deluge.log import LOG
 from foobnix.util.fc import FC
 from foobnix.helpers.dialog_entry import info_dialog_with_link_and_donate
 from foobnix.helpers.pref_widgets import IconBlock
+from foobnix.util import LOG
 class OtherConfig(ConfigPlugin):
     
     name = _("Other configs")
@@ -64,8 +64,6 @@ class OtherConfig(ConfigPlugin):
             active = self.is_show.get_active()
             if not active:       
                 FC().background_image = None
-                print "deactive" 
-        
         
         self.is_show.connect("clicked", on_change)
         

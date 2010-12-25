@@ -127,7 +127,11 @@ class VKService:
             time.sleep(0.8)        
         self.execute_time = time.time()
         
-        data = urllib2.urlopen(conn);
+        try:
+            data = urllib2.urlopen(conn);
+        except Exception, e:
+            LOG.critical(FC().agent_line, FC().vk_login, FC().vk_password)
+            LOG.critical("VK ERROR", e)
         result = data.read()
         return result
     

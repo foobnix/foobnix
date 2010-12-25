@@ -37,7 +37,7 @@ class AboutWindow(BaseParentWindow):
         self.set_size_request(360, 300)
 
         """Content Begin"""
-        table = gtk.Table(3, 3, False)
+        table = gtk.Table(3, 4, False)
         try:
             pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(self.get_fobnix_logo(), 100, 100) #@UndefinedVariable
             image = gtk.image_new_from_pixbuf(pixbuf)
@@ -46,23 +46,23 @@ class AboutWindow(BaseParentWindow):
         except TypeError:
             image = gtk.image_new_from_stock(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_INVALID)
         table.attach(image, 0, 3, 0, 1)
-        label1 = gtk.LinkButton ("http://foobnix.com", "http://foobnix.com")
-        label1.set_relief(gtk.RELIEF_NONE)
+        url_label = gtk.LinkButton ("http://www.foobnix.com", "www.foobnix.com")
+        url_label.set_relief(gtk.RELIEF_NONE)
         label = gtk.Label("Foobnix " + FOOBNIX_VERSION)
-        label.set_markup ("""<big><big><b><b>Foobnix %s</b></b></big></big>
-Playing all imaginations\n
-<small>Developed by Ivan Ivanenko</small>
-<small>ivan.ivanenko@gmail.com</small>\n""")
+        label.set_markup ("""<big><big><b><b>Foobnix</b></b></big></big>
+Playing all imaginations""")
 #<a href="http://www.foobnix.com">www.foobnix.com</a>\n""" % FOOBNIX_VERSION)
         label.set_justify(gtk.JUSTIFY_CENTER)
-        table.attach(label1, 0, 3, 1, 2)
+        table.attach(label, 0, 3, 1, 2)
+        
+        table.attach(url_label, 0, 3, 2, 3)
 
         label = gtk.Label("Credits")
         image = gtk.image_new_from_stock(gtk.STOCK_INFO, gtk.ICON_SIZE_MENU)
 
         button_credits = self.create_button_with_label_and_icon(image, label)
         button_credits.set_border_width (9)
-        table.attach(button_credits, 0, 1, 2, 3)
+        table.attach(button_credits, 0, 1, 3, 4)
 
         label = gtk.Label(_("Close"))
         image = gtk.image_new_from_stock(gtk.STOCK_STOP, gtk.ICON_SIZE_MENU)
@@ -70,21 +70,20 @@ Playing all imaginations\n
         button_close = self.create_button_with_label_and_icon(image, label)
         button_close.connect("clicked", self.hide_window)
         button_close.set_border_width (9)
-        table.attach(button_close, 2, 3, 2, 3)
+        table.attach(button_close, 2, 3, 3, 4)
 
         label = gtk.Label(_("Changelog"))
         image = gtk.image_new_from_stock(gtk.STOCK_DND, gtk.ICON_SIZE_MENU)
 
         button_changelog = self.create_button_with_label_and_icon(image, label)
         button_changelog.set_border_width (9)
-        table.attach(button_changelog, 1, 2, 2, 3)
+        table.attach(button_changelog, 1, 2, 3, 4)
 
         creaditsWindow = WindowWithBuffer(_("Credential"))
 
         text = """\t\t\tDevelopers:
     Ivan Ivanenko <ivan.ivanenko@gmail.com>
-    Anton Komolov <anton.komolov@gmail.com>
-    Dmitry Kozhura <Dmitry-Kogura@yandex.ru>"""
+    Dmitry Kozhura (zavlab1) <Dmitry-Kogura@yandex.ru>"""
 
         creaditsWindow.set_text(text)
 
@@ -126,6 +125,7 @@ class WindowWithBuffer(BaseParentWindow):
 
         text = gtk.TextView(self.buffer)
         text.set_editable(False)
+        text.set_cursor_visible(False)
 
         scrolled_window = gtk.ScrolledWindow()
         scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
