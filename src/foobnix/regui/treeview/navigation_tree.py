@@ -89,7 +89,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 if FC().tab_close_element:
                     vbox.pack_start(self.controls.tablib.button(tree.scroll), False, False)
                 vbox.pack_end(label, False, False)
-                event = self.controls.notetabs.to_eventbox(vbox)
+                event = self.controls.notetabs.to_eventbox(vbox, tree)
                 event = self.controls.tablib.tab_menu_creator(event, tree.scroll)
                 event.connect("button-press-event", self.controls.tablib.on_button_press) 
                 self.controls.tablib.set_tab_label(tree.scroll, event)
