@@ -54,9 +54,8 @@ class TabLib(TabGeneral):
         tree = tab_child.get_child()
         tree.clear()
         FC().cache_music_tree_beans[n] = []
-        FC().music_paths[n] = []
-        self.controls.update_music_tree(tree, n)
-    
+        tree.is_empty = True
+            
     def on_update_music_tree(self, tab_child):
         n = self.page_num(tab_child)
         tree = tab_child.get_child()

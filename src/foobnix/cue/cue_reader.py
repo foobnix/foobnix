@@ -158,6 +158,10 @@ class CueReader():
         self.files_count = 0
 
         for line in file:
+            if not self.is_valid and not line.startswith(FILE):
+                continue
+            else: self.is_valid = True
+            
             try:
                 pass
                 line = unicode(line, code)
@@ -171,6 +175,7 @@ class CueReader():
 
             if line.startswith(TITLE):
                 title = self.get_line_value(line)
+                print "title ",title
                 if self.files_count == 0:
                     cue_file.title = title
 
@@ -206,8 +211,10 @@ class CueReader():
                     
                     if not find_source:    
                         self.is_valid = False
-                        return cue_file
-
+                        self.files_count -= 1
+                        LOG.warn("Can't find sourse for ", line, "  Check source file name")
+                        continue
+                
                 if self.files_count == 0:
                     cue_file.file = full_file
 
@@ -217,6 +224,7 @@ class CueReader():
             if line.startswith("INDEX 01"):
                 cue_track = CueTrack(title, performer, index, full_file)
                 cue_file.append_track(cue_track)
+        
         LOG.debug("CUE file parsed ", cue_file.file)
         return self.normalize(cue_file)
     

@@ -11,6 +11,7 @@ from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util import LOG
 from foobnix.util.id3_util import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
+from foobnix.util.file_utils import get_file_extenstion
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -84,33 +85,45 @@ class DrugDropTree(gtk.TreeView):
                 is_file = to_model.get_model().get_value(to_iter, self.is_file[0])
                 if is_file == True:
                     return False
-            
             new_iter = to_model.get_model().prepend(to_iter, row)               
         elif pos == gtk.TREE_VIEW_DROP_BEFORE:
             new_iter = to_model.get_model().insert_before(None, to_iter, row)
         elif pos == gtk.TREE_VIEW_DROP_AFTER:
             new_iter = to_model.get_model().insert_after(None, to_iter, row)
-            
-            
         else:
             new_iter = to_model.get_model().append(None, row)
-        
-        
+                
         if ((to_type == VIEW_TREE and from_type == VIEW_TREE) or
             (to_type == VIEW_PLAIN and from_type == VIEW_TREE)):            
+           
             """3)tree to tree, tree to plain"""
             if from_model.iter_has_child(from_iter):
+                
+                cue_iters = []
+                folder_iters = []
+                not_cue_iters = []
+                
+                """if there are cue-files in iters, display only them and subfolder"""  
                 for i in range(0, from_model.iter_n_children(from_iter)):
                     next_iter_to_copy = from_model.iter_nth_child(from_iter, i)
-                    self.iter_copy(from_model, next_iter_to_copy, to_model, new_iter, pos, to_type, from_type)
+                    if from_model.get_value(next_iter_to_copy, 0).endswith(".cue"):
+                        cue_iters.append(next_iter_to_copy)
+                    else:
+                        if from_model.iter_has_child(next_iter_to_copy):
+                            folder_iters.append(next_iter_to_copy)
+                        not_cue_iters.append(next_iter_to_copy)
+                if cue_iters:
+                    for next_iter_to_copy in cue_iters+folder_iters:
+                        self.iter_copy(from_model, next_iter_to_copy, to_model, new_iter, pos, to_type, from_type)
+                else:
+                    for next_iter_to_copy in not_cue_iters:
+                        self.iter_copy(from_model, next_iter_to_copy, to_model, new_iter, pos, to_type, from_type)
         else:
-            
             """3)plain to tree, plain to plain"""
             parent_row = self.get_row_from_model_iter(from_model, from_iter)
             parent_level = parent_row[self.level[0]]
             self.add_reqursive_plain(from_model, from_iter, to_model, new_iter, parent_level)
-            
-        
+                   
         return True
     
     def add_reqursive_plain(self, from_model, from_iter, to_model, to_iter, parent_level):
@@ -130,6 +143,7 @@ class DrugDropTree(gtk.TreeView):
         pass
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
+        
         to_filter_model = to_tree.get_model()
         #to_model = to_filter_model.get_model()
         if to_tree.get_dest_row_at_pos(x, y):
@@ -147,6 +161,7 @@ class DrugDropTree(gtk.TreeView):
             return None
         from_filter_model, from_paths = from_tree.get_selection().get_selected_rows()
         #from_model = from_filter_model.get_model()
+
         for current_path  in from_paths:
             #from_path = from_filter_model.convert_path_to_child_path(current_path) 
             from_iter = from_filter_model.get_iter(current_path)
@@ -157,7 +172,6 @@ class DrugDropTree(gtk.TreeView):
                 "do not copy to himself"
                 drag_context.finish(False, False)
                 return None
-            
             
             """do not copy to child"""        
             result = self.iter_copy(from_filter_model, from_iter, to_filter_model, to_iter, to_pos, to_tree.current_view, from_tree.current_view)
@@ -217,12 +231,13 @@ class DrugDropTree(gtk.TreeView):
         self.plain_append_all(copy_beans)
         
     def tree_append_all(self, beans):
+        
         if not beans:
-            print "not beans"
             return
         self.current_view = VIEW_TREE
         LOG.debug("append all as tree")
-        for bean in beans:
+       
+        for bean in beans:    
             self.tree_append(bean)
     
     def plain_append_all(self, beans):
@@ -230,7 +245,6 @@ class DrugDropTree(gtk.TreeView):
         if not beans:
             return
         self.current_view = VIEW_PLAIN
-        
         
         normilized = []
         for model in beans:
@@ -242,9 +256,7 @@ class DrugDropTree(gtk.TreeView):
             else:
                 normilized.append(model)
         beans = normilized
-        
-        
-        
+              
         counter = 0
         for bean in beans:
             if bean.path and not bean.path.lower().endswith(".cue"):                                        
