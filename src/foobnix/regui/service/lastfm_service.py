@@ -66,8 +66,8 @@ class Cache():
             if album:
                 image = album.get_cover_image(size)
                 self.cache_images[self.get_key(artist, title)] = image
-                return image            
-                
+                return image
+
 
 
 
@@ -95,7 +95,7 @@ class LastFmService():
         password_hash = pylast.md5(FC().lfm_password)
         self.cache = None
         try:
-            
+
             self.network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
             self.cache = Cache(self.network)
             if FC().proxy_enable and FC().proxy_url:
@@ -126,46 +126,46 @@ class LastFmService():
 
     def get_scrobler(self):
         return self.scrobler
-    
+
     def report_now_playting(self, bean):
         if not FC().enable_music_srobbler:
             LOG.debug("Last.fm scrobbler not enabled")
-            return None 
+            return None
         if not self.get_scrobler():
-            return None   
+            return None
         def task(song):
             if bean.artist and bean.title:
                 try:
                     self.get_scrobler().report_now_playing(bean.artist, bean.title)
                     LOG.debug("notify", bean.artist, bean.title)
-                except Exception, e:       
+                except Exception, e:
                     LOG.error(e, "Error reporting now playing last.fm", bean.artist, bean.title, "A", bean.album)
             else:
                 LOG.warn("Bean title or artist not difined")
-                
+
         thread.start_new_thread(task, (bean,))
-    
+
     def report_scrobled(self, bean, start_time, duration_sec):
         if not FC().enable_music_srobbler:
             LOG.debug("Last.fm scrobbler not enabled")
             return None
-       
+
         if not self.get_scrobler():
             return None
-        
+
         def task(bean):
             if bean.artist and bean.title:
                 try:
                     self.get_scrobler().scrobble(bean.artist, bean.title, start_time, "P", "", int(duration_sec))
                     LOG.debug("Song Scrobled", bean.artist, bean.title, start_time, "P", "", int(duration_sec))
-                except Exception, e:       
+                except Exception, e:
                     LOG.error(e, "Error reporting now playing last.fm", bean.artist, bean.title, "A", bean.album)
             else:
                 LOG.debug("Bean title or artist not difined")
-        
+
         thread.start_new_thread(task, (bean,))
-        
-    
+
+
     def connected(self):
         return self.network is not None
 
@@ -258,7 +258,7 @@ class LastFmService():
             bean = FModel(text).add_artist(artist).add_title(title)
             #norm_duration = track_item.get_duration() / 1000
             #LOG.info(track_item.get_duration(), norm_duration
-            #bean.time = normilize_time(norm_duration)
+            #bean.time = normalize_time(norm_duration)
             beans.append(bean)
 
         return beans
@@ -293,7 +293,7 @@ class LastFmService():
             bean = FModel(text).add_artist(artist).add_title(title)
             #norm_duration = track_item.get_duration() / 1000
             #LOG.info(track_item.get_duration(), norm_duration
-            #bean.time = normilize_time(norm_duration)
+            #bean.time = normalize_time(norm_duration)
             beans.append(bean)
 
         return beans

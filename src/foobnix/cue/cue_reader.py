@@ -7,7 +7,7 @@ Created on 7  2010
 from __future__ import with_statement
 from foobnix.regui.model import FModel
 import os
-from foobnix.util.time_utils import normilize_time
+from foobnix.util.time_utils import normalize_time
 from foobnix.util import LOG, file_utils
 import chardet
 import re
@@ -30,7 +30,7 @@ class CueTrack():
         self.duration = 0
         self.path = path
 
-    def __str__(self):        
+    def __str__(self):
         return "Track: " + self.title + " " + self.performer + " " + self.index
 
     def get_start_time_str(self):
@@ -43,12 +43,12 @@ class CueTrack():
 
         if not times or len(times) < 2:
             return 0
-    
+
         min = times[0]
         sec = times[1]
         starts = int(min) * 60 + int(sec)
         return starts
-    
+
 class CueFile():
     def __init__(self):
         self.title = None
@@ -56,7 +56,7 @@ class CueFile():
         self.file = ""
         self.image = None
         self.tracks = []
-        
+
     def append_track(self, track):
         self.tracks.append(track)
 
@@ -80,11 +80,11 @@ class CueReader():
         first = str.find('"') or str.find("'")
         end = str.find('"', first + 1) or str.find("'", first + 1)
         return str[first + 1:end]
-    
-    def get_full_duration (self, file):        
+
+    def get_full_duration (self, file):
         audio = get_mutagen_audio(file)
         return audio.info.length
-    
+
     def normalize(self, cue_file):
         duration_tracks = []
         tracks = cue_file.tracks
@@ -99,7 +99,7 @@ class CueReader():
                     duration = next_track.get_start_time_sec() - track.get_start_time_sec()
                 else: #for cue  "several files - each file involve several tracks"
                     duration = self.get_full_duration(track.path) - track.get_start_time_sec()
-                        
+
             track.duration = duration
             if not track.path:
                 track.path = cue_file.file
@@ -121,10 +121,10 @@ class CueReader():
             bean.name = bean.text
             bean.start_sec = track.get_start_time_sec()
             bean.duration_sec = track.duration
-            bean.time = normilize_time(track.duration)
+            bean.time = normalize_time(track.duration)
             bean.is_file = True
             beans.append(bean)
-        
+
         return beans
 
     def is_cue_valid(self):
@@ -139,8 +139,8 @@ class CueReader():
         try:
             return chardet.detect(data)['encoding']
         except:
-            return "utf-8" 
-         
+            return "utf-8"
+
     def parse(self):
         file = open(self.cue_file, "r")
         code = self.code_detecter(self.cue_file);
@@ -191,10 +191,10 @@ class CueReader():
 
                 if not exists:
                     """try to find other source"""
-                    ext = file_utils.get_file_extenstion(full_file)
+                    ext = file_utils.get_file_extension(full_file)
                     nor = full_file[:-len(ext)]
-                    LOG.info("Normilized path", nor)
-                    
+                    LOG.info("Normalized path", nor)
+
                     find_source = False
                     for support_ext in FC().audio_formats:
                         try_name = nor + support_ext
@@ -203,8 +203,8 @@ class CueReader():
                             LOG.debug("Found source for cue file name", try_name)
                             find_source = True
                             break;
-                    
-                    if not find_source:    
+
+                    if not find_source:
                         self.is_valid = False
                         return cue_file
 
@@ -219,7 +219,7 @@ class CueReader():
                 cue_file.append_track(cue_track)
         LOG.debug("CUE file parsed ", cue_file.file)
         return self.normalize(cue_file)
-    
+
 def update_id3_for_cue(beans):
     result = []
     for bean in beans:
@@ -230,5 +230,5 @@ def update_id3_for_cue(beans):
                     result.append(cue)
         else:
             result.append(bean)
-    return result  
+    return result
 

@@ -6,9 +6,9 @@ Created on 24 нояб. 2010
 '''
 from foobnix.cue.cue_reader import update_id3_for_cue
 from foobnix.util.image_util import get_image_by_path
-from foobnix.util.time_utils import normilize_time
-from foobnix.util.bean_utils import update_bean_from_normilized_text
-from foobnix.util.file_utils import file_extenstion
+from foobnix.util.time_utils import normalize_time
+from foobnix.util.bean_utils import update_bean_from_normalized_text
+from foobnix.util.file_utils import file_extension
 from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.util.audio import get_mutagen_audio
@@ -43,18 +43,18 @@ def decode_cp866(text):
         pass
     return text
 
-def udpate_id3_for_beans(beans):
+def update_id3_for_beans(beans):
     for bean in beans:
         try:
-            udpate_id3(bean)
+            update_id3(bean)
         except Exception, e:
-            LOG.error("udpate id3 error", e)
+            LOG.error("update id3 error", e)
     return beans
 
-def udpate_id3(bean):
+def update_id3(bean):
     if bean and bean.path and os.path.isfile(bean.path):
         try:
-            audio = get_mutagen_audio(bean.path)            
+            audio = get_mutagen_audio(bean.path)
         except Exception, e:
             LOG.warn("ID3 NOT MP3", e, bean.path)
             return bean
@@ -62,8 +62,8 @@ def udpate_id3(bean):
         if audio and audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])
         if audio and audio.has_key('title'): bean.title = decode_cp866(audio["title"][0])
         #if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
-        #else: 
-            #if audio and not audio.has_key('tracknumber'): 
+        #else:
+            #if audio and not audio.has_key('tracknumber'):
         duration_sec = bean.duration_sec
         if not bean.duration_sec:
             if audio and audio.info and audio.info.length: duration_sec = int(audio.info.length)
@@ -79,10 +79,10 @@ def udpate_id3(bean):
                 bean.tracknumber = int(bean.tracknumber)
             except:
                 bean.tracknumber = ""
-        
-        bean = update_bean_from_normilized_text(bean)        
-        
-        bean.time = normilize_time(duration_sec)
+
+        bean = update_bean_from_normalized_text(bean)
+
+        bean.time = normalize_time(duration_sec)
 
     return bean
 
@@ -91,17 +91,17 @@ def get_support_music_beans_from_all(beans):
     for bean in beans:
         if bean.path and os.path.isdir(bean.path):
             result.append(bean)
-        elif bean.path and os.path.isfile(bean.path) and file_extenstion(bean.path) in FC().audio_formats:
+        elif bean.path and os.path.isfile(bean.path) and file_extension(bean.path) in FC().audio_formats:
             result.append(bean)
         elif bean.path and bean.path.startswith("http://"):
             result.append(bean)
         else:
             result.append(bean)
-    
+
     return result
 
 
-def add_upadte_image_paths(beans):
+def add_update_image_paths(beans):
     for bean in beans:
         if bean.path:
             bean.image = get_image_by_path(bean.path)
@@ -109,9 +109,9 @@ def add_upadte_image_paths(beans):
 
 def update_id3_wind_filtering(beans):
     beans = get_support_music_beans_from_all(beans)
-    beans = udpate_id3_for_beans(beans)
+    beans = update_id3_for_beans(beans)
     beans = update_id3_for_cue(beans)
-    beans = add_upadte_image_paths(beans)
+    beans = add_update_image_paths(beans)
     result = []
     for bean in beans:
         result.append(bean)

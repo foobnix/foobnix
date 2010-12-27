@@ -1,25 +1,25 @@
 import re
 from foobnix.util.fc import FC
-from foobnix.util.file_utils import get_file_extenstion
+from foobnix.util.file_utils import get_file_extension
 import urllib
 
-def capitilize_query(line):
+def capitalize_query(line):
     if not line:
         return line
-    
+
     if line.startswith("http://"):
         return line
-    
+
     line = u"" + line.strip()
     result = ""
     for word in line.split():
         result += " " + word[0].upper() + word[1:]
     return result.strip()
 
-def capitilize_string(src):
+def capitalize_string(src):
     if not src:
         return src
-        
+
     line = u"" + src.strip()
     result = ""
     for word in line.split():
@@ -30,33 +30,33 @@ def capitilize_string(src):
 def smart_splitter(input, max_len):
     if not input:
         return input
-    
+
     if max_len > len(input):
         return input
-        
-    separators = (" " , "-" , "," , "/" , "_", "\n")    
-    result = []    
+
+    separators = (" " , "-" , "," , "/" , "_", "\n")
+    result = []
     buffer = ""
     for i in xrange(len(input)):
         char = input[i]
         buffer += char
-                
+
         if len(buffer) >= max_len:
-            if char in separators:   
+            if char in separators:
                 result.append(buffer.strip())
-                buffer = ""                
+                buffer = ""
     result.append(buffer[:max_len].strip())
     return result
 
 
 '''divides the string into pieces according to a specified maximum length
 fission occurs only at the nearest left separator
-If delimiter is not found, the division on the maximum length'''        
+If delimiter is not found, the division on the maximum length'''
 def split_string(str, length):
     if not str:
         return str
     #take the max number of characters from a string
-    i = length - 1 
+    i = length - 1
     separator = None
     #go around them from right to left
     while i > -1:
@@ -66,7 +66,7 @@ def split_string(str, length):
             if str[i] == simbol:
                 separator = str[i]
                 break
-        #if the symbol is not found in the tuple, 
+        #if the symbol is not found in the tuple,
         #go to the next symbol to the left
         if not separator:
             i -= 1
@@ -86,26 +86,26 @@ def split_string(str, length):
     str = substr1 + "\n" + substr2
     return str
 
-def normilize_text(line):
+def normalize_text(line):
     if not line:
         return ""
     line = urllib.unquote(line)
     """find in extension"""
     for element in ("[", "(", "*"):
         index = line.find(element)
-        if index >= 0:            
+        if index >= 0:
             line = line[:index]
         index = -1
-        
+
     """find in prefix"""
-    prefix_index = re.search('^([ 0-9.-]*)', line).end()   
+    prefix_index = re.search('^([ 0-9.-]*)', line).end()
     line = line[prefix_index:]
-    
-    line = capitilize_string(line)
-    
+
+    line = capitalize_string(line)
+
     """remove extension"""
-    ext = get_file_extenstion(line)  
-    if ext in FC().all_support_formats:                
+    ext = get_file_extension(line)
+    if ext in FC().all_support_formats:
         line = line.replace(ext, "")
-    
+
     return line.strip()

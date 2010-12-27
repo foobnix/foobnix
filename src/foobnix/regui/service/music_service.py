@@ -6,13 +6,13 @@ Created on 25 сент. 2010
 '''
 import os
 from foobnix.util.fc import FC
-from foobnix.util.file_utils import file_extenstion
+from foobnix.util.file_utils import file_extension
 from foobnix.util import LOG
 from foobnix.regui.model import FModel
 from foobnix.util.id3_util import update_id3_wind_filtering
-    
+
 def get_all_music_by_path(path):
-    return _scanner(path, None) 
+    return _scanner(path, None)
 
 def get_all_music_with_id3_by_path(path):
     all = _scanner(path, None)
@@ -28,10 +28,10 @@ def _scanner(path, level):
 
     for file in list:
         full_path = os.path.join(path, file)
-        
-        if os.path.isfile(full_path) and file_extenstion(file) not in FC().all_support_formats:
+
+        if os.path.isfile(full_path) and file_extension(file) not in FC().all_support_formats:
             continue;
-        
+
         if is_dir_with_music(full_path):
             b_bean = FModel(file, full_path).add_parent(level).add_is_file(False)
             results.append(b_bean)
@@ -69,6 +69,6 @@ def is_dir_with_music(path):
                 if is_dir_with_music(full_path):
                     return True
             else:
-                if file_extenstion(file) in FC().all_support_formats:
+                if file_extension(file) in FC().all_support_formats:
                     return True
     return False

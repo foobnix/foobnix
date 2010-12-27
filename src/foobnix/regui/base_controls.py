@@ -20,10 +20,10 @@ from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
 from foobnix.regui.service.music_service import get_all_music_by_path
 from foobnix.regui.service.google_service import google_search_resutls
-from foobnix.util.file_utils import get_file_extenstion
+from foobnix.util.file_utils import get_file_extension
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 from foobnix.version import FOOBNIX_VERSION
-from foobnix.util.text_utils import normilize_text
+from foobnix.util.text_utils import normalize_text
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
@@ -35,20 +35,20 @@ class BaseFoobnixControls():
         self.count_errors = 0
         self.is_scrobled = False
         self.start_time = None
-    
-    def check_for_media(self, args):         
+
+    def check_for_media(self, args):
         dirs = []
         files = []
-        for arg in args:            
+        for arg in args:
             if os.path.isdir(arg):
                 dirs.append(arg)
-            elif os.path.isfile(arg) and get_file_extenstion(arg) in FC().all_support_formats:
+            elif os.path.isfile(arg) and get_file_extension(arg) in FC().all_support_formats:
                 files.append(arg)
         if dirs:
             self.on_add_folders(dirs)
-        elif files:            
+        elif files:
             self.on_add_files(files)
-    
+
     def show_google_results(self, query):
         beans = []
         beans.append(FModel('"%s" not found trying Google search' % query))
@@ -57,23 +57,23 @@ class BaseFoobnixControls():
             beans.append(FModel(line).add_is_file(True))
         if not g_results:
             beans.append(FModel('Google not found %s' % query))
-            
+
         return beans
     def get_active_bean(self):
         return self.notetabs.get_active_tree().get_selected_or_current_bean()
-     
-    def play_selected_song(self):    
+
+    def play_selected_song(self):
         current = self.get_active_bean()
         if current and current.is_file:
             self.notetabs.get_active_tree().set_play_icon_to_bean_to_selected()
-        
+
             """play song"""
             self.play(current)
-        
-    
+
+
     def save_beans_to(self, beans):
-        return None    
-   
+        return None
+
     def on_add_folders(self, paths=None):
         if not paths:
             paths = directory_chooser_dialog(_("Choose folders to open"), FC().last_dir)
@@ -84,7 +84,7 @@ class BaseFoobnixControls():
             name = list[len(list) - 1]
             parent = FModel(name)
             self.append_to_new_notebook(name, [])
-    
+
             all_beans = []
             all_beans.append(parent)
             for path in paths:
@@ -92,32 +92,32 @@ class BaseFoobnixControls():
                     LOG.info("Skip root folder")
                     continue;
                 beans = get_all_music_by_path(path)
-                
+
                 for bean in beans:
                     if not bean.is_file:
                         bean.parent(parent).add_is_file(False)
                     all_beans.append(bean)
-    
+
             if all_beans:
                 self.append_to_current_notebook(all_beans)
             else:
                 self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
-    
+
     def on_add_files(self, paths=None, tab_name=None):
-        if not paths:       
+        if not paths:
             paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
-        if paths:            
+        if paths:
             if paths[0]:
                 path = paths[0]
                 list = paths[0].split("/")
             else:
                 path = paths[1]
                 list = paths[1].split("/")
-    
+
             FC().last_dir = path[:path.rfind("/")]
             name = list[len(list) - 2]
             self.append_to_new_notebook(tab_name, [])
-            
+
             parent = FModel(name)
             self.append_to_current_notebook([parent])
             beans = []
@@ -128,7 +128,7 @@ class BaseFoobnixControls():
                 self.append_to_current_notebook([FModel(_("Nothing found to play in the file(s)") + paths[0])])
             else:
                 self.append_to_current_notebook(beans)
-       
+
     def set_playlist_tree(self):
         self.notetabs.set_playlist_tree()
 
@@ -148,15 +148,15 @@ class BaseFoobnixControls():
             self.tree.append_all(FC().cache_music_tree_beans[tabs - 1])
             self.tablib.label.set_label(FC().tab_names[tabs - 1] + " ")
             for tab in xrange(tabs - 2, -1, -1):
-                
+
                 tree = NavigationTreeControl(self)
                 tree.append_all(FC().cache_music_tree_beans[tab])
                 self.tablib.append_tab(FC().tab_names[tab], navig_tree=tree)
-                
-                if not FC().cache_music_tree_beans[tab]: 
+
+                if not FC().cache_music_tree_beans[tab]:
                     tree.is_empty = True
                     self.perspective.show_add_button()
-            
+
             LOG.info("Tree loaded from cache")
 
     def update_music_tree(self, tree=None, number_of_page=0):
@@ -165,9 +165,9 @@ class BaseFoobnixControls():
         LOG.info("Update music tree", FC().music_paths[number_of_page])
         tree.clear()
         FC().cache_music_tree_beans[number_of_page] = []
-               
+
         all = []
-        
+
         for path in FC().music_paths[number_of_page]:
             all_in_folder = get_all_music_by_path(path)
             if all_in_folder:
@@ -177,19 +177,19 @@ class BaseFoobnixControls():
             FC().cache_music_tree_beans[number_of_page].append(bean)
         try:
             self.perspective.hide_add_button()
-        except AttributeError: 
+        except AttributeError:
             LOG.warn("Object perspective not exist yet")
         if not all:
             tree.is_empty = True
             try:
                 self.perspective.show_add_button()
-            except AttributeError: 
+            except AttributeError:
                 LOG.warn("Object perspective not exist yet")
-            all.append(FModel(_("Music not found in folder(s):")))        
-            for path in FC().music_paths[number_of_page]:            
+            all.append(FModel(_("Music not found in folder(s):")))
+            for path in FC().music_paths[number_of_page]:
                 all.append(FModel(path).add_is_file(True))
         else: tree.is_empty = False
-        
+
         tree.append_all(all)
 
     def set_visible_search_panel(self, flag):
@@ -202,7 +202,7 @@ class BaseFoobnixControls():
     def set_visible_info_panel(self, flag):
         FC().is_view_info_panel = flag
         self.layout.set_visible_info_panel(flag)
-        
+
     def set_visible_video_panel(self, flag):
         FC().is_view_video_panel = flag
         if flag:
@@ -215,28 +215,28 @@ class BaseFoobnixControls():
 
     def volume_down(self):
         self.volume.volume_down()
-    
+
     def hide(self):
         self.main_window.hide()
-    
+
     def show_hide(self):
         self.main_window.show_hide()
-        
+
     def show(self):
         self.main_window.show()
-    
+
     def play_pause(self):
         if self.media_engine.get_state() == STATE_PLAY:
-            self.media_engine.state_pause()            
+            self.media_engine.state_pause()
         else:
             self.media_engine.state_play()
-    
-    def seek_up(self):        
+
+    def seek_up(self):
         self.media_engine.seek_up()
-        
+
     def seek_down(self):
         self.media_engine.seek_down()
-    
+
     def windows_visibility(self):
         visible = self.main_window.get_property('visible')
         if visible:
@@ -249,13 +249,13 @@ class BaseFoobnixControls():
             self.media_engine.state_play()
         else:
             self.play_selected_song()
-        
+
         if remeber_position:
             self.media_engine.restore_seek_ns()
-            
-            
-        
-    
+
+
+
+
     def show_preferences(self):
         self.preferences.show()
 
@@ -269,7 +269,7 @@ class BaseFoobnixControls():
         self.media_engine.state_play_pause()
 
     def fill_bean_from_vk(self, bean):
-        
+
         vk = self.vk.find_one_track(bean.get_display_name())
         if vk:
             bean.path = vk.path
@@ -283,11 +283,11 @@ class BaseFoobnixControls():
         if not bean:
             self.state_stop()
             return None
-        
-        if not bean.is_file: 
+
+        if not bean.is_file:
             self.state_stop()
             return None
-        
+
         if not bean.path:
             if not self.fill_bean_from_vk(bean):
                 if self.count_errors < 4:
@@ -295,55 +295,55 @@ class BaseFoobnixControls():
                     time.sleep(0.5)
                     self.next()
                 self.count_errors += 1
-        
+
         if bean.path and os.path.isdir(bean.path):
             self.state_stop()
             return None
-            
+
         self.seek_bar.clear()
         self.count_errors = 0
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
         self.main_window.set_title(bean.text)
-        
-        self.media_engine.play(bean)  
+
+        self.media_engine.play(bean)
         self.is_scrobled = False
-        self.start_time = False      
-        
+        self.start_time = False
+
         self.update_info_panel(bean)
 
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
-                        
+
         if sec > 10 and sec % 11 == 0:
             self.lastfm.report_now_playting(bean)
-            
+
         if not self.start_time:
             self.start_time = str(int(time.time()))
-        
-        if not self.is_scrobled:            
+
+        if not self.is_scrobled:
             if sec > dur_sec / 2 or sec > 60:
                 self.is_scrobled = True
                 self.lastfm.report_scrobled(bean, self.start_time, dur_sec)
-            
-            
-                
-            
+
+
+
+
 
     def notify_title(self, text):
         LOG.debug("Notify title", text)
-        
+
         self.statusbar.set_text(text)
-        text = normilize_text(text)
-        self.seek_bar.set_text(text)       
-        t_bean = FModel(text).create_from_text(text)                       
+        text = normalize_text(text)
+        self.seek_bar.set_text(text)
+        t_bean = FModel(text).create_from_text(text)
         self.update_info_panel(t_bean)
-    
+
     def notify_error(self, msg):
         LOG.error("notify error", msg)
         self.seek_bar.set_text(msg)
         self.info_panel.clear()
-        
+
     def notify_eos(self):
         self.next()
 
@@ -352,7 +352,7 @@ class BaseFoobnixControls():
 
     def player_volue(self, percent):
         self.media_engine.volume(percent)
-        
+
 
     def search_vk_page_tracks(self, vk_ulr):
         results = self.vk.find_tracks_by_url(vk_ulr)
@@ -362,10 +362,10 @@ class BaseFoobnixControls():
         for i, bean in enumerate(results):
             bean.tracknumber = i + 1
             bean.parent(p_bean)
-            all.append(bean)        
-            
+            all.append(bean)
+
         self.notetabs.append_tab(vk_ulr, all)
-    
+
     def search_all_videos(self, query):
         def inline():
             results = self.vk.find_video_by_query(query)
@@ -376,12 +376,12 @@ class BaseFoobnixControls():
                 bean.tracknumber = i + 1
                 bean.parent(p_bean)
                 all.append(bean)
-            
+
             if not results:
-                all = self.show_google_results(query)                
+                all = self.show_google_results(query)
             self.notetabs.append_tab(query, all)
         self.in_thread.run_with_progressbar(inline)
-    
+
     def search_all_tracks(self, query):
         def inline(query):
             results = self.vk.find_tracks_by_query(query)
@@ -394,10 +394,10 @@ class BaseFoobnixControls():
                 bean.tracknumber = i + 1
                 bean.parent(p_bean)
                 all.append(bean)
-                
+
             if not results:
                 all = self.show_google_results(query)
-            
+
             self.notetabs.append_tab(query, all)
         self.in_thread.run_with_progressbar(inline, query)
 
@@ -411,12 +411,12 @@ class BaseFoobnixControls():
             all.append(parent_bean)
             for i, bean in enumerate(results):
                 bean.tracknumber = i + 1
-                bean.parent(parent_bean)                
+                bean.parent(parent_bean)
                 all.append(bean)
-            
+
             if not results:
                 all = self.show_google_results(query)
-                
+
             self.notetabs.append_tab(query, all)
         self.in_thread.run_with_progressbar(inline, query)
 
@@ -434,15 +434,15 @@ class BaseFoobnixControls():
                 tracks = self.lastfm.search_album_tracks(album.artist, album.album)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
-                    track.parent(album)                    
+                    track.parent(album)
                     all.append(track)
-                
+
                 self.notetabs.append_all(all)
-                
+
             if not results:
                 all = self.show_google_results(query)
                 self.notetabs.append_all(all)
-                                   
+
         self.in_thread.run_with_progressbar(inline, query)
 
     def search_top_similar(self, query):
@@ -460,13 +460,13 @@ class BaseFoobnixControls():
                     track.tracknumber = i + 1
                     track.parent(artist)
                     all.append(track)
-                
+
                 self.notetabs.append_all(all)
-                
+
             if not results:
                 all = self.show_google_results(query)
-                     
-            
+
+
         #inline(query)
         self.in_thread.run_with_progressbar(inline, query)
 
@@ -485,48 +485,48 @@ class BaseFoobnixControls():
                     track.tracknumber = i + 1
                     track.parent(tag)
                     all.append(track)
-                
+
                 self.notetabs.append_all(all)
-            
+
             if not results:
                 all = self.show_google_results(query)
                 self.notetabs.append_all(all)
-        
+
         self.in_thread.run_with_progressbar(inline, query)
 
     def update_info_panel(self, bean):
         self.info_panel.update(bean)
 
     def append_to_new_notebook(self, text, beans):
-        #beans = update_id3_wind_filtering(beans)        
+        #beans = update_id3_wind_filtering(beans)
         self.notetabs.append_tab(text, beans)
 
-    def append_to_current_notebook(self, beans):  
-        #beans = update_id3_wind_filtering(beans)              
+    def append_to_current_notebook(self, beans):
+        #beans = update_id3_wind_filtering(beans)
         self.notetabs.append_all(beans)
 
-    def next(self):        
+    def next(self):
         bean = self.notetabs.next()
         gap = FC().gap_secs
-        time.sleep(gap) 
+        time.sleep(gap)
         if bean and bean.path and os.path.isdir(bean.path):
             return None
-            
+
         self.play(bean)
 
     def prev(self):
         bean = self.notetabs.prev()
-        
+
         if bean and  bean.path and os.path.isdir(bean.path):
             return None
-        
+
         self.play(bean)
 
     def filter_by_folder(self, value):
         self.tree.filter_by_folder(value)
         self.radio.filter_by_folder(value)
         self.virtual.filter_by_folder(value)
-        
+
     def filter_by_file(self, value):
         self.tree.filter_by_file(value)
         self.radio.filter_by_file(value)
@@ -535,19 +535,19 @@ class BaseFoobnixControls():
     def quit(self, *a):
         self.state_stop()
         self.main_window.hide()
-        self.trayicon.hide()        
-        
+        self.trayicon.hide()
+
         LOG.info("Controls - Quit")
         def task():
             self.on_save()
-            FC().save(False)                        
+            FC().save(False)
             gtk.main_quit()
-        
+
         task()
 
     def check_version(self):
         uuid = FC().uuid
-        current_version = FOOBNIX_VERSION        
+        current_version = FOOBNIX_VERSION
         try:
             from socket import gethostname
             f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname() + "&version=" + current_version)
@@ -560,7 +560,7 @@ class BaseFoobnixControls():
         LOG.info("version", current_version , "|", new_version, "|", uuid)
         f.close()
         if FC().check_new_version and current_version < new_version:
-            info_dialog_with_link_and_donate(new_version)            
+            info_dialog_with_link_and_donate(new_version)
 
     def on_load(self):
         for element in self.__dict__:
@@ -569,16 +569,16 @@ class BaseFoobnixControls():
                 self.__dict__[element].on_load()
             else:
                 LOG.debug("NOT LOAD", self.__dict__[element])
-                
+
         self.main_window.show()
         self.movie_window.hide_all()
         thread.start_new_thread(self.check_version, ())
         self.info_panel.hide()
-        
+
         self.change_backgound()
-        
-    
-    
+
+
+
     def change_backgound(self):
         win = self.main_window
         if FC().background_image:
@@ -590,8 +590,8 @@ class BaseFoobnixControls():
         else:
             win.set_app_paintable(False)
             win.realize()
-            win.window.set_back_pixmap(None, False)            
-    
+            win.window.set_back_pixmap(None, False)
+
 
     def on_save(self):
         for element in self.__dict__:

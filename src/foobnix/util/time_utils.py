@@ -14,7 +14,7 @@ def size2text(size):
         return "%.2f Kb" % (size / 1024.0)
     return size
 
-def convert_ns(time_int):    
+def convert_ns(time_int):
     time_int = time_int / 1000000000
     time_str = ""
     if time_int >= 3600:
@@ -35,11 +35,11 @@ def convert_ns(time_int):
         time_str = time_str + str(time_int)
     else:
         time_str = time_str + "0" + str(time_int)
-        
+
     return time_str
 
 def convert_seconds_to_text(time_sec):
-        time_sec = int(time_sec)    
+        time_sec = int(time_sec)
         time_str = ""
         if time_sec >= 3600:
             _hours = time_sec / 3600
@@ -59,21 +59,21 @@ def convert_seconds_to_text(time_sec):
             time_str = time_str + str(time_sec)
         else:
             time_str = time_str + "0" + str(time_sec)
-            
+
         return time_str
 
 
-def normilize_time(length):
+def normalize_time(length):
     if length < 0:
         return 0
-    
+
     length = int(length)
     result = ""
     hour = int(length / 60 / 60)
     if hour:
         if hour < 10:
             hour = "0" + str(hour)
-        result = str(hour) + ":"     
+        result = str(hour) + ":"
     min = int(length / 60) - int(hour) * 60
     if min:
         if min < 10:
@@ -81,10 +81,10 @@ def normilize_time(length):
         result += str(min) + ":"
     else:
         result += "00:"
-    
+
     sec = length - int(min) * 60 - int(hour) * 3600
     if sec < 10:
-        sec = "0" + str(sec)   
-    
+        sec = "0" + str(sec)
+
     result += str(sec)
     return result

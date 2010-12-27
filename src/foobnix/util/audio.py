@@ -3,7 +3,7 @@ Created on Nov 10, 2010
 
 @author: ivan
 '''
-from foobnix.util.file_utils import get_file_extenstion
+from foobnix.util.file_utils import get_file_extension
 from mutagen.flac import FLAC
 from mutagen.monkeysaudio import MonkeysAudio
 from mutagen.mp3 import MP3
@@ -14,7 +14,7 @@ from foobnix.util import LOG
 
 def get_mutagen_audio (path):
     LOG.debug("GET mutagen audio", path)
-    ext = get_file_extenstion(path)
+    ext = get_file_extension(path)
     audio = None
     if ext == ".flac":
         audio = FLAC(path)
