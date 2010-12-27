@@ -2,6 +2,7 @@ import re
 from foobnix.util.fc import FC
 from foobnix.util.file_utils import get_file_extension
 import urllib
+import string
 
 def capitalize_query(line):
     if not line:
@@ -21,10 +22,8 @@ def capitalize_string(src):
         return src
 
     line = u"" + src.strip()
-    result = ""
-    for word in line.split():
-        result += " " + word[0].upper() + word[1:].lower()
-    return result.strip()
+    word_capitalized = map(string.capitalize, line.split())
+    return ' '.join(word_capitalized)
 
 
 def smart_splitter(input, max_len):

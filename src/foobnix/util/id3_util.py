@@ -44,11 +44,10 @@ def decode_cp866(text):
     return text
 
 def update_id3_for_beans(beans):
-    for bean in beans:
-        try:
-            update_id3(bean)
-        except Exception, e:
-            LOG.error("update id3 error", e)
+    try:
+        map(update_id3, beans)
+    except Exception, e:
+        LOG.error("update id3 error", e)
     return beans
 
 def update_id3(bean):
@@ -66,7 +65,8 @@ def update_id3(bean):
             #if audio and not audio.has_key('tracknumber'):
         duration_sec = bean.duration_sec
         if not bean.duration_sec:
-            if audio and audio.info and audio.info.length: duration_sec = int(audio.info.length)
+            if audio and audio.info and audio.info.length:
+                duration_sec = int(audio.info.length)
 
         if audio and audio.info:
             bean.info = audio.info.pprint()
@@ -74,31 +74,16 @@ def update_id3(bean):
         if bean.artist and bean.title:
             bean.text = bean.artist + " - " + bean.title
 
-        if bean.tracknumber:
-            try:
-                bean.tracknumber = int(bean.tracknumber)
-            except:
-                bean.tracknumber = ""
+        try:
+            bean.tracknumber = int(bean.tracknumber)
+        except:
+            bean.tracknumber = ""
 
         bean = update_bean_from_normalized_text(bean)
 
         bean.time = normalize_time(duration_sec)
 
     return bean
-
-def get_support_music_beans_from_all(beans):
-    result = []
-    for bean in beans:
-        if bean.path and os.path.isdir(bean.path):
-            result.append(bean)
-        elif bean.path and os.path.isfile(bean.path) and file_extension(bean.path) in FC().audio_formats:
-            result.append(bean)
-        elif bean.path and bean.path.startswith("http://"):
-            result.append(bean)
-        else:
-            result.append(bean)
-
-    return result
 
 
 def add_update_image_paths(beans):
@@ -108,11 +93,7 @@ def add_update_image_paths(beans):
     return beans
 
 def update_id3_wind_filtering(beans):
-    beans = get_support_music_beans_from_all(beans)
     beans = update_id3_for_beans(beans)
     beans = update_id3_for_cue(beans)
     beans = add_update_image_paths(beans)
-    result = []
-    for bean in beans:
-        result.append(bean)
-    return result
+    return beans
