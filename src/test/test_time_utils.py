@@ -1,6 +1,6 @@
 import unittest
 
-from foobnix.util.time_utils import size2text, convert_ns, convert_seconds_to_text, normalize_time
+from foobnix.util.time_utils import size2text, convert_seconds_to_text, normalize_time
 
 class TestSize2Text(unittest.TestCase):
     def test_gigabyte(self):
