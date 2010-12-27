@@ -11,7 +11,6 @@ from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util import LOG
 from foobnix.util.id3_util import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
-from foobnix.util.file_utils import get_file_extenstion
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -143,7 +142,6 @@ class DrugDropTree(gtk.TreeView):
         pass
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
-        
         to_filter_model = to_tree.get_model()
         #to_model = to_filter_model.get_model()
         if to_tree.get_dest_row_at_pos(x, y):
@@ -231,7 +229,6 @@ class DrugDropTree(gtk.TreeView):
         self.plain_append_all(copy_beans)
         
     def tree_append_all(self, beans):
-        
         if not beans:
             return
         self.current_view = VIEW_TREE

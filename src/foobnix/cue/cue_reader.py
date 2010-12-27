@@ -175,7 +175,6 @@ class CueReader():
 
             if line.startswith(TITLE):
                 title = self.get_line_value(line)
-                print "title ",title
                 if self.files_count == 0:
                     cue_file.title = title
 

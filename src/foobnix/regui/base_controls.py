@@ -11,6 +11,7 @@ import os
 import time
 
 from foobnix.util.fc import FC
+from foobnix.util.m3u_utils import m3u_reader
 from foobnix.util import LOG
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel
@@ -25,6 +26,7 @@ from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.text_utils import normilize_text
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
+import copy
 
 class BaseFoobnixControls():
     def __init__(self):
@@ -105,6 +107,11 @@ class BaseFoobnixControls():
     def on_add_files(self, paths=None, tab_name = None):
         if not paths:       
             paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
+            
+            for i, path in enumerate(copy.deepcopy(paths)):
+                if path.lower().endswith(".m3u") or path.lower().endswith(".m3u8"):
+                    paths[i:i+1] = m3u_reader(path)
+                              
         if paths:            
             if paths[0]:
                 path = paths[0]
@@ -325,10 +332,6 @@ class BaseFoobnixControls():
                 self.is_scrobled = True
                 self.lastfm.report_scrobled(bean, self.start_time, dur_sec)
             
-            
-                
-            
-
     def notify_title(self, text):
         LOG.debug("Notify title", text)
         
@@ -351,8 +354,7 @@ class BaseFoobnixControls():
 
     def player_volue(self, percent):
         self.media_engine.volume(percent)
-        
-
+    
     def search_vk_page_tracks(self, vk_ulr):
         results = self.vk.find_tracks_by_url(vk_ulr)
         all = []
@@ -497,11 +499,21 @@ class BaseFoobnixControls():
         self.info_panel.update(bean)
 
     def append_to_new_notebook(self, text, beans):
+        
         #beans = update_id3_wind_filtering(beans)        
         self.notetabs.append_tab(text, beans)
 
-    def append_to_current_notebook(self, beans):  
-        #beans = update_id3_wind_filtering(beans)              
+    def append_to_current_notebook(self, beans):
+          
+        #beans = update_id3_wind_filtering(beans) 
+        """cue_beans = []
+        for bean in beans:
+            print "1", bean.path
+            if get_file_extenstion(bean.path) == ".cue":
+                cue_beans.append(bean.path)
+        if cue_beans:
+            print "2", cue_beans
+            beans = cue_beans"""
         self.notetabs.append_all(beans)
 
     def next(self):        
