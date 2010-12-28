@@ -111,7 +111,7 @@ class BaseFoobnixControls():
             
             for i, path in enumerate(copy.deepcopy(paths)):
                 if path.lower().endswith(".m3u") or path.lower().endswith(".m3u8"):
-                    paths[i:i+1] = m3u_reader(path)
+                    paths[i:i + 1] = m3u_reader(path)
                               
         if paths:            
             if paths[0]:
@@ -322,6 +322,7 @@ class BaseFoobnixControls():
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
         sec = int(sec) 
+        LOG.debug("Now playing sec", sec)
         if sec > 10 and sec % 11 == 0:
             self.lastfm.report_now_playting(bean)
             

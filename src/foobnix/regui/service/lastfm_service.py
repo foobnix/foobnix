@@ -132,6 +132,7 @@ class LastFmService():
             LOG.debug("Last.fm scrobbler not enabled")
             return None 
         if not self.get_scrobler():
+            LOG.warn("no last.fm scrobbler")
             return None   
         def task(song):
             if bean.artist and bean.title:
