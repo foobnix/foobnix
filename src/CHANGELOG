@@ -1,6 +1,11 @@
-0.2.2-11
-* Fixes playback controls style for all themes
+0.2.3
+* Added Multi tab navigation tree
+* Saved navigation and playlist tabs on exit
+* New style menu one button
+* Window themes support 
+
 0.2.2-10
+* Fixes playback controls style for all themes
 * Fixed crashes on Debian and maybe on other system when online search
 * Append by right click button
 * Add support of ISO.wv

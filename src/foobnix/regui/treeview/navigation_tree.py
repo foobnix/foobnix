@@ -74,7 +74,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             FC().last_music_path = path[:path.rfind("/")]
             tree = self
             number_of_tab = self.controls.tablib.page_num(tree.scroll)
-                        
+                      
             if in_new_tab:
                 tree = NavigationTreeControl(self.controls)
                 tab_name = unicode(path[path.rfind("/") + 1:])
@@ -92,11 +92,12 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 if FC().tab_close_element:
                     vbox.pack_start(self.controls.tablib.button(tree.scroll), False, False)
                 vbox.pack_end(label, False, False)
-                event = self.controls.notetabs.to_eventbox(vbox)
+                event = self.controls.notetabs.to_eventbox(vbox, tree)
                 event = self.controls.tablib.tab_menu_creator(event, tree.scroll)
                 event.connect("button-press-event", self.controls.tablib.on_button_press) 
                 self.controls.tablib.set_tab_label(tree.scroll, event)
                 FC().tab_names[number_of_tab] = tab_name
+                FC().music_paths[number_of_tab] = []
             
             for path in paths:
                 if path in FC().music_paths[number_of_tab]:
