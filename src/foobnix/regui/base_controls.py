@@ -28,6 +28,7 @@ from foobnix.util.text_utils import normilize_text
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 import copy
+import gobject
 
 class BaseFoobnixControls():
     def __init__(self):
@@ -141,7 +142,7 @@ class BaseFoobnixControls():
 
     def set_playlist_plain(self):
         self.notetabs.set_playlist_plain()
-
+    
     def load_music_tree(self):
         self.perspective.hide_add_button()
         if not FC().cache_music_tree_beans[0] and len(FC().cache_music_tree_beans) == 1:

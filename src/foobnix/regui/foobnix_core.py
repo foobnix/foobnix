@@ -39,6 +39,9 @@ class FoobnixCore(BaseFoobnixControls):
         self.media_engine = GStreamerEngine(self)
         """elements"""
         
+        self.tree = NavigationTreeControl(self)
+        self.tablib = TabLib(self)
+        
         self.statusbar = StatusbarControls(self)
         
         self.volume = VolumeControls(self)
@@ -64,10 +67,10 @@ class FoobnixCore(BaseFoobnixControls):
 
         self.filter = FilterControl(self)
 
-        self.tree = NavigationTreeControl(self)
+        
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
-        self.tablib = TabLib(self)
+        
         self.perspective = PerspectiveControls(self)
         
         """preferences"""

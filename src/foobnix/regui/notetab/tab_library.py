@@ -10,14 +10,16 @@ from foobnix.util.fc import FC
 from foobnix.util.list_utils import reorderer_list
 from foobnix.helpers.menu import Popup
 from foobnix.regui.notetab import TabGeneral
+from foobnix.regui.state import LoadSave
 
-class TabLib(TabGeneral):
+class TabLib(TabGeneral, LoadSave):
     def __init__(self, controls):
         TabGeneral.__init__(self, controls)
         
+        
         self.set_tab_pos(gtk.POS_LEFT)
-        self.append_tab(navig_tree = self.controls.tree)
-                
+        self._append_tab(navig_tree=self.controls.tree)
+        
         """the only signal lets get the previous number of moved page"""
         self.connect("button-release-event", self.get_page_number)
         
@@ -40,12 +42,12 @@ class TabLib(TabGeneral):
                    
     def reorder_callback(self, notebook, child, new_page_num):
         for list in [FC().music_paths, FC().tab_names, FC().cache_music_tree_beans]:
-            reorderer_list(list, new_page_num, self.page_number, )
+            reorderer_list(list, new_page_num, self.page_number,)
         
     def get_page_number(self, *a):
             self.page_number = self.get_current_page()
                
-    def on_add_folder(self, tab_child, in_new_tab = False):
+    def on_add_folder(self, tab_child, in_new_tab=False):
         tree = tab_child.get_child()
         tree.add_folder(in_new_tab)
         
@@ -65,5 +67,10 @@ class TabLib(TabGeneral):
         scrolled_tree = self.get_nth_page(number_of_page)
         tree = scrolled_tree.get_child()
         return tree
+    
+    def on_load(self):
+        pass
+    def on_save(self):
+        pass
     
     
