@@ -594,7 +594,10 @@ class BaseFoobnixControls():
     def change_backgound(self):
         win = self.main_window
         if FC().background_image:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(get_foobnix_resourse_path_by_name(FC().background_image))
+            img = get_foobnix_resourse_path_by_name(FC().background_image)
+            if not img:
+                return 
+            pixbuf = gtk.gdk.pixbuf_new_from_file(img)
             pixmap, mask = pixbuf.render_pixmap_and_mask()
             win.set_app_paintable(True)
             #win.realize()
