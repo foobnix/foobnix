@@ -8,6 +8,7 @@ import gtk
 from foobnix.util.key_utils import is_key
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import ICON_FOOBNIX
+from foobnix.util.fc import FC
 
 class ChildTopWindow(gtk.Window):
     def __init__(self, title=None, width=None, height=None):         
@@ -25,6 +26,7 @@ class ChildTopWindow(gtk.Window):
         self.connect("key-press-event", self.on_key_press)
         
         self.hide_on_escape = True
+        self.set_opacity(FC().window_opacity)
     
     def set_hide_on_escape(self, hide_on_escape=True):
         self.hide_on_escape = hide_on_escape

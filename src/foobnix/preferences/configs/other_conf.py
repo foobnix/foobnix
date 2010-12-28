@@ -88,6 +88,23 @@ class OtherConfig(ConfigPlugin):
         pbox.pack_start(self.new_style, False, True, 0)
         pbox.pack_start(self.old_style, False, False, 0)
         
+        """opacity"""
+        obox = gtk.HBox(False, 0)
+        obox.show()
+        
+        tab_label = gtk.Label(_("Opacity"))
+        tab_label.show()
+        
+     
+        
+        adjustment = gtk.Adjustment(value=1, lower=20, upper=100, step_incr=1, page_incr=1, page_size=0)
+        self.opacity_size = gtk.SpinButton(adjustment)
+        self.opacity_size.connect("value-changed", self.on_chage_opacity)
+        self.opacity_size.show()
+        
+        obox.pack_start(tab_label, False, False, 0)
+        obox.pack_start(self.opacity_size, False, True, 0)
+        
         
         """packaging"""        
         box.pack_start(hbox, False, True, 0)
@@ -96,8 +113,15 @@ class OtherConfig(ConfigPlugin):
         box.pack_start(demo, False, False, 0)
         box.pack_start(catbox, False, False, 0)
         box.pack_start(pbox, False, False, 0)
+        box.pack_start(obox, False, False, 0)
+        
         
         self.widget = box
+    
+    def on_chage_opacity(self, *a):
+        opacity = self.opacity_size.get_value() / 100
+        self.controls.main_window.set_opacity(opacity)
+        self.controls.preferences.set_opacity(opacity)
     
     def on_change_menu_type(self, *a):
         if self.old_style.get_active():
@@ -121,6 +145,7 @@ class OtherConfig(ConfigPlugin):
         
         """disc"""
         self.image_size_spin.set_value(FC().info_panel_image_size)
+        self.opacity_size.set_value(int(FC().window_opacity * 100))
         
         self.check_new_version.set_active(FC().check_new_version)
         if FC().background_image:
@@ -136,6 +161,8 @@ class OtherConfig(ConfigPlugin):
         if self.is_show.get_active():    
             FC().background_image = self.bg_image.get_active_path()    
         FC().info_panel_image_size = self.image_size_spin.get_value_as_int()
+        FC().window_opacity = self.opacity_size.get_value() / 100
         FC().check_new_version = self.check_new_version.get_active()
         self.controls.change_backgound()
                     
+

@@ -26,6 +26,8 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         self.connect("key-press-event", self.on_key_press)
         self.set_icon(self.controls.trayicon.get_pixbuf())
         
+        self.set_opacity(FC().window_opacity)
+        
         
     def on_key_press(self, w, e):
         if is_key(e, 'Escape'):
