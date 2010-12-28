@@ -314,7 +314,7 @@ class BaseFoobnixControls():
 
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
-                        
+        sec = int(sec) 
         if sec > 10 and sec % 11 == 0:
             self.lastfm.report_now_playting(bean)
             

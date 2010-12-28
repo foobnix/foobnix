@@ -24,6 +24,7 @@
 ./foobnix/preferences/configs/music_library.py
 ./foobnix/preferences/configs/network_conf.py
 ./foobnix/preferences/configs/notification_conf.py
+./foobnix/preferences/configs/other_conf.py
 ./foobnix/preferences/configs/tabs.py
 ./foobnix/preferences/configs/tray_icon.py
 ./foobnix/preferences/configs/vk_conf.py
@@ -50,6 +51,7 @@
 ./foobnix/regui/engine/gstreamer.py
 ./foobnix/regui/model/eq_model.py
 ./foobnix/regui/model/signal.py
+./foobnix/regui/notetab/tab_library.py
 ./foobnix/regui/service/google_service.py
 ./foobnix/regui/service/lastfm_service.py
 ./foobnix/regui/service/music_service.py
@@ -72,6 +74,7 @@
 ./foobnix/thirdparty/google/browser.py
 ./foobnix/thirdparty/google/search.py
 ./foobnix/thirdparty/google/translate.py
+./foobnix/util/agent.py
 ./foobnix/util/audio.py
 ./foobnix/util/bean_utils.py
 ./foobnix/util/const.py
@@ -81,6 +84,7 @@
 ./foobnix/util/image_util.py
 ./foobnix/util/iso_util.py
 ./foobnix/util/key_utils.py
+./foobnix/util/list_utils.py
 ./foobnix/util/localization.py
 ./foobnix/util/LOG.py
 ./foobnix/util/mouse_utils.py
@@ -93,6 +97,7 @@
 ./foobnix/util/time_utils.py
 ./foobnix/util/url_utils.py
 ./foobnix/util/widget_utils.py
+./foobnix/util/agent.py
 ./foobnix/util/audio.py
 ./foobnix/util/bean_utils.py
 ./foobnix/util/const.py
@@ -102,6 +107,7 @@
 ./foobnix/util/image_util.py
 ./foobnix/util/iso_util.py
 ./foobnix/util/key_utils.py
+./foobnix/util/list_utils.py
 ./foobnix/util/localization.py
 ./foobnix/util/LOG.py
 ./foobnix/util/mouse_utils.py

@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 import sys
 import time
-from foobnix.regui.foobnix_core import FoobnixCore
 import gtk
 import os
 import gobject
 import logging
+from foobnix.util import LOG
 
 
 if "test" in sys.argv:
@@ -18,7 +18,8 @@ if "test" in sys.argv:
 def other():
     print "start server other"
     init_time = time.time()
-    gobject.threads_init() 
+    gobject.threads_init()
+    from foobnix.regui.foobnix_core import FoobnixCore 
     core = FoobnixCore()
     core.run()    
     print "******Foobnix run in", time.time() - init_time, " seconds******"
@@ -30,12 +31,13 @@ def gnome():
     iface = foobnix_dbus_interface()
     
     if "debug" in sys.argv:
-        logging.basicConfig(level=logging.INFO)
-
+        LOG.set_logger_level("debug")
+        LOG.print_platform_info()
 
     if "debug" in sys.argv or not iface:
         print "start server gnome"
         gobject.threads_init()
+        from foobnix.regui.foobnix_core import FoobnixCore
         core = FoobnixCore()
         core.run()
         core.dbus.parse_arguments(sys.argv)
