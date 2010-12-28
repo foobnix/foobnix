@@ -13,7 +13,6 @@ from foobnix.util.key_utils import is_key, is_key_alt
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION, \
     LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_VIRTUAL, LEFT_PERSPECTIVE_INFO
-from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 class MainWindow(gtk.Window, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)

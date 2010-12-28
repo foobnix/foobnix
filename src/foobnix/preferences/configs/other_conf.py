@@ -10,9 +10,10 @@ from foobnix.util.fc import FC
 from foobnix.helpers.dialog_entry import info_dialog_with_link_and_donate
 from foobnix.helpers.pref_widgets import IconBlock
 from foobnix.util import LOG
+from foobnix.preferences.configs import CONFIG_OTHER
 class OtherConfig(ConfigPlugin):
     
-    name = _("Other configs")
+    name = CONFIG_OTHER
     
     def __init__(self, controls):
         self.controls = controls

@@ -4,7 +4,6 @@ import time
 import gtk
 import os
 import gobject
-import logging
 from foobnix.util import LOG
 
 

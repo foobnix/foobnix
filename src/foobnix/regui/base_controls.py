@@ -28,7 +28,6 @@ from foobnix.util.text_utils import normilize_text
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 import copy
-import gobject
 
 class BaseFoobnixControls():
     def __init__(self):
@@ -323,7 +322,6 @@ class BaseFoobnixControls():
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
         sec = int(sec) 
-        LOG.debug("Now playing sec", sec)
         if sec > 10 and sec % 11 == 0:
             self.lastfm.report_now_playting(bean)
             
@@ -504,7 +502,7 @@ class BaseFoobnixControls():
     def append_to_new_notebook(self, text, beans):
         
         #beans = update_id3_wind_filtering(beans)        
-        self.notetabs.append_tab(text, beans)
+        self.notetabs._append_tab(text, beans)
 
     def append_to_current_notebook(self, beans):
           

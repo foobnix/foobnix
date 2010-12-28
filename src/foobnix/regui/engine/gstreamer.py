@@ -202,7 +202,6 @@ class GStreamerEngine(MediaPlayerEngine):
                     if position_int + self.NANO_SECONDS > duraction_int:
                         self.notify_eos()
                 
-                LOG.debug("current state", self.get_state())
                 if self.get_state() == STATE_PLAY:
                     sec += 1 
                     
