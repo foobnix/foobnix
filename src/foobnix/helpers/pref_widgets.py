@@ -69,7 +69,7 @@ class IconBlock(gtk.HBox):
     
     def on_change_icon(self, *a):        
         active_id = self.combobox.get_active()
-        if active_id:
+        if active_id > 0:
             icon_name = self.combobox.get_model()[active_id][1]
             self.entry.set_text(icon_name)
         #FC().static_tray_icon = True
