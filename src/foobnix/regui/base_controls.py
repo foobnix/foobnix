@@ -105,21 +105,31 @@ class BaseFoobnixControls():
                 self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
     
     def on_add_files(self, paths=None, tab_name = None):
+        
         if not paths:       
             paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
-            
-            for i, path in enumerate(copy.deepcopy(paths)):
+            copy_paths = copy.deepcopy(paths) 
+            for i, path in enumerate(copy_paths):
                 if path.lower().endswith(".m3u") or path.lower().endswith(".m3u8"):
                     paths[i:i+1] = m3u_reader(path)
-                              
-        if paths:            
+                    if len(copy_paths) == 1:
+                        ext = os.path.splitext(path)[1]
+                        tab_name =  os.path.basename(path)[:-len(ext)]
+                    break
+            
+                
+        if paths: 
+                        
             if paths[0]:
                 path = paths[0]
                 list = paths[0].split("/")
             else:
                 path = paths[1]
                 list = paths[1].split("/")
-    
+                
+            if not tab_name:
+                tab_name = os.path.split(os.path.dirname(path))[1]
+                
             FC().last_dir = path[:path.rfind("/")]
             name = list[len(list) - 2]
             self.append_to_new_notebook(tab_name, [])
