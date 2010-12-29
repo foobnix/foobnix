@@ -217,7 +217,7 @@ class FCHelper():
 
     def load(self):
         if not os.path.exists(CONFIG_FILE):
-            LOG.warn("Config file not found", CONFIG_FILE)
+            LOG.debug("Config file not found", CONFIG_FILE)
             return None
 
         with file(CONFIG_FILE, 'r') as load_file:
