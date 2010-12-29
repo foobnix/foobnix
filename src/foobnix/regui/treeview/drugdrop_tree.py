@@ -65,6 +65,8 @@ class DrugDropTree(gtk.TreeView):
                 self.update_tree_structure_row_requrcive(child)
    
     def get_bean_from_model_iter(self, model, iter):
+        if not model or not iter:
+            return None
         bean = FModel()
         id_dict = FTreeModel().cut().__dict__
         for key in id_dict.keys():
@@ -175,7 +177,7 @@ class DrugDropTree(gtk.TreeView):
             result = self.iter_copy(from_filter_model, from_iter, to_filter_model, to_iter, to_pos, to_tree.current_view, from_tree.current_view)
             
             if result and to_tree == from_tree:
-                """move element in the save tree"""
+                """move element in the same tree"""
                 drag_context.finish(True, True)
             
             if to_path:

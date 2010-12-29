@@ -37,7 +37,7 @@ def gnome():
         print "start server gnome"
         gobject.threads_init()
         from foobnix.regui.foobnix_core import FoobnixCore
-        core = FoobnixCore()
+        core = FoobnixCore(True)
         core.run()
         core.dbus.parse_arguments(sys.argv)
         print "******Foobnix run in", time.time() - init_time, " seconds******"

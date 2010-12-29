@@ -32,7 +32,7 @@ from foobnix.regui.notetab.tab_library import TabLib
 foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):
-    def __init__(self):
+    def __init__(self, with_dbus=False):
         BaseFoobnixControls.__init__(self)
         self.layout = None
         
@@ -88,8 +88,8 @@ class FoobnixCore(BaseFoobnixControls):
         """layout"""
         self.layout = BaseFoobnixLayout(self)
 
-        
-        self.dbus = DBusManager(self)
+        if with_dbus:
+            self.dbus = DBusManager(self)
     
     def run(self):    
         self.on_load()
