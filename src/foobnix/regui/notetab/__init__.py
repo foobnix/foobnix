@@ -18,6 +18,7 @@ from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
 from foobnix.helpers.menu import Popup
 import threading
 from foobnix.util.key_utils import is_key
+import gobject
 
 class TabGeneral(gtk.Notebook, FControl):
     def __init__(self, controls):
@@ -106,7 +107,7 @@ class TabGeneral(gtk.Notebook, FControl):
     def append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None):
         def task():
             self._append_tab(name, beans, navig_tree)
-        gtk.idle_add(task)
+        gobject.idle_add(task)
         
     def _append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None):
         LOG.info("append new tab")
