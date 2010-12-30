@@ -16,7 +16,7 @@ import thread
 import cPickle
 from foobnix.version import VERSION
 from foobnix.util.agent import get_ranmom_agent
- 
+
 
 
 
@@ -30,7 +30,7 @@ def get_random_vk():
        "c891888@bofthew.com":"c891888",
        "c892009@bofthew.com":"c892009",
        "c892406@bofthew.com":"c892406",
-       "c892588@bofthew.com":"c892588"       
+       "c892588@bofthew.com":"c892588"
        }
 
     rand = random.randint(0, len(vks) - 1)
@@ -71,8 +71,8 @@ class FC:
         self.tab_close_element = "label"
         self.count_of_tabs = 5
         self.tab_position = "top"
-        
-        
+
+
         self.agent_line = get_ranmom_agent()
 
         """main window controls"""
@@ -83,25 +83,26 @@ class FC:
         self.background_image_themes = ["theme/cat.jpg", "theme/flower.jpg"]
         self.background_image = None
         self.window_opacity = 1
-        
+
         self.menu_style = "new"
 
         """main window action"""
         self.on_close_window = const.ON_CLOSE_HIDE
 
         """support file formats"""
-                
+
         audio_container = [".cue", ".iso.wv"]
-        video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mp4", ".mpg", ".rm", ".swf", ".vob", ".wmv"] 
-        self.audio_formats = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp", ".wv"]        
+        video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mp4", ".mpg", ".rm", ".swf", ".vob", ".wmv"]
+        self.audio_formats = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".m4a", ".ra", ".m4p", ".3gp", ".wv"]
         self.all_support_formats = self.audio_formats + video_formats + audio_container
-        
+        self.all_support_formats.sort()
+
         """music lybrary"""
         self.tab_names = [_("Empty tab"), ]
         self.last_music_path = None
         self.music_paths = [["/tmp", ], ]
         self.cache_music_tree_beans = [[], ]
-        
+
         self.cache_virtual_tree_beans = []
         self.cache_radio_tree_beans = []
 
@@ -113,72 +114,72 @@ class FC:
         self.vk_login = vk[0]
         self.vk_password = vk[1]
         self.vk_cookie = None
-        
+
         self.enable_music_srobbler = True
         self.enable_radio_srobbler = True
 
         """proxy"""
         self.proxy_enable = False
         self.proxy_url = None
-        
+
         """tray icon"""
         self.show_tray_icon = True
         self.tray_icon_auto_hide = True
         self.static_tray_icon = True
         self.system_icons_dinamic = False
         self.change_tray_icon = False
-        
+
         self.all_icons = [ICON_FOOBNIX, ICON_FOOBNIX_PLAY, ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO, "foobnix-tux.gif"]
-                
+
         self.static_icon_entry = ICON_FOOBNIX
-        
+
         self.play_icon_entry = ICON_FOOBNIX_PLAY
         self.pause_icon_entry = ICON_FOOBNIX_PAUSE
         self.stop_icon_entry = ICON_FOOBNIX_STOP
         self.radio_icon_entry = ICON_FOOBNIX_RADIO
-               
+
         """download manager controls"""
         self.auto_start_donwload = True
         self.max_active_count = 3
         self.online_save_to_folder = "/tmp"
         self.is_save_online = True
-        
+
         """info panel"""
         self.info_panel_image_size = 150
         self.tooltip_image_size = 150
         self.is_info_panel_show_tags = False
-        
+
         self.uuid = uuid.uuid4().hex
         self.check_new_version = True
 
         self.last_dir = None
-        
+
         self.proxy_enable = False
         self.proxy_url = None
         self.proxy_user = None
         self.proxy_password = None
-        
+
         self.action_hotkey = {'foobnix --volume-up': '<SUPER>Up', 'foobnix --volume-down': '<SUPER>Down', 'foobnix --show-hide': '<SUPER>a', 'foobnix --prev': '<SUPER>Left', 'foobnix --play': '<SUPER>x', 'foobnix --pause': '<SUPER>z', 'foobnix --next': '<SUPER>Right'}
 
-        self.left_perspective = "info"        
-        
+        self.left_perspective = "info"
+
         self.gap_secs = 0
-        
+
         self.tabs_mode = "Multi"
-        
+
         self.tab_pl_names = [_("Empty tab"), ]
         self.cache_pl_tab_contents = []
-         
+
         self = self._load();
-                
-        
+
+
 
     def save(self, in_thread=True):
         if in_thread:
             thread.start_new_thread(FCHelper().save, (self,))
         else:
             FCHelper().save(self)
-        
+
     def _load(self):
         """restore from file"""
         object = FCHelper().load()
