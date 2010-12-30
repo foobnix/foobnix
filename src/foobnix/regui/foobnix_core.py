@@ -32,12 +32,15 @@ from foobnix.regui.notetab.tab_library import TabLib
 foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):
-    def __init__(self):
+    def __init__(self, with_dbus=False):
         BaseFoobnixControls.__init__(self)
         self.layout = None
         
         self.media_engine = GStreamerEngine(self)
         """elements"""
+        
+        self.tree = NavigationTreeControl(self)
+        self.tablib = TabLib(self)
         
         self.statusbar = StatusbarControls(self)
         
@@ -64,10 +67,10 @@ class FoobnixCore(BaseFoobnixControls):
 
         self.filter = FilterControl(self)
 
-        self.tree = NavigationTreeControl(self)
+        
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
-        self.tablib = TabLib(self)
+        
         self.perspective = PerspectiveControls(self)
         
         """preferences"""
@@ -85,8 +88,8 @@ class FoobnixCore(BaseFoobnixControls):
         """layout"""
         self.layout = BaseFoobnixLayout(self)
 
-        
-        self.dbus = DBusManager(self)
+        if with_dbus:
+            self.dbus = DBusManager(self)
     
     def run(self):    
         self.on_load()

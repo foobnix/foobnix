@@ -20,7 +20,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.controls = controls
         
         """column config"""
-        column = gtk.TreeViewColumn("Music Lybrary", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = gtk.TreeViewColumn(_("Music Lybrary"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.append_column(column)
         
@@ -41,21 +41,24 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             
         if is_rigth_click(e):            
             menu = Popup()
+            menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
+            menu.add_separator()
             menu.add_item(_("Add to current tab"), gtk.STOCK_ADD, self.add_to_current_tab, None)
             menu.add_separator()
-            menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, lambda: self.controls.tablib.on_update_music_tree(self.scroll), None)
-                #menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
-            menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
+            
+            
             if FC().tabs_mode == "Multi":
                 menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
                 menu.add_item(_("Clear Music Tree"), gtk.STOCK_CLEAR, lambda : self.controls.tablib.clear_tree(self.scroll), None)
+            menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, lambda: self.controls.tablib.on_update_music_tree(self.scroll), None)
+                
             menu.show(e)
     
     def add_to_current_tab(self):
         beans = self.get_all_child_beans_by_selected()  
         self.controls.append_to_current_notebook(beans)
     
-    def add_folder(self, in_new_tab = False):
+    def add_folder(self, in_new_tab=False):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"),
                                         action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
                                         buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
@@ -71,29 +74,30 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             FC().last_music_path = path[:path.rfind("/")]
             tree = self
             number_of_tab = self.controls.tablib.page_num(tree.scroll)
-                        
+                      
             if in_new_tab:
                 tree = NavigationTreeControl(self.controls)
-                tab_name = unicode(path[path.rfind("/")+1:])
-                self.controls.tablib.append_tab(tab_name, navig_tree = tree)
-                number_of_tab  =  self.controls.tablib.get_current_page()
+                tab_name = unicode(path[path.rfind("/") + 1:])
+                self.controls.tablib.append_tab(tab_name, navig_tree=tree)
+                number_of_tab = self.controls.tablib.get_current_page()
                 FC().music_paths.insert(0, [])
                 FC().tab_names.insert(0, tab_name)
                 FC().cache_music_tree_beans.insert(0, [])
             
             elif tree.is_empty:
-                tab_name = unicode(path[path.rfind("/")+1:])
+                tab_name = unicode(path[path.rfind("/") + 1:])
                 vbox = gtk.VBox()
                 label = gtk.Label(tab_name + " ")
                 label.set_angle(90)
                 if FC().tab_close_element:
                     vbox.pack_start(self.controls.tablib.button(tree.scroll), False, False)
                 vbox.pack_end(label, False, False)
-                event = self.controls.notetabs.to_eventbox(vbox)
+                event = self.controls.notetabs.to_eventbox(vbox, tree)
                 event = self.controls.tablib.tab_menu_creator(event, tree.scroll)
                 event.connect("button-press-event", self.controls.tablib.on_button_press) 
                 self.controls.tablib.set_tab_label(tree.scroll, event)
                 FC().tab_names[number_of_tab] = tab_name
+                FC().music_paths[number_of_tab] = []
             
             for path in paths:
                 if path in FC().music_paths[number_of_tab]:

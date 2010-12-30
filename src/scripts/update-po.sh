@@ -4,10 +4,7 @@ writelines() {
    cd $2
    for i in *.py 
      do
-     if [ ${i} != "__init__.py" ]
-     then     
        echo $2${i} >> $1
-     fi
     done
     cd -
 }

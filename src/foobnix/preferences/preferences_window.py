@@ -6,9 +6,6 @@ from foobnix.preferences.configs.music_library import MusicLibraryConfig
 from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs.vk_conf import VkontakteConfig
 from foobnix.preferences.configs.tabs import TabsConfig
-from foobnix.preferences.configs.info_panel_conf import InfoPagenConfig
-from foobnix.preferences.configs.network_conf import NetworkConfig
-from foobnix.preferences.configs.notification_conf import NotificationConfig
 from foobnix.preferences.configs.tray_icon import TrayIconConfig
 import thread
 import os
@@ -16,7 +13,6 @@ from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
 from foobnix.util.fc import FC
 from foobnix.helpers.window import ChildTopWindow
-from foobnix.preferences.configs.dm_config import DMConfig
 from foobnix.regui.model import FDModel
 from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY

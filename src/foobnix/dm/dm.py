@@ -16,14 +16,14 @@ from foobnix.regui.model import FDModel, FModel
 from foobnix.dm.dm_dowloader import Dowloader
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.helpers.toolbar import MyToolbar
-from foobnix.preferences.configs import CONFIG_DOWNLOAD_MANAGER
 from foobnix.util import LOG
+from foobnix.preferences.configs import CONFIG_OTHER
 
 class DMControls(MyToolbar):
     def __init__(self, controls, dm_tree): 
         MyToolbar.__init__(self)   
         
-        self.add_button(_("Preferences"), gtk.STOCK_PREFERENCES, controls.preferences.show, CONFIG_DOWNLOAD_MANAGER)
+        self.add_button(_("Preferences"), gtk.STOCK_PREFERENCES, controls.preferences.show, CONFIG_OTHER)
         self.add_separator()   
         self.add_button(_("Start Downloading"), gtk.STOCK_MEDIA_PLAY, dm_tree.update_status_for_selected, DOWNLOAD_STATUS_ACTIVE)
         self.add_button(_("Stop Downloading"), gtk.STOCK_MEDIA_PAUSE, dm_tree.update_status_for_selected, DOWNLOAD_STATUS_STOP)

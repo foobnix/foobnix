@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-08 12:20+0200\n"
+"POT-Creation-Date: 2010-12-29 01:27+0200\n"
 "PO-Revision-Date: 2009-04-06 21:35+0300\n"
 "Last-Translator: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
@@ -19,7 +19,8 @@ msgstr ""
 
 #: .././foobnix/dm/dm.py:26
 #: .././foobnix/preferences/preferences_window.py:56
-#: .././foobnix/regui/menu.py:41
+#: .././foobnix/regui/menu.py:45
+#: .././foobnix/regui/top.py:41
 msgid "Preferences"
 msgstr "Настройки"
 
@@ -32,12 +33,13 @@ msgid "Stop Downloading"
 msgstr "Остановить закачку"
 
 #: .././foobnix/dm/dm.py:44
-#: .././foobnix/regui/menu.py:39
+#: .././foobnix/preferences/configs/__init__.py:3
+#: .././foobnix/regui/menu.py:43
 msgid "Download Manager"
 msgstr "Менеджер закачек"
 
 #: .././foobnix/eq/eq_gui.py:39
-#: .././foobnix/regui/menu.py:38
+#: .././foobnix/regui/menu.py:42
 msgid "Equalizer"
 msgstr "Эквалайзер"
 
@@ -119,26 +121,29 @@ msgstr "Клавиша"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:41
 #: .././foobnix/preferences/configs/music_library.py:61
-#: .././foobnix/preferences/configs/music_library.py:159
+#: .././foobnix/preferences/configs/music_library.py:164
 msgid "Add"
 msgstr "Добавить"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:46
 #: .././foobnix/preferences/configs/music_library.py:66
-#: .././foobnix/preferences/configs/music_library.py:164
+#: .././foobnix/preferences/configs/music_library.py:169
 msgid "Remove"
 msgstr "Удалить"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:123
+#: .././foobnix/regui/controls/playback.py:32
 #: .././foobnix/regui/treeview/playlist_tree.py:124
 msgid "Play"
 msgstr "Играть"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:124
+#: .././foobnix/regui/controls/playback.py:33
 msgid "Pause"
 msgstr "Пауза"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:125
+#: .././foobnix/regui/controls/playback.py:31
 #: .././foobnix/util/const.py:39
 msgid "Stop"
 msgstr "Стоп"
@@ -172,6 +177,7 @@ msgid "Info panel"
 msgstr "Информационная панель"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:22
+#: .././foobnix/preferences/configs/other_conf.py:38
 msgid "Disc cover size"
 msgstr "Обложка диска"
 
@@ -182,6 +188,14 @@ msgstr "Размер информационной панели"
 #: .././foobnix/preferences/configs/info_panel_conf.py:47
 msgid "Show Tags list"
 msgstr "Показыать Теги"
+
+#: .././foobnix/preferences/configs/__init__.py:4
+msgid "Music Library"
+msgstr "Коллекция музыки"
+
+#: .././foobnix/preferences/configs/__init__.py:5
+msgid "Other configs"
+msgstr "Другие настройки"
 
 #: .././foobnix/preferences/configs/last_fm.py:13
 msgid "Last FM"
@@ -220,16 +234,16 @@ msgstr "Пути"
 msgid "Reload"
 msgstr "Обновить"
 
-#: .././foobnix/preferences/configs/music_library.py:122
-#: .././foobnix/regui/treeview/navigation_tree.py:54
+#: .././foobnix/preferences/configs/music_library.py:128
+#: .././foobnix/regui/treeview/navigation_tree.py:62
 msgid "Choose directory with music"
 msgstr "Выберете директорию с музыкой"
 
-#: .././foobnix/preferences/configs/music_library.py:144
+#: .././foobnix/preferences/configs/music_library.py:150
 msgid "File Types"
 msgstr "Форматы файлов"
 
-#: .././foobnix/preferences/configs/music_library.py:152
+#: .././foobnix/preferences/configs/music_library.py:158
 msgid "Extensions"
 msgstr "Расширения"
 
@@ -244,6 +258,14 @@ msgstr "Расширение должно быть как \".mp3\""
 #: .././foobnix/preferences/configs/music_library.py:197
 msgid "Gap between tracks: "
 msgstr "Пауза между треками"
+
+#: .././foobnix/preferences/configs/music_library.py:213
+msgid "Multitabs mode"
+msgstr "Многотабовый режим"
+
+#: .././foobnix/preferences/configs/music_library.py:219
+msgid "Singletab mode"
+msgstr "Режим одной вкладки"
 
 #: .././foobnix/preferences/configs/network_conf.py:16
 msgid "Network Settings"
@@ -283,12 +305,38 @@ msgid "Notifications"
 msgstr "Уведомления"
 
 #: .././foobnix/preferences/configs/notification_conf.py:19
+#: .././foobnix/preferences/configs/other_conf.py:49
 msgid "Check for new foobnix release on start"
 msgstr "Проверять наличие новой версии при старте"
 
 #: .././foobnix/preferences/configs/notification_conf.py:22
+#: .././foobnix/preferences/configs/other_conf.py:52
 msgid "Show new foobnix release avaliable demo dialog"
 msgstr "Показать диалог наличия новой версии"
+
+#: .././foobnix/preferences/configs/other_conf.py:31
+msgid "Save music to folder"
+msgstr "Сохранять музыку в"
+
+#: .././foobnix/preferences/configs/other_conf.py:62
+msgid "Enable theme image"
+msgstr "Включить тему плеера"
+
+#: .././foobnix/preferences/configs/other_conf.py:78
+msgid "Menu type"
+msgstr "Тим меню"
+
+#: .././foobnix/preferences/configs/other_conf.py:80
+msgid "Old Style (Menu Bar)"
+msgstr "Старый стиль (панель)"
+
+#: .././foobnix/preferences/configs/other_conf.py:83
+msgid "New Style (Button)"
+msgstr "Новый Стиль (Кнопка)"
+
+#: .././foobnix/preferences/configs/other_conf.py:95
+msgid "Opacity"
+msgstr "Прозрачность"
 
 #: .././foobnix/preferences/configs/tabs.py:13
 msgid "Tabs"
@@ -322,6 +370,10 @@ msgstr "Нет"
 msgid "Close tab sign"
 msgstr "Значек закрытия"
 
+#: .././foobnix/preferences/configs/tabs.py:102
+msgid "None"
+msgstr "Новый"
+
 #: .././foobnix/preferences/configs/tray_icon.py:24
 msgid "Show tray icon"
 msgstr "Показывать системную иконку"
@@ -342,23 +394,23 @@ msgstr "При закрытии окна - уменьшать плеер"
 msgid "Vkontakte"
 msgstr "Vkontakte"
 
-#: .././foobnix/regui/base_controls.py:77
+#: .././foobnix/regui/base_controls.py:81
 msgid "Choose folders to open"
 msgstr "Выберите папки для открытия"
 
-#: .././foobnix/regui/base_controls.py:102
+#: .././foobnix/regui/base_controls.py:106
 msgid "Nothing found to play in the folder(s)"
 msgstr "Не найдено музыки в папках"
 
-#: .././foobnix/regui/base_controls.py:106
+#: .././foobnix/regui/base_controls.py:110
 msgid "Choose file to open"
 msgstr "Выберите файлы для открытия"
 
-#: .././foobnix/regui/base_controls.py:122
+#: .././foobnix/regui/base_controls.py:135
 msgid "Nothing found to play in the file(s)"
 msgstr "Музыка не найдена в файлах"
 
-#: .././foobnix/regui/base_controls.py:157
+#: .././foobnix/regui/base_controls.py:195
 msgid "Music not found in folder(s):"
 msgstr "Музыка не найдена в папках"
 
@@ -382,93 +434,94 @@ msgstr "Похожие Жанры"
 msgid "Lyrics"
 msgstr "Лирика"
 
-#: .././foobnix/regui/menu.py:21
+#: .././foobnix/regui/menu.py:25
 msgid "_File"
 msgstr "_Файл"
 
-#: .././foobnix/regui/menu.py:22
+#: .././foobnix/regui/menu.py:26
 msgid "Add File(s)"
 msgstr "Добавить Файл(ы)"
 
-#: .././foobnix/regui/menu.py:23
+#: .././foobnix/regui/menu.py:27
 msgid "Add Folder(s)"
 msgstr "Добавить папку(и)"
 
-#: .././foobnix/regui/menu.py:25
+#: .././foobnix/regui/menu.py:29
+#: .././foobnix/regui/top.py:43
 msgid "Quit"
 msgstr "Выход"
 
-#: .././foobnix/regui/menu.py:29
+#: .././foobnix/regui/menu.py:33
 msgid "_View"
 msgstr "_Вид"
 
-#: .././foobnix/regui/menu.py:30
+#: .././foobnix/regui/menu.py:34
 msgid "Left Panel"
 msgstr "Информационная панель"
 
-#: .././foobnix/regui/menu.py:33
+#: .././foobnix/regui/menu.py:37
 msgid "Search Panel"
 msgstr "Панель поиска"
 
-#: .././foobnix/regui/menu.py:44
+#: .././foobnix/regui/menu.py:48
 msgid "_Playback"
 msgstr "Проигрывание"
 
-#: .././foobnix/regui/menu.py:51
+#: .././foobnix/regui/menu.py:55
 msgid "Order"
 msgstr "Порядок"
 
-#: .././foobnix/regui/menu.py:52
+#: .././foobnix/regui/menu.py:56
 msgid "Linear"
 msgstr "Линейный"
 
-#: .././foobnix/regui/menu.py:55
+#: .././foobnix/regui/menu.py:59
 msgid "Random"
 msgstr "Случайный"
 
-#: .././foobnix/regui/menu.py:62
+#: .././foobnix/regui/menu.py:66
 msgid "Repeat"
 msgstr "Повторять"
 
-#: .././foobnix/regui/menu.py:63
+#: .././foobnix/regui/menu.py:67
 #: .././foobnix/regui/search.py:131
 #: .././foobnix/util/const.py:37
 msgid "All"
 msgstr "Все"
 
-#: .././foobnix/regui/menu.py:64
+#: .././foobnix/regui/menu.py:68
 msgid "Single"
 msgstr "Одна"
 
-#: .././foobnix/regui/menu.py:65
+#: .././foobnix/regui/menu.py:69
 msgid "Disable"
 msgstr "Выключено"
 
-#: .././foobnix/regui/menu.py:92
+#: .././foobnix/regui/menu.py:96
 msgid "_Help"
 msgstr "Справка"
 
-#: .././foobnix/regui/menu.py:93
+#: .././foobnix/regui/menu.py:97
 msgid "About"
 msgstr "О программе"
 
-#: .././foobnix/regui/menu.py:95
+#: .././foobnix/regui/menu.py:99
 msgid "Project page"
 msgstr "Страница проекта"
 
-#: .././foobnix/regui/menu.py:95
+#: .././foobnix/regui/menu.py:99
 msgid "http://www.foobnix.com/news/eng"
 msgstr "http://www.foobnix.com"
 
-#: .././foobnix/regui/menu.py:96
+#: .././foobnix/regui/menu.py:100
 msgid "Issue report"
 msgstr "Сообщить о неполадке"
 
-#: .././foobnix/regui/menu.py:98
+#: .././foobnix/regui/menu.py:102
 msgid "Donate Participate"
 msgstr "Поддержать проект"
 
-#: .././foobnix/regui/menu.py:98
+#: .././foobnix/regui/menu.py:102
 msgid "http://www.foobnix.com/donate/eng"
 msgstr "http://www.foobnix.com/donate"
 
@@ -564,6 +617,59 @@ msgstr "Изменения"
 msgid "Credential"
 msgstr "Учасники"
 
+#: .././foobnix/regui/controls/playback.py:34
+msgid "Previous"
+msgstr "Предыдущая"
+
+#: .././foobnix/regui/controls/playback.py:35
+msgid "Next"
+msgstr "Следующая"
+
+#: .././foobnix/regui/controls/tray_icon.py:37
+msgid "Exit"
+msgstr "Выход"
+
+#: .././foobnix/regui/controls/tray_icon.py:38
+msgid "Close Popup"
+msgstr "Закрыть"
+
+#: .././foobnix/regui/notetab/__init__.py:106
+#: .././foobnix/regui/notetab/__init__.py:111
+#: .././foobnix/util/fc.py:100
+#: .././foobnix/util/fc.py:169
+msgid "Empty tab"
+msgstr "Пустая вкладка"
+
+#: .././foobnix/regui/notetab/__init__.py:258
+#: .././foobnix/regui/notetab/tab_library.py:35
+msgid "Rename tab"
+msgstr "Переименовать вкладку"
+
+#: .././foobnix/regui/notetab/__init__.py:259
+#: .././foobnix/regui/notetab/tab_library.py:40
+msgid "Close tab"
+msgstr "Закрыть влкадку"
+
+#: .././foobnix/regui/notetab/tab_library.py:36
+#: .././foobnix/regui/treeview/navigation_tree.py:53
+msgid "Update Music Tree"
+msgstr "Обновить дерево музыки"
+
+#: .././foobnix/regui/notetab/tab_library.py:37
+#: .././foobnix/regui/treeview/navigation_tree.py:44
+msgid "Add folder"
+msgstr "Добавить папку"
+
+#: .././foobnix/regui/notetab/tab_library.py:38
+#: .././foobnix/regui/treeview/navigation_tree.py:51
+msgid "Add folder in new tab"
+msgstr "Добавить папку в новую вкладку"
+
+#: .././foobnix/regui/notetab/tab_library.py:39
+#: .././foobnix/regui/treeview/navigation_tree.py:52
+msgid "Clear Music Tree"
+msgstr "Очистить список"
+
 #: .././foobnix/regui/service/lastfm_service.py:117
 msgid "Last.fm connection error"
 msgstr "Ошбика подлюкчения к last.fm"
@@ -577,18 +683,13 @@ msgstr "Проверте логин и пароль"
 msgid "VKontakte connection error"
 msgstr "Ошибка подключания к ВКонтакте"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:42
-msgid "Add to current tab"
-msgstr "Добавить в очередь"
-
-#: .././foobnix/regui/treeview/navigation_tree.py:44
-msgid "Update Music Tree"
-msgstr "Обновить дерево музыки"
+#: .././foobnix/regui/treeview/navigation_tree.py:23
+msgid "Music Lybrary"
+msgstr "Коллекция музыки"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:46
-#. menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.populate_playlist, None)
-msgid "Add folder"
-msgstr "Добавить папку"
+msgid "Add to current tab"
+msgstr "Добавить в очередь"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:129
 msgid "Copy to Search Line"
@@ -631,12 +732,17 @@ msgid "Add playlist"
 msgstr "Добавить плейлист"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:52
+#: .././foobnix/regui/treeview/virtual_tree.py:69
 msgid "Rename playlist"
 msgstr "Переименовать плейлист"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:53
 msgid "Delete playlist"
 msgstr "Удалить плейлист"
+
+#: .././foobnix/regui/treeview/virtual_tree.py:59
+msgid "Create new playlist"
+msgstr "Создать новый плейлист"
 
 #: .././foobnix/util/const.py:38
 msgid "Active"

@@ -6,9 +6,7 @@ Created on 29 сент. 2010
 '''
 from foobnix.regui.model.signal import FControl
 import gtk
-import string
 from foobnix.util.fc import FC
-from foobnix.helpers.toolbar import MyToolbar
 from foobnix.util.mouse_utils import is_middle_click
 from foobnix.regui.state import LoadSave
 import gobject

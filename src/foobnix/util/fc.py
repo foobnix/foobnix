@@ -81,7 +81,8 @@ class FC:
         self.hpaned_right = 320;
         self.vpaned_small = 100;
         self.background_image_themes = ["theme/cat.jpg", "theme/flower.jpg"]
-        self.background_image = "theme/cat.jpg"
+        self.background_image = None
+        self.window_opacity = 1
         
         self.menu_style = "new"
 
@@ -216,7 +217,7 @@ class FCHelper():
 
     def load(self):
         if not os.path.exists(CONFIG_FILE):
-            LOG.warn("Config file not found", CONFIG_FILE)
+            LOG.debug("Config file not found", CONFIG_FILE)
             return None
 
         with file(CONFIG_FILE, 'r') as load_file:

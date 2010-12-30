@@ -63,6 +63,8 @@ class TopWidgets(FControl, LoadSave, gtk.HBox):
     def on_load(self):        
         self.controls.volume.on_load()
         self.old_menu.on_load()
+        self.update_menu_style()
+        
         
     def on_button_press(self, w, e):       
         self.menu.show(e)

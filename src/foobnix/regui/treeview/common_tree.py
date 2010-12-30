@@ -8,7 +8,6 @@ Created on 20 окт. 2010
 import gtk
 from foobnix.regui.model import FTreeModel, FModel
 from foobnix.regui.model.signal import FControl
-from foobnix.regui.treeview.drugdrop_tree import DrugDropTree
 from random import randint
 import gobject
 from foobnix.regui.treeview.filter_tree import FilterTreeControls

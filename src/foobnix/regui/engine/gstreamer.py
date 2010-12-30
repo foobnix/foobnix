@@ -15,7 +15,6 @@ from foobnix.util.fc import FC
 from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
 from foobnix.util.plsparser import get_radio_source
 
-
 class GStreamerEngine(MediaPlayerEngine):
     NANO_SECONDS = 1000000000
     def __init__(self, controls):
@@ -34,6 +33,8 @@ class GStreamerEngine(MediaPlayerEngine):
 
     def get_state(self):
         return self.current_state
+    def set_state(self, state):        
+        self.current_state = state
 
     def gstreamer_player(self):
         playbin = gst.element_factory_make("playbin2", "player")
@@ -72,9 +73,10 @@ class GStreamerEngine(MediaPlayerEngine):
         self.controls.notify_playing(self.position_sec, self.duration_sec, self.bean, sec)
 
     def notify_eos(self):
-        LOG.debug("Notify eos")
+        LOG.debug("Notify eos, STOP State")
         self.controls.notify_eos()
-        self.current_state = STATE_STOP
+        
+        self.set_state(STATE_STOP)
 
     def notify_title(self, text):
         if self.bean.type == FTYPE_RADIO:
@@ -82,8 +84,8 @@ class GStreamerEngine(MediaPlayerEngine):
             self.controls.notify_title(text)
 
     def notify_error(self, msg):
-        LOG.debug("Notify error")
-        self.current_state = STATE_STOP
+        LOG.debug("Notify error, STOP state")
+        self.set_state(STATE_STOP)
         self.controls.notify_error(msg)
 
     def play(self, bean):
@@ -98,10 +100,7 @@ class GStreamerEngine(MediaPlayerEngine):
 
         
         self.state_stop()
-        time.sleep(0.2)
-        
-        
-        
+
         if self.prev_path != path:
             self.player = self.gstreamer_player()
             """equlizer settings"""
@@ -125,12 +124,13 @@ class GStreamerEngine(MediaPlayerEngine):
             
             self.prev_path = path
         
-        self.state_pause()        
+        self.state_pause()
         time.sleep(0.2)        
         self.seek_seconds(bean.start_sec)
         self.state_play()
         self.volume(FC().volume)
-        self.current_state = STATE_PLAY
+        
+        LOG.debug("current state before thread", self.get_state(), self.play_thread_id)
         self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
 
     
@@ -162,7 +162,9 @@ class GStreamerEngine(MediaPlayerEngine):
         thread_id = self.play_thread_id
         error_count = 0
         sec = 0
-
+        
+        LOG.debug("current state in thread", self.get_state())
+         
         while thread_id == self.play_thread_id:
             try:
                 time.sleep(0.2)
@@ -186,12 +188,17 @@ class GStreamerEngine(MediaPlayerEngine):
 
         if self.bean.duration_sec > 0:
             duraction_int = float(self.bean.duration_sec) * self.NANO_SECONDS
-
+        
+        LOG.debug("current state before while", self.get_state())
+        
+        self.set_state(STATE_PLAY)
+        
         while thread_id == self.play_thread_id:
             try:
                 position_int = self.get_position_seek_ns()
-                if self.bean.start_sec > 0:
+                if position_int > 0 and self.bean.start_sec > 0:
                     position_int = position_int - float(self.bean.start_sec) * self.NANO_SECONDS
+                    LOG.debug(position_int, self.bean.start_sec, duraction_int)
                     if position_int + self.NANO_SECONDS > duraction_int:
                         self.notify_eos()
                 
@@ -265,19 +272,20 @@ class GStreamerEngine(MediaPlayerEngine):
                         
         self.play_thread_id = None        
         self.player.set_state(gst.STATE_NULL)
-        self.current_state = STATE_STOP
+        self.set_state(STATE_STOP)
         
         #if FC().system_icons_dinamic:
         self.controls.trayicon.on_dynamic_icons(self.current_state)
+        LOG.debug("state STOP")
 
     def state_pause(self):
         self.player.set_state(gst.STATE_PAUSED)
-        self.current_state = STATE_PAUSE
+        self.set_state(STATE_PAUSE)
         #if FC().system_icons_dinamic:
         self.controls.trayicon.on_dynamic_icons(self.current_state)
         
     def state_play_pause(self):
-        if self.current_state == STATE_PLAY:
+        if self.get_state() == STATE_PLAY:
             self.state_pause()
         else:
             self.state_play()

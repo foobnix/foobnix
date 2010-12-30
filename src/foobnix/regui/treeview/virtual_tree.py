@@ -56,7 +56,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
                 menu.show(e)
     
     def create_playlist(self):
-        text = one_line_dialog("Create new playlist")
+        text = one_line_dialog(_("Create new playlist"))
         bean = FModel(text).add_font("bold")
         self.append(bean)
               
@@ -66,7 +66,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
     
     def rename_playlist(self):
         bean = self.get_selected_bean()
-        text = one_line_dialog("Rename playlist", bean.text)
+        text = one_line_dialog(_("Rename playlist"), bean.text)
         if not text:
             return
         self.rename_selected(text)
