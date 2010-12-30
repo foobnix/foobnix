@@ -1,6 +1,16 @@
-0.2.2-11
-* Fixes playback controls style for all themes
+0.2.3
+* Added Multi tab navigation tree
+* Saving navigation and playlist tabs on exit
+* New style menu with one button
+* Image themes support 
+* Context menu for tabs
+* Possibility to rename tabs, playlist tab managment (mouse wheel, remove, create) 
+* Possibility to set gap between tracks possibility
+* Performance optimization
+* Other fixes
+
 0.2.2-10
+* Fixes playback controls style for all themes
 * Fixed crashes on Debian and maybe on other system when online search
 * Append by right click button
 * Add support of ISO.wv

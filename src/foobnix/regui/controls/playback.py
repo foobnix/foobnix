@@ -9,7 +9,6 @@ from foobnix.regui.model.signal import FControl
 import gtk
 from foobnix.helpers.my_widgets import ImageButton
 
-@DeprecationWarning
 class PlaybackControlsNotUser(FControl, MyToolbar, LoadSave):
     def __init__(self, controls): 
         FControl.__init__(self, controls)    

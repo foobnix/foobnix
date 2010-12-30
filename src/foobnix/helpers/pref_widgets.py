@@ -12,25 +12,33 @@ from foobnix.helpers.window import ChildTopWindow
 from foobnix.util import LOG
 class IconBlock(gtk.HBox):
      
-    def __init__(self, text, controls, filename):
+    def __init__(self, text, controls, filename, all_icons=FC().all_icons):
         gtk.HBox.__init__(self, False, 0)
         
         self.controls = controls
         
         self.combobox = gtk.ComboBox()
         self.entry = gtk.Entry()
+        if filename:
+            self.entry.set_text(filename)
+        else:
+            filename = ""
         self.entry.set_size_request(350, -1)
         
+        self.all_icons = all_icons
+        
+        self.modconst = ModelConstructor(all_icons)
         
         
-        self.combobox.set_model(self.controls.modconst.model)
         
-        if FC().all_icons.count(filename):
-            self.combobox.set_active(FC().all_icons.index(filename))
+        self.combobox.set_model(self.modconst.model)
+        
+        if filename in self.all_icons:
+            self.combobox.set_active(self.all_icons.index(filename))
         else:
             self.combobox.set_active(0)
             self.on_change_icon()
-            LOG.warn("*** WARNING *** : Icon " + filename + " is absent in list of icons")
+            LOG.debug("*** WARNING *** : Icon " + filename + " is absent in list of icons")
         
         pix_render = gtk.CellRendererPixbuf()
         self.combobox.pack_start(pix_render)        
@@ -56,25 +64,31 @@ class IconBlock(gtk.HBox):
     def on_file_choose(self, *a):
         file = file_chooser_dialog("Choose icon")
         self.entry.set_text(file[0])
-        self.controls.modconst.apeend_icon(self, file[0], True)
-        FC().all_icons.append(file[0])
+        self.modconst.apeend_icon(self, file[0], True)
+        self.all_icons.append(file[0])
     
     def on_change_icon(self, *a):        
         active_id = self.combobox.get_active()
-        icon_name = self.combobox.get_model()[active_id][1]
-        self.entry.set_text(icon_name)
+        if active_id > 0:
+            icon_name = self.combobox.get_model()[active_id][1]
+            self.entry.set_text(icon_name)
         #FC().static_tray_icon = True
         #self.controls.trayicon.on_dynamic_icons(None)
+    
+    def get_active_path(self):
+        active_id = self.combobox.get_active()
+        return self.combobox.get_model()[active_id][1]
+    
         
     def on_delete(self, *a):
         
         active_id = self.combobox.get_active()
         rem_icon = self.entry.get_text()
-        iter = self.controls.modconst.model.get_iter(active_id)
+        iter = self.modconst.model.get_iter(active_id)
         try:
-            if FC().all_icons.index(rem_icon) > 4:
-                FC().all_icons.remove(rem_icon)
-                self.controls.modconst.delete_icon(iter)
+            if self.all_icons.index(rem_icon) > 4:
+                self.all_icons.remove(rem_icon)
+                self.modconst.delete_icon(iter)
                 self.combobox.set_active(0)
             else:
                 error_window = ChildTopWindow("Error")
@@ -126,11 +140,11 @@ class ModelConstructor():
     
     ICON_SIZE = 24
     
-    def __init__(self):
+    def __init__(self, all_icons):
         
         self.model = gtk.ListStore(gobject.TYPE_OBJECT, str)
         
-        for icon_name in FC().all_icons:
+        for icon_name in all_icons:
             self.apeend_icon(None, icon_name)          
 
     def apeend_icon(self, calling_object, icon_name, active=False):

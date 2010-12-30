@@ -56,7 +56,6 @@ class LastFmConfig(ConfigPlugin):
         box.pack_start(lbox, False, True, 0)
         box.pack_start(pbox, False, True, 0)
         box.pack_start(self.music_srobbler, False, True, 0)
-        #box.pack_start(self.radio_srobbler, False, True, 0)
         
         self.widget = box
     

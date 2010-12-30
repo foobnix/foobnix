@@ -34,7 +34,7 @@ class VKService:
                                  'pass' : FC().vk_password,
                                  'vk' : ''})
 
-        headers = {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; uk; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.0',
+        headers = {'User-Agent' : FC().agent_line,
                    'Host' : 'login.vk.com',
                    'Referer' : 'http://vkontakte.ru/index.php',
                    'Connection' : 'close',
@@ -82,7 +82,7 @@ class VKService:
         
         host = 'http://vkontakte.ru/login.php?op=slogin'
         post = urllib.urlencode({'s' : s_value})
-        headers = {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; uk; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.0',
+        headers = {'User-Agent' : FC().agent_line,
                    'Host' : 'vkontakte.ru',
                    'Referer' : 'http://login.vk.com/?act=login',
                    'Connection' : 'close',
@@ -108,7 +108,7 @@ class VKService:
                                  "c[q]" : query,
                                  "c[section]":section
                                 })
-        headers = {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; uk; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.0',
+        headers = {'User-Agent' : FC().agent_line,
                    'Host' : 'vkontakte.ru',
                    'Referer' : 'http://vkontakte.ru/index.php',
                    'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -127,7 +127,11 @@ class VKService:
             time.sleep(0.8)        
         self.execute_time = time.time()
         
-        data = urllib2.urlopen(conn);
+        try:
+            data = urllib2.urlopen(conn);
+        except Exception, e:
+            LOG.critical(FC().agent_line, FC().vk_login, FC().vk_password)
+            LOG.critical("VK ERROR", e)
         result = data.read()
         return result
     
@@ -138,7 +142,7 @@ class VKService:
         host_url.replace("#", "&")
         post = host_url[host_url.find("?") + 1:]
         LOG.debug("post", post)
-        headers = {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; uk; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.0',
+        headers = {'User-Agent' : FC().agent_line,
                    'Host' : 'vkontakte.ru',
                    'Referer' : 'http://vkontakte.ru/index.php',
                    'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',

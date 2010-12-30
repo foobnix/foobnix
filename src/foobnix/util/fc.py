@@ -15,6 +15,7 @@ from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
 import thread
 import cPickle
 from foobnix.version import VERSION
+from foobnix.util.agent import get_ranmom_agent
  
 
 
@@ -71,12 +72,19 @@ class FC:
         self.count_of_tabs = 5
         self.tab_position = "top"
         
+        
+        self.agent_line = get_ranmom_agent()
 
         """main window controls"""
         self.main_window_size = [119, 154, 884, 479]
         self.hpaned_left = 248;
         self.hpaned_right = 320;
         self.vpaned_small = 100;
+        self.background_image_themes = ["theme/cat.jpg", "theme/flower.jpg"]
+        self.background_image = None
+        self.window_opacity = 1
+        
+        self.menu_style = "new"
 
         """main window action"""
         self.on_close_window = const.ON_CLOSE_HIDE
@@ -158,8 +166,8 @@ class FC:
         
         self.tabs_mode = "Multi"
         
-        self.tab_pl_names = [_("Empty tab"),]
-        self.cache_pl_tab_contents= []
+        self.tab_pl_names = [_("Empty tab"), ]
+        self.cache_pl_tab_contents = []
          
         self = self._load();
                 
@@ -209,7 +217,7 @@ class FCHelper():
 
     def load(self):
         if not os.path.exists(CONFIG_FILE):
-            LOG.warn("Config file not found", CONFIG_FILE)
+            LOG.debug("Config file not found", CONFIG_FILE)
             return None
 
         with file(CONFIG_FILE, 'r') as load_file:

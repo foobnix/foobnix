@@ -1,4 +1,4 @@
-#Fri Dec 10 18:11:07 MSK 2010
+#Sat Dec 25 16:46:01 EET 2010
 eclipse.preferences.version=1
 encoding//src/foobnix/eq/eq_gui.py=utf-8
 encoding//src/foobnix/helpers/dialog_entry.py=utf-8
@@ -12,6 +12,7 @@ encoding//src/foobnix/preferences/configs/last_fm.py=utf-8
 encoding//src/foobnix/preferences/configs/music_library.py=utf-8
 encoding//src/foobnix/preferences/configs/network_conf.py=utf-8
 encoding//src/foobnix/preferences/configs/notification_conf.py=utf-8
+encoding//src/foobnix/preferences/configs/other_conf.py=utf-8
 encoding//src/foobnix/preferences/configs/tabs.py=utf-8
 encoding//src/foobnix/preferences/configs/tray_icon.py=utf-8
 encoding//src/foobnix/preferences/configs/vk_conf.py=utf-8
@@ -41,6 +42,7 @@ encoding//src/foobnix/regui/treeview/filter_tree.py=utf-8
 encoding//src/foobnix/regui/treeview/navigation_tree.py=utf-8
 encoding//src/foobnix/regui/treeview/playlist_tree.py=utf-8
 encoding//src/foobnix/regui/window.py=utf-8
+encoding//src/foobnix/util/agent.py=utf-8
 encoding//src/foobnix/util/bean_utils.py=utf-8
 encoding//src/foobnix/util/const.py=utf-8
 encoding//src/foobnix/util/fc.py=utf-8
@@ -50,4 +52,6 @@ encoding//src/foobnix/util/list_utils.py=utf-8
 encoding//src/foobnix/util/singe_thread.py=utf-8
 encoding//src/foobnix/util/widget_utils.py=utf-8
 encoding//src/test/all.py=utf-8
+encoding//src/test/prototypes/logger.py=utf-8
 encoding//src/test/test_core.py=utf-8
+encoding//src/test/test_vk_service.py=utf-8

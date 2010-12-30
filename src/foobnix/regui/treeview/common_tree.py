@@ -8,7 +8,6 @@ Created on 20 окт. 2010
 import gtk
 from foobnix.regui.model import FTreeModel, FModel
 from foobnix.regui.model.signal import FControl
-from foobnix.regui.treeview.drugdrop_tree import DrugDropTree
 from random import randint
 import gobject
 from foobnix.regui.treeview.filter_tree import FilterTreeControls
@@ -95,8 +94,6 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def get_bean_from_row(self, row):
         bean = FModel()
         id_dict = FTreeModel().cut().__dict__
-        print "FTreeModel().__dict__: ",FTreeModel().__dict__
-        print "FTreeModel().cut().__dict__: ",FTreeModel().cut().__dict__
         for key in id_dict.keys():
             num = id_dict[key]
             setattr(bean, key, row[num])

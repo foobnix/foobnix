@@ -4,8 +4,8 @@ import shutil
 from distutils.core import setup, Command
 from test.all import run_all_tests
 
-VERSION = "0.2.2"
-RELEASE = "10ppa1"
+VERSION = "0.2.3"
+RELEASE = "0"
 LANGS = ('ru', 'zh_CN')
 
 if not os.path.exists("mo/"):
@@ -84,7 +84,7 @@ setup(name='foobnix',
                     ('share/foobnix', ['README']),
                     ('share/foobnix', ['CHANGELOG']),
                     ('share/applications', ['foobnix.desktop']),
-                    ('share/pixmaps/other', glob.glob('foobnix/pixmaps/other/*')),
+                    ('share/pixmaps/theme', glob.glob('foobnix/pixmaps/theme/*')),
                     ('share/pixmaps', glob.glob('foobnix/pixmaps/*.png')),
                     ('share/pixmaps', glob.glob('foobnix/pixmaps/*.jpg')),
                     ('share/pixmaps', glob.glob('foobnix/pixmaps/*.gif')),

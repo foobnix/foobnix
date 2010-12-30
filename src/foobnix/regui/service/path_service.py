@@ -8,6 +8,8 @@ import os.path, sys
 from foobnix.util import LOG
 
 def get_foobnix_resourse_path_by_name(filename):
+    if not filename:
+        return None
     paths = ("/usr/local/share/pixmaps",
              "/usr/share/pixmaps",
              "/usr/share/foobnix",

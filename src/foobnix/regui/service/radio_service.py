@@ -45,7 +45,7 @@ class RadioFolder():
             full_path = os.path.join(path, list_name)
             
             if not os.path.isfile(full_path):
-                LOG.warn("Not a file ", full_path)    
+                LOG.debug("Not a file ", full_path)    
                 continue
         
             dict = {}

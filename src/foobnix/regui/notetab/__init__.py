@@ -12,12 +12,13 @@ from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
-from foobnix.util.mouse_utils import is_double_left_click, is_double_middle_click,\
+from foobnix.util.mouse_utils import is_double_left_click, is_double_middle_click, \
     is_middle_click, is_rigth_click
 from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
 from foobnix.helpers.menu import Popup
 import threading
 from foobnix.util.key_utils import is_key
+import gobject
 
 class TabGeneral(gtk.Notebook, FControl):
     def __init__(self, controls):
@@ -41,19 +42,22 @@ class TabGeneral(gtk.Notebook, FControl):
         elif FC().tab_close_element == "label":
             return notetab_label(func=self.on_delete_tab, arg=tab_child, angle=90)
             
-    def get_text_label_from_tab(self, tab_child, need_box_lenth = False):
+    def get_text_label_from_tab(self, tab_child, need_box_lenth=False):
         eventbox = self.get_tab_label(tab_child)
         box = eventbox.get_child()
         box_lenth = len(box.get_children())
+        
         if type(box.get_children()[0]) == gtk.Label:
             label_object = box.get_children()[0]
-        else: label_object = box.get_children()[1]
+        else: 
+            label_object = box.get_children()[1]
+            
         text_of_label = label_object.get_label()
         if need_box_lenth:
             return text_of_label, box_lenth
         else: return text_of_label
     
-    def on_rename_tab(self, tab_child, angle = 0, name_list = None):
+    def on_rename_tab(self, tab_child, angle=0, name_list=None):
         """get old label value"""
         n = self.page_num(tab_child)
         old_label_text, box_lenth = self.get_text_label_from_tab(tab_child, True)
@@ -99,8 +103,13 @@ class TabGeneral(gtk.Notebook, FControl):
         window.connect("focus-out-event", on_focus_out)
         window.add(entry)
         window.show_all()
+    
+    def append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None):
+        def task():
+            self._append_tab(name, beans, navig_tree)
+        gobject.idle_add(task)
         
-    def append_tab(self, name = _("Empty tab"), beans=None, navig_tree = None):
+    def _append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None):
         LOG.info("append new tab")
         self.last_notebook_page = name
         try:
@@ -201,7 +210,7 @@ class NoteTabControl(TabGeneral, LoadSave):
             
             self.controls.check_for_media(paths)
                     
-    def on_button_press(self, w, e, tab_content = None):
+    def on_button_press(self, w, e, tab_content=None):
         """there were two problems in the handler:
         1. when you click on eventbox, appears extra the signal from the notebook
         2. when double-clicking, the first click is handled"""
@@ -267,7 +276,7 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.default_angle = 90
         self.set_show_tabs(True)
         FC().tab_position = "left"
-        for page in xrange(self.get_n_pages()-1, 0, -1):
+        for page in xrange(self.get_n_pages() - 1, 0, -1):
             tab_content = self.get_nth_page(page)
             label_text = self.get_text_label_from_tab(tab_content)
             vbox = gtk.VBox()
@@ -285,7 +294,7 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.default_angle = 0
         self.set_show_tabs(True)
         FC().tab_position = "top"
-        for page in xrange(self.get_n_pages()-1, 0, -1):
+        for page in xrange(self.get_n_pages() - 1, 0, -1):
             tab_content = self.get_nth_page(page)
             label_text = self.get_text_label_from_tab(tab_content)
             hbox = gtk.HBox()
@@ -319,7 +328,7 @@ class NoteTabControl(TabGeneral, LoadSave):
             self.controls.append_to_new_notebook(FC().tab_pl_names[page], FC().cache_pl_tab_contents[page])
    
     def on_save(self):
-        number_music_tabs = self.get_n_pages()-1
+        number_music_tabs = self.get_n_pages() - 1
         FC().cache_pl_tab_contents = []
         FC().tab_pl_names = []
         if number_music_tabs > 0:

@@ -88,7 +88,6 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         self.frame.add(frame_box)
         
         if FC().tabs_mode == "Multi":
-            print "!!!!!!!!!!!!!!!!!!!!!!"
             self.frame.hide()       
         return self.frame
    
