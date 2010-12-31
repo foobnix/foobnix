@@ -11,6 +11,7 @@ from foobnix.helpers.dialog_entry import info_dialog_with_link_and_donate
 from foobnix.helpers.pref_widgets import IconBlock
 from foobnix.util import LOG
 from foobnix.preferences.configs import CONFIG_OTHER
+
 class OtherConfig(ConfigPlugin):
     
     name = CONFIG_OTHER

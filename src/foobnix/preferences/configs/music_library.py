@@ -210,13 +210,13 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         
     def tabs_mode(self):
         hbox = gtk.HBox()
-        self.multitabs_button = gtk.RadioButton(None, _("Multitabs mode"))
+        self.multitabs_button = gtk.RadioButton(None, _("Multi tab mode"))
         def on_toggle_multitab(widget, data=None):
             self.frame.hide()
         self.multitabs_button.connect("toggled", on_toggle_multitab)
         hbox.pack_start(self.multitabs_button, True, False)
         
-        self.singletab_button = gtk.RadioButton(self.multitabs_button, _("Singletab mode"))
+        self.singletab_button = gtk.RadioButton(self.multitabs_button, _("Single tab mode"))
         def on_toggle_singletab(widget, data=None):
             self.frame.show()
         self.singletab_button.connect("toggled", on_toggle_singletab)

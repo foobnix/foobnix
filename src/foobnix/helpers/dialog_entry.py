@@ -198,6 +198,20 @@ def show_login_password_error_dialog(title, description, login, password):
         password_text = password_entry.get_text()
         dialog.destroy()
         return [login_text, password_text]    
+
+def file_saving_dialog(title, current_folder=None):
+    chooser = gtk.FileChooserDialog(title, action=gtk.FILE_CHOOSER_ACTION_SAVE, buttons=(gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+    chooser.set_default_response(gtk.RESPONSE_OK)
+    chooser.set_select_multiple(False)
+    if current_folder:
+        chooser.set_current_folder(current_folder)
+    response = chooser.run()
+    if response == gtk.RESPONSE_OK:
+        paths = chooser.get_filenames()
+    elif response == gtk.RESPONSE_CANCEL:
+        LOG.info('Closed, no files selected')
+    chooser.destroy()
+    
     
 if __name__ == '__main__':
         info_dialog_with_link_and_donate("foobnix 0.2.1-8")

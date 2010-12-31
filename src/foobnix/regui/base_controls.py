@@ -155,9 +155,11 @@ class BaseFoobnixControls():
     def load_music_tree(self):
         self.perspective.hide_add_button()
         if not FC().cache_music_tree_beans[0] and len(FC().cache_music_tree_beans) == 1:
-            #self.update_music_tree()
-            #LOG.info("Tree updated")
+            
             self.perspective.show_add_button()
+            
+            self.tree.is_empty = True
+            
             if FC().tab_names[0]:
                 self.tablib.label.set_label(FC().tab_names[0] + " ")
         else:
@@ -195,13 +197,14 @@ class BaseFoobnixControls():
         try:
             self.perspective.hide_add_button()
         except AttributeError: 
-            LOG.warn("Object perspective not exist yet")
+            LOG.warn("Object perspective not exists yet")
+        
         if not all:
             tree.is_empty = True
             try:
                 self.perspective.show_add_button()
             except AttributeError: 
-                LOG.warn("Object perspective not exist yet")
+                LOG.warn("Object perspective not exists yet")
             all.append(FModel(_("Music not found in folder(s):")))        
             for path in FC().music_paths[number_of_page]:            
                 all.append(FModel(path).add_is_file(True))
