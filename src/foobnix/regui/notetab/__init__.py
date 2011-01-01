@@ -321,7 +321,9 @@ class NoteTabControl(TabGeneral, LoadSave):
     
     def on_save_playlist(self, tab_child):
         tree = tab_child.get_child()
-        chooser = gtk.FileChooserDialog(title=_("Choose folder to save playlist"), action=gtk.FILE_CHOOSER_ACTION_SAVE, buttons=(gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+        chooser = gtk.FileChooserDialog(title=_("Choose folder to save playlist"), 
+                                        action=gtk.FILE_CHOOSER_ACTION_SAVE, 
+                                        buttons=(gtk.STOCK_SAVE, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         if FC().last_music_path:
             chooser.set_current_folder(FC().last_music_path)
