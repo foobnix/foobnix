@@ -63,13 +63,9 @@ class TabLib(TabGeneral, LoadSave):
         tree = tab_child.get_child()
         self.controls.update_music_tree(tree, n)
         
-    def get_current_tree(self, number_of_page):
-        scrolled_tree = self.get_nth_page(number_of_page)
-        tree = scrolled_tree.get_child()
-        return tree
-    
     def on_load(self):
         pass
+    
     def on_save(self):
         pass
     

@@ -548,12 +548,14 @@ class BaseFoobnixControls():
         self.play(bean)
 
     def filter_by_folder(self, value):
-        self.tree.filter_by_folder(value)
+        tree = self.tablib.get_current_tree()
+        tree.filter_by_folder(value)
         self.radio.filter_by_folder(value)
         self.virtual.filter_by_folder(value)
         
     def filter_by_file(self, value):
-        self.tree.filter_by_file(value)
+        tree = self.tablib.get_current_tree()
+        tree.filter_by_file(value)
         self.radio.filter_by_file(value)
         self.virtual.filter_by_file(value)
 

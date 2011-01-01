@@ -66,7 +66,7 @@ class FilterTreeControls(DrugDropTree):
         return find    
     
     def file_filter(self, query, column_num):
-        for parent in self.model:     
+        for parent in self.model:  
             if parent[self.is_file[0]]:
                 column_text = parent[column_num].decode().lower().strip()
                 if query not in column_text:

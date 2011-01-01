@@ -178,6 +178,11 @@ class TabGeneral(gtk.Notebook, FControl):
             del FC().tab_names[n]
             del FC().music_paths[n]
             del FC().cache_music_tree_beans[n]
+            
+    def get_current_tree(self):
+        n = self.get_current_page()
+        tab_child = self.get_nth_page(n)
+        return tab_child.get_child()
 
 TARGET_TYPE_URI_LIST = 80
 dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
