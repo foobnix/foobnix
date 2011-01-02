@@ -620,7 +620,10 @@ class BaseFoobnixControls():
         else:
             win.set_app_paintable(False)
             win.realize()
-            win.window.set_back_pixmap(None, False)            
+            win.window.set_back_pixmap(None, False)
+        win.hide()
+        #time.sleep(0.5)
+        win.show()            
     
 
     def on_save(self):
