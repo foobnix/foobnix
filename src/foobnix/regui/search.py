@@ -4,6 +4,7 @@ from foobnix.regui.model.signal import FControl
 from foobnix.util import LOG
 from foobnix.util.text_utils import capitilize_query
 from foobnix.util.key_utils import is_key
+from foobnix.helpers.menu import Popup
 class SearchControls(FControl, gtk.Frame):
     def __init__(self, controls):        
         gtk.Frame.__init__(self)
@@ -18,11 +19,10 @@ class SearchControls(FControl, gtk.Frame):
         """default search function"""
         self.search_function = self.controls.search_top_tracks
         self.buttons = []
-        
-        
+                
         vbox = gtk.VBox(False, 0)
         vbox.pack_start(self.search_line(), False, False, 0)
-        vbox.pack_start(self.search_buttons(), False, False, 0)
+        #vbox.pack_start(self.search_buttons(), False, False, 0)
         
         vbox.pack_start(controls.search_progress, False, False, 0)
            
@@ -54,8 +54,6 @@ class SearchControls(FControl, gtk.Frame):
         return capitilize_query(query)
         
     def search_line(self):
-        hbox = gtk.HBox(False, 0)
-        
         self.entry = gtk.Entry()
         self.entry.connect("key-press-event", self.on_search_key_press)
         
@@ -63,19 +61,15 @@ class SearchControls(FControl, gtk.Frame):
         button = gtk.Button(_("_Search"))
         button.connect("clicked", self.on_search)
         
-        g = gtk.Button("_G")
-        g.set_tooltip_text(_("Set focus on search line (Alt+G) Google :)"))
-        g.connect("clicked", lambda * a:self.entry.grab_focus())
+        menu_button = gtk.Button(_("Kinds of search"))
+        menu = self.menu_creator()
+        #g.set_tooltip_text(_("Set focus on search line (Alt+G) Google :)"))
+        menu_button.connect("button-press-event", self.show_menu, menu)
         
         hbox = gtk.HBox(False, 0)
-        hbox.pack_start(g, False, False, 0)        
+        hbox.pack_start(menu_button, False, False, 0)        
         hbox.pack_start(self.entry, True, True, 0)
         hbox.pack_start(button, False, False, 0)
-        
-        
-        
-        
-        
         hbox.show_all()
         
         return hbox 
@@ -88,10 +82,9 @@ class SearchControls(FControl, gtk.Frame):
             self.on_search();
             self.entry.grab_focus()
     
-    def search_buttons(self):
+    '''def search_buttons(self):
         h_line_box = gtk.HBox(False, 0)
-        
-        
+                
         """Top searches"""
         top_frame = gtk.Frame()
         label = gtk.Label()
@@ -148,5 +141,40 @@ class SearchControls(FControl, gtk.Frame):
         h_line_box.show_all()
         
         self.buttons = [songs, albums, similars, tags, all, video]
-        return h_line_box
+        return h_line_box'''
     
+    def menu_creator(self):
+        menu = gtk.Menu()
+        item = gtk.CheckMenuItem(_("Tracks"))
+        item.connect("toggled", self.set_search_function, self.controls.search_top_tracks)
+        menu.append(item)
+        item = gtk.CheckMenuItem(_("_Albums"))
+        item.connect("toggled", self.set_search_function, self.controls.search_top_albums)
+        menu.append(item)
+        item = gtk.CheckMenuItem(_("Similar"))
+        item.connect("toggled", self.set_search_function, self.controls.search_top_similar)
+        menu.append(item)
+        item = gtk.CheckMenuItem(_("Genre"))
+        item.connect("toggled", self.set_search_function, self.controls.search_top_tags)
+        menu.append(item)
+        item = gtk.CheckMenuItem(_("All"))
+        item.connect("toggled", self.set_search_function , self.controls.search_all_tracks)
+        menu.append(item)
+        item = gtk.CheckMenuItem(_("Video"))
+        item.connect("toggled", self.set_search_function , self.controls.search_all_videos)
+        menu.append(item)
+        
+        def on_select(selected_item, *a):
+            for item in menu:
+                item.set_active(False)
+             
+        for item in menu:
+            item.connect("button-press-event", on_select)
+        return menu
+    
+     
+    def show_menu(self, w, event, menu):
+        menu.show_all()
+        menu.popup(None, None, None, event.button, event.time)  
+        
+        
