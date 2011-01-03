@@ -36,7 +36,7 @@ class SearchControls(FControl, gtk.Frame):
         OneActiveToggledButton(self.buttons)
         
     
-    def set_search_function(self, w, search_function):
+    def set_search_function(self, search_function):
         LOG.info("Set search fucntion", search_function)
         self.search_function = search_function    
         
@@ -55,20 +55,13 @@ class SearchControls(FControl, gtk.Frame):
     def search_line(self):
         self.entry = gtk.Entry()
         self.entry.connect("key-press-event", self.on_search_key_press)
-        
         self.entry.set_text("")
-        #button = gtk.Button(_("_Search"))
-        #button.connect("clicked", self.on_search)
-        
-        menu_button = gtk.Button(_("Kinds of search"))
-        menu = self.menu_creator()
-        #g.set_tooltip_text(_("Set focus on search line (Alt+G) Google :)"))
-        menu_button.connect("button-press-event", self.show_menu, menu)
+               
+        combobox = self.combobox_creator()
         
         hbox = gtk.HBox(False, 0)
-        hbox.pack_start(menu_button, False, False, 0)        
+        hbox.pack_start(combobox, False, False, 0)        
         hbox.pack_start(self.entry, True, True, 0)
-        #hbox.pack_start(button, False, False, 0)
         hbox.show_all()
         
         return hbox 
@@ -81,35 +74,43 @@ class SearchControls(FControl, gtk.Frame):
             self.on_search();
             self.entry.grab_focus()
     
-    def menu_creator(self):
-        menu = gtk.Menu()
-        item = gtk.CheckMenuItem(_("Tracks"))
-        item.connect("toggled", self.set_search_function, self.controls.search_top_tracks)
-        menu.append(item)
-        item = gtk.CheckMenuItem(_("_Albums"))
-        item.connect("toggled", self.set_search_function, self.controls.search_top_albums)
-        menu.append(item)
-        item = gtk.CheckMenuItem(_("Similar"))
-        item.connect("toggled", self.set_search_function, self.controls.search_top_similar)
-        menu.append(item)
-        item = gtk.CheckMenuItem(_("Genre"))
-        item.connect("toggled", self.set_search_function, self.controls.search_top_tags)
-        menu.append(item)
-        item = gtk.CheckMenuItem(_("All"))
-        item.connect("toggled", self.set_search_function , self.controls.search_all_tracks)
-        menu.append(item)
-        item = gtk.CheckMenuItem(_("Video"))
-        item.connect("toggled", self.set_search_function , self.controls.search_all_videos)
-        menu.append(item)
+    def combobox_creator(self):
+        list_func = []
+        liststore = gtk.ListStore(str)
         
-        def on_select(selected_item, *a):
-            for item in menu:
-                item.set_active(False)
-             
-        for item in menu:
-            item.connect("button-press-event", on_select)
-        return menu
-         
+        liststore.append([_("All")])
+        list_func.append(self.controls.search_all_tracks)
+        
+        liststore.append([_("Tracks")])
+        list_func.append(self.controls.search_top_tracks)
+        
+        liststore.append([_("_Albums")])
+        list_func.append(self.controls.search_top_albums)
+        
+        liststore.append([_("Similar")])
+        list_func.append(self.controls.search_top_similar)
+        
+        liststore.append([_("Genre")])
+        list_func.append(self.controls.search_top_tags)
+        
+        liststore.append([_("Video")])
+        list_func.append(self.controls.search_all_videos)
+               
+        combobox = gtk.ComboBox(liststore)
+        cell = gtk.CellRendererText()
+        combobox.pack_start(cell, True)
+        combobox.add_attribute(cell, 'text', 0)
+        combobox.set_active(0)
+        self.set_search_function(list_func[0])
+        
+        def on_changed(combobox):
+            n = combobox.get_active()
+            self.set_search_function(list_func[n])
+            self.entry.grab_focus()
+        
+        combobox.connect("changed", on_changed)     
+        return combobox
+        
     def show_menu(self, w, event, menu):
         menu.show_all()
         menu.popup(None, None, None, event.button, event.time)  

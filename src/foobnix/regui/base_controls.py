@@ -566,8 +566,11 @@ class BaseFoobnixControls():
         
         LOG.info("Controls - Quit")
         def task():
-            self.on_save()
-            FC().save(False)                        
+            init_time = time.time()
+            self.notetabs.on_quit()
+            #self.on_save()
+            FC().save(False)
+            print  time.time()-init_time                    
             gtk.main_quit()
         
         task()

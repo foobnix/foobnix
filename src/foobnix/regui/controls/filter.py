@@ -21,8 +21,11 @@ class FilterControl(gtk.HBox, FControl, LoadSave):
         self.search_func = self.controls.filter_by_file
         
         file_search = ToggleImageButton(gtk.STOCK_FILE, func=self.set_search_by, param=self.controls.filter_by_file)
+        file_search.set_tooltip_text(_("File search"))
         file_search.set_active(True)
+        
         folder_search = ToggleImageButton(gtk.STOCK_DIRECTORY, func=self.set_search_by, param=self.controls.filter_by_folder)
+        folder_search.set_tooltip_text(_("Folder search"))
         
         self.list = [file_search, folder_search]
         OneActiveToggledButton(self.list)
