@@ -99,7 +99,7 @@ class FC:
         """music lybrary"""
         self.tab_names = [_("Empty tab"), ]
         self.last_music_path = None
-        self.music_paths = [["/tmp", ], ]
+        self.music_paths = [[], ]
         self.cache_music_tree_beans = [[], ]
         
         self.cache_virtual_tree_beans = []

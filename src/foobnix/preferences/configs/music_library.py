@@ -13,6 +13,9 @@ from foobnix.regui.model.signal import FControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 from foobnix.regui.treeview.simple_tree import  SimpleListTreeControl
 from foobnix.regui.model import FDModel
+import time
+import gobject
+
 
 class MusicLibraryConfig(ConfigPlugin, FControl):
     name = CONFIG_MUSIC_LIBRARY
@@ -23,14 +26,8 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         
         box = gtk.VBox(False, 0)
         box.hide()
-        
-        
-        #self.child_button = gtk.CheckButton(label=_("Get music from child folders"), use_underline=True)
-        #$self.child_button.show()
-        
         box.pack_start(self.tabs_mode(), False, True, 0)
         box.pack_start(self.dirs(), False, True, 0)
-        #box.pack_start(self.child_button, False, True, 0)
         box.pack_start(self.formats(), False, True, 0)
         box.pack_start(self.gap(), False, True, 0)
         self.widget = box
@@ -71,15 +68,15 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         empty = gtk.Label("")        
         empty.show()
         
-        bt_reload = gtk.Button(label=_("Reload"))
-        bt_reload.connect("clicked", self.reload_dir)
-        bt_reload.set_size_request(80, -1)
-        bt_reload.show()
+        #bt_reload = gtk.Button(label=_("Reload"))
+        #bt_reload.connect("clicked", self.reload_dir)
+        #bt_reload.set_size_request(80, -1)
+        #bt_reload.show()
                 
         button_box.pack_start(bt_add, False, False, 0)
         button_box.pack_start(bt_remove, False, False, 0)
         button_box.pack_start(empty, True, True, 0)
-        button_box.pack_start(bt_reload, False, False, 0)
+        #button_box.pack_start(bt_reload, False, False, 0)
         
         self.tree_controller.scroll.show_all()
         frame_box.pack_start(self.tree_controller.scroll, True, True, 0)
@@ -93,7 +90,8 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
    
     def reload_dir(self, *a):
         FC().music_paths[0] = self.tree_controller.get_all_beans_text()
-        self.controls.update_music_tree()
+        tree = self.controls.tablib.get_current_tree()
+        self.controls.update_music_tree(tree)
    
     def on_load(self):
         self.tree_controller.clear()
@@ -114,10 +112,11 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         FC().all_support_formats = self.files_controller.get_all_beans_text()
         FC().gap_secs = self.adjustment.get_value()
         if self.singletab_button.get_active():
-            for i in xrange(1, len(FC().music_paths)):
+            for i in xrange(len(FC().music_paths)-1, 0, -1):
                 del FC().music_paths[i]
                 del FC().cache_music_tree_beans[i]
                 del FC().tab_names[i]
+                self.controls.tablib.remove_page(i)
             FC().tabs_mode = "Single"
             self.controls.tablib.set_show_tabs(False)
         else:
@@ -129,7 +128,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(True)
         if FC().last_music_path:
-                chooser.set_current_folder(FC().last_music_path)
+            chooser.set_current_folder(FC().last_music_path)
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
@@ -138,11 +137,12 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             for path in paths:            
                 if path not in self.tree_controller.get_all_beans_text():
                     self.tree_controller.append(FDModel(path))
-            
+            gobject.idle_add(self.reload_dir)
         elif response == gtk.RESPONSE_CANCEL:
             LOG.info('Closed, no files selected')
         chooser.destroy()
-    
+        
+         
     def remove_dir(self, *a):
         self.tree_controller.delete_selected()
     
