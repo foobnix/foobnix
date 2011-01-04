@@ -169,7 +169,7 @@ class TabGeneral(gtk.Notebook, FControl):
             self.set_current_page(1)
             if self.get_n_pages() - 1 > FC().count_of_tabs:
                 self.remove_page(self.get_n_pages() - 1)
-
+        
     def on_delete_tab(self, child):
         n = self.page_num(child)
         if self.get_n_pages() == 1: return
@@ -394,7 +394,7 @@ class NoteTabControl(TabGeneral, LoadSave):
     
     def set_active_tree(self, tree):
         self.active_tree = tree
-
+        
     def set_playlist_tree(self):
         self.active_tree.set_playlist_tree()
 

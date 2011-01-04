@@ -12,6 +12,7 @@ from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
+import gobject
     
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -38,7 +39,35 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             if selected:
                 beans = self.get_all_child_beans_by_selected()  
                 self.controls.append_to_new_notebook(selected.text, [selected] + beans)
-            
+                
+                "run the first of added tracks"
+                active_playlist_tree = self.controls.notetabs.get_active_tree()
+                filter_model = active_playlist_tree.get_model()
+                current_model = filter_model.get_model()
+                             
+                def play_item(iter, active_playlist_tree, filter_model, current_model):
+                    bean = self.get_bean_from_model_iter(current_model, iter)
+                    
+                    if bean.is_file:
+                        self.controls.play(bean)
+                        TreeSelection = active_playlist_tree.get_selection()
+                        filter_iter = filter_model.convert_child_iter_to_iter(iter)
+                        TreeSelection.select_iter(filter_iter)
+                        active_playlist_tree.set_play_icon_to_bean_to_selected()
+                    else:
+                        iter = current_model.iter_next(iter)
+                        play_item(iter, active_playlist_tree, filter_model, current_model)
+                        
+                def get_first_iter(active_playlist_tree, filter_model, current_model):
+                    self.iter = current_model.get_iter_first()
+                    play_item(self.iter, active_playlist_tree, filter_model, current_model)
+                    
+                gobject.idle_add(get_first_iter, active_playlist_tree, filter_model, current_model)
+                
+                
+                
+                
+                        
         if is_rigth_click(e):            
             menu = Popup()
             menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)

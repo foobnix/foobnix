@@ -513,7 +513,6 @@ class BaseFoobnixControls():
         self.info_panel.update(bean)
 
     def append_to_new_notebook(self, text, beans):
-        
         #beans = update_id3_wind_filtering(beans)        
         self.notetabs._append_tab(text, beans)
 
@@ -566,11 +565,9 @@ class BaseFoobnixControls():
         
         LOG.info("Controls - Quit")
         def task():
-            init_time = time.time()
             self.notetabs.on_quit()
             #self.on_save()
             FC().save(False)
-            print  time.time()-init_time                    
             gtk.main_quit()
         
         task()
