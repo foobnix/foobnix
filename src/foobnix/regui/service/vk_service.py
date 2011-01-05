@@ -5,7 +5,7 @@ Created on Sep 29, 2010
 @author: ivan
 '''
 import time
-from foobnix.util.fc import FC
+from foobnix.util.fc import FC, get_random_vk
 import urllib2
 from foobnix.util import LOG
 import urllib
@@ -132,6 +132,7 @@ class VKService:
         except Exception, e:
             LOG.critical(FC().agent_line, FC().vk_login, FC().vk_password)
             LOG.critical("VK ERROR", e)
+             
         result = data.read()
         return result
     
@@ -199,6 +200,7 @@ class VKService:
         
         page = page.replace("&quot;", '"')
         urls = re.findall(ur'showVideoBoxCommon([{}(\\"\a-z:0-9,/);.% _A-Zа-яА-Я+-]*)' , page, re.UNICODE)
+        LOG.debug(urls)
         for url in urls:
             res = {}
             for line in url.split(","):
@@ -213,6 +215,8 @@ class VKService:
                     value = value.replace('+', ' ')
                     res[key] = value
             LOG.debug(res)
+            if "host" not in res:
+                continue;
             host = res["host"]
                 
             if "http://" in host:

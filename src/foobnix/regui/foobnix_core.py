@@ -25,7 +25,6 @@ from foobnix.dm.dm import DM
 from foobnix.regui.controls.movie_area import MovieDrawingArea
 from foobnix.util.singe_thread import SingreThread
 from foobnix.regui.perspectives import PerspectiveControls
-from foobnix.regui.controls.dbus_manager import DBusManager
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.notetab.tab_library import TabLib
 
@@ -89,6 +88,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.layout = BaseFoobnixLayout(self)
 
         if with_dbus:
+            from foobnix.regui.controls.dbus_manager import DBusManager
             self.dbus = DBusManager(self)
     
     def run(self):    
