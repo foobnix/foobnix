@@ -9,8 +9,6 @@ import thread
 import urllib2
 import os
 import time
-import copy
-import gobject
 
 from foobnix.util.fc import FC
 from foobnix.util.m3u_utils import m3u_reader
@@ -29,8 +27,7 @@ from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.text_utils import normilize_text
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
-
-
+import copy
 
 class BaseFoobnixControls():
     def __init__(self):
@@ -109,31 +106,21 @@ class BaseFoobnixControls():
                 self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
     
     def on_add_files(self, paths=None, tab_name=None):
-        
         if not paths:       
             paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
-            copy_paths = copy.deepcopy(paths) 
-            for i, path in enumerate(copy_paths):
+            
+            for i, path in enumerate(copy.deepcopy(paths)):
                 if path.lower().endswith(".m3u") or path.lower().endswith(".m3u8"):
                     paths[i:i + 1] = m3u_reader(path)
-                    if len(copy_paths) == 1:
-                        ext = os.path.splitext(path)[1]
-                        tab_name =  os.path.basename(path)[:-len(ext)]
-                    break
-            
-                
-        if paths: 
-                        
+                              
+        if paths:            
             if paths[0]:
                 path = paths[0]
                 list = paths[0].split("/")
             else:
                 path = paths[1]
                 list = paths[1].split("/")
-                
-            if not tab_name:
-                tab_name = os.path.split(os.path.dirname(path))[1]
-                
+    
             FC().last_dir = path[:path.rfind("/")]
             name = list[len(list) - 2]
             self.append_to_new_notebook(tab_name, [])
@@ -158,11 +145,9 @@ class BaseFoobnixControls():
     def load_music_tree(self):
         self.perspective.hide_add_button()
         if not FC().cache_music_tree_beans[0] and len(FC().cache_music_tree_beans) == 1:
-            
+            #self.update_music_tree()
+            #LOG.info("Tree updated")
             self.perspective.show_add_button()
-            
-            self.tree.is_empty = True
-            
             if FC().tab_names[0]:
                 self.tablib.label.set_label(FC().tab_names[0] + " ")
         else:
@@ -200,14 +185,13 @@ class BaseFoobnixControls():
         try:
             self.perspective.hide_add_button()
         except AttributeError: 
-            LOG.warn("Object perspective not exists yet")
-        
+            LOG.warn("Object perspective not exist yet")
         if not all:
             tree.is_empty = True
             try:
                 self.perspective.show_add_button()
             except AttributeError: 
-                LOG.warn("Object perspective not exists yet")
+                LOG.warn("Object perspective not exist yet")
             all.append(FModel(_("Music not found in folder(s):")))        
             for path in FC().music_paths[number_of_page]:            
                 all.append(FModel(path).add_is_file(True))
@@ -516,6 +500,7 @@ class BaseFoobnixControls():
         self.info_panel.update(bean)
 
     def append_to_new_notebook(self, text, beans):
+        
         #beans = update_id3_wind_filtering(beans)        
         self.notetabs._append_tab(text, beans)
 
@@ -550,14 +535,12 @@ class BaseFoobnixControls():
         self.play(bean)
 
     def filter_by_folder(self, value):
-        tree = self.tablib.get_current_tree()
-        tree.filter_by_folder(value)
+        self.tree.filter_by_folder(value)
         self.radio.filter_by_folder(value)
         self.virtual.filter_by_folder(value)
         
     def filter_by_file(self, value):
-        tree = self.tablib.get_current_tree()
-        tree.filter_by_file(value)
+        self.tree.filter_by_file(value)
         self.radio.filter_by_file(value)
         self.virtual.filter_by_file(value)
 
@@ -568,9 +551,8 @@ class BaseFoobnixControls():
         
         LOG.info("Controls - Quit")
         def task():
-            self.notetabs.on_quit()
-            #self.on_save()
-            FC().save(False)
+            self.on_save()
+            FC().save(False)                        
             gtk.main_quit()
         
         task()
@@ -623,35 +605,9 @@ class BaseFoobnixControls():
         else:
             win.set_app_paintable(False)
             win.realize()
-            win.window.set_back_pixmap(None, False)
-        win.hide()
-        #time.sleep(0.5)
-        win.show()            
+            win.window.set_back_pixmap(None, False)            
     
-    def play_first_file_in_playlist(self):    
-        active_playlist_tree = self.notetabs.get_active_tree()
-        filter_model = active_playlist_tree.get_model()
-        current_model = filter_model.get_model()
-                             
-        def play_item(iter, active_playlist_tree, filter_model, current_model):
-            bean = self.tree.get_bean_from_model_iter(current_model, iter)
-                    
-            if bean.is_file:
-                self.play(bean)
-                TreeSelection = active_playlist_tree.get_selection()
-                filter_iter = filter_model.convert_child_iter_to_iter(iter)
-                TreeSelection.select_iter(filter_iter)
-                active_playlist_tree.set_play_icon_to_bean_to_selected()
-            else:
-                iter = current_model.iter_next(iter)
-                play_item(iter, active_playlist_tree, filter_model, current_model)
-                        
-        def get_first_iter(active_playlist_tree, filter_model, current_model):
-            iter = current_model.get_iter_first()
-            play_item(iter, active_playlist_tree, filter_model, current_model)
-                    
-        gobject.idle_add(get_first_iter, active_playlist_tree, filter_model, current_model)        
-    
+
     def on_save(self):
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):

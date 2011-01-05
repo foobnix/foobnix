@@ -27,9 +27,9 @@ CONFIG_FILE = CONFIG_DIR + "foobnix_%s.pkl" % VERSION
 
 def get_random_vk():
     vks = {
-       "c891888@bofthew.com":"c891888",
+       #"c891888@bofthew.com":"c891888",
        "c892009@bofthew.com":"c892009",
-       "c892406@bofthew.com":"c892406",
+       #"c892406@bofthew.com":"c892406",
        "c892588@bofthew.com":"c892588"       
        }
 
@@ -84,7 +84,7 @@ class FC:
         self.background_image = None
         self.window_opacity = 1
         
-        self.menu_style = "new"
+        self.menu_style = "old"
 
         """main window action"""
         self.on_close_window = const.ON_CLOSE_HIDE
@@ -164,7 +164,7 @@ class FC:
         
         self.gap_secs = 0
         
-        self.tabs_mode = "Multi"
+        self.tabs_mode = "Single" #Multi,Single
         
         self.tab_pl_names = [_("Empty tab"), ]
         self.cache_pl_tab_contents = []

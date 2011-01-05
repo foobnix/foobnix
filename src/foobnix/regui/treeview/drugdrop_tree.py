@@ -11,7 +11,6 @@ from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util import LOG
 from foobnix.util.id3_util import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
-from foobnix.util.m3u_utils import m3u_reader
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -79,15 +78,6 @@ class DrugDropTree(gtk.TreeView):
     def iter_copy(self, from_model, from_iter, to_model, to_iter, pos, to_type, from_type):
         row = self.get_row_from_model_iter(from_model, from_iter)
         
-        """if m3u is dropped"""
-        if (from_model.get_value(from_iter, 0).endswith(".m3u") 
-        or from_model.get_value(from_iter, 0).endswith(".m3u8")):
-            tree_store = from_model.get_model()
-            child_iter = from_model.convert_iter_to_child_iter(from_iter)
-            m3u_file_path = tree_store.get_value(child_iter, 5)
-            m3u_title = tree_store.get_value(child_iter, 0)
-            self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)
-        
         if to_iter:
             to_iter = to_model.convert_iter_to_child_iter(to_iter)
         
@@ -116,12 +106,8 @@ class DrugDropTree(gtk.TreeView):
                 
                 """if there are cue-files in iters, display only them and subfolder"""  
                 for i in range(0, from_model.iter_n_children(from_iter)):
-                     
                     next_iter_to_copy = from_model.iter_nth_child(from_iter, i)
-                    if (from_model.get_value(next_iter_to_copy, 0).endswith(".m3u") 
-                    or from_model.get_value(next_iter_to_copy, 0).endswith(".m3u8")):
-                        continue
-                    elif from_model.get_value(next_iter_to_copy, 0).endswith(".cue"):
+                    if from_model.get_value(next_iter_to_copy, 0).endswith(".cue"):
                         cue_iters.append(next_iter_to_copy)
                     else:
                         if from_model.iter_has_child(next_iter_to_copy):
@@ -174,7 +160,6 @@ class DrugDropTree(gtk.TreeView):
             """it is possible drug from file system"""
             return None
         from_filter_model, from_paths = from_tree.get_selection().get_selected_rows()
-        
         #from_model = from_filter_model.get_model()
 
         for current_path  in from_paths:

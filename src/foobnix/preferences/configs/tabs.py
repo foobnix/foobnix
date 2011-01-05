@@ -91,7 +91,6 @@ class TabsConfig(ConfigPlugin):
         self.radio_tab_button.show()
         
         self.radio_tab_none = gtk.RadioButton(self.radio_tab_label, None)
-        self.radio_tab_none.connect("toggled", self.on_chage_tab_position)
         self.radio_tab_none.show()
         
         close_label_box.pack_start(close_label, False, False, 0)
@@ -138,7 +137,6 @@ class TabsConfig(ConfigPlugin):
         FC().len_of_tab = val
     
     def on_load(self):
-        print FC().tab_position
         self.tabs_count.set_value(FC().count_of_tabs)
         self.tab_len.set_value(FC().len_of_tab)
         
@@ -171,9 +169,5 @@ class TabsConfig(ConfigPlugin):
             FC().tab_close_element = "button"
         else: FC().tab_close_element = None
             
-        if self.radio_tab_left.get_active():
-            FC().tab_position = "left"
-        elif self.radio_tab_top.get_active(): 
-            FC().tab_position = "top"
-        else: FC().tab_position = "no"
         
+     

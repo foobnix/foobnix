@@ -19,7 +19,6 @@ from foobnix.helpers.menu import Popup
 import threading
 from foobnix.util.key_utils import is_key
 import gobject
-from foobnix.util.m3u_utils import m3u_writer
 
 class TabGeneral(gtk.Notebook, FControl):
     def __init__(self, controls):
@@ -169,7 +168,7 @@ class TabGeneral(gtk.Notebook, FControl):
             self.set_current_page(1)
             if self.get_n_pages() - 1 > FC().count_of_tabs:
                 self.remove_page(self.get_n_pages() - 1)
-        
+
     def on_delete_tab(self, child):
         n = self.page_num(child)
         if self.get_n_pages() == 1: return
@@ -178,11 +177,6 @@ class TabGeneral(gtk.Notebook, FControl):
             del FC().tab_names[n]
             del FC().music_paths[n]
             del FC().cache_music_tree_beans[n]
-            
-    def get_current_tree(self):
-        n = self.get_current_page()
-        tab_child = self.get_nth_page(n)
-        return tab_child.get_child()
 
 TARGET_TYPE_URI_LIST = 80
 dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
@@ -263,7 +257,6 @@ class NoteTabControl(TabGeneral, LoadSave):
     def tab_menu_creator(self, widget, tab_child):   
         widget.menu = Popup()
         widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, self.default_angle), None)
-        widget.menu.add_item(_("Save playlist as"), gtk.STOCK_SAVE_AS, lambda: self.on_save_playlist(tab_child))
         widget.menu.add_item(_("Close tab"), gtk.STOCK_CLOSE, lambda: self.on_delete_tab(tab_child), None)
         widget.show()
         return widget   
@@ -282,6 +275,7 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.set_tab_pos(gtk.POS_LEFT)
         self.default_angle = 90
         self.set_show_tabs(True)
+        FC().tab_position = "left"
         for page in xrange(self.get_n_pages() - 1, 0, -1):
             tab_content = self.get_nth_page(page)
             label_text = self.get_text_label_from_tab(tab_content)
@@ -299,6 +293,7 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.set_tab_pos(gtk.POS_TOP)
         self.default_angle = 0
         self.set_show_tabs(True)
+        FC().tab_position = "top"
         for page in xrange(self.get_n_pages() - 1, 0, -1):
             tab_content = self.get_nth_page(page)
             label_text = self.get_text_label_from_tab(tab_content)
@@ -321,28 +316,7 @@ class NoteTabControl(TabGeneral, LoadSave):
         treeview.append_all(beans)
         treeview.scroll.show_all()
         return  treeview.scroll
-    
-    def on_save_playlist(self, tab_child):
-        tree = tab_child.get_child()
-        chooser = gtk.FileChooserDialog(title=_("Choose folder to save playlist"), 
-                                        action=gtk.FILE_CHOOSER_ACTION_SAVE, 
-                                        buttons=(gtk.STOCK_SAVE, gtk.RESPONSE_OK))
-        chooser.set_default_response(gtk.RESPONSE_OK)
-        if FC().last_music_path:
-            chooser.set_current_folder(FC().last_music_path)
-        name = self.get_text_label_from_tab(tab_child)
-        chooser.set_current_name(name+".m3u")
-        chooser.set_do_overwrite_confirmation(True)
-        response = chooser.run()
-        if response == gtk.RESPONSE_OK:
-            beans = tree.get_all_beans()
-            if beans:
-                paths = [bean.path for bean in beans if bean.is_file]
-            filename = chooser.get_filename()
-            current_folder = chooser.get_current_folder()
-            m3u_writer(filename, current_folder, paths)
-        chooser.destroy()    
-    
+  
     def on_load(self):
         if FC().tab_position == "no": self.set_tab_no()
         elif FC().tab_position == "left": self.set_tab_left()
@@ -354,9 +328,6 @@ class NoteTabControl(TabGeneral, LoadSave):
             self.controls.append_to_new_notebook(FC().tab_pl_names[page], FC().cache_pl_tab_contents[page])
    
     def on_save(self):
-        pass
-        
-    def on_quit(self):
         number_music_tabs = self.get_n_pages() - 1
         FC().cache_pl_tab_contents = []
         FC().tab_pl_names = []
@@ -387,7 +358,7 @@ class NoteTabControl(TabGeneral, LoadSave):
     
     def set_active_tree(self, tree):
         self.active_tree = tree
-        
+
     def set_playlist_tree(self):
         self.active_tree.set_playlist_tree()
 

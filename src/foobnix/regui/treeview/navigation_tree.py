@@ -12,7 +12,6 @@ from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
-import gobject
     
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -39,17 +38,15 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             if selected:
                 beans = self.get_all_child_beans_by_selected()  
                 self.controls.append_to_new_notebook(selected.text, [selected] + beans)
-                
-                "run the first of added tracks"
-                self.controls.play_first_file_in_playlist()
-        
+            
         if is_rigth_click(e):            
             menu = Popup()
             menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
             menu.add_separator()
             menu.add_item(_("Add to current tab"), gtk.STOCK_ADD, self.add_to_current_tab, None)
             menu.add_separator()
-                        
+            
+            
             if FC().tabs_mode == "Multi":
                 menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
                 menu.add_item(_("Clear Music Tree"), gtk.STOCK_CLEAR, lambda : self.controls.tablib.clear_tree(self.scroll), None)

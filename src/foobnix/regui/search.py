@@ -4,7 +4,6 @@ from foobnix.regui.model.signal import FControl
 from foobnix.util import LOG
 from foobnix.util.text_utils import capitilize_query
 from foobnix.util.key_utils import is_key
-
 class SearchControls(FControl, gtk.Frame):
     def __init__(self, controls):        
         gtk.Frame.__init__(self)
@@ -19,10 +18,12 @@ class SearchControls(FControl, gtk.Frame):
         """default search function"""
         self.search_function = self.controls.search_top_tracks
         self.buttons = []
-                
+        
+        
         vbox = gtk.VBox(False, 0)
         vbox.pack_start(self.search_line(), False, False, 0)
-                
+        vbox.pack_start(self.search_buttons(), False, False, 0)
+        
         vbox.pack_start(controls.search_progress, False, False, 0)
            
         self.add(vbox)
@@ -36,7 +37,7 @@ class SearchControls(FControl, gtk.Frame):
         OneActiveToggledButton(self.buttons)
         
     
-    def set_search_function(self, search_function):
+    def set_search_function(self, w, search_function):
         LOG.info("Set search fucntion", search_function)
         self.search_function = search_function    
         
@@ -53,15 +54,28 @@ class SearchControls(FControl, gtk.Frame):
         return capitilize_query(query)
         
     def search_line(self):
+        hbox = gtk.HBox(False, 0)
+        
         self.entry = gtk.Entry()
         self.entry.connect("key-press-event", self.on_search_key_press)
+        
         self.entry.set_text("")
-               
-        combobox = self.combobox_creator()
+        button = gtk.Button(_("_Search"))
+        button.connect("clicked", self.on_search)
+        
+        g = gtk.Button("_G")
+        g.set_tooltip_text(_("Set focus on search line (Alt+G) Google :)"))
+        g.connect("clicked", lambda * a:self.entry.grab_focus())
         
         hbox = gtk.HBox(False, 0)
-        hbox.pack_start(combobox, False, False, 0)        
+        hbox.pack_start(g, False, False, 0)        
         hbox.pack_start(self.entry, True, True, 0)
+        hbox.pack_start(button, False, False, 0)
+        
+        
+        
+        
+        
         hbox.show_all()
         
         return hbox 
@@ -74,45 +88,65 @@ class SearchControls(FControl, gtk.Frame):
             self.on_search();
             self.entry.grab_focus()
     
-    def combobox_creator(self):
-        list_func = []
-        liststore = gtk.ListStore(str)
-        
-        liststore.append([_("All")])
-        list_func.append(self.controls.search_all_tracks)
-        
-        liststore.append([_("Tracks")])
-        list_func.append(self.controls.search_top_tracks)
-        
-        liststore.append([_("_Albums")])
-        list_func.append(self.controls.search_top_albums)
-        
-        liststore.append([_("Similar")])
-        list_func.append(self.controls.search_top_similar)
-        
-        liststore.append([_("Genre")])
-        list_func.append(self.controls.search_top_tags)
-        
-        liststore.append([_("Video")])
-        list_func.append(self.controls.search_all_videos)
-               
-        combobox = gtk.ComboBox(liststore)
-        cell = gtk.CellRendererText()
-        combobox.pack_start(cell, True)
-        combobox.add_attribute(cell, 'text', 0)
-        combobox.set_active(0)
-        self.set_search_function(list_func[0])
-        
-        def on_changed(combobox):
-            n = combobox.get_active()
-            self.set_search_function(list_func[n])
-            self.entry.grab_focus()
-        
-        combobox.connect("changed", on_changed)     
-        return combobox
-        
-    def show_menu(self, w, event, menu):
-        menu.show_all()
-        menu.popup(None, None, None, event.button, event.time)  
+    def search_buttons(self):
+        h_line_box = gtk.HBox(False, 0)
         
         
+        """Top searches"""
+        top_frame = gtk.Frame()
+        label = gtk.Label()
+        label.set_markup("<b>%s</b>" % _("Top by artist"))
+        top_frame.set_label_widget(label)                                
+        top_frame.set_shadow_type(gtk.SHADOW_NONE)
+
+        hbox = gtk.HBox(False, 0)
+        
+        songs = gtk.ToggleButton(_("_Tracks"))
+        songs.set_active(True)
+        songs.connect("toggled", self.set_search_function, self.controls.search_top_tracks)
+        
+        albums = gtk.ToggleButton(_("_Albums"))
+        albums.connect("toggled", self.set_search_function, self.controls.search_top_albums)        
+        
+        similars = gtk.ToggleButton(_("Similar"))
+        similars.connect("toggled", self.set_search_function, self.controls.search_top_similar)
+        
+        hbox.pack_start(songs, True, True, 0)
+        hbox.pack_start(albums, True, True, 0)
+        hbox.pack_start(similars, True, True, 0)
+        
+        top_frame.add(hbox)
+        
+        """Other searches"""
+        other_frame = gtk.Frame()
+        label = gtk.Label()
+        label.set_markup("<b>%s</b>" % _("Other"))
+        other_frame.set_label_widget(label)    
+        other_frame.set_shadow_type(gtk.SHADOW_NONE)
+        hbox = gtk.HBox(False, 0)
+        
+        tags = gtk.ToggleButton(_("Genre"))        
+        tags.connect("toggled", self.set_search_function, self.controls.search_top_tags)
+        
+        all = gtk.ToggleButton(_("All"))
+        all.connect("toggled", self.set_search_function , self.controls.search_all_tracks)
+        
+        video = gtk.ToggleButton(_("Video"))
+        video.connect("toggled", self.set_search_function , self.controls.search_all_videos)
+        
+        hbox.pack_start(tags, True, True, 0)
+        hbox.pack_start(all, True, True, 0)
+        hbox.pack_start(video, True, True, 0)
+        
+        
+        other_frame.add(hbox)
+        
+        
+        h_line_box.pack_start(top_frame, True, True, 0)
+        h_line_box.pack_start(other_frame, True, True, 0)
+        
+        h_line_box.show_all()
+        
+        self.buttons = [songs, albums, similars, tags, all, video]
+        return h_line_box
+    
