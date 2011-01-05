@@ -68,13 +68,15 @@ class DBusManager(dbus.service.Object, FControl):
             mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
             mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
         except Exception, e:
-            LOG.error("your OS is not GNOME", e)
+            LOG.error("your DE is not GNOME", e)
     
     def check_for_commands(self, args):
         if len(args) == 1:
+            print 1
             command = args[0]
             
         elif len(args) == 2:
+            print 2
             command = args[1]
         else:
             return False
@@ -104,7 +106,7 @@ class DBusManager(dbus.service.Object, FControl):
         elif "--version" == command:
             return FOOBNIX_VERSION
         elif "--now-playing" == command:
-            bean = self.controls.get_active_bean()
+            bean = self.controls.notetabs.get_active_tree().get_current_bean_by_UUID()
             if bean:
                 return bean.get_display_name()
         else:
@@ -120,7 +122,7 @@ class DBusManager(dbus.service.Object, FControl):
                 self.controls.show()
             if type(result).__name__ == 'str':        
                 return result
-        return "client"
+        return "Other copy of player is run"
         
                 
     def on_mediakey(self, comes_from, what):
