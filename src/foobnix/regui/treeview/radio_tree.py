@@ -36,6 +36,9 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
             selected = self.get_selected_bean()
             beans = self.get_all_child_beans_by_selected()  
             self.controls.append_to_new_notebook(selected.text, [selected] + beans)
+            "run radio channel"
+            self.controls.play_first_file_in_playlist()
+            
         if is_rigth_click(e): 
             menu = Popup()
             menu.add_item(_("Add Station"), gtk.STOCK_ADD, self.on_add_station, None)

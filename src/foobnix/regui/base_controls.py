@@ -9,6 +9,8 @@ import thread
 import urllib2
 import os
 import time
+import copy
+import gobject
 
 from foobnix.util.fc import FC
 from foobnix.util.m3u_utils import m3u_reader
@@ -27,7 +29,8 @@ from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.text_utils import normilize_text
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
-import copy
+
+
 
 class BaseFoobnixControls():
     def __init__(self):
@@ -625,7 +628,30 @@ class BaseFoobnixControls():
         #time.sleep(0.5)
         win.show()            
     
-
+    def play_first_file_in_playlist(self):    
+        active_playlist_tree = self.notetabs.get_active_tree()
+        filter_model = active_playlist_tree.get_model()
+        current_model = filter_model.get_model()
+                             
+        def play_item(iter, active_playlist_tree, filter_model, current_model):
+            bean = self.tree.get_bean_from_model_iter(current_model, iter)
+                    
+            if bean.is_file:
+                self.play(bean)
+                TreeSelection = active_playlist_tree.get_selection()
+                filter_iter = filter_model.convert_child_iter_to_iter(iter)
+                TreeSelection.select_iter(filter_iter)
+                active_playlist_tree.set_play_icon_to_bean_to_selected()
+            else:
+                iter = current_model.iter_next(iter)
+                play_item(iter, active_playlist_tree, filter_model, current_model)
+                        
+        def get_first_iter(active_playlist_tree, filter_model, current_model):
+            iter = current_model.get_iter_first()
+            play_item(iter, active_playlist_tree, filter_model, current_model)
+                    
+        gobject.idle_add(get_first_iter, active_playlist_tree, filter_model, current_model)        
+    
     def on_save(self):
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):

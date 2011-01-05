@@ -41,41 +41,15 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 self.controls.append_to_new_notebook(selected.text, [selected] + beans)
                 
                 "run the first of added tracks"
-                active_playlist_tree = self.controls.notetabs.get_active_tree()
-                filter_model = active_playlist_tree.get_model()
-                current_model = filter_model.get_model()
-                             
-                def play_item(iter, active_playlist_tree, filter_model, current_model):
-                    bean = self.get_bean_from_model_iter(current_model, iter)
-                    
-                    if bean.is_file:
-                        self.controls.play(bean)
-                        TreeSelection = active_playlist_tree.get_selection()
-                        filter_iter = filter_model.convert_child_iter_to_iter(iter)
-                        TreeSelection.select_iter(filter_iter)
-                        active_playlist_tree.set_play_icon_to_bean_to_selected()
-                    else:
-                        iter = current_model.iter_next(iter)
-                        play_item(iter, active_playlist_tree, filter_model, current_model)
-                        
-                def get_first_iter(active_playlist_tree, filter_model, current_model):
-                    self.iter = current_model.get_iter_first()
-                    play_item(self.iter, active_playlist_tree, filter_model, current_model)
-                    
-                gobject.idle_add(get_first_iter, active_playlist_tree, filter_model, current_model)
-                
-                
-                
-                
-                        
+                self.controls.play_first_file_in_playlist()
+        
         if is_rigth_click(e):            
             menu = Popup()
             menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
             menu.add_separator()
             menu.add_item(_("Add to current tab"), gtk.STOCK_ADD, self.add_to_current_tab, None)
             menu.add_separator()
-            
-            
+                        
             if FC().tabs_mode == "Multi":
                 menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
                 menu.add_item(_("Clear Music Tree"), gtk.STOCK_CLEAR, lambda : self.controls.tablib.clear_tree(self.scroll), None)
