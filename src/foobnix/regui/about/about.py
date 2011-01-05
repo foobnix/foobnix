@@ -22,8 +22,7 @@ class BaseParentWindow(ChildTopWindow):
             self.set_icon_from_file (self.get_fobnix_logo())
             gtk.window_set_default_icon_from_file (self.get_fobnix_logo())
         except TypeError: pass
-        
-        
+            
     def get_fobnix_logo(self):
         return get_foobnix_resourse_path_by_name(ICON_FOOBNIX)
 
@@ -34,7 +33,7 @@ class AboutWindow(BaseParentWindow):
         """init About window"""
         BaseParentWindow.__init__(self, _("About Window"))
 
-        self.set_size_request(360, 300)
+        self.set_size_request(295, 210)
 
         """Content Begin"""
         table = gtk.Table(3, 4, False)
@@ -48,8 +47,8 @@ class AboutWindow(BaseParentWindow):
         table.attach(image, 0, 3, 0, 1)
         url_label = gtk.LinkButton ("http://www.foobnix.com", "www.foobnix.com")
         url_label.set_relief(gtk.RELIEF_NONE)
-        label = gtk.Label("Foobnix " + FOOBNIX_VERSION)
-        label.set_markup ("Foobnix %s" % FOOBNIX_VERSION)
+        label = gtk.Label()
+        label.set_markup ("\nFoobnix %s" % FOOBNIX_VERSION)
         
         label.set_justify(gtk.JUSTIFY_CENTER)
         table.attach(label, 0, 3, 1, 2)
@@ -82,7 +81,7 @@ class AboutWindow(BaseParentWindow):
 
         text = """\t\t\tDevelopers:
     Ivan Ivanenko <ivan.ivanenko@gmail.com>
-    Dmitry Kozhura (zavlab1) <Dmitry-Kogura@yandex.ru>"""
+    Dmitry Kozhura (zavlab1) <zavlab1@gmail.com>"""
 
         creaditsWindow.set_text(text)
 
@@ -135,7 +134,10 @@ class WindowWithBuffer(BaseParentWindow):
     def set_text(self, text):
         self.buffer.set_text(text)
 
-
+if __name__ == "__main__":
+    w = AboutWindow()    
+    w.show()
+    gtk.main()
 
 
 
