@@ -68,7 +68,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         
         for plugin in self.configs:
             self.navigation.append(FDModel(plugin.name))
-            
+                
         self.navigation.set_left_click_func(func)
 
         paned.add1(self.navigation.scroll)
@@ -95,11 +95,15 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         for plugin in self.configs:            
             plugin.on_load()
 
-    def on_save(self):
+    def on_save(self, hide=False):
         for plugin in self.configs:
             plugin.on_save()
         FC().save()
-        self.hide_window()
+        if hide:
+            self.hide_window()
+        else: 
+            self.hide()
+            self.show()
                 
     def hide_window(self, *a):
         self.hide()
@@ -124,10 +128,17 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
 
 
-        button_save = gtk.Button(_("Save"))
-        button_save.set_size_request(100, -1)
-        button_save.connect("clicked", lambda * a:self.on_save())
-        button_save.show()
+        button_apply = gtk.Button(_("Apply"))
+        button_apply.set_size_request(100, -1)
+        button_apply.connect("clicked", lambda * a:self.on_save())
+        button_apply.show()
+        
+        label = gtk.Label("       ")
+        
+        button_ok = gtk.Button(_("OK"))
+        button_ok.set_size_request(100, -1)
+        button_ok.connect("clicked", lambda * a:self.on_save(True))
+        button_ok.show()
 
         button_cancel = gtk.Button(_("Cancel"))
         button_cancel.set_size_request(100, -1)
@@ -140,9 +151,10 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
         box.pack_start(button_restore, False, True, 0)
         box.pack_start(empty, True, True, 0)
+        box.pack_start(button_apply, False, True, 0)
+        box.pack_start(label, False, True, 0)
+        box.pack_start(button_ok, False, True, 0)
         box.pack_start(button_cancel, False, True, 0)
-        box.pack_start(button_save, False, True, 0)
-        
 
         return box
 

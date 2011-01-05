@@ -282,7 +282,6 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.set_tab_pos(gtk.POS_LEFT)
         self.default_angle = 90
         self.set_show_tabs(True)
-        FC().tab_position = "left"
         for page in xrange(self.get_n_pages() - 1, 0, -1):
             tab_content = self.get_nth_page(page)
             label_text = self.get_text_label_from_tab(tab_content)
@@ -300,7 +299,6 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.set_tab_pos(gtk.POS_TOP)
         self.default_angle = 0
         self.set_show_tabs(True)
-        FC().tab_position = "top"
         for page in xrange(self.get_n_pages() - 1, 0, -1):
             tab_content = self.get_nth_page(page)
             label_text = self.get_text_label_from_tab(tab_content)
@@ -334,17 +332,12 @@ class NoteTabControl(TabGeneral, LoadSave):
             chooser.set_current_folder(FC().last_music_path)
         name = self.get_text_label_from_tab(tab_child)
         chooser.set_current_name(name+".m3u")
-        #chooser.add_filter(".m3u")
-        #chooser.add_pattern(".m3u")
         chooser.set_do_overwrite_confirmation(True)
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
             beans = tree.get_all_beans()
             if beans:
                 paths = [bean.path for bean in beans if bean.is_file]
-            """for bean in beans:
-                if bean.is_file:
-                    paths.append(bean.path)"""
             filename = chooser.get_filename()
             current_folder = chooser.get_current_folder()
             m3u_writer(filename, current_folder, paths)
