@@ -88,65 +88,46 @@ class SearchControls(FControl, gtk.Frame):
             self.on_search();
             self.entry.grab_focus()
 
-    def search_buttons(self):
-        h_line_box = gtk.HBox(False, 0)
+    def combobox_creator(self):
+        list_func = []
+        liststore = gtk.ListStore(str)
 
 
-        """Top searches"""
-        top_frame = gtk.Frame()
-        label = gtk.Label()
-        label.set_markup("<b>%s</b>" % _("Top by artist"))
-        top_frame.set_label_widget(label)
-        top_frame.set_shadow_type(gtk.SHADOW_NONE)
-
-        hbox = gtk.HBox(False, 0)
-
-        songs = gtk.ToggleButton(_("_Tracks"))
-        songs.set_active(True)
-        songs.connect("toggled", self.set_search_function, self.controls.search_top_tracks)
-
-        albums = gtk.ToggleButton(_("_Albums"))
-        albums.connect("toggled", self.set_search_function, self.controls.search_top_albums)
-
-        similars = gtk.ToggleButton(_("Similar"))
-        similars.connect("toggled", self.set_search_function, self.controls.search_top_similar)
-
-        hbox.pack_start(songs, True, True, 0)
-        hbox.pack_start(albums, True, True, 0)
-        hbox.pack_start(similars, True, True, 0)
-
-        top_frame.add(hbox)
-
-        """Other searches"""
-        other_frame = gtk.Frame()
-        label = gtk.Label()
-        label.set_markup("<b>%s</b>" % _("Other"))
-        other_frame.set_label_widget(label)
-        other_frame.set_shadow_type(gtk.SHADOW_NONE)
-        hbox = gtk.HBox(False, 0)
-
-        tags = gtk.ToggleButton(_("Genre"))
-        tags.connect("toggled", self.set_search_function, self.controls.search_top_tags)
-
-        all = gtk.ToggleButton(_("All"))
-        all.connect("toggled", self.set_search_function , self.controls.search_all_tracks)
-
-        video = gtk.ToggleButton(_("Video"))
-        video.connect("toggled", self.set_search_function , self.controls.search_all_videos)
-
-        hbox.pack_start(tags, True, True, 0)
-        hbox.pack_start(all, True, True, 0)
-        hbox.pack_start(video, True, True, 0)
+        liststore.append([_("Tracks")])
+        list_func.append(self.controls.search_top_tracks)
 
 
-        other_frame.add(hbox)
+        liststore.append([_("Albums")])
+        list_func.append(self.controls.search_top_albums)
+
+        liststore.append([_("Similar")])
+        list_func.append(self.controls.search_top_similar)
+
+        liststore.append([_("Genre")])
+        list_func.append(self.controls.search_top_tags)
 
 
-        h_line_box.pack_start(top_frame, True, True, 0)
-        h_line_box.pack_start(other_frame, True, True, 0)
+        liststore.append([_("Audio")])
+        list_func.append(self.controls.search_all_tracks)
 
-        h_line_box.show_all()
+        liststore.append([_("Video")])
+        list_func.append(self.controls.search_all_videos)
 
-        self.buttons = [songs, albums, similars, tags, all, video]
-        return h_line_box
+        combobox = gtk.ComboBox(liststore)
+        cell = gtk.CellRendererText()
+        combobox.pack_start(cell, True)
+        combobox.add_attribute(cell, 'text', 0)
+        combobox.set_active(0)
+        self.set_search_function(list_func[0])
 
+        def on_changed(combobox):
+            n = combobox.get_active()
+            self.set_search_function(list_func[n])
+            self.entry.grab_focus()
+
+        combobox.connect("changed", on_changed)
+        return combobox
+
+    def show_menu(self, w, event, menu):
+        menu.show_all()
+        menu.popup(None, None, None, event.button, event.time)
