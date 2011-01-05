@@ -1,3 +1,6 @@
+0.2.3-1
+* Make search line without Frame, search help text inside. 
+
 0.2.3
 * Added Multi tab navigation tree
 * Saving navigation and playlist tabs on exit
@@ -7,6 +10,7 @@
 * Possibility to rename tabs, playlist tab managment (mouse wheel, remove, create) 
 * Possibility to set gap between tracks possibility
 * Performance optimization
+* Opacity configuration
 * Other fixes
 
 0.2.2-10

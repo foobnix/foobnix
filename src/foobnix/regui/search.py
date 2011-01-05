@@ -5,27 +5,25 @@ from foobnix.util import LOG
 from foobnix.util.text_utils import capitilize_query
 from foobnix.util.key_utils import is_key
 
-class SearchControls(FControl, gtk.Frame):
+class SearchControls(FControl, gtk.VBox):
     def __init__(self, controls):        
-        gtk.Frame.__init__(self)
+        gtk.VBox.__init__(self, False, 0)
         FControl.__init__(self, controls)
         self.controls = controls
         
         label = gtk.Label()
         label.set_markup("<b>%s:</b>" % _("Search music online"))
-        self.set_label_widget(label)
-        self.set_border_width(0)
+        #self.set_label_widget(label)
+        #self.set_border_width(0)
         
         """default search function"""
         self.search_function = self.controls.search_top_tracks
         self.buttons = []
                 
-        vbox = gtk.VBox(False, 0)
-        vbox.pack_start(self.search_line(), False, False, 0)
+        
+        self.pack_start(self.search_line(), False, False, 0)
                 
-        vbox.pack_start(controls.search_progress, False, False, 0)
-           
-        self.add(vbox)
+        self.pack_start(controls.search_progress, False, False, 0)
         
         self.show_all()
         """search on enter"""
@@ -54,14 +52,26 @@ class SearchControls(FControl, gtk.Frame):
         
     def search_line(self):
         self.entry = gtk.Entry()
+        online_text = _("Online Music Search, Play, Download")        
+        
+        def on_activate():
+            LOG.debug("on_activate", self.entry.get_text())
+            if online_text == self.entry.get_text():
+                self.entry.set_text("")
+            
+        self.entry.connect("button-press-event", lambda * a:on_activate())
         self.entry.connect("key-press-event", self.on_search_key_press)
-        self.entry.set_text("")
+        
+        self.entry.set_text(online_text)
                
         combobox = self.combobox_creator()
         
         hbox = gtk.HBox(False, 0)
-        hbox.pack_start(combobox, False, False, 0)        
-        hbox.pack_start(self.entry, True, True, 0)
+        searchLable = gtk.Label()
+        searchLable.set_markup("<b>%s</b>" % _("Online Search"))
+        hbox.pack_start(combobox, False, False)        
+        hbox.pack_start(self.entry, True, True)
+        #hbox.pack_start(searchLable, False, False)
         hbox.show_all()
         
         return hbox 
