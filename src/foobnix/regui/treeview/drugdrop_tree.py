@@ -45,8 +45,7 @@ class DrugDropTree(gtk.TreeView):
             self.plain_append_all([bean])
         else:
             self.tree_append(bean)
-        
-        
+                
     def set_type_plain(self):
         self.current_view = VIEW_PLAIN
     
@@ -90,15 +89,12 @@ class DrugDropTree(gtk.TreeView):
         
         if to_iter:
             to_iter = to_model.convert_iter_to_child_iter(to_iter)
-        
+        if type(pos)!= type(None): print int(pos)
         if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
-            if to_iter:
-                is_file = to_model.get_model().get_value(to_iter, self.is_file[0])
-                if is_file == True:
-                    return False
-            new_iter = to_model.get_model().prepend(to_iter, row)               
+            new_iter = to_model.get_model().prepend(to_iter, row) 
         elif pos == gtk.TREE_VIEW_DROP_BEFORE:
             new_iter = to_model.get_model().insert_before(None, to_iter, row)
+            new_iter = to_model.get_model().iter_next(new_iter)
         elif pos == gtk.TREE_VIEW_DROP_AFTER:
             new_iter = to_model.get_model().insert_after(None, to_iter, row)
         else:
@@ -139,7 +135,7 @@ class DrugDropTree(gtk.TreeView):
             parent_level = parent_row[self.level[0]]
             self.add_reqursive_plain(from_model, from_iter, to_model, new_iter, parent_level)
                    
-        return True
+        return True, new_iter
     
     def add_reqursive_plain(self, from_model, from_iter, to_model, to_iter, parent_level):
         for child_row in self.get_child_rows(from_model, parent_level):            
@@ -175,21 +171,19 @@ class DrugDropTree(gtk.TreeView):
             return None
         from_filter_model, from_paths = from_tree.get_selection().get_selected_rows()
         
-        #from_model = from_filter_model.get_model()
-
+        new_iter = None
         for current_path  in from_paths:
-            #from_path = from_filter_model.convert_path_to_child_path(current_path) 
             from_iter = from_filter_model.get_iter(current_path)
             
             """do not copy to himself"""
-            
             if to_tree == from_tree and current_path == to_path:
-                "do not copy to himself"
                 drag_context.finish(False, False)
                 return None
             
-            """do not copy to child"""        
-            result = self.iter_copy(from_filter_model, from_iter, to_filter_model, to_iter, to_pos, to_tree.current_view, from_tree.current_view)
+            #"""do not copy to child""" 
+            if new_iter: 
+                to_iter = to_filter_model.convert_child_iter_to_iter(new_iter)      
+            result, new_iter = self.iter_copy(from_filter_model, from_iter, to_filter_model, to_iter, to_pos, to_tree.current_view, from_tree.current_view)
             
             if result and to_tree == from_tree:
                 """move element in the same tree"""
