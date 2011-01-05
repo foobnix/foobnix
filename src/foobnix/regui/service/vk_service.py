@@ -213,6 +213,8 @@ class VKService:
                     value = value.replace('+', ' ')
                     res[key] = value
             LOG.debug(res)
+            if "host" not in res:
+                continue;
             host = res["host"]
                 
             if "http://" in host:

@@ -78,13 +78,12 @@ class SearchControls(FControl, gtk.Frame):
         list_func = []
         liststore = gtk.ListStore(str)
         
-        liststore.append([_("All")])
-        list_func.append(self.controls.search_all_tracks)
         
         liststore.append([_("Tracks")])
         list_func.append(self.controls.search_top_tracks)
         
-        liststore.append([_("_Albums")])
+
+        liststore.append([_("Albums")])
         list_func.append(self.controls.search_top_albums)
         
         liststore.append([_("Similar")])
@@ -92,6 +91,10 @@ class SearchControls(FControl, gtk.Frame):
         
         liststore.append([_("Genre")])
         list_func.append(self.controls.search_top_tags)
+        
+        
+        liststore.append([_("Audio")])
+        list_func.append(self.controls.search_all_tracks)
         
         liststore.append([_("Video")])
         list_func.append(self.controls.search_all_videos)
