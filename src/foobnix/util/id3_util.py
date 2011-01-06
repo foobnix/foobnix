@@ -43,15 +43,15 @@ def decode_cp866(text):
         pass
     return text
 
-def udpate_id3_for_beans(beans):
-    for bean in beans:
-        try:
-            udpate_id3(bean)
-        except Exception, e:
-            LOG.error("udpate id3 error", e)
+def update_id3_for_beans(beans):
+    try:
+        map(update_id3, beans)
+    except Exception, e:
+        LOG.error("update id3 error", e)
     return beans
 
-def udpate_id3(bean):
+
+def update_id3(bean):
     if bean and bean.path and os.path.isfile(bean.path):
         try:
             audio = get_mutagen_audio(bean.path)            
@@ -86,32 +86,16 @@ def udpate_id3(bean):
 
     return bean
 
-def get_support_music_beans_from_all(beans):
-    result = []
-    for bean in beans:
-        if bean.path and os.path.isdir(bean.path):
-            result.append(bean)
-        elif bean.path and os.path.isfile(bean.path) and file_extension(bean.path) in FC().audio_formats:
-            result.append(bean)
-        elif bean.path and bean.path.startswith("http://"):
-            result.append(bean)
-        else:
-            result.append(bean)
-    
-    return result
-
-
-def add_upadte_image_paths(beans):
+def add_update_image_paths(beans):
     for bean in beans:
         if bean.path:
             bean.image = get_image_by_path(bean.path)
     return beans
 
 def update_id3_wind_filtering(beans):
-    beans = get_support_music_beans_from_all(beans)
-    beans = udpate_id3_for_beans(beans)
+    beans = update_id3_for_beans(beans)
     beans = update_id3_for_cue(beans)
-    beans = add_upadte_image_paths(beans)
+    beans = add_update_image_paths(beans)
     result = []
     for bean in beans:
         result.append(bean)
