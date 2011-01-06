@@ -692,11 +692,6 @@ msgstr "验证用户与密码"
 msgid "VKontakte connection error"
 msgstr "VKontakte 连接错误"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:23
-#, fuzzy
-msgid "Music Library"
-msgstr "音乐目录"
-
 #: .././foobnix/regui/treeview/navigation_tree.py:46
 msgid "Add to current tab"
 msgstr ""

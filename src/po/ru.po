@@ -683,10 +683,6 @@ msgstr "Проверте логин и пароль"
 msgid "VKontakte connection error"
 msgstr "Ошибка подключания к ВКонтакте"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:23
-msgid "Music Library"
-msgstr "Коллекция музыки"
-
 #: .././foobnix/regui/treeview/navigation_tree.py:46
 msgid "Add to current tab"
 msgstr "Добавить в очередь"
