@@ -5,7 +5,8 @@ from foobnix.regui.base_layout import BaseFoobnixLayout
 from foobnix.regui.base_controls import BaseFoobnixControls
 from foobnix.regui.window import MainWindow
 from foobnix.regui.controls.filter import FilterControl
-from foobnix.regui.controls.playback import PlaybackControls
+from foobnix.regui.controls.playback import PlaybackControls, \
+    OrderShuffleControls
 from foobnix.regui.search import SearchControls
 from foobnix.regui.controls.seach_progress import SearchProgressBar
 from foobnix.regui.infopanel import InfoPanelWidget
@@ -56,6 +57,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.movie_window = MovieDrawingArea(self)
 
         self.searchPanel = SearchControls(self)
+        self.os = OrderShuffleControls(self)
         self.playback = PlaybackControls(self)
         
         self.trayicon = TrayIconControls(self)

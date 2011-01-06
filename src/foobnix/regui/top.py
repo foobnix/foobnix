@@ -28,6 +28,7 @@ class TopWidgets(FControl, LoadSave, gtk.HBox):
         
         self.pack_start(self.new_menu_button, False, False)
         self.pack_start(controls.playback, False, False)
+        self.pack_start(controls.os, False, False)
         self.pack_start(controls.volume, False, False)
         self.pack_start(gtk.SeparatorToolItem(), False, False)
         self.pack_start(controls.seek_bar, True, True)
@@ -52,9 +53,6 @@ class TopWidgets(FControl, LoadSave, gtk.HBox):
         else:
             self.old_menu.widget.show()
             self.new_menu_button.hide()
-            
-                    
-        
         
     def on_save(self):        
         self.controls.volume.on_save()
@@ -63,6 +61,7 @@ class TopWidgets(FControl, LoadSave, gtk.HBox):
     def on_load(self):        
         self.controls.volume.on_load()
         self.old_menu.on_load()
+        self.controls.os.on_load()
         self.update_menu_style()
         
         

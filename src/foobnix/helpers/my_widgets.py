@@ -75,6 +75,18 @@ class ToggleImageButton(gtk.ToggleButton):
         self.set_relief(gtk.RELIEF_NONE)
         img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
         self.add(img)
+        
+class ToggleWidgetButton(gtk.ToggleButton):
+    def __init__(self, widget, func=None, param=None):
+        gtk.ToggleButton.__init__(self)
+
+        if param and func:             
+            self.connect("toggled", lambda * a: func(param))
+        elif func:
+            self.connect("toggled", lambda * a: func())         
+                
+        self.set_relief(gtk.RELIEF_NONE)        
+        self.add(widget)        
 
 def tab_close_button(func=None, arg=None, stock=gtk.STOCK_CLOSE):
     """button"""
@@ -114,8 +126,10 @@ class EventLabel(gtk.EventBox):
 
         self.add(self.label)
         self.show_all()
-        
-        
+     
+    def set_markup(self, text):
+        self.text = text
+        self.label.set_markup(text)
         
     def set_underline(self):
         if self.selected:

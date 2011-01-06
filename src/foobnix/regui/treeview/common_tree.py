@@ -282,7 +282,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
     def get_random_bean(self):        
         rows = self.get_all_file_rows()
-        return self.get_bean_from_row(rows[randint(0, len(rows))])
+        return self.get_bean_from_row(rows[randint(0, len(rows) - 1)])
     
     def get_child_level1_beans_by_selected(self):
         selection = self.get_selection()

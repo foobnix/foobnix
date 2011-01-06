@@ -50,6 +50,7 @@ class MenuBarWidget(FControl):
         def set_random(flag=True):            
             FC().is_order_random = flag
             LOG.debug("set random", flag)
+            controls.os.on_load()
 
         """Playback - Order"""
         order = playback.add_text_item(_("Order"))
@@ -69,16 +70,20 @@ class MenuBarWidget(FControl):
         self.lopping_disable = repeat.add_radio_item(_("Disable"), self.lopping_all, FC().repeat_state == const.REPEAT_NO)
         
         def repeat_all():
-            FC().repeat_state = const.REPEAT_ALL
+            FC().repeat_state = const.REPEAT_ALL            
             LOG.debug("set repeat_all")
+            controls.os.on_load()
+            
         
         def repeat_sigle():
             FC().repeat_state = const.REPEAT_SINGLE
             LOG.debug("set repeat_sigle")
+            controls.os.on_load()
         
         def repeat_no():
             FC().repeat_state = const.REPEAT_NO
             LOG.debug("set repeat_no")
+            controls.os.on_load()
             
         self.lopping_all.connect("activate", lambda * a:repeat_all())
         self.lopping_single.connect("activate", lambda * a:repeat_sigle())
