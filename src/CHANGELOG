@@ -1,5 +1,7 @@
 0.2.3-1
-* Make search line without Frame, search help text inside. 
+* Make search line without Frame, search help text inside.
+* Implement Shuffle and Repeat buttons.
+* Remove from dependency setuptools 
 
 0.2.3
 * Added Multi tab navigation tree
