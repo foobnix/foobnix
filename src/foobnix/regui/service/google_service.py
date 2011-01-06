@@ -5,7 +5,7 @@ Created on Oct 25, 2010
 '''
 from foobnix.util import LOG
 from foobnix.thirdparty.google.search import GoogleSearch
-def google_search_resutls(query, results_count=10):
+def google_search_results(query, results_count=10):
     results = []
     try:
         LOG.debug("Start google search", query)
