@@ -93,8 +93,9 @@ class FC:
                 
         audio_container = [".cue", ".iso.wv"]
         video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mp4", ".mpg", ".rm", ".swf", ".vob", ".wmv"] 
-        self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".ra", ".m4p", ".3gp", ".wv"]        
+        self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".m4a", ".ra", ".m4p", ".3gp", ".wv"]        
         self.all_support_formats = self.audio_formats + video_formats + audio_container
+        self.all_support_formats.sort()
         
         """music lybrary"""
         self.tab_names = [_("Empty tab"), ]
