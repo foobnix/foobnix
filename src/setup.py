@@ -17,6 +17,8 @@ for lang in LANGS:
         os.mkdir("mo/" + lang + "/")
     print "generating", mofile
     os.system("msgfmt %s -o %s" % (pofile, mofile))
+    
+    
 
 
 version = file("foobnix/version.py", "wt")
@@ -91,8 +93,8 @@ setup(name='foobnix',
                     ('share/pixmaps', glob.glob('foobnix/pixmaps/*.svg')),
                     ('share/foobnix/radio', glob.glob('radio/*')),
                     ('share/man/man1', ['foobnix.1']),
-                    ('/usr/share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo']),
-                    ('/usr/share/locale/zh_CN/LC_MESSAGES', ['mo/zh_CN/foobnix.mo'])                   
+                    #('/usr/share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo']),
+                    #('/usr/share/locale/zh_CN/LC_MESSAGES', ['mo/zh_CN/foobnix.mo'])                   
                     ]
         )
 
