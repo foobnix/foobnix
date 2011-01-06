@@ -32,6 +32,12 @@ class TestVkService(unittest.TestCase):
         for bean in list:
             self.assertTrue(bean.path.startswith("http://"))
    
+    def test_find_by_url_user(self):
+        list = self.vk.find_tracks_by_url("http://vkontakte.ru/audio.php?id=14775382")        
+        for bean in list:
+            self.assertFalse('\">' in bean.text)
+            self.assertTrue(bean.path.startswith("http://"))
+       
     
 if __name__ == '__main__':
     unittest.main()        

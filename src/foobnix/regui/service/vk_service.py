@@ -287,7 +287,6 @@ class VKService:
             result = unicode(result)
         except:
             result = result
-      
         
         reg_all = "([^{<}]*)"
         result_url = re.findall(ur"http:([\\/.0-9_A-Z]*)", result, re.IGNORECASE)
@@ -309,7 +308,9 @@ class VKService:
                     j += 1                
             artist = self.to_good_chars(artist)
             #song = VKSong(path, artist, title, result_time[i]);
-            text = artist + " - " + title            
+            if "\">" in title:
+                title = title[title.find("\">") + 2:]
+            text = artist + " - " + title        
             song = FModel(text, path).add_artist(artist).add_title(title).add_time(result_time[i])
             songs.append(song)        
         LOG.info(len(songs))
