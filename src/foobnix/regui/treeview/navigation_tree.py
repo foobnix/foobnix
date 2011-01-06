@@ -21,7 +21,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.controls = controls
         
         """column config"""
-        column = gtk.TreeViewColumn(_("Music Lybrary"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = gtk.TreeViewColumn(_("Music Library"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.append_column(column)
         

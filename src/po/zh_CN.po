@@ -694,7 +694,7 @@ msgstr "VKontakte 连接错误"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:23
 #, fuzzy
-msgid "Music Lybrary"
+msgid "Music Library"
 msgstr "音乐目录"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:46

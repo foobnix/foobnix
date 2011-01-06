@@ -97,7 +97,7 @@ class FC:
         self.all_support_formats = self.audio_formats + video_formats + audio_container
         self.all_support_formats.sort()
         
-        """music lybrary"""
+        """music library"""
         self.tab_names = [_("Empty tab"), ]
         self.last_music_path = None
         self.music_paths = [[], ]

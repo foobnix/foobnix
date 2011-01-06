@@ -684,7 +684,7 @@ msgid "VKontakte connection error"
 msgstr "Ошибка подключания к ВКонтакте"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:23
-msgid "Music Lybrary"
+msgid "Music Library"
 msgstr "Коллекция музыки"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:46
