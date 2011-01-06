@@ -72,11 +72,9 @@ class DBusManager(dbus.service.Object, FControl):
     
     def check_for_commands(self, args):
         if len(args) == 1:
-            print 1
             command = args[0]
             
         elif len(args) == 2:
-            print 2
             command = args[1]
         else:
             return False

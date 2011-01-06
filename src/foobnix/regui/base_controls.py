@@ -118,7 +118,7 @@ class BaseFoobnixControls():
                     paths[i:i + 1] = m3u_reader(path)
                     if len(copy_paths) == 1:
                         ext = os.path.splitext(path)[1]
-                        tab_name =  os.path.basename(path)[:-len(ext)]
+                        tab_name = os.path.basename(path)[:-len(ext)]
                     break
             
                 
@@ -524,11 +524,9 @@ class BaseFoobnixControls():
         #beans = update_id3_wind_filtering(beans) 
         """cue_beans = []
         for bean in beans:
-            print "1", bean.path
             if get_file_extension(bean.path) == ".cue":
                 cue_beans.append(bean.path)
         if cue_beans:
-            print "2", cue_beans
             beans = cue_beans"""
         self.notetabs.append_all(beans)
 

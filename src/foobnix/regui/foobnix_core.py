@@ -92,7 +92,6 @@ class FoobnixCore(BaseFoobnixControls):
         if with_dbus:
             from foobnix.regui.controls.dbus_manager import DBusManager
             self.dbus = DBusManager(self)
-    
     def run(self):    
         self.on_load()
             
