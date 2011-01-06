@@ -89,11 +89,11 @@ class SearchControls(FControl, gtk.VBox):
         liststore = gtk.ListStore(str)
         
         
-        liststore.append([_("Tracks")])
+        liststore.append([_("Artist")])
         list_func.append(self.controls.search_top_tracks)
         
 
-        liststore.append([_("Albums")])
+        liststore.append([_("Album")])
         list_func.append(self.controls.search_top_albums)
         
         liststore.append([_("Similar")])
