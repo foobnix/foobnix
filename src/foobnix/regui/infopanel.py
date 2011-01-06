@@ -34,10 +34,10 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
     def __init__(self, controls): 
         gtk.Frame.__init__(self)
         FControl.__init__(self, controls)
-        self.almum_label = gtk.Label()
-        self.almum_label.set_line_wrap(True)
-        self.almum_label.set_markup("<b></b>")
-        self.set_label_widget(self.almum_label)                                
+        self.album_label = gtk.Label()
+        self.album_label.set_line_wrap(True)
+        self.album_label.set_markup("<b></b>")
+        self.set_label_widget(self.album_label)                                
         
         self.best_songs = SimpleTreeControl(_("Best Songs"), controls)
         self.best_songs.line_title = EventLabel(self.best_songs.get_title(), func=self.show_current, arg=self.best_songs, func1=self.show_best_songs)
@@ -170,7 +170,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             if album_name and album_year:
                 info_line = album_name + "(" + album_year + ")"
                 
-            self.almum_label.set_markup("<b>%s</b>" % info_line)
+            self.album_label.set_markup("<b>%s</b>" % info_line)
         gobject.idle_add(task)
     
     def show_disc_cover(self):
