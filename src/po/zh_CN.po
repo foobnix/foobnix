@@ -214,12 +214,12 @@ msgid "Password"
 msgstr "密码"
 
 #: .././foobnix/preferences/configs/last_fm.py:46
-msgid "Enable Music Srobbler"
-msgstr "启用 Music Srobbler"
+msgid "Enable Music Scrobbler"
+msgstr "启用 Music Scrobbler"
 
 #: .././foobnix/preferences/configs/last_fm.py:49
-msgid "Enable Radio Srobbler"
-msgstr "启用 Radio Srobbler"
+msgid "Enable Radio Scrobbler"
+msgstr "启用 Radio Scrobbler"
 
 #: .././foobnix/preferences/configs/music_library.py:40
 msgid "Music dirs"

@@ -43,11 +43,11 @@ class LastFmConfig(ConfigPlugin):
         self.password_text.set_invisible_char("*")
         self.password_text.show()
         
-        self.music_srobbler = gtk.CheckButton(label=_("Enable Music Srobbler"), use_underline=True)
-        self.music_srobbler.show()
+        self.music_scrobbler = gtk.CheckButton(label=_("Enable Music Scrobbler"), use_underline=True)
+        self.music_scrobbler.show()
         
-        self.radio_srobbler = gtk.CheckButton(label=_("Enable Radio Srobbler"), use_underline=True)
-        self.radio_srobbler.show()
+        self.radio_scrobbler = gtk.CheckButton(label=_("Enable Radio Scrobbler"), use_underline=True)
+        self.radio_scrobbler.show()
         
         pbox.pack_start(password, False, False, 0)
         pbox.pack_start(self.password_text, False, True, 0)
@@ -55,15 +55,15 @@ class LastFmConfig(ConfigPlugin):
         
         box.pack_start(lbox, False, True, 0)
         box.pack_start(pbox, False, True, 0)
-        box.pack_start(self.music_srobbler, False, True, 0)
+        box.pack_start(self.music_scrobbler, False, True, 0)
         
         self.widget = box
     
     def on_load(self):
         self.login_text.set_text(FC().lfm_login)
         self.password_text.set_text(FC().lfm_password)
-        self.music_srobbler.set_active(FC().enable_music_srobbler)
-        self.radio_srobbler.set_active(FC().enable_radio_srobbler)
+        self.music_scrobbler.set_active(FC().enable_music_scrobbler)
+        self.radio_scrobbler.set_active(FC().enable_radio_scrobbler)
     
     def on_save(self):
         if FC().lfm_login != self.login_text.get_text() or FC().lfm_password != self.password_text.get_text():
@@ -72,6 +72,6 @@ class LastFmConfig(ConfigPlugin):
         FC().lfm_login = self.login_text.get_text()
         FC().lfm_password = self.password_text.get_text() 
         
-        FC().enable_music_srobbler = self.music_srobbler.get_active()
-        FC().enable_radio_srobbler = self.radio_srobbler.get_active()
+        FC().enable_music_scrobbler = self.music_scrobbler.get_active()
+        FC().enable_radio_scrobbler = self.radio_scrobbler.get_active()
         

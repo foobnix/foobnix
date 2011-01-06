@@ -75,7 +75,7 @@ class Cache():
 class LastFmService():
     def __init__(self):
         self.network = None
-        self.scrobler = None
+        self.scrobbler = None
         self.preferences_window = None
 
         #thread.start_new_thread(self.init_thread, ())
@@ -85,7 +85,7 @@ class LastFmService():
 
 
     def connect(self):
-        if self.network and self.scrobler:
+        if self.network and self.scrobbler:
             return True
         return self.init_thread()
 
@@ -107,12 +107,12 @@ class LastFmService():
                 LOG.info("Enable proxy for last fm", proxy, port)
 
 
-            """scrobler"""
-            scrobler_network = pylast.get_lastfm_network(username=username, password_hash=password_hash)
-            self.scrobler = scrobler_network.get_scrobbler("fbx", "1.0")
+            """scrobbler"""
+            scrobbler_network = pylast.get_lastfm_network(username=username, password_hash=password_hash)
+            self.scrobbler = scrobbler_network.get_scrobbler("fbx", "1.0")
         except:
             self.network = None
-            self.scrobler = None
+            self.scrobbler = None
             LOG.error("Invalid last fm login or password or network problems", username, FC().lfm_password)
             val = show_login_password_error_dialog(_("Last.fm connection error"), _("Verify user and password"), username, FC().lfm_password)
             if val:
@@ -124,20 +124,20 @@ class LastFmService():
     def get_network(self):
         return self.network
 
-    def get_scrobler(self):
-        return self.scrobler
+    def get_scrobbler(self):
+        return self.scrobbler
     
     def report_now_playting(self, bean):
-        if not FC().enable_music_srobbler:
+        if not FC().enable_music_scrobbler:
             LOG.debug("Last.fm scrobbler not enabled")
             return None 
-        if not self.get_scrobler():
+        if not self.get_scrobbler():
             LOG.warn("no last.fm scrobbler")
             return None   
         def task(song):
             if bean.artist and bean.title:
                 try:
-                    self.get_scrobler().report_now_playing(bean.artist, bean.title)
+                    self.get_scrobbler().report_now_playing(bean.artist, bean.title)
                     LOG.debug("notify", bean.artist, bean.title)
                 except Exception, e:       
                     LOG.error(e, "Error reporting now playing last.fm", bean.artist, bean.title, "A", bean.album)
@@ -146,19 +146,19 @@ class LastFmService():
                 
         thread.start_new_thread(task, (bean,))
     
-    def report_scrobled(self, bean, start_time, duration_sec):
-        if not FC().enable_music_srobbler:
+    def report_scrobbled(self, bean, start_time, duration_sec):
+        if not FC().enable_music_scrobbler:
             LOG.debug("Last.fm scrobbler not enabled")
             return None
        
-        if not self.get_scrobler():
+        if not self.get_scrobbler():
             return None
         
         def task(bean):
             if bean.artist and bean.title:
                 try:
-                    self.get_scrobler().scrobble(bean.artist, bean.title, start_time, "P", "", int(duration_sec))
-                    LOG.debug("Song Scrobled", bean.artist, bean.title, start_time, "P", "", int(duration_sec))
+                    self.get_scrobbler().scrobble(bean.artist, bean.title, start_time, "P", "", int(duration_sec))
+                    LOG.debug("Song Scrobbled", bean.artist, bean.title, start_time, "P", "", int(duration_sec))
                 except Exception, e:       
                     LOG.error(e, "Error reporting now playing last.fm", bean.artist, bean.title, "A", bean.album)
             else:

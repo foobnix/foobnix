@@ -38,7 +38,7 @@ class BaseFoobnixControls():
         self.vk = VKService()
 
         self.count_errors = 0
-        self.is_scrobled = False
+        self.is_scrobbled = False
         self.start_time = None
     
     def check_for_media(self, args):         
@@ -330,7 +330,7 @@ class BaseFoobnixControls():
         self.main_window.set_title(bean.text)
         
         self.media_engine.play(bean)  
-        self.is_scrobled = False
+        self.is_scrobbled = False
         self.start_time = False      
         
         self.update_info_panel(bean)
@@ -344,10 +344,10 @@ class BaseFoobnixControls():
         if not self.start_time:
             self.start_time = str(int(time.time()))
         
-        if not self.is_scrobled:            
+        if not self.is_scrobbled:            
             if sec > dur_sec / 2 or sec > 60:
-                self.is_scrobled = True
-                self.lastfm.report_scrobled(bean, self.start_time, dur_sec)
+                self.is_scrobbled = True
+                self.lastfm.report_scrobbled(bean, self.start_time, dur_sec)
             
     def notify_title(self, text):
         LOG.debug("Notify title", text)

@@ -208,11 +208,11 @@ msgid "Password"
 msgstr ""
 
 #: .././foobnix/preferences/configs/last_fm.py:46
-msgid "Enable Music Srobbler"
+msgid "Enable Music Scrobbler"
 msgstr ""
 
 #: .././foobnix/preferences/configs/last_fm.py:49
-msgid "Enable Radio Srobbler"
+msgid "Enable Radio Scrobbler"
 msgstr ""
 
 #: .././foobnix/preferences/configs/music_library.py:40

@@ -115,8 +115,8 @@ class FC:
         self.vk_password = vk[1]
         self.vk_cookie = None
         
-        self.enable_music_srobbler = True
-        self.enable_radio_srobbler = True
+        self.enable_music_scrobbler = True
+        self.enable_radio_scrobbler = True
 
         """proxy"""
         self.proxy_enable = False
