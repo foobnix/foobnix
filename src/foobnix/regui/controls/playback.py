@@ -82,7 +82,7 @@ class PlaybackControls(FControl, gtk.HBox, LoadSave):
         self.pack_start(gtk.SeparatorToolItem())
         self.pack_start(ImageButton(gtk.STOCK_MEDIA_STOP, controls.state_stop, _("Stop")))
         self.pack_start(ImageButton(gtk.STOCK_MEDIA_PLAY, controls.state_play, _("Play")))
-        self.pack_start(ImageButton(gtk.STOCK_MEDIA_PAUSE, controls.state_pause, _("Pause")))
+        self.pack_start(ImageButton(gtk.STOCK_MEDIA_PAUSE, controls.state_play_pause, _("Pause")))
         self.pack_start(ImageButton(gtk.STOCK_MEDIA_PREVIOUS, controls.prev, _("Previous")))
         self.pack_start(ImageButton(gtk.STOCK_MEDIA_NEXT, controls.next, _("Next")))
         self.pack_start(gtk.SeparatorToolItem())
