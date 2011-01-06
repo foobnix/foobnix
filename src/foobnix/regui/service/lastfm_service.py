@@ -127,7 +127,7 @@ class LastFmService():
     def get_scrobbler(self):
         return self.scrobbler
     
-    def report_now_playting(self, bean):
+    def report_now_playing(self, bean):
         if not FC().enable_music_scrobbler:
             LOG.debug("Last.fm scrobbler not enabled")
             return None 
