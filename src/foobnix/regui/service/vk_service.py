@@ -11,8 +11,6 @@ from foobnix.util import LOG
 import urllib
 import re
 from foobnix.helpers.dialog_entry import show_login_password_error_dialog
-from setuptools.package_index import htmldecode
-from setuptools.command.sdist import unescape
 from string import replace
 from foobnix.regui.model import FModel
     
@@ -178,12 +176,12 @@ class VKService:
             
             return None   
     
-    def to_good_chars(self, line):
+    def to_good_chars(self, line):        
         try:
+            from setuptools.package_index import htmldecode
             return htmldecode(line)
         except:
-            return unescape(line)
-    
+            return line
     
     def find_time_value(self, times_count, r_count):
         for i in times_count:
