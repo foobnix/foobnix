@@ -1,9 +1,10 @@
 import re
 from foobnix.util.fc import FC
-from foobnix.util.file_utils import get_file_extenstion
+from foobnix.util.file_utils import get_file_extension
 import urllib
+import string
 
-def capitilize_query(line):
+def capitalize_query(line):
     if not line:
         return line
     
@@ -16,15 +17,13 @@ def capitilize_query(line):
         result += " " + word[0].upper() + word[1:]
     return result.strip()
 
-def capitilize_string(src):
+def capitalize_string(src):
     if not src:
         return src
-        
+
     line = u"" + src.strip()
-    result = ""
-    for word in line.split():
-        result += " " + word[0].upper() + word[1:].lower()
-    return result.strip()
+    word_capitalized = map(string.capitalize, line.split())
+    return ' '.join(word_capitalized)
 
 
 def smart_splitter(input, max_len):
@@ -86,7 +85,7 @@ def split_string(str, length):
     str = substr1 + "\n" + substr2
     return str
 
-def normilize_text(line):
+def normalize_text(line):
     if not line:
         return ""
     line = urllib.unquote(line)
@@ -101,10 +100,10 @@ def normilize_text(line):
     prefix_index = re.search('^([ 0-9.-]*)', line).end()   
     line = line[prefix_index:]
     
-    line = capitilize_string(line)
+    line = capitalize_string(line)
     
     """remove extension"""
-    ext = get_file_extenstion(line)  
+    ext = get_file_extension(line)  
     if ext in FC().all_support_formats:                
         line = line.replace(ext, "")
     

@@ -11,7 +11,7 @@ from foobnix.util.const import DOWNLOAD_STATUS_COMPLETED, \
 import os
 from foobnix.util.time_utils import size2text
 from foobnix.util.fc import FC
-from foobnix.util.file_utils import get_file_extenstion
+from foobnix.util.file_utils import get_file_extension
 
 class Dowloader(threading.Thread):
     def __init__(self, update, bean, notify_finish):
@@ -47,7 +47,7 @@ class Dowloader(threading.Thread):
         block_size = 4096
         block_count = 0
         
-        ext = get_file_extenstion(bean.path)
+        ext = get_file_extension(bean.path)
         
         if bean.artist:
             path = FC().online_save_to_folder + "/" + bean.artist 

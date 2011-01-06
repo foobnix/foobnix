@@ -7,7 +7,7 @@ Created on 7  2010
 from __future__ import with_statement
 from foobnix.regui.model import FModel
 import os
-from foobnix.util.time_utils import normilize_time
+from foobnix.util.time_utils import normalize_time
 from foobnix.util import LOG, file_utils
 import chardet
 import re
@@ -121,7 +121,7 @@ class CueReader():
             bean.name = bean.text
             bean.start_sec = track.get_start_time_sec()
             bean.duration_sec = track.duration
-            bean.time = normilize_time(track.duration)
+            bean.time = normalize_time(track.duration)
             bean.is_file = True
             beans.append(bean)
         
@@ -195,9 +195,9 @@ class CueReader():
 
                 if not exists:
                     """try to find other source"""
-                    ext = file_utils.get_file_extenstion(full_file)
+                    ext = file_utils.get_file_extension(full_file)
                     nor = full_file[:-len(ext)]
-                    LOG.info("Normilized path", nor)
+                    LOG.info("Normalized path", nor)
                     
                     find_source = False
                     for support_ext in FC().audio_formats:

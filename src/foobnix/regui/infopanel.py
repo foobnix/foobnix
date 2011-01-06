@@ -17,7 +17,7 @@ from foobnix.thirdparty.lyr import get_lyrics
 import gobject
 from foobnix.helpers.image import ImageBase
 from foobnix.util.bean_utils import update_parent_for_beans, \
-    update_bean_from_normilized_text
+    update_bean_from_normalized_text
 from foobnix.util import LOG
 
 class InfoCache():
@@ -145,7 +145,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             return
 
         """update bean info form text if possible"""
-        bean = update_bean_from_normilized_text(bean)
+        bean = update_bean_from_normalized_text(bean)
         
                 
         if not bean.artist or not bean.title:

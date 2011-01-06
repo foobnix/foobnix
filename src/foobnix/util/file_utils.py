@@ -10,11 +10,11 @@ def isDirectory(path):
     return os.path.isdir(path)
 
 """extentsion linke .mp3, .mp4"""
-def get_file_extenstion(fileName):    
+def get_file_extension(fileName):    
     return os.path.splitext(fileName)[1].lower().strip()
 
-def file_extenstion(file_name):
-    return get_file_extenstion(file_name)
+def file_extension(file_name):
+    return get_file_extension(file_name)
 
 def get_file_path_from_dnd_dropped_uri(uri):
     path = ""

@@ -257,9 +257,6 @@ class LastFmService():
             title = track_item.get_title()
             text = artist + " - " + title
             bean = FModel(text).add_artist(artist).add_title(title)
-            #norm_duration = track_item.get_duration() / 1000
-            #LOG.info(track_item.get_duration(), norm_duration
-            #bean.time = normilize_time(norm_duration)
             beans.append(bean)
 
         return beans
@@ -292,9 +289,6 @@ class LastFmService():
             title = track_item.get_title()
             text = artist + " - " + title
             bean = FModel(text).add_artist(artist).add_title(title)
-            #norm_duration = track_item.get_duration() / 1000
-            #LOG.info(track_item.get_duration(), norm_duration
-            #bean.time = normilize_time(norm_duration)
             beans.append(bean)
 
         return beans

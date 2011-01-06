@@ -63,7 +63,7 @@ def convert_seconds_to_text(time_sec):
         return time_str
 
 
-def normilize_time(length):
+def normalize_time(length):
     if length < 0:
         return 0
     

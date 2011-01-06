@@ -23,10 +23,10 @@ from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
 from foobnix.regui.service.music_service import get_all_music_by_path
 from foobnix.regui.service.google_service import google_search_resutls
-from foobnix.util.file_utils import get_file_extenstion
+from foobnix.util.file_utils import get_file_extension
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 from foobnix.version import FOOBNIX_VERSION
-from foobnix.util.text_utils import normilize_text
+from foobnix.util.text_utils import normalize_text
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
@@ -47,7 +47,7 @@ class BaseFoobnixControls():
         for arg in args:            
             if os.path.isdir(arg):
                 dirs.append(arg)
-            elif os.path.isfile(arg) and get_file_extenstion(arg) in FC().all_support_formats:
+            elif os.path.isfile(arg) and get_file_extension(arg) in FC().all_support_formats:
                 files.append(arg)
         if dirs:
             self.on_add_folders(dirs)
@@ -353,7 +353,7 @@ class BaseFoobnixControls():
         LOG.debug("Notify title", text)
         
         self.statusbar.set_text(text)
-        text = normilize_text(text)
+        text = normalize_text(text)
         self.seek_bar.set_text(text)       
         t_bean = FModel(text).create_from_text(text)                       
         self.update_info_panel(t_bean)
@@ -525,7 +525,7 @@ class BaseFoobnixControls():
         """cue_beans = []
         for bean in beans:
             print "1", bean.path
-            if get_file_extenstion(bean.path) == ".cue":
+            if get_file_extension(bean.path) == ".cue":
                 cue_beans.append(bean.path)
         if cue_beans:
             print "2", cue_beans

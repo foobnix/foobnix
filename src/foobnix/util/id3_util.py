@@ -6,9 +6,9 @@ Created on 24 нояб. 2010
 '''
 from foobnix.cue.cue_reader import update_id3_for_cue
 from foobnix.util.image_util import get_image_by_path
-from foobnix.util.time_utils import normilize_time
-from foobnix.util.bean_utils import update_bean_from_normilized_text
-from foobnix.util.file_utils import file_extenstion
+from foobnix.util.time_utils import normalize_time
+from foobnix.util.bean_utils import update_bean_from_normalized_text
+from foobnix.util.file_utils import file_extension
 from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.util.audio import get_mutagen_audio
@@ -80,9 +80,9 @@ def udpate_id3(bean):
             except:
                 bean.tracknumber = ""
         
-        bean = update_bean_from_normilized_text(bean)        
+        bean = update_bean_from_normalized_text(bean)        
         
-        bean.time = normilize_time(duration_sec)
+        bean.time = normalize_time(duration_sec)
 
     return bean
 
@@ -91,7 +91,7 @@ def get_support_music_beans_from_all(beans):
     for bean in beans:
         if bean.path and os.path.isdir(bean.path):
             result.append(bean)
-        elif bean.path and os.path.isfile(bean.path) and file_extenstion(bean.path) in FC().audio_formats:
+        elif bean.path and os.path.isfile(bean.path) and file_extension(bean.path) in FC().audio_formats:
             result.append(bean)
         elif bean.path and bean.path.startswith("http://"):
             result.append(bean)

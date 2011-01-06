@@ -2,7 +2,7 @@ import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.model.signal import FControl
 from foobnix.util import LOG
-from foobnix.util.text_utils import capitilize_query
+from foobnix.util.text_utils import capitalize_query
 from foobnix.util.key_utils import is_key
 
 class SearchControls(FControl, gtk.VBox):
@@ -48,7 +48,7 @@ class SearchControls(FControl, gtk.VBox):
     
     def get_query(self):
         query = self.entry.get_text()
-        return capitilize_query(query)
+        return capitalize_query(query)
         
     def search_line(self):
         self.entry = gtk.Entry()

@@ -260,16 +260,16 @@ class DrugDropTree(gtk.TreeView):
             return
         self.current_view = VIEW_PLAIN
         
-        normilized = []
+        normalized = []
         for model in beans:
             if model.path and model.path.lower().endswith(".iso.wv"):
                 LOG.debug("begin normalize iso.wv", model.path)
                 all = get_beans_from_iso_wv(model.path)
                 for inner in all:
-                    normilized.append(inner)
+                    normalized.append(inner)
             else:
-                normilized.append(model)
-        beans = normilized
+                normalized.append(model)
+        beans = normalized
               
         counter = 0
         for bean in beans:
