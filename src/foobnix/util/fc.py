@@ -33,10 +33,7 @@ def get_random_vk():
        "c892588@bofthew.com":"c892588"       
        }
 
-    rand = random.randint(0, len(vks) - 1)
-    key = vks.keys()[rand]
-    value = vks[key]
-    return key, value
+    return random.choice(vks.items())
 
 
 
@@ -110,9 +107,7 @@ class FC:
         self.lfm_login = self.LASTFM_USER
         self.lfm_password = self.LASTFM_PASSWORD
         """vk"""
-        vk = get_random_vk()
-        self.vk_login = vk[0]
-        self.vk_password = vk[1]
+        self.vk_login, self.vk_password = get_random_vk()
         self.vk_cookie = None
         
         self.enable_music_scrobbler = True

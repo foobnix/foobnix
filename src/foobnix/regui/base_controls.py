@@ -22,7 +22,7 @@ from foobnix.regui.service.vk_service import VKService
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
 from foobnix.regui.service.music_service import get_all_music_by_path
-from foobnix.regui.service.google_service import google_search_resutls
+from foobnix.regui.service.google_service import google_search_results
 from foobnix.util.file_utils import get_file_extension
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE
 from foobnix.version import FOOBNIX_VERSION
@@ -57,7 +57,7 @@ class BaseFoobnixControls():
     def show_google_results(self, query):
         beans = []
         beans.append(FModel('"%s" not found trying Google search' % query))
-        g_results = google_search_resutls(query)
+        g_results = google_search_results(query)
         for line in g_results:
             beans.append(FModel(line).add_is_file(True))
         if not g_results:
@@ -339,7 +339,7 @@ class BaseFoobnixControls():
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
         sec = int(sec) 
         if sec > 10 and sec % 11 == 0:
-            self.lastfm.report_now_playting(bean)
+            self.lastfm.report_now_playing(bean)
             
         if not self.start_time:
             self.start_time = str(int(time.time()))

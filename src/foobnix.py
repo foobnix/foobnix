@@ -4,6 +4,7 @@ import sys
 import time
 import gtk
 import gobject
+from foobnix.regui.controls.dbus_manager import foobnix_dbus_interface
 from foobnix.util import LOG
 
 
@@ -13,7 +14,7 @@ if "--test" in sys.argv:
     result = run_all_tests(ignore="test_core")
     if not result:        
         raise SystemExit("Test failures are listed above.")
-
+    exit()
 
 init_time = time.time()
 
@@ -21,7 +22,7 @@ if "--debug" in sys.argv:
     LOG.set_logger_level("debug")
     LOG.print_platform_info()
 
-from foobnix.regui.controls.dbus_manager import foobnix_dbus_interface
+
 iface = foobnix_dbus_interface()
 
 if "--debug" in sys.argv or not iface:
