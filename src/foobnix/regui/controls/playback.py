@@ -42,21 +42,21 @@ class OrderShuffleControls(FControl, gtk.HBox, LoadSave):
     def update(self):
         if FC().is_order_random:
             self.rlabel.set_markup("<b>S</b>")
-            self.rlabel.set_tooltip_text("Shuffle on")
+            self.rlabel.set_tooltip_text(_("Shuffle on"))
             
         else:
             self.rlabel.set_markup("S")
-            self.rlabel.set_tooltip_text("Shuffle off")
+            self.rlabel.set_tooltip_text(_("Shuffle off"))
             
         if FC().repeat_state == const.REPEAT_ALL:
             self.olabel.set_markup("<b>R</b>")
-            self.olabel.set_tooltip_text("Repeat all")            
+            self.olabel.set_tooltip_text(_("Repeat all"))            
         elif FC().repeat_state == const.REPEAT_SINGLE:
             self.olabel.set_markup("<b>R1</b>")
-            self.olabel.set_tooltip_text("Repeat single")
+            self.olabel.set_tooltip_text(_("Repeat single"))
         else:
             self.olabel.set_markup("R")
-            self.olabel.set_tooltip_text("Repeat off")
+            self.olabel.set_tooltip_text(_("Repeat off"))
         
     def on_random(self, *a):
         FC().is_order_random = not FC().is_order_random
