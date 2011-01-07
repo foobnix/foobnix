@@ -15,38 +15,14 @@ from string import replace
 from foobnix.regui.model import FModel
     
 class VKService:
-    def __init__(self):
+    def __init__(self, email=None, password=None):
         self.vk_cookie = None
         self.execute_time = time.time()
        
-    def request(self, host, post):
-        headers = {'User-Agent' : FC().agent_line,
-                   'Host' : 'vkontakte.ru',
-                   'Referer' : 'http://vkontakte.ru/index.php',
-                   'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
-                   'X-Requested-With' : 'XMLHttpRequest',
-                   'Connection' : 'close',
-                   'Cookie' : 'remixlang=0; remixchk=5; audio_vol=100; %s' % self.get_cookie(),
-                   'Pragma' : 'no-cache',
-                   'Cache-Control' : '    no-cache'
-                  }
-        conn = urllib2.Request(host, post, headers)
-        #Do not run to offten
-        cur_time = time.time()
-        if cur_time - self.execute_time < 0.5:
-            LOG.info("Sleep because to many requests...")
-            time.sleep(0.8)        
-        self.execute_time = time.time()
         
-        try:
-            data = urllib2.urlopen(conn);
-        except Exception, e:
-            LOG.critical(FC().agent_line, FC().vk_login, FC().vk_password)
-            LOG.critical("VK ERROR", e)
-        result = data.read()
-        return result
-    
-    
+    def isLive(self):
+        return self.get_s_value()
+
     def get_s_value(self):
 
         host = 'http://login.vk.com/?act=login'
@@ -130,8 +106,33 @@ class VKService:
                                  "c[q]" : query,
                                  "c[section]":section
                                 })
+        headers = {'User-Agent' : FC().agent_line,
+                   'Host' : 'vkontakte.ru',
+                   'Referer' : 'http://vkontakte.ru/index.php',
+                   'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
+                   'X-Requested-With' : 'XMLHttpRequest',
+                   'Connection' : 'close',
+                   'Cookie' : 'remixlang=0; remixchk=5; audio_vol=100; %s' % self.get_cookie(),
+                   'Pragma' : 'no-cache',
+                   'Cache-Control' : '    no-cache'
+                  }
+        conn = urllib2.Request(host, post, headers)
         
-        return self.request(host, post)
+        #Do not run to offten
+        cur_time = time.time()
+        if cur_time - self.execute_time < 0.5:
+            LOG.info("Sleep because to many requests...")
+            time.sleep(0.8)        
+        self.execute_time = time.time()
+        
+        try:
+            data = urllib2.urlopen(conn);
+        except Exception, e:
+            LOG.critical(FC().agent_line, FC().vk_login, FC().vk_password)
+            LOG.critical("VK ERROR", e)
+        result = data.read()
+        return result
+    
        
     def get_page_by_url(self, host_url):
         if not host_url:
@@ -139,8 +140,32 @@ class VKService:
         host_url.replace("#", "&")
         post = host_url[host_url.find("?") + 1:]
         LOG.debug("post", post)
-
-        return self.request(host_url, post, headers)
+        headers = {'User-Agent' : FC().agent_line,
+                   'Host' : 'vkontakte.ru',
+                   'Referer' : 'http://vkontakte.ru/index.php',
+                   'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
+                   'X-Requested-With' : 'XMLHttpRequest',
+                   'Connection' : 'close',
+                   'Cookie' : 'remixlang=0; remixchk=5; audio_vol=100; %s' % self.get_cookie(),
+                   'Pragma' : 'no-cache',
+                   'Cache-Control' : '    no-cache'
+                  }
+        conn = urllib2.Request(host_url, post, headers)
+        
+        #Do not run to offten
+        cur_time = time.time()
+        if cur_time - self.execute_time < 0.5:
+            LOG.info("Sleep because to many requests...")
+            time.sleep(0.8)        
+        self.execute_time = time.time()
+        
+        try:
+            data = urllib2.urlopen(conn);
+        except Exception, e:
+            LOG.error("VK Connection Erorr", e)
+            return None
+        result = data.read()
+        return result
     
     def get_name_by(self, id, result_album):
             for album in result_album:
