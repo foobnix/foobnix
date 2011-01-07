@@ -6,7 +6,7 @@ from test.all import run_all_tests
 
 VERSION = "0.2.3"
 RELEASE = "1"
-LANGS = ('ru', 'zh_CN')
+LANGS = ('ru', 'zh_CN', "es", "it")
 
 if not os.path.exists("mo/"):
     os.mkdir("mo/")
@@ -94,6 +94,8 @@ setup(name='foobnix',
                     ('share/foobnix/radio', glob.glob('radio/*')),
                     ('share/man/man1', ['foobnix.1']),
                     ('/usr/share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo']),
+                    ('/usr/share/locale/es/LC_MESSAGES', ['mo/es/foobnix.mo']),
+                    ('/usr/share/locale/it/LC_MESSAGES', ['mo/it/foobnix.mo']),
                     ('/usr/share/locale/zh_CN/LC_MESSAGES', ['mo/zh_CN/foobnix.mo'])                   
                     ]
         )
