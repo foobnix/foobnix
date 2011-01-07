@@ -12,7 +12,6 @@ from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
-import gobject
     
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
