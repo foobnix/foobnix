@@ -16,6 +16,7 @@ def get_foobnix_resourse_path_by_name(filename):
              "/usr/local/share/foobnix",
              "pixmaps",
              "foobnix/pixmaps",
+             "share/pixmaps",
              "./../../..",
              "./../../",
              "./../pixmaps",

@@ -12,6 +12,19 @@ VERSION = "0.2.3"
 RELEASE = "1"
 LANGS = ('ru', 'zh_CN', "es", "it")
 
+data_files = [
+    ('share/foobnix', ['README']),
+    ('share/foobnix', ['CHANGELOG']),
+    ('share/applications', ['foobnix.desktop']),
+    ('share/pixmaps/theme', glob.glob('foobnix/pixmaps/theme/*')),
+    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.png')),
+    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.jpg')),
+    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.gif')),
+    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.svg')),
+    ('share/foobnix/radio', glob.glob('radio/*')),
+    ('share/man/man1', ['foobnix.1']),
+]
+
 
 if os.name != 'nt':    
     if not os.path.exists("mo/"):
@@ -23,7 +36,7 @@ if os.name != 'nt':
             os.mkdir("mo/" + lang + "/")
         print "generating", mofile    
         os.system("msgfmt %s -o %s" % (pofile, mofile))
-        
+        data_files.append(('share/locale/%s/LC_MESSAGES' % lang, ['mo/%s/foobnix.mo' % lang]))
     
     version = file("foobnix/version.py", "wt")
     version.write("""
@@ -86,24 +99,7 @@ setup(name='foobnix',
                 ],
         scripts=['foobnix/foobnix'],
         cmdclass={"test": test_cmd},
-        data_files=[
-                    ('share/foobnix', ['README']),
-                    ('share/foobnix', ['CHANGELOG']),
-                    ('share/applications', ['foobnix.desktop']),
-                    ('share/pixmaps/theme', glob.glob('foobnix/pixmaps/theme/*')),
-                    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.png')),
-                    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.jpg')),
-                    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.gif')),
-                    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.svg')),
-                    ('share/foobnix/radio', glob.glob('radio/*')),
-                    ('share/man/man1', ['foobnix.1']),
-                    
-                    ('share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo']),
-                    ('share/locale/es/LC_MESSAGES', ['mo/es/foobnix.mo']),
-                    ('share/locale/it/LC_MESSAGES', ['mo/it/foobnix.mo']),
-                    ('share/locale/zh_CN/LC_MESSAGES', ['mo/zh_CN/foobnix.mo'])
-                                       
-                    ],
+        data_files=data_files,
         windows=[
                 {
                     "script": "foobnix.py",
