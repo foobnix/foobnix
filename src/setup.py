@@ -80,6 +80,7 @@ setup(name='foobnix',
                 "foobnix.util",
                 ],
         scripts=['foobnix/foobnix'],
+        window=['foobnix.py'],
         cmdclass={"test": test_cmd},
         data_files=[
                     ('share/foobnix', ['README']),
@@ -97,6 +98,11 @@ setup(name='foobnix',
                     ('/usr/share/locale/it/LC_MESSAGES', ['mo/it/foobnix.mo']),
                     ('/usr/share/locale/zh_CN/LC_MESSAGES', ['mo/zh_CN/foobnix.mo'])                   
                     ],
+        windows=[
+                {
+                    "script": "foobnix.py",
+                    "icon_resources": [(0, os.path.join('foobnix', 'pixmaps', 'foobnix.ico'))]
+                }],
         options={
                 'py2exe': {                
                     'includes': ('cairo, pango, pangocairo, atk, gio,pygst, gst, simplejson, chardet')
