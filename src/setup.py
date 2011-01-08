@@ -8,26 +8,25 @@ VERSION = "0.2.3"
 RELEASE = "1"
 LANGS = ('ru', 'zh_CN', "es", "it")
 
-if not os.path.exists("mo/"):
-    os.mkdir("mo/")
-for lang in LANGS:
-    pofile = "po/" + lang + ".po"
-    mofile = "mo/" + lang + "/foobnix.mo"
-    if not os.path.exists("mo/" + lang + "/"):
-        os.mkdir("mo/" + lang + "/")
-    print "generating", mofile    
-    os.system("msgfmt %s -o %s" % (pofile, mofile))
+if os.name != 'nt':    
+    if not os.path.exists("mo/"):
+        os.mkdir("mo/")
+    for lang in LANGS:
+        pofile = "po/" + lang + ".po"
+        mofile = "mo/" + lang + "/foobnix.mo"
+        if not os.path.exists("mo/" + lang + "/"):
+            os.mkdir("mo/" + lang + "/")
+        print "generating", mofile    
+        os.system("msgfmt %s -o %s" % (pofile, mofile))
+        
     
-    
-
-
-version = file("foobnix/version.py", "wt")
-version.write("""
-FOOBNIX_VERSION="%(VERSION)s-%(RELEASE)s"
-VERSION="%(VERSION)s"
-RELEASE="%(RELEASE)s"
-""" % {'RELEASE':RELEASE, 'VERSION':VERSION})
-version.close()
+    version = file("foobnix/version.py", "wt")
+    version.write("""
+    FOOBNIX_VERSION="%(VERSION)s-%(RELEASE)s"
+    VERSION="%(VERSION)s"
+    RELEASE="%(RELEASE)s"
+    """ % {'RELEASE':RELEASE, 'VERSION':VERSION})
+    version.close()
 
 shutil.copyfile("foobnix.py", "foobnix/foobnix")
 
@@ -97,11 +96,17 @@ setup(name='foobnix',
                     ('/usr/share/locale/es/LC_MESSAGES', ['mo/es/foobnix.mo']),
                     ('/usr/share/locale/it/LC_MESSAGES', ['mo/it/foobnix.mo']),
                     ('/usr/share/locale/zh_CN/LC_MESSAGES', ['mo/zh_CN/foobnix.mo'])                   
-                    ]
+                    ],
+        options={
+                'py2exe': {                
+                    'includes': ('cairo, pango, pangocairo, atk, gio,pygst, gst, simplejson, chardet')
+                }
+                }
         )
 
-os.remove("foobnix/foobnix")
-if os.path.exists("mo"):
-    shutil.rmtree("mo")
-if os.path.exists("build"):
-    shutil.rmtree("build")
+if os.name != 'nt':    
+    os.remove("foobnix/foobnix")
+    if os.path.exists("mo"):
+        shutil.rmtree("mo")
+    if os.path.exists("build"):
+        shutil.rmtree("build")
