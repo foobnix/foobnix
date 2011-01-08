@@ -55,6 +55,7 @@ class ImageButton(gtk.Button):
     def __init__(self, stock_image, func=None, tooltip_text=None):
         gtk.Button.__init__(self)
         self.set_relief(gtk.RELIEF_NONE)
+        self.set_focus_on_click(False)
         if tooltip_text:
             self.set_tooltip_text(tooltip_text)
         img = gtk.image_new_from_stock(stock_image, gtk.ICON_SIZE_LARGE_TOOLBAR)
