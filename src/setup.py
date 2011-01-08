@@ -22,9 +22,9 @@ if os.name != 'nt':
     
     version = file("foobnix/version.py", "wt")
     version.write("""
-    FOOBNIX_VERSION="%(VERSION)s-%(RELEASE)s"
-    VERSION="%(VERSION)s"
-    RELEASE="%(RELEASE)s"
+FOOBNIX_VERSION="%(VERSION)s-%(RELEASE)s"
+VERSION="%(VERSION)s"
+RELEASE="%(RELEASE)s"
     """ % {'RELEASE':RELEASE, 'VERSION':VERSION})
     version.close()
 
