@@ -19,6 +19,7 @@ data_files = [
     ('share/pixmaps/theme', glob.glob('foobnix/pixmaps/theme/*')),
     ('share/pixmaps', glob.glob('foobnix/pixmaps/*.png')),
     ('share/pixmaps', glob.glob('foobnix/pixmaps/*.jpg')),
+    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.ico')),
     ('share/pixmaps', glob.glob('foobnix/pixmaps/*.gif')),
     ('share/pixmaps', glob.glob('foobnix/pixmaps/*.svg')),
     ('share/foobnix/radio', glob.glob('radio/*')),
