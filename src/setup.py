@@ -107,7 +107,7 @@ setup(name='foobnix',
                 }],
         options={
                 'py2exe': {                
-                    'includes': ('cairo, pango, pangocairo, atk, gio, gst, simplejson, chardet')
+                    'includes': ('cairo, pango, pangocairo, atk, gio, pygst, gst, simplejson, chardet')
                 }
                 }
         )
