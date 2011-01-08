@@ -4,9 +4,14 @@ import shutil
 from distutils.core import setup, Command
 from test.all import run_all_tests
 
+if os.name == 'nt':
+    import py2exe
+
+
 VERSION = "0.2.3"
 RELEASE = "1"
 LANGS = ('ru', 'zh_CN', "es", "it")
+
 
 if os.name != 'nt':    
     if not os.path.exists("mo/"):
@@ -80,7 +85,6 @@ setup(name='foobnix',
                 "foobnix.util",
                 ],
         scripts=['foobnix/foobnix'],
-        window=['foobnix.py'],
         cmdclass={"test": test_cmd},
         data_files=[
                     ('share/foobnix', ['README']),
