@@ -4,7 +4,7 @@ rm -rf ../../build/*.*
 cd ../
 
 python setup.py build
-python setup.py test
+#python setup.py test
 
 echo -n "Tests finished > "
 read text
@@ -39,7 +39,7 @@ V_RELEASE=${RELEASE}${UBUNTU:0:1}
 	
 	#dch -e
 	
-	debuild -S -sd -kD2628E50
+	debuild -S -sd -kB8C27E00
 	
 	#debuild -us -uc
 	
