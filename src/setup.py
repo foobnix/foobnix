@@ -97,10 +97,12 @@ setup(name='foobnix',
                     ('share/pixmaps', glob.glob('foobnix/pixmaps/*.svg')),
                     ('share/foobnix/radio', glob.glob('radio/*')),
                     ('share/man/man1', ['foobnix.1']),
-                    ('/usr/share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo']),
-                    ('/usr/share/locale/es/LC_MESSAGES', ['mo/es/foobnix.mo']),
-                    ('/usr/share/locale/it/LC_MESSAGES', ['mo/it/foobnix.mo']),
-                    ('/usr/share/locale/zh_CN/LC_MESSAGES', ['mo/zh_CN/foobnix.mo'])                   
+                    
+                    ('share/locale/ru/LC_MESSAGES', ['mo/ru/foobnix.mo']),
+                    ('share/locale/es/LC_MESSAGES', ['mo/es/foobnix.mo']),
+                    ('share/locale/it/LC_MESSAGES', ['mo/it/foobnix.mo']),
+                    ('share/locale/zh_CN/LC_MESSAGES', ['mo/zh_CN/foobnix.mo'])
+                                       
                     ],
         windows=[
                 {
@@ -109,7 +111,7 @@ setup(name='foobnix',
                 }],
         options={
                 'py2exe': {                
-                    'includes': ('cairo, pango, pangocairo, atk, gio,pygst, gst, simplejson, chardet')
+                    'includes': ('cairo, pango, pangocairo, atk, gio, gst, simplejson, chardet')
                 }
                 }
         )
