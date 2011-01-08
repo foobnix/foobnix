@@ -8,7 +8,7 @@ import os
 from foobnix.util import LOG
 
 
-FOOBNIX_RADIO_PATHS = ("/usr/local/share/foobnix/radio", "radio", "/usr/share/foobnix/radio")
+FOOBNIX_RADIO_PATHS = ("/usr/local/share/foobnix/radio", "radio", "share/foobnix/radio", "/usr/share/foobnix/radio")
 EXTENSION = ".fpl"
 
 

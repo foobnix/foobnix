@@ -45,7 +45,7 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
             menu.add_item(_("Delete Station"), gtk.STOCK_DELETE, self.on_delete_station, None)
             menu.add_item(_("Edit Radio"), gtk.STOCK_EDIT, self.on_edit_radio, None)
             menu.add_separator()
-            menu.add_item(_("Restore Defaults"), gtk.STOCK_REFRESH, self.update_radio_tree, None)            
+            menu.add_item(_("Reload radio folder"), gtk.STOCK_REFRESH, self.update_radio_tree, None)            
             menu.show(e)
     
     def on_edit_radio(self):

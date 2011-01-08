@@ -51,9 +51,9 @@ LEFT_PERSPECTIVE_VIRTUAL = "virtual"
 
 ICON_FOOBNIX = "foobnix.png"
 
-ICON_FOOBNIX_PLAY = "foobnix-play.svg"
-ICON_FOOBNIX_PAUSE = "foobnix-pause.svg"
-ICON_FOOBNIX_STOP = "foobnix-stop.svg"
+ICON_FOOBNIX_PLAY = "foobnix-play.png"
+ICON_FOOBNIX_PAUSE = "foobnix-pause.png"
+ICON_FOOBNIX_STOP = "foobnix-stop.png"
 ICON_FOOBNIX_RADIO = "foobnix-radio.jpg"
 ICON_BLANK_DISK = "foobnix-blank-disc.jpg"
       
