@@ -76,42 +76,26 @@ class DrugDropTree(gtk.TreeView):
         return bean
     
     def iter_copy(self, from_filter_model, from_filter_iter, to_filter_model, to_filter_iter, pos, to_type, from_type):
-        print from_filter_model.iter_has_child(from_filter_iter)
-        row = self.get_row_from_model_iter(from_filter_model, from_filter_iter)
-        print row
         
-        to_model = to_filter_model.get_model()
-        from_filter_path = from_filter_model.get_path(from_filter_iter) #only before changing in the tree
+        
+        
+        #to_model = to_filter_model.get_model()
+        #from_filter_path = from_filter_model.get_path(from_filter_iter) #only before changing in the tree
         
         if to_filter_iter:
             to_filter_path = to_filter_model.get_path(to_filter_iter)
-            to_filter_iter_has_child = to_filter_model.iter_has_child(to_filter_iter) #only before changing in the tree
+            #to_filter_iter_has_child = to_filter_model.iter_has_child(to_filter_iter) #only before changing in the tree
                 
-        """if m3u is dropped"""
+        '''"""if m3u is dropped"""
         if (from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u") 
         or from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u8")):
             tree_store = from_filter_model.get_model()
             child_iter = from_filter_model.convert_iter_to_child_iter(from_filter_iter)
             m3u_file_path = tree_store.get_value(child_iter, 5)
             m3u_title = tree_store.get_value(child_iter, 0)
-            self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)
-        
-        if to_filter_iter:
-            print "to"
-            to_iter = to_filter_model.convert_iter_to_child_iter(to_filter_iter)
-        
-        if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
-            new_iter = to_model.prepend(to_iter, row) 
-            if to_filter_iter and to_filter_iter_has_child:
-                new_iter = to_model.iter_parent(new_iter)
-        elif pos == gtk.TREE_VIEW_DROP_BEFORE:
-            new_iter_1 = to_model.insert_before(None, to_iter, row)
-            new_iter = to_model.iter_next(new_iter_1)
-        elif pos == gtk.TREE_VIEW_DROP_AFTER:
-            new_iter = to_model.insert_after(None, to_iter, row)
-        else:
-            new_iter = to_model.append(None, row)
-        
+            self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)'''
+    
+    
         if (to_type == VIEW_TREE and from_type == VIEW_TREE) and from_filter_model == to_filter_model:
             print "in if"
             
@@ -149,13 +133,12 @@ class DrugDropTree(gtk.TreeView):
                 
         if ((to_type == VIEW_TREE and from_type == VIEW_TREE) or
             (to_type == VIEW_PLAIN and from_type == VIEW_TREE)):            
-            print "in_if"
-            print from_filter_model.iter_has_child(from_filter_iter)
+            
             """3)tree to tree, tree to plain"""
             if from_filter_model.iter_has_child(from_filter_iter):
                 print "has child"
-                cue_iters = []
-                folder_iters = []
+                #cue_iters = []
+                #folder_iters = []
                 not_cue_iters = []
                 
                 """if there are cue-files in iters, display only them and subfolder"""  
@@ -212,7 +195,7 @@ class DrugDropTree(gtk.TreeView):
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
         to_filter_model = to_tree.get_model()
-        #to_model = to_filter_model.get_model()
+        
         if to_tree.get_dest_row_at_pos(x, y):
             to_filter_path, to_filter_pos = to_tree.get_dest_row_at_pos(x, y)
             #to_path = to_filter_model.convert_path_to_child_path(to_path)      
@@ -222,37 +205,59 @@ class DrugDropTree(gtk.TreeView):
             to_filter_pos = None     
             to_filter_iter = None
         
-        from_tree = drag_context.get_source_widget()
-        if not from_tree:
-            """it is possible drug from file system"""
-            return None
-        from_filter_model, from_filter_paths = from_tree.get_selection().get_selected_rows()
+        from_tree = drag_context.get_source_widget()        
         
+        if not from_tree: return None
+        
+        from_filter_model, from_filter_paths = from_tree.get_selection().get_selected_rows()
         from_model = from_filter_model.get_model()
+        to_model = to_filter_model.get_model()
+        if to_filter_iter: 
+            to_iter = to_filter_model.convert_iter_to_child_iter(to_filter_iter)
+        else:
+            to_iter = None
         new_iter = None
-        for i, current_path  in enumerate(from_filter_paths):
-            
-            from_filter_iter = from_filter_model.get_iter(current_path)
-            #print from_filter_iter
-            #print "!!!",self.get_row_from_model_iter(from_filter_model, from_filter_iter)
-            #from_filter_path = from_filter_model.get_path(from_filter_iter)
-            from_path = from_model.get_path(from_filter_model.convert_iter_to_child_iter(from_filter_iter))
+        for i, from_filter_path  in enumerate(from_filter_paths):
+            from_filter_iter = from_filter_model.get_iter(from_filter_path)
+            from_path = from_filter_model.convert_path_to_child_path(from_filter_path)
+            from_iter = from_model.get_iter(from_path)
             #print from_path
-            
             """do not copy to himself"""
-            if to_tree == from_tree and current_path == to_filter_path:
+            if to_tree == from_tree and from_filter_path == to_filter_path:
                 drag_context.finish(False, False)
                 return None
             
+            """if m3u is dropped"""
+            if (from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u") 
+            or from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u8")):
+                m3u_file_path = from_model.get_value(from_iter, 5)
+                m3u_title = from_model.get_value(from_iter, 0)
+                self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)
+            
+            row = self.get_row_from_model_iter(from_filter_model, from_filter_iter)
+            
+            if from_model.iter_n_children(from_iter):
+                new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)
+                self.iter_is_parent(from_iter, from_model, to_model, new_iter)
+            else:
+                if new_iter:
+                    to_iter = new_iter
+                new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)
+            
+                        
             #"""do not copy to child""" 
-            if new_iter: 
+            
+            
+            
+            '''if new_iter: 
                 to_filter_iter = to_filter_model.convert_child_iter_to_iter(new_iter)
                 try:
-                    if current_path[0] > to_filter_path[0]:
-                        from_filter_iter = from_filter_model.get_iter( (current_path[0]+i, ) )
+                    if from_filter_path[0] > to_filter_path[0]:
+                        from_filter_iter = from_filter_model.get_iter( (from_filter_path[0]+i, ) )
                 except TypeError:
                     pass
-            new_iter = self.iter_copy(from_filter_model, from_filter_iter, to_filter_model, to_filter_iter, to_filter_pos, to_tree.current_view, from_tree.current_view)
+            
+            new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)'''
             
             if to_tree.current_view == VIEW_TREE:             
                 self.updates_tree_structure()
@@ -260,7 +265,7 @@ class DrugDropTree(gtk.TreeView):
             if to_tree.current_view == VIEW_PLAIN:             
                 self.rebuild_as_plain()
         
-        def task(i):
+        '''def task(i):
             if from_filter_model == to_filter_model:
                 #n = i
                 try:
@@ -295,9 +300,53 @@ class DrugDropTree(gtk.TreeView):
                 self.rebuild_as_plain()    
                 
            
-        gobject.idle_add(task, i)
+        gobject.idle_add(task, i)'''
         self.on_drag_drop_finish()
     
+    def to_add_drug_item(self, to_model, to_iter, row,  pos):    
+        
+        if to_iter:
+            if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+                new_iter = to_model.prepend(to_iter, row)
+                #if to_filter_iter and to_filter_iter_has_child:
+                    #new_iter = to_model.iter_parent(new_iter)
+            elif pos == gtk.TREE_VIEW_DROP_BEFORE:
+                new_iter_1 = to_model.insert_before(None, to_iter, row)
+                new_iter = to_model.iter_next(new_iter_1)
+            elif pos == gtk.TREE_VIEW_DROP_AFTER:
+                new_iter = to_model.insert_after(None, to_iter, row)
+            else:
+                new_iter = to_model.append(None, row)
+        else:
+            new_iter = to_model.append(None, row)
+        
+        return new_iter
+
+    def iter_is_parent(self, from_iter, from_model, to_model, to_parent_iter, pos=gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+        iters = self.content_filter(from_iter, from_model) #to_parent_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)
+        for iter in iters:
+            child_row = self.get_row_from_model_iter(from_model, iter)
+            to_child_iter = to_model.append(to_parent_iter, child_row)
+            if  from_model.iter_n_children(iter):
+                self.iter_is_parent(iter, from_model, to_model, to_child_iter)
+    
+    def content_filter(self, from_iter, from_model):
+        cue_iters = []
+        folder_iters = []
+        not_cue_iters = []
+        for n in xrange(from_model.iter_n_children(from_iter)):
+            from_child_iter = from_model.iter_nth_child(from_iter, n)
+            if (from_model.get_value(from_child_iter, 0).endswith(".m3u") 
+                or from_model.get_value(from_child_iter, 0).endswith(".m3u8")):
+                    continue
+            elif from_model.get_value(from_child_iter, 0).endswith(".cue"):
+                cue_iters.append(from_child_iter)
+            else:
+                if from_model.iter_has_child(from_child_iter):
+                    folder_iters.append(from_child_iter)
+                not_cue_iters.append(from_child_iter)
+        return cue_iters+folder_iters if cue_iters else not_cue_iters
+
     def child_by_recursion(self, row, plain):
         for child in row.iterchildren():
                 plain.append(child)
