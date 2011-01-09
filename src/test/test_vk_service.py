@@ -7,9 +7,20 @@ Created on 21 нояб. 2010
 import unittest
 from foobnix.regui.service.vk_service import VKService
 from foobnix.util.url_utils import get_url_type
-class TestVkService(unittest.TestCase):
+
+class TestVKService(unittest.TestCase):
     vk = VKService()
-        
+    
+    def test_login(self):
+        self.assertTrue(self.vk.get("http://vk.com/gsearch.php?section=audio&q=persiana&name=1").find("Persiana jones") > -1 )
+
+    def test_search_page(self):
+        self.assertTrue(self.vk.search("Madonna").find("Madonna") > -1)
+
+    def test_find_tracks_in_page(self):
+        page = self.vk.search("Madonna")
+        self.assertTrue(len(self.vk.find_tracks_in_page(page)) >0)
+    
     def test_find_videos(self):
         list = self.vk.find_video_by_query("Мадонна")
         for bean in list[:10]:
@@ -25,7 +36,6 @@ class TestVkService(unittest.TestCase):
         "http://cs12907.vkontakte.ru/u87507380/video/bee60bc871.240.mp4"
         path = beans[0].path
         self.assertNotEquals("text/html", get_url_type(path))
-        
                     
     def test_find_by_url(self):
         list = self.vk.find_tracks_by_url("http://vkontakte.ru/audio.php?gid=2849#album_id=0&gid=2849&id=0&offset=200")        
@@ -37,8 +47,6 @@ class TestVkService(unittest.TestCase):
         for bean in list:
             self.assertFalse('\">' in bean.text)
             self.assertTrue(bean.path.startswith("http://"))
-       
     
 if __name__ == '__main__':
-    unittest.main()        
-        
+    unittest.main()

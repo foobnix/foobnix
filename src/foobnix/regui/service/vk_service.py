@@ -13,184 +13,62 @@ import re
 from foobnix.helpers.dialog_entry import show_login_password_error_dialog
 from string import replace
 from foobnix.regui.model import FModel
-    
+import logging
+import sys
+from foobnix.util.text_utils import html_decode
+
 class VKService:
-    def __init__(self, email=None, password=None):
-        self.vk_cookie = None
-        self.execute_time = time.time()
-       
-        
-    def isLive(self):
-        return self.get_s_value()
-
-    def get_s_value(self):
-
-        host = 'http://login.vk.com/?act=login'
-        #host = 'http://vkontakte.ru/login.php'
-        post = urllib.urlencode({'email' : FC().vk_login,
-                                 'expire' : '',
-                                 'pass' : FC().vk_password,
-                                 'vk' : ''})
-
-        headers = {'User-Agent' : FC().agent_line,
-                   'Host' : 'login.vk.com',
-                   'Referer' : 'http://vkontakte.ru/index.php',
-                   'Connection' : 'close',
-                   'Pragma' : 'no-cache',
-                   'Cache-Control' : 'no-cache',
-                  }
-
-        conn = urllib2.Request(host, post, headers)
-        try:
-            data = urllib2.urlopen(conn)
-        except:
-            LOG.error("Error VK connection")
-            return None
-            
-        result = data.read()               
-        value = re.findall(r"name='s' value='(.*?)'", result)
-        
-        """old response format"""
-        if not value:
-            value = re.findall(r"name='s' id='s' value='(.*?)'", result)
-            
-        if value:
-            return value[0]
-        
-        return None
-
-    def get_cookie(self):
-        if FC().vk_cookie:
-            LOG.info("Get VK cookie from cache") 
-            return FC().vk_cookie
-        
-        s_value = self.get_s_value()
-        if not s_value:    
-            FC().vk_cookie = None    
-            val = show_login_password_error_dialog(_("VKontakte connection error"), _("Verify user and password"), FC().vk_login, FC().vk_password)
-            if val:
-                FC().vk_cookie = None
-                FC().vk_login = val[0]
-                FC().vk_password = val[1]
-            return None 
-        
-        if self.vk_cookie: 
-            return self.vk_cookie
-        
-        
-        host = 'http://vkontakte.ru/login.php?op=slogin'
-        post = urllib.urlencode({'s' : s_value})
-        headers = {'User-Agent' : FC().agent_line,
-                   'Host' : 'vkontakte.ru',
-                   'Referer' : 'http://login.vk.com/?act=login',
-                   'Connection' : 'close',
-                   'Cookie' : 'remixchk=5; remixsid=nonenone',
-                   'Pragma' : 'no-cache',
-                   'Cache-Control' : 'no-cache'
-                  }
-        conn = urllib2.Request(host, post, headers)
-        data = urllib2.urlopen(conn)
-        cookie_src = data.info().get('Set-Cookie')
-        self.cookie = re.sub(r'(expires=.*?;\s|path=\/;\s|domain=\.vkontakte\.ru(?:,\s)?)', '', cookie_src)
-        
-        FC().vk_cookie = self.vk_cookie 
-        return self.cookie
     
-    def get_page(self, query, section="audio"):
-        if not query:
-            return None
-        #offset_values = [0, 40, 80, 120, 160]
+    def __init__(self):
+        self.initialize_urllib2()
+        self.login()
+        
+    def initialize_urllib2(self):
+        self.cookie_processor = urllib2.HTTPCookieProcessor()
+        self.opener = urllib2.build_opener( self.cookie_processor )
+        urllib2.install_opener( self.opener )
 
-        host = 'http://vkontakte.ru/gsearch.php?section=' + section + '&q=vasya#c[q]=some%20id&c[section]=audio&name=1'
-        post = urllib.urlencode({
-                                 "c[q]" : query,
-                                 "c[section]":section
-                                })
-        headers = {'User-Agent' : FC().agent_line,
-                   'Host' : 'vkontakte.ru',
-                   'Referer' : 'http://vkontakte.ru/index.php',
-                   'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
-                   'X-Requested-With' : 'XMLHttpRequest',
-                   'Connection' : 'close',
-                   'Cookie' : 'remixlang=0; remixchk=5; audio_vol=100; %s' % self.get_cookie(),
-                   'Pragma' : 'no-cache',
-                   'Cache-Control' : '    no-cache'
-                  }
-        conn = urllib2.Request(host, post, headers)
+    def login(self):
+        post = {
+                'email' : FC().vk_login,
+                'pass' : FC().vk_password,
+                'act' : 'login',
+                'q' : '1',
+                'al_frame' : '1'
+        }
+        self.get('http://login.vk.com/?act=login', post)
+    
+    def find_tracks_by_query(self, query):
+        LOG.info("start search songs", query)
+        page = self.search(query)
+        return self.find_tracks_in_page(page)
         
-        #Do not run to offten
-        cur_time = time.time()
-        if cur_time - self.execute_time < 0.5:
-            LOG.info("Sleep because to many requests...")
-            time.sleep(0.8)        
-        self.execute_time = time.time()
+    def search(self, query, type='audio'):
+        return self.get("http://vk.com/gsearch.php?section="+type+"&q="+urllib.quote(query)+"&name=1")
+    
+    def find_tracks_in_page(self, page):
+        vkpage = VKResultsPage(page)
+        return vkpage.audio_tracks()
+    
+    def get(self, url, data=None, headers={}):
+        if data:
+            data = urllib.urlencode(data)
         
+        time.sleep(0.8)
         try:
-            data = urllib2.urlopen(conn);
+            handler = self.opener.open(url, data)
+            data = handler.read()
+            handler.close()
+            return data
         except Exception, e:
-            LOG.critical(FC().agent_line, FC().vk_login, FC().vk_password)
-            LOG.critical("VK ERROR", e)
-        result = data.read()
-        return result
-    
-       
-    def get_page_by_url(self, host_url):
-        if not host_url:
-            return host_url
-        host_url.replace("#", "&")
-        post = host_url[host_url.find("?") + 1:]
-        LOG.debug("post", post)
-        headers = {'User-Agent' : FC().agent_line,
-                   'Host' : 'vkontakte.ru',
-                   'Referer' : 'http://vkontakte.ru/index.php',
-                   'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
-                   'X-Requested-With' : 'XMLHttpRequest',
-                   'Connection' : 'close',
-                   'Cookie' : 'remixlang=0; remixchk=5; audio_vol=100; %s' % self.get_cookie(),
-                   'Pragma' : 'no-cache',
-                   'Cache-Control' : '    no-cache'
-                  }
-        conn = urllib2.Request(host_url, post, headers)
-        
-        #Do not run to offten
-        cur_time = time.time()
-        if cur_time - self.execute_time < 0.5:
-            LOG.info("Sleep because to many requests...")
-            time.sleep(0.8)        
-        self.execute_time = time.time()
-        
-        try:
-            data = urllib2.urlopen(conn);
-        except Exception, e:
-            LOG.error("VK Connection Erorr", e)
+            LOG.error("VK Connection Error", e)
             return None
-        result = data.read()
-        return result
-    
-    def get_name_by(self, id, result_album):
-            for album in result_album:
-                id_album = album[0]
-                name = album[1]
-                if id_album == id:
-                    return name
-            
-            return None   
-    
-    def to_good_chars(self, line):        
-        try:
-            from setuptools.package_index import htmldecode
-            return htmldecode(line)
-        except:
-            return line
-    
-    def find_time_value(self, times_count, r_count):
-        for i in times_count:
-            if times_count[i] == r_count:
-                return i
-        return None 
-    
+#
+# METHODS TO REFACTOR
+#
+
     def find_video_by_query(self, query):        
-        page = self.get_page(query, "video")
+        page = self.search(query, "video")
         
         uniq = []
         beans = []
@@ -230,7 +108,7 @@ class VKService:
             
             text = res["md_title"]
             text = urllib.unquote(text)
-            text = self.to_good_chars(text)
+            text = html_decode(text)
             if text not in uniq:
                 uniq.append(text)
                 beans.append(FModel(text, link)) 
@@ -238,51 +116,10 @@ class VKService:
     
     "http://v525.vkadre.ru/assets/videos/adda2e950c01-105202975.vk.flv"
     
-    def find_tracks_by_query(self, query):
-        LOG.info("start search songs", query)
-        page = self.get_page(query)
-                        
-                
-        reg_all = "([^<>]*)"
-        resultall = re.findall("return operate\(([\w() ,']*)\);", page, re.IGNORECASE)
-        result_album = re.findall(ur'<b id=\\"performer([_0-9]*)\\">' + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
-        result_track = re.findall(u"<span id=\\\\\"title([_0-9]*)\\\\\">" + reg_all + "<", page, re.IGNORECASE | re.UNICODE)
-        result_time = re.findall("<div class=\\\\\"duration\\\\\">" + reg_all + "<", page, re.IGNORECASE)
-        
-        urls = []
-        ids = []
-        vkSongs = [] 
-        for result in resultall:
-            result = replace(result, "'", " ")
-            result = replace(result, ",", " ")
-            
-            result = result.split()
-            
-            if len(result) > 4:
-                id_id = result[0]
-                id_server = result[1]
-                id_folder = result[2]
-                id_file = result[3]
-            
-                url = "http://cs" + id_server + ".vkontakte.ru/u" + id_folder + "/audio/" + id_file + ".mp3"
-                urls.append(url)
-                ids.append(id_id)
-        
-        for i in xrange(len(result_time)):    
-            id = ids[i]       
-            path = urls[i] 
-            album = self.get_name_by(id, result_album)
-            track = self.get_name_by(id, result_track)
-            time = result_time[i] 
-            text = album + " - " + track
-            vkSong = FModel(text, path).add_artist(album).add_title(track).add_time(time)
-            vkSongs.append(vkSong)            
-        
-        return vkSongs
      
     def find_tracks_by_url(self, url):
         LOG.debug("Search By URL")
-        result = self.get_page_by_url(url) 
+        result = self.get(url) 
         try:       
             result = unicode(result)
         except:
@@ -291,22 +128,22 @@ class VKService:
         reg_all = "([^{<}]*)"
         result_url = re.findall(ur"http:([\\/.0-9_A-Z]*)", result, re.IGNORECASE)
         result_artist = re.findall(u"q]=" + reg_all + "'", result, re.IGNORECASE | re.UNICODE)
-        result_title = re.findall(u"\"title([0-9_]*)\\\\\">" + reg_all + "", result, re.IGNORECASE | re.UNICODE)
+        result_title = re.findall('"title([0-9_]*)">' + reg_all + '<', result, re.IGNORECASE | re.UNICODE)
          
-        result_time = re.findall("duration\\\\\">" + reg_all, result, re.IGNORECASE | re.UNICODE)
+        result_time = re.findall('duration">' + reg_all, result, re.IGNORECASE | re.UNICODE)
         result_lyr = re.findall(ur"showLyrics" + reg_all, result, re.IGNORECASE | re.UNICODE)
         LOG.info("lyr:::", result_lyr)
         songs = []
         j = 0
         for i, artist in enumerate(result_artist):
             path = "http:" + result_url[i].replace("\\/", "/")
-            title = self.to_good_chars(result_title[i][1])
+            title = html_decode(result_title[i][1])
             if not title:
                 if len(result_lyr) > j:
                     title = result_lyr[j]
                     title = title[title.find(";'>") + 3:]
                     j += 1                
-            artist = self.to_good_chars(artist)
+            artist = html_decode(artist)
             #song = VKSong(path, artist, title, result_time[i]);
             if "\">" in title:
                 title = title[title.find("\">") + 2:]
@@ -341,3 +178,46 @@ class VKService:
                 return song
 
         return vkSongs[0]
+
+    def find_time_value(self, times_count, r_count):
+        for i in times_count:
+            if times_count[i] == r_count:
+                return i
+        return None 
+
+class VKResultsPage:
+
+    def __init__(self, page):
+        self.page = page
+
+    def audio_tracks(self):
+        tracks = []
+        for html in self.page.split('<table><tbody>'):
+            if html.find('audioTitle') == -1: continue
+            tracks.append(self.generate_track(html))
+        return tracks
+        
+    def generate_track(self, html):
+        ids = re.findall("return operate\(([\w() ,']*)\);", html, re.IGNORECASE)[0]
+        url = self.track_url(ids)
+        reg_all = "([^<>]*)"
+        artist = self.field('<b id="performer[_0-9]*">', html)
+        title = self.field('<span id="title[_0-9]*">', html)
+        duration = self.field('<div class="duration">', html)
+        text = artist + " - " + title
+        return FModel(text, url).add_artist(artist).add_title(title).add_time(duration)
+    
+    def track_url(self, parameters):
+        id, id_server, id_folder, id_file, trash = parameters.replace("'", "").split(',')
+        return "http://cs" + id_server + ".vkontakte.ru/u" + id_folder + "/audio/" + id_file + ".mp3"
+
+    def field(self, regexp_before, html):
+        reg_all = "([^<>]*)"
+        try:
+            text = re.findall(regexp_before + reg_all + '<', html, re.IGNORECASE | re.UNICODE)[0]
+            text = unicode(text, 'cp1251')
+            return html_decode(text)
+        except IndexError:
+            return ""
+
+
