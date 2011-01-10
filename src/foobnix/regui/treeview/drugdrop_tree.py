@@ -75,108 +75,6 @@ class DrugDropTree(gtk.TreeView):
             setattr(bean, key, val)
         return bean
     
-    def iter_copy(self, from_filter_model, from_filter_iter, to_filter_model, to_filter_iter, pos, to_type, from_type):
-        
-        
-        
-        #to_model = to_filter_model.get_model()
-        #from_filter_path = from_filter_model.get_path(from_filter_iter) #only before changing in the tree
-        
-        if to_filter_iter:
-            to_filter_path = to_filter_model.get_path(to_filter_iter)
-            #to_filter_iter_has_child = to_filter_model.iter_has_child(to_filter_iter) #only before changing in the tree
-                
-        '''"""if m3u is dropped"""
-        if (from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u") 
-        or from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u8")):
-            tree_store = from_filter_model.get_model()
-            child_iter = from_filter_model.convert_iter_to_child_iter(from_filter_iter)
-            m3u_file_path = tree_store.get_value(child_iter, 5)
-            m3u_title = tree_store.get_value(child_iter, 0)
-            self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)'''
-    
-    
-        if (to_type == VIEW_TREE and from_type == VIEW_TREE) and from_filter_model == to_filter_model:
-            print "in if"
-            
-            if to_filter_iter and to_filter_iter_has_child: 
-                print "to child"
-                return new_iter
-            
-            try:
-                if (from_filter_path[0] > to_filter_path[0] and 
-                    pos != gtk.TREE_VIEW_DROP_INTO_OR_BEFORE and 
-                    pos != gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
-                    
-                    from_filter_path = (from_filter_path[0] + 1, )
-            except (TypeError, UnboundLocalError):
-                pass
-              
-            from_filter_iter = from_filter_model.get_iter(from_filter_path)
-            
-            if from_filter_model.iter_has_child(from_filter_iter):
-                for i in xrange(from_filter_model.iter_n_children(from_filter_iter)):
-                    print "in cycle"
-                    from_filter_iter = from_filter_model.get_iter(from_filter_path)
-                    child_from_filter_iter = from_filter_model.iter_nth_child(from_filter_iter, i)
-                    #path = from_filter_model.get_path(child_from_filter_iter)
-                    row = self.get_row_from_model_iter(from_filter_model, child_from_filter_iter)
-                    if pos == gtk.TREE_VIEW_DROP_BEFORE:
-                        new_iter = new_iter_1
-                    child_new_iter = to_model.insert_after(new_iter, None, row)
-                    #print "@@@@@@@@",self.get_row_from_model_iter(from_filter_model, child_from_filter_iter)
-                    #child_from_filter_iter = from_filter_model.get_iter(path)
-                    #if from_filter_model.iter_has_child(child_from_filter_iter):
-                        #print path
-                        #self.iter_copy(from_filter_model, child_from_filter_iter, to_filter_model, child_new_iter, pos, to_type, from_type)
-            return new_iter 
-                
-        if ((to_type == VIEW_TREE and from_type == VIEW_TREE) or
-            (to_type == VIEW_PLAIN and from_type == VIEW_TREE)):            
-            
-            """3)tree to tree, tree to plain"""
-            if from_filter_model.iter_has_child(from_filter_iter):
-                print "has child"
-                #cue_iters = []
-                #folder_iters = []
-                not_cue_iters = []
-                
-                """if there are cue-files in iters, display only them and subfolder"""  
-                for i in range(0, from_filter_model.iter_n_children(from_filter_iter)):
-                     
-                    next_iter_to_copy = from_filter_model.iter_nth_child(from_filter_iter, i)
-                    if (from_filter_model.get_value(next_iter_to_copy, 0).endswith(".m3u") 
-                    or from_filter_model.get_value(next_iter_to_copy, 0).endswith(".m3u8")):
-                        continue
-                    elif from_filter_model.get_value(next_iter_to_copy, 0).endswith(".cue"):
-                        cue_iters.append(next_iter_to_copy)
-                    else:
-                        if from_filter_model.iter_has_child(next_iter_to_copy):
-                            folder_iters.append(next_iter_to_copy)
-                        not_cue_iters.append(next_iter_to_copy)
-                if cue_iters:
-                    for next_iter_to_copy in cue_iters + folder_iters:
-                        if from_filter_model.iter_has_child(next_iter_to_copy):
-                            self.iter_copy(from_filter_model, next_iter_to_copy, to_filter_model, new_iter, pos, to_type, from_type)
-                        row = self.get_row_from_model_iter(from_filter_model, next_iter_to_copy) 
-                        new_iter = to_model.insert_after(None, new_iter, row)
-                        
-                else:
-                    for next_iter_to_copy in not_cue_iters:
-                        if from_filter_model.iter_has_child(next_iter_to_copy):
-                            self.iter_copy(from_filter_model, next_iter_to_copy, to_filter_model, new_iter, pos, to_type, from_type)
-                        row = self.get_row_from_model_iter(from_filter_model, next_iter_to_copy) 
-                        new_iter = to_model.insert_after(None, new_iter, row)
-                        
-                        #self.iter_copy(from_filter_model, next_iter_to_copy, to_filter_model, new_iter, pos, to_type, from_type)
-        else:
-            """3)plain to tree, plain to plain"""
-            print "in else"
-            parent_level = row[self.level[0]]
-            self.add_reqursive_plain(from_filter_model, from_filter_iter, to_filter_model, new_iter, parent_level)
-                   
-        return new_iter
-    
     def add_reqursive_plain(self, from_model, from_iter, to_model, to_iter, parent_level):
         for child_row in self.get_child_rows(from_model, parent_level):            
             new_iter = to_model.get_model().append(to_iter, child_row)
@@ -195,124 +93,111 @@ class DrugDropTree(gtk.TreeView):
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
         to_filter_model = to_tree.get_model()
-        
+        to_model = to_filter_model.get_model()
         if to_tree.get_dest_row_at_pos(x, y):
             to_filter_path, to_filter_pos = to_tree.get_dest_row_at_pos(x, y)
-            #to_path = to_filter_model.convert_path_to_child_path(to_path)      
+            to_path = to_filter_model.convert_path_to_child_path(to_filter_path)      
             to_filter_iter = to_filter_model.get_iter(to_filter_path)
+            to_iter = to_filter_model.convert_iter_to_child_iter(to_filter_iter)
         else:
             to_filter_path = None
+            to_path = None
             to_filter_pos = None     
             to_filter_iter = None
-        
+            to_iter = None
+            
         from_tree = drag_context.get_source_widget()        
         
         if not from_tree: return None
         
         from_filter_model, from_filter_paths = from_tree.get_selection().get_selected_rows()
         from_model = from_filter_model.get_model()
-        to_model = to_filter_model.get_model()
-        if to_filter_iter: 
-            to_iter = to_filter_model.convert_iter_to_child_iter(to_filter_iter)
-        else:
-            to_iter = None
+                
         new_iter = None
+                
         for i, from_filter_path  in enumerate(from_filter_paths):
             from_filter_iter = from_filter_model.get_iter(from_filter_path)
             from_path = from_filter_model.convert_path_to_child_path(from_filter_path)
             from_iter = from_model.get_iter(from_path)
-            #print from_path
+            
             """do not copy to himself"""
             if to_tree == from_tree and from_filter_path == to_filter_path:
                 drag_context.finish(False, False)
                 return None
             
+            row = self.get_row_from_model_iter(from_filter_model, from_filter_iter)
+            
             """if m3u is dropped"""
             if (from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u") 
             or from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u8")):
+                LOG.info("m3u is found")
                 m3u_file_path = from_model.get_value(from_iter, 5)
                 m3u_title = from_model.get_value(from_iter, 0)
                 self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)
+                continue
             
-            row = self.get_row_from_model_iter(from_filter_model, from_filter_iter)
-            
-            if from_model.iter_n_children(from_iter):
-                new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)
+            if from_model.iter_has_child(from_iter):
+                new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos, True)
                 self.iter_is_parent(from_iter, from_model, to_model, new_iter)
             else:
                 if new_iter:
                     to_iter = new_iter
                 new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)
-            
-                        
-            #"""do not copy to child""" 
-            
-            
-            
-            '''if new_iter: 
-                to_filter_iter = to_filter_model.convert_child_iter_to_iter(new_iter)
-                try:
-                    if from_filter_path[0] > to_filter_path[0]:
-                        from_filter_iter = from_filter_model.get_iter( (from_filter_path[0]+i, ) )
-                except TypeError:
-                    pass
-            
-            new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)'''
-            
-            if to_tree.current_view == VIEW_TREE:             
-                self.updates_tree_structure()
-                
-            if to_tree.current_view == VIEW_PLAIN:             
-                self.rebuild_as_plain()
         
-        '''def task(i):
-            if from_filter_model == to_filter_model:
-                #n = i
-                try:
-                    if current_path[0]-i > to_filter_path[0]-i:
-                        
-                        to_filter_iter = to_filter_model.get_iter(to_filter_path)
-                        
-                        n = 0 if to_filter_model.iter_has_child(to_filter_iter) else 1
-                        
-                        while i > -1:
-                            from_model.remove(from_model.get_iter( (from_path[0]+n,  ) ) )
-                            i -= 1 
+        def remove_replaced(i):
+                if from_filter_model == to_filter_model:
+                    LOG.info("Remove already replaced rows")
                     
-                    elif current_path[0]-i < to_filter_path[0]-i:
-                        from_filter_iter = from_filter_model.get_iter(current_path)
-                        n = 0 if from_filter_model.iter_parent(from_filter_iter) else i
+                    """Iters have already changed. Redefine"""
+                    from_iter = from_model.get_iter(from_path)
+                    from_level = from_model.iter_depth(from_iter)
+                    try:
+                        to_iter = to_model.get_iter(to_path)
+                        to_level = from_model.iter_depth(to_iter)
+                    except TypeError:
+                        pass
+                    if to_path and from_level == to_level:
+                        
+                        if from_path[from_level]-i > to_path[from_level]:
+                            LOG.info("drag up")
+                            n = 0 if to_model.iter_has_child(to_iter) else 1
+                            while i > -1:
+                                from_model.remove(from_model.get_iter( (from_path[from_level]+n,  ) ) )
+                                i -= 1 
+                    
+                        elif from_path[from_level]-i < to_path[from_level]:
+                            LOG.info("drag down")
+                            n = i
+                            from_path1 = from_path[:from_level]+(from_path[from_level]-n, )+from_path[from_level+1 :]
+                            while i > -1:
+                                from_model.remove(from_model.get_iter(from_path1))
+                                i -= 1
+                    else:
+                        LOG.info("drag to empty space or from other level")
+                        n = i
                         while i > -1:
-                            from_model.remove(from_model.get_iter( (from_path[0]-n,  ) ) )
+                            from_path1 = from_path[:from_level]+(from_path[from_level]-n, )+from_path[from_level+1 :]
+                            from_model.remove(from_model.get_iter(from_path1))
                             i -= 1
                 
-                except TypeError:
-                    from_filter_iter = from_filter_model.get_iter(current_path)
-                    n = 0 if from_filter_model.iter_parent(from_filter_iter) else i
-                    while i > -1:
-                            from_model.remove(from_model.get_iter( (from_path[0]-n,  ) ) )
-                            i -= 1
-            
-            if to_tree.current_view == VIEW_TREE:             
-                self.updates_tree_structure()
+                if to_tree.current_view == VIEW_TREE:             
+                    self.updates_tree_structure()
                 
-            if to_tree.current_view == VIEW_PLAIN:             
-                self.rebuild_as_plain()    
-                
-           
-        gobject.idle_add(task, i)'''
+                if to_tree.current_view == VIEW_PLAIN:             
+                    self.rebuild_as_plain()
+       
+        gobject.idle_add(remove_replaced, i)
+        
         self.on_drag_drop_finish()
     
-    def to_add_drug_item(self, to_model, to_iter, row,  pos):    
-        
+    def to_add_drug_item(self, to_model, to_iter, row,  pos, from_iter_has_child=False):    
         if to_iter:
             if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
                 new_iter = to_model.prepend(to_iter, row)
-                #if to_filter_iter and to_filter_iter_has_child:
-                    #new_iter = to_model.iter_parent(new_iter)
             elif pos == gtk.TREE_VIEW_DROP_BEFORE:
-                new_iter_1 = to_model.insert_before(None, to_iter, row)
-                new_iter = to_model.iter_next(new_iter_1)
+                new_iter = to_model.insert_before(None, to_iter, row)
+                if not from_iter_has_child:
+                    new_iter = to_model.iter_next(new_iter)
             elif pos == gtk.TREE_VIEW_DROP_AFTER:
                 new_iter = to_model.insert_after(None, to_iter, row)
             else:
@@ -338,8 +223,10 @@ class DrugDropTree(gtk.TreeView):
             from_child_iter = from_model.iter_nth_child(from_iter, n)
             if (from_model.get_value(from_child_iter, 0).endswith(".m3u") 
                 or from_model.get_value(from_child_iter, 0).endswith(".m3u8")):
-                    continue
+                LOG.info("m3u is found. Skip it")
+                continue
             elif from_model.get_value(from_child_iter, 0).endswith(".cue"):
+                LOG.info("Cue is found. Skip other files")
                 cue_iters.append(from_child_iter)
             else:
                 if from_model.iter_has_child(from_child_iter):
