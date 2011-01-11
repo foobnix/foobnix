@@ -34,7 +34,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
     
     def on_button_press(self, w, e):
-        if is_double_left_click(e):
+        if is_middle_click(e):
             # on left double click add selected items to current tab
             self.add_to_current_tab()
             return
@@ -43,7 +43,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             # on left click expand selected folders
             return
         
-        if is_middle_click(e):
+        if is_double_left_click(e):
             # on middle click play selected beans 
             self.add_to_new_tab()
             return
