@@ -9,7 +9,7 @@ from threading import Lock
 from foobnix.util import LOG
 import time
 
-class SingreThread():
+class SingleThread():
     def __init__(self, progressbar):
         self.lock = Lock()
         self.progressbar = progressbar

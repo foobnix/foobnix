@@ -149,7 +149,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
                 
         if not bean.artist or not bean.title:
-            LOG.debug("""Artist and title no difined""")
+            LOG.debug("Artist and title not defined")
             return None
         
         self.bean = bean

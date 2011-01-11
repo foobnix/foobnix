@@ -108,3 +108,10 @@ def normalize_text(line):
         line = line.replace(ext, "")
     
     return line.strip()
+
+def html_decode(line):
+    try:
+        from setuptools.package_index import htmldecode
+        return htmldecode(line)
+    except:
+        return line
