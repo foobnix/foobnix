@@ -45,10 +45,19 @@ def decode_cp866(text):
 
 def udpate_id3_for_beans(beans):
     for bean in beans:
-        try:
-            udpate_id3(bean)
-        except Exception, e:
-            LOG.error("udpate id3 error", e)
+        if os.path.splitext(bean.text)[1] in FC().all_support_formats:
+            """This condition is here in order to avoid 
+            incorrect cue handling when you re-rebuild the tree
+            (otherwise there can will the same text for each bean in tree)
+            in other words, if bean.text == filename, 
+            the file is adding to the tree in first time,
+            else - re-rebuilding the tree is now. That is, if 
+            the tree is rebuilding again, will not remake bean content"""
+            
+            try:
+                udpate_id3(bean)
+            except Exception, e:
+                LOG.error("udpate id3 error", e)
     return beans
 
 def udpate_id3(bean):

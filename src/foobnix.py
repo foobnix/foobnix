@@ -2,7 +2,6 @@
 import sys
 import time
 import gtk
-import os
 import gobject
 from foobnix.util import LOG
 
