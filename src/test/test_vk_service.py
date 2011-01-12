@@ -5,24 +5,25 @@ Created on 21 нояб. 2010
 @author: ivan
 '''
 import unittest
-from foobnix.regui.service.vk_service import VKService
+from foobnix.regui.service.vk_service import VKService, VKAudioResultsPage
 from foobnix.util.url_utils import get_url_type
 
 class TestVKService(unittest.TestCase):
     vk = VKService()
     
     def test_login(self):
-        self.assertTrue(self.vk.get("http://vk.com/gsearch.php?section=audio&q=persiana&name=1").find("Persiana jones") > -1 )
+        self.assertTrue(self.vk.is_connected() )
 
     def test_search_page(self):
         self.assertTrue(self.vk.search("Madonna").find("Madonna") > -1)
 
     def test_find_tracks_in_page(self):
         page = self.vk.search("Madonna")
-        self.assertTrue(len(self.vk.find_tracks_in_page(page)) >0)
+        vk_search = VKAudioResultsPage(page)
+        self.assertTrue(len(vk_search.tracks()) >0)
     
     def test_find_videos(self):
-        list = self.vk.find_video_by_query("Мадонна")
+        list = self.vk.find_video_by_query("Madonna")
         for bean in list[:10]:
             self.assertNotEquals("text/html", get_url_type(bean.path))
             self.assertTrue(bean.path.startswith("http://")) 
@@ -47,6 +48,6 @@ class TestVKService(unittest.TestCase):
         for bean in list:
             self.assertFalse('\">' in bean.text)
             self.assertTrue(bean.path.startswith("http://"))
-    
+
 if __name__ == '__main__':
     unittest.main()
