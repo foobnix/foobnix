@@ -291,6 +291,9 @@ class BaseFoobnixControls():
     def state_play_pause(self):
         self.media_engine.state_play_pause()
 
+    def state_is_playing(self):
+        return self.media_engine.get_state() == STATE_PLAY
+
     def fill_bean_from_vk(self, bean):
         
         vk = self.vk.find_one_track(bean.get_display_name())

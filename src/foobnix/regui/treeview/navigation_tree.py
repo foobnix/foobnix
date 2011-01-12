@@ -5,13 +5,14 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_middle_click, is_left_click
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
 from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
+from foobnix.util.list_utils import any
     
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -33,22 +34,29 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
     
     def on_button_press(self, w, e):
-        if is_double_left_click(e):
-            selected = self.get_selected_bean()
-            if selected:
-                beans = self.get_all_child_beans_by_selected()  
-                self.controls.append_to_new_notebook(selected.text, [selected] + beans)
-                
-                "run the first of added tracks"
-                self.controls.play_first_file_in_playlist()
+        if is_middle_click(e):
+            # on left double click add selected items to current tab
+            self.add_to_current_tab()
+            return
+
+        if is_left_click(e):
+            # on left click expand selected folders
+            return
         
-        if is_rigth_click(e):            
+        if is_double_left_click(e):
+            # on middle click play selected beans 
+            self.add_to_new_tab()
+            return
+        
+        if is_rigth_click(e):
+            # on right click, show pop-up menu
             menu = Popup()
+            menu.add_item(_("Add to current tab"), gtk.STOCK_ADD, self.add_to_current_tab, None)
+            menu.add_item(_("Add to new tab"), gtk.STOCK_MEDIA_PLAY, self.add_to_new_tab, None)
+            menu.add_separator()
             menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
             menu.add_separator()
-            menu.add_item(_("Add to current tab"), gtk.STOCK_ADD, self.add_to_current_tab, None)
-            menu.add_separator()
-                        
+
             if FC().tabs_mode == "Multi":
                 menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
                 menu.add_item(_("Clear Music Tree"), gtk.STOCK_CLEAR, lambda : self.controls.tablib.clear_tree(self.scroll), None)
@@ -56,9 +64,47 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 
             menu.show(e)
     
+    def collect_selected_beans(self):
+        def is_parent(path_parent, path_child):
+            len_parent = len(path_parent)
+            len_child = len(path_child)
+            if len_child <= len_parent:
+                return False
+            for i in xrange(0, len_parent):
+                if path_parent[i] != path_child[i]:
+                    return False
+            return True
+        
+        paths = self.get_selected_bean_paths()
+        if not paths:
+            return None
+        model = self.get_model()
+        beans = []
+        for path in paths:
+            if any(lambda p : is_parent(p, path), paths):
+                continue
+            iter = model.get_iter(path)
+            sub_beans = self.get_child_iters_by_parent(model, iter)
+            parent_bean = self._get_bean_by_path(path)            
+            beans = beans + [parent_bean] + sub_beans
+        return beans       
+    
+    def add_to_new_tab(self):
+        beans = self.collect_selected_beans()
+        if not beans:
+            return
+        selected = self.get_selected_bean()
+        self.controls.append_to_new_notebook(selected.text, beans)
+        self.controls.play_first_file_in_playlist()
+    
     def add_to_current_tab(self):
-        beans = self.get_all_child_beans_by_selected()  
+        beans = self.collect_selected_beans()
+        if not beans:
+            return
         self.controls.append_to_current_notebook(beans)
+        # start play, if not yet playing
+        if not self.controls.state_is_playing():
+            self.controls.play_first_file_in_playlist()
     
     def add_folder(self, in_new_tab=False):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"),

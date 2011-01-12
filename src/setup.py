@@ -9,7 +9,7 @@ if os.name == 'nt':
 
 
 VERSION = "0.2.3"
-RELEASE = "1"
+RELEASE = "2"
 LANGS = ('ru', 'zh_CN', "es", "it")
 
 data_files = [
@@ -27,7 +27,7 @@ data_files = [
 ]
 
 
-if os.name != 'nt':    
+if os.name != 'nt': 
     if not os.path.exists("mo/"):
         os.mkdir("mo/")
     for lang in LANGS:
