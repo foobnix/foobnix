@@ -45,7 +45,7 @@ def decode_cp866(text):
 
 def udpate_id3_for_beans(beans):
     for bean in beans:
-        if os.path.splitext(bean.text)[1] in FC().all_support_formats:
+        if os.path.splitext(bean.text)[1].lower() in FC().all_support_formats:
             """This condition is here in order to avoid 
             incorrect cue handling when you re-rebuild the tree
             (otherwise there can will the same text for each bean in tree)

@@ -42,6 +42,8 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_INFO)
         elif is_key_control(e) and is_key(e, "q"):
             self.controls.quit()
+        elif is_key_control(e) and is_key(e, "s"):    
+            self.controls.notetabs.on_save_playlist(self.controls.notetabs.active_tree.scroll)
         
                     
     def on_configure_event(self, w, e):
