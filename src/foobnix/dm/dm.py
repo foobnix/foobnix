@@ -41,20 +41,17 @@ class DMControls(MyToolbar):
 class DM(ChildTopWindow):
     def __init__(self, controls):
         self.controls = controls        
-        ChildTopWindow.__init__(self, _("Download Manager"), 900, 700)
+        ChildTopWindow.__init__(self, _("Download Manager"))
+        
         self.set_resizable(True)
-
+        self.set_default_size(900, 700)
+        
         vbox = gtk.VBox(False, 0)
-        
-                
-        
         #paned = gtk.HPaned()
         #paned.set_position(200)
         
         self.navigation = DMNavigationTreeControl()
-        
-        
-        
+            
         self.navigation.append(FDModel("All").add_artist("All").add_status(DOWNLOAD_STATUS_ALL))
         self.navigation.append(FDModel("Downloading").add_artist("Downloading").add_status(DOWNLOAD_STATUS_DOWNLOADING))
         self.navigation.append(FDModel("Completed").add_artist("Completed").add_status(DOWNLOAD_STATUS_COMPLETED))
@@ -65,21 +62,16 @@ class DM(ChildTopWindow):
         self.navigation.dm_list = self.dm_list
         #paned.pack1(self.navigation.scroll)
         #paned.pack2(self.dm_list.scroll)
-        
-        
         playback = DMControls(controls, self.dm_list)
         
         vbox.pack_start(playback, False, True)
         #vbox.pack_start(paned, True, True)
         vbox.pack_start(self.dm_list.scroll, True, True)
-        
-                
+                       
         self.add(vbox)
         thread.start_new_thread(self.dowloader, (self.dm_list,))
-       
         #self.demo_tasks()
-       
-    
+           
     def demo_tasks(self):
         self.append_task(FModel("Madonna - Sorry"))
         self.append_task(FModel("Madonna - Frozen"))

@@ -35,9 +35,6 @@ def start():
     else:
         print iface.parse_arguments(sys.argv)
 
-"""if 'gnome' == os.environ.get('DESKTOP_SESSION'):
-    gnome()
-else:
-    other()"""
+
 
 start()
