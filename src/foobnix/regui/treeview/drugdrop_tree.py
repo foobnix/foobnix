@@ -128,13 +128,7 @@ class DrugDropTree(gtk.TreeView):
             row = self.get_row_from_model_iter(from_filter_model, from_filter_iter)
             
             """if m3u is dropped"""
-            if (from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u") 
-            or from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u8")):
-                LOG.info("m3u is found")
-                m3u_file_path = from_model.get_value(from_iter, 5)
-                m3u_title = from_model.get_value(from_iter, 0)
-                self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)
-                continue
+            if self.is_m3u(from_model, from_iter): continue
             
             if from_model.iter_has_child(from_iter):
                 new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos, True)
@@ -189,6 +183,15 @@ class DrugDropTree(gtk.TreeView):
         gobject.idle_add(remove_replaced, i)
         
         self.on_drag_drop_finish()
+    
+    def is_m3u(self, from_model, from_iter):
+        if (from_model.get_value(from_iter, 0).endswith(".m3u") 
+        or from_model.get_value(from_iter, 0).endswith(".m3u8")):
+            LOG.info("m3u is found")
+            m3u_file_path = from_model.get_value(from_iter, 5)
+            m3u_title = from_model.get_value(from_iter, 0)
+            self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)
+            return True
     
     def to_add_drug_item(self, to_model, to_iter, row,  pos, from_iter_has_child=False):    
         if to_iter:
