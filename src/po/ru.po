@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-07 16:38+0200\n"
-"PO-Revision-Date: 2009-04-06 21:35+0300\n"
-"Last-Translator: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
+"PO-Revision-Date: 2011-01-13 16:42+0100\n"
+"Last-Translator: Аляксей Серада (Aliaksei Serada) <alex.serada@gmail.com>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -46,16 +46,16 @@ msgstr "Эквалайзер"
 
 #: .././foobnix/eq/eq_gui.py:85
 msgid "Off"
-msgstr "Выключить"
+msgstr "Выключен"
 
 #: .././foobnix/eq/eq_gui.py:87
 msgid "On"
-msgstr "Включить"
+msgstr "Включен"
 
 #: .././foobnix/eq/eq_gui.py:88
 #, python-format
 msgid "Equalizer %s"
-msgstr "Equalizer %s"
+msgstr "Эквалайзер %s"
 
 #: .././foobnix/eq/eq_gui.py:153
 msgid "To enable EQ set ON"
@@ -70,8 +70,8 @@ msgstr "Найдена новая версия"
 msgid "Download and Donate"
 msgstr "Скачать и дать денег :)"
 
-#: .././foobnix/helpers/dialog_entry.py:130
 #. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
+#: .././foobnix/helpers/dialog_entry.py:130
 msgid "http://www.foobnix.com/download/eng"
 msgstr "http://www.foobnix.com/download"
 
@@ -221,7 +221,7 @@ msgstr "Пароль"
 
 #: .././foobnix/preferences/configs/last_fm.py:46
 msgid "Enable Music Scrobbler"
-msgstr "Включить скроблер для музыки"
+msgstr "Включить скроблер музыки"
 
 #: .././foobnix/preferences/configs/last_fm.py:49
 msgid "Enable Radio Scrobbler"
@@ -717,7 +717,7 @@ msgstr "Проверте логин и пароль"
 
 #: .././foobnix/regui/service/vk_service.py:94
 msgid "VKontakte connection error"
-msgstr "Ошибка подключания к ВКонтакте"
+msgstr "Ошибка подключания к vkontakte.ru"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:49
 msgid "Add to current tab"
@@ -725,7 +725,7 @@ msgstr "Добавить в очередь"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:129
 msgid "Copy to Search Line"
-msgstr "Скопировать с строку поиска"
+msgstr "Скопировать в строку поиска"
 
 #: .././foobnix/regui/treeview/radio_tree.py:22
 msgid "Radio Stations"

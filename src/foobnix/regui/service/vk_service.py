@@ -10,11 +10,7 @@ import urllib2
 from foobnix.util import LOG
 import urllib
 import re
-from foobnix.helpers.dialog_entry import show_login_password_error_dialog
-from string import replace
 from foobnix.regui.model import FModel
-import logging
-import sys
 from foobnix.util.text_utils import html_decode
 
 class VKService:
@@ -25,8 +21,8 @@ class VKService:
         
     def initialize_urllib2(self):
         self.cookie_processor = urllib2.HTTPCookieProcessor()
-        self.opener = urllib2.build_opener( self.cookie_processor )
-        urllib2.install_opener( self.opener )
+        self.opener = urllib2.build_opener(self.cookie_processor)
+        urllib2.install_opener(self.opener)
 
     def login(self):
         post = {
@@ -44,7 +40,7 @@ class VKService:
         return self.find_tracks_in_page(page)
         
     def search(self, query, type='audio'):
-        return self.get("http://vk.com/gsearch.php?section="+type+"&q="+urllib.quote(query)+"&name=1")
+        return self.get("http://vk.com/gsearch.php?section=" + type + "&q=" + urllib.quote(query) + "&name=1")
     
     def find_tracks_in_page(self, page):
         vkpage = VKResultsPage(page)

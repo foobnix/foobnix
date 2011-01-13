@@ -10,7 +10,7 @@ if os.name == 'nt':
 
 VERSION = "0.2.3"
 RELEASE = "2"
-LANGS = ('ru', 'zh_CN', "es", "it")
+LANGS = ('ru', 'zh_CN', "es", "it", "by")
 
 data_files = [
     ('share/foobnix', ['README']),
