@@ -6,10 +6,10 @@ Created on Feb 26, 2010
 
 
 def size2text(size):
-    if size > 1024*1024*1024:
-        return "%.2f Gb" % (size / (1024*1024*1024.0))
-    if size > 1024*1024:
-        return "%.2f Mb" % (size / (1024*1024.0))
+    if size > 1024 * 1024 * 1024:
+        return "%.2f Gb" % (size / (1024 * 1024 * 1024.0))
+    if size > 1024 * 1024:
+        return "%.2f Mb" % (size / (1024 * 1024.0))
     if size > 1024:
         return "%.2f Kb" % (size / 1024.0)
     return size
@@ -17,8 +17,8 @@ def size2text(size):
 def convert_seconds_to_text(time_sec):
         time_sec = int(time_sec)
 
-        hours = time_sec / (60*60)
-        time_sec = time_sec - (hours * 60*60)
+        hours = time_sec / (60 * 60)
+        time_sec = time_sec - (hours * 60 * 60)
 
         mins = time_sec / 60
         time_sec = time_sec - (mins * 60)
@@ -29,5 +29,5 @@ def convert_seconds_to_text(time_sec):
         else:
             return "{0:0>2}:{1:0>2}".format(mins, secs)
 
-def normalize_time(length):
+def  normalize_time(length):
     convert_seconds_to_text(length)

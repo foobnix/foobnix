@@ -9,7 +9,7 @@ from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.util import const
-from foobnix.util.key_utils import is_key, is_key_alt
+from foobnix.util.key_utils import is_key, is_key_alt, is_key_control
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION, \
     LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_VIRTUAL, LEFT_PERSPECTIVE_INFO
@@ -40,6 +40,10 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_VIRTUAL)
         elif is_key_alt(e) and is_key(e, "4"):
             self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_INFO)
+        elif is_key_control(e) and is_key(e, "q"):
+            self.controls.quit()
+        elif is_key_control(e) and is_key(e, "s"):    
+            self.controls.notetabs.on_save_playlist(self.controls.notetabs.active_tree.scroll)
         
                     
     def on_configure_event(self, w, e):

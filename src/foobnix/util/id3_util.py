@@ -13,6 +13,7 @@ from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.util.audio import get_mutagen_audio
 import os
+
 def decode_cp866(text):
     try:
         decode_text = text.decode("cp866")
@@ -43,15 +44,24 @@ def decode_cp866(text):
         pass
     return text
 
-def update_id3_for_beans(beans):
-    try:
-        map(update_id3, beans)
-    except Exception, e:
-        LOG.error("update id3 error", e)
+def udpate_id3_for_beans(beans):
+    for bean in beans:
+        if os.path.splitext(bean.text)[1].lower() in FC().all_support_formats:
+            """This condition is here in order to avoid 
+            incorrect cue handling when you re-rebuild the tree
+            (otherwise there can will the same text for each bean in tree)
+            in other words, if bean.text == filename, 
+            the file is adding to the tree in first time,
+            else - re-rebuilding the tree is now. That is, if 
+            the tree is rebuilding again, will not remake bean content"""
+            
+            try:
+                udpate_id3(bean)
+            except Exception, e:
+                LOG.error("udpate id3 error", e)
     return beans
 
-
-def update_id3(bean):
+def udpate_id3(bean):
     if bean and bean.path and os.path.isfile(bean.path):
         try:
             audio = get_mutagen_audio(bean.path)            
@@ -86,16 +96,32 @@ def update_id3(bean):
 
     return bean
 
-def add_update_image_paths(beans):
+def get_support_music_beans_from_all(beans):
+    result = []
+    for bean in beans:
+        if bean.path and os.path.isdir(bean.path):
+            result.append(bean)
+        elif bean.path and os.path.isfile(bean.path) and file_extension(bean.path) in FC().audio_formats:
+            result.append(bean)
+        elif bean.path and bean.path.startswith("http://"):
+            result.append(bean)
+        else:
+            result.append(bean)
+    
+    return result
+
+
+def add_upadte_image_paths(beans):
     for bean in beans:
         if bean.path:
             bean.image = get_image_by_path(bean.path)
     return beans
 
 def update_id3_wind_filtering(beans):
-    beans = update_id3_for_beans(beans)
+    beans = get_support_music_beans_from_all(beans)
+    beans = udpate_id3_for_beans(beans)
     beans = update_id3_for_cue(beans)
-    beans = add_update_image_paths(beans)
+    beans = add_upadte_image_paths(beans)
     result = []
     for bean in beans:
         result.append(bean)
