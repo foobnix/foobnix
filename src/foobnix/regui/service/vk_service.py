@@ -7,7 +7,7 @@ Created on Sep 29, 2010
 import time
 from foobnix.util.fc import FC
 import urllib2
-from foobnix.util import LOG
+import logging
 import urllib
 import re
 from foobnix.regui.model import FModel
@@ -39,7 +39,7 @@ class VKService:
         return (str(self.cookie_processor.cookiejar).find('remixsid') > -1)
     
     def find_tracks_by_query(self, query):
-        LOG.info("start search songs", query)
+        logging.info("start search songs"+ query)
         page = self.search(query)
         vk_audio = VKAudioResultsPage(page)
         return vk_audio.tracks()
@@ -63,7 +63,7 @@ class VKService:
             handler.close()
             return data
         except Exception, e:
-            LOG.error("VK Connection Error", e)
+            logging.error("VK Connection Error"+ str(e))
             return None
         
 
@@ -71,7 +71,13 @@ class VKService:
 # METHODS TO REFACTOR
 #
     def find_tracks_by_url(self, url):
-        LOG.debug("Search By URL")
+        page = self.get(url)
+        vk_audio = VKAudioResultsPage(page)
+        return vk_audio.tracks()
+        
+        
+    def old_find_tracks_by_url(self, url):
+        logging.debug("Search By URL")
         result = self.get(url) 
         try:       
             result = unicode(result)
@@ -85,7 +91,7 @@ class VKService:
          
         result_time = re.findall('duration">' + reg_all, result, re.IGNORECASE | re.UNICODE)
         result_lyr = re.findall(ur"showLyrics" + reg_all, result, re.IGNORECASE | re.UNICODE)
-        LOG.info("lyr:::", result_lyr)
+        logging.info("lyr:::"+ str(result_lyr))
         songs = []
         j = 0
         for i, artist in enumerate(result_artist):
@@ -103,14 +109,14 @@ class VKService:
             text = artist + " - " + title        
             song = FModel(text, path).add_artist(artist).add_title(title).add_time(result_time[i])
             songs.append(song)        
-        LOG.info(len(songs))
+        logging.info(len(songs))
         return songs    
     
     def find_one_track(self, query):        
         vkSongs = self.find_tracks_by_query(query)
         if not vkSongs:
             return None
-            
+        #We want the most common song, so we search it using the track duration
         times_count = {}
         for song in vkSongs:
             time = song.time
@@ -122,9 +128,8 @@ class VKService:
         #get most relatives times time
         r_count = max(times_count.values())
         r_time = self.find_time_value(times_count, r_count)
-        LOG.info("LOG.info(Song time", r_time)
-        LOG.info("LOG.info(Count of congs", r_count)
-        
+        logging.info("Song time"+ str(r_time))
+        logging.info("Count of songs with this time"+ str(r_count))
         
         for song in vkSongs:
             if song.time == r_time:        
@@ -216,7 +221,7 @@ class VKVideoResultsPage:
                 link = video['host'] + "u" + video["uid"] + "/video/" + video["vtag"] + ".%s.mp4" % quality
         else:
             link = "http://" + video['host'] + "/assets/videos/" + video["vtag"] + video["vkid"] + ".vk.flv"
-        LOG.debug(link)
+        logging.debug(link)
         return link
 
     def get_title(self, html):

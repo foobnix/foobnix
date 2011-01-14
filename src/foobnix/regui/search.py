@@ -1,7 +1,7 @@
 import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.model.signal import FControl
-from foobnix.util import LOG
+import logging
 from foobnix.util.text_utils import capitalize_query
 from foobnix.util.key_utils import is_key
 
@@ -35,7 +35,7 @@ class SearchControls(FControl, gtk.VBox):
         
     
     def set_search_function(self, search_function):
-        LOG.info("Set search fucntion", search_function)
+        logging.info("Set search function"+ str(search_function))
         self.search_function = search_function    
         
     
@@ -55,7 +55,7 @@ class SearchControls(FControl, gtk.VBox):
         online_text = _("Online Music Search, Play, Download")        
         
         def on_activate():
-            LOG.debug("on_activate", self.entry.get_text())
+            logging.debug("on_activate"+ self.entry.get_text())
             if online_text == self.entry.get_text():
                 self.entry.set_text("")
             

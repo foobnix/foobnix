@@ -5,7 +5,7 @@ Created on 1 сент. 2010
 @author: ivan
 '''
 import urllib2
-from foobnix.util import LOG
+import logging
 from foobnix.util.fc import FC
 class ProxyPasswordMgr:
     def __init__(self):
@@ -23,7 +23,7 @@ def set_proxy_settings():
         user = FC().proxy_user
         password = FC().proxy_password
         
-        LOG.info("Proxy enable:", proxy, user, password)
+        logging.info("Proxy enable:"+ proxy+ user+ password)
         
         proxy = urllib2.ProxyHandler({"http" : proxy})
         proxy_auth_handler = urllib2.ProxyBasicAuthHandler(ProxyPasswordMgr())
@@ -31,4 +31,4 @@ def set_proxy_settings():
         opener = urllib2.build_opener(proxy, proxy_auth_handler)
         urllib2.install_opener(opener)
     else:
-        LOG.info("Proxy not enable")
+        logging.info("Proxy not enable")

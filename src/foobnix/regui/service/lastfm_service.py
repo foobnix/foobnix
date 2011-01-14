@@ -8,7 +8,7 @@ Created on 27 сент. 2010
 #from foobnix.model.entity import CommonBean
 from foobnix.thirdparty import pylast
 from foobnix.thirdparty.pylast import WSError, Tag
-from foobnix.util import LOG
+import logging
 from foobnix.util.fc import FC
 from foobnix.helpers.dialog_entry import show_login_password_error_dialog
 from foobnix.regui.model import FModel
@@ -33,7 +33,7 @@ class Cache():
             return None
         if self.cache_tracks.has_key(self.get_key(artist, title)):
             track = self.cache_tracks[self.get_key(artist, title)]
-            LOG.debug("Get track from cache", track)
+            logging.debug("Get track from cache"+ str(track))
             return track
         else:
             track = self.network.get_track(artist, title)
@@ -46,7 +46,7 @@ class Cache():
         track = self.get_track(artist, title)
         if track:
             if self.cache_albums.has_key(self.get_key(artist, title)):
-                LOG.debug("Get album from cache", track)
+                logging.debug("Get album from cache"+ str(track))
                 return self.cache_albums[self.get_key(artist, title)]
             else:
                 album = track.get_album()
@@ -59,7 +59,7 @@ class Cache():
         if not artist or not title:
             return None
         if self.cache_images.has_key(self.get_key(artist, title)):
-            LOG.info("Get image from cache")
+            logging.info("Get image from cache")
             return self.cache_images[self.get_key(artist, title)]
         else:
             album = self.get_album(artist, title)
@@ -90,7 +90,7 @@ class LastFmService():
         return self.init_thread()
 
     def init_thread(self):
-        LOG.debug("RUN INIT LAST.FM")
+        logging.debug("RUN INIT LAST.FM")
         username = FC().lfm_login
         password_hash = pylast.md5(FC().lfm_password)
         self.cache = None
@@ -104,7 +104,7 @@ class LastFmService():
                 proxy = proxy_rul[:index]
                 port = proxy_rul[index + 1:]
                 self.network.enable_proxy(proxy, port)
-                LOG.info("Enable proxy for last fm", proxy, port)
+                logging.info("Enable proxy for last fm"+ str(proxy)+ str(port))
 
 
             """scrobbler"""
@@ -113,7 +113,7 @@ class LastFmService():
         except:
             self.network = None
             self.scrobbler = None
-            LOG.error("Invalid last fm login or password or network problems", username, FC().lfm_password)
+            logging.error("Invalid last fm login or password or network problems"+ username + FC().lfm_password)
             val = show_login_password_error_dialog(_("Last.fm connection error"), _("Verify user and password"), username, FC().lfm_password)
             if val:
                 FC().lfm_login = val[0]
@@ -129,26 +129,26 @@ class LastFmService():
     
     def report_now_playing(self, bean):
         if not FC().enable_music_scrobbler:
-            LOG.debug("Last.fm scrobbler not enabled")
+            logging.debug("Last.fm scrobbler not enabled")
             return None 
         if not self.get_scrobbler():
-            LOG.warn("no last.fm scrobbler")
+            logging.warn("no last.fm scrobbler")
             return None   
         def task(song):
             if bean.artist and bean.title:
                 try:
                     self.get_scrobbler().report_now_playing(bean.artist, bean.title)
-                    LOG.debug("notify", bean.artist, bean.title)
+                    logging.debug("notify %s %s" % (bean.artist, bean.title))
                 except Exception, e:       
-                    LOG.error(e, "Error reporting now playing last.fm", bean.artist, bean.title, "A", bean.album)
+                    logging.error(str(e)+ "Error reporting now playing last.fm"+ bean.artist + bean.title + "A" + bean.album)
             else:
-                LOG.debug("Bean title or artist not defined")
+                logging.debug("Bean title or artist not defined")
                 
         thread.start_new_thread(task, (bean,))
     
     def report_scrobbled(self, bean, start_time, duration_sec):
         if not FC().enable_music_scrobbler:
-            LOG.debug("Last.fm scrobbler not enabled")
+            logging.debug("Last.fm scrobbler not enabled")
             return None
        
         if not self.get_scrobbler():
@@ -158,11 +158,11 @@ class LastFmService():
             if bean.artist and bean.title:
                 try:
                     self.get_scrobbler().scrobble(bean.artist, bean.title, start_time, "P", "", int(duration_sec))
-                    LOG.debug("Song Scrobbled", bean.artist, bean.title, start_time, "P", "", int(duration_sec))
+                    logging.debug("Song Scrobbled"+ str(bean.artist)+ str(bean.title)+ str(start_time)+ "P"+ ""+ str(int(duration_sec))
                 except Exception, e:       
-                    LOG.error(e, "Error reporting now playing last.fm", bean.artist, bean.title, "A", bean.album)
+                    logging.error(str(e)+ "Error reporting now playing last.fm"+ str(bean.artist)+ str(bean.title)+ "A"+ str(bean.album))
             else:
-                LOG.debug("Bean title or artist not defined")
+                logging.debug("Bean title or artist not defined")
         
         thread.start_new_thread(task, (bean,))
         
@@ -179,7 +179,7 @@ class LastFmService():
         try:
             albums = artist.get_top_albums()
         except WSError:
-            LOG.info("No artist with that name")
+            logging.info("No artist with that name")
             return None
 
         beans = []
@@ -202,7 +202,7 @@ class LastFmService():
 
     def search_album_tracks(self, artist_name, album_name):
         if not artist_name or not album_name:
-            LOG.warn("search_album_tracks artist and album is empty")
+            logging.warn("search_album_tracks artist and album is empty")
             return []
         if not self.connect():
             return None
@@ -220,7 +220,7 @@ class LastFmService():
         if not self.connect():
             return None
         if not tag:
-            LOG.warn("search_top_tags TAG is empty")
+            logging.warn("search_top_tags TAG is empty")
             return []
         tag = translate(tag, src="ru", to="en")
         beans = []
@@ -235,7 +235,7 @@ class LastFmService():
         if not self.connect():
             return None
         if not tag_name:
-            LOG.warn("search_top_tags TAG is empty")
+            logging.warn("search_top_tags TAG is empty")
             return []
 
         tag = Tag(tag_name, self.network)
@@ -270,7 +270,7 @@ class LastFmService():
         try:
             tracks = artist.get_top_tracks()
         except WSError:
-            LOG.info("No artist with that name")
+            logging.info("No artist with that name")
             return []
 
         beans = []
@@ -297,7 +297,7 @@ class LastFmService():
         if not self.connect():
             return None
         if not artist_name:
-            LOG.warn("search_top_similar_artist, Artist name is empty")
+            logging.warn("search_top_similar_artist, Artist name is empty")
             return []
 
         artist = self.network.get_artist(artist_name)
@@ -323,12 +323,12 @@ class LastFmService():
             return None
 
         if not artist or not title:
-            LOG.warn("search_top_similar_tags artist or title is empty")
+            logging.warn("search_top_similar_tags artist or title is empty")
             return []
 
         track = self.cache.get_track(artist, title)
         if not track:
-            LOG.warn("search_top_similar_tracks track not found")
+            logging.warn("search_top_similar_tracks track not found")
             return []
 
         similars = track.get_similar()
@@ -351,13 +351,13 @@ class LastFmService():
             return None
 
         if not artist or not title:
-            LOG.warn("search_top_similar_tags artist or title is empty")
+            logging.warn("search_top_similar_tags artist or title is empty")
             return []
 
         track = self.cache.get_track(artist, title)
 
         if not track:
-            LOG.warn("search_top_similar_tags track not found")
+            logging.warn("search_top_similar_tags track not found")
             return []
 
         tags = track.get_top_tags()

@@ -8,7 +8,7 @@ import copy
 import uuid
 import gobject
 from foobnix.regui.model import FModel, FTreeModel
-from foobnix.util import LOG
+import logging
 from foobnix.util.id3_util import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.m3u_utils import m3u_reader
@@ -34,7 +34,7 @@ class DrugDropTree(gtk.TreeView):
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY) #@UndefinedVariable
     
     def append_all(self, beans):
-        LOG.debug("begin apeend all")
+        logging.debug("begin append all")
         if self.current_view == VIEW_PLAIN:
             self.plain_append_all(beans)            
         else:
@@ -130,7 +130,7 @@ class DrugDropTree(gtk.TreeView):
             """if m3u is dropped"""
             if (from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u") 
             or from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u8")):
-                LOG.info("m3u is found")
+                logging.info("m3u is found")
                 m3u_file_path = from_model.get_value(from_iter, 5)
                 m3u_title = from_model.get_value(from_iter, 0)
                 self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)
@@ -146,7 +146,7 @@ class DrugDropTree(gtk.TreeView):
         
         def remove_replaced(i):
                 if from_filter_model == to_filter_model:
-                    LOG.info("Remove already replaced rows")
+                    logging.info("Remove already replaced rows")
                     
                     """Iters have already changed. Redefine"""
                     from_iter = from_model.get_iter(from_path)
@@ -159,21 +159,21 @@ class DrugDropTree(gtk.TreeView):
                     if to_path and from_level == to_level:
                         
                         if from_path[from_level]-i > to_path[from_level]:
-                            LOG.info("drag up")
+                            logging.info("drag up")
                             n = 0 if to_model.iter_has_child(to_iter) else 1
                             while i > -1:
                                 from_model.remove(from_model.get_iter( (from_path[from_level]+n,  ) ) )
                                 i -= 1 
                     
                         elif from_path[from_level]-i < to_path[from_level]:
-                            LOG.info("drag down")
+                            logging.info("drag down")
                             n = i
                             from_path1 = from_path[:from_level]+(from_path[from_level]-n, )+from_path[from_level+1 :]
                             while i > -1:
                                 from_model.remove(from_model.get_iter(from_path1))
                                 i -= 1
                     else:
-                        LOG.info("drag to empty space or from other level")
+                        logging.info("drag to empty space or from other level")
                         n = i
                         while i > -1:
                             from_path1 = from_path[:from_level]+(from_path[from_level]-n, )+from_path[from_level+1 :]
@@ -223,10 +223,10 @@ class DrugDropTree(gtk.TreeView):
             from_child_iter = from_model.iter_nth_child(from_iter, n)
             if (from_model.get_value(from_child_iter, 0).endswith(".m3u") 
                 or from_model.get_value(from_child_iter, 0).endswith(".m3u8")):
-                LOG.info("m3u is found. Skip it")
+                logging.info("m3u is found. Skip it")
                 continue
             elif from_model.get_value(from_child_iter, 0).endswith(".cue"):
-                LOG.info("Cue is found. Skip other files")
+                logging.info("Cue is found. Skip other files")
                 cue_iters.append(from_child_iter)
             else:
                 if from_model.iter_has_child(from_child_iter):
@@ -277,13 +277,13 @@ class DrugDropTree(gtk.TreeView):
         if not beans:
             return None
         self.current_view = VIEW_TREE
-        LOG.debug("append all as tree")
+        logging.debug("append all as tree")
        
         for bean in beans:    
             self.tree_append(bean)
     
     def plain_append_all(self, beans):
-        LOG.debug("begin plain append all")
+        logging.debug("begin plain append all")
         if not beans:
             return
         self.current_view = VIEW_PLAIN
@@ -291,7 +291,7 @@ class DrugDropTree(gtk.TreeView):
         normalized = []
         for model in beans:
             if model.path and model.path.lower().endswith(".iso.wv"):
-                LOG.debug("begin normalize iso.wv", model.path)
+                logging.debug("begin normalize iso.wv"+ str(model.path))
                 all = get_beans_from_iso_wv(model.path)
                 for inner in all:
                     normalized.append(inner)
@@ -311,9 +311,9 @@ class DrugDropTree(gtk.TreeView):
             
     def _plain_append(self, bean):
         def task():
-            LOG.debug("Plain append begin", bean.text, bean.path)
+            logging.debug("Plain append begin"+ str(bean.text)+ str(bean.path))
             
-            LOG.debug("Plain append task", bean.text, bean.path)
+            logging.debug("Plain append task"+ str(bean.text)+ str(bean.path))
             if not bean:
                 return
             if bean.is_file == True:

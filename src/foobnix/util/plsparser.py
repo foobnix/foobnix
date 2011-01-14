@@ -4,7 +4,7 @@ Created on Mar 3, 2010
 @author: ivan
 '''
 import urllib2
-from foobnix.util import LOG
+import logging
 
 
 "Get content of the url"
@@ -17,7 +17,7 @@ def get_content(url):
         data = connect.read()
         return data
     except:
-        LOG.error("INCORRECT URL ERROR .... ", url)
+        logging.error("INCORRECT URL ERROR .... "+ url)
         return None
     
             
@@ -33,7 +33,7 @@ def getStationPath(url):
         data = connect.read()
         urls = getStations(data, urls)
     except Exception, e:
-        LOG.error("INCORRECT URL ERROR .... ", url, e)
+        logging.error("INCORRECT URL ERROR .... "+ url+ str(e))
     if urls:
         return urls[0]
         
@@ -50,22 +50,22 @@ def get_radio_source(url):
     if url:          
         if url.lower().endswith(".pls"):                
             source_url = getStationPath(url)
-            LOG.info("Radio content", source_url)
+            logging.info("Radio content"+ source_url)
             if source_url :          
-                LOG.info("Radio url", source_url)      
+                logging.info("Radio url"+ source_url)      
                 return  source_url                   
                 
         elif url.lower().endswith(".m3u"):
             content = get_content(url)
-            LOG.info("Radio content", content)
+            logging.info("Radio content"+ content)
             if not content:
                 return None
             for line in content.rsplit():
                 if line.startswith("http://"):
-                    LOG.info("Radio url", line)
+                    logging.info("Radio url"+ line)
                     return line
     
-    LOG.info("Radio url", url)
+    logging.info("Radio url"+ url)
     return url
              
                         

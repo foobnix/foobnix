@@ -5,7 +5,7 @@ Created on 15  2010
 '''
 from __future__ import with_statement
 import os
-from foobnix.util import LOG
+import logging
 
 
 FOOBNIX_RADIO_PATHS = ("/usr/local/share/foobnix/radio", "radio", "share/foobnix/radio", "/usr/share/foobnix/radio")
@@ -34,7 +34,7 @@ class RadioFolder():
                 for item in os.listdir(cur_path):
                     path = os.path.join(cur_path, item)
                     if item.endswith(EXTENSION) and os.path.isfile(path) and os.path.getsize(path) > 0:
-                        LOG.info("Find radio station playlist", item)
+                        logging.info("Find radio station playlist"+ str(item))
                         if item not in result:
                             result.append(item)                    
         return result
@@ -45,7 +45,7 @@ class RadioFolder():
             full_path = os.path.join(path, list_name)
             
             if not os.path.isfile(full_path):
-                LOG.debug("Not a file ", full_path)    
+                logging.debug("Not a file "+ full_path)    
                 continue
         
             dict = {}
@@ -79,7 +79,7 @@ class RadioFolder():
         results = []    
         for play_name in names:
             content = self.parse_play_list(play_name)
-            LOG.info("Create FPL", play_name)
+            logging.info("Create FPL"+ play_name)
             play_name = play_name[:-len(EXTENSION)]
             results.append(FPL(play_name, content))
         return results

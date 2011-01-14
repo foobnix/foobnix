@@ -6,7 +6,7 @@ Created on Jul 16, 2010
 '''
 import urllib2
 import re
-from foobnix.util import LOG
+import logging
 site = "http://guzei.com/online_radio/?search=france"
 def load_urls_name_page():
     
@@ -38,8 +38,8 @@ def load_urls_name_page():
                     i += 1
                     url = get_ulr_by_id(id)
                     res = name + " = " + url
-                    LOG.info(j)
-                    LOG.info(res)
+                    logging.info(j)
+                    logging.info(res)
                     file.write(res + "\n")
                     
                 

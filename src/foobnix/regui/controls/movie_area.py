@@ -6,7 +6,7 @@ from foobnix.helpers.my_widgets import notetab_label
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.util.key_utils import is_key, is_key_alt, get_key
-from foobnix.util import LOG
+import logging
 
 class AdvancedDrawingArea(gtk.DrawingArea):
     def __init__(self, controls):  
@@ -20,7 +20,7 @@ class AdvancedDrawingArea(gtk.DrawingArea):
         self.connect("scroll-event", self.controls.volume.on_scroll_event)
     
     def action_function(self):
-        LOG.debug("Template function not defined")    
+        logging.debug("Template function not defined")    
     
     def on_key_press(self, w, e):            
         if is_key(e, 'Escape') or get_key(e) in ('F', 'f', 'а', 'А'):                

@@ -18,7 +18,7 @@ import gobject
 from foobnix.helpers.image import ImageBase
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
-from foobnix.util import LOG
+import logging
 
 class InfoCache():
     def __init__(self):
@@ -137,7 +137,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.clear()    
         
         if not FC().is_view_info_panel:
-            LOG.debug("Info panel disabled")  
+            logging.debug("Info panel disabled")  
             return
         
         """check connection"""
@@ -149,7 +149,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
                 
         if not bean.artist or not bean.title:
-            LOG.debug("Artist and title not defined")
+            logging.debug("Artist and title not defined")
             return None
         
         self.bean = bean

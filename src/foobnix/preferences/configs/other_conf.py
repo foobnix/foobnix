@@ -9,7 +9,7 @@ from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.fc import FC
 from foobnix.helpers.dialog_entry import info_dialog_with_link_and_donate
 from foobnix.helpers.pref_widgets import IconBlock
-from foobnix.util import LOG
+import logging
 from foobnix.preferences.configs import CONFIG_OTHER
 
 class OtherConfig(ConfigPlugin):
@@ -137,7 +137,7 @@ class OtherConfig(ConfigPlugin):
     def on_change_folder(self, *a):
         path = self.online_dir.get_filename()       
         FC().online_save_to_folder = path        
-        LOG.info("Change music online folder", path)  
+        logging.info("Change music online folder"+ path)  
                 
     
     def on_load(self):

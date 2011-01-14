@@ -8,7 +8,7 @@ import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
 from foobnix.regui.model.signal import FControl
 from foobnix.version import FOOBNIX_VERSION
-from foobnix.util import LOG
+import logging
 
 DBusGMainLoop(set_as_default=True)
 
@@ -68,7 +68,7 @@ class DBusManager(dbus.service.Object, FControl):
             mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
             mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
         except Exception, e:
-            LOG.error("your DE is not GNOME", e)
+            logging.error("your DE is not GNOME"+ str(e))
     
     def check_for_commands(self, args):
         if len(args) == 1:
@@ -124,7 +124,7 @@ class DBusManager(dbus.service.Object, FControl):
         
                 
     def on_mediakey(self, comes_from, what):
-        LOG.debug("Multi media key pressed", what)
+        logging.debug("Multi media key pressed"+ what)
         """
         gets called when multimedia keys are pressed down.
         """
@@ -138,7 +138,7 @@ class DBusManager(dbus.service.Object, FControl):
             elif what == 'Previous':
                 self.controls.prev()
         else:
-            LOG.debug('Got a multimedia key:', what)
+            logging.debug('Got a multimedia key:'+ str(what))
 
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='s')
     def Identity(self):
