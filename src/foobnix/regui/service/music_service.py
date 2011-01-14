@@ -19,6 +19,7 @@ def get_all_music_with_id3_by_path(path):
     return update_id3_wind_filtering(all)
 
 def _scanner(path, level):
+    path = unicode(path)
     results = []
     if not os.path.exists(path):
         return None

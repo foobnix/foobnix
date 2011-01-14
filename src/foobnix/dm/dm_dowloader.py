@@ -50,8 +50,7 @@ class Dowloader(threading.Thread):
         ext = get_file_extension(bean.path)
         
         if bean.artist:
-            path = FC().online_save_to_folder + "/" + bean.artist 
-            to_file = os.path.join(path, bean.get_display_name() + ext)            
+            to_file = os.path.join(FC().online_save_to_folder, bean.artist, bean.get_display_name() + ext)            
         else:
             path = FC().online_save_to_folder
             to_file = os.path.join(path, bean.get_display_name() + ext)        
