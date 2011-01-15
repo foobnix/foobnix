@@ -69,6 +69,9 @@ class FC:
         self.count_of_tabs = 5
         self.tab_position = "top"
         
+        """navigation tree"""
+        self.nav_selected_path = []
+        
         
         self.agent_line = get_ranmom_agent()
 

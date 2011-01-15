@@ -5,6 +5,8 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
+import gobject
+
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_middle_click, is_left_click
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
@@ -29,6 +31,16 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         self.set_type_tree()
         self.is_empty = False
+        
+        selection = self.get_selection()
+        selection.connect("changed", self.selection_chanaged)
+        
+    def selection_chanaged(self, w):
+        paths = self.get_selected_bean_paths()
+        if paths != None:
+            FC().nav_selected_path = paths
+        else:
+            FC().nav_selected_path = []
     
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
@@ -158,10 +170,18 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             FC().save()
         elif response == gtk.RESPONSE_CANCEL:
             LOG.info('Closed, no files selected')
-        chooser.destroy()       
-        
+        chooser.destroy()
+    
     def on_load(self):
         self.controls.load_music_tree()
+        def restore_selection():
+            paths = FC().nav_selected_path
+            LOG.debug("Restoring selected paths: " + str(paths))
+            selection = self.get_selection()
+            for path in paths:
+                self.expand_to_path(path)
+                selection.select_path(path)
+        gobject.idle_add(restore_selection)
     
     def on_save(self):
         pass
