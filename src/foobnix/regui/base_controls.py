@@ -389,7 +389,7 @@ class BaseFoobnixControls():
     
     def search_all_videos(self, query):
         def inline():
-            results = self.vk.find_video_by_query(query)
+            results = self.vk.find_videos_by_query(query)
             all = []
             p_bean = FModel(query).add_font("bold")
             all.append(p_bean)

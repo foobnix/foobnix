@@ -29,7 +29,7 @@ class SingleThread():
             self.lock.acquire()            
             thread.start_new_thread(self._thread_task, (method, args,))
         else:
-            logging.warning("Thread not finished"+ method+ args)    
+            logging.warning("Thread not finished"+ str(method)+ str(args))    
     
     def _thread_task(self, method, args):
         try:

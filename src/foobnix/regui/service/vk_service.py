@@ -5,7 +5,7 @@ Created on Sep 29, 2010
 @author: ivan
 '''
 import time
-from foobnix.util.fc import FC
+from foobnix.util.fc import FC, get_random_vk
 import urllib2
 import logging
 import urllib
@@ -13,6 +13,7 @@ import re
 from foobnix.regui.model import FModel
 from foobnix.util.text_utils import html_decode
 import json
+from urllib2 import HTTPError
 
 class VKService:
     
@@ -34,52 +35,57 @@ class VKService:
                 'al_frame' : '1'
         }
         self.get('http://login.vk.com/?act=login', post)
+        if (not self.is_connected()):
+            logging.error("failed connection to vk")
 
     def is_connected(self):
         return (str(self.cookie_processor.cookiejar).find('remixsid') > -1)
     
+    def check_connection(self):
+        if (not self.is_connected()):
+            logging.warning("vk is not connected!")
+    
     def find_tracks_by_query(self, query):
+        if not self.is_connected():
+            return []
         logging.info("start search songs"+ query)
         page = self.search(query)
+        if not page:
+            return []
         vk_audio = VKAudioResultsPage(page)
         return vk_audio.tracks()
         
     def search(self, query, type='audio'):
         return self.get("http://vk.com/gsearch.php?section=" + type + "&q=" + urllib.quote(query) + "&name=1")
 
-    def find_video_by_query(self, query):
+    def find_videos_by_query(self, query):
         page = self.search(query, "video")
+        if not page:
+            return []
         vk_videos = VKVideoResultsPage(page)
         return vk_videos.tracks()
     
     def get(self, url, data=None, headers={}):
         if data:
             data = urllib.urlencode(data)
-        
-        time.sleep(0.8)
+        time.sleep(1.2)
         try:
-            handler = self.opener.open(url, data)
+            handler= self.opener.open(url, data)
             data = handler.read()
             handler.close()
             return data
-        except Exception, e:
-            logging.error("VK Connection Error"+ str(e))
+        except HTTPError, e:
+            logging.error("VK Connection Error:"+ str(e) + "( Searching: "+str(url)+" with data "+str(data)+") ["+FC().vk_login+":"+FC().vk_password+"]")
+            if e.code == 400:
+                FC().vk_login, FC().vk_password = get_random_vk()
+                self.initialize_urllib2()
+                self.login()
             return None
-        
 
-#
-# METHODS TO REFACTOR
-#
     def find_tracks_by_url(self, url):
-        page = self.get(url)
-        vk_audio = VKAudioResultsPage(page)
-        return vk_audio.tracks()
-        
-        
-    def old_find_tracks_by_url(self, url):
         logging.debug("Search By URL")
-        result = self.get(url) 
-        try:       
+        result = self.get(url)
+        try:
             result = unicode(result)
         except:
             result = result
@@ -101,17 +107,17 @@ class VKService:
                 if len(result_lyr) > j:
                     title = result_lyr[j]
                     title = title[title.find(";'>") + 3:]
-                    j += 1                
+                    j += 1
             artist = html_decode(artist)
             #song = VKSong(path, artist, title, result_time[i]);
             if "\">" in title:
                 title = title[title.find("\">") + 2:]
-            text = artist + " - " + title        
+            text = artist + " - " + title
             song = FModel(text, path).add_artist(artist).add_title(title).add_time(result_time[i])
-            songs.append(song)        
+            songs.append(song)
         logging.info(len(songs))
-        return songs    
-    
+        return songs 
+        
     def find_one_track(self, query):        
         vkSongs = self.find_tracks_by_query(query)
         if not vkSongs:

@@ -23,7 +23,7 @@ class TestVKService(unittest.TestCase):
         self.assertTrue(len(vk_search.tracks()) >0)
     
     def test_find_videos(self):
-        list = self.vk.find_video_by_query("Madonna")
+        list = self.vk.find_videos_by_query("Madonna")
         for bean in list[:10]:
             self.assertNotEquals("text/html", get_url_type(bean.path))
             self.assertTrue(bean.path.startswith("http://")) 
@@ -33,7 +33,7 @@ class TestVKService(unittest.TestCase):
         self.assertTrue(bean.path.startswith("http://"))
     
     def test_bad_link_track(self):
-        beans = self.vk.find_video_by_query("akon-cry out of jou(michael jackson tribute")
+        beans = self.vk.find_videos_by_query("akon-cry out of jou(michael jackson tribute")
         "http://cs12907.vkontakte.ru/u87507380/video/bee60bc871.240.mp4"
         path = beans[0].path
         self.assertNotEquals("text/html", get_url_type(path))
