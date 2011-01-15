@@ -83,9 +83,11 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 new_iter = self.to_add_drug_item(to_model, None, row, None)
         def task():
             self.controls.notetabs.get_active_tree().rebuild_as_plain()
+            if not current:
+                self.controls.play_first_file_in_playlist()
         gobject.idle_add(task)
-    
-    
+        
+        
     def add_folder(self, in_new_tab=False):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"),
                                         action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,

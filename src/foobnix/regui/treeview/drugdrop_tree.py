@@ -254,7 +254,7 @@ class DrugDropTree(gtk.TreeView):
             bean = self.get_bean_from_row(row)
             copy_beans.append(bean)
         
-        self.clear()
+        self.clear_tree()
         
         self.tree_append_all(copy_beans)
     
@@ -262,6 +262,8 @@ class DrugDropTree(gtk.TreeView):
     
     def rebuild_as_plain(self, *a):
         self.current_view = VIEW_PLAIN
+        if len(self.model) == 0: 
+            return
         plain = []
         for row in self.model:
             plain.append(row)
@@ -272,7 +274,8 @@ class DrugDropTree(gtk.TreeView):
             bean = self.get_bean_from_row(row)
             copy_beans.append(bean)
             
-        self.clear()
+        #attention! clear_tree() has low priority
+        self.clear_tree()
         
         self.plain_append_all(copy_beans)
         
@@ -315,7 +318,6 @@ class DrugDropTree(gtk.TreeView):
     def _plain_append(self, bean):
         def task():
             LOG.debug("Plain append begin", bean.text, bean.path)
-            
             LOG.debug("Plain append task", bean.text, bean.path)
             if not bean:
                 return

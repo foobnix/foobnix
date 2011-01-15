@@ -318,7 +318,7 @@ class NoteTabControl(TabGeneral, LoadSave):
     def create_notebook_tab(self, beans):
         treeview = PlaylistTreeControl(self.controls)
         self.set_active_tree(treeview)
-        treeview.append_all(beans)
+        if beans: treeview.append_all(beans)
         treeview.scroll.show_all()
         return  treeview.scroll
     

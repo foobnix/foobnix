@@ -54,7 +54,7 @@ class TabLib(TabGeneral, LoadSave):
     def clear_tree(self, tab_child):
         n = self.page_num(tab_child)
         tree = tab_child.get_child()
-        tree.clear()
+        tree.clear_tree()
         FC().cache_music_tree_beans[n] = []
         tree.is_empty = True
             

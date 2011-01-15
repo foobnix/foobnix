@@ -84,7 +84,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         self.append(bean)
         
     def populate_all(self, beans):
-        self.clear()
+        self.clear_tree()
         self.append_all(beans)
     
     def get_bean_from_iter(self, iter):
@@ -118,7 +118,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             attributes.append(value)
         return attributes
 
-    def clear(self):
+    def clear_tree(self):
         gobject.idle_add(self.model.clear)
         #self.model.clear()
 
