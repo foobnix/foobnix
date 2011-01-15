@@ -371,3 +371,12 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             bean = self._get_bean_by_path(path)
             beans.append(bean)
         return beans                         
+
+    def select_paths(self, paths):
+        selection = self.get_selection()
+        for path in paths:
+            self.expand_to_path(path)
+            selection.select_path(path)
+
+    def restore_selection(self, paths):
+        gobject.idle_add(self.select_paths, paths)

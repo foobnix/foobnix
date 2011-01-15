@@ -26,7 +26,16 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         self.configure_send_drug()
         self.configure_recive_drug()
         
-        self.set_type_tree()
+        self.set_type_tree()        
+        selection = self.get_selection()
+        selection.connect("changed", self.selection_chanaged)
+
+    def selection_chanaged(self, w):
+        paths = self.get_selected_bean_paths()
+        if paths != None:
+            FC().virtual_selected_paths = paths
+        else:
+            FC().virtual_selected_paths = []
    
     def activate_perspective(self):
    
@@ -76,6 +85,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
     def on_load(self):
         self.scroll.hide()
         self.populate_all(FC().cache_virtual_tree_beans)
+        self.restore_selection(FC().virtual_selected_paths)
     
     def on_save(self):        
         FC().cache_virtual_tree_beans = self.get_all_beans()

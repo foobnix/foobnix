@@ -69,8 +69,10 @@ class FC:
         self.count_of_tabs = 5
         self.tab_position = "top"
         
-        """navigation tree"""
-        self.nav_selected_path = []
+        """selected tree paths"""
+        self.nav_selected_paths = []
+        self.radio_selected_paths = []
+        self.virtual_selected_paths = []
         
         
         self.agent_line = get_ranmom_agent()

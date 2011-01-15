@@ -34,13 +34,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         selection = self.get_selection()
         selection.connect("changed", self.selection_chanaged)
-        
+
     def selection_chanaged(self, w):
         paths = self.get_selected_bean_paths()
         if paths != None:
-            FC().nav_selected_path = paths
+            FC().nav_selected_paths = paths
         else:
-            FC().nav_selected_path = []
+            FC().nav_selected_paths = []
     
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
@@ -174,14 +174,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     
     def on_load(self):
         self.controls.load_music_tree()
-        def restore_selection():
-            paths = FC().nav_selected_path
-            LOG.debug("Restoring selected paths: " + str(paths))
-            selection = self.get_selection()
-            for path in paths:
-                self.expand_to_path(path)
-                selection.select_path(path)
-        gobject.idle_add(restore_selection)
+        self.restore_selection(FC().nav_selected_paths)
     
     def on_save(self):
         pass

@@ -6,6 +6,7 @@ Created on Sep 29, 2010
 from foobnix.regui.state import LoadSave
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 import gtk
+import gobject
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.fc import FC
 from foobnix.regui.model import FModel
@@ -26,7 +27,16 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
         
         self.configure_send_drug()
 
-        self.set_type_tree()
+        self.set_type_tree()        
+        selection = self.get_selection()
+        selection.connect("changed", self.selection_chanaged)
+
+    def selection_chanaged(self, w):
+        paths = self.get_selected_bean_paths()
+        if paths != None:
+            FC().radio_selected_paths = paths
+        else:
+            FC().radio_selected_paths = []
     
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_RADIO
@@ -82,6 +92,7 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
         self.populate_all(FC().cache_radio_tree_beans)
         if not FC().cache_radio_tree_beans:
             self.update_radio_tree()
+        self.restore_selection(FC().radio_selected_paths);
         
     
     def on_save(self):        
