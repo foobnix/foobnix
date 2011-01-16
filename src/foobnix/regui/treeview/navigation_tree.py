@@ -26,16 +26,25 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.append_column(column)
         
         self.configure_send_drug()
-        
+        self.connect("button-press-event", self.select_path)
         self.set_type_tree()
         self.is_empty = False
     
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
     
+    def select_path(self, widget, event):
+        path = self.get_path_at_pos(int(event.x), int(event.y))
+        self.get_selection().select_path(path[0])
+    
     def on_button_press(self, w, e):
+        
+        # on left double click add selected items to current tab
         if is_middle_click(e):
-            # on left double click add selected items to current tab
+                        
+            #in order to firstly row has been selected than middle click has been handled
+            self.emit("button-press-event", gtk.gdk.Event(gtk.gdk.BUTTON_PRESS))
+            
             self.add_to_tab(True)
             return
 
@@ -66,26 +75,29 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
     def add_to_tab(self, current=False):
         paths = self.get_selected_bean_paths()
-        to_model = self.controls.notetabs.get_active_tree().get_model().get_model()
+        to_model = self.controls.notetabs.get_current_tree().get_model().get_model()
         from_model = self.get_model()
         for i, path in enumerate(paths):
             from_iter = from_model.get_iter(path)
             row = self.get_row_from_model_iter(from_model, from_iter)
-            if self.is_m3u(from_model, from_iter): continue
+            
             if not i and not current:
                 name = row[0]
                 self.controls.notetabs._append_tab(name)
-                to_model = self.controls.notetabs.get_active_tree().get_model().get_model()
+                to_model = self.controls.notetabs.get_current_tree().get_model().get_model()
+            if self.is_m3u(from_model, from_iter, to_model, None, None): continue
             if from_model.iter_has_child(from_iter):
                 new_iter = self.to_add_drug_item(to_model, None, row, None, True)
                 self.iter_is_parent(from_iter, from_model, to_model, new_iter)
             else:
                 new_iter = self.to_add_drug_item(to_model, None, row, None)
+        self.controls.notetabs.get_current_tree().rebuild_as_plain()
         def task():
-            self.controls.notetabs.get_active_tree().rebuild_as_plain()
-            if not current:
-                self.controls.play_first_file_in_playlist()
-        gobject.idle_add(task)
+            self.controls.play_first_file_in_playlist()
+        if not current:
+            gobject.idle_add(task)
+        
+                
         
         
     def add_folder(self, in_new_tab=False):
