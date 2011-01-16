@@ -8,8 +8,10 @@ import os
 from foobnix.util import LOG
 
 if "--debug" in sys.argv:
-    LOG.set_logger_level("debug")
+    LOG.setup("debug")
     LOG.print_platform_info()
+else:
+    LOG.setup("error")
 
 from foobnix.regui.foobnix_core import FoobnixCore
 

@@ -9,7 +9,7 @@ from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_mi
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
 from foobnix.util.fc import FC
-from foobnix.util import LOG
+import logging
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
 from foobnix.util.list_utils import any
@@ -153,11 +153,11 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 else:
                     FC().music_paths[number_of_tab].append(path) 
                     self.controls.preferences.on_load()
-                    LOG.info("New music paths", FC().music_paths[number_of_tab])
+                    logging.info("New music paths"+ str(FC().music_paths[number_of_tab]))
                     self.controls.update_music_tree(tree, number_of_tab)
             FC().save()
         elif response == gtk.RESPONSE_CANCEL:
-            LOG.info('Closed, no files selected')
+            logging.info('Closed, no files selected')
         chooser.destroy()       
         
     def on_load(self):

@@ -6,7 +6,7 @@ Created on 27 сент. 2010
 '''
 import thread
 from threading import Lock
-from foobnix.util import LOG
+import logging
 import time
 import gobject
 
@@ -31,7 +31,7 @@ class SingleThread():
             self.lock.acquire()            
             thread.start_new_thread(self._thread_task, (method, args,))
         else:
-            LOG.warn("Thread not finished", method, args)    
+            logging.warning("Thread not finished"+ str(method)+ str(args))    
     
     def _thread_task(self, method, args):
         try:
@@ -41,7 +41,7 @@ class SingleThread():
                 method()
             time.sleep(0.1)
         except Exception, e:
-            LOG.error(e)
+            logging.error(e)
         finally:
             self.progressbar.stop()        
             self.lock.release()

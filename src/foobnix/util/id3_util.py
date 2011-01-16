@@ -10,7 +10,7 @@ from foobnix.util.time_utils import normalize_time
 from foobnix.util.bean_utils import update_bean_from_normalized_text
 from foobnix.util.file_utils import file_extension
 from foobnix.util.fc import FC
-from foobnix.util import LOG
+import logging
 from foobnix.util.audio import get_mutagen_audio
 import os
 
@@ -58,7 +58,7 @@ def udpate_id3_for_beans(beans):
             try:
                 udpate_id3(bean)
             except Exception, e:
-                LOG.error("udpate id3 error", e)
+                logging.error("update id3 error"+ str(e))
     return beans
 
 def udpate_id3(bean):
@@ -66,7 +66,7 @@ def udpate_id3(bean):
         try:
             audio = get_mutagen_audio(bean.path)            
         except Exception, e:
-            LOG.warn("ID3 NOT MP3", e, bean.path)
+            logging.warn("ID3 NOT MP3"+ str(e) + bean.path)
             return bean
 
         if audio and audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])

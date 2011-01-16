@@ -8,7 +8,7 @@ import gtk
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
-from foobnix.util import LOG
+import logging
 class BaseFoobnixLayout(LoadSave, FControl):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -51,7 +51,7 @@ class BaseFoobnixLayout(LoadSave, FControl):
    
     
     def set_visible_search_panel(self, flag=True):
-        LOG.info("set_visible_search_panel", flag)
+        logging.info("set_visible_search_panel"+ str(flag))
         if flag:
             self.controls.searchPanel.show_all()
             self.controls.search_progress.hide()
@@ -59,7 +59,7 @@ class BaseFoobnixLayout(LoadSave, FControl):
             self.controls.searchPanel.hide()   
     
     def set_visible_musictree_panel(self, flag):
-        LOG.info("set_visible_musictree_panel", flag)
+        logging.info("set_visible_musictree_panel"+ str(flag))
         if flag:
             self.hpaned_left.set_position(FC().hpaned_left)            
         else:

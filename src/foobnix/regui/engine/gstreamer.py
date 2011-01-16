@@ -8,7 +8,7 @@ import gst
 import urllib
 import os
 from foobnix.regui.engine import MediaPlayerEngine
-from foobnix.util import LOG
+import logging
 import time
 import thread
 from foobnix.util.fc import FC
@@ -60,11 +60,11 @@ class GStreamerEngine(MediaPlayerEngine):
         bus.enable_sync_message_emission()
         bus.connect("message", self.on_message)
         bus.connect("sync-message::element", self.on_sync_message)
-        LOG.debug("LOCAL gstreamer")
+        logging.debug("LOCAL gstreamer")
         return playbin
     
-    def notify_init(self, duraction_int):
-        LOG.debug("Pre init thread", duraction_int)
+    def notify_init(self, duration_int):
+        logging.debug("Pre init thread"+ str(duration_int))
 
     def notify_playing(self, position_int, duration_int, sec):
         #LOG.debug("Notify playing", position_int)
@@ -73,7 +73,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.controls.notify_playing(self.position_sec, self.duration_sec, self.bean, sec)
 
     def notify_eos(self):
-        LOG.debug("Notify eos, STOP State")
+        logging.debug("Notify eos, STOP State")
         self.controls.notify_eos()
         
         self.set_state(STATE_STOP)
@@ -84,7 +84,7 @@ class GStreamerEngine(MediaPlayerEngine):
             self.controls.notify_title(text)
 
     def notify_error(self, msg):
-        LOG.debug("Notify error, STOP state")
+        logging.debug("Notify error, STOP state")
         self.set_state(STATE_STOP)
         self.controls.notify_error(msg)
 
@@ -95,7 +95,7 @@ class GStreamerEngine(MediaPlayerEngine):
         path = bean.path
 
         if not path:
-            LOG.error("Can't play empty path!!!")
+            logging.error("Can't play empty path!!!")
             return None
 
         
@@ -111,7 +111,7 @@ class GStreamerEngine(MediaPlayerEngine):
             
             if path.startswith("http://"):
                 path = get_radio_source(path)
-                LOG.debug("Try To play path", path)
+                logging.debug("Try To play path"+ path)
                 uri = path
                 self.notify_title(uri)
             else:
@@ -119,7 +119,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 if os.name == 'nt':
                     uri = 'file:' + urllib.pathname2url(path)
 
-            LOG.info("Gstreamer try to play", uri)
+            logging.info("Gstreamer try to play"+ uri)
             self.player.set_property("uri", uri)
             
             self.prev_path = path
@@ -130,7 +130,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.state_play()
         self.volume(FC().volume)
         
-        LOG.debug("current state before thread", self.get_state(), self.play_thread_id)
+        logging.debug("current state before thread"+ str(self.get_state()) + str(self.play_thread_id))
         self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
 
     
@@ -148,14 +148,14 @@ class GStreamerEngine(MediaPlayerEngine):
         try:
             return self.player.query_position(gst.Format(gst.FORMAT_TIME), None)[0]
         except Exception, e:
-            LOG.warn("GET query_position", e)
+            logging.warn("GET query_position"+ str(e))
             return - 1
     
     def get_duration_seek_ns(self):
         try:
             return self.player.query_duration(gst.Format(gst.FORMAT_TIME), None)[0]
         except Exception, e:
-            LOG.warn("GET query_duration", e)
+            logging.warn("GET query_duration"+ str(e))
             return - 1
     
     def playing_thread(self):
@@ -163,22 +163,22 @@ class GStreamerEngine(MediaPlayerEngine):
         error_count = 0
         sec = 0
         
-        LOG.debug("current state in thread", self.get_state())
+        logging.debug("current state in thread"+  str(self.get_state()))
          
         while thread_id == self.play_thread_id:
             try:
                 time.sleep(0.2)
-                duraction_int = self.get_duration_seek_ns()
-                if duraction_int == -1:
+                duration_int = self.get_duration_seek_ns()
+                if duration_int == -1:
                     time.sleep(1)
                     continue
-                self.notify_init(duraction_int)
+                self.notify_init(duration_int)
                 break
             except Exception, e:
-                LOG.info("Init playing thread", e)
+                logging.info("Init playing thread "+ str(e))
                 time.sleep(1)
                 if error_count > 3:
-                    LOG.warn("shit happens")
+                    logging.warn("shit happens")
                     self.state_stop()
                     time.sleep(1)
                     self.state_play()
@@ -187,9 +187,9 @@ class GStreamerEngine(MediaPlayerEngine):
         time.sleep(0.2)
 
         if self.bean.duration_sec > 0:
-            duraction_int = float(self.bean.duration_sec) * self.NANO_SECONDS
+            duration_int = float(self.bean.duration_sec) * self.NANO_SECONDS
         
-        LOG.debug("current state before while", self.get_state())
+        logging.debug("current state before while"+ str(self.get_state()))
         
         self.set_state(STATE_PLAY)
         
@@ -198,16 +198,16 @@ class GStreamerEngine(MediaPlayerEngine):
                 position_int = self.get_position_seek_ns()
                 if position_int > 0 and self.bean.start_sec > 0:
                     position_int = position_int - float(self.bean.start_sec) * self.NANO_SECONDS
-                    LOG.debug(position_int, self.bean.start_sec, duraction_int)
-                    if position_int + self.NANO_SECONDS > duraction_int:
+                    logging.debug(str(position_int)+ str(self.bean.start_sec)+ str(duration_int))
+                    if position_int + self.NANO_SECONDS > duration_int:
                         self.notify_eos()
                 
                 if self.get_state() == STATE_PLAY:
                     sec += 1 
                     
-                self.notify_playing(position_int, duraction_int, sec)
+                self.notify_playing(position_int, duration_int, sec)
             except Exception, e:
-                LOG.info("Playing thread error..." , e)
+                logging.info("Playing thread error..." + str(e))
 
             time.sleep(1)
 
@@ -222,15 +222,15 @@ class GStreamerEngine(MediaPlayerEngine):
     def seek_seconds(self, seconds):
         if not seconds:
             return
-        LOG.info("Start with seconds", seconds)
+        logging.info("Start with seconds"+ str(seconds))
         seek_ns = (float(seconds) + 0.0) * self.NANO_SECONDS
-        LOG.info("SEC SEEK SEC", seek_ns)
+        logging.info("SEC SEEK SEC"+  str(seek_ns))
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
     
     def seek_ns(self, ns):
         if not ns:
             return        
-        LOG.info("SEC ns", ns)
+        logging.info("SEC ns" +  str(ns))
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, ns)
 
     def volume(self, percent):
@@ -254,11 +254,11 @@ class GStreamerEngine(MediaPlayerEngine):
     
     def seek_up(self, offset=3):                
         self.seek(self.get_current_percent(), offset)
-        LOG.debug("SEEK UP")
+        logging.debug("SEEK UP")
     
     def seek_down(self, offset= -3):
         self.seek(self.get_current_percent(), offset)
-        LOG.debug("SEEK DOWN")
+        logging.debug("SEEK DOWN")
     
     def restore_seek_ns(self):
         time.sleep(1)        
@@ -276,7 +276,7 @@ class GStreamerEngine(MediaPlayerEngine):
         
         #if FC().system_icons_dinamic:
         self.controls.trayicon.on_dynamic_icons(self.current_state)
-        LOG.debug("state STOP")
+        logging.debug("state STOP")
 
     def state_pause(self):
         self.player.set_state(gst.STATE_PAUSED)
@@ -306,11 +306,11 @@ class GStreamerEngine(MediaPlayerEngine):
                 self.notify_title(title)
 
         elif type == gst.MESSAGE_EOS:
-            LOG.info("MESSAGE_EOS")
+            logging.info("MESSAGE_EOS")
             self.notify_eos()
         elif type == gst.MESSAGE_ERROR:
             err, debug = message.parse_error()
-            LOG.warn("Error: %s" % err, debug, err.domain, err.code)
+            logging.warn("Error: " + str(err) + str(debug) + str(err.domain) + str(err.code))
 
             if err.code != 1:
                 self.notify_error(str(err))

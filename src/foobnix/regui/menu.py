@@ -4,7 +4,8 @@ Created on Sep 22, 2010
 @author: ivan
 '''
 import gtk
-from foobnix.util import LOG, const
+import logging
+from foobnix.util import const
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import open_link_in_browser
@@ -49,7 +50,7 @@ class MenuBarWidget(FControl):
 
         def set_random(flag=True):            
             FC().is_order_random = flag
-            LOG.debug("set random", flag)
+            logging.debug("set random"+ str(flag))
             controls.os.on_load()
 
         """Playback - Order"""
@@ -71,18 +72,18 @@ class MenuBarWidget(FControl):
         
         def repeat_all():
             FC().repeat_state = const.REPEAT_ALL            
-            LOG.debug("set repeat_all")
+            logging.debug("set repeat_all")
             controls.os.on_load()
             
         
         def repeat_sigle():
             FC().repeat_state = const.REPEAT_SINGLE
-            LOG.debug("set repeat_sigle")
+            logging.debug("set repeat_sigle")
             controls.os.on_load()
         
         def repeat_no():
             FC().repeat_state = const.REPEAT_NO
-            LOG.debug("set repeat_no")
+            logging.debug("set repeat_no")
             controls.os.on_load()
             
         self.lopping_all.connect("activate", lambda * a:repeat_all())
@@ -146,7 +147,7 @@ class MyMenu(gtk.Menu):
             img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
             item.set_image(img)
 
-        LOG.debug("Menu-Image-Activate", title, gtk_stock, func, param)
+        logging.debug("Menu-Image-Activate"+ title + str(gtk_stock) + str(func)  + str(param))
         if func and param:
             item.connect("activate", lambda * a: func(param))
         elif func:

@@ -7,7 +7,7 @@ Created on 24 авг. 2010
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
 from foobnix.helpers.dialog_entry import show_entry_dialog
-from foobnix.util import LOG
+import logging
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
@@ -139,7 +139,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
                     self.tree_controller.append(FDModel(path))
             gobject.idle_add(self.reload_dir)
         elif response == gtk.RESPONSE_CANCEL:
-            LOG.info('Closed, no files selected')
+            logging.info('Closed, no files selected')
         chooser.destroy()
         
          
@@ -191,7 +191,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         if val and val.find(".") >= 0 and len(val) <= 5 and val not in self.files_controller.get_all_beans_text():
             self.files_controller.append(FDModel(val))
         else:
-            LOG.info("Can't add your value", val)
+            logging.info("Can't add your value"+ val)
             
     def gap(self):
         label = gtk.Label(_("Gap between tracks: "))

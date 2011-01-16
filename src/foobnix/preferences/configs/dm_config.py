@@ -6,7 +6,7 @@ Created on 24 авг. 2010
 '''
 import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
-from foobnix.util import LOG
+import logging
 from foobnix.util.fc import FC
 from foobnix.preferences.configs import CONFIG_DOWNLOAD_MANAGER
 
@@ -51,7 +51,7 @@ class DMConfig(ConfigPlugin):
         path = self.online_dir.get_filename()       
         FC().online_save_to_folder = path
         
-        LOG.info("Change music online folder", path)  
+        logging.info("Change music online folder"+ path)  
                 
     
     def on_load(self):

@@ -5,7 +5,7 @@ Created on 24 авг. 2010
 @author: ivan
 '''
 import gtk
-from foobnix.util import LOG
+import logging
 from foobnix.util.localization import foobnix_localization
 from foobnix.helpers.image import ImageBase
 
@@ -25,7 +25,7 @@ def file_chooser_dialog(title, current_folder=None):
     if response == gtk.RESPONSE_OK:
         paths = chooser.get_filenames()
     elif response == gtk.RESPONSE_CANCEL:
-        LOG.info('Closed, no files selected')
+        logging.info('Closed, no files selected')
     chooser.destroy()
     return paths
 
@@ -40,7 +40,7 @@ def directory_chooser_dialog(title, current_folder=None):
     if response == gtk.RESPONSE_OK:
         paths = chooser.get_filenames()
     elif response == gtk.RESPONSE_CANCEL:
-        LOG.info('Closed, no directory selected')
+        logging.info('Closed, no directory selected')
     chooser.destroy()
     return paths
 
@@ -209,7 +209,7 @@ def file_saving_dialog(title, current_folder=None):
     if response == gtk.RESPONSE_OK:
         paths = chooser.get_filenames()
     elif response == gtk.RESPONSE_CANCEL:
-        LOG.info('Closed, no files selected')
+        logging.info('Closed, no files selected')
     chooser.destroy()
     
     

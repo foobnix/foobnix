@@ -14,7 +14,7 @@ import gobject
 
 from foobnix.util.fc import FC
 from foobnix.util.m3u_utils import m3u_reader
-from foobnix.util import LOG
+import logging
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel
 from foobnix.regui.service.lastfm_service import LastFmService
@@ -94,7 +94,7 @@ class BaseFoobnixControls():
             all_beans.append(parent)
             for path in paths:
                 if path == "/":
-                    LOG.info("Skip root folder")
+                    logging.info("Skip root folder")
                     continue;
                 beans = get_all_music_by_path(path)
                 
@@ -179,12 +179,12 @@ class BaseFoobnixControls():
                     tree.is_empty = True
                     self.perspective.show_add_button()
             
-            LOG.info("Tree loaded from cache")
+            logging.info("Tree loaded from cache")
 
     def update_music_tree(self, tree=None, number_of_page=0):
         if not tree:
             tree = self.tree
-        LOG.info("Update music tree", FC().music_paths[number_of_page])
+        logging.info("Update music tree" + str(FC().music_paths[number_of_page]))
         tree.clear()
         FC().cache_music_tree_beans[number_of_page] = []
                
@@ -200,14 +200,14 @@ class BaseFoobnixControls():
         try:
             self.perspective.hide_add_button()
         except AttributeError: 
-            LOG.warn("Object perspective not exists yet")
+            logging.warn("Object perspective not exists yet")
         
         if not all:
             tree.is_empty = True
             try:
                 self.perspective.show_add_button()
             except AttributeError: 
-                LOG.warn("Object perspective not exists yet")
+                logging.warn("Object perspective not exists yet")
             all.append(FModel(_("Music not found in folder(s):")))        
             for path in FC().music_paths[number_of_page]:            
                 all.append(FModel(path).add_is_file(True))
@@ -317,7 +317,7 @@ class BaseFoobnixControls():
         if not bean.path:
             if not self.fill_bean_from_vk(bean):
                 if self.count_errors < 4:
-                    LOG.debug("Error happen", self.count_errors)
+                    logging.debug("Error happen" + str(self.count_errors))
                     time.sleep(0.5)
                     self.next()
                 self.count_errors += 1
@@ -353,7 +353,7 @@ class BaseFoobnixControls():
                 self.lastfm.report_scrobbled(bean, self.start_time, dur_sec)
             
     def notify_title(self, text):
-        LOG.debug("Notify title", text)
+        logging.debug("Notify title" + text)
         
         self.statusbar.set_text(text)
         text = normalize_text(text)
@@ -362,7 +362,7 @@ class BaseFoobnixControls():
         self.update_info_panel(t_bean)
     
     def notify_error(self, msg):
-        LOG.error("notify error", msg)
+        logging.error("notify error" + msg)
         self.seek_bar.set_text(msg)
         self.info_panel.clear()
         
@@ -389,7 +389,7 @@ class BaseFoobnixControls():
     
     def search_all_videos(self, query):
         def inline():
-            results = self.vk.find_video_by_query(query)
+            results = self.vk.find_videos_by_query(query)
             all = []
             p_bean = FModel(query).add_font("bold")
             all.append(p_bean)
@@ -566,9 +566,8 @@ class BaseFoobnixControls():
         self.state_stop()
         self.main_window.hide()
         self.trayicon.hide()        
-        
-        LOG.info("Controls - Quit")
-        
+
+        logging.info("Controls - Quit")
         self.notetabs.on_quit()
         #self.on_save()
         FC().save(False)
@@ -582,11 +581,11 @@ class BaseFoobnixControls():
             f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname() + "&version=" + current_version)
             #f = urllib2.urlopen("http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version)
         except Exception, e:
-            LOG.error("Check version error", e)
+            logging.error("Check version error" + str(e))
             return None
 
         new_version = f.read()
-        LOG.info("version", current_version , "|", new_version, "|", uuid)
+        logging.info("version" + current_version + "|" + new_version + "|" + str(uuid))
         f.close()
         if FC().check_new_version and current_version < new_version:
             info_dialog_with_link_and_donate(new_version)            
@@ -594,10 +593,10 @@ class BaseFoobnixControls():
     def on_load(self):
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):
-                LOG.debug("LOAD ON START", self.__dict__[element])
+                logging.debug("LOAD ON START" + str(self.__dict__[element]))
                 self.__dict__[element].on_load()
             else:
-                LOG.debug("NOT LOAD", self.__dict__[element])
+                logging.debug("NOT LOAD" + str(self.__dict__[element]))
                 
         self.main_window.show()
         self.movie_window.hide_all()
@@ -656,4 +655,4 @@ class BaseFoobnixControls():
             if isinstance(self.__dict__[element], LoadSave):
                 self.__dict__[element].on_save()
             else:
-                LOG.debug("NOT SAVE", self.__dict__[element])
+                logging.debug("NOT SAVE" + str(self.__dict__[element]))

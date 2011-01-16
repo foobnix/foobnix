@@ -9,7 +9,7 @@ import gtk
 from foobnix.util.proxy_connect import set_proxy_settings
 import time
 import urllib2
-from foobnix.util import LOG
+import logging
 from foobnix.util.fc import FC
 class NetworkConfig(ConfigPlugin):
     
@@ -129,7 +129,7 @@ class NetworkConfig(ConfigPlugin):
             f.read()
             f.close()
         except Exception, e:
-            LOG.error(e)
+            logging.error(e)
             self.result.set_text(str(e))
             return None
         
