@@ -140,16 +140,16 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
             title = bean.text
         if FC().change_tray_icon:
             super(TrayIconControls, self).update_info_from(bean)
-        
-        if not pynotify.init('org.mpris.foobnix'):
-            logging.warning("Can't initialize pynotify")
-            return
-        notification = pynotify.Notification("<b><big>Foobnix</big></b>", "<b><i>> "+artist+"\n\n> "+title+"</i></b>")
-        notification.set_urgency(pynotify.URGENCY_LOW)
-        notification.set_timeout(5000)
-        notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
-        notification.show()
-           
+        if FC().notifier == "On":
+            if not pynotify.init('org.mpris.foobnix'):
+                logging.warning("Can't initialize pynotify")
+                return
+            notification = pynotify.Notification("<b><big>Foobnix</big></b>", "<b><i>> "+artist+"\n\n> "+title+"</i></b>")
+            notification.set_urgency(pynotify.URGENCY_LOW)
+            notification.set_timeout(5000)
+            notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
+            notification.show()
+               
     
     def on_dynamic_icons(self, state):
         if FC().static_tray_icon:

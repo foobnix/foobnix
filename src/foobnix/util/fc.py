@@ -132,6 +132,8 @@ class FC:
         self.pause_icon_entry = ICON_FOOBNIX_PAUSE
         self.stop_icon_entry = ICON_FOOBNIX_STOP
         self.radio_icon_entry = ICON_FOOBNIX_RADIO
+        
+        self.notifier = "On"
                
         """download manager controls"""
         self.auto_start_donwload = True
@@ -160,7 +162,7 @@ class FC:
         
         self.gap_secs = 0
         
-        self.tabs_mode = "Single"
+        self.tabs_mode = "Multi"
         
         self.tab_pl_names = [_("Empty tab"), ]
         self.cache_pl_tab_contents = []
