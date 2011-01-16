@@ -68,7 +68,7 @@ class DBusManager(dbus.service.Object, FControl):
             mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
             mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
         except Exception, e:
-            logging.error("your DE is not GNOME"+ str(e))
+            logging.error("your DE is not GNOME" + str(e))
     
     def check_for_commands(self, args):
         if len(args) == 1:
@@ -124,7 +124,7 @@ class DBusManager(dbus.service.Object, FControl):
         
                 
     def on_mediakey(self, comes_from, what):
-        logging.debug("Multi media key pressed"+ what)
+        logging.debug("Multi media key pressed" + what)
         """
         gets called when multimedia keys are pressed down.
         """
@@ -138,7 +138,7 @@ class DBusManager(dbus.service.Object, FControl):
             elif what == 'Previous':
                 self.controls.prev()
         else:
-            logging.debug('Got a multimedia key:'+ str(what))
+            logging.debug('Got a multimedia key:' + str(what))
 
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='s')
     def Identity(self):
@@ -153,10 +153,13 @@ class DBusManager(dbus.service.Object, FControl):
         self.controls.quit()
 
 def foobnix_dbus_interface():
-    bus = dbus.SessionBus()
-    dbus_objects = dbus.Interface(bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'), 'org.freedesktop.DBus').ListNames()
-    if not DBUS_NAME in dbus_objects:
+    try:
+        bus = dbus.SessionBus()
+        dbus_objects = dbus.Interface(bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'), 'org.freedesktop.DBus').ListNames()
+        if not DBUS_NAME in dbus_objects:
+            return None
+        else:
+            return dbus.Interface(bus.get_object(DBUS_NAME, MPRIS_ROOT_PATH), DBUS_MEDIAPLAYER_INTERFACE)
+    except Exception, e:
+        logging.error("Dbus error", e)
         return None
-    else:
-        return dbus.Interface(bus.get_object(DBUS_NAME, MPRIS_ROOT_PATH), DBUS_MEDIAPLAYER_INTERFACE)
-
