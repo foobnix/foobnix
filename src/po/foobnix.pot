@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-07 16:38+0200\n"
+"POT-Creation-Date: 2011-01-16 16:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -83,19 +83,19 @@ msgstr ""
 msgid "Categories"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:125
+#: .././foobnix/preferences/preferences_window.py:127
 msgid "Restore Defaults Settings"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:131
+#: .././foobnix/preferences/preferences_window.py:133
 msgid "Apply"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:138
+#: .././foobnix/preferences/preferences_window.py:140
 msgid "OK"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:143
+#: .././foobnix/preferences/preferences_window.py:145
 msgid "Cancel"
 msgstr ""
 
@@ -189,7 +189,7 @@ msgid "Show Tags list"
 msgstr ""
 
 #: .././foobnix/preferences/configs/__init__.py:4
-#: .././foobnix/regui/treeview/navigation_tree.py:23
+#: .././foobnix/regui/treeview/navigation_tree.py:24
 msgid "Music Library"
 msgstr ""
 
@@ -234,7 +234,7 @@ msgid "Reload"
 msgstr ""
 
 #: .././foobnix/preferences/configs/music_library.py:127
-#: .././foobnix/regui/treeview/navigation_tree.py:64
+#: .././foobnix/regui/treeview/navigation_tree.py:110
 msgid "Choose directory with music"
 msgstr ""
 
@@ -413,24 +413,28 @@ msgstr ""
 msgid "Music not found in folder(s):"
 msgstr ""
 
-#: .././foobnix/regui/infopanel.py:42
+#: .././foobnix/regui/infopanel.py:45
 msgid "Best Songs"
 msgstr ""
 
-#: .././foobnix/regui/infopanel.py:45
+#: .././foobnix/regui/infopanel.py:48
 msgid "Similar Artists"
 msgstr ""
 
-#: .././foobnix/regui/infopanel.py:48
+#: .././foobnix/regui/infopanel.py:51
 msgid "Similar Songs"
 msgstr ""
 
-#: .././foobnix/regui/infopanel.py:51
+#: .././foobnix/regui/infopanel.py:54
 msgid "Similar Tags"
 msgstr ""
 
-#: .././foobnix/regui/infopanel.py:56
+#: .././foobnix/regui/infopanel.py:59
 msgid "Lyrics"
+msgstr ""
+
+#: .././foobnix/regui/infopanel.py:66
+msgid "Biography"
 msgstr ""
 
 #: .././foobnix/regui/menu.py:25
@@ -678,22 +682,22 @@ msgid "Choose folder to save playlist"
 msgstr ""
 
 #: .././foobnix/regui/notetab/tab_library.py:36
-#: .././foobnix/regui/treeview/navigation_tree.py:55
+#: .././foobnix/regui/treeview/navigation_tree.py:63
 msgid "Update Music Tree"
 msgstr ""
 
 #: .././foobnix/regui/notetab/tab_library.py:37
-#: .././foobnix/regui/treeview/navigation_tree.py:47
+#: .././foobnix/regui/treeview/navigation_tree.py:57
 msgid "Add folder"
 msgstr ""
 
 #: .././foobnix/regui/notetab/tab_library.py:38
-#: .././foobnix/regui/treeview/navigation_tree.py:53
+#: .././foobnix/regui/treeview/navigation_tree.py:61
 msgid "Add folder in new tab"
 msgstr ""
 
 #: .././foobnix/regui/notetab/tab_library.py:39
-#: .././foobnix/regui/treeview/navigation_tree.py:54
+#: .././foobnix/regui/treeview/navigation_tree.py:62
 msgid "Clear Music Tree"
 msgstr ""
 
@@ -702,16 +706,15 @@ msgid "Last.fm connection error"
 msgstr ""
 
 #: .././foobnix/regui/service/lastfm_service.py:117
-#: .././foobnix/regui/service/vk_service.py:94
 msgid "Verify user and password"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:94
-msgid "VKontakte connection error"
+#: .././foobnix/regui/treeview/navigation_tree.py:54
+msgid "Add to current tab"
 msgstr ""
 
-#: .././foobnix/regui/treeview/navigation_tree.py:49
-msgid "Add to current tab"
+#: .././foobnix/regui/treeview/navigation_tree.py:55
+msgid "Add to new tab"
 msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:129
@@ -735,7 +738,7 @@ msgid "Edit Radio"
 msgstr ""
 
 #: .././foobnix/regui/treeview/radio_tree.py:48
-msgid "Restore Defaults"
+msgid "Reload radio folder"
 msgstr ""
 
 #: .././foobnix/regui/treeview/radio_tree.py:53

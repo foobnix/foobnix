@@ -19,6 +19,8 @@ from foobnix.helpers.image import ImageBase
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
 from foobnix.util import LOG
+from foobnix.helpers.pref_widgets import HBoxDecorator
+import locale
 
 class InfoCache():
     def __init__(self):
@@ -27,6 +29,7 @@ class InfoCache():
         self.similar_artists_bean = None
         self.similar_tags_bean = None
         self.lyric_bean = None
+        self.wiki_artist = None
         
         self.active_method = None
 
@@ -58,6 +61,24 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.lyrics.line_title = EventLabel(lyric_title, func=self.show_current, arg=self.lyrics, func1=self.show_similar_lyrics)
         
         
+        """wiki"""
+        wBox = gtk.VBox()
+        wiki_title = _("Biography")
+        self.wiki = TextArea()
+        
+        wBox.line_title = EventLabel(wiki_title, func=self.show_current, arg=wBox, func1=self.show_wiki_info)
+        
+        self.last_fm_label = gtk.LinkButton("http://www.last.fm", "last.fm")
+        self.wiki_label = gtk.LinkButton("http://www.wikipedia.org", "wikipedia")
+        
+        self.wiki = TextArea()
+        self.wiki.set_text("", wiki_title)
+        
+        wBox.pack_start(HBoxDecorator(self.last_fm_label, self.wiki_label), False, False)
+        wBox.pack_start(self.wiki, True, True)
+        
+        wBox.scroll = wBox
+        
         self.vpaned_small = gtk.VBox(False, 0)
         
         """image and similar artists"""
@@ -68,7 +89,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         lbox = gtk.VBox(False, 0)
         
         
-        self.left_widget = [self.artists, self.tracks, self.tags, self.lyrics, self.best_songs]
+        self.left_widget = [wBox, self.artists, self.tracks, self.tags, self.lyrics, self.best_songs]
         
         for l_widget in self.left_widget:        
             lbox.pack_start(l_widget.line_title)
@@ -192,6 +213,29 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         text = get_lyrics(self.bean.artist, self.bean.title)
         lyrics_title = "*** %s - %s *** \n" % (self.bean.artist, self.bean.title)
         self.lyrics.set_text(text, lyrics_title)
+        
+    def show_wiki_info(self):
+        if self.info_cache.wiki_artist == self.bean.artist:
+            return None
+        self.info_cache.wiki_artist = self.bean.artist    
+        if "ru" in locale.getlocale()[0]:
+            self.last_fm_label.set_uri("http://ru.wikipedia.org/w/index.php?&search=%s" % self.bean.artist)
+        else:
+            self.last_fm_label.set_uri("http://en.wikipedia.org/w/index.php?&search=%s" % self.bean.artist)
+        self.wiki_label.set_uri("http://www.last.fm/search?q=%s" % self.bean.artist)
+        
+        artist = self.controls.lastfm.get_network().get_artist(self.bean.artist)        
+        self.wiki.set_text(artist.get_bio_content(), self.bean.artist)
+        
+        images = artist.get_images(limit=5)
+        
+        for image in images:
+            print image.sizes
+            try:
+                url = image.sizes.large
+            except AttributeError:
+                url = image.sizes["large"]
+            self.wiki.append_image(url)
     
     def show_similar_tags(self):
         if self.info_cache.similar_tags_bean == self.bean:
@@ -203,7 +247,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         parent = FModel("Similar Tags: " + self.bean.title)
         update_parent_for_beans(similar_tags, parent)
         self.tags.populate_all([parent] + similar_tags)
-    
+        
     def show_similar_tracks(self):
         if self.info_cache.similar_tracks_bean == self.bean:
             return None

@@ -30,7 +30,7 @@ def comparator(x, y):
     value_x = get_song_number(x)
     value_y = get_song_number(y)
     if value_x and value_y:
-        return get_song_number(x) - get_song_number(y)
+        return value_x - value_y
     else:
         return cmp(x, y)
 
