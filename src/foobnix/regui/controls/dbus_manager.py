@@ -55,20 +55,20 @@ class MprisPlayer(dbus.service.Object, FControl):
 
 class DBusManager(dbus.service.Object, FControl):
     def __init__(self, controls, object_path=MPRIS_ROOT_PATH):
-        bus = dbus.SessionBus()
-        bus_name = dbus.service.BusName(DBUS_NAME, bus=bus)
-        dbus.service.Object.__init__(self, bus_name, object_path)
         FControl.__init__(self, controls)
-
-        self._player = MprisPlayer(controls)
-
         try:
+            bus = dbus.SessionBus()
+            bus_name = dbus.service.BusName(DBUS_NAME, bus=bus)
+            dbus.service.Object.__init__(self, bus_name, object_path)
+    
+            self._player = MprisPlayer(controls)
+        
             dbus_interface = 'org.gnome.SettingsDaemon.MediaKeys'
             mm_object = bus.get_object('org.gnome.SettingsDaemon', '/org/gnome/SettingsDaemon/MediaKeys')
             mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
             mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
         except Exception, e:
-            logging.error("your DE is not GNOME" + str(e))
+            logging.error("DBUS Initialization Error" + str(e))
     
     def check_for_commands(self, args):
         if len(args) == 1:
