@@ -90,8 +90,8 @@ class FC:
         """support file formats"""
                 
         audio_container = [".cue", ".iso.wv"]
-        video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mp4", ".mpg", ".rm", ".swf", ".vob", ".wmv"] 
-        self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".m4a", ".ra", ".m4p", ".3gp", ".wv"]        
+        video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mpg", ".rm", ".swf", ".vob", ".wmv"] 
+        self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".m4a", ".ra", ".m4p", ".wv"]        
         self.all_support_formats = self.audio_formats + video_formats + audio_container
         self.all_support_formats.sort()
         
@@ -134,7 +134,7 @@ class FC:
         self.stop_icon_entry = ICON_FOOBNIX_STOP
         self.radio_icon_entry = ICON_FOOBNIX_RADIO
         
-        self.notifier = "On"
+        self.notifier = False
                
         """download manager controls"""
         self.auto_start_donwload = True
@@ -189,7 +189,7 @@ class FC:
                     if i in keys:
                         setattr(self, i, dict[i])
                 except Exception, e:
-                    logging.warn("Value not found"+ str(e))
+                    logging.warn("Value not found" + str(e))
                     return False
         return True
 
@@ -208,7 +208,7 @@ class FCHelper():
         try:
             cPickle.dump(object, save_file)
         except Exception, e:
-            logging.error("Erorr dumping pickle conf"+ str(e))
+            logging.error("Erorr dumping pickle conf" + str(e))
         save_file.close()
         logging.debug("Config save")
         self.print_info(object);
@@ -216,7 +216,7 @@ class FCHelper():
 
     def load(self):
         if not os.path.exists(CONFIG_FILE):
-            logging.debug("Config file not found"+ CONFIG_FILE)
+            logging.debug("Config file not found" + CONFIG_FILE)
             return None
 
         with file(CONFIG_FILE, 'r') as load_file:
@@ -229,7 +229,7 @@ class FCHelper():
                 self.print_info(object);
                 return object
             except Exception, e:
-                logging.error("Error load config"+ str(e))
+                logging.error("Error load config" + str(e))
         return None
 
 
@@ -240,4 +240,4 @@ class FCHelper():
     def print_info(self, object):
         dict = object.__dict__
         for i in object.__dict__:
-            logging.debug(i+ str(dict[i])[:500])
+            logging.debug(i + str(dict[i])[:500])
