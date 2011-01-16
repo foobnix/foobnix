@@ -16,15 +16,15 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
         
         label_m = gtk.Label("-")
         
-        adjustment = gtk.Adjustment(value=1, lower=0, upper=self.MAX_VALUE, step_incr=10, page_incr=50, page_size=0)
+        adjustment = gtk.Adjustment(value=1, lower=0, upper=self.MAX_VALUE, step_incr=1, page_incr=1, page_size=0)
         self.volume_scale = gtk.HScale(adjustment)
         self.volume_scale.connect("value-changed", self.on_value_changed)
         self.volume_scale.connect("scroll-event", self.on_scroll_event)
+        self.volume_scale.connect("button-press-event", self.on_volume_change)
         self.volume_scale.set_size_request(200, -1)
         self.volume_scale.set_update_policy(gtk.UPDATE_CONTINUOUS)
         self.volume_scale.set_digits(1)        
         self.volume_scale.set_draw_value(False)
-        self.volume_scale.set_value(30)
 
         label_p = gtk.Label("+")
         
@@ -34,10 +34,17 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
         
         self.show_all()
     
+    def on_volume_change(self, w, event):
+        max_x, max_y = w.size_request()
+        x, y = event.x, event.y
+        value = x / max_x * self.MAX_VALUE
+        self.set_value(value);
+        self.on_save()
+    
     def get_value(self):
         self.volume_scale.get_value() 
     
-    def set_value(self,value):
+    def set_value(self, value):
         self.volume_scale.set_value(value)
     
     def volume_up(self):
@@ -66,6 +73,8 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
     
     def on_save(self):
         FC().volume = self.volume_scale.get_value()
+        print "save", FC().volume
     
     def on_load(self):
         self.volume_scale.set_value(FC().volume)
+        print "load", FC().volume

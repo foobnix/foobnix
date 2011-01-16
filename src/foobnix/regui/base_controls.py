@@ -568,13 +568,11 @@ class BaseFoobnixControls():
         self.trayicon.hide()        
         
         LOG.info("Controls - Quit")
-        def task():
-            self.notetabs.on_quit()
-            #self.on_save()
-            FC().save(False)
-            gtk.main_quit()
         
-        task()
+        self.notetabs.on_quit()
+        #self.on_save()
+        FC().save(False)
+        gtk.main_quit()
 
     def check_version(self):
         uuid = FC().uuid
