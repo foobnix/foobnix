@@ -219,10 +219,11 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             return None
         self.info_cache.wiki_artist = self.bean.artist    
         if "ru" in locale.getlocale()[0]:
-            self.last_fm_label.set_uri("http://ru.wikipedia.org/w/index.php?&search=%s" % self.bean.artist)
+            self.wiki_label.set_uri("http://ru.wikipedia.org/w/index.php?&search=%s" % self.bean.artist)
         else:
-            self.last_fm_label.set_uri("http://en.wikipedia.org/w/index.php?&search=%s" % self.bean.artist)
-        self.wiki_label.set_uri("http://www.last.fm/search?q=%s" % self.bean.artist)
+            self.wiki_label.set_uri("http://en.wikipedia.org/w/index.php?&search=%s" % self.bean.artist)
+        
+        self.last_fm_label.set_uri("http://www.last.fm/search?q=%s" % self.bean.artist)
         
         artist = self.controls.lastfm.get_network().get_artist(self.bean.artist)        
         self.wiki.set_text(artist.get_bio_content(), self.bean.artist)
@@ -230,7 +231,6 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         images = artist.get_images(limit=5)
         
         for image in images:
-            print image.sizes
             try:
                 url = image.sizes.large
             except AttributeError:
