@@ -13,6 +13,7 @@ from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
+import threading
   
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -33,19 +34,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
     
-    def select_path(self, widget, event):
-        path = self.get_path_at_pos(int(event.x), int(event.y))
-        self.get_selection().select_path(path[0])
-    
     def on_button_press(self, w, e):
         
         # on left double click add selected items to current tab
         if is_middle_click(e):
-                        
-            #in order to firstly row has been selected than middle click has been handled
-            self.emit("button-press-event", gtk.gdk.Event(gtk.gdk.BUTTON_PRESS))
-            
-            self.add_to_tab(True)
+            def start_handling():
+                self.add_to_tab(True)
+            threading.Timer(0.1, start_handling).start()
             return
 
         if is_left_click(e):
