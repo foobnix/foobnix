@@ -15,6 +15,8 @@ def size2text(size):
     return size
 
 def convert_seconds_to_text(time_sec):
+        if not time_sec:
+            return ""
         time_sec = int(time_sec)
 
         hours = time_sec / (60 * 60)
