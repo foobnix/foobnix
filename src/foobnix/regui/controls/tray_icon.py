@@ -4,12 +4,16 @@ Created on 29 сент. 2010
 
 @author: ivan
 '''
-from foobnix.regui.model.signal import FControl
+
 import gtk
+import gobject
+import logging
+import pynotify
+
 from foobnix.util.fc import FC
 from foobnix.util.mouse_utils import is_middle_click
 from foobnix.regui.state import LoadSave
-import gobject
+from foobnix.regui.model.signal import FControl
 from foobnix.helpers.image import ImageBase
 from foobnix.regui.model import FModel
 from foobnix.helpers.pref_widgets import VBoxDecorator, IconBlock
@@ -20,6 +24,8 @@ from foobnix.util.text_utils import split_string
 import logging
 from foobnix.regui.controls.playback import PlaybackControls
 from foobnix.helpers.my_widgets import ImageButton
+
+
  
 class PopupWindowMenu(gtk.Window, FControl):
     def __init__(self, controls):
@@ -89,8 +95,10 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
             logging.warn("On debian it doesn't work"+ str(e))
         
         self.current_bean = FModel().add_artist("Artist").add_title("Title")
-        self.tooltip_image = ImageBase(ICON_FOOBNIX, 150)
+        self.tooltip_image = ImageBase(ICON_FOOBNIX, 75)
         self.hide()
+        
+        
         
     def on_save(self):
         FC().static_icon_entry = self.static_icon.entry.get_text()
@@ -117,10 +125,32 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         
     def update_info_from(self, bean):
         self.current_bean = bean
+        if bean.artist:
+            artist = bean.artist
+            self.tooltip_image.size = 150
+        else: 
+            artist = 'Unknown artist'
+            self.tooltip_image.size = 75
+            self.tooltip_image.resource = ICON_FOOBNIX
         self.tooltip_image.update_info_from(bean)
+        
+        if bean.title: 
+            title = bean.title
+        else: 
+            title = bean.text
         if FC().change_tray_icon:
             super(TrayIconControls, self).update_info_from(bean)
-            
+        if FC().notifier == "On":
+            if not pynotify.init('org.mpris.foobnix'):
+                logging.warning("Can't initialize pynotify")
+                return
+            notification = pynotify.Notification("<b><big>Foobnix</big></b>", "<b><i>> "+artist+"\n\n> "+title+"</i></b>")
+            notification.set_urgency(pynotify.URGENCY_LOW)
+            notification.set_timeout(5000)
+            notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
+            notification.show()
+               
+    
     def on_dynamic_icons(self, state):
         if FC().static_tray_icon:
             self.check_active_dynamic_icon(self.static_icon)
@@ -146,25 +176,36 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         artist = "Artist"
         title = "Title"
         if self.current_bean:
-            artist = self.current_bean.artist
-            #artist = string.join(["&amp;" if x == '&' else x for x in artist], '')
-            
-            artist = artist.replace('&', '&amp;')
-            title = self.current_bean.title
+            if self.current_bean.artist and self.current_bean.title:
+                artist = self.current_bean.artist
+                #artist = string.join(["&amp;" if x == '&' else x for x in artist], '')
+                artist = artist.replace('&', '&amp;')
+                title = self.current_bean.title
+            else:
+                artist = "Unknown artist"
+                title = self.current_bean.text
         
         max_str_len = 40
         if len(title) > max_str_len:
             title = split_string(title, max_str_len)
+        
         alabel = gtk.Label()
-
         alabel.set_markup("<b>%s</b>" % artist)
-                
-        vbox = VBoxDecorator(gtk.Label(), alabel, gtk.Label(), gtk.Label(title))        
-        
+        hbox1 = gtk.HBox()
+        hbox1.pack_start(alabel, False, False)
+        hbox2 = gtk.HBox()
+        hbox2.pack_start(gtk.Label(title), False, False)        
+        vbox = VBoxDecorator(gtk.Label(), hbox1, gtk.Label(), hbox2)        
+        if self.tooltip_image.size == 150:
+            alignment = gtk.Alignment(0, 0.4)
+        else:
+            alignment = gtk.Alignment()
+        alignment.set_padding(padding_top=0, padding_bottom=0, padding_left=10, padding_right=10)
+        alignment.add(vbox)
         tooltip.set_icon(self.tooltip_image.get_pixbuf())
-        tooltip.set_custom(vbox)
+        tooltip.set_custom(alignment)
         return True
-        
+    
     def on_activate(self, *a):
         self.controls.windows_visibility()
 

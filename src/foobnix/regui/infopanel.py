@@ -135,9 +135,9 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
     
     def clear(self):
         self.image.set_no_image()
-        self.tracks.clear()
-        self.tags.clear()
-        self.artists.clear()
+        self.tracks.clear_tree()
+        self.tags.clear_tree()
+        self.artists.clear_tree()
         
     def update_info_panel(self):
         if not self.bean:
@@ -152,7 +152,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.controls.in_thread.run_with_progressbar(task)
         
     def update(self, bean):        
-        self.bean = bean
+        #self.bean = bean
         
         if bean.type == FTYPE_NOT_UPDATE_INFO_PANEL:
             return False
@@ -170,10 +170,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         """update bean info form text if possible"""
         bean = update_bean_from_normalized_text(bean)
         
-                
         if not bean.artist or not bean.title:
             logging.debug("Artist and title not defined")
-            return None
         
         self.bean = bean
         

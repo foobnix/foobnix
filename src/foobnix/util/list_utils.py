@@ -6,7 +6,6 @@ Created on Dec 7, 2010
 '''
 import re
 
-
 def reorderer_list(List, new_index, old_index):
     if new_index < old_index:
         List.insert(new_index, List[old_index])
@@ -14,6 +13,7 @@ def reorderer_list(List, new_index, old_index):
     elif old_index < new_index:
         List.insert(new_index + 1, List[old_index])
         del List[old_index]
+
 
 def any(pred, list):
     for el in list:

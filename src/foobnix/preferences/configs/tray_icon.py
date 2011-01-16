@@ -48,20 +48,21 @@ class TrayIconConfig(ConfigPlugin):
         image = ImageBase(ICON_BLANK_DISK, 30)
         self.change_tray_icon = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator("Disc cover image", image))
         
+        self.notifier = gtk.CheckButton(_("Notification pop-up"))
+        
         box.pack_start(self.tray_icon_button, False, True, 0)
         box.pack_start(self.close_button, False, True, 0)
         box.pack_start(self.hide_button, False, True, 0)
         box.pack_start(self.minimize_button, False, True, 0)
         
-
         box.pack_start(self.static_tray_icon, True, True, 0)
         box.pack_start(self.icon_controls, True, True, 0)
         box.pack_start(self.change_tray_icon, False, False, 0)
         
-        self.widget = box
+        box.pack_start(FrameDecorator("Notification", self.notifier), False, False, 0)
         
-    
-                        
+        self.widget = box
+                               
     def on_show_tray_icon(self, *args):
         if not self.tray_icon_button.get_active():
             self.hide_button.set_sensitive(False) 
@@ -86,7 +87,10 @@ class TrayIconConfig(ConfigPlugin):
             
         elif FC().on_close_window == const.ON_CLOSE_MINIMIZE:
             self.minimize_button.set_active(True)
-            
+        
+        if FC().notifier == "On":
+            self.notifier.set_active(True)       
+             
     def on_save(self):
         FC().show_tray_icon = self.tray_icon_button.get_active() 
         FC().static_tray_icon = self.static_tray_icon.button.get_active()
@@ -102,3 +106,7 @@ class TrayIconConfig(ConfigPlugin):
         
         elif self.minimize_button.get_active():
             FC().on_close_window = const.ON_CLOSE_MINIMIZE
+            
+        if self.notifier.get_active():       
+                FC().notifier = "On"
+        else: FC().notifier = "Off"

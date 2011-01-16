@@ -66,7 +66,7 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
         self.delete_selected()
     
     def update_radio_tree(self):        
-        self.clear()
+        self.clear_tree()
         self.radio_folder = RadioFolder()
         files = self.radio_folder.get_radio_FPLs()        
         for fpl in files:

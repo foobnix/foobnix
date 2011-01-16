@@ -184,8 +184,9 @@ class BaseFoobnixControls():
     def update_music_tree(self, tree=None, number_of_page=0):
         if not tree:
             tree = self.tree
+
         logging.info("Update music tree" + str(FC().music_paths[number_of_page]))
-        tree.clear()
+        tree.clear_tree()
         FC().cache_music_tree_beans[number_of_page] = []
                
         all = []
