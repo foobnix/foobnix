@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-07 16:38+0200\n"
+"POT-Creation-Date: 2011-01-16 16:01+0200\n"
 "PO-Revision-Date: 2010-11-26 22:37+0800\n"
 "Last-Translator: Dean Lee <xslidian@gmail.com>\n"
 "Language-Team: Chinese Simplified <xslidian+foobnix@gmail.com>\n"
@@ -88,19 +88,19 @@ msgstr ""
 msgid "Categories"
 msgstr "分类"
 
-#: .././foobnix/preferences/preferences_window.py:125
+#: .././foobnix/preferences/preferences_window.py:127
 msgid "Restore Defaults Settings"
 msgstr "恢复默认设置"
 
-#: .././foobnix/preferences/preferences_window.py:131
+#: .././foobnix/preferences/preferences_window.py:133
 msgid "Apply"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:138
+#: .././foobnix/preferences/preferences_window.py:140
 msgid "OK"
 msgstr ""
 
-#: .././foobnix/preferences/preferences_window.py:143
+#: .././foobnix/preferences/preferences_window.py:145
 msgid "Cancel"
 msgstr "取消"
 
@@ -194,7 +194,7 @@ msgid "Show Tags list"
 msgstr "显示标签列表"
 
 #: .././foobnix/preferences/configs/__init__.py:4
-#: .././foobnix/regui/treeview/navigation_tree.py:23
+#: .././foobnix/regui/treeview/navigation_tree.py:24
 #, fuzzy
 msgid "Music Library"
 msgstr "音乐目录"
@@ -240,7 +240,7 @@ msgid "Reload"
 msgstr "重载"
 
 #: .././foobnix/preferences/configs/music_library.py:127
-#: .././foobnix/regui/treeview/navigation_tree.py:64
+#: .././foobnix/regui/treeview/navigation_tree.py:110
 msgid "Choose directory with music"
 msgstr "选择含音乐的目录"
 
@@ -423,25 +423,29 @@ msgstr "无可播放文件"
 msgid "Music not found in folder(s):"
 msgstr "文件夹中未找到音乐:"
 
-#: .././foobnix/regui/infopanel.py:42
+#: .././foobnix/regui/infopanel.py:45
 msgid "Best Songs"
 msgstr "最佳歌曲"
 
-#: .././foobnix/regui/infopanel.py:45
+#: .././foobnix/regui/infopanel.py:48
 msgid "Similar Artists"
 msgstr "类似歌手"
 
-#: .././foobnix/regui/infopanel.py:48
+#: .././foobnix/regui/infopanel.py:51
 msgid "Similar Songs"
 msgstr "类似歌曲"
 
-#: .././foobnix/regui/infopanel.py:51
+#: .././foobnix/regui/infopanel.py:54
 msgid "Similar Tags"
 msgstr "类似标签"
 
-#: .././foobnix/regui/infopanel.py:56
+#: .././foobnix/regui/infopanel.py:59
 msgid "Lyrics"
 msgstr "歌词"
+
+#: .././foobnix/regui/infopanel.py:66
+msgid "Biography"
+msgstr ""
 
 #: .././foobnix/regui/menu.py:25
 msgid "_File"
@@ -702,23 +706,23 @@ msgid "Choose folder to save playlist"
 msgstr "选择要打开的文件夹"
 
 #: .././foobnix/regui/notetab/tab_library.py:36
-#: .././foobnix/regui/treeview/navigation_tree.py:55
+#: .././foobnix/regui/treeview/navigation_tree.py:63
 msgid "Update Music Tree"
 msgstr "更新音乐树"
 
 #: .././foobnix/regui/notetab/tab_library.py:37
-#: .././foobnix/regui/treeview/navigation_tree.py:47
+#: .././foobnix/regui/treeview/navigation_tree.py:57
 msgid "Add folder"
 msgstr "添加文件夹"
 
 #: .././foobnix/regui/notetab/tab_library.py:38
-#: .././foobnix/regui/treeview/navigation_tree.py:53
+#: .././foobnix/regui/treeview/navigation_tree.py:61
 #, fuzzy
 msgid "Add folder in new tab"
 msgstr "添加文件夹"
 
 #: .././foobnix/regui/notetab/tab_library.py:39
-#: .././foobnix/regui/treeview/navigation_tree.py:54
+#: .././foobnix/regui/treeview/navigation_tree.py:62
 #, fuzzy
 msgid "Clear Music Tree"
 msgstr "更新音乐树"
@@ -728,17 +732,17 @@ msgid "Last.fm connection error"
 msgstr "Last.fm 连接错误"
 
 #: .././foobnix/regui/service/lastfm_service.py:117
-#: .././foobnix/regui/service/vk_service.py:94
 msgid "Verify user and password"
 msgstr "验证用户与密码"
 
-#: .././foobnix/regui/service/vk_service.py:94
-msgid "VKontakte connection error"
-msgstr "VKontakte 连接错误"
-
-#: .././foobnix/regui/treeview/navigation_tree.py:49
+#: .././foobnix/regui/treeview/navigation_tree.py:54
 msgid "Add to current tab"
 msgstr ""
+
+#: .././foobnix/regui/treeview/navigation_tree.py:55
+#, fuzzy
+msgid "Add to new tab"
+msgstr "添加文件夹"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:129
 msgid "Copy to Search Line"
@@ -762,8 +766,9 @@ msgid "Edit Radio"
 msgstr "广播"
 
 #: .././foobnix/regui/treeview/radio_tree.py:48
-msgid "Restore Defaults"
-msgstr "恢复默认"
+#, fuzzy
+msgid "Reload radio folder"
+msgstr "添加文件夹"
 
 #: .././foobnix/regui/treeview/radio_tree.py:53
 msgid "Change Radio Station name and path"
@@ -822,6 +827,12 @@ msgstr "错误"
 #: .././foobnix/util/m3u_utils.py:45
 msgid "Choose window"
 msgstr ""
+
+#~ msgid "VKontakte connection error"
+#~ msgstr "VKontakte 连接错误"
+
+#~ msgid "Restore Defaults"
+#~ msgstr "恢复默认"
 
 #~ msgid "Save"
 #~ msgstr "保存"

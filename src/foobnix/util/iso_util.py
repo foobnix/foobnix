@@ -6,7 +6,7 @@ Created on 1 дек. 2010
 '''
 import subprocess
 import os
-from foobnix.util import LOG
+import logging
 from foobnix.regui.service.music_service import get_all_music_by_path
 
 def get_beans_from_iso_wv(path):
@@ -18,9 +18,9 @@ def mount_tmp_iso(path):
     name = os.path.basename(path)
     tmp_dir = os.path.join("/tmp", name)
     if os.path.exists(tmp_dir):
-        LOG.debug("tmp dir to mount already exists", tmp_dir)
+        logging.debug("tmp dir to mount already exists"+ tmp_dir)
         return tmp_dir
     command = ["fuseiso", "-n", "-p", path, tmp_dir]
-    LOG.debug("Mount iso.wv", command)
+    logging.debug("Mount iso.wv"+ command)
     subprocess.call(command)
     return tmp_dir

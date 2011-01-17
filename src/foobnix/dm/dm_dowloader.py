@@ -4,7 +4,7 @@ Created on Oct 27, 2010
 @author: ivan
 '''
 import threading
-from foobnix.util import LOG
+import logging
 from urllib import FancyURLopener
 from foobnix.util.const import DOWNLOAD_STATUS_COMPLETED, \
     DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_INACTIVE
@@ -26,7 +26,7 @@ class Dowloader(threading.Thread):
         except Exception, e:
             self.bean.status = DOWNLOAD_STATUS_INACTIVE
             self.update(self.bean)
-            LOG.error(e)
+            logging.error(e)
         finally:
             self.notify_finish() 
     

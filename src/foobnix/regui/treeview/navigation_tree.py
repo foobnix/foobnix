@@ -6,16 +6,14 @@ Created on 25 сент. 2010
 '''
 import gtk
 import gobject
-
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_middle_click, is_left_click
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
 from foobnix.util.fc import FC
-from foobnix.util import LOG
+import logging
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
-from foobnix.util.list_utils import any
-    
+  
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
@@ -48,7 +46,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     def on_button_press(self, w, e):
         if is_middle_click(e):
             # on left double click add selected items to current tab
-            self.add_to_current_tab()
+            self.add_to_tab(True)
             return
 
         if is_left_click(e):
@@ -57,14 +55,14 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         if is_double_left_click(e):
             # on middle click play selected beans 
-            self.add_to_new_tab()
+            self.add_to_tab()
             return
         
         if is_rigth_click(e):
             # on right click, show pop-up menu
             menu = Popup()
-            menu.add_item(_("Add to current tab"), gtk.STOCK_ADD, self.add_to_current_tab, None)
-            menu.add_item(_("Add to new tab"), gtk.STOCK_MEDIA_PLAY, self.add_to_new_tab, None)
+            menu.add_item(_("Add to current tab"), gtk.STOCK_ADD, lambda: self.add_to_tab(True), None)
+            menu.add_item(_("Add to new tab"), gtk.STOCK_MEDIA_PLAY, self.add_to_tab, None)
             menu.add_separator()
             menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
             menu.add_separator()
@@ -75,49 +73,31 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, lambda: self.controls.tablib.on_update_music_tree(self.scroll), None)
                 
             menu.show(e)
-    
-    def collect_selected_beans(self):
-        def is_parent(path_parent, path_child):
-            len_parent = len(path_parent)
-            len_child = len(path_child)
-            if len_child <= len_parent:
-                return False
-            for i in xrange(0, len_parent):
-                if path_parent[i] != path_child[i]:
-                    return False
-            return True
-        
+
+    def add_to_tab(self, current=False):
         paths = self.get_selected_bean_paths()
-        if not paths:
-            return None
-        model = self.get_model()
-        beans = []
-        for path in paths:
-            if any(lambda p : is_parent(p, path), paths):
-                continue
-            iter = model.get_iter(path)
-            sub_beans = self.get_child_iters_by_parent(model, iter)
-            parent_bean = self._get_bean_by_path(path)            
-            beans = beans + [parent_bean] + sub_beans
-        return beans       
-    
-    def add_to_new_tab(self):
-        beans = self.collect_selected_beans()
-        if not beans:
-            return
-        selected = self.get_selected_bean()
-        self.controls.append_to_new_notebook(selected.text, beans)
-        self.controls.play_first_file_in_playlist()
-    
-    def add_to_current_tab(self):
-        beans = self.collect_selected_beans()
-        if not beans:
-            return
-        self.controls.append_to_current_notebook(beans)
-        # start play, if not yet playing
-        if not self.controls.state_is_playing():
-            self.controls.play_first_file_in_playlist()
-    
+        to_model = self.controls.notetabs.get_active_tree().get_model().get_model()
+        from_model = self.get_model()
+        for i, path in enumerate(paths):
+            from_iter = from_model.get_iter(path)
+            row = self.get_row_from_model_iter(from_model, from_iter)
+            if self.is_m3u(from_model, from_iter): continue
+            if not i and not current:
+                name = row[0]
+                self.controls.notetabs._append_tab(name)
+                to_model = self.controls.notetabs.get_active_tree().get_model().get_model()
+            if from_model.iter_has_child(from_iter):
+                new_iter = self.to_add_drug_item(to_model, None, row, None, True)
+                self.iter_is_parent(from_iter, from_model, to_model, new_iter)
+            else:
+                new_iter = self.to_add_drug_item(to_model, None, row, None)
+        def task():
+            self.controls.notetabs.get_active_tree().rebuild_as_plain()
+            if not current:
+                self.controls.play_first_file_in_playlist()
+        gobject.idle_add(task)
+        
+        
     def add_folder(self, in_new_tab=False):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"),
                                         action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
@@ -165,13 +145,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 else:
                     FC().music_paths[number_of_tab].append(path) 
                     self.controls.preferences.on_load()
-                    LOG.info("New music paths", FC().music_paths[number_of_tab])
+                    logging.info("New music paths"+ str(FC().music_paths[number_of_tab]))
                     self.controls.update_music_tree(tree, number_of_tab)
             FC().save()
         elif response == gtk.RESPONSE_CANCEL:
-            LOG.info('Closed, no files selected')
-        chooser.destroy()
-    
+            logging.info('Closed, no files selected')
+        chooser.destroy()       
+        
     def on_load(self):
         self.controls.load_music_tree()
         self.restore_selection(FC().nav_selected_paths)

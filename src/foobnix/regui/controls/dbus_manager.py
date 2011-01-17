@@ -8,7 +8,7 @@ import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
 from foobnix.regui.model.signal import FControl
 from foobnix.version import FOOBNIX_VERSION
-from foobnix.util import LOG
+import logging
 
 DBusGMainLoop(set_as_default=True)
 
@@ -55,20 +55,20 @@ class MprisPlayer(dbus.service.Object, FControl):
 
 class DBusManager(dbus.service.Object, FControl):
     def __init__(self, controls, object_path=MPRIS_ROOT_PATH):
-        bus = dbus.SessionBus()
-        bus_name = dbus.service.BusName(DBUS_NAME, bus=bus)
-        dbus.service.Object.__init__(self, bus_name, object_path)
         FControl.__init__(self, controls)
-
-        self._player = MprisPlayer(controls)
-
         try:
+            bus = dbus.SessionBus()
+            bus_name = dbus.service.BusName(DBUS_NAME, bus=bus)
+            dbus.service.Object.__init__(self, bus_name, object_path)
+    
+            self._player = MprisPlayer(controls)
+        
             dbus_interface = 'org.gnome.SettingsDaemon.MediaKeys'
             mm_object = bus.get_object('org.gnome.SettingsDaemon', '/org/gnome/SettingsDaemon/MediaKeys')
             mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
             mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
         except Exception, e:
-            LOG.error("your DE is not GNOME", e)
+            logging.error("DBUS Initialization Error" + str(e))
     
     def check_for_commands(self, args):
         if len(args) == 1:
@@ -124,7 +124,7 @@ class DBusManager(dbus.service.Object, FControl):
         
                 
     def on_mediakey(self, comes_from, what):
-        LOG.debug("Multi media key pressed", what)
+        logging.debug("Multi media key pressed" + what)
         """
         gets called when multimedia keys are pressed down.
         """
@@ -138,7 +138,7 @@ class DBusManager(dbus.service.Object, FControl):
             elif what == 'Previous':
                 self.controls.prev()
         else:
-            LOG.debug('Got a multimedia key:', what)
+            logging.debug('Got a multimedia key:' + str(what))
 
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='s')
     def Identity(self):
@@ -153,10 +153,13 @@ class DBusManager(dbus.service.Object, FControl):
         self.controls.quit()
 
 def foobnix_dbus_interface():
-    bus = dbus.SessionBus()
-    dbus_objects = dbus.Interface(bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'), 'org.freedesktop.DBus').ListNames()
-    if not DBUS_NAME in dbus_objects:
+    try:
+        bus = dbus.SessionBus()
+        dbus_objects = dbus.Interface(bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'), 'org.freedesktop.DBus').ListNames()
+        if not DBUS_NAME in dbus_objects:
+            return None
+        else:
+            return dbus.Interface(bus.get_object(DBUS_NAME, MPRIS_ROOT_PATH), DBUS_MEDIAPLAYER_INTERFACE)
+    except Exception, e:
+        logging.error("Dbus error", e)
         return None
-    else:
-        return dbus.Interface(bus.get_object(DBUS_NAME, MPRIS_ROOT_PATH), DBUS_MEDIAPLAYER_INTERFACE)
-

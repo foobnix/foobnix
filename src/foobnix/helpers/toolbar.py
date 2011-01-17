@@ -4,7 +4,7 @@ Created on Sep 27, 2010
 @author: ivan
 '''
 import gtk
-from foobnix.util import LOG
+import logging
 
 
 
@@ -32,7 +32,7 @@ class MyToolbar(gtk.Toolbar):
         button.show()  
         button.set_tooltip_text(tooltip)
         
-        LOG.debug("Button-Controls-Clicked", tooltip, gtk_stock, func, param)
+        logging.debug("Button-Controls-Clicked" + str(tooltip)+ str(gtk_stock) + str(func) + str(param))
         if func and param:             
             button.connect("clicked", lambda * a: func(param))
         elif func:

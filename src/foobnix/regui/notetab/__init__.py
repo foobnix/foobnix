@@ -5,7 +5,8 @@ Created on Dec 20, 2010
 @author: zavlab1
 '''
 import gtk
-from foobnix.util import LOG, const
+import logging
+from foobnix.util import const
 from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
@@ -111,14 +112,14 @@ class TabGeneral(gtk.Notebook, FControl):
         gobject.idle_add(task)
         
     def _append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None):
-        LOG.info("append new tab")
+        logging.info("append new tab")
         self.last_notebook_page = name
         try:
-            LOG.info("encoding of tab name is", name)
+            logging.info("encoding of tab name is"+ name)
             name = unicode(name) #convert from any encoding in ascii
-            LOG.info("encoding finished ", name)
+            logging.info("encoding finished "+ name)
         except:
-            LOG.warn("problem of encoding definition for tab name is occured")
+            logging.warn("problem of encoding definition for tab name is occured")
         
         if name and (FC().len_of_tab > -1) and (len(name) > FC().len_of_tab):
             name = name[:FC().len_of_tab]
@@ -278,7 +279,7 @@ class NoteTabControl(TabGeneral, LoadSave):
     
         
     def set_tab_left(self):
-        LOG.info("Set tabs Left")
+        logging.info("Set tabs Left")
         self.set_tab_pos(gtk.POS_LEFT)
         self.default_angle = 90
         self.set_show_tabs(True)
@@ -295,7 +296,7 @@ class NoteTabControl(TabGeneral, LoadSave):
             self.set_tab_label(tab_content, event)
         
     def set_tab_top(self):
-        LOG.info("Set tabs top")
+        logging.info("Set tabs top")
         self.set_tab_pos(gtk.POS_TOP)
         self.default_angle = 0
         self.set_show_tabs(True)
@@ -312,13 +313,13 @@ class NoteTabControl(TabGeneral, LoadSave):
             self.set_tab_label(tab_content, event)
         
     def set_tab_no(self):
-        LOG.info("Set tabs no")
+        logging.info("Set tabs no")
         self.set_show_tabs(False)
         
     def create_notebook_tab(self, beans):
         treeview = PlaylistTreeControl(self.controls)
         self.set_active_tree(treeview)
-        treeview.append_all(beans)
+        if beans: treeview.append_all(beans)
         treeview.scroll.show_all()
         return  treeview.scroll
     

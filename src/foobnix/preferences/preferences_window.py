@@ -16,7 +16,7 @@ from foobnix.helpers.window import ChildTopWindow
 from foobnix.regui.model import FDModel
 from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
-from foobnix.util import LOG
+import logging
 from foobnix.preferences.configs.other_conf import OtherConfig
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
@@ -44,7 +44,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
             from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
             self.configs.append(HotKeysConfig(controls))
         except Exception, e:
-            LOG.warn("Keybinder not instlled", e) 
+            logging.warn("Keybinder not installed"+ str(e)) 
         
         
         self.configs.append(OtherConfig(controls))
@@ -91,7 +91,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.populate_config_category(current)
     
     def on_load(self):
-        LOG.debug("LOAD PreferencesWindow")
+        logging.debug("LOAD PreferencesWindow")
         for plugin in self.configs:            
             plugin.on_load()
 
@@ -161,7 +161,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         return box
 
     def restore_defaults(self):
-        LOG.debug("restore defaults settings")
+        logging.debug("restore defaults settings")
         gtk.main_quit()
         FC().delete()
         thread.start_new_thread(os.system, ("foobnix",))

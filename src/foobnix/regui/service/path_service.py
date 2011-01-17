@@ -5,7 +5,7 @@ Created on 3 окт. 2010
 @author: ivan
 '''
 import os.path, sys
-from foobnix.util import LOG
+import logging
 
 def get_foobnix_resourse_path_by_name(filename):
     if not filename:
@@ -28,5 +28,5 @@ def get_foobnix_resourse_path_by_name(filename):
         if os.path.isfile(full_path):
             return full_path
     
-    LOG.error("******* WARNING: File " + filename + " not found *******")
+    logging.error("File " + filename + " not found")
     #raise TypeError, "******* WARNING: File " + filename + " not found *******"

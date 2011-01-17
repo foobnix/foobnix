@@ -7,8 +7,9 @@ Created on 7  2010
 from __future__ import with_statement
 from foobnix.regui.model import FModel
 import os
+import logging
 from foobnix.util.time_utils import normalize_time
-from foobnix.util import LOG, file_utils
+from foobnix.util import file_utils
 import chardet
 import re
 from foobnix.util.image_util import get_image_by_path
@@ -62,11 +63,11 @@ class CueFile():
 
     def __str__(self):
         if self.title:
-            LOG.info("Title", self.title)
+            logging.info("Title"+ self.title)
         if self.performer:
-            LOG.info("Performer", self.performer)
+            logging.info("Performer"+ self.performer)
         if self.file:
-            LOG.info("File", self.file)
+            logging.info("File"+ self.file)
 
         return "CUEFILE: " + self.title + " " + self.performer + " " + self.file
 
@@ -129,7 +130,7 @@ class CueReader():
 
     def is_cue_valid(self):
         self.parse()
-        LOG.info("CUE VALID", self.cue_file, self.is_valid)
+        logging.info("CUE VALID"+ str(self.cue_file) + str(self.is_valid))
         return self.is_valid
 
     """detect file encoding"""
@@ -144,7 +145,7 @@ class CueReader():
     def parse(self):
         file = open(self.cue_file, "r")
         code = self.code_detecter(self.cue_file);
-        LOG.debug("File encoding is", code)
+        logging.debug("File encoding is"+ str(code))
 
         cue_file = CueFile()
 
@@ -166,7 +167,7 @@ class CueReader():
                 pass
                 line = unicode(line, code)
             except:
-                LOG.error("File encoding is too strange", code)
+                logging.error("File encoding is too strange"+ str(code))
                 pass
 
             line = str(line).strip()
@@ -189,7 +190,7 @@ class CueReader():
                 file = self.get_line_value(line)
                 dir = os.path.dirname(self.cue_file)
                 full_file = os.path.join(dir, file)
-                LOG.debug("CUE source", full_file)
+                logging.debug("CUE source"+ full_file)
                 exists = os.path.exists(full_file)
                 """if there no source cue file"""
 
@@ -197,21 +198,21 @@ class CueReader():
                     """try to find other source"""
                     ext = file_utils.get_file_extension(full_file)
                     nor = full_file[:-len(ext)]
-                    LOG.info("Normalized path", nor)
+                    logging.info("Normalized path"+ nor)
                     
                     find_source = False
                     for support_ext in FC().audio_formats:
                         try_name = nor + support_ext
                         if os.path.exists(try_name):
                             full_file = try_name
-                            LOG.debug("Found source for cue file name", try_name)
+                            logging.debug("Found source for cue file name"+ try_name)
                             find_source = True
                             break;
                     
                     if not find_source:    
                         self.is_valid = False
                         self.files_count -= 1
-                        LOG.warn("Can't find sourse for ", line, "  Check source file name")
+                        logging.warn("Can't find source for "+ line+ "  Check source file name")
                         continue
                 
                 if self.files_count == 0:
@@ -224,7 +225,7 @@ class CueReader():
                 cue_track = CueTrack(title, performer, index, full_file)
                 cue_file.append_track(cue_track)
         
-        LOG.debug("CUE file parsed ", cue_file.file)
+        logging.debug("CUE file parsed "+ str(cue_file.file))
         return self.normalize(cue_file)
     
 def update_id3_for_cue(beans):

@@ -8,7 +8,7 @@ import gtk
 from foobnix.helpers.menu import Popup
 import keybinder
 import os
-from foobnix.util import LOG
+import logging
 import thread
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.util.fc import FC
@@ -132,7 +132,7 @@ class HotKeysConfig(ConfigPlugin):
         menu.show(event)     
    
     def on_load(self):
-        LOG.debug("LOAD HOT KEYS")
+        logging.debug("LOAD HOT KEYS")
         items = FC().action_hotkey
         self.model.clear()
         for key in items:
@@ -147,10 +147,10 @@ class HotKeysConfig(ConfigPlugin):
         try:                      
             keybinder.bind(hotkey, self.activate_hot_key, command)
         except Exception, e:
-            LOG.error("add_key_binder exception", hotkey, e)
+            logging.error("add_key_binder exception"+ str(hotkey) + str(e))
     
     def activate_hot_key(self, command):
-        LOG.debug("Run command: " + command)         
+        logging.debug("Run command: " + str(command))         
         thread.start_new_thread(os.system, (command,))
         
     def on_save(self):
@@ -188,7 +188,7 @@ class HotKeysConfig(ConfigPlugin):
         
         self.unbind_all() 
         keyname = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
-        LOG.debug("Key %s (%d) was pressed" % (keyname, event.keyval), event.state)
+        logging.debug("Key %s (%d) was pressed. %s" % (keyname, event.keyval, str(event.state)))
         if is_key_control(event):           
             self.set_hotkey_text("<Control>" + keyname)
         elif is_key_shift(event) :
@@ -202,4 +202,4 @@ class HotKeysConfig(ConfigPlugin):
             
     def on_key_release(self, w, event): 
         keyname = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
-        LOG.debug("Key release %s (%d) was pressed" % (keyname, event.keyval))        
+        logging.debug("Key release %s (%d) was pressed" % (keyname, event.keyval))        

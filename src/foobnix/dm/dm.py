@@ -16,7 +16,7 @@ from foobnix.regui.model import FDModel, FModel
 from foobnix.dm.dm_dowloader import Dowloader
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.helpers.toolbar import MyToolbar
-from foobnix.util import LOG
+import logging
 from foobnix.preferences.configs import CONFIG_OTHER
 
 class DMControls(MyToolbar):
@@ -117,7 +117,7 @@ class DM(ChildTopWindow):
                     if not vk:
                         bean.status = DOWNLOAD_STATUS_ERROR
                         dm_list.update_bean_info(bean)
-                        LOG.debug("Source for song not found", bean.text)
+                        logging.debug("Source for song not found"+ bean.text)
                         semaphore.release()
                         continue
                         

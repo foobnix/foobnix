@@ -7,9 +7,10 @@ Created on 25 сент. 2010
 import os
 from foobnix.util.fc import FC
 from foobnix.util.file_utils import file_extension
-from foobnix.util import LOG
+import logging
 from foobnix.regui.model import FModel
 from foobnix.util.id3_util import update_id3_wind_filtering
+from foobnix.util.list_utils import sort_by_song_name
     
 def get_all_music_by_path(path):
     return _scanner(path, None) 
@@ -51,7 +52,7 @@ def sort_by_name(path, list):
         else:
             files.append(file)
 
-    return sorted(directories) + sorted(files)
+    return sorted(directories) + sort_by_song_name(files)
 
 def is_dir_with_music(path):
     if os.path.isdir(path):
@@ -59,7 +60,7 @@ def is_dir_with_music(path):
         try:
             list = os.listdir(path)
         except OSError, e:
-            LOG.info("Can't get list of dir", e)
+            logging.info("Can't get list of dir"+ str(e))
 
         if not list:
             return False

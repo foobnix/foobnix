@@ -28,7 +28,6 @@ from foobnix.util.single_thread import SingleThread
 from foobnix.regui.perspectives import PerspectiveControls
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.notetab.tab_library import TabLib
-
 foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):
@@ -92,6 +91,7 @@ class FoobnixCore(BaseFoobnixControls):
         if with_dbus:
             from foobnix.regui.controls.dbus_manager import DBusManager
             self.dbus = DBusManager(self)
+
     def run(self):    
         self.on_load()
             
