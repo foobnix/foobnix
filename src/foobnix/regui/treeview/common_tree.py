@@ -380,3 +380,25 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
     def restore_selection(self, paths):
         gobject.idle_add(self.select_paths, paths)
+
+    def restore_expand(self, paths):
+        def task():
+            for path in paths:
+                self.expand_to_path(path)
+        gobject.idle_add(task)
+        
+    def selection_changed(self, callback):
+        def on_selection_changed(w):
+            paths = self.get_selected_bean_paths()
+            if paths != None:
+                callback(paths)
+        selection = self.get_selection()
+        selection.connect("changed", on_selection_changed)
+    
+    def expand_updated(self, callback):
+        def on_expand_collapse(w, iter, path):
+            values = []
+            self.map_expanded_rows(lambda w, p : values.append(p))
+            callback(values)
+        self.connect("row-expanded", on_expand_collapse)
+        self.connect("row-collapsed", on_expand_collapse)

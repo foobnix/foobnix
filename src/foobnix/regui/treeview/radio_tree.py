@@ -27,16 +27,7 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
         
         self.configure_send_drug()
 
-        self.set_type_tree()        
-        selection = self.get_selection()
-        selection.connect("changed", self.selection_chanaged)
-
-    def selection_chanaged(self, w):
-        paths = self.get_selected_bean_paths()
-        if paths != None:
-            FC().radio_selected_paths = paths
-        else:
-            FC().radio_selected_paths = []
+        self.set_type_tree()
     
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_RADIO
@@ -92,7 +83,13 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
         self.populate_all(FC().cache_radio_tree_beans)
         if not FC().cache_radio_tree_beans:
             self.update_radio_tree()
-        self.restore_selection(FC().radio_selected_paths);
+        self.restore_expand(FC().radio_expand_paths)
+        self.restore_selection(FC().radio_selected_paths)
+        
+        def set_expand_path(new_value): FC().radio_expand_paths = new_value
+        def set_selected_path(new_value): FC().radio_selected_paths = new_value
+        self.expand_updated(set_expand_path)
+        self.selection_changed(set_selected_path)
         
     
     def on_save(self):        
