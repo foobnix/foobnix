@@ -136,6 +136,7 @@ class FModel(FTreeModel):
         self.parent_level = parent_bean.level
         self.is_file = True
         return self
+    
     def set_parent(self, parent):
         self.parent_level = parent
     

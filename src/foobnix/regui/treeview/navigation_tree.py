@@ -5,6 +5,7 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
+import glib
 import gobject
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_middle_click, is_left_click
 from foobnix.regui.state import LoadSave
@@ -13,7 +14,7 @@ from foobnix.util.fc import FC
 from foobnix.util import LOG
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
-import threading
+
   
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -27,7 +28,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.append_column(column)
         
         self.configure_send_drug()
-        self.connect("button-press-event", self.select_path)
+        
         self.set_type_tree()
         self.is_empty = False
     
@@ -36,11 +37,12 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     
     def on_button_press(self, w, e):
         
-        # on left double click add selected items to current tab
         if is_middle_click(e):
+            # on left double click add selected items to current tab
             def start_handling():
                 self.add_to_tab(True)
-            threading.Timer(0.1, start_handling).start()
+            #threading.Timer(0.1, start_handling).start()
+            glib.timeout_add(100, start_handling)
             return
 
         if is_left_click(e):
@@ -80,7 +82,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 name = row[0]
                 self.controls.notetabs._append_tab(name)
                 to_model = self.controls.notetabs.get_current_tree().get_model().get_model()
-            if self.is_m3u(from_model, from_iter, to_model, None, None): continue
+            if self.add_m3u(from_model, from_iter, to_model, None, None): continue
             if from_model.iter_has_child(from_iter):
                 new_iter = self.to_add_drug_item(to_model, None, row, None, True)
                 self.iter_is_parent(from_iter, from_model, to_model, new_iter)
