@@ -8,7 +8,7 @@ from __future__ import with_statement
 from foobnix.regui.model import FModel
 import os
 import logging
-from foobnix.util.time_utils import normalize_time
+from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util import file_utils
 import chardet
 import re
@@ -122,7 +122,7 @@ class CueReader():
             bean.name = bean.text
             bean.start_sec = track.get_start_time_sec()
             bean.duration_sec = track.duration
-            bean.time = normalize_time(track.duration)
+            bean.time = convert_seconds_to_text(track.duration)
             bean.is_file = True
             beans.append(bean)
         

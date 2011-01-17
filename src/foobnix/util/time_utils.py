@@ -28,6 +28,3 @@ def convert_seconds_to_text(time_sec):
             return '%(hours)d:%(mins)02d:%(secs)02d' % {'hours' : hours, 'mins': mins, 'secs': secs }
         else:
             return '%(mins)02d:%(secs)02d' % {'mins': mins, 'secs': secs}
-
-def  normalize_time(length):
-    convert_seconds_to_text(length)
