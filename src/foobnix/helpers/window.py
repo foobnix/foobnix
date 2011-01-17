@@ -13,6 +13,12 @@ from foobnix.util.fc import FC
 class ChildTopWindow(gtk.Window):
     def __init__(self, title=None, width=None, height=None):         
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
+        self.child_title = title
+        self.child_width = width
+        self.child_height = height
+        self.is_rendered = False
+    
+    def lazy_parent_init(self, title, width, height):
         self.set_title(title)
         self.set_position(gtk.WIN_POS_CENTER)
         self.set_resizable(False)
@@ -27,6 +33,8 @@ class ChildTopWindow(gtk.Window):
         
         self.hide_on_escape = True
         self.set_opacity(FC().window_opacity)
+        self.is_rendered = True
+        
     
     def set_hide_on_escape(self, hide_on_escape=True):
         self.hide_on_escape = hide_on_escape
@@ -42,5 +50,14 @@ class ChildTopWindow(gtk.Window):
         self.hide()
         return True
     
+    def render(self):
+        if not self.is_rendered:
+            self.lazy_parent_init(self.child_title, self.child_width, self.child_height)
+    
+    def lazy_init(self, *args):
+        pass
+    
     def show(self):
+        self.render()
+        self.lazy_init()
         self.show_all()

@@ -6,7 +6,6 @@ Created on Oct 14, 2010
 import gtk
 import copy
 import uuid
-import gobject
 from foobnix.regui.model import FModel, FTreeModel
 import logging
 from foobnix.util.id3_util import update_id3_wind_filtering
@@ -37,6 +36,18 @@ class DrugDropTree(gtk.TreeView):
         logging.debug("begin append all")
         if self.current_view == VIEW_PLAIN:
             self.plain_append_all(beans)            
+        else:
+            self.tree_append_all(beans)
+    
+    def simple_append_all(self, beans):
+        logging.debug("simple_append_all")
+        logging.debug(self.current_view)
+        
+        if self.current_view == VIEW_PLAIN:
+            logging.debug("simple_append_all")
+            for bean in beans:
+                row = self.get_row_from_bean(bean)            
+                self.model.append(None, row)               
         else:
             self.tree_append_all(beans)
     
@@ -180,7 +191,7 @@ class DrugDropTree(gtk.TreeView):
                 if to_tree.current_view == VIEW_PLAIN:             
                     self.rebuild_as_plain()
        
-        gobject.idle_add(remove_replaced, i)
+        remove_replaced(i)
         
         self.on_drag_drop_finish()
     
@@ -316,54 +327,45 @@ class DrugDropTree(gtk.TreeView):
             self._plain_append(bean)
             
     def _plain_append(self, bean):
-        def task():
-            logging.debug("Plain append begin" + str(bean.text) + str(bean.path))
-            logging.debug("Plain append task" + str(bean.text) + str(bean.path))
-            if not bean:
-                return
-            if bean.is_file == True:
-                bean.font = "normal"
-            else:
-                bean.font = "bold"
-                
-            bean.visible = True
-        
-            beans = update_id3_wind_filtering([bean])
-            for one in beans:
-                one.update_uuid() 
-                row = self.get_row_from_bean(one)            
-                """append to tree thread safe"""
-                
-                self.model.append(None, row)            
-                """append to tree thread safe end"""
-        gobject.idle_add(task)
+        logging.debug("Plain append task" + str(bean.text) + str(bean.path))
+        if not bean:
+            return
+        if bean.is_file == True:
+            bean.font = "normal"
+        else:
+            bean.font = "bold"
             
-        
+        bean.visible = True
+    
+        beans = update_id3_wind_filtering([bean])
+        for one in beans:
+            one.update_uuid() 
+            row = self.get_row_from_bean(one)            
+            """append to tree thread safe"""
+            
+            self.model.append(None, row)            
+            """append to tree thread safe end"""
         
     def tree_append(self, bean):
-        def task(bean):
-            if not bean:
-                return
-            if bean.is_file == True:
-                bean.font = "normal"
-            else:
-                bean.font = "bold"
-            
-            """copy beans"""
-            bean = copy.copy(bean)
-            bean.visible = True
+        if not bean:
+            return
+        if bean.is_file == True:
+            bean.font = "normal"
+        else:
+            bean.font = "bold"
         
-            if self.hash.has_key(bean.get_parent()):
-                parent_iter_exists = self.hash[bean.get_parent()]
-            else:
-                parent_iter_exists = None
-            row = self.get_row_from_bean(bean)
-            
-            parent_iter = self.model.append(parent_iter_exists, row)
-            self.hash[bean.level] = parent_iter
+        """copy beans"""
+        bean = copy.copy(bean)
+        bean.visible = True
+    
+        if self.hash.has_key(bean.get_parent()):
+            parent_iter_exists = self.hash[bean.get_parent()]
+        else:
+            parent_iter_exists = None
+        row = self.get_row_from_bean(bean)
         
-        gobject.idle_add(task, bean)
-        
+        parent_iter = self.model.append(parent_iter_exists, row)
+        self.hash[bean.level] = parent_iter    
         
             
         

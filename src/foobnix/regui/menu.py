@@ -10,6 +10,7 @@ from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import open_link_in_browser
 from foobnix.util.widget_utils import MenuStyleDecorator
+from foobnix.regui.about.about import AboutWindow
 
 class MenuBarWidget(FControl):
     def __init__(self, controls, parent=None):
@@ -50,7 +51,7 @@ class MenuBarWidget(FControl):
 
         def set_random(flag=True):            
             FC().is_order_random = flag
-            logging.debug("set random"+ str(flag))
+            logging.debug("set random" + str(flag))
             controls.os.on_load()
 
         """Playback - Order"""
@@ -100,7 +101,7 @@ class MenuBarWidget(FControl):
 
         """Help"""
         help = top.add_submenu(_("_Help"))
-        help.add_image_item(_("About"), gtk.STOCK_ABOUT, self.controls.about.show_all)
+        help.add_image_item(_("About"), gtk.STOCK_ABOUT, self.show_about)
         help.separator()
         help.add_text_item(_("Project page"), lambda * a:open_link_in_browser(_("http://www.foobnix.com/news/eng")), None, False)
         help.add_image_item(_("Issue report"), gtk.STOCK_DIALOG_WARNING, lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
@@ -122,6 +123,10 @@ class MenuBarWidget(FControl):
         self.widget = top
 
         self.on_load()
+    
+    def show_about(self):
+        about = AboutWindow()
+        about.show()
     
     def on_load(self):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
@@ -147,7 +152,7 @@ class MyMenu(gtk.Menu):
             img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
             item.set_image(img)
 
-        logging.debug("Menu-Image-Activate"+ title + str(gtk_stock) + str(func)  + str(param))
+        logging.debug("Menu-Image-Activate" + title + str(gtk_stock) + str(func) + str(param))
         if func and param:
             item.connect("activate", lambda * a: func(param))
         elif func:

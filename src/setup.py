@@ -7,7 +7,6 @@ from test.all import run_all_tests
 if os.name == 'nt':
     import py2exe
 
-
 VERSION = "0.2.3"
 RELEASE = "2"
 LANGS = ('ru', 'zh_CN', "es", "it", "by")

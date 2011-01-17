@@ -6,7 +6,6 @@ Created on 29 сент. 2010
 '''
 
 import gtk
-import gobject
 
 from foobnix.util.fc import FC
 from foobnix.util.mouse_utils import is_middle_click
@@ -232,7 +231,6 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.show_window()
 
     def set_text(self, text):
-        def task():
-            self.popup_menu.set_text(text)
-            self.set_tooltip(text)
-        gobject.idle_add(task)   
+        self.popup_menu.set_text(text)
+        self.set_tooltip(text)
+       

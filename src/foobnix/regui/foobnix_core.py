@@ -17,7 +17,6 @@ from foobnix.regui.controls.status_bar import StatusbarControls
 from foobnix.regui.controls.tray_icon import TrayIconControls
 from foobnix.preferences.preferences_window import PreferencesWindow
 from foobnix.regui.top import TopWidgets
-from foobnix.regui.about.about import AboutWindow
 from foobnix.regui.treeview.radio_tree import RadioTreeControl
 from foobnix.regui.treeview.virtual_tree import VirtualTreeControl
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
@@ -80,7 +79,6 @@ class FoobnixCore(BaseFoobnixControls):
 
         self.eq = EqController(self)
         self.dm = DM(self)
-        self.about = AboutWindow()
 
         """layout panels"""
         self.top_panel = TopWidgets(self)
@@ -94,6 +92,7 @@ class FoobnixCore(BaseFoobnixControls):
 
     def run(self):    
         self.on_load()
+        pass
             
         
                

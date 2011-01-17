@@ -9,7 +9,6 @@ import gtk
 from foobnix.regui.model import FTreeModel, FModel
 from foobnix.regui.model.signal import FControl
 from random import randint
-import gobject
 from foobnix.regui.treeview.filter_tree import FilterTreeControls
 
 class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
@@ -119,8 +118,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         return attributes
 
     def clear_tree(self):
-        gobject.idle_add(self.model.clear)
-        #self.model.clear()
+        self.model.clear()
 
         
 
@@ -140,10 +138,10 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             iter = self.model.get_iter(path)
             to_delete.append(iter)
 
-        def task():        
-            for iter in to_delete:
-                self.model.remove(iter)
-        gobject.idle_add(task)
+                
+        for iter in to_delete:
+            self.model.remove(iter)
+    
 
     def get_selected_bean_paths(self):
         selection = self.get_selection()
@@ -171,42 +169,35 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             return self.get_current_bean_by_UUID();
     
     def set_play_icon_to_bean_to_selected(self):
-        def task():
-            for row in self.model:
-                row[self.play_icon[0]] = None
-            
-            paths = self.get_selected_bean_paths()
-            if not paths:
-                return None
-            
-            path = paths[0]  
-                     
-            iter = self.model.get_iter(path)
-            self.model.set_value(iter, FTreeModel().play_icon[0], gtk.STOCK_GO_FORWARD)
-            self.active_UUID = self.model.get_value(iter, FTreeModel().UUID[0])
         
-        gobject.idle_add(task)
+        for row in self.model:
+            row[self.play_icon[0]] = None
+        
+        paths = self.get_selected_bean_paths()
+        if not paths:
+            return None
+        
+        path = paths[0]  
+                 
+        iter = self.model.get_iter(path)
+        self.model.set_value(iter, FTreeModel().play_icon[0], gtk.STOCK_GO_FORWARD)
+        self.active_UUID = self.model.get_value(iter, FTreeModel().UUID[0])
         
     def set_bean_column_value(self, bean, colum_num, value):
-        def task():
-            for row in self.model:
-                if row[self.UUID[0]] == bean.UUID:
-                    row[colum_num] = value
-                    break
-        gobject.idle_add(task)
+        for row in self.model:
+            if row[self.UUID[0]] == bean.UUID:
+                row[colum_num] = value
+                break
             
     def update_bean(self, bean):
-        def task():
-            for row in self.model:
-                if row[self.UUID[0]] == bean.UUID:
-                    dict = FTreeModel().__dict__
-                    for key in dict:
-                        value = getattr(bean, key)
-                        row_num = dict[key][0]
-                        row[row_num] = value
-                    break
-        gobject.idle_add(task)
-        
+        for row in self.model:
+            if row[self.UUID[0]] == bean.UUID:
+                dict = FTreeModel().__dict__
+                for key in dict:
+                    value = getattr(bean, key)
+                    row_num = dict[key][0]
+                    row[row_num] = value
+                break
         
     def _get_bean_by_path(self, path):
         model = self.model

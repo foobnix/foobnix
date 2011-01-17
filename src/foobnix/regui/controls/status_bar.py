@@ -6,7 +6,6 @@ Created on 28 сент. 2010
 '''
 from foobnix.regui.model.signal import FControl
 import gtk
-import gobject
 class StatusbarControls(gtk.Statusbar, FControl):
     def __init__(self, controls):
         gtk.Statusbar.__init__(self)
@@ -14,9 +13,8 @@ class StatusbarControls(gtk.Statusbar, FControl):
         self.show()
 
     def set_text(self, text):
-        def task():
-            if text:
-                self.push(0, text)
-            else:
-                self.push(0, "")
-        gobject.idle_add(task)
+        if text:
+            self.push(0, text)
+        else:
+            self.push(0, "")
+    

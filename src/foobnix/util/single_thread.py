@@ -8,7 +8,6 @@ import thread
 from threading import Lock
 import logging
 import time
-import gobject
 
 class SingleThread():
     def __init__(self, progressbar):
@@ -20,8 +19,7 @@ class SingleThread():
             if method and args:
                 method(args)
             if method:
-                gobject.idle_add(method)
-                #method()                            
+                method()
         else:
             self.progressbar.start(text)
             self._run(method, args)
@@ -31,7 +29,7 @@ class SingleThread():
             self.lock.acquire()            
             thread.start_new_thread(self._thread_task, (method, args,))
         else:
-            logging.warning("Thread not finished"+ str(method)+ str(args))    
+            logging.warning("Thread not finished" + str(method) + str(args))    
     
     def _thread_task(self, method, args):
         try:

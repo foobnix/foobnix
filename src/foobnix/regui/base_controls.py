@@ -10,7 +10,6 @@ import urllib2
 import os
 import time
 import copy
-import gobject
 
 from foobnix.util.fc import FC
 from foobnix.util.m3u_utils import m3u_reader
@@ -40,7 +39,7 @@ class BaseFoobnixControls():
         self.count_errors = 0
         self.is_scrobbled = False
         self.start_time = None
-    
+        
     def check_for_media(self, args):         
         dirs = []
         files = []
@@ -167,12 +166,12 @@ class BaseFoobnixControls():
                 self.tablib.label.set_label(FC().tab_names[0] + " ")
         else:
             tabs = len(FC().cache_music_tree_beans)
-            self.tree.append_all(FC().cache_music_tree_beans[tabs - 1])
+            self.tree.simple_append_all(FC().cache_music_tree_beans[tabs - 1])
             self.tablib.label.set_label(FC().tab_names[tabs - 1] + " ")
             for tab in xrange(tabs - 2, -1, -1):
                 
                 tree = NavigationTreeControl(self)
-                tree.append_all(FC().cache_music_tree_beans[tab])
+                tree.simple_append_all(FC().cache_music_tree_beans[tab])
                 self.tablib.append_tab(FC().tab_names[tab], navig_tree=tree)
                 
                 if not FC().cache_music_tree_beans[tab]: 
@@ -519,9 +518,9 @@ class BaseFoobnixControls():
     def update_info_panel(self, bean):
         self.info_panel.update(bean)
 
-    def append_to_new_notebook(self, text, beans):
+    def append_to_new_notebook(self, text, beans, optimization=False):
         #beans = update_id3_wind_filtering(beans)        
-        self.notetabs._append_tab(text, beans)
+        self.notetabs._append_tab(text, beans, None, optimization)
 
     def append_to_current_notebook(self, beans):
           
@@ -591,19 +590,21 @@ class BaseFoobnixControls():
         if FC().check_new_version and current_version < new_version:
             info_dialog_with_link_and_donate(new_version)            
 
+    
+    
     def on_load(self):
+        """load controls"""
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):
-                logging.debug("LOAD ON START" + str(self.__dict__[element]))
+                init = time.time()                
                 self.__dict__[element].on_load()
-            else:
-                logging.debug("NOT LOAD" + str(self.__dict__[element]))
-                
+                logging.debug("%f LOAD ON START %s" % (time.time() - init, str(self.__dict__[element])))
+        
+        """load others"""
         self.main_window.show()
         self.movie_window.hide_all()
         thread.start_new_thread(self.check_version, ())
-        self.info_panel.hide()
-        
+        self.info_panel.hide()        
         self.change_backgound()
         
     
@@ -613,7 +614,7 @@ class BaseFoobnixControls():
         if FC().background_image:
             img = get_foobnix_resourse_path_by_name(FC().background_image)
             if not img:
-                return 
+                return None
             pixbuf = gtk.gdk.pixbuf_new_from_file(img)
             pixmap, mask = pixbuf.render_pixmap_and_mask()
             win.set_app_paintable(True)
@@ -645,11 +646,9 @@ class BaseFoobnixControls():
                 iter = current_model.iter_next(iter)
                 play_item(iter, active_playlist_tree, filter_model, current_model)
                         
-        def get_first_iter(active_playlist_tree, filter_model, current_model):
-            iter = current_model.get_iter_first()
-            play_item(iter, active_playlist_tree, filter_model, current_model)
-                    
-        gobject.idle_add(get_first_iter, active_playlist_tree, filter_model, current_model)        
+        
+        iter = current_model.get_iter_first()
+        play_item(iter, active_playlist_tree, filter_model, current_model)
     
     def on_save(self):
         for element in self.__dict__:

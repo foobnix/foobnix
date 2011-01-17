@@ -4,16 +4,16 @@ Created on Nov 10, 2010
 @author: ivan
 '''
 from foobnix.util.file_utils import get_file_extension
-from mutagen.flac import FLAC
 from mutagen.monkeysaudio import MonkeysAudio
 from mutagen.mp3 import MP3
 from mutagen.wavpack import WavPack
 from mutagen.ogg import OggFileType
 from mutagen.easyid3 import EasyID3
 import logging
+from mutagen.flac import FLAC
 
 def get_mutagen_audio (path):
-    logging.debug("GET mutagen audio"+ path)
+    logging.debug("GET mutagen audio" + path)
     ext = get_file_extension(path)
     audio = None
     if ext == ".flac":

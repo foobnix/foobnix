@@ -14,7 +14,6 @@ from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
 from foobnix.helpers.my_widgets import EventLabel
 from foobnix.helpers.textarea import TextArea
 from foobnix.thirdparty.lyr import get_lyrics
-import gobject
 from foobnix.helpers.image import ImageBase
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
@@ -184,15 +183,15 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         album_name = self.controls.lastfm.get_album_name(bean.artist, bean.title)
         album_year = self.controls.lastfm.get_album_year(bean.artist, bean.title)
-        def task():
-            info_line = bean.artist        
-            if album_name:
-                info_line = album_name
-            if album_name and album_year:
-                info_line = album_name + "(" + album_year + ")"
-                
-            self.album_label.set_markup("<b>%s</b>" % info_line)
-        gobject.idle_add(task)
+      
+        info_line = bean.artist        
+        if album_name:
+            info_line = album_name
+        if album_name and album_year:
+            info_line = album_name + "(" + album_year + ")"
+            
+        self.album_label.set_markup("<b>%s</b>" % info_line)
+  
     
     def show_disc_cover(self):
         bean = self.bean
