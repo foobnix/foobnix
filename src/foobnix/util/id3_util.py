@@ -93,7 +93,7 @@ def udpate_id3(bean):
         bean = update_bean_from_normalized_text(bean)        
         
         bean.time = normalize_time(duration_sec)
-
+        
     return bean
 
 def get_support_music_beans_from_all(beans):

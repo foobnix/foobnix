@@ -639,7 +639,7 @@ class BaseFoobnixControls():
                              
         def play_item(iter, active_playlist_tree, filter_model, current_model):
             bean = self.tree.get_bean_from_model_iter(current_model, iter)
-            print "bean", bean        
+                  
             if bean.is_file:
                 self.play(bean)
                 tree_selection = active_playlist_tree.get_selection()
