@@ -184,8 +184,9 @@ class BaseFoobnixControls():
     def update_music_tree(self, tree=None, number_of_page=0):
         if not tree:
             tree = self.tree
-        logging.info("Update music tree"+ str( FC().music_paths[number_of_page]))
-        tree.clear()
+
+        logging.info("Update music tree" + str(FC().music_paths[number_of_page]))
+        tree.clear_tree()
         FC().cache_music_tree_beans[number_of_page] = []
                
         all = []
@@ -317,7 +318,7 @@ class BaseFoobnixControls():
         if not bean.path:
             if not self.fill_bean_from_vk(bean):
                 if self.count_errors < 4:
-                    logging.debug("Error happen"+ str(self.count_errors))
+                    logging.debug("Error happen" + str(self.count_errors))
                     time.sleep(0.5)
                     self.next()
                 self.count_errors += 1
@@ -353,7 +354,7 @@ class BaseFoobnixControls():
                 self.lastfm.report_scrobbled(bean, self.start_time, dur_sec)
             
     def notify_title(self, text):
-        logging.debug("Notify title"+ text)
+        logging.debug("Notify title" + text)
         
         self.statusbar.set_text(text)
         text = normalize_text(text)
@@ -362,7 +363,7 @@ class BaseFoobnixControls():
         self.update_info_panel(t_bean)
     
     def notify_error(self, msg):
-        logging.error("notify error"+ msg)
+        logging.error("notify error" + msg)
         self.seek_bar.set_text(msg)
         self.info_panel.clear()
         
@@ -566,15 +567,12 @@ class BaseFoobnixControls():
         self.state_stop()
         self.main_window.hide()
         self.trayicon.hide()        
-        
+
         logging.info("Controls - Quit")
-        def task():
-            self.notetabs.on_quit()
-            #self.on_save()
-            FC().save(False)
-            gtk.main_quit()
-        
-        task()
+        self.notetabs.on_quit()
+        #self.on_save()
+        FC().save(False)
+        gtk.main_quit()
 
     def check_version(self):
         uuid = FC().uuid
@@ -584,11 +582,11 @@ class BaseFoobnixControls():
             f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname() + "&version=" + current_version)
             #f = urllib2.urlopen("http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version)
         except Exception, e:
-            logging.error("Check version error"+ str(e))
+            logging.error("Check version error" + str(e))
             return None
 
         new_version = f.read()
-        logging.info("version"+ current_version + "|"+ new_version+ "|"+ str(uuid))
+        logging.info("version" + current_version + "|" + new_version + "|" + str(uuid))
         f.close()
         if FC().check_new_version and current_version < new_version:
             info_dialog_with_link_and_donate(new_version)            
@@ -596,10 +594,10 @@ class BaseFoobnixControls():
     def on_load(self):
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):
-                logging.debug("LOAD ON START"+ str(self.__dict__[element]))
+                logging.debug("LOAD ON START" + str(self.__dict__[element]))
                 self.__dict__[element].on_load()
             else:
-                logging.debug("NOT LOAD"+ str(self.__dict__[element]))
+                logging.debug("NOT LOAD" + str(self.__dict__[element]))
                 
         self.main_window.show()
         self.movie_window.hide_all()
@@ -658,4 +656,4 @@ class BaseFoobnixControls():
             if isinstance(self.__dict__[element], LoadSave):
                 self.__dict__[element].on_save()
             else:
-                logging.debug("NOT SAVE"+ str(self.__dict__[element]))
+                logging.debug("NOT SAVE" + str(self.__dict__[element]))

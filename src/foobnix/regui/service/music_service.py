@@ -10,6 +10,7 @@ from foobnix.util.file_utils import file_extension
 import logging
 from foobnix.regui.model import FModel
 from foobnix.util.id3_util import update_id3_wind_filtering
+from foobnix.util.list_utils import sort_by_song_name
     
 def get_all_music_by_path(path):
     return _scanner(path, None) 
@@ -51,7 +52,7 @@ def sort_by_name(path, list):
         else:
             files.append(file)
 
-    return sorted(directories) + sorted(files)
+    return sorted(directories) + sort_by_song_name(files)
 
 def is_dir_with_music(path):
     if os.path.isdir(path):

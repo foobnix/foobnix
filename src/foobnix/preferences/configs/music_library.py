@@ -94,11 +94,11 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         self.controls.update_music_tree(tree)
    
     def on_load(self):
-        self.tree_controller.clear()
+        self.tree_controller.clear_tree()
         for path in FC().music_paths[0]:
             self.tree_controller.append(FDModel(path))
             
-        self.files_controller.clear()
+        self.files_controller.clear_tree()
         for ext in FC().all_support_formats:
             self.files_controller.append(FDModel(ext))
             

@@ -128,13 +128,7 @@ class DrugDropTree(gtk.TreeView):
             row = self.get_row_from_model_iter(from_filter_model, from_filter_iter)
             
             """if m3u is dropped"""
-            if (from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u") 
-            or from_filter_model.get_value(from_filter_iter, 0).endswith(".m3u8")):
-                logging.info("m3u is found")
-                m3u_file_path = from_model.get_value(from_iter, 5)
-                m3u_title = from_model.get_value(from_iter, 0)
-                self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)
-                continue
+            if self.is_m3u(from_model, from_iter): continue
             
             if from_model.iter_has_child(from_iter):
                 new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos, True)
@@ -158,17 +152,17 @@ class DrugDropTree(gtk.TreeView):
                         pass
                     if to_path and from_level == to_level:
                         
-                        if from_path[from_level]-i > to_path[from_level]:
+                        if from_path[from_level] - i > to_path[from_level]:
                             logging.info("drag up")
                             n = 0 if to_model.iter_has_child(to_iter) else 1
                             while i > -1:
-                                from_model.remove(from_model.get_iter( (from_path[from_level]+n,  ) ) )
+                                from_model.remove(from_model.get_iter((from_path[from_level] + n,)))
                                 i -= 1 
                     
-                        elif from_path[from_level]-i < to_path[from_level]:
+                        elif from_path[from_level] - i < to_path[from_level]:
                             logging.info("drag down")
                             n = i
-                            from_path1 = from_path[:from_level]+(from_path[from_level]-n, )+from_path[from_level+1 :]
+                            from_path1 = from_path[:from_level] + (from_path[from_level] - n,) + from_path[from_level + 1 :]
                             while i > -1:
                                 from_model.remove(from_model.get_iter(from_path1))
                                 i -= 1
@@ -176,7 +170,7 @@ class DrugDropTree(gtk.TreeView):
                         logging.info("drag to empty space or from other level")
                         n = i
                         while i > -1:
-                            from_path1 = from_path[:from_level]+(from_path[from_level]-n, )+from_path[from_level+1 :]
+                            from_path1 = from_path[:from_level] + (from_path[from_level] - n,) + from_path[from_level + 1 :]
                             from_model.remove(from_model.get_iter(from_path1))
                             i -= 1
                 
@@ -190,7 +184,16 @@ class DrugDropTree(gtk.TreeView):
         
         self.on_drag_drop_finish()
     
-    def to_add_drug_item(self, to_model, to_iter, row,  pos, from_iter_has_child=False):    
+    def is_m3u(self, from_model, from_iter):
+        if (from_model.get_value(from_iter, 0).endswith(".m3u") 
+        or from_model.get_value(from_iter, 0).endswith(".m3u8")):
+            logging.info("m3u is found")
+            m3u_file_path = from_model.get_value(from_iter, 5)
+            m3u_title = from_model.get_value(from_iter, 0)
+            self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)
+            return True
+    
+    def to_add_drug_item(self, to_model, to_iter, row, pos, from_iter_has_child=False):    
         if to_iter:
             if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
                 new_iter = to_model.prepend(to_iter, row)
@@ -232,7 +235,7 @@ class DrugDropTree(gtk.TreeView):
                 if from_model.iter_has_child(from_child_iter):
                     folder_iters.append(from_child_iter)
                 not_cue_iters.append(from_child_iter)
-        return cue_iters+folder_iters if cue_iters else not_cue_iters
+        return cue_iters + folder_iters if cue_iters else not_cue_iters
 
     def child_by_recursion(self, row, plain):
         for child in row.iterchildren():
@@ -251,7 +254,7 @@ class DrugDropTree(gtk.TreeView):
             bean = self.get_bean_from_row(row)
             copy_beans.append(bean)
         
-        self.clear()
+        self.clear_tree()
         
         self.tree_append_all(copy_beans)
     
@@ -259,6 +262,8 @@ class DrugDropTree(gtk.TreeView):
     
     def rebuild_as_plain(self, *a):
         self.current_view = VIEW_PLAIN
+        if len(self.model) == 0: 
+            return
         plain = []
         for row in self.model:
             plain.append(row)
@@ -269,7 +274,8 @@ class DrugDropTree(gtk.TreeView):
             bean = self.get_bean_from_row(row)
             copy_beans.append(bean)
             
-        self.clear()
+        #attention! clear_tree() has low priority
+        self.clear_tree()
         
         self.plain_append_all(copy_beans)
         
@@ -291,7 +297,7 @@ class DrugDropTree(gtk.TreeView):
         normalized = []
         for model in beans:
             if model.path and model.path.lower().endswith(".iso.wv"):
-                logging.debug("begin normalize iso.wv"+ str(model.path))
+                logging.debug("begin normalize iso.wv" + str(model.path))
                 all = get_beans_from_iso_wv(model.path)
                 for inner in all:
                     normalized.append(inner)
@@ -311,9 +317,8 @@ class DrugDropTree(gtk.TreeView):
             
     def _plain_append(self, bean):
         def task():
-            logging.debug("Plain append begin"+ str(bean.text)+ str(bean.path))
-            
-            logging.debug("Plain append task"+ str(bean.text)+ str(bean.path))
+            logging.debug("Plain append begin" + str(bean.text) + str(bean.path))
+            logging.debug("Plain append task" + str(bean.text) + str(bean.path))
             if not bean:
                 return
             if bean.is_file == True:

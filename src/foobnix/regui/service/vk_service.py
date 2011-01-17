@@ -12,7 +12,7 @@ import urllib
 import re
 from foobnix.regui.model import FModel
 from foobnix.util.text_utils import html_decode
-import json
+import simplejson
 from urllib2 import HTTPError
 
 class VKService:
@@ -48,7 +48,7 @@ class VKService:
     def find_tracks_by_query(self, query):
         if not self.is_connected():
             return []
-        logging.info("start search songs"+ query)
+        logging.info("start search songs" + query)
         page = self.search(query)
         if not page:
             return []
@@ -70,12 +70,12 @@ class VKService:
             data = urllib.urlencode(data)
         time.sleep(1.2)
         try:
-            handler= self.opener.open(url, data)
+            handler = self.opener.open(url, data)
             data = handler.read()
             handler.close()
             return data
         except HTTPError, e:
-            logging.error("VK Connection Error:"+ str(e) + "( Searching: "+str(url)+" with data "+str(data)+") ["+FC().vk_login+":"+FC().vk_password+"]")
+            logging.error("VK Connection Error:" + str(e) + "( Searching: " + str(url) + " with data " + str(data) + ") [" + FC().vk_login + ":" + FC().vk_password + "]")
             if e.code == 400:
                 FC().vk_login, FC().vk_password = get_random_vk()
                 self.initialize_urllib2()
@@ -97,7 +97,7 @@ class VKService:
          
         result_time = re.findall('duration">' + reg_all, result, re.IGNORECASE | re.UNICODE)
         result_lyr = re.findall(ur"showLyrics" + reg_all, result, re.IGNORECASE | re.UNICODE)
-        logging.info("lyr:::"+ str(result_lyr))
+        logging.info("lyr:::" + str(result_lyr))
         songs = []
         j = 0
         for i, artist in enumerate(result_artist):
@@ -134,8 +134,8 @@ class VKService:
         #get most relatives times time
         r_count = max(times_count.values())
         r_time = self.find_time_value(times_count, r_count)
-        logging.info("Song time"+ str(r_time))
-        logging.info("Count of songs with this time"+ str(r_count))
+        logging.info("Song time" + str(r_time))
+        logging.info("Count of songs with this time" + str(r_count))
         
         for song in vkSongs:
             if song.time == r_time:        
@@ -210,7 +210,7 @@ class VKVideoResultsPage:
         json_code = re.findall("(\{.*\})", html)[0]
         json_code = html_decode(json_code)
         try:
-            video = json.loads(json_code)
+            video = simplejson.loads(json_code)
         except:
             return None #if is not valid json 
         if 'host' not in video:
