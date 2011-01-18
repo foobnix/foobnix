@@ -41,10 +41,6 @@ class DMControls(MyToolbar):
 class DM(ChildTopWindow):
     def __init__(self, controls):
         self.controls = controls        
-        self.is_init = False                
-        
-    
-    def lazy_init(self):
         ChildTopWindow.__init__(self, _("Download Manager"))
         self.set_resizable(True)
         self.set_default_size(900, 700)
@@ -73,7 +69,7 @@ class DM(ChildTopWindow):
                        
         self.add(vbox)
         thread.start_new_thread(self.dowloader, (self.dm_list,))
-        self.is_init = True
+        
            
     def demo_tasks(self):
         self.append_task(FModel("Madonna - Sorry"))
@@ -94,9 +90,6 @@ class DM(ChildTopWindow):
         
         
     def show(self):
-        if not self.is_init:
-            self.lazy_init()
-            
         self.show_all()
     
     def append_task(self, bean):
