@@ -29,19 +29,19 @@ class PlaylistTreeControl(CommonTreeControl):
         self.append_column(tracknumber)
 
 
-        """conlumt artist title"""
+        """conlumn artist title"""
         description = gtk.TreeViewColumn('Track', gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         #description.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         description.set_expand(True)
         self.append_column(description)
         
         
-        """conlumt artist title"""
+        """conlumn artist title"""
         artist = gtk.TreeViewColumn('Artist', gtk.CellRendererText(), text=self.artist[0])
         artist.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         #self.append_column(artist)
         
-        """conlumt artist title"""
+        """conlumn artist title"""
         title = gtk.TreeViewColumn('Title', gtk.CellRendererText(), text=self.title[0])
         title.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         #self.append_column(title)
@@ -55,7 +55,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.configure_recive_drug()
         
         self.set_playlist_plain()
-        
+                
     def set_playlist_tree(self):
         self.rebuild_as_tree()
         

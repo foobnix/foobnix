@@ -83,9 +83,7 @@ def udpate_id3(bean):
                 bean.tracknumber = ""
         
         bean = update_bean_from_normalized_text(bean)        
-        
         bean.time = convert_seconds_to_text(duration_sec)
-
     return bean
 
 def get_support_music_beans_from_all(beans):

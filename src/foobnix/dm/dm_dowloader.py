@@ -49,14 +49,16 @@ class Dowloader(threading.Thread):
         
         ext = get_file_extension(bean.path)
         
-        if bean.artist:
-            to_file = os.path.join(FC().online_save_to_folder, bean.artist, bean.get_display_name() + ext)            
-        else:
-            path = FC().online_save_to_folder
-            to_file = os.path.join(path, bean.get_display_name() + ext)        
-        
-        if not os.path.exists(path):
+        path = FC().online_save_to_folder
+        if not os.path.isdir(path):
             os.makedirs(path)
+            
+        if bean.artist:
+            to_file = os.path.join(FC().online_save_to_folder, bean.artist, bean.get_display_name() + ext)
+            if not os.path.isdir(os.path.dirname(to_file)):
+                os.makedirs(os.path.dirname(to_file))             
+        else:
+            to_file = os.path.join(path, bean.get_display_name() + ext)        
         
         to_file_tmp = to_file + ".tmp"
         

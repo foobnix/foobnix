@@ -6,12 +6,12 @@ Created on Oct 14, 2010
 import gtk
 import copy
 import uuid
-import gobject
 from foobnix.regui.model import FModel, FTreeModel
 import logging
 from foobnix.util.id3_util import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.m3u_utils import m3u_reader
+import os.path
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -37,6 +37,18 @@ class DrugDropTree(gtk.TreeView):
         logging.debug("begin append all")
         if self.current_view == VIEW_PLAIN:
             self.plain_append_all(beans)            
+        else:
+            self.tree_append_all(beans)
+    
+    def simple_append_all(self, beans):
+        logging.debug("simple_append_all")
+        logging.debug(self.current_view)
+        
+        if self.current_view == VIEW_PLAIN:
+            logging.debug("simple_append_all")
+            for bean in beans:
+                row = self.get_row_from_bean(bean)            
+                self.model.append(None, row)               
         else:
             self.tree_append_all(beans)
     
@@ -128,7 +140,8 @@ class DrugDropTree(gtk.TreeView):
             row = self.get_row_from_model_iter(from_filter_model, from_filter_iter)
             
             """if m3u is dropped"""
-            if self.is_m3u(from_model, from_iter): continue
+            if self.add_m3u(from_model, from_iter, to_model, to_iter, to_filter_pos):
+                continue
             
             if from_model.iter_has_child(from_iter):
                 new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos, True)
@@ -180,17 +193,33 @@ class DrugDropTree(gtk.TreeView):
                 if to_tree.current_view == VIEW_PLAIN:             
                     self.rebuild_as_plain()
        
-        gobject.idle_add(remove_replaced, i)
+        remove_replaced(i)
         
         self.on_drag_drop_finish()
     
-    def is_m3u(self, from_model, from_iter):
-        if (from_model.get_value(from_iter, 0).endswith(".m3u") 
-        or from_model.get_value(from_iter, 0).endswith(".m3u8")):
+    def add_m3u(self, from_model, from_iter, to_model, to_iter, pos):
+        if (from_model.get_value(from_iter, 0).lower().endswith(".m3u") 
+        or from_model.get_value(from_iter, 0).lower().endswith(".m3u8")):
             logging.info("m3u is found")
             m3u_file_path = from_model.get_value(from_iter, 5)
             m3u_title = from_model.get_value(from_iter, 0)
-            self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)
+            paths = m3u_reader(m3u_file_path)
+            paths.insert(0, os.path.splitext(m3u_title)[0])
+            list = paths[0].split("/")
+            name = list[len(list) - 2]
+            parent = FModel(name)
+            new_iter = None
+            for i, path in enumerate(paths):
+                if not i:
+                    bean = FModel(path)
+                else:
+                    bean = FModel(path, path).parent(parent)
+                
+                row = self.get_row_from_bean(bean)
+                if new_iter:
+                    to_iter = new_iter
+                new_iter = self.to_add_drug_item(to_model, to_iter, row, pos)
+                  
             return True
     
     def to_add_drug_item(self, to_model, to_iter, row, pos, from_iter_has_child=False):    
@@ -260,7 +289,7 @@ class DrugDropTree(gtk.TreeView):
     
         self.expand_all()
     
-    def rebuild_as_plain(self, *a):
+    def rebuild_as_plain(self, with_beans=True):
         self.current_view = VIEW_PLAIN
         if len(self.model) == 0: 
             return
@@ -268,7 +297,10 @@ class DrugDropTree(gtk.TreeView):
         for row in self.model:
             plain.append(row)
             self.child_by_recursion(row, plain)
-        
+        if not with_beans:
+            for row in plain:
+                self.model.append(None, row)
+            return
         copy_beans = []
         for row in plain:
             bean = self.get_bean_from_row(row)
@@ -316,54 +348,45 @@ class DrugDropTree(gtk.TreeView):
             self._plain_append(bean)
             
     def _plain_append(self, bean):
-        def task():
-            logging.debug("Plain append begin" + str(bean.text) + str(bean.path))
-            logging.debug("Plain append task" + str(bean.text) + str(bean.path))
-            if not bean:
-                return
-            if bean.is_file == True:
-                bean.font = "normal"
-            else:
-                bean.font = "bold"
-                
-            bean.visible = True
-        
-            beans = update_id3_wind_filtering([bean])
-            for one in beans:
-                one.update_uuid() 
-                row = self.get_row_from_bean(one)            
-                """append to tree thread safe"""
-                
-                self.model.append(None, row)            
-                """append to tree thread safe end"""
-        gobject.idle_add(task)
+        logging.debug("Plain append task" + str(bean.text) + str(bean.path))
+        if not bean:
+            return
+        if bean.is_file == True:
+            bean.font = "normal"
+        else:
+            bean.font = "bold"
             
-        
+        bean.visible = True
+    
+        beans = update_id3_wind_filtering([bean])
+        for one in beans:
+            one.update_uuid() 
+            row = self.get_row_from_bean(one)            
+            """append to tree thread safe"""
+            
+            self.model.append(None, row)            
+            """append to tree thread safe end"""
         
     def tree_append(self, bean):
-        def task(bean):
-            if not bean:
-                return
-            if bean.is_file == True:
-                bean.font = "normal"
-            else:
-                bean.font = "bold"
-            
-            """copy beans"""
-            bean = copy.copy(bean)
-            bean.visible = True
+        if not bean:
+            return
+        if bean.is_file == True:
+            bean.font = "normal"
+        else:
+            bean.font = "bold"
         
-            if self.hash.has_key(bean.get_parent()):
-                parent_iter_exists = self.hash[bean.get_parent()]
-            else:
-                parent_iter_exists = None
-            row = self.get_row_from_bean(bean)
-            
-            parent_iter = self.model.append(parent_iter_exists, row)
-            self.hash[bean.level] = parent_iter
+        """copy beans"""
+        bean = copy.copy(bean)
+        bean.visible = True
+    
+        if self.hash.has_key(bean.get_parent()):
+            parent_iter_exists = self.hash[bean.get_parent()]
+        else:
+            parent_iter_exists = None
+        row = self.get_row_from_bean(bean)
         
-        gobject.idle_add(task, bean)
-        
+        parent_iter = self.model.append(parent_iter_exists, row)
+        self.hash[bean.level] = parent_iter    
         
             
         

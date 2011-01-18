@@ -3,7 +3,6 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
-from foobnix.regui.state import LoadSave
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 import gtk
 from foobnix.regui.treeview.common_tree import CommonTreeControl
@@ -13,7 +12,7 @@ from foobnix.helpers.dialog_entry import two_line_dialog
 from foobnix.helpers.menu import Popup
 from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
 from foobnix.regui.service.radio_service import RadioFolder
-class RadioTreeControl(CommonTreeControl, LoadSave):
+class RadioTreeControl(CommonTreeControl):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
         self.set_reorderable(False)
@@ -27,6 +26,7 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
         self.configure_send_drug()
 
         self.set_type_tree()
+        self.is_lazy_load = False
     
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_RADIO
@@ -78,10 +78,25 @@ class RadioTreeControl(CommonTreeControl, LoadSave):
         self.is_radio_populated = True            
     
     def on_load(self):
+        if self.is_lazy_load:
+            return True
+        self.is_lazy_load = True
+                            
         self.scroll.hide()
         self.populate_all(FC().cache_radio_tree_beans)
         if not FC().cache_radio_tree_beans:
             self.update_radio_tree()
+        self.restore_expand(FC().radio_expand_paths)
+        self.restore_selection(FC().radio_selected_paths)
+        
+        def set_expand_path(new_value): 
+            FC().radio_expand_paths = new_value
+            
+        def set_selected_path(new_value): 
+            FC().radio_selected_paths = new_value
+            
+        self.expand_updated(set_expand_path)
+        self.selection_changed(set_selected_path)
         
     
     def on_save(self):        

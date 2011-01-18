@@ -27,6 +27,9 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
 
+    
+    def lazy_init(self):
+        controls = self.controls
         self.configs.append(MusicLibraryConfig(controls))
         #self.configs.append(DMConfig(controls))
         self.configs.append(TabsConfig(controls))
@@ -44,7 +47,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
             from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
             self.configs.append(HotKeysConfig(controls))
         except Exception, e:
-            logging.warn("Keybinder not installed"+ str(e)) 
+            logging.warn("Keybinder not installed" + str(e)) 
         
         
         self.configs.append(OtherConfig(controls))
@@ -87,8 +90,10 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.add(mainVBox)
             
     def show(self, current=CONFIG_MUSIC_LIBRARY):
+        self.lazy_init()
         self.show_all()
         self.populate_config_category(current)
+        self.on_load()
     
     def on_load(self):
         logging.debug("LOAD PreferencesWindow")
@@ -103,9 +108,8 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
             self.hide_window()
         else:
             bean = self.navigation.get_selected_bean() 
-            self.hide()
-            self.show()
-            self.populate_config_category(bean.text)
+            if bean:
+                self.populate_config_category(bean.text)
                 
     def hide_window(self, *a):
         self.hide()

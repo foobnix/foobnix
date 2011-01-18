@@ -14,10 +14,15 @@ from foobnix.regui.model import FModel
 from foobnix.util.text_utils import html_decode
 import simplejson
 from urllib2 import HTTPError
+import thread
 
 class VKService:
     
     def __init__(self):
+        thread.start_new_thread(self.in_thread_init, ())
+        
+    #We need to start inside thread to fast player start
+    def in_thread_init(self):
         self.initialize_urllib2()
         self.login()
         

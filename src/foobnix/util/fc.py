@@ -70,6 +70,16 @@ class FC:
         self.count_of_tabs = 5
         self.tab_position = "top"
         
+        """expand tree paths"""
+        self.nav_expand_paths = []
+        self.radio_expand_paths = []
+        self.virtual_expand_paths = []
+        
+        """selected tree paths"""
+        self.nav_selected_paths = []
+        self.radio_selected_paths = []
+        self.virtual_selected_paths = []
+        
         
         self.agent_line = get_ranmom_agent()
 
@@ -134,7 +144,7 @@ class FC:
         self.stop_icon_entry = ICON_FOOBNIX_STOP
         self.radio_icon_entry = ICON_FOOBNIX_RADIO
         
-        self.notifier = False
+        self.notifier = True
                
         """download manager controls"""
         self.auto_start_donwload = True

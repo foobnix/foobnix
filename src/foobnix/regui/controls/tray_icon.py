@@ -6,7 +6,6 @@ Created on 29 сент. 2010
 '''
 
 import gtk
-import gobject
 
 from foobnix.util.fc import FC
 from foobnix.util.mouse_utils import is_middle_click
@@ -138,6 +137,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
             title = bean.text
         if FC().change_tray_icon:
             super(TrayIconControls, self).update_info_from(bean)
+
         if FC().notifier:
             try:
                 import pynotify
@@ -146,11 +146,12 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
                     return
                 notification = pynotify.Notification("<b><big>Foobnix</big></b>", "<b><i>> " + artist + "\n\n> " + title + "</i></b>")
                 notification.set_urgency(pynotify.URGENCY_LOW)
-                notification.set_timeout(5000)
+                notification.set_timeout(1)
                 notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
                 notification.show()
             except:
                 logging.warn("Pynotify not found in your system")
+
                
     
     def on_dynamic_icons(self, state):
@@ -232,7 +233,6 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.show_window()
 
     def set_text(self, text):
-        def task():
-            self.popup_menu.set_text(text)
-            self.set_tooltip(text)
-        gobject.idle_add(task)   
+        self.popup_menu.set_text(text)
+        self.set_tooltip(text)
+       

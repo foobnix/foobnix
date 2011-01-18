@@ -76,6 +76,13 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
     def on_load(self):
         self.scroll.hide()
         self.populate_all(FC().cache_virtual_tree_beans)
+        self.restore_expand(FC().virtual_expand_paths)
+        self.restore_selection(FC().virtual_selected_paths)
+        
+        def set_expand_path(new_value): FC().virtual_expand_paths = new_value
+        def set_selected_path(new_value): FC().virtual_selected_paths = new_value
+        self.expand_updated(set_expand_path)
+        self.selection_changed(set_selected_path)
     
     def on_save(self):        
         FC().cache_virtual_tree_beans = self.get_all_beans()
