@@ -369,9 +369,8 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             self.expand_to_path(path)
             selection.select_path(path)
 
-    def restore_selection(self, paths):
-        for path in paths:
-            self.select_path(path)
+    def restore_selection(self, paths):        
+        self.select_paths(paths)
 
     def restore_expand(self, paths):
         for path in paths:
