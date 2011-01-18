@@ -77,11 +77,28 @@ class RadioTreeControl(CommonTreeControl):
                 self.append(child)
         self.is_radio_populated = True            
     
-    def lazy_load(self):
-        if not self.is_lazy_load:
-            self.populate_all(FC().cache_radio_tree_beans)
-            if not FC().cache_radio_tree_beans:
-                self.update_radio_tree()
-                FC().cache_radio_tree_beans = self.get_all_beans()
-            self.is_lazy_load = True 
+    def on_load(self):
+        if self.is_lazy_load:
+            return True
+        self.is_lazy_load = True
+                            
+        self.scroll.hide()
+        self.populate_all(FC().cache_radio_tree_beans)
+        if not FC().cache_radio_tree_beans:
+            self.update_radio_tree()
+        self.restore_expand(FC().radio_expand_paths)
+        self.restore_selection(FC().radio_selected_paths)
+        
+        def set_expand_path(new_value): 
+            FC().radio_expand_paths = new_value
+            
+        def set_selected_path(new_value): 
+            FC().radio_selected_paths = new_value
+            
+        self.expand_updated(set_expand_path)
+        self.selection_changed(set_selected_path)
+        
+    
+    def on_save(self):        
+        FC().cache_radio_tree_beans = self.get_all_beans()
         

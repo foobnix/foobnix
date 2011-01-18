@@ -70,6 +70,16 @@ class FC:
         self.count_of_tabs = 5
         self.tab_position = "top"
         
+        """expand tree paths"""
+        self.nav_expand_paths = []
+        self.radio_expand_paths = []
+        self.virtual_expand_paths = []
+        
+        """selected tree paths"""
+        self.nav_selected_paths = []
+        self.radio_selected_paths = []
+        self.virtual_selected_paths = []
+        
         
         self.agent_line = get_ranmom_agent()
 

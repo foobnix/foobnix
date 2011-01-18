@@ -143,6 +143,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
     def on_load(self):
         self.controls.load_music_tree()
+        self.restore_expand(FC().nav_expand_paths)
+        self.restore_selection(FC().nav_selected_paths)
+        
+        def set_expand_path(new_value): FC().nav_expand_paths = new_value
+        def set_selected_path(new_value): FC().nav_selected_paths = new_value
+        self.expand_updated(set_expand_path)
+        self.selection_changed(set_selected_path)
     
     def on_save(self):
         pass
