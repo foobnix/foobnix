@@ -523,7 +523,8 @@ class BaseFoobnixControls():
         self.notetabs._append_tab(text, beans, None, optimization)
 
     def append_to_current_notebook(self, beans):
-          
+                           
+                    
         #beans = update_id3_wind_filtering(beans) 
         """cue_beans = []
         for bean in beans:
@@ -531,6 +532,8 @@ class BaseFoobnixControls():
                 cue_beans.append(bean.path)
         if cue_beans:
             beans = cue_beans"""
+        #parent = FModel
+        
         self.notetabs.append_all(beans)
 
     def next(self):        
@@ -629,18 +632,18 @@ class BaseFoobnixControls():
         win.show()            
     
     def play_first_file_in_playlist(self):    
-        active_playlist_tree = self.notetabs.get_active_tree()
+        active_playlist_tree = self.notetabs.get_current_tree()
         filter_model = active_playlist_tree.get_model()
         current_model = filter_model.get_model()
                              
         def play_item(iter, active_playlist_tree, filter_model, current_model):
             bean = self.tree.get_bean_from_model_iter(current_model, iter)
-                    
+                  
             if bean.is_file:
                 self.play(bean)
-                TreeSelection = active_playlist_tree.get_selection()
+                tree_selection = active_playlist_tree.get_selection()
                 filter_iter = filter_model.convert_child_iter_to_iter(iter)
-                TreeSelection.select_iter(filter_iter)
+                tree_selection.select_iter(filter_iter)
                 active_playlist_tree.set_play_icon_to_bean_to_selected()
             else:
                 iter = current_model.iter_next(iter)

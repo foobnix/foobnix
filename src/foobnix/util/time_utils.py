@@ -26,8 +26,10 @@ def convert_seconds_to_text(time_sec):
         secs = time_sec
         if hours > 0:
             return "{0}:{1:0>2}:{2:0>2}".format(hours, mins, secs)
+            
         else:
             return "{0:0>2}:{1:0>2}".format(mins, secs)
+        
 
-def  normalize_time(length):
-    convert_seconds_to_text(length)
+def normalize_time(length):
+    return convert_seconds_to_text(length)

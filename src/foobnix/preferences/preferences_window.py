@@ -57,7 +57,6 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         mainVBox = gtk.VBox(False, 0)
         
         ChildTopWindow.__init__(self, _("Preferences"), 900, 500)
-        self.render()
         
 
         paned = gtk.HPaned()

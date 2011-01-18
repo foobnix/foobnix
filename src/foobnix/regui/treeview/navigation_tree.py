@@ -12,6 +12,7 @@ from foobnix.util.fc import FC
 import logging
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
+
   
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -33,8 +34,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
     
     def on_button_press(self, w, e):
+        
         if is_middle_click(e):
-            # on left double click add selected items to current tab
             self.add_to_tab(True)
             return
 
@@ -65,16 +66,17 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
     def add_to_tab(self, current=False):
         paths = self.get_selected_bean_paths()
-        to_model = self.controls.notetabs.get_active_tree().get_model().get_model()
+        to_model = self.controls.notetabs.get_current_tree().get_model().get_model()
         from_model = self.get_model()
         for i, path in enumerate(paths):
             from_iter = from_model.get_iter(path)
             row = self.get_row_from_model_iter(from_model, from_iter)
-            if self.is_m3u(from_model, from_iter): continue
+            
             if not i and not current:
                 name = row[0]
                 self.controls.notetabs._append_tab(name)
-                to_model = self.controls.notetabs.get_active_tree().get_model().get_model()
+                to_model = self.controls.notetabs.get_current_tree().get_model().get_model()
+            if self.add_m3u(from_model, from_iter, to_model, None, None): continue
             if from_model.iter_has_child(from_iter):
                 new_iter = self.to_add_drug_item(to_model, None, row, None, True)
                 self.iter_is_parent(from_iter, from_model, to_model, new_iter)
@@ -84,8 +86,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.controls.notetabs.get_active_tree().rebuild_as_plain()
         if not current:
             self.controls.play_first_file_in_playlist()
-        
-        
+
     def add_folder(self, in_new_tab=False):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"),
                                         action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,

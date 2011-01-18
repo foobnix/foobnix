@@ -11,6 +11,7 @@ import logging
 from foobnix.util.id3_util import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.m3u_utils import m3u_reader
+import os.path
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -139,7 +140,8 @@ class DrugDropTree(gtk.TreeView):
             row = self.get_row_from_model_iter(from_filter_model, from_filter_iter)
             
             """if m3u is dropped"""
-            if self.is_m3u(from_model, from_iter): continue
+            if self.add_m3u(from_model, from_iter, to_model, to_iter, to_filter_pos):
+                continue
             
             if from_model.iter_has_child(from_iter):
                 new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos, True)
@@ -195,13 +197,29 @@ class DrugDropTree(gtk.TreeView):
         
         self.on_drag_drop_finish()
     
-    def is_m3u(self, from_model, from_iter):
-        if (from_model.get_value(from_iter, 0).endswith(".m3u") 
-        or from_model.get_value(from_iter, 0).endswith(".m3u8")):
+    def add_m3u(self, from_model, from_iter, to_model, to_iter, pos):
+        if (from_model.get_value(from_iter, 0).lower().endswith(".m3u") 
+        or from_model.get_value(from_iter, 0).lower().endswith(".m3u8")):
             logging.info("m3u is found")
             m3u_file_path = from_model.get_value(from_iter, 5)
             m3u_title = from_model.get_value(from_iter, 0)
-            self.controls.on_add_files(m3u_reader(m3u_file_path), m3u_title)
+            paths = m3u_reader(m3u_file_path)
+            paths.insert(0, os.path.splitext(m3u_title)[0])
+            list = paths[0].split("/")
+            name = list[len(list) - 2]
+            parent = FModel(name)
+            new_iter = None
+            for i, path in enumerate(paths):
+                if not i:
+                    bean = FModel(path)
+                else:
+                    bean = FModel(path, path).parent(parent)
+                
+                row = self.get_row_from_bean(bean)
+                if new_iter:
+                    to_iter = new_iter
+                new_iter = self.to_add_drug_item(to_model, to_iter, row, pos)
+                  
             return True
     
     def to_add_drug_item(self, to_model, to_iter, row, pos, from_iter_has_child=False):    
@@ -271,7 +289,7 @@ class DrugDropTree(gtk.TreeView):
     
         self.expand_all()
     
-    def rebuild_as_plain(self, *a):
+    def rebuild_as_plain(self, with_beans=True):
         self.current_view = VIEW_PLAIN
         if len(self.model) == 0: 
             return
@@ -279,7 +297,10 @@ class DrugDropTree(gtk.TreeView):
         for row in self.model:
             plain.append(row)
             self.child_by_recursion(row, plain)
-        
+        if not with_beans:
+            for row in plain:
+                self.model.append(None, row)
+            return
         copy_beans = []
         for row in plain:
             bean = self.get_bean_from_row(row)
