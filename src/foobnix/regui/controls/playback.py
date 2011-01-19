@@ -3,13 +3,15 @@ Created on Sep 27, 2010
 
 @author: ivan
 '''
+import gtk
+
+from foobnix.util import const
+from foobnix.util.fc import FC
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.toolbar import MyToolbar
 from foobnix.regui.model.signal import FControl
-import gtk
-from foobnix.helpers.my_widgets import ImageButton, EventLabel
-from foobnix.util.fc import FC
-from foobnix.util import const
+from foobnix.helpers.my_widgets import ImageButton
+
 
 class PlaybackControlsNotUsedOld(FControl, MyToolbar, LoadSave):
     def __init__(self, controls): 
@@ -26,54 +28,93 @@ class PlaybackControlsNotUsedOld(FControl, MyToolbar, LoadSave):
     def on_load(self): pass
     def on_save(self): pass
     
-class OrderShuffleControls(FControl, gtk.HBox, LoadSave):
+class OrderShuffleControls(FControl, gtk.HBox, gtk.Tooltips, LoadSave):
     def __init__(self, controls): 
         gtk.HBox.__init__(self, False)
+                
+        self.order = gtk.ToggleButton()
+        order_image = gtk.image_new_from_stock(gtk.STOCK_REDO, gtk.ICON_SIZE_BUTTON)
+        self.order.add(order_image)
+        self.order.set_relief(gtk.RELIEF_NONE)
+        self.order.set_has_tooltip(True)
+        self.order.connect("button-press-event", self.on_order)
         
-        self.rlabel = EventLabel(text="S", func=lambda * a: self.on_random())
-        self.olabel = EventLabel(text="R", func=lambda * a: self.on_order())
+        self.pack_start(self.order)
         
-        self.pack_start(self.rlabel)
-        self.pack_start(gtk.Label(" "))
-        self.pack_start(self.olabel)
+        self.repeat = gtk.ToggleButton()
+        repeat_image = gtk.image_new_from_stock(gtk.STOCK_REFRESH, gtk.ICON_SIZE_BUTTON)
+        self.repeat.add(repeat_image)
+        self.repeat.set_relief(gtk.RELIEF_NONE)    
+        self.repeat.set_has_tooltip(True)
         
+        self.repeat.connect("button-press-event", self.choise)
+        self.pack_start(self.repeat)
+                
         self.pack_start(gtk.SeparatorToolItem())
-    
-    def update(self):
+        
+        self.menu = gtk.Menu()
+        self.item_all = gtk.CheckMenuItem(_("Repeat all"))
+        self.item_all.connect("button-press-event", self.on_repeat)
+        self.menu.append(self.item_all)
+        self.item_single = gtk.CheckMenuItem(_("Repeat single"))
+        self.item_single.connect("button-press-event", lambda item, *a: self.on_repeat(item, False))
+        self.menu.append(self.item_single)
+       
+    def choise(self, widget, event):
+            self.menu.popup(None, None, None, event.button, event.time)
+            self.menu.show_all()
+            
+    def on_load(self):
         if FC().is_order_random:
-            self.rlabel.set_markup("<b>S</b>")
-            self.rlabel.set_tooltip_text(_("Shuffle on"))
-            
+            self.order.set_active(True)
+            self.order.set_tooltip_text(_("Shuffle on"))
         else:
-            self.rlabel.set_markup("S")
-            self.rlabel.set_tooltip_text(_("Shuffle off"))
+            self.order.set_active(False)
+            self.order.set_tooltip_text(_("Shuffle off"))
             
         if FC().repeat_state == const.REPEAT_ALL:
-            self.olabel.set_markup("<b>R</b>")
-            self.olabel.set_tooltip_text(_("Repeat all"))            
+            self.repeat.set_active(True)
+            self.repeat.set_tooltip_text(_("Repeat all"))
+            self.item_all.set_active(True)            
         elif FC().repeat_state == const.REPEAT_SINGLE:
-            self.olabel.set_markup("<b>R1</b>")
-            self.olabel.set_tooltip_text(_("Repeat single"))
+            self.repeat.set_active(True)
+            self.repeat.set_tooltip_text(_("Repeat single"))
+            self.item_single.set_active(True)
         else:
-            self.olabel.set_markup("R")
-            self.olabel.set_tooltip_text(_("Repeat off"))
+            self.repeat.set_active(False)
+            self.repeat.set_tooltip_text(_("Repeat off"))
         
-    def on_random(self, *a):
+    def on_order(self, *a):
         FC().is_order_random = not FC().is_order_random
-        self.update()
-    
-    def on_order(self):
-        if FC().repeat_state == const.REPEAT_ALL:
-            FC().repeat_state = const.REPEAT_SINGLE
-        elif FC().repeat_state == const.REPEAT_SINGLE:
-            FC().repeat_state = const.REPEAT_NO
-        elif FC().repeat_state == const.REPEAT_NO:
-            FC().repeat_state = const.REPEAT_ALL
-        self.update()
+        if FC().is_order_random:
+            self.order.set_tooltip_text(_("Shuffle on"))
+        else:
+            self.order.set_tooltip_text(_("Shuffle off"))
             
-    def on_load(self): 
-        self.update()
-        
+    def on_repeat(self, item, all=True):
+        is_active = item.get_active()
+        for menu_item in self.menu: 
+            menu_item.set_active(False)
+        if all:
+            if not is_active:
+                FC().repeat_state = const.REPEAT_ALL
+                self.repeat.set_tooltip_text(_("Repeat all"))
+                self.repeat.set_active(True)
+            else:
+                FC().repeat_state = const.REPEAT_NO
+                item.set_active(True) #because signal "toggled" will change the value to the opposite
+                self.repeat.set_active(False)
+        elif not all:
+            if not is_active:
+                FC().repeat_state = const.REPEAT_SINGLE
+                self.repeat.set_tooltip_text(_("Repeat single"))
+                self.repeat.set_active(True)
+            else:
+                FC().repeat_state = const.REPEAT_NO
+                item.set_active(True) #because signal "toggled" will change the value to the opposite  
+                self.repeat.set_active(False)
+                             
+    
     def on_save(self): pass    
     
 class PlaybackControls(FControl, gtk.HBox, LoadSave):

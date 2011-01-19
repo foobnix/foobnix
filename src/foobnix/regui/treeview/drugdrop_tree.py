@@ -7,12 +7,14 @@ import gtk
 import copy
 import uuid
 import gobject
+import os.path
+
 from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util import LOG
 from foobnix.util.id3_util import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.m3u_utils import m3u_reader
-import os.path
+
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
