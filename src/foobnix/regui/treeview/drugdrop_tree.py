@@ -72,9 +72,9 @@ class DrugDropTree(gtk.TreeView):
     
     def update_tree_structure_row_requrcive(self, row):        
         for child in row.iterchildren():
-                child[self.parent_level[0]] = row[self.level[0]]
-                child[self.level[0]] = uuid.uuid4().hex   
-                self.update_tree_structure_row_requrcive(child)
+            child[self.parent_level[0]] = row[self.level[0]]
+            child[self.level[0]] = uuid.uuid4().hex   
+            self.update_tree_structure_row_requrcive(child)
    
     def get_bean_from_model_iter(self, model, iter):
         if not model or not iter:
@@ -187,7 +187,7 @@ class DrugDropTree(gtk.TreeView):
                             from_model.remove(from_model.get_iter(from_path1))
                             i -= 1
                 
-                if to_tree.current_view == VIEW_TREE:             
+                if to_tree.current_view == VIEW_TREE:
                     self.updates_tree_structure()
                 
                 if to_tree.current_view == VIEW_PLAIN:             
