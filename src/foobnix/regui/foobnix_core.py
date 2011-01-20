@@ -17,7 +17,6 @@ from foobnix.regui.controls.status_bar import StatusbarControls
 from foobnix.regui.controls.tray_icon import TrayIconControls
 from foobnix.preferences.preferences_window import PreferencesWindow
 from foobnix.regui.top import TopWidgets
-from foobnix.regui.about.about import AboutWindow
 from foobnix.regui.treeview.radio_tree import RadioTreeControl
 from foobnix.regui.treeview.virtual_tree import VirtualTreeControl
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
@@ -28,7 +27,6 @@ from foobnix.util.single_thread import SingleThread
 from foobnix.regui.perspectives import PerspectiveControls
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.notetab.tab_library import TabLib
-
 foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):
@@ -81,7 +79,6 @@ class FoobnixCore(BaseFoobnixControls):
 
         self.eq = EqController(self)
         self.dm = DM(self)
-        self.about = AboutWindow()
 
         """layout panels"""
         self.top_panel = TopWidgets(self)
@@ -92,8 +89,10 @@ class FoobnixCore(BaseFoobnixControls):
         if with_dbus:
             from foobnix.regui.controls.dbus_manager import DBusManager
             self.dbus = DBusManager(self)
+
     def run(self):    
         self.on_load()
+        pass
             
         
                

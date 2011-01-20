@@ -7,7 +7,6 @@ Created on 28 сент. 2010
 from foobnix.regui.model.signal import FControl
 import gtk
 from foobnix.util.time_utils import convert_seconds_to_text
-import gobject
 class SeekProgressBarControls(FControl, gtk.Alignment):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -33,23 +32,21 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         self.controls.player_seek(seek_percent);
     
     def set_text(self, text):
-        def task():
-            if text:
-                self.progresbar.set_text(text[:200])    
-        gobject.idle_add(task)
+        if text:
+            self.progresbar.set_text(text[:200])    
+        
     def clear(self):
         self.progresbar.set_text("00:00 / 00:00")
         self.progresbar.set_fraction(0)
     
     def update_seek_status(self, position_sec, duration_sec):
-        def task():        
-            duration_str = convert_seconds_to_text(duration_sec)
-            position_str = convert_seconds_to_text(position_sec)
-            
-            seek_text = position_str + " / " + duration_str
-            seek_persent = (position_sec + 0.0) / (duration_sec)                
-                                  
-            self.progresbar.set_text(seek_text)
-            if 0 <= seek_persent <= 1: 
-                self.progresbar.set_fraction(seek_persent)
-        gobject.idle_add(task)
+        duration_str = convert_seconds_to_text(duration_sec)
+        position_str = convert_seconds_to_text(position_sec)
+        
+        seek_text = position_str + " / " + duration_str
+        seek_persent = (position_sec + 0.0) / (duration_sec)                
+                              
+        self.progresbar.set_text(seek_text)
+        if 0 <= seek_persent <= 1: 
+            self.progresbar.set_fraction(seek_persent)
+        

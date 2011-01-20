@@ -7,14 +7,12 @@ Created on 24 авг. 2010
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
 from foobnix.helpers.dialog_entry import show_entry_dialog
-from foobnix.util import LOG
+import logging
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 from foobnix.regui.treeview.simple_tree import  SimpleListTreeControl
 from foobnix.regui.model import FDModel
-import time
-import gobject
 
 
 class MusicLibraryConfig(ConfigPlugin, FControl):
@@ -112,7 +110,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         FC().all_support_formats = self.files_controller.get_all_beans_text()
         FC().gap_secs = self.adjustment.get_value()
         if self.singletab_button.get_active():
-            for i in xrange(len(FC().music_paths)-1, 0, -1):
+            for i in xrange(len(FC().music_paths) - 1, 0, -1):
                 del FC().music_paths[i]
                 del FC().cache_music_tree_beans[i]
                 del FC().tab_names[i]
@@ -137,9 +135,9 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             for path in paths:            
                 if path not in self.tree_controller.get_all_beans_text():
                     self.tree_controller.append(FDModel(path))
-            gobject.idle_add(self.reload_dir)
+            self.reload_dir()
         elif response == gtk.RESPONSE_CANCEL:
-            LOG.info('Closed, no files selected')
+            logging.info('Closed, no files selected')
         chooser.destroy()
         
          
@@ -191,7 +189,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         if val and val.find(".") >= 0 and len(val) <= 5 and val not in self.files_controller.get_all_beans_text():
             self.files_controller.append(FDModel(val))
         else:
-            LOG.info("Can't add your value", val)
+            logging.info("Can't add your value" + val)
             
     def gap(self):
         label = gtk.Label(_("Gap between tracks: "))

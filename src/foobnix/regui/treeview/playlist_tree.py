@@ -5,7 +5,8 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
-from foobnix.util import const, LOG
+import logging
+from foobnix.util import const
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 from foobnix.helpers.menu import Popup
 from foobnix.regui.treeview.common_tree import CommonTreeControl
@@ -72,7 +73,7 @@ class PlaylistTreeControl(CommonTreeControl):
             self.controls.seek_up()
     
     def common_signle_random(self):
-        LOG.debug("Repeat state", FC().repeat_state)
+        logging.debug("Repeat state"+ str(FC().repeat_state))
         if FC().repeat_state == const.REPEAT_SINGLE:
             return self.get_current_bean_by_UUID();
         
@@ -93,7 +94,7 @@ class PlaylistTreeControl(CommonTreeControl):
         
         self.set_play_icon_to_bean(bean)
         
-        LOG.debug("Next bean", bean, bean.text)
+        logging.debug("Next bean"+ str(bean)+ bean.text)
         
         return bean
 

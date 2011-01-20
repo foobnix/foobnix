@@ -6,15 +6,12 @@ Created on Oct 14, 2010
 import gtk
 import copy
 import uuid
-import gobject
-import os.path
-
 from foobnix.regui.model import FModel, FTreeModel
-from foobnix.util import LOG
+import logging
 from foobnix.util.id3_util import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.m3u_utils import m3u_reader
-
+import os.path
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -37,9 +34,21 @@ class DrugDropTree(gtk.TreeView):
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY) #@UndefinedVariable
     
     def append_all(self, beans):
-        LOG.debug("begin apeend all")
+        logging.debug("begin append all")
         if self.current_view == VIEW_PLAIN:
             self.plain_append_all(beans)            
+        else:
+            self.tree_append_all(beans)
+    
+    def simple_append_all(self, beans):
+        logging.debug("simple_append_all")
+        logging.debug(self.current_view)
+        
+        if self.current_view == VIEW_PLAIN:
+            logging.debug("simple_append_all")
+            for bean in beans:
+                row = self.get_row_from_bean(bean)            
+                self.model.append(None, row)               
         else:
             self.tree_append_all(beans)
     
@@ -144,7 +153,7 @@ class DrugDropTree(gtk.TreeView):
         
         def remove_replaced(i):
                 if from_filter_model == to_filter_model:
-                    LOG.info("Remove already replaced rows")
+                    logging.info("Remove already replaced rows")
                     
                     """Iters have already changed. Redefine"""
                     from_iter = from_model.get_iter(from_path)
@@ -156,25 +165,25 @@ class DrugDropTree(gtk.TreeView):
                         pass
                     if to_path and from_level == to_level:
                         
-                        if from_path[from_level]-i > to_path[from_level]:
-                            LOG.info("drag up")
+                        if from_path[from_level] - i > to_path[from_level]:
+                            logging.info("drag up")
                             n = 0 if to_model.iter_has_child(to_iter) else 1
                             while i > -1:
-                                from_model.remove(from_model.get_iter( (from_path[from_level]+n,  ) ) )
+                                from_model.remove(from_model.get_iter((from_path[from_level] + n,)))
                                 i -= 1 
                     
-                        elif from_path[from_level]-i < to_path[from_level]:
-                            LOG.info("drag down")
+                        elif from_path[from_level] - i < to_path[from_level]:
+                            logging.info("drag down")
                             n = i
-                            from_path1 = from_path[:from_level]+(from_path[from_level]-n, )+from_path[from_level+1 :]
+                            from_path1 = from_path[:from_level] + (from_path[from_level] - n,) + from_path[from_level + 1 :]
                             while i > -1:
                                 from_model.remove(from_model.get_iter(from_path1))
                                 i -= 1
                     else:
-                        LOG.info("drag to empty space or from other level")
+                        logging.info("drag to empty space or from other level")
                         n = i
                         while i > -1:
-                            from_path1 = from_path[:from_level]+(from_path[from_level]-n, )+from_path[from_level+1 :]
+                            from_path1 = from_path[:from_level] + (from_path[from_level] - n,) + from_path[from_level + 1 :]
                             from_model.remove(from_model.get_iter(from_path1))
                             i -= 1
                 
@@ -184,14 +193,14 @@ class DrugDropTree(gtk.TreeView):
                 if to_tree.current_view == VIEW_PLAIN:             
                     self.rebuild_as_plain()
        
-        gobject.idle_add(remove_replaced, i)
+        remove_replaced(i)
         
         self.on_drag_drop_finish()
     
     def add_m3u(self, from_model, from_iter, to_model, to_iter, pos):
         if (from_model.get_value(from_iter, 0).lower().endswith(".m3u") 
         or from_model.get_value(from_iter, 0).lower().endswith(".m3u8")):
-            LOG.info("m3u is found")
+            logging.info("m3u is found")
             m3u_file_path = from_model.get_value(from_iter, 5)
             m3u_title = from_model.get_value(from_iter, 0)
             paths = m3u_reader(m3u_file_path)
@@ -209,11 +218,11 @@ class DrugDropTree(gtk.TreeView):
                 row = self.get_row_from_bean(bean)
                 if new_iter:
                     to_iter = new_iter
-                new_iter = self.to_add_drug_item(to_model, to_iter, row,  pos)
+                new_iter = self.to_add_drug_item(to_model, to_iter, row, pos)
                   
             return True
     
-    def to_add_drug_item(self, to_model, to_iter, row,  pos, from_iter_has_child=False):    
+    def to_add_drug_item(self, to_model, to_iter, row, pos, from_iter_has_child=False):    
         if to_iter:
             if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
                 new_iter = to_model.prepend(to_iter, row)
@@ -246,16 +255,16 @@ class DrugDropTree(gtk.TreeView):
             from_child_iter = from_model.iter_nth_child(from_iter, n)
             if (from_model.get_value(from_child_iter, 0).endswith(".m3u") 
                 or from_model.get_value(from_child_iter, 0).endswith(".m3u8")):
-                LOG.info("m3u is found. Skip it")
+                logging.info("m3u is found. Skip it")
                 continue
             elif from_model.get_value(from_child_iter, 0).endswith(".cue"):
-                LOG.info("Cue is found. Skip other files")
+                logging.info("Cue is found. Skip other files")
                 cue_iters.append(from_child_iter)
             else:
                 if from_model.iter_has_child(from_child_iter):
                     folder_iters.append(from_child_iter)
                 not_cue_iters.append(from_child_iter)
-        return cue_iters+folder_iters if cue_iters else not_cue_iters
+        return cue_iters + folder_iters if cue_iters else not_cue_iters
 
     def child_by_recursion(self, row, plain):
         for child in row.iterchildren():
@@ -306,13 +315,13 @@ class DrugDropTree(gtk.TreeView):
         if not beans:
             return None
         self.current_view = VIEW_TREE
-        LOG.debug("append all as tree")
+        logging.debug("append all as tree")
        
         for bean in beans:    
             self.tree_append(bean)
     
     def plain_append_all(self, beans):
-        LOG.debug("begin plain append all")
+        logging.debug("begin plain append all")
         if not beans:
             return
         self.current_view = VIEW_PLAIN
@@ -320,7 +329,7 @@ class DrugDropTree(gtk.TreeView):
         normalized = []
         for model in beans:
             if model.path and model.path.lower().endswith(".iso.wv"):
-                LOG.debug("begin normalize iso.wv", model.path)
+                logging.debug("begin normalize iso.wv" + str(model.path))
                 all = get_beans_from_iso_wv(model.path)
                 for inner in all:
                     normalized.append(inner)
@@ -339,54 +348,45 @@ class DrugDropTree(gtk.TreeView):
             self._plain_append(bean)
             
     def _plain_append(self, bean):
-        def task():
-            LOG.debug("Plain append begin", bean.text, bean.path)
-            LOG.debug("Plain append task", bean.text, bean.path)
-            if not bean:
-                return
-            if bean.is_file == True:
-                bean.font = "normal"
-            else:
-                bean.font = "bold"
-                
-            bean.visible = True
-        
-            beans = update_id3_wind_filtering([bean])
-            for one in beans:
-                one.update_uuid() 
-                row = self.get_row_from_bean(one)            
-                """append to tree thread safe"""
-                
-                self.model.append(None, row)            
-                """append to tree thread safe end"""
-        gobject.idle_add(task)
+        logging.debug("Plain append task" + str(bean.text) + str(bean.path))
+        if not bean:
+            return
+        if bean.is_file == True:
+            bean.font = "normal"
+        else:
+            bean.font = "bold"
             
-        
+        bean.visible = True
+    
+        beans = update_id3_wind_filtering([bean])
+        for one in beans:
+            one.update_uuid() 
+            row = self.get_row_from_bean(one)            
+            """append to tree thread safe"""
+            
+            self.model.append(None, row)            
+            """append to tree thread safe end"""
         
     def tree_append(self, bean):
-        def task(bean):
-            if not bean:
-                return
-            if bean.is_file == True:
-                bean.font = "normal"
-            else:
-                bean.font = "bold"
-            
-            """copy beans"""
-            bean = copy.copy(bean)
-            bean.visible = True
+        if not bean:
+            return
+        if bean.is_file == True:
+            bean.font = "normal"
+        else:
+            bean.font = "bold"
         
-            if self.hash.has_key(bean.get_parent()):
-                parent_iter_exists = self.hash[bean.get_parent()]
-            else:
-                parent_iter_exists = None
-            row = self.get_row_from_bean(bean)
-            
-            parent_iter = self.model.append(parent_iter_exists, row)
-            self.hash[bean.level] = parent_iter
+        """copy beans"""
+        bean = copy.copy(bean)
+        bean.visible = True
+    
+        if self.hash.has_key(bean.get_parent()):
+            parent_iter_exists = self.hash[bean.get_parent()]
+        else:
+            parent_iter_exists = None
+        row = self.get_row_from_bean(bean)
         
-        gobject.idle_add(task, bean)
-        
+        parent_iter = self.model.append(parent_iter_exists, row)
+        self.hash[bean.level] = parent_iter    
         
             
         

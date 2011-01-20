@@ -5,7 +5,8 @@ Created on 23 сент. 2010
 @author: ivan
 '''
 from __future__ import with_statement
-from foobnix.util import LOG, const
+from foobnix.util import const
+import logging
 import os
 from foobnix.util.singleton import Singleton
 import uuid
@@ -69,6 +70,16 @@ class FC:
         self.count_of_tabs = 5
         self.tab_position = "top"
         
+        """expand tree paths"""
+        self.nav_expand_paths = []
+        self.radio_expand_paths = []
+        self.virtual_expand_paths = []
+        
+        """selected tree paths"""
+        self.nav_selected_paths = []
+        self.radio_selected_paths = []
+        self.virtual_selected_paths = []
+        
         
         self.agent_line = get_ranmom_agent()
 
@@ -89,8 +100,8 @@ class FC:
         """support file formats"""
                 
         audio_container = [".cue", ".iso.wv"]
-        video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mp4", ".mpg", ".rm", ".swf", ".vob", ".wmv"] 
-        self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".m4a", ".ra", ".m4p", ".3gp", ".wv"]        
+        video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mpg", ".rm", ".swf", ".vob", ".wmv"] 
+        self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".mp4", ".m4a", ".ra", ".m4p", ".wv"]        
         self.all_support_formats = self.audio_formats + video_formats + audio_container
         self.all_support_formats.sort()
         
@@ -188,7 +199,7 @@ class FC:
                     if i in keys:
                         setattr(self, i, dict[i])
                 except Exception, e:
-                    LOG.warn("Value not found", e)
+                    logging.warn("Value not found" + str(e))
                     return False
         return True
 
@@ -207,15 +218,15 @@ class FCHelper():
         try:
             cPickle.dump(object, save_file)
         except Exception, e:
-            LOG.error("Erorr dumping pickle conf", e)
+            logging.error("Erorr dumping pickle conf" + str(e))
         save_file.close()
-        LOG.debug("Config save")
+        logging.debug("Config save")
         self.print_info(object);
 
 
     def load(self):
         if not os.path.exists(CONFIG_FILE):
-            LOG.debug("Config file not found", CONFIG_FILE)
+            logging.debug("Config file not found" + CONFIG_FILE)
             return None
 
         with file(CONFIG_FILE, 'r') as load_file:
@@ -224,11 +235,11 @@ class FCHelper():
                 pickled = load_file.read()
 
                 object = cPickle.loads(pickled)
-                LOG.debug("Config loaded")
+                logging.debug("Config loaded")
                 self.print_info(object);
                 return object
             except Exception, e:
-                LOG.error("Error laod config", e)
+                logging.error("Error load config" + str(e))
         return None
 
 
@@ -239,4 +250,4 @@ class FCHelper():
     def print_info(self, object):
         dict = object.__dict__
         for i in object.__dict__:
-            LOG.debug(i, str(dict[i])[:500])
+            logging.debug(i + str(dict[i])[:500])

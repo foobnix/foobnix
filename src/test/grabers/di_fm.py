@@ -4,7 +4,7 @@ Created on 16  2010
 @author: ivan
 '''
 import urllib2
-from foobnix.util import LOG
+import logging
 site = "http://di.fm"
 def load_urls_name_page():
     connect = urllib2.urlopen(site)
@@ -16,7 +16,7 @@ def load_urls_name_page():
         if line.find(pre) > 0:
             el = "<td><a href=\""
             url = line[line.find(el) + len(el) :line.find("\" rel")]
-            LOG.info(url)
+            logging.info(url)
             name = url[url.rfind("/") + 1:]
             name = name[:-4]
             file.write(name + " = " + url + "\n")

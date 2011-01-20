@@ -9,7 +9,7 @@ from foobnix.helpers.dialog_entry import file_chooser_dialog
 from foobnix.util.pix_buffer import create_pixbuf_from_resource
 from foobnix.util.fc import FC
 from foobnix.helpers.window import ChildTopWindow
-from foobnix.util import LOG
+import logging
 class IconBlock(gtk.HBox):
      
     def __init__(self, text, controls, filename, all_icons=FC().all_icons):
@@ -38,7 +38,7 @@ class IconBlock(gtk.HBox):
         else:
             self.combobox.set_active(0)
             self.on_change_icon()
-            LOG.debug("*** WARNING *** : Icon " + filename + " is absent in list of icons")
+            logging.warning("Icon " + filename + " is absent in list of icons")
         
         pix_render = gtk.CellRendererPixbuf()
         self.combobox.pack_start(pix_render)        
@@ -96,7 +96,7 @@ class IconBlock(gtk.HBox):
                 error_window.add(label)
                 error_window.show()
         except ValueError, e:
-            LOG.error("There is not such icon in the list", e)        
+            logging.error("There is not such icon in the list"+ str(e))        
         
 class FrameDecorator(gtk.Frame):
     def __init__(self, text, widget):

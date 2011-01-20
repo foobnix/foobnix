@@ -4,7 +4,7 @@ Created on Oct 27, 2010
 @author: ivan
 '''
 import threading
-from foobnix.util import LOG
+import logging
 from urllib import FancyURLopener
 from foobnix.util.const import DOWNLOAD_STATUS_COMPLETED, \
     DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_INACTIVE
@@ -26,7 +26,7 @@ class Dowloader(threading.Thread):
         except Exception, e:
             self.bean.status = DOWNLOAD_STATUS_INACTIVE
             self.update(self.bean)
-            LOG.error(e)
+            logging.error(e)
         finally:
             self.notify_finish() 
     
@@ -49,15 +49,16 @@ class Dowloader(threading.Thread):
         
         ext = get_file_extension(bean.path)
         
-        if bean.artist:
-            path = FC().online_save_to_folder + "/" + bean.artist 
-            to_file = os.path.join(path, bean.get_display_name() + ext)            
-        else:
-            path = FC().online_save_to_folder
-            to_file = os.path.join(path, bean.get_display_name() + ext)        
-        
-        if not os.path.exists(path):
+        path = FC().online_save_to_folder
+        if not os.path.isdir(path):
             os.makedirs(path)
+            
+        if bean.artist:
+            to_file = os.path.join(FC().online_save_to_folder, bean.artist, bean.get_display_name() + ext)
+            if not os.path.isdir(os.path.dirname(to_file)):
+                os.makedirs(os.path.dirname(to_file))             
+        else:
+            to_file = os.path.join(path, bean.get_display_name() + ext)        
         
         to_file_tmp = to_file + ".tmp"
         

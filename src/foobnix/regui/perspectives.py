@@ -7,12 +7,12 @@ Created on 22 сент. 2010
 import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.model.signal import FControl
-from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, \
     LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO
 from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
-class PerspectiveControls(FControl, LoadSave, gtk.VBox):
+from foobnix.regui.state import LoadSave
+class PerspectiveControls(FControl, gtk.VBox, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         gtk.VBox.__init__(self, False, 0)
@@ -24,7 +24,7 @@ class PerspectiveControls(FControl, LoadSave, gtk.VBox):
                      LEFT_PERSPECTIVE_INFO:controls.info_panel
                      }
         
-        self.buttons = PerspectiveButtonControlls(self.activate_perspective)
+        self.buttons = PerspectiveButtonControlls(self.activate_perspective, controls)
         self.buttons.show_all()
         
         self.add_button = ButtonStockText(_("Add Folder(s) in tree"), gtk.STOCK_ADD)
@@ -57,16 +57,13 @@ class PerspectiveControls(FControl, LoadSave, gtk.VBox):
             self.controls.filter.show()
    
     def activate_perspective_key(self, name):
-        self.buttons.activate_button(name)     
-        
-    def on_load(self):            
-        pass            
-   
-    def on_save(self):
-        pass
+        self.buttons.activate_button(name)
+    
+    def on_load(self):  
+        self.activate_perspective(LEFT_PERSPECTIVE_NAVIGATION)   
 
 class PerspectiveButtonControlls(gtk.HBox):
-    def __init__(self, activate_perspective):
+    def __init__(self, activate_perspective, controls):
         
         gtk.HBox.__init__(self, False, 0)
         
@@ -78,6 +75,7 @@ class PerspectiveButtonControlls(gtk.HBox):
         
                 
         radios = PespectiveToogledButton(_("Radio"), gtk.STOCK_NETWORK, _("Radio Stantions (Alt+2)"))
+        radios.connect("clicked", lambda * a:controls.radio.lazy_load())
         radios.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_RADIO))
         
         

@@ -33,7 +33,7 @@ class TrayIconConfig(ConfigPlugin):
         
 
         """system icon"""
-        self.static_tray_icon = ChooseDecorator(None, FrameDecorator("System Icon Static", controls.trayicon.static_icon))
+        self.static_tray_icon = ChooseDecorator(None, FrameDecorator(_("System Icon Static"), controls.trayicon.static_icon))
         
         """dynamic icons"""
         line = VBoxDecorator(controls.trayicon.play_icon,
@@ -42,11 +42,11 @@ class TrayIconConfig(ConfigPlugin):
                              controls.trayicon.radio_icon)
         
 
-        self.icon_controls = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator("System Icons Dynamic", line))
+        self.icon_controls = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator(_("System Icons Dynamic"), line))
         
         """disc image icon"""        
         image = ImageBase(ICON_BLANK_DISK, 30)
-        self.change_tray_icon = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator("Disc cover image", image))
+        self.change_tray_icon = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator(_("Disc cover image"), image))
         
         self.notifier = gtk.CheckButton(_("Notification pop-up"))
         
@@ -59,7 +59,7 @@ class TrayIconConfig(ConfigPlugin):
         box.pack_start(self.icon_controls, True, True, 0)
         box.pack_start(self.change_tray_icon, False, False, 0)
         
-        box.pack_start(FrameDecorator("Notification", self.notifier), False, False, 0)
+        box.pack_start(FrameDecorator(_("Notification"), self.notifier), False, False, 0)
         
         self.widget = box
                                
@@ -88,7 +88,7 @@ class TrayIconConfig(ConfigPlugin):
         elif FC().on_close_window == const.ON_CLOSE_MINIMIZE:
             self.minimize_button.set_active(True)
         
-        if FC().notifier == "On":
+        if FC().notifier:
             self.notifier.set_active(True)       
              
     def on_save(self):
@@ -108,5 +108,6 @@ class TrayIconConfig(ConfigPlugin):
             FC().on_close_window = const.ON_CLOSE_MINIMIZE
             
         if self.notifier.get_active():       
-                FC().notifier = "On"
-        else: FC().notifier = "Off"
+            FC().notifier = True
+        else: 
+            FC().notifier = False

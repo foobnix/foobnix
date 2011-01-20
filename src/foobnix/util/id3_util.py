@@ -8,9 +8,9 @@ from foobnix.cue.cue_reader import update_id3_for_cue
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import normalize_time
 from foobnix.util.bean_utils import update_bean_from_normalized_text
-from foobnix.util.file_utils import file_extension
+from foobnix.util.file_utils import file_extension, get_file_extension
 from foobnix.util.fc import FC
-from foobnix.util import LOG
+import logging
 from foobnix.util.audio import get_mutagen_audio
 import os
 
@@ -46,19 +46,11 @@ def decode_cp866(text):
 
 def udpate_id3_for_beans(beans):
     for bean in beans:
-        if os.path.splitext(bean.text)[1].lower() in FC().all_support_formats:
-            """This condition is here in order to avoid 
-            incorrect cue handling when you re-rebuild the tree
-            (otherwise there can will the same text for each bean in tree)
-            in other words, if bean.text == filename, 
-            the file is adding to the tree in first time,
-            else - re-rebuilding the tree is now. That is, if 
-            the tree is rebuilding again, will not remake bean content"""
-            
+        if get_file_extension(bean.text) in FC().audio_formats:
             try:
                 udpate_id3(bean)
             except Exception, e:
-                LOG.error("udpate id3 error", e)
+                logging.warn("update id3 error")
     return beans
 
 def udpate_id3(bean):
@@ -66,7 +58,7 @@ def udpate_id3(bean):
         try:
             audio = get_mutagen_audio(bean.path)            
         except Exception, e:
-            LOG.warn("ID3 NOT MP3", e, bean.path)
+            logging.warn("ID3 NOT MP3" + str(e) + bean.path)
             return bean
 
         if audio and audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])

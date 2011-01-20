@@ -6,9 +6,6 @@ Created on 29 сент. 2010
 '''
 
 import gtk
-import gobject
-import logging
-import pynotify
 
 from foobnix.util.fc import FC
 from foobnix.util.mouse_utils import is_middle_click
@@ -21,7 +18,7 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO, \
     ICON_FOOBNIX
 from foobnix.util.text_utils import split_string
-from foobnix.util import LOG
+import logging
 from foobnix.regui.controls.playback import PlaybackControls
 from foobnix.helpers.my_widgets import ImageButton
 
@@ -92,7 +89,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
             self.connect("button-press-event", self.on_button_press)
             self.connect("scroll-event", self.controls.volume.on_scroll_event)
         except Exception, e:
-            LOG.warn("On debian it's not works", e)
+            logging.warn("On debian it doesn't work" + str(e))
         
         self.current_bean = FModel().add_artist("Artist").add_title("Title")
         self.tooltip_image = ImageBase(ICON_FOOBNIX, 75)
@@ -140,15 +137,21 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
             title = bean.text
         if FC().change_tray_icon:
             super(TrayIconControls, self).update_info_from(bean)
-        if FC().notifier == "On":
-            if not pynotify.init('org.mpris.foobnix'):
-                logging.warning("Can't initialize pynotify")
-                return
-            notification = pynotify.Notification("<b><big>Foobnix</big></b>", "<b><i> "+artist+"\n\n "+title+"</i></b>")
-            notification.set_urgency(pynotify.URGENCY_LOW)
-            notification.set_timeout(1000)
-            notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
-            notification.show()
+
+        if FC().notifier:
+            try:
+                import pynotify
+                if not pynotify.init('org.mpris.foobnix'):
+                    logging.warning("Can't initialize pynotify")
+                    return
+                notification = pynotify.Notification("<b><big>Foobnix</big></b>", "<b><i> " + artist + "\n\n " + title + "</i></b>")
+                notification.set_urgency(pynotify.URGENCY_LOW)
+                notification.set_timeout(1)
+                notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
+                notification.show()
+            except:
+                logging.warn("Pynotify not found in your system")
+
                
     
     def on_dynamic_icons(self, state):
@@ -230,7 +233,6 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.show_window()
 
     def set_text(self, text):
-        def task():
-            self.popup_menu.set_text(text)
-            self.set_tooltip(text)
-        gobject.idle_add(task)   
+        self.popup_menu.set_text(text)
+        self.set_tooltip(text)
+       

@@ -16,7 +16,7 @@ from foobnix.helpers.window import ChildTopWindow
 from foobnix.regui.model import FDModel
 from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
-from foobnix.util import LOG
+import logging
 from foobnix.preferences.configs.other_conf import OtherConfig
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
@@ -27,6 +27,9 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
 
+    
+    def lazy_init(self):
+        controls = self.controls
         self.configs.append(MusicLibraryConfig(controls))
         #self.configs.append(DMConfig(controls))
         self.configs.append(TabsConfig(controls))
@@ -44,7 +47,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
             from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
             self.configs.append(HotKeysConfig(controls))
         except Exception, e:
-            LOG.warn("Keybinder not instlled", e) 
+            logging.warn("Keybinder not installed" + str(e)) 
         
         
         self.configs.append(OtherConfig(controls))
@@ -87,11 +90,13 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.add(mainVBox)
             
     def show(self, current=CONFIG_MUSIC_LIBRARY):
+        self.lazy_init()
         self.show_all()
         self.populate_config_category(current)
+        self.on_load()
     
     def on_load(self):
-        LOG.debug("LOAD PreferencesWindow")
+        logging.debug("LOAD PreferencesWindow")
         for plugin in self.configs:            
             plugin.on_load()
 
@@ -103,9 +108,8 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
             self.hide_window()
         else:
             bean = self.navigation.get_selected_bean() 
-            self.hide()
-            self.show()
-            self.populate_config_category(bean.text)
+            if bean:
+                self.populate_config_category(bean.text)
                 
     def hide_window(self, *a):
         self.hide()
@@ -161,7 +165,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         return box
 
     def restore_defaults(self):
-        LOG.debug("restore defaults settings")
+        logging.debug("restore defaults settings")
         gtk.main_quit()
         FC().delete()
         thread.start_new_thread(os.system, ("foobnix",))

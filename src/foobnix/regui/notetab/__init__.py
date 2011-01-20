@@ -5,7 +5,8 @@ Created on Dec 20, 2010
 @author: zavlab1
 '''
 import gtk
-from foobnix.util import LOG, const
+import logging
+from foobnix.util import const
 from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
@@ -18,8 +19,8 @@ from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
 from foobnix.helpers.menu import Popup
 import threading
 from foobnix.util.key_utils import is_key
-import gobject
 from foobnix.util.m3u_utils import m3u_writer
+import thread
 
 class TabGeneral(gtk.Notebook, FControl):
     def __init__(self, controls):
@@ -105,20 +106,19 @@ class TabGeneral(gtk.Notebook, FControl):
         window.add(entry)
         window.show_all()
     
-    def append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None):
-        def task():
-            self._append_tab(name, beans, navig_tree)
-        gobject.idle_add(task)
+    def append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None, optimization=False):
+        self._append_tab(name, beans, navig_tree, optimization)
         
-    def _append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None):
-        LOG.info("append new tab")
+        
+    def _append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None, optimization=False):
+        logging.info("append new tab")
         self.last_notebook_page = name
         try:
-            LOG.info("encoding of tab name is", name)
+            logging.info("encoding of tab name is" + name)
             name = unicode(name) #convert from any encoding in ascii
-            LOG.info("encoding finished ", name)
+            logging.info("encoding finished " + name)
         except:
-            LOG.warn("problem of encoding definition for tab name is occured")
+            logging.warn("problem of encoding definition for tab name is occured")
         
         if name and (FC().len_of_tab > -1) and (len(name) > FC().len_of_tab):
             name = name[:FC().len_of_tab]
@@ -135,7 +135,7 @@ class TabGeneral(gtk.Notebook, FControl):
             self.label.set_angle(90)
         else:
             self.navig = False
-            tab_content = self.create_notebook_tab(beans)
+            tab_content = self.create_notebook_tab(beans, optimization)
             self.label.set_angle(self.default_angle)
         self.label.show()    
         
@@ -278,7 +278,7 @@ class NoteTabControl(TabGeneral, LoadSave):
     
         
     def set_tab_left(self):
-        LOG.info("Set tabs Left")
+        logging.info("Set tabs Left")
         self.set_tab_pos(gtk.POS_LEFT)
         self.default_angle = 90
         self.set_show_tabs(True)
@@ -295,7 +295,7 @@ class NoteTabControl(TabGeneral, LoadSave):
             self.set_tab_label(tab_content, event)
         
     def set_tab_top(self):
-        LOG.info("Set tabs top")
+        logging.info("Set tabs top")
         self.set_tab_pos(gtk.POS_TOP)
         self.default_angle = 0
         self.set_show_tabs(True)
@@ -312,26 +312,30 @@ class NoteTabControl(TabGeneral, LoadSave):
             self.set_tab_label(tab_content, event)
         
     def set_tab_no(self):
-        LOG.info("Set tabs no")
+        logging.info("Set tabs no")
         self.set_show_tabs(False)
         
-    def create_notebook_tab(self, beans):
+    def create_notebook_tab(self, beans, optimization=False):
         treeview = PlaylistTreeControl(self.controls)
         self.set_active_tree(treeview)
-        if beans: treeview.append_all(beans)
+        if beans: 
+            if optimization:
+                treeview.simple_append_all(beans)
+            else:
+                treeview.append_all(beans)
         treeview.scroll.show_all()
         return  treeview.scroll
     
     def on_save_playlist(self, tab_child):
         tree = tab_child.get_child()
-        chooser = gtk.FileChooserDialog(title=_("Choose folder to save playlist"), 
-                                        action=gtk.FILE_CHOOSER_ACTION_SAVE, 
+        chooser = gtk.FileChooserDialog(title=_("Choose folder to save playlist"),
+                                        action=gtk.FILE_CHOOSER_ACTION_SAVE,
                                         buttons=(gtk.STOCK_SAVE, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         if FC().last_music_path:
             chooser.set_current_folder(FC().last_music_path)
         name = self.get_text_label_from_tab(tab_child)
-        chooser.set_current_name(name+".m3u")
+        chooser.set_current_name(name + ".m3u")
         chooser.set_do_overwrite_confirmation(True)
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
@@ -343,15 +347,21 @@ class NoteTabControl(TabGeneral, LoadSave):
             m3u_writer(filename, current_folder, paths)
         chooser.destroy()    
     
+       
     def on_load(self):
-        if FC().tab_position == "no": self.set_tab_no()
-        elif FC().tab_position == "left": self.set_tab_left()
-        else: self.set_tab_top()
+        
+        if FC().tab_position == "no": 
+            self.set_tab_no()
+        elif FC().tab_position == "left": 
+            self.set_tab_left()
+        else: 
+            self.set_tab_top()
+            
         for page in xrange(0, len(FC().cache_pl_tab_contents)):
             if FC().cache_pl_tab_contents[page] == []:
-                self.append_tab(FC().tab_pl_names[page], None, None)
+                self.append_tab(FC().tab_pl_names[page], None, None, optimization=True)
                 continue
-            self.controls.append_to_new_notebook(FC().tab_pl_names[page], FC().cache_pl_tab_contents[page])
+            self.controls.append_to_new_notebook(FC().tab_pl_names[page], FC().cache_pl_tab_contents[page], True)
    
     def on_save(self):
         pass

@@ -5,11 +5,11 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
-from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
-from foobnix.util import LOG
-class BaseFoobnixLayout(LoadSave, FControl):
+import logging
+from foobnix.regui.state import LoadSave
+class BaseFoobnixLayout(FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
          
@@ -48,10 +48,8 @@ class BaseFoobnixLayout(LoadSave, FControl):
         
         controls.main_window.add(vbox)        
         
-   
-    
     def set_visible_search_panel(self, flag=True):
-        LOG.info("set_visible_search_panel", flag)
+        logging.info("set_visible_search_panel" + str(flag))
         if flag:
             self.controls.searchPanel.show_all()
             self.controls.search_progress.hide()
@@ -59,7 +57,7 @@ class BaseFoobnixLayout(LoadSave, FControl):
             self.controls.searchPanel.hide()   
     
     def set_visible_musictree_panel(self, flag):
-        LOG.info("set_visible_musictree_panel", flag)
+        logging.info("set_visible_musictree_panel" + str(flag))
         if flag:
             self.hpaned_left.set_position(FC().hpaned_left)            
         else:
@@ -71,7 +69,7 @@ class BaseFoobnixLayout(LoadSave, FControl):
         if FC().is_view_music_tree_panel:
             FC().hpaned_left = self.hpaned_left.get_position()
             
-    def on_load(self):   
+    def on_load(self):  
         self.controls.search_progress.hide()        
         self.hpaned_left.set_position(FC().hpaned_left)
         self.set_visible_musictree_panel(FC().is_view_music_tree_panel)
