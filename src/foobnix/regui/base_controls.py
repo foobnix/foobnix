@@ -572,7 +572,7 @@ class BaseFoobnixControls():
 
         logging.info("Controls - Quit")
         self.notetabs.on_quit()
-        #self.on_save()
+        self.virtual.on_quit()
         FC().save(False)
         gtk.main_quit()
 

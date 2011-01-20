@@ -144,7 +144,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
                 if not pynotify.init('org.mpris.foobnix'):
                     logging.warning("Can't initialize pynotify")
                     return
-                notification = pynotify.Notification("<b><big>Foobnix</big></b>", "<b><i>> " + artist + "\n\n> " + title + "</i></b>")
+                notification = pynotify.Notification("<b><big>Foobnix</big></b>", "<b><i> " + artist + "\n\n " + title + "</i></b>")
                 notification.set_urgency(pynotify.URGENCY_LOW)
                 notification.set_timeout(1)
                 notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())

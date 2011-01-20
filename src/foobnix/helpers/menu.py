@@ -18,7 +18,7 @@ class Popup(gtk.Menu):
     
     def add_item(self, text, gtk_stock, func=None, arg=None):            
         item = gtk.ImageMenuItem(text)
-        img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
+        img = gtk.image_new_from_stock("", gtk.ICON_SIZE_MENU)
         item.set_image(img) 
         if func and arg:    
             item.connect("activate", lambda * a: func(arg))
