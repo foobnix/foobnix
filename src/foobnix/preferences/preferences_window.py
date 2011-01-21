@@ -23,10 +23,10 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
     configs = []
     POS_NAME = 0
-
+        
     def __init__(self, controls):
         FControl.__init__(self, controls)
-
+        self.number_inits = 0
     
     def lazy_init(self):
         controls = self.controls
@@ -63,7 +63,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         paned.set_position(250)
         
         def func():
-            bean = self.navigation.get_selected_bean()            
+            bean = self.navigation.get_selected_bean()
             if bean:
                 self.populate_config_category(bean.text)
         
@@ -90,7 +90,9 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.add(mainVBox)
             
     def show(self, current=CONFIG_MUSIC_LIBRARY):
-        self.lazy_init()
+        if not self.number_inits:
+            self.lazy_init()
+            self.number_inits += 1
         self.show_all()
         self.populate_config_category(current)
         self.on_load()
