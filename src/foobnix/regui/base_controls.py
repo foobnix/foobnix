@@ -448,8 +448,11 @@ class BaseFoobnixControls():
             if not results:
                 results = []
             self.notetabs.append_tab(query, None)
+            albums_already_inserted = []
             for album in results[:15]:
                 all = []
+                if (album.album.lower() in albums_already_inserted):
+                    continue
                 album.is_file = False
                 tracks = self.lastfm.search_album_tracks(album.artist, album.album)
                 for i, track in enumerate(tracks):
@@ -458,6 +461,7 @@ class BaseFoobnixControls():
                     all.append(track)
                 if (len(all) > 0):
                     all = [album] + all
+                    albums_already_inserted.append(album.album.lower())
                     self.notetabs.append_all(all)
                 
             if not results:
