@@ -6,7 +6,7 @@ Created on 24 нояб. 2010
 '''
 from foobnix.cue.cue_reader import update_id3_for_cue
 from foobnix.util.image_util import get_image_by_path
-from foobnix.util.time_utils import normalize_time
+from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.bean_utils import update_bean_from_normalized_text
 from foobnix.util.file_utils import file_extension, get_file_extension
 from foobnix.util.fc import FC
@@ -83,9 +83,7 @@ def udpate_id3(bean):
                 bean.tracknumber = ""
         
         bean = update_bean_from_normalized_text(bean)        
-        
-        bean.time = normalize_time(duration_sec)
-        
+        bean.time = convert_seconds_to_text(duration_sec)
     return bean
 
 def get_support_music_beans_from_all(beans):

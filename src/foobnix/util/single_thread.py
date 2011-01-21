@@ -39,7 +39,7 @@ class SingleThread():
                 method()
             time.sleep(0.1)
         except Exception, e:
-            logging.error(e)
+            logging.error(method.__name__ +"("+ str(args)+"):"+ str(e))
         finally:
             self.progressbar.stop()        
             self.lock.release()
