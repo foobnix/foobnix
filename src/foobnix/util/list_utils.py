@@ -22,9 +22,9 @@ def any(pred, list):
     return False
 
 def get_song_number(text):
-    res = re.search('^([ 0-9]+)', text).group()
+    res = re.search('^([0-9]+)', text)
     if res:
-        return int(res)
+        return int(res.group())
 
 def comparator(x, y):
     value_x = get_song_number(x)
