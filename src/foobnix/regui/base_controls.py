@@ -451,14 +451,14 @@ class BaseFoobnixControls():
             for album in results[:15]:
                 all = []
                 album.is_file = False
-                all.append(album)
                 tracks = self.lastfm.search_album_tracks(album.artist, album.album)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
                     track.parent(album)                    
                     all.append(track)
-                
-                self.notetabs.append_all(all)
+                if (len(all) > 0):
+                    all = [album] + all
+                    self.notetabs.append_all(all)
                 
             if not results:
                 all = self.show_google_results(query)
