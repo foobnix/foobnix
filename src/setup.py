@@ -9,7 +9,6 @@ if os.name == 'nt':
 
 VERSION = "0.2.3"
 RELEASE = "2"
-LANGS = ('ru', 'zh_CN', "es", "it", "by")
 
 data_files = [
     ('share/foobnix', ['README']),
@@ -26,10 +25,13 @@ data_files = [
 ]
 
 
-if os.name != 'nt': 
+if os.name != 'nt':
+    LANGS = glob.glob("po/*.po")
     if not os.path.exists("mo/"):
         os.mkdir("mo/")
     for lang in LANGS:
+        lang = lang.replace(".po", "")
+        lang = lang.replace("po/", "")
         pofile = "po/" + lang + ".po"
         mofile = "mo/" + lang + "/foobnix.mo"
         if not os.path.exists("mo/" + lang + "/"):
