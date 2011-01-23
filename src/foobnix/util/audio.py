@@ -29,13 +29,5 @@ def get_mutagen_audio (path):
         audio = OggFileType(path)
     if ext == ".m4a" or ext == ".mp4":
         audio = MP4(path)
-        """print audio.keys()
-        audiokeys = [key.replace('\xa9', '').lower().replace('art', 'artist').replace('nam', 'title')
-            for key in audio.keys()]  
-                
-        audiovalues = audio.values()
-        audio = {}
-        for key, value in zip(audiokeys, audiovalues):
-            audio[key] = value"""
-            
+        
     return audio

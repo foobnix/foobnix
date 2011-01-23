@@ -75,10 +75,9 @@ def udpate_id3(bean):
         #if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
         #else: 
             #if audio and not audio.has_key('tracknumber'): 
-        print  bean.artist
-        print bean.title
+        
         duration_sec = bean.duration_sec
-        print audio.info
+        
         if not bean.duration_sec:
             if audio and audio.info and audio.info.length: duration_sec = int(audio.info.length)
         
@@ -87,7 +86,7 @@ def udpate_id3(bean):
 
         if bean.artist and bean.title:
             bean.text = bean.artist + " - " + bean.title
-        print bean.text
+        
         if bean.tracknumber:
             try:
                 bean.tracknumber = int(bean.tracknumber)
