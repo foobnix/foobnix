@@ -51,11 +51,7 @@ class TestVKService(unittest.TestCase):
             self.assertTrue(bean.path.startswith("http://"))
 
 if __name__ == '__main__':
-    #unittest.main()
+    unittest.main()
    
-    vk = VKService(True)
-    list = vk.find_tracks_by_url("http://vk.com/audio.php?gid=10776407")        
-    for bean in list:
-        print bean.path, bean.text
     
 
