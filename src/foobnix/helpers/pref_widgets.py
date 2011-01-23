@@ -96,7 +96,7 @@ class IconBlock(gtk.HBox):
                 error_window.add(label)
                 error_window.show()
         except ValueError, e:
-            logging.error("There is not such icon in the list"+ str(e))        
+            logging.error("There is not such icon in the list" + str(e))        
         
 class FrameDecorator(gtk.Frame):
     def __init__(self, text, widget):
@@ -133,7 +133,7 @@ class HBoxDecorator(gtk.HBox):
     def __init__(self, *args):
         gtk.HBox.__init__(self, False, 0)
         for widget in args:
-            self.pack_start(widget, True, True)   
+            self.pack_start(widget, False, False)   
         self.show_all()
         
 class ModelConstructor():

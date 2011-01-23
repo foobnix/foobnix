@@ -18,7 +18,7 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         gtk.VBox.__init__(self, False, 0)
         
         self.perspectivs = {
-                     LEFT_PERSPECTIVE_NAVIGATION:controls.tablib,
+                     LEFT_PERSPECTIVE_NAVIGATION:controls.tabhelper,
                      LEFT_PERSPECTIVE_RADIO:controls.radio.scroll,
                      LEFT_PERSPECTIVE_VIRTUAL:controls.virtual.scroll,
                      LEFT_PERSPECTIVE_INFO:controls.info_panel

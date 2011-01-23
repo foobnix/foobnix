@@ -5,6 +5,7 @@ Created on 30 авг. 2010
 @author: ivan
 '''
 import gtk
+from foobnix.helpers.pref_widgets import HBoxDecorator
 #from desktopcouch.replication_services.example import is_active
 
 def open_link_in_browser(uri):
@@ -50,15 +51,44 @@ class ButtonStockText(gtk.Button):
         
         self.add(box)        
         
+class InsensetiveImageButton(gtk.EventBox):
+    def __init__(self, stock_image, size=gtk.ICON_SIZE_LARGE_TOOLBAR):
+        gtk.EventBox.__init__(self)
+        self.button = gtk.Button()
+        #self.button.set_sensitive(False)
+        self.button.set_focus_on_click(False)
+        self.button.set_relief(gtk.RELIEF_NONE)
+        img = gtk.image_new_from_stock(stock_image, size)
+        self.button.set_image(img)
+        self.add(HBoxDecorator(self.button, gtk.Label("R")))
+        
+        #self.button.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("red"))
+        
+        self.connect("button-press-event", self.on_click)
+        self.button.connect("button-press-event", self.on_click1)
+        
+        self.insensetive = False
+    
+    def on_click1(self, *a):
+        print "button", a
+        
+    def on_click(self, *a):
+        print "event", a
+        self.insensetive = not self.insensetive
+        #self.button.set_sensitive(self.insensetive)
+    
+     
+        
+                
 
 class ImageButton(gtk.Button):
-    def __init__(self, stock_image, func=None, tooltip_text=None):
+    def __init__(self, stock_image, func=None, tooltip_text=None, size=gtk.ICON_SIZE_LARGE_TOOLBAR):
         gtk.Button.__init__(self)
         self.set_relief(gtk.RELIEF_NONE)
         self.set_focus_on_click(False)
         if tooltip_text:
             self.set_tooltip_text(tooltip_text)
-        img = gtk.image_new_from_stock(stock_image, gtk.ICON_SIZE_LARGE_TOOLBAR)
+        img = gtk.image_new_from_stock(stock_image, size)
         self.set_image(img)
         if func:
             self.connect("clicked", lambda * a: func())
@@ -67,13 +97,13 @@ class ImageButton(gtk.Button):
 class ToggleImageButton(gtk.ToggleButton):
     def __init__(self, gtk_stock, func=None, param=None):
         gtk.ToggleButton.__init__(self)
-
+        self.set_relief(gtk.RELIEF_NONE)
+        self.set_focus_on_click(False)
         if param and func:             
             self.connect("toggled", lambda * a: func(param))
         elif func:
             self.connect("toggled", lambda * a: func())         
                 
-        self.set_relief(gtk.RELIEF_NONE)
         img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
         self.add(img)
         

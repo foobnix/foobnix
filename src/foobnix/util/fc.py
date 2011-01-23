@@ -31,7 +31,7 @@ def get_random_vk():
        "c891888@bofthew.com":"c891888",
        "c892009@bofthew.com":"c892009",
        "c892406@bofthew.com":"c892406",
-       "c892588@bofthew.com":"c892588"       
+       "c892588@bofthew.com":"c892588"
        }
 
     return random.choice(vks.items())
@@ -173,7 +173,7 @@ class FC:
         
         self.gap_secs = 0
         
-        self.tabs_mode = "Multi"
+        self.tabs_mode = "Single"#Multi, Single
         
         self.tab_pl_names = [_("Empty tab"), ]
         self.cache_pl_tab_contents = []

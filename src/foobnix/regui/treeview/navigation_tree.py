@@ -12,12 +12,11 @@ from foobnix.util.fc import FC
 import logging
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
-
-  
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
+        
         self.controls = controls
         
         """column config"""
@@ -59,8 +58,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
             if FC().tabs_mode == "Multi":
                 menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
-                menu.add_item(_("Clear Music Tree"), gtk.STOCK_CLEAR, lambda : self.controls.tablib.clear_tree(self.scroll), None)
-            menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, lambda: self.controls.tablib.on_update_music_tree(self.scroll), None)
+                menu.add_item(_("Clear Music Tree"), gtk.STOCK_CLEAR, lambda : self.controls.tabhelper.clear_tree(self.scroll), None)
+            menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, lambda: self.controls.tabhelper.on_update_music_tree(self.scroll), None)
                 
             menu.show(e)
 
@@ -102,13 +101,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             path = paths[0]
             FC().last_music_path = path[:path.rfind("/")]
             tree = self
-            number_of_tab = self.controls.tablib.page_num(tree.scroll)
+            number_of_tab = self.controls.tabhelper.page_num(tree.scroll)
                       
             if in_new_tab:
                 tree = NavigationTreeControl(self.controls)
                 tab_name = unicode(path[path.rfind("/") + 1:])
-                self.controls.tablib.append_tab(tab_name, navig_tree=tree)
-                number_of_tab = self.controls.tablib.get_current_page()
+                self.controls.tabhelper.append_tab(tab_name, navig_tree=tree)
+                number_of_tab = self.controls.tabhelper.get_current_page()
                 FC().music_paths.insert(0, [])
                 FC().tab_names.insert(0, tab_name)
                 FC().cache_music_tree_beans.insert(0, [])
@@ -119,12 +118,12 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 label = gtk.Label(tab_name + " ")
                 label.set_angle(90)
                 if FC().tab_close_element:
-                    vbox.pack_start(self.controls.tablib.button(tree.scroll), False, False)
+                    vbox.pack_start(self.controls.tabhelper.button(tree.scroll), False, False)
                 vbox.pack_end(label, False, False)
                 event = self.controls.notetabs.to_eventbox(vbox, tree)
-                event = self.controls.tablib.tab_menu_creator(event, tree.scroll)
-                event.connect("button-press-event", self.controls.tablib.on_button_press) 
-                self.controls.tablib.set_tab_label(tree.scroll, event)
+                event = self.controls.tabhelper.tab_menu_creator(event, tree.scroll)
+                event.connect("button-press-event", self.controls.tabhelper.on_button_press) 
+                self.controls.tabhelper.set_tab_label(tree.scroll, event)
                 FC().tab_names[number_of_tab] = tab_name
                 FC().music_paths[number_of_tab] = []
             
@@ -146,10 +145,16 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.restore_expand(FC().nav_expand_paths)
         self.restore_selection(FC().nav_selected_paths)
         
-        def set_expand_path(new_value): FC().nav_expand_paths = new_value
-        def set_selected_path(new_value): FC().nav_selected_paths = new_value
+        def set_expand_path(new_value): 
+            FC().nav_expand_paths = new_value
+        def set_selected_path(new_value): 
+            FC().nav_selected_paths = new_value
         self.expand_updated(set_expand_path)
         self.selection_changed(set_selected_path)
+        
+        """tab choose"""
+        if FC().tabs_mode == "Single":
+            self.controls.tabhelper.set_show_tabs(False)
     
     def on_save(self):
         pass

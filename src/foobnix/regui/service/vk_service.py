@@ -60,8 +60,8 @@ class VKService:
         vk_audio = VKAudioResultsPage(page)
         return vk_audio.tracks()
         
-    def search(self, query, type='audio'):
-        return self.get("http://vk.com/gsearch.php?section=" + type + "&q=" + urllib.quote(query) + "&name=1")
+    def search(self, query, type='audio'):   
+        return self.get("http://vk.com/gsearch.php?section=" + type + "&q=" + urllib.quote(query.encode('utf-8')) + "&name=1")
 
     def find_videos_by_query(self, query):
         page = self.search(query, "video")

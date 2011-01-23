@@ -214,7 +214,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.lyrics.set_text(text, lyrics_title)
         
     def show_wiki_info(self):
-        if (not self.info_cache.wiki_artist) or (self.info_cache.wiki_artist == self.bean.artist):
+        if self.info_cache.wiki_artist == self.bean.artist:
             return None
         self.info_cache.wiki_artist = self.bean.artist    
         if "ru" in locale.getlocale()[0]:

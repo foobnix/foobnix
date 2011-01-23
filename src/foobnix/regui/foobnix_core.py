@@ -26,7 +26,7 @@ from foobnix.regui.controls.movie_area import MovieDrawingArea
 from foobnix.util.single_thread import SingleThread
 from foobnix.regui.perspectives import PerspectiveControls
 from foobnix.util.localization import foobnix_localization
-from foobnix.regui.notetab.tab_library import TabLib
+from foobnix.regui.notetab.tab_library import TabHelperControl
 foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):
@@ -38,7 +38,7 @@ class FoobnixCore(BaseFoobnixControls):
         """elements"""
         
         self.tree = NavigationTreeControl(self)
-        self.tablib = TabLib(self)
+        self.tabhelper = TabHelperControl(self)
         
         self.statusbar = StatusbarControls(self)
         

@@ -10,7 +10,7 @@ from foobnix.util.fc import FC
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.toolbar import MyToolbar
 from foobnix.regui.model.signal import FControl
-from foobnix.helpers.my_widgets import ImageButton
+from foobnix.helpers.my_widgets import ImageButton, EventLabel
 
 
 class PlaybackControlsNotUsedOld(FControl, MyToolbar, LoadSave):
@@ -27,8 +27,58 @@ class PlaybackControlsNotUsedOld(FControl, MyToolbar, LoadSave):
         
     def on_load(self): pass
     def on_save(self): pass
+
+class OrderShuffleControls(FControl, gtk.HBox, LoadSave):
+    def __init__(self, controls): 
+        gtk.HBox.__init__(self, False)
+        
+        self.rlabel = EventLabel(text="S", func=lambda * a: self.on_random())
+        self.olabel = EventLabel(text="R", func=lambda * a: self.on_order())
+        
+        self.pack_start(self.rlabel)
+        self.pack_start(gtk.Label(" "))
+        self.pack_start(self.olabel)
+        
+        self.pack_start(gtk.SeparatorToolItem())
     
-class OrderShuffleControls(FControl, gtk.HBox, gtk.Tooltips, LoadSave):
+    def update(self):
+        if FC().is_order_random:
+            self.rlabel.set_markup("<b>S</b>")
+            self.rlabel.set_tooltip_text(_("Shuffle on"))
+            
+        else:
+            self.rlabel.set_markup("S")
+            self.rlabel.set_tooltip_text(_("Shuffle off"))
+            
+        if FC().repeat_state == const.REPEAT_ALL:
+            self.olabel.set_markup("<b>R</b>")
+            self.olabel.set_tooltip_text(_("Repeat all"))            
+        elif FC().repeat_state == const.REPEAT_SINGLE:
+            self.olabel.set_markup("<b>R1</b>")
+            self.olabel.set_tooltip_text(_("Repeat single"))
+        else:
+            self.olabel.set_markup("R")
+            self.olabel.set_tooltip_text(_("Repeat off"))
+        
+    def on_random(self, *a):
+        FC().is_order_random = not FC().is_order_random
+        self.update()
+    
+    def on_order(self):
+        if FC().repeat_state == const.REPEAT_ALL:
+            FC().repeat_state = const.REPEAT_SINGLE
+        elif FC().repeat_state == const.REPEAT_SINGLE:
+            FC().repeat_state = const.REPEAT_NO
+        elif FC().repeat_state == const.REPEAT_NO:
+            FC().repeat_state = const.REPEAT_ALL
+        self.update()
+            
+    def on_load(self): 
+        self.update()
+        
+    def on_save(self): pass        
+    
+class OrderShuffleControls_ZAVLAB(FControl, gtk.HBox, gtk.Tooltips, LoadSave):
     def __init__(self, controls): 
         gtk.HBox.__init__(self, False)
                 

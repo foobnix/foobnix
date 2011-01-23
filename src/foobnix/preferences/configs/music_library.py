@@ -88,7 +88,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
    
     def reload_dir(self, *a):
         FC().music_paths[0] = self.tree_controller.get_all_beans_text()
-        tree = self.controls.tablib.get_current_tree()
+        tree = self.controls.tabhelper.get_current_tree()
         self.controls.update_music_tree(tree)
    
     def on_load(self):
@@ -103,7 +103,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         self.adjustment.set_value(FC().gap_secs)
         if FC().tabs_mode == "Single":
             self.singletab_button.set_active(True)
-            self.controls.tablib.set_show_tabs(False)
+            self.controls.tabhelper.set_show_tabs(False)
                 
     def on_save(self):             
         FC().music_paths[0] = self.tree_controller.get_all_beans_text()
@@ -114,12 +114,12 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
                 del FC().music_paths[i]
                 del FC().cache_music_tree_beans[i]
                 del FC().tab_names[i]
-                self.controls.tablib.remove_page(i)
+                self.controls.tabhelper.remove_page(i)
             FC().tabs_mode = "Single"
-            self.controls.tablib.set_show_tabs(False)
+            self.controls.tabhelper.set_show_tabs(False)
         else:
             FC().tabs_mode = "Multi"
-            self.controls.tablib.set_show_tabs(True)
+            self.controls.tabhelper.set_show_tabs(True)
         
     def add_dir(self, *a):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))

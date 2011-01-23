@@ -10,9 +10,8 @@ from foobnix.util.fc import FC
 from foobnix.util.list_utils import reorderer_list
 from foobnix.helpers.menu import Popup
 from foobnix.regui.notetab import TabGeneral
-from foobnix.regui.state import LoadSave
 
-class TabLib(TabGeneral, LoadSave):
+class TabHelperControl(TabGeneral):
     def __init__(self, controls):
         TabGeneral.__init__(self, controls)
         
@@ -62,11 +61,5 @@ class TabLib(TabGeneral, LoadSave):
         n = self.page_num(tab_child)
         tree = tab_child.get_child()
         self.controls.update_music_tree(tree, n)
-        
-    def on_load(self):
-        pass
-    
-    def on_save(self):
-        pass
     
     

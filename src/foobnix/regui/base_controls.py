@@ -163,16 +163,16 @@ class BaseFoobnixControls():
             self.tree.is_empty = True
             
             if FC().tab_names[0]:
-                self.tablib.label.set_label(FC().tab_names[0] + " ")
+                self.tabhelper.label.set_label(FC().tab_names[0] + " ")
         else:
             tabs = len(FC().cache_music_tree_beans)
             self.tree.simple_append_all(FC().cache_music_tree_beans[tabs - 1])
-            self.tablib.label.set_label(FC().tab_names[tabs - 1] + " ")
+            self.tabhelper.label.set_label(FC().tab_names[tabs - 1] + " ")
             for tab in xrange(tabs - 2, -1, -1):
                 
                 tree = NavigationTreeControl(self)
                 tree.simple_append_all(FC().cache_music_tree_beans[tab])
-                self.tablib.append_tab(FC().tab_names[tab], navig_tree=tree)
+                self.tabhelper.append_tab(FC().tab_names[tab], navig_tree=tree)
                 
                 if not FC().cache_music_tree_beans[tab]: 
                     tree.is_empty = True
@@ -317,10 +317,11 @@ class BaseFoobnixControls():
         if not bean.path:
             if not self.fill_bean_from_vk(bean):
                 if self.count_errors < 4:
-                    logging.debug("Error happen" + str(self.count_errors))
+                    logging.debug("Error happen [%s] %s" % (self.count_errors, FC().vk_login))
                     time.sleep(0.5)
+                    self.count_errors += 1
                     self.next()
-                self.count_errors += 1
+                
         
         if bean.path and os.path.isdir(bean.path):
             self.state_stop()
@@ -404,7 +405,7 @@ class BaseFoobnixControls():
         self.in_thread.run_with_progressbar(inline)
     
     def search_all_tracks(self, query):
-        def inline(query):
+        def inline():
             results = self.vk.find_tracks_by_query(query)
             if not results:
                 results = []
@@ -420,7 +421,7 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
             
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline, query)
+        self.in_thread.run_with_progressbar(inline, no_thread=True)
 
     def search_top_tracks(self, query):
         def inline(query):
@@ -558,13 +559,13 @@ class BaseFoobnixControls():
         self.play(bean)
 
     def filter_by_folder(self, value):
-        tree = self.tablib.get_current_tree()
+        tree = self.tabhelper.get_current_tree()
         tree.filter_by_folder(value)
         self.radio.filter_by_folder(value)
         self.virtual.filter_by_folder(value)
         
     def filter_by_file(self, value):
-        tree = self.tablib.get_current_tree()
+        tree = self.tabhelper.get_current_tree()
         tree.filter_by_file(value)
         self.radio.filter_by_file(value)
         self.virtual.filter_by_file(value)

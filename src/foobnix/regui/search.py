@@ -35,7 +35,7 @@ class SearchControls(FControl, gtk.VBox):
         
     
     def set_search_function(self, search_function):
-        logging.info("Set search function"+ str(search_function))
+        logging.info("Set search function" + str(search_function))
         self.search_function = search_function    
         
     
@@ -55,7 +55,7 @@ class SearchControls(FControl, gtk.VBox):
         online_text = _("Online Music Search, Play, Download")        
         
         def on_activate():
-            logging.debug("on_activate"+ self.entry.get_text())
+            logging.debug("on_activate" + self.entry.get_text())
             if online_text == self.entry.get_text():
                 self.entry.set_text("")
             
@@ -66,12 +66,15 @@ class SearchControls(FControl, gtk.VBox):
                
         combobox = self.combobox_creator()
         
+        search_button = gtk.Button(_("Search"))
+        search_button.connect("clicked", self.on_search)
+        
         hbox = gtk.HBox(False, 0)
         searchLable = gtk.Label()
         searchLable.set_markup("<b>%s</b>" % _("Online Search"))
         hbox.pack_start(combobox, False, False)        
         hbox.pack_start(self.entry, True, True)
-        #hbox.pack_start(searchLable, False, False)
+        hbox.pack_start(search_button, False, False)
         hbox.show_all()
         
         return hbox 

@@ -12,7 +12,7 @@ class TestVKService(unittest.TestCase):
     vk = VKService()
     
     def test_login(self):
-        self.assertTrue(self.vk.is_connected() )
+        self.assertTrue(self.vk.is_connected())
 
     def test_search_page(self):
         self.assertTrue(self.vk.search("Madonna").find("Madonna") > -1)
@@ -20,10 +20,10 @@ class TestVKService(unittest.TestCase):
     def test_find_tracks_in_page(self):
         page = self.vk.search("Madonna")
         vk_search = VKAudioResultsPage(page)
-        self.assertTrue(len(vk_search.tracks()) >0)
+        self.assertTrue(len(vk_search.tracks()) > 0)
     
     def test_find_videos(self):
-        list = self.vk.find_videos_by_query("Madonna")
+        list = self.vk.find_videos_by_query("Мадонна")
         for bean in list[:10]:
             self.assertNotEquals("text/html", get_url_type(bean.path))
             self.assertTrue(bean.path.startswith("http://")) 

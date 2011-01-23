@@ -64,7 +64,7 @@ class GStreamerEngine(MediaPlayerEngine):
         return playbin
     
     def notify_init(self, duration_int):
-        logging.debug("Pre init thread"+ str(duration_int))
+        logging.debug("Pre init thread" + str(duration_int))
 
     def notify_playing(self, position_int, duration_int, sec):
         #LOG.debug("Notify playing", position_int)
@@ -111,7 +111,7 @@ class GStreamerEngine(MediaPlayerEngine):
             
             if path.startswith("http://"):
                 path = get_radio_source(path)
-                logging.debug("Try To play path"+ path)
+                logging.debug("Try To play path" + path)
                 uri = path
                 self.notify_title(uri)
             else:
@@ -119,7 +119,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 if os.name == 'nt':
                     uri = 'file:' + urllib.pathname2url(path)
 
-            logging.info("Gstreamer try to play"+ uri)
+            logging.info("Gstreamer try to play" + uri)
             self.player.set_property("uri", uri)
             
             self.prev_path = path
@@ -130,7 +130,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.state_play()
         self.volume(FC().volume)
         
-        logging.debug("current state before thread"+ str(self.get_state()) + str(self.play_thread_id))
+        logging.debug("current state before thread" + str(self.get_state()) + str(self.play_thread_id))
         self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
 
     
@@ -148,14 +148,14 @@ class GStreamerEngine(MediaPlayerEngine):
         try:
             return self.player.query_position(gst.Format(gst.FORMAT_TIME), None)[0]
         except Exception, e:
-            logging.warn("GET query_position"+ str(e))
+            logging.warn("GET query_position" + str(e))
             return - 1
     
     def get_duration_seek_ns(self):
         try:
             return self.player.query_duration(gst.Format(gst.FORMAT_TIME), None)[0]
         except Exception, e:
-            logging.warn("GET query_duration"+ str(e))
+            logging.warn("GET query_duration" + str(e))
             return - 1
     
     def playing_thread(self):
@@ -163,7 +163,7 @@ class GStreamerEngine(MediaPlayerEngine):
         error_count = 0
         sec = 0
         
-        logging.debug("current state in thread"+  str(self.get_state()))
+        logging.debug("current state in thread" + str(self.get_state()))
          
         while thread_id == self.play_thread_id:
             try:
@@ -175,7 +175,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 self.notify_init(duration_int)
                 break
             except Exception, e:
-                logging.info("Init playing thread "+ str(e))
+                logging.info("Init playing thread " + str(e))
                 time.sleep(1)
                 if error_count > 3:
                     logging.warn("shit happens")
@@ -189,7 +189,7 @@ class GStreamerEngine(MediaPlayerEngine):
         if self.bean.duration_sec > 0:
             duration_int = float(self.bean.duration_sec) * self.NANO_SECONDS
         
-        logging.debug("current state before while"+ str(self.get_state()))
+        logging.debug("current state before while" + str(self.get_state()))
         
         self.set_state(STATE_PLAY)
         
@@ -198,7 +198,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 position_int = self.get_position_seek_ns()
                 if position_int > 0 and self.bean.start_sec > 0:
                     position_int = position_int - float(self.bean.start_sec) * self.NANO_SECONDS
-                    logging.debug(str(position_int)+ str(self.bean.start_sec)+ str(duration_int))
+                    logging.debug(str(position_int) + str(self.bean.start_sec) + str(duration_int))
                     if position_int + self.NANO_SECONDS > duration_int:
                         self.notify_eos()
                 
@@ -212,6 +212,8 @@ class GStreamerEngine(MediaPlayerEngine):
             time.sleep(1)
 
     def seek(self, percent, offset=0):
+        if not self.bean:
+            return None
         seek_ns = self.duration_sec * (percent + offset) / 100 * self.NANO_SECONDS;
 
         if self.bean.start_sec > 0:
@@ -222,15 +224,15 @@ class GStreamerEngine(MediaPlayerEngine):
     def seek_seconds(self, seconds):
         if not seconds:
             return
-        logging.info("Start with seconds"+ str(seconds))
+        logging.info("Start with seconds" + str(seconds))
         seek_ns = (float(seconds) + 0.0) * self.NANO_SECONDS
-        logging.info("SEC SEEK SEC"+  str(seek_ns))
+        logging.info("SEC SEEK SEC" + str(seek_ns))
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
     
     def seek_ns(self, ns):
         if not ns:
             return        
-        logging.info("SEC ns" +  str(ns))
+        logging.info("SEC ns" + str(ns))
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, ns)
 
     def volume(self, percent):
