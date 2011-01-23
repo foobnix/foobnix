@@ -377,6 +377,7 @@ class BaseFoobnixControls():
         self.media_engine.volume(percent)
     
     def search_vk_page_tracks(self, vk_ulr):
+        logging.debug("Search vk page tracks")
         results = self.vk.find_tracks_by_url(vk_ulr)
         all = []
         p_bean = FModel(vk_ulr).add_font("bold")

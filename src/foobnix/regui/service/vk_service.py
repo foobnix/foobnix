@@ -15,11 +15,15 @@ from foobnix.util.text_utils import html_decode
 import simplejson
 from urllib2 import HTTPError
 import thread
+from urlparse import urlparse
 
 class VKService:
     
-    def __init__(self):
-        thread.start_new_thread(self.in_thread_init, ())
+    def __init__(self, forse=False):
+        if forse:
+            self.in_thread_init()
+        else:
+            thread.start_new_thread(self.in_thread_init, ())
         
     #We need to start inside thread to fast player start
     def in_thread_init(self):
@@ -89,9 +93,16 @@ class VKService:
 
     def find_tracks_by_url(self, url):
         logging.debug("Search By URL")
-        result = self.get(url)
+        url_parse = urlparse(url)
+        
+        if url_parse.fragment:
+            params = dict([part.split('=') for part in url_parse.fragment.split('&')])
+            result = self.get(url, params)
+        else:
+            result = self.get(url)
+            
         try:
-            result = unicode(result)
+            result = unicode(result, 'cp1251')            
         except:
             result = result
         
@@ -106,7 +117,7 @@ class VKService:
         songs = []
         j = 0
         for i, artist in enumerate(result_artist):
-            path = "http:" + result_url[i].replace("\\/", "/")
+            path = "http:" + result_url[i + 3].replace("\\/", "/")
             title = html_decode(result_title[i][1])
             if not title:
                 if len(result_lyr) > j:
@@ -118,6 +129,7 @@ class VKService:
             if "\">" in title:
                 title = title[title.find("\">") + 2:]
             text = artist + " - " + title
+            #print text
             song = FModel(text, path).add_artist(artist).add_title(title).add_time(result_time[i])
             songs.append(song)
         logging.info(len(songs))
