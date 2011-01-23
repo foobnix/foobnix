@@ -4,15 +4,18 @@ Created on 24 нояб. 2010
 
 @author: ivan
 '''
+import os
+import logging
+
+from mutagen.mp4 import MP4
 from foobnix.cue.cue_reader import update_id3_for_cue
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.bean_utils import update_bean_from_normalized_text
 from foobnix.util.file_utils import file_extension, get_file_extension
 from foobnix.util.fc import FC
-import logging
 from foobnix.util.audio import get_mutagen_audio
-import os
+
 
 def decode_cp866(text):
     try:
@@ -60,22 +63,31 @@ def udpate_id3(bean):
         except Exception, e:
             logging.warn("ID3 NOT MP3" + str(e) + bean.path)
             return bean
-
-        if audio and audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])
-        if audio and audio.has_key('title'): bean.title = decode_cp866(audio["title"][0])
+        
+        if audio:
+            if isinstance(audio, MP4):
+                if audio.has_key('\xa9ART'): bean.artist = audio["\xa9ART"][0]
+                if audio.has_key('\xa9nam'): bean.title = audio["\xa9nam"][0]
+            else:
+                if audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])
+                if audio.has_key('title'): bean.title = decode_cp866(audio["title"][0])
+          
         #if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
         #else: 
             #if audio and not audio.has_key('tracknumber'): 
+        print  bean.artist
+        print bean.title
         duration_sec = bean.duration_sec
+        print audio.info
         if not bean.duration_sec:
             if audio and audio.info and audio.info.length: duration_sec = int(audio.info.length)
-
+        
         if audio and audio.info:
             bean.info = audio.info.pprint()
 
         if bean.artist and bean.title:
             bean.text = bean.artist + " - " + bean.title
-
+        print bean.text
         if bean.tracknumber:
             try:
                 bean.tracknumber = int(bean.tracknumber)
