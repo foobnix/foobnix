@@ -16,11 +16,12 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
         
         label_m = gtk.Label("-")
         
-        adjustment = gtk.Adjustment(value=1, lower=0, upper=self.MAX_VALUE, step_incr=1, page_incr=1, page_size=0)
+        adjustment = gtk.Adjustment(value=1, lower=0, upper=self.MAX_VALUE, step_incr=0, page_incr=0, page_size=0)
         self.volume_scale = gtk.HScale(adjustment)
         self.volume_scale.connect("value-changed", self.on_value_changed)
         self.volume_scale.connect("scroll-event", self.on_scroll_event)
         self.volume_scale.connect("button-press-event", self.on_volume_change)
+        #self.volume_scale.connect("motion-notify-event", self.on_volume_change1)
         self.volume_scale.set_size_request(200, -1)
         self.volume_scale.set_update_policy(gtk.UPDATE_CONTINUOUS)
         self.volume_scale.set_digits(1)        
@@ -38,6 +39,11 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
         max_x, max_y = w.size_request()
         x, y = event.x, event.y
         value = x / max_x * self.MAX_VALUE
+        if value > self.MAX_VALUE * 0.75:
+            value += self.MAX_VALUE / 20
+        elif value < self.MAX_VALUE * 0.25:
+            value -= self.MAX_VALUE / 20
+            
         self.set_value(value);
         self.on_save()
     

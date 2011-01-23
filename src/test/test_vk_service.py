@@ -7,7 +7,6 @@ Created on 21 нояб. 2010
 import unittest
 from foobnix.regui.service.vk_service import VKService, VKAudioResultsPage
 from foobnix.util.url_utils import get_url_type
-from urlparse import urlparse
 
 class TestVKService(unittest.TestCase):
     vk = VKService(True)
