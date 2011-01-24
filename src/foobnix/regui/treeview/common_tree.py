@@ -10,6 +10,7 @@ from foobnix.regui.model import FTreeModel, FModel
 from foobnix.regui.model.signal import FControl
 from random import randint
 from foobnix.regui.treeview.filter_tree import FilterTreeControls
+import logging
 
 class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
@@ -132,16 +133,16 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         selection = self.get_selection()
         fm, paths = selection.get_selected_rows()
         
-        to_delete = []
         for path in paths:
             path = self.filter_model.convert_path_to_child_path(path)
             iter = self.model.get_iter(path)
-            to_delete.append(iter)
-
-                
-        for iter in to_delete:
             self.model.remove(iter)
-    
+        
+        if len(paths) == 1:
+            path = paths[0]
+            logging.debug("path " + repr(path))
+            position = path[0]
+            selection.select_path(position-1)
 
     def get_selected_bean_paths(self):
         selection = self.get_selection()

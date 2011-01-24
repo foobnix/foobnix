@@ -28,25 +28,24 @@ class PlaylistTreeControl(CommonTreeControl):
         tracknumber = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.tracknumber[0])
         self.append_column(tracknumber)
 
-
-        """conlumn artist title"""
+        """column artist title"""
         description = gtk.TreeViewColumn('Track', gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         #description.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         description.set_expand(True)
         self.append_column(description)
         
         
-        """conlumn artist title"""
+        """column artist (NOT USED)"""
         artist = gtk.TreeViewColumn('Artist', gtk.CellRendererText(), text=self.artist[0])
         artist.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         #self.append_column(artist)
         
-        """conlumn artist title"""
+        """column title (NOT USED)"""
         title = gtk.TreeViewColumn('Title', gtk.CellRendererText(), text=self.title[0])
         title.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         #self.append_column(title)
 
-        """time text"""
+        """column time"""
         time = gtk.TreeViewColumn('Time', gtk.CellRendererText(), text=self.time[0])
         
         self.append_column(time)
@@ -72,7 +71,7 @@ class PlaylistTreeControl(CommonTreeControl):
         elif is_key(e, 'Right'):
             self.controls.seek_up()
     
-    def common_signle_random(self):
+    def common_single_random(self):
         logging.debug("Repeat state"+ str(FC().repeat_state))
         if FC().repeat_state == const.REPEAT_SINGLE:
             return self.get_current_bean_by_UUID();
@@ -83,7 +82,7 @@ class PlaylistTreeControl(CommonTreeControl):
             return bean
     
     def next(self):
-        bean = self.common_signle_random()       
+        bean = self.common_single_random()       
         if bean:
             return bean
     
@@ -99,7 +98,7 @@ class PlaylistTreeControl(CommonTreeControl):
         return bean
 
     def prev(self):
-        bean = self.common_signle_random()       
+        bean = self.common_single_random()       
         if bean:
             return bean
     
