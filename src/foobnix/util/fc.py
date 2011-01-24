@@ -144,7 +144,7 @@ class FC:
         self.stop_icon_entry = ICON_FOOBNIX_STOP
         self.radio_icon_entry = ICON_FOOBNIX_RADIO
         
-        self.notifier = True
+        self.notifier = False
                
         """download manager controls"""
         self.auto_start_donwload = True
