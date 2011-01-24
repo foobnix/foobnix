@@ -14,6 +14,29 @@ from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.util.fc import FC
 from foobnix.util.key_utils import is_key_control, is_key_shift, is_key_super, \
     is_key_alt
+    
+
+def activate_hot_key(command):
+    logging.debug("Run command: " + str(command))         
+    thread.start_new_thread(os.system, (command,))    
+    
+def add_key_binder(command, hotkey):
+    try:                      
+        keybinder.bind(hotkey, activate_hot_key, command)
+    except Exception, e:
+        logging.error("add_key_binder exception" + str(hotkey) + str(e))
+
+def bind_all(items):
+    for key in items:
+        command = key
+        hotkey = items[key]
+        add_key_binder(command, hotkey);                
+
+def load_foobnix_hotkeys():
+    bind_all(FC().action_hotkey)
+    logging.debug("LOAD HOT KEYS")    
+
+    
 class HotKeysConfig(ConfigPlugin):
     
     name = _("Global Hotkeys")
@@ -92,7 +115,7 @@ class HotKeysConfig(ConfigPlugin):
         if command and hotkey: 
             if command not in self.get_all_items():
                 self.model.append([command, hotkey])
-                self.add_key_binder(command, hotkey);
+                add_key_binder(command, hotkey);
             
         self.action_text.set_text("")
         self.hotkey_text.set_text("")
@@ -107,6 +130,15 @@ class HotKeysConfig(ConfigPlugin):
             keybinder.unbind(keystring)
         except:
             pass 
+    
+    def unbind_all(self):
+        items = self.get_all_items()
+        for keystring in items: 
+            try:          
+                keybinder.unbind(items[keystring])
+            except Exception, e:
+                logging.error("unbind error %s" % str(e))
+
     
     def on_populate_click(self, w, event):
         if is_double_left_click(event):            
@@ -132,7 +164,6 @@ class HotKeysConfig(ConfigPlugin):
         menu.show(event)     
    
     def on_load(self):
-        logging.debug("LOAD HOT KEYS")
         items = FC().action_hotkey
         self.model.clear()
         for key in items:
@@ -140,38 +171,11 @@ class HotKeysConfig(ConfigPlugin):
             hotkey = items[key]            
             self.model.append([command, hotkey])  
             
-        self.bind_all(items)
-       
-    
-    def add_key_binder(self, command, hotkey):
-        try:                      
-            keybinder.bind(hotkey, self.activate_hot_key, command)
-        except Exception, e:
-            logging.error("add_key_binder exception"+ str(hotkey) + str(e))
-    
-    def activate_hot_key(self, command):
-        logging.debug("Run command: " + str(command))         
-        thread.start_new_thread(os.system, (command,))
-        
     def on_save(self):
         FC().action_hotkey = self.get_all_items()
-        #self.bind_all(self.get_all_items())
+        bind_all(self.get_all_items())
         self.unbind_all()
     
-    def unbind_all(self):
-        items = self.get_all_items()
-        for keystring in items: 
-            try:          
-                keybinder.unbind(items[keystring])
-            except:
-                pass
-                              
-    def bind_all(self, items):
-        for key in items:
-            command = key
-            hotkey = items[key]
-            self.add_key_binder(command, hotkey);                
-   
     def get_all_items(self):
         items = {}
         for item in self.model:              

@@ -54,7 +54,8 @@ class Dowloader(threading.Thread):
             os.makedirs(path)
             
         if bean.artist:
-            bean.artist = bean.artist.replace("/", "\\")
+            bean.artist = bean.artist.replace("/", "-")
+            bean.artist = bean.artist.replace("\\", "-")
             to_file = os.path.join(FC().online_save_to_folder, bean.artist, bean.get_display_name() + ext)
             if not os.path.isdir(os.path.dirname(to_file)):
                 os.makedirs(os.path.dirname(to_file))             
