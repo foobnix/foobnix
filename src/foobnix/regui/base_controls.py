@@ -33,7 +33,7 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 class BaseFoobnixControls():
     def __init__(self):
-        self.lastfm = LastFmService()
+        self.lastfm = LastFmService(self)
         self.vk = VKService()
 
         self.count_errors = 0

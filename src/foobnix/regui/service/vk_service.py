@@ -13,7 +13,7 @@ import re
 from foobnix.regui.model import FModel
 from foobnix.util.text_utils import html_decode
 import simplejson
-from urllib2 import HTTPError
+from urllib2 import HTTPError, URLError
 import thread
 from urlparse import urlparse
 
@@ -90,6 +90,9 @@ class VKService:
                 self.initialize_urllib2()
                 self.login()
             return None
+        except URLError, e:
+            logging.error("Network not available")
+            
 
     def find_tracks_by_url(self, url):
         logging.debug("Search By URL")
