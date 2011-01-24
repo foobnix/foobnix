@@ -18,8 +18,7 @@ from foobnix.util.text_utils import split_string
 import logging
 from foobnix.regui.controls.playback import PlaybackControls
 from foobnix.helpers.my_widgets import ImageButton
-from foobnix.util.const import ICON_FOOBNIX, FTYPE_RADIO, STATE_PLAY, \
-    STATE_PAUSE, STATE_STOP
+from foobnix.util.const import ICON_FOOBNIX
 
 
  
@@ -63,6 +62,8 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         gtk.StatusIcon.__init__(self)
+        self.hide()
+        
         ImageBase.__init__(self, ICON_FOOBNIX, 150)
         
         self.popup_menu = PopupWindowMenu(self.controls)
@@ -82,8 +83,8 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         
         self.current_bean = FModel().add_artist("Artist").add_title("Title")
         self.tooltip_image = ImageBase(ICON_FOOBNIX, 75)
-        self.hide()
-               
+        
+              
         
     def on_save(self):
         pass
