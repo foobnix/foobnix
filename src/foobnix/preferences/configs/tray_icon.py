@@ -8,9 +8,12 @@ import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util import const
 from foobnix.util.fc import FC
-from foobnix.helpers.pref_widgets import FrameDecorator, VBoxDecorator, ChooseDecorator
+from foobnix.helpers.pref_widgets import FrameDecorator, VBoxDecorator, ChooseDecorator, \
+    IconBlock
 from foobnix.helpers.image import ImageBase
-from foobnix.util.const import ICON_BLANK_DISK
+from foobnix.util.const import ICON_BLANK_DISK, FTYPE_RADIO, STATE_PLAY, \
+    STATE_PAUSE, STATE_STOP
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 class TrayIconConfig(ConfigPlugin):
     
@@ -20,6 +23,17 @@ class TrayIconConfig(ConfigPlugin):
         self.controls = controls
         box = gtk.VBox(False, 0)        
         box.hide()
+        
+        '''static_icon'''
+        self.static_icon = IconBlock("Icon", controls, FC().static_icon_entry)
+        
+        """dynamic icons"""
+        self.play_icon = IconBlock("Play", controls, FC().play_icon_entry)
+        self.pause_icon = IconBlock("Pause", controls, FC().pause_icon_entry)
+        self.stop_icon = IconBlock("Stop", controls, FC().stop_icon_entry)
+        self.radio_icon = IconBlock("Radio", controls, FC().radio_icon_entry)
+        
+        
         
         self.tray_icon_button = gtk.CheckButton(label=_("Show tray icon"), use_underline=True)
         self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
@@ -33,13 +47,13 @@ class TrayIconConfig(ConfigPlugin):
         
 
         """system icon"""
-        self.static_tray_icon = ChooseDecorator(None, FrameDecorator(_("System Icon Static"), controls.trayicon.static_icon))
+        self.static_tray_icon = ChooseDecorator(None, FrameDecorator(_("System Icon Static"), self.static_icon))
         
         """dynamic icons"""
-        line = VBoxDecorator(controls.trayicon.play_icon,
-                             controls.trayicon.pause_icon,
-                             controls.trayicon.stop_icon,
-                             controls.trayicon.radio_icon)
+        line = VBoxDecorator(self.play_icon,
+                             self.pause_icon,
+                             self.stop_icon,
+                             self.radio_icon)
         
 
         self.icon_controls = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator(_("System Icons Dynamic"), line))
@@ -68,11 +82,33 @@ class TrayIconConfig(ConfigPlugin):
             self.hide_button.set_sensitive(False) 
             if self.hide_button.get_active():
                 self.minimize_button.set_active(True)
-            self.controls.trayicon.hide()
+            self.self.hide()
         else:
-            self.controls.trayicon.show()
+            self.show()
             self.hide_button.set_sensitive(True)
-            
+   
+    def on_dynamic_icons(self, state):
+        if FC().static_tray_icon:
+            self.check_active_dynamic_icon(self.static_icon)
+        if FC().system_icons_dinamic:
+            if state == FTYPE_RADIO:
+                self.check_active_dynamic_icon(self.radio_icon)
+            elif state == STATE_PLAY:
+                self.check_active_dynamic_icon(self.play_icon)
+            elif state == STATE_PAUSE:
+                self.check_active_dynamic_icon(self.pause_icon)
+            elif state == STATE_STOP:
+                self.check_active_dynamic_icon(self.stop_icon)
+                 
+    def check_active_dynamic_icon(self, icon_object):
+        icon_name = icon_object.entry.get_text()
+        try:
+            path = get_foobnix_resourse_path_by_name(icon_name)
+            self.controls.trayicon.set_image_from_path(path)
+        except TypeError:
+            pass
+    
+    
     def on_load(self):
         self.tray_icon_button.set_active(FC().show_tray_icon)
         self.static_tray_icon.button.set_active(FC().static_tray_icon)
@@ -89,12 +125,18 @@ class TrayIconConfig(ConfigPlugin):
             self.minimize_button.set_active(True)
         
         if FC().notifier:
-            self.notifier.set_active(True)       
+            self.notifier.set_active(True)   
+
+        self.static_icon.entry.set_text(FC().static_icon_entry)
+        self.play_icon.entry.set_text(FC().play_icon_entry)
+        self.pause_icon.entry.set_text(FC().pause_icon_entry)
+        self.stop_icon.entry.set_text(FC().stop_icon_entry)
+        self.radio_icon.entry.set_text(FC().radio_icon_entry)
              
     def on_save(self):
         FC().show_tray_icon = self.tray_icon_button.get_active() 
         FC().static_tray_icon = self.static_tray_icon.button.get_active()
-        if FC().static_tray_icon: self.controls.trayicon.on_dynamic_icons(None)
+        if FC().static_tray_icon: self.self.on_dynamic_icons(None)
         FC().system_icons_dinamic = self.icon_controls.button.get_active()
         FC().change_tray_icon = self.change_tray_icon.button.get_active()
                 
@@ -111,3 +153,9 @@ class TrayIconConfig(ConfigPlugin):
             FC().notifier = True
         else: 
             FC().notifier = False
+            
+        FC().static_icon_entry = self.static_icon.entry.get_text()
+        FC().play_icon_entry = self.play_icon.entry.get_text()
+        FC().pause_icon_entry = self.pause_icon.entry.get_text()
+        FC().stop_icon_entry = self.stop_icon.entry.get_text()
+        FC().radio_icon_entry = self.radio_icon.entry.get_text()
