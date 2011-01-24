@@ -46,7 +46,7 @@ class FC:
     API_SECRET = "800adaf46e237805a4ec2a81404b3ff2"
     LASTFM_USER = "l_user_"
     LASTFM_PASSWORD = "l_pass_"
-
+    
     def __init__(self):
         """init default values"""
         self.is_view_info_panel = True
@@ -144,7 +144,7 @@ class FC:
         self.stop_icon_entry = ICON_FOOBNIX_STOP
         self.radio_icon_entry = ICON_FOOBNIX_RADIO
         
-        self.notifier = True
+        self.notifier = False
                
         """download manager controls"""
         self.auto_start_donwload = True

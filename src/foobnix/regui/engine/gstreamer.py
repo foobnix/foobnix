@@ -245,9 +245,11 @@ class GStreamerEngine(MediaPlayerEngine):
         self.current_state = STATE_PLAY
         #if FC().system_icons_dinamic:
         if self.bean.type == FTYPE_RADIO:
-            self.controls.trayicon.on_dynamic_icons(FTYPE_RADIO)
+            #self.controls.trayicon.on_dynamic_icons(FTYPE_RADIO)
+            pass
         else:
-            self.controls.trayicon.on_dynamic_icons(self.current_state)
+            pass
+            #self.controls.trayicon.on_dynamic_icons(self.current_state)
     
     def get_current_percent(self):
         duration = self.get_duration_seek_ns()
@@ -277,14 +279,14 @@ class GStreamerEngine(MediaPlayerEngine):
         self.set_state(STATE_STOP)
         
         #if FC().system_icons_dinamic:
-        self.controls.trayicon.on_dynamic_icons(self.current_state)
+        #self.controls.trayicon.on_dynamic_icons(self.current_state)
         logging.debug("state STOP")
 
     def state_pause(self):
         self.player.set_state(gst.STATE_PAUSED)
         self.set_state(STATE_PAUSE)
         #if FC().system_icons_dinamic:
-        self.controls.trayicon.on_dynamic_icons(self.current_state)
+        #self.controls.trayicon.on_dynamic_icons(self.current_state)
         
     def state_play_pause(self):
         if self.get_state() == STATE_PLAY:

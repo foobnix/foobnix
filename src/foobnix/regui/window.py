@@ -13,6 +13,7 @@ from foobnix.util.key_utils import is_key, is_key_alt, is_key_control
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION, \
     LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_VIRTUAL, LEFT_PERSPECTIVE_INFO
+import logging
 class MainWindow(gtk.Window, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -66,7 +67,6 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             self.show()
         
     def hide_window(self, *args):
-        
         if FC().on_close_window == const.ON_CLOSE_CLOSE:
             self.controls.quit()
 
@@ -75,5 +75,7 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             
         elif FC().on_close_window == const.ON_CLOSE_MINIMIZE:
             self.iconify()
+        
+        logging.debug("On close window action %s" % FC().on_close_window)
         
         return True

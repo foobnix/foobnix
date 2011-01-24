@@ -98,8 +98,12 @@ class FModel(FTreeModel):
     def get_display_name(self):
         if self.artist and self.title:
             text = self.artist + " - " + self.title
+            text.replace("/", "-")
+            text.replace("\\", "-")
             return text.strip()
         else:
+            text.replace("/", "-")
+            text.replace("\\", "-")
             text = "" + self.text
             return text.strip()
     

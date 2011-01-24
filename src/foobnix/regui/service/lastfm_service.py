@@ -33,7 +33,7 @@ class Cache():
             return None
         if self.cache_tracks.has_key(self.get_key(artist, title)):
             track = self.cache_tracks[self.get_key(artist, title)]
-            logging.debug("Get track from cache"+ str(track))
+            logging.debug("Get track from cache" + str(track))
             return track
         else:
             track = self.network.get_track(artist, title)
@@ -46,7 +46,7 @@ class Cache():
         track = self.get_track(artist, title)
         if track:
             if self.cache_albums.has_key(self.get_key(artist, title)):
-                logging.debug("Get album from cache"+ str(track))
+                logging.debug("Get album from cache" + str(track))
                 return self.cache_albums[self.get_key(artist, title)]
             else:
                 album = track.get_album()
@@ -73,10 +73,12 @@ class Cache():
 
 
 class LastFmService():
-    def __init__(self):
+    def __init__(self, controls):
+        
         self.network = None
         self.scrobbler = None
         self.preferences_window = None
+        self.controls = controls
 
         #thread.start_new_thread(self.init_thread, ())
         #self.init_thread()
@@ -104,7 +106,7 @@ class LastFmService():
                 proxy = proxy_rul[:index]
                 port = proxy_rul[index + 1:]
                 self.network.enable_proxy(proxy, port)
-                logging.info("Enable proxy for last fm"+ str(proxy)+ str(port))
+                logging.info("Enable proxy for last fm" + str(proxy) + str(port))
 
 
             """scrobbler"""
@@ -113,12 +115,15 @@ class LastFmService():
         except:
             self.network = None
             self.scrobbler = None
-            logging.error("Invalid last fm login or password or network problems"+ username + FC().lfm_password)
+            self.controls.statusbar.set_text("Error last.fm connection with %s/%s" % (username, FC().lfm_password))
+            logging.error("Invalid last fm login or password or network problems" + username + FC().lfm_password)
+            """
             val = show_login_password_error_dialog(_("Last.fm connection error"), _("Verify user and password"), username, FC().lfm_password)
             if val:
                 FC().lfm_login = val[0]
                 FC().lfm_password = val[1]
             return False
+            """
 
         return True
     def get_network(self):
@@ -140,7 +145,7 @@ class LastFmService():
                     self.get_scrobbler().report_now_playing(bean.artist, bean.title)
                     logging.debug("notify %s %s" % (bean.artist, bean.title))
                 except Exception, e:       
-                    logging.error(str(e)+ "Error reporting now playing last.fm"+ bean.artist + bean.title + "A" + bean.album)
+                    logging.error(str(e) + "Error reporting now playing last.fm" + bean.artist + bean.title + "A" + bean.album)
             else:
                 logging.debug("Bean title or artist not defined")
                 
@@ -158,9 +163,9 @@ class LastFmService():
             if bean.artist and bean.title:
                 try:
                     self.get_scrobbler().scrobble(bean.artist, bean.title, start_time, "P", "", int(duration_sec))
-                    logging.debug("Song Scrobbled"+ str(bean.artist)+ str(bean.title)+ str(start_time)+ "P"+ ""+ str(int(duration_sec)))
+                    logging.debug("Song Scrobbled" + str(bean.artist) + str(bean.title) + str(start_time) + "P" + "" + str(int(duration_sec)))
                 except Exception, e:       
-                    logging.error(str(e)+ "Error reporting now playing last.fm"+ str(bean.artist)+ str(bean.title)+ "A"+ str(bean.album))
+                    logging.error(str(e) + "Error reporting now playing last.fm" + str(bean.artist) + str(bean.title) + "A" + str(bean.album))
             else:
                 logging.debug("Bean title or artist not defined")
         

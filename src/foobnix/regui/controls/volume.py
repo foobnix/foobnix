@@ -8,13 +8,14 @@ import gtk
 from foobnix.regui.state import LoadSave
 from foobnix.util.fc import FC
 from foobnix.regui.model.signal import FControl
+from foobnix.helpers.my_widgets import EventLabel
 class VolumeControls(LoadSave, gtk.HBox, FControl):
     MAX_VALUE = 120
     def __init__(self, controls):
         gtk.HBox.__init__(self, False, 0)
         FControl.__init__(self, controls)
         
-        label_m = gtk.Label("-")
+        label_m = EventLabel(text="-", func=self.volume_down)
         
         adjustment = gtk.Adjustment(value=1, lower=0, upper=self.MAX_VALUE, step_incr=0, page_incr=0, page_size=0)
         self.volume_scale = gtk.HScale(adjustment)
@@ -27,7 +28,7 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
         self.volume_scale.set_digits(1)        
         self.volume_scale.set_draw_value(False)
 
-        label_p = gtk.Label("+")
+        label_p = EventLabel(text="+", func=self.volume_up)
         
         self.pack_start(label_m, False, False)
         self.pack_start(self.volume_scale, False, False)
