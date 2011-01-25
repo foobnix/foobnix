@@ -54,19 +54,19 @@ class TagEditor(ChildTopWindow):
         hpan.pack1(lvbox)
         hpan.pack2(rvbox)
 
-        save_button = gtk.Button(_("Save"))
-        cancel_button = gtk.Button(_("Cancel"))
+        apply_button = gtk.Button(_("Apply"))
+        close_button = gtk.Button(_("Close"))
 
         buttons_hbox = gtk.HBox(True, 10)
-        buttons_hbox.pack_start(save_button)
-        buttons_hbox.pack_start(cancel_button)
+        buttons_hbox.pack_start(apply_button)
+        buttons_hbox.pack_start(close_button)
         
         vbox = gtk.VBox(False, 15)
         vbox.pack_start(hpan)
         vbox.pack_start(buttons_hbox, True, True, 10)
         
-        save_button.connect("clicked", self.save_audio_tags)
-        cancel_button.connect_object("clicked", gtk.Widget.destroy, self)
+        apply_button.connect("clicked", self.save_audio_tags)
+        close_button.connect("clicked", lambda *a: self.hide())
         
         self.add(vbox)
         self.show_all()
@@ -79,7 +79,8 @@ class TagEditor(ChildTopWindow):
                 if self.audio.has_key(tag_name):
                     tag_entry.set_text(self.audio[tag_name][0])
             except AttributeError:
-                logging.warn('Can\'t get tags. This is not audio file') 
+                logging.warn('Can\'t get tags. This is not audio file')
+            self.show_all() 
                    
     def save_audio_tags(self, *a):
         for tag_name, tag_entry in zip(self.tag_names, self.tag_entries):
@@ -98,7 +99,8 @@ def edit_tags(path=None):
     if not path:
         logging.warn('Can\'t get tags. File not found')
         return
-    if not vars().has_key("tag_editor"):
+    if not globals().has_key("tag_editor"):
+        global tag_editor
         tag_editor = TagEditor()
     tag_editor.get_audio_tags(path)
     
