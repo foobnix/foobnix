@@ -14,11 +14,8 @@ class BaseFoobnixLayout(FControl, LoadSave):
         FControl.__init__(self, controls)
          
         vbox = gtk.VBox(False, 0)
-        
-          
         vbox.pack_start(controls.top_panel, False, False)
-        
-       
+               
         center_box = gtk.VBox(False, 0)
         
         #self.hpaned_right = gtk.HPaned()
@@ -27,10 +24,9 @@ class BaseFoobnixLayout(FControl, LoadSave):
         
         bbox.pack_start(controls.notetabs, True, True)        
         bbox.pack_start(controls.movie_window, False, False)
-        
         #self.hpaned_right.pack1(child=bbox, resize=True, shrink=True)
         #self.hpaned_right.pack2(child=controls.info_panel, resize=True, shrink=True)
-               
+          
         
         center_box.pack_start(controls.searchPanel, False, False)
         center_box.pack_start(bbox, True, True)

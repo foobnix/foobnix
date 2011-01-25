@@ -12,6 +12,7 @@ from foobnix.helpers.menu import Popup
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.util.fc import FC
+from foobnix.util.tag_util import edit_tags
 
 class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
@@ -114,7 +115,6 @@ class PlaylistTreeControl(CommonTreeControl):
     def append(self, bean):
         return super(PlaylistTreeControl, self).append(bean)
 
-    
     def on_button_press(self, w, e):
         self.controls.notetabs.set_active_tree(self)
         if is_double_left_click(e):
@@ -125,6 +125,8 @@ class PlaylistTreeControl(CommonTreeControl):
             menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
             #menu.add_item('Save as', gtk.STOCK_SAVE_AS, self.controls.save_beans_to, self.get_all_selected_beans())
             menu.add_separator()
+            path = self.get_selected_bean().path
+            menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, path)
             text = self.get_selected_bean().text
             menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
             menu.show(e)
