@@ -10,6 +10,7 @@ import gtk
 from foobnix.util.localization import foobnix_localization
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.helpers.window import ChildTopWindow
+import logging
 
 
 foobnix_localization()
@@ -73,25 +74,31 @@ class TagEditor(ChildTopWindow):
 
     def get_audio_tags(self, path):
         self.audio = get_mutagen_audio(path)
-        print self.audio
-        
         for tag_name, tag_entry in zip(self.tag_names, self.tag_entries):
-            if self.audio.has_key(tag_name):
-                tag_entry.set_text(self.audio[tag_name][0])
-    
+            try:
+                if self.audio.has_key(tag_name):
+                    tag_entry.set_text(self.audio[tag_name][0])
+            except AttributeError:
+                logging.warn('Can\'t get tags. This is not audio file') 
+                   
     def save_audio_tags(self, *a):
         for tag_name, tag_entry in zip(self.tag_names, self.tag_entries):
             tag_value = tag_entry.get_text()
-            if self.audio.has_key(tag_name):
-                self.audio[tag_name] = tag_value
-                self.audio.save()
-            else:
-                if tag_value:
-                    self.audio[tag_name] = [tag_value]
-                    
-
-def edit_tags(path):
-    TagEditor().get_audio_tags(path)
+            try:
+                if self.audio.has_key(tag_name):
+                    self.audio[tag_name] = tag_value
+                    self.audio.save()
+                else:
+                    if tag_value:
+                        self.audio[tag_name] = [tag_value]
+            except AttributeError:
+                logging.warn('Can\'t save tags. This is not audio file') 
+                
+def edit_tags(path=None):
+    if not path:
+        logging.warn('Can\'t get tags. File not found')
+        return
+    if not vars().has_key("tag_editor"):
+        tag_editor = TagEditor()
+    tag_editor.get_audio_tags(path)
     
-
-

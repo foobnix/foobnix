@@ -124,7 +124,7 @@ class DrugDropTree(gtk.TreeView):
         
         from_filter_model, from_filter_paths = from_tree.get_selection().get_selected_rows()
         from_model = from_filter_model.get_model()
-                
+        
         new_iter = None
                 
         for i, from_filter_path  in enumerate(from_filter_paths):
@@ -150,8 +150,19 @@ class DrugDropTree(gtk.TreeView):
                 if new_iter:
                     to_iter = new_iter
                 new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)
-        
-        def remove_replaced(i):
+                
+            if (from_model != to_model
+                and not self.get_bean_from_model_iter(from_model, from_iter).is_file 
+                and from_tree.current_view == VIEW_PLAIN):
+                next_iter = from_model.iter_next(from_iter)
+                iter = new_iter
+                while self.get_bean_from_model_iter(from_model, next_iter).is_file:
+                    row = self.get_row_from_model_iter(from_model, next_iter)
+                    iter = self.to_add_drug_item(to_model, iter, row, gtk.TREE_VIEW_DROP_AFTER)
+                    next_iter = from_model.iter_next(next_iter)
+                    if not next_iter: break
+                
+            def remove_replaced(i):
                 if from_filter_model == to_filter_model:
                     logging.info("Remove already replaced rows")
                     
@@ -190,7 +201,7 @@ class DrugDropTree(gtk.TreeView):
                 if to_tree.current_view == VIEW_TREE:
                     self.updates_tree_structure()
                 
-                if to_tree.current_view == VIEW_PLAIN:             
+                if to_tree.current_view == VIEW_PLAIN:              
                     self.rebuild_as_plain()
        
         remove_replaced(i)
