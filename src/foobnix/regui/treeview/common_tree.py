@@ -161,6 +161,15 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         
         return selected_bean
     
+    def get_selected_beans(self):
+        paths = self.get_selected_bean_paths()
+        if not paths:
+            return None
+        
+        beans = [self._get_bean_by_path(path) for path in paths]
+                
+        return beans
+    
     def get_selected_or_current_bean(self):
         bean = self.get_selected_bean()  
         if bean:

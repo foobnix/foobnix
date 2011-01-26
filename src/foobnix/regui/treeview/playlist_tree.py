@@ -126,8 +126,8 @@ class PlaylistTreeControl(CommonTreeControl):
             menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
             #menu.add_item('Save as', gtk.STOCK_SAVE_AS, self.controls.save_beans_to, self.get_all_selected_beans())
             menu.add_separator()
-            path = self.get_selected_bean().path
-            menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, path)
+            paths = [bean.path for bean in self.get_selected_beans()]
+            menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, paths)
             text = self.get_selected_bean().text
             menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
             menu.show(e)

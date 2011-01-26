@@ -66,7 +66,6 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             self.show()
         
     def hide_window(self, *args):
-        
         if FC().on_close_window == const.ON_CLOSE_CLOSE:
             self.controls.quit()
 
