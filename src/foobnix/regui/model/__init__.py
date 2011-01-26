@@ -102,9 +102,9 @@ class FModel(FTreeModel):
             text.replace("\\", "-")
             return text.strip()
         else:
+            text = "" + self.text
             text.replace("/", "-")
             text.replace("\\", "-")
-            text = "" + self.text
             return text.strip()
     
     def get_save_to(self):
