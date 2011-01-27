@@ -80,7 +80,7 @@ class LastFmService():
         self.preferences_window = None
         self.controls = controls
 
-        #thread.start_new_thread(self.init_thread, ())
+        thread.start_new_thread(self.init_thread, ())
         #self.init_thread()
 
 
@@ -396,4 +396,8 @@ class LastFmService():
         if not self.connect():
             return None
         return self.cache.get_album_image_url(artist, title);
-
+    
+    def love(self, bean):
+        track = self.cache.get_track(bean.artist, bean.title)
+        track.love()
+        logging.debug("I love this track %s-%s" % (bean.artist, bean.title))

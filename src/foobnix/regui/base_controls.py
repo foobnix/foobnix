@@ -53,6 +53,9 @@ class BaseFoobnixControls():
         elif files:            
             self.on_add_files(files)
     
+    def love_this_tracks(self, beans):        
+        map(self.lastfm.love, beans)
+    
     def show_google_results(self, query):
         beans = []
         beans.append(FModel('"%s" not found trying Google search' % query))
