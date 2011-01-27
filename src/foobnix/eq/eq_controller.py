@@ -46,8 +46,7 @@ class EqController(FControl, LoadSave):
         
     
     def on_save(self):
-        self.eq_view.on_save()
-        FC().eq_presets = self.eq_view.models
+        pass
     
     def default_models(self):
         models = []

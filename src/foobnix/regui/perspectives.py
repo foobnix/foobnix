@@ -60,7 +60,10 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         self.buttons.activate_button(name)
     
     def on_load(self):  
-        self.activate_perspective(LEFT_PERSPECTIVE_NAVIGATION)   
+        self.activate_perspective(LEFT_PERSPECTIVE_NAVIGATION)
+        
+    def on_save(self):
+        pass
 
 class PerspectiveButtonControlls(gtk.HBox):
     def __init__(self, activate_perspective, controls):

@@ -79,7 +79,7 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
         FC().volume = percent
     
     def on_save(self):
-        FC().volume = self.volume_scale.get_value()
+        pass
     
     def on_load(self):        
         self.volume_scale.set_value(FC().volume)

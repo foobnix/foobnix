@@ -133,9 +133,7 @@ class MenuBarWidget(FControl):
         self.view_search_panel.set_active(FC().is_view_search_panel)
         
     def on_save(self):
-        FC().is_view_music_tree_panel = self.view_music_tree.get_active()
-        FC().is_view_search_panel = self.view_search_panel.get_active()
-        
+        pass        
 
 class MyMenu(gtk.Menu):
     """My custom menu class for helping buildings"""

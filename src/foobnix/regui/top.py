@@ -54,9 +54,8 @@ class TopWidgets(FControl, LoadSave, gtk.HBox):
             self.old_menu.widget.show()
             self.new_menu_button.hide()
         
-    def on_save(self):        
-        self.controls.volume.on_save()
-        self.old_menu.on_save()
+    def on_save(self):
+        pass        
         
     def on_load(self):        
         self.controls.volume.on_load()

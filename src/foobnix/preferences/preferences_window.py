@@ -104,18 +104,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
             plugin.on_load()
 
     def on_save(self, hide=False):
-        for plugin in self.configs:
-            plugin.on_save()
-        FC().save()
-        if hide:
-            self.hide_window()
-        else:
-            bean = self.navigation.get_selected_bean() 
-            self.hide()
-            if bean:
-                self.populate_config_category(bean.text)
-            self.show()
-                
+        pass
                 
     def hide_window(self, *a):
         self.hide()

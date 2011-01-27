@@ -62,8 +62,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
     
 
     def on_save(self, *a):
-        if FC().is_view_music_tree_panel:
-            FC().hpaned_left = self.hpaned_left.get_position()
+        pass
             
     def on_load(self):  
         #self.controls.search_progress.hide()        
