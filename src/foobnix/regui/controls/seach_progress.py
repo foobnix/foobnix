@@ -12,12 +12,14 @@ class SearchProgressBar(FControl, gtk.ProgressBar):
     def __init__(self, controls):
         FControl.__init__(self, controls)  
         gtk.ProgressBar.__init__(self)
-        self.set_size_request(-1, 5)
+        self.set_size_request(20, -1)
         
-        self.hide()
-        
+        #self.hide()
+        self.set_pulse_step(0.2)
+        self.set_fraction(0)
         self.flag = True
         self.started = False
+        self.set_text("...")
 
             
     def start(self, text):
@@ -38,4 +40,5 @@ class SearchProgressBar(FControl, gtk.ProgressBar):
     
     def stop(self):
         self.flag = False
-        self.hide()
+        self.set_fraction(0)
+        #self.hide()

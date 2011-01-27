@@ -23,7 +23,7 @@ class SearchControls(FControl, gtk.VBox):
         
         self.pack_start(self.search_line(), False, False, 0)
                 
-        self.pack_start(controls.search_progress, False, False, 0)
+        #self.pack_start(controls.search_progress, False, False, 0)
         
         self.show_all()
         """search on enter"""
@@ -72,6 +72,9 @@ class SearchControls(FControl, gtk.VBox):
         hbox = gtk.HBox(False, 0)
         searchLable = gtk.Label()
         searchLable.set_markup("<b>%s</b>" % _("Online Search"))
+        
+        hbox.pack_start(self.controls.search_progress, False, False)
+        
         hbox.pack_start(combobox, False, False)        
         hbox.pack_start(self.entry, True, True)
         hbox.pack_start(search_button, False, False)
@@ -96,7 +99,7 @@ class SearchControls(FControl, gtk.VBox):
         list_func.append(self.controls.search_top_tracks)
         
 
-        liststore.append([_("Albums of")])
+        liststore.append([_("Albums")])
         list_func.append(self.controls.search_top_albums)
         
         liststore.append([_("Similar")])

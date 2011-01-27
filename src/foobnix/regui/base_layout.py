@@ -48,7 +48,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         logging.info("set_visible_search_panel" + str(flag))
         if flag:
             self.controls.searchPanel.show_all()
-            self.controls.search_progress.hide()
+            #self.controls.search_progress.hide()
         else:
             self.controls.searchPanel.hide()   
     
@@ -66,7 +66,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
             FC().hpaned_left = self.hpaned_left.get_position()
             
     def on_load(self):  
-        self.controls.search_progress.hide()        
+        #self.controls.search_progress.hide()        
         self.hpaned_left.set_position(FC().hpaned_left)
         self.set_visible_musictree_panel(FC().is_view_music_tree_panel)
         self.set_visible_search_panel(FC().is_view_search_panel)
