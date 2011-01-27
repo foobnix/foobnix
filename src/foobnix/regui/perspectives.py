@@ -9,7 +9,7 @@ from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.model.signal import FControl
 from foobnix.util.fc import FC
 from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, \
-    LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO
+    LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_LASTFM
 from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
 from foobnix.regui.state import LoadSave
 class PerspectiveControls(FControl, gtk.VBox, LoadSave):
@@ -21,7 +21,8 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
                      LEFT_PERSPECTIVE_NAVIGATION:controls.tabhelper,
                      LEFT_PERSPECTIVE_RADIO:controls.radio.scroll,
                      LEFT_PERSPECTIVE_VIRTUAL:controls.virtual.scroll,
-                     LEFT_PERSPECTIVE_INFO:controls.info_panel
+                     LEFT_PERSPECTIVE_INFO:controls.info_panel,
+                     LEFT_PERSPECTIVE_LASTFM:controls.lastfm_integration.scroll                     
                      }
         
         self.buttons = PerspectiveButtonControlls(self.activate_perspective, controls)
@@ -53,6 +54,8 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         if name == LEFT_PERSPECTIVE_INFO:
             self.controls.filter.hide()
             self.controls.info_panel.update_info_panel()
+        elif name == LEFT_PERSPECTIVE_LASTFM:           
+            self.controls.lastfm_integration.update()        
         else:
             self.controls.filter.show()
    
@@ -80,18 +83,22 @@ class PerspectiveButtonControlls(gtk.HBox):
         
         
         
-        virtuals = PespectiveToogledButton(_("Play Lists"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
+        virtuals = PespectiveToogledButton(_("Playlist"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
         virtuals.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
         
         
         info = PespectiveToogledButton(_("Info"), gtk.STOCK_INFO, _("Info Panel (Alt+4)"))
         info.connect("clicked", lambda * a: activate_perspective(LEFT_PERSPECTIVE_INFO))
+        
+        lastfm = PespectiveToogledButton(_("LastFM"), gtk.STOCK_CONNECT, _("Last.fm Panel (Alt+5)"))
+        lastfm.connect("clicked", lambda * a: activate_perspective(LEFT_PERSPECTIVE_LASTFM))
                 
         self.button_list = {
                      LEFT_PERSPECTIVE_NAVIGATION:musics,
                      LEFT_PERSPECTIVE_RADIO:radios,
                      LEFT_PERSPECTIVE_VIRTUAL:virtuals,
-                     LEFT_PERSPECTIVE_INFO:info
+                     LEFT_PERSPECTIVE_INFO:info,
+                     LEFT_PERSPECTIVE_LASTFM:lastfm
                      }
         
         OneActiveToggledButton(self.button_list.values())
@@ -100,6 +107,8 @@ class PerspectiveButtonControlls(gtk.HBox):
         self.pack_start(radios, False, False, 0)
         self.pack_start(virtuals, False, False, 0)
         self.pack_start(info, False, False, 0)
+        self.pack_start(lastfm, False, False, 0)
     
     def activate_button(self, name):
         self.button_list[name].set_active(True)
+

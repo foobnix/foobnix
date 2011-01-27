@@ -16,7 +16,6 @@ from foobnix.util.m3u_utils import m3u_reader
 import logging
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel
-from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.regui.service.vk_service import VKService
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
@@ -33,8 +32,8 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 class BaseFoobnixControls():
     def __init__(self):
-        self.lastfm = LastFmService(self)
-        self.vk = VKService()
+        
+        self.vk_service = VKService()
 
         self.count_errors = 0
         self.is_scrobbled = False
@@ -54,7 +53,7 @@ class BaseFoobnixControls():
             self.on_add_files(files)
     
     def love_this_tracks(self, beans):        
-        map(self.lastfm.love, beans)
+        map(self.lastfm_service.love, beans)
     
     def show_google_results(self, query):
         beans = []
@@ -299,7 +298,7 @@ class BaseFoobnixControls():
 
     def fill_bean_from_vk(self, bean):
         
-        vk = self.vk.find_one_track(bean.get_display_name())
+        vk = self.vk_service.find_one_track(bean.get_display_name())
         if vk:
             bean.path = vk.path
             bean.time = vk.time
@@ -346,7 +345,7 @@ class BaseFoobnixControls():
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
         sec = int(sec) 
         if sec > 10 and sec % 11 == 0:
-            self.lastfm.report_now_playing(bean)
+            self.lastfm_service.report_now_playing(bean)
             
         if not self.start_time:
             self.start_time = str(int(time.time()))
@@ -354,7 +353,7 @@ class BaseFoobnixControls():
         if not self.is_scrobbled:            
             if sec > dur_sec / 2 or sec > 60:
                 self.is_scrobbled = True
-                self.lastfm.report_scrobbled(bean, self.start_time, dur_sec)
+                self.lastfm_service.report_scrobbled(bean, self.start_time, dur_sec)
             
     def notify_title(self, text):
         logging.debug("Notify title" + text)
@@ -380,8 +379,8 @@ class BaseFoobnixControls():
         self.media_engine.volume(percent)
     
     def search_vk_page_tracks(self, vk_ulr):
-        logging.debug("Search vk page tracks")
-        results = self.vk.find_tracks_by_url(vk_ulr)
+        logging.debug("Search vk_service page tracks")
+        results = self.vk_service.find_tracks_by_url(vk_ulr)
         all = []
         p_bean = FModel(vk_ulr).add_font("bold")
         all.append(p_bean)
@@ -394,7 +393,7 @@ class BaseFoobnixControls():
     
     def search_all_videos(self, query):
         def inline():
-            results = self.vk.find_videos_by_query(query)
+            results = self.vk_service.find_videos_by_query(query)
             all = []
             p_bean = FModel(query).add_font("bold")
             all.append(p_bean)
@@ -410,7 +409,7 @@ class BaseFoobnixControls():
     
     def search_all_tracks(self, query):
         def inline():
-            results = self.vk.find_tracks_by_query(query)
+            results = self.vk_service.find_tracks_by_query(query)
             if not results:
                 results = []
             all = []
@@ -429,7 +428,7 @@ class BaseFoobnixControls():
 
     def search_top_tracks(self, query):
         def inline(query):
-            results = self.lastfm.search_top_tracks(query)
+            results = self.lastfm_service.search_top_tracks(query)
             if not results:
                 results = []
             all = []
@@ -449,7 +448,7 @@ class BaseFoobnixControls():
 
     def search_top_albums(self, query):
         def inline(query):
-            results = self.lastfm.search_top_albums(query)
+            results = self.lastfm_service.search_top_albums(query)
             if not results:
                 results = []
             self.notetabs.append_tab(query, None)
@@ -459,7 +458,7 @@ class BaseFoobnixControls():
                 if (album.album.lower() in albums_already_inserted):
                     continue
                 album.is_file = False
-                tracks = self.lastfm.search_album_tracks(album.artist, album.album)
+                tracks = self.lastfm_service.search_album_tracks(album.artist, album.album)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
                     track.parent(album)                    
@@ -477,7 +476,7 @@ class BaseFoobnixControls():
 
     def search_top_similar(self, query):
         def inline(query):
-            results = self.lastfm.search_top_similar_artist(query)
+            results = self.lastfm_service.search_top_similar_artist(query)
             if not results:
                 results = []
             self.notetabs.append_tab(query, None)
@@ -485,7 +484,7 @@ class BaseFoobnixControls():
                 all = []
                 artist.is_file = False
                 all.append(artist)
-                tracks = self.lastfm.search_top_tracks(artist.artist)
+                tracks = self.lastfm_service.search_top_tracks(artist.artist)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
                     track.parent(artist)
@@ -502,7 +501,7 @@ class BaseFoobnixControls():
 
     def search_top_tags(self, query):
         def inline(query):
-            results = self.lastfm.search_top_tags(query)
+            results = self.lastfm_service.search_top_tags(query)
             if not results:
                 results = []
             self.notetabs.append_tab(query, None)
@@ -510,7 +509,7 @@ class BaseFoobnixControls():
                 all = []
                 tag.is_file = False
                 all.append(tag)
-                tracks = self.lastfm.search_top_tag_tracks(tag.text)
+                tracks = self.lastfm_service.search_top_tag_tracks(tag.text)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
                     track.parent(tag)

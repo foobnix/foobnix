@@ -27,12 +27,17 @@ from foobnix.util.single_thread import SingleThread
 from foobnix.regui.perspectives import PerspectiveControls
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.notetab.tab_library import TabHelperControl
+from foobnix.regui.treeview.lastfm_integration_tree import LastFmIntegrationControls
+from foobnix.regui.service.lastfm_service import LastFmService
 foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):
     def __init__(self, with_dbus=False):
         BaseFoobnixControls.__init__(self)
         self.layout = None
+        
+        self.lastfm_service = LastFmService(self)
+        
         
         self.media_engine = GStreamerEngine(self)
         """elements"""
@@ -69,6 +74,7 @@ class FoobnixCore(BaseFoobnixControls):
         
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
+        self.lastfm_integration = LastFmIntegrationControls(self)
         
         self.perspective = PerspectiveControls(self)
         

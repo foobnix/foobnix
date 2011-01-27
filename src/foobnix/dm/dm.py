@@ -112,7 +112,7 @@ class DM(ChildTopWindow):
             bean = dm_list.get_next_bean_to_dowload()            
             if bean:
                 if not bean.path:                 
-                    vk = self.controls.vk.find_one_track(bean.get_display_name())
+                    vk = self.controls.vk_service.find_one_track(bean.get_display_name())
                     if not vk:
                         bean.status = DOWNLOAD_STATUS_ERROR
                         dm_list.update_bean_info(bean)
