@@ -145,7 +145,7 @@ class DrugDropTree(gtk.TreeView):
             
             if from_model.iter_has_child(from_iter):
                 new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos, True)
-                self.iter_is_parent(from_iter, from_model, to_model, new_iter)
+                self.iter_is_parent(from_filter_iter, from_filter_model, to_model, new_iter)
             else:
                 if new_iter:
                     to_iter = new_iter
@@ -250,13 +250,13 @@ class DrugDropTree(gtk.TreeView):
         
         return new_iter
 
-    def iter_is_parent(self, from_iter, from_model, to_model, to_parent_iter, pos=gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
-        iters = self.content_filter(from_iter, from_model) #to_parent_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)
+    def iter_is_parent(self, from_filter_iter, from_filter_model, to_model, to_parent_iter, pos=gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+        iters = self.content_filter(from_filter_iter, from_filter_model) #to_parent_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)
         for iter in iters:
-            child_row = self.get_row_from_model_iter(from_model, iter)
+            child_row = self.get_row_from_model_iter(from_filter_model, iter)
             to_child_iter = to_model.append(to_parent_iter, child_row)
-            if  from_model.iter_n_children(iter):
-                self.iter_is_parent(iter, from_model, to_model, to_child_iter)
+            if  from_filter_model.iter_n_children(iter):
+                self.iter_is_parent(iter, from_filter_model, to_model, to_child_iter)
     
     def content_filter(self, from_iter, from_model):
         cue_iters = []
