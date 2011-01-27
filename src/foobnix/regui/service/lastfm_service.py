@@ -10,7 +10,6 @@ from foobnix.thirdparty import pylast
 from foobnix.thirdparty.pylast import WSError, Tag
 import logging
 from foobnix.util.fc import FC
-from foobnix.helpers.dialog_entry import show_login_password_error_dialog
 from foobnix.regui.model import FModel
 import thread
 from foobnix.thirdparty.google.translate import translate
@@ -81,7 +80,7 @@ class LastFmService():
         self.controls = controls
 
         #thread.start_new_thread(self.init_thread, ())
-        #self.init_thread()
+        self.init_thread()
 
 
 
@@ -128,7 +127,26 @@ class LastFmService():
         return True
     def get_network(self):
         return self.network
-
+    
+    def get_user(self, username):
+        return self.network.get_user(username);
+    
+    def get_loved_tracks(self, username , limit=50):
+        lfm_tracks = self.get_user(username).get_loved_tracks()      
+        return self.sub_tracks_to_models(lfm_tracks, 'track')    
+    
+    def get_recent_tracks(self, username , limit=10):
+        lfm_tracks = self.get_user(username).get_recent_tracks(10)      
+        return self.sub_tracks_to_models(lfm_tracks, 'track')
+    
+    def get_top_tracks(self, username):
+        lfm_tracks = self.get_user(username).get_top_tracks()      
+        return self.sub_tracks_to_models(lfm_tracks, 'item')
+    
+    def get_top_artists(self, username):
+        lfm_tracks = self.get_user(username).get_top_artists()      
+        return self.sub_artist_to_models(lfm_tracks, 'item')
+    
     def get_scrobbler(self):
         return self.scrobbler
     
@@ -204,7 +222,48 @@ class LastFmService():
 
             beans.append(bean)
         return beans
+    
+    """some parent linke LoveTrack"""
+    def sub_tracks_to_models(self, love_tracks, key='track'):
+        tracks = []
+        for love_track in love_tracks:
+            try:
+                track = getattr(love_track, key)
+            except AttributeError:
+                track = love_track[key]
+            tracks.append(track)
+            
+        return self.tracks_to_models(tracks)
 
+    def sub_artist_to_models(self, topartists, key='item'):
+        artists = []
+        for love_track in topartists:
+            try:
+                artist = getattr(love_track, key)
+            except AttributeError:
+                artist = love_track[key]
+            artists.append(artist)
+            
+        return self.artists_to_models(artists)
+
+    
+    def tracks_to_models(self, tracks):
+        results = []
+        for track in tracks:
+            artist = track.get_artist().get_name()
+            title = track.get_title()
+            bean = FModel(artist + " - " + title).add_artist(artist).add_title(title)
+            results.append(bean)
+        return results
+    
+    def artists_to_models(self, artists):
+        results = []
+        for track in artists:
+            artist = track.get_name()
+            bean = FModel(artist).add_artist(artist)
+            results.append(bean)
+        return results
+    
     def search_album_tracks(self, artist_name, album_name):
         if not artist_name or not album_name:
             logging.warn("search_album_tracks artist and album is empty")
@@ -213,13 +272,7 @@ class LastFmService():
             return None
         album = self.network.get_album(artist_name, album_name)
         tracks = album.get_tracks()
-        results = []
-        for track in tracks:
-            artist = track.get_artist().get_name()
-            title = track.get_title()
-            bean = FModel(artist + " - " + title).add_artist(artist).add_title(title)
-            results.append(bean)
-        return results
+        return self.tracks_to_models(tracks)
 
     def search_top_tags(self, tag):
         if not self.connect():
@@ -396,4 +449,8 @@ class LastFmService():
         if not self.connect():
             return None
         return self.cache.get_album_image_url(artist, title);
-
+    
+    def love(self, bean):
+        track = self.cache.get_track(bean.artist, bean.title)
+        track.love()
+        logging.debug("I love this track %s-%s" % (bean.artist, bean.title))

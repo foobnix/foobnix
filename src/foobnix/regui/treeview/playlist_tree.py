@@ -73,7 +73,7 @@ class PlaylistTreeControl(CommonTreeControl):
             self.controls.seek_up()
     
     def common_single_random(self):
-        logging.debug("Repeat state"+ str(FC().repeat_state))
+        logging.debug("Repeat state" + str(FC().repeat_state))
         if FC().repeat_state == const.REPEAT_SINGLE:
             return self.get_current_bean_by_UUID();
         
@@ -94,7 +94,7 @@ class PlaylistTreeControl(CommonTreeControl):
         
         self.set_play_icon_to_bean(bean)
         
-        logging.debug("Next bean"+ str(bean)+ bean.text)
+        logging.debug("Next bean" + str(bean) + bean.text)
         
         return bean
 
@@ -125,8 +125,11 @@ class PlaylistTreeControl(CommonTreeControl):
             menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
             #menu.add_item('Save as', gtk.STOCK_SAVE_AS, self.controls.save_beans_to, self.get_all_selected_beans())
             menu.add_separator()
-            path = self.get_selected_bean().path
-            menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, path)
+            paths = [bean.path for bean in self.get_selected_beans()]
+            menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, paths)
             text = self.get_selected_bean().text
             menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
+            menu.add_separator()
+            menu.add_item(_('Love this track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
+            
             menu.show(e)

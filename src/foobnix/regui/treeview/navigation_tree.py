@@ -50,16 +50,16 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         if is_rigth_click(e):
             # on right click, show pop-up menu
             menu = Popup()
-            menu.add_item(_("Add to current tab"), gtk.STOCK_ADD, lambda: self.add_to_tab(True), None)
-            menu.add_item(_("Add to new tab"), gtk.STOCK_MEDIA_PLAY, self.add_to_tab, None)
+            menu.add_item(_("Append to playlist"), gtk.STOCK_ADD, lambda: self.add_to_tab(True), None)
+            menu.add_item(_("Open in new playlist"), gtk.STOCK_MEDIA_PLAY, self.add_to_tab, None)
             menu.add_separator()
-            menu.add_item(_("Add folder"), gtk.STOCK_OPEN, self.add_folder, None)
+            menu.add_item(_("Add folder here"), gtk.STOCK_OPEN, self.add_folder, None)
             menu.add_separator()
 
             if FC().tabs_mode == "Multi":
-                menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
-                menu.add_item(_("Clear Music Tree"), gtk.STOCK_CLEAR, lambda : self.controls.tabhelper.clear_tree(self.scroll), None)
-            menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, lambda: self.controls.tabhelper.on_update_music_tree(self.scroll), None)
+                menu.add_item(_("Open folder in tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
+                menu.add_item(_("Clear"), gtk.STOCK_CLEAR, lambda : self.controls.tabhelper.clear_tree(self.scroll), None)
+            menu.add_item(_("Update"), gtk.STOCK_REFRESH, lambda: self.controls.tabhelper.on_update_music_tree(self.scroll), None)
                 
             menu.show(e)
 

@@ -163,7 +163,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             return
         
         """check connection"""
-        if not self.controls.lastfm.connect():
+        if not self.controls.lastfm_service.connect():
             return
 
         """update bean info form text if possible"""
@@ -181,8 +181,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         bean = self.bean
         """update info album and year"""
         
-        album_name = self.controls.lastfm.get_album_name(bean.artist, bean.title)
-        album_year = self.controls.lastfm.get_album_year(bean.artist, bean.title)
+        album_name = self.controls.lastfm_service.get_album_name(bean.artist, bean.title)
+        album_year = self.controls.lastfm_service.get_album_year(bean.artist, bean.title)
       
         info_line = bean.artist        
         if album_name:
@@ -198,7 +198,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         """update image"""
         if not bean.image:
-            bean.image = self.controls.lastfm.get_album_image_url(bean.artist, bean.title)
+            bean.image = self.controls.lastfm_service.get_album_image_url(bean.artist, bean.title)
         
         self.image.update_info_from(bean)
         self.controls.trayicon.update_info_from(bean)
@@ -224,7 +224,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         self.last_fm_label.set_uri("http://www.last.fm/search?q=%s" % self.bean.artist)
         
-        artist = self.controls.lastfm.get_network().get_artist(self.bean.artist)        
+        artist = self.controls.lastfm_service.get_network().get_artist(self.bean.artist)        
         self.wiki.set_text(artist.get_bio_content(), self.bean.artist)
         
         images = artist.get_images(limit=5)
@@ -242,7 +242,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.info_cache.similar_tags_bean = self.bean
         
         """similar  tags"""
-        similar_tags = self.controls.lastfm.search_top_similar_tags(self.bean.artist, self.bean.title)
+        similar_tags = self.controls.lastfm_service.search_top_similar_tags(self.bean.artist, self.bean.title)
         parent = FModel("Similar Tags: " + self.bean.title)
         update_parent_for_beans(similar_tags, parent)
         self.tags.populate_all([parent] + similar_tags)
@@ -253,7 +253,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.info_cache.similar_tracks_bean = self.bean
         
         """similar  songs"""
-        similar_tracks = self.controls.lastfm.search_top_similar_tracks(self.bean.artist, self.bean.title)
+        similar_tracks = self.controls.lastfm_service.search_top_similar_tracks(self.bean.artist, self.bean.title)
         parent = FModel("Similar Tracks: " + self.bean.title)
         update_parent_for_beans(similar_tracks, parent)
         self.tracks.populate_all([parent] + similar_tracks)
@@ -264,7 +264,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.info_cache.similar_artists_bean = self.bean
         
         """similar  artists"""
-        similar_artists = self.controls.lastfm.search_top_similar_artist(self.bean.artist)
+        similar_artists = self.controls.lastfm_service.search_top_similar_artist(self.bean.artist)
         parent = FModel("Similar Artists: " + self.bean.artist)
         update_parent_for_beans(similar_artists, parent)
         self.artists.populate_all([parent] + similar_artists)
@@ -275,7 +275,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         self.info_cache.best_songs_bean = self.bean
         
-        best_songs = self.controls.lastfm.search_top_tracks(self.bean.artist)
+        best_songs = self.controls.lastfm_service.search_top_tracks(self.bean.artist)
         parent = FModel("Best Songs: " + self.bean.artist)
         update_parent_for_beans(best_songs, parent)
         self.best_songs.populate_all([parent] + best_songs)
