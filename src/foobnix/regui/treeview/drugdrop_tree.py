@@ -162,7 +162,6 @@ class DrugDropTree(gtk.TreeView):
                         pos = gtk.TREE_VIEW_DROP_AFTER
                     else:
                         pos = gtk.TREE_VIEW_DROP_INTO_OR_AFTER
-                    #pos = gtk.TREE_VIEW_DROP_AFTER if to_tree.current_view == VIEW_PLAIN else gtk.TREE_VIEW_DROP_INTO_OR_AFTER
                     iter = self.to_add_drug_item(to_model, iter, row, pos)
                     next_iter = from_model.iter_next(next_iter)
                     if not next_iter: break

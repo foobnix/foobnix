@@ -12,6 +12,7 @@ from foobnix.util.audio import get_mutagen_audio
 from foobnix.helpers.window import ChildTopWindow
 import logging
 import os.path
+from mutagen.mp4 import MP4, MP4MetadataValueError
 
 
 foobnix_localization()
@@ -33,6 +34,7 @@ class TagEditor(ChildTopWindow):
         
         self.paths = []
         self.tag_names = ["artist", "title", "album", "date", "tracknumber", "genre", "author", "composer"]
+        self.tag_mp4_names = ['\xa9ART', '\xa9nam', '\xa9alb', '\xa9day', 'trkn', '\xa9gen', '', '\xa9wrt']
         self.tag_entries = []
         self.labels = []
         self.toggle_buttons = []
@@ -106,7 +108,15 @@ class TagEditor(ChildTopWindow):
         for path in paths:
             self.audious.append(get_mutagen_audio(path))
         
-        for tag_name, tag_entry in zip(self.tag_names, self.tag_entries):
+        if isinstance(self.audious[0], MP4):
+            tag_names = self.tag_mp4_names
+            #make author entry not sensitive because mp4 hasn't so tag
+            self.tag_entries[-2].set_sensitive(False)
+            self.toggle_buttons[-2].set_sensitive(False)
+            self.labels[-2].set_sensitive(False)
+        else:
+            tag_names = self.tag_names
+        for tag_name, tag_entry in zip(tag_names, self.tag_entries):
             try:
                 if self.audious[0].has_key(tag_name):
                     tag_entry.set_text(self.audious[0][tag_name][0])
@@ -114,11 +124,18 @@ class TagEditor(ChildTopWindow):
                     tag_entry.set_text('')
             except AttributeError:
                 logging.warn('Can\'t get tags. This is not audio file')
-        self.show_all() 
+            except TypeError as e:
+                if isinstance(self.audious[0][tag_name][0], tuple):
+                    tag_entry.set_text(str(self.audious[0][tag_name][0]).strip('()'))
+                else:
+                    logging.error(e)
+        self.show_all()
                    
     def save_audio_tags(self, button, paths):
         
         def set_tags(audio, path):
+            if isinstance(audio, MP4):
+                tag_name = tag_mp4_name
             try:
                 if audio.has_key(tag_name):
                     audio[tag_name] = tag_value
@@ -128,8 +145,13 @@ class TagEditor(ChildTopWindow):
                 audio.save()
             except AttributeError:
                 logging.warn('Can\'t save tags. ' + os.path.split(path)[1] + ' is not audio file') 
-        
-        for tag_name, tag_entry, toggle_button in zip(self.tag_names, self.tag_entries, self.toggle_buttons):
+            except MP4MetadataValueError:
+                #for mp4 trkn is tuple
+                new_tag_value = [tuple(map(int, tag_value.split(', ')))]
+                audio[tag_name] = new_tag_value
+                audio.save()
+                          
+        for tag_name, tag_mp4_name, tag_entry, toggle_button in zip(self.tag_names, self.tag_mp4_names, self.tag_entries, self.toggle_buttons):
             tag_value = tag_entry.get_text()
             if toggle_button.get_active():
                 for audio, path in zip(self.audious, self.paths):
