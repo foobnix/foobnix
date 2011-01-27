@@ -132,7 +132,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def delete_selected(self):
         selection = self.get_selection()
         fm, paths = selection.get_selected_rows()
-        
+        paths.reverse()
         for path in paths:
             path = self.filter_model.convert_path_to_child_path(path)
             iter = self.model.get_iter(path)
