@@ -21,6 +21,7 @@ import threading
 from foobnix.util.key_utils import is_key
 from foobnix.util.m3u_utils import m3u_writer
 import thread
+import gobject
 
 class TabGeneral(gtk.Notebook, FControl):
     def __init__(self, controls):
@@ -107,7 +108,9 @@ class TabGeneral(gtk.Notebook, FControl):
         window.show_all()
     
     def append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None, optimization=False):
-        self._append_tab(name, beans, navig_tree, optimization)
+        def task():
+            self._append_tab(name, beans, navig_tree, optimization)
+        gobject.idle_add(task)
         
         
     def _append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None, optimization=False):
