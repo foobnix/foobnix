@@ -9,6 +9,8 @@ from foobnix.util.const import LEFT_PERSPECTIVE_LASTFM
 from foobnix.util.fc import FC
 from foobnix.regui.model import FModel
 from foobnix.util.bean_utils import update_parent_for_beans
+from foobnix.util.mouse_utils import is_rigth_click
+from foobnix.helpers.menu import Popup
 
 class LastFmIntegrationControls(CommonTreeControl):
     def __init__(self, controls):
@@ -29,6 +31,14 @@ class LastFmIntegrationControls(CommonTreeControl):
     def activate_perspective(self):   
         FC().left_perspective = LEFT_PERSPECTIVE_LASTFM
         
+    def on_button_press(self, w, e):
+        active = self.get_selected_bean()
+        if is_rigth_click(e):
+            menu = Popup()
+            menu.add_item('Play', gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
+            menu.add_item('Copy to Search Line', gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            
+            menu.show(e)
+                    
     def update(self):
         self.controls.in_thread.run_with_progressbar(self._update)
         

@@ -663,6 +663,7 @@ class BaseFoobnixControls():
     def on_save(self):
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):
+                logging.debug("SAVE " + str(self.__dict__[element]))
                 self.__dict__[element].on_save()
-            else:
-                logging.debug("NOT SAVE" + str(self.__dict__[element]))
+            
+                

@@ -27,8 +27,8 @@ from foobnix.util.single_thread import SingleThread
 from foobnix.regui.perspectives import PerspectiveControls
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.notetab.tab_library import TabHelperControl
-from foobnix.regui.treeview.lastfm_integration_tree import LastFmIntegrationControls
 from foobnix.regui.service.lastfm_service import LastFmService
+from foobnix.regui.treeview.lastfm_integration_tree import LastFmIntegrationControls
 foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):

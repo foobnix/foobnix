@@ -56,10 +56,7 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
         if is_rigth_click(e):
             menu = Popup()
             menu.add_item('Play', gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
-            menu.add_item('Copy to Search Line', gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)
-            menu.add_separator()
-            menu.add_item(_("Append to tab"), gtk.STOCK_ADD, lambda: self.controls.tree.add_to_tab(True), None)
-            menu.add_item(_("Open in new tab"), gtk.STOCK_MEDIA_PLAY, self.controls.tree.add_to_tab, None)
+            menu.add_item('Copy to Search Line', gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            
             menu.show(e)
         
     def on_load(self):
