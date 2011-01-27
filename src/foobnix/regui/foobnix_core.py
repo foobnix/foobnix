@@ -27,7 +27,6 @@ from foobnix.util.single_thread import SingleThread
 from foobnix.regui.perspectives import PerspectiveControls
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.notetab.tab_library import TabHelperControl
-from foobnix.preferences.configs.hotkey_conf import load_foobnix_hotkeys
 foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):
@@ -92,6 +91,7 @@ class FoobnixCore(BaseFoobnixControls):
             self.dbus = DBusManager(self)
             try:            
                 import keybinder #@UnresolvedImport @UnusedImport
+                from foobnix.preferences.configs.hotkey_conf import load_foobnix_hotkeys
                 load_foobnix_hotkeys()
             except:
                 pass
