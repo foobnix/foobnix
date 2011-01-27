@@ -133,8 +133,9 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         selection = self.get_selection()
         fm, paths = selection.get_selected_rows()
         
-        for path in paths:
-            path = self.filter_model.convert_path_to_child_path(path)
+        paths.reverse() # reverse to avoid that removing change position 
+        for path in  paths:
+            logging.debug("path: "+ str(path))
             iter = self.model.get_iter(path)
             self.model.remove(iter)
         
