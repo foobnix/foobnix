@@ -12,6 +12,8 @@ from foobnix.util.id3_util import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.m3u_utils import m3u_reader
 import os.path
+import gobject
+from uuid import uuid4
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -108,12 +110,10 @@ class DrugDropTree(gtk.TreeView):
         to_model = to_filter_model.get_model()
         if to_tree.get_dest_row_at_pos(x, y):
             to_filter_path, to_filter_pos = to_tree.get_dest_row_at_pos(x, y)
-            to_path = to_filter_model.convert_path_to_child_path(to_filter_path)      
             to_filter_iter = to_filter_model.get_iter(to_filter_path)
             to_iter = to_filter_model.convert_iter_to_child_iter(to_filter_iter)
         else:
             to_filter_path = None
-            to_path = None
             to_filter_pos = None     
             to_filter_iter = None
             to_iter = None
@@ -126,11 +126,12 @@ class DrugDropTree(gtk.TreeView):
         from_model = from_filter_model.get_model()
         
         new_iter = None
-                
-        for i, from_filter_path  in enumerate(from_filter_paths):
+        self.row_to_remove = []        
+        for from_filter_path  in from_filter_paths:
             from_filter_iter = from_filter_model.get_iter(from_filter_path)
             from_path = from_filter_model.convert_path_to_child_path(from_filter_path)
             from_iter = from_model.get_iter(from_path)
+            from_filter_row_reference = gtk.TreeRowReference(from_filter_model, from_filter_path)
             
             """do not copy to himself"""
             if to_tree == from_tree and from_filter_path == to_filter_path:
@@ -138,14 +139,21 @@ class DrugDropTree(gtk.TreeView):
                 return None
             
             row = self.get_row_from_model_iter(from_filter_model, from_filter_iter)
-            
+            #self.row_to_remove.append(id(row))
             """if m3u is dropped"""
             if self.add_m3u(from_model, from_iter, to_model, to_iter, to_filter_pos):
                 continue
             
             if from_model.iter_has_child(from_iter):
                 new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos, True)
-                self.iter_is_parent(from_filter_iter, from_filter_model, to_model, new_iter)
+                """if from_model == to_model:
+                    row_uuid = self.get_row_from_model_iter(from_model, new_iter)[self.UUID[0]]
+                    self.iter_is_parent_2(from_model, new_iter, row_uuid)
+                    '''from_filter_iter = from_filter_model.get_iter(from_filter_path)
+                    if from_model.get_path(new_iter) < from_path:
+                        from_filter_iter = from_filter_model.iter_next(from_filter_iter)'''
+                else:"""
+                self.iter_is_parent(from_filter_row_reference, from_filter_model, to_model, new_iter)
             else:
                 if new_iter:
                     to_iter = new_iter
@@ -166,52 +174,56 @@ class DrugDropTree(gtk.TreeView):
                     next_iter = from_model.iter_next(next_iter)
                     if not next_iter: break
                 
-            def remove_replaced(i):
-                if from_filter_model == to_filter_model:
-                    logging.info("Remove already replaced rows")
+        def r_replaced():
+            def has_child(iter, row):    
+                if row.iterchildren():
+                    child_iter = from_model.iter_children(iter)
+                    for row in row.iterchildren():
+                        has_child(child_iter, row)
+                        if row[self.UUID[0]] in self.row_to_remove:
+                            from_model.remove(child_iter)
+                        else:
+                            child_iter = from_model.iter_next(child_iter)
+            
+            iter = from_model.get_iter_first()
+            for row in from_model:
+                has_child(iter, row)
+                if row[self.UUID[0]] in self.row_to_remove:
+                    from_model.remove(iter)
+                else:
+                    iter = from_model.iter_next(iter)
                     
-                    """Iters have already changed. Redefine"""
-                    from_iter = from_model.get_iter(from_path)
-                    from_level = from_model.iter_depth(from_iter)
-                    try:
-                        to_iter = to_model.get_iter(to_path)
-                        to_level = from_model.iter_depth(to_iter)
-                    except TypeError:
-                        pass
-                    if to_path and from_level == to_level:
-                        
-                        if from_path[from_level] - i > to_path[from_level]:
-                            logging.info("drag up")
-                            n = 0 if to_model.iter_has_child(to_iter) else 1
-                            while i > -1:
-                                from_model.remove(from_model.get_iter((from_path[from_level] + n,)))
-                                i -= 1 
-                    
-                        elif from_path[from_level] - i < to_path[from_level]:
-                            logging.info("drag down")
-                            n = i
-                            from_path1 = from_path[:from_level] + (from_path[from_level] - n,) + from_path[from_level + 1 :]
-                            while i > -1:
-                                from_model.remove(from_model.get_iter(from_path1))
-                                i -= 1
-                    else:
-                        logging.info("drag to empty space or from other level")
-                        n = i
-                        while i > -1:
-                            from_path1 = from_path[:from_level] + (from_path[from_level] - n,) + from_path[from_level + 1 :]
-                            from_model.remove(from_model.get_iter(from_path1))
-                            i -= 1
+        if from_model == to_model:
+            r_replaced()
+        self.row_to_remove = []
+        
+        if to_tree.current_view == VIEW_TREE:
+            self.updates_tree_structure()
                 
-                if to_tree.current_view == VIEW_TREE:
-                    self.updates_tree_structure()
-                
-                if to_tree.current_view == VIEW_PLAIN:              
-                    self.rebuild_as_plain()
-       
-        remove_replaced(i)
+        if to_tree.current_view == VIEW_PLAIN:              
+            self.rebuild_as_plain()
         
         self.on_drag_drop_finish()
-    
+ 
+    def iter_is_parent_2(self, from_model, to_parent_iter, row_uuid):
+        
+        def has_child(iter, row):    
+            if row.iterchildren():
+                child_iter = from_model.iter_children(iter)
+                for row in row.iterchildren():
+                    has_child(child_iter, row)
+                    if row[self.UUID[0]] == row_uuid:
+                        self.to_add_drug_item(self, from_model, to_parent_iter, row, gtk.TREE_VIEW_DROP_INTO_OR_AFTER)
+                    child_iter = from_model.iter_next(child_iter)
+            
+        iter = from_model.get_iter_first()
+        for row in from_model:
+            has_child(iter, row)
+            if row[self.UUID[0]] == row_uuid:
+                self.to_add_drug_item(self, from_model, to_parent_iter, row, gtk.TREE_VIEW_DROP_INTO_OR_AFTER)
+            else:
+                iter = from_model.iter_next(iter)
+ 
     def add_m3u(self, from_model, from_iter, to_model, to_iter, pos):
         if (from_model.get_value(from_iter, 0).lower().endswith(".m3u") 
         or from_model.get_value(from_iter, 0).lower().endswith(".m3u8")):
@@ -238,6 +250,8 @@ class DrugDropTree(gtk.TreeView):
             return True
     
     def to_add_drug_item(self, to_model, to_iter, row, pos, from_iter_has_child=False):    
+        self.row_to_remove.append(row[self.UUID[0]])
+        row[self.UUID[0]] = uuid4()
         if to_iter:
             if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
                 new_iter = to_model.prepend(to_iter, row)
@@ -251,40 +265,49 @@ class DrugDropTree(gtk.TreeView):
                 new_iter = to_model.append(None, row)
         else:
             new_iter = to_model.append(None, row)
-        
+        row[self.UUID[0]] = uuid4()
+        self.row_to_remove.append(row[self.UUID[0]])
         return new_iter
 
-    def iter_is_parent(self, from_filter_iter, from_filter_model, to_model, to_parent_iter, pos=gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
-        iters = self.content_filter(from_filter_iter, from_filter_model) #to_parent_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)
-        for iter in iters:
+    def iter_is_parent(self, from_filter_row_reference, from_filter_model, to_model, to_parent_iter, pos=gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+        from_filter_iter = self.get_iter_from_row_reference(from_filter_row_reference)
+        refs = self.content_filter(from_filter_iter, from_filter_model) #to_parent_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)
+        for ref in refs:
+            iter = self.get_iter_from_row_reference(ref)
             child_row = self.get_row_from_model_iter(from_filter_model, iter)
+            self.row_to_remove.append(child_row[self.UUID[0]])
+            child_row[self.UUID[0]] = uuid4()
             to_child_iter = to_model.append(to_parent_iter, child_row)
+            """Iters have already changed. Redefine"""
+            iter = self.get_iter_from_row_reference(ref)
             if  from_filter_model.iter_n_children(iter):
-                self.iter_is_parent(iter, from_filter_model, to_model, to_child_iter)
+                self.iter_is_parent(ref, from_filter_model, to_model, to_child_iter)
     
     def content_filter(self, from_iter, from_model):
-        cue_iters = []
-        folder_iters = []
-        not_cue_iters = []
+        cue_refs = []
+        folder_refs = []
+        not_cue_refs = []
         for n in xrange(from_model.iter_n_children(from_iter)):
             from_child_iter = from_model.iter_nth_child(from_iter, n)
+            row_reference = self.get_row_reference_from_iter(from_model, from_child_iter)
             if (from_model.get_value(from_child_iter, 0).endswith(".m3u") 
                 or from_model.get_value(from_child_iter, 0).endswith(".m3u8")):
                 logging.info("m3u is found. Skip it")
                 continue
             elif from_model.get_value(from_child_iter, 0).endswith(".cue"):
                 logging.info("Cue is found. Skip other files")
-                cue_iters.append(from_child_iter)
+                cue_refs.append(row_reference)
             else:
                 if from_model.iter_has_child(from_child_iter):
-                    folder_iters.append(from_child_iter)
-                not_cue_iters.append(from_child_iter)
-        return cue_iters + folder_iters if cue_iters else not_cue_iters
+                    folder_refs.append(row_reference)
+                not_cue_refs.append(row_reference)
+        
+        return cue_refs + folder_refs if cue_refs else not_cue_refs
 
     def child_by_recursion(self, row, plain):
         for child in row.iterchildren():
-                plain.append(child)
-                self.child_by_recursion(child, plain)
+            plain.append(child)
+            self.child_by_recursion(child, plain)
     
     def rebuild_as_tree(self, *a):
         self.current_view = VIEW_TREE        

@@ -117,6 +117,15 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             attributes.append(value)
         return attributes
 
+    def get_iter_from_row_reference(self, row_reference):
+        model = row_reference.get_model()
+        path = row_reference.get_path()
+        return model.get_iter(path)
+    
+    def get_row_reference_from_iter(self, model, iter):
+        path = model.get_path(iter)
+        return gtk.TreeRowReference(model, path)
+    
     def clear_tree(self):
         self.model.clear()
 
