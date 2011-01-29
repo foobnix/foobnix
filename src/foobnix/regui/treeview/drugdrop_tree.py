@@ -128,7 +128,6 @@ class DrugDropTree(gtk.TreeView):
         new_iter = None
         self.row_to_remove = []        
         for from_filter_path  in from_filter_paths:
-            from_filter_iter = from_filter_model.get_iter(from_filter_path)
             from_path = from_filter_model.convert_path_to_child_path(from_filter_path)
             from_iter = from_model.get_iter(from_path)
             from_filter_row_reference = gtk.TreeRowReference(from_filter_model, from_filter_path)
@@ -138,26 +137,17 @@ class DrugDropTree(gtk.TreeView):
                 drag_context.finish(False, False)
                 return None
             
-            row = self.get_row_from_model_iter(from_filter_model, from_filter_iter)
-            #self.row_to_remove.append(id(row))
             """if m3u is dropped"""
             if self.add_m3u(from_model, from_iter, to_model, to_iter, to_filter_pos):
                 continue
             
             if from_model.iter_has_child(from_iter):
-                new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos, True)
-                """if from_model == to_model:
-                    row_uuid = self.get_row_from_model_iter(from_model, new_iter)[self.UUID[0]]
-                    self.iter_is_parent_2(from_model, new_iter, row_uuid)
-                    '''from_filter_iter = from_filter_model.get_iter(from_filter_path)
-                    if from_model.get_path(new_iter) < from_path:
-                        from_filter_iter = from_filter_model.iter_next(from_filter_iter)'''
-                else:"""
+                new_iter = self.to_add_drug_item(to_model, to_iter, from_filter_row_reference, to_filter_pos, True)
                 self.iter_is_parent(from_filter_row_reference, from_filter_model, to_model, new_iter)
             else:
                 if new_iter:
                     to_iter = new_iter
-                new_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)
+                new_iter = self.to_add_drug_item(to_model, to_iter, from_filter_row_reference, to_filter_pos)
                 
             if (from_model != to_model
                 and not self.get_bean_from_model_iter(from_model, from_iter).is_file 
@@ -165,36 +155,23 @@ class DrugDropTree(gtk.TreeView):
                 next_iter = from_model.iter_next(from_iter)
                 iter = new_iter
                 while self.get_bean_from_model_iter(from_model, next_iter).is_file:
-                    row = self.get_row_from_model_iter(from_model, next_iter)
+                    ref = self.get_row_reference_from_iter(from_model, next_iter)
                     if to_tree.current_view == VIEW_TREE and iter != new_iter:
                         pos = gtk.TREE_VIEW_DROP_AFTER
                     else:
                         pos = gtk.TREE_VIEW_DROP_INTO_OR_AFTER
-                    iter = self.to_add_drug_item(to_model, iter, row, pos)
+                    iter = self.to_add_drug_item(to_model, iter, ref, pos)
                     next_iter = from_model.iter_next(next_iter)
                     if not next_iter: break
                 
-        def r_replaced():
-            def has_child(iter, row):    
-                if row.iterchildren():
-                    child_iter = from_model.iter_children(iter)
-                    for row in row.iterchildren():
-                        has_child(child_iter, row)
-                        if row[self.UUID[0]] in self.row_to_remove:
-                            from_model.remove(child_iter)
-                        else:
-                            child_iter = from_model.iter_next(child_iter)
-            
-            iter = from_model.get_iter_first()
-            for row in from_model:
-                has_child(iter, row)
-                if row[self.UUID[0]] in self.row_to_remove:
-                    from_model.remove(iter)
-                else:
-                    iter = from_model.iter_next(iter)
-                    
+        def remove_replaced():
+            for ref in self.row_to_remove:
+                filter_iter = self.get_iter_from_row_reference(ref)
+                iter = from_filter_model.convert_iter_to_child_iter(filter_iter)
+                from_model.remove(iter)    
+        
         if from_model == to_model:
-            r_replaced()
+            remove_replaced()
         self.row_to_remove = []
         
         if to_tree.current_view == VIEW_TREE:
@@ -202,27 +179,7 @@ class DrugDropTree(gtk.TreeView):
                 
         if to_tree.current_view == VIEW_PLAIN:              
             self.rebuild_as_plain()
-        
-        self.on_drag_drop_finish()
- 
-    def iter_is_parent_2(self, from_model, to_parent_iter, row_uuid):
-        
-        def has_child(iter, row):    
-            if row.iterchildren():
-                child_iter = from_model.iter_children(iter)
-                for row in row.iterchildren():
-                    has_child(child_iter, row)
-                    if row[self.UUID[0]] == row_uuid:
-                        self.to_add_drug_item(self, from_model, to_parent_iter, row, gtk.TREE_VIEW_DROP_INTO_OR_AFTER)
-                    child_iter = from_model.iter_next(child_iter)
-            
-        iter = from_model.get_iter_first()
-        for row in from_model:
-            has_child(iter, row)
-            if row[self.UUID[0]] == row_uuid:
-                self.to_add_drug_item(self, from_model, to_parent_iter, row, gtk.TREE_VIEW_DROP_INTO_OR_AFTER)
-            else:
-                iter = from_model.iter_next(iter)
+                
  
     def add_m3u(self, from_model, from_iter, to_model, to_iter, pos):
         if (from_model.get_value(from_iter, 0).lower().endswith(".m3u") 
@@ -245,19 +202,26 @@ class DrugDropTree(gtk.TreeView):
                 row = self.get_row_from_bean(bean)
                 if new_iter:
                     to_iter = new_iter
-                new_iter = self.to_add_drug_item(to_model, to_iter, row, pos)
-                  
+                new_iter = self.to_add_drug_item(to_model, to_iter, None,  pos, row=row)
+                
             return True
     
-    def to_add_drug_item(self, to_model, to_iter, row, pos, from_iter_has_child=False):    
-        self.row_to_remove.append(row[self.UUID[0]])
-        row[self.UUID[0]] = uuid4()
+    def to_add_drug_item(self, to_model, to_iter, ref, pos, parent=False, child=False, row=None):    
+        if not row:
+            from_iter = self.get_iter_from_row_reference(ref)
+            from_model = ref.get_model()
+            row = self.get_row_from_model_iter(from_model, from_iter)
+            if not child:
+                self.row_to_remove.append(ref)
         if to_iter:
             if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
-                new_iter = to_model.prepend(to_iter, row)
+                if child:
+                    new_iter = to_model.append(to_iter, row)
+                else:
+                    new_iter = to_model.prepend(to_iter, row)
             elif pos == gtk.TREE_VIEW_DROP_BEFORE:
                 new_iter = to_model.insert_before(None, to_iter, row)
-                if not from_iter_has_child:
+                if not parent:
                     new_iter = to_model.iter_next(new_iter)
             elif pos == gtk.TREE_VIEW_DROP_AFTER:
                 new_iter = to_model.insert_after(None, to_iter, row)
@@ -265,19 +229,14 @@ class DrugDropTree(gtk.TreeView):
                 new_iter = to_model.append(None, row)
         else:
             new_iter = to_model.append(None, row)
-        row[self.UUID[0]] = uuid4()
-        self.row_to_remove.append(row[self.UUID[0]])
+        
         return new_iter
 
     def iter_is_parent(self, from_filter_row_reference, from_filter_model, to_model, to_parent_iter, pos=gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
         from_filter_iter = self.get_iter_from_row_reference(from_filter_row_reference)
-        refs = self.content_filter(from_filter_iter, from_filter_model) #to_parent_iter = self.to_add_drug_item(to_model, to_iter, row, to_filter_pos)
+        refs = self.content_filter(from_filter_iter, from_filter_model) 
         for ref in refs:
-            iter = self.get_iter_from_row_reference(ref)
-            child_row = self.get_row_from_model_iter(from_filter_model, iter)
-            self.row_to_remove.append(child_row[self.UUID[0]])
-            child_row[self.UUID[0]] = uuid4()
-            to_child_iter = to_model.append(to_parent_iter, child_row)
+            to_child_iter = self.to_add_drug_item(to_model, to_parent_iter, ref, pos, child=True)
             """Iters have already changed. Redefine"""
             iter = self.get_iter_from_row_reference(ref)
             if  from_filter_model.iter_n_children(iter):

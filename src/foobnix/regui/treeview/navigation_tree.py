@@ -78,10 +78,11 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 to_model = self.controls.notetabs.get_current_tree().get_model().get_model()
             if self.add_m3u(from_model, from_iter, to_model, None, None): continue
             if from_model.iter_has_child(from_iter):
-                new_iter = self.to_add_drug_item(to_model, None, row, None, True)
-                self.iter_is_parent(from_iter, from_model, to_model, new_iter)
+                new_iter = self.to_add_drug_item(to_model, None, None, None, True, row=row)
+                from_ref = self.get_row_reference_from_iter(from_model, from_iter)
+                self.iter_is_parent(from_ref, from_model, to_model, new_iter)
             else:
-                new_iter = self.to_add_drug_item(to_model, None, row, None)
+                new_iter = self.to_add_drug_item(to_model, None, None, None, row=row)
         
         self.controls.notetabs.get_active_tree().rebuild_as_plain()
         if not current:
