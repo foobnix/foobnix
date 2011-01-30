@@ -74,10 +74,8 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         path = paths[0]
         path = self.filter_model.convert_path_to_child_path(path)        
         iter = self.model.get_iter(path)
-        
         self.model.set_value(iter, self.text[0], text)
-        
-    
+            
     def populate(self, bean):
         self.clear()
         self.append(bean)
@@ -117,6 +115,11 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             attributes.append(value)
         return attributes
 
+    def get_previous_iter(self, model, iter):
+        path = model.get_path(iter)
+        previous_path = path[:-1] + (path[-1] - 1,)
+        return model.get_iter(previous_path) 
+    
     def get_iter_from_row_reference(self, row_reference):
         model = row_reference.get_model()
         path = row_reference.get_path()
@@ -128,8 +131,6 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     
     def clear_tree(self):
         self.model.clear()
-
-        
 
     def on_button_press(self, w, e):
         pass
