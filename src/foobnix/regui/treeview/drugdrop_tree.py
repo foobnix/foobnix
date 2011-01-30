@@ -13,8 +13,7 @@ from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util.id3_util import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.m3u_utils import m3u_reader
-
-
+from foobnix.util.key_utils import is_key_control
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -25,7 +24,9 @@ class DrugDropTree(gtk.TreeView):
         gtk.TreeView.__init__(self)
         
         self.connect("drag-drop", self.on_drag_drop)
-        
+        self.connect("key-press-event", self.on_key_event)
+        self.connect("key-release-event", self.on_key_event)
+        self.to_copy = False
         """init values"""
         self.hash = {None:None}
         self.current_view = None
@@ -217,7 +218,7 @@ class DrugDropTree(gtk.TreeView):
             from_iter = self.get_iter_from_row_reference(ref)
             from_model = ref.get_model()
             row = self.get_row_from_model_iter(from_model, from_iter)
-            if not child:
+            if not child and not self.to_copy:
                 self.row_to_remove.append(ref)
         if to_iter:
             if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
@@ -391,5 +392,8 @@ class DrugDropTree(gtk.TreeView):
         parent_iter = self.model.append(parent_iter_exists, row)
         self.hash[bean.level] = parent_iter    
         
-            
-        
+    def on_key_event(self, w, e):
+        if is_key_control(e):
+            self.to_copy = True
+        else:
+            self.to_copy = False
