@@ -147,13 +147,13 @@ class DrugDropTree(gtk.TreeView):
                 if new_iter:
                     to_iter = new_iter
                 new_iter = self.to_add_drug_item(to_model, to_iter, ff_row_ref, to_filter_pos)
-                
+            
+            '''drug row with children from plain tree'''    
             if from_tree.current_view == VIEW_PLAIN:
                 ff_iter = self.get_iter_from_row_reference(ff_row_ref)
                 if not self.get_bean_from_model_iter(ff_model, ff_iter).is_file:
                     next_iter = ff_model.iter_next(ff_iter)
                     iter = new_iter
-                    
                     while self.get_bean_from_model_iter(ff_model, next_iter).is_file:
                         ref = self.get_row_reference_from_iter(ff_model, next_iter)
                         if to_tree.current_view == VIEW_TREE:
@@ -165,7 +165,6 @@ class DrugDropTree(gtk.TreeView):
                                 pos = gtk.TREE_VIEW_DROP_AFTER
                         else:
                             pos = to_filter_pos
-                        
                         iter = self.to_add_drug_item(to_model, iter, ref, pos)
                         next_iter = self.get_iter_from_row_reference(ref)
                         next_iter = ff_model.iter_next(next_iter)
