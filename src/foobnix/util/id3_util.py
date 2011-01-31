@@ -68,10 +68,11 @@ def udpate_id3(bean):
             if isinstance(audio, MP4):
                 if audio.has_key('\xa9ART'): bean.artist = audio["\xa9ART"][0]
                 if audio.has_key('\xa9nam'): bean.title = audio["\xa9nam"][0]
+                if audio.has_key('\xa9alb'): bean.album = audio["\xa9alb"][0]
             else:
                 if audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])
                 if audio.has_key('title'): bean.title = decode_cp866(audio["title"][0])
-          
+                if audio.has_key('album'): bean.album = decode_cp866(audio["album"][0])
         #if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
         #else: 
             #if audio and not audio.has_key('tracknumber'): 

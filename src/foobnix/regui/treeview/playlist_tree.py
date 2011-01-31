@@ -129,7 +129,13 @@ class PlaylistTreeControl(CommonTreeControl):
             menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, paths)
             text = self.get_selected_bean().text
             menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
+
+            
+            menu.add_separator()
+            menu.add_item(_('Copy №-Title-Time'), gtk.STOCK_COPY, self.copy_info_to_clipboard)
+            menu.add_item(_('Copy Artist-Title-Album'), gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
+            
             menu.add_separator()
             menu.add_item(_('Love this track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
-            
+
             menu.show(e)
