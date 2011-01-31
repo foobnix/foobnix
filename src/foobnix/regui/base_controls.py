@@ -579,7 +579,8 @@ class BaseFoobnixControls():
         self.trayicon.hide()        
 
         logging.info("Controls - Quit")
-        self.on_save()
+        self.notetabs.on_quit()
+        self.virtual.on_quit()
         FC().save(False)
         gtk.main_quit()
 

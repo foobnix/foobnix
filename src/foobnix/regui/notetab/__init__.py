@@ -367,6 +367,9 @@ class NoteTabControl(TabGeneral, LoadSave):
             self.controls.append_to_new_notebook(FC().tab_pl_names[page], FC().cache_pl_tab_contents[page], True)
    
     def on_save(self):
+        pass
+    
+    def on_quit(self):
         number_music_tabs = self.get_n_pages() - 1
         FC().cache_pl_tab_contents = []
         FC().tab_pl_names = []

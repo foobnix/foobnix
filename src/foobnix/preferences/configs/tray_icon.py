@@ -82,7 +82,7 @@ class TrayIconConfig(ConfigPlugin):
             self.hide_button.set_sensitive(False) 
             if self.hide_button.get_active():
                 self.minimize_button.set_active(True)
-            self.self.hide()
+            self.hide()
         else:
             self.show()
             self.hide_button.set_sensitive(True)
@@ -136,7 +136,7 @@ class TrayIconConfig(ConfigPlugin):
     def on_save(self):
         FC().show_tray_icon = self.tray_icon_button.get_active() 
         FC().static_tray_icon = self.static_tray_icon.button.get_active()
-        if FC().static_tray_icon: self.self.on_dynamic_icons(None)
+        if FC().static_tray_icon: self.on_dynamic_icons(None)
         FC().system_icons_dinamic = self.icon_controls.button.get_active()
         FC().change_tray_icon = self.change_tray_icon.button.get_active()
                 
