@@ -1,4 +1,4 @@
-#Tue Jan 18 00:30:49 EET 2011
+#Mon Jan 31 23:56:52 EET 2011
 eclipse.preferences.version=1
 encoding//src/foobnix/eq/eq_controller.py=utf-8
 encoding//src/foobnix/eq/eq_gui.py=utf-8
@@ -22,6 +22,7 @@ encoding//src/foobnix/regui/base_controls.py=utf-8
 encoding//src/foobnix/regui/base_layout.py=utf-8
 encoding//src/foobnix/regui/controls/dbus_manager.py=utf-8
 encoding//src/foobnix/regui/controls/filter.py=utf-8
+encoding//src/foobnix/regui/controls/seach_progress.py=utf-8
 encoding//src/foobnix/regui/controls/seekbar.py=utf-8
 encoding//src/foobnix/regui/controls/status_bar.py=utf-8
 encoding//src/foobnix/regui/controls/tray_icon.py=utf-8
