@@ -177,6 +177,8 @@ class FC:
         
         self.tab_pl_names = [_("Empty tab"), ]
         self.cache_pl_tab_contents = []
+        
+        self.order_repeat_style = "ToggleButtons"
          
         self = self._load();
                 

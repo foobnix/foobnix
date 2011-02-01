@@ -32,12 +32,15 @@ class OrderShuffleControls(FControl, gtk.HBox, LoadSave):
     def __init__(self, controls): 
         gtk.HBox.__init__(self, False)
         
+        self.toggle_buttons = OrderShuffleControls_ZAVLAB(controls)
+        
         self.rlabel = EventLabel(text="S", func=lambda * a: self.on_random())
         self.olabel = EventLabel(text="R", func=lambda * a: self.on_order())
         
         self.pack_start(self.rlabel)
         self.pack_start(gtk.Label(" "))
         self.pack_start(self.olabel)
+        self.pack_start(self.toggle_buttons)
         
         self.pack_start(gtk.SeparatorToolItem())
     
@@ -74,7 +77,17 @@ class OrderShuffleControls(FControl, gtk.HBox, LoadSave):
         self.update()
             
     def on_load(self): 
-        self.update()
+        if FC().order_repeat_style == "ToggleButtons":
+            self.toggle_buttons.on_load()
+            self.olabel.hide()
+            self.rlabel.hide()
+            self.toggle_buttons.show()
+        else:
+            self.update()
+            self.toggle_buttons.hide()
+            self.olabel.show()
+            self.rlabel.show()
+            
         
     def on_save(self): pass        
     
@@ -111,7 +124,7 @@ class OrderShuffleControls_ZAVLAB(FControl, gtk.HBox, gtk.Tooltips, LoadSave):
         self.item_single = gtk.CheckMenuItem(_("Repeat single"))
         self.item_single.connect("button-press-event", lambda item, *a: self.on_repeat(item, False))
         self.menu.append(self.item_single)
-       
+        
     def choise(self, widget, event):
             self.menu.popup(None, None, None, event.button, event.time)
             self.menu.show_all()

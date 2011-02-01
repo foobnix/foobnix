@@ -4,7 +4,9 @@ Created on 22 сент. 2010
 
 @author: ivan
 '''
+
 import gtk
+
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.regui.menu import MenuBarWidget
