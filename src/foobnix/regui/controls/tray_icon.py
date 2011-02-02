@@ -47,7 +47,7 @@ class PopupWindowMenu(gtk.Window, FControl):
         self.hide()
         
     def set_text(self, text):
-        self.poopup_text.set_text(text)
+        self.poopup_text.set_text(text[:40])
 
     def on_leave_window(self, w, event):
         max_x, max_y = w.size_request()
