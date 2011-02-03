@@ -4,6 +4,7 @@ Created on Sep 29, 2010
 @author: ivan
 '''
 import gtk
+import logging
 
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 from foobnix.regui.treeview.common_tree import CommonTreeControl
@@ -13,6 +14,7 @@ from foobnix.helpers.dialog_entry import two_line_dialog
 from foobnix.helpers.menu import Popup
 from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
 from foobnix.regui.service.radio_service import RadioFolder
+
 
 class RadioTreeControl(CommonTreeControl):
     def __init__(self, controls):
@@ -68,7 +70,7 @@ class RadioTreeControl(CommonTreeControl):
         self.delete_selected()
     
     def update_radio_tree(self):        
-        print "in update radio"
+        logging.info("in update radio")
         self.clear_tree()
         self.radio_folder = RadioFolder()
         files = self.radio_folder.get_radio_FPLs()        

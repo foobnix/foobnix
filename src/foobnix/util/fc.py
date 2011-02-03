@@ -70,6 +70,8 @@ class FC:
         self.count_of_tabs = 5
         self.tab_position = "top"
         
+        self.update_tree_on_start = False
+        
         """expand tree paths"""
         self.nav_expand_paths = []
         self.radio_expand_paths = []
@@ -123,7 +125,6 @@ class FC:
         
         self.enable_music_scrobbler = True
         self.enable_radio_scrobbler = True
-
         """proxy"""
         self.proxy_enable = False
         self.proxy_url = None
@@ -144,7 +145,7 @@ class FC:
         self.stop_icon_entry = ICON_FOOBNIX_STOP
         self.radio_icon_entry = ICON_FOOBNIX_RADIO
         
-        self.notifier = False
+        self.notifier = True
                
         """download manager controls"""
         self.auto_start_donwload = True
@@ -173,7 +174,7 @@ class FC:
         
         self.gap_secs = 0
         
-        self.tabs_mode = "Single"#Multi, Single
+        self.tabs_mode = "Multi"#Multi, Single
         
         self.tab_pl_names = [_("Empty tab"), ]
         self.cache_pl_tab_contents = []

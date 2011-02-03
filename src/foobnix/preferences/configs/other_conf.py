@@ -20,6 +20,7 @@ class OtherConfig(ConfigPlugin):
     
     def __init__(self, controls):
         self.controls = controls
+                
         box = gtk.VBox(False, 0)
         box.hide()        
 
@@ -63,13 +64,6 @@ class OtherConfig(ConfigPlugin):
         self.bg_image = IconBlock("", controls, FC().background_image, FC().background_image_themes)
         
         self.is_show = gtk.CheckButton(label=_("Enable theme image"), use_underline=True)
-        
-        def on_change(*a):            
-            active = self.is_show.get_active()
-            if not active:       
-                FC().background_image = None
-        
-        self.is_show.connect("clicked", on_change)
         
         catbox.pack_start(self.is_show, False, True, 0)
         catbox.pack_start(self.bg_image, True, True, 0)
@@ -150,12 +144,6 @@ class OtherConfig(ConfigPlugin):
         
         self.controls.top_panel.update_menu_style()
     
-    '''def on_change_o_r_style(self, *a):
-        if self.buttons.get_active():
-            FC().order_repeat_style = "ToggleButtons"
-        else:
-            FC().order_repeat_style = "TextLabels"'''
-        
     def on_change_folder(self, *a):
         path = self.online_dir.get_filename()       
         FC().online_save_to_folder = path        
@@ -173,7 +161,7 @@ class OtherConfig(ConfigPlugin):
         self.check_new_version.set_active(FC().check_new_version)
         if FC().background_image:
             self.is_show.set_active(True)   
-        
+            
         """menu style"""
         if  FC().menu_style == "new":
             self.new_style.set_active(True)        
@@ -184,9 +172,12 @@ class OtherConfig(ConfigPlugin):
             self.labels.set_active(True)
             
     def on_save(self):
+        self.is_background_image = FC().background_image
         if self.is_show.get_active():    
             FC().background_image = self.bg_image.get_active_path()
-            
+        else:
+            FC().background_image = None
+                
         if self.buttons.get_active():
             FC().order_repeat_style = "ToggleButtons"
         else:
@@ -196,6 +187,8 @@ class OtherConfig(ConfigPlugin):
         FC().info_panel_image_size = self.image_size_spin.get_value_as_int()
         FC().window_opacity = self.opacity_size.get_value() / 100
         FC().check_new_version = self.check_new_version.get_active()
-        self.controls.change_backgound()
-                    
+        if self.is_background_image != FC().background_image:
+            self.controls.change_backgound()
+            self.controls.preferences.hide()            
+            self.controls.preferences.show()        
 

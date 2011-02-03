@@ -57,7 +57,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             menu.add_separator()
 
             if FC().tabs_mode == "Multi":
-                menu.add_item(_("Open folder in tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
+                menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
                 menu.add_item(_("Clear"), gtk.STOCK_CLEAR, lambda : self.controls.tabhelper.clear_tree(self.scroll), None)
             menu.add_item(_("Update"), gtk.STOCK_REFRESH, lambda: self.controls.tabhelper.on_update_music_tree(self.scroll), None)
                 
