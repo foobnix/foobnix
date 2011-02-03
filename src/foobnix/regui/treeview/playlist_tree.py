@@ -55,7 +55,9 @@ class PlaylistTreeControl(CommonTreeControl):
         self.configure_recive_drug()
         
         self.set_playlist_plain()
-                
+        
+        self.connect("button-release-event", self.on_button_release)
+                     
     def set_playlist_tree(self):
         self.rebuild_as_tree()
         
@@ -119,21 +121,25 @@ class PlaylistTreeControl(CommonTreeControl):
         self.controls.notetabs.set_active_tree(self)
         if is_double_left_click(e):
             self.controls.play_selected_song()
-        if is_rigth_click(e):
+            
+    def on_button_release(self, w, e):
+        if e.button == 3:
             menu = Popup()
             menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
             menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
             #menu.add_item('Save as', gtk.STOCK_SAVE_AS, self.controls.save_beans_to, self.get_all_selected_beans())
             menu.add_separator()
-            paths = [bean.path for bean in self.get_selected_beans()]
-            menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, paths)
-            text = self.get_selected_bean().text
-            menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
-
-            
-            menu.add_separator()
+            try:
+                paths = [bean.path for bean in self.get_selected_beans()]
+                menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, paths)
+                text = self.get_selected_bean().text
+                menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
+                menu.add_separator()
+            except (TypeError, AttributeError, UnboundLocalError):
+                pass
+                        
             menu.add_item(_('Copy №-Title-Time'), gtk.STOCK_COPY, self.copy_info_to_clipboard)
-            menu.add_item(_('Copy Artist-Title-Album'), gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
+            menu.add_item(_('Copy Artist-Title-Album'), gtk.STOCK_REMOVE, self.copy_info_to_clipboard, True)
             
             menu.add_separator()
             menu.add_item(_('Love this track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())

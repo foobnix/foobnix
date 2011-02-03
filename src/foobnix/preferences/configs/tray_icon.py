@@ -188,4 +188,4 @@ class TrayIconConfig(ConfigPlugin):
         FC().pause_icon_entry = self.pause_icon.entry.get_text()
         FC().stop_icon_entry = self.stop_icon.entry.get_text()
         FC().radio_icon_entry = self.radio_icon.entry.get_text()
-        FC().notify_time = self.adjustment.get_value() * 1000
+        FC().notify_time = int(self.adjustment.get_value() * 1000)

@@ -206,6 +206,7 @@ class DrugDropTree(gtk.TreeView):
                     bean = FModel(path, path).parent(parent)
                 
                 row = self.get_row_from_bean(bean)
+                
                 if new_iter:
                     to_iter = new_iter
                 new_iter = self.to_add_drug_item(to_model, to_iter, None,  pos, row=row)

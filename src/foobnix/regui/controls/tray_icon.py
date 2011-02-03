@@ -95,9 +95,6 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         else:
             self.hide()
                 
-        #if FC().static_tray_icon:
-        #    self.on_dynamic_icons(None)
-        
     def update_info_from(self, bean):
         self.current_bean = bean
         if bean.artist:

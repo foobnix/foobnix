@@ -4,7 +4,10 @@ Created on 25 сент. 2010
 
 @author: ivan
 '''
+
 import gtk
+import glib
+
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_middle_click, is_left_click
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
@@ -12,6 +15,7 @@ from foobnix.util.fc import FC
 import logging
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
+
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
@@ -35,8 +39,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     def on_button_press(self, w, e):
         
         if is_middle_click(e):
-            self.add_to_tab(True)
+            # on left double click add selected items to current tab
+            def start_handling():
+                self.add_to_tab(True)
+            #selection must be early than handling of click 
+            glib.timeout_add(100, start_handling) #@UndefinedVariable
             return
+            
 
         if is_left_click(e):
             # on left click expand selected folders
@@ -83,7 +92,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             else:
                 new_iter = self.to_add_drug_item(to_model, None, None, None, row=row)
         
-        self.controls.notetabs.get_active_tree().rebuild_as_plain()
+        self.controls.notetabs.get_current_tree().rebuild_as_plain()
         if not current:
             self.controls.play_first_file_in_playlist()
 
