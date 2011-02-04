@@ -139,7 +139,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 pass
                         
             menu.add_item(_('Copy №-Title-Time'), gtk.STOCK_COPY, self.copy_info_to_clipboard)
-            menu.add_item(_('Copy Artist-Title-Album'), gtk.STOCK_REMOVE, self.copy_info_to_clipboard, True)
+            menu.add_item(_('Copy Artist-Title-Album'), gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
             
             menu.add_separator()
             menu.add_item(_('Love this track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())

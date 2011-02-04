@@ -398,6 +398,8 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     
     def copy_info_to_clipboard(self, mode=False):
         beans = self.get_selected_beans()
+        if not beans:
+            return
         clb = gtk.Clipboard()
         if not mode:
             tracks = [b.tracknumber+". "+b.title+" ("+b.time+")" 
