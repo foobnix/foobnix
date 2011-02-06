@@ -35,3 +35,15 @@ def is_double_rigth_click(event):
         return True
     else:
         return False
+
+def is_middle_click_release(event):
+    if event.button == 2 and event.type == gtk.gdk.BUTTON_RELEASE: #@UndefinedVariable
+        return True
+    else:
+        return False
+
+def is_rigth_click_release(event):
+    if event.button == 3 and event.type == gtk.gdk.BUTTON_RELEASE: #@UndefinedVariable
+        return True
+    else:
+        return False

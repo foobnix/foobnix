@@ -6,9 +6,9 @@ Created on 25 сент. 2010
 '''
 
 import gtk
-import glib
 
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_middle_click, is_left_click
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click,\
+    is_middle_click_release
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
 from foobnix.util.fc import FC
@@ -32,21 +32,18 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         self.set_type_tree()
         self.is_empty = False
-    
+        self.connect("button-release-event", self.on_button_release)
+        
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
     
-    def on_button_press(self, w, e):
-        
-        if is_middle_click(e):
+    def on_button_release(self, w, e):
+        if is_middle_click_release(e):
             # on left double click add selected items to current tab
-            def start_handling():
-                self.add_to_tab(True)
-            #selection must be early than handling of click 
-            glib.timeout_add(100, start_handling) #@UndefinedVariable
+            self.add_to_tab(True)
             return
-            
-
+        
+    def on_button_press(self, w, e):
         if is_left_click(e):
             # on left click expand selected folders
             return
