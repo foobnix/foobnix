@@ -67,7 +67,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         
         self.popup_menu = PopupWindowMenu(self.controls)
         
-        #self.connect("activate", self.on_activate)
+        self.connect("activate", self.on_activate)
         self.connect("popup-menu", self.on_popup_menu)
 
         try:
@@ -162,6 +162,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         return True
     
     def on_activate(self, *a):
+        print 123
         self.controls.windows_visibility()
 
     def on_button_press(self, w, e):
