@@ -52,7 +52,7 @@ def udpate_id3_for_beans(beans):
         if get_file_extension(bean.text) in FC().audio_formats:
             try:
                 udpate_id3(bean)
-            except Exception, e:
+            except Exception:
                 logging.warn("update id3 error")
     return beans
 

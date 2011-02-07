@@ -651,7 +651,7 @@ class BaseFoobnixControls():
         
     def play_first_file_in_playlist(self):    
         active_playlist_tree = self.notetabs.get_current_tree()
-        filter_model = active_playlist_tree.get_model()
+        filter_model = active_playlist_tree.get_model()sudo cp /usr/share/themes/oxygen-gtk/gtk-2.0/gtkrc /etc/gtk-2.0/
         current_model = filter_model.get_model()
                              
         def play_item(iter, active_playlist_tree, filter_model, current_model):

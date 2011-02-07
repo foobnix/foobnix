@@ -7,8 +7,7 @@ Created on 25 сент. 2010
 import gtk
 import logging
 from foobnix.util import const
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click,\
-    is_rigth_click_release
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release
 from foobnix.helpers.menu import Popup
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE

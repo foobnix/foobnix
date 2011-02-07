@@ -67,7 +67,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         
         self.popup_menu = PopupWindowMenu(self.controls)
         
-        self.connect("activate", self.on_activate)
+        #self.connect("activate", self.on_activate)
         self.connect("popup-menu", self.on_popup_menu)
 
         try:
