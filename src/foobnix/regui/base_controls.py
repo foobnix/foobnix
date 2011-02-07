@@ -340,6 +340,7 @@ class BaseFoobnixControls():
             
         self.seek_bar.clear()
         self.count_errors = 0
+        print bean.info
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
         self.main_window.set_title(bean.text)
@@ -651,7 +652,7 @@ class BaseFoobnixControls():
         
     def play_first_file_in_playlist(self):    
         active_playlist_tree = self.notetabs.get_current_tree()
-        filter_model = active_playlist_tree.get_model()sudo cp /usr/share/themes/oxygen-gtk/gtk-2.0/gtkrc /etc/gtk-2.0/
+        filter_model = active_playlist_tree.get_model()
         current_model = filter_model.get_model()
                              
         def play_item(iter, active_playlist_tree, filter_model, current_model):
