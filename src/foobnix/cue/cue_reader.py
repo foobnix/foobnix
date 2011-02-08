@@ -235,7 +235,6 @@ def update_id3_for_cue(beans):
         if bean.path and bean.path.lower().endswith(".cue"):
                 reader = CueReader(bean.path)
                 cue_beans = reader.get_common_beans()
-                print cue_beans
                 for cue in cue_beans:
                     result.append(cue)
         else:

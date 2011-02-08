@@ -340,7 +340,6 @@ class BaseFoobnixControls():
             
         self.seek_bar.clear()
         self.count_errors = 0
-        print bean.info
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
         self.main_window.set_title(bean.text)
@@ -636,7 +635,7 @@ class BaseFoobnixControls():
             img = get_foobnix_resourse_path_by_name(FC().background_image)
             if not img:
                 return None
-            pixbuf = gtk.gdk.pixbuf_new_from_file(img)
+            pixbuf = gtk.gdk.pixbuf_new_from_file(img) #@UndefinedVariable
             pixmap, mask = pixbuf.render_pixmap_and_mask()
             win.set_app_paintable(True)
             #win.realize()

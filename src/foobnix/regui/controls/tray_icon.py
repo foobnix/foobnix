@@ -162,7 +162,6 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         return True
     
     def on_activate(self, *a):
-        print 123
         self.controls.windows_visibility()
 
     def on_button_press(self, w, e):
