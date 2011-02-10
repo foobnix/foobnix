@@ -63,6 +63,7 @@ class TrayIconConfig(ConfigPlugin):
         self.change_tray_icon = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator(_("Disc cover image"), image))
         
         self.notifier = gtk.CheckButton(_("Notification pop-up"))
+        self.notifier.connect("toggled", self.on_toggle)
         
         box.pack_start(self.tray_icon_button, False, True, 0)
         box.pack_start(self.close_button, False, True, 0)
@@ -74,6 +75,8 @@ class TrayIconConfig(ConfigPlugin):
         box.pack_start(self.change_tray_icon, False, False, 0)
         
         box.pack_start(FrameDecorator(_("Notification"), self.notifier), False, False, 0)
+        self.n_time = self.notify_time()
+        box.pack_start(self.n_time, False, False, 0)
         
         self.widget = box
                                
@@ -108,7 +111,31 @@ class TrayIconConfig(ConfigPlugin):
         except TypeError:
             pass
     
+    def notify_time(self):
+        label = gtk.Label(_("Time Notification (sec): "))
+                
+        self.adjustment = gtk.Adjustment(value=0, lower=1, upper=10, step_incr=0.5)
+        
+        not_len = gtk.SpinButton(self.adjustment, climb_rate=0.0, digits=1)
+        not_len.show()
+        
+        hbox = gtk.HBox(False, 0)
+        
+        hbox.pack_start(label, False, False)
+        hbox.pack_start(not_len, False, False)
+        
+        hbox.show_all()
+        
+        hbox.set_sensitive(False)
+        
+        return hbox
     
+    def on_toggle(self, *a):
+            if self.notifier.get_active():
+                self.n_time.set_sensitive(True)
+            else:
+                self.n_time.set_sensitive(False)
+                    
     def on_load(self):
         self.tray_icon_button.set_active(FC().show_tray_icon)
         self.static_tray_icon.button.set_active(FC().static_tray_icon)
@@ -125,8 +152,10 @@ class TrayIconConfig(ConfigPlugin):
             self.minimize_button.set_active(True)
         
         if FC().notifier:
-            self.notifier.set_active(True)   
-
+            self.notifier.set_active(True)
+            self.n_time.set_sensitive(True)   
+        self.adjustment.set_value(FC().notify_time / 1000)
+        
         self.static_icon.entry.set_text(FC().static_icon_entry)
         self.play_icon.entry.set_text(FC().play_icon_entry)
         self.pause_icon.entry.set_text(FC().pause_icon_entry)
@@ -159,3 +188,5 @@ class TrayIconConfig(ConfigPlugin):
         FC().pause_icon_entry = self.pause_icon.entry.get_text()
         FC().stop_icon_entry = self.stop_icon.entry.get_text()
         FC().radio_icon_entry = self.radio_icon.entry.get_text()
+        FC().notify_time = int(self.adjustment.get_value() * 1000)
+        

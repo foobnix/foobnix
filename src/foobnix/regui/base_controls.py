@@ -27,6 +27,7 @@ from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.text_utils import normalize_text
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+import gobject
 
 
 
@@ -181,6 +182,14 @@ class BaseFoobnixControls():
                     self.perspective.show_add_button()
             
             logging.info("Tree loaded from cache")
+        
+        if FC().update_tree_on_start:
+            def cycle():
+                for n in xrange(len(FC().music_paths)):
+                    tab_child = self.tabhelper.get_nth_page(n)
+                    tree = tab_child.get_child()
+                    self.update_music_tree(tree, n)
+            gobject.idle_add(cycle)
 
     def update_music_tree(self, tree=None, number_of_page=0):
         if not tree:
@@ -272,27 +281,31 @@ class BaseFoobnixControls():
     def state_play(self, remeber_position=False):
         if self.media_engine.get_state() == STATE_PAUSE:
             self.media_engine.state_play()
+            self.statusbar.set_text(self.media_engine.bean.info)
         else:
             self.play_selected_song()
         
         if remeber_position:
             self.media_engine.restore_seek_ns()
-            
-            
-        
     
     def show_preferences(self):
         self.preferences.show()
 
     def state_pause(self):
         self.media_engine.state_pause()
-
+    
     def state_stop(self, remeber_position=False):
         self.media_engine.state_stop(remeber_position)
-
+        self.statusbar.set_text("Stopped")
+        
     def state_play_pause(self):
         self.media_engine.state_play_pause()
-
+        bean = self.media_engine.bean
+        if self.media_engine.get_state() == STATE_PLAY:
+            self.statusbar.set_text(bean.info)
+        else:
+            self.statusbar.set_text("Paused | " + bean.info)
+    
     def state_is_playing(self):
         return self.media_engine.get_state() == STATE_PLAY
 
@@ -626,7 +639,7 @@ class BaseFoobnixControls():
             img = get_foobnix_resourse_path_by_name(FC().background_image)
             if not img:
                 return None
-            pixbuf = gtk.gdk.pixbuf_new_from_file(img)
+            pixbuf = gtk.gdk.pixbuf_new_from_file(img) #@UndefinedVariable
             pixmap, mask = pixbuf.render_pixmap_and_mask()
             win.set_app_paintable(True)
             #win.realize()
@@ -637,8 +650,9 @@ class BaseFoobnixControls():
             win.window.set_back_pixmap(None, False)
         win.hide()
         #time.sleep(0.5)
-        win.show()            
-    
+        win.show()
+        
+        
     def play_first_file_in_playlist(self):    
         active_playlist_tree = self.notetabs.get_current_tree()
         filter_model = active_playlist_tree.get_model()

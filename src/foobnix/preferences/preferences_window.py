@@ -110,8 +110,6 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
             self.hide_window()
         else:
             bean = self.navigation.get_selected_bean() 
-            self.hide()
-            self.show()
             if bean:
                 self.populate_config_category(bean.text)
             

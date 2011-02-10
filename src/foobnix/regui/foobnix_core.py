@@ -104,6 +104,7 @@ class FoobnixCore(BaseFoobnixControls):
 
     def run(self):    
         self.on_load()
+        self.main_window.show()
         pass
             
         

@@ -133,7 +133,7 @@ class TagEditor(ChildTopWindow):
                    
     def save_audio_tags(self, button, paths):
         
-        def set_tags(audio, path):
+        def set_tags(audio, path, tag_name):
             if isinstance(audio, MP4):
                 tag_name = tag_mp4_name
             try:
@@ -155,9 +155,9 @@ class TagEditor(ChildTopWindow):
             tag_value = tag_entry.get_text()
             if toggle_button.get_active():
                 for audio, path in zip(self.audious, self.paths):
-                    set_tags(audio, path)
+                    set_tags(audio, path, tag_name)
             else:
-                set_tags(self.audious[0], self.paths[0])
+                set_tags(self.audious[0], self.paths[0], tag_name)
             toggle_button.set_active(False)
             
             

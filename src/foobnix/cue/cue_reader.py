@@ -73,10 +73,11 @@ class CueFile():
 
 class CueReader():
 
-    def __init__(self, cue_file):
-        self.cue_file = cue_file
+    def __init__(self, cue_path):
+        self.cue_path = cue_path
         self.is_valid = True
-
+        self.cue_file = CueFile()
+        
     def get_line_value(self, str):
         first = str.find('"') or str.find("'")
         end = str.find('"', first + 1) or str.find("'", first + 1)
@@ -86,9 +87,9 @@ class CueReader():
         audio = get_mutagen_audio(file)
         return audio.info.length
     
-    def normalize(self, cue_file):
+    def normalize(self):
         duration_tracks = []
-        tracks = cue_file.tracks
+        tracks = self.cue_file.tracks
         for i in xrange(len(tracks)):
             track = tracks[i]
             if i == len(tracks) - 1: #for last track in cue
@@ -103,11 +104,11 @@ class CueReader():
                         
             track.duration = duration
             if not track.path:
-                track.path = cue_file.file
+                track.path = self.cue_file.file
             duration_tracks.append(track)
 
-        cue_file.tracks = duration_tracks
-        return cue_file
+        self.cue_file.tracks = duration_tracks
+        return self.cue_file
 
     def get_common_beans(self):
         beans = []
@@ -119,6 +120,7 @@ class CueReader():
             bean.artist = track.performer
             bean.tracknumber = i + 1
             bean.title = track.title
+            bean.album = self.cue_file.title
             bean.name = bean.text
             bean.start_sec = track.get_start_time_sec()
             bean.duration_sec = track.duration
@@ -129,8 +131,7 @@ class CueReader():
         return beans
 
     def is_cue_valid(self):
-        self.parse()
-        logging.info("CUE VALID"+ str(self.cue_file) + str(self.is_valid))
+        logging.info("CUE VALID"+ str(self.cue_path) + str(self.is_valid))
         return self.is_valid
 
     """detect file encoding"""
@@ -143,18 +144,18 @@ class CueReader():
             return "utf-8" 
          
     def parse(self):
-        file = open(self.cue_file, "r")
-        code = self.code_detecter(self.cue_file);
+        file = open(self.cue_path, "r")
+        code = self.code_detecter(self.cue_path);
         logging.debug("File encoding is"+ str(code))
 
-        cue_file = CueFile()
+        
 
         title = ""
         performer = ""
         index = "00:00:00"
         full_file = None
 
-        cue_file.image = get_image_by_path(self.cue_file)
+        self.cue_file.image = get_image_by_path(self.cue_path)
 
         self.files_count = 0
 
@@ -177,18 +178,18 @@ class CueReader():
             if line.startswith(TITLE):
                 title = self.get_line_value(line)
                 if self.files_count == 0:
-                    cue_file.title = title
+                    self.cue_file.title = title
 
 
             if line.startswith(PERFORMER):
                 performer = self.get_line_value(line)
                 if self.files_count == 0:
-                    cue_file.performer = performer
+                    self.cue_file.performer = performer
 
             if line.startswith(FILE):
                 self.files_count += 1
                 file = self.get_line_value(line)
-                dir = os.path.dirname(self.cue_file)
+                dir = os.path.dirname(self.cue_path)
                 full_file = os.path.join(dir, file)
                 logging.debug("CUE source"+ full_file)
                 exists = os.path.exists(full_file)
@@ -216,17 +217,17 @@ class CueReader():
                         continue
                 
                 if self.files_count == 0:
-                    cue_file.file = full_file
+                    self.cue_file.file = full_file
 
             if line.startswith(INDEX):
                 index = self.get_line_value(line)
 
             if line.startswith("INDEX 01"):
                 cue_track = CueTrack(title, performer, index, full_file)
-                cue_file.append_track(cue_track)
+                self.cue_file.append_track(cue_track)
         
-        logging.debug("CUE file parsed "+ str(cue_file.file))
-        return self.normalize(cue_file)
+        logging.debug("CUE file parsed "+ str(self.cue_file.file))
+        return self.normalize()
     
 def update_id3_for_cue(beans):
     result = []

@@ -52,7 +52,7 @@ def udpate_id3_for_beans(beans):
         if get_file_extension(bean.text) in FC().audio_formats:
             try:
                 udpate_id3(bean)
-            except Exception, e:
+            except Exception:
                 logging.warn("update id3 error")
     return beans
 
@@ -83,8 +83,8 @@ def udpate_id3(bean):
             if audio and audio.info and audio.info.length: duration_sec = int(audio.info.length)
         
         if audio and audio.info:
-            bean.info = audio.info.pprint()
-
+            bean.info = normalized_info(audio.info, bean)
+            
         if bean.artist and bean.title:
             bean.text = bean.artist + " - " + bean.title
         
@@ -96,7 +96,17 @@ def udpate_id3(bean):
         
         bean = update_bean_from_normalized_text(bean)        
         bean.time = convert_seconds_to_text(duration_sec)
+        
     return bean
+
+def normalized_info(info, bean):
+    list = info.pprint().split(", ")
+    list[1] = str(info.bitrate/1000) + 'kbps'
+    list[3] = convert_seconds_to_text(int(info.length))
+    bean.size = os.path.getsize(bean.path)
+    size = '%.2f MB' % (float(bean.size)/1024/1024)
+    list.append(size)
+    return " | ".join(list)
 
 def get_support_music_beans_from_all(beans):
     result = []

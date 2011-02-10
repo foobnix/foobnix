@@ -74,4 +74,3 @@ class LastFmConfig(ConfigPlugin):
         
         FC().enable_music_scrobbler = self.music_scrobbler.get_active()
         FC().enable_radio_scrobbler = self.radio_scrobbler.get_active()
-        

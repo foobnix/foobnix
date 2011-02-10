@@ -115,7 +115,7 @@ class OrderShuffleControls_ZAVLAB(FControl, gtk.HBox, gtk.Tooltips, LoadSave):
         self.repeat.connect("button-press-event", self.choise)
         self.pack_start(self.repeat)
                 
-        self.pack_start(gtk.SeparatorToolItem())
+        #self.pack_start(gtk.SeparatorToolItem())
         
         self.menu = gtk.Menu()
         self.item_all = gtk.CheckMenuItem(_("Repeat all"))

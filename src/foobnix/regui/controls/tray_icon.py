@@ -95,9 +95,6 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         else:
             self.hide()
                 
-        #if FC().static_tray_icon:
-        #    self.on_dynamic_icons(None)
-        
     def update_info_from(self, bean):
         self.current_bean = bean
         if bean.artist:
@@ -124,7 +121,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
                     return
                 notification = pynotify.Notification("<b><big>Foobnix</big></b>", "<b><i> " + artist + "\n\n " + title + "</i></b>")
                 notification.set_urgency(pynotify.URGENCY_LOW)
-                notification.set_timeout(3000)
+                notification.set_timeout(FC().notify_time)
                 notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
                 notification.show()
             except:

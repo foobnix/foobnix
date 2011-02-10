@@ -4,14 +4,18 @@ Created on 25 сент. 2010
 
 @author: ivan
 '''
+
 import gtk
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_middle_click, is_left_click
+
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click,\
+    is_middle_click_release
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
 from foobnix.util.fc import FC
 import logging
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
+
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
@@ -28,16 +32,18 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         self.set_type_tree()
         self.is_empty = False
-    
+        self.connect("button-release-event", self.on_button_release)
+        
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
     
-    def on_button_press(self, w, e):
-        
-        if is_middle_click(e):
+    def on_button_release(self, w, e):
+        if is_middle_click_release(e):
+            # on left double click add selected items to current tab
             self.add_to_tab(True)
             return
-
+        
+    def on_button_press(self, w, e):
         if is_left_click(e):
             # on left click expand selected folders
             return
@@ -57,7 +63,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             menu.add_separator()
 
             if FC().tabs_mode == "Multi":
-                menu.add_item(_("Open folder in tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
+                menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
                 menu.add_item(_("Clear"), gtk.STOCK_CLEAR, lambda : self.controls.tabhelper.clear_tree(self.scroll), None)
             menu.add_item(_("Update"), gtk.STOCK_REFRESH, lambda: self.controls.tabhelper.on_update_music_tree(self.scroll), None)
                 
@@ -83,7 +89,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             else:
                 new_iter = self.to_add_drug_item(to_model, None, None, None, row=row)
         
-        self.controls.notetabs.get_active_tree().rebuild_as_plain()
+        self.controls.notetabs.get_current_tree().rebuild_as_plain()
         if not current:
             self.controls.play_first_file_in_playlist()
 

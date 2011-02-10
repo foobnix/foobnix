@@ -27,10 +27,18 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         box.pack_start(self.tabs_mode(), False, True, 0)
         box.pack_start(self.dirs(), False, True, 0)
         box.pack_start(self.formats(), False, True, 0)
-        box.pack_start(self.gap(), False, True, 0)
+        
         self.widget = box
-    
-    
+        uhbox = gtk.HBox()
+        ulabel = gtk.Label(_("Update library on start (more slow) "))
+        self.update_on_start = gtk.CheckButton()
+        #self.update_on_start.show()                
+        uhbox.pack_start(ulabel, False, True, 0)
+        uhbox.pack_start(self.update_on_start)
+        box.pack_start(uhbox, False, True, 0)
+        box.pack_start(self.gap(), False, True, 0)
+        
+        
     def dirs(self):
         self.frame = gtk.Frame(label=_("Music dirs"))
         self.frame.set_border_width(0)
@@ -104,8 +112,11 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         if FC().tabs_mode == "Single":
             self.singletab_button.set_active(True)
             self.controls.tabhelper.set_show_tabs(False)
+            
+        if FC().update_tree_on_start:
+            self.update_on_start.set_active(True)
                 
-    def on_save(self):             
+    def on_save(self):
         FC().music_paths[0] = self.tree_controller.get_all_beans_text()
         FC().all_support_formats = self.files_controller.get_all_beans_text()
         FC().gap_secs = self.adjustment.get_value()
@@ -120,7 +131,11 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         else:
             FC().tabs_mode = "Multi"
             self.controls.tabhelper.set_show_tabs(True)
-        
+        if self.update_on_start.get_active():
+            FC().update_tree_on_start = True
+        else:
+            FC().update_tree_on_start = False
+            
     def add_dir(self, *a):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
