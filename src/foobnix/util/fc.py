@@ -182,6 +182,8 @@ class FC:
         self.cache_pl_tab_contents = []
         
         self.order_repeat_style = "ToggleButtons"
+        
+        self.file_managers = ['nautilus', 'dolphin', 'konqueror', 'thunar', 'pcmanfm']
          
         self = self._load();
                 

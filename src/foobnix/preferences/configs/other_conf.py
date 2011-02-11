@@ -105,9 +105,7 @@ class OtherConfig(ConfigPlugin):
         
         tab_label = gtk.Label(_("Opacity"))
         tab_label.show()
-        
-     
-        
+          
         adjustment = gtk.Adjustment(value=1, lower=20, upper=100, step_incr=1, page_incr=1, page_size=0)
         self.opacity_size = gtk.SpinButton(adjustment)
         self.opacity_size.connect("value-changed", self.on_chage_opacity)
@@ -116,7 +114,11 @@ class OtherConfig(ConfigPlugin):
         obox.pack_start(tab_label, False, False, 0)
         obox.pack_start(self.opacity_size, False, True, 0)
         
-        
+        self.fmgrs_combo = self.fmgr_combobox()
+        hcombobox = gtk.HBox()
+        hcombobox.pack_start(gtk.Label(_('Choose your preferred file manager: ')), False, False)
+        hcombobox.pack_start(self.fmgrs_combo, False, False)
+                
         """packaging"""        
         box.pack_start(hbox, False, True, 0)
         box.pack_start(cbox, False, True, 0)
@@ -126,7 +128,7 @@ class OtherConfig(ConfigPlugin):
         box.pack_start(pbox, False, False, 0)
         box.pack_start(o_r_box, False, False, 0)
         box.pack_start(obox, False, False, 0)
-        
+        box.pack_start(hcombobox, False, False, 0)
         
         self.widget = box
     
@@ -192,3 +194,37 @@ class OtherConfig(ConfigPlugin):
             self.controls.preferences.hide()            
             self.controls.preferences.show()        
 
+    def fmgr_combobox(self):
+        list_func = []
+        liststore = gtk.ListStore(str)
+        
+        liststore.append(['Player\'s choice'])
+                
+        liststore.append(['Nautilus'])
+        #list_func.append(self.controls.search_top_tracks)
+        
+
+        liststore.append(['Dolphin'])
+        #list_func.append(self.controls.search_top_albums)
+        
+        liststore.append(['Konqueror'])
+        #list_func.append(self.controls.search_top_similar)
+        
+        liststore.append(['Thunar'])
+        #list_func.append(self.controls.search_top_tags)
+        
+        
+        liststore.append(['PCManFM'])
+        #list_func.append(self.controls.search_all_tracks)
+        
+        liststore.append(['Explorer'])
+        #list_func.append(self.controls.search_all_videos)
+               
+        combobox = gtk.ComboBox(liststore)
+        cell = gtk.CellRendererText()
+        combobox.pack_start(cell, True)
+        combobox.add_attribute(cell, 'text', 0)
+        combobox.set_active(0)
+        
+        return combobox
+        #self.set_search_function(list_func[0])

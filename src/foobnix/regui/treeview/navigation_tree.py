@@ -15,6 +15,8 @@ from foobnix.util.fc import FC
 import logging
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
+import os
+from foobnix.util.file_utils import open_in_filemanager
 
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -66,7 +68,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
                 menu.add_item(_("Clear"), gtk.STOCK_CLEAR, lambda : self.controls.tabhelper.clear_tree(self.scroll), None)
             menu.add_item(_("Update"), gtk.STOCK_REFRESH, lambda: self.controls.tabhelper.on_update_music_tree(self.scroll), None)
-                
+            menu.add_separator()
+            menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)    
             menu.show(e)
 
     def add_to_tab(self, current=False):
@@ -146,7 +149,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         elif response == gtk.RESPONSE_CANCEL:
             logging.info('Closed, no files selected')
         chooser.destroy()       
-        
+    
+            
     def on_load(self):
         self.controls.load_music_tree()
         self.restore_expand(FC().nav_expand_paths)
