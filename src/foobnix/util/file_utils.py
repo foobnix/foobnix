@@ -9,7 +9,7 @@ from foobnix.util.fc import FC
 import logging
 
 def open_in_filemanager(path, managers=None):
-    dirname = os.path.dirname(path)
+    dirname = path if os.path.isdir(path) else os.path.dirname(path)
     if FC().active_manager[0] and not managers:
         managers = [FC().active_manager[1]]
     else:
