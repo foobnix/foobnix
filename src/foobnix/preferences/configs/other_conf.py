@@ -172,6 +172,8 @@ class OtherConfig(ConfigPlugin):
         
         if FC().order_repeat_style == "TextLabels":
             self.labels.set_active(True)
+        
+        self.fmgrs_combo.set_active(FC().active_manager[0])
             
     def on_save(self):
         self.is_background_image = FC().background_image
@@ -193,38 +195,18 @@ class OtherConfig(ConfigPlugin):
             self.controls.change_backgound()
             self.controls.preferences.hide()            
             self.controls.preferences.show()        
-
+        FC().active_manager = [self.fmgrs_combo.get_active(), self.fmgrs_combo.get_active_text().lower()]
+        
     def fmgr_combobox(self):
-        list_func = []
-        liststore = gtk.ListStore(str)
-        
-        liststore.append(['Player\'s choice'])
-                
-        liststore.append(['Nautilus'])
-        #list_func.append(self.controls.search_top_tracks)
-        
-
-        liststore.append(['Dolphin'])
-        #list_func.append(self.controls.search_top_albums)
-        
-        liststore.append(['Konqueror'])
-        #list_func.append(self.controls.search_top_similar)
-        
-        liststore.append(['Thunar'])
-        #list_func.append(self.controls.search_top_tags)
-        
-        
-        liststore.append(['PCManFM'])
-        #list_func.append(self.controls.search_all_tracks)
-        
-        liststore.append(['Explorer'])
-        #list_func.append(self.controls.search_all_videos)
-               
-        combobox = gtk.ComboBox(liststore)
-        cell = gtk.CellRendererText()
-        combobox.pack_start(cell, True)
-        combobox.add_attribute(cell, 'text', 0)
+        combobox = gtk.combo_box_new_text()
+        combobox.append_text('--- Auto ---')
+        combobox.append_text('Nautilus')
+        combobox.append_text('Dolphin')
+        combobox.append_text('Konqueror')
+        combobox.append_text('Thunar')
+        combobox.append_text('PCManFM')
+        combobox.append_text('Explorer')
         combobox.set_active(0)
         
         return combobox
-        #self.set_search_function(list_func[0])
+        
