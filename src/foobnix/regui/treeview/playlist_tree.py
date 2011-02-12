@@ -13,6 +13,7 @@ from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.util.fc import FC
 from foobnix.util.tag_util import edit_tags
+from foobnix.util.file_utils import open_in_filemanager
 
 class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
@@ -143,5 +144,9 @@ class PlaylistTreeControl(CommonTreeControl):
             
             menu.add_separator()
             menu.add_item(_('Love this track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
-
+            try:
+                menu.add_separator()
+                menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
+            except:
+                pass
             menu.show(e)
