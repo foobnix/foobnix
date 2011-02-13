@@ -8,7 +8,7 @@ Created on 25 сент. 2010
 import gtk
 
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click,\
-    is_middle_click_release
+    is_middle_click_release, is_middle_click
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
 from foobnix.util.fc import FC
@@ -42,10 +42,19 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     def on_button_release(self, w, e):
         if is_middle_click_release(e):
             # on left double click add selected items to current tab
+            "to select item under cursor"
+            try:
+                path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y))
+                self.get_selection().select_path(path)
+            except TypeError:
+                pass
             self.add_to_tab(True)
             return
         
     def on_button_press(self, w, e):
+        if is_middle_click(e):
+            "to avoid unselect all selected items"
+            self.stop_emission('button-press-event')
         if is_left_click(e):
             # on left click expand selected folders
             return
