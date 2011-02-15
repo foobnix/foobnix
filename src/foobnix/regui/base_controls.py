@@ -53,7 +53,9 @@ class BaseFoobnixControls():
         elif files:            
             self.on_add_files(files)
     
-    def love_this_tracks(self, beans):        
+    def love_this_tracks(self, beans=None):        
+        if not beans:
+            return
         map(self.lastfm_service.love, beans)
     
     def show_google_results(self, query):

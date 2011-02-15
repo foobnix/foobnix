@@ -8,13 +8,15 @@ Created on 25 сент. 2010
 import gtk
 
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click,\
-    is_middle_click_release
+    is_middle_click_release, is_middle_click
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
 from foobnix.util.fc import FC
 import logging
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
+import os
+from foobnix.util.file_utils import open_in_filemanager
 
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -40,10 +42,19 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     def on_button_release(self, w, e):
         if is_middle_click_release(e):
             # on left double click add selected items to current tab
+            "to select item under cursor"
+            try:
+                path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y))
+                self.get_selection().select_path(path)
+            except TypeError:
+                pass
             self.add_to_tab(True)
             return
         
     def on_button_press(self, w, e):
+        if is_middle_click(e):
+            "to avoid unselect all selected items"
+            self.stop_emission('button-press-event')
         if is_left_click(e):
             # on left click expand selected folders
             return
@@ -66,7 +77,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
                 menu.add_item(_("Clear"), gtk.STOCK_CLEAR, lambda : self.controls.tabhelper.clear_tree(self.scroll), None)
             menu.add_item(_("Update"), gtk.STOCK_REFRESH, lambda: self.controls.tabhelper.on_update_music_tree(self.scroll), None)
-                
+            menu.add_separator()
+            menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)    
             menu.show(e)
 
     def add_to_tab(self, current=False):
@@ -146,7 +158,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         elif response == gtk.RESPONSE_CANCEL:
             logging.info('Closed, no files selected')
         chooser.destroy()       
-        
+    
+            
     def on_load(self):
         self.controls.load_music_tree()
         self.restore_expand(FC().nav_expand_paths)

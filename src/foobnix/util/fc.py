@@ -182,10 +182,11 @@ class FC:
         self.cache_pl_tab_contents = []
         
         self.order_repeat_style = "ToggleButtons"
+        
+        self.file_managers = ['nautilus', 'dolphin', 'konqueror', 'thunar', 'pcmanfm']
+        self.active_manager = [0, ""]
          
         self = self._load();
-                
-        
 
     def save(self, in_thread=True):
         if in_thread:

@@ -7,18 +7,21 @@ Created on 25 сент. 2010
 import gtk
 import logging
 from foobnix.util import const
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release,\
+    is_rigth_click
 from foobnix.helpers.menu import Popup
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.util.fc import FC
 from foobnix.util.tag_util import edit_tags
+from foobnix.util.file_utils import open_in_filemanager
+import gobject
 
 class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
         #self.set_headers_visible(True)
-        
+        print gobject.signal_list_names(self)
         """Column icon"""
         icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         icon.set_fixed_width(5)
@@ -118,12 +121,21 @@ class PlaylistTreeControl(CommonTreeControl):
         return super(PlaylistTreeControl, self).append(bean)
 
     def on_button_press(self, w, e):
-        self.controls.notetabs.set_active_tree(self)
+        if is_rigth_click(e):
+            "to avoid unselect all selected items"
+            self.stop_emission('button-press-event')
         if is_double_left_click(e):
             self.controls.play_selected_song()
             
     def on_button_release(self, w, e):
         if is_rigth_click_release(e):
+            "to select item under cursor"
+            try:
+                path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y))
+                self.get_selection().select_path(path)
+            except TypeError:
+                pass
+                                                               
             menu = Popup()
             menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
             menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
@@ -143,5 +155,9 @@ class PlaylistTreeControl(CommonTreeControl):
             
             menu.add_separator()
             menu.add_item(_('Love this track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
-
+            try:
+                menu.add_separator()
+                menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
+            except:
+                pass
             menu.show(e)

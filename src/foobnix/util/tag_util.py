@@ -37,7 +37,7 @@ class TagEditor(ChildTopWindow):
         self.tag_mp4_names = ['\xa9ART', '\xa9nam', '\xa9alb', '\xa9day', 'trkn', '\xa9gen', '', '\xa9wrt']
         self.tag_entries = []
         self.labels = []
-        self.toggle_buttons = []
+        self.check_buttons = []
         self.hboxes = []
            
         for tag_name in self.tag_names:
@@ -47,21 +47,21 @@ class TagEditor(ChildTopWindow):
     
             self.labels.append(vars()[tag_name + "_label"])
             
-            vars()[tag_name + "_tbutton"] = gtk.ToggleButton()
-            self.toggle_buttons.append(vars()[tag_name + "_tbutton"])
-            tbutton_image = gtk.image_new_from_stock(gtk.STOCK_COPY, gtk.ICON_SIZE_SMALL_TOOLBAR)
+            vars()[tag_name + "_chbutton"] = gtk.CheckButton()
+            self.check_buttons.append(vars()[tag_name + "_chbutton"])
+#           chbutton_image = gtk.image_new_from_stock(gtk.STOCK_COPY, gtk.ICON_SIZE_SMALL_TOOLBAR)
             
-            toggle_button = self.toggle_buttons[-1]
-            toggle_button.add(tbutton_image)
+            check_button = self.check_buttons[-1]
+            #check_button.add(chbutton_image)
             
-            toggle_button.set_focus_on_click(False) 
-            toggle_button.set_tooltip_text(_("Apply for all selected tracks"))
+            check_button.set_focus_on_click(False) 
+            check_button.set_tooltip_text(_("Apply for all selected tracks"))
             
             vars()[tag_name + "_hbox"] = gtk.HBox(False, 5)
             self.hboxes.append(vars()[tag_name + "_hbox"])
             
-            self.hboxes[-1].pack_end(toggle_button,False,False)
-            self.hboxes[-1].pack_end(self.tag_entries[-1],True,True)
+            self.hboxes[-1].pack_end(check_button, False, False)
+            self.hboxes[-1].pack_end(self.tag_entries[-1], True, True)
             
     
         lvbox = gtk.VBox(True, 7)
@@ -96,13 +96,13 @@ class TagEditor(ChildTopWindow):
     def get_audio_tags(self, paths):
         self.paths = paths
         if len(paths) == 1:
-            for tbutton in self.toggle_buttons:
-                tbutton.set_sensitive(False)
-                tbutton.set_relief(gtk.RELIEF_NONE)
+            for chbutton in self.check_buttons:
+                chbutton.set_sensitive(False)
+                chbutton.set_relief(gtk.RELIEF_NONE)
         else: 
-            for tbutton in self.toggle_buttons:
-                tbutton.set_sensitive(True)
-                tbutton.set_relief(gtk.RELIEF_NORMAL)           
+            for chbutton in self.check_buttons:
+                chbutton.set_sensitive(True)
+                chbutton.set_relief(gtk.RELIEF_NORMAL)           
         
         self.audious = []
         for path in paths:
@@ -112,7 +112,7 @@ class TagEditor(ChildTopWindow):
             tag_names = self.tag_mp4_names
             #make author entry not sensitive because mp4 hasn't so tag
             self.tag_entries[-2].set_sensitive(False)
-            self.toggle_buttons[-2].set_sensitive(False)
+            self.check_buttons[-2].set_sensitive(False)
             self.labels[-2].set_sensitive(False)
         else:
             tag_names = self.tag_names
@@ -151,14 +151,14 @@ class TagEditor(ChildTopWindow):
                 audio[tag_name] = new_tag_value
                 audio.save()
                           
-        for tag_name, tag_mp4_name, tag_entry, toggle_button in zip(self.tag_names, self.tag_mp4_names, self.tag_entries, self.toggle_buttons):
+        for tag_name, tag_mp4_name, tag_entry, check_button in zip(self.tag_names, self.tag_mp4_names, self.tag_entries, self.check_buttons):
             tag_value = tag_entry.get_text()
-            if toggle_button.get_active():
+            if check_button.get_active():
                 for audio, path in zip(self.audious, self.paths):
                     set_tags(audio, path, tag_name)
             else:
                 set_tags(self.audious[0], self.paths[0], tag_name)
-            toggle_button.set_active(False)
+            check_button.set_active(False)
             
             
                 

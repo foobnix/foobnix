@@ -138,7 +138,7 @@ class EventLabel(gtk.EventBox):
     def __init__(self, text="×", angle=0, func=None, arg=None, func1=None):        
         gtk.EventBox.__init__(self)
         self.text = text
-        
+        self.set_visible_window(False)
         self.selected = False
         
         self.label = gtk.Label()
@@ -182,9 +182,6 @@ class EventLabel(gtk.EventBox):
         self.selected = False
         self.set_not_underline()
     
-    
-        
-
 def notetab_label(func=None, arg=None, angle=0, symbol="×"):
     """label"""
     label = gtk.Label(symbol)
