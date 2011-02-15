@@ -56,11 +56,11 @@ class SearchProgressBarOld(gtk.ProgressBar):
         self.set_fraction(0)
         #self.hide()        
 
-try:
+if gtk.pygtk_version >= (2, 21, 0):
     class SearchProgressBar(SearchProgressBarNew):
         def __init__(self):
                 SearchProgressBarNew.__init__(self)
-except:
+else:
     class SearchProgressBar(SearchProgressBarOld):
         def __init__(self):
                 SearchProgressBarOld.__init__(self)
