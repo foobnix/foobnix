@@ -15,13 +15,13 @@ from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.util.fc import FC
 from foobnix.util.tag_util import edit_tags
 from foobnix.util.file_utils import open_in_filemanager
-import gobject
+
 
 class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
         #self.set_headers_visible(True)
-        print gobject.signal_list_names(self)
+        
         """Column icon"""
         icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         icon.set_fixed_width(5)
@@ -122,14 +122,14 @@ class PlaylistTreeControl(CommonTreeControl):
 
     def on_button_press(self, w, e):
         if is_rigth_click(e):
-            "to avoid unselect all selected items"
+            """to avoid unselect all selected items"""
             self.stop_emission('button-press-event')
         if is_double_left_click(e):
             self.controls.play_selected_song()
             
     def on_button_release(self, w, e):
         if is_rigth_click_release(e):
-            "to select item under cursor"
+            """to select item under cursor"""
             try:
                 path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y))
                 self.get_selection().select_path(path)
