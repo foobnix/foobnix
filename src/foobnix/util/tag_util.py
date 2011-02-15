@@ -90,7 +90,7 @@ class TagEditor(ChildTopWindow):
         vbox.pack_start(buttons_hbox, True, True, 10)
         
         apply_button.connect("clicked", self.save_audio_tags, self.paths)
-        close_button.connect("clicked", lambda *a: self.hide())
+        close_button.connect("clicked", lambda * a: self.hide())
         
         self.add(vbox)
         self.show_all()
@@ -127,7 +127,7 @@ class TagEditor(ChildTopWindow):
                     tag_entry.set_text('')
             except AttributeError:
                 logging.warn('Can\'t get tags. This is not audio file')
-            except TypeError as e:
+            except TypeError, e:
                 if isinstance(self.audious[0][tag_name][0], tuple):
                     tag_entry.set_text(str(self.audious[0][tag_name][0]).strip('()'))
                 else:
