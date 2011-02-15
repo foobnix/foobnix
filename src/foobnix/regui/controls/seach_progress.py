@@ -62,4 +62,3 @@ else:
     class SearchProgressBar(SearchProgressBarOld):
         def __init__(self):
                 SearchProgressBarOld.__init__(self)
-                self.b = self.c
