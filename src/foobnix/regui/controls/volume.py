@@ -15,7 +15,7 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
         gtk.HBox.__init__(self, False, 0)
         FControl.__init__(self, controls)
         
-        label_m = EventLabel(text="-", func=self.volume_down)
+        label_m = EventLabel(text="‒", func=self.volume_down)
         
         adjustment = gtk.Adjustment(value=1, lower=0, upper=self.MAX_VALUE, step_incr=0, page_incr=0, page_size=0)
         self.volume_scale = gtk.HScale(adjustment)
