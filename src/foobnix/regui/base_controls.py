@@ -601,10 +601,17 @@ class BaseFoobnixControls():
 
     def check_version(self):
         uuid = FC().uuid
-        current_version = FOOBNIX_VERSION        
+        current_version = FOOBNIX_VERSION
+        system = "not_set"
+        try:
+            import platform
+            system = platform.system()
+        except:
+            pass
+                
         try:
             from socket import gethostname
-            f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname() + "&version=" + current_version)
+            f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname() + "&version=" + current_version + "&platform=" + system)
             #f = urllib2.urlopen("http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version)
         except Exception, e:
             logging.error("Check version error" + str(e))

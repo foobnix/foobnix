@@ -7,8 +7,8 @@ from test.all import run_all_tests
 if os.name == 'nt':
     import py2exe
 
-VERSION = "0.2.3"
-RELEASE = "3"
+VERSION = "0.2.4"
+RELEASE = "0"
 
 data_files = [
     ('share/foobnix', ['README']),
