@@ -11,8 +11,7 @@ from foobnix.util.fc import FC
 from foobnix.helpers.pref_widgets import FrameDecorator, VBoxDecorator, ChooseDecorator, \
     IconBlock
 from foobnix.helpers.image import ImageBase
-from foobnix.util.const import ICON_BLANK_DISK, FTYPE_RADIO, STATE_PLAY, \
-    STATE_PAUSE, STATE_STOP
+from foobnix.util.const import ICON_BLANK_DISK
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 class TrayIconConfig(ConfigPlugin):
@@ -90,18 +89,9 @@ class TrayIconConfig(ConfigPlugin):
             self.controls.trayicon.show()
             self.hide_button.set_sensitive(True)
    
-    def on_dynamic_icons(self, state):
+    def on_static_icon(self):
         if FC().static_tray_icon:
             self.check_active_dynamic_icon(self.static_icon)
-        if FC().system_icons_dinamic:
-            if state == FTYPE_RADIO:
-                self.check_active_dynamic_icon(self.radio_icon)
-            elif state == STATE_PLAY:
-                self.check_active_dynamic_icon(self.play_icon)
-            elif state == STATE_PAUSE:
-                self.check_active_dynamic_icon(self.pause_icon)
-            elif state == STATE_STOP:
-                self.check_active_dynamic_icon(self.stop_icon)
                  
     def check_active_dynamic_icon(self, icon_object):
         icon_name = icon_object.entry.get_text()
@@ -165,8 +155,18 @@ class TrayIconConfig(ConfigPlugin):
     def on_save(self):
         FC().show_tray_icon = self.tray_icon_button.get_active() 
         FC().static_tray_icon = self.static_tray_icon.button.get_active()
-        if FC().static_tray_icon: self.on_dynamic_icons(None)
+        
+        if FC().static_tray_icon: 
+            self.on_static_icon()
+            
+        if FC().system_icons_dinamic:            
+            FC().play_icon_entry = self.play_icon.get_active_path()
+            FC().pause_icon_entry = self.pause_icon.get_active_path()
+            FC().stop_icon_entry = self.stop_icon.get_active_path()
+            FC().radio_icon_entry = self.radio_icon.get_active_path()
+            
         FC().system_icons_dinamic = self.icon_controls.button.get_active()
+            
         FC().change_tray_icon = self.change_tray_icon.button.get_active()
                 
         if  self.close_button.get_active():

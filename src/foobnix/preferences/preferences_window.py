@@ -6,7 +6,6 @@ from foobnix.preferences.configs.music_library import MusicLibraryConfig
 from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs.vk_conf import VkontakteConfig
 from foobnix.preferences.configs.tabs import TabsConfig
-from foobnix.preferences.configs.tray_icon import TrayIconConfig
 import thread
 import os
 from foobnix.regui.state import LoadSave
@@ -18,6 +17,7 @@ from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 import logging
 from foobnix.preferences.configs.other_conf import OtherConfig
+from foobnix.preferences.configs.tray_icon_conf import TrayIconConfig
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 

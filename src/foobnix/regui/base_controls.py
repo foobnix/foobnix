@@ -22,7 +22,7 @@ from foobnix.helpers.dialog_entry import file_chooser_dialog, \
 from foobnix.regui.service.music_service import get_all_music_by_path
 from foobnix.regui.service.google_service import google_search_results
 from foobnix.util.file_utils import get_file_extension
-from foobnix.util.const import STATE_PLAY, STATE_PAUSE
+from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.text_utils import normalize_text
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
@@ -82,6 +82,19 @@ class BaseFoobnixControls():
     
     def save_beans_to(self, beans):
         return None    
+   
+    def on_chage_player_state(self, state):
+        if not FC().system_icons_dinamic:
+            return None  
+            
+        if state == STATE_STOP:
+            self.trayicon.set_image_from_path(FC().stop_icon_entry)
+        elif state == STATE_PAUSE:
+            self.trayicon.set_image_from_path(FC().pause_icon_entry)
+        elif state == STATE_PLAY:
+            self.trayicon.set_image_from_path(FC().play_icon_entry)
+        elif state == FTYPE_RADIO:
+            self.trayicon.set_image_from_path(FC().radio_icon_entry)
    
     def on_add_folders(self, paths=None):
         if not paths:
@@ -306,7 +319,7 @@ class BaseFoobnixControls():
         if self.media_engine.get_state() == STATE_PLAY:
             self.statusbar.set_text(bean.info)
         else:
-            self.statusbar.set_text("Paused | " + bean.info)
+            self.statusbar.set_text("Paused | " + str(bean.info))
     
     def state_is_playing(self):
         return self.media_engine.get_state() == STATE_PLAY
