@@ -100,7 +100,8 @@ class OrderShuffleControls_ZAVLAB(FControl, gtk.HBox, gtk.Tooltips, LoadSave):
         self.order.add(order_image)
         self.order.set_relief(gtk.RELIEF_NONE)
         self.order.set_focus_on_click(False)
-        self.order.set_has_tooltip(True)
+        
+        
         self.order.connect("button-press-event", self.on_order)
         
         self.pack_start(self.order)
@@ -110,7 +111,12 @@ class OrderShuffleControls_ZAVLAB(FControl, gtk.HBox, gtk.Tooltips, LoadSave):
         self.repeat.add(repeat_image)
         self.repeat.set_relief(gtk.RELIEF_NONE)
         self.repeat.set_focus_on_click(False)    
-        self.repeat.set_has_tooltip(True)
+        
+        try:
+            self.order.set_has_tooltip(True)
+            self.repeat.set_has_tooltip(True)
+        except:
+            pass
         
         self.repeat.connect("button-press-event", self.choise)
         self.pack_start(self.repeat)
