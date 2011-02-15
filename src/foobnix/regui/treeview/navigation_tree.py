@@ -15,7 +15,6 @@ from foobnix.util.fc import FC
 import logging
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
-import os
 from foobnix.util.file_utils import open_in_filemanager
 
     
@@ -42,7 +41,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     def on_button_release(self, w, e):
         if is_middle_click_release(e):
             # on left double click add selected items to current tab
-            "to select item under cursor"
+            """to select item under cursor"""
             try:
                 path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y))
                 self.get_selection().select_path(path)
@@ -53,7 +52,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
     def on_button_press(self, w, e):
         if is_middle_click(e):
-            "to avoid unselect all selected items"
+            """to avoid unselect all selected items"""
             self.stop_emission('button-press-event')
         if is_left_click(e):
             # on left click expand selected folders

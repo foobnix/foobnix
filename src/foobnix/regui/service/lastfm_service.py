@@ -4,14 +4,13 @@ Created on 27 сент. 2010
 
 @author: ivan
 '''
+import thread
+import logging
 
-#from foobnix.model.entity import CommonBean
 from foobnix.thirdparty import pylast
 from foobnix.thirdparty.pylast import WSError, Tag
-import logging
 from foobnix.util.fc import FC
 from foobnix.regui.model import FModel
-import thread
 from foobnix.thirdparty.google.translate import translate
 
 API_KEY = FC().API_KEY
@@ -66,10 +65,6 @@ class Cache():
                 image = album.get_cover_image(size)
                 self.cache_images[self.get_key(artist, title)] = image
                 return image            
-                
-
-
-
 
 class LastFmService():
     def __init__(self, controls):
@@ -78,18 +73,13 @@ class LastFmService():
         self.scrobbler = None
         self.preferences_window = None
         self.controls = controls
-
-        #thread.start_new_thread(self.init_thread, ())
-        self.init_thread()
-
-
-
-
+        thread.start_new_thread(self.init_thread, ())
+            
     def connect(self):
         if self.network and self.scrobbler:
             return True
         return self.init_thread()
-
+    
     def init_thread(self):
         logging.debug("RUN INIT LAST.FM")
         username = FC().lfm_login

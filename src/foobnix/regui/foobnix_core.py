@@ -29,6 +29,7 @@ from foobnix.util.localization import foobnix_localization
 from foobnix.regui.notetab.tab_library import TabHelperControl
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.regui.treeview.lastfm_integration_tree import LastFmIntegrationControls
+
 foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):
@@ -36,17 +37,16 @@ class FoobnixCore(BaseFoobnixControls):
         BaseFoobnixControls.__init__(self)
         self.layout = None
         
-        self.lastfm_service = LastFmService(self)
-        
-        
-        self.media_engine = GStreamerEngine(self)
-        """elements"""
-        
-        self.tree = NavigationTreeControl(self)
-        self.tabhelper = TabHelperControl(self)
-        
         self.statusbar = StatusbarControls(self)
         
+        self.lastfm_service = LastFmService(self)
+                
+        self.media_engine = GStreamerEngine(self)
+        
+        """elements"""
+        self.tree = NavigationTreeControl(self)
+        self.tabhelper = TabHelperControl(self)
+                
         self.volume = VolumeControls(self)
         
         self.seek_bar = SeekProgressBarControls(self)
@@ -101,7 +101,7 @@ class FoobnixCore(BaseFoobnixControls):
                 load_foobnix_hotkeys()
             except:
                 pass
-
+       
     def run(self):    
         self.on_load()
         self.main_window.show()

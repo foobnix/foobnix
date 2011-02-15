@@ -121,14 +121,14 @@ class PlaylistTreeControl(CommonTreeControl):
     def on_button_press(self, w, e):
         self.controls.notetabs.set_active_tree(self)
         if is_rigth_click(e):
-            "to avoid unselect all selected items"
-            self.stop_emission('button-press-event')            
+            """to avoid unselect all selected items"""
+            self.stop_emission('button-press-event')
         if is_double_left_click(e):
             self.controls.play_selected_song()
             
     def on_button_release(self, w, e):
         if is_rigth_click_release(e):
-            "to select item under cursor"
+            """to select item under cursor"""
             try:
                 path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y))
                 self.get_selection().select_path(path)

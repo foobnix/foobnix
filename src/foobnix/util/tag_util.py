@@ -23,6 +23,9 @@ class TagEditor(ChildTopWindow):
         self.set_resizable(True)
         self.set_default_size(430, 150)
         
+        """make tooltip more quick (useful for checkbuttons)"""
+        gtk.Settings().set_property('gtk-tooltip-timeout', 0)
+        
         artist_label = gtk.Label(_("Artist"))
         title_label = gtk.Label(_("Title"))
         album_label = gtk.Label(_("Album"))
@@ -55,7 +58,7 @@ class TagEditor(ChildTopWindow):
             #check_button.add(chbutton_image)
             
             check_button.set_focus_on_click(False) 
-            check_button.set_tooltip_text(_("Apply for all selected tracks"))
+            check_button.set_tooltip_text(_("Apply for all selected tracks\n(active on multi selection)"))
             
             vars()[tag_name + "_hbox"] = gtk.HBox(False, 5)
             self.hboxes.append(vars()[tag_name + "_hbox"])
@@ -98,11 +101,11 @@ class TagEditor(ChildTopWindow):
         if len(paths) == 1:
             for chbutton in self.check_buttons:
                 chbutton.set_sensitive(False)
-                chbutton.set_relief(gtk.RELIEF_NONE)
+                #chbutton.set_relief(gtk.RELIEF_NONE)
         else: 
             for chbutton in self.check_buttons:
                 chbutton.set_sensitive(True)
-                chbutton.set_relief(gtk.RELIEF_NORMAL)           
+                #chbutton.set_relief(gtk.RELIEF_NORMAL)           
         
         self.audious = []
         for path in paths:
