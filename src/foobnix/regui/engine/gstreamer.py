@@ -242,7 +242,7 @@ class GStreamerEngine(MediaPlayerEngine):
 
     def state_play(self):
         self.player.set_state(gst.STATE_PLAYING)
-        self.current_state = STATE_PLAY
+        self.current_state = STATE_PLAY        
         self.on_chage_state()
         
     
@@ -289,7 +289,7 @@ class GStreamerEngine(MediaPlayerEngine):
             
     
     def on_chage_state(self):
-        self.controls.on_chage_player_state(self.get_state())
+        self.controls.on_chage_player_state(self.get_state(), self.bean)
     
     
     def on_sync_message(self, bus, message):

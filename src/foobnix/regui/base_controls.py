@@ -83,18 +83,23 @@ class BaseFoobnixControls():
     def save_beans_to(self, beans):
         return None    
    
-    def on_chage_player_state(self, state):
+    def on_chage_player_state(self, state, bean):
+        logging.debug("bean state %s" % (state))
+        
         if not FC().system_icons_dinamic:
             return None  
-            
+        
         if state == STATE_STOP:
             self.trayicon.set_image_from_path(FC().stop_icon_entry)
         elif state == STATE_PAUSE:
             self.trayicon.set_image_from_path(FC().pause_icon_entry)
         elif state == STATE_PLAY:
             self.trayicon.set_image_from_path(FC().play_icon_entry)
-        elif state == FTYPE_RADIO:
-            self.trayicon.set_image_from_path(FC().radio_icon_entry)
+        
+        if bean and bean.type:
+            logging.debug("bean state and type %s %s" % (state, bean.type))        
+            if bean.type == FTYPE_RADIO:
+                return self.trayicon.set_image_from_path(FC().radio_icon_entry)    
    
     def on_add_folders(self, paths=None):
         if not paths:
