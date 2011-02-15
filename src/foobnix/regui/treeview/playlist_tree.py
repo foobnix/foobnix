@@ -7,7 +7,7 @@ Created on 25 сент. 2010
 import gtk
 import logging
 from foobnix.util import const
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release,\
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release, \
     is_rigth_click
 from foobnix.helpers.menu import Popup
 from foobnix.regui.treeview.common_tree import CommonTreeControl
@@ -15,13 +15,11 @@ from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.util.fc import FC
 from foobnix.util.tag_util import edit_tags
 from foobnix.util.file_utils import open_in_filemanager
-import gobject
 
 class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
         #self.set_headers_visible(True)
-        print gobject.signal_list_names(self)
         """Column icon"""
         icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         icon.set_fixed_width(5)
@@ -121,9 +119,10 @@ class PlaylistTreeControl(CommonTreeControl):
         return super(PlaylistTreeControl, self).append(bean)
 
     def on_button_press(self, w, e):
+        self.controls.notetabs.set_active_tree(self)
         if is_rigth_click(e):
             "to avoid unselect all selected items"
-            self.stop_emission('button-press-event')
+            self.stop_emission('button-press-event')            
         if is_double_left_click(e):
             self.controls.play_selected_song()
             
