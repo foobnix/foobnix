@@ -83,6 +83,7 @@ class Dowloader(threading.Thread):
         
         """begin download"""
         self.bean.status = DOWNLOAD_STATUS_DOWNLOADING
+        self.bean.path = to_file
         self.update(self.bean)
         
         
