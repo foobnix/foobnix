@@ -6,17 +6,11 @@ Created on Oct 27, 2010
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import DOWNLOAD_STATUS_ALL
 from foobnix.regui.model import FTreeModel
-from foobnix.util.mouse_utils import is_double_left_click, \
-    is_rigth_click_release
-from ccm.Widgets import Popup
-from foobnix.util.file_utils import open_in_filemanager
-import logging
+from foobnix.util.mouse_utils import is_double_left_click
 class DMNavigationTreeControl(SimpleTreeControl):
     def __init__(self):
         SimpleTreeControl.__init__(self, None, None)
         self.dm_list = None
-        
-        
     
     def on_button_press(self, w, e):
         if is_double_left_click(e):
@@ -26,13 +20,6 @@ class DMNavigationTreeControl(SimpleTreeControl):
                     self.dm_list.filter_by_file(None, FTreeModel().status[0])
                 else:
                     self.dm_list.filter_by_file(active.get_status(), FTreeModel().status[0])
-        if is_rigth_click_release(e):
-            menu = Popup()
-            try:
-                menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
-            except:
-                pass
-            menu.show(e)
     def use_filter(self):
         active = self.get_selected_bean()
         if active:

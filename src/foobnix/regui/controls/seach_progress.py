@@ -8,20 +8,6 @@ import gtk
 import time
 import thread
 
-class SearchProgressBarNew(gtk.Spinner):
-    def __init__(self):
-        super(SearchProgressBarNew, self).__init__()
-        self.hide()
-
-    def start(self, trash=""):
-        self.show()
-        super(SearchProgressBarNew, self).start()
-    
-    def stop(self):
-        super(SearchProgressBarNew, self).stop()
-        self.hide()
-        
-        
 class SearchProgressBarOld(gtk.ProgressBar):
     def __init__(self):
         gtk.ProgressBar.__init__(self)
@@ -57,6 +43,18 @@ class SearchProgressBarOld(gtk.ProgressBar):
         #self.hide()        
 
 if gtk.pygtk_version >= (2, 21, 0):
+    class SearchProgressBarNew(gtk.Spinner):
+        def __init__(self):
+            super(SearchProgressBarNew, self).__init__()
+            self.hide()
+    
+        def start(self, trash=""):
+            self.show()
+            super(SearchProgressBarNew, self).start()
+        
+        def stop(self):
+            super(SearchProgressBarNew, self).stop()
+            self.hide()
     class SearchProgressBar(SearchProgressBarNew):
         def __init__(self):
                 SearchProgressBarNew.__init__(self)
@@ -64,3 +62,4 @@ else:
     class SearchProgressBar(SearchProgressBarOld):
         def __init__(self):
                 SearchProgressBarOld.__init__(self)
+                self.b = self.c
