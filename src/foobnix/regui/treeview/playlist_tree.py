@@ -142,7 +142,7 @@ class PlaylistTreeControl(CommonTreeControl):
             menu.add_separator()
             try:
                 paths = [bean.path for bean in self.get_selected_beans()]
-                menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, paths)
+                menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, (self.controls, paths))
                 text = self.get_selected_bean().text
                 menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
                 menu.add_separator()

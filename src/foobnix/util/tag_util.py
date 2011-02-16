@@ -6,20 +6,23 @@ Created on Jan 25, 2011
 '''
 
 import gtk
+import logging
+import os.path
 
 from foobnix.util.localization import foobnix_localization
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.helpers.window import ChildTopWindow
-import logging
-import os.path
 from mutagen.mp4 import MP4, MP4MetadataValueError
-
 
 foobnix_localization()
 
 class TagEditor(ChildTopWindow):
-    def __init__(self):
+    def __init__(self, controls):
         ChildTopWindow.__init__(self, _("Tag Editor"))
+        self.controls = controls
+        
+        self.dict = {}
+        
         self.set_resizable(True)
         self.set_default_size(430, 150)
         
@@ -95,18 +98,33 @@ class TagEditor(ChildTopWindow):
         self.add(vbox)
         self.show_all()
 
+    def apply_changes_for_rows_in_tree(self):
+        ''' apply stored changes for rows in playlist_tree ''' 
+        dict = {}   
+        for path in self.dict.keys():
+            if self.dict[path][0] and self.dict[path][1]:
+                dict[path] = self.dict[path][0] + ' - ' + self.dict[path][1]
+            elif self.dict[path][0] and not self.dict[path][1]:
+                dict[path] = self.dict[path][0] 
+            elif self.dict[path][1] and not self.dict[path][0]:
+                dict[path] = self.dict[path][1]
+        
+        playlist_tree = self.controls.notetabs.get_current_tree()
+        for path in dict.keys():
+            for row in playlist_tree.model:
+                if row[playlist_tree.path[0]] == path:
+                    row[playlist_tree.text[0]] = dict[path]
+        self.dict = {}
     
     def get_audio_tags(self, paths):
         self.paths = paths
         if len(paths) == 1:
             for chbutton in self.check_buttons:
                 chbutton.set_sensitive(False)
-                #chbutton.set_relief(gtk.RELIEF_NONE)
         else: 
             for chbutton in self.check_buttons:
                 chbutton.set_sensitive(True)
-                #chbutton.set_relief(gtk.RELIEF_NORMAL)           
-        
+                        
         self.audious = []
         for path in paths:
             self.audious.append(get_mutagen_audio(path))
@@ -137,6 +155,8 @@ class TagEditor(ChildTopWindow):
     def save_audio_tags(self, button, paths):
         
         def set_tags(audio, path, tag_name):
+            if not self.dict.has_key(path):
+                self.dict[path] = ["", ""]
             if isinstance(audio, MP4):
                 tag_name = tag_mp4_name
             try:
@@ -153,7 +173,21 @@ class TagEditor(ChildTopWindow):
                 new_tag_value = [tuple(map(int, tag_value.split(', ')))]
                 audio[tag_name] = new_tag_value
                 audio.save()
-                          
+            
+            ''' store changes '''
+            if (tag_name == "artist" or tag_name == '\xa9ART') and tag_value:
+                self.dict[path][0] = tag_value
+                if audio.has_key("title"):
+                    self.dict[path][1] = audio["title"][0]
+                elif audio.has_key('\xa9nam'):
+                    self.dict[path][1] = audio['\xa9nam'][0]
+            elif (tag_name == "title" or tag_name == '\xa9nam') and tag_value:
+                self.dict[path][1] = tag_value
+                if audio.has_key("artist"):
+                    self.dict[path][0] = audio["artist"][0]
+                elif audio.has_key('\xa9ART'):
+                    self.dict[path][0] = audio['\xa9ART'][0]        
+        
         for tag_name, tag_mp4_name, tag_entry, check_button in zip(self.tag_names, self.tag_mp4_names, self.tag_entries, self.check_buttons):
             tag_value = tag_entry.get_text()
             if check_button.get_active():
@@ -162,16 +196,17 @@ class TagEditor(ChildTopWindow):
             else:
                 set_tags(self.audious[0], self.paths[0], tag_name)
             check_button.set_active(False)
-            
-            
-                
-def edit_tags(paths=None):
+        
+        self.apply_changes_for_rows_in_tree()
+             
+def edit_tags(a):
+    controls, paths = a 
     if not paths:
         logging.warn('Can\'t get tags. Files not found')
         return
     if not globals().has_key("tag_editor"):
         global tag_editor
-        tag_editor = TagEditor()
+        tag_editor = TagEditor(controls)
     tag_editor.get_audio_tags(paths)
     
     
