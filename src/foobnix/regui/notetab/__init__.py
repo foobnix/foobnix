@@ -352,7 +352,6 @@ class NoteTabControl(TabGeneral, LoadSave):
     
        
     def on_load(self):
-        
         if FC().tab_position == "no": 
             self.set_tab_no()
         elif FC().tab_position == "left": 
@@ -362,10 +361,12 @@ class NoteTabControl(TabGeneral, LoadSave):
             
         for page in xrange(0, len(FC().cache_pl_tab_contents)):
             if FC().cache_pl_tab_contents[page] == []:
-                self.append_tab(FC().tab_pl_names[page], None, None, optimization=True)
+                self.append_tab(FC().tab_pl_names[page])
                 continue
-            self.controls.append_to_new_notebook(FC().tab_pl_names[page], FC().cache_pl_tab_contents[page], True)
-   
+            self._append_tab(FC().tab_pl_names[page])
+            for row in FC().cache_pl_tab_contents[page]:
+                self.get_current_tree().model.append(None, row)
+            
     def on_save(self):
         pass
     
@@ -377,10 +378,10 @@ class NoteTabControl(TabGeneral, LoadSave):
             for page in xrange(number_music_tabs, 0, -1):
                 tab_content = self.get_nth_page(page)
                 pl_tree = tab_content.get_child()
-                beans = pl_tree.get_all_beans()
-                FC().cache_pl_tab_contents.append(beans)
+                FC().cache_pl_tab_contents.append([list(row) for row in pl_tree.model])
                 FC().tab_pl_names.append(self.get_text_label_from_tab(tab_content))
-    
+                
+                
     def empty_tab(self, *a):
         self.append_tab("Foobnix", [])
     
