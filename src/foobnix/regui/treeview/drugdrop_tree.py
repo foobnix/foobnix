@@ -209,7 +209,7 @@ class DrugDropTree(gtk.TreeView):
                 
                 if new_iter:
                     to_iter = new_iter
-                new_iter = self.to_add_drug_item(to_model, to_iter, None,  pos, row=row)
+                new_iter = self.to_add_drug_item(to_model, to_iter, None, pos, row=row)
                 
             return True
     
@@ -324,10 +324,60 @@ class DrugDropTree(gtk.TreeView):
         for bean in beans:    
             self.tree_append(bean)
     
-    def plain_append_all(self, beans):
+    def get_iter_from_bean(self, bean):                
+        for row in self.model:
+            if row[self.UUID[0]] == bean.UUID:
+                return row.iter
+        return None
+    
+    
+    
+    def remove_iters(self, allIters):
+        for iter in allIters:
+            self.model.remove(iter)
+                
+    
+    def get_child_iters_by_parent(self, model, iter):
+        list = []
+        if model.iter_has_child(iter):
+            for i in xrange(model.iter_n_children(iter)):
+                next_iter = model.iter_nth_child(iter, i)
+                
+                list.append(next_iter)
+                 
+                iters = self.get_child_beans_by_parent(model, next_iter)
+                
+                for iter in iters:
+                    list.append(iter)
+                
+        return list
+    
+    def get_child_beans_by_parent(self, model, iter):
+        list = []
+        if model.iter_has_child(iter):
+            for i in xrange(model.iter_n_children(iter)):
+                next_iter = model.iter_nth_child(iter, i)
+                
+                parent = self.get_bean_from_model_iter(model, next_iter)                
+                list.append(parent)
+                 
+                beans = self.get_child_beans_by_parent(model, next_iter)
+                
+                for bean in beans:
+                    bean.parent(parent)                
+                    list.append(bean)
+                
+        return list
+    
+    def plain_append_all(self, beans, parent=None):
         logging.debug("begin plain append all")
         if not beans:
             return
+        
+        parent_iter = None
+        if parent:
+            parent_iter = self.get_iter_from_bean(parent)
+         
         self.current_view = VIEW_PLAIN
         
         normalized = []
@@ -349,9 +399,9 @@ class DrugDropTree(gtk.TreeView):
                     bean.tracknumber = counter
                 else: 
                     counter = 0
-            self._plain_append(bean)
+            self._plain_append(bean, parent_iter)
             
-    def _plain_append(self, bean):
+    def _plain_append(self, bean, parent_iter):
         logging.debug("Plain append task" + str(bean.text) + str(bean.path))
         if not bean:
             return
@@ -368,7 +418,7 @@ class DrugDropTree(gtk.TreeView):
             row = self.get_row_from_bean(one)            
             """append to tree thread safe"""
             
-            self.model.append(None, row)            
+            self.model.append(parent_iter, row)            
             """append to tree thread safe end"""
         
     def tree_append(self, bean):

@@ -33,7 +33,7 @@
 ./foobnix/preferences/configs/notification_conf.py
 ./foobnix/preferences/configs/other_conf.py
 ./foobnix/preferences/configs/tabs.py
-./foobnix/preferences/configs/tray_icon.py
+./foobnix/preferences/configs/tray_icon_conf.py
 ./foobnix/preferences/configs/vk_conf.py
 ./foobnix/regui/base_controls.py
 ./foobnix/regui/base_layout.py
@@ -78,6 +78,7 @@
 ./foobnix/regui/treeview/drugdrop_tree.py
 ./foobnix/regui/treeview/filter_tree.py
 ./foobnix/regui/treeview/__init__.py
+./foobnix/regui/treeview/lastfm_integration_tree.py
 ./foobnix/regui/treeview/navigation_tree.py
 ./foobnix/regui/treeview/playlist_tree.py
 ./foobnix/regui/treeview/radio_tree.py
@@ -112,6 +113,7 @@
 ./foobnix/util/proxy_connect.py
 ./foobnix/util/single_thread.py
 ./foobnix/util/singleton.py
+./foobnix/util/tag_util.py
 ./foobnix/util/text_utils.py
 ./foobnix/util/time_utils.py
 ./foobnix/util/url_utils.py
@@ -137,6 +139,7 @@
 ./foobnix/util/proxy_connect.py
 ./foobnix/util/single_thread.py
 ./foobnix/util/singleton.py
+./foobnix/util/tag_util.py
 ./foobnix/util/text_utils.py
 ./foobnix/util/time_utils.py
 ./foobnix/util/url_utils.py

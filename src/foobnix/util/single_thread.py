@@ -23,6 +23,7 @@ class SingleThread():
         else:
             self.progressbar.start(text)
             self._run(method, args)
+            
     
     def _run(self, method, args=None):
         if not self.lock.locked():            
@@ -39,7 +40,7 @@ class SingleThread():
                 method()
             time.sleep(0.1)
         except Exception, e:
-            logging.error(method.__name__ +"("+ str(args)+"):"+ str(e))
+            logging.error(method.__name__ + "(" + str(args) + "):" + str(e))
         finally:
             self.progressbar.stop()        
             self.lock.release()

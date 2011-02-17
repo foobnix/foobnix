@@ -7,10 +7,12 @@ from foobnix.regui.treeview.common_tree import CommonTreeControl
 import gtk
 from foobnix.util.const import LEFT_PERSPECTIVE_LASTFM
 from foobnix.util.fc import FC
-from foobnix.regui.model import FModel
+from foobnix.regui.model import FModel, FDModel
 from foobnix.util.bean_utils import update_parent_for_beans
 from foobnix.util.mouse_utils import is_rigth_click
 from foobnix.helpers.menu import Popup
+import time
+import gobject
 
 class LastFmIntegrationControls(CommonTreeControl):
     def __init__(self, controls):
@@ -26,6 +28,22 @@ class LastFmIntegrationControls(CommonTreeControl):
         self.configure_recive_drug()
         
         self.set_type_tree()
+        
+        
+        self.services = {
+                         _("My loved tracks"):self.controls.lastfm_service.get_loved_tracks,
+                         _("My top tracks"):self.controls.lastfm_service.get_top_tracks,
+                         _("My recent tracks"):self.controls.lastfm_service.get_recent_tracks,
+                         _("My top artists"):self.controls.lastfm_service.get_top_artists
+                         }  
+        
+        
+        for name in self.services:          
+            parent = FModel(name)
+            bean = FDModel(_("loading...")).parent(parent)
+            self.append(parent)        
+            self.append(bean)
+               
                
         
     def activate_perspective(self):   
@@ -35,39 +53,21 @@ class LastFmIntegrationControls(CommonTreeControl):
         active = self.get_selected_bean()
         if is_rigth_click(e):
             menu = Popup()
-            menu.add_item('Play', gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
-            menu.add_item('Copy to Search Line', gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            
+            menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
+            menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            
             menu.show(e)
-                    
-    def update(self):
-        self.controls.in_thread.run_with_progressbar(self._update)
-        
-    def _update(self):        
-        self.clear_tree()
-        parent = FModel("My loved tracks")
-        self.append(parent)        
-        childs = self.controls.lastfm_service.get_loved_tracks(FC().lfm_login)        
-        update_parent_for_beans(childs, parent)        
-        self.append_all(childs)
-        
-        
-        parent = FModel("My Top tracks")
-        self.append(parent)        
-        childs = self.controls.lastfm_service.get_top_tracks(FC().lfm_login)        
-        update_parent_for_beans(childs, parent)        
-        self.append_all(childs)
-        
-        parent = FModel("My Recent tracks")
-        self.append(parent)        
-        childs = self.controls.lastfm_service.get_recent_tracks(FC().lfm_login)        
-        update_parent_for_beans(childs, parent)        
-        self.append_all(childs)
-        
-        parent = FModel("My top atrists")
-        self.append(parent)        
-        childs = self.controls.lastfm_service.get_top_artists(FC().lfm_login)        
-        update_parent_for_beans(childs, parent)        
-        self.append_all(childs)
-        
-            
     
+    def on_bean_expanded(self, parent):        
+        def task():
+            time.sleep(1)
+            old_iters = self.get_child_iters_by_parent(self.model, self.get_iter_from_bean(parent));
+            childs = self.services[parent.text](FC().lfm_login)
+            update_parent_for_beans(childs, parent)        
+            
+            def sub_task():
+                self.append_all(childs)            
+                self.remove_iters(old_iters)        
+            
+            gobject.idle_add(sub_task)
+       
+        self.controls.in_thread.run_with_progressbar(task)

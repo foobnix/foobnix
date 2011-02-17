@@ -34,6 +34,9 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         """connectors"""
         self.connect("button-press-event", self.on_button_press)
         self.connect("key-release-event", self.on_key_release)
+        self.connect("row-expanded", self.on_row_expanded)
+        self.connect('button_press_event', self.on_multi_button_press)
+        self.connect('button_release_event', self.on_multi_button_release)
 
         self.count_index = 0
 
@@ -44,14 +47,24 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         
         self.active_UUID = -1
         
-        self.connect('button_press_event', self.on_multi_button_press)
-        self.connect('button_release_event', self.on_multi_button_release)
+        
         self.defer_select = False
         
         self.scroll = gtk.ScrolledWindow()
         self.scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         self.scroll.add(self)
-        
+    
+    def on_row_expanded(self, widget, iter, path):
+        bean = self.get_bean_from_path(path)
+        self.on_bean_expanded(bean)
+    
+    def get_bean_from_path(self, path_string):
+        iter = self.model.get_iter(path_string)
+        return self.get_bean_from_iter(iter)
+    
+    def on_bean_expanded(self, bean):
+        pass
+    
     def on_multi_button_press(self, widget, event):
         target = self.get_path_at_pos(int(event.x), int(event.y))
         if (target and event.type == gtk.gdk.BUTTON_PRESS and not (event.state & (gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)) #@UndefinedVariable
@@ -317,7 +330,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             #to_path = model.convert_path_to_child_path(paths[0])
             if model and paths:
                 iter = model.get_iter(paths[0])
-                return self.get_child_iters_by_parent(model, iter)
+                return self.get_child_beans_by_parent(model, iter)
             return None
      
     def get_all_beans(self):
@@ -326,7 +339,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         
         if next:
             parent = self.get_bean_from_iter(next) 
-            results += [parent] + self.get_child_iters_by_parent(self.model, next)
+            results += [parent] + self.get_child_beans_by_parent(self.model, next)
         else:
             return None
         
@@ -338,7 +351,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 flag = False
             else:
                 parent = self.get_bean_from_iter(next) 
-                results += [parent] + self.get_child_iters_by_parent(self.model, next)
+                results += [parent] + self.get_child_beans_by_parent(self.model, next)
                 
         return results
     
@@ -353,23 +366,6 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             result.append(bean.text)
                             
         return result
-                
-    def get_child_iters_by_parent(self, model, iter):
-        list = []
-        if model.iter_has_child(iter):
-            for i in xrange(model.iter_n_children(iter)):
-                next_iter = model.iter_nth_child(iter, i)
-                
-                parent = self.get_bean_from_model_iter(model, next_iter)                
-                list.append(parent)
-                 
-                beans = self.get_child_iters_by_parent(model, next_iter)
-                
-                for bean in beans:
-                    bean.parent(parent)                
-                    list.append(bean)
-                
-        return list
                 
     def get_all_selected_beans(self):
         selection = self.get_selection()
@@ -402,7 +398,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             return
         clb = gtk.Clipboard()
         if not mode:
-            tracks = [b.tracknumber+". "+b.title+" ("+b.time+")" 
+            tracks = [b.tracknumber + ". " + b.title + " (" + b.time + ")" 
                       if (b.tracknumber and b.title and b.time) else b.text for b in beans]
         else:
             tracks = []
@@ -410,7 +406,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 artist = bean.artist if bean.artist else "Unknown artist"
                 title = bean.title if bean.title else "Unknown title"
                 album = bean.album if bean.album else "Unknown album"
-                tracks.append(artist+" - "+title+" ("+album+")")
+                tracks.append(artist + " - " + title + " (" + album + ")")
                 
         clb.set_text("\n".join(tracks))
                 

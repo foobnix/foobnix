@@ -7,7 +7,7 @@ Created on 25 сент. 2010
 
 import gtk
 
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click,\
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
     is_middle_click_release, is_middle_click
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
@@ -166,8 +166,10 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         def set_expand_path(new_value): 
             FC().nav_expand_paths = new_value
+            
         def set_selected_path(new_value): 
             FC().nav_selected_paths = new_value
+            
         self.expand_updated(set_expand_path)
         self.selection_changed(set_selected_path)
         
