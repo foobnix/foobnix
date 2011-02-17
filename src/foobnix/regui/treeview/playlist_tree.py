@@ -20,6 +20,7 @@ class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
         #self.set_headers_visible(True)
+        self.set_headers_visible(True)
         """Column icon"""
         icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         icon.set_fixed_width(5)
@@ -27,13 +28,15 @@ class PlaylistTreeControl(CommonTreeControl):
         self.append_column(icon)
         
         """track number"""
-        tracknumber = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.tracknumber[0])
+        tracknumber = gtk.TreeViewColumn("№", gtk.CellRendererText(), text=self.tracknumber[0])
+        #tracknumber.set_title(_("№"))
         self.append_column(tracknumber)
 
         """column artist title"""
         description = gtk.TreeViewColumn('Track', gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         #description.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         description.set_expand(True)
+        description.set_resizable(True)
         self.append_column(description)
         
         

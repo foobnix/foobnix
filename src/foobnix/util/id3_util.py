@@ -52,8 +52,8 @@ def udpate_id3_for_beans(beans):
         if get_file_extension(bean.text) in FC().audio_formats:
             try:
                 udpate_id3(bean)
-            except Exception:
-                logging.warn("update id3 error")
+            except Exception, e:
+                logging.warn("update id3 error - " + e)
     return beans
 
 def udpate_id3(bean):
@@ -79,12 +79,12 @@ def udpate_id3(bean):
         
         duration_sec = bean.duration_sec
         
-        if not bean.duration_sec:
-            if audio and audio.info and audio.info.length: duration_sec = int(audio.info.length)
+        if not bean.duration_sec and audio.info.length:
+            duration_sec = int(audio.info.length)
         
-        if audio and audio.info:
+        if audio.info.__dict__:
             bean.info = normalized_info(audio.info, bean)
-            
+                        
         if bean.artist and bean.title:
             bean.text = bean.artist + " - " + bean.title
         
@@ -101,9 +101,14 @@ def udpate_id3(bean):
 
 def normalized_info(info, bean):
     list = info.pprint().split(", ")
-    list[1] = str(info.bitrate/1000) + 'kbps'
-    list[3] = convert_seconds_to_text(int(info.length))
     bean.size = os.path.getsize(bean.path)
+    if info.__dict__.has_key('bitrate'):
+        list[1] = str(info.bitrate/1000) + ' kbps'
+        list[3] = convert_seconds_to_text(int(info.length))
+    else:
+        kbps = int(round(bean.size*8/info.length/1000))
+        list.insert(1, str(kbps+1 if kbps % 2 else kbps) + ' kbps')
+        list[2] = convert_seconds_to_text(int(info.length))
     size = '%.2f MB' % (float(bean.size)/1024/1024)
     list.append(size)
     return " | ".join(list)

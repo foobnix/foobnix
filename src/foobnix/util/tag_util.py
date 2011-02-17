@@ -21,7 +21,7 @@ class TagEditor(ChildTopWindow):
         ChildTopWindow.__init__(self, _("Tag Editor"))
         self.controls = controls
         
-        self.dict = {}
+        self.store = {}
         
         self.set_resizable(True)
         self.set_default_size(430, 150)
@@ -55,11 +55,9 @@ class TagEditor(ChildTopWindow):
             
             vars()[tag_name + "_chbutton"] = gtk.CheckButton()
             self.check_buttons.append(vars()[tag_name + "_chbutton"])
-#           chbutton_image = gtk.image_new_from_stock(gtk.STOCK_COPY, gtk.ICON_SIZE_SMALL_TOOLBAR)
-            
+#                      
             check_button = self.check_buttons[-1]
-            #check_button.add(chbutton_image)
-            
+                        
             check_button.set_focus_on_click(False) 
             check_button.set_tooltip_text(_("Apply for all selected tracks\n(active on multi selection)"))
             
@@ -100,21 +98,21 @@ class TagEditor(ChildTopWindow):
 
     def apply_changes_for_rows_in_tree(self):
         ''' apply stored changes for rows in playlist_tree ''' 
-        dict = {}   
-        for path in self.dict.keys():
-            if self.dict[path][0] and self.dict[path][1]:
-                dict[path] = self.dict[path][0] + ' - ' + self.dict[path][1]
-            elif self.dict[path][0] and not self.dict[path][1]:
-                dict[path] = self.dict[path][0] 
-            elif self.dict[path][1] and not self.dict[path][0]:
-                dict[path] = self.dict[path][1]
+        store = {}   
+        for path in self.store.keys():
+            if self.store[path][0] and self.store[path][1]:
+                store[path] = self.store[path][0] + ' - ' + self.store[path][1]
+            elif self.store[path][0] and not self.store[path][1]:
+                store[path] = self.store[path][0] 
+            elif self.store[path][1] and not self.store[path][0]:
+                store[path] = self.store[path][1]
         
         playlist_tree = self.controls.notetabs.get_current_tree()
-        for path in dict.keys():
+        for path in store.keys():
             for row in playlist_tree.model:
                 if row[playlist_tree.path[0]] == path:
-                    row[playlist_tree.text[0]] = dict[path]
-        self.dict = {}
+                    row[playlist_tree.text[0]] = store[path]
+        self.store = {}
     
     def get_audio_tags(self, paths):
         self.paths = paths
@@ -131,7 +129,7 @@ class TagEditor(ChildTopWindow):
         
         if isinstance(self.audious[0], MP4):
             tag_names = self.tag_mp4_names
-            #make author entry not sensitive because mp4 hasn't so tag
+            '''make author entry not sensitive because mp4 hasn't so tag'''
             self.tag_entries[-2].set_sensitive(False)
             self.check_buttons[-2].set_sensitive(False)
             self.labels[-2].set_sensitive(False)
@@ -155,12 +153,15 @@ class TagEditor(ChildTopWindow):
     def save_audio_tags(self, button, paths):
         
         def set_tags(audio, path, tag_name):
-            if not self.dict.has_key(path):
-                self.dict[path] = ["", ""]
+            if not self.store.has_key(path):
+                self.store[path] = ["", ""]
             if isinstance(audio, MP4):
                 tag_name = tag_mp4_name
             try:
                 if audio.has_key(tag_name):
+                    if not tag_value:
+                        del audio[tag_name]
+                        return
                     audio[tag_name] = tag_value
                 else:
                     if tag_value:
@@ -169,24 +170,24 @@ class TagEditor(ChildTopWindow):
             except AttributeError:
                 logging.warn('Can\'t save tags. ' + os.path.split(path)[1] + ' is not audio file') 
             except MP4MetadataValueError:
-                #for mp4 trkn is tuple
+                '''for mp4 trkn is tuple'''
                 new_tag_value = [tuple(map(int, tag_value.split(', ')))]
                 audio[tag_name] = new_tag_value
                 audio.save()
             
             ''' store changes '''
             if (tag_name == "artist" or tag_name == '\xa9ART') and tag_value:
-                self.dict[path][0] = tag_value
+                self.store[path][0] = tag_value
                 if audio.has_key("title"):
-                    self.dict[path][1] = audio["title"][0]
+                    self.store[path][1] = audio["title"][0]
                 elif audio.has_key('\xa9nam'):
-                    self.dict[path][1] = audio['\xa9nam'][0]
+                    self.store[path][1] = audio['\xa9nam'][0]
             elif (tag_name == "title" or tag_name == '\xa9nam') and tag_value:
-                self.dict[path][1] = tag_value
+                self.store[path][1] = tag_value
                 if audio.has_key("artist"):
-                    self.dict[path][0] = audio["artist"][0]
+                    self.store[path][0] = audio["artist"][0]
                 elif audio.has_key('\xa9ART'):
-                    self.dict[path][0] = audio['\xa9ART'][0]        
+                    self.store[path][0] = audio['\xa9ART'][0]        
         
         for tag_name, tag_mp4_name, tag_entry, check_button in zip(self.tag_names, self.tag_mp4_names, self.tag_entries, self.check_buttons):
             tag_value = tag_entry.get_text()

@@ -617,7 +617,7 @@ class BaseFoobnixControls():
         self.virtual.on_quit()
         FC().save(False)
         gtk.main_quit()
-
+               
     def check_version(self):
         uuid = FC().uuid
         current_version = FOOBNIX_VERSION
