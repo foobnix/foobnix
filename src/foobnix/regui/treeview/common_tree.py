@@ -208,7 +208,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             if row[self.UUID[0]] == bean.UUID:
                 row[colum_num] = value
                 break
-            
+              
     def update_bean(self, bean):
         for row in self.model:
             if row[self.UUID[0]] == bean.UUID:
