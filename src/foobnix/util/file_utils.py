@@ -58,7 +58,7 @@ def rename_file_on_disk(a):
         hbox.pack_start(entry)
         hbox.pack_start(entry_ext)
         title = _('Rename file')
-    dialog = gtk.Dialog(title, buttons=(gtk.STOCK_OK, gtk.RESPONSE_ACCEPT, gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
+    dialog = gtk.Dialog(title, buttons=("Rename", gtk.RESPONSE_ACCEPT, "Cancel", gtk.RESPONSE_REJECT))
     dialog.vbox.pack_start(hbox)
     dialog.show_all()    
     if dialog.run() == gtk.RESPONSE_ACCEPT:
@@ -78,11 +78,21 @@ def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
             
     title = _('Delete file(s) / folder(s)')
     label = gtk.Label(_('Do you really want to delete item(s) from disk?'))
-    dialog = gtk.Dialog(title, buttons=(gtk.STOCK_OK, gtk.RESPONSE_ACCEPT, gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
+    dialog = gtk.Dialog(title, buttons=("Delete", gtk.RESPONSE_ACCEPT, "Cancel", gtk.RESPONSE_REJECT))
+    dialog.set_default_size(500, 200)
+    dialog.set_border_width(5)
     dialog.vbox.pack_start(label)
+    buffer = gtk.TextBuffer()
+    text = gtk.TextView(buffer)
+    text.set_editable(False)
+    text.set_cursor_visible(False)
+    scrolled_window = gtk.ScrolledWindow()
+    scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+    scrolled_window.add(text)
+    dialog.vbox.pack_start(scrolled_window)
     for path in paths:
         name = os.path.basename(path)
-        dialog.vbox.pack_start(gtk.Label(name))
+        buffer.insert_at_cursor('\t' + name + '\n')
     
     dialog.show_all()    
     if dialog.run() == gtk.RESPONSE_ACCEPT:

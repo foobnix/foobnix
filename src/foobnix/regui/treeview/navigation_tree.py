@@ -82,7 +82,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             if f_t_paths:
                 model = f_model.get_model()
                 t_paths = [f_model.convert_child_path_to_path(f_t_path) for f_t_path in f_t_paths]
-                row = [model[t_paths[0]]]
+                row = model[t_paths[0]]
                 paths = [model[t_path][self.path[0]] for t_path in t_paths]
                 row_refs = [gtk.TreeRowReference(model, t_path) for t_path in t_paths]
                 menu.add_separator()
