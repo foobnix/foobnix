@@ -5,7 +5,7 @@ Created on Sep 23, 2010
 '''
 import gtk
 from foobnix.regui.state import LoadSave
-from foobnix.util.fc import FC
+from foobnix.util.fc import FC, CONFIG_DIR
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
@@ -21,7 +21,9 @@ from foobnix.util.bean_utils import update_parent_for_beans, \
 from foobnix.helpers.pref_widgets import HBoxDecorator
 import locale
 import logging
+import os
 
+COVERS_DIR = CONFIG_DIR + 'Covers/'
 
 class InfoCache():
     def __init__(self):
@@ -195,13 +197,44 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
     
     def show_disc_cover(self):
         bean = self.bean
+        dict = FC().covers
         
         """update image"""
         if not bean.image:
-            bean.image = self.controls.lastfm_service.get_album_image_url(bean.artist, bean.title)
-        
+            if not os.path.isdir(COVERS_DIR):
+                os.mkdir(COVERS_DIR)
+            list_images = os.listdir(COVERS_DIR)
+            '''remove extra keys'''
+            for key in dict.keys():
+                if (key+'.jpg') not in list_images:
+                    del dict[key]
+            '''remove extra files'''
+            for file in list_images:
+                if os.path.splitext(file)[0] not in dict.keys():
+                    os.remove(COVERS_DIR + file)
+            
+            for list, key in zip(dict.values(), dict.keys()):
+                if bean.text in list:
+                    bean.image = COVERS_DIR + key + ".jpg"
+                    break
+            
+            if not bean.image:
+                '''get image url'''
+                bean.image = self.controls.lastfm_service.get_album_image_url(bean.artist, bean.title)
+                              
         self.image.update_info_from(bean)
+        
+        '''make .jpg image and store it in cache'''        
+        if bean.image.startswith("http://"):
+            url_basename = os.path.splitext(os.path.basename(bean.image))[0]
+            if dict.has_key(url_basename):
+                dict[url_basename].append(bean.text)
+            else:
+                dict[url_basename] = [bean.text]
+                self.image.get_pixbuf().save(COVERS_DIR + url_basename + '.jpg', "jpeg", {"quality":"90"})
+            
         self.controls.trayicon.update_info_from(bean)
+        
         
     def show_similar_lyrics(self):
         if self.info_cache.lyric_bean == self.bean:
