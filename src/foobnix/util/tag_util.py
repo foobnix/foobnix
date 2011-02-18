@@ -205,10 +205,6 @@ class TagEditor(ChildTopWindow):
              
 def edit_tags(a):
     controls, paths = a 
-    print paths
-    if not paths:
-        logging.warn('Can\'t get tags. Files not found')
-        return
     if not globals().has_key("tag_editor"):
         global tag_editor
         tag_editor = TagEditor(controls)

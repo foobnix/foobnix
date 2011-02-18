@@ -14,7 +14,7 @@ from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.util.fc import FC
 from foobnix.util.tag_util import edit_tags
-from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk
+from foobnix.util.file_utils import open_in_filemanager
 
 class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
@@ -137,31 +137,27 @@ class PlaylistTreeControl(CommonTreeControl):
                 self.get_selection().select_path(path)
             except TypeError:
                 pass
-                                                               
-            menu = Popup()
-            menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
-            menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
             #menu.add_item('Save as', gtk.STOCK_SAVE_AS, self.controls.save_beans_to, self.get_all_selected_beans())
-            menu.add_separator()
-            try:
-                paths = [bean.path for bean in self.get_selected_beans()]
+            
+            beans = self.get_selected_beans()
+            
+            if beans:
+                menu = Popup()
+                menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
+                menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
+                menu.add_separator()
+                paths = [bean.path for bean in beans]
                 if paths[0]:
                     menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, (self.controls, paths))
                 text = self.get_selected_bean().text
                 menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
                 menu.add_separator()
-            except (TypeError, AttributeError, UnboundLocalError):
-                pass
-                        
-            menu.add_item(_('Copy №-Title-Time'), gtk.STOCK_COPY, self.copy_info_to_clipboard)
-            menu.add_item(_('Copy Artist-Title-Album'), gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
-            
-            menu.add_separator()
-            menu.add_item(_('Love this track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
-            try:
+                menu.add_item(_('Copy №-Title-Time'), gtk.STOCK_COPY, self.copy_info_to_clipboard)
+                menu.add_item(_('Copy Artist-Title-Album'), gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
                 menu.add_separator()
-                path = self.get_selected_bean().path
-                menu.add_item(_("Open in file manager"), None, open_in_filemanager, path)
-            except:
-                pass
-            menu.show(e)
+                menu.add_item(_('Love this track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
+                menu.add_separator()
+                if paths[0]:
+                    menu.add_item(_("Open in file manager"), None, open_in_filemanager, paths[0])
+                menu.show(e)
+            
