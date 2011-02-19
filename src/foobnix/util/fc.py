@@ -185,6 +185,8 @@ class FC:
         
         self.file_managers = ['nautilus', 'dolphin', 'konqueror', 'thunar', 'pcmanfm']
         self.active_manager = [0, ""]
+        
+        self.covers = {}
          
         self = self._load();
 

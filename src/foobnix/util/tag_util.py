@@ -124,9 +124,12 @@ class TagEditor(ChildTopWindow):
                 chbutton.set_sensitive(True)
                         
         self.audious = []
-        for path in paths:
+        for path in paths[:]:
+            if not path or os.path.isdir(path):
+                self.paths.remove(path)
+                continue
             self.audious.append(get_mutagen_audio(path))
-        
+            
         if isinstance(self.audious[0], MP4):
             tag_names = self.tag_mp4_names
             '''make author entry not sensitive because mp4 hasn't so tag'''
@@ -202,9 +205,6 @@ class TagEditor(ChildTopWindow):
              
 def edit_tags(a):
     controls, paths = a 
-    if not paths:
-        logging.warn('Can\'t get tags. Files not found')
-        return
     if not globals().has_key("tag_editor"):
         global tag_editor
         tag_editor = TagEditor(controls)

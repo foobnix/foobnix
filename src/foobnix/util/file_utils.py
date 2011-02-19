@@ -7,6 +7,7 @@ import os
 import urllib
 from foobnix.util.fc import FC
 import logging
+import gtk
 
 def open_in_filemanager(path, managers=None):
     dirname = path if os.path.isdir(path) else os.path.dirname(path)
@@ -37,7 +38,85 @@ def open_in_filemanager(path, managers=None):
         else:
             logging.warning("None file manager found")          
     
-                
+def rename_file_on_disk(a):
+    row, index_path, index_text = a
+    path = row[index_path]
+    name = os.path.basename(path)
+    entry = gtk.Entry()
+    entry.set_width_chars(64)
+    hbox = gtk.HBox()
+    if os.path.isdir(path):
+        entry.set_text(name)
+        hbox.pack_start(entry)
+        title = _('Rename folder')
+    else:
+        name_tuple = os.path.splitext(name)
+        entry.set_text(name_tuple[0])
+        entry_ext = gtk.Entry()
+        entry_ext.set_width_chars(7)
+        entry_ext.set_text(name_tuple[1][1:])
+        hbox.pack_start(entry)
+        hbox.pack_start(entry_ext)
+        title = _('Rename file')
+    dialog = gtk.Dialog(title, buttons=("Rename", gtk.RESPONSE_ACCEPT, "Cancel", gtk.RESPONSE_REJECT))
+    dialog.vbox.pack_start(hbox)
+    dialog.show_all()    
+    if dialog.run() == gtk.RESPONSE_ACCEPT:
+        new_path = os.path.join(os.path.dirname(path), entry.get_text())
+        os.rename(path, new_path)
+        row[index_path] = new_path
+        row[index_text] = os.path.basename(new_path)
+    dialog.destroy()
+
+def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):            
+    for path in paths[:] :
+        if os.path.isdir(path):
+            for row_ref, _path in zip(row_refs[:], paths[:]):
+                if path != _path and _path.startswith(path):
+                    paths.remove(_path)
+                    row_refs.remove(row_ref)
+            
+    title = _('Delete file(s) / folder(s)')
+    label = gtk.Label(_('Do you really want to delete item(s) from disk?'))
+    dialog = gtk.Dialog(title, buttons=("Delete", gtk.RESPONSE_ACCEPT, "Cancel", gtk.RESPONSE_REJECT))
+    dialog.set_default_size(500, 200)
+    dialog.set_border_width(5)
+    dialog.vbox.pack_start(label)
+    buffer = gtk.TextBuffer()
+    text = gtk.TextView(buffer)
+    text.set_editable(False)
+    text.set_cursor_visible(False)
+    scrolled_window = gtk.ScrolledWindow()
+    scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+    scrolled_window.add(text)
+    dialog.vbox.pack_start(scrolled_window)
+    for path in paths:
+        name = os.path.basename(path)
+        buffer.insert_at_cursor('\t' + name + '\n')
+    
+    dialog.show_all()    
+    if dialog.run() == gtk.RESPONSE_ACCEPT:
+        model = row_refs[0].get_model()
+        for row_ref, path in zip(row_refs, paths):
+            if os.path.isfile(path):
+                os.remove(path)
+            else:
+                del_dir(path)
+            model.remove(get_iter_from_row_reference(row_ref))
+    
+    dialog.destroy()             
+
+def del_dir(path): 
+        list = os.listdir(path)
+        if not list: return
+        for item in list:
+            item_abs = os.path.join(path, item)
+            if os.path.isfile(item_abs):
+                os.remove(item_abs)
+            else:
+                del_dir(item_abs)
+        os.rmdir(path)
+
 def isDirectory(path):
     return os.path.isdir(path)
 

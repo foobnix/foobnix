@@ -361,7 +361,7 @@ class NoteTabControl(TabGeneral, LoadSave):
             
         for page in xrange(0, len(FC().cache_pl_tab_contents)):
             if FC().cache_pl_tab_contents[page] == []:
-                self.append_tab(FC().tab_pl_names[page])
+                self._append_tab(FC().tab_pl_names[page])
                 continue
             self._append_tab(FC().tab_pl_names[page])
             for row in FC().cache_pl_tab_contents[page]:

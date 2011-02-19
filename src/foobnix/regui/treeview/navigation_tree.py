@@ -15,7 +15,8 @@ from foobnix.util.fc import FC
 import logging
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
-from foobnix.util.file_utils import open_in_filemanager
+from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
+    delete_files_from_disk
 
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -76,10 +77,30 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
                 menu.add_item(_("Clear"), gtk.STOCK_CLEAR, lambda : self.controls.tabhelper.clear_tree(self.scroll), None)
             menu.add_item(_("Update"), gtk.STOCK_REFRESH, lambda: self.controls.tabhelper.on_update_music_tree(self.scroll), None)
-            menu.add_separator()
-            menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)    
+            
+            f_model, f_t_paths = self.get_selection().get_selected_rows()
+            if f_t_paths:
+                model = f_model.get_model()
+                t_paths = [f_model.convert_child_path_to_path(f_t_path) for f_t_path in f_t_paths]
+                row = model[t_paths[0]]
+                paths = [model[t_path][self.path[0]] for t_path in t_paths]
+                row_refs = [gtk.TreeRowReference(model, t_path) for t_path in t_paths]
+                menu.add_separator()
+                menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
+                menu.add_item(_("Rename file (folder)"), None, rename_file_on_disk, (row, self.path[0], self.text[0]))    
+                menu.add_item(_("Delete file(s) / folder(s)"), None, self.delete_files, (row_refs, paths, self.get_iter_from_row_reference))
+            
             menu.show(e)
-
+    
+    def delete_files(self, a):
+        row_refs, paths, get_iter_from_row_reference = a
+        copy_paths = paths[:]
+        delete_files_from_disk(row_refs, paths, get_iter_from_row_reference)
+        beans = FC().cache_music_tree_beans[self.controls.notetabs.get_current_page()]
+        for bean in beans[:] :
+            if bean.path in copy_paths:
+                beans.remove(bean)
+                
     def add_to_tab(self, current=False):
         paths = self.get_selected_bean_paths()
         to_model = self.controls.notetabs.get_current_tree().get_model().get_model()
@@ -124,7 +145,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             if in_new_tab:
                 tree = NavigationTreeControl(self.controls)
                 tab_name = unicode(path[path.rfind("/") + 1:])
-                self.controls.tabhelper.append_tab(tab_name, navig_tree=tree)
+                self.controls.tabhelper._append_tab(tab_name, navig_tree=tree)
                 number_of_tab = self.controls.tabhelper.get_current_page()
                 FC().music_paths.insert(0, [])
                 FC().tab_names.insert(0, tab_name)
