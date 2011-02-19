@@ -11,6 +11,7 @@ from foobnix.regui.model.signal import FControl
 from random import randint
 from foobnix.regui.treeview.filter_tree import FilterTreeControls
 import logging
+import gobject
 
 class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
@@ -93,8 +94,14 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def populate(self, bean):
         self.clear()
         self.append(bean)
-        
+    
     def populate_all(self, beans):
+        def task():
+            self._populate_all(beans)
+            
+        gobject.idle_add(task)
+        
+    def _populate_all(self, beans):
         self.clear_tree()
         self.append_all(beans)
     
