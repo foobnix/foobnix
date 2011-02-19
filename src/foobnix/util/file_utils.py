@@ -38,8 +38,7 @@ def open_in_filemanager(path, managers=None):
         else:
             logging.warning("None file manager found")          
     
-def rename_file_on_disk(a):
-    row, index_path, index_text = a
+def rename_file_on_disk(row, index_path, index_text):
     path = row[index_path]
     name = os.path.basename(path)
     entry = gtk.Entry()
@@ -62,10 +61,15 @@ def rename_file_on_disk(a):
     dialog.vbox.pack_start(hbox)
     dialog.show_all()    
     if dialog.run() == gtk.RESPONSE_ACCEPT:
-        new_path = os.path.join(os.path.dirname(path), entry.get_text())
+        if os.path.isdir(path) or not entry_ext.get_text():
+            new_path = os.path.join(os.path.dirname(path), entry.get_text())
+        else:
+            new_path = os.path.join(os.path.dirname(path), entry.get_text() + '.' + entry_ext.get_text()) 
         os.rename(path, new_path)
         row[index_path] = new_path
         row[index_text] = os.path.basename(new_path)
+        dialog.destroy()
+        return True
     dialog.destroy()
 
 def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):            
@@ -103,7 +107,8 @@ def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
             else:
                 del_dir(path)
             model.remove(get_iter_from_row_reference(row_ref))
-    
+            dialog.destroy()
+            return True
     dialog.destroy()             
 
 def del_dir(path): 
