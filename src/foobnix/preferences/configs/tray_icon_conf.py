@@ -90,8 +90,9 @@ class TrayIconConfig(ConfigPlugin):
             self.hide_button.set_sensitive(True)
    
     def on_static_icon(self):
-        if FC().static_tray_icon:
-            self.check_active_dynamic_icon(self.static_icon)
+        if FC().static_tray_icon:            
+            FC().static_icon_entry = self.static_icon.get_active_path()
+            self.controls.trayicon.set_from_resource(FC().static_icon_entry)
                  
     def check_active_dynamic_icon(self, icon_object):
         icon_name = icon_object.entry.get_text()

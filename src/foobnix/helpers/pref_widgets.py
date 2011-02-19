@@ -63,13 +63,15 @@ class IconBlock(gtk.HBox):
         
     def on_file_choose(self, *a):
         file = file_chooser_dialog("Choose icon")
+        if not file:
+            return None
         self.entry.set_text(file[0])
         self.modconst.apeend_icon(self, file[0], True)
         self.all_icons.append(file[0])
     
     def on_change_icon(self, *a):        
         active_id = self.combobox.get_active()
-        if active_id > 0:
+        if active_id >= 0:
             icon_name = self.combobox.get_model()[active_id][1]
             self.entry.set_text(icon_name)
         #FC().static_tray_icon = True
