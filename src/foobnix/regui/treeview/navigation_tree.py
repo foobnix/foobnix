@@ -87,19 +87,30 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 row_refs = [gtk.TreeRowReference(model, t_path) for t_path in t_paths]
                 menu.add_separator()
                 menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
-                menu.add_item(_("Rename file (folder)"), None, rename_file_on_disk, (row, self.path[0], self.text[0]))    
+                menu.add_item(_("Rename file (folder)"), None, self.rename_files, (row, self.path[0], self.text[0]))    
                 menu.add_item(_("Delete file(s) / folder(s)"), None, self.delete_files, (row_refs, paths, self.get_iter_from_row_reference))
             
             menu.show(e)
     
+    def rename_files(self, a):
+        row, index_path, index_text = a
+        if rename_file_on_disk(row, index_path, index_text):
+            old_bean = self.get_selected_bean()
+            beans = FC().cache_music_tree_beans[self.controls.tabhelper.get_current_page()]
+            for bean in beans:
+                if old_bean == bean:
+                    bean.path = row[index_path]
+                    bean.text = row[index_text]
+                    break
+    
     def delete_files(self, a):
         row_refs, paths, get_iter_from_row_reference = a
         copy_paths = paths[:]
-        delete_files_from_disk(row_refs, paths, get_iter_from_row_reference)
-        beans = FC().cache_music_tree_beans[self.controls.notetabs.get_current_page()]
-        for bean in beans[:] :
-            if bean.path in copy_paths:
-                beans.remove(bean)
+        if delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
+            beans = FC().cache_music_tree_beans[self.controls.tabhelper.get_current_page()]
+            for bean in beans[:] :
+                if bean.path in copy_paths:
+                    beans.remove(bean)
                 
     def add_to_tab(self, current=False):
         paths = self.get_selected_bean_paths()
