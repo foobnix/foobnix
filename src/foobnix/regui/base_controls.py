@@ -28,6 +28,7 @@ from foobnix.util.text_utils import normalize_text
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 import gobject
+from foobnix.util.bean_utils import get_bean_posible_paths
 
 
 
@@ -351,6 +352,9 @@ class BaseFoobnixControls():
             return None
         
         if not bean.path:
+            bean.path = get_bean_posible_paths(bean)
+                    
+        if not bean.path:            
             if not self.fill_bean_from_vk(bean):
                 if self.count_errors < 4:
                     logging.debug("Error happen [%s] %s" % (self.count_errors, FC().vk_login))

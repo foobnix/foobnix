@@ -5,6 +5,10 @@ Created on 20 окт. 2010
 @author: ivan
 '''
 from foobnix.util.text_utils import normalize_text
+import os
+from foobnix.util.file_utils import get_file_extension
+from foobnix.util.fc import FC
+import logging
 def update_parent_for_beans(beans, parent):
     for bean in beans:
         bean.parent(parent)
@@ -23,3 +27,35 @@ def update_bean_from_normalized_text(bean):
             bean.artist, bean.title = text_artist, text_title
     return bean
 
+
+def get_bean_posible_paths(bean):
+    logging.debug("get bean pat %s" % bean)
+    path = get_bean_download_path(bean, path=FC().online_save_to_folder)
+    if path and os.path.exists(path):
+        return path
+    
+    for paths in FC().music_paths:
+        for path in paths:
+            path = get_bean_download_path(bean, path)
+            if path and os.path.exists(path):
+                return path
+            
+    return None    
+    
+    
+def get_bean_download_path(bean, path=FC().online_save_to_folder):
+
+    ext = ".mp3"
+
+    if bean.artist:
+        bean.artist = bean.artist.replace("/", "-")
+        bean.artist = bean.artist.replace("\\", "-")
+        path = os.path.join(path, bean.artist, bean.get_display_name() + ext)
+        logging.debug("bean path %s" % path)
+        return path
+    else:
+        logging.debug("get bean pat %s" % bean)
+        path = os.path.join(path, bean.get_display_name() + ext)
+        logging.debug("bean path %s" % path)
+        return path   
+    

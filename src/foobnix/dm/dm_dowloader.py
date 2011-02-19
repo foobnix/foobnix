@@ -12,6 +12,7 @@ import os
 from foobnix.util.time_utils import size2text
 from foobnix.util.fc import FC
 from foobnix.util.file_utils import get_file_extension
+from foobnix.util.bean_utils import get_bean_download_path
 
 class Dowloader(threading.Thread):
     def __init__(self, update, bean, notify_finish):
@@ -53,14 +54,10 @@ class Dowloader(threading.Thread):
         if not os.path.isdir(path):
             os.makedirs(path)
             
-        if bean.artist:
-            bean.artist = bean.artist.replace("/", "-")
-            bean.artist = bean.artist.replace("\\", "-")
-            to_file = os.path.join(FC().online_save_to_folder, bean.artist, bean.get_display_name() + ext)
-            if not os.path.isdir(os.path.dirname(to_file)):
-                os.makedirs(os.path.dirname(to_file))             
-        else:
-            to_file = os.path.join(path, bean.get_display_name() + ext)        
+        to_file = get_bean_download_path(bean, FC().online_save_to_folder)
+        
+        if not os.path.exists(os.path.dirname(to_file)):
+                os.makedirs(os.path.dirname(to_file))        
         
         to_file_tmp = to_file + ".tmp"
         
