@@ -153,6 +153,7 @@ class FC:
         self.auto_start_donwload = True
         self.max_active_count = 3
         self.online_save_to_folder = "/tmp"
+        self.automatic_online_save = False
         self.is_save_online = True
         
         """info panel"""

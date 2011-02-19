@@ -95,6 +95,7 @@ class DM(ChildTopWindow):
     def append_task(self, bean):
         bean.status = DOWNLOAD_STATUS_ACTIVE
         self.dm_list.append(bean)
+        logging.debug("Begin download %s" % bean)
     
     def append_tasks(self, beans):
         self.show()

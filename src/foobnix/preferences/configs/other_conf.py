@@ -35,6 +35,10 @@ class OtherConfig(ConfigPlugin):
         hbox.pack_start(gtk.Label(_("Save music to folder")), False, True, 0)
         hbox.pack_start(self.online_dir, True, True, 0)
         
+        """automatic save"""                
+        self.automatic_save_checkbutton = gtk.CheckButton(label=_("Automatic music save"), use_underline=True)
+        
+        
         """disc cover size"""
         cbox = gtk.HBox(False, 0)
         cbox.show()
@@ -121,6 +125,7 @@ class OtherConfig(ConfigPlugin):
                 
         """packaging"""        
         box.pack_start(hbox, False, True, 0)
+        box.pack_start(self.automatic_save_checkbutton, False, True, 0)
         box.pack_start(cbox, False, True, 0)
         box.pack_start(self.check_new_version, False, True, 0)
         box.pack_start(demo, False, False, 0)
@@ -149,7 +154,7 @@ class OtherConfig(ConfigPlugin):
     def on_change_folder(self, *a):
         path = self.online_dir.get_filename()       
         FC().online_save_to_folder = path        
-        logging.info("Change music online folder: "+ path)  
+        logging.info("Change music online folder: " + path)  
                 
     
     def on_load(self):
@@ -163,6 +168,9 @@ class OtherConfig(ConfigPlugin):
         self.check_new_version.set_active(FC().check_new_version)
         if FC().background_image:
             self.is_show.set_active(True)   
+        
+        if FC().automatic_online_save:
+            self.automatic_save_checkbutton.set_active(True)
             
         """menu style"""
         if  FC().menu_style == "new":
@@ -191,6 +199,9 @@ class OtherConfig(ConfigPlugin):
         FC().info_panel_image_size = self.image_size_spin.get_value_as_int()
         FC().window_opacity = self.opacity_size.get_value() / 100
         FC().check_new_version = self.check_new_version.get_active()
+        
+        FC().automatic_online_save = self.automatic_save_checkbutton.get_active()
+        
         if self.is_background_image != FC().background_image:
             self.controls.change_backgound()
             self.controls.preferences.hide()            

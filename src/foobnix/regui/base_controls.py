@@ -392,6 +392,9 @@ class BaseFoobnixControls():
             if sec > dur_sec / 2 or sec > 60:
                 self.is_scrobbled = True
                 self.lastfm_service.report_scrobbled(bean, self.start_time, dur_sec)
+                """download music"""
+                if FC().automatic_online_save:
+                    self.dm.append_task(bean)
             
     def notify_title(self, text):
         logging.debug("Notify title" + text)
