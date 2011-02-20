@@ -21,7 +21,11 @@ class Test(unittest.TestCase):
         input = ["aEnigma", "cBee", "bSome", "dKOT"]
         result = ["aEnigma", "bSome", "cBee", "dKOT"]
         self.assertEquals(result, sort_by_song_name(input))
-
+    
+    def test_log_compare(self):        
+        input = ["1234512345132316149982_b39e7d45e6_o1", "1234512345132316149981_b39e7d45e6_o1"]
+        result = ["1234512345132316149982_b39e7d45e6_o1", "1234512345132316149981_b39e7d45e6_o1"]
+        self.assertEquals(result, sort_by_song_name(input))
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
