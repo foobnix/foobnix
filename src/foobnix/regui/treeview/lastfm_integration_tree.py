@@ -14,6 +14,7 @@ import time
 import gobject
 from foobnix.fc.fc_base import FCBase
 from foobnix.fc.fc import FC
+import logging
 
 class LastFmIntegrationControls(CommonTreeControl):
     def __init__(self, controls):
@@ -36,6 +37,8 @@ class LastFmIntegrationControls(CommonTreeControl):
                          _("My top tracks"):self.controls.lastfm_service.get_top_tracks,
                          _("My recent tracks"):self.controls.lastfm_service.get_recent_tracks,
                          _("My top artists"):self.controls.lastfm_service.get_top_artists
+                        # _("My friends"):self.controls.lastfm_service.get_friends,
+                        #_("My neighbours"):self.controls.lastfm_service.get_neighbours
                          }  
         
         
@@ -58,12 +61,12 @@ class LastFmIntegrationControls(CommonTreeControl):
             menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            
             menu.show(e)
     
-    def on_bean_expanded(self, parent):        
+    def on_bean_expanded(self, parent):
+        logging.debug("expanded %s" % parent)
         def task():
-            time.sleep(1)
             old_iters = self.get_child_iters_by_parent(self.model, self.get_iter_from_bean(parent));
             childs = self.services[parent.text](FCBase().lfm_login)
-            update_parent_for_beans(childs, parent)        
+            update_parent_for_beans(childs, parent)
             
             def sub_task():
                 self.append_all(childs)            

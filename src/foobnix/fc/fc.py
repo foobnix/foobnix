@@ -14,8 +14,9 @@ from foobnix.util.agent import get_ranmom_agent
 from foobnix.fc.fc_helper import FCStates, CONFIG_DIR
 from foobnix.version import VERSION
 from foobnix.fc.fc_base import FCBase
+import os
 
-CONFIG_FILE = CONFIG_DIR + "foobnix_%s.pkl" % VERSION
+CONFIG_FILE = os.path.join(CONFIG_DIR , "foobnix_%s.pkl" % VERSION)
 
 """Foobnix player configuration"""
 class FC():

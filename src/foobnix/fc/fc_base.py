@@ -9,6 +9,7 @@ from foobnix.fc.fc_helper import FCStates, CONFIG_DIR
 from foobnix.util.singleton import Singleton
 import random
 import uuid
+import os
 
 def get_random_vk():
     vks = {
@@ -21,7 +22,7 @@ def get_random_vk():
     return random.choice(vks.items())
 
 
-CONFIG_BASE_FILE = CONFIG_DIR + "foobnix_base.pkl" 
+CONFIG_BASE_FILE = os.path.join(CONFIG_DIR, "foobnix_base.pkl") 
 
 """Foobnix base configuration, not change after installation, stable"""
 class FCBase():

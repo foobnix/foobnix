@@ -8,7 +8,7 @@ import os
 import logging
 import cPickle
 
-CONFIG_DIR = os.path.expanduser("~") + "/.config/foobnix/"
+CONFIG_DIR = os.path.expanduser("~") + "/.config/foobnix"
 if not os.path.exists(CONFIG_DIR):
     os.makedirs(CONFIG_DIR)
 COVERS_DIR = CONFIG_DIR + 'Covers/'

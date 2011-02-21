@@ -9,7 +9,7 @@ import logging
 
 from foobnix.thirdparty import pylast
 from foobnix.thirdparty.pylast import WSError, Tag
-from foobnix.regui.model import FModel
+from foobnix.regui.model import FModel, FDModel
 from foobnix.thirdparty.google.translate import translate
 from foobnix.fc.fc_base import FCBase
 from foobnix.fc.fc import FC
@@ -138,6 +138,24 @@ class LastFmService():
         lfm_tracks = self.get_user(username).get_top_artists()      
         return self.sub_artist_to_models(lfm_tracks, 'item')
     
+    def get_friends(self, username):
+        lfm_tracks = self.get_user(username).get_friends()
+        list = self.get_sub_childs(lfm_tracks, 'name')
+        result = []
+        for item in list:
+            result.append(FModel(item))
+        return result
+    
+    def get_neighbours(self, username):
+        lfm_tracks = self.get_user(username).get_neighbours()
+        list = self.get_sub_childs(lfm_tracks, 'name')
+        result = []
+        for item in list:
+            parent = FModel(item)
+            result.append(parent)
+        return result
+    
+    
     def get_scrobbler(self):
         return self.scrobbler
     
@@ -225,6 +243,16 @@ class LastFmService():
             tracks.append(track)
             
         return self.tracks_to_models(tracks)
+    def get_sub_childs(self, list, key='name'):
+        result = []
+        for item in list:
+            try:
+                artist = getattr(item, key)
+            except AttributeError:
+                artist = item[key]
+            result.append(artist)            
+        return result
+
 
     def sub_artist_to_models(self, topartists, key='item'):
         artists = []
