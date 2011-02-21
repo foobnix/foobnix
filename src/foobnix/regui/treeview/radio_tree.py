@@ -14,6 +14,7 @@ from foobnix.helpers.dialog_entry import two_line_dialog
 from foobnix.helpers.menu import Popup
 from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
 from foobnix.regui.service.radio_service import RadioFolder
+import gobject
 
 
 class RadioTreeControl(CommonTreeControl):
@@ -80,13 +81,16 @@ class RadioTreeControl(CommonTreeControl):
             for radio, urls in fpl.urls_dict.iteritems():
                 child = FModel(radio, urls[0]).parent(parent).add_type(FTYPE_RADIO)
                 self.append(child)
+                
+        FC().cache_radio_tree_beans = self.get_all_beans()
         self.is_radio_populated = True            
     
     def lazy_load(self):
         if not self.is_lazy_load:
+            logging.debug("radio Lazy loading")
             self.populate_all(FC().cache_radio_tree_beans)
             if not FC().cache_radio_tree_beans:
-                self.update_radio_tree()
-                FC().cache_radio_tree_beans = self.get_all_beans()
+                logging.debug("populdate from file system")
+                gobject.idle_add(self.update_radio_tree)
             self.is_lazy_load = True 
         

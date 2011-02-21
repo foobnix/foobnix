@@ -54,8 +54,6 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         if name == LEFT_PERSPECTIVE_INFO:
             self.controls.filter.hide()
             self.controls.info_panel.update_info_panel()
-        if name == LEFT_PERSPECTIVE_RADIO:
-            self.controls.radio.lazy_load()            
         else:
             self.controls.filter.show()
    
@@ -81,8 +79,9 @@ class PerspectiveButtonControlls(gtk.HBox):
         
                 
         radios = PespectiveToogledButton(_("Radio"), gtk.STOCK_NETWORK, _("Radio Stantions (Alt+2)"))
-        radios.connect("clicked", lambda * a:controls.radio.lazy_load())
         radios.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_RADIO))
+        radios.connect("clicked", lambda * a:controls.radio.lazy_load())
+        
         
         
         
