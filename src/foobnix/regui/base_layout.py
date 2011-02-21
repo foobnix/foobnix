@@ -5,7 +5,7 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.regui.model.signal import FControl
 import logging
 from foobnix.regui.state import LoadSave

@@ -8,7 +8,7 @@ import gtk
 from foobnix.regui.model.signal import FControl
 from foobnix.util.const import EQUALIZER_LABLES
 from foobnix.regui.model.eq_model import EqModel
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.mouse_utils import is_rigth_click
 from foobnix.helpers.menu import Popup
 from foobnix.helpers.my_widgets import ImageButton

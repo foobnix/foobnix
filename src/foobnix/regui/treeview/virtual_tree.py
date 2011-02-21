@@ -10,7 +10,7 @@ from foobnix.helpers.menu import Popup
 from foobnix.helpers.dialog_entry import one_line_dialog
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.common_tree import CommonTreeControl
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.key_utils import KEY_DELETE, is_key
 from foobnix.util.const import LEFT_PERSPECTIVE_VIRTUAL
 class VirtualTreeControl(CommonTreeControl, LoadSave):

@@ -6,7 +6,7 @@ Created on 1 сент. 2010
 '''
 import urllib2
 import logging
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 class ProxyPasswordMgr:
     def __init__(self):
         self.user = self.passwd = None

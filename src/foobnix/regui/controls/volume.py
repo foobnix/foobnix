@@ -6,7 +6,7 @@ Created on 28 сент. 2010
 '''
 import gtk
 from foobnix.regui.state import LoadSave
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
 class VolumeControls(LoadSave, gtk.HBox, FControl):

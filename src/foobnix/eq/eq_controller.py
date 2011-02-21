@@ -8,7 +8,7 @@ from foobnix.eq.eq_gui import EqWindow
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model.eq_model import EqModel
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 
 class EqController(FControl, LoadSave):
     def __init__(self, controls):

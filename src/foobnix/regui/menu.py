@@ -6,7 +6,7 @@ Created on Sep 22, 2010
 import gtk
 import logging
 from foobnix.util import const
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import open_link_in_browser
 from foobnix.util.widget_utils import MenuStyleDecorator

@@ -7,7 +7,7 @@ Created on 24 авг. 2010
 import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
 import logging
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.preferences.configs import CONFIG_DOWNLOAD_MANAGER
 
 class DMConfig(ConfigPlugin):

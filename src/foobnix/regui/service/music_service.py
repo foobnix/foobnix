@@ -5,7 +5,7 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import os
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.file_utils import file_extension
 import logging
 from foobnix.regui.model import FModel

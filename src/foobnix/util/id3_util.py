@@ -13,7 +13,7 @@ from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.bean_utils import update_bean_from_normalized_text
 from foobnix.util.file_utils import file_extension, get_file_extension
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.audio import get_mutagen_audio
 
 

@@ -10,7 +10,7 @@ from foobnix.util.proxy_connect import set_proxy_settings
 import time
 import urllib2
 import logging
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 class NetworkConfig(ConfigPlugin):
     
     name = _("Network Settings")

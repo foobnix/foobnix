@@ -9,12 +9,13 @@ import logging
 
 from foobnix.thirdparty import pylast
 from foobnix.thirdparty.pylast import WSError, Tag
-from foobnix.util.fc import FC
 from foobnix.regui.model import FModel
 from foobnix.thirdparty.google.translate import translate
+from foobnix.fc.fc_base import FCBase
+from foobnix.fc.fc import FC
 
-API_KEY = FC().API_KEY
-API_SECRET = FC().API_SECRET
+API_KEY = FCBase().API_KEY
+API_SECRET = FCBase().API_SECRET
 
 class Cache():
     def __init__(self, network):
@@ -82,8 +83,8 @@ class LastFmService():
     
     def init_thread(self):
         logging.debug("RUN INIT LAST.FM")
-        username = FC().lfm_login
-        password_hash = pylast.md5(FC().lfm_password)
+        username = FCBase().lfm_login
+        password_hash = pylast.md5(FCBase().lfm_password)
         self.cache = None
         try:
             
@@ -104,8 +105,8 @@ class LastFmService():
         except:
             self.network = None
             self.scrobbler = None
-            self.controls.statusbar.set_text("Error last.fm connection with %s/%s" % (username, FC().lfm_password))
-            logging.error("Invalid last fm login or password or network problems" + username + FC().lfm_password)
+            self.controls.statusbar.set_text("Error last.fm connection with %s/%s" % (username, FCBase().lfm_password))
+            logging.error("Invalid last fm login or password or network problems" + username + FCBase().lfm_password)
             """
             val = show_login_password_error_dialog(_("Last.fm connection error"), _("Verify user and password"), username, FC().lfm_password)
             if val:

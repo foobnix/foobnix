@@ -12,7 +12,7 @@ from foobnix.regui.state import LoadSave
 from foobnix.regui.menu import MenuBarWidget
 from foobnix.helpers.my_widgets import ImageButton
 from foobnix.helpers.menu import Popup
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.widget_utils import MenuStyleDecorator
 
 class TopWidgets(FControl, LoadSave, gtk.HBox):

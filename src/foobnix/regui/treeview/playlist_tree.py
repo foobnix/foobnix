@@ -12,7 +12,7 @@ from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_releas
 from foobnix.helpers.menu import Popup
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.tag_util import edit_tags
 from foobnix.util.file_utils import open_in_filemanager
 

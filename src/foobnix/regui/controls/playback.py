@@ -6,7 +6,7 @@ Created on Sep 27, 2010
 import gtk
 
 from foobnix.util import const
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.toolbar import MyToolbar
 from foobnix.regui.model.signal import FControl

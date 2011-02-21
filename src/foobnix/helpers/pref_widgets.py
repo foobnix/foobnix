@@ -7,9 +7,12 @@ import gtk
 import gobject
 from foobnix.helpers.dialog_entry import file_chooser_dialog
 from foobnix.util.pix_buffer import create_pixbuf_from_resource
-from foobnix.util.fc import FC
+#from foobnix.fc.fc import FC
+from foobnix.fc.fc import FC
+
 from foobnix.helpers.window import ChildTopWindow
 import logging
+
 class IconBlock(gtk.HBox):
      
     def __init__(self, text, controls, filename, all_icons=FC().all_icons):

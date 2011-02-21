@@ -5,7 +5,7 @@ Created on Sep 29, 2010
 @author: ivan
 '''
 import time
-from foobnix.util.fc import FC, get_random_vk
+from foobnix.fc.fc import FC
 import urllib2
 import logging
 import urllib
@@ -16,6 +16,7 @@ import simplejson
 from urllib2 import HTTPError, URLError
 import thread
 from urlparse import urlparse
+from foobnix.fc.fc_base import get_random_vk
 
 class VKService:
     

@@ -7,7 +7,7 @@ Created on 24 авг. 2010
 import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util import const
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.helpers.pref_widgets import FrameDecorator, VBoxDecorator, ChooseDecorator, \
     IconBlock
 from foobnix.helpers.image import ImageBase

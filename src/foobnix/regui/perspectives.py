@@ -7,7 +7,7 @@ Created on 22 сент. 2010
 import gtk
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.model.signal import FControl
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, \
     LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_LASTFM
 from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
@@ -54,6 +54,8 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         if name == LEFT_PERSPECTIVE_INFO:
             self.controls.filter.hide()
             self.controls.info_panel.update_info_panel()
+        if name == LEFT_PERSPECTIVE_RADIO:
+            self.controls.radio.lazy_load()            
         else:
             self.controls.filter.show()
    

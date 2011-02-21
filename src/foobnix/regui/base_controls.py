@@ -11,7 +11,7 @@ import os
 import time
 import copy
 
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.m3u_utils import m3u_reader
 import logging
 from foobnix.regui.state import LoadSave
@@ -29,6 +29,7 @@ from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 import gobject
 from foobnix.util.bean_utils import get_bean_posible_paths
+from foobnix.fc.fc_base import FCBase
 
 
 
@@ -357,7 +358,7 @@ class BaseFoobnixControls():
         if not bean.path:            
             if not self.fill_bean_from_vk(bean):
                 if self.count_errors < 4:
-                    logging.debug("Error happen [%s] %s" % (self.count_errors, FC().vk_login))
+                    logging.debug("Error happen [%s] %s" % (self.count_errors, FCBase().vk_login))
                     time.sleep(0.5)
                     self.count_errors += 1
                     self.next()
@@ -622,11 +623,11 @@ class BaseFoobnixControls():
         logging.info("Controls - Quit")
         self.notetabs.on_quit()
         self.virtual.on_quit()
-        FC().save(False)
+        FC().save()
         gtk.main_quit()
                
     def check_version(self):
-        uuid = FC().uuid
+        uuid = FCBase().uuid
         current_version = FOOBNIX_VERSION
         system = "not_set"
         try:

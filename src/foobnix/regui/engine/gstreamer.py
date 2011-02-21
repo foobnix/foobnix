@@ -11,7 +11,7 @@ from foobnix.regui.engine import MediaPlayerEngine
 import logging
 import time
 import thread
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
 from foobnix.util.plsparser import get_radio_source
 

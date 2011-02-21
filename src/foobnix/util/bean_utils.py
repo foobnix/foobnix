@@ -6,8 +6,7 @@ Created on 20 окт. 2010
 '''
 from foobnix.util.text_utils import normalize_text
 import os
-from foobnix.util.file_utils import get_file_extension
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 import logging
 def update_parent_for_beans(beans, parent):
     for bean in beans:

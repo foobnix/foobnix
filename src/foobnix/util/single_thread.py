@@ -15,7 +15,7 @@ class SingleThread():
         self.progressbar = progressbar
     
     def run_with_progressbar(self, method, args=None, text=None, no_thread=False):
-        if no_thread:
+        if True or no_thread:
             if method and args:
                 method(args)
             if method:

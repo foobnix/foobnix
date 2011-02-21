@@ -11,7 +11,7 @@ from foobnix.regui.model import FTreeModel
 from foobnix.util.mouse_utils import is_rigth_click
 from foobnix.util.file_utils import open_in_filemanager
 import logging
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.helpers.menu import Popup
 class DownloadManagerTreeControl(CommonTreeControl):
     def __init__(self, navigation):

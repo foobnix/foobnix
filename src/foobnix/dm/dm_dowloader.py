@@ -10,7 +10,7 @@ from foobnix.util.const import DOWNLOAD_STATUS_COMPLETED, \
     DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_INACTIVE
 import os
 from foobnix.util.time_utils import size2text
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.file_utils import get_file_extension
 from foobnix.util.bean_utils import get_bean_download_path
 

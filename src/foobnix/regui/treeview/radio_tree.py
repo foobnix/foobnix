@@ -8,7 +8,7 @@ import logging
 
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 from foobnix.regui.treeview.common_tree import CommonTreeControl
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.regui.model import FModel
 from foobnix.helpers.dialog_entry import two_line_dialog
 from foobnix.helpers.menu import Popup

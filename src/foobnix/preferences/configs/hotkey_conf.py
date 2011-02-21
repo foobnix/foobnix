@@ -11,7 +11,7 @@ import os
 import logging
 import thread
 from foobnix.util.mouse_utils import is_double_left_click
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.key_utils import is_key_control, is_key_shift, is_key_super, \
     is_key_alt
     

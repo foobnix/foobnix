@@ -6,20 +6,21 @@ Created on Jan 27, 2011
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 import gtk
 from foobnix.util.const import LEFT_PERSPECTIVE_LASTFM
-from foobnix.util.fc import FC
 from foobnix.regui.model import FModel, FDModel
 from foobnix.util.bean_utils import update_parent_for_beans
 from foobnix.util.mouse_utils import is_rigth_click
 from foobnix.helpers.menu import Popup
 import time
 import gobject
+from foobnix.fc.fc_base import FCBase
+from foobnix.fc.fc import FC
 
 class LastFmIntegrationControls(CommonTreeControl):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
         
         """column config"""
-        column = gtk.TreeViewColumn(_("Lasm.fm Integration ") + FC().lfm_login, gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = gtk.TreeViewColumn(_("Lasm.fm Integration ") + FCBase().lfm_login, gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)
@@ -61,7 +62,7 @@ class LastFmIntegrationControls(CommonTreeControl):
         def task():
             time.sleep(1)
             old_iters = self.get_child_iters_by_parent(self.model, self.get_iter_from_bean(parent));
-            childs = self.services[parent.text](FC().lfm_login)
+            childs = self.services[parent.text](FCBase().lfm_login)
             update_parent_for_beans(childs, parent)        
             
             def sub_task():

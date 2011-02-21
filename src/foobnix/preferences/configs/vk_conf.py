@@ -6,7 +6,8 @@ Created on 24 авг. 2010
 '''
 from foobnix.preferences.configs.last_fm import LastFmConfig
 import gtk
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
+from foobnix.fc.fc_base import FCBase
 
 class VkontakteConfig(LastFmConfig):
     
@@ -54,14 +55,14 @@ class VkontakteConfig(LastFmConfig):
         self.widget = box
         
     def on_load(self):
-        self.login_text.set_text(FC().vk_login)
-        self.password_text.set_text(FC().vk_password)
+        self.login_text.set_text(FCBase().vk_login)
+        self.password_text.set_text(FCBase().vk_password)
     
     def on_save(self):
-        if FC().vk_login != self.login_text.get_text() or FC().vk_password != self.password_text.get_text():
+        if FCBase().vk_login != self.login_text.get_text() or FCBase().vk_password != self.password_text.get_text():
             FC().cookie = None
                         
-        FC().vk_login = self.login_text.get_text()
-        FC().vk_password = self.password_text.get_text() 
+        FCBase().vk_login = self.login_text.get_text()
+        FCBase().vk_password = self.password_text.get_text() 
         
         

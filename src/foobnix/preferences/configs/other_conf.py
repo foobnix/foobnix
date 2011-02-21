@@ -9,7 +9,7 @@ import gtk
 import logging
 
 from foobnix.preferences.config_plugin import ConfigPlugin
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.helpers.dialog_entry import info_dialog_with_link_and_donate
 from foobnix.helpers.pref_widgets import IconBlock
 from foobnix.preferences.configs import CONFIG_OTHER

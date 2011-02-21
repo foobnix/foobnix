@@ -8,7 +8,7 @@ import gtk
 import logging
 from foobnix.util import const
 from foobnix.helpers.my_widgets import tab_close_button, notetab_label
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel

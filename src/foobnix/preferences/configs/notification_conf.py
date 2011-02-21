@@ -6,7 +6,7 @@ Created on 3 сент. 2010
 '''
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.helpers.dialog_entry import info_dialog_with_link_and_donate
 class NotificationConfig(ConfigPlugin):
     

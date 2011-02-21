@@ -6,40 +6,19 @@ Created on 23 сент. 2010
 '''
 from __future__ import with_statement
 from foobnix.util import const
-import logging
-import os
 from foobnix.util.singleton import Singleton
-import uuid
-import random
 from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
-import thread
-import cPickle
-from foobnix.version import VERSION
+
 from foobnix.util.agent import get_ranmom_agent
- 
+from foobnix.fc.fc_helper import FCStates, CONFIG_DIR
+from foobnix.version import VERSION
+from foobnix.fc.fc_base import FCBase
 
-
-
-CONFIG_DIR = os.path.expanduser("~") + "/.config/foobnix/"
-if not os.path.exists(CONFIG_DIR):
-    os.makedirs(CONFIG_DIR)
 CONFIG_FILE = CONFIG_DIR + "foobnix_%s.pkl" % VERSION
 
-def get_random_vk():
-    vks = {
-       "c891888@bofthew.com":"c891888",
-       "c892009@bofthew.com":"c892009",
-       "c892406@bofthew.com":"c892406",
-       "c892588@bofthew.com":"c892588"
-       }
-
-    return random.choice(vks.items())
-
-
-
-"""Foobnix configuration"""
-class FC:
+"""Foobnix player configuration"""
+class FC():
     __metaclass__ = Singleton
 
     API_KEY = "bca6866edc9bdcec8d5e8c32f709bea1"
@@ -116,13 +95,6 @@ class FC:
         self.cache_virtual_tree_beans = []
         self.cache_radio_tree_beans = []
 
-        """last fm"""
-        self.lfm_login = self.LASTFM_USER
-        self.lfm_password = self.LASTFM_PASSWORD
-        """vk"""
-        self.vk_login, self.vk_password = get_random_vk()
-        self.vk_cookie = None
-        
         self.enable_music_scrobbler = True
         self.enable_radio_scrobbler = True
         """proxy"""
@@ -161,7 +133,6 @@ class FC:
         self.tooltip_image_size = 150
         self.is_info_panel_show_tags = False
         
-        self.uuid = uuid.uuid4().hex
         self.check_new_version = True
 
         self.last_dir = None
@@ -189,74 +160,11 @@ class FC:
         
         self.covers = {}
          
-        self = self._load();
-
-    def save(self, in_thread=True):
-        if in_thread:
-            thread.start_new_thread(FCHelper().save, (self,))
-        else:
-            FCHelper().save(self)
-        
-    def _load(self):
-        """restore from file"""
-        object = FCHelper().load()
-        if object:
-            dict = object.__dict__
-            keys = self.__dict__.keys()
-            for i in dict:
-                try:
-                    if i in keys:
-                        setattr(self, i, dict[i])
-                except Exception, e:
-                    logging.warn("Value not found" + str(e))
-                    return False
-        return True
-
-    def info(self):
-        FCHelper().print_info(self)
-
-    def delete(self):
-        FCHelper().delete()
-
-class FCHelper():
-    def __init__(self):
-        pass
-
-    def save(self, object):
-        save_file = file(CONFIG_FILE, 'w')
-        try:
-            cPickle.dump(object, save_file)
-        except Exception, e:
-            logging.error("Erorr dumping pickle conf" + str(e))
-        save_file.close()
-        logging.debug("Config save")
-        self.print_info(object);
-
-
+        self.load();
+    
+    def save(self):
+        FCStates().save(self, CONFIG_FILE)
+        FCBase().save()
+    
     def load(self):
-        if not os.path.exists(CONFIG_FILE):
-            logging.debug("Config file not found" + CONFIG_FILE)
-            return None
-
-        with file(CONFIG_FILE, 'r') as load_file:
-            try:
-                load_file = file(CONFIG_FILE, 'r')
-                pickled = load_file.read()
-
-                object = cPickle.loads(pickled)
-                logging.debug("Config loaded")
-                self.print_info(object);
-                return object
-            except Exception, e:
-                logging.error("Error load config" + str(e))
-        return None
-
-
-    def delete(self):
-        if os.path.exists(CONFIG_FILE):
-            os.remove(CONFIG_FILE)
-
-    def print_info(self, object):
-        dict = object.__dict__
-        for i in object.__dict__:
-            logging.debug(i + str(dict[i])[:500])
+        FCStates().load(self, CONFIG_FILE)

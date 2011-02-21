@@ -6,7 +6,8 @@ Created on 24 авг. 2010
 '''
 import gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
+from foobnix.fc.fc_base import FCBase
 
 class LastFmConfig(ConfigPlugin):
     
@@ -60,17 +61,17 @@ class LastFmConfig(ConfigPlugin):
         self.widget = box
     
     def on_load(self):
-        self.login_text.set_text(FC().lfm_login)
-        self.password_text.set_text(FC().lfm_password)
+        self.login_text.set_text(FCBase().lfm_login)
+        self.password_text.set_text(FCBase().lfm_password)
         self.music_scrobbler.set_active(FC().enable_music_scrobbler)
         self.radio_scrobbler.set_active(FC().enable_radio_scrobbler)
     
     def on_save(self):
-        if FC().lfm_login != self.login_text.get_text() or FC().lfm_password != self.password_text.get_text():
-            FC().cookie = None
+        if FCBase().lfm_login != self.login_text.get_text() or FCBase().lfm_password != self.password_text.get_text():
+            FCBase().cookie = None
         
-        FC().lfm_login = self.login_text.get_text()
-        FC().lfm_password = self.password_text.get_text() 
+        FCBase().lfm_login = self.login_text.get_text()
+        FCBase().lfm_password = self.password_text.get_text() 
         
         FC().enable_music_scrobbler = self.music_scrobbler.get_active()
         FC().enable_radio_scrobbler = self.radio_scrobbler.get_active()

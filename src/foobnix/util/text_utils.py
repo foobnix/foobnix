@@ -1,5 +1,5 @@
 import re
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.file_utils import get_file_extension
 import urllib
 import string

@@ -8,7 +8,7 @@ from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
 from foobnix.helpers.dialog_entry import show_entry_dialog
 import logging
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 from foobnix.regui.treeview.simple_tree import  SimpleListTreeControl

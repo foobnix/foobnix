@@ -6,7 +6,7 @@ Created on 29 авг. 2010
 '''
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 class InfoPagenConfig(ConfigPlugin):
     
     name = _("Info panel")

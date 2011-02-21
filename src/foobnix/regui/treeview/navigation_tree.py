@@ -11,7 +11,7 @@ from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_le
     is_middle_click_release, is_middle_click
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 import logging
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION

@@ -6,7 +6,7 @@ Created on Dec 7, 2010
 '''
 
 import gtk
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.util.list_utils import reorderer_list
 from foobnix.helpers.menu import Popup
 from foobnix.regui.notetab import TabGeneral

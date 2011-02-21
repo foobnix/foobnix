@@ -10,7 +10,7 @@ import thread
 import os
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.regui.model import FDModel
 from foobnix.regui.treeview.simple_tree import SimpleListTreeControl

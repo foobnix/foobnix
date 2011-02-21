@@ -5,7 +5,6 @@ Created on Sep 23, 2010
 '''
 import gtk
 from foobnix.regui.state import LoadSave
-from foobnix.util.fc import FC, CONFIG_DIR
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
@@ -22,8 +21,8 @@ from foobnix.helpers.pref_widgets import HBoxDecorator
 import locale
 import logging
 import os
-
-COVERS_DIR = CONFIG_DIR + 'Covers/'
+from foobnix.fc.fc_helper import COVERS_DIR
+from foobnix.fc.fc import FC
 
 class InfoCache():
     def __init__(self):
@@ -206,7 +205,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             list_images = os.listdir(COVERS_DIR)
             '''remove extra keys'''
             for key in dict.keys():
-                if (key+'.jpg') not in list_images:
+                if (key + '.jpg') not in list_images:
                     del dict[key]
             '''remove extra files'''
             for file in list_images:

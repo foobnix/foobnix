@@ -5,7 +5,7 @@ Created on Feb 26, 2010
 '''
 import os
 import urllib
-from foobnix.util.fc import FC
+from foobnix.fc.fc import FC
 import logging
 import gtk
 
