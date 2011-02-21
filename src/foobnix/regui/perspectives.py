@@ -99,17 +99,17 @@ class PerspectiveButtonControlls(gtk.HBox):
                      LEFT_PERSPECTIVE_NAVIGATION:musics,
                      LEFT_PERSPECTIVE_RADIO:radios,
                      LEFT_PERSPECTIVE_VIRTUAL:virtuals,
-                     LEFT_PERSPECTIVE_INFO:info,
-                     LEFT_PERSPECTIVE_LASTFM:lastfm
+                     LEFT_PERSPECTIVE_LASTFM:lastfm,
+                     LEFT_PERSPECTIVE_INFO:info                     
                      }
         
         OneActiveToggledButton(self.button_list.values())
         
         self.pack_start(musics, False, False, 0)
         self.pack_start(radios, False, False, 0)
+        self.pack_start(lastfm, False, False, 0)
         self.pack_start(virtuals, False, False, 0)
         self.pack_start(info, False, False, 0)
-        self.pack_start(lastfm, False, False, 0)
     
     def activate_button(self, name):
         self.button_list[name].set_active(True)
