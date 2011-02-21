@@ -4,7 +4,6 @@ Created on 23 сент. 2010
 
 @author: ivan
 '''
-from __future__ import with_statement
 from foobnix.util import const
 from foobnix.util.singleton import Singleton
 from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
