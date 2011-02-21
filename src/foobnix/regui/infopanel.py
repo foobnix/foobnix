@@ -39,10 +39,13 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
     def __init__(self, controls): 
         gtk.Frame.__init__(self)
         FControl.__init__(self, controls)
+               
         self.album_label = gtk.Label()
         self.album_label.set_line_wrap(True)
         self.album_label.set_markup("<b></b>")
         self.set_label_widget(self.album_label)                                
+        
+        self.empty = TextArea()
         
         self.best_songs = SimpleTreeControl(_("Best Songs"), controls)
         self.best_songs.line_title = EventLabel(self.best_songs.get_title(), func=self.show_current, arg=self.best_songs, func1=self.show_best_songs)
@@ -108,6 +111,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         for l_widget in self.left_widget:        
             sbox.pack_start(l_widget.scroll, True, True)
         
+        sbox.pack_end(self.empty.scroll, True, True)
+        
         self.vpaned_small.pack_start(ibox, False, False)
         self.vpaned_small.pack_start(sbox, True, True)
                 
@@ -122,10 +127,18 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         FC().left_perspective = LEFT_PERSPECTIVE_INFO
     
     def show_current(self, widget):
+        elf.empty.hide()
+        if widget.line_title.selected:
+            widget.scroll.hide()
+            self.empty.show()
+            widget.line_title.set_not_active()
+            self.info_cache.active_method
+            return
+        
         for w in self.left_widget:
             w.scroll.hide()
             w.line_title.set_not_active()
-            
+        
         widget.scroll.show_all()
         widget.line_title.set_active()
         
@@ -145,8 +158,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         def task():
             self.show_disc_cover()
             
-            if FC().left_perspective == LEFT_PERSPECTIVE_INFO:
-                self.show_album_title()
+            self.show_album_title()
+            if self.info_cache.active_method:
                 self.info_cache.active_method()
     
         self.controls.in_thread.run_with_progressbar(task)
@@ -181,22 +194,25 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
     def show_album_title(self):
         bean = self.bean
         """update info album and year"""
+        info_line = bean.artist
+        if FCache().album_titles.has_key(bean.text):
+            info_line = FCache().album_titles[bean.text]
+        else:
+            album_name = self.controls.lastfm_service.get_album_name(bean.artist, bean.title)
+            album_year = self.controls.lastfm_service.get_album_year(bean.artist, bean.title)
+            if album_name:
+                info_line = album_name
+            if album_name and album_year:
+                info_line = album_name + "(" + album_year + ")"
+            if isinstance(info_line, str):
+                FCache().album_titles[bean.text] = info_line
         
-        album_name = self.controls.lastfm_service.get_album_name(bean.artist, bean.title)
-        album_year = self.controls.lastfm_service.get_album_year(bean.artist, bean.title)
-      
-        info_line = bean.artist        
-        if album_name:
-            info_line = album_name
-        if album_name and album_year:
-            info_line = album_name + "(" + album_year + ")"
-            
         self.album_label.set_markup("<b>%s</b>" % info_line)
   
     
     def show_disc_cover(self):
         bean = self.bean
-        dict = FC().covers
+        dict = FCache().covers
         
         """update image"""
         if not bean.image:
@@ -205,7 +221,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             list_images = os.listdir(COVERS_DIR)
             '''remove extra keys'''
             for key in dict.keys():
-                if (key + '.jpg') not in list_images:
+                if (key+'.jpg') not in list_images:
                     del dict[key]
             '''remove extra files'''
             for file in list_images:
@@ -222,6 +238,10 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                 bean.image = self.controls.lastfm_service.get_album_image_url(bean.artist, bean.title)
                               
         self.image.update_info_from(bean)
+        
+        if not bean.image:
+            logging.warning("Can't get cover image. Check the correctness of the artist's name and track title")
+            return
         
         '''make .jpg image and store it in cache'''        
         if bean.image.startswith("http://"):
@@ -241,8 +261,19 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.info_cache.lyric_bean = self.bean
         
         """lyrics"""
-        text = get_lyrics(self.bean.artist, self.bean.title)
+        if not os.path.isdir(LYRICS_DIR):
+            os.mkdir(LYRICS_DIR)
+        lyrics_list = os.listdir(LYRICS_DIR)
         lyrics_title = "*** %s - %s *** \n" % (self.bean.artist, self.bean.title)
+        if lyrics_title in lyrics_list:
+            text = "".join(open(LYRICS_DIR + lyrics_title, 'r').readlines())
+        else:
+            text = get_lyrics(self.bean.artist, self.bean.title)
+            if text:
+                open(LYRICS_DIR + lyrics_title, 'w').write(text)
+            else:
+                text = "The text not found"
+        
         self.lyrics.set_text(text, lyrics_title)
         
     def show_wiki_info(self):
@@ -315,7 +346,32 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.best_songs.populate_all([parent] + best_songs)
         
     def on_load(self):
-        self.show_current(self.left_widget[0])
+        for w in self.left_widget:
+            w.scroll.hide()
+            w.line_title.set_not_active()
+        self.empty.show()
+        
+        if os.path.isfile(COVERS_DIR + 'covers_cache'):
+            '''reading cover cache file in dictionary'''
+            cov_conf = open(COVERS_DIR + 'covers_cache', 'r')
+            for line in cov_conf:
+                if line.startswith('#') and not FCache().covers.has_key(line[1:-1]):
+                    FCache().covers[line[1:-1]] = cov_conf.next()[:-1].split(", ")   
+        if os.path.isfile(CONFIG_DIR + 'albums_cache'):
+            '''reading cover cache file in dictionary'''
+            albums_cache = open(CONFIG_DIR + 'albums_cache', 'r')
+            for line in albums_cache:
+                if line.startswith('#') and not FCache().album_titles.has_key(line[1:-1]):
+                    FCache().album_titles[line[1:-1]] = albums_cache.next()[:-1]
          
     def on_save(self):
         pass    
+    
+    def on_quit(self):
+        f = open(COVERS_DIR + 'covers_cache', 'w')
+        for key, value in zip(FCache().covers.keys(), FCache().covers.values()):
+            f.write('#' + key + '\n' + ','.join(value) + '\n')
+        
+        f = open(CONFIG_DIR + 'albums_cache', 'w')
+        for key, value in zip(FCache().album_titles.keys(), FCache().album_titles.values()):
+            f.write('#' + key + '\n' + value + '\n')

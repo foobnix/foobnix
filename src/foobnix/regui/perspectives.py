@@ -53,7 +53,6 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         
         if name == LEFT_PERSPECTIVE_INFO:
             self.controls.filter.hide()
-            self.controls.info_panel.update_info_panel()
         else:
             self.controls.filter.show()
    
