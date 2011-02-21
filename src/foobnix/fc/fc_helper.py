@@ -12,7 +12,7 @@ import cPickle
 CONFIG_DIR = os.path.expanduser("~") + "/.config/foobnix"
 if not os.path.exists(CONFIG_DIR):
     os.makedirs(CONFIG_DIR)
-COVERS_DIR = CONFIG_DIR + 'Covers/'
+COVERS_DIR = os.path.join(CONFIG_DIR , 'Covers', '');
 
 
 class FCStates:    
