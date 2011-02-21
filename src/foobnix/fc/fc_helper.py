@@ -4,11 +4,11 @@ Created on 21 февр. 2011
 
 @author: ivan
 '''
+from __future__ import with_statement
 import os
 import logging
 import cPickle
 
-from __future__ import with_statement
 CONFIG_DIR = os.path.expanduser("~") + "/.config/foobnix"
 if not os.path.exists(CONFIG_DIR):
     os.makedirs(CONFIG_DIR)
