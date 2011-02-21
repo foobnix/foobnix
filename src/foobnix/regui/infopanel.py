@@ -224,7 +224,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.image.update_info_from(bean)
         
         '''make .jpg image and store it in cache'''        
-        if bean.image.startswith("http://"):
+        if bean.image and bean.image.startswith("http://"):
             url_basename = os.path.splitext(os.path.basename(bean.image))[0]
             if dict.has_key(url_basename):
                 dict[url_basename].append(bean.text)
