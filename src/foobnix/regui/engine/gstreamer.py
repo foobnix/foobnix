@@ -112,6 +112,10 @@ class GStreamerEngine(MediaPlayerEngine):
             if path.startswith("http://"):
                 path = get_radio_source(path)
                 logging.debug("Try To play path" + path)
+                
+                if self.bean.type == FTYPE_RADIO:
+                    time.sleep(2)
+                
                 uri = path
                 self.notify_title(uri)
             else:
