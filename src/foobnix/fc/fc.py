@@ -158,6 +158,9 @@ class FC():
          
         self.load();
     
+    def delete(self):
+        FCStates().delete(CONFIG_FILE)
+    
     def save(self):
         FCStates().save(self, CONFIG_FILE)
         FCBase().save()

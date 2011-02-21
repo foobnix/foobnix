@@ -39,8 +39,8 @@ class FCStates:
     def info(self):
         FCHelper().print_info(self)
 
-    def delete(self):
-        FCHelper().delete()
+    def delete(self, file_path):
+        FCHelper().delete(file_path)
         
 class FCHelper():
     def __init__(self):

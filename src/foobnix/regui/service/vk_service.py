@@ -5,7 +5,6 @@ Created on Sep 29, 2010
 @author: ivan
 '''
 import time
-from foobnix.fc.fc import FC
 import urllib2
 import logging
 import urllib
@@ -16,7 +15,7 @@ import simplejson
 from urllib2 import HTTPError, URLError
 import thread
 from urlparse import urlparse
-from foobnix.fc.fc_base import get_random_vk
+from foobnix.fc.fc_base import get_random_vk, FCBase
 
 class VKService:
     
@@ -38,8 +37,8 @@ class VKService:
 
     def login(self):
         post = {
-                'email' : FC().vk_login,
-                'pass' : FC().vk_password,
+                'email' : FCBase().vk_login,
+                'pass' : FCBase().vk_password,
                 'act' : 'login',
                 'q' : '1',
                 'al_frame' : '1'
@@ -85,9 +84,9 @@ class VKService:
             handler.close()
             return data
         except HTTPError, e:
-            logging.error("VK Connection Error:" + str(e) + "( Searching: " + str(url) + " with data " + str(data) + ") [" + FC().vk_login + ":" + FC().vk_password + "]")
+            logging.error("VK Connection Error:" + str(e) + "( Searching: " + str(url) + " with data " + str(data) + ") [" + FCBase().vk_login + ":" + FCBase().vk_password + "]")
             if e.code == 400:
-                FC().vk_login, FC().vk_password = get_random_vk()
+                FCBase().vk_login, FCBase().vk_password = get_random_vk()
                 self.initialize_urllib2()
                 self.login()
             return None
