@@ -12,6 +12,7 @@ import time
 import copy
 
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_cache import FCache
 from foobnix.util.m3u_utils import m3u_reader
 import logging
 from foobnix.regui.state import LoadSave
@@ -623,7 +624,9 @@ class BaseFoobnixControls():
         logging.info("Controls - Quit")
         self.notetabs.on_quit()
         self.virtual.on_quit()
+        self.info_panel.on_quit()
         FC().save()
+        FCache().save()
         gtk.main_quit()
                
     def check_version(self):

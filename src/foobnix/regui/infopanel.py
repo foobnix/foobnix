@@ -4,25 +4,26 @@ Created on Sep 23, 2010
 @author: ivan
 '''
 import gtk
-from foobnix.regui.state import LoadSave
-from foobnix.regui.model.signal import FControl
+import os
+import locale
+import logging
+
+from foobnix.fc.fc import FC
 from foobnix.regui.model import FModel
+from foobnix.regui.state import LoadSave
+from foobnix.helpers.image import ImageBase
+from foobnix.helpers.textarea import TextArea
+from foobnix.thirdparty.lyr import get_lyrics
+from foobnix.regui.model.signal import FControl
+from foobnix.helpers.my_widgets import EventLabel
+from foobnix.helpers.pref_widgets import HBoxDecorator
+from foobnix.fc.fc_helper import CONFIG_DIR
+from foobnix.fc.fc_cache import FCache, COVERS_DIR, LYRICS_DIR 
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
     LEFT_PERSPECTIVE_INFO, ICON_BLANK_DISK
-from foobnix.helpers.my_widgets import EventLabel
-from foobnix.helpers.textarea import TextArea
-from foobnix.thirdparty.lyr import get_lyrics
-from foobnix.helpers.image import ImageBase
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
-
-from foobnix.helpers.pref_widgets import HBoxDecorator
-import locale
-import logging
-import os
-from foobnix.fc.fc_helper import COVERS_DIR
-from foobnix.fc.fc import FC
 
 class InfoCache():
     def __init__(self):
@@ -127,7 +128,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         FC().left_perspective = LEFT_PERSPECTIVE_INFO
     
     def show_current(self, widget):
-        elf.empty.hide()
+        self.empty.hide()
         if widget.line_title.selected:
             widget.scroll.hide()
             self.empty.show()
@@ -204,12 +205,12 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                 info_line = album_name
             if album_name and album_year:
                 info_line = album_name + "(" + album_year + ")"
-            if isinstance(info_line, str):
+            
+            if isinstance(info_line, unicode) or isinstance(info_line, str) :
                 FCache().album_titles[bean.text] = info_line
         
         self.album_label.set_markup("<b>%s</b>" % info_line)
-  
-    
+        
     def show_disc_cover(self):
         bean = self.bean
         dict = FCache().covers
@@ -226,11 +227,11 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             '''remove extra files'''
             for file in list_images:
                 if os.path.splitext(file)[0] not in dict.keys():
-                    os.remove(COVERS_DIR + file)
+                    os.remove(os.path.join(COVERS_DIR, file))
             
             for list, key in zip(dict.values(), dict.keys()):
                 if bean.text in list:
-                    bean.image = COVERS_DIR + key + ".jpg"
+                    bean.image = os.path.join(COVERS_DIR, key + ".jpg")
                     break
             
             if not bean.image:
@@ -250,7 +251,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                 dict[url_basename].append(bean.text)
             else:
                 dict[url_basename] = [bean.text]
-                self.image.get_pixbuf().save(COVERS_DIR + url_basename + '.jpg', "jpeg", {"quality":"90"})
+                self.image.get_pixbuf().save(os.path.join(COVERS_DIR, url_basename + '.jpg'), "jpeg", {"quality":"90"})
             
         self.controls.trayicon.update_info_from(bean)
         
@@ -266,11 +267,11 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         lyrics_list = os.listdir(LYRICS_DIR)
         lyrics_title = "*** %s - %s *** \n" % (self.bean.artist, self.bean.title)
         if lyrics_title in lyrics_list:
-            text = "".join(open(LYRICS_DIR + lyrics_title, 'r').readlines())
+            text = "".join(open(os.path.join(LYRICS_DIR, lyrics_title), 'r').readlines())
         else:
             text = get_lyrics(self.bean.artist, self.bean.title)
             if text:
-                open(LYRICS_DIR + lyrics_title, 'w').write(text)
+                open(os.path.join(LYRICS_DIR, lyrics_title), 'w').write(text)
             else:
                 text = "The text not found"
         
@@ -351,15 +352,15 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             w.line_title.set_not_active()
         self.empty.show()
         
-        if os.path.isfile(COVERS_DIR + 'covers_cache'):
+        if os.path.isfile(os.path.join(COVERS_DIR + 'covers_cache')):
             '''reading cover cache file in dictionary'''
-            cov_conf = open(COVERS_DIR + 'covers_cache', 'r')
+            cov_conf = open(os.path.join(COVERS_DIR + 'covers_cache', 'r'))
             for line in cov_conf:
                 if line.startswith('#') and not FCache().covers.has_key(line[1:-1]):
                     FCache().covers[line[1:-1]] = cov_conf.next()[:-1].split(", ")   
-        if os.path.isfile(CONFIG_DIR + 'albums_cache'):
+        if os.path.isfile(os.path.join(CONFIG_DIR + 'albums_cache')):
             '''reading cover cache file in dictionary'''
-            albums_cache = open(CONFIG_DIR + 'albums_cache', 'r')
+            albums_cache = open(os.path.join(CONFIG_DIR + 'albums_cache'), 'r')
             for line in albums_cache:
                 if line.startswith('#') and not FCache().album_titles.has_key(line[1:-1]):
                     FCache().album_titles[line[1:-1]] = albums_cache.next()[:-1]
@@ -368,10 +369,10 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         pass    
     
     def on_quit(self):
-        f = open(COVERS_DIR + 'covers_cache', 'w')
+        f = open(os.path.join(COVERS_DIR, 'covers_cache'), 'w')
         for key, value in zip(FCache().covers.keys(), FCache().covers.values()):
             f.write('#' + key + '\n' + ','.join(value) + '\n')
         
-        f = open(CONFIG_DIR + 'albums_cache', 'w')
+        f = open(os.path.join(CONFIG_DIR, 'albums_cache'), 'w')
         for key, value in zip(FCache().album_titles.keys(), FCache().album_titles.values()):
             f.write('#' + key + '\n' + value + '\n')

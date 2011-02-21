@@ -6,6 +6,7 @@ Created on 29 сент. 2010
 '''
 
 import gtk
+import logging
 
 from foobnix.fc.fc import FC
 from foobnix.util.mouse_utils import is_middle_click
@@ -15,7 +16,6 @@ from foobnix.helpers.image import ImageBase
 from foobnix.regui.model import FModel
 from foobnix.helpers.pref_widgets import VBoxDecorator
 from foobnix.util.text_utils import split_string
-import logging
 from foobnix.regui.controls.playback import PlaybackControls
 from foobnix.helpers.my_widgets import ImageButton
 from foobnix.util.const import ICON_FOOBNIX
@@ -88,8 +88,6 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         
   
     def on_load(self):
-        print "load"
-        print FC().static_icon_entry
         if FC().show_tray_icon:
             if FC().static_tray_icon:
                 self.set_from_resource(FC().static_icon_entry)               
