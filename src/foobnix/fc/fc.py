@@ -20,11 +20,6 @@ CONFIG_FILE = CONFIG_DIR + "foobnix_%s.pkl" % VERSION
 """Foobnix player configuration"""
 class FC():
     __metaclass__ = Singleton
-
-    API_KEY = "bca6866edc9bdcec8d5e8c32f709bea1"
-    API_SECRET = "800adaf46e237805a4ec2a81404b3ff2"
-    LASTFM_USER = "l_user_"
-    LASTFM_PASSWORD = "l_pass_"
     
     def __init__(self):
         """init default values"""
