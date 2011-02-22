@@ -31,7 +31,10 @@ class BaseFoobnixLayout(FControl, LoadSave):
         center_box.pack_start(controls.searchPanel, False, False)
         center_box.pack_start(bbox, True, True)
         
-        self.hpaned_left = gtk.HPaned()     
+        self.hpaned_left = gtk.HPaned()
+        self.hpaned_left.connect("motion-notify-event", self.on_save)
+        
+             
         
         self.hpaned_left.pack1(child=controls.perspective, resize=True, shrink=True)
         self.hpaned_left.pack2(child=center_box, resize=True, shrink=True)
@@ -59,11 +62,10 @@ class BaseFoobnixLayout(FControl, LoadSave):
         else:
             self.hpaned_left.set_position(0)
         
-    
+        self.on_save()
 
-    def on_save(self, *a):
-        if FC().is_view_music_tree_panel:
-            FC().hpaned_left = self.hpaned_left.get_position()
+    def on_save(self, *a):        
+        FC().hpaned_left = self.hpaned_left.get_position()
             
     def on_load(self):  
         #self.controls.search_progress.hide()        
