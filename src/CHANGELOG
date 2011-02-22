@@ -1,6 +1,7 @@
 0.2.5
-* Tag Editor, multi file tag edit support
-* Rename file and directories
+* Simple Tag Editor, support of batch processing file tags
+* Rename and delete files and directories from music library
+* Open folders in file manager from music library
 * Popup notification
 * Last.fm integration (Love this tracks, My top artists, My top tracks, My loved tracks)
 * New style buttons for Shuffle and Ordering
@@ -8,8 +9,15 @@
 * Open content in file manager
 * Info panel - Artist Biography with images.
 * Volume control active "+", "-"
-* Online music search module refactoring
-* A lot of bug fixed
+* Online music search module optimization
+* File cache for online info (covers, album titles, lyrics)
+* Copy data in fit format for trackers
+* Display technical file info and player state in status panel
+* More compact search panel  
+* Improve performance player (more quick start, exit and more other)
+* Drug and drop optimization
+* A lot of bug fixes
+
  
 
 0.2.3-2

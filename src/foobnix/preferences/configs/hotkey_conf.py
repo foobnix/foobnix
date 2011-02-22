@@ -24,7 +24,7 @@ def add_key_binder(command, hotkey):
     try:                      
         keybinder.bind(hotkey, activate_hot_key, command)
     except Exception, e:
-        logging.error("add_key_binder exception" + str(hotkey) + str(e))
+        logging.warn("add_key_binder exception" + str(hotkey) + str(e))
 
 def bind_all(items):
     for key in items:
@@ -137,7 +137,7 @@ class HotKeysConfig(ConfigPlugin):
             try:          
                 keybinder.unbind(items[keystring])
             except Exception, e:
-                logging.error("unbind error %s" % str(e))
+                logging.warn("unbind error %s" % str(e))
 
     
     def on_populate_click(self, w, event):
