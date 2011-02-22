@@ -9,7 +9,6 @@ import locale
 import logging
 
 from foobnix.fc.fc import FC
-from foobnix.fc.fc_cache import FCache
 from foobnix.regui.model import FModel
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.image import ImageBase
@@ -18,7 +17,6 @@ from foobnix.thirdparty.lyr import get_lyrics
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
 from foobnix.helpers.pref_widgets import HBoxDecorator
-from foobnix.fc.fc_helper import CONFIG_DIR
 from foobnix.fc.fc_cache import FCache, COVERS_DIR, LYRICS_DIR 
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
@@ -352,34 +350,11 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             w.scroll.hide()
             w.line_title.set_not_active()
         self.empty.show()
-        
-        if os.path.isfile(os.path.join(COVERS_DIR, 'covers_cache')):
-            '''reading cover cache file in dictionary'''
-            with file(os.path.join(COVERS_DIR, 'covers_cache'),'r') as cov_conf:
-                for line in cov_conf:
-                    if line.startswith('#') and not FCache().covers.has_key(line[1:-1]):
-                        FCache().covers[line[1:-1]] = cov_conf.next()[:-1].split(", ")
-                   
-        if os.path.isfile(os.path.join(CONFIG_DIR + 'albums_cache')):
-            '''reading cover cache file in dictionary'''
-            with file(os.path.join(CONFIG_DIR, 'albums_cache'), 'r') as albums_cache:
-                for line in albums_cache:
-                    if line.startswith('#') and not FCache().album_titles.has_key(line[1:-1]):
-                        FCache().album_titles[line[1:-1]] = albums_cache.next()[:-1]
-         
+        FCache().on_load()
+
     def on_save(self):
         pass    
     
     def on_quit(self):
-        if not os.path.isdir(COVERS_DIR):
-            os.mkdir(COVERS_DIR)
-        
-        f = open(os.path.join(COVERS_DIR, 'covers_cache'), 'w')
-        for key, value in zip(FCache().covers.keys(), FCache().covers.values()):
-            f.write('#' + key + '\n' + ','.join(value) + '\n')
-        f.close()
-                
-        f = open(os.path.join(CONFIG_DIR, 'albums_cache'), 'w')
-        for key, value in zip(FCache().album_titles.keys(), FCache().album_titles.values()):
-            f.write('#' + key + '\n' + value + '\n')
-        f.close()
+        FCache().on_quit()
+       
