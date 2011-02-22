@@ -1,3 +1,17 @@
+0.2.5
+* Tag Editor, multi file tag edit support
+* Rename file and directories
+* Popup notification
+* Last.fm integration (Love this tracks, My top artists, My top tracks, My loved tracks)
+* New style buttons for Shuffle and Ordering
+* Automatic download online music 
+* Open content in file manager
+* Info panel - Artist Biography with images.
+* Volume control active "+", "-"
+* Online music search module refactoring
+* A lot of bug fixed
+ 
+
 0.2.3-2
 * Belorussian translation Алексей Середа <alex.serada@gmail.com>
 * Translated to it and es Bersil <bmsavone@gmail.com>
