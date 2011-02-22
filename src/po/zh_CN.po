@@ -11,12 +11,12 @@ msgstr ""
 "PO-Revision-Date: 2011-02-01 09:04+0000\n"
 "Last-Translator: XsLiDian <xslidian@gmail.com>\n"
 "Language-Team: Chinese Simplified <xslidian+foobnix@gmail.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-02-02 05:09+0000\n"
-"X-Generator: Launchpad (build 12177)\n"
+"X-Launchpad-Export-Date: 2011-02-17 04:57+0000\n"
+"X-Generator: Launchpad (build 12351)\n"
+"Language: \n"
 "X-Poedit-Language: Chinese\n"
 
 #: .././foobnix/dm/dm.py:26 .././foobnix/preferences/preferences_window.py:59
@@ -329,9 +329,8 @@ msgid "Enable theme image"
 msgstr "启用主题图像"
 
 #: .././foobnix/preferences/configs/other_conf.py:75
-#, fuzzy
 msgid "Menu type: "
-msgstr "菜单类型"
+msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:77
 msgid "Old Style (Menu Bar)"
@@ -423,24 +422,20 @@ msgid "System Icons Dynamic"
 msgstr ""
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:62
-#, fuzzy
 msgid "Disc cover image"
-msgstr "封面尺寸"
+msgstr ""
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:64
-#, fuzzy
 msgid "Notification pop-up"
-msgstr "通知"
+msgstr ""
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:76
-#, fuzzy
 msgid "Notification"
-msgstr "通知"
+msgstr ""
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:105
-#, fuzzy
 msgid "Time Notification (sec): "
-msgstr "通知"
+msgstr ""
 
 #: .././foobnix/preferences/configs/vk_conf.py:13
 msgid "Vkontakte"
@@ -599,9 +594,8 @@ msgid "Radio Stantions (Alt+2)"
 msgstr "广播电台 (Alt+2)"
 
 #: .././foobnix/regui/perspectives.py:89
-#, fuzzy
 msgid "Playlist"
-msgstr "播放列表"
+msgstr ""
 
 #: .././foobnix/regui/perspectives.py:89
 msgid "Virtual Play Lists (Alt+3)"
@@ -616,14 +610,12 @@ msgid "Info Panel (Alt+4)"
 msgstr "信息面板 (Alt+4)"
 
 #: .././foobnix/regui/perspectives.py:96
-#, fuzzy
 msgid "LastFM"
-msgstr "Last.FM"
+msgstr ""
 
 #: .././foobnix/regui/perspectives.py:96
-#, fuzzy
 msgid "Last.fm Panel (Alt+5)"
-msgstr "信息面板 (Alt+4)"
+msgstr ""
 
 #: .././foobnix/regui/search.py:15
 msgid "Search music online"
@@ -634,9 +626,8 @@ msgid "Online Music Search, Play, Download"
 msgstr "在线搜索、播放与下载音乐"
 
 #: .././foobnix/regui/search.py:69
-#, fuzzy
 msgid "Search"
-msgstr "搜索面板"
+msgstr ""
 
 #: .././foobnix/regui/search.py:74
 msgid "Online Search"
@@ -647,9 +638,8 @@ msgid "Artist"
 msgstr "歌手"
 
 #: .././foobnix/regui/search.py:102
-#, fuzzy
 msgid "Albums"
-msgstr "专辑"
+msgstr ""
 
 #: .././foobnix/regui/search.py:105
 msgid "Similar"
@@ -776,24 +766,20 @@ msgid "Open in file manager"
 msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:20
-#, fuzzy
 msgid "Lasm.fm Integration "
-msgstr "Last.fm 连接错误"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:69
-#, fuzzy
 msgid "Append to playlist"
-msgstr "添加播放列表"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:70
-#, fuzzy
 msgid "Open in new playlist"
-msgstr "新建播放列表"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:72
-#, fuzzy
 msgid "Add folder here"
-msgstr "添加文件夹"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:77
 msgid "Clear"
@@ -804,9 +790,8 @@ msgid "Update"
 msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:145
-#, fuzzy
 msgid "Edit tags"
-msgstr "编辑广播"
+msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:147
 msgid "Copy to Search Line"
@@ -926,9 +911,8 @@ msgid "Author text"
 msgstr ""
 
 #: .././foobnix/util/tag_util.py:36
-#, fuzzy
 msgid "Composer"
-msgstr "完成"
+msgstr ""
 
 #: .././foobnix/util/tag_util.py:61
 msgid ""
@@ -940,23 +924,11 @@ msgstr ""
 msgid "Close"
 msgstr "关闭"
 
-#~ msgid "About Window"
-#~ msgstr "关于窗口"
-
-#~ msgid "Changelog"
-#~ msgstr "更新日志"
-
-#~ msgid "Credential"
-#~ msgstr "凭证"
+#~ msgid "Last.fm connection error"
+#~ msgstr "Last.fm 连接错误"
 
 #~ msgid "Verify user and password"
 #~ msgstr "验证用户与密码"
-
-#~ msgid "Add to current tab"
-#~ msgstr "添加到当前标签"
-
-#~ msgid "Add to new tab"
-#~ msgstr "添加到新标签"
 
 #~ msgid "VKontakte connection error"
 #~ msgstr "VKontakte 连接错误"
@@ -978,3 +950,24 @@ msgstr "关闭"
 
 #~ msgid "Other"
 #~ msgstr "其他"
+
+#~ msgid "Menu type"
+#~ msgstr "菜单类型"
+
+#~ msgid "Play Lists"
+#~ msgstr "播放列表"
+
+#~ msgid "About Window"
+#~ msgstr "关于窗口"
+
+#~ msgid "Credential"
+#~ msgstr "凭证"
+
+#~ msgid "Changelog"
+#~ msgstr "更新日志"
+
+#~ msgid "Add to new tab"
+#~ msgstr "添加到新标签"
+
+#~ msgid "Add to current tab"
+#~ msgstr "添加到当前标签"

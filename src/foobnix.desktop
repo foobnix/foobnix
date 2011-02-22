@@ -1,17 +1,17 @@
 [Desktop Entry]
 Name=Foobnix
 GenericName=Music Player
-GenericName[ru]=Плеер для музыки
+GenericName[ru]=Плеер музыки
 X-GNOME-FullName=Foobnix Music Player
-Comment=Simple and Powerful music player for Linux
-Comment[ru]=Простой и мощный плеер музыки для Linux
+Comment=Simple and Powerful player for Linux
+Comment[ru]=Простой и мощный плеер для Linux
 Exec=foobnix %U
 Terminal=false
 Type=Application
 Icon=foobnix
 X-GNOME-DocPath=foobnix/foobnix.xml
-Categories=GNOME;GTK;AudioVideo;
-MimeType=application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;x-content/audio$
+Categories=GNOME;GTK;AudioVideo;Player;
+MimeType=application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;x-content/audio;
 StartupNotify=true
 X-Ubuntu-Gettext-Domain=foobnix
 

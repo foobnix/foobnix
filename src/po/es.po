@@ -11,13 +11,13 @@ msgstr ""
 "PO-Revision-Date: 2011-02-08 21:31+0000\n"
 "Last-Translator: Aldo Mann <Unknown>\n"
 "Language-Team: SPANISH <bmsavone@gmail.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-02-09 05:25+0000\n"
-"X-Generator: Launchpad (build 12177)\n"
+"X-Launchpad-Export-Date: 2011-02-17 04:57+0000\n"
+"X-Generator: Launchpad (build 12351)\n"
 "X-Poedit-Country: SPAIN\n"
+"Language: \n"
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -332,9 +332,8 @@ msgid "Enable theme image"
 msgstr "Habilita theme image"
 
 #: .././foobnix/preferences/configs/other_conf.py:75
-#, fuzzy
 msgid "Menu type: "
-msgstr "Tipo de menu"
+msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:77
 msgid "Old Style (Menu Bar)"
@@ -426,24 +425,20 @@ msgid "System Icons Dynamic"
 msgstr ""
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:62
-#, fuzzy
 msgid "Disc cover image"
-msgstr "Tamaño de tapa del disco"
+msgstr ""
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:64
-#, fuzzy
 msgid "Notification pop-up"
-msgstr "Notificaciones"
+msgstr ""
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:76
-#, fuzzy
 msgid "Notification"
-msgstr "Notificaciones"
+msgstr ""
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:105
-#, fuzzy
 msgid "Time Notification (sec): "
-msgstr "Notificaciones"
+msgstr ""
 
 #: .././foobnix/preferences/configs/vk_conf.py:13
 msgid "Vkontakte"
@@ -602,9 +597,8 @@ msgid "Radio Stantions (Alt+2)"
 msgstr "Emisoras de Radio (Alt+2)"
 
 #: .././foobnix/regui/perspectives.py:89
-#, fuzzy
 msgid "Playlist"
-msgstr "Play Lists"
+msgstr ""
 
 #: .././foobnix/regui/perspectives.py:89
 msgid "Virtual Play Lists (Alt+3)"
@@ -619,14 +613,12 @@ msgid "Info Panel (Alt+4)"
 msgstr "Panel Info (Alt+4)"
 
 #: .././foobnix/regui/perspectives.py:96
-#, fuzzy
 msgid "LastFM"
-msgstr "Last FM"
+msgstr ""
 
 #: .././foobnix/regui/perspectives.py:96
-#, fuzzy
 msgid "Last.fm Panel (Alt+5)"
-msgstr "Panel Info (Alt+4)"
+msgstr ""
 
 #: .././foobnix/regui/search.py:15
 msgid "Search music online"
@@ -637,9 +629,8 @@ msgid "Online Music Search, Play, Download"
 msgstr "Busca, Reproduce, Descarga Música Online"
 
 #: .././foobnix/regui/search.py:69
-#, fuzzy
 msgid "Search"
-msgstr "Panel Buscar"
+msgstr ""
 
 #: .././foobnix/regui/search.py:74
 msgid "Online Search"
@@ -650,9 +641,8 @@ msgid "Artist"
 msgstr "Artista"
 
 #: .././foobnix/regui/search.py:102
-#, fuzzy
 msgid "Albums"
-msgstr "Album"
+msgstr ""
 
 #: .././foobnix/regui/search.py:105
 msgid "Similar"
@@ -779,24 +769,20 @@ msgid "Open in file manager"
 msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:20
-#, fuzzy
 msgid "Lasm.fm Integration "
-msgstr "Last.fm error de conexión"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:69
-#, fuzzy
 msgid "Append to playlist"
-msgstr "Agrega playlist"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:70
-#, fuzzy
 msgid "Open in new playlist"
-msgstr "Crea nueva playlist"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:72
-#, fuzzy
 msgid "Add folder here"
-msgstr "Agregar carpeta"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:77
 msgid "Clear"
@@ -807,9 +793,8 @@ msgid "Update"
 msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:145
-#, fuzzy
 msgid "Edit tags"
-msgstr "Edita Radio"
+msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:147
 msgid "Copy to Search Line"
@@ -929,9 +914,8 @@ msgid "Author text"
 msgstr ""
 
 #: .././foobnix/util/tag_util.py:36
-#, fuzzy
 msgid "Composer"
-msgstr "Completo"
+msgstr ""
 
 #: .././foobnix/util/tag_util.py:61
 msgid ""
@@ -943,6 +927,12 @@ msgstr ""
 msgid "Close"
 msgstr "Cerrar"
 
+#~ msgid "Menu type"
+#~ msgstr "Tipo de menu"
+
+#~ msgid "Play Lists"
+#~ msgstr "Play Lists"
+
 #~ msgid "About Window"
 #~ msgstr "Ventana Info"
 
@@ -952,14 +942,14 @@ msgstr "Cerrar"
 #~ msgid "Credential"
 #~ msgstr "Credencial"
 
+#~ msgid "Last.fm connection error"
+#~ msgstr "Last.fm error de conexión"
+
 #~ msgid "Verify user and password"
 #~ msgstr "Verificar usuario y password"
 
 #~ msgid "Add to current tab"
 #~ msgstr "Agregar en la tab actual"
-
-#~ msgid "Add to new tab"
-#~ msgstr "Añadir a una nueva pestaña"
 
 #~ msgid "VKontakte connection error"
 #~ msgstr "VKontakte error de conexión"
@@ -984,3 +974,6 @@ msgstr "Cerrar"
 
 #~ msgid "Other"
 #~ msgstr "Otros"
+
+#~ msgid "Add to new tab"
+#~ msgstr "Añadir a una nueva pestaña"

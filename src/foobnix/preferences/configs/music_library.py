@@ -106,7 +106,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             self.tree_controller.append(FDModel(path))
             
         self.files_controller.clear_tree()
-        for ext in FCache().all_support_formats:
+        for ext in FC().all_support_formats:
             self.files_controller.append(FDModel(ext))
             
         self.adjustment.set_value(FC().gap_secs)
