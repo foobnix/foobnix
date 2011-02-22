@@ -77,6 +77,8 @@ class BaseFoobnixControls():
      
     def play_selected_song(self):    
         current = self.get_active_bean()
+        if not current:
+            return None
         logging.debug("play current bean is %s" % str(current.text))
         if current and current.is_file:
             self.notetabs.get_current_tree().set_play_icon_to_bean_to_selected()

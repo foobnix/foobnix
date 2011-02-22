@@ -39,6 +39,7 @@ if os.name != 'nt':
         print "generating", mofile    
         os.system("msgfmt %s -o %s" % (pofile, mofile))
         data_files.append(('share/locale/%s/LC_MESSAGES' % lang, ['mo/%s/foobnix.mo' % lang]))
+        #data_files.append(('/usr/share/locale/%s/LC_MESSAGES' % lang, ['mo/%s/foobnix.mo' % lang]))
     
     version = file("foobnix/version.py", "wt")
     version.write("""
