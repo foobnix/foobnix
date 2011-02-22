@@ -121,6 +121,9 @@ class VKService:
         j = 0
         for i, artist in enumerate(result_artist):
             path = "http:" + result_url[i + 3].replace("\\/", "/")
+            
+            if i>=len(result_title):
+                break; 
             title = html_decode(result_title[i][1])
             if not title:
                 if len(result_lyr) > j:

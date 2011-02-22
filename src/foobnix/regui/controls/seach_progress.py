@@ -46,7 +46,6 @@ if gtk.pygtk_version >= (2, 21, 0):
     class SearchProgressBarNew(gtk.Spinner):
         def __init__(self):
             super(SearchProgressBarNew, self).__init__()
-            self.hide()
     
         def start(self, trash=""):
             self.show()
@@ -58,6 +57,7 @@ if gtk.pygtk_version >= (2, 21, 0):
     class SearchProgressBar(SearchProgressBarNew):
         def __init__(self):
                 SearchProgressBarNew.__init__(self)
+                self.hide()
 else:
     class SearchProgressBar(SearchProgressBarOld):
         def __init__(self):

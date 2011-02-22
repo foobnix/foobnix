@@ -14,6 +14,7 @@ from foobnix.util.id3_util import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.m3u_utils import m3u_reader
 from foobnix.util.key_utils import is_key_control
+import gobject
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -36,6 +37,7 @@ class DrugDropTree(gtk.TreeView):
     
     def configure_send_drug(self):
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY) #@UndefinedVariable
+    
     
     def append_all(self, beans):
         logging.debug("begin append all")
@@ -369,7 +371,13 @@ class DrugDropTree(gtk.TreeView):
                 
         return list
     
+    
     def plain_append_all(self, beans, parent=None):
+        def task():
+            self._plain_append_all(beans, parent)
+        gobject.idle_add(task)
+    
+    def _plain_append_all(self, beans, parent=None):
         logging.debug("begin plain append all")
         if not beans:
             return

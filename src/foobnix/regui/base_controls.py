@@ -670,6 +670,7 @@ class BaseFoobnixControls():
         thread.start_new_thread(self.check_version, ())
         self.info_panel.hide()        
         self.change_backgound()
+        self.search_progress.stop()
         
     
     
