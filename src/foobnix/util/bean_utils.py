@@ -4,10 +4,13 @@ Created on 20 окт. 2010
 
 @author: ivan
 '''
-from foobnix.util.text_utils import normalize_text
 import os
-from foobnix.fc.fc import FC
 import logging
+
+from foobnix.util.text_utils import normalize_text
+from foobnix.fc.fc import FC
+from foobnix.fc.fc_cache import FCache
+
 def update_parent_for_beans(beans, parent):
     for bean in beans:
         bean.parent(parent)
@@ -33,7 +36,7 @@ def get_bean_posible_paths(bean):
     if path and os.path.exists(path):
         return path
     
-    for paths in FC().music_paths:
+    for paths in FCache().music_paths:
         for path in paths:
             path = get_bean_download_path(bean, path)
             if path and os.path.exists(path):

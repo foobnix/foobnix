@@ -3,16 +3,19 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
+import gtk
+
 from foobnix.regui.state import LoadSave
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
-import gtk
 from foobnix.helpers.menu import Popup
 from foobnix.helpers.dialog_entry import one_line_dialog
 from foobnix.regui.model import FModel
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_cache import FCache
 from foobnix.util.key_utils import KEY_DELETE, is_key
 from foobnix.util.const import LEFT_PERSPECTIVE_VIRTUAL
+
 class VirtualTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
@@ -36,7 +39,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
             self.delete_playlist()
     
     def on_drag_drop_finish(self):
-        FC().cache_virtual_tree_beans = self.get_all_beans()
+        FCache().cache_virtual_tree_beans = self.get_all_beans()
         FC().save()        
          
     def on_button_press(self, w, e):
@@ -75,7 +78,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
     
     def on_load(self):
         self.scroll.hide()
-        self.populate_all(FC().cache_virtual_tree_beans)
+        self.populate_all(FCache().cache_virtual_tree_beans)
         self.restore_expand(FC().virtual_expand_paths)
         self.restore_selection(FC().virtual_selected_paths)
         
@@ -89,5 +92,5 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         self.selection_changed(set_selected_path)
     
     def on_quit(self):
-        FC().cache_virtual_tree_beans = self.get_all_beans()
+        FCache().cache_virtual_tree_beans = self.get_all_beans()
         

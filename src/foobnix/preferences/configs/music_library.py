@@ -9,6 +9,7 @@ import gtk
 from foobnix.helpers.dialog_entry import show_entry_dialog
 import logging
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_cache import FCache
 from foobnix.regui.model.signal import FControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 from foobnix.regui.treeview.simple_tree import  SimpleListTreeControl
@@ -95,17 +96,17 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         return self.frame
    
     def reload_dir(self, *a):
-        FC().music_paths[0] = self.tree_controller.get_all_beans_text()
+        FCache().music_paths[0] = self.tree_controller.get_all_beans_text()
         tree = self.controls.tabhelper.get_current_tree()
         self.controls.update_music_tree(tree)
    
     def on_load(self):
         self.tree_controller.clear_tree()
-        for path in FC().music_paths[0]:
+        for path in FCache().music_paths[0]:
             self.tree_controller.append(FDModel(path))
             
         self.files_controller.clear_tree()
-        for ext in FC().all_support_formats:
+        for ext in FCache().all_support_formats:
             self.files_controller.append(FDModel(ext))
             
         self.adjustment.set_value(FC().gap_secs)
@@ -117,14 +118,14 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             self.update_on_start.set_active(True)
                 
     def on_save(self):
-        FC().music_paths[0] = self.tree_controller.get_all_beans_text()
+        FCache().music_paths[0] = self.tree_controller.get_all_beans_text()
         FC().all_support_formats = self.files_controller.get_all_beans_text()
         FC().gap_secs = self.adjustment.get_value()
         if self.singletab_button.get_active():
-            for i in xrange(len(FC().music_paths) - 1, 0, -1):
-                del FC().music_paths[i]
-                del FC().cache_music_tree_beans[i]
-                del FC().tab_names[i]
+            for i in xrange(len(FCache().music_paths) - 1, 0, -1):
+                del FCache().music_paths[i]
+                del FCache().cache_music_tree_beans[i]
+                del FCache().tab_names[i]
                 self.controls.tabhelper.remove_page(i)
             FC().tabs_mode = "Single"
             self.controls.tabhelper.set_show_tabs(False)
@@ -140,13 +141,13 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"), action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(True)
-        if FC().last_music_path:
-            chooser.set_current_folder(FC().last_music_path)
+        if FCache().last_music_path:
+            chooser.set_current_folder(FCache().last_music_path)
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
             path = paths[0]  
-            FC().last_music_path = path[:path.rfind("/")]          
+            FCache().last_music_path = path[:path.rfind("/")]          
             for path in paths:            
                 if path not in self.tree_controller.get_all_beans_text():
                     self.tree_controller.append(FDModel(path))

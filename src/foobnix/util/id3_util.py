@@ -76,7 +76,7 @@ def udpate_id3(bean):
         #if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
         #else: 
             #if audio and not audio.has_key('tracknumber'): 
-        
+       
         duration_sec = bean.duration_sec
         
         if not bean.duration_sec and audio.info.length:
@@ -84,7 +84,7 @@ def udpate_id3(bean):
         
         if audio.info.__dict__:
             bean.info = normalized_info(audio.info, bean)
-                        
+                       
         if bean.artist and bean.title:
             bean.text = bean.artist + " - " + bean.title
         
@@ -101,17 +101,25 @@ def udpate_id3(bean):
 
 def normalized_info(info, bean):
     list = info.pprint().split(", ")
+    new_list = []
     bean.size = os.path.getsize(bean.path)
+    new_list.append(list[0])
+    if info.__dict__.has_key('channels'):
+        new_list.append('Ch: ' + str(info.channels))
+    if info.__dict__.has_key('bits_per_sample'):
+        new_list.append(str(info.bits_per_sample) + ' bit')
+    if info.__dict__.has_key('sample_rate'):
+        new_list.append(str(info.sample_rate) + 'Hz')
     if info.__dict__.has_key('bitrate'):
-        list[1] = str(info.bitrate / 1000) + ' kbps'
-        list[3] = convert_seconds_to_text(int(info.length))
+        new_list.append(str(info.bitrate/1000) + ' kbps')
     else:
-        kbps = int(round(bean.size * 8 / info.length / 1000))
-        list.insert(1, str(kbps + 1 if kbps % 2 else kbps) + ' kbps')
-        list[2] = convert_seconds_to_text(int(info.length))
-    size = '%.2f MB' % (float(bean.size) / 1024 / 1024)
-    list.append(size)
-    return " | ".join(list)
+        kbps = int(round(bean.size*8/info.length/1000))
+        new_list.append(str(kbps+1 if kbps % 2 else kbps) + ' kbps')
+    if info.__dict__.has_key('length'):
+        new_list.append(convert_seconds_to_text(int(info.length)))
+    size = '%.2f MB' % (float(bean.size)/1024/1024)
+    new_list.append(size)
+    return " | ".join(new_list)
 
 def get_support_music_beans_from_all(beans):
     result = []

@@ -6,6 +6,7 @@ Created on 29 сент. 2010
 '''
 
 import gtk
+import logging
 
 from foobnix.fc.fc import FC
 from foobnix.util.mouse_utils import is_middle_click
@@ -15,7 +16,6 @@ from foobnix.helpers.image import ImageBase
 from foobnix.regui.model import FModel
 from foobnix.helpers.pref_widgets import VBoxDecorator
 from foobnix.util.text_utils import split_string
-import logging
 from foobnix.regui.controls.playback import PlaybackControls
 from foobnix.helpers.my_widgets import ImageButton
 from foobnix.util.const import ICON_FOOBNIX
@@ -119,7 +119,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
                 if not pynotify.init('org.mpris.foobnix'):
                     logging.warning("Can't initialize pynotify")
                     return
-                notification = pynotify.Notification("<b><big>Foobnix</big></b>", "<b><i> " + artist + "\n\n " + title + "</i></b>")
+                notification = pynotify.Notification("Foobnix", "<b><i> " + artist + "\n\n " + title + "</i></b>")
                 notification.set_urgency(pynotify.URGENCY_LOW)
                 notification.set_timeout(FC().notify_time)
                 notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())

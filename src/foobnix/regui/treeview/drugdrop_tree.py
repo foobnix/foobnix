@@ -144,7 +144,7 @@ class DrugDropTree(gtk.TreeView):
                 new_iter = self.to_add_drug_item(to_model, to_iter, ff_row_ref, to_filter_pos, True)
                 self.iter_is_parent(ff_row_ref, ff_model, to_model, new_iter)
             else:
-                if new_iter:
+                if new_iter and to_iter and not to_model.iter_has_child(to_iter):
                     to_iter = new_iter
                 new_iter = self.to_add_drug_item(to_model, to_iter, ff_row_ref, to_filter_pos)
             

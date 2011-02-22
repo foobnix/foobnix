@@ -7,6 +7,7 @@ Created on Dec 7, 2010
 
 import gtk
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_cache import FCache
 from foobnix.util.list_utils import reorderer_list
 from foobnix.helpers.menu import Popup
 from foobnix.regui.notetab import TabGeneral
@@ -32,7 +33,7 @@ class TabHelperControl(TabGeneral):
      
     def tab_menu_creator(self, widget, tab_child):
         widget.menu = Popup()
-        widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, 90, FC().tab_names), None)
+        widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, 90, FCache().tab_names), None)
         widget.menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, lambda: self.on_update_music_tree(tab_child), None)
         widget.menu.add_item(_("Add folder"), gtk.STOCK_OPEN, lambda: self.on_add_folder(tab_child), None)
         widget.menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.on_add_folder(tab_child, True), None)
@@ -41,7 +42,7 @@ class TabHelperControl(TabGeneral):
         return widget
                    
     def reorder_callback(self, notebook, child, new_page_num):
-        for list in [FC().music_paths, FC().tab_names, FC().cache_music_tree_beans]:
+        for list in [FCache().music_paths, FCache().tab_names, FCache().cache_music_tree_beans]:
             reorderer_list(list, new_page_num, self.page_number,)
         
     def get_page_number(self, *a):
@@ -55,7 +56,7 @@ class TabHelperControl(TabGeneral):
         n = self.page_num(tab_child)
         tree = tab_child.get_child()
         tree.clear_tree()
-        FC().cache_music_tree_beans[n] = []
+        FCache().cache_music_tree_beans[n] = []
         tree.is_empty = True
             
     def on_update_music_tree(self, tab_child):

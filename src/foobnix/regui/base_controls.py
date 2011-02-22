@@ -12,6 +12,8 @@ import time
 import copy
 
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_cache import FCache
+from foobnix.fc.fc_cache import FCache
 from foobnix.util.m3u_utils import m3u_reader
 import logging
 from foobnix.regui.state import LoadSave
@@ -182,25 +184,25 @@ class BaseFoobnixControls():
     
     def load_music_tree(self):
         self.perspective.hide_add_button()
-        if not FC().cache_music_tree_beans[0] and len(FC().cache_music_tree_beans) == 1:
+        if not FCache().cache_music_tree_beans[0] and len(FCache().cache_music_tree_beans) == 1:
             
             self.perspective.show_add_button()
             
             self.tree.is_empty = True
             
-            if FC().tab_names[0]:
-                self.tabhelper.label.set_label(FC().tab_names[0] + " ")
+            if FCache().tab_names[0]:
+                self.tabhelper.label.set_label(FCache().tab_names[0] + " ")
         else:
-            tabs = len(FC().cache_music_tree_beans)
-            self.tree.simple_append_all(FC().cache_music_tree_beans[tabs - 1])
-            self.tabhelper.label.set_label(FC().tab_names[tabs - 1] + " ")
+            tabs = len(FCache().cache_music_tree_beans)
+            self.tree.simple_append_all(FCache().cache_music_tree_beans[tabs - 1])
+            self.tabhelper.label.set_label(FCache().tab_names[tabs - 1] + " ")
             for tab in xrange(tabs - 2, -1, -1):
                 
                 tree = NavigationTreeControl(self)
-                tree.simple_append_all(FC().cache_music_tree_beans[tab])
-                self.tabhelper.append_tab(FC().tab_names[tab], navig_tree=tree)
+                tree.simple_append_all(FCache().cache_music_tree_beans[tab])
+                self.tabhelper.append_tab(FCache().tab_names[tab], navig_tree=tree)
                 
-                if not FC().cache_music_tree_beans[tab]: 
+                if not FCache().cache_music_tree_beans[tab]: 
                     tree.is_empty = True
                     self.perspective.show_add_button()
             
@@ -208,7 +210,7 @@ class BaseFoobnixControls():
         
         if FC().update_tree_on_start:
             def cycle():
-                for n in xrange(len(FC().music_paths)):
+                for n in xrange(len(FCache().music_paths)):
                     tab_child = self.tabhelper.get_nth_page(n)
                     tree = tab_child.get_child()
                     self.update_music_tree(tree, n)
@@ -218,19 +220,19 @@ class BaseFoobnixControls():
         if not tree:
             tree = self.tree
 
-        logging.info("Update music tree" + str(FC().music_paths[number_of_page]))
+        logging.info("Update music tree" + str(FCache().music_paths[number_of_page]))
         tree.clear_tree()
-        FC().cache_music_tree_beans[number_of_page] = []
+        FCache().cache_music_tree_beans[number_of_page] = []
                
         all = []
         
-        for path in FC().music_paths[number_of_page]:
+        for path in FCache().music_paths[number_of_page]:
             all_in_folder = get_all_music_by_path(path)
             if all_in_folder:
                 for bean in all_in_folder:
                     all.append(bean)
         for bean in all:
-            FC().cache_music_tree_beans[number_of_page].append(bean)
+            FCache().cache_music_tree_beans[number_of_page].append(bean)
         try:
             self.perspective.hide_add_button()
         except AttributeError: 
@@ -243,7 +245,7 @@ class BaseFoobnixControls():
             except AttributeError: 
                 logging.warn("Object perspective not exists yet")
             all.append(FModel(_("Music not found in folder(s):")))        
-            for path in FC().music_paths[number_of_page]:            
+            for path in FCache().music_paths[number_of_page]:            
                 all.append(FModel(path).add_is_file(True))
         else: tree.is_empty = False
         
@@ -623,7 +625,9 @@ class BaseFoobnixControls():
         logging.info("Controls - Quit")
         self.notetabs.on_quit()
         self.virtual.on_quit()
+        self.info_panel.on_quit()
         FC().save()
+        FCache().save()
         gtk.main_quit()
                
     def check_version(self):

@@ -81,15 +81,6 @@ class FC():
         self.all_support_formats = self.audio_formats + video_formats + audio_container
         self.all_support_formats.sort()
         
-        """music library"""
-        self.tab_names = [_("Empty tab"), ]
-        self.last_music_path = None
-        self.music_paths = [[], ]
-        self.cache_music_tree_beans = [[], ]
-        
-        self.cache_virtual_tree_beans = []
-        self.cache_radio_tree_beans = []
-
         self.enable_music_scrobbler = True
         self.enable_radio_scrobbler = True
         """proxy"""
@@ -145,16 +136,11 @@ class FC():
         
         self.tabs_mode = "Multi"#Multi, Single
         
-        self.tab_pl_names = [_("Empty tab"), ]
-        self.cache_pl_tab_contents = []
-        
         self.order_repeat_style = "ToggleButtons"
         
         self.file_managers = ['nautilus', 'dolphin', 'konqueror', 'thunar', 'pcmanfm']
         self.active_manager = [0, ""]
-        
-        self.covers = {}
-         
+                 
         self.load();
     
     def delete(self):

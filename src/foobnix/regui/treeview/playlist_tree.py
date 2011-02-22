@@ -92,8 +92,8 @@ class PlaylistTreeControl(CommonTreeControl):
         bean = self.common_single_random()       
         if bean:
             return bean
-    
-        bean = self.get_next_bean_by_UUID(FC().repeat_state == const.REPEAT_ALL)
+        
+        bean = self.get_next_bean(FC().repeat_state == const.REPEAT_ALL)
         
         if not bean:
             return
@@ -109,12 +109,11 @@ class PlaylistTreeControl(CommonTreeControl):
         if bean:
             return bean
     
-        bean = self.get_prev_bean_by_UUID(FC().repeat_state == const.REPEAT_ALL)
+        bean = self.get_prev_bean(FC().repeat_state == const.REPEAT_ALL)
         
         if not bean:
             return
-        
-        
+                
         self.set_play_icon_to_bean(bean)
         return bean
 

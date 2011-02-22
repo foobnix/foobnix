@@ -277,9 +277,9 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         task()
 
     def get_next_bean_by_UUID(self, repeat_all=False):
+        '''not correct method after rebuild beans'''
         UUID = self.active_UUID
         rows = self.get_all_file_rows()
-        
         for i, row in enumerate(rows):
             if row[self.UUID[0]] == UUID and i + 1 < len(rows):
                 next_row = rows[i + 1]
@@ -290,6 +290,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             return self.get_bean_from_row(rows[0])
         
     def get_prev_bean_by_UUID(self, repeat_all=False):
+        '''not correct method after rebuild beans'''
         UUID = self.active_UUID        
         rows = self.get_all_file_rows() 
         
@@ -302,7 +303,28 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         if repeat_all:
             return self.get_bean_from_row(rows[len(rows) - 1])
         
-
+    def get_next_bean(self, repeat_all=False):
+        rows = self.get_all_file_rows()
+        for i, row in enumerate(rows):
+            if row[self.play_icon[0]] and i + 1 < len(rows):
+                next_row = rows[i + 1]
+                if next_row:
+                    return self.get_bean_from_row(next_row)
+        
+        if repeat_all:
+            return self.get_bean_from_row(rows[0])
+    
+    def get_prev_bean(self, repeat_all=False):
+        rows = self.get_all_file_rows() 
+        for i, row in enumerate(rows):
+            if row[self.play_icon[0]] and i > 0:
+                prev_row = rows[i - 1]
+                if prev_row: 
+                    return self.get_bean_from_row(prev_row)
+        
+        if repeat_all:
+            return self.get_bean_from_row(rows[len(rows) - 1])
+        
     def get_all_file_rows(self):
         rows = []
         for row in self.model:

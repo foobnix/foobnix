@@ -9,6 +9,7 @@ import logging
 from foobnix.util import const
 from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_cache import FCache
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel
@@ -178,9 +179,9 @@ class TabGeneral(gtk.Notebook, FControl):
         if self.get_n_pages() == 1: return
         self.remove_page(n)
         if self.navig:
-            del FC().tab_names[n]
-            del FC().music_paths[n]
-            del FC().cache_music_tree_beans[n]
+            del FCache().tab_names[n]
+            del FCache().music_paths[n]
+            del FCache().cache_music_tree_beans[n]
             
     def get_current_tree(self):
         n = self.get_current_page()
@@ -205,7 +206,7 @@ class NoteTabControl(TabGeneral, LoadSave):
         
         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP, dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY) #@UndefinedVariable
         
-        if not FC().cache_pl_tab_contents:
+        if not FCache().cache_pl_tab_contents:
             self.empty_tab()
         
     def on_system_drag_data_received(self, widget, context, x, y, selection, target_type, timestamp):
@@ -335,8 +336,8 @@ class NoteTabControl(TabGeneral, LoadSave):
                                         action=gtk.FILE_CHOOSER_ACTION_SAVE,
                                         buttons=(gtk.STOCK_SAVE, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
-        if FC().last_music_path:
-            chooser.set_current_folder(FC().last_music_path)
+        if FCache().last_music_path:
+            chooser.set_current_folder(FCache().last_music_path)
         name = self.get_text_label_from_tab(tab_child)
         chooser.set_current_name(name + ".m3u")
         chooser.set_do_overwrite_confirmation(True)
@@ -359,12 +360,12 @@ class NoteTabControl(TabGeneral, LoadSave):
         else: 
             self.set_tab_top()
             
-        for page in xrange(0, len(FC().cache_pl_tab_contents)):
-            if FC().cache_pl_tab_contents[page] == []:
-                self._append_tab(FC().tab_pl_names[page])
+        for page in xrange(0, len(FCache().cache_pl_tab_contents)):
+            if FCache().cache_pl_tab_contents[page] == []:
+                self._append_tab(FCache().tab_pl_names[page])
                 continue
-            self._append_tab(FC().tab_pl_names[page])
-            for row in FC().cache_pl_tab_contents[page]:
+            self._append_tab(FCache().tab_pl_names[page])
+            for row in FCache().cache_pl_tab_contents[page]:
                 self.get_current_tree().model.append(None, row)
             
     def on_save(self):
@@ -372,14 +373,14 @@ class NoteTabControl(TabGeneral, LoadSave):
     
     def on_quit(self):
         number_music_tabs = self.get_n_pages() - 1
-        FC().cache_pl_tab_contents = []
-        FC().tab_pl_names = []
+        FCache().cache_pl_tab_contents = []
+        FCache().tab_pl_names = []
         if number_music_tabs > 0:
             for page in xrange(number_music_tabs, 0, -1):
                 tab_content = self.get_nth_page(page)
                 pl_tree = tab_content.get_child()
-                FC().cache_pl_tab_contents.append([list(row) for row in pl_tree.model])
-                FC().tab_pl_names.append(self.get_text_label_from_tab(tab_content))
+                FCache().cache_pl_tab_contents.append([list(row) for row in pl_tree.model])
+                FCache().tab_pl_names.append(self.get_text_label_from_tab(tab_content))
                 
                 
     def empty_tab(self, *a):
