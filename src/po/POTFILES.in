@@ -96,7 +96,6 @@
 ./foobnix/util/audio.py
 ./foobnix/util/bean_utils.py
 ./foobnix/util/const.py
-./foobnix/util/fc.py
 ./foobnix/util/file_utils.py
 ./foobnix/util/id3_util.py
 ./foobnix/util/image_util.py
@@ -122,7 +121,6 @@
 ./foobnix/util/audio.py
 ./foobnix/util/bean_utils.py
 ./foobnix/util/const.py
-./foobnix/util/fc.py
 ./foobnix/util/file_utils.py
 ./foobnix/util/id3_util.py
 ./foobnix/util/image_util.py

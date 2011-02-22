@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-02-16 09:47+0200\n"
-"PO-Revision-Date: 2011-02-16 12:24+0000\n"
-"Last-Translator: Oleg «Eleidan» Kulik <helh-saintman@yandex.ru>\n"
+"PO-Revision-Date: 2011-02-22 11:11+0000\n"
+"Last-Translator: Ivan Ivanenko <Unknown>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-02-17 04:57+0000\n"
-"X-Generator: Launchpad (build 12351)\n"
+"X-Launchpad-Export-Date: 2011-02-22 17:20+0000\n"
+"X-Generator: Launchpad (build 12406)\n"
 "Language: \n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -227,7 +227,7 @@ msgstr "Включить радио скроблер"
 
 #: .././foobnix/preferences/configs/music_library.py:33
 msgid "Update library on start (more slow) "
-msgstr ""
+msgstr "Обновлять библиотеку при старте (медленный запуск) "
 
 #: .././foobnix/preferences/configs/music_library.py:43
 msgid "Music dirs"
@@ -331,7 +331,7 @@ msgstr "Включить тему плеера"
 
 #: .././foobnix/preferences/configs/other_conf.py:75
 msgid "Menu type: "
-msgstr ""
+msgstr "Тип меню: "
 
 #: .././foobnix/preferences/configs/other_conf.py:77
 msgid "Old Style (Menu Bar)"
@@ -343,16 +343,16 @@ msgstr "Новый Стиль (Кнопка)"
 
 #: .././foobnix/preferences/configs/other_conf.py:90
 msgid "Order-Repeat Switcher Style: "
-msgstr ""
+msgstr "Тип кнопок \"Случайная песня\" "
 
 #: .././foobnix/preferences/configs/other_conf.py:92
 msgid "Toggle Buttons"
-msgstr ""
+msgstr "Нажимаемые кнопки"
 
 #. self.buttons.connect("toggled", self.on_change_o_r_style)
 #: .././foobnix/preferences/configs/other_conf.py:95
 msgid "Text Labels"
-msgstr ""
+msgstr "Текстовые метки"
 
 #: .././foobnix/preferences/configs/other_conf.py:106
 msgid "Opacity"
@@ -360,7 +360,7 @@ msgstr "Прозрачность"
 
 #: .././foobnix/preferences/configs/other_conf.py:119
 msgid "Choose your preferred file manager: "
-msgstr ""
+msgstr "Выберите файловый менеджер "
 
 #: .././foobnix/preferences/configs/tabs.py:13
 msgid "Tabs"
@@ -416,27 +416,27 @@ msgstr "При закрытии окна - уменьшать плеер"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:49
 msgid "System Icon Static"
-msgstr ""
+msgstr "Системная иконка постоянная"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:58
 msgid "System Icons Dynamic"
-msgstr ""
+msgstr "Системная иконка изменяемая"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:62
 msgid "Disc cover image"
-msgstr ""
+msgstr "Картинка с ообложки диска"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:64
 msgid "Notification pop-up"
-msgstr ""
+msgstr "Окно уведомлений"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:76
 msgid "Notification"
-msgstr ""
+msgstr "Уведомления"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:105
 msgid "Time Notification (sec): "
-msgstr ""
+msgstr "Время показа уведомления "
 
 #: .././foobnix/preferences/configs/vk_conf.py:13
 msgid "Vkontakte"
@@ -596,7 +596,7 @@ msgstr "Радио станции (Alt+2)"
 
 #: .././foobnix/regui/perspectives.py:89
 msgid "Playlist"
-msgstr ""
+msgstr "Плейлист"
 
 #: .././foobnix/regui/perspectives.py:89
 msgid "Virtual Play Lists (Alt+3)"
@@ -612,11 +612,11 @@ msgstr "Информационная панель (Alt+4)"
 
 #: .././foobnix/regui/perspectives.py:96
 msgid "LastFM"
-msgstr ""
+msgstr "LastFM"
 
 #: .././foobnix/regui/perspectives.py:96
 msgid "Last.fm Panel (Alt+5)"
-msgstr ""
+msgstr "Last.fm панель (Alt+5)"
 
 #: .././foobnix/regui/search.py:15
 msgid "Search music online"
@@ -628,7 +628,7 @@ msgstr "Искать, Слушать, Скачать музыку с интер�
 
 #: .././foobnix/regui/search.py:69
 msgid "Search"
-msgstr ""
+msgstr "Поиск"
 
 #: .././foobnix/regui/search.py:74
 msgid "Online Search"
@@ -640,7 +640,7 @@ msgstr "Исполнитель"
 
 #: .././foobnix/regui/search.py:102
 msgid "Albums"
-msgstr ""
+msgstr "Альбомы"
 
 #: .././foobnix/regui/search.py:105
 msgid "Similar"
@@ -660,7 +660,7 @@ msgstr "Видео"
 
 #: .././foobnix/regui/about/about.py:20
 msgid "Simple and Powerful player"
-msgstr ""
+msgstr "Простой и можный плеер"
 
 #: .././foobnix/regui/controls/filter.py:24
 msgid "File search"
@@ -764,35 +764,35 @@ msgstr "Очистить список"
 #: .././foobnix/regui/treeview/navigation_tree.py:80
 #: .././foobnix/regui/treeview/playlist_tree.py:159
 msgid "Open in file manager"
-msgstr ""
+msgstr "Открыть в файловом менеджере"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:20
 msgid "Lasm.fm Integration "
-msgstr ""
+msgstr "Интеграция с last.fm "
 
 #: .././foobnix/regui/treeview/navigation_tree.py:69
 msgid "Append to playlist"
-msgstr ""
+msgstr "Добавить в плейлист"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:70
 msgid "Open in new playlist"
-msgstr ""
+msgstr "Открыть в новом плейлисте"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:72
 msgid "Add folder here"
-msgstr ""
+msgstr "Добавить папку суда"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:77
 msgid "Clear"
-msgstr ""
+msgstr "Очистить"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:78
 msgid "Update"
-msgstr ""
+msgstr "Обновить"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:145
 msgid "Edit tags"
-msgstr ""
+msgstr "Редактировать теги"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:147
 msgid "Copy to Search Line"
@@ -800,15 +800,15 @@ msgstr "Скопировать в строку поиска"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:152
 msgid "Copy №-Title-Time"
-msgstr ""
+msgstr "Копировать №-Title-Time"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:153
 msgid "Copy Artist-Title-Album"
-msgstr ""
+msgstr "Копировать Artist-Title-Album"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:156
 msgid "Love this track(s)"
-msgstr ""
+msgstr "Нравится эта песня(и)"
 
 #: .././foobnix/regui/treeview/radio_tree.py:25
 msgid "Radio Stations"
@@ -889,11 +889,11 @@ msgstr "Выберите окно"
 
 #: .././foobnix/util/tag_util.py:22
 msgid "Tag Editor"
-msgstr ""
+msgstr "Редактор тегов"
 
 #: .././foobnix/util/tag_util.py:30
 msgid "Title"
-msgstr ""
+msgstr "Заголовок"
 
 #: .././foobnix/util/tag_util.py:31
 msgid "Album"
@@ -901,11 +901,11 @@ msgstr "Альбом"
 
 #: .././foobnix/util/tag_util.py:32
 msgid "Year"
-msgstr ""
+msgstr "Год"
 
 #: .././foobnix/util/tag_util.py:33
 msgid "Track number"
-msgstr ""
+msgstr "Номер композиции"
 
 #: .././foobnix/util/tag_util.py:35
 msgid "Author text"
@@ -913,7 +913,7 @@ msgstr ""
 
 #: .././foobnix/util/tag_util.py:36
 msgid "Composer"
-msgstr ""
+msgstr "Композитор"
 
 #: .././foobnix/util/tag_util.py:61
 msgid ""
