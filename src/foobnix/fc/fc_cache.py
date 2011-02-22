@@ -11,7 +11,7 @@ import logging
 import cPickle
 
 from foobnix.util.singleton import Singleton
-from foobnix.fc.fc_helper import CONFIG_DIR
+from foobnix.fc.fc_helper import FCHelper, CONFIG_DIR
 
 CACHE_FILE = os.path.join(CONFIG_DIR, "foobnix_cache.pkl")
 COVERS_DIR = os.path.join(CONFIG_DIR, 'Covers')
@@ -24,17 +24,26 @@ class FCache:
         self.covers = {}
         self.album_titles = {}
         
+        """music library"""
+        self.tab_names = [_("Empty tab"), ]
+        self.last_music_path = None
+        self.music_paths = [[], ]
+        self.cache_music_tree_beans = [[], ]
+        
+        self.cache_virtual_tree_beans = []
+        self.cache_radio_tree_beans = []
+        
         self = self._load()
         
     def save(self, in_thread=True):
         if in_thread:
-            thread.start_new_thread(FCacheHelper().save, (self,))
+            thread.start_new_thread(FCHelper().save, (self,))
         else:
-            FCacheHelper().save(self)
+            FCHelper().save(self)
         
     def _load(self):
         """restore from file"""
-        object = FCacheHelper().load()
+        object = FCHelper().load()
         if object:
             dict = object.__dict__
             keys = self.__dict__.keys()
@@ -46,41 +55,3 @@ class FCache:
                     logging.warn("Value not found" + str(e))
                     return False
         return True
-        
-class FCacheHelper():
-    def __init__(self):
-        pass
-
-    def save(self, object):
-        save_file = file(CACHE_FILE, 'w')
-        try:
-            cPickle.dump(object, save_file)
-        except Exception, e:
-            logging.error("Error dumping pickle cache config" + str(e))
-        save_file.close()
-        logging.debug("Cache config save")
-        self.print_info(object);
-
-
-    def load(self):
-        if not os.path.exists(CACHE_FILE):
-            logging.debug("Cache config file not found" + CACHE_FILE)
-            return None
-
-        with file(CACHE_FILE, 'r') as load_file:
-            try:
-                load_file = file(CACHE_FILE, 'r')
-                pickled = load_file.read()
-
-                object = cPickle.loads(pickled)
-                logging.debug("Cache config loaded")
-                self.print_info(object);
-                return object
-            except Exception, e:
-                logging.error("Error load cache config" + str(e))
-        return None
-    
-    def print_info(self, object):
-        dict = object.__dict__
-        for i in object.__dict__:
-            logging.debug(i + str(dict[i])[:500])

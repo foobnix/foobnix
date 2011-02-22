@@ -5,16 +5,18 @@ Created on Sep 29, 2010
 '''
 import gtk
 import logging
+import gobject
 
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_cache import FCache
 from foobnix.regui.model import FModel
 from foobnix.helpers.dialog_entry import two_line_dialog
 from foobnix.helpers.menu import Popup
 from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
 from foobnix.regui.service.radio_service import RadioFolder
-import gobject
+
 
 
 class RadioTreeControl(CommonTreeControl):
@@ -82,14 +84,14 @@ class RadioTreeControl(CommonTreeControl):
                 child = FModel(radio, urls[0]).parent(parent).add_type(FTYPE_RADIO)
                 self.append(child)
                 
-        FC().cache_radio_tree_beans = self.get_all_beans()
+        FCache().cache_radio_tree_beans = self.get_all_beans()
         self.is_radio_populated = True            
     
     def lazy_load(self):
         if not self.is_lazy_load:
             logging.debug("radio Lazy loading")
-            self.populate_all(FC().cache_radio_tree_beans)
-            if not FC().cache_radio_tree_beans:
+            self.populate_all(FCache().cache_radio_tree_beans)
+            if not FCache().cache_radio_tree_beans:
                 logging.debug("populdate from file system")
                 gobject.idle_add(self.update_radio_tree)
             self.is_lazy_load = True 

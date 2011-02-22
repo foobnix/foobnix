@@ -6,13 +6,14 @@ Created on 25 сент. 2010
 '''
 
 import gtk
+import logging
 
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
     is_middle_click_release, is_middle_click
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
 from foobnix.fc.fc import FC
-import logging
+from foobnix.fc.fc_cache import FCache
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
 from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
@@ -96,7 +97,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         row, index_path, index_text = a
         if rename_file_on_disk(row, index_path, index_text):
             old_bean = self.get_selected_bean()
-            beans = FC().cache_music_tree_beans[self.controls.tabhelper.get_current_page()]
+            beans = FCache().cache_music_tree_beans[self.controls.tabhelper.get_current_page()]
             for bean in beans:
                 if old_bean == bean:
                     bean.path = row[index_path]
@@ -107,7 +108,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         row_refs, paths, get_iter_from_row_reference = a
         copy_paths = paths[:]
         if delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
-            beans = FC().cache_music_tree_beans[self.controls.tabhelper.get_current_page()]
+            beans = FCache().cache_music_tree_beans[self.controls.tabhelper.get_current_page()]
             for bean in beans[:] :
                 if bean.path in copy_paths:
                     beans.remove(bean)
@@ -142,14 +143,14 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                                         buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(True)
-        if FC().last_music_path:
-            chooser.set_current_folder(FC().last_music_path)
+        if FCache().last_music_path:
+            chooser.set_current_folder(FCache().last_music_path)
         response = chooser.run()
         
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
             path = paths[0]
-            FC().last_music_path = path[:path.rfind("/")]
+            FCache().last_music_path = path[:path.rfind("/")]
             tree = self
             number_of_tab = self.controls.tabhelper.page_num(tree.scroll)
                       
@@ -158,9 +159,9 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 tab_name = unicode(path[path.rfind("/") + 1:])
                 self.controls.tabhelper._append_tab(tab_name, navig_tree=tree)
                 number_of_tab = self.controls.tabhelper.get_current_page()
-                FC().music_paths.insert(0, [])
-                FC().tab_names.insert(0, tab_name)
-                FC().cache_music_tree_beans.insert(0, [])
+                FCache().music_paths.insert(0, [])
+                FCache().tab_names.insert(0, tab_name)
+                FCache().cache_music_tree_beans.insert(0, [])
             
             elif tree.is_empty:
                 tab_name = unicode(path[path.rfind("/") + 1:])
@@ -174,16 +175,16 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 event = self.controls.tabhelper.tab_menu_creator(event, tree.scroll)
                 event.connect("button-press-event", self.controls.tabhelper.on_button_press) 
                 self.controls.tabhelper.set_tab_label(tree.scroll, event)
-                FC().tab_names[number_of_tab] = tab_name
-                FC().music_paths[number_of_tab] = []
+                FCache().tab_names[number_of_tab] = tab_name
+                FCache().music_paths[number_of_tab] = []
             
             for path in paths:
-                if path in FC().music_paths[number_of_tab]:
+                if path in FCache().music_paths[number_of_tab]:
                     pass
                 else:
-                    FC().music_paths[number_of_tab].append(path) 
+                    FCache().music_paths[number_of_tab].append(path) 
                     self.controls.preferences.on_load()
-                    logging.info("New music paths" + str(FC().music_paths[number_of_tab]))
+                    logging.info("New music paths" + str(FCache().music_paths[number_of_tab]))
                     self.controls.update_music_tree(tree, number_of_tab)
             FC().save()
         elif response == gtk.RESPONSE_CANCEL:
