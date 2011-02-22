@@ -53,7 +53,7 @@ def udpate_id3_for_beans(beans):
             try:
                 udpate_id3(bean)
             except Exception, e:
-                logging.warn("update id3 error - " + e)
+                logging.warn("update id3 error - % s" % e)
     return beans
 
 def udpate_id3(bean):
@@ -103,13 +103,13 @@ def normalized_info(info, bean):
     list = info.pprint().split(", ")
     bean.size = os.path.getsize(bean.path)
     if info.__dict__.has_key('bitrate'):
-        list[1] = str(info.bitrate/1000) + ' kbps'
+        list[1] = str(info.bitrate / 1000) + ' kbps'
         list[3] = convert_seconds_to_text(int(info.length))
     else:
-        kbps = int(round(bean.size*8/info.length/1000))
-        list.insert(1, str(kbps+1 if kbps % 2 else kbps) + ' kbps')
+        kbps = int(round(bean.size * 8 / info.length / 1000))
+        list.insert(1, str(kbps + 1 if kbps % 2 else kbps) + ' kbps')
         list[2] = convert_seconds_to_text(int(info.length))
-    size = '%.2f MB' % (float(bean.size)/1024/1024)
+    size = '%.2f MB' % (float(bean.size) / 1024 / 1024)
     list.append(size)
     return " | ".join(list)
 
