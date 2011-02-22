@@ -70,10 +70,9 @@ class InsensetiveImageButton(gtk.EventBox):
         self.insensetive = False
     
     def on_click1(self, *a):
-        print "button", a
+        pass
         
     def on_click(self, *a):
-        print "event", a
         self.insensetive = not self.insensetive
         #self.button.set_sensitive(self.insensetive)
     
