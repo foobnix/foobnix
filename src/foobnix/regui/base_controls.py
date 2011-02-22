@@ -696,6 +696,8 @@ class BaseFoobnixControls():
                              
         def play_item(iter, active_playlist_tree, filter_model, current_model):
             bean = self.tree.get_bean_from_model_iter(current_model, iter)
+            if not bean:
+                return
                   
             if bean.is_file:
                 self.play(bean)

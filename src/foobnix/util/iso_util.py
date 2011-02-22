@@ -18,9 +18,9 @@ def mount_tmp_iso(path):
     name = os.path.basename(path)
     tmp_dir = os.path.join("/tmp", name)
     if os.path.exists(tmp_dir):
-        logging.debug("tmp dir to mount already exists"+ tmp_dir)
+        logging.debug("tmp dir to mount already exists" + tmp_dir)
         return tmp_dir
     command = ["fuseiso", "-n", "-p", path, tmp_dir]
-    logging.debug("Mount iso.wv"+ command)
+    logging.debug("Mount iso.wv %s" % command)
     subprocess.call(command)
     return tmp_dir
