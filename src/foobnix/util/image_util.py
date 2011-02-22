@@ -9,8 +9,12 @@ import glob
 def get_image_by_path(path):
     dir = os.path.dirname(path)
     if not os.path.isdir(dir):
-        return None            
-    files = glob.glob(dir + "/*.jpg")
+        return None          
+    try:  
+        files = glob.glob(os.path.join(dir, "*.jpg"))
+    except:
+        files = os.listdir(dir)
+        
     for file in files:
         for name in ("cover", "face", "front", "case"):                
             if name in file.lower():
