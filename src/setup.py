@@ -8,7 +8,7 @@ if os.name == 'nt':
     import py2exe
 
 VERSION = "0.2.5"
-RELEASE = "4"
+RELEASE = "6"
 
 data_files = [
     ('share/foobnix', ['README']),
