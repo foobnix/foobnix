@@ -34,11 +34,10 @@ class MenuBarWidget(FControl):
         """View"""
         view = top.add_submenu(_("_View"))
         self.view_music_tree = view.add_ckeck_item(_("Left Panel"), FC().is_view_music_tree_panel)
-        self.view_music_tree.connect("activate", lambda w: controls.set_visible_musictree_panel(w.get_active()))
+        self.view_music_tree.connect("activate", lambda w: controls.layout.set_visible_musictree_panel(w.get_active()))
 
-        self.view_search_panel = view.add_ckeck_item(_("Search Panel"))
-            
-        self.view_search_panel.connect("activate", lambda w: controls.set_visible_search_panel(w.get_active()))
+        self.view_search_panel = view.add_ckeck_item(_("Search Panel"), FC().is_view_search_panel)            
+        self.view_search_panel.connect("activate", lambda w: controls.layout.set_visible_search_panel(w.get_active()))
 
         view.separator()
         view.add_image_item(_("Equalizer"), None, self.controls.eq.show)

@@ -249,17 +249,7 @@ class BaseFoobnixControls():
         else: tree.is_empty = False
         
         tree.append_all(all)
-
-    def set_visible_search_panel(self, flag):
-        if self.layout:
-            self.layout.set_visible_search_panel(flag)
-
-    def set_visible_musictree_panel(self, flag):
-        self.layout.set_visible_musictree_panel(flag)
-
-    def set_visible_info_panel(self, flag):
-        FC().is_view_info_panel = flag
-        self.layout.set_visible_info_panel(flag)
+     
         
     def set_visible_video_panel(self, flag):
         FC().is_view_video_panel = flag
@@ -670,6 +660,9 @@ class BaseFoobnixControls():
         self.info_panel.hide()        
         self.change_backgound()
         self.search_progress.stop()
+        
+        """base layout"""
+        self.layout.on_load()
         
     
     

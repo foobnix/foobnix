@@ -9,6 +9,7 @@ from foobnix.fc.fc import FC
 from foobnix.regui.model.signal import FControl
 import logging
 from foobnix.regui.state import LoadSave
+import time
 class BaseFoobnixLayout(FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -51,27 +52,28 @@ class BaseFoobnixLayout(FControl, LoadSave):
         logging.info("set_visible_search_panel" + str(flag))
         if flag:
             self.controls.searchPanel.show_all()
-            #self.controls.search_progress.hide()
         else:
-            self.controls.searchPanel.hide()   
+            self.controls.searchPanel.hide()
+        
+        FC().is_view_search_panel = flag   
     
     def set_visible_musictree_panel(self, flag):
         logging.info("set_visible_musictree_panel" + str(flag))
         if flag:
-            self.hpaned_left.set_position(FC().hpaned_left)            
+            self.hpaned_left.set_position(FC().hpaned_left)
         else:
             self.hpaned_left.set_position(0)
-        
-        self.on_save()
+            
+        FC().is_view_music_tree_panel = flag
 
-    def on_save(self, *a):        
-        FC().hpaned_left = self.hpaned_left.get_position()
+    def on_save(self, *a): 
+        if self.hpaned_left.get_position() > 0:   
+            FC().hpaned_left = self.hpaned_left.get_position()
             
     def on_load(self):  
-        #self.controls.search_progress.hide()        
-        self.hpaned_left.set_position(FC().hpaned_left)
-        self.set_visible_musictree_panel(FC().is_view_music_tree_panel)
         self.set_visible_search_panel(FC().is_view_search_panel)
+        self.set_visible_musictree_panel(FC().is_view_music_tree_panel)
+        
         
         
                              
