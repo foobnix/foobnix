@@ -115,7 +115,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 
     def add_to_tab(self, current=False):
         paths = self.get_selected_bean_paths()
-        to_model = self.controls.notetabs.get_current_tree().get_model().get_model()
+        if self.controls.notetabs.get_n_pages() > 1:
+            to_model = self.controls.notetabs.get_current_tree().get_model().get_model()
         from_model = self.get_model()
         for i, path in enumerate(paths):
             from_iter = from_model.get_iter(path)
