@@ -4,13 +4,14 @@ Created on 28 сент. 2010
 
 @author: ivan
 '''
-import gst
-import urllib
 import os
-from foobnix.regui.engine import MediaPlayerEngine
-import logging
+import gst
 import time
 import thread
+import urllib
+import logging
+
+from foobnix.regui.engine import MediaPlayerEngine
 from foobnix.fc.fc import FC
 from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
 from foobnix.util.plsparser import get_radio_source
@@ -33,6 +34,7 @@ class GStreamerEngine(MediaPlayerEngine):
 
     def get_state(self):
         return self.current_state
+    
     def set_state(self, state):        
         self.current_state = state
 

@@ -1,23 +1,25 @@
 #!/usr/bin/env python
 
 # example packbox.py
+
+import os
 import gtk
-from foobnix.preferences.configs.music_library import MusicLibraryConfig
+import thread
+import logging
+
+from foobnix.fc.fc import FC
+from foobnix.regui.model import FDModel
+from foobnix.regui.state import LoadSave
+from foobnix.regui.model.signal import FControl
+from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
+from foobnix.helpers.window import ChildTopWindow
 from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs.vk_conf import VkontakteConfig
 from foobnix.preferences.configs.tabs import TabsConfig
-import thread
-import os
-from foobnix.regui.state import LoadSave
-from foobnix.regui.model.signal import FControl
-from foobnix.fc.fc import FC
-from foobnix.helpers.window import ChildTopWindow
-from foobnix.regui.model import FDModel
-from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
-import logging
 from foobnix.preferences.configs.other_conf import OtherConfig
 from foobnix.preferences.configs.tray_icon_conf import TrayIconConfig
+from foobnix.preferences.configs.music_library import MusicLibraryConfig
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 

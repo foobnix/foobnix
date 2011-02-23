@@ -103,6 +103,8 @@ class DBusManager(dbus.service.Object, FControl):
             self.controls.play_pause()
         elif "--version" == command:
             return FOOBNIX_VERSION
+        elif "--state" == command:
+            return self.controls.media_engine.current_state
         elif "--now-playing" == command:
             bean = self.controls.notetabs.get_active_tree().get_current_bean_by_UUID()
             if bean:

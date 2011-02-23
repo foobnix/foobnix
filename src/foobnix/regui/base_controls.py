@@ -4,36 +4,33 @@ Created on 25 сент. 2010
 
 @author: ivan
 '''
-import gtk
-import thread
-import urllib2
 import os
-import time
+import gtk
 import copy
+import time
+import thread
+import gobject
+import logging
+import urllib2
 
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_base import FCBase
 from foobnix.fc.fc_cache import FCache
-from foobnix.fc.fc_cache import FCache
-from foobnix.util.m3u_utils import m3u_reader
-import logging
-from foobnix.regui.state import LoadSave
 from foobnix.regui.model import FModel
+from foobnix.regui.state import LoadSave
+from foobnix.version import FOOBNIX_VERSION
+from foobnix.util.m3u_utils import m3u_reader
+from foobnix.util.text_utils import normalize_text
+from foobnix.util.file_utils import get_file_extension
 from foobnix.regui.service.vk_service import VKService
-from foobnix.helpers.dialog_entry import file_chooser_dialog, \
-    directory_chooser_dialog, info_dialog_with_link_and_donate
+from foobnix.util.bean_utils import get_bean_posible_paths
 from foobnix.regui.service.music_service import get_all_music_by_path
 from foobnix.regui.service.google_service import google_search_results
-from foobnix.util.file_utils import get_file_extension
-from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
-from foobnix.version import FOOBNIX_VERSION
-from foobnix.util.text_utils import normalize_text
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
-import gobject
-from foobnix.util.bean_utils import get_bean_posible_paths
-from foobnix.fc.fc_base import FCBase
-
-
+from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
+from foobnix.helpers.dialog_entry import file_chooser_dialog, \
+    directory_chooser_dialog, info_dialog_with_link_and_donate
 
 class BaseFoobnixControls():
     def __init__(self):
