@@ -104,16 +104,13 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         for plugin in self.configs:            
             plugin.on_load()
 
-    def on_save(self, hide=False):
+    def on_save(self):
         for plugin in self.configs:
             plugin.on_save()
         FC().save()
-        if hide:
-            self.hide_window()
-        else:
-            bean = self.navigation.get_selected_bean() 
-            if bean:
-                self.populate_config_category(bean.text)
+        bean = self.navigation.get_selected_bean() 
+        if bean:
+            self.populate_config_category(bean.text)
             
                 
                 
@@ -138,24 +135,15 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         button_restore.connect("clicked", lambda * a:self.restore_defaults())
         button_restore.show()
 
-
-
         button_apply = gtk.Button(_("Apply"))
         button_apply.set_size_request(100, -1)
         button_apply.connect("clicked", lambda * a:self.on_save())
         button_apply.show()
         
-        label = gtk.Label("       ")
-        
-        button_ok = gtk.Button(_("OK"))
-        button_ok.set_size_request(100, -1)
-        button_ok.connect("clicked", lambda * a:self.on_save(True))
-        button_ok.show()
-
-        button_cancel = gtk.Button(_("Cancel"))
-        button_cancel.set_size_request(100, -1)
-        button_cancel.connect("clicked", self.hide_window)
-        button_cancel.show()
+        button_close = gtk.Button(_("Close"))
+        button_close.set_size_request(100, -1)
+        button_close.connect("clicked", self.hide_window)
+        button_close.show()
         
 
         empty = gtk.Label("")
@@ -164,9 +152,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         box.pack_start(button_restore, False, True, 0)
         box.pack_start(empty, True, True, 0)
         box.pack_start(button_apply, False, True, 0)
-        box.pack_start(label, False, True, 0)
-        box.pack_start(button_ok, False, True, 0)
-        box.pack_start(button_cancel, False, True, 0)
+        box.pack_start(button_close, False, True, 0)
 
         return box
 

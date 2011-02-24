@@ -64,6 +64,8 @@ class TrayIconConfig(ConfigPlugin):
         self.notifier = gtk.CheckButton(_("Notification pop-up"))
         self.notifier.connect("toggled", self.on_toggle)
         
+        self.n_time = self.notify_time()
+        
         box.pack_start(self.tray_icon_button, False, True, 0)
         box.pack_start(self.close_button, False, True, 0)
         box.pack_start(self.hide_button, False, True, 0)
@@ -73,10 +75,10 @@ class TrayIconConfig(ConfigPlugin):
         box.pack_start(self.icon_controls, True, True, 0)
         box.pack_start(self.change_tray_icon, False, False, 0)
         
-        box.pack_start(FrameDecorator(_("Notification"), self.notifier), False, False, 0)
-        self.n_time = self.notify_time()
-        box.pack_start(self.n_time, False, False, 0)
-        
+        notifier_box = gtk.VBox()
+        notifier_box.pack_start(self.notifier, False, False, 0)
+        notifier_box.pack_start(self.n_time, False, False, 0)
+        box.pack_start(FrameDecorator(_("Notification"), notifier_box), False, False, 0)
         self.widget = box
                                
     def on_show_tray_icon(self, *args):
@@ -110,7 +112,7 @@ class TrayIconConfig(ConfigPlugin):
         not_len = gtk.SpinButton(self.adjustment, climb_rate=0.0, digits=1)
         not_len.show()
         
-        hbox = gtk.HBox(False, 0)
+        hbox = gtk.HBox(False, 5)
         
         hbox.pack_start(label, False, False)
         hbox.pack_start(not_len, False, False)

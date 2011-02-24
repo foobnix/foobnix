@@ -21,7 +21,7 @@ class TabsConfig(ConfigPlugin):
         cbox = gtk.HBox(False, 0)
         cbox.show()
         
-        tab_label = gtk.Label(_("Count of tabs"))
+        tab_label = gtk.Label(_("Count of tabs:"))
         tab_label.set_size_request(150, -1)
         tab_label.show()
         
@@ -38,7 +38,7 @@ class TabsConfig(ConfigPlugin):
         lbox = gtk.HBox(False, 0)
         lbox.show()
         
-        tab_label = gtk.Label(_("Max length of tab"))
+        tab_label = gtk.Label(_("Max length of tab:"))
         tab_label.set_size_request(150, -1)
         tab_label.show()
         
@@ -51,10 +51,10 @@ class TabsConfig(ConfigPlugin):
         lbox.pack_start(self.tab_len, False, True, 0)
         
         """position"""
-        pbox = gtk.HBox(False, 0)
+        pbox = gtk.HBox(False, 10)
         pbox.show()
         
-        label = gtk.Label(_("Tab position"))
+        label = gtk.Label(_("Tab position:"))
         label.set_size_request(150, -1)
         label.show()
         
@@ -72,17 +72,18 @@ class TabsConfig(ConfigPlugin):
         
         pbox.pack_start(label, False, False, 0)
         pbox.pack_start(self.radio_tab_left, False, False, 0)
-        pbox.pack_start(self.radio_tab_top, False, True, 0)
-        pbox.pack_start(self.radio_tab_no, False, True, 0)
+        pbox.pack_start(self.radio_tab_top, False, False, 0)
+        pbox.pack_start(self.radio_tab_no, False, False, 0)
         
         """closed type """
-        close_label_box = gtk.HBox(False, 0)
+        close_label_box = gtk.HBox(False, 10)
         close_label_box.show()
         
-        close_label = gtk.Label(_("Close tab sign"))
+        close_label = gtk.Label(_("Close tab sign:"))
+        close_label.set_size_request(150, -1)
         close_label.show()
         
-        self.radio_tab_label = gtk.RadioButton(None, None)
+        self.radio_tab_label = gtk.RadioButton(None, "x")
         self.radio_tab_label.connect("toggled", self.on_chage_tab_position)
         self.radio_tab_label.show()
         
@@ -90,17 +91,20 @@ class TabsConfig(ConfigPlugin):
         self.radio_tab_button.connect("toggled", self.on_chage_tab_position)
         self.radio_tab_button.show()
         
-        self.radio_tab_none = gtk.RadioButton(self.radio_tab_label, None)
+        self.tab_close_box = gtk.HBox()
+        self.tab_close_box.pack_start(self.radio_tab_button, False, True, 0)
+        self.tab_close_box.pack_start(tab_close_button(), False, False, 0)
+        self.tab_close_box.show()
+        
+        self.radio_tab_none = gtk.RadioButton(self.radio_tab_label, _("None"))
         self.radio_tab_none.connect("toggled", self.on_chage_tab_position)
         self.radio_tab_none.show()
         
         close_label_box.pack_start(close_label, False, False, 0)
         close_label_box.pack_start(self.radio_tab_label, False, False, 0)
-        close_label_box.pack_start(notetab_label(), False, False, 0)        
-        close_label_box.pack_start(self.radio_tab_button, False, True, 0)
-        close_label_box.pack_start(tab_close_button(), False, False, 0)
+        close_label_box.pack_start(self.tab_close_box, False, False, 0)
         close_label_box.pack_start(self.radio_tab_none, False, False, 0)
-        close_label_box.pack_start(gtk.Label(_("None")), False, False, 0)
+        
         
         """global pack"""
         box.pack_start(cbox, False, True, 0)

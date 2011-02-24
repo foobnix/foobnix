@@ -25,14 +25,14 @@ class OtherConfig(ConfigPlugin):
         box.hide()        
 
         """save to"""
-        hbox = gtk.HBox(False, 0)
+        hbox = gtk.HBox(False, 5)
         
         self.online_dir = gtk.FileChooserButton("set place")
         self.online_dir.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
         self.online_dir.connect("current-folder-changed", self.on_change_folder)        
         self.online_dir.show()
         
-        hbox.pack_start(gtk.Label(_("Save music to folder")), False, True, 0)
+        hbox.pack_start(gtk.Label(_("Save music to folder:")), False, True, 0)
         hbox.pack_start(self.online_dir, True, True, 0)
         
         """automatic save"""                
@@ -40,18 +40,18 @@ class OtherConfig(ConfigPlugin):
         
         
         """disc cover size"""
-        cbox = gtk.HBox(False, 0)
+        cbox = gtk.HBox(False, 5)
         cbox.show()
         
-        tab_label = gtk.Label(_("Disc cover size"))
+        tab_label = gtk.Label(_("Disc cover size:"))
         tab_label.show()
         
         adjustment = gtk.Adjustment(value=1, lower=100, upper=350, step_incr=20, page_incr=50, page_size=0)
         self.image_size_spin = gtk.SpinButton(adjustment)
         self.image_size_spin.show()
         
-        cbox.pack_start(tab_label, False, False, 0)
-        cbox.pack_start(self.image_size_spin, False, True, 0)
+        cbox.pack_start(tab_label, False, False)
+        cbox.pack_start(self.image_size_spin, False, True)
                 
         """notification"""
         self.check_new_version = gtk.CheckButton(label=_("Check for new foobnix release on start"), use_underline=True)
@@ -63,7 +63,7 @@ class OtherConfig(ConfigPlugin):
         
         """background image"""
         
-        catbox = gtk.HBox(False, 0)
+        catbox = gtk.HBox(False, 5)
         
         self.bg_image = IconBlock("", controls, FC().background_image, FC().background_image_themes)
         
@@ -73,7 +73,7 @@ class OtherConfig(ConfigPlugin):
         catbox.pack_start(self.bg_image, True, True, 0)
         
         """menu position"""
-        pbox = gtk.HBox(False, 0)
+        pbox = gtk.HBox(False, 5)
         pbox.show()
         
         label = gtk.Label(_("Menu type: "))
@@ -88,10 +88,10 @@ class OtherConfig(ConfigPlugin):
         pbox.pack_start(self.new_style, False, True, 0)
         pbox.pack_start(self.old_style, False, False, 0)
         
-        o_r_box = gtk.HBox()
+        o_r_box = gtk.HBox(False, 5)
         o_r_box.show()
         
-        o_r_label = gtk.Label(_("Order-Repeat Switcher Style: "))
+        o_r_label = gtk.Label(_("Order-Repeat Switcher Style:"))
         
         self.buttons = gtk.RadioButton(None, _("Toggle Buttons"))
         #self.buttons.connect("toggled", self.on_change_o_r_style)
@@ -104,10 +104,10 @@ class OtherConfig(ConfigPlugin):
         o_r_box.pack_start(self.labels, False, False, 0)
         
         """opacity"""
-        obox = gtk.HBox(False, 0)
+        obox = gtk.HBox(False, 5)
         obox.show()
         
-        tab_label = gtk.Label(_("Opacity"))
+        tab_label = gtk.Label(_("Opacity:"))
         tab_label.show()
           
         adjustment = gtk.Adjustment(value=1, lower=20, upper=100, step_incr=1, page_incr=1, page_size=0)
@@ -119,8 +119,8 @@ class OtherConfig(ConfigPlugin):
         obox.pack_start(self.opacity_size, False, True, 0)
         
         self.fmgrs_combo = self.fmgr_combobox()
-        hcombobox = gtk.HBox()
-        hcombobox.pack_start(gtk.Label(_('Choose your preferred file manager: ')), False, False)
+        hcombobox = gtk.HBox(False, 5)
+        hcombobox.pack_start(gtk.Label(_('Choose your preferred file manager:')), False, False)
         hcombobox.pack_start(self.fmgrs_combo, False, False)
                 
         """packaging"""        
