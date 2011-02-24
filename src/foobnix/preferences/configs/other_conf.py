@@ -79,10 +79,10 @@ class OtherConfig(ConfigPlugin):
         label = gtk.Label(_("Menu type: "))
         
         self.old_style = gtk.RadioButton(None, _("Old Style (Menu Bar)"))
-        self.old_style.connect("toggled", self.on_change_menu_type)
+        #self.old_style.connect("toggled", self.on_change_menu_type)
         
         self.new_style = gtk.RadioButton(self.old_style, _("New Style (Button)"))
-        self.new_style.connect("toggled", self.on_change_menu_type)
+        #self.new_style.connect("toggled", self.on_change_menu_type)
         
         pbox.pack_start(label, False, False, 0)
         pbox.pack_start(self.new_style, False, True, 0)
@@ -207,6 +207,7 @@ class OtherConfig(ConfigPlugin):
             self.controls.preferences.hide()            
             self.controls.preferences.show()        
         FC().active_manager = [self.fmgrs_combo.get_active(), self.fmgrs_combo.get_active_text().lower()]
+        self.on_change_menu_type()
         
     def fmgr_combobox(self):
         combobox = gtk.combo_box_new_text()
