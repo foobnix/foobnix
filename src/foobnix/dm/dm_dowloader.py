@@ -3,6 +3,7 @@ Created on Oct 27, 2010
 
 @author: ivan
 '''
+from __future__ import with_statement
 import threading
 import logging
 from urllib import FancyURLopener
@@ -74,29 +75,28 @@ class Dowloader(threading.Thread):
             return None
         
         bean.save_to = to_file        
-        file = open(to_file_tmp, "wb")
-        
-        data = True
-        
-        """begin download"""
-        self.bean.status = DOWNLOAD_STATUS_DOWNLOADING
-        self.bean.path = to_file
-        self.update(self.bean)
-        
-        
-        while data:
-            data = remote.read(block_size)
-            if data:
-                block_count += 1
-                file.write(data)
-                #time.sleep(0.1)
-                persent = block_count * block_size * 100.0 / remote_size
-                if block_count % 50 == 0:
-                    bean.persent = persent
-                    update(bean)
+        with file(to_file_tmp, "wb") as tmp_file:
+            data = True
+            
+            """begin download"""
+            self.bean.status = DOWNLOAD_STATUS_DOWNLOADING
+            self.bean.path = to_file
+            self.update(self.bean)
+            
+            
+            while data:
+                data = remote.read(block_size)
+                if data:
+                    block_count += 1
+                    tmp_file.write(data)
+                    #time.sleep(0.1)
+                    persent = block_count * block_size * 100.0 / remote_size
+                    if block_count % 50 == 0:
+                        bean.persent = persent
+                        update(bean)
                     
         """update file info on finish"""                    
-        
+        logging.debug("rename %s - %s" % (to_file_tmp, to_file))
         os.rename(to_file_tmp, to_file)
         bean.status = DOWNLOAD_STATUS_COMPLETED
         bean.to_file = to_file
