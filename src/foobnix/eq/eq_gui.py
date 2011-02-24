@@ -82,9 +82,9 @@ class EqWindow(ChildTopWindow, FControl):
         self.collback()
     
     def set_custom_title(self):
-        status = _("Off")
+        status = _("Disabled")
         if FC().is_eq_enable:
-            status = _("On")        
+            status = _("Enabled")        
         self.set_title(_("Equalizer %s") % status)
             
     def on_enable_eq(self, w):
@@ -149,13 +149,13 @@ class EqWindow(ChildTopWindow, FControl):
         box = gtk.HBox(False, 0)
         box.show()
         
-        self.on = gtk.ToggleButton("On")
+        self.on = gtk.ToggleButton(_("Enable EQ"))
         self.on.set_tooltip_text(_("To enable EQ set ON"))
         self.on.connect("toggled", self.on_enable_eq)
         #on.set_size_request(30,-1)        
         self.on.show()
         
-        auto = gtk.ToggleButton("Auto")
+        auto = gtk.ToggleButton(_("Auto"))
         #auto.set_size_request(50,-1)
         auto.show()
         
@@ -170,7 +170,7 @@ class EqWindow(ChildTopWindow, FControl):
         #self.combo.set_size_request(240, -1)
         self.combo.show()
         
-        save = gtk.Button("Save")
+        save = gtk.Button(_("Save"))
         save.connect("clicked", self.on_save)
         
         save.show()
@@ -178,7 +178,7 @@ class EqWindow(ChildTopWindow, FControl):
         
         resButton = ImageButton(gtk.STOCK_REFRESH)
         resButton.connect("clicked", self.on_restore_defaults)
-        resButton.set_tooltip_text("Restore defaults presets")
+        resButton.set_tooltip_text(_("Restore defaults presets"))
         
         box.pack_start(self.on, False, False, 0)
         #box.pack_start(auto, False, True, 0)
