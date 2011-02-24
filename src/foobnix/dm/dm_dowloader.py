@@ -14,6 +14,7 @@ from foobnix.util.time_utils import size2text
 from foobnix.fc.fc import FC
 from foobnix.util.file_utils import get_file_extension
 from foobnix.util.bean_utils import get_bean_download_path
+import time
 
 class Dowloader(threading.Thread):
     def __init__(self, update, bean, notify_finish):
@@ -94,7 +95,7 @@ class Dowloader(threading.Thread):
                     if block_count % 50 == 0:
                         bean.persent = persent
                         update(bean)
-                    
+        time.sleep(0.5)           
         """update file info on finish"""                    
         logging.debug("rename %s - %s" % (to_file_tmp, to_file))
         os.rename(to_file_tmp, to_file)
