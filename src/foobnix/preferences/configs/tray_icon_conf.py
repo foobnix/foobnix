@@ -4,15 +4,18 @@ Created on 24 авг. 2010
 
 @author: ivan
 '''
+
 import gtk
-from foobnix.preferences.config_plugin import ConfigPlugin
-from foobnix.util import const
+
 from foobnix.fc.fc import FC
-from foobnix.helpers.pref_widgets import FrameDecorator, VBoxDecorator, ChooseDecorator, \
-    IconBlock
+from foobnix.util import const
+from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.helpers.image import ImageBase
 from foobnix.util.const import ICON_BLANK_DISK
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.helpers.pref_widgets import FrameDecorator, VBoxDecorator, ChooseDecorator, \
+    IconBlock
+
 
 class TrayIconConfig(ConfigPlugin):
     
@@ -32,10 +35,8 @@ class TrayIconConfig(ConfigPlugin):
         self.stop_icon = IconBlock("Stop", controls, FC().stop_icon_entry)
         self.radio_icon = IconBlock("Radio", controls, FC().radio_icon_entry)
         
-        
-        
         self.tray_icon_button = gtk.CheckButton(label=_("Show tray icon"), use_underline=True)
-        self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
+        #self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
         
         self.close_button = gtk.RadioButton(None, label=_("On close window - close player"))
 
@@ -44,7 +45,6 @@ class TrayIconConfig(ConfigPlugin):
         
         self.minimize_button = gtk.RadioButton(self.close_button, label=_("On close window - minimize player"))
         
-
         """system icon"""
         self.static_tray_icon = ChooseDecorator(None, FrameDecorator(_("System Icon Static"), self.static_icon))
         
@@ -54,7 +54,6 @@ class TrayIconConfig(ConfigPlugin):
                              self.stop_icon,
                              self.radio_icon)
         
-
         self.icon_controls = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator(_("System Icons Dynamic"), line))
         
         """disc image icon"""        
@@ -63,6 +62,8 @@ class TrayIconConfig(ConfigPlugin):
         
         self.notifier = gtk.CheckButton(_("Notification pop-up"))
         self.notifier.connect("toggled", self.on_toggle)
+        
+        self.n_time = self.notify_time()
         
         box.pack_start(self.tray_icon_button, False, True, 0)
         box.pack_start(self.close_button, False, True, 0)
@@ -73,10 +74,10 @@ class TrayIconConfig(ConfigPlugin):
         box.pack_start(self.icon_controls, True, True, 0)
         box.pack_start(self.change_tray_icon, False, False, 0)
         
-        box.pack_start(FrameDecorator(_("Notification"), self.notifier), False, False, 0)
-        self.n_time = self.notify_time()
-        box.pack_start(self.n_time, False, False, 0)
-        
+        notifier_box = gtk.VBox()
+        notifier_box.pack_start(self.notifier, False, False, 0)
+        notifier_box.pack_start(self.n_time, False, False, 0)
+        box.pack_start(FrameDecorator(_("Notification"), notifier_box), False, False, 0)
         self.widget = box
                                
     def on_show_tray_icon(self, *args):
@@ -110,13 +111,10 @@ class TrayIconConfig(ConfigPlugin):
         not_len = gtk.SpinButton(self.adjustment, climb_rate=0.0, digits=1)
         not_len.show()
         
-        hbox = gtk.HBox(False, 0)
-        
+        hbox = gtk.HBox(False, 5)
         hbox.pack_start(label, False, False)
         hbox.pack_start(not_len, False, False)
-        
         hbox.show_all()
-        
         hbox.set_sensitive(False)
         
         return hbox
@@ -191,3 +189,7 @@ class TrayIconConfig(ConfigPlugin):
         FC().radio_icon_entry = self.radio_icon.entry.get_text()
         FC().notify_time = int(self.adjustment.get_value() * 1000)
         
+        if IconBlock.temp_list != FC().all_icons:
+            FC().all_icons = IconBlock.temp_list
+        
+        self.on_show_tray_icon()

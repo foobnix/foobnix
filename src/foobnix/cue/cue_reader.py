@@ -5,17 +5,19 @@ Created on 7  2010
 '''
 
 from __future__ import with_statement
-from foobnix.regui.model import FModel
-import os
-import logging
-from foobnix.util.time_utils import convert_seconds_to_text
-from foobnix.util import file_utils
-import re
-from foobnix.util.image_util import get_image_by_path
 
-from foobnix.util.audio import get_mutagen_audio
-from foobnix.fc.fc import FC
+import os
+import re
+import logging
 import chardet
+import foobnix.util.id3_util
+
+from foobnix.fc.fc import FC
+from foobnix.regui.model import FModel
+from foobnix.util import file_utils
+from foobnix.util.audio import get_mutagen_audio
+from foobnix.util.image_util import get_image_by_path
+from foobnix.util.time_utils import convert_seconds_to_text
 
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
@@ -126,6 +128,7 @@ class CueReader():
             bean.duration_sec = track.duration
             bean.time = convert_seconds_to_text(track.duration)
             bean.is_file = True
+            bean.info = foobnix.util.id3_util.normalized_info(get_mutagen_audio(bean.path).info, bean)
             beans.append(bean)
         
         return beans

@@ -5,35 +5,36 @@ Created on Nov 5, 2010
 '''
 import gtk
 import gobject
-from foobnix.helpers.dialog_entry import file_chooser_dialog
-from foobnix.util.pix_buffer import create_pixbuf_from_resource
-#from foobnix.fc.fc import FC
-from foobnix.fc.fc import FC
-
-from foobnix.helpers.window import ChildTopWindow
 import logging
 
+from foobnix.fc.fc import FC
+from foobnix.helpers.dialog_entry import file_chooser_dialog
+from foobnix.util.pix_buffer import create_pixbuf_from_resource
+from foobnix.helpers.window import ChildTopWindow
+
+
 class IconBlock(gtk.HBox):
+    
+    temp_list = FC().all_icons[:]
      
-    def __init__(self, text, controls, filename, all_icons=FC().all_icons):
+    def __init__(self, text, controls, filename, all_icons=temp_list):
         gtk.HBox.__init__(self, False, 0)
         
         self.controls = controls
         
         self.combobox = gtk.ComboBox()
         self.entry = gtk.Entry()
+        self.entry.set_size_request(300, -1)
         if filename:
             self.entry.set_text(filename)
         else:
             filename = ""
-        self.entry.set_size_request(350, -1)
+        
         
         self.all_icons = all_icons
         
         self.modconst = ModelConstructor(all_icons)
-        
-        
-        
+               
         self.combobox.set_model(self.modconst.model)
         
         if filename in self.all_icons:
@@ -83,10 +84,8 @@ class IconBlock(gtk.HBox):
     def get_active_path(self):
         active_id = self.combobox.get_active()
         return self.combobox.get_model()[active_id][1]
-    
-        
+            
     def on_delete(self, *a):
-        
         active_id = self.combobox.get_active()
         rem_icon = self.entry.get_text()
         iter = self.modconst.model.get_iter(active_id)
