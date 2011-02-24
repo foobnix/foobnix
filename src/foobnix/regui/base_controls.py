@@ -109,30 +109,33 @@ class BaseFoobnixControls():
         if not paths:
             paths = directory_chooser_dialog(_("Choose folders to open"), FC().last_dir)
         if paths:
-            path = paths[0]
-            list = path.split("/")
-            FC().last_dir = path[:path.rfind("/")]
-            name = list[len(list) - 1]
-            parent = FModel(name)
-            self.append_to_new_notebook(name, [])
-    
-            all_beans = []
-            all_beans.append(parent)
-            for path in paths:
-                if path == "/":
-                    logging.info("Skip root folder")
-                    continue;
-                beans = get_all_music_by_path(path)
-                
-                for bean in beans:
-                    if not bean.is_file:
-                        bean.parent(parent).add_is_file(False)
-                    all_beans.append(bean)
-    
-            if all_beans:
-                self.append_to_current_notebook(all_beans)
-            else:
-                self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
+            def task():
+                path = paths[0]
+                list = path.split("/")
+                FC().last_dir = path[:path.rfind("/")]
+                name = list[len(list) - 1]
+                parent = FModel(name)
+                self.append_to_new_notebook(name, [])
+        
+                all_beans = []
+                all_beans.append(parent)
+                for path in paths:
+                    if path == "/":
+                        logging.info("Skip root folder")
+                        continue;
+                    beans = get_all_music_by_path(path)
+                    
+                    for bean in beans:
+                        if not bean.is_file:
+                            bean.parent(parent).add_is_file(False)
+                        all_beans.append(bean)
+        
+                if all_beans:
+                    self.append_to_current_notebook(all_beans)
+                else:
+                    self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
+                    
+            self.in_thread.run_with_progressbar(task)
     
     def on_add_files(self, paths=None, tab_name=None):
         
@@ -146,8 +149,6 @@ class BaseFoobnixControls():
                         ext = os.path.splitext(path)[1]
                         tab_name = os.path.basename(path)[:-len(ext)]
                     break
-            
-                
         if paths: 
                         
             if paths[0]:

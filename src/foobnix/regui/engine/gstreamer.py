@@ -306,6 +306,16 @@ class GStreamerEngine(MediaPlayerEngine):
 
     def on_message(self, bus, message):
         type = message.type
+        
+        
+        if type == gst.MESSAGE_BUFFERING:
+            return
+        
+        logging.debug("Message type %s" % type)
+        logging.debug("Message %s" % message)
+        
+        if type in [ gst.MESSAGE_STATE_CHANGED, gst.MESSAGE_STREAM_STATUS]:            
+            pass
 
         if type == gst.MESSAGE_TAG  and message.parse_tag():
             if message.structure.has_field("title"):

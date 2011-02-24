@@ -155,47 +155,51 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
-            path = paths[0]
-            FCache().last_music_path = path[:path.rfind("/")]
-            tree = self
-            number_of_tab = self.controls.tabhelper.page_num(tree.scroll)
-                      
-            if in_new_tab:
-                tree = NavigationTreeControl(self.controls)
-                tab_name = unicode(path[path.rfind("/") + 1:])
-                self.controls.tabhelper._append_tab(tab_name, navig_tree=tree)
-                number_of_tab = self.controls.tabhelper.get_current_page()
-                FCache().music_paths.insert(0, [])
-                FCache().tab_names.insert(0, tab_name)
-                FCache().cache_music_tree_beans.insert(0, [])
+            chooser.destroy()
             
-            elif tree.is_empty:
-                tab_name = unicode(path[path.rfind("/") + 1:])
-                vbox = gtk.VBox()
-                label = gtk.Label(tab_name + " ")
-                label.set_angle(90)
-                if FC().tab_close_element:
-                    vbox.pack_start(self.controls.tabhelper.button(tree.scroll), False, False)
-                vbox.pack_end(label, False, False)
-                event = self.controls.notetabs.to_eventbox(vbox, tree)
-                event = self.controls.tabhelper.tab_menu_creator(event, tree.scroll)
-                event.connect("button-press-event", self.controls.tabhelper.on_button_press) 
-                self.controls.tabhelper.set_tab_label(tree.scroll, event)
-                FCache().tab_names[number_of_tab] = tab_name
-                FCache().music_paths[number_of_tab] = []
-            
-            for path in paths:
-                if path in FCache().music_paths[number_of_tab]:
-                    pass
-                else:
-                    FCache().music_paths[number_of_tab].append(path) 
-                    self.controls.preferences.on_load()
-                    logging.info("New music paths" + str(FCache().music_paths[number_of_tab]))
-                    self.controls.update_music_tree(tree, number_of_tab)
-            FC().save()
+            def task():
+                path = paths[0]
+                FCache().last_music_path = path[:path.rfind("/")]
+                tree = self
+                number_of_tab = self.controls.tabhelper.page_num(tree.scroll)
+                          
+                if in_new_tab:
+                    tree = NavigationTreeControl(self.controls)
+                    tab_name = unicode(path[path.rfind("/") + 1:])
+                    self.controls.tabhelper._append_tab(tab_name, navig_tree=tree)
+                    number_of_tab = self.controls.tabhelper.get_current_page()
+                    FCache().music_paths.insert(0, [])
+                    FCache().tab_names.insert(0, tab_name)
+                    FCache().cache_music_tree_beans.insert(0, [])
+                
+                elif tree.is_empty:
+                    tab_name = unicode(path[path.rfind("/") + 1:])
+                    vbox = gtk.VBox()
+                    label = gtk.Label(tab_name + " ")
+                    label.set_angle(90)
+                    if FC().tab_close_element:
+                        vbox.pack_start(self.controls.tabhelper.button(tree.scroll), False, False)
+                    vbox.pack_end(label, False, False)
+                    event = self.controls.notetabs.to_eventbox(vbox, tree)
+                    event = self.controls.tabhelper.tab_menu_creator(event, tree.scroll)
+                    event.connect("button-press-event", self.controls.tabhelper.on_button_press) 
+                    self.controls.tabhelper.set_tab_label(tree.scroll, event)
+                    FCache().tab_names[number_of_tab] = tab_name
+                    FCache().music_paths[number_of_tab] = []
+                
+                for path in paths:
+                    if path in FCache().music_paths[number_of_tab]:
+                        pass
+                    else:
+                        FCache().music_paths[number_of_tab].append(path) 
+                        self.controls.preferences.on_load()
+                        logging.info("New music paths" + str(FCache().music_paths[number_of_tab]))
+                        self.controls.update_music_tree(tree, number_of_tab)
+                FC().save()
+            self.controls.in_thread.run_with_progressbar(task)
         elif response == gtk.RESPONSE_CANCEL:
             logging.info('Closed, no files selected')
-        chooser.destroy()       
+            chooser.destroy()       
     
             
     def on_load(self):

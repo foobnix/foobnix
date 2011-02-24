@@ -93,6 +93,10 @@ class DM(ChildTopWindow):
         self.show_all()
     
     def append_task(self, bean):
+        """download only remote files"""
+        if bean.path and not bean.path.startswith("http"):
+            return 
+          
         bean.status = DOWNLOAD_STATUS_ACTIVE
         self.dm_list.append(bean)
         logging.debug("Begin download %s" % bean)
