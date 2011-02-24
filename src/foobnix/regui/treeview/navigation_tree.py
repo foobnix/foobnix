@@ -7,6 +7,7 @@ Created on 25 сент. 2010
 
 import gtk
 import logging
+import gobject
 
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
     is_middle_click_release, is_middle_click
@@ -128,6 +129,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 name = row[0]
                 self.controls.notetabs._append_tab(name)
                 to_model = self.controls.notetabs.get_current_tree().get_model().get_model()
+                
             if self.add_m3u(from_model, from_iter, to_model, None, None): continue
             if from_model.iter_has_child(from_iter):
                 new_iter = self.to_add_drug_item(to_model, None, None, None, True, row=row)
@@ -135,10 +137,11 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 self.iter_is_parent(from_ref, from_model, to_model, new_iter)
             else:
                 new_iter = self.to_add_drug_item(to_model, None, None, None, row=row)
-        
+                
         self.controls.notetabs.get_current_tree().rebuild_as_plain()
         if not current:
-            self.controls.play_first_file_in_playlist()
+            '''gobject because rebuild_as_plain use it too'''
+            gobject.idle_add(self.controls.play_first_file_in_playlist)
 
     def add_folder(self, in_new_tab=False):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"),
