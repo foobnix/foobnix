@@ -102,3 +102,5 @@ class RadioTreeControl(CommonTreeControl):
                 self.update_radio_tree()
             self.is_lazy_load = True 
         
+    def on_quit(self):
+        FCache().cache_radio_tree_beans = self.get_all_beans()
