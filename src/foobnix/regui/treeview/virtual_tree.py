@@ -41,13 +41,14 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
     def on_drag_drop_finish(self):
         FCache().cache_virtual_tree_beans = self.get_all_beans()
         FC().save()        
-         
+        
     def on_button_press(self, w, e):
         if is_double_left_click(e):
             
             selected = self.get_selected_bean()
             beans = self.get_all_child_beans_by_selected()         
-            self.controls.append_to_new_notebook(selected.text, [selected] + beans)
+            self.controls.notetabs._append_tab(selected.text, [selected] + beans, optimization=True)
+            self.controls.play_first_file_in_playlist()
             
         if is_rigth_click(e): 
                 menu = Popup()

@@ -687,7 +687,6 @@ class BaseFoobnixControls():
         #time.sleep(0.5)
         win.show()
         
-        
     def play_first_file_in_playlist(self):    
         active_playlist_tree = self.notetabs.get_current_tree()
         filter_model = active_playlist_tree.get_model()

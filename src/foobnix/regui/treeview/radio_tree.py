@@ -42,7 +42,7 @@ class RadioTreeControl(CommonTreeControl):
         if is_double_left_click(e):
             selected = self.get_selected_bean()
             beans = self.get_all_child_beans_by_selected()  
-            self.controls.append_to_new_notebook(selected.text, [selected] + beans)
+            self.controls.notetabs._append_tab(selected.text, [selected] + beans, optimization=True)
             "run radio channel"
             self.controls.play_first_file_in_playlist()
             
