@@ -5,6 +5,7 @@ Created on Dec 7, 2010
 @author: zavlab1
 '''
 import re
+
 def reorderer_list(List, new_index, old_index):
     if new_index < old_index:
         List.insert(new_index, List[old_index])
@@ -13,7 +14,6 @@ def reorderer_list(List, new_index, old_index):
         List.insert(new_index + 1, List[old_index])
         del List[old_index]
 
-
 def any(pred, list):
     for el in list:
         if pred(el):
@@ -21,7 +21,7 @@ def any(pred, list):
     return False
 
 def get_song_number(text):
-    res = re.search('^([0-9]{1,4})', text)
+    res = re.search('^([0-9]{1,5})', text)
     if res:
         return int(res.group())
 

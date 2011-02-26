@@ -25,7 +25,7 @@ def open_in_filemanager(path, managers=None):
                     logging.info("Folder " + dirname + " has been opened in " + fm)
                     return True
         else:
-            if not os.system('explorer ' + '/"' + dirname + '/"'):
+            if not os.system('explorer ' + dirname):
                 logging.info("Folder " + dirname + " has been opened in explorer")
                 return True
     

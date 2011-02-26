@@ -321,7 +321,7 @@ class NoteTabControl(TabGeneral, LoadSave):
         
     def create_notebook_tab(self, beans, optimization=False):
         treeview = PlaylistTreeControl(self.controls)
-        self.set_active_tree(treeview)
+        #self.set_active_tree(treeview)
         if beans: 
             if optimization:
                 treeview.simple_append_all(beans)
@@ -386,27 +386,19 @@ class NoteTabControl(TabGeneral, LoadSave):
     def empty_tab(self, *a):
         self.append_tab("Foobnix", [])
     
-    def get_active_tree(self):
-        return self.active_tree
-    
     def append_all(self, beans):
-        self.active_tree.append_all(beans)
+        self.get_current_tree().append_all(beans)
     
     def next(self):
-        bean = self.active_tree.next()
+        bean = self.get_current_tree().next()
         return bean
 
     def prev(self):
-        bean = self.active_tree.prev()
+        bean = self.get_current_tree().prev()
         return bean
     
-    def set_active_tree(self, tree):
-        self.active_tree = tree
-        
     def set_playlist_tree(self):
-        self.active_tree.set_playlist_tree()
+        self.get_current_tree().set_playlist_tree()
 
     def set_playlist_plain(self):
-        self.active_tree.set_playlist_plain()
-
-    
+        self.get_current_tree().set_playlist_plain()

@@ -44,7 +44,7 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         elif is_key_control(e) and is_key(e, "q"):
             self.controls.quit()
         elif is_key_control(e) and is_key(e, "s"):    
-            self.controls.notetabs.on_save_playlist(self.controls.notetabs.active_tree.scroll)
+            self.controls.notetabs.on_save_playlist(self.controls.notetabs.get_current_tree().scroll)
         
                     
     def on_configure_event(self, w, e):

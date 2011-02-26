@@ -15,6 +15,7 @@ from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.fc.fc import FC
 from foobnix.util.tag_util import edit_tags
 from foobnix.util.file_utils import open_in_filemanager
+from foobnix.util.converter import convert_files
 
 class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
@@ -38,8 +39,7 @@ class PlaylistTreeControl(CommonTreeControl):
         description.set_expand(True)
         description.set_resizable(True)
         self.append_column(description)
-        
-        
+                
         """column artist (NOT USED)"""
         artist = gtk.TreeViewColumn('Artist', gtk.CellRendererText(), text=self.artist[0])
         artist.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
@@ -121,7 +121,7 @@ class PlaylistTreeControl(CommonTreeControl):
         return super(PlaylistTreeControl, self).append(bean)
 
     def on_button_press(self, w, e):
-        self.controls.notetabs.set_active_tree(self)
+        #self.controls.notetabs.set_active_tree(self)
         if is_rigth_click(e):
             """to avoid unselect all selected items"""
             self.stop_emission('button-press-event')
@@ -148,6 +148,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 paths = [bean.path for bean in beans]
                 if paths[0]:
                     menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, (self.controls, paths))
+                    menu.add_item(_('Convert files'), None, convert_files, paths)
                 text = self.get_selected_bean().text
                 menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
                 menu.add_separator()

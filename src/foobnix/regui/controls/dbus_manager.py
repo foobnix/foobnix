@@ -106,7 +106,7 @@ class DBusManager(dbus.service.Object, FControl):
         elif "--state" == command:
             return self.controls.media_engine.current_state
         elif "--now-playing" == command:
-            bean = self.controls.notetabs.get_active_tree().get_current_bean_by_UUID()
+            bean = self.controls.notetabs.get_current_tree().get_current_bean_by_UUID()
             if bean:
                 return bean.get_display_name()
         else:

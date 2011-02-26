@@ -200,3 +200,4 @@ def notetab_label(func=None, arg=None, angle=0, symbol="×"):
         event.connect("button-press-event", lambda * a: func())
     event.show()
     return event
+

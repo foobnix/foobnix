@@ -76,7 +76,7 @@ def udpate_id3(bean):
         #if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
         #else: 
             #if audio and not audio.has_key('tracknumber'): 
-       
+        
         duration_sec = bean.duration_sec
         
         if not bean.duration_sec and audio.info.length:
@@ -94,7 +94,8 @@ def udpate_id3(bean):
             except:
                 bean.tracknumber = ""
         
-        bean = update_bean_from_normalized_text(bean)        
+        bean = update_bean_from_normalized_text(bean)
+            
         bean.time = convert_seconds_to_text(duration_sec)
         
     return bean

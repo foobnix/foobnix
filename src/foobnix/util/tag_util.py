@@ -8,9 +8,10 @@ Created on Jan 25, 2011
 import gtk
 import logging
 import os.path
-
+import urllib
 from foobnix.util.localization import foobnix_localization
 from foobnix.util.audio import get_mutagen_audio
+from foobnix.util.id3_util import decode_cp866
 from foobnix.helpers.window import ChildTopWindow
 from mutagen.mp4 import MP4, MP4MetadataValueError
 
@@ -128,8 +129,11 @@ class TagEditor(ChildTopWindow):
             if not path or os.path.isdir(path):
                 self.paths.remove(path)
                 continue
-            self.audious.append(get_mutagen_audio(path))
-            
+            audio = get_mutagen_audio(path)
+            self.decoding_cp866(audio)
+            self.audious.append(audio)
+        
+                    
         if isinstance(self.audious[0], MP4):
             tag_names = self.tag_mp4_names
             '''make author entry not sensitive because mp4 hasn't so tag'''
@@ -171,7 +175,7 @@ class TagEditor(ChildTopWindow):
                         audio[tag_name] = [tag_value]
                 audio.save()
             except AttributeError:
-                logging.warn('Can\'t save tags. ' + os.path.split(path)[1] + ' is not audio file') 
+                logging.warn('Can\'t save tags. Perhaps' + os.path.split(path)[1] + ' is not audio file') 
             except MP4MetadataValueError:
                 '''for mp4 trkn is tuple'''
                 new_tag_value = [tuple(map(int, tag_value.split(', ')))]
@@ -181,17 +185,23 @@ class TagEditor(ChildTopWindow):
             ''' store changes '''
             if (tag_name == "artist" or tag_name == '\xa9ART') and tag_value:
                 self.store[path][0] = tag_value
-                if audio.has_key("title"):
-                    self.store[path][1] = audio["title"][0]
-                elif audio.has_key('\xa9nam'):
-                    self.store[path][1] = audio['\xa9nam'][0]
+                try:
+                    if audio.has_key("title"):
+                        self.store[path][1] = audio["title"][0]
+                    elif audio.has_key('\xa9nam'):
+                        self.store[path][1] = audio['\xa9nam'][0]
+                except UnicodeDecodeError:
+                    pass
             elif (tag_name == "title" or tag_name == '\xa9nam') and tag_value:
                 self.store[path][1] = tag_value
-                if audio.has_key("artist"):
-                    self.store[path][0] = audio["artist"][0]
-                elif audio.has_key('\xa9ART'):
-                    self.store[path][0] = audio['\xa9ART'][0]        
-        
+                try:
+                    if audio.has_key("artist"):
+                        self.store[path][0] = audio["artist"][0]
+                    elif audio.has_key('\xa9ART'):
+                        self.store[path][0] = audio['\xa9ART']
+                except UnicodeDecodeError:
+                    pass
+                
         for tag_name, tag_mp4_name, tag_entry, check_button in zip(self.tag_names, self.tag_mp4_names, self.tag_entries, self.check_buttons):
             tag_value = tag_entry.get_text()
             if check_button.get_active():
@@ -202,7 +212,15 @@ class TagEditor(ChildTopWindow):
             check_button.set_active(False)
         
         self.apply_changes_for_rows_in_tree()
-             
+
+
+    def decoding_cp866(self, audio):
+        
+        print audio
+        if not isinstance(audio, MP4):
+            for value, key in zip(audio.values(), audio.keys()):
+                audio[key] = decode_cp866(value[0])
+                  
 def edit_tags(a):
     controls, paths = a 
     if not globals().has_key("tag_editor"):
