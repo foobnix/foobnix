@@ -48,3 +48,14 @@ class TextArea(gtk.ScrolledWindow):
         start = self.buffer.get_iter_at_offset(0)            
         end = self.buffer.get_iter_at_offset(len(bold_text))
         self.buffer.apply_tag(self.tag_bold, start, end)
+
+    
+class ScrolledText():
+    def __init__(self):
+        self.buffer = gtk.TextBuffer()
+        self.text = gtk.TextView(self.buffer)
+        self.text.set_editable(False)
+        self.text.set_cursor_visible(False)
+        self.scroll = gtk.ScrolledWindow()
+        self.scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.scroll.add(self.text)     

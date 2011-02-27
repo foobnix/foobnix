@@ -206,13 +206,3 @@ def convert_files(paths):
     converter.show_all()
     converter.progress_box.hide_all()
     converter.fill_form(paths)
-
-class SccrolledText:
-    def __init__(self):
-        self.buffer = gtk.TextBuffer()
-        self.text = gtk.TextView(self.buffer)
-        self.text.set_editable(False)
-        self.text.set_cursor_visible(False)
-        self.scroll = gtk.ScrolledWindow()
-        self.scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        self.scroll.add(self.text)     

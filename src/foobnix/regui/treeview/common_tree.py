@@ -304,11 +304,13 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             return self.get_bean_from_row(rows[len(rows) - 1])
         
     def get_next_bean(self, repeat_all=False):
-        rows = self.get_all_file_rows()
-        for i, row in enumerate(rows):
+        rows, paths = self.get_all_file_rows_and_paths()
+        for i, row, path in zip(xrange(len(rows)), rows, paths):
             if row[self.play_icon[0]] and i + 1 < len(rows):
                 next_row = rows[i + 1]
                 if next_row:
+                    if path >= self.get_visible_range()[1]:
+                        self.scroll_to_cell(paths[i+1])
                     return self.get_bean_from_row(next_row)
         
         if repeat_all:
@@ -332,7 +334,32 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 rows.append(row)
         
         return rows
-
+    
+    def get_all_file_rows_and_paths(self):
+        rows = []
+        paths = []
+        for i, row in enumerate(self.model):
+            if row[self.is_file[0]]:
+                rows.append(row)
+                paths.append((i,))
+        return rows, paths
+    
+    def visibles(self):
+        iter = self.model.get_iter_first()
+        for i, row in enumerate(self.model):
+            if row[self.play_icon[0]] and i + 1 < len(self.model):
+                next_row = self.model[i + 1]
+                break
+            iter = self.model.iter_next(iter)
+        
+        if iter:
+            active_path = self.model.get_path(iter) 
+            rect = self.get_cell_area(active_path, self.icon)
+            
+            start_path, end_path = self.get_visible_range()
+            print start_path, end_path, active_path
+            
+    
     def get_random_bean(self):        
         rows = self.get_all_file_rows()
         return self.get_bean_from_row(rows[randint(0, len(rows) - 1)])

@@ -23,10 +23,10 @@ class PlaylistTreeControl(CommonTreeControl):
         #self.set_headers_visible(True)
         self.set_headers_visible(True)
         """Column icon"""
-        icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
-        icon.set_fixed_width(5)
-        icon.set_min_width(5)
-        self.append_column(icon)
+        self.icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
+        self.icon.set_fixed_width(5)
+        self.icon.set_min_width(5)
+        self.append_column(self.icon)
         
         """track number"""
         tracknumber = gtk.TreeViewColumn("№", gtk.CellRendererText(), text=self.tracknumber[0])
