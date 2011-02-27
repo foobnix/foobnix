@@ -15,7 +15,7 @@ from subprocess import Popen
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.localization import foobnix_localization
-#from foobnix.helpers.textarea import ScrolledText
+from foobnix.helpers.textarea import ScrolledText
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
@@ -207,7 +207,7 @@ def convert_files(paths):
     converter.progress_box.hide_all()
     converter.fill_form(paths)
 
-class ScrolledText:
+class SccrolledText:
     def __init__(self):
         self.buffer = gtk.TextBuffer()
         self.text = gtk.TextView(self.buffer)
