@@ -215,8 +215,6 @@ class TagEditor(ChildTopWindow):
 
 
     def decoding_cp866(self, audio):
-        
-        print audio
         if not isinstance(audio, MP4):
             for value, key in zip(audio.values(), audio.keys()):
                 audio[key] = decode_cp866(value[0])

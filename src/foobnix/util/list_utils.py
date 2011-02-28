@@ -21,7 +21,7 @@ def any(pred, list):
     return False
 
 def get_song_number(text):
-    res = re.search('^([0-9]{1,5})', text)
+    res = re.search('^([0-9]{1,4})', text)
     if res:
         return int(res.group())
 

@@ -15,7 +15,8 @@ COVERS_DIR = os.path.join(CONFIG_DIR, 'covers','')
 LYRICS_DIR = os.path.join(CONFIG_DIR, 'lirics','')
 
 CACHE_COVERS_FILE = os.path.join(COVERS_DIR, 'covers_cache')
-CACHE_ALBUM_FILE = os.path.join(CONFIG_DIR + 'albums_cache')
+CACHE_ALBUM_FILE = os.path.join(CONFIG_DIR, 'albums_cache')
+CACHE_RADIO_FILE = os.path.join(CONFIG_DIR, 'radio_cache')
 
 """Foobnix cache"""
 class FCache:

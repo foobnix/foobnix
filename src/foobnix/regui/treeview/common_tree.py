@@ -328,23 +328,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def get_all_file_rows(self):
         rows = [row for row in self.model if row[self.is_file[0]]]
         return rows
-    
-    def visibles(self):
-        iter = self.model.get_iter_first()
-        for i, row in enumerate(self.model):
-            if row[self.play_icon[0]] and i + 1 < len(self.model):
-                next_row = self.model[i + 1]
-                break
-            iter = self.model.iter_next(iter)
-        
-        if iter:
-            active_path = self.model.get_path(iter) 
-            rect = self.get_cell_area(active_path, self.icon)
-            
-            start_path, end_path = self.get_visible_range()
-            print start_path, end_path, active_path
-            
-    
+
     def get_random_bean(self):        
         rows = self.get_all_file_rows()
         return self.get_bean_from_row(rows[randint(0, len(rows) - 1)])
