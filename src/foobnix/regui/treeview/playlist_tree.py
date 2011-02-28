@@ -99,6 +99,8 @@ class PlaylistTreeControl(CommonTreeControl):
             return
         
         self.set_play_icon_to_bean(bean)
+           
+        self.scroll_follow_play_icon()            
         
         logging.debug("Next bean" + str(bean) + bean.text)
         
@@ -115,8 +117,19 @@ class PlaylistTreeControl(CommonTreeControl):
             return
                 
         self.set_play_icon_to_bean(bean)
+        
+        self.scroll_follow_play_icon() 
+        
         return bean
-
+    
+    def scroll_follow_play_icon(self):
+        paths = [(i,) for i, row in enumerate(self.model)]
+        for row, path in zip(self.model, paths):
+            if row[self.play_icon[0]]:
+                start_path, end_path = self.get_visible_range()
+                if path > end_path or path < start_path:
+                    self.scroll_to_cell(path)
+    
     def append(self, bean):
         return super(PlaylistTreeControl, self).append(bean)
 
