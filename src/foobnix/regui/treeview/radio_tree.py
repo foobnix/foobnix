@@ -3,6 +3,7 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
+from __future__ import with_statement
 import os.path
 import gtk
 import logging
