@@ -25,7 +25,7 @@ LOGO = get_foobnix_resourse_path_by_name(ICON_FOOBNIX)
 
 class Converter(ChildTopWindow):
     def __init__(self):
-        ChildTopWindow.__init__(self, title="Audio Converter", width=500, height=300)
+        ChildTopWindow.__init__(self, title=_("Audio Converter"), width=500, height=300)
         self.area = ScrolledText()
         vbox = gtk.VBox(False, 10)
         vbox.pack_start(self.area.scroll)
@@ -127,12 +127,12 @@ class Converter(ChildTopWindow):
             self.progressbar.set_text("")
             def task():
                 for i, path in enumerate(self.paths):
-                    self.progressbar.set_text("Convert  %d of %d file(s)"% (i+1, len(self.paths)))
+                    self.progressbar.set_text(_("Convert  %d of %d file(s)")% (i+1, len(self.paths)))
                     self.convert(path, os.path.join(current_folder, os.path.splitext(os.path.basename(path))[0] + "." + format), format)
                     self.progressbar.set_fraction(self.progressbar.get_fraction() + fraction_length)
                     if self.stop:
                         break
-                self.progressbar.set_text("Finished (%d of %d)" % (i+1, len(self.paths)))
+                self.progressbar.set_text(_("Finished (%d of %d)") % (i+1, len(self.paths)))
                 self.button_box.show_all()
             thread.start_new_thread(task, ())
         chooser.destroy()

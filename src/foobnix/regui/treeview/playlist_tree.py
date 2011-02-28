@@ -161,7 +161,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 paths = [bean.path for bean in beans]
                 if paths[0]:
                     menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, (self.controls, paths))
-                    menu.add_item(_('Convert files'), gtk.STOCK_CONVERT, convert_files, paths)
+                    menu.add_item(_('Convert files (alpha)'), gtk.STOCK_CONVERT, convert_files, paths)
                 text = self.get_selected_bean().text
                 menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
                 menu.add_separator()
