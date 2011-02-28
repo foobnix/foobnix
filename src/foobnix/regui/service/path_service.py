@@ -23,7 +23,7 @@ def get_foobnix_resourse_path_by_name(filename):
              "./../pixmaps",
              "./",
              filename]
-    if len(sys.path)>0:
+    if len(sys.path)>=1:
         paths.append(sys.path[1])
         
     for path in paths:
