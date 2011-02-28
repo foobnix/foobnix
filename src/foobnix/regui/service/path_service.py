@@ -10,7 +10,8 @@ import logging
 def get_foobnix_resourse_path_by_name(filename):
     if not filename:
         return None
-    paths = ("/usr/local/share/pixmaps",
+    
+    paths = ["/usr/local/share/pixmaps",
              "/usr/share/pixmaps",
              "/usr/share/foobnix",
              "/usr/local/share/foobnix",
@@ -21,8 +22,10 @@ def get_foobnix_resourse_path_by_name(filename):
              "./../../",
              "./../pixmaps",
              "./",
-             sys.path[1],
-             filename)
+             filename]
+    if len(sys.path)>0:
+        paths.append(sys.path[1])
+        
     for path in paths:
         full_path = os.path.join(path, filename)
         if os.path.isfile(full_path):
