@@ -1,4 +1,3 @@
-import gobject
 import uuid
 
 class FTreeModel():   
@@ -6,14 +5,14 @@ class FTreeModel():
     def __init__(self):
         
         self.text = 0 , str        
-        self.visible = 1 , gobject.TYPE_BOOLEAN        
+        self.visible = 1 , bool        
         self.font = 2 , str
         self.play_icon = 3 , str
         self.time = 4 , str
         self.path = 5 , str
         self.level = 6 , str
         self.tracknumber = 7 , str        
-        self.is_file = 8 , gobject.TYPE_BOOLEAN
+        self.is_file = 8 , bool
         
         self.artist = 9 , str
         self.title = 10 , str
