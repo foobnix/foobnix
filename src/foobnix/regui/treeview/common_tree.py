@@ -125,6 +125,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         for key in new_dict.values():
             value = getattr(bean, key)
             attributes.append(value)
+
         return attributes
 
     def get_row_from_model_iter(self, model, iter):
