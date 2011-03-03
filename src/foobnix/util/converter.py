@@ -16,6 +16,7 @@ from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.file_utils import open_in_filemanager
 from foobnix.util.localization import foobnix_localization
+from foobnix.util.audio import get_mutagen_audio
 from foobnix.helpers.textarea import ScrolledText
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
@@ -131,18 +132,20 @@ class Converter(ChildTopWindow):
             fraction_length = 1.0 / len(self.paths)
             self.progressbar.set_text("")
             def task():
-		self.stop_button.show()
-		self.open_folder_button.hide()             
-		for i, path in enumerate(self.paths):
-                    self.progressbar.set_text("Convert  %d of %d file(s)"% (i+1, len(self.paths)))
+                self.stop_button.show()
+                self.open_folder_button.hide()             
+                for i, path in enumerate(self.paths):
+                    self.progressbar.set_text("Convert  %d of %d file(s)" % (i+1, len(self.paths)))
                     self.convert(path, os.path.join(self.current_folder, os.path.splitext(os.path.basename(path))[0] + "." + format), format)
                     self.progressbar.set_fraction(self.progressbar.get_fraction() + fraction_length)
                     if self.stop:
-		        self.open_folder_button.show()                        
-			break
-                self.progressbar.set_text("Finished (%d of %d)" % (i+1, len(self.paths)))
-		self.stop_button.hide()
-		self.open_folder_button.show()
+                        self.open_folder_button.show()
+                        self.progressbar.set_text("Stopped . Converted %d of %d file(s)" % (i, len(self.paths)))                        
+                        break
+                if not self.stop:
+                    self.progressbar.set_text("Finished (%d of %d)" % (i+1, len(self.paths)))
+                self.stop_button.hide()
+                self.open_folder_button.show()
                 self.button_box.show_all()
             thread.start_new_thread(task, ())
         chooser.destroy()
@@ -167,7 +170,7 @@ class Converter(ChildTopWindow):
             acodec = "libfaac"
         elif format == "wav":
             acodec = "pcm_s16le"
-            
+        
         list = ["ffmpeg", "-i", path, "-acodec", acodec, "-ac", channels, "-ab", bitrate, "-ar", samp_rate, '-y', new_path]
         
         if format == "wav":
@@ -181,7 +184,7 @@ class Converter(ChildTopWindow):
         self.ffmpeg.kill()
         self.stop = True
         self.open_folder_button.show()
-
+                
     def fill_form(self, paths):
         self.paths = []
         self.area.buffer.delete(self.area.buffer.get_start_iter(), self.area.buffer.get_end_iter())
