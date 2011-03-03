@@ -10,8 +10,10 @@ import re
 import gtk
 import thread
 import logging
+import time
 
 from subprocess import Popen
+from foobnix.fc.fc_helper import CONFIG_DIR
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.file_utils import open_in_filemanager
@@ -87,12 +89,12 @@ class Converter(ChildTopWindow):
         self.stop_button.set_size_request(100, 30)
         self.stop_button.connect("clicked", self.on_stop)
         
-	self.open_folder_button = gtk.Button(_("Show files"))
-	self.open_folder_button.connect('released', self.open_in_fm)
+        self.open_folder_button = gtk.Button(_("Show files"))
+        self.open_folder_button.connect('released', self.open_in_fm)
         
-	self.progress_box = gtk.HBox()
+        self.progress_box = gtk.HBox()
         self.progress_box.pack_end(self.open_folder_button, False)
-	self.progress_box.pack_end(self.stop_button, False)
+        self.progress_box.pack_end(self.stop_button, False)
         self.progress_box.pack_end(self.progressbar, True)
         
 
@@ -195,10 +197,10 @@ class Converter(ChildTopWindow):
      
     def warning(self):
         dialog = gtk.Dialog(_("Warning!!!"))
-	ok_button = dialog.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
-	cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
-	cancel_button.grab_default()      
-	label = gtk.Label(_("So file(s)  already exist(s) and will be overwritten.\nDo you wish to continue?"))
+        ok_button = dialog.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
+        cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+        cancel_button.grab_default()      
+        label = gtk.Label(_("So file(s)  already exist(s) and will be overwritten.\nDo you wish to continue?"))
         image = gtk.image_new_from_stock(gtk.STOCK_DIALOG_WARNING, gtk.ICON_SIZE_LARGE_TOOLBAR)
         hbox = gtk.HBox(False, 10)
         hbox.pack_start(image)
@@ -224,11 +226,11 @@ class Converter(ChildTopWindow):
             self.hertz_combo.append_text(h)
     
     def clear_combos(self, *combo_list):
-	if not combo_list:
-	    return
-	for combo in combo_list:
+        if not combo_list:
+            return
+        for combo in combo_list:
             for i in self.bitrate_list: #the longest list
-                combo.remove_text(0) 
+                combo.remove_text(0)
    
     def on_change_format(self, a):
         bitrate_list = self.bitrate_list[:]
@@ -252,7 +254,7 @@ class Converter(ChildTopWindow):
             hertz_list.remove("  96000 Hz")
             hertz_list.remove("  44100 Hz")
             hertz_list.remove("  22050 Hz")
-	    hertz_index = 0
+            hertz_index = 0
         elif self.format_combo.get_active_text() == "  ac3":    
             hertz_list.remove("  96000 Hz")
         elif self.format_combo.get_active_text() == "  m4a":    
@@ -260,23 +262,24 @@ class Converter(ChildTopWindow):
                
         self.remake_combos(bitrate_list, channels_list, hertz_list)
         
-	self.bitrate_combo.set_active(bitrate_index)
+        self.bitrate_combo.set_active(bitrate_index)
         self.channels_combo.set_active(channels_index)
         self.hertz_combo.set_active(hertz_index)
 
-	if self.format_combo.get_active() == 0:
-	    self.clear_combos(self.bitrate_combo, self.channels_combo, self.hertz_combo)
+        if self.format_combo.get_active() == 0:
+            self.clear_combos(self.bitrate_combo, self.channels_combo, self.hertz_combo)
             self.convert_button.set_sensitive(False)
-	    self.bitrate_combo.set_sensitive(False)
+            self.bitrate_combo.set_sensitive(False)
             self.channels_combo.set_sensitive(False)
             self.hertz_combo.set_sensitive(False)
         else:
-	    self.convert_button.set_sensitive(True)            
-	    if self.format_combo.get_active_text() == "  wav":    
-		self.clear_combos(self.bitrate_combo)           	
-		self.bitrate_combo.set_sensitive(False)
-	    else:
-		self.bitrate_combo.set_sensitive(True)
+            self.convert_button.set_sensitive(True)            
+	    
+        if self.format_combo.get_active_text() == "  wav":    
+            self.clear_combos(self.bitrate_combo)           	
+            self.bitrate_combo.set_sensitive(False)
+        else:
+            self.bitrate_combo.set_sensitive(True)
             self.channels_combo.set_sensitive(True)
             self.hertz_combo.set_sensitive(True)
         
@@ -294,10 +297,53 @@ def combobox_constr(list=None):
     return combobox
 
 def convert_files(paths):
-    if not globals().has_key("converter"):
-        global converter
-        converter = Converter()
-    converter.show_all()
-    converter.progress_box.hide_all()
-    converter.fill_form(paths)
-    converter.format_combo.set_active(0)
+    if 'ffmpeg_foobnix' in os.listdir(CONFIG_DIR):
+        if not globals().has_key("converter"):
+            global converter
+            converter = Converter()
+        converter.show_all()
+        converter.progress_box.hide_all()
+        converter.fill_form(paths)
+        converter.format_combo.set_active(0)
+    else:
+        dialog = gtk.Dialog(_("Attention"))
+        area = ScrolledText()
+        area.buffer.set_text(_("Converter needs specially binary module for work. You can \ndownload and install it automatically (click \"Install\") \
+or download it \nfrom foobnix.com and place to config folder\n\
+(~/.config/foobnix) manually"))
+        ok_button = dialog.add_button(_("Install"), gtk.RESPONSE_OK)
+        cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+        ok_button.grab_default()      
+        prog_bar = gtk.ProgressBar()
+        dialog.vbox.pack_start(area.scroll)
+        dialog.vbox.pack_start(prog_bar, False)
+        dialog.set_icon_from_file(LOGO)
+        dialog.set_default_size(400, 150)
+        dialog.show_all()
+        prog_bar.hide()
+        if dialog.run() == gtk.RESPONSE_OK:
+            prog_bar.show()
+            def on_close(*a):
+                dialog.destroy()
+                return
+            cancel_button.connect("released", on_close)
+            import urllib2
+            remote_file = urllib2.urlopen("https://launchpad.net/~foobnix-player/+archive/foobnix/+buildjob/2292383/+files/foobnix_0.2.5-7m_i386.deb")
+            size = float(remote_file.info()['Content-Length'])
+            def task():
+                with open(os.path.join(CONFIG_DIR, 'ffmpeg_foobnix'),'wb') as local_file:
+                    for byte in xrange(int(size/100)):
+                        local_file.write(remote_file.read(1000))
+                        got = os.path.getsize(os.path.join(CONFIG_DIR, 'ffmpeg_foobnix'))
+                        prog_bar.set_fraction(got/size)
+                        prog_bar.set_text("Downloaded  %.2f%% of %.2fMb" % (float(got)/1000000, size/1000000))
+                convert_files(paths)
+                dialog.destroy()
+                    
+            thread.start_new_thread(task, ())
+        else:
+            dialog.destroy()
+           
+            
+        
+            
