@@ -157,20 +157,21 @@ class PlaylistTreeControl(CommonTreeControl):
                 menu = Popup()
                 menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
                 menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
+                menu.add_item(_('Download To...'), gtk.STOCK_ADD, self.controls.dm.append_tasks_with_dialog, self.get_all_selected_beans())
                 menu.add_separator()
                 paths = [bean.path for bean in beans]
                 if paths[0]:
-                    menu.add_item(_('Edit tags'), gtk.STOCK_EDIT, edit_tags, (self.controls, paths))
-                    menu.add_item(_('Convert files'), gtk.STOCK_CONVERT, convert_files, paths)
+                    menu.add_item(_('Edit Tags'), gtk.STOCK_EDIT, edit_tags, (self.controls, paths))
+                    menu.add_item(_('Format Converter'), gtk.STOCK_CONVERT, convert_files, paths)
                 text = self.get_selected_bean().text
-                menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
+                menu.add_item(_('Copy To Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
                 menu.add_separator()
                 menu.add_item(_('Copy №-Title-Time'), gtk.STOCK_COPY, self.copy_info_to_clipboard)
                 menu.add_item(_('Copy Artist-Title-Album'), gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
                 menu.add_separator()
-                menu.add_item(_('Love this track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
+                menu.add_item(_('Love Lhis Track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
                 menu.add_separator()
                 if paths[0]:
-                    menu.add_item(_("Open in file manager"), None, open_in_filemanager, paths[0])
+                    menu.add_item(_("Open In File Manager"), None, open_in_filemanager, paths[0])
                 menu.show(e)
             

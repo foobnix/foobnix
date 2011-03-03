@@ -56,7 +56,10 @@ class Dowloader(threading.Thread):
         if not os.path.isdir(path):
             os.makedirs(path)
             
-        to_file = get_bean_download_path(bean, FC().online_save_to_folder)
+        if bean.save_to:
+            to_file = os.path.join(bean.save_to, bean.text + ".mp3") 
+        else:            
+            to_file = get_bean_download_path(bean, FC().online_save_to_folder)
         
         if not os.path.exists(os.path.dirname(to_file)):
                 os.makedirs(os.path.dirname(to_file))        

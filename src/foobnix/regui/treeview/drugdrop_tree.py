@@ -393,6 +393,8 @@ class DrugDropTree(gtk.TreeView):
             if model.path and model.path.lower().endswith(".iso.wv"):
                 logging.debug("begin normalize iso.wv" + str(model.path))
                 all = get_beans_from_iso_wv(model.path)
+                if not all:
+                    break
                 for inner in all:
                     normalized.append(inner)
             else:

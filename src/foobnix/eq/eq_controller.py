@@ -9,6 +9,7 @@ from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model.eq_model import EqModel
 from foobnix.fc.fc import FC
+import logging
 
 class EqController(FControl, LoadSave):
     def __init__(self, controls):
@@ -35,6 +36,7 @@ class EqController(FControl, LoadSave):
         self.controls.media_engine.set_all_bands(pre, self.eq_view.get_active_values()[1:])
     
     def on_load(self):
+        logging.debug("FC().eq_presets %s" % FC().eq_presets)
         if FC().eq_presets:
             self.eq_view.append_all_models(FC().eq_presets)
         else:
@@ -42,7 +44,14 @@ class EqController(FControl, LoadSave):
         
         self.eq_view.default_models = self.default_models()
         self.eq_view.set_active(FC().eq_presets_default)
+        
+        logging.debug("default_models %s" % self.default_models())
+        logging.debug("FC().eq_presets_default %s" % FC().eq_presets_default)
+        
+        
         self.eq_view.on_load()
+        
+        
         
     
     def on_save(self):

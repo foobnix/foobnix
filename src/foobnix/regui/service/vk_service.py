@@ -99,7 +99,11 @@ class VKService:
         url_parse = urlparse(url)
         
         if url_parse.fragment:
-            params = dict([part.split('=') for part in url_parse.fragment.split('&')])
+            logging.debug("url_parse.fragment %s" % url_parse.fragment)
+            fragmensts = url_parse.fragment.split('&')
+            logging.debug("fragmensts %s" % fragmensts)
+            params = dict([part.split('=') for part in fragmensts if part.find("=")>=0])
+            logging.debug("params%s" % params)
             result = self.get(url, params)
         else:
             result = self.get(url)
@@ -109,18 +113,26 @@ class VKService:
         except:
             result = result
         
+        #print result
+        
         reg_all = "([^{<}]*)"
-        result_url = re.findall(ur"http:([\\/.0-9_A-Z]*)", result, re.IGNORECASE)
+        result_url = re.findall(ur"value=\"http:([\\/.0-9_A-Z]*)", result, re.IGNORECASE)
         result_artist = re.findall(u"q]=" + reg_all + "'", result, re.IGNORECASE | re.UNICODE)
         result_title = re.findall('"title([0-9_]*)">' + reg_all + '<', result, re.IGNORECASE | re.UNICODE)
          
-        result_time = re.findall('duration">' + reg_all, result, re.IGNORECASE | re.UNICODE)
+        result_time = re.findall('duration fl_r">' + reg_all, result, re.IGNORECASE | re.UNICODE)
         result_lyr = re.findall(ur"showLyrics" + reg_all, result, re.IGNORECASE | re.UNICODE)
         logging.info("lyr:::" + str(result_lyr))
         songs = []
         j = 0
+        logging.debug("%s -%s" % ( result_time, len(result_time)))
+        logging.debug("%s -%s" % ( result_artist, len(result_url)))
+        logging.debug("%s -%s" % (result_artist, len(result_artist)))
         for i, artist in enumerate(result_artist):
-            path = "http:" + result_url[i + 3].replace("\\/", "/")
+            if i >= 50:
+                break
+            #print result_url
+            path = "http:" + result_url[i].replace("\\/", "/")
             
             if i>=len(result_title):
                 break; 
@@ -130,13 +142,19 @@ class VKService:
                     title = result_lyr[j]
                     title = title[title.find(";'>") + 3:]
                     j += 1
+            a_index =artist.find("&c[section]=audio")
+            if a_index>=0:
+                artist = artist[:a_index]
             artist = html_decode(artist)
             #song = VKSong(path, artist, title, result_time[i]);
             if "\">" in title:
                 title = title[title.find("\">") + 2:]
             text = artist + " - " + title
-            #print text
-            song = FModel(text, path).add_artist(artist).add_title(title).add_time(result_time[i])
+            
+            rtime = result_time[i]
+            
+            
+            song = FModel(text, path).add_artist(artist).add_title(title).add_time(rtime)
             songs.append(song)
         logging.info(len(songs))
         return songs 

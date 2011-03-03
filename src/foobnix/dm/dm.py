@@ -18,6 +18,8 @@ from foobnix.helpers.window import ChildTopWindow
 from foobnix.helpers.toolbar import MyToolbar
 import logging
 from foobnix.preferences.configs import CONFIG_OTHER
+from foobnix.helpers.dialog_entry import directory_chooser_dialog
+from foobnix.fc.fc import FC
 
 class DMControls(MyToolbar):
     def __init__(self, controls, dm_tree): 
@@ -92,19 +94,27 @@ class DM(ChildTopWindow):
     def show(self):
         self.show_all()
     
-    def append_task(self, bean):
+    def append_task(self, bean, save_to=None):
         """download only remote files"""
         if bean.path and not bean.path.startswith("http"):
             return 
           
         bean.status = DOWNLOAD_STATUS_ACTIVE
+        if save_to:
+            bean.save_to = save_to
+            
         self.dm_list.append(bean)
         logging.debug("Begin download %s" % bean)
     
-    def append_tasks(self, beans):
+    def append_tasks_with_dialog(self, beans):
+        paths = directory_chooser_dialog(_("Choose Folder"), FC().last_dir)
+        if paths:
+            self.append_tasks(beans, paths[0])
+    
+    def append_tasks(self, beans, save_to=None):
         self.show()
         for bean in beans:
-            self.append_task(bean)
+            self.append_task(bean, save_to)
     
     def dowloader(self, dm_list):
         semaphore = threading.Semaphore(5)

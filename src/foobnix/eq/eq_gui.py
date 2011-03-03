@@ -14,6 +14,7 @@ from foobnix.helpers.menu import Popup
 from foobnix.helpers.my_widgets import ImageButton
 import copy
 from foobnix.helpers.window import ChildTopWindow
+import logging
 
 
 def label(): 
@@ -93,21 +94,32 @@ class EqWindow(ChildTopWindow, FControl):
     
     def on_save(self, *args):
         text = self.combo.get_active_text()
+        
+        logging.debug("text %s "%text)
+        
         find = False
         text_id = None 
         for model in self.models:
             if model.name == text:               
-                model.set_values(self.get_active_values()[1:])
+                values = self.get_active_values()[1:]
+                logging.debug("values %s " % values)
+                model.set_values(values)
+                model.set_preamp(self.get_active_values()[0])
                 find = True
                 text_id = model.id
+                logging.debug("find %s "%model.id)
                 break
         
         if not find:
-            self.models.append(EqModel(text, text, 0, self.get_active_values()[1:]))
+            self.models.append(EqModel(text, text, self.get_active_values()[0], self.get_active_values()[1:]))
             self.combo.append_text(text)
             text_id = text
-        
-        FC().eq_presets_default = text_id   
+            logging.debug("not find %s "%text)
+            
+        FC().eq_presets_default =  text_id
+        FC().eq_presets =  self.models
+        logging.debug("SAVE %s "%text_id)   
+        FC().save()
         
     def get_active_values(self):
         result = []
