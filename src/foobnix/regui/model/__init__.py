@@ -4,35 +4,35 @@ class FTreeModel():
    
     def __init__(self):
         
-        self.text = 0 , str        
-        self.visible = 1 , bool        
-        self.font = 2 , str
-        self.play_icon = 3 , str
-        self.time = 4 , str
-        self.path = 5 , str
-        self.level = 6 , str
-        self.tracknumber = 7 , str        
-        self.is_file = 8 , bool
+        self.text = 0 , gobject.TYPE_STRING        
+        self.visible = 1 , gobject.TYPE_BOOLEAN    
+        self.font = 2 , gobject.TYPE_STRING
+        self.play_icon = 3 , gobject.TYPE_STRING
+        self.time = 4 , gobject.TYPE_STRING
+        self.path = 5 , gobject.TYPE_STRING
+        self.level = 6 , gobject.TYPE_STRING
+        self.tracknumber = 7 , gobject.TYPE_STRING        
+        self.is_file = 8 , gobject.TYPE_BOOLEAN
         
-        self.artist = 9 , str
-        self.title = 10 , str
-        self.image = 11 , str
-        self.album = 12 , str
-        self.genre = 13 , str
-        self.year = 14 , str
-        self.info = 15 , str
+        self.artist = 9 , gobject.TYPE_STRING
+        self.title = 10 , gobject.TYPE_STRING
+        self.image = 11 , gobject.TYPE_STRING
+        self.album = 12 , gobject.TYPE_STRING
+        self.genre = 13 , gobject.TYPE_STRING
+        self.year = 14 , gobject.TYPE_STRING
+        self.info = 15 , gobject.TYPE_STRING
         
-        self.start_sec = 16 , str
-        self.duration_sec = 17 , str
+        self.start_sec = 16 , gobject.TYPE_STRING
+        self.duration_sec = 17 , gobject.TYPE_STRING
         
-        self.UUID = 18 , str
-        self.parent_level = 19 , str
-        self.type = 20 , str
-        self.status = 21, str
-        self.progress = 22, str
-        self.save_to = 23, str
-        self.persent = 24, int
-        self.size = 25, str
+        self.UUID = 18 , gobject.TYPE_STRING
+        self.parent_level = 19 , gobject.TYPE_STRING
+        self.type = 20 , gobject.TYPE_STRING
+        self.status = 21, gobject.TYPE_STRING
+        self.progress = 22, gobject.TYPE_STRING
+        self.save_to = 23, gobject.TYPE_STRING
+        self.persent = 24, gobject.TYPE_INT
+        self.size = 25, gobject.TYPE_STRING
     
     def cut(self):
     
