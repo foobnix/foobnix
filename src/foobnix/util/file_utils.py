@@ -132,6 +132,25 @@ def get_file_extension(fileName):
 def file_extension(file_name):
     return get_file_extension(file_name)
 
+
+def get_any_supported_audio_file(full_file):    
+    exists = os.path.exists(full_file)
+    if exists:
+        return  full_file
+    
+    """try to find other source"""
+    ext = get_file_extension(full_file)
+    nor = full_file[:-len(ext)]
+    logging.info("Normalized path" + nor)
+    
+    for support_ext in FC().audio_formats:
+        try_name = nor + support_ext
+        if os.path.exists(try_name):
+            return try_name
+                
+    return None
+
+
 def get_file_path_from_dnd_dropped_uri(uri):
     path = ""
     if uri.startswith('file:\\\\\\'): # windows
