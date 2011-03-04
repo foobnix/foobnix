@@ -11,6 +11,7 @@ import gtk
 import thread
 import logging
 import time
+import gobject
 
 from subprocess import Popen
 from foobnix.fc.fc_helper import CONFIG_DIR
@@ -323,27 +324,30 @@ or download it \nfrom foobnix.com and place to config folder\n\
         prog_bar.hide()
         if dialog.run() == gtk.RESPONSE_OK:
             prog_bar.show()
+            import urllib2
+            remote_file = urllib2.urlopen("http://foobnix.googlecode.com/files/ffmpeg_foobnix")
+            size = float(remote_file.info()['Content-Length'])
+            ffmpeg_path = os.path.join(CONFIG_DIR, 'ffmpeg_foobnix')
             def on_close(*a):
+                if os.path.isfile(ffmpeg_path) and os.path.getsize(ffmpeg_path) < size:
+                    os.remove(ffmpeg_path)
                 dialog.destroy()
                 return
             cancel_button.connect("released", on_close)
-            import urllib2
-            remote_file = urllib2.urlopen("https://launchpad.net/~foobnix-player/+archive/foobnix/+buildjob/2292383/+files/foobnix_0.2.5-7m_i386.deb")
-            size = float(remote_file.info()['Content-Length'])
             def task():
-                with open(os.path.join(CONFIG_DIR, 'ffmpeg_foobnix'),'wb') as local_file:
+                with open(ffmpeg_path,'wb') as local_file:
                     for byte in xrange(int(size/100)):
                         local_file.write(remote_file.read(1000))
-                        got = os.path.getsize(os.path.join(CONFIG_DIR, 'ffmpeg_foobnix'))
+                        got = os.path.getsize(ffmpeg_path)
                         prog_bar.set_fraction(got/size)
-                        prog_bar.set_text("Downloaded  %.2f%% of %.2fMb" % (float(got)/1000000, size/1000000))
-                convert_files(paths)
+                        prog_bar.set_text("Downloaded  %.2f of %.2fMb" % (float(got)/1024/1024, size/1024/1024))
+                time.sleep(1)
+                gobject.idle_add(convert_files, paths)
                 dialog.destroy()
-                    
+
             thread.start_new_thread(task, ())
         else:
             dialog.destroy()
-           
-            
+          
         
             
