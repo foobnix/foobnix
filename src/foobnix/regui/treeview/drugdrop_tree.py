@@ -10,11 +10,11 @@ import os.path
 import logging
 
 from foobnix.regui.model import FModel, FTreeModel
-from foobnix.util.id3_util import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.m3u_utils import m3u_reader
 from foobnix.util.key_utils import is_key_control
 import gobject
+from foobnix.util.id3_file import update_id3_wind_filtering
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1

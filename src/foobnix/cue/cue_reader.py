@@ -18,6 +18,8 @@ from foobnix.util import file_utils
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
+from foobnix.util.file_utils import get_any_supported_audio_file
+from foobnix.util.id3_util import udpate_id3
 
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
@@ -107,6 +109,10 @@ class CueReader():
             track.duration = duration
             if not track.path:
                 track.path = self.cue_file.file
+            
+            track.path = get_any_supported_audio_file(track.path)
+                
+            
             duration_tracks.append(track)
 
         self.cue_file.tracks = duration_tracks
@@ -129,6 +135,10 @@ class CueReader():
             bean.time = convert_seconds_to_text(track.duration)
             bean.is_file = True
             bean.info = foobnix.util.id3_util.normalized_info(get_mutagen_audio(bean.path).info, bean)
+            
+            if not bean.title or not bean.artist:
+                bean = udpate_id3(bean)
+            
             beans.append(bean)
         
         return beans
@@ -192,6 +202,11 @@ class CueReader():
             if line.startswith(FILE):
                 self.files_count += 1
                 file = self.get_line_value(line)
+                if "/" in file:
+                    file = file[file.rfind("/")+1:]
+                if "\\" in file:
+                    file = file[file.rfind("\\")+1:]
+                    
                 dir = os.path.dirname(self.cue_path)
                 full_file = os.path.join(dir, file)
                 logging.debug("CUE source" + full_file)
