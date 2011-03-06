@@ -155,7 +155,10 @@ class Converter(ChildTopWindow):
         
     def convert(self, path, new_path, format):
         bitrate_text = self.bitrate_combo.get_active_text()
-        bitrate = re.search('^([0-9]{1,5})', bitrate_text.strip()).group() + 'k'
+        if bitrate_text:
+            bitrate = re.search('^([0-9]{1,5})', bitrate_text.strip()).group() + 'k'
+        else:
+            bitrate = ""
         channels_text = self.channels_combo.get_active_text()
         channels = re.search('^([0-9]{1,5})', channels_text.strip()).group()                 
         hertz_text = self.hertz_combo.get_active_text()
@@ -174,7 +177,7 @@ class Converter(ChildTopWindow):
         elif format == "wav":
             acodec = "pcm_s16le"
         
-        list = ["ffmpeg", "-i", path, "-acodec", acodec, "-ac", channels, "-ab", bitrate, "-ar", samp_rate, '-y', new_path]
+        list = ["~/.config/foobnix/ffmpeg", "-i", path, "-acodec", acodec, "-ac", channels, "-ab", bitrate, "-ar", samp_rate, '-y', new_path]
         
         if format == "wav":
             list.remove("-ab")

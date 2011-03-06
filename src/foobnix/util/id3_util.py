@@ -6,7 +6,7 @@ Created on 24 нояб. 2010
 '''
 import os
 import logging
-
+import chardet
 from mutagen.mp4 import MP4
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
@@ -14,37 +14,44 @@ from foobnix.util.bean_utils import update_bean_from_normalized_text
 from foobnix.util.file_utils import file_extension, get_file_extension
 from foobnix.fc.fc import FC
 from foobnix.util.audio import get_mutagen_audio
+from chardet import detect
 
+RUS_ALPHABITE = "абвгдеёжзиклмнопрстуфхцчшщъыьэюя"
 
 def decode_cp866(text):
     try:
-        decode_text = text.decode("cp866")
-        if decode_text.find(u"├") >= 0 :
-            #LOG.warn("File tags encoding is very old cp866")
-            text = decode_text.replace(
-                u"\u252c", u'ё').replace(
-                u"├", "").replace(
-                u"░", u"р").replace(
-                u"▒", u"с").replace(
-                u"▓", u"т").replace(
-                u"│", u"у").replace(
-                u"┤", u"ф").replace(
-                u"╡", u"х").replace(
-                u"╢", u"ц").replace(
-                u"╖", u"ч").replace(
-                u"╕", u"ш").replace(
-                u"╣", u"щ").replace(
-                u"║", u"ъ").replace(
-                u"╗", u"ы").replace(
-                u"╝", u"ь").replace(
-                u"╜", u"э").replace(
-                u"╛", u"ю").replace(
-                u"┐", u"я")
-            #fix ёш to ё
-            text = text.replace(u'\u0451\u0448', u'\u0451')
+        #text = unicode(text, 'utf-8')
+        decode_text = text.decode('cp866')
+        for i in decode_text:
+            if i.lower() in RUS_ALPHABITE:
+                if u"├" in decode_text:
+                #LOG.warn("File tags encoding is very old cp866")
+                    decode_text = decode_text.replace(
+                        u"\u252c", u'ё').replace(
+                        u"├", "").replace(
+                        u"░", u"р").replace(
+                        u"▒", u"с").replace(
+                        u"▓", u"т").replace(
+                        u"│", u"у").replace(
+                        u"┤", u"ф").replace(
+                        u"╡", u"х").replace(
+                        u"╢", u"ц").replace(
+                        u"╖", u"ч").replace(
+                        u"╕", u"ш").replace(
+                        u"╣", u"щ").replace(
+                        u"║", u"ъ").replace(
+                        u"╗", u"ы").replace(
+                        u"╝", u"ь").replace(
+                        u"╜", u"э").replace(
+                        u"╛", u"ю").replace(
+                        u"┐", u"я")
+                    decode_text = decode_text.replace(u'\u0451\u0448', u'\u0451')
+                return decode_text
     except:
         pass
     return text
+                
+    
 
 def udpate_id3_for_beans(beans):
     for bean in beans:
