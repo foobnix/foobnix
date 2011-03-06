@@ -5,8 +5,9 @@ Created on 24 нояб. 2010
 @author: ivan
 '''
 import os
+import re
 import logging
-import chardet
+
 from mutagen.mp4 import MP4
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
@@ -14,18 +15,16 @@ from foobnix.util.bean_utils import update_bean_from_normalized_text
 from foobnix.util.file_utils import file_extension, get_file_extension
 from foobnix.fc.fc import FC
 from foobnix.util.audio import get_mutagen_audio
-from chardet import detect
 
-RUS_ALPHABITE = "абвгдеёжзиклмнопрстуфхцчшщъыьэюя"
+RUS_ALPHABITE = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 
 def decode_cp866(text):
     try:
-        #text = unicode(text, 'utf-8')
         decode_text = text.decode('cp866')
-        for i in decode_text:
-            if i.lower() in RUS_ALPHABITE:
-                if u"├" in decode_text:
-                #LOG.warn("File tags encoding is very old cp866")
+        if u"├" in decode_text:   
+            clear_text = re.sub(u"├.", "", decode_text)
+            for i in clear_text:
+                if i.lower() in RUS_ALPHABITE:
                     decode_text = decode_text.replace(
                         u"\u252c", u'ё').replace(
                         u"├", "").replace(
@@ -46,7 +45,7 @@ def decode_cp866(text):
                         u"╛", u"ю").replace(
                         u"┐", u"я")
                     decode_text = decode_text.replace(u'\u0451\u0448', u'\u0451')
-                return decode_text
+                    return decode_text
     except:
         pass
     return text
