@@ -8,9 +8,9 @@ Created on Jan 25, 2011
 import os
 import re
 import gtk
+import time
 import thread
 import logging
-import time
 import gobject
 
 from subprocess import Popen
@@ -177,10 +177,10 @@ class Converter(ChildTopWindow):
         elif format == "wav":
             acodec = "pcm_s16le"
         
-        list = ["~/.config/foobnix/ffmpeg", "-i", path, "-acodec", acodec, "-ac", channels, "-ab", bitrate, "-ar", samp_rate, '-y', new_path]
+        list = [os.path.join(CONFIG_DIR, "ffmpeg_foobnix"), "-i", path, "-acodec", acodec, "-ac", channels, "-ab", bitrate, "-ar", samp_rate, '-y', new_path]
         
         if format == "wav":
-            list.remove("-ab")
+            list.remove("-ab")  
             list.remove(bitrate)
         
         self.ffmpeg = Popen(list, universal_newlines=True)
@@ -312,9 +312,9 @@ def convert_files(paths):
     else:
         dialog = gtk.Dialog(_("Attention"))
         area = ScrolledText()
-        area.buffer.set_text(_("Converter needs specially binary module for work. You can \ndownload and install it automatically (click \"Install\") \
+        area.buffer.set_text(_("Converter needs specially compiled binary module for work. You can \ndownload and install it automatically (click \"Install\") \
 or download it \nfrom foobnix.com and place to config folder\n\
-(~/.config/foobnix) manually"))
+(~/.config/foobnix) manually "))
         ok_button = dialog.add_button(_("Install"), gtk.RESPONSE_OK)
         cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
         ok_button.grab_default()      
@@ -344,13 +344,14 @@ or download it \nfrom foobnix.com and place to config folder\n\
                         got = os.path.getsize(ffmpeg_path)
                         prog_bar.set_fraction(got/size)
                         prog_bar.set_text("Downloaded  %.2f of %.2fMb" % (float(got)/1024/1024, size/1024/1024))
-                time.sleep(1)
+                os.chmod(ffmpeg_path, 0777)
+                time.sleep(1) #for stability
                 gobject.idle_add(convert_files, paths)
                 dialog.destroy()
 
             thread.start_new_thread(task, ())
         else:
-            dialog.destroy()
+            dialog.destroy()    
           
         
             
