@@ -16,16 +16,14 @@ from foobnix.util.file_utils import file_extension, get_file_extension
 from foobnix.fc.fc import FC
 from foobnix.util.audio import get_mutagen_audio
 
-RUS_ALPHABITE = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
-
 def decode_cp866(text):
     try:
+        if not is_cp866(text):
+            return text
+        
         decode_text = text.decode('cp866')
         if u"├" in decode_text:   
-            clear_text = re.sub(u"├.", "", decode_text)
-            for i in clear_text:
-                if i.lower() in RUS_ALPHABITE:
-                    decode_text = decode_text.replace(
+            decode_text = decode_text.replace(
                         u"\u252c", u'ё').replace(
                         u"├", "").replace(
                         u"░", u"р").replace(
@@ -44,13 +42,22 @@ def decode_cp866(text):
                         u"╜", u"э").replace(
                         u"╛", u"ю").replace(
                         u"┐", u"я")
-                    decode_text = decode_text.replace(u'\u0451\u0448', u'\u0451')
-                    return decode_text
+            decode_text = decode_text.replace(u'\u0451\u0448', u'\u0451')
+        return decode_text
     except:
         pass
     return text
                 
+def is_cp866(text):
+    '''del figures, punctuation marks and unrecognized text (so as cp866)'''
+    only_alphabite = re.sub('[\d\W]', '', text)
     
+    '''del only figures and punctuation marks'''
+    without_punctuation = re.sub('[\d.,/_\-\^#$%&*()+=<>;:\'\"|]', '', text)
+    
+    """if unrecognized characters are more half of all 
+    alphabetic characters, very likely code text is cp866"""
+    return len(only_alphabite) <= len(without_punctuation)/2
 
 def udpate_id3_for_beans(beans):
     for bean in beans:
