@@ -4,25 +4,32 @@ Created on 25 сент. 2010
 
 @author: ivan
 '''
+
+import re
 import gtk
 import logging
+
+from foobnix.fc.fc import FC
 from foobnix.util import const
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release, \
-    is_rigth_click
 from foobnix.helpers.menu import Popup
+from foobnix.util.tag_util import edit_tags
+from foobnix.util.converter import convert_files
+from foobnix.util.audio import get_mutagen_audio
+from foobnix.util.file_utils import open_in_filemanager
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
-from foobnix.fc.fc import FC
-from foobnix.util.tag_util import edit_tags
-from foobnix.util.file_utils import open_in_filemanager
-from foobnix.util.converter import convert_files
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release, \
+    is_rigth_click
+
+
 
 class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
-        #self.set_headers_visible(True)
+        
         self.set_headers_visible(True)
         self.set_headers_clickable(True)
+        
         """Column icon"""
         icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         icon.set_fixed_width(5)
@@ -40,10 +47,13 @@ class PlaylistTreeControl(CommonTreeControl):
         
         num_button = num_label.get_parent().get_parent().get_parent()
         num_button.menu = Popup()
-        num_tags = gtk.CheckMenuItem(_("Numering by tags"))
-        num_order = gtk.CheckMenuItem(_("Numering by order"))
-        num_button.menu.append(num_tags)
-        num_button.menu.append(num_order)
+        self.num_order = gtk.RadioMenuItem(None, _("Numering by order"))
+        self.num_order.connect("button-press-event", self.on_toggled_num)
+        self.num_tags = gtk.RadioMenuItem(self.num_order, _("Numering by tags"))
+        self.num_tags.connect("button-press-event", self.on_toggled_num)
+        
+        num_button.menu.append(self.num_order)
+        num_button.menu.append(self.num_tags)
         num_button.connect("button-press-event", self.on_click_header)
         
         
@@ -75,6 +85,8 @@ class PlaylistTreeControl(CommonTreeControl):
         self.set_playlist_plain()
         
         self.connect("button-release-event", self.on_button_release)
+        
+        self.on_load()
     
     def set_playlist_tree(self):
         self.rebuild_as_tree()
@@ -183,7 +195,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 menu.add_item(_('Copy №-Title-Time'), gtk.STOCK_COPY, self.copy_info_to_clipboard)
                 menu.add_item(_('Copy Artist-Title-Album'), gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
                 menu.add_separator()
-                menu.add_item(_('Love Lhis Track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
+                menu.add_item(_('Love This Track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
                 menu.add_separator()
                 if paths[0]:
                     menu.add_item(_("Open In File Manager"), None, open_in_filemanager, paths[0])
@@ -192,4 +204,22 @@ class PlaylistTreeControl(CommonTreeControl):
     def on_click_header(self, w, e):
         if is_rigth_click(e):
             w.menu.show(e)
-        
+            
+    def on_toggled_num(self, *a):
+        FC().numbering_by_order = not FC().numbering_by_order
+        if FC().numbering_by_order:
+            self.rebuild_as_plain()
+            return
+        for row in self.model:
+            if row[self.is_file[0]]:
+                audio = get_mutagen_audio(row[self.path[0]])
+                if audio and audio.has_key('tracknumber'):
+                    row[self.tracknumber[0]] = re.search('\d*', audio['tracknumber'][0]).group()
+                if audio and audio.has_key('trkn'):
+                    row[self.tracknumber[0]] = re.search('\d*', audio["trkn"][0]).group()
+    
+    def on_load(self):
+        if FC().numbering_by_order:
+            self.num_order.set_active(True)
+        else:
+            self.num_tags.set_active(True)

@@ -9,19 +9,28 @@ import re
 import logging
 
 from mutagen.mp4 import MP4
+from foobnix.fc.fc import FC
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.bean_utils import update_bean_from_normalized_text
 from foobnix.util.file_utils import file_extension, get_file_extension
-from foobnix.fc.fc import FC
+
 from foobnix.util.audio import get_mutagen_audio
+
+RUS_ALPHABITE = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+
 
 def decode_cp866(text):
     try:
+        for i in text:
+            if i.lower() in RUS_ALPHABITE:
+                return text
+        
         if not is_cp866(text):
             return text
-        
+             
         decode_text = text.decode('cp866')
+        
         if u"├" in decode_text:   
             decode_text = decode_text.replace(
                         u"\u252c", u'ё').replace(
@@ -47,7 +56,7 @@ def decode_cp866(text):
     except:
         pass
     return text
-                
+
 def is_cp866(text):
     '''del figures, punctuation marks and unrecognized text (so as cp866)'''
     only_alphabite = re.sub('[\d\W]', '', text)
@@ -81,13 +90,16 @@ def udpate_id3(bean):
                 if audio.has_key('\xa9ART'): bean.artist = audio["\xa9ART"][0]
                 if audio.has_key('\xa9nam'): bean.title = audio["\xa9nam"][0]
                 if audio.has_key('\xa9alb'): bean.album = audio["\xa9alb"][0]
+                if audio.has_key('trkn'): 
+                    if FC().numbering_by_order:
+                        bean.tracknumber = audio['trkn'][0]
             else:
                 if audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])
                 if audio.has_key('title'): bean.title = decode_cp866(audio["title"][0])
                 if audio.has_key('album'): bean.album = decode_cp866(audio["album"][0])
-        #if audio and audio.has_key('tracknumber'): bean.tracknumber = audio["tracknumber"][0]
-        #else: 
-            #if audio and not audio.has_key('tracknumber'): 
+                if audio.has_key('tracknumber'): 
+                    if FC().numbering_by_order:
+                        bean.tracknumber = audio["tracknumber"][0]   
         
         duration_sec = bean.duration_sec
         
