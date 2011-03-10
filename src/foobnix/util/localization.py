@@ -9,5 +9,7 @@ import gettext
 def foobnix_localization():
     APP_NAME = "foobnix"
     gettext.install(APP_NAME, unicode=True)
+    gettext.bindtextdomain(APP_NAME, "share/locale")
     gettext.textdomain(APP_NAME)
+     
 
