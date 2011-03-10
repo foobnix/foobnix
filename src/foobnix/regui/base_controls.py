@@ -658,13 +658,18 @@ class BaseFoobnixControls():
         """load others"""
         self.main_window.show()
         self.movie_window.hide_all()
-        thread.start_new_thread(self.check_version, ())
         self.info_panel.hide()        
         self.change_backgound()
         self.search_progress.stop()
         
         """base layout"""
         self.layout.on_load()
+        
+        """check for new version"""
+        if os.name == 'nt':
+            self.check_version()
+        else:
+            thread.start_new_thread(self.check_version, ())
         
     
     
