@@ -15,6 +15,7 @@ from foobnix.util.m3u_utils import m3u_reader
 from foobnix.util.key_utils import is_key_control
 import gobject
 from foobnix.util.id3_file import update_id3_wind_filtering
+from foobnix.fc.fc import FC
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -404,7 +405,7 @@ class DrugDropTree(gtk.TreeView):
         counter = 0
         for bean in beans:
             if bean.path and not bean.path.lower().endswith(".cue"):                                        
-                if bean.is_file:
+                if bean.is_file and FC().numbering_by_order:
                     counter += 1
                     bean.tracknumber = counter
                 else: 
