@@ -25,20 +25,29 @@ data_files = [
 ]
 
 
+MO_DIR = "../dist/"
+if os.path.exists(MO_DIR):
+        shutil.rmtree(MO_DIR)
+
+
 if os.name != 'nt':
     LANGS = glob.glob("po/*.po")
-    if not os.path.exists("mo/"):
-        os.mkdir("mo/")
+    if not os.path.exists(MO_DIR):
+        os.mkdir(MO_DIR)
     for lang in LANGS:
         lang = lang.replace(".po", "")
         lang = lang.replace("po/", "")
+        
+        if not os.path.exists(MO_DIR+'share/locale/%s/LC_MESSAGES'% lang):
+            os.makedirs(MO_DIR+'share/locale/%s/LC_MESSAGES'% lang)
+        
+        mofile = MO_DIR+'share/locale/%s/LC_MESSAGES/foobnix.mo'% lang
         pofile = "po/" + lang + ".po"
-        mofile = "mo/" + lang + "/foobnix.mo"
-        if not os.path.exists("mo/" + lang + "/"):
-            os.mkdir("mo/" + lang + "/")
+        
         print "generating", mofile    
         os.system("msgfmt %s -o %s" % (pofile, mofile))
-        data_files.append(('share/locale/%s/LC_MESSAGES' % lang, ['mo/%s/foobnix.mo' % lang]))
+        data_files.append(('share/locale/%s/LC_MESSAGES' % lang, [mofile]))
+        
         #data_files.append(('/usr/share/locale/%s/LC_MESSAGES' % lang, ['mo/%s/foobnix.mo' % lang]))
     
     version = file("foobnix/version.py", "wt")
@@ -118,7 +127,5 @@ setup(name='foobnix',
 
 if os.name != 'nt':    
     os.remove("foobnix/foobnix")
-    if os.path.exists("mo"):
-        shutil.rmtree("mo")
     if os.path.exists("build"):
         shutil.rmtree("build")
