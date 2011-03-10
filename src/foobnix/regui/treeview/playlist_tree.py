@@ -22,17 +22,31 @@ class PlaylistTreeControl(CommonTreeControl):
         CommonTreeControl.__init__(self, controls)
         #self.set_headers_visible(True)
         self.set_headers_visible(True)
+        self.set_headers_clickable(True)
         """Column icon"""
-        self.icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
-        self.icon.set_fixed_width(5)
-        self.icon.set_min_width(5)
-        self.append_column(self.icon)
+        icon = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
+        icon.set_fixed_width(5)
+        icon.set_min_width(5)
+        self.append_column(icon)
         
         """track number"""
         tracknumber = gtk.TreeViewColumn("№", gtk.CellRendererText(), text=self.tracknumber[0])
-        #tracknumber.set_title(_("№"))
+        tracknumber.set_clickable(True)
+        num_label = gtk.Label("№")
+        num_label.show()
+        tracknumber.set_widget(num_label)
+        
         self.append_column(tracknumber)
-
+        
+        num_button = num_label.get_parent().get_parent().get_parent()
+        num_button.menu = Popup()
+        num_tags = gtk.CheckMenuItem(_("Numering by tags"))
+        num_order = gtk.CheckMenuItem(_("Numering by order"))
+        num_button.menu.append(num_tags)
+        num_button.menu.append(num_order)
+        num_button.connect("button-press-event", self.on_click_header)
+        
+        
         """column artist title"""
         description = gtk.TreeViewColumn('Track', gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         #description.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
@@ -61,7 +75,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.set_playlist_plain()
         
         self.connect("button-release-event", self.on_button_release)
-                     
+    
     def set_playlist_tree(self):
         self.rebuild_as_tree()
         
@@ -175,3 +189,7 @@ class PlaylistTreeControl(CommonTreeControl):
                     menu.add_item(_("Open In File Manager"), None, open_in_filemanager, paths[0])
                 menu.show(e)
             
+    def on_click_header(self, w, e):
+        if is_rigth_click(e):
+            w.menu.show(e)
+        
