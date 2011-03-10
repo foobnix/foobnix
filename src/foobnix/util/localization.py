@@ -11,6 +11,7 @@ import os
 def foobnix_localization():
     APP_NAME = "foobnix"
     gettext.textdomain(APP_NAME)
+    gettext.install(APP_NAME, unicode=True)
     
     if os.name == 'nt':
         try:
@@ -18,8 +19,7 @@ def foobnix_localization():
             lang.install(unicode=True)
         except:
             pass
-    else:
-        gettext.install(APP_NAME, unicode=True)
+    
         
     
     
