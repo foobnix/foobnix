@@ -31,71 +31,59 @@ class PlaylistTreeControl(CommonTreeControl):
         self.set_headers_clickable(True)
         self.set_reorderable(True)
         
+        self.menu = Popup()
+
         """Column icon"""
-        self.icon_col = gtk.TreeViewColumn("*", gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
+        self.icon_col = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         self.icon_col.set_fixed_width(5)
         self.icon_col.set_min_width(5)
         self.icon_col.label = gtk.Label("*")
-        self.icon_col.set_widget(self.icon_col.label)
-        self.append_column(self.icon_col)
+        self._append_column(self.icon_col)
         
         """track number"""
-        self.trkn_col = gtk.TreeViewColumn("№", gtk.CellRendererText(), text=self.tracknumber[0])
+        self.trkn_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.tracknumber[0])
         self.trkn_col.set_clickable(True)
         self.trkn_col.label = gtk.Label("№")
         self.trkn_col.label.show()
+        self.trkn_col.item = gtk.CheckMenuItem(_("Number"))
         self.trkn_col.set_widget(self.trkn_col.label)
-        
-        self.append_column(self.trkn_col)
-        
-        num_button = self.trkn_col.label.get_parent().get_parent().get_parent()
-        num_button.menu = Popup()
-        self.num_order = gtk.RadioMenuItem(None, _("Numering by order"))
-        self.num_order.connect("button-press-event", self.on_toggled_num)
-        self.num_tags = gtk.RadioMenuItem(self.num_order, _("Numering by tags"))
-        self.num_tags.connect("button-press-event", self.on_toggled_num)
-        
-        num_button.menu.append(self.num_order)
-        num_button.menu.append(self.num_tags)
-        num_button.connect("button-press-event", self.on_click_header)
+        self._append_column(self.trkn_col)
         
         """column composer (NOT USED)"""
-        self.comp_col = gtk.TreeViewColumn(_("Composer"), gtk.CellRendererText(), text=self.composer[0])
+        self.comp_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.composer[0])
         self.comp_col.set_resizable(True)
         self.comp_col.label = gtk.Label(_("Composer"))
-        self.append_column(self.comp_col)
+        self.comp_col.item = gtk.CheckMenuItem(_("Composer"))
+        self._append_column(self.comp_col)
         
         """column artist title"""
-        self.description_col = gtk.TreeViewColumn(_('Track'), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.description_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         #self.description_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.description_col.set_expand(True)
         self.description_col.set_resizable(True)
         self.description_col.label = gtk.Label(_("Track"))
-        self.description_col.set_widget(self.description_col.label)
-        self.append_column(self.description_col)
-        #des_button = num_label.get_parent().get_parent().get_parent()
-        #des_button.connect("button-press-event", self.on_click_header)
-        
-                
+        self.description_col.item = gtk.CheckMenuItem(_("Track"))
+        self._append_column(self.description_col)
+                        
         """column artist (NOT USED)"""
-        self.artist_col = gtk.TreeViewColumn('Artist', gtk.CellRendererText(), text=self.artist[0])
+        self.artist_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.artist[0])
         self.artist_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.artist_col.label = gtk.Label(_("Artist"))
-        self.append_column(self.artist_col)
-        
-        
-        
+        self.artist_col.item = gtk.CheckMenuItem(_("Artist"))
+        self._append_column(self.artist_col)
+               
         """column title (NOT USED)"""
-        self.title_col = gtk.TreeViewColumn('Title', gtk.CellRendererText(), text=self.title[0])
+        self.title_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.title[0])
         self.title_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.title_col.label = gtk.Label(_("Title"))
-        self.append_column(self.title_col)
+        self.title_col.item = gtk.CheckMenuItem(_("Title"))
+        self._append_column(self.title_col)
 
         """column time"""
-        self.time_col = gtk.TreeViewColumn('Time', gtk.CellRendererText(), text=self.time[0])
+        self.time_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.time[0])
         self.time_col.label = gtk.Label(_("Time"))
-        
-        self.append_column(self.time_col)
+        self.time_col.item = gtk.CheckMenuItem(_("Time"))
+        self._append_column(self.time_col)
 
         self.configure_send_drug()
         self.configure_recive_drug()
@@ -105,27 +93,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.connect("button-release-event", self.on_button_release)
         
         self.on_load()
-        self.menu_init()
         
-    def menu_init(self):
-        self.menu = Popup()
-        self.item_composer = gtk.CheckMenuItem(_("Composer"))
-        self.item_composer.connect("button-press-event", self.on_toggle, self.comp_col)
-        self.item_artist = gtk.CheckMenuItem(_("Artist"))
-        self.item_artist.connect("button-press-event", self.on_toggle, self.artist_col)
-        self.item_track = gtk.CheckMenuItem(_("Track"))
-        self.item_track.connect("button-press-event", self.on_toggle, self.description_col)
-        self.item_title = gtk.CheckMenuItem(_("Title"))
-        self.item_title.connect("button-press-event", self.on_toggle, self.title_col)
-        self.item_time = gtk.CheckMenuItem(_("Time"))
-        self.item_time.connect("button-press-event", self.on_toggle, self.time_col)
-        self.item_time = gtk.CheckMenuItem("№")
-        self.item_time.connect("button-press-event", self.on_toggle, self.trkn_col)
-        self.menu.append(self.item_composer)
-        self.menu.append(self.item_artist)
-        self.menu.append(self.item_track)
-        self.menu.append(self.item_title)
-    
     def set_playlist_tree(self):
         self.rebuild_as_tree()
         
@@ -244,7 +212,7 @@ class PlaylistTreeControl(CommonTreeControl):
             if w.__dict__.has_key("menu"):
                 w.menu.show(e)
             else:
-                self.menu.show()
+                self.menu.show(e)
             
     def on_toggled_num(self, *a):
         FC().numbering_by_order = not FC().numbering_by_order
@@ -260,32 +228,72 @@ class PlaylistTreeControl(CommonTreeControl):
                     row[self.tracknumber[0]] = re.search('\d*', audio["trkn"][0]).group()
         
     def on_toggle(self, w, e, column):
-        title = w.get_child().get_text()
+        title = column.label.get_text()
         FC().columns[title][0] = not FC().columns[title][0]
-        if FC().columns[title][0]:
-            self.append_column(column)
-        else:
-            self.remove_column(column)
+        
+        number_music_tabs = self.controls.notetabs.get_n_pages() - 1
+        for key in self.__dict__.keys():
+            if self.__dict__[key] is column:
+                atr_name = key
+                break
+        for page in xrange(number_music_tabs, 0, -1):
+            tab_content = self.controls.notetabs.get_nth_page(page)
+            pl_tree = tab_content.get_child()
+            pl_tree_column = pl_tree.__dict__[atr_name]
+            if FC().columns[title][0]:
+                pl_tree._append_column(pl_tree_column)
+                if self is not pl_tree:
+                    pl_tree_column.item.set_active(True)
+            else:
+                pl_tree._remove_column(pl_tree_column)
+                if self is not pl_tree:
+                    pl_tree_column.item.set_active(False)
+    
+    def _append_column(self, column):
+        column.set_widget(column.label)
+        self.append_column(column)
+        column.button = column.label.get_parent().get_parent().get_parent()
+        column.button.connect("button-press-event", self.on_click_header)
+        if column.label.get_text() == '№':
+            self.trkn_col.button.menu = Popup()
+            self.num_order = gtk.RadioMenuItem(None, _("Numbering by order"))
+            self.num_order.connect("button-press-event", self.on_toggled_num)
+            self.num_tags = gtk.RadioMenuItem(self.num_order, _("Numbering by tags"))
+            self.num_tags.connect("button-press-event", self.on_toggled_num)
+        
+            self.trkn_col.button.menu.append(self.num_order)
+            self.trkn_col.button.menu.append(self.num_tags)
+            if FC().numbering_by_order:
+                self.num_order.set_active(True)
+            else:
+                self.num_tags.set_active(True)
+                   
+    def _remove_column(self, column):
+        column.button.get_child().get_children()[0].remove(column.button.get_child().get_children()[0].get_child())
+        self.remove_column(column)
             
     def on_load(self):
-        if FC().numbering_by_order:
-            self.num_order.set_active(True)
-        else:
-            self.num_tags.set_active(True)
+        
         def comp(x, y):
-            print x,y
-            print FC().columns[x.label.get_text()][1], FC().columns[y.label.get_text()][1]
-            print cmp(FC().columns[x.label.get_text()][1], FC().columns[y.label.get_text()][1])
             return cmp(FC().columns[x.label.get_text()][1], FC().columns[y.label.get_text()][1])
-        
-        print self.get_columns().sort(comp)
-        for column in self.get_columns().sort(comp):
-            button = column.label.get_parent().get_parent().get_parent()
-            button.connect("button-press-event", self.on_click_header)
-            column.menu = Popup()
+        col_list = self.get_columns()
+        col_list.sort(comp, reverse=True)
+        for column in col_list:
+            column.label.show()
+            column.set_widget(column.label)
             column.set_reorderable(True)
-            title = column.get_widget().get_title()
+            column.set_clickable(True)
+            title = column.label.get_text()
+            
             if FC().columns[title][0]:
-                self.append_column(column)
-            self.__dict__[title.lower()].set_active(True)    
-        
+                self.move_column_after(column, None)
+                if column.__dict__.has_key("item"):
+                    column.item.connect("button-press-event", self.on_toggle, column)
+                    self.menu.append(column.item)
+                    column.item.set_active(True)
+            else:
+                if column.__dict__.has_key("item"):
+                    column.item.connect("button-press-event", self.on_toggle, column)
+                    self.menu.append(column.item)
+                    column.item.set_active(False)
+                self._remove_column(column)
