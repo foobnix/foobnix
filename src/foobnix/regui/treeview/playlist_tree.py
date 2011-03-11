@@ -216,16 +216,22 @@ class PlaylistTreeControl(CommonTreeControl):
             
     def on_toggled_num(self, *a):
         FC().numbering_by_order = not FC().numbering_by_order
-        if FC().numbering_by_order:
-            self.rebuild_as_plain()
-            return
-        for row in self.model:
-            if row[self.is_file[0]]:
-                audio = get_mutagen_audio(row[self.path[0]])
-                if audio and audio.has_key('tracknumber'):
-                    row[self.tracknumber[0]] = re.search('\d*', audio['tracknumber'][0]).group()
-                if audio and audio.has_key('trkn'):
-                    row[self.tracknumber[0]] = re.search('\d*', audio["trkn"][0]).group()
+        number_music_tabs = self.controls.notetabs.get_n_pages() - 1
+        for page in xrange(number_music_tabs, 0, -1):
+            tab_content = self.controls.notetabs.get_nth_page(page)
+            pl_tree = tab_content.get_child()
+            if FC().numbering_by_order:
+                pl_tree.rebuild_as_plain()
+                pl_tree.num_order.set_active(True)
+                continue
+            pl_tree.num_tags.set_active(True)
+            for row in pl_tree.model:
+                if row[pl_tree.is_file[0]]:
+                    audio = get_mutagen_audio(row[pl_tree.path[0]])
+                    if audio and audio.has_key('tracknumber'):
+                        row[pl_tree.tracknumber[0]] = re.search('\d*', audio['tracknumber'][0]).group()
+                    if audio and audio.has_key('trkn'):
+                        row[pl_tree.tracknumber[0]] = re.search('\d*', audio["trkn"][0]).group()
         
     def on_toggle(self, w, e, column):
         title = column.label.get_text()
