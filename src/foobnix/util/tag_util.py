@@ -8,12 +8,13 @@ Created on Jan 25, 2011
 import gtk
 import logging
 import os.path
-import urllib
+
 from foobnix.util.localization import foobnix_localization
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.id3_util import decode_cp866
 from foobnix.helpers.window import ChildTopWindow
 from mutagen.mp4 import MP4, MP4MetadataValueError
+
 
 foobnix_localization()
 
@@ -218,7 +219,7 @@ class TagEditor(ChildTopWindow):
         if not isinstance(audio, MP4):
             for value, key in zip(audio.values(), audio.keys()):
                 audio[key] = decode_cp866(value[0])
-                  
+                                  
 def edit_tags(a):
     controls, paths = a 
     if not globals().has_key("tag_editor"):

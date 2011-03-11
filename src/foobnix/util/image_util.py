@@ -5,7 +5,7 @@ Created on 11 сент. 2010
 @author: ivan
 '''
 import os
-import glob
+
 from foobnix.util.file_utils import get_file_extension
 
 def get_image_by_path(path):
@@ -26,5 +26,4 @@ def get_image_by_path(path):
                 return os.path.join(dir, file)
     
     return os.path.join(dir, files[0])
-    
     

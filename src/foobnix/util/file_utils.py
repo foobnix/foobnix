@@ -4,10 +4,12 @@ Created on Feb 26, 2010
 @author: ivan
 '''
 import os
-import urllib
-from foobnix.fc.fc import FC
-import logging
 import gtk
+import urllib
+import logging
+
+from foobnix.fc.fc import FC
+
 
 def open_in_filemanager(path, managers=None):
     dirname = path if os.path.isdir(path) else os.path.dirname(path)
