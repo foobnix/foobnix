@@ -49,7 +49,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.trkn_col.set_widget(self.trkn_col.label)
         self._append_column(self.trkn_col)
         
-        """column composer (NOT USED)"""
+        """column composer"""
         self.comp_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.composer[0])
         self.comp_col.set_resizable(True)
         self.comp_col.label = gtk.Label(_("Composer"))
@@ -65,14 +65,14 @@ class PlaylistTreeControl(CommonTreeControl):
         self.description_col.item = gtk.CheckMenuItem(_("Track"))
         self._append_column(self.description_col)
                         
-        """column artist (NOT USED)"""
+        """column artist"""
         self.artist_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.artist[0])
         self.artist_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.artist_col.label = gtk.Label(_("Artist"))
         self.artist_col.item = gtk.CheckMenuItem(_("Artist"))
         self._append_column(self.artist_col)
                
-        """column title (NOT USED)"""
+        """column title"""
         self.title_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.title[0])
         self.title_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.title_col.label = gtk.Label(_("Title"))
