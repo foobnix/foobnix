@@ -4,16 +4,19 @@ Created on 23 сент. 2010
 
 @author: ivan
 '''
+
+import os
 from foobnix.util import const
+from foobnix.version import VERSION
+from foobnix.fc.fc_base import FCBase
 from foobnix.util.singleton import Singleton
+from foobnix.util.agent import get_ranmom_agent
+from foobnix.fc.fc_helper import FCStates, CONFIG_DIR
+from foobnix.util.localization import foobnix_localization
 from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
 
-from foobnix.util.agent import get_ranmom_agent
-from foobnix.fc.fc_helper import FCStates, CONFIG_DIR
-from foobnix.version import VERSION
-from foobnix.fc.fc_base import FCBase
-import os
+foobnix_localization()
 
 CONFIG_FILE = os.path.join(CONFIG_DIR , "foobnix_%s.pkl" % VERSION)
 
@@ -142,7 +145,9 @@ class FC():
         self.active_manager = [0, ""]
         
         self.numbering_by_order = True
-        self.columns = {'*': [True, 0], '№': [True, 1], 'Composer': [False, 2], 'Artist': [False, 3], 'Title': [False, 4], 'Track': [True, 5], 'Time': [True, 6]}         
+        
+        '''translations of key words must match exactly with the translations of column names in PlaylistTreeControl'''
+        self.columns = {'*': [True, 0], '№': [True, 1], _('Composer'): [False, 2], _('Artist'): [False, 3], _('Title'): [False, 4], _('Track'): [True, 5], _('Time'): [True, 6]}         
         self.load();
     
     def delete(self):

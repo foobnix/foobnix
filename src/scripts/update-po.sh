@@ -23,6 +23,7 @@ LIST=(
 "foobnix.cue"
 "foobnix.dm"
 "foobnix.eq"
+"foobnix.fc"
 "foobnix.helpers"
 "foobnix.preferences"
 "foobnix.preferences.configs"
