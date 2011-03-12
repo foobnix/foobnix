@@ -382,8 +382,7 @@ class NoteTabControl(TabGeneral, LoadSave):
                 FCache().cache_pl_tab_contents.append([list(row) for row in pl_tree.model])
                 FCache().tab_pl_names.append(self.get_text_label_from_tab(tab_content))
                 for i, column in enumerate(pl_tree.get_columns()):
-                    title = column.label.get_text()
-                    FC().columns[title][1] = i 
+                    FC().columns[column.key][1] = i 
                 
                 
     def empty_tab(self, *a):

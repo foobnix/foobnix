@@ -36,6 +36,7 @@ class PlaylistTreeControl(CommonTreeControl):
 
         """Column icon"""
         self.icon_col = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
+        self.icon_col.key = "*"
         self.icon_col.set_fixed_width(5)
         self.icon_col.set_min_width(5)
         self.icon_col.label = gtk.Label("*")
@@ -43,6 +44,7 @@ class PlaylistTreeControl(CommonTreeControl):
         
         """track number"""
         self.trkn_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.tracknumber[0])
+        self.trkn_col.key = "№"
         self.trkn_col.set_clickable(True)
         self.trkn_col.label = gtk.Label("№")
         self.trkn_col.label.show()
@@ -52,6 +54,7 @@ class PlaylistTreeControl(CommonTreeControl):
         
         """column composer"""
         self.comp_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.composer[0])
+        self.comp_col.key = "Composer"
         self.comp_col.set_resizable(True)
         self.comp_col.label = gtk.Label(_("Composer"))
         self.comp_col.item = gtk.CheckMenuItem(_("Composer"))
@@ -59,6 +62,7 @@ class PlaylistTreeControl(CommonTreeControl):
         
         """column artist title"""
         self.description_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.description_col.key = "Track"
         #self.description_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.description_col.set_expand(True)
         self.description_col.set_resizable(True)
@@ -68,6 +72,7 @@ class PlaylistTreeControl(CommonTreeControl):
                         
         """column artist"""
         self.artist_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.artist[0])
+        self.artist_col.key = "Artist"
         self.artist_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.artist_col.set_resizable(True)
         self.artist_col.label = gtk.Label(_("Artist"))
@@ -76,6 +81,7 @@ class PlaylistTreeControl(CommonTreeControl):
                
         """column title"""
         self.title_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.title[0])
+        self.title_col.key = "Title"
         self.title_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.title_col.set_resizable(True)
         self.title_col.label = gtk.Label(_("Title"))
@@ -84,6 +90,7 @@ class PlaylistTreeControl(CommonTreeControl):
 
         """column time"""
         self.time_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.time[0])
+        self.time_col.key = "Time"
         self.time_col.label = gtk.Label(_("Time"))
         self.time_col.item = gtk.CheckMenuItem(_("Time"))
         self._append_column(self.time_col)
@@ -237,8 +244,7 @@ class PlaylistTreeControl(CommonTreeControl):
                         row[pl_tree.tracknumber[0]] = re.search('\d*', audio["trkn"][0]).group()
         
     def on_toggle(self, w, e, column):
-        title = column.label.get_text()
-        FC().columns[title][0] = not FC().columns[title][0]
+        FC().columns[column.key][0] = not FC().columns[column.key][0]
         
         number_music_tabs = self.controls.notetabs.get_n_pages() - 1
         for key in self.__dict__.keys():
@@ -249,7 +255,7 @@ class PlaylistTreeControl(CommonTreeControl):
             tab_content = self.controls.notetabs.get_nth_page(page)
             pl_tree = tab_content.get_child()
             pl_tree_column = pl_tree.__dict__[atr_name]
-            if FC().columns[title][0]:
+            if FC().columns[column.key][0]:
                 pl_tree._append_column(pl_tree_column)
                 if self is not pl_tree:
                     pl_tree_column.item.set_active(True)
@@ -263,7 +269,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.append_column(column)
         column.button = column.label.get_parent().get_parent().get_parent()
         column.button.connect("button-press-event", self.on_click_header)
-        if column.label.get_text() == '№':
+        if column.key == '№':
             self.trkn_col.button.menu = Popup()
             self.num_order = gtk.RadioMenuItem(None, _("Numbering by order"))
             self.num_order.connect("button-press-event", self.on_toggled_num)
@@ -284,7 +290,7 @@ class PlaylistTreeControl(CommonTreeControl):
     def on_load(self):
         
         def comp(x, y):
-            return cmp(FC().columns[x.label.get_text()][1], FC().columns[y.label.get_text()][1])
+            return cmp(FC().columns[x.key][1], FC().columns[y.key][1])
         col_list = self.get_columns()
         col_list.sort(comp, reverse=True)
         for column in col_list:
@@ -292,9 +298,9 @@ class PlaylistTreeControl(CommonTreeControl):
             column.set_widget(column.label)
             column.set_reorderable(True)
             column.set_clickable(True)
-            title = column.label.get_text()
+            #title = column.label.get_text()
             
-            if FC().columns[title][0]:
+            if FC().columns[column.key][0]:
                 self.move_column_after(column, None)
                 if column.__dict__.has_key("item"):
                     column.item.connect("button-press-event", self.on_toggle, column)

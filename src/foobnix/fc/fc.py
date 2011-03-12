@@ -146,8 +146,8 @@ class FC():
         
         self.numbering_by_order = True
         
-        '''translations of key words must match exactly with the translations of column names in PlaylistTreeControl'''
-        self.columns = {'*': [True, 0], '№': [True, 1], _('Composer'): [False, 2], _('Artist'): [False, 3], _('Title'): [False, 4], _('Track'): [True, 5], _('Time'): [True, 6]}         
+        '''translations of key words must match exactly with the translations of column.key names in PlaylistTreeControl'''
+        self.columns = {'*': [True, 0], '№': [True, 1], 'Composer': [False, 2], 'Artist': [False, 3], 'Title': [False, 4], 'Track': [True, 5], 'Time': [True, 6]}         
         self.load();
     
     def delete(self):

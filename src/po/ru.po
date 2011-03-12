@@ -870,7 +870,7 @@ msgstr "Открыть в новом плейлисте"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:75
 msgid "Add folder here"
-msgstr "Добавить папку суда"
+msgstr "Добавить папку сюда"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:80
 msgid "Clear"
