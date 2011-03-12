@@ -256,11 +256,11 @@ class PlaylistTreeControl(CommonTreeControl):
             pl_tree = tab_content.get_child()
             pl_tree_column = pl_tree.__dict__[atr_name]
             if FC().columns[column.key][0]:
-                pl_tree._append_column(pl_tree_column)
+                pl_tree_column.set_visible(True)
                 if self is not pl_tree:
                     pl_tree_column.item.set_active(True)
             else:
-                pl_tree._remove_column(pl_tree_column)
+                pl_tree_column.set_visible(False)
                 if self is not pl_tree:
                     pl_tree_column.item.set_active(False)
     
@@ -283,10 +283,6 @@ class PlaylistTreeControl(CommonTreeControl):
             else:
                 self.num_tags.set_active(True)
                    
-    def _remove_column(self, column):
-        column.button.get_child().get_children()[0].remove(column.button.get_child().get_children()[0].get_child())
-        self.remove_column(column)
-            
     def on_load(self):
         
         def comp(x, y):
@@ -298,8 +294,7 @@ class PlaylistTreeControl(CommonTreeControl):
             column.set_widget(column.label)
             column.set_reorderable(True)
             column.set_clickable(True)
-            #title = column.label.get_text()
-            
+                        
             if FC().columns[column.key][0]:
                 self.move_column_after(column, None)
                 if column.__dict__.has_key("item"):
@@ -311,4 +306,4 @@ class PlaylistTreeControl(CommonTreeControl):
                     column.item.connect("button-press-event", self.on_toggle, column)
                     self.menu.append(column.item)
                     column.item.set_active(False)
-                self._remove_column(column)
+                column.set_visible(False)
