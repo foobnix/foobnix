@@ -10,16 +10,13 @@ import re
 import gtk
 import time
 import thread
-import logging
 import gobject
 
 from subprocess import Popen
 from foobnix.fc.fc_helper import CONFIG_DIR
 from foobnix.util.const import ICON_FOOBNIX
-from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.file_utils import open_in_filemanager
 from foobnix.util.localization import foobnix_localization
-from foobnix.util.audio import get_mutagen_audio
 from foobnix.helpers.textarea import ScrolledText
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
@@ -52,7 +49,7 @@ class Converter(ChildTopWindow):
         
         self.format_combo = combobox_constr(self.format_list)
         self.format_combo.connect("changed", self.on_change_format)
-	
+
         self.bitrate_combo = combobox_constr()
         self.channels_combo = combobox_constr()
         self.hertz_combo = combobox_constr()
@@ -103,7 +100,7 @@ class Converter(ChildTopWindow):
         
         self.button_box.pack_end(self.convert_button, False)
         self.button_box.pack_end(close_button, False)
-	
+
         self.button_box.show_all()
         
         vbox.pack_start(self.button_box, False)
@@ -121,11 +118,11 @@ class Converter(ChildTopWindow):
             format = self.format_combo.get_active_text().strip()
             self.current_folder = chooser.get_current_folder()
             
-	    for path in self.paths:
-		if (os.path.splitext(os.path.basename(path))[0] + '.' + format) in os.listdir(self.current_folder):
-		    if not self.warning():
-                    	chooser.destroy()
-                    	return
+        for path in self.paths:
+            if (os.path.splitext(os.path.basename(path))[0] + '.' + format) in os.listdir(self.current_folder):
+                if not self.warning():
+                    chooser.destroy()
+                    return
            
             self.stop = False
             self.button_box.hide_all()
@@ -278,7 +275,7 @@ class Converter(ChildTopWindow):
             self.hertz_combo.set_sensitive(False)
         else:
             self.convert_button.set_sensitive(True)            
-	    
+   
         if self.format_combo.get_active_text() == "  wav":    
             self.clear_combos(self.bitrate_combo)           	
             self.bitrate_combo.set_sensitive(False)
@@ -288,7 +285,7 @@ class Converter(ChildTopWindow):
             self.hertz_combo.set_sensitive(True)
         
     def open_in_fm(self, *a):
-	open_in_filemanager(self.current_folder)
+        open_in_filemanager(self.current_folder)
 
 def combobox_constr(list=None):
     combobox = gtk.combo_box_new_text()
