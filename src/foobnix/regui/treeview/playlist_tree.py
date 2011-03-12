@@ -266,6 +266,7 @@ class PlaylistTreeControl(CommonTreeControl):
     
     def _append_column(self, column):
         column.set_widget(column.label)
+        column.set_min_width(FC().columns[column.key][2])
         self.append_column(column)
         column.button = column.label.get_parent().get_parent().get_parent()
         column.button.connect("button-press-event", self.on_click_header)
