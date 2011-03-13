@@ -311,7 +311,7 @@ def convert_files(paths):
         area = ScrolledText()
         area.buffer.set_text(_("Converter needs specially compiled binary module for work. You can \ndownload and install it automatically (click \"Install\") \
 or download it \nfrom foobnix.com and place to config folder\n\
-(~/.config/foobnix) manually "))
+(~/.config/foobnix) manually \n\nCheck if you have packages libmp3lame0 and libfaac0"))
         ok_button = dialog.add_button(_("Install"), gtk.RESPONSE_OK)
         cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
         ok_button.grab_default()      
