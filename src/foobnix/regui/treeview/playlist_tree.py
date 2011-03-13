@@ -263,6 +263,7 @@ class PlaylistTreeControl(CommonTreeControl):
             if FC().columns[column.key][0]:
                 pl_tree_column.set_visible(True)
                 if self is not pl_tree:
+                    pl_tree.move_column_after(pl_tree_column, pl_tree.icon_col)
                     pl_tree_column.item.set_active(True)
             else:
                 pl_tree_column.set_visible(False)
@@ -319,9 +320,9 @@ class PlaylistTreeControl(CommonTreeControl):
         for column in col_list:
             column.label.show()
             column.set_widget(column.label)
-            column.set_reorderable(True)
             column.set_clickable(True)
-                        
+            if column.key != "*":
+                column.set_reorderable(True)            
             if FC().columns[column.key][0]:
                 self.move_column_after(column, None)
                 if column.__dict__.has_key("item"):
