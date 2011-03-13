@@ -90,6 +90,7 @@ def udpate_id3(bean):
                 if audio.has_key('\xa9ART'): bean.artist = audio["\xa9ART"][0]
                 if audio.has_key('\xa9nam'): bean.title = audio["\xa9nam"][0]
                 if audio.has_key('\xa9alb'): bean.album = audio["\xa9alb"][0]
+                if audio.has_key('\xa9wrt'): bean.composer = audio["\xa9wrt"][0]
                 if audio.has_key('trkn'): 
                     if not FC().numbering_by_order:
                         bean.tracknumber = audio['trkn'][0]
@@ -97,7 +98,8 @@ def udpate_id3(bean):
                 if audio.has_key('artist'): bean.artist = decode_cp866(audio["artist"][0])
                 if audio.has_key('title'): bean.title = decode_cp866(audio["title"][0])
                 if audio.has_key('album'): bean.album = decode_cp866(audio["album"][0])
-                if audio.has_key('tracknumber'): 
+                if audio.has_key('composer'): bean.composer = decode_cp866(audio['composer'][0])
+                if audio.has_key('tracknumber'):
                     if not FC().numbering_by_order:
                         bean.tracknumber = audio["tracknumber"][0]   
         

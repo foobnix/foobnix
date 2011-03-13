@@ -13,7 +13,7 @@ import threading
 from foobnix.fc.fc import FC
 from foobnix.util import const
 from foobnix.fc.fc_cache import FCache
-from foobnix.regui.model import FModel
+from foobnix.regui.model import FModel, FTreeModel
 from foobnix.helpers.menu import Popup
 from foobnix.regui.state import LoadSave
 from foobnix.util.key_utils import is_key
@@ -367,7 +367,17 @@ class NoteTabControl(TabGeneral, LoadSave):
                 self._append_tab(FCache().tab_pl_names[page])
                 continue
             self._append_tab(FCache().tab_pl_names[page])
+            
+            model_len = len(FTreeModel().__dict__)
+            row_len = len(FCache().cache_pl_tab_contents[page][0])
+            
             for row in FCache().cache_pl_tab_contents[page]:
+                '''if row_len != model_len:
+                    for i in xrange(abs(model_len - row_len)):
+                        if model_len > row_len:
+                            row.append( (None, None) )
+                        else:
+                            del row[-1]'''
                 self.get_current_tree().model.append(None, row)
             
     def on_save(self):
