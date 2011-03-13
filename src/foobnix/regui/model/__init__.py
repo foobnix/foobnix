@@ -6,7 +6,7 @@ class FTreeModel():
     def __init__(self):
         
         self.text = 0 , str        
-        self.visible = 1 , bool    
+        self.visible = 1 , bool        
         self.font = 2 , str
         self.play_icon = 3 , str
         self.time = 4 , str
@@ -17,24 +17,24 @@ class FTreeModel():
         
         self.artist = 9 , str
         self.title = 10 , str
-        self.composer = 11 , str
-        self.image = 12 , str
-        self.album = 13 , str
-        self.genre = 14 , str
-        self.year = 15 , str
-        self.info = 16 , str
+        self.image = 11 , str
+        self.album = 12 , str
+        self.genre = 13 , str
+        self.year = 14 , str
+        self.info = 15 , str
         
-        self.start_sec = 17 , str
-        self.duration_sec = 18 , str
+        self.start_sec = 16 , str
+        self.duration_sec = 17 , str
         
-        self.UUID = 19 , str
-        self.parent_level = 20 , str
-        self.type = 21, str
-        self.status = 22, str
-        self.progress = 23, str
-        self.save_to = 24, str
-        self.persent = 25, int
-        self.size = 26, str
+        self.UUID = 18 , str
+        self.parent_level = 19 , str
+        self.type = 20 , str
+        self.status = 21, str
+        self.progress = 22, str
+        self.save_to = 23, str
+        self.persent = 24, int
+        self.size = 25, str        
+        self.composer = 26 , str
     
     def cut(self):
     

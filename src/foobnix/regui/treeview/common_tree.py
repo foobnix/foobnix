@@ -124,6 +124,9 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         new_dict = dict (zip(m_dict.values(), m_dict.keys()))
 
         for key in new_dict.values():
+            if not hasattr(bean, key):
+                setattr(bean, key, None)
+                
             value = getattr(bean, key)
             attributes.append(value)
 
