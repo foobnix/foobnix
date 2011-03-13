@@ -8,6 +8,7 @@ import gtk
 import logging
 from foobnix.util.localization import foobnix_localization
 from foobnix.helpers.image import ImageBase
+from foobnix.fc.fc import FC
 
 foobnix_localization()
 
@@ -141,9 +142,15 @@ def info_dialog_with_link_and_donate(version):
         dialog.vbox.pack_start(image, True, True)
         dialog.vbox.pack_start(frame, True, True)
         dialog.vbox.pack_start(gtk.Label(_("We hope you like the player. We will make it even better.")), True, True)
+        version_check = gtk.CheckButton(_("Check for new foobnix release on start"))
+        version_check.set_active(FC().check_new_version)
+        dialog.vbox.pack_start(version_check, True, True)
         
         dialog.show_all()
         dialog.run()
+        
+        FC().check_new_version = version_check.get_active()
+        FC().save()
         dialog.destroy()           
     
 

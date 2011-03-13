@@ -202,11 +202,13 @@ class CueReader():
             if line.startswith(FILE):
                 self.files_count += 1
                 file = self.get_line_value(line)
+                file = os.path.basename(file)
+                
                 if "/" in file:
                     file = file[file.rfind("/")+1:]
                 if "\\" in file:
                     file = file[file.rfind("\\")+1:]
-                    
+                 
                 dir = os.path.dirname(self.cue_path)
                 full_file = os.path.join(dir, file)
                 logging.debug("CUE source" + full_file)
