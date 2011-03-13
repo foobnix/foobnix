@@ -24,7 +24,10 @@ from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_releas
 
 foobnix_localization()
 
+FLAG = False
+
 class PlaylistTreeControl(CommonTreeControl):
+    
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
         
@@ -103,6 +106,8 @@ class PlaylistTreeControl(CommonTreeControl):
         self.connect("button-release-event", self.on_button_release)
         
         self.on_load()
+        
+        self.connect("columns-changed", self.on_columns_changed)
         
     def set_playlist_tree(self):
         self.rebuild_as_tree()
@@ -266,7 +271,8 @@ class PlaylistTreeControl(CommonTreeControl):
     
     def _append_column(self, column):
         column.set_widget(column.label)
-        column.set_min_width(FC().columns[column.key][2])
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        column.set_fixed_width(FC().columns[column.key][2])
         self.append_column(column)
         column.button = column.label.get_parent().get_parent().get_parent()
         column.button.connect("button-press-event", self.on_click_header)
@@ -283,13 +289,33 @@ class PlaylistTreeControl(CommonTreeControl):
                 self.num_order.set_active(True)
             else:
                 self.num_tags.set_active(True)
-                   
-    def on_load(self):
+    
+    def on_columns_changed(self, *a):
+        global FLAG
+        if FLAG:
+            return
+        FLAG = True 
         
-        def comp(x, y):
-            return cmp(FC().columns[x.key][1], FC().columns[y.key][1])
+        number_music_tabs = self.controls.notetabs.get_n_pages() - 1
+        for i, column in enumerate(self.get_columns()):
+            FC().columns[column.key][1] = i
+            FC().columns[column.key][2] = column.get_width()
+        
+        for page in xrange(number_music_tabs, 0, -1):
+            tab_content = self.controls.notetabs.get_nth_page(page)
+            pl_tree = tab_content.get_child()
+            col_list = pl_tree.get_columns()
+            col_list.sort(self.to_order_columns, reverse=True)
+            for column in col_list:
+                pl_tree.move_column_after(column, None)
+        FLAG = False
+        
+    def to_order_columns(self, x, y):
+        return cmp(FC().columns[x.key][1], FC().columns[y.key][1])  
+                          
+    def on_load(self):
         col_list = self.get_columns()
-        col_list.sort(comp, reverse=True)
+        col_list.sort(self.to_order_columns, reverse=True)
         for column in col_list:
             column.label.show()
             column.set_widget(column.label)

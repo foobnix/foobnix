@@ -205,6 +205,7 @@ class NoteTabControl(TabGeneral, LoadSave):
         
         self.connect("button-press-event", self.on_button_press) 
         self.connect('drag-data-received', self.on_system_drag_data_received)
+        self.connect('switch-page', self.equalize_columns_size)
         
         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP, dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY) #@UndefinedVariable
         
@@ -323,7 +324,6 @@ class NoteTabControl(TabGeneral, LoadSave):
         
     def create_notebook_tab(self, beans, optimization=False):
         treeview = PlaylistTreeControl(self.controls)
-        #self.set_active_tree(treeview)
         if beans: 
             if optimization:
                 treeview.simple_append_all(beans)
@@ -395,6 +395,12 @@ class NoteTabControl(TabGeneral, LoadSave):
                     FC().columns[column.key][1] = i
                     FC().columns[column.key][2] = column.get_width()
                 
+    def equalize_columns_size(self, notebook, page_pointer, page_num):
+        old_pl_tree_columns =  self.get_current_tree().get_columns()
+        new_pl_tree_columns = self.get_nth_page(page_num).get_child().get_columns()
+        for old_pl_tree_column, new_pl_tree_column in zip(old_pl_tree_columns, new_pl_tree_columns):
+            new_pl_tree_column.set_fixed_width(old_pl_tree_column.get_width())
+    
     def empty_tab(self, *a):
         self.append_tab("Foobnix", [])
     
