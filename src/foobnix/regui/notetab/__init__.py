@@ -375,7 +375,7 @@ class NoteTabControl(TabGeneral, LoadSave):
                 if model_len > cache_len:
                     for i in xrange(abs(model_len - cache_len)):                        
                         row.append((None, None))
-                if model_len < cache_len:
+                elif model_len < cache_len:
                     for i in xrange(abs(model_len - cache_len)):                        
                         del row[-1]
                     

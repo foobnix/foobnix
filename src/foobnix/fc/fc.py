@@ -74,7 +74,10 @@ class FC():
         self.menu_style = "new"
 
         """main window action"""
-        self.on_close_window = const.ON_CLOSE_HIDE
+        if os.name == 'nt':
+            self.on_close_window = const.ON_CLOSE_MINIMIZE
+        else:
+            self.on_close_window = const.ON_CLOSE_HIDE
 
         """support file formats"""
                 
