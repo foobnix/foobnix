@@ -91,6 +91,8 @@ class EqWindow(ChildTopWindow, FControl):
     def on_enable_eq(self, w):
         FC().is_eq_enable = w.get_active()
         self.set_custom_title()
+        self.controls.state_stop(True)
+        self.controls.state_play(True)
     
     def on_save(self, *args):
         text = self.combo.get_active_text()

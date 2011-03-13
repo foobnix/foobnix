@@ -16,7 +16,7 @@ class EqController(FControl, LoadSave):
         FControl.__init__(self, controls)
         LoadSave.__init__(self)
                 
-        self.eq_view = EqWindow(None, self.on_eq_chaged)
+        self.eq_view = EqWindow(controls, self.on_eq_chaged)
         self.eq_view.hide()
     
     def show(self):

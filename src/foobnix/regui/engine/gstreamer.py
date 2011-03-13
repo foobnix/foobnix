@@ -103,32 +103,30 @@ class GStreamerEngine(MediaPlayerEngine):
         
         self.state_stop()
 
-        if self.prev_path != path:
-            self.player = self.gstreamer_player()
-            """equlizer settings"""
-            if FC().is_eq_enable:
-                pre = self.controls.eq.get_preamp()
-                bands = self.controls.eq.get_bands()
-                self.set_all_bands(pre, bands)
+        
+        self.player = self.gstreamer_player()
+        """equlizer settings"""
+        if FC().is_eq_enable:
+            pre = self.controls.eq.get_preamp()
+            bands = self.controls.eq.get_bands()
+            self.set_all_bands(pre, bands)
+        
+        if path.startswith("http://"):
+            path = get_radio_source(path)
+            logging.debug("Try To play path" + path)
             
-            if path.startswith("http://"):
-                path = get_radio_source(path)
-                logging.debug("Try To play path" + path)
-                
-                if self.bean.type == FTYPE_RADIO:
-                    time.sleep(2)
-                
-                uri = path
-                self.notify_title(uri)
-            else:
-                uri = 'file://' + urllib.pathname2url(path)
-                if os.name == 'nt':
-                    uri = 'file:' + urllib.pathname2url(path)
+            if self.bean.type == FTYPE_RADIO:
+                time.sleep(2)
+            
+            uri = path
+            self.notify_title(uri)
+        else:
+            uri = 'file://' + urllib.pathname2url(path)
+            if os.name == 'nt':
+                uri = 'file:' + urllib.pathname2url(path)
 
-            logging.info("Gstreamer try to play" + uri)
-            self.player.set_property("uri", uri)
-            
-            self.prev_path = path
+        logging.info("Gstreamer try to play" + uri)
+        self.player.set_property("uri", uri)
         
         self.state_pause()
         time.sleep(0.2)        
