@@ -5,6 +5,7 @@ import gtk
 import gobject
 import os
 from foobnix.util import LOG
+from foobnix.fc.fc import FC
 
 def foobnix():
     if "--debug" in sys.argv:
@@ -51,6 +52,10 @@ def foobnix():
 if "--profile" in sys.argv:
     import cProfile
     cProfile.run('foobnix()')
-else:
-    foobnix()
+else:    
+    try:
+        foobnix()
+    except Exception, e:
+        print e
+        FC().save()
     

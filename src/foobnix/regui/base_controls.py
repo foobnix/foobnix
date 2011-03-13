@@ -613,12 +613,14 @@ class BaseFoobnixControls():
         self.trayicon.hide()        
 
         logging.info("Controls - Quit")
+        
         self.notetabs.on_quit()
         self.virtual.on_quit()
         self.info_panel.on_quit()
         self.radio.on_quit()
+        
         FC().save()
-        FCache().save()
+        
         gtk.main_quit()
                
     def check_version(self):

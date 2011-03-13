@@ -15,6 +15,7 @@ from foobnix.fc.fc_helper import FCStates, CONFIG_DIR
 from foobnix.util.localization import foobnix_localization
 from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
+from foobnix.fc.fc_cache import FCache
 
 foobnix_localization()
 
@@ -150,7 +151,7 @@ class FC():
         self.numbering_by_order = True
         
         '''translations of key words must match exactly with the translations of column.key names in PlaylistTreeControl'''
-        self.columns = {'*': [True, 0, 40], '№': [True, 1, 30], 'Composer': [False, 2, -1], 'Artist': [False, 3, -1], 'Title': [False, 4, -1], 'Track': [True, 5, -1], 'Time': [True, 6, 40]}         
+        self.columns = {'*': [True, 0, 40], '№': [True, 1, 30], 'Composer': [False, 2, 60], 'Artist': [False, 3, 60], 'Title': [False, 4, 60], 'Track': [True, 5, -1], 'Time': [True, 6, 40]}         
         self.load();
     
     def delete(self):
@@ -159,6 +160,7 @@ class FC():
     def save(self):
         FCStates().save(self, CONFIG_FILE)
         FCBase().save()
+        FCache().save()
     
     def load(self):
         FCStates().load(self, CONFIG_FILE)
