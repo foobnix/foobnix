@@ -273,6 +273,10 @@ class PlaylistTreeControl(CommonTreeControl):
     def _append_column(self, column):
         column.set_widget(column.label)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        if column.key == '*' or column.key == '№' or column.key == 'Time':
+            column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        else:
+            column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
         column.set_fixed_width(FC().columns[column.key][2])
         self.append_column(column)
         column.button = column.label.get_parent().get_parent().get_parent()
