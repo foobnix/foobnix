@@ -12,8 +12,8 @@ import gtk
 import time
 import thread
 import gobject
-
-from subprocess import Popen
+import vte
+from subprocess import Popen, PIPE
 from foobnix.fc.fc_helper import CONFIG_DIR
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util.file_utils import open_in_filemanager
@@ -96,7 +96,8 @@ class Converter(ChildTopWindow):
         self.progress_box.pack_end(self.stop_button, False)
         self.progress_box.pack_end(self.progressbar, True)
         
-
+        self.output = ScrolledText()
+        self.output.scroll.set_placement(gtk.CORNER_BOTTOM_LEFT)
         vbox.pack_start(self.progress_box, False)
         
         self.button_box.pack_end(self.convert_button, False)
@@ -105,6 +106,7 @@ class Converter(ChildTopWindow):
         self.button_box.show_all()
         
         vbox.pack_start(self.button_box, False)
+        vbox.pack_start(self.output.scroll, False)
         self.add(vbox)
 
     def save(self, *a):
@@ -119,19 +121,22 @@ class Converter(ChildTopWindow):
             format = self.format_combo.get_active_text().strip()
             self.current_folder = chooser.get_current_folder()
             
-        for path in self.paths:
-            if (os.path.splitext(os.path.basename(path))[0] + '.' + format) in os.listdir(self.current_folder):
-                if not self.warning():
-                    chooser.destroy()
-                    return
-           
+            for path in self.paths:
+                if (os.path.splitext(os.path.basename(path))[0] + '.' + format) in os.listdir(self.current_folder):
+                    if not self.warning():
+                        chooser.destroy()
+                        return
+                    else:
+                        break
             self.stop = False
             self.button_box.hide_all()
             self.progressbar.set_fraction(0)
             self.progress_box.show_all()
+            self.output.scroll.show()
             
             fraction_length = 1.0 / len(self.paths)
             self.progressbar.set_text("")
+            self.output.buffer.delete(self.output.buffer.get_start_iter(), self.output.buffer.get_end_iter())
             def task():
                 self.stop_button.show()
                 self.open_folder_button.hide()             
@@ -181,13 +186,21 @@ class Converter(ChildTopWindow):
             list.remove("-ab")  
             list.remove(bitrate)
         
-        self.ffmpeg = Popen(list, universal_newlines=True)
+        self.ffmpeg = Popen(list, universal_newlines=True, stderr=PIPE)
+                
+        for line in iter(self.ffmpeg.stderr.readline, ""):
+            time.sleep(0.1)#for stability
+            self.output.buffer.insert_at_cursor(line)
+            adj = self.output.scroll.get_vadjustment()
+            adj.set_value(adj.upper - adj.page_size + 1)
+        
         self.ffmpeg.wait()
         
+       
     def on_stop(self, *a):
-        self.ffmpeg.kill()
+        self.ffmpeg.terminate()
         self.stop = True
-        self.open_folder_button.show()
+        #self.open_folder_button.show()
                 
     def fill_form(self, paths):
         self.paths = []
@@ -305,6 +318,7 @@ def convert_files(paths):
             converter = Converter()
         converter.show_all()
         converter.progress_box.hide_all()
+        converter.output.scroll.hide()
         converter.fill_form(paths)
         converter.format_combo.set_active(0)
     else:
