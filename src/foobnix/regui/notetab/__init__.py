@@ -188,7 +188,8 @@ class TabGeneral(gtk.Notebook, FControl):
     def get_current_tree(self):
         n = self.get_current_page()
         tab_child = self.get_nth_page(n)
-        return tab_child.get_child()
+        if tab_child:
+            return tab_child.get_child()
 
 TARGET_TYPE_URI_LIST = 80
 dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
