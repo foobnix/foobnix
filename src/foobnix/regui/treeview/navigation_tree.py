@@ -194,7 +194,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                         FCache().music_paths[number_of_tab].append(path) 
                         self.controls.preferences.on_load()
                         logging.info("New music paths" + str(FCache().music_paths[number_of_tab]))
-                        self.controls.update_music_tree(tree, number_of_tab)
+                self.controls.update_music_tree(tree, number_of_tab)
                 FC().save()
             self.controls.in_thread.run_with_progressbar(task)
         elif response == gtk.RESPONSE_CANCEL:

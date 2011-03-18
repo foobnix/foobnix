@@ -12,7 +12,7 @@ import gtk
 import time
 import thread
 import gobject
-import vte
+
 from subprocess import Popen, PIPE
 from foobnix.fc.fc_helper import CONFIG_DIR
 from foobnix.util.const import ICON_FOOBNIX
@@ -25,10 +25,14 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 foobnix_localization()
 
 LOGO = get_foobnix_resourse_path_by_name(ICON_FOOBNIX)
-
+FFMPEG_NAME = "ffmpeg_foobnix"
+if os.uname()[4] == 'x86_64':
+    FFMPEG_NAME += "_x64"
+    
 class Converter(ChildTopWindow):
     def __init__(self):
         ChildTopWindow.__init__(self, title="Audio Converter", width=500, height=300)
+        
         self.area = ScrolledText()
         vbox = gtk.VBox(False, 10)
         vbox.pack_start(self.area.scroll)
@@ -180,7 +184,7 @@ class Converter(ChildTopWindow):
         elif format == "wav":
             acodec = "pcm_s16le"
         
-        list = [os.path.join(CONFIG_DIR, "ffmpeg_foobnix"), "-i", path, "-acodec", acodec, "-ac", channels, "-ab", bitrate, "-ar", samp_rate, '-y', new_path]
+        list = [os.path.join(CONFIG_DIR, FFMPEG_NAME), "-i", path, "-acodec", acodec, "-ac", channels, "-ab", bitrate, "-ar", samp_rate, '-y', new_path]
         
         if format == "wav":
             list.remove("-ab")  
@@ -312,7 +316,7 @@ def combobox_constr(list=None):
     return combobox
 
 def convert_files(paths):
-    if 'ffmpeg_foobnix' in os.listdir(CONFIG_DIR):
+    if FFMPEG_NAME in os.listdir(CONFIG_DIR):
         if not globals().has_key("converter"):
             global converter
             converter = Converter()
@@ -340,9 +344,9 @@ or download it \nfrom foobnix.com and place to config folder\n\
         if dialog.run() == gtk.RESPONSE_OK:
             prog_bar.show()
             import urllib2
-            remote_file = urllib2.urlopen("http://foobnix.googlecode.com/files/ffmpeg_foobnix")
+            remote_file = urllib2.urlopen("http://foobnix.googlecode.com/files/" + FFMPEG_NAME)
             size = float(remote_file.info()['Content-Length'])
-            ffmpeg_path = os.path.join(CONFIG_DIR, 'ffmpeg_foobnix')
+            ffmpeg_path = os.path.join(CONFIG_DIR, FFMPEG_NAME)
             def on_close(*a):
                 if os.path.isfile(ffmpeg_path) and os.path.getsize(ffmpeg_path) < size:
                     os.remove(ffmpeg_path)
