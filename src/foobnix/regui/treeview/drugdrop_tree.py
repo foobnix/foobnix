@@ -317,8 +317,13 @@ class DrugDropTree(gtk.TreeView):
         self.clear_tree()
         
         self.plain_append_all(copy_beans)
-        
+    
     def tree_append_all(self, beans):
+        def task():
+            self._tree_append_all(beans)
+        gobject.idle_add(task)
+        
+    def _tree_append_all(self, beans):
         if not beans:
             return None
         self.current_view = VIEW_TREE
