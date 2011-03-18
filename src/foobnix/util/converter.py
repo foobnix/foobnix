@@ -87,14 +87,7 @@ class Converter(ChildTopWindow):
         self.convert_button.set_size_request(150, 30)
         self.convert_button.connect("clicked", self.save)
         
-        class CustomProgressBar(gtk.ProgressBar):
-            def __init__(self):
-                gtk.ProgressBar.__init__(self)
-            
-            def set_text(self, text):
-                gobject.idle_add(super(CustomProgressBar, self).set_text,text)
-                
-        self.progressbar = CustomProgressBar()
+        self.progressbar = gtk.ProgressBar()
                 
         self.stop_button = gtk.Button(_("Stop"))
         self.stop_button.set_size_request(100, 30)
