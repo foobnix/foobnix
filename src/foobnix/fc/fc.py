@@ -12,12 +12,9 @@ from foobnix.fc.fc_base import FCBase
 from foobnix.util.singleton import Singleton
 from foobnix.util.agent import get_ranmom_agent
 from foobnix.fc.fc_helper import FCStates, CONFIG_DIR
-from foobnix.util.localization import foobnix_localization
 from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
 from foobnix.fc.fc_cache import FCache
-
-foobnix_localization()
 
 CONFIG_FILE = os.path.join(CONFIG_DIR , "foobnix_%s.pkl" % VERSION)
 
@@ -151,7 +148,7 @@ class FC():
         self.numbering_by_order = True
         
         '''translations of key words must match exactly with the translations of column.key names in PlaylistTreeControl'''
-        self.columns = {'*': [True, 0, 40], '№': [True, 1, 30], 'Composer': [False, 2, 60], 'Artist': [False, 3, 60], 'Title': [False, 4, 60], 'Track': [True, 5, -1], 'Time': [True, 6, 40]}         
+        self.columns = {'*': [True, 0, 40], '№': [True, 1, 30], 'Composer': [False, 2, 60], 'Artist': [False, 3, 60], 'Title': [False, 4, 60], 'Track': [True, 5, -1], 'Time': [True, 6, 45]}         
         self.load();
     
     def delete(self):

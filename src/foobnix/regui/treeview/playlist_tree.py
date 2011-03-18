@@ -261,9 +261,9 @@ class PlaylistTreeControl(CommonTreeControl):
             pl_tree = tab_content.get_child()
             pl_tree_column = pl_tree.__dict__[atr_name]
             if FC().columns[column.key][0]:
+                pl_tree.move_column_after(pl_tree_column, pl_tree.icon_col)
                 pl_tree_column.set_visible(True)
                 if self is not pl_tree:
-                    pl_tree.move_column_after(pl_tree_column, pl_tree.icon_col)
                     pl_tree_column.item.set_active(True)
             else:
                 pl_tree_column.set_visible(False)
@@ -273,6 +273,10 @@ class PlaylistTreeControl(CommonTreeControl):
     def _append_column(self, column):
         column.set_widget(column.label)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        if column.key in ['*', '№', 'Time']:
+            column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        else:
+            column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
         column.set_fixed_width(FC().columns[column.key][2])
         self.append_column(column)
         column.button = column.label.get_parent().get_parent().get_parent()
