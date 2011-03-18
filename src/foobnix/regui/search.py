@@ -3,7 +3,7 @@ from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.regui.model.signal import FControl
 import logging
 from foobnix.util.text_utils import capitalize_query
-from foobnix.util.key_utils import is_key
+from foobnix.util.key_utils import is_key, is_key_enter
 
 class SearchControls(FControl, gtk.VBox):
     def __init__(self, controls):        
@@ -85,8 +85,8 @@ class SearchControls(FControl, gtk.VBox):
     def set_search_text(self, text):
         self.entry.set_text(text)
     
-    def on_search_key_press(self, w, e):        
-        if is_key(e, 'Return'):
+    def on_search_key_press(self, w, e):
+        if is_key_enter(e):
             self.on_search();
             self.entry.grab_focus()
     

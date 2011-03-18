@@ -12,10 +12,14 @@ def is_key(event, key_const):
     #LOG.debug("KEY", const)
     return const == key_const
 
+
 def get_key(event):
     const = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
     #LOG.debug("KEY", const)    
     return const
+
+def is_key_enter(e):
+    return is_key(e,'Return') or is_key(e,'KP_Enter')
 
 def is_key_control(event): 
     return event.state == gtk.gdk.CONTROL_MASK #@UndefinedVariable

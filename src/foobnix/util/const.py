@@ -5,8 +5,13 @@ Created on 30 авг. 2010
 @author: ivan
 '''
 from foobnix.util.localization import foobnix_localization
+import locale
 
 foobnix_localization()
+
+SITE_LOCALE="en"
+if "ru" in locale.getdefaultlocale()[0]:
+    SITE_LOCALE="ru"
 
 ORDER_LINEAR = "ORDER_LINEAR"
 ORDER_SHUFFLE = "ORDER_SHUFFLE"

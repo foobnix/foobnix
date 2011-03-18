@@ -9,6 +9,7 @@ import logging
 from foobnix.util.localization import foobnix_localization
 from foobnix.helpers.image import ImageBase
 from foobnix.fc.fc import FC
+from foobnix.util.const import SITE_LOCALE
 
 foobnix_localization()
 
@@ -126,9 +127,9 @@ def info_dialog_with_link_and_donate(version):
         
         
         
-        card = gtk.LinkButton("http://www.foobnix.com/donate/eng", _("Download and Donate"))
+        card = gtk.LinkButton("http://www.foobnix.com/support?lang=%s"%SITE_LOCALE, _("Download and Donate"))
         #terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
-        link = gtk.LinkButton(_("http://www.foobnix.com/download/eng"), _("Download"))
+        link = gtk.LinkButton("http://www.foobnix.com/support?lang=%s"%SITE_LOCALE, _("Download"))
         
         frame = gtk.Frame("Please donate and download")
         vbox = gtk.VBox(True, 0)

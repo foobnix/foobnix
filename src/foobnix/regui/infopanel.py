@@ -20,7 +20,7 @@ from foobnix.helpers.pref_widgets import HBoxDecorator
 from foobnix.fc.fc_cache import FCache, COVERS_DIR, LYRICS_DIR 
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
-    LEFT_PERSPECTIVE_INFO, ICON_BLANK_DISK
+    LEFT_PERSPECTIVE_INFO, ICON_BLANK_DISK, SITE_LOCALE
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
 
@@ -282,10 +282,10 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if self.info_cache.wiki_artist == self.bean.artist:
             return None
         self.info_cache.wiki_artist = self.bean.artist    
-        if "ru" in locale.getlocale()[0]:
-            self.wiki_label.set_uri("http://ru.wikipedia.org/w/index.php?&search=%s" % self.bean.artist)
-        else:
-            self.wiki_label.set_uri("http://en.wikipedia.org/w/index.php?&search=%s" % self.bean.artist)
+        
+        
+        self.wiki_label.set_uri("http://%s.wikipedia.org/w/index.php?&search=%s" %(SITE_LOCALE, self.bean.artist))
+        
         
         self.last_fm_label.set_uri("http://www.last.fm/search?q=%s" % self.bean.artist)
         
