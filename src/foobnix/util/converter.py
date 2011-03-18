@@ -21,6 +21,7 @@ from foobnix.util.localization import foobnix_localization
 from foobnix.helpers.textarea import ScrolledText
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+import logging
 
 foobnix_localization()
 
@@ -86,7 +87,14 @@ class Converter(ChildTopWindow):
         self.convert_button.set_size_request(150, 30)
         self.convert_button.connect("clicked", self.save)
         
-        self.progressbar = gtk.ProgressBar()
+        class CustomProgressBar(gtk.ProgressBar):
+            def __init__(self):
+                gtk.ProgressBar.__init__(self)
+            
+            def set_text(self, text):
+                gobject.idle_add(super(CustomProgressBar, self).set_text,text)
+                
+        self.progressbar = CustomProgressBar()
                 
         self.stop_button = gtk.Button(_("Stop"))
         self.stop_button.set_size_request(100, 30)
@@ -190,13 +198,16 @@ class Converter(ChildTopWindow):
             list.remove("-ab")  
             list.remove(bitrate)
         
+        
+        logging.debug(list)
+        
         self.ffmpeg = Popen(list, universal_newlines=True, stderr=PIPE)
-                
+        
         for line in iter(self.ffmpeg.stderr.readline, ""):
-            time.sleep(0.1)#for stability
-            self.output.buffer.insert_at_cursor(line)
+            gobject.idle_add(self.output.buffer.insert_at_cursor,line)
+            logging.debug(line)
             adj = self.output.scroll.get_vadjustment()
-            adj.set_value(adj.upper - adj.page_size + 1)
+            gobject.idle_add(adj.set_value,adj.upper - adj.page_size + 1)
         
         self.ffmpeg.wait()
         
