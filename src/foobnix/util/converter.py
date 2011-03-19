@@ -191,8 +191,7 @@ class Converter(ChildTopWindow):
             list.remove("-ab")  
             list.remove(bitrate)
         
-        
-        logging.debug(list)
+        logging.debug(" ".join(list))
         
         self.ffmpeg = Popen(list, universal_newlines=True, stderr=PIPE)
         
