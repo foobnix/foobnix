@@ -163,6 +163,7 @@ class TagEditor(ChildTopWindow):
         else:
             tag_names = self.tag_names
         for tag_name, tag_entry in zip(tag_names, self.tag_entries):
+            tag_entry.delete_text(0, -1)
             try:
                 if self.audious[0].has_key(tag_name):
                     tag_entry.set_text(self.audious[0][tag_name][0])
@@ -228,15 +229,20 @@ class TagEditor(ChildTopWindow):
             tag_value = tag_entry.get_text()
             if check_button.get_active():
                 for audio, path in zip(self.audious, self.paths):
+                    if not audio:
+                        continue
                     set_tags(audio, path, tag_name)
             else:
-                set_tags(self.audious[0], self.paths[0], tag_name)
+                if self.audious[0]:
+                    set_tags(self.audious[0], self.paths[0], tag_name)
             check_button.set_active(False)
         
         self.apply_changes_for_rows_in_tree()
 
 
     def decoding_cp866(self, audio):
+        if not audio:
+            return
         if not isinstance(audio, MP4):
             for value, key in zip(audio.values(), audio.keys()):
                 audio[key] = decode_cp866(value[0])
