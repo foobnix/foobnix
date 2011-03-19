@@ -49,7 +49,9 @@ class FoobnixCore(BaseFoobnixControls):
                 
         self.volume = VolumeControls(self)
         
-        self.seek_bar = SeekProgressBarControls(self)
+        
+        self.seek_bar_movie = SeekProgressBarControls(self)
+        self.seek_bar = SeekProgressBarControls(self, self.seek_bar_movie)
         
         self.search_progress = SearchProgressBar()
         self.in_thread = SingleThread(self.search_progress)

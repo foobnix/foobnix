@@ -19,6 +19,8 @@ from foobnix.fc.fc_cache import FCache
 from foobnix.regui.model import FModel
 from foobnix.regui.state import LoadSave
 from foobnix.version import FOOBNIX_VERSION
+from foobnix.version import VERSION
+from foobnix.version import RELEASE
 from foobnix.util.m3u_utils import m3u_reader
 from foobnix.util.text_utils import normalize_text
 from foobnix.util.file_utils import get_file_extension
@@ -31,6 +33,7 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
+from foobnix.util.version import compare_versions
 
 class BaseFoobnixControls():
     def __init__(self):
@@ -364,6 +367,8 @@ class BaseFoobnixControls():
         self.count_errors = 0
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
+        
+        self.movie_window.set_text(bean.text)        
         self.main_window.set_title(bean.text)
         
         self.media_engine.play(bean)  
@@ -641,11 +646,14 @@ class BaseFoobnixControls():
             logging.error("Check version error" + str(e))
             return None
 
-        new_version = f.read()
-        logging.info("version" + current_version + "|" + new_version + "|" + str(uuid))
+        new_version_line = f.read()
+        
+        
+        logging.info("version" + current_version + "|" + new_version_line + "|" + str(uuid))
+        
         f.close()
-        if FC().check_new_version and current_version < new_version:
-            info_dialog_with_link_and_donate(new_version)            
+        if FC().check_new_version and compare_versions(current_version, new_version_line) == 1:
+            info_dialog_with_link_and_donate(new_version_line)            
 
     
     

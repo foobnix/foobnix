@@ -39,7 +39,7 @@ msgid "Download Manager"
 msgstr "Менеджер закачек"
 
 #: .././foobnix/dm/dm.py:110
-#, fuzzy
+
 msgid "Choose Folder"
 msgstr "Выберите папки для открытия"
 
@@ -48,7 +48,7 @@ msgid "Equalizer"
 msgstr "Эквалайзер"
 
 #: .././foobnix/eq/eq_gui.py:86
-#, fuzzy
+
 msgid "Disabled"
 msgstr "Выключено"
 
@@ -78,7 +78,7 @@ msgid "Save"
 msgstr "Сохранить"
 
 #: .././foobnix/eq/eq_gui.py:195
-#, fuzzy
+
 msgid "Restore defaults presets"
 msgstr "Востановить исходные настройки"
 
@@ -350,7 +350,7 @@ msgid "Show new foobnix release avaliable demo dialog"
 msgstr "Показать диалог наличия новой версии"
 
 #: .././foobnix/preferences/configs/other_conf.py:35
-#, fuzzy
+
 msgid "Save music to folder:"
 msgstr "Сохранять музыку в"
 
@@ -359,7 +359,7 @@ msgid "Automatic music save"
 msgstr "Автоматическое сохранение музыки"
 
 #: .././foobnix/preferences/configs/other_conf.py:46
-#, fuzzy
+
 msgid "Disc cover size:"
 msgstr "Обложка диска"
 
@@ -381,7 +381,7 @@ msgid "New Style (Button)"
 msgstr "Новый Стиль (Кнопка)"
 
 #: .././foobnix/preferences/configs/other_conf.py:94
-#, fuzzy
+
 msgid "Order-Repeat Switcher Style:"
 msgstr "Тип кнопок \"Случайная песня\" "
 
@@ -395,12 +395,12 @@ msgid "Text Labels"
 msgstr "Текстовые метки"
 
 #: .././foobnix/preferences/configs/other_conf.py:110
-#, fuzzy
+
 msgid "Opacity:"
 msgstr "Прозрачность"
 
 #: .././foobnix/preferences/configs/other_conf.py:123
-#, fuzzy
+
 msgid "Choose your preferred file manager:"
 msgstr "Выберите файловый менеджер "
 
@@ -409,17 +409,17 @@ msgid "Tabs"
 msgstr "Табы"
 
 #: .././foobnix/preferences/configs/tabs.py:24
-#, fuzzy
+
 msgid "Count of tabs:"
 msgstr "Количество табов"
 
 #: .././foobnix/preferences/configs/tabs.py:39
-#, fuzzy
+
 msgid "Max length of tab:"
 msgstr "Максимальная длина таба"
 
 #: .././foobnix/preferences/configs/tabs.py:54
-#, fuzzy
+
 msgid "Tab position:"
 msgstr "Позиция табов"
 
@@ -436,7 +436,7 @@ msgid "No Tabs"
 msgstr "Нет"
 
 #: .././foobnix/preferences/configs/tabs.py:76
-#, fuzzy
+
 msgid "Close tab sign:"
 msgstr "Значек закрытия"
 
@@ -813,7 +813,7 @@ msgid "Lasm.fm Integration "
 msgstr "Интеграция с last.fm "
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:36
-#, fuzzy
+
 msgid "My loved tracks"
 msgstr "Нравится эта песня(и)"
 
@@ -822,7 +822,7 @@ msgid "My top tracks"
 msgstr "Мои любимые треки"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:38
-#, fuzzy
+
 msgid "My recent tracks"
 msgstr "Пауза между треками "
 
@@ -831,7 +831,7 @@ msgid "My top artists"
 msgstr "Мои любимые артисты"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:47
-#, fuzzy
+
 msgid "loading..."
 msgstr "Скачивается"
 
@@ -860,7 +860,7 @@ msgid "Update"
 msgstr "Обновить"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:92
-#, fuzzy
+
 msgid "Rename file (folder)"
 msgstr "Обновить папку с радио"
 
@@ -896,12 +896,12 @@ msgid "Time"
 msgstr "Время"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:207
-#, fuzzy
+
 msgid "Download To..."
 msgstr "Скачать"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:211
-#, fuzzy
+
 msgid "Edit Tags"
 msgstr "Редактировать теги"
 
@@ -910,7 +910,7 @@ msgid "Format Converter"
 msgstr "Конвертировать"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:214
-#, fuzzy
+
 msgid "Copy To Search Line"
 msgstr "Скопировать в строку поиска"
 
@@ -923,12 +923,12 @@ msgid "Copy Artist-Title-Album"
 msgstr "Копировать Artist-Title-Album"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:219
-#, fuzzy
+
 msgid "Love This Track(s)"
 msgstr "Нравится эта песня(и)"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:222
-#, fuzzy
+
 msgid "Open In File Manager"
 msgstr "Открыть в файловом менеджере"
 
@@ -1022,7 +1022,7 @@ msgid "Bitrate"
 msgstr "Битрейт"
 
 #: .././foobnix/util/converter.py:37
-#, fuzzy
+
 msgid "Channels"
 msgstr "Изменения"
 
@@ -1035,12 +1035,12 @@ msgid "Convert"
 msgstr "Конвертировать"
 
 #: .././foobnix/util/converter.py:90
-#, fuzzy
+
 msgid "Show files"
 msgstr "Показать-Спрятать"
 
 #: .././foobnix/util/converter.py:110
-#, fuzzy
+
 msgid "Choose directory to save converted files"
 msgstr "Выберете директорию с музыкой"
 
@@ -1057,7 +1057,7 @@ msgstr ""
 "Желаете продолжить?"
 
 #: .././foobnix/util/converter.py:310
-#, fuzzy
+
 msgid "Attention"
 msgstr "Действие"
 
@@ -1076,12 +1076,12 @@ msgstr ""
 "\\\r"
 
 #: .././foobnix/util/file_utils.py:52
-#, fuzzy
+
 msgid "Rename folder"
 msgstr "Обновить папку с радио"
 
 #: .././foobnix/util/file_utils.py:61
-#, fuzzy
+
 msgid "Rename file"
 msgstr "Переименовать вкладку"
 

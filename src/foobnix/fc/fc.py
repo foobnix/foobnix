@@ -146,7 +146,7 @@ class FC():
         self.active_manager = [0, ""]
         
         self.numbering_by_order = True
-        
+                
         '''translations of key words must match exactly with the translations of column.key names in PlaylistTreeControl'''
         self.columns = {'*': [True, 0, 40], '№': [True, 1, 30], 'Composer': [False, 2, 60], 'Artist': [False, 3, 60], 'Title': [False, 4, 60], 'Track': [True, 5, -1], 'Time': [True, 6, 45]}         
         self.load();
