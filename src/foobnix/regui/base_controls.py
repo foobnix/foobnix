@@ -367,6 +367,8 @@ class BaseFoobnixControls():
         self.count_errors = 0
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
+        
+        self.movie_window.set_text(bean.text)        
         self.main_window.set_title(bean.text)
         
         self.media_engine.play(bean)  

@@ -8,8 +8,9 @@ from foobnix.regui.model.signal import FControl
 import gtk
 from foobnix.util.time_utils import convert_seconds_to_text
 class SeekProgressBarControls(FControl, gtk.Alignment):
-    def __init__(self, controls):
+    def __init__(self, controls, seek_bar_movie=None):
         FControl.__init__(self, controls)
+        self.seek_bar_movie =seek_bar_movie
         gtk.Alignment.__init__(self, xalign=0.5, yalign=0.5, xscale=1.0, yscale=1.0)
         
         self.set_padding(padding_top=7, padding_bottom=7, padding_left=0, padding_right=7)
@@ -30,14 +31,23 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         x = event.x
         seek_percent = (x + 0.0) / width * 100        
         self.controls.player_seek(seek_percent);
+        
+        if self.seek_bar_movie:
+            self.seek_bar_movie.on_seek(widget, event)
     
     def set_text(self, text):
         if text:
             self.progresbar.set_text(text[:200])    
         
+        if self.seek_bar_movie:
+            self.seek_bar_movie.set_text(text)
+        
     def clear(self):
         self.progresbar.set_text("00:00 / 00:00")
         self.progresbar.set_fraction(0)
+        
+        if self.seek_bar_movie:
+            self.seek_bar_movie.clear()
     
     def update_seek_status(self, position_sec, duration_sec):
         duration_str = convert_seconds_to_text(duration_sec)
@@ -50,3 +60,5 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         if 0 <= seek_persent <= 1: 
             self.progresbar.set_fraction(seek_persent)
         
+        if self.seek_bar_movie:
+            self.seek_bar_movie.update_seek_status(position_sec, duration_sec)

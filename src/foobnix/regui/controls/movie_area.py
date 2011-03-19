@@ -7,6 +7,7 @@ from foobnix.helpers.window import ChildTopWindow
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.util.key_utils import is_key, is_key_alt, get_key
 import logging
+from foobnix.regui.controls.playback import PlaybackControls
 
 class AdvancedDrawingArea(gtk.DrawingArea):
     def __init__(self, controls):  
@@ -22,12 +23,13 @@ class AdvancedDrawingArea(gtk.DrawingArea):
     def action_function(self):
         logging.debug("Template function not defined")    
     
-    def on_key_press(self, w, e):            
+    def on_key_press(self, w, e):   
+        print e         
         if is_key(e, 'Escape') or get_key(e) in ('F', 'f', 'а', 'А'):                
             self.action_function()                
         elif is_key_alt(e) and is_key(e, "Return"):
             self.action_function()
-        elif get_key(e) in ('P', 'p', 'з', 'З'):
+        elif get_key(e) in ('P', 'p', 'з', 'З','space'):
             self.controls.play_pause()
         elif is_key(e, 'Left'):
             self.controls.seek_down()
@@ -52,13 +54,30 @@ class FullScreanArea(ChildTopWindow):
             self.set_hide_on_escape(False)
             self.on_hide_callback = on_hide_callback
             
+            self.layout = gtk.VBox(False)
+            
             self.drow = AdvancedDrawingArea(controls)
             self.drow.action_function = on_hide_callback 
             self.set_resizable(True)
             self.set_border_width(0)
             
-            self.add(self.drow)
-
+            self.layout.pack_start(self.drow, True)
+            
+            line = gtk.HBox(False)
+            line.pack_start(PlaybackControls(controls), False)
+            #line.pack_start(SeekProgressBarControls(controls), True)
+            line.pack_start(controls.seek_bar_movie, True)
+            self.text_label = gtk.Label("foobnix")
+            line.pack_start(self.text_label, False)
+            
+            self.layout.pack_start(line,False)
+            
+            self.add(self.layout)
+            self.set_opacity(1)
+        
+        def set_text(self, text):
+            self.text_label.set_text(text)
+        
         def get_draw(self):
             return self.drow
             
@@ -103,8 +122,11 @@ class MovieDrawingArea(FControl, gtk.Frame):
         self.fullscrean_area.show_window()        
         self.set_out(self.fullscrean_area.get_draw())      
         self.controls.state_play(True)
-        
     
+    def set_text(self, text):
+        self.fullscrean_area.set_text(text)
+        
+                                      
     def on_small_screen(self):
         self.controls.state_stop(True)
         self.set_out(self.smallscree_area)

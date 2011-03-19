@@ -5,15 +5,12 @@ def compare_versions(version1, version2):
     if "-" in version1:    
         v1, r1 = version1.split("-")
     else:
-        v1 = version1
-        r1 = 0
+        v1, r1 = version1, 0
     
     if "-" in version2:
         v2, r2 = version2.split("-")
     else:
-        v2 = version2
-        r2 = 0
-    
+        v2, r2 = version2, 0
     
     v1 = int(v1.replace(".",""))
     v2 = int(v2.replace(".",""))
