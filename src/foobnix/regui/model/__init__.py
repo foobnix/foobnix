@@ -35,6 +35,7 @@ class FTreeModel():
         self.persent = 24, int
         self.size = 25, str        
         self.composer = 26 , str
+        self.user_id = 27 , str
     
     def cut(self):
     

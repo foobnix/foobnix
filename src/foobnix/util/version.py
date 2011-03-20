@@ -7,8 +7,6 @@ def compare_versions(v1, v2):
     v1 = int(v1)
     v2 = int(v2)
     
-    print v1,v2
-    
     if v1 == v2:
         return 0
     elif v1 > v2:

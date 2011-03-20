@@ -50,7 +50,7 @@ if os.name != 'nt':
         #data_files.append(('/usr/share/locale/%s/LC_MESSAGES' % lang, ['mo/%s/foobnix.mo' % lang]))
     
     version = file("foobnix/version.py", "wt")
-    version.write("FOOBNIX_VERSION=%s" % VERSION)
+    version.write("FOOBNIX_VERSION='%s'" % VERSION)
     version.close()
 
 shutil.copyfile("foobnix.py", "foobnix/foobnix")
@@ -102,6 +102,7 @@ setup(name='foobnix',
                 "foobnix.regui.service",
                 "foobnix.regui.treeview",
                 "foobnix.thirdparty",
+                "foobnix.thirdparty.vkontakte",
                 "foobnix.thirdparty.google",
                 "foobnix.util",
                 ],

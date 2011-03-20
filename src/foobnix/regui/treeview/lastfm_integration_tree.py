@@ -68,10 +68,8 @@ class LastFmIntegrationControls(CommonTreeControl):
             childs = self.services[parent.text](FCBase().lfm_login)
             update_parent_for_beans(childs, parent)
             
-            def sub_task():
-                self.append_all(childs)            
-                self.remove_iters(old_iters)        
             
-            gobject.idle_add(sub_task)
-       
+            self.append_all(childs)            
+            gobject.idle_add(self.remove_iters,old_iters)        
+            
         self.controls.in_thread.run_with_progressbar(task)

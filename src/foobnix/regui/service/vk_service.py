@@ -16,6 +16,8 @@ from urllib2 import HTTPError, URLError
 import thread
 from urlparse import urlparse
 from foobnix.fc.fc_base import get_random_vk, FCBase
+from foobnix.thirdparty import vkontakte
+from foobnix.util.time_utils import convert_seconds_to_text
 
 class VKService:
     
@@ -24,11 +26,13 @@ class VKService:
             self.in_thread_init()
         else:
             thread.start_new_thread(self.in_thread_init, ())
-        
+    
+    
     #We need to start inside thread to fast player start
     def in_thread_init(self):
         self.initialize_urllib2()
         self.login()
+        self.api = vkontakte.API('2234333', '0kCUFX5mK3McLmkxPHHB',self.opener)
         
     def initialize_urllib2(self):
         self.cookie_processor = urllib2.HTTPCookieProcessor()
@@ -96,68 +100,27 @@ class VKService:
 
     def find_tracks_by_url(self, url):
         logging.debug("Search By URL")
-        url_parse = urlparse(url)
-        
-        if url_parse.fragment:
-            logging.debug("url_parse.fragment %s" % url_parse.fragment)
-            fragmensts = url_parse.fragment.split('&')
-            logging.debug("fragmensts %s" % fragmensts)
-            params = dict([part.split('=') for part in fragmensts if part.find("=")>=0])
-            logging.debug("params%s" % params)
-            result = self.get(url, params)
+        index = url.find("id=")
+        if index < 0:
+            return None
+        id = url[index+3:]
+        id = int(id)
+        if id > 0:
+            results = self.api.get('audio.get',uid=id)
         else:
-            result = self.get(url)
+            results = self.api.get('audio.get',gid=abs(id))
             
-        try:
-            result = unicode(result, 'cp1251')            
-        except:
-            result = result
-        
-        #print result
-        
-        reg_all = "([^{<}]*)"
-        result_url = re.findall(ur"value=\"http:([\\/.0-9_A-Z]*)", result, re.IGNORECASE)
-        result_artist = re.findall(u"q]=" + reg_all + "'", result, re.IGNORECASE | re.UNICODE)
-        result_title = re.findall('"title([0-9_]*)">' + reg_all + '<', result, re.IGNORECASE | re.UNICODE)
-         
-        result_time = re.findall('duration fl_r">' + reg_all, result, re.IGNORECASE | re.UNICODE)
-        result_lyr = re.findall(ur"showLyrics" + reg_all, result, re.IGNORECASE | re.UNICODE)
-        logging.info("lyr:::" + str(result_lyr))
-        songs = []
-        j = 0
-        logging.debug("%s -%s" % ( result_time, len(result_time)))
-        logging.debug("%s -%s" % ( result_artist, len(result_url)))
-        logging.debug("%s -%s" % (result_artist, len(result_artist)))
-        for i, artist in enumerate(result_artist):
-            if i >= 50:
-                break
-            #print result_url
-            path = "http:" + result_url[i].replace("\\/", "/")
-            
-            if i>=len(result_title):
-                break; 
-            title = html_decode(result_title[i][1])
-            if not title:
-                if len(result_lyr) > j:
-                    title = result_lyr[j]
-                    title = title[title.find(";'>") + 3:]
-                    j += 1
-            a_index =artist.find("&c[section]=audio")
-            if a_index>=0:
-                artist = artist[:a_index]
-            artist = html_decode(artist)
-            #song = VKSong(path, artist, title, result_time[i]);
-            if "\">" in title:
-                title = title[title.find("\">") + 2:]
-            text = artist + " - " + title
-            
-            rtime = result_time[i]
-            
-            
-            song = FModel(text, path).add_artist(artist).add_title(title).add_time(rtime)
-            songs.append(song)
-        logging.info(len(songs))
-        return songs 
+        childs = []
+        for line in results:
+            bean = FModel(line['artist']+' - '+line['title'])
+            bean.aritst = line['artist']
+            bean.title = line['title']
+            bean.time = convert_seconds_to_text(line['duration'])
+            bean.path = line['url']
+            childs.append(bean)
+             
+       
+        return childs 
         
     def find_one_track(self, query):        
         vkSongs = self.find_tracks_by_query(query)

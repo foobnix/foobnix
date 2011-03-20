@@ -44,6 +44,8 @@ class VkontakteConfig(LastFmConfig):
         self.password_text.set_invisible_char("*")
         self.password_text.show()
         
+        link = gtk.LinkButton("http://vkontakte.ru/login.php?app=2234333&layout=popup&type=browser&settings=26", _("Check Requesting Access"))
+        
         
         pbox.pack_start(password, False, False, 0)
         pbox.pack_start(self.password_text, False, True, 0)
@@ -51,6 +53,7 @@ class VkontakteConfig(LastFmConfig):
         
         box.pack_start(lbox, False, True, 0)
         box.pack_start(pbox, False, True, 0)
+        box.pack_start(link, False, True, 0)
         
         self.widget = box
         
