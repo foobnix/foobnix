@@ -13,6 +13,7 @@ from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, 
     LEFT_PERSPECTIVE_VK
 from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
 from foobnix.regui.state import LoadSave
+from foobnix.fc.fc_base import FCBase
 class PerspectiveControls(FControl, gtk.VBox, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -118,7 +119,10 @@ class PerspectiveButtonControlls(gtk.HBox):
         self.pack_start(musics, False, False, 0)
         self.pack_start(radios, False, False, 0)
         self.pack_start(lastfm, False, False, 0)
-        self.pack_start(vk, False, False, 0)
+        
+        if "@bofthew.com" not in FCBase().vk_login: 
+            self.pack_start(vk, False, False, 0)
+                
         self.pack_start(virtuals, False, False, 0)
         self.pack_start(info, False, False, 0)
     

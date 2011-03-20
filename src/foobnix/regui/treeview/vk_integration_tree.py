@@ -35,7 +35,7 @@ class VKIntegrationControls(CommonTreeControl):
         self.cache =[]
     
     def lazy_load(self):
-        if self.lazy:
+        if self.lazy or not hasattr(self.controls.vk_service,"api"):
             return True
         
         
@@ -55,7 +55,8 @@ class VKIntegrationControls(CommonTreeControl):
         get_users_by_uuid(self.controls.vk_service.api.my_user_id)
         
         uids = self.controls.vk_service.api.get('friends.get')
-        get_users_by_uuid(uids)
+        if uids:
+            get_users_by_uuid(uids)
         
         self.lazy = True
         
