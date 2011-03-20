@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-13 19:20+0200\n"
-"PO-Revision-Date: 2011-02-23 17:29+0000\n"
-"Last-Translator: Dmitry-Kogura <Unknown>\n"
+"PO-Revision-Date: 2011-03-18 19:24+0000\n"
+"Last-Translator: Ivan Ivanenko <Unknown>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-02-23 19:56+0000\n"
-"X-Generator: Launchpad (build 12432)\n"
+"X-Launchpad-Export-Date: 2011-03-19 06:03+0000\n"
+"X-Generator: Launchpad (build 12559)\n"
+"Language: \n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -39,22 +39,20 @@ msgid "Download Manager"
 msgstr "Менеджер закачек"
 
 #: .././foobnix/dm/dm.py:110
-
 msgid "Choose Folder"
-msgstr "Выберите папки для открытия"
+msgstr ""
 
 #: .././foobnix/eq/eq_gui.py:40 .././foobnix/regui/menu.py:43
 msgid "Equalizer"
 msgstr "Эквалайзер"
 
 #: .././foobnix/eq/eq_gui.py:86
-
 msgid "Disabled"
-msgstr "Выключено"
+msgstr "Отключено"
 
 #: .././foobnix/eq/eq_gui.py:88
 msgid "Enabled"
-msgstr "Включен"
+msgstr "Включено"
 
 #: .././foobnix/eq/eq_gui.py:89
 #, python-format
@@ -78,9 +76,8 @@ msgid "Save"
 msgstr "Сохранить"
 
 #: .././foobnix/eq/eq_gui.py:195
-
 msgid "Restore defaults presets"
-msgstr "Востановить исходные настройки"
+msgstr "Восстановить настройки по умолчанию"
 
 #: .././foobnix/fc/fc_cache.py:29 .././foobnix/fc/fc_cache.py:37
 #: .././foobnix/regui/notetab/__init__.py:113
@@ -95,7 +92,7 @@ msgstr "Найдена новая версия"
 
 #: .././foobnix/helpers/dialog_entry.py:129
 msgid "Download and Donate"
-msgstr "Скачать и дать денег :)"
+msgstr "Скачать и Поддержать"
 
 #. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:131
@@ -215,7 +212,7 @@ msgstr "Информационная панель"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:22
 msgid "Disc cover size"
-msgstr "Обложка диска"
+msgstr "Размер обложки диска"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:36
 msgid "Lyric panel size"
@@ -260,7 +257,7 @@ msgstr "Включить радио скроблер"
 
 #: .././foobnix/preferences/configs/music_library.py:34
 msgid "Update library on start (more slow) "
-msgstr "Обновлять библиотеку при старте (медленный запуск) "
+msgstr "Обновлять библиотеку при старте (более медленный запуск) "
 
 #: .././foobnix/preferences/configs/music_library.py:44
 msgid "Music dirs"
@@ -277,7 +274,7 @@ msgstr "Обновить"
 #: .././foobnix/preferences/configs/music_library.py:141
 #: .././foobnix/regui/treeview/navigation_tree.py:147
 msgid "Choose directory with music"
-msgstr "Выберете директорию с музыкой"
+msgstr "Выберите директорию с музыкой"
 
 #: .././foobnix/preferences/configs/music_library.py:164
 msgid "File Types"
@@ -289,7 +286,7 @@ msgstr "Расширения"
 
 #: .././foobnix/preferences/configs/music_library.py:204
 msgid "Please add audio extension"
-msgstr "Пожалуйста, добавте аудио расширение"
+msgstr "Пожалуйста, добавьте аудио расширение"
 
 #: .././foobnix/preferences/configs/music_library.py:204
 msgid "Extension should be like '.mp3'"
@@ -350,18 +347,16 @@ msgid "Show new foobnix release avaliable demo dialog"
 msgstr "Показать диалог наличия новой версии"
 
 #: .././foobnix/preferences/configs/other_conf.py:35
-
 msgid "Save music to folder:"
-msgstr "Сохранять музыку в"
+msgstr "Сохранить музыку в папку"
 
 #: .././foobnix/preferences/configs/other_conf.py:39
 msgid "Automatic music save"
 msgstr "Автоматическое сохранение музыки"
 
 #: .././foobnix/preferences/configs/other_conf.py:46
-
 msgid "Disc cover size:"
-msgstr "Обложка диска"
+msgstr "Размер обложки диска:"
 
 #: .././foobnix/preferences/configs/other_conf.py:70
 msgid "Enable theme image"
@@ -378,12 +373,11 @@ msgstr "Старый стиль (панель)"
 #. self.old_style.connect("toggled", self.on_change_menu_type)
 #: .././foobnix/preferences/configs/other_conf.py:84
 msgid "New Style (Button)"
-msgstr "Новый Стиль (Кнопка)"
+msgstr "Новый стиль (кнопка)"
 
 #: .././foobnix/preferences/configs/other_conf.py:94
-
 msgid "Order-Repeat Switcher Style:"
-msgstr "Тип кнопок \"Случайная песня\" "
+msgstr "Тип кнопок \"порядок-повторение\":"
 
 #: .././foobnix/preferences/configs/other_conf.py:96
 msgid "Toggle Buttons"
@@ -395,33 +389,28 @@ msgid "Text Labels"
 msgstr "Текстовые метки"
 
 #: .././foobnix/preferences/configs/other_conf.py:110
-
 msgid "Opacity:"
-msgstr "Прозрачность"
+msgstr "Прозрачность:"
 
 #: .././foobnix/preferences/configs/other_conf.py:123
-
 msgid "Choose your preferred file manager:"
-msgstr "Выберите файловый менеджер "
+msgstr "Выберите предпочитаемый файловый менеджер:"
 
 #: .././foobnix/preferences/configs/tabs.py:13
 msgid "Tabs"
 msgstr "Табы"
 
 #: .././foobnix/preferences/configs/tabs.py:24
-
 msgid "Count of tabs:"
-msgstr "Количество табов"
+msgstr "Количество вкладок:"
 
 #: .././foobnix/preferences/configs/tabs.py:39
-
 msgid "Max length of tab:"
-msgstr "Максимальная длина таба"
+msgstr "Максимальная длина вкладки:"
 
 #: .././foobnix/preferences/configs/tabs.py:54
-
 msgid "Tab position:"
-msgstr "Позиция табов"
+msgstr "Позиция вкладок:"
 
 #: .././foobnix/preferences/configs/tabs.py:58
 msgid "Left"
@@ -433,16 +422,15 @@ msgstr "Сверху"
 
 #: .././foobnix/preferences/configs/tabs.py:64
 msgid "No Tabs"
-msgstr "Нет"
+msgstr "Не отображать"
 
 #: .././foobnix/preferences/configs/tabs.py:76
-
 msgid "Close tab sign:"
-msgstr "Значек закрытия"
+msgstr "Значок закрытия вкладки:"
 
 #: .././foobnix/preferences/configs/tabs.py:91
 msgid "None"
-msgstr "Новый"
+msgstr "Не отбражать"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:38
 msgid "Show tray icon"
@@ -455,7 +443,7 @@ msgstr "При закрытии окна - закрывать плеер"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:43
 msgid "On close window - hide player"
-msgstr "При закрытии окна - прятать плеер"
+msgstr "При закрытии окна - прятать плеер в трей"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:46
 msgid "On close window - minimize player"
@@ -471,11 +459,11 @@ msgstr "Системная иконка изменяемая"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:61
 msgid "Disc cover image"
-msgstr "Картинка с ообложки диска"
+msgstr "Картинка с обложки диска"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:63
 msgid "Notification pop-up"
-msgstr "Окно уведомлений"
+msgstr "Показывать уведомления"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:80
 msgid "Notification"
@@ -483,7 +471,7 @@ msgstr "Уведомления"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:107
 msgid "Time Notification (sec): "
-msgstr "Время показа уведомления "
+msgstr "Время показа уведомления: "
 
 #: .././foobnix/preferences/configs/vk_conf.py:14
 msgid "Vkontakte"
@@ -639,7 +627,7 @@ msgstr "Радио"
 
 #: .././foobnix/regui/perspectives.py:80
 msgid "Radio Stantions (Alt+2)"
-msgstr "Радио станции (Alt+2)"
+msgstr "Радиостанции (Alt+2)"
 
 #: .././foobnix/regui/perspectives.py:87
 msgid "Playlist"
@@ -779,7 +767,7 @@ msgstr "Сохранить плейлист как"
 #: .././foobnix/regui/notetab/__init__.py:274
 #: .././foobnix/regui/notetab/tab_library.py:41
 msgid "Close tab"
-msgstr "Закрыть влкадку"
+msgstr "Закрыть вкладку"
 
 #: .././foobnix/regui/notetab/__init__.py:337
 msgid "Choose folder to save playlist"
@@ -813,27 +801,24 @@ msgid "Lasm.fm Integration "
 msgstr "Интеграция с last.fm "
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:36
-
 msgid "My loved tracks"
-msgstr "Нравится эта песня(и)"
+msgstr "Мои любимые треки"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:37
 msgid "My top tracks"
 msgstr "Мои любимые треки"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:38
-
 msgid "My recent tracks"
-msgstr "Пауза между треками "
+msgstr "Мои недавние треки"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:39
 msgid "My top artists"
 msgstr "Мои любимые артисты"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:47
-
 msgid "loading..."
-msgstr "Скачивается"
+msgstr "загрузка..."
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:61
 msgid "Copy to Search Line"
@@ -860,9 +845,8 @@ msgid "Update"
 msgstr "Обновить"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:92
-
 msgid "Rename file (folder)"
-msgstr "Обновить папку с радио"
+msgstr "Переименовать файл (папку)"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:93
 #: .././foobnix/util/file_utils.py:85
@@ -896,23 +880,20 @@ msgid "Time"
 msgstr "Время"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:207
-
 msgid "Download To..."
-msgstr "Скачать"
+msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:211
-
 msgid "Edit Tags"
-msgstr "Редактировать теги"
+msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:212
 msgid "Format Converter"
 msgstr "Конвертировать"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:214
-
 msgid "Copy To Search Line"
-msgstr "Скопировать в строку поиска"
+msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:216
 msgid "Copy №-Title-Time"
@@ -923,14 +904,12 @@ msgid "Copy Artist-Title-Album"
 msgstr "Копировать Artist-Title-Album"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:219
-
 msgid "Love This Track(s)"
-msgstr "Нравится эта песня(и)"
+msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:222
-
 msgid "Open In File Manager"
-msgstr "Открыть в файловом менеджере"
+msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:281
 msgid "Numbering by order"
@@ -1022,9 +1001,8 @@ msgid "Bitrate"
 msgstr "Битрейт"
 
 #: .././foobnix/util/converter.py:37
-
 msgid "Channels"
-msgstr "Изменения"
+msgstr "Каналы"
 
 #: .././foobnix/util/converter.py:38
 msgid "Frequency"
@@ -1035,18 +1013,16 @@ msgid "Convert"
 msgstr "Конвертировать"
 
 #: .././foobnix/util/converter.py:90
-
 msgid "Show files"
-msgstr "Показать-Спрятать"
+msgstr ""
 
 #: .././foobnix/util/converter.py:110
-
 msgid "Choose directory to save converted files"
-msgstr "Выберете директорию с музыкой"
+msgstr "Выберите папку для сохранения файлов"
 
 #: .././foobnix/util/converter.py:200
 msgid "Warning!!!"
-msgstr "Осторожно!!!"
+msgstr "Предупреждение!!!"
 
 #: .././foobnix/util/converter.py:204
 msgid ""
@@ -1057,9 +1033,8 @@ msgstr ""
 "Желаете продолжить?"
 
 #: .././foobnix/util/converter.py:310
-
 msgid "Attention"
-msgstr "Действие"
+msgstr ""
 
 #: .././foobnix/util/converter.py:315
 msgid "Install"
@@ -1070,24 +1045,18 @@ msgid ""
 "Converter needs specially compiled binary module for work. You can \n"
 "download and install it automatically (click \"Install\") \\\r"
 msgstr ""
-"Конвертеру необходим специально скомпилированный бинарный модуль для "
-"работы. \n"
-"Вы можете загрузить и установить его автоматически (кликните \"Установить\") "
-"\\\r"
 
 #: .././foobnix/util/file_utils.py:52
-
 msgid "Rename folder"
-msgstr "Обновить папку с радио"
+msgstr "Переименовать папку"
 
 #: .././foobnix/util/file_utils.py:61
-
 msgid "Rename file"
-msgstr "Переименовать вкладку"
+msgstr "Переименовать файл"
 
 #: .././foobnix/util/file_utils.py:86
 msgid "Do you really want to delete item(s) from disk?"
-msgstr "Вы действительно желаете удалить объекты с диска?"
+msgstr "Вы действительно хотите удалить файл(ы) с диска?"
 
 #: .././foobnix/util/m3u_utils.py:45
 msgid "Choose window"
@@ -1133,11 +1102,29 @@ msgstr ""
 #~ msgid "Cancel"
 #~ msgstr "Отменить"
 
+#~ msgid "Save music to folder"
+#~ msgstr "Сохранять музыку в"
+
+#~ msgid "Opacity"
+#~ msgstr "Прозрачность"
+
+#~ msgid "Count of tabs"
+#~ msgstr "Количество табов"
+
+#~ msgid "Max length of tab"
+#~ msgstr "Максимальная длина таба"
+
+#~ msgid "Tab position"
+#~ msgstr "Позиция табов"
+
 #~ msgid "Play Lists"
 #~ msgstr "Списки"
 
 #~ msgid "About Window"
 #~ msgstr "О программе"
+
+#~ msgid "Changelog"
+#~ msgstr "Изменения"
 
 #~ msgid "Credential"
 #~ msgstr "Учасники"
@@ -1156,3 +1143,37 @@ msgstr ""
 
 #~ msgid "Menu type"
 #~ msgstr "Тип меню"
+
+#~ msgid "Choose your preferred file manager: "
+#~ msgstr "Выберите файловый менеджер "
+
+#~ msgid "Order-Repeat Switcher Style: "
+#~ msgstr "Тип кнопок \"Случайная песня\" "
+
+#~ msgid "Love this track(s)"
+#~ msgstr "Нравится эта песня(и)"
+
+#~ msgid "Edit tags"
+#~ msgstr "Редактировать теги"
+
+#~ msgid "Close tab sign"
+#~ msgstr "Значок закрытия"
+
+#~ msgid "Audio Converter"
+#~ msgstr "Аудио Конвертер"
+
+#~ msgid "Convert files (alpha)"
+#~ msgstr "Конвертировать файлы (альфа)"
+
+#~ msgid ""
+#~ "Existing files will be overwritten.\n"
+#~ "Do you wish to continue?"
+#~ msgstr "Существующие файлы будут перезаписаны"
+
+#, python-format
+#~ msgid "Convert  %d of %d file(s)"
+#~ msgstr "Конвертирую %d из %d файл(ов)"
+
+#, python-format
+#~ msgid "Finished (%d of %d)"
+#~ msgstr "Завершено (%d из %d)"

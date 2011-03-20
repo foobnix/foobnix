@@ -6,7 +6,7 @@ Created on 24 авг. 2010
 '''
 from foobnix.preferences.config_plugin import ConfigPlugin
 import gtk
-from foobnix.helpers.my_widgets import tab_close_button, notetab_label
+from foobnix.helpers.my_widgets import tab_close_button
 from foobnix.fc.fc import FC
 class TabsConfig(ConfigPlugin):
     

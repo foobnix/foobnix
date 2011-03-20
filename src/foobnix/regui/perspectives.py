@@ -118,7 +118,9 @@ class PerspectiveButtonControlls(gtk.HBox):
         
         self.pack_start(musics, False, False, 0)
         self.pack_start(radios, False, False, 0)
-        self.pack_start(lastfm, False, False, 0)
+        
+        if "l_user_" != FCBase().lfm_login:
+            self.pack_start(lastfm, False, False, 0)
         
         if "@bofthew.com" not in FCBase().vk_login: 
             self.pack_start(vk, False, False, 0)

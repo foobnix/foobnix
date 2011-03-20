@@ -14,7 +14,6 @@ from foobnix.util.text_utils import html_decode
 import simplejson
 from urllib2 import HTTPError, URLError
 import thread
-from urlparse import urlparse
 from foobnix.fc.fc_base import get_random_vk, FCBase
 from foobnix.thirdparty import vkontakte
 from foobnix.util.time_utils import convert_seconds_to_text

@@ -9,7 +9,7 @@ import logging
 
 from foobnix.thirdparty import pylast
 from foobnix.thirdparty.pylast import WSError, Tag
-from foobnix.regui.model import FModel, FDModel
+from foobnix.regui.model import FModel
 from foobnix.thirdparty.google.translate import translate
 from foobnix.fc.fc_base import FCBase
 from foobnix.fc.fc import FC

@@ -355,5 +355,4 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         pass    
     
     def on_quit(self):
-        FCache().on_quit()
-       
+        FCache().on_quit()     

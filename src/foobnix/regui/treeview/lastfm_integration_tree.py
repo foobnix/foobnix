@@ -10,7 +10,6 @@ from foobnix.regui.model import FModel, FDModel
 from foobnix.util.bean_utils import update_parent_for_beans
 from foobnix.util.mouse_utils import is_rigth_click
 from foobnix.helpers.menu import Popup
-import time
 import gobject
 from foobnix.fc.fc_base import FCBase
 from foobnix.fc.fc import FC

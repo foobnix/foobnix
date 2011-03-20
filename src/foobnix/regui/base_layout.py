@@ -9,7 +9,6 @@ from foobnix.fc.fc import FC
 from foobnix.regui.model.signal import FControl
 import logging
 from foobnix.regui.state import LoadSave
-import time
 class BaseFoobnixLayout(FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)

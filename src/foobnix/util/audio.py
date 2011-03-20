@@ -47,5 +47,4 @@ def get_mutagen_audio (path):
     if ext == ".m4a" or ext == ".mp4":
         audio = MP4(path)
         
-    return audio
-  
+    return audio 

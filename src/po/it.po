@@ -11,13 +11,13 @@ msgstr ""
 "PO-Revision-Date: 2011-02-08 00:10+0000\n"
 "Last-Translator: Martino Barbon <Unknown>\n"
 "Language-Team: ITALIAN <bmsavone@gmail.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-02-23 19:56+0000\n"
-"X-Generator: Launchpad (build 12432)\n"
+"X-Launchpad-Export-Date: 2011-03-14 05:08+0000\n"
+"X-Generator: Launchpad (build 12559)\n"
 "X-Poedit-Country: ITALY\n"
+"Language: \n"
 "X-Poedit-Language: Italian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -40,18 +40,16 @@ msgid "Download Manager"
 msgstr "Download Manager"
 
 #: .././foobnix/dm/dm.py:110
-#, fuzzy
 msgid "Choose Folder"
-msgstr "Scegli le cartelle da aprire"
+msgstr ""
 
 #: .././foobnix/eq/eq_gui.py:40 .././foobnix/regui/menu.py:43
 msgid "Equalizer"
 msgstr "Equalizzatore"
 
 #: .././foobnix/eq/eq_gui.py:86
-#, fuzzy
 msgid "Disabled"
-msgstr "Disabilita"
+msgstr ""
 
 #: .././foobnix/eq/eq_gui.py:88
 msgid "Enabled"
@@ -79,9 +77,8 @@ msgid "Save"
 msgstr "Salva"
 
 #: .././foobnix/eq/eq_gui.py:195
-#, fuzzy
 msgid "Restore defaults presets"
-msgstr "Ripristina impostazioni predefinite"
+msgstr ""
 
 #: .././foobnix/fc/fc_cache.py:29 .././foobnix/fc/fc_cache.py:37
 #: .././foobnix/regui/notetab/__init__.py:113
@@ -351,18 +348,16 @@ msgid "Show new foobnix release avaliable demo dialog"
 msgstr "Prova finestra notifiche per nuova versione di foobnix disponibile"
 
 #: .././foobnix/preferences/configs/other_conf.py:35
-#, fuzzy
 msgid "Save music to folder:"
-msgstr "Salvare la musica nella cartella"
+msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:39
 msgid "Automatic music save"
 msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:46
-#, fuzzy
 msgid "Disc cover size:"
-msgstr "Dimensioni della copertina disco"
+msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:70
 msgid "Enable theme image"
@@ -395,9 +390,8 @@ msgid "Text Labels"
 msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:110
-#, fuzzy
 msgid "Opacity:"
-msgstr "Opacità"
+msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:123
 msgid "Choose your preferred file manager:"
@@ -408,19 +402,16 @@ msgid "Tabs"
 msgstr "Schede"
 
 #: .././foobnix/preferences/configs/tabs.py:24
-#, fuzzy
 msgid "Count of tabs:"
-msgstr "Numero di schede"
+msgstr ""
 
 #: .././foobnix/preferences/configs/tabs.py:39
-#, fuzzy
 msgid "Max length of tab:"
-msgstr "Lunghezza massima"
+msgstr ""
 
 #: .././foobnix/preferences/configs/tabs.py:54
-#, fuzzy
 msgid "Tab position:"
-msgstr "Posizione delle schede"
+msgstr ""
 
 #: .././foobnix/preferences/configs/tabs.py:58
 msgid "Left"
@@ -435,9 +426,8 @@ msgid "No Tabs"
 msgstr "Senza schede"
 
 #: .././foobnix/preferences/configs/tabs.py:76
-#, fuzzy
 msgid "Close tab sign:"
-msgstr "Segno chiusura schede"
+msgstr ""
 
 #: .././foobnix/preferences/configs/tabs.py:91
 msgid "None"
@@ -820,19 +810,16 @@ msgid "My top tracks"
 msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:38
-#, fuzzy
 msgid "My recent tracks"
-msgstr "Pausa tra i brani: "
+msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:39
-#, fuzzy
 msgid "My top artists"
-msgstr "Top per artista"
+msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:47
-#, fuzzy
 msgid "loading..."
-msgstr "Scaricando"
+msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:61
 msgid "Copy to Search Line"
@@ -859,9 +846,8 @@ msgid "Update"
 msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:92
-#, fuzzy
 msgid "Rename file (folder)"
-msgstr "Ricarica la cartella radio"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:93
 #: .././foobnix/util/file_utils.py:85
@@ -880,9 +866,8 @@ msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:72
 #: .././foobnix/regui/treeview/playlist_tree.py:73
-#, fuzzy
 msgid "Track"
-msgstr "_Tracks"
+msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:90
 #: .././foobnix/regui/treeview/playlist_tree.py:91
@@ -896,23 +881,20 @@ msgid "Time"
 msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:207
-#, fuzzy
 msgid "Download To..."
-msgstr "Scarica"
+msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:211
-#, fuzzy
 msgid "Edit Tags"
-msgstr "Edita Radio"
+msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:212
 msgid "Format Converter"
 msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:214
-#, fuzzy
 msgid "Copy To Search Line"
-msgstr "Copia nella riga di Ricerca"
+msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:216
 msgid "Copy №-Title-Time"
@@ -1020,9 +1002,8 @@ msgid "Bitrate"
 msgstr ""
 
 #: .././foobnix/util/converter.py:37
-#, fuzzy
 msgid "Channels"
-msgstr "Changelog"
+msgstr ""
 
 #: .././foobnix/util/converter.py:38
 msgid "Frequency"
@@ -1033,14 +1014,12 @@ msgid "Convert"
 msgstr ""
 
 #: .././foobnix/util/converter.py:90
-#, fuzzy
 msgid "Show files"
-msgstr "Mostra-Nasconde"
+msgstr ""
 
 #: .././foobnix/util/converter.py:110
-#, fuzzy
 msgid "Choose directory to save converted files"
-msgstr "Scegli la directory con musica"
+msgstr ""
 
 #: .././foobnix/util/converter.py:200
 msgid "Warning!!!"
@@ -1053,9 +1032,8 @@ msgid ""
 msgstr ""
 
 #: .././foobnix/util/converter.py:310
-#, fuzzy
 msgid "Attention"
-msgstr "Azione"
+msgstr ""
 
 #: .././foobnix/util/converter.py:315
 msgid "Install"
@@ -1068,14 +1046,12 @@ msgid ""
 msgstr ""
 
 #: .././foobnix/util/file_utils.py:52
-#, fuzzy
 msgid "Rename folder"
-msgstr "Ricarica la cartella radio"
+msgstr ""
 
 #: .././foobnix/util/file_utils.py:61
-#, fuzzy
 msgid "Rename file"
-msgstr "Rinomina scheda"
+msgstr ""
 
 #: .././foobnix/util/file_utils.py:86
 msgid "Do you really want to delete item(s) from disk?"
@@ -1123,14 +1099,35 @@ msgstr ""
 #~ msgid "Cancel"
 #~ msgstr "Anulla"
 
+#~ msgid "Save music to folder"
+#~ msgstr "Salvare la musica nella cartella"
+
 #~ msgid "Menu type"
 #~ msgstr "Tipo Menu"
+
+#~ msgid "Opacity"
+#~ msgstr "Opacità"
+
+#~ msgid "Count of tabs"
+#~ msgstr "Numero di schede"
+
+#~ msgid "Max length of tab"
+#~ msgstr "Lunghezza massima"
+
+#~ msgid "Tab position"
+#~ msgstr "Posizione delle schede"
+
+#~ msgid "Close tab sign"
+#~ msgstr "Segno chiusura schede"
 
 #~ msgid "Play Lists"
 #~ msgstr "Play Lists"
 
 #~ msgid "About Window"
 #~ msgstr "Finestra Info"
+
+#~ msgid "Changelog"
+#~ msgstr "Changelog"
 
 #~ msgid "Credential"
 #~ msgstr "Credenziali"
@@ -1155,6 +1152,12 @@ msgstr ""
 
 #~ msgid "Set focus on search line (Alt+G) Google :)"
 #~ msgstr "Focus impostato sulla riga di ricerca (Alt+G) Google :)"
+
+#~ msgid "Top by artist"
+#~ msgstr "Top per artista"
+
+#~ msgid "_Tracks"
+#~ msgstr "_Tracks"
 
 #~ msgid "Other"
 #~ msgstr "Altro"

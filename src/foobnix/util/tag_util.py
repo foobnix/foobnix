@@ -31,6 +31,7 @@ class TagEditor(ChildTopWindow):
         """make tooltip more quick (useful for checkbuttons)"""
         gtk.Settings().set_property('gtk-tooltip-timeout', 0)
         
+        """
         artist_label = gtk.Label(_("Artist"))
         title_label = gtk.Label(_("Title"))
         album_label = gtk.Label(_("Album"))
@@ -39,7 +40,7 @@ class TagEditor(ChildTopWindow):
         genre_label = gtk.Label(_("Genre"))
         author_label = gtk.Label(_("Author text"))
         composer_label = gtk.Label(_("Composer"))
-        
+        """
         self.paths = []
         self.tag_names = ["artist", "title", "album", "date", "tracknumber", "genre", "author", "composer"]
         self.tag_mp4_names = ['\xa9ART', '\xa9nam', '\xa9alb', '\xa9day', 'trkn', '\xa9gen', '', '\xa9wrt']
