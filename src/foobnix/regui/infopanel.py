@@ -5,7 +5,6 @@ Created on Sep 23, 2010
 '''
 import gtk
 import os
-import locale
 import logging
 
 from foobnix.fc.fc import FC
@@ -68,7 +67,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         """wiki"""
         wBox = gtk.VBox()
-        wiki_title = _("Biography")
+        wiki_title = _("About Artist")
         self.wiki = TextArea()
         
         wBox.line_title = EventLabel(wiki_title, func=self.show_current, arg=wBox, func1=self.show_wiki_info)

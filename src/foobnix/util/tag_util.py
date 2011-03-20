@@ -100,20 +100,39 @@ class TagEditor(ChildTopWindow):
 
     def apply_changes_for_rows_in_tree(self):
         ''' apply stored changes for rows in playlist_tree ''' 
-        store = {}   
-        for path in self.store.keys():
-            if self.store[path][0] and self.store[path][1]:
-                store[path] = self.store[path][0] + ' - ' + self.store[path][1]
-            elif self.store[path][0] and not self.store[path][1]:
-                store[path] = self.store[path][0] 
-            elif self.store[path][1] and not self.store[path][0]:
-                store[path] = self.store[path][1]
+        texts = {}
+        artists = {}
+        titles = {}
+        composers = {}
         
         playlist_tree = self.controls.notetabs.get_current_tree()
-        for path in store.keys():
+        
+        for path in self.store.keys():
+            if self.store[path][0] and self.store[path][1]:
+                texts[path] = self.store[path][0] + ' - ' + self.store[path][1]
+                artists[path] = self.store[path][0]
+                titles[path] = self.store[path][1]
+            elif self.store[path][0] and not self.store[path][1]:
+                texts[path] = self.store[path][0]
+                artists[path] = self.store[path][0] 
+                titles[path] = ''
+            elif self.store[path][1] and not self.store[path][0]:
+                texts[path] = self.store[path][1]
+                artists[path] = ''
+                titles[path] = self.store[path][1]
+            if self.store[path][2]:
+                composers[path] = self.store[path][2]
+        
+        
+        for path in self.store.keys():
             for row in playlist_tree.model:
                 if row[playlist_tree.path[0]] == path:
-                    row[playlist_tree.text[0]] = store[path]
+                    if path in texts:
+                        row[playlist_tree.text[0]] = texts[path]
+                        row[playlist_tree.artist[0]] = artists[path]
+                        row[playlist_tree.title[0]] = titles[path]
+                    if path in composers:
+                        row[playlist_tree.composer[0]] = composers[path]
         self.store = {}
     
     def get_audio_tags(self, paths):
@@ -144,6 +163,7 @@ class TagEditor(ChildTopWindow):
         else:
             tag_names = self.tag_names
         for tag_name, tag_entry in zip(tag_names, self.tag_entries):
+            tag_entry.delete_text(0, -1)
             try:
                 if self.audious[0].has_key(tag_name):
                     tag_entry.set_text(self.audious[0][tag_name][0])
@@ -157,12 +177,12 @@ class TagEditor(ChildTopWindow):
                 else:
                     logging.error(e)
         self.show_all()
-                   
+
     def save_audio_tags(self, button, paths):
         
         def set_tags(audio, path, tag_name):
             if not self.store.has_key(path):
-                self.store[path] = ["", ""]
+                self.store[path] = ["", "", ""]
             if isinstance(audio, MP4):
                 tag_name = tag_mp4_name
             try:
@@ -202,20 +222,27 @@ class TagEditor(ChildTopWindow):
                         self.store[path][0] = audio['\xa9ART']
                 except UnicodeDecodeError:
                     pass
+            if (tag_name == "composer" or tag_name == '\xa9wrt') and tag_value:
+                self.store[path][2] = tag_value
                 
         for tag_name, tag_mp4_name, tag_entry, check_button in zip(self.tag_names, self.tag_mp4_names, self.tag_entries, self.check_buttons):
             tag_value = tag_entry.get_text()
             if check_button.get_active():
                 for audio, path in zip(self.audious, self.paths):
+                    if not audio:
+                        continue
                     set_tags(audio, path, tag_name)
             else:
-                set_tags(self.audious[0], self.paths[0], tag_name)
+                if self.audious[0]:
+                    set_tags(self.audious[0], self.paths[0], tag_name)
             check_button.set_active(False)
         
         self.apply_changes_for_rows_in_tree()
 
 
     def decoding_cp866(self, audio):
+        if not audio:
+            return
         if not isinstance(audio, MP4):
             for value, key in zip(audio.values(), audio.keys()):
                 audio[key] = decode_cp866(value[0])
