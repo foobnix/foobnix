@@ -7,7 +7,6 @@ Created on 23 сент. 2010
 
 import os
 from foobnix.util import const
-from foobnix.version import VERSION
 from foobnix.fc.fc_base import FCBase
 from foobnix.util.singleton import Singleton
 from foobnix.util.agent import get_ranmom_agent
@@ -16,7 +15,7 @@ from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
 from foobnix.fc.fc_cache import FCache
 
-CONFIG_FILE = os.path.join(CONFIG_DIR , "foobnix_%s.pkl" % VERSION)
+CONFIG_FILE = os.path.join(CONFIG_DIR , "foobnix.pkl")
 
 """Foobnix player configuration"""
 class FC():

@@ -19,8 +19,6 @@ from foobnix.fc.fc_cache import FCache
 from foobnix.regui.model import FModel
 from foobnix.regui.state import LoadSave
 from foobnix.version import FOOBNIX_VERSION
-from foobnix.version import VERSION
-from foobnix.version import RELEASE
 from foobnix.util.m3u_utils import m3u_reader
 from foobnix.util.text_utils import normalize_text
 from foobnix.util.file_utils import get_file_extension
@@ -73,7 +71,8 @@ class BaseFoobnixControls():
             
         return beans
     def get_active_bean(self):
-        return self.notetabs.get_current_tree().get_selected_or_current_bean()
+        if self.notetabs.get_current_tree():
+            return self.notetabs.get_current_tree().get_selected_or_current_bean()
      
     def play_selected_song(self):    
         current = self.get_active_bean()

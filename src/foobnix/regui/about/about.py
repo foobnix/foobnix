@@ -20,7 +20,7 @@ class AboutWindow(gtk.AboutDialog):
         self.set_comments(_("Simple and Powerful player"))
         self.set_website("http://www.foobnix.com")
         self.set_authors(["Dmitry Kozhura (zavlab1) <zavlab1@gmail.com>", "Pietro Campagnano <fain182@gmailcom>"])
-        self.set_logo(gtk.gdk.pixbuf_new_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX)))
+        self.set_logo(gtk.gdk.pixbuf_new_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))) #@UndefinedVariable
     
     def show(self):
         self.run()

@@ -24,7 +24,6 @@ class AdvancedDrawingArea(gtk.DrawingArea):
         logging.debug("Template function not defined")    
     
     def on_key_press(self, w, e):   
-        print e         
         if is_key(e, 'Escape') or get_key(e) in ('F', 'f', 'а', 'А'):                
             self.action_function()                
         elif is_key_alt(e) and is_key(e, "Return"):
@@ -74,6 +73,14 @@ class FullScreanArea(ChildTopWindow):
             
             self.add(self.layout)
             self.set_opacity(1)
+            
+            def my_event(w, e):
+                if e.y > gtk.gdk.screen_height() - 50: #@UndefinedVariable
+                    line.show()
+                else:
+                    line.hide()          
+            
+            self.connect("motion-notify-event", my_event)
         
         def set_text(self, text):
             self.text_label.set_text(text)

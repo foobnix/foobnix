@@ -5,10 +5,9 @@ from distutils.core import setup, Command
 from test.all import run_all_tests
 
 if os.name == 'nt':
-    import py2exe
+    import py2exe #@UnresolvedImport @UnusedImport
 
-VERSION = "0.2.5"
-RELEASE = "10"
+VERSION = "2.5.10"
 
 data_files = [
     ('share/foobnix', ['README']),
@@ -51,11 +50,7 @@ if os.name != 'nt':
         #data_files.append(('/usr/share/locale/%s/LC_MESSAGES' % lang, ['mo/%s/foobnix.mo' % lang]))
     
     version = file("foobnix/version.py", "wt")
-    version.write("""
-FOOBNIX_VERSION="%(VERSION)s-%(RELEASE)s"
-VERSION="%(VERSION)s"
-RELEASE="%(RELEASE)s"
-    """ % {'RELEASE':RELEASE, 'VERSION':VERSION})
+    version.write("FOOBNIX_VERSION=%s" % VERSION)
     version.close()
 
 shutil.copyfile("foobnix.py", "foobnix/foobnix")

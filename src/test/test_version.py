@@ -13,8 +13,10 @@ class TestNormalizeFunctions(unittest.TestCase):
         self.assertEquals(-1, compare_versions("0.2.5-11","0.2.5-1"))
         self.assertEquals(-1, compare_versions("0.2.5-10","0.2.5-9"))
         self.assertEquals(1, compare_versions("0.2.5-9","0.2.5-10"))
-        self.assertEquals(0, compare_versions("0.2.5","0.2.5-0"))
-        self.assertEquals(1, compare_versions("0.2.3-9","0.2.5-0"))
+        #self.assertEquals(0, compare_versions("0.2.5","0.2.5-0"))
+        #self.assertEquals(1, compare_versions("0.2.3-9","0.2.5-0"))
+        self.assertEquals(0, compare_versions("0.2.5-10","2.5.10"))
+        self.assertEquals(1, compare_versions("0.2.5-9","2.5.10"))
         
         
         

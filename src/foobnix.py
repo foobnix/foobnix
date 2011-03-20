@@ -28,7 +28,7 @@ def foobnix():
     init_time = time.time()
     
     if "--nt" in sys.argv or os.name == 'nt':    
-        gobject.threads_init()
+        gobject.threads_init() #@UndefinedVariable
         core = FoobnixCore(False)
         core.run()
         print ("******Foobnix run in", time.time() - init_time, " seconds******")
@@ -39,7 +39,7 @@ def foobnix():
         iface = foobnix_dbus_interface()
         if "--debug" in sys.argv or not iface:
             print ("start program")
-            gobject.threads_init()    
+            gobject.threads_init()    #@UndefinedVariable
             core = FoobnixCore(True)
             core.run()
             core.dbus.parse_arguments(sys.argv)
