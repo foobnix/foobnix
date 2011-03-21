@@ -26,7 +26,7 @@ LIST=("lucid" "maverick")
 
 for UBUNTU in ${LIST[@]}
 do
-V_RELEASE=${RELEASE}${UBUNTU:0:1}
+	V_RELEASE=${RELEASE}${UBUNTU:0:1}
 	echo "Deleting content of the folder", $UBUNTU
 	pwd
 	rm -rf foobnix_*_*
@@ -34,7 +34,7 @@ V_RELEASE=${RELEASE}${UBUNTU:0:1}
 	rm -rf foobnix*.tar.gz
 	rm -rf foobnix_$FOOBNIX_VERSION/debian/changelog
 	cd foobnix_$FOOBNIX_VERSION/debian/
-	python ../../../src/scripts/changelog_gen.py $VERSION $V_RELEASE $UBUNTU
+	python ../../../src/scripts/changelog_gen.py ${FOOBNIX_VERSION}${UBUNTU:0:1} $UBUNTU
 	cd ../
 	
 	#dch -e
@@ -45,6 +45,7 @@ V_RELEASE=${RELEASE}${UBUNTU:0:1}
 	
 	cd ../	
 	dput ppa:foobnix-player/foobnix foobnix_${FOOBNIX_VERSION}${UBUNTU:0:1}_source.changes
+	#read text
 done
 
 rm -rf foobnix_*
