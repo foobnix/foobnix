@@ -27,8 +27,10 @@ foobnix_localization()
 
 LOGO = get_foobnix_resourse_path_by_name(ICON_FOOBNIX)
 FFMPEG_NAME = "ffmpeg_foobnix"
-if os.uname()[4] == 'x86_64':
-    FFMPEG_NAME += "_x64"
+#fix win
+if os.name == 'posix':
+    if os.uname()[4] == 'x86_64':
+        FFMPEG_NAME += "_x64"
     
 class Converter(ChildTopWindow):
     def __init__(self):
