@@ -82,6 +82,7 @@ class RadioTreeControl(CommonTreeControl):
         with open(CACHE_RADIO_FILE, 'a') as f:
             f.write('#' + name + '\n' + url + '\n')
         bean = FModel(name, url).add_is_file(True)
+        bean.type=FTYPE_RADIO
         self.append(bean)
     
     def on_delete_station(self):
