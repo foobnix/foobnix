@@ -35,10 +35,11 @@ class VKIntegrationControls(CommonTreeControl):
         self.cache =[]
     
     def lazy_load(self):
+        self.controls.in_thread.run_with_progressbar(self._lazy_load)
+    
+    def _lazy_load(self):
         if self.lazy or not hasattr(self.controls.vk_service,"api"):
             return True
-        
-        
         
         def get_users_by_uuid(uuidd):
             for user in self.controls.vk_service.api.get('getProfiles',uids=uuidd):
@@ -65,7 +66,7 @@ class VKIntegrationControls(CommonTreeControl):
     
     def on_button_press(self, w, e):
         active = self.get_selected_bean()
-        if is_rigth_click(e):
+        if active and is_rigth_click(e):
             menu = Popup()
             menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
             menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            
