@@ -401,10 +401,13 @@ class NoteTabControl(TabGeneral, LoadSave):
                     FC().columns[column.key][2] = column.get_width()
                 
     def equalize_columns_size(self, notebook, page_pointer, page_num):
-        old_pl_tree_columns =  self.get_current_tree().get_columns()
-        new_pl_tree_columns = self.get_nth_page(page_num).get_child().get_columns()
-        for old_pl_tree_column, new_pl_tree_column in zip(old_pl_tree_columns, new_pl_tree_columns):
-            new_pl_tree_column.set_fixed_width(old_pl_tree_column.get_width())
+        try:
+            old_pl_tree_columns =  self.get_current_tree().get_columns()
+            new_pl_tree_columns = self.get_nth_page(page_num).get_child().get_columns()
+            for old_pl_tree_column, new_pl_tree_column in zip(old_pl_tree_columns, new_pl_tree_columns):
+                new_pl_tree_column.set_fixed_width(old_pl_tree_column.get_width())
+        except AttributeError:
+            pass
     
     def empty_tab(self, *a):
         self.append_tab("Foobnix", [])
