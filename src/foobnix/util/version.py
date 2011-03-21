@@ -20,7 +20,7 @@ def compare_versions(version1, version2):
     
     if v1 == v2 and r1==r2:
         return 0
-    print v1, v2, r1, r2
+    
     if v1 >= v2 and r1 > r2:
         return -1
     else:

@@ -329,11 +329,12 @@ def convert_files(paths):
         converter.fill_form(paths)
         converter.format_combo.set_active(0)
     else:
+        url = "http://foobnix.googlecode.com/files/" + FFMPEG_NAME
         dialog = gtk.Dialog(_("Attention"))
         area = ScrolledText()
-        area.buffer.set_text(_("Converter needs specially compiled binary module for work. You can \ndownload and install it automatically (click \"Install\") \
-or download it \nfrom foobnix.com and place to config folder\n\
-(~/.config/foobnix) manually \n\nCheck if you have packages libmp3lame0 and libfaac0"))
+        area.buffer.set_text(_(("Converter needs specially compiled binary module for work. You can \ndownload and install it automatically (click \"Install\")\
+        or download it manually (%s) and place to config folder\n\
+(~/.config/foobnix)  \n\nCheck if you have packages libmp3lame0 and libfaac0") % url) )
         ok_button = dialog.add_button(_("Install"), gtk.RESPONSE_OK)
         cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
         ok_button.grab_default()      
