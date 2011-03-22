@@ -404,7 +404,7 @@ class NoteTabControl(TabGeneral, LoadSave):
         old_pl_tree_columns =  self.get_current_tree().get_columns()
         new_pl_tree_columns = self.get_nth_page(page_num).get_child().get_columns()
         for old_pl_tree_column, new_pl_tree_column in zip(old_pl_tree_columns, new_pl_tree_columns):
-            new_pl_tree_column.set_fixed_width(old_pl_tree_column.get_width())
+            gobject.idle_add(new_pl_tree_column.set_fixed_width,old_pl_tree_column.get_width())
     
     def empty_tab(self, *a):
         self.append_tab("Foobnix", [])

@@ -21,6 +21,7 @@ from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release, \
     is_rigth_click
+import gobject
 
 foobnix_localization()
 
@@ -277,7 +278,8 @@ class PlaylistTreeControl(CommonTreeControl):
             column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         else:
             column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
-        column.set_fixed_width(FC().columns[column.key][2])
+        gobject.idle_add(column.set_fixed_width,FC().columns[column.key][2])
+        
         self.append_column(column)
         column.button = column.label.get_parent().get_parent().get_parent()
         column.button.connect("button-press-event", self.on_click_header)
