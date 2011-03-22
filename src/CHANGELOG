@@ -1,3 +1,13 @@
+2.5.11
+* Fixed show title and artist for radios, added manualy
+* Fixed lastfm integration list for non English locale. 
+
+2.5.10
+* File Converter
+* Controls for full screen video.
+* VK integration: Show Friends list and frieds music
+* VK integration: Search by user id and by group id
+
 0.2.5
 * Simple Tag Editor, support of batch processing file tags
 * Rename and delete files and directories from music library
