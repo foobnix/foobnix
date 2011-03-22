@@ -331,12 +331,14 @@ def convert_files(paths):
         converter.fill_form(paths)
         converter.format_combo.set_active(0)
     else:
+        url = "http://foobnix.googlecode.com/files/" + FFMPEG_NAME
         dialog = gtk.Dialog(_("Attention"))
         area = ScrolledText()
         area.buffer.set_text(_("Converter require specially compiled ffmpeg module for work.\n" + 
                                "You should download it automatically (click Download)\n"+
                                "Also check you have packages libmp3lame0 and libfaac0"))
         ok_button = dialog.add_button(_("Download"), gtk.RESPONSE_OK)
+        
         cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
         ok_button.grab_default()      
         prog_bar = gtk.ProgressBar()
