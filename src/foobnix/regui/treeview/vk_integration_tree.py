@@ -102,5 +102,5 @@ class VKIntegrationControls(CommonTreeControl):
             gobject.idle_add(self.remove_iters,old_iters)        
             
             #gobject.idle_add(sub_task)
-       
+        #task()
         self.controls.in_thread.run_with_progressbar(task)

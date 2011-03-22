@@ -64,11 +64,11 @@ class LastFmIntegrationControls(CommonTreeControl):
         logging.debug("expanded %s" % parent)
         def task():
             old_iters = self.get_child_iters_by_parent(self.model, self.get_iter_from_bean(parent));
-            childs = self.services[parent.text](FCBase().lfm_login)
+            childs = self.services[u""+parent.text](FCBase().lfm_login)
             update_parent_for_beans(childs, parent)
             
             
             self.append_all(childs)            
             gobject.idle_add(self.remove_iters,old_iters)        
             
-        self.controls.in_thread.run_with_progressbar(task)
+        self.controls.in_thread.run_with_progressbar(task)        

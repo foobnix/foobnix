@@ -6,11 +6,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-03-13 19:20+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-03-22 16:46+0200\n"
 "PO-Revision-Date: 2011-03-17 11:57+0000\n"
 "Last-Translator: Sérgio Marques <Unknown>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
+"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -82,30 +83,27 @@ msgstr "Restaurar predefinições"
 msgid "Empty tab"
 msgstr "Separador vazio"
 
-#: .././foobnix/helpers/dialog_entry.py:123
 #: .././foobnix/helpers/dialog_entry.py:124
+#: .././foobnix/helpers/dialog_entry.py:125
 msgid "New foobnix release avaliable"
 msgstr "Está disponível uma nova versão do foobnix"
 
-#: .././foobnix/helpers/dialog_entry.py:129
+#: .././foobnix/helpers/dialog_entry.py:130
 msgid "Download and Donate"
 msgstr "Transferir e doar"
 
 #. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
-#: .././foobnix/helpers/dialog_entry.py:131
-msgid "http://www.foobnix.com/download/eng"
-msgstr "http://www.foobnix.com/download/eng"
-
-#: .././foobnix/helpers/dialog_entry.py:131
+#: .././foobnix/helpers/dialog_entry.py:132
 #: .././foobnix/regui/treeview/playlist_tree.py:206
+#: .././foobnix/util/converter.py:339
 msgid "Download"
 msgstr "Transferir"
 
-#: .././foobnix/helpers/dialog_entry.py:144
+#: .././foobnix/helpers/dialog_entry.py:145
 msgid "We hope you like the player. We will make it even better."
 msgstr "Esperamos que goste do reprodutor. Vamos torná-lo ainda melhor."
 
-#: .././foobnix/helpers/dialog_entry.py:145
+#: .././foobnix/helpers/dialog_entry.py:146
 #: .././foobnix/preferences/configs/notification_conf.py:19
 #: .././foobnix/preferences/configs/other_conf.py:57
 msgid "Check for new foobnix release on start"
@@ -120,12 +118,12 @@ msgid "Restore Defaults Settings"
 msgstr "Restaurar as definições pré-definidas"
 
 #: .././foobnix/preferences/preferences_window.py:138
-#: .././foobnix/util/tag_util.py:84
+#: .././foobnix/util/tag_util.py:85
 msgid "Apply"
 msgstr "Aplicar"
 
 #: .././foobnix/preferences/preferences_window.py:143
-#: .././foobnix/util/converter.py:77 .././foobnix/util/tag_util.py:85
+#: .././foobnix/util/converter.py:85 .././foobnix/util/tag_util.py:86
 msgid "Close"
 msgstr "Fechar"
 
@@ -163,8 +161,9 @@ msgstr "Remover"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:155
 #: .././foobnix/regui/controls/playback.py:196
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:60
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:59
 #: .././foobnix/regui/treeview/playlist_tree.py:205
+#: .././foobnix/regui/treeview/vk_integration_tree.py:71
 msgid "Play"
 msgstr "Reproduzir"
 
@@ -174,8 +173,8 @@ msgid "Pause"
 msgstr "Pausar"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:157
-#: .././foobnix/regui/controls/playback.py:195 .././foobnix/util/const.py:39
-#: .././foobnix/util/converter.py:86
+#: .././foobnix/regui/controls/playback.py:195 .././foobnix/util/const.py:44
+#: .././foobnix/util/converter.py:94
 msgid "Stop"
 msgstr "Parar"
 
@@ -474,49 +473,54 @@ msgstr "Duração (seg): "
 msgid "Vkontakte"
 msgstr "Vkontakte"
 
-#: .././foobnix/regui/base_controls.py:110
+#: .././foobnix/preferences/configs/vk_conf.py:47
+msgid "Check Foobnix Access (Require)"
+msgstr ""
+
+#: .././foobnix/regui/base_controls.py:112
 msgid "Choose folders to open"
 msgstr "Escolha as pastas a abrir"
 
-#: .././foobnix/regui/base_controls.py:136
+#: .././foobnix/regui/base_controls.py:138
 msgid "Nothing found to play in the folder(s)"
 msgstr "Nada a reproduzir na(s) pasta(s)"
 
-#: .././foobnix/regui/base_controls.py:143
+#: .././foobnix/regui/base_controls.py:145
 msgid "Choose file to open"
 msgstr "Escolha o ficheiro a abrir"
 
-#: .././foobnix/regui/base_controls.py:175
+#: .././foobnix/regui/base_controls.py:177
 msgid "Nothing found to play in the file(s)"
 msgstr "Nada a reproduzir no(s) ficheiros(s)"
 
-#: .././foobnix/regui/base_controls.py:247
+#: .././foobnix/regui/base_controls.py:249
 msgid "Music not found in folder(s):"
 msgstr "Não foram encontradas músicas na(s) pasta(s):"
 
-#: .././foobnix/regui/infopanel.py:50
+#: .././foobnix/regui/infopanel.py:49
 msgid "Best Songs"
 msgstr "Melhores músicas"
 
-#: .././foobnix/regui/infopanel.py:53
+#: .././foobnix/regui/infopanel.py:52
 msgid "Similar Artists"
 msgstr "Artistas semelhantes"
 
-#: .././foobnix/regui/infopanel.py:56
+#: .././foobnix/regui/infopanel.py:55
 msgid "Similar Songs"
 msgstr "Música semelhantes"
 
-#: .././foobnix/regui/infopanel.py:59
+#: .././foobnix/regui/infopanel.py:58
 msgid "Similar Tags"
 msgstr "\"Tags\" semelhantes"
 
-#: .././foobnix/regui/infopanel.py:64
+#: .././foobnix/regui/infopanel.py:63
 msgid "Lyrics"
 msgstr "Letras musicais"
 
-#: .././foobnix/regui/infopanel.py:71
-msgid "Biography"
-msgstr "Biografia"
+#: .././foobnix/regui/infopanel.py:70
+#, fuzzy
+msgid "About Artist"
+msgstr "Artista"
 
 #: .././foobnix/regui/menu.py:27
 msgid "_File"
@@ -566,7 +570,7 @@ msgstr "Aleatória"
 msgid "Repeat"
 msgstr "Repetir"
 
-#: .././foobnix/regui/menu.py:69 .././foobnix/util/const.py:37
+#: .././foobnix/regui/menu.py:69 .././foobnix/util/const.py:42
 msgid "All"
 msgstr "Tudo"
 
@@ -606,49 +610,59 @@ msgstr "Doar / Participar"
 msgid "http://www.foobnix.com/donate/eng"
 msgstr "http://www.foobnix.com/donate/eng"
 
-#: .././foobnix/regui/perspectives.py:31
+#: .././foobnix/regui/perspectives.py:35
 msgid "Add Folder(s) in tree"
 msgstr "Adicionar pasta(s)"
 
-#: .././foobnix/regui/perspectives.py:75
+#: .././foobnix/regui/perspectives.py:81
 msgid "Music"
 msgstr "Música"
 
-#: .././foobnix/regui/perspectives.py:75
+#: .././foobnix/regui/perspectives.py:81
 msgid "Music Navigation (Alt+1)"
 msgstr "Navegação nas músicas (Alt+1)"
 
-#: .././foobnix/regui/perspectives.py:80
+#: .././foobnix/regui/perspectives.py:86
 msgid "Radio"
 msgstr "Rádio"
 
-#: .././foobnix/regui/perspectives.py:80
+#: .././foobnix/regui/perspectives.py:86
 msgid "Radio Stantions (Alt+2)"
 msgstr "Estações de rádio (Alt+2)"
 
-#: .././foobnix/regui/perspectives.py:87
+#: .././foobnix/regui/perspectives.py:93
 msgid "Playlist"
 msgstr "Lista de reprodução"
 
-#: .././foobnix/regui/perspectives.py:87
+#: .././foobnix/regui/perspectives.py:93
 msgid "Virtual Play Lists (Alt+3)"
 msgstr "Listas de reprodução virtuais (Alt+3)"
 
-#: .././foobnix/regui/perspectives.py:91
+#: .././foobnix/regui/perspectives.py:97
 msgid "Info"
 msgstr "Info"
 
-#: .././foobnix/regui/perspectives.py:91
+#: .././foobnix/regui/perspectives.py:97
 msgid "Info Panel (Alt+4)"
 msgstr "Painel de info (Alt+4)"
 
-#: .././foobnix/regui/perspectives.py:94
-msgid "LastFM"
+#: .././foobnix/regui/perspectives.py:100
+#, fuzzy
+msgid "Last.Fm"
 msgstr "LastFM"
 
-#: .././foobnix/regui/perspectives.py:94
+#: .././foobnix/regui/perspectives.py:100
 msgid "Last.fm Panel (Alt+5)"
 msgstr "Painel Last.fm (Alt+5)"
+
+#: .././foobnix/regui/perspectives.py:103
+msgid "VK"
+msgstr ""
+
+#: .././foobnix/regui/perspectives.py:103
+#, fuzzy
+msgid "VK Panel (Alt+6)"
+msgstr "Painel de info (Alt+4)"
 
 #: .././foobnix/regui/search.py:15
 msgid "Search music online"
@@ -669,7 +683,6 @@ msgstr "Pesquisa \"online\""
 #: .././foobnix/regui/search.py:98
 #: .././foobnix/regui/treeview/playlist_tree.py:81
 #: .././foobnix/regui/treeview/playlist_tree.py:82
-#: .././foobnix/util/tag_util.py:34
 msgid "Artist"
 msgstr "Artista"
 
@@ -681,7 +694,7 @@ msgstr "Álbuns"
 msgid "Similar"
 msgstr "Semelhantes"
 
-#: .././foobnix/regui/search.py:108 .././foobnix/util/tag_util.py:39
+#: .././foobnix/regui/search.py:108
 msgid "Genre"
 msgstr "Género"
 
@@ -752,21 +765,21 @@ msgstr "Sair"
 msgid "Close Popup"
 msgstr "Fechar alerta"
 
-#: .././foobnix/regui/notetab/__init__.py:272
+#: .././foobnix/regui/notetab/__init__.py:273
 #: .././foobnix/regui/notetab/tab_library.py:36
 msgid "Rename tab"
 msgstr "Renomear separador"
 
-#: .././foobnix/regui/notetab/__init__.py:273
+#: .././foobnix/regui/notetab/__init__.py:274
 msgid "Save playlist as"
 msgstr "Gravar lista de reprodução como"
 
-#: .././foobnix/regui/notetab/__init__.py:274
+#: .././foobnix/regui/notetab/__init__.py:275
 #: .././foobnix/regui/notetab/tab_library.py:41
 msgid "Close tab"
 msgstr "Fechar separador"
 
-#: .././foobnix/regui/notetab/__init__.py:337
+#: .././foobnix/regui/notetab/__init__.py:338
 msgid "Choose folder to save playlist"
 msgstr "Escolha a pasta para gravar a lista de reprodução"
 
@@ -793,31 +806,33 @@ msgstr "Apagar músicas"
 msgid "Open in file manager"
 msgstr "Abrir no gestor de ficheiros"
 
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:24
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:23
 msgid "Lasm.fm Integration "
 msgstr "Integração Lasm.fm "
 
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:36
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:35
 msgid "My loved tracks"
 msgstr "Minhas músicas adoradas"
 
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:37
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:36
 msgid "My top tracks"
 msgstr "Minhas músicas preferidas"
 
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:38
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:37
 msgid "My recent tracks"
 msgstr "Minhas músicas recentes"
 
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:39
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:38
 msgid "My top artists"
 msgstr "Meus artistas preferidos"
 
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:47
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:46
+#: .././foobnix/regui/treeview/vk_integration_tree.py:51
 msgid "loading..."
 msgstr "a carregar..."
 
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:61
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:60
+#: .././foobnix/regui/treeview/vk_integration_tree.py:72
 msgid "Copy to Search Line"
 msgstr "Copiar para a linha de pesquisa"
 
@@ -856,7 +871,6 @@ msgstr "Número"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:62
 #: .././foobnix/regui/treeview/playlist_tree.py:63
-#: .././foobnix/util/tag_util.py:41
 msgid "Composer"
 msgstr "Compositor"
 
@@ -867,7 +881,6 @@ msgstr "Música"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:90
 #: .././foobnix/regui/treeview/playlist_tree.py:91
-#: .././foobnix/util/tag_util.py:35
 msgid "Title"
 msgstr "Título"
 
@@ -908,11 +921,11 @@ msgstr "Adoro esta(s) música(s)"
 msgid "Open In File Manager"
 msgstr "Abrir no gestor de ficheiros"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:281
+#: .././foobnix/regui/treeview/playlist_tree.py:286
 msgid "Numbering by order"
 msgstr "Numerar pela ordem"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:283
+#: .././foobnix/regui/treeview/playlist_tree.py:288
 msgid "Numbering by tags"
 msgstr "Numerar por \"tags\""
 
@@ -965,63 +978,68 @@ msgstr "Apagar lista de reprodução"
 msgid "Create new playlist"
 msgstr "Criar lista de reprodução"
 
-#: .././foobnix/util/const.py:38
+#: .././foobnix/regui/treeview/vk_integration_tree.py:24
+#, fuzzy
+msgid "VK Integration "
+msgstr "Integração Lasm.fm "
+
+#: .././foobnix/util/const.py:43
 msgid "Active"
 msgstr "Ativa"
 
-#: .././foobnix/util/const.py:40
+#: .././foobnix/util/const.py:45
 msgid "Downloading"
 msgstr "A transferir"
 
-#: .././foobnix/util/const.py:41
+#: .././foobnix/util/const.py:46
 msgid "Complete"
 msgstr "Concluído"
 
-#: .././foobnix/util/const.py:42
+#: .././foobnix/util/const.py:47
 msgid "Inactive"
 msgstr "Inativo"
 
-#: .././foobnix/util/const.py:44
+#: .././foobnix/util/const.py:49
 msgid "Lock"
 msgstr "Bloquear"
 
-#: .././foobnix/util/const.py:45
+#: .././foobnix/util/const.py:50
 msgid "Error"
 msgstr "Erro"
 
-#: .././foobnix/util/converter.py:35
+#: .././foobnix/util/converter.py:43
 msgid "Format"
 msgstr "Formato"
 
-#: .././foobnix/util/converter.py:36
+#: .././foobnix/util/converter.py:44
 msgid "Bitrate"
 msgstr "Taxa de \"bits\""
 
-#: .././foobnix/util/converter.py:37
+#: .././foobnix/util/converter.py:45
 msgid "Channels"
 msgstr "Canais"
 
-#: .././foobnix/util/converter.py:38
+#: .././foobnix/util/converter.py:46
 msgid "Frequency"
 msgstr "Frequência"
 
-#: .././foobnix/util/converter.py:80
+#: .././foobnix/util/converter.py:88
 msgid "Convert"
 msgstr "Converter"
 
-#: .././foobnix/util/converter.py:90
+#: .././foobnix/util/converter.py:98
 msgid "Show files"
 msgstr "Mostrar ficheiros"
 
-#: .././foobnix/util/converter.py:110
+#: .././foobnix/util/converter.py:120
 msgid "Choose directory to save converted files"
 msgstr "Escolha o diretório para gravar os ficheiros convertidos"
 
-#: .././foobnix/util/converter.py:200
+#: .././foobnix/util/converter.py:223
 msgid "Warning!!!"
 msgstr "Atenção!!!"
 
-#: .././foobnix/util/converter.py:204
+#: .././foobnix/util/converter.py:227
 msgid ""
 "So file(s)  already exist(s) and will be overwritten.\n"
 "Do you wish to continue?"
@@ -1029,18 +1047,12 @@ msgstr ""
 "O(s) ficheiro(s) existente(s) será(ão) substituído(s).\n"
 "Pretende continuar?"
 
-#: .././foobnix/util/converter.py:310
+#: .././foobnix/util/converter.py:334
 msgid "Attention"
 msgstr "Atenção"
 
-#: .././foobnix/util/converter.py:315
-msgid "Install"
-msgstr "Instalar"
-
-#: .././foobnix/util/converter.py:312
-msgid ""
-"Converter needs specially compiled binary module for work. You can \n"
-"download and install it automatically (click \"Install\") \\\r"
+#: .././foobnix/util/converter.py:336
+msgid "Converter require specially compiled ffmpeg module for work.\n"
 msgstr ""
 
 #: .././foobnix/util/file_utils.py:52
@@ -1063,29 +1075,34 @@ msgstr "Escolha a janela"
 msgid "Tag Editor"
 msgstr "Editor de detalhes"
 
-#: .././foobnix/util/tag_util.py:36
-msgid "Album"
-msgstr "Álbum"
-
-#: .././foobnix/util/tag_util.py:37
-msgid "Year"
-msgstr "Ano"
-
-#: .././foobnix/util/tag_util.py:38
-msgid "Track number"
-msgstr "Número da música"
-
-#: .././foobnix/util/tag_util.py:40
-msgid "Author text"
-msgstr "Autor da letra"
-
-#: .././foobnix/util/tag_util.py:64
+#: .././foobnix/util/tag_util.py:65
 msgid ""
 "Apply for all selected tracks\n"
 "(active on multi selection)"
 msgstr ""
 "Aplicar nas músicas selecionadas\n"
 "(ativo na seleção múltipla)"
+
+#~ msgid "Install"
+#~ msgstr "Instalar"
+
+#~ msgid "http://www.foobnix.com/download/eng"
+#~ msgstr "http://www.foobnix.com/download/eng"
+
+#~ msgid "Biography"
+#~ msgstr "Biografia"
+
+#~ msgid "Album"
+#~ msgstr "Álbum"
+
+#~ msgid "Year"
+#~ msgstr "Ano"
+
+#~ msgid "Track number"
+#~ msgstr "Número da música"
+
+#~ msgid "Author text"
+#~ msgstr "Autor da letra"
 
 #~ msgid "Love this track(s)"
 #~ msgstr "Adoro esta(s) música(s)"
@@ -1099,11 +1116,9 @@ msgstr ""
 #~ msgid "Audio Converter"
 #~ msgstr "Conversor de áudio"
 
-#, python-format
 #~ msgid "Convert  %d of %d file(s)"
 #~ msgstr "Convertido(s)  %d de %d ficheiro(s)"
 
-#, python-format
 #~ msgid "Finished (%d of %d)"
 #~ msgstr "Concluído (%d de %d)"
 

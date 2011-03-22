@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-20 22:21+0200\n"
+"POT-Creation-Date: 2011-03-22 16:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,6 +94,7 @@ msgstr ""
 #. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:132
 #: .././foobnix/regui/treeview/playlist_tree.py:206
+#: .././foobnix/util/converter.py:339
 msgid "Download"
 msgstr ""
 
@@ -121,7 +122,7 @@ msgid "Apply"
 msgstr ""
 
 #: .././foobnix/preferences/preferences_window.py:143
-#: .././foobnix/util/converter.py:83 .././foobnix/util/tag_util.py:86
+#: .././foobnix/util/converter.py:85 .././foobnix/util/tag_util.py:86
 msgid "Close"
 msgstr ""
 
@@ -161,7 +162,7 @@ msgstr ""
 #: .././foobnix/regui/controls/playback.py:196
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:59
 #: .././foobnix/regui/treeview/playlist_tree.py:205
-#: .././foobnix/regui/treeview/vk_integration_tree.py:70
+#: .././foobnix/regui/treeview/vk_integration_tree.py:71
 msgid "Play"
 msgstr ""
 
@@ -172,7 +173,7 @@ msgstr ""
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:157
 #: .././foobnix/regui/controls/playback.py:195 .././foobnix/util/const.py:44
-#: .././foobnix/util/converter.py:92
+#: .././foobnix/util/converter.py:94
 msgid "Stop"
 msgstr ""
 
@@ -472,7 +473,7 @@ msgid "Vkontakte"
 msgstr ""
 
 #: .././foobnix/preferences/configs/vk_conf.py:47
-msgid "Check Requesting Access"
+msgid "Check Foobnix Access (Require)"
 msgstr ""
 
 #: .././foobnix/regui/base_controls.py:112
@@ -822,12 +823,12 @@ msgid "My top artists"
 msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:46
-#: .././foobnix/regui/treeview/vk_integration_tree.py:50
+#: .././foobnix/regui/treeview/vk_integration_tree.py:51
 msgid "loading..."
 msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:60
-#: .././foobnix/regui/treeview/vk_integration_tree.py:71
+#: .././foobnix/regui/treeview/vk_integration_tree.py:72
 msgid "Copy to Search Line"
 msgstr ""
 
@@ -1001,56 +1002,50 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: .././foobnix/util/converter.py:41
+#: .././foobnix/util/converter.py:43
 msgid "Format"
 msgstr ""
 
-#: .././foobnix/util/converter.py:42
+#: .././foobnix/util/converter.py:44
 msgid "Bitrate"
 msgstr ""
 
-#: .././foobnix/util/converter.py:43
+#: .././foobnix/util/converter.py:45
 msgid "Channels"
 msgstr ""
 
-#: .././foobnix/util/converter.py:44
+#: .././foobnix/util/converter.py:46
 msgid "Frequency"
 msgstr ""
 
-#: .././foobnix/util/converter.py:86
+#: .././foobnix/util/converter.py:88
 msgid "Convert"
 msgstr ""
 
-#: .././foobnix/util/converter.py:96
+#: .././foobnix/util/converter.py:98
 msgid "Show files"
 msgstr ""
 
-#: .././foobnix/util/converter.py:118
+#: .././foobnix/util/converter.py:120
 msgid "Choose directory to save converted files"
 msgstr ""
 
-#: .././foobnix/util/converter.py:221
+#: .././foobnix/util/converter.py:223
 msgid "Warning!!!"
 msgstr ""
 
-#: .././foobnix/util/converter.py:225
+#: .././foobnix/util/converter.py:227
 msgid ""
 "So file(s)  already exist(s) and will be overwritten.\n"
 "Do you wish to continue?"
 msgstr ""
 
-#: .././foobnix/util/converter.py:332
+#: .././foobnix/util/converter.py:334
 msgid "Attention"
 msgstr ""
 
-#: .././foobnix/util/converter.py:337
-msgid "Install"
-msgstr ""
-
-#: .././foobnix/util/converter.py:334
-msgid ""
-"Converter needs specially compiled binary module for work. You can \n"
-"download and install it automatically (click \"Install\") \\\r"
+#: .././foobnix/util/converter.py:336
+msgid "Converter require specially compiled ffmpeg module for work.\n"
 msgstr ""
 
 #: .././foobnix/util/file_utils.py:52
