@@ -6,16 +6,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-22 16:46+0200\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-03-20 22:21+0200\n"
 "PO-Revision-Date: 2011-03-16 14:27+0000\n"
 "Last-Translator: KamilSPL <Unknown>\n"
 "Language-Team: Polish <pl@li.org>\n"
-"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-03-17 05:15+0000\n"
+"X-Launchpad-Export-Date: 2011-03-22 05:21+0000\n"
 "X-Generator: Launchpad (build 12559)\n"
 
 #: .././foobnix/dm/dm.py:28 .././foobnix/preferences/preferences_window.py:61
@@ -95,7 +94,6 @@ msgstr "Pobierz i wspomóż"
 #. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:132
 #: .././foobnix/regui/treeview/playlist_tree.py:206
-#: .././foobnix/util/converter.py:339
 msgid "Download"
 msgstr "Pobierz"
 
@@ -123,7 +121,7 @@ msgid "Apply"
 msgstr "Zastosuj"
 
 #: .././foobnix/preferences/preferences_window.py:143
-#: .././foobnix/util/converter.py:85 .././foobnix/util/tag_util.py:86
+#: .././foobnix/util/converter.py:83 .././foobnix/util/tag_util.py:86
 msgid "Close"
 msgstr "Zamknij"
 
@@ -163,7 +161,7 @@ msgstr "Usuń"
 #: .././foobnix/regui/controls/playback.py:196
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:59
 #: .././foobnix/regui/treeview/playlist_tree.py:205
-#: .././foobnix/regui/treeview/vk_integration_tree.py:71
+#: .././foobnix/regui/treeview/vk_integration_tree.py:70
 msgid "Play"
 msgstr "Odtwórz"
 
@@ -174,7 +172,7 @@ msgstr "Pauza"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:157
 #: .././foobnix/regui/controls/playback.py:195 .././foobnix/util/const.py:44
-#: .././foobnix/util/converter.py:94
+#: .././foobnix/util/converter.py:92
 msgid "Stop"
 msgstr "Zatrzymaj"
 
@@ -474,7 +472,7 @@ msgid "Vkontakte"
 msgstr "Vkontakte"
 
 #: .././foobnix/preferences/configs/vk_conf.py:47
-msgid "Check Foobnix Access (Require)"
+msgid "Check Requesting Access"
 msgstr ""
 
 #: .././foobnix/regui/base_controls.py:112
@@ -518,9 +516,8 @@ msgid "Lyrics"
 msgstr "Tekst utworu"
 
 #: .././foobnix/regui/infopanel.py:70
-#, fuzzy
 msgid "About Artist"
-msgstr "Wykonawca"
+msgstr ""
 
 #: .././foobnix/regui/menu.py:27
 msgid "_File"
@@ -647,9 +644,8 @@ msgid "Info Panel (Alt+4)"
 msgstr "Panel informacyjny (Alt+4)"
 
 #: .././foobnix/regui/perspectives.py:100
-#, fuzzy
 msgid "Last.Fm"
-msgstr "LastFM"
+msgstr ""
 
 #: .././foobnix/regui/perspectives.py:100
 msgid "Last.fm Panel (Alt+5)"
@@ -660,9 +656,8 @@ msgid "VK"
 msgstr ""
 
 #: .././foobnix/regui/perspectives.py:103
-#, fuzzy
 msgid "VK Panel (Alt+6)"
-msgstr "Panel informacyjny (Alt+4)"
+msgstr ""
 
 #: .././foobnix/regui/search.py:15
 msgid "Search music online"
@@ -827,12 +822,12 @@ msgid "My top artists"
 msgstr "Moi ulubieni artyści"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:46
-#: .././foobnix/regui/treeview/vk_integration_tree.py:51
+#: .././foobnix/regui/treeview/vk_integration_tree.py:50
 msgid "loading..."
 msgstr "ładowanie..."
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:60
-#: .././foobnix/regui/treeview/vk_integration_tree.py:72
+#: .././foobnix/regui/treeview/vk_integration_tree.py:71
 msgid "Copy to Search Line"
 msgstr "Kopiuj do linii wyszukiwania"
 
@@ -979,9 +974,8 @@ msgid "Create new playlist"
 msgstr "Utwórz nową listę odtwarzania"
 
 #: .././foobnix/regui/treeview/vk_integration_tree.py:24
-#, fuzzy
 msgid "VK Integration "
-msgstr "Integracja z Last.fm "
+msgstr ""
 
 #: .././foobnix/util/const.py:43
 msgid "Active"
@@ -1007,39 +1001,39 @@ msgstr "Zablokuj"
 msgid "Error"
 msgstr "Błąd"
 
-#: .././foobnix/util/converter.py:43
+#: .././foobnix/util/converter.py:41
 msgid "Format"
 msgstr "Format"
 
-#: .././foobnix/util/converter.py:44
+#: .././foobnix/util/converter.py:42
 msgid "Bitrate"
 msgstr "Przepływ"
 
-#: .././foobnix/util/converter.py:45
+#: .././foobnix/util/converter.py:43
 msgid "Channels"
 msgstr "Kanały"
 
-#: .././foobnix/util/converter.py:46
+#: .././foobnix/util/converter.py:44
 msgid "Frequency"
 msgstr "Częstotliwość"
 
-#: .././foobnix/util/converter.py:88
+#: .././foobnix/util/converter.py:86
 msgid "Convert"
 msgstr "Konwertuj"
 
-#: .././foobnix/util/converter.py:98
+#: .././foobnix/util/converter.py:96
 msgid "Show files"
 msgstr "Pokarz pliki"
 
-#: .././foobnix/util/converter.py:120
+#: .././foobnix/util/converter.py:118
 msgid "Choose directory to save converted files"
 msgstr "Wybierz folder do zapisania konwertowanej muzyki"
 
-#: .././foobnix/util/converter.py:223
+#: .././foobnix/util/converter.py:221
 msgid "Warning!!!"
 msgstr "Uwaga!!!"
 
-#: .././foobnix/util/converter.py:227
+#: .././foobnix/util/converter.py:225
 msgid ""
 "So file(s)  already exist(s) and will be overwritten.\n"
 "Do you wish to continue?"
@@ -1047,12 +1041,18 @@ msgstr ""
 "Plik(i) aktualnie istnieje(ą) i zostaną nadpisane.\n"
 "Kontynuować?"
 
-#: .././foobnix/util/converter.py:334
+#: .././foobnix/util/converter.py:332
 msgid "Attention"
 msgstr "Ostrzeżenie"
 
-#: .././foobnix/util/converter.py:336
-msgid "Converter require specially compiled ffmpeg module for work.\n"
+#: .././foobnix/util/converter.py:337
+msgid "Install"
+msgstr "Instaluj"
+
+#: .././foobnix/util/converter.py:334
+msgid ""
+"Converter needs specially compiled binary module for work. You can \n"
+"download and install it automatically (click \"Install\") \"
 msgstr ""
 
 #: .././foobnix/util/file_utils.py:52
@@ -1082,27 +1082,6 @@ msgid ""
 msgstr ""
 "Zastosuj dla wybranych utworów\n"
 "(aktywne przy wybieraniu wielu)"
-
-#~ msgid "Install"
-#~ msgstr "Instaluj"
-
-#~ msgid "http://www.foobnix.com/download/eng"
-#~ msgstr "http://www.foobnix.com/download"
-
-#~ msgid "Biography"
-#~ msgstr "Biografia"
-
-#~ msgid "Album"
-#~ msgstr "Album"
-
-#~ msgid "Year"
-#~ msgstr "Rok"
-
-#~ msgid "Track number"
-#~ msgstr "Numer utworu"
-
-#~ msgid "Author text"
-#~ msgstr "Autor tekstu"
 
 #~ msgid "Off"
 #~ msgstr "Wył."
@@ -1134,17 +1113,38 @@ msgstr ""
 #~ msgid "Tab position"
 #~ msgstr "Pozycja karty"
 
+#~ msgid "http://www.foobnix.com/download/eng"
+#~ msgstr "http://www.foobnix.com/download"
+
 #~ msgid "Order-Repeat Switcher Style: "
 #~ msgstr "Styl przycisków kolejność - powatarzanie "
 
+#~ msgid "Biography"
+#~ msgstr "Biografia"
+
 #~ msgid "Opacity"
 #~ msgstr "Nieprzezroczystość:"
+
+#~ msgid "LastFM"
+#~ msgstr "LastFM"
 
 #~ msgid "Edit tags"
 #~ msgstr "Edytuj tagi"
 
 #~ msgid "Love this track(s)"
 #~ msgstr "Lubię ten utwór"
+
+#~ msgid "Album"
+#~ msgstr "Album"
+
+#~ msgid "Year"
+#~ msgstr "Rok"
+
+#~ msgid "Track number"
+#~ msgstr "Numer utworu"
+
+#~ msgid "Author text"
+#~ msgstr "Autor tekstu"
 
 #~ msgid "Play Lists"
 #~ msgstr "Lista odtwarzania"
@@ -1179,9 +1179,11 @@ msgstr ""
 #~ msgid "Audio Converter"
 #~ msgstr "Konwerter dźwięku"
 
+#, python-format
 #~ msgid "Convert  %d of %d file(s)"
 #~ msgstr "Konwertuj %d z %d plik(ów)"
 
+#, python-format
 #~ msgid "Finished (%d of %d)"
 #~ msgstr "Zakończono (%d z %d)"
 

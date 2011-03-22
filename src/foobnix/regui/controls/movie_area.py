@@ -2,7 +2,7 @@
 
 from foobnix.regui.model.signal import FControl
 import gtk
-from foobnix.helpers.my_widgets import notetab_label
+from foobnix.helpers.my_widgets import notetab_label, ImageButton
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.util.key_utils import is_key, is_key_alt, get_key
@@ -49,6 +49,7 @@ class AdvancedDrawingArea(gtk.DrawingArea):
 
 class FullScreanArea(ChildTopWindow):
         def __init__(self, controls, on_hide_callback):
+            self.controls = controls
             ChildTopWindow.__init__(self, "movie")
             self.set_hide_on_escape(False)
             self.on_hide_callback = on_hide_callback
@@ -62,12 +63,20 @@ class FullScreanArea(ChildTopWindow):
             
             self.layout.pack_start(self.drow, True)
             
-            line = gtk.HBox(False)
-            line.pack_start(PlaybackControls(controls), False)
-            #line.pack_start(SeekProgressBarControls(controls), True)
-            line.pack_start(controls.seek_bar_movie, True)
+            
             self.text_label = gtk.Label("foobnix")
+            self.volume_button= gtk.VolumeButton()
+            self.volume_button.connect("value-changed", self.volume_changed)
+            
+            line = gtk.HBox(False)            
+             
+            line.pack_start(ImageButton(gtk.STOCK_FULLSCREEN, on_hide_callback, _("Exit Fullscrean")), False)
+            line.pack_start(PlaybackControls(controls), False)
+            line.pack_start(controls.seek_bar_movie, True)
+            line.pack_start(gtk.SeparatorToolItem(),False)
             line.pack_start(self.text_label, False)
+            line.pack_start(gtk.SeparatorToolItem(),False)
+            line.pack_start(self.volume_button, False)
             
             self.layout.pack_start(line,False)
             
@@ -82,6 +91,9 @@ class FullScreanArea(ChildTopWindow):
             
             self.connect("motion-notify-event", my_event)
         
+        def volume_changed(self, volumebutton, value):
+            self.controls.volume.set_value(float(value * 100))
+        
         def set_text(self, text):
             self.text_label.set_text(text)
         
@@ -95,6 +107,7 @@ class FullScreanArea(ChildTopWindow):
         def show_window(self):
             self.show_all()
             self.fullscreen()
+            self.volume_button.set_value(float(self.controls.volume.volume_scale.get_value()/ 100))
 
 class MovieDrawingArea(FControl, gtk.Frame):
     def __init__(self, controls):

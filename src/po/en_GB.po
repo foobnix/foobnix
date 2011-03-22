@@ -6,16 +6,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-22 16:46+0200\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-03-20 22:21+0200\n"
 "PO-Revision-Date: 2011-02-27 20:27+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-03-14 05:08+0000\n"
+"X-Launchpad-Export-Date: 2011-03-22 05:21+0000\n"
 "X-Generator: Launchpad (build 12559)\n"
 
 #: .././foobnix/dm/dm.py:28 .././foobnix/preferences/preferences_window.py:61
@@ -95,7 +94,6 @@ msgstr ""
 #. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:132
 #: .././foobnix/regui/treeview/playlist_tree.py:206
-#: .././foobnix/util/converter.py:339
 msgid "Download"
 msgstr ""
 
@@ -123,7 +121,7 @@ msgid "Apply"
 msgstr ""
 
 #: .././foobnix/preferences/preferences_window.py:143
-#: .././foobnix/util/converter.py:85 .././foobnix/util/tag_util.py:86
+#: .././foobnix/util/converter.py:83 .././foobnix/util/tag_util.py:86
 msgid "Close"
 msgstr ""
 
@@ -163,7 +161,7 @@ msgstr ""
 #: .././foobnix/regui/controls/playback.py:196
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:59
 #: .././foobnix/regui/treeview/playlist_tree.py:205
-#: .././foobnix/regui/treeview/vk_integration_tree.py:71
+#: .././foobnix/regui/treeview/vk_integration_tree.py:70
 msgid "Play"
 msgstr ""
 
@@ -174,7 +172,7 @@ msgstr ""
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:157
 #: .././foobnix/regui/controls/playback.py:195 .././foobnix/util/const.py:44
-#: .././foobnix/util/converter.py:94
+#: .././foobnix/util/converter.py:92
 msgid "Stop"
 msgstr ""
 
@@ -474,7 +472,7 @@ msgid "Vkontakte"
 msgstr ""
 
 #: .././foobnix/preferences/configs/vk_conf.py:47
-msgid "Check Foobnix Access (Require)"
+msgid "Check Requesting Access"
 msgstr ""
 
 #: .././foobnix/regui/base_controls.py:112
@@ -824,12 +822,12 @@ msgid "My top artists"
 msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:46
-#: .././foobnix/regui/treeview/vk_integration_tree.py:51
+#: .././foobnix/regui/treeview/vk_integration_tree.py:50
 msgid "loading..."
 msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:60
-#: .././foobnix/regui/treeview/vk_integration_tree.py:72
+#: .././foobnix/regui/treeview/vk_integration_tree.py:71
 msgid "Copy to Search Line"
 msgstr ""
 
@@ -1003,50 +1001,56 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: .././foobnix/util/converter.py:43
+#: .././foobnix/util/converter.py:41
 msgid "Format"
 msgstr ""
 
-#: .././foobnix/util/converter.py:44
+#: .././foobnix/util/converter.py:42
 msgid "Bitrate"
 msgstr ""
 
-#: .././foobnix/util/converter.py:45
+#: .././foobnix/util/converter.py:43
 msgid "Channels"
 msgstr ""
 
-#: .././foobnix/util/converter.py:46
+#: .././foobnix/util/converter.py:44
 msgid "Frequency"
 msgstr ""
 
-#: .././foobnix/util/converter.py:88
+#: .././foobnix/util/converter.py:86
 msgid "Convert"
 msgstr ""
 
-#: .././foobnix/util/converter.py:98
+#: .././foobnix/util/converter.py:96
 msgid "Show files"
 msgstr ""
 
-#: .././foobnix/util/converter.py:120
+#: .././foobnix/util/converter.py:118
 msgid "Choose directory to save converted files"
 msgstr ""
 
-#: .././foobnix/util/converter.py:223
+#: .././foobnix/util/converter.py:221
 msgid "Warning!!!"
 msgstr ""
 
-#: .././foobnix/util/converter.py:227
+#: .././foobnix/util/converter.py:225
 msgid ""
 "So file(s)  already exist(s) and will be overwritten.\n"
 "Do you wish to continue?"
 msgstr ""
 
-#: .././foobnix/util/converter.py:334
+#: .././foobnix/util/converter.py:332
 msgid "Attention"
 msgstr ""
 
-#: .././foobnix/util/converter.py:336
-msgid "Converter require specially compiled ffmpeg module for work.\n"
+#: .././foobnix/util/converter.py:337
+msgid "Install"
+msgstr ""
+
+#: .././foobnix/util/converter.py:334
+msgid ""
+"Converter needs specially compiled binary module for work. You can \n"
+"download and install it automatically (click \"Install\") \"
 msgstr ""
 
 #: .././foobnix/util/file_utils.py:52

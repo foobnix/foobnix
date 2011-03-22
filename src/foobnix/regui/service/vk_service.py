@@ -99,9 +99,15 @@ class VKService:
 
     def find_tracks_by_url(self, url):
         logging.debug("Search By URL")
+        
+        index = url.rfind("#")
+        if index > 0:
+            url = url[:index]
+        print url
         index = url.find("id=")
         if index < 0:
             return None
+        
         id = url[index+3:]
         id = int(id)
         if id > 0:

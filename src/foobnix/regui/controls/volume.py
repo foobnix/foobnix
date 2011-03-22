@@ -10,7 +10,7 @@ from foobnix.fc.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
 class VolumeControls(LoadSave, gtk.HBox, FControl):
-    MAX_VALUE = 120
+    MAX_VALUE = 100
     def __init__(self, controls):
         gtk.HBox.__init__(self, False, 0)
         FControl.__init__(self, controls)

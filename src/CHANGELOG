@@ -1,6 +1,9 @@
 2.5.11
-* Fixed show title and artist for radios, added manualy
-* Fixed lastfm integration list for non English locale. 
+* Fixed show title and artist for radios, added manually
+* Fixed lastfm integration list for non English locale 
+* Fixed translation error with \r symbol
+* Process search by vk audio url with '#' http://vk.com/audio?id=-xxxxx#/idxxxxxx
+* Add controls to fullscreen mode: Volume Control, Exit Full Screen.
 
 2.5.10
 * File Converter
