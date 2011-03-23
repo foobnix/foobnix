@@ -30,6 +30,7 @@ from foobnix.regui.notetab.tab_library import TabHelperControl
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.regui.treeview.lastfm_integration_tree import LastFmIntegrationControls
 from foobnix.regui.treeview.vk_integration_tree import VKIntegrationControls
+from foobnix.regui.controls.record import RadioRecord
 
 foobnix_localization()
 
@@ -50,7 +51,7 @@ class FoobnixCore(BaseFoobnixControls):
                 
         self.volume = VolumeControls(self)
         
-        
+        self.record = RadioRecord(self)
         self.seek_bar_movie = SeekProgressBarControls(self)
         self.seek_bar = SeekProgressBarControls(self, self.seek_bar_movie)
         

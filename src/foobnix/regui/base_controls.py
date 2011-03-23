@@ -71,8 +71,7 @@ class BaseFoobnixControls():
             
         return beans
     def get_active_bean(self):
-        if self.notetabs.get_current_tree():
-            return self.notetabs.get_current_tree().get_selected_or_current_bean()
+        return self.notetabs.get_current_tree().get_selected_or_current_bean()
      
     def play_selected_song(self):    
         current = self.get_active_bean()
@@ -312,8 +311,9 @@ class BaseFoobnixControls():
         self.media_engine.state_pause()
     
     def state_stop(self, remeber_position=False):
+        self.record.hide()
         self.media_engine.state_stop(remeber_position)
-        self.statusbar.set_text("Stopped")
+        self.statusbar.set_text(_("Stopped"))
         
     def state_play_pause(self):
         self.media_engine.state_play_pause()
@@ -321,7 +321,7 @@ class BaseFoobnixControls():
         if self.media_engine.get_state() == STATE_PLAY:
             self.statusbar.set_text(bean.info)
         else:
-            self.statusbar.set_text("Paused | " + str(bean.info))
+            self.statusbar.set_text(_("Paused | ") + str(bean.info))
     
     def state_is_playing(self):
         return self.media_engine.get_state() == STATE_PLAY
@@ -361,7 +361,12 @@ class BaseFoobnixControls():
         if bean.path and os.path.isdir(bean.path):
             self.state_stop()
             return None
-            
+        
+        if bean.type == FTYPE_RADIO:
+            self.record.show()
+        else:
+            self.record.hide()
+                
         self.seek_bar.clear()
         self.count_errors = 0
         self.statusbar.set_text(bean.info)

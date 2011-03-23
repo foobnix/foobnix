@@ -90,6 +90,26 @@ class GStreamerEngine(MediaPlayerEngine):
         self.set_state(STATE_STOP)
         self.controls.notify_error(msg)
 
+    def record_radio(self, bean):
+        if not bean:
+            return None
+        path = bean.path
+        
+        self.state_stop()
+        
+        if path and path.startswith("http://"):
+            path = get_radio_source(path)
+            logging.debug("Try to play and record path" + path)
+            
+            file_name = "/tmp/" + os.path.basename(path)
+            
+            '''mime = subprocess.Popen("/usr/bin/file -i PATH", shell=True, \
+    stdout=subprocess.PIPE).communicate()[0]'''
+            self.pipeline = gst.parse_launch("""souphttpsrc location=%s ! tee name=t ! queue ! decodebin2 ! audioconvert ! audioresample ! autoaudiosink  t. ! queue ! filesink location=%s""" % (path, file_name))
+            self.notify_title(path)
+            self.pipeline.set_state(gst.STATE_PLAYING)
+            
+    
     def play(self, bean):
         self.bean = bean
         if not bean:
@@ -102,9 +122,12 @@ class GStreamerEngine(MediaPlayerEngine):
 
         
         self.state_stop()
-
+        
+        if hasattr(self, "pipeline"):
+            self.pipeline.set_state(gst.STATE_NULL)
         
         self.player = self.gstreamer_player()
+        
         """equlizer settings"""
         if FC().is_eq_enable:
             pre = self.controls.eq.get_preamp()
@@ -116,9 +139,10 @@ class GStreamerEngine(MediaPlayerEngine):
             logging.debug("Try To play path" + path)
             
             if self.bean.type == FTYPE_RADIO:
-                time.sleep(2)
-            
+                    time.sleep(2)
+                    
             uri = path
+
             self.notify_title(uri)
         else:
             uri = 'file://' + urllib.pathname2url(path)
@@ -248,8 +272,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.set_state(gst.STATE_PLAYING)
         self.current_state = STATE_PLAY        
         self.on_chage_state()
-        
-    
+            
     def get_current_percent(self):
         duration = self.get_duration_seek_ns()
         postion = self.get_position_seek_ns()
@@ -268,6 +291,9 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
         
     def state_stop(self, remeber_position=False):
+        if hasattr(self, 'pipeline'):
+            self.pipeline.set_state(gst.STATE_NULL)
+        
         if remeber_position:
             self.player.set_state(gst.STATE_PAUSED)
             time.sleep(0.1)
@@ -281,6 +307,8 @@ class GStreamerEngine(MediaPlayerEngine):
         logging.debug("state STOP")
 
     def state_pause(self):
+        if hasattr(self, 'pipeline'):
+            self.pipeline.set_state(gst.STATE_PAUSED)
         self.player.set_state(gst.STATE_PAUSED)
         self.set_state(STATE_PAUSE)
         self.on_chage_state()

@@ -33,6 +33,7 @@ class TopWidgets(FControl, LoadSave, gtk.HBox):
         self.pack_start(controls.os, False, False)
         self.pack_start(controls.volume, False, False)
         self.pack_start(gtk.SeparatorToolItem(), False, False)
+        self.pack_start(controls.record, False, False)
         self.pack_start(controls.seek_bar, True, True)
         
         self.show_all()
