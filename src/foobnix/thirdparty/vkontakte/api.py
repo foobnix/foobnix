@@ -87,7 +87,10 @@ class API(object):
         url = url[id+len("session="):]
     
         logging.debug(url)
-        self.json =  simplejson.loads(url)
+        try:
+            self.json =  simplejson.loads(url)
+        except Exception, e:
+            logging.error("Error decoding url %s" % url)
         logging.debug(json)
         self.my_user_id =self.json['mid'] 
         
