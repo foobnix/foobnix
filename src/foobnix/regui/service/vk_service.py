@@ -35,7 +35,8 @@ class VKService:
         
     def initialize_urllib2(self):
         self.cookie_processor = urllib2.HTTPCookieProcessor()
-        self.opener = urllib2.build_opener(self.cookie_processor)
+        self.redirect_hadler = urllib2.HTTPRedirectHandler()
+        self.opener = urllib2.build_opener(self.cookie_processor,self.redirect_hadler)
         urllib2.install_opener(self.opener)
 
     def login(self):

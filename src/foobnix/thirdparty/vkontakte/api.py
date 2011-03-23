@@ -79,8 +79,9 @@ class API(object):
         self.defaults = defaults
         self.method_prefix = ''
         
+        url = opener.open("http://vkontakte.ru/login.php?app=2234333&layout=popup&type=browser&settings=26")
+        url = url.geturl()
         
-        url = opener.open("http://vkontakte.ru/login.php?app=2234333&layout=popup&type=browser&settings=26").geturl()
         logging.debug(url)    
         url = urllib.url2pathname(url)    
         id = url.find("session=")
