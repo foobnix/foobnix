@@ -336,7 +336,7 @@ def convert_files(paths):
         area = ScrolledText()
         area.buffer.set_text(_("Converter require specially compiled ffmpeg module for work.\n" + 
                                "You should download it automatically (click Download)\n"+
-                               "Also check you have packages libmp3lame0 and libfaac0"))
+                               "Also check if you have packages libmp3lame0 and libfaac0"))
         ok_button = dialog.add_button(_("Download"), gtk.RESPONSE_OK)
         
         cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
@@ -351,7 +351,7 @@ def convert_files(paths):
         if dialog.run() == gtk.RESPONSE_OK:
             prog_bar.show()
             import urllib2
-            remote_file = urllib2.urlopen("http://foobnix.googlecode.com/files/" + FFMPEG_NAME)
+            remote_file = urllib2.urlopen(url)
             size = float(remote_file.info()['Content-Length'])
             ffmpeg_path = os.path.join(CONFIG_DIR, FFMPEG_NAME)
             def on_close(*a):

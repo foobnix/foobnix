@@ -6,9 +6,11 @@
 * Add controls to fullscreen mode: Volume Control, Exit Full Screen.
 
 2.5.10
-* File Converter
+* Audio Converter
+* Configurable columns in playlist
+* Opportunity to choose the method of numbering (right click on №-header)
 * Controls for full screen video.
-* VK integration: Show Friends list and frieds music
+* VK integration: Show Friends list and friends music
 * VK integration: Search by user id and by group id
 
 0.2.5
