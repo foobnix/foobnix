@@ -434,9 +434,11 @@ class DrugDropTree(gtk.TreeView):
             row = self.get_row_from_bean(one)            
             """append to tree thread safe"""
             
-            self.model.append(parent_iter, row)            
+            
             """append to tree thread safe end"""
             logging.debug(row)
+            self.model.append(parent_iter, row)            
+            
         
     def tree_append(self, bean):
         if not bean:
