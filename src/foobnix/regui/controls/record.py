@@ -31,32 +31,25 @@ class RadioRecord(gtk.ToggleButton):
         
     def on_toggle(self, a=None):
         engine = self.controls.media_engine
-              
+            
         if hasattr(engine, 'pipeline'):
             if gst.STATE_PLAYING in engine.pipeline.get_state():
                 engine.pipeline.set_state(gst.STATE_NULL)
                 if os.path.isfile(engine.radio_path):
-                    name = os.path.basename(engine.radio_path)
+                    name = os.path.splitext(os.path.basename(engine.radio_path))[0] + ".ogg"
                 else:
-                    name = "radio_record"
-                current_name = name
+                    name = "radio_record.ogg"
                 
                 temp_file = os.path.join("/tmp", name)
                 if not os.path.exists(temp_file):
                     logging.warning(_("So file doesn't exist. Pehaps it wasn't create yet."))
                     return
-                if not os.path.splitext(current_name)[1]:
-                    mime = Popen("file -i " + temp_file, shell=True, stdout=PIPE).communicate()[0]
-                    
-                    if 'mpeg' in mime:
-                        current_name = name + '.mp3'
-                    elif 'ogg' in mime:
-                        current_name = name + '.ogg'
-                    
+                                   
                 def func(filename, folder):
                     shutil.move(temp_file, os.path.join(folder, filename))
                     
-                FileSavingDialog(_("Save file as ..."), func, args = None, current_folder=os.path.expanduser("~"), current_name=current_name)
+                FileSavingDialog(_("Save file as ..."), func, args = None, current_folder=os.path.expanduser("~"), current_name=name)
                 return
+            
         bean = self.controls.notetabs.get_current_tree().get_current_bean_by_UUID()
         engine.record_radio(bean)

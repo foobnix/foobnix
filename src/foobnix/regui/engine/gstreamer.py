@@ -92,14 +92,15 @@ class GStreamerEngine(MediaPlayerEngine):
 
     def record_radio(self, bean):
         if os.path.isfile(self.radio_path):
-            file_name = os.path.join("/tmp", os.path.basename(self.radio_path))
+            file_name = os.path.join("/tmp", os.path.splitext(os.path.basename(self.radio_path))[0] + ".ogg")
         else:
-            file_name = os.path.join("/tmp", "radio_record")
-        
+            file_name = os.path.join("/tmp", "radio_record.ogg")
+       
         #self.pipeline = gst.parse_launch("""souphttpsrc location=%s ! tee name=t ! queue ! decodebin2 ! audioconvert ! audioresample ! autoaudiosink  t. ! queue ! filesink location=%s""" % (self.radio_rec_path, file_name))
         self.pipeline = gst.parse_launch("""alsasrc ! audioconvert ! vorbisenc bitrate=128000 ! oggmux ! filesink location=%s""" % file_name)
+        
         self.pipeline.set_state(gst.STATE_PLAYING)
-           
+       
     
     def play(self, bean):
         self.bean = bean
