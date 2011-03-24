@@ -24,6 +24,7 @@ from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
 from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 from foobnix.util.mouse_utils import is_double_left_click, is_double_middle_click, \
     is_middle_click, is_rigth_click
+from foobnix.helpers.dialog_entry import FileSavingDialog
 
 
 class TabGeneral(gtk.Notebook, FControl):
@@ -334,25 +335,18 @@ class NoteTabControl(TabGeneral, LoadSave):
         return  treeview.scroll
     
     def on_save_playlist(self, tab_child):
-        tree = tab_child.get_child()
-        chooser = gtk.FileChooserDialog(title=_("Choose folder to save playlist"),
-                                        action=gtk.FILE_CHOOSER_ACTION_SAVE,
-                                        buttons=(gtk.STOCK_SAVE, gtk.RESPONSE_OK))
-        chooser.set_default_response(gtk.RESPONSE_OK)
-        if FCache().last_music_path:
-            chooser.set_current_folder(FCache().last_music_path)
         name = self.get_text_label_from_tab(tab_child)
-        chooser.set_current_name(name + ".m3u")
-        chooser.set_do_overwrite_confirmation(True)
-        response = chooser.run()
-        if response == gtk.RESPONSE_OK:
+        current_name = name + ".m3u"
+        tree = tab_child.get_child()
+        def func(filename, folder):
             beans = tree.get_all_beans()
             if beans:
                 paths = [bean.path for bean in beans if bean.is_file]
-            filename = chooser.get_filename()
-            current_folder = chooser.get_current_folder()
-            m3u_writer(filename, current_folder, paths)
-        chooser.destroy()    
+            else:
+                logging.warning(_("It's need not empty playlist"))
+            m3u_writer(filename, folder, paths)
+        
+        FileSavingDialog(_("Choose folder to save playlist"), func, current_folder=FCache().last_music_path, current_name = current_name) 
     
        
     def on_load(self):

@@ -1,4 +1,4 @@
-#Tue Mar 22 00:25:23 MSK 2011
+#Thu Mar 24 11:23:56 MSK 2011
 eclipse.preferences.version=1
 encoding//foobnix/eq/eq_controller.py=utf-8
 encoding//foobnix/eq/eq_gui.py=utf-8
@@ -6,6 +6,7 @@ encoding//foobnix/fc/fc.py=utf-8
 encoding//foobnix/fc/fc_base.py=utf-8
 encoding//foobnix/fc/fc_cache.py=utf-8
 encoding//foobnix/fc/fc_helper.py=utf-8
+encoding//foobnix/helpers/dialog_entry.py=utf-8
 encoding//foobnix/helpers/my_widgets.py=utf-8
 encoding//foobnix/helpers/window.py=utf-8
 encoding//foobnix/preferences/configs/music_library.py=utf-8

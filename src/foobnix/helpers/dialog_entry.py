@@ -220,7 +220,28 @@ def file_saving_dialog(title, current_folder=None):
         logging.info('Closed, no files selected')
     chooser.destroy()
     
-    
+class FileSavingDialog(gtk.FileChooserDialog):
+    def __init__(self, title, func, args = None, current_folder=None, current_name=None):
+        gtk.FileChooserDialog.__init__(self, title, action=gtk.FILE_CHOOSER_ACTION_SAVE, buttons=(gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+        self.set_default_response(gtk.RESPONSE_OK)
+        self.set_select_multiple(False)
+        self.set_do_overwrite_confirmation(True)
+        if current_folder:
+            self.set_current_folder(current_folder)
+        if current_name:
+            self.set_current_name(current_name)
+        
+        response = self.run()
+        if response == gtk.RESPONSE_OK:
+            filename = self.get_filename()
+            folder = self.get_current_folder()
+            if func:
+                if args: func(filename, folder, args)
+                else: func(filename, folder)
+        elif response == gtk.RESPONSE_CANCEL:
+            logging.info('Closed, no files selected')
+        self.destroy()
+   
 if __name__ == '__main__':
         info_dialog_with_link_and_donate("foobnix 0.2.1-8")
         gtk.main()        

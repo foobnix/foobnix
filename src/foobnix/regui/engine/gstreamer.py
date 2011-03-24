@@ -91,24 +91,15 @@ class GStreamerEngine(MediaPlayerEngine):
         self.controls.notify_error(msg)
 
     def record_radio(self, bean):
-        if not bean:
-            return None
-        path = bean.path
+        if os.path.isfile(self.radio_path):
+            file_name = os.path.join("/tmp", os.path.basename(self.radio_path))
+        else:
+            file_name = os.path.join("/tmp", "radio_record")
         
-        self.state_stop()
-        
-        if path and path.startswith("http://"):
-            path = get_radio_source(path)
-            logging.debug("Try to play and record path" + path)
-            
-            file_name = "/tmp/" + os.path.basename(path)
-            
-            '''mime = subprocess.Popen("/usr/bin/file -i PATH", shell=True, \
-    stdout=subprocess.PIPE).communicate()[0]'''
-            self.pipeline = gst.parse_launch("""souphttpsrc location=%s ! tee name=t ! queue ! decodebin2 ! audioconvert ! audioresample ! autoaudiosink  t. ! queue ! filesink location=%s""" % (path, file_name))
-            self.notify_title(path)
-            self.pipeline.set_state(gst.STATE_PLAYING)
-            
+        #self.pipeline = gst.parse_launch("""souphttpsrc location=%s ! tee name=t ! queue ! decodebin2 ! audioconvert ! audioresample ! autoaudiosink  t. ! queue ! filesink location=%s""" % (self.radio_rec_path, file_name))
+        self.pipeline = gst.parse_launch("""alsasrc ! audioconvert ! vorbisenc bitrate=128000 ! oggmux ! filesink location=%s""" % file_name)
+        self.pipeline.set_state(gst.STATE_PLAYING)
+           
     
     def play(self, bean):
         self.bean = bean
@@ -135,13 +126,13 @@ class GStreamerEngine(MediaPlayerEngine):
             self.set_all_bands(pre, bands)
         
         if path.startswith("http://"):
-            path = get_radio_source(path)
-            logging.debug("Try To play path" + path)
+            self.radio_path = get_radio_source(path)
+            logging.debug("Try To play path" + self.radio_path)
             
             if self.bean.type == FTYPE_RADIO:
                     time.sleep(2)
                     
-            uri = path
+            uri = self.radio_path
 
             self.notify_title(uri)
         else:
@@ -292,8 +283,9 @@ class GStreamerEngine(MediaPlayerEngine):
         
     def state_stop(self, remeber_position=False):
         if hasattr(self, 'pipeline'):
-            self.pipeline.set_state(gst.STATE_NULL)
-        
+            if gst.STATE_PLAYING in self.pipeline.get_state():
+                self.controls.record.on_toggle()
+                                
         if remeber_position:
             self.player.set_state(gst.STATE_PAUSED)
             time.sleep(0.1)
