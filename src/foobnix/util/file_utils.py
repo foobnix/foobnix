@@ -9,6 +9,9 @@ import urllib
 import logging
 
 from foobnix.fc.fc import FC
+from foobnix.util.const import ICON_FOOBNIX
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+
 
 
 def open_in_filemanager(path, managers=None):
@@ -61,15 +64,19 @@ def rename_file_on_disk(row, index_path, index_text):
         title = _('Rename file')
     dialog = gtk.Dialog(title, buttons=("Rename", gtk.RESPONSE_ACCEPT, "Cancel", gtk.RESPONSE_REJECT))
     dialog.vbox.pack_start(hbox)
+    dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
     dialog.show_all()    
     if dialog.run() == gtk.RESPONSE_ACCEPT:
         if os.path.isdir(path) or not entry_ext.get_text():
             new_path = os.path.join(os.path.dirname(path), entry.get_text())
         else:
             new_path = os.path.join(os.path.dirname(path), entry.get_text() + '.' + entry_ext.get_text()) 
-        os.rename(path, new_path)
-        row[index_path] = new_path
-        row[index_text] = os.path.basename(new_path)
+        try:
+            os.rename(path, new_path)
+            row[index_path] = new_path
+            row[index_text] = os.path.basename(new_path)
+        except IOError, e:
+            logging.error(e)
         dialog.destroy()
         return True
     dialog.destroy()
@@ -88,6 +95,7 @@ def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
     dialog.set_default_size(500, 200)
     dialog.set_border_width(5)
     dialog.vbox.pack_start(label)
+    dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
     buffer = gtk.TextBuffer()
     text = gtk.TextView(buffer)
     text.set_editable(False)
@@ -103,14 +111,17 @@ def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
     dialog.show_all()    
     if dialog.run() == gtk.RESPONSE_ACCEPT:
         model = row_refs[0].get_model()
-        for row_ref, path in zip(row_refs, paths):
-            if os.path.isfile(path):
-                os.remove(path)
-            else:
-                del_dir(path)
-            model.remove(get_iter_from_row_reference(row_ref))
-            dialog.destroy()
-            return True
+        try:
+            for row_ref, path in zip(row_refs, paths):
+                if os.path.isfile(path):
+                    os.remove(path)
+                else:
+                    del_dir(path)
+                model.remove(get_iter_from_row_reference(row_ref))
+        except IOError, e:
+            logging.error(e)
+        dialog.destroy()
+        return True
     dialog.destroy()             
 
 def del_dir(path): 

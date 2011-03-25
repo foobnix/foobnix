@@ -11,10 +11,11 @@ import thread
 import urllib
 import logging
 
-from foobnix.regui.engine import MediaPlayerEngine
 from foobnix.fc.fc import FC
-from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
+from foobnix.regui.engine import MediaPlayerEngine
 from foobnix.util.plsparser import get_radio_source
+from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
+
 
 class GStreamerEngine(MediaPlayerEngine):
     NANO_SECONDS = 1000000000
@@ -98,10 +99,8 @@ class GStreamerEngine(MediaPlayerEngine):
        
         #self.pipeline = gst.parse_launch("""souphttpsrc location=%s ! tee name=t ! queue ! decodebin2 ! audioconvert ! audioresample ! autoaudiosink  t. ! queue ! filesink location=%s""" % (self.radio_rec_path, file_name))
         self.pipeline = gst.parse_launch("""alsasrc ! audioconvert ! vorbisenc bitrate=128000 ! oggmux ! filesink location=%s""" % file_name)
-        
         self.pipeline.set_state(gst.STATE_PLAYING)
-       
-    
+            
     def play(self, bean):
         self.bean = bean
         if not bean:
@@ -131,7 +130,7 @@ class GStreamerEngine(MediaPlayerEngine):
             logging.debug("Try To play path" + self.radio_path)
             
             if self.bean.type == FTYPE_RADIO:
-                    time.sleep(2)
+                time.sleep(2)
                     
             uri = self.radio_path
 
@@ -264,7 +263,10 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.set_state(gst.STATE_PLAYING)
         self.current_state = STATE_PLAY        
         self.on_chage_state()
-            
+        if hasattr(self, 'pipeline'):
+            if gst.STATE_PAUSED in self.pipeline.get_state()[1:]:
+                self.pipeline.set_state(gst.STATE_PLAYING)
+                                
     def get_current_percent(self):
         duration = self.get_duration_seek_ns()
         postion = self.get_position_seek_ns()
@@ -283,10 +285,6 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
         
     def state_stop(self, remeber_position=False):
-        if hasattr(self, 'pipeline'):
-            if gst.STATE_PLAYING in self.pipeline.get_state():
-                self.controls.record.on_toggle()
-                                
         if remeber_position:
             self.player.set_state(gst.STATE_PAUSED)
             time.sleep(0.1)
@@ -298,14 +296,23 @@ class GStreamerEngine(MediaPlayerEngine):
         
         self.on_chage_state()
         logging.debug("state STOP")
-
-    def state_pause(self):
         if hasattr(self, 'pipeline'):
-            self.pipeline.set_state(gst.STATE_PAUSED)
+            if gst.STATE_PLAYING in self.pipeline.get_state()[1:]:
+                self.controls.record.set_active(False)#it will call "on toggle" method from self.record
+                
+    def state_pause(self):
         self.player.set_state(gst.STATE_PAUSED)
         self.set_state(STATE_PAUSE)
         self.on_chage_state()
-        
+        '''if hasattr(self, 'pipeline'):
+            print "in pause", self.pipeline.get_state()[1:]
+            if gst.STATE_PLAYING in self.pipeline.get_state()[1:]:
+                self.pipeline.set_state(gst.STATE_PAUSED)
+                print "pause after", self.pipeline.get_state()[1:]
+            elif gst.STATE_PAUSED in self.pipeline.get_state()[1:]:
+                self.pipeline.set_state(gst.STATE_PLAYING)'''
+                
+                
     def state_play_pause(self):
         if self.get_state() == STATE_PLAY:
             self.state_pause()

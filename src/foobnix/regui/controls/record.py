@@ -9,9 +9,7 @@ import gst
 import shutil
 import logging
 
-from subprocess import Popen, PIPE
 from foobnix.helpers.dialog_entry import FileSavingDialog
-
 
 
 class RadioRecord(gtk.ToggleButton):
@@ -29,11 +27,11 @@ class RadioRecord(gtk.ToggleButton):
         self.set_no_show_all(True)
         self.hide()
         
-    def on_toggle(self, a=None):
+    def on_toggle(self, a):
         engine = self.controls.media_engine
             
         if hasattr(engine, 'pipeline'):
-            if gst.STATE_PLAYING in engine.pipeline.get_state():
+            if gst.STATE_PLAYING in engine.pipeline.get_state()[1:]:
                 engine.pipeline.set_state(gst.STATE_NULL)
                 if os.path.isfile(engine.radio_path):
                     name = os.path.splitext(os.path.basename(engine.radio_path))[0] + ".ogg"
@@ -46,8 +44,11 @@ class RadioRecord(gtk.ToggleButton):
                     return
                                    
                 def func(filename, folder):
-                    shutil.move(temp_file, os.path.join(folder, filename))
-                    
+                    try:
+                        shutil.move(temp_file, os.path.join(folder, filename))
+                    except IOError, e:
+                        logging.error(e)
+
                 FileSavingDialog(_("Save file as ..."), func, args = None, current_folder=os.path.expanduser("~"), current_name=name)
                 return
             

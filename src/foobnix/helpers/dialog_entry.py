@@ -6,10 +6,12 @@ Created on 24 авг. 2010
 '''
 import gtk
 import logging
-from foobnix.util.localization import foobnix_localization
-from foobnix.helpers.image import ImageBase
+
 from foobnix.fc.fc import FC
-from foobnix.util.const import SITE_LOCALE
+from foobnix.helpers.image import ImageBase
+from foobnix.util.const import SITE_LOCALE, ICON_FOOBNIX
+from foobnix.util.localization import foobnix_localization
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 foobnix_localization()
 
@@ -226,6 +228,7 @@ class FileSavingDialog(gtk.FileChooserDialog):
         self.set_default_response(gtk.RESPONSE_OK)
         self.set_select_multiple(False)
         self.set_do_overwrite_confirmation(True)
+        self.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         if current_folder:
             self.set_current_folder(current_folder)
         if current_name:
@@ -236,8 +239,11 @@ class FileSavingDialog(gtk.FileChooserDialog):
             filename = self.get_filename()
             folder = self.get_current_folder()
             if func:
-                if args: func(filename, folder, args)
-                else: func(filename, folder)
+                try:
+                    if args: func(filename, folder, args)
+                    else: func(filename, folder)
+                except IOError, e:
+                        logging.error(e)
         elif response == gtk.RESPONSE_CANCEL:
             logging.info('Closed, no files selected')
         self.destroy()
