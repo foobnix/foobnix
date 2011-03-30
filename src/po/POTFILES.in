@@ -58,6 +58,7 @@
 ./foobnix/regui/controls/__init__.py
 ./foobnix/regui/controls/movie_area.py
 ./foobnix/regui/controls/playback.py
+./foobnix/regui/controls/record.py
 ./foobnix/regui/controls/seach_progress.py
 ./foobnix/regui/controls/seekbar.py
 ./foobnix/regui/controls/status_bar.py
@@ -93,6 +94,7 @@
 ./foobnix/thirdparty/__init__.py
 ./foobnix/thirdparty/lyr.py
 ./foobnix/thirdparty/pylast.py
+./foobnix/thirdparty/urllib2.py
 ./foobnix/thirdparty/google/BeautifulSoup.py
 ./foobnix/thirdparty/google/browser.py
 ./foobnix/thirdparty/google/__init__.py

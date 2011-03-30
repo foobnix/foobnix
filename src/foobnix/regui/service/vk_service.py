@@ -103,7 +103,6 @@ class VKService:
         index = url.rfind("#")
         if index > 0:
             url = url[:index]
-        print url
         index = url.find("id=")
         if index < 0:
             return None
