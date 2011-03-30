@@ -13,9 +13,19 @@ from foobnix.util.text_utils import html_decode
 import simplejson
 import thread
 from foobnix.fc.fc_base import get_random_vk, FCBase
-from foobnix.thirdparty import vkontakte, urllib2
+from foobnix.thirdparty import vkontakte
 from foobnix.util.time_utils import convert_seconds_to_text
-from foobnix.thirdparty.urllib2 import HTTPError, URLError
+
+import sys
+
+#FIN BUG IN PYTHON 2.7
+#http://bugs.python.org/issue11703
+if sys.version_info > (2, 6):
+    from foobnix.thirdparty import urllib2
+    from foobnix.thirdparty.urllib2 import HTTPError, URLError
+else:
+    import urllib2
+    
 
 class VKService:
     

@@ -97,11 +97,11 @@ import os
 import posixpath
 import random
 import re
+import socket
 import sys
 import time
 import urlparse
 import bisect
-import socket
 
 try:
     from cStringIO import StringIO
@@ -119,7 +119,7 @@ from urllib import localhost, url2pathname, getproxies, proxy_bypass
 __version__ = sys.version[:3]
 
 _opener = None
-def urlopen(url, data=None, timeout=10000):
+def urlopen(url, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
     global _opener
     if _opener is None:
         _opener = build_opener()
@@ -370,7 +370,7 @@ class OpenerDirector:
             if result is not None:
                 return result
 
-    def open(self, fullurl, data=None, timeout=10000):
+    def open(self, fullurl, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         # accept a URL or a Request object
         if isinstance(fullurl, basestring):
             req = Request(fullurl, data)
@@ -602,7 +602,7 @@ class HTTPRedirectHandler(BaseHandler):
         fp.read()
         fp.close()
 
-        return self.parent.open(new, timeout=10000)
+        return self.parent.open(new, timeout=req.timeout)
 
     http_error_301 = http_error_303 = http_error_307 = http_error_302
 
@@ -724,7 +724,7 @@ class ProxyHandler(BaseHandler):
             # {'http': 'ftp://proxy.example.com'}, we may end up turning
             # a request for http://acme.example.com/a into one for
             # ftp://proxy.example.com/a
-            return self.parent.open(req, timeout=10000)
+            return self.parent.open(req, timeout=req.timeout)
 
 class HTTPPasswordMgr:
 
@@ -849,7 +849,7 @@ class AbstractBasicAuthHandler:
             if req.headers.get(self.auth_header, None) == auth:
                 return None
             req.add_unredirected_header(self.auth_header, auth)
-            return self.parent.open(req, timeout=10000)
+            return self.parent.open(req, timeout=req.timeout)
         else:
             return None
 
@@ -941,7 +941,7 @@ class AbstractDigestAuthHandler:
             if req.headers.get(self.auth_header, None) == auth_val:
                 return None
             req.add_unredirected_header(self.auth_header, auth_val)
-            resp = self.parent.open(req, timeout=10000)
+            resp = self.parent.open(req, timeout=req.timeout)
             return resp
 
     def get_cnonce(self, nonce):
@@ -1113,7 +1113,7 @@ class AbstractHTTPHandler(BaseHandler):
         if not host:
             raise URLError('no host given')
 
-        h = http_class(host, timeout=10000) # will parse host:port
+        h = http_class(host, timeout=req.timeout) # will parse host:port
         h.set_debuglevel(self._debuglevel)
 
         headers = dict(req.headers)
@@ -1341,7 +1341,7 @@ class FTPHandler(BaseHandler):
         if dirs and not dirs[0]:
             dirs = dirs[1:]
         try:
-            fw = self.connect_ftp(user, passwd, host, port, dirs, 10000)
+            fw = self.connect_ftp(user, passwd, host, port, dirs, req.timeout)
             type = file and 'I' or 'D'
             for attr in attrs:
                 attr, value = splitvalue(attr)
