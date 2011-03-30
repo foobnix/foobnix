@@ -1,19 +1,25 @@
 #-*- coding: utf-8 -*-
-import os.path
 import gtk
+import logging
+import os.path
+
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import ICON_FOOBNIX
-import logging
+
 
 def m3u_reader(m3u_file_path):
     try:
         lines = open(unicode(m3u_file_path)).readlines()
         paths = [os.path.normpath(line) for line in lines if not line.startswith("#")]
         dirname = os.path.dirname(m3u_file_path)
-        if paths[0][0] == "\\" or paths[0][0] == '/':
-            full_paths = [path.replace("\\", "/").strip('\r\n') for path in paths]
-        else:
-            full_paths = [os.path.join(dirname, path).replace("\\", "/").strip('\r\n') for path in paths]
+        full_paths = []
+        for path in paths:
+            if (paths[0][0] in "\\/"):
+                full_paths.append(path.replace("\\", "/").strip('\r\n'))
+            elif paths[0].startswith('http'):
+                full_paths.append(path.strip('\r\n').replace('/', '//', 1))
+            else:
+                full_paths.append(os.path.join(dirname, path).replace("\\", "/").strip('\r\n'))
         return full_paths
     except IndexError: 
         logging.warn("You try to load empty playlist")
@@ -46,7 +52,7 @@ def message_on_save(absolute=True):
     dialog.set_border_width(5)
     dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
     label = gtk.Label()
-    label.set_markup("""<big><b>\t\t\t\t\t\t\t\tAttention!\n</b></big>\t\
+    label.set_markup(_("""<big><b>\t\t\t\t\t\t\t\tAttention!\n</b></big>\t\
 The relative location of the \
 playlist and music files allows you to save a relative
 paths to the files in your playlist. This will allow to carry along the playlist with the
@@ -56,7 +62,7 @@ change the relative location of the playlist file  and music files.
 \tAbsolute file paths make it impossible to transfer a playlist on other computer
 or use it in OS Windows, but it will put the library anywhere in the file system sepa-
 rate from the music files (the library will be working).\n
-\tDo you want to save the playlist with relative paths?\n""")
+\tDo you want to save the playlist with relative paths?\n"""))
     label.show()
     dialog.vbox.pack_start(label, False, False)
     dialog.vbox.show()

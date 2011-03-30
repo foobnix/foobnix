@@ -36,6 +36,7 @@ class TrayIconConfig(ConfigPlugin):
         self.radio_icon = IconBlock("Radio", controls, FC().radio_icon_entry)
         
         self.tray_icon_button = gtk.CheckButton(label=_("Show tray icon"), use_underline=True)
+        self.hide_in_tray_on_start = gtk.CheckButton(label=_("Hide player in tray on start"), use_underline=True)
         #self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
         
         self.close_button = gtk.RadioButton(None, label=_("On close window - close player"))
@@ -65,6 +66,7 @@ class TrayIconConfig(ConfigPlugin):
         
         self.n_time = self.notify_time()
         
+        box.pack_start(self.hide_in_tray_on_start, False, True, 0)
         box.pack_start(self.tray_icon_button, False, True, 0)
         box.pack_start(self.close_button, False, True, 0)
         box.pack_start(self.hide_button, False, True, 0)
@@ -152,7 +154,8 @@ class TrayIconConfig(ConfigPlugin):
         self.radio_icon.entry.set_text(FC().radio_icon_entry)
              
     def on_save(self):
-        FC().show_tray_icon = self.tray_icon_button.get_active() 
+        FC().show_tray_icon = self.tray_icon_button.get_active()
+        FC().hide_on_start =  self.hide_in_tray_on_start.get_active()
         FC().static_tray_icon = self.static_tray_icon.button.get_active()
         
         if FC().static_tray_icon: 

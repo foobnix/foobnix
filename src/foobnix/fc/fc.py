@@ -90,6 +90,8 @@ class FC():
         self.proxy_enable = False
         self.proxy_url = None
         
+        self.hide_on_start = False
+        
         """tray icon"""
         self.show_tray_icon = True
         self.tray_icon_auto_hide = True
