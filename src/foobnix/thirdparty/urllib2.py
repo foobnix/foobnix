@@ -97,11 +97,11 @@ import os
 import posixpath
 import random
 import re
-import socket
 import sys
 import time
 import urlparse
 import bisect
+import socket
 
 try:
     from cStringIO import StringIO
@@ -119,7 +119,7 @@ from urllib import localhost, url2pathname, getproxies, proxy_bypass
 __version__ = sys.version[:3]
 
 _opener = None
-def urlopen(url, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+def urlopen(url, data=None, timeout=10000):
     global _opener
     if _opener is None:
         _opener = build_opener()
@@ -370,7 +370,7 @@ class OpenerDirector:
             if result is not None:
                 return result
 
-    def open(self, fullurl, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+    def open(self, fullurl, data=None, timeout=10000):
         # accept a URL or a Request object
         if isinstance(fullurl, basestring):
             req = Request(fullurl, data)
