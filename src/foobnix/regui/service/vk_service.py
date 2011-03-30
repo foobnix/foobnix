@@ -5,18 +5,17 @@ Created on Sep 29, 2010
 @author: ivan
 '''
 import time
-import urllib2
 import logging
 import urllib
 import re
 from foobnix.regui.model import FModel
 from foobnix.util.text_utils import html_decode
 import simplejson
-from urllib2 import HTTPError, URLError
 import thread
 from foobnix.fc.fc_base import get_random_vk, FCBase
-from foobnix.thirdparty import vkontakte
+from foobnix.thirdparty import vkontakte, urllib2
 from foobnix.util.time_utils import convert_seconds_to_text
+from foobnix.thirdparty.urllib2 import HTTPError, URLError
 
 class VKService:
     
