@@ -31,6 +31,7 @@ from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.regui.treeview.lastfm_integration_tree import LastFmIntegrationControls
 from foobnix.regui.treeview.vk_integration_tree import VKIntegrationControls
 from foobnix.regui.controls.record import RadioRecord
+from foobnix.fc.fc import FC
 
 foobnix_localization()
 
@@ -110,7 +111,10 @@ class FoobnixCore(BaseFoobnixControls):
        
     def run(self):    
         self.on_load()
-        self.main_window.show()
+        if FC().hide_on_start:
+            print 1
+            self.main_window.hide()
+        #self.main_window.show()
         pass
             
         

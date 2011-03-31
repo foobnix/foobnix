@@ -6,12 +6,12 @@ Created on Dec 7, 2010
 '''
 
 import gtk
-from foobnix.fc.fc import FC
+
 from foobnix.fc.fc_cache import FCache
 from foobnix.util.list_utils import reorderer_list
 from foobnix.helpers.menu import Popup
 from foobnix.regui.notetab import TabGeneral
-
+import time
 
 class TabHelperControl(TabGeneral):
     def __init__(self, controls):
@@ -63,5 +63,5 @@ class TabHelperControl(TabGeneral):
         n = self.page_num(tab_child)
         tree = tab_child.get_child()
         self.controls.update_music_tree(tree, n)
-    
+        
     

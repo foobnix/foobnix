@@ -201,8 +201,7 @@ class BaseFoobnixControls():
                 
                 tree = NavigationTreeControl(self)
                 tree.simple_append_all(FCache().cache_music_tree_beans[tab])
-                self.tabhelper.append_tab(FCache().tab_names[tab], navig_tree=tree)
-                
+                self.tabhelper._append_tab(FCache().tab_names[tab], navig_tree=tree)
                 if not FCache().cache_music_tree_beans[tab]: 
                     tree.is_empty = True
                     self.perspective.show_add_button()
@@ -216,7 +215,8 @@ class BaseFoobnixControls():
                     tree = tab_child.get_child()
                     self.update_music_tree(tree, n)
             gobject.idle_add(cycle)
-
+        
+    
     def update_music_tree(self, tree=None, number_of_page=0):
         if not tree:
             tree = self.tree
@@ -251,7 +251,7 @@ class BaseFoobnixControls():
         else: tree.is_empty = False
         
         tree.append_all(all)
-     
+        tree.ext_width = tree.ext_column.get_width()
         
     def set_visible_video_panel(self, flag):
         FC().is_view_video_panel = flag
@@ -337,6 +337,7 @@ class BaseFoobnixControls():
             return False
 
     def play(self, bean):
+        self.tabhelper.normalize_columns_width()
         self.statusbar.set_text("")
         if not bean:
             self.state_stop()
@@ -670,7 +671,7 @@ class BaseFoobnixControls():
                 logging.debug("%f LOAD ON START %s" % (time.time() - init, str(self.__dict__[element])))
         
         """load others"""
-        self.main_window.show()
+        #self.main_window.show()
         self.movie_window.hide_all()
         self.info_panel.hide()        
         self.change_backgound()
@@ -684,7 +685,7 @@ class BaseFoobnixControls():
             self.check_version()
         else:
             thread.start_new_thread(self.check_version, ())
-        
+        #gobject.idle_add(self.tabhelper.normalize_columns_width)
     
     
     def change_backgound(self):

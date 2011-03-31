@@ -5,6 +5,7 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 
+import os
 import gtk
 import logging
 import gobject
@@ -27,16 +28,51 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         self.controls = controls
         
-        """column config"""
-        column = gtk.TreeViewColumn(_("Music Library"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
-        column.set_resizable(True)
-        self.append_column(column)
+        self.set_headers_visible(True)
+        self.set_reorderable(True)
         
+        """column config"""
+        #column = gtk.TreeViewColumn(_("Music Library"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        def func(column, cell, model, iter, ext=False):
+            data = model.get_value(iter, self.text[0])
+            if os.path.isfile(model.get_value(iter, self.path[0])):
+                if ext:
+                    cell.set_property('text', os.path.splitext(data)[1][1:])
+                else:
+                    cell.set_property('text', os.path.splitext(data)[0])
+            else:
+                if ext:
+                    cell.set_property('text', '')
+                
+        
+        self.name_column = gtk.TreeViewColumn(_("Name"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.name_column.set_resizable(True)
+        self.name_column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        for rend in self.name_column.get_cell_renderers():
+            self.name_column.set_cell_data_func(rend, func, False)
+        self.append_column(self.name_column)
+       
+        self.ext_column = gtk.TreeViewColumn(_("Ext"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.ext_column.set_resizable(False)
+        for rend in self.ext_column.get_cell_renderers():
+            self.ext_column.set_cell_data_func(rend, func, True)
+        self.append_column(self.ext_column)
+          
         self.configure_send_drug()
         
         self.set_type_tree()
         self.is_empty = False
         self.connect("button-release-event", self.on_button_release)
+        
+        '''to force the ext_column to take the minimum size'''
+        self.name_column.set_fixed_width(2000)
+        
+        def task(*a):
+            gobject.idle_add(self.normalize_columns_width)
+        task()
+        
+        self.scroll.get_vscrollbar().connect('show', task)
+        self.scroll.get_vscrollbar().connect('hide', task)
         
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
@@ -201,7 +237,22 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             logging.info('Closed, no files selected')
             chooser.destroy()       
     
+    def normalize_columns_width(self):
+        if not hasattr(self, 'ext_width'):
+            self.ext_width = self.ext_column.get_width()
             
+        increase = 0
+        vscrollbar = self.scroll.get_vscrollbar()
+        if not vscrollbar.get_property('visible'):
+            increase += 5
+            
+        self.name_column.set_fixed_width(self.get_allocation().width - self.ext_width - increase)
+            
+        
+    
+    def on_show_hide(self, *a):
+        self.normalize_columns_width()
+                    
     def on_load(self):
         self.controls.load_music_tree()
         self.restore_expand(FC().nav_expand_paths)
@@ -219,6 +270,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         """tab choose"""
         if FC().tabs_mode == "Single":
             self.controls.tabhelper.set_show_tabs(False)
-    
+        
     def on_save(self):
         pass

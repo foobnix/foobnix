@@ -28,8 +28,7 @@ class ChildTopWindow(gtk.Window):
         self.hide_on_escape = True
         self.set_opacity(FC().window_opacity)
         self.is_rendered = True
-        if FC().hide_on_start:
-            self.hide()
+        
     
     def set_hide_on_escape(self, hide_on_escape=True):
         self.hide_on_escape = hide_on_escape

@@ -32,7 +32,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         center_box.pack_start(bbox, True, True)
         
         self.hpaned_left = gtk.HPaned()
-        self.hpaned_left.connect("motion-notify-event", self.on_save)
+        self.hpaned_left.connect("motion-notify-event", self.on_save_and_normilize_columns)
         
              
         
@@ -65,11 +65,16 @@ class BaseFoobnixLayout(FControl, LoadSave):
             
         FC().is_view_music_tree_panel = flag
 
-    def on_save(self, *a): 
+    def on_save_and_normilize_columns(self, *a): 
         if self.hpaned_left.get_position() > 0:   
             FC().hpaned_left = self.hpaned_left.get_position()
+                
+        for page in xrange(self.controls.tabhelper.get_n_pages()):
+            tab_content = self.controls.tabhelper.get_nth_page(page)
+            tree = tab_content.get_child()
+            tree.normalize_columns_width()
             
-    def on_load(self):  
+    def on_load(self):
         self.set_visible_search_panel(FC().is_view_search_panel)
         self.set_visible_musictree_panel(FC().is_view_music_tree_panel)
         

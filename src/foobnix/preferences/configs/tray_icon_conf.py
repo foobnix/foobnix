@@ -132,7 +132,8 @@ class TrayIconConfig(ConfigPlugin):
         self.static_tray_icon.button.set_active(FC().static_tray_icon)
         self.icon_controls.button.set_active(FC().system_icons_dinamic)
         self.change_tray_icon.button.set_active(FC().change_tray_icon)
-        
+        self.hide_in_tray_on_start.set_active(FC().hide_on_start)
+          
         if FC().on_close_window == const.ON_CLOSE_CLOSE:
             self.close_button.set_active(True)
             
