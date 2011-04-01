@@ -215,7 +215,6 @@ class BaseFoobnixControls():
                     tree = tab_child.get_child()
                     self.update_music_tree(tree, n)
             gobject.idle_add(cycle)
-        
     
     def update_music_tree(self, tree=None, number_of_page=0):
         if not tree:
@@ -337,7 +336,6 @@ class BaseFoobnixControls():
             return False
 
     def play(self, bean):
-        self.tabhelper.normalize_columns_width()
         self.statusbar.set_text("")
         if not bean:
             self.state_stop()
@@ -571,21 +569,9 @@ class BaseFoobnixControls():
         self.info_panel.update(bean)
 
     def append_to_new_notebook(self, text, beans, optimization=False):
-        #beans = update_id3_wind_filtering(beans)        
         self.notetabs._append_tab(text, beans, None, optimization)
 
     def append_to_current_notebook(self, beans):
-                           
-                    
-        #beans = update_id3_wind_filtering(beans) 
-        """cue_beans = []
-        for bean in beans:
-            if get_file_extension(bean.path) == ".cue":
-                cue_beans.append(bean.path)
-        if cue_beans:
-            beans = cue_beans"""
-        #parent = FModel
-        
         self.notetabs.append_all(beans)
 
     def next(self):        
@@ -671,7 +657,6 @@ class BaseFoobnixControls():
                 logging.debug("%f LOAD ON START %s" % (time.time() - init, str(self.__dict__[element])))
         
         """load others"""
-        #self.main_window.show()
         self.movie_window.hide_all()
         self.info_panel.hide()        
         self.change_backgound()
@@ -685,9 +670,7 @@ class BaseFoobnixControls():
             self.check_version()
         else:
             thread.start_new_thread(self.check_version, ())
-        #gobject.idle_add(self.tabhelper.normalize_columns_width)
-    
-    
+           
     def change_backgound(self):
         win = self.main_window
         if FC().background_image:

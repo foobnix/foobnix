@@ -5,6 +5,8 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
+import logging
+
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 from foobnix.fc.fc import FC
@@ -13,7 +15,7 @@ from foobnix.util.key_utils import is_key, is_key_alt, is_key_control
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION, \
     LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_VIRTUAL, LEFT_PERSPECTIVE_INFO
-import logging
+
 
 class MainWindow(gtk.Window, FControl, LoadSave):
     def __init__(self, controls):

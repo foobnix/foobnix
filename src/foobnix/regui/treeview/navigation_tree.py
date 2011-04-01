@@ -44,16 +44,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 if ext:
                     cell.set_property('text', '')
                 
-        
         self.name_column = gtk.TreeViewColumn(_("Name"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
-        self.name_column.set_resizable(True)
         self.name_column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
         for rend in self.name_column.get_cell_renderers():
             self.name_column.set_cell_data_func(rend, func, False)
         self.append_column(self.name_column)
        
         self.ext_column = gtk.TreeViewColumn(_("Ext"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
-        self.ext_column.set_resizable(False)
         for rend in self.ext_column.get_cell_renderers():
             self.ext_column.set_cell_data_func(rend, func, True)
         self.append_column(self.ext_column)
@@ -248,11 +245,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             
         self.name_column.set_fixed_width(self.get_allocation().width - self.ext_width - increase)
             
-        
-    
-    def on_show_hide(self, *a):
-        self.normalize_columns_width()
-                    
     def on_load(self):
         self.controls.load_music_tree()
         self.restore_expand(FC().nav_expand_paths)

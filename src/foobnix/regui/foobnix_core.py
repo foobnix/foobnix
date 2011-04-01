@@ -112,11 +112,5 @@ class FoobnixCore(BaseFoobnixControls):
     def run(self):    
         self.on_load()
         if FC().hide_on_start:
-            print 1
             self.main_window.hide()
-        #self.main_window.show()
-        pass
-            
-        
-               
         
