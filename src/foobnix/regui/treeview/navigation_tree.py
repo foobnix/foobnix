@@ -66,13 +66,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         '''to force the ext_column to take the minimum size'''
         self.name_column.set_fixed_width(2000)
         def task(*a):
-            gobject.idle_add(self.normalize_columns_width)
-        task()
+            self.on_click_header(None, None, on_start=True)
+        gobject.idle_add(task)
         
         self.scroll.get_vscrollbar().connect('show', task)
         self.scroll.get_vscrollbar().connect('hide', task)
         
-        gobject.idle_add(self.on_click_header, None, None, True)
+        #gobject.idle_add(self.on_click_header, None, None, True)
         
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
@@ -253,7 +253,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         increase = 0
         vscrollbar = self.scroll.get_vscrollbar()
         if not vscrollbar.get_property('visible'):
-            increase += 5
+            increase += 3
             
         self.name_column.set_fixed_width(self.get_allocation().width - self.ext_width - increase)
     
