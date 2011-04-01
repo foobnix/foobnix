@@ -29,10 +29,12 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.controls = controls
         
         self.set_headers_visible(True)
-        self.set_reorderable(True)
-        
+        self.set_headers_clickable(True)
+                
         """column config"""
-        #column = gtk.TreeViewColumn(_("Music Library"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.column = gtk.TreeViewColumn("File", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self._append_column(self.column, _("File"))
+        
         def func(column, cell, model, iter, ext=False):
             data = model.get_value(iter, self.text[0])
             if os.path.isfile(model.get_value(iter, self.path[0])):
@@ -44,16 +46,16 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 if ext:
                     cell.set_property('text', '')
                 
-        self.name_column = gtk.TreeViewColumn(_("Name"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.name_column = gtk.TreeViewColumn("Name", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         self.name_column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
         for rend in self.name_column.get_cell_renderers():
             self.name_column.set_cell_data_func(rend, func, False)
-        self.append_column(self.name_column)
-       
-        self.ext_column = gtk.TreeViewColumn(_("Ext"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self._append_column(self.name_column, _("Name"))
+               
+        self.ext_column = gtk.TreeViewColumn("Ext", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         for rend in self.ext_column.get_cell_renderers():
             self.ext_column.set_cell_data_func(rend, func, True)
-        self.append_column(self.ext_column)
+        self._append_column(self.ext_column, _("Ext"))
           
         self.configure_send_drug()
         
@@ -70,6 +72,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         self.scroll.get_vscrollbar().connect('show', task)
         self.scroll.get_vscrollbar().connect('hide', task)
+        self.on_click_header(None, None, on_start=True)
         
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
@@ -127,6 +130,15 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             
             menu.show(e)
     
+    def _append_column(self, column, title):
+        column.label = gtk.Label(title)
+        column.label.show()
+        column.set_widget(column.label)
+        column.set_clickable(True)
+        self.append_column(column)
+        column.button = column.label.get_parent().get_parent().get_parent()
+        column.button.connect("button-press-event", self.on_click_header)
+        
     def rename_files(self, a):
         row, index_path, index_text = a
         if rename_file_on_disk(row, index_path, index_text):
@@ -244,7 +256,19 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             increase += 5
             
         self.name_column.set_fixed_width(self.get_allocation().width - self.ext_width - increase)
-            
+    
+    def on_click_header(self, w, e, on_start=False):
+        if not on_start:
+            FC().show_full_filename = not FC().show_full_filename
+        if FC().show_full_filename:
+            self.column.set_visible(True)
+            self.name_column.set_visible(False)
+            self.ext_column.set_visible(False)
+        else:
+            self.column.set_visible(False)
+            self.name_column.set_visible(True)
+            self.ext_column.set_visible(True)
+        
     def on_load(self):
         self.controls.load_music_tree()
         self.restore_expand(FC().nav_expand_paths)

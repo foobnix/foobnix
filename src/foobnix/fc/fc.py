@@ -6,6 +6,7 @@ Created on 23 сент. 2010
 '''
 
 import os
+
 from foobnix.util import const
 from foobnix.fc.fc_base import FCBase
 from foobnix.util.singleton import Singleton
@@ -147,9 +148,15 @@ class FC():
         self.active_manager = [0, ""]
         
         self.numbering_by_order = True
-                
-        '''translations of key words must match exactly with the translations of column.key names in PlaylistTreeControl'''
+        
+        '''columns configuration'''        
+        '''for playlists'''
+        """translations of key words must match exactly with the translations of column.key names in PlaylistTreeControl"""
         self.columns = {'*': [True, 0, 40], '№': [True, 1, 30], 'Composer': [False, 2, 80], 'Artist': [False, 3, 90], 'Title': [False, 4, 70], 'Track': [True, 5, -1], 'Time': [True, 6, 50]}         
+        
+        '''for navigation tree'''
+        self.show_full_filename = False
+        
         self.load();
     
     def delete(self):
