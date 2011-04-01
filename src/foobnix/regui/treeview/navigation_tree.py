@@ -65,14 +65,14 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         '''to force the ext_column to take the minimum size'''
         self.name_column.set_fixed_width(2000)
-        
         def task(*a):
             gobject.idle_add(self.normalize_columns_width)
         task()
         
         self.scroll.get_vscrollbar().connect('show', task)
         self.scroll.get_vscrollbar().connect('hide', task)
-        self.on_click_header(None, None, on_start=True)
+        
+        gobject.idle_add(self.on_click_header, None, None, True)
         
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
@@ -249,7 +249,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     def normalize_columns_width(self):
         if not hasattr(self, 'ext_width'):
             self.ext_width = self.ext_column.get_width()
-            
+        
         increase = 0
         vscrollbar = self.scroll.get_vscrollbar()
         if not vscrollbar.get_property('visible'):
@@ -258,16 +258,25 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.name_column.set_fixed_width(self.get_allocation().width - self.ext_width - increase)
     
     def on_click_header(self, w, e, on_start=False):
+        def task(tree):
+            if FC().show_full_filename:
+                tree.column.set_visible(True)
+                tree.name_column.set_visible(False)
+                tree.ext_column.set_visible(False)
+            else:
+                tree.column.set_visible(False)
+                tree.name_column.set_visible(True)
+                tree.ext_column.set_visible(True)
+        
         if not on_start:
             FC().show_full_filename = not FC().show_full_filename
-        if FC().show_full_filename:
-            self.column.set_visible(True)
-            self.name_column.set_visible(False)
-            self.ext_column.set_visible(False)
+            for page in xrange(self.controls.tabhelper.get_n_pages()):
+                tab_content = self.controls.tabhelper.get_nth_page(page)
+                tree = tab_content.get_child()
+                task(tree)
         else:
-            self.column.set_visible(False)
-            self.name_column.set_visible(True)
-            self.ext_column.set_visible(True)
+            task(self)
+            self.normalize_columns_width()
         
     def on_load(self):
         self.controls.load_music_tree()
