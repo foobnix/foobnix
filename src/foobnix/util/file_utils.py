@@ -11,7 +11,7 @@ import logging
 from foobnix.fc.fc import FC
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
-
+from foobnix.helpers.textarea import ScrolledText
 
 
 def open_in_filemanager(path, managers=None):
@@ -135,6 +135,33 @@ def del_dir(path):
                 del_dir(item_abs)
         os.rmdir(path)
 
+def copy_move_files_dialog(files, dest_folder, copy=None):
+    if copy: action = _("Copy")
+    else: action = _("Replace") 
+    
+    dialog = gtk.Dialog(_('%s file(s) / folder(s)') % action)
+    
+    ok_button = dialog.add_button(action, gtk.RESPONSE_OK)
+    cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+    
+    ok_button.grab_default()
+    label = gtk.Label(_("\nAre you really want to %s this item(s) to %s ?") % (action, dest_folder))      
+    area = ScrolledText()
+    area.text.set_editable(False)
+    area.text.set_cursor_visible(False)
+    area.buffer.set_text("\n".join([os.path.basename(path) for path in files]))
+    dialog.vbox.pack_start(area.scroll)
+    dialog.set_border_width(5)
+    dialog.vbox.pack_start(label)
+    dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
+    dialog.set_default_size(400, 150)
+    dialog.show_all()
+    if dialog.run() == gtk.RESPONSE_OK:
+        dialog.destroy()
+        return True
+    dialog.destroy()
+    return False
+        
 def isDirectory(path):
     return os.path.isdir(path)
 

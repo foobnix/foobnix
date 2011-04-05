@@ -3,19 +3,22 @@ Created on Oct 14, 2010
 
 @author: ivan
 '''
+
 import gtk
 import copy
 import uuid
-import os.path
+import shutil
+import gobject
 import logging
+import os.path
 
-from foobnix.regui.model import FModel, FTreeModel
-from foobnix.util.iso_util import get_beans_from_iso_wv
+from foobnix.fc.fc import FC
 from foobnix.util.m3u_utils import m3u_reader
 from foobnix.util.key_utils import is_key_control
-import gobject
+from foobnix.regui.model import FModel, FTreeModel
+from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.id3_file import update_id3_wind_filtering
-from foobnix.fc.fc import FC
+from foobnix.util.file_utils import copy_move_files_dialog
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -127,52 +130,75 @@ class DrugDropTree(gtk.TreeView):
         
         ff_model, ff_paths = from_tree.get_selection().get_selected_rows()
         
+        """to tree is NavigationTreeControl"""
+        is_copy_move = False
+        if isinstance(self, self.controls.tree.__class__) and from_tree is to_tree:
+            rows = [to_model[ff_path] for ff_path in ff_paths]
+            files = [row[self.path[0]] for row in rows]
+            dest_folder = self.get_dest_folder(to_filter_model, to_filter_iter, to_filter_path)
+            if copy_move_files_dialog(files, dest_folder, self.to_copy):
+                new_paths = []
+                is_copy_move = True
+                for file in files:
+                    new_path = self.replace_inside_navig_tree(file, dest_folder)
+                    new_paths.append(new_path)
+                new_paths = iter(new_paths)
+            else:
+                return
+        
+        
         ff_row_refs = [gtk.TreeRowReference(ff_model, ff_path) for ff_path in ff_paths]
                 
         new_iter = None
         self.row_to_remove = []        
-        for ff_row_ref  in ff_row_refs:
+        for ff_row_ref in ff_row_refs:
             ff_iter = self.get_iter_from_row_reference(ff_row_ref)
                         
             """do not copy to himself"""
             if to_tree == from_tree and ff_path == to_filter_path:
                 drag_context.finish(False, False)
                 return None
-            
+           
             """if m3u is dropped"""
             if self.add_m3u(ff_model, ff_iter, to_model, to_iter, to_filter_pos):
                 continue
             
             if ff_model.iter_has_child(ff_iter):
-                new_iter = self.to_add_drug_item(to_model, to_iter, ff_row_ref, to_filter_pos, True)
+                new_iter = self.to_add_drug_item(to_model, to_iter, to_filter_pos, ff_row_ref)
                 self.iter_is_parent(ff_row_ref, ff_model, to_model, new_iter)
             else:
                 if new_iter and to_iter and not to_model.iter_has_child(to_iter):
                     to_iter = new_iter
-                new_iter = self.to_add_drug_item(to_model, to_iter, ff_row_ref, to_filter_pos)
+                new_iter = self.to_add_drug_item(to_model, to_iter, to_filter_pos, ff_row_ref)
+                if to_filter_pos == gtk.TREE_VIEW_DROP_BEFORE:
+                    new_iter = to_model.iter_next(new_iter)
             
-            '''drug row with children from plain tree'''    
+            if is_copy_move:
+                row = to_model[to_model.get_path(new_iter)]
+                row[self.path[0]] = new_paths.next()
+            
+            '''drag row with children from plain tree'''    
             if from_tree.current_view == VIEW_PLAIN:
                 ff_iter = self.get_iter_from_row_reference(ff_row_ref)
                 if not self.get_bean_from_model_iter(ff_model, ff_iter).is_file:
                     next_iter = ff_model.iter_next(ff_iter)
-                    iter = new_iter
+                    _iter = new_iter
                     while self.get_bean_from_model_iter(ff_model, next_iter).is_file:
                         ref = self.get_row_reference_from_iter(ff_model, next_iter)
                         if to_tree.current_view == VIEW_TREE:
-                            if iter == new_iter:
+                            if _iter == new_iter:
                                 pos = gtk.TREE_VIEW_DROP_INTO_OR_AFTER
                                 if to_filter_pos == gtk.TREE_VIEW_DROP_BEFORE:
-                                    iter = self.get_previous_iter(to_model, iter)
+                                    _iter = self.get_previous_iter(to_model, _iter)
                             else:
                                 pos = gtk.TREE_VIEW_DROP_AFTER
                         else:
                             pos = to_filter_pos
-                        iter = self.to_add_drug_item(to_model, iter, ref, pos)
+                        _iter = self.to_add_drug_item(to_model, _iter, pos, ref)
                         next_iter = self.get_iter_from_row_reference(ref)
                         next_iter = ff_model.iter_next(next_iter)
                         if not next_iter: break
-                
+            
         def remove_replaced():
             for ref in self.row_to_remove:
                 filter_iter = self.get_iter_from_row_reference(ref)
@@ -191,8 +217,9 @@ class DrugDropTree(gtk.TreeView):
                 
  
     def add_m3u(self, from_model, from_iter, to_model, to_iter, pos):
-        if (from_model.get_value(from_iter, 0).lower().endswith(".m3u") 
-        or from_model.get_value(from_iter, 0).lower().endswith(".m3u8")):
+        if ((from_model.get_value(from_iter, 0).lower().endswith(".m3u") 
+        or from_model.get_value(from_iter, 0).lower().endswith(".m3u8"))
+        and from_model is not to_model):
             logging.info("m3u is found")
             m3u_file_path = from_model.get_value(from_iter, 5)
             m3u_title = from_model.get_value(from_iter, 0)
@@ -212,11 +239,11 @@ class DrugDropTree(gtk.TreeView):
                 
                 if new_iter:
                     to_iter = new_iter
-                new_iter = self.to_add_drug_item(to_model, to_iter, None, pos, row=row)
+                new_iter = self.to_add_drug_item(to_model, to_iter, pos, None,  row=row)
                 
             return True
     
-    def to_add_drug_item(self, to_model, to_iter, ref, pos, parent=False, child=False, row=None):    
+    def to_add_drug_item(self, to_model, to_iter,  pos, ref=None, child=False, row=None):    
         if not row:
             from_iter = self.get_iter_from_row_reference(ref)
             from_model = ref.get_model()
@@ -231,22 +258,21 @@ class DrugDropTree(gtk.TreeView):
                     new_iter = to_model.prepend(to_iter, row)
             elif pos == gtk.TREE_VIEW_DROP_BEFORE:
                 new_iter = to_model.insert_before(None, to_iter, row)
-                if not parent:
-                    new_iter = to_model.iter_next(new_iter)
+                
             elif pos == gtk.TREE_VIEW_DROP_AFTER:
                 new_iter = to_model.insert_after(None, to_iter, row)
             else:
                 new_iter = to_model.append(None, row)
         else:
             new_iter = to_model.append(None, row)
-        
+     
         return new_iter
 
     def iter_is_parent(self, ff_row_ref, ff_model, to_model, to_parent_iter, pos=gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
         ff_iter = self.get_iter_from_row_reference(ff_row_ref)
         refs = self.content_filter(ff_iter, ff_model) 
         for ref in refs:
-            to_child_iter = self.to_add_drug_item(to_model, to_parent_iter, ref, pos, child=True)
+            to_child_iter = self.to_add_drug_item(to_model, to_parent_iter, pos, ref, child=True)
             """Iters have already changed. Redefine"""
             iter = self.get_iter_from_row_reference(ref)
             if  ff_model.iter_n_children(iter):
@@ -272,7 +298,42 @@ class DrugDropTree(gtk.TreeView):
                 not_cue_refs.append(row_reference)
         
         return cue_refs + folder_refs if cue_refs else not_cue_refs
-
+    
+    def replace_inside_navig_tree(self, old_path, dest_folder):
+        logging.debug('drag inside navigation tree')
+        new_path = os.path.join(dest_folder, os.path.basename(old_path))
+        print old_path
+        print new_path
+        
+        if old_path != new_path:
+            logging.debug('old file: ' + old_path)
+            logging.debug('new file: ' + new_path)
+            if not self.to_copy:
+                shutil.move(old_path, new_path)
+            else:
+                print 1
+                shutil.copy(old_path, new_path)
+        return new_path
+    
+    def get_dest_folder(self, to_f_model, to_filter_iter, to_filter_path):
+        if to_filter_iter:
+            parent_iter = to_f_model.iter_parent(to_filter_iter)
+        else:
+            parent_iter = None
+        if not parent_iter:
+            logging.debug("no parent iter found")
+            if to_filter_path[-1] > 0:
+                previous_iter = to_f_model.get_iter( (to_filter_path[-1] -1,) )
+                previous_path = to_f_model.get_value(previous_iter , self.path[0])
+                dest_folder = os.path.dirname(previous_path)                                        
+            else:
+                logging.debug("item is top in tree")
+                next_path = to_f_model.get_value(to_f_model.get_iter_root(), self.path[0])
+                dest_folder = os.path.dirname(next_path)
+        else:
+            dest_folder = to_f_model.get_value(parent_iter, self.path[0])
+        return dest_folder
+        
     def child_by_recursion(self, row, plain):
         for child in row.iterchildren():
             plain.append(child)

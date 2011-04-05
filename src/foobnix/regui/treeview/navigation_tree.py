@@ -58,6 +58,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self._append_column(self.ext_column, _("Ext"))
           
         self.configure_send_drug()
+        self.configure_recive_drug()
         
         self.set_type_tree()
         self.is_empty = False
