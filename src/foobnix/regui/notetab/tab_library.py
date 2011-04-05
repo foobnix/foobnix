@@ -11,7 +11,7 @@ from foobnix.fc.fc_cache import FCache
 from foobnix.util.list_utils import reorderer_list
 from foobnix.helpers.menu import Popup
 from foobnix.regui.notetab import TabGeneral
-import time
+
 
 class TabHelperControl(TabGeneral):
     def __init__(self, controls):
