@@ -4,11 +4,13 @@ Created on 7 нояб. 2010
 
 @author: ivan
 '''
+
 from foobnix.regui.model import FTreeModel
-from foobnix.regui.treeview.drugdrop_tree import DrugDropTree
-class FilterTreeControls(DrugDropTree):
+from foobnix.regui.treeview.dragdrop_tree import DragDropTree
+
+class FilterTreeControls(DragDropTree):
     def __init__(self, controls):
-        DrugDropTree.__init__(self, controls)
+        DragDropTree.__init__(self, controls)
     
     def show_all_lines(self):
         def req(line):

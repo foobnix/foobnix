@@ -3,6 +3,7 @@ Created on Feb 26, 2010
 
 @author: ivan
 '''
+
 import os
 import gtk
 import urllib
@@ -10,8 +11,8 @@ import logging
 
 from foobnix.fc.fc import FC
 from foobnix.util.const import ICON_FOOBNIX
-from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.helpers.textarea import ScrolledText
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 
 def open_in_filemanager(path, managers=None):
@@ -142,7 +143,7 @@ def copy_move_files_dialog(files, dest_folder, copy=None):
     dialog = gtk.Dialog(_('%s file(s) / folder(s)') % action)
     
     ok_button = dialog.add_button(action, gtk.RESPONSE_OK)
-    cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+    cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL) #@UnusedVariable
     
     ok_button.grab_default()
     label = gtk.Label(_("\nAre you really want to %s this item(s) to %s ?") % (action, dest_folder))      

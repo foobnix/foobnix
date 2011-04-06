@@ -10,17 +10,16 @@ import gtk
 import logging
 import gobject
 
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
-    is_middle_click_release, is_middle_click, is_left_click_release
-from foobnix.regui.state import LoadSave
-from foobnix.helpers.menu import Popup
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
-from foobnix.regui.treeview.common_tree import CommonTreeControl
+from foobnix.helpers.menu import Popup
+from foobnix.regui.state import LoadSave
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
+from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
     delete_files_from_disk
-
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
+    is_middle_click_release, is_middle_click
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
@@ -60,8 +59,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             self.ext_column.set_cell_data_func(rend, func, True)
         self._append_column(self.ext_column, _("Ext"))
           
-        self.configure_send_drug()
-        self.configure_recive_drug()
+        self.configure_send_drag()
+        self.configure_recive_drag()
         
         self.set_type_tree()
         self.is_empty = False
@@ -75,9 +74,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         self.scroll.get_vscrollbar().connect('show', task)
         self.scroll.get_vscrollbar().connect('hide', task)
-        
-        #gobject.idle_add(self.on_click_header, None, None, True)
-        
+                
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
     
@@ -86,7 +83,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             # on left click add selected items to current tab
             """to select item under cursor"""
             try:
-                path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y))
+                path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y)) #@UnusedVariable
                 self.get_selection().select_path(path)
             except TypeError:
                 pass
@@ -182,11 +179,11 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 
             if self.add_m3u(from_model, from_iter, to_model, None, None): continue
             if from_model.iter_has_child(from_iter):
-                new_iter = self.to_add_drug_item(to_model, None, None, None, True, row=row)
+                new_iter = self.to_add_drag_item(to_model, None, None, None, True, row=row)
                 from_ref = self.get_row_reference_from_iter(from_model, from_iter)
                 self.iter_is_parent(from_ref, from_model, to_model, new_iter)
             else:
-                new_iter = self.to_add_drug_item(to_model, None, None, None, row=row)
+                new_iter = self.to_add_drag_item(to_model, None, None, None, row=row)
                 
         self.controls.notetabs.get_current_tree().rebuild_as_plain()
         if not current:

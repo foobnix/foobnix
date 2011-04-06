@@ -3,17 +3,19 @@ Created on Jan 27, 2011
 
 @author: ivan
 '''
-from foobnix.regui.treeview.common_tree import CommonTreeControl
 import gtk
-from foobnix.util.const import LEFT_PERSPECTIVE_LASTFM
-from foobnix.regui.model import FModel, FDModel
-from foobnix.util.bean_utils import update_parent_for_beans
-from foobnix.util.mouse_utils import is_rigth_click
-from foobnix.helpers.menu import Popup
 import gobject
-from foobnix.fc.fc_base import FCBase
-from foobnix.fc.fc import FC
 import logging
+
+from foobnix.fc.fc import FC
+from foobnix.fc.fc_base import FCBase
+from foobnix.helpers.menu import Popup
+from foobnix.regui.model import FModel, FDModel
+from foobnix.util.mouse_utils import is_rigth_click
+from foobnix.util.const import LEFT_PERSPECTIVE_LASTFM
+from foobnix.util.bean_utils import update_parent_for_beans
+from foobnix.regui.treeview.common_tree import CommonTreeControl
+
 
 class LastFmIntegrationControls(CommonTreeControl):
     def __init__(self, controls):
@@ -25,8 +27,8 @@ class LastFmIntegrationControls(CommonTreeControl):
         self.set_headers_visible(True)
         self.append_column(column)
         
-        self.configure_send_drug()
-        self.configure_recive_drug()
+        self.configure_send_drag()
+        self.configure_recive_drag()
         
         self.set_type_tree()
         

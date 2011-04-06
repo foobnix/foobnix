@@ -3,22 +3,23 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
+
 from __future__ import with_statement
-import os.path
+
 import gtk
-import logging
 import gobject
+import logging
+import os.path
 
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
-from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.fc.fc import FC
-from foobnix.fc.fc_cache import FCache, CACHE_RADIO_FILE
 from foobnix.regui.model import FModel
-from foobnix.helpers.dialog_entry import two_line_dialog
 from foobnix.helpers.menu import Popup
-from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
+from foobnix.helpers.dialog_entry import two_line_dialog
+from foobnix.fc.fc_cache import FCache, CACHE_RADIO_FILE
 from foobnix.regui.service.radio_service import RadioFolder
-
+from foobnix.regui.treeview.common_tree import CommonTreeControl
+from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
 
 
 class RadioTreeControl(CommonTreeControl):
@@ -32,7 +33,7 @@ class RadioTreeControl(CommonTreeControl):
         self.set_headers_visible(True)
         self.append_column(column)
         
-        self.configure_send_drug()
+        self.configure_send_drag()
 
         self.set_type_tree()
         self.is_lazy_load = False

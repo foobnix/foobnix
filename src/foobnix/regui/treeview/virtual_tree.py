@@ -26,8 +26,8 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         self.set_headers_visible(True)
         self.append_column(column)
         
-        self.configure_send_drug()
-        self.configure_recive_drug()
+        self.configure_send_drag()
+        self.configure_recive_drag()
         
         self.set_type_tree()
    

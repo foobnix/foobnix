@@ -7,6 +7,7 @@ Created on 25 сент. 2010
 
 import re
 import gtk
+import gobject
 import logging
 
 from foobnix.fc.fc import FC
@@ -21,7 +22,6 @@ from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release, \
     is_rigth_click
-import gobject
 
 foobnix_localization()
 
@@ -99,8 +99,8 @@ class PlaylistTreeControl(CommonTreeControl):
         self.time_col.item = gtk.CheckMenuItem(_("Time"))
         self._append_column(self.time_col)
 
-        self.configure_send_drug()
-        self.configure_recive_drug()
+        self.configure_send_drag()
+        self.configure_recive_drag()
         
         self.set_playlist_plain()
         
@@ -193,7 +193,7 @@ class PlaylistTreeControl(CommonTreeControl):
         if is_rigth_click_release(e):
             """to select item under cursor"""
             try:
-                path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y))
+                path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y)) #@UnusedVariable
                 self.get_selection().select_path(path)
             except TypeError:
                 pass

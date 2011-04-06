@@ -26,7 +26,7 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
         self.append_column(column)
         self.set_headers_visible(head_visible)
         
-        self.configure_send_drug()
+        self.configure_send_drag()
         
         self.set_type_plain()
         #self.populate_all([FModel("Madonna").add_is_file(True)])

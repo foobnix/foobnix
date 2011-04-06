@@ -15,7 +15,6 @@ import os.path
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
 from foobnix.util.m3u_utils import m3u_reader
-from foobnix.util.key_utils import is_key
 from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.id3_file import update_id3_wind_filtering
@@ -24,7 +23,7 @@ from foobnix.util.file_utils import copy_move_files_dialog
 VIEW_PLAIN = 0
 VIEW_TREE = 1
 
-class DrugDropTree(gtk.TreeView):
+class DragDropTree(gtk.TreeView):
     def __init__(self, controls):
         self.controls = controls
         gtk.TreeView.__init__(self)
@@ -36,10 +35,10 @@ class DrugDropTree(gtk.TreeView):
         self.hash = {None:None}
         self.current_view = None
     
-    def configure_recive_drug(self):
+    def configure_recive_drag(self):
         self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
     
-    def configure_send_drug(self):
+    def configure_send_drag(self):
         self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
     
     
@@ -183,14 +182,14 @@ class DrugDropTree(gtk.TreeView):
             return
             
         if ff_model.iter_has_child(ff_iter):
-            new_iter = self.to_add_drug_item(to_model, to_iter, to_filter_pos, ff_row_ref)
+            new_iter = self.to_add_drag_item(to_model, to_iter, to_filter_pos, ff_row_ref)
             self.iter_is_parent(ff_row_ref, ff_model, to_model, new_iter)
             if is_copy_move:
                 self.change_filepaths_in_row(to_model, new_iter, new_path)
         else:
             if new_iter and to_iter and not to_model.iter_has_child(to_iter):
                 to_iter = new_iter
-            new_iter = self.to_add_drug_item(to_model, to_iter, to_filter_pos, ff_row_ref)
+            new_iter = self.to_add_drag_item(to_model, to_iter, to_filter_pos, ff_row_ref)
             if is_copy_move:
                 self.change_filepaths_in_row(to_model, new_iter, new_path)
             if to_filter_pos == gtk.TREE_VIEW_DROP_BEFORE:
@@ -213,7 +212,7 @@ class DrugDropTree(gtk.TreeView):
                             pos = gtk.TREE_VIEW_DROP_AFTER
                     else:
                         pos = to_filter_pos
-                    _iter = self.to_add_drug_item(to_model, _iter, pos, ref)
+                    _iter = self.to_add_drag_item(to_model, _iter, pos, ref)
                     next_iter = self.get_iter_from_row_reference(ref)
                     next_iter = ff_model.iter_next(next_iter)
                     if not next_iter: break
@@ -259,11 +258,11 @@ class DrugDropTree(gtk.TreeView):
                 
                 if new_iter:
                     to_iter = new_iter
-                new_iter = self.to_add_drug_item(to_model, to_iter, pos, None,  row=row)
+                new_iter = self.to_add_drag_item(to_model, to_iter, pos, None,  row=row)
                 
             return True
     
-    def to_add_drug_item(self, to_model, to_iter,  pos, ref=None, child=False, row=None):    
+    def to_add_drag_item(self, to_model, to_iter,  pos, ref=None, child=False, row=None):    
         if not row:
             from_iter = self.get_iter_from_row_reference(ref)
             from_model = ref.get_model()
@@ -292,7 +291,7 @@ class DrugDropTree(gtk.TreeView):
         ff_iter = self.get_iter_from_row_reference(ff_row_ref)
         refs = self.content_filter(ff_iter, ff_model) 
         for ref in refs:
-            to_child_iter = self.to_add_drug_item(to_model, to_parent_iter, pos, ref, child=True)
+            to_child_iter = self.to_add_drag_item(to_model, to_parent_iter, pos, ref, child=True)
             """Iters have already changed. Redefine"""
             iter = self.get_iter_from_row_reference(ref)
             if  ff_model.iter_n_children(iter):
