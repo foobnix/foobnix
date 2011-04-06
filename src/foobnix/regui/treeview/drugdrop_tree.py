@@ -13,13 +13,13 @@ import logging
 import os.path
 
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_cache import FCache
 from foobnix.util.m3u_utils import m3u_reader
 from foobnix.util.key_utils import is_key
 from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.file_utils import copy_move_files_dialog
-from foobnix.fc.fc_cache import FCache
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -30,19 +30,17 @@ class DrugDropTree(gtk.TreeView):
         gtk.TreeView.__init__(self)
         
         self.connect("drag-drop", self.on_drag_drop)
-        self.connect("key-press-event", self.on_key_event, True)
-        self.connect("key-release-event", self.on_key_event)
-        self.to_copy = False
         self.copy = False
+        
         """init values"""
         self.hash = {None:None}
         self.current_view = None
     
     def configure_recive_drug(self):
-        self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY) #@UndefinedVariable
+        self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
     
     def configure_send_drug(self):
-        self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY) #@UndefinedVariable
+        self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("example1", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
     
     
     def append_all(self, beans):
@@ -114,7 +112,7 @@ class DrugDropTree(gtk.TreeView):
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
         # ff - from_filter
-        self.copy = False
+        self.copy = drag_context.action
         to_filter_model = to_tree.get_model()
         to_model = to_filter_model.get_model()
         if to_tree.get_dest_row_at_pos(x, y):
@@ -136,8 +134,7 @@ class DrugDropTree(gtk.TreeView):
         
         new_iter = None
         self.row_to_remove = []
-        if self.to_copy: self.copy = True
-        
+                
         """to tree is NavigationTreeControl"""
         is_copy_move = False
         if isinstance(self, self.controls.tree.__class__) and from_tree is to_tree:
@@ -149,6 +146,7 @@ class DrugDropTree(gtk.TreeView):
                 for ff_path, file in zip(ff_paths, files):
                     ff_row_ref = gtk.TreeRowReference(ff_model, ff_path)
                     new_path = self.replace_inside_navig_tree(file, dest_folder)
+                    if not new_path: continue
                     self.one_row_replacing(ff_row_ref, ff_path, ff_model, from_tree,
                         to_model, to_tree, to_iter, to_filter_pos, to_filter_path,
                         new_iter, new_path, is_copy_move)
@@ -167,7 +165,7 @@ class DrugDropTree(gtk.TreeView):
             
         self.row_to_remove = []
    
-        self.rebuild_tree(self, to_tree)
+        self.rebuild_tree(to_tree)
         
         
     def one_row_replacing(self, ff_row_ref, ff_path, ff_model, from_tree,
@@ -270,7 +268,7 @@ class DrugDropTree(gtk.TreeView):
             from_iter = self.get_iter_from_row_reference(ref)
             from_model = ref.get_model()
             row = self.get_row_from_model_iter(from_model, from_iter)
-            if not child and not self.copy:
+            if not child and self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
                 self.row_to_remove.append(ref)
         if to_iter:
             if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
@@ -327,17 +325,20 @@ class DrugDropTree(gtk.TreeView):
         if old_path != new_path:
             logging.debug('old file: ' + old_path)
             logging.debug('new file: ' + new_path)
-            if not self.copy:
+            if self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
                 shutil.move(old_path, new_path)
             else:
                 shutil.copy(old_path, new_path)
-        return new_path
+            return new_path
+        else:
+            logging.debug("Destination folder same as file folder. Skipping")
+            return None
     
     def get_dest_folder(self, to_f_model, to_filter_iter, to_filter_path):
         if to_filter_iter:
             parent_iter = to_f_model.iter_parent(to_filter_iter)
         else:
-            return FCache().music_paths[self.controls.tabhelper.page_num(self) - 1][-1]
+            return FCache().music_paths[self.controls.tabhelper.get_current_page()][-1]
         if not parent_iter:
             logging.debug("no parent iter found")
             if to_filter_path[-1] > 0:
@@ -536,12 +537,4 @@ class DrugDropTree(gtk.TreeView):
         row = self.get_row_from_bean(bean)
         
         parent_iter = self.model.append(parent_iter_exists, row)
-        self.hash[bean.level] = parent_iter    
-        
-    def on_key_event(self, w, e, is_pressed=False):
-        if (is_key(e, "Control_L") or is_key(e, "Control_R")) and is_pressed:
-            self.to_copy = True
-            return True
-        else:
-            self.to_copy = False
-            return False
+        self.hash[bean.level] = parent_iter

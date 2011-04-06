@@ -47,3 +47,9 @@ def is_rigth_click_release(event):
         return True
     else:
         return False
+    
+def is_left_click_release(event):
+    if event.button == 1 and event.type == gtk.gdk.BUTTON_RELEASE: #@UndefinedVariable
+        return True
+    else:
+        return False

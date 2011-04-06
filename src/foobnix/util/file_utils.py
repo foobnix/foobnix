@@ -136,7 +136,7 @@ def del_dir(path):
         os.rmdir(path)
 
 def copy_move_files_dialog(files, dest_folder, copy=None):
-    if copy: action = _("Copy")
+    if copy == gtk.gdk.ACTION_COPY: action = _("Copy") #@UndefinedVariable
     else: action = _("Replace") 
     
     dialog = gtk.Dialog(_('%s file(s) / folder(s)') % action)

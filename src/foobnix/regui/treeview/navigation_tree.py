@@ -11,7 +11,7 @@ import logging
 import gobject
 
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
-    is_middle_click_release, is_middle_click
+    is_middle_click_release, is_middle_click, is_left_click_release
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.menu import Popup
 from foobnix.fc.fc import FC
@@ -37,6 +37,9 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         def func(column, cell, model, iter, ext=False):
             data = model.get_value(iter, self.text[0])
+            if not model.get_value(iter, self.path[0]): 
+                cell.set_property('text', '')
+                return
             if os.path.isfile(model.get_value(iter, self.path[0])):
                 if ext:
                     cell.set_property('text', os.path.splitext(data)[1][1:])
@@ -80,7 +83,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     
     def on_button_release(self, w, e):
         if is_middle_click_release(e):
-            # on left double click add selected items to current tab
+            # on left click add selected items to current tab
             """to select item under cursor"""
             try:
                 path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y))
@@ -89,6 +92,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 pass
             self.add_to_tab(True)
             return
+        
         
     def on_button_press(self, w, e):
         if is_middle_click(e):
