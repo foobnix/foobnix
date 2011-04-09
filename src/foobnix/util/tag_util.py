@@ -31,16 +31,16 @@ class TagEditor(ChildTopWindow):
         """make tooltip more quick (useful for checkbuttons)"""
         gtk.Settings().set_property('gtk-tooltip-timeout', 0)
         
-        """
-        artist_label = gtk.Label(_("Artist"))
-        title_label = gtk.Label(_("Title"))
-        album_label = gtk.Label(_("Album"))
-        date_label = gtk.Label(_("Year"))
-        tracknumber_label = gtk.Label(_("Track number"))
-        genre_label = gtk.Label(_("Genre"))
-        author_label = gtk.Label(_("Author text"))
-        composer_label = gtk.Label(_("Composer"))
-        """
+        
+        artist_label = gtk.Label(_("Artist")) #@UnusedVariable
+        title_label = gtk.Label(_("Title")) #@UnusedVariable
+        album_label = gtk.Label(_("Album")) #@UnusedVariable
+        date_label = gtk.Label(_("Year")) #@UnusedVariable
+        tracknumber_label = gtk.Label(_("Track number")) #@UnusedVariable
+        genre_label = gtk.Label(_("Genre")) #@UnusedVariable
+        author_label = gtk.Label(_("Author text")) #@UnusedVariable
+        composer_label = gtk.Label(_("Composer")) #@UnusedVariable
+        
         self.paths = []
         self.tag_names = ["artist", "title", "album", "date", "tracknumber", "genre", "author", "composer"]
         self.tag_mp4_names = ['\xa9ART', '\xa9nam', '\xa9alb', '\xa9day', 'trkn', '\xa9gen', '', '\xa9wrt']
