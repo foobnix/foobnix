@@ -13,7 +13,6 @@ import os
 
 def get_random_vk():
     vks = {
-       "c891888@bofthew.com":"c891888",
        "c892009@bofthew.com":"c892009",
        "c892406@bofthew.com":"c892406",
        "c892588@bofthew.com":"c892588"

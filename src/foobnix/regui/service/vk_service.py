@@ -74,6 +74,31 @@ class VKService:
         page = self.search(query)
         if not page:
             return []
+         
+        results = self.api.get('audio.search',q=query, count=50)
+            
+        childs = []
+        
+        for i, line in enumerate(results):
+            if i ==0:
+                continue
+            
+            bean = FModel(line['artist']+' - '+line['title'])
+            bean.aritst = line['artist']
+            bean.title = line['title']
+            bean.time = convert_seconds_to_text(line['duration'])
+            bean.path = line['url']
+            childs.append(bean)
+             
+        return childs
+    
+    def _find_tracks_by_query(self, query):
+        if not self.is_connected():
+            return []
+        logging.info("start search songs" + query)
+        page = self.search(query)
+        if not page:
+            return []
         vk_audio = VKAudioResultsPage(page)
         return vk_audio.tracks()
         
@@ -90,7 +115,7 @@ class VKService:
     def get(self, url, data=None, headers={}):
         if data:
             data = urllib.urlencode(data)
-        time.sleep(1.2)
+        time.sleep(0.6)
         try:
             handler = self.opener.open(url, data)
             data = handler.read()
