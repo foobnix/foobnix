@@ -117,7 +117,7 @@ class DM(ChildTopWindow):
             self.append_task(bean, save_to)
     
     def dowloader(self, dm_list):
-        semaphore = threading.Semaphore(5)
+        semaphore = threading.Semaphore(FC().amount_dm_threads)
         while True:
             time.sleep(2)
             #self.navigation.use_filter()

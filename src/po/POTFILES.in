@@ -81,7 +81,7 @@
 ./foobnix/regui/treeview/common_tree.py
 ./foobnix/regui/treeview/dm_nav_tree.py
 ./foobnix/regui/treeview/dm_tree.py
-./foobnix/regui/treeview/drugdrop_tree.py
+./foobnix/regui/treeview/dragdrop_tree.py
 ./foobnix/regui/treeview/filter_tree.py
 ./foobnix/regui/treeview/__init__.py
 ./foobnix/regui/treeview/lastfm_integration_tree.py

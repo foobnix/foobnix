@@ -1,0 +1,12 @@
+#Mon Apr 11 17:49:52 EEST 2011
+eclipse.preferences.version=1
+encoding//src/foobnix/fc/fc.py=utf-8
+encoding//src/foobnix/fc/fc_base.py=utf-8
+encoding//src/foobnix/preferences/configs/music_library.py=utf-8
+encoding//src/foobnix/preferences/configs/network_conf.py=utf-8
+encoding//src/foobnix/preferences/configs/other_conf.py=utf-8
+encoding//src/foobnix/regui/base_controls.py=utf-8
+encoding//src/foobnix/regui/engine/gstreamer.py=utf-8
+encoding//src/foobnix/regui/foobnix_core.py=utf-8
+encoding//src/foobnix/regui/service/vk_service.py=utf-8
+encoding//src/foobnix/thirdparty/vkontakte/api.py=utf-8

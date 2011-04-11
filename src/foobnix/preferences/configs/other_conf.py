@@ -38,6 +38,22 @@ class OtherConfig(ConfigPlugin):
         """automatic save"""                
         self.automatic_save_checkbutton = gtk.CheckButton(label=_("Automatic music save"), use_underline=True)
         
+        """download threads"""
+        thbox = gtk.HBox(False, 5)
+        
+        
+        tab_label = gtk.Label(_("Download in threads"))
+        tab_label.show()
+        
+        adjustment = gtk.Adjustment(value=1, lower=1, upper=10, step_incr=1, page_incr=1, page_size=0)
+        self.threads_count = gtk.SpinButton(adjustment)
+        self.threads_count.show()
+        
+        thbox.pack_start(tab_label, False, False)
+        thbox.pack_start(self.threads_count, False, True)
+        
+        
+        
         
         """disc cover size"""
         cbox = gtk.HBox(False, 5)
@@ -126,6 +142,7 @@ class OtherConfig(ConfigPlugin):
         """packaging"""        
         box.pack_start(hbox, False, True, 0)
         box.pack_start(self.automatic_save_checkbutton, False, True, 0)
+        box.pack_start(thbox, False, True, 0)
         box.pack_start(cbox, False, True, 0)
         box.pack_start(self.check_new_version, False, True, 0)
         box.pack_start(demo, False, False, 0)
@@ -163,6 +180,9 @@ class OtherConfig(ConfigPlugin):
         
         """disc"""
         self.image_size_spin.set_value(FC().info_panel_image_size)
+        self.threads_count.set_value(FC().amount_dm_threads)
+        
+        
         self.opacity_size.set_value(int(FC().window_opacity * 100))
         
         self.check_new_version.set_active(FC().check_new_version)
@@ -197,6 +217,8 @@ class OtherConfig(ConfigPlugin):
         self.controls.os.on_load()
         
         FC().info_panel_image_size = self.image_size_spin.get_value_as_int()
+        FC().amount_dm_threads = self.threads_count.get_value_as_int()
+        
         FC().window_opacity = self.opacity_size.get_value() / 100
         FC().check_new_version = self.check_new_version.get_active()
         
