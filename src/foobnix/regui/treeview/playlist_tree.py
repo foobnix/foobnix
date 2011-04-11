@@ -67,8 +67,6 @@ class PlaylistTreeControl(CommonTreeControl):
         """column artist title"""
         self.description_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         self.description_col.key = "Track"
-        #self.description_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        self.description_col.set_expand(True)
         self.description_col.set_resizable(True)
         self.description_col.label = gtk.Label(_("Track"))
         self.description_col.item = gtk.CheckMenuItem(_("Track"))
@@ -278,7 +276,8 @@ class PlaylistTreeControl(CommonTreeControl):
             column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         else:
             column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
-        gobject.idle_add(column.set_fixed_width,FC().columns[column.key][2])
+        if FC().columns[column.key][2] > 0:
+            column.set_fixed_width(FC().columns[column.key][2])
         
         self.append_column(column)
         column.button = column.label.get_parent().get_parent().get_parent()
@@ -323,6 +322,7 @@ class PlaylistTreeControl(CommonTreeControl):
     def on_load(self):
         col_list = self.get_columns()
         col_list.sort(self.to_order_columns, reverse=True)
+        visible_columns = []
         for column in col_list:
             column.label.show()
             column.set_widget(column.label)
@@ -335,9 +335,13 @@ class PlaylistTreeControl(CommonTreeControl):
                     column.item.connect("button-press-event", self.on_toggle, column)
                     self.menu.append(column.item)
                     column.item.set_active(True)
+                visible_columns.append(column)
             else:
                 if column.__dict__.has_key("item"):
                     column.item.connect("button-press-event", self.on_toggle, column)
                     self.menu.append(column.item)
                     column.item.set_active(False)
                 column.set_visible(False)
+        if FC().columns["Track"][2] < 0:
+            self.description_col.set_fixed_width(self.time_col.get_width() - FC().columns["Time"][2])
+                            

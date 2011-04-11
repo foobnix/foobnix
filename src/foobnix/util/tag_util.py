@@ -151,6 +151,7 @@ class TagEditor(ChildTopWindow):
                 self.paths.remove(path)
                 continue
             audio = get_mutagen_audio(path)
+            
             self.decoding_cp866(audio)
             self.audious.append(audio)
         
@@ -234,8 +235,7 @@ class TagEditor(ChildTopWindow):
                         continue
                     set_tags(audio, path, tag_name)
             else:
-                if self.audious[0]:
-                    set_tags(self.audious[0], self.paths[0], tag_name)
+                set_tags(self.audious[0], self.paths[0], tag_name)
             check_button.set_active(False)
         
         self.apply_changes_for_rows_in_tree()
