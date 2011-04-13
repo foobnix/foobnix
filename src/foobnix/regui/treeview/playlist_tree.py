@@ -7,7 +7,6 @@ Created on 25 сент. 2010
 
 import re
 import gtk
-import gobject
 import logging
 
 from foobnix.fc.fc import FC

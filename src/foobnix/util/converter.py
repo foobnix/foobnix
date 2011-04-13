@@ -221,7 +221,7 @@ class Converter(ChildTopWindow):
      
     def warning(self):
         dialog = gtk.Dialog(_("Warning!!!"))
-        ok_button = dialog.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
+        ok_button = dialog.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK) #@UnusedVariable
         cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
         cancel_button.grab_default()      
         label = gtk.Label(_("So file(s)  already exist(s) and will be overwritten.\nDo you wish to continue?"))
@@ -375,6 +375,6 @@ def convert_files(paths):
             thread.start_new_thread(task, ())
         else:
             dialog.destroy()    
-          
+        
         
             

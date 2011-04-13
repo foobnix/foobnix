@@ -12,6 +12,7 @@ from random import randint
 from foobnix.regui.treeview.filter_tree import FilterTreeControls
 import logging
 import gobject
+from foobnix.fc.fc_cache import FCache
 
 class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
@@ -156,6 +157,21 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         path = model.get_path(iter)
         return gtk.TreeRowReference(model, path)
     
+    def save_beans_from_tree(self):
+        number_of_page = self.controls.notetabs.page_num(self.scroll)
+        FCache().cache_music_tree_beans[number_of_page] = []
+        for row in self.model:
+            def task(row):
+                for child_row in row.iterchildren():
+                    bean = self.get_bean_from_row(child_row)
+                    FCache().cache_music_tree_beans[number_of_page].append(bean)
+                    if child_row.iterchildren():
+                        task(child_row)
+            bean = self.get_bean_from_row(row)
+            FCache().cache_music_tree_beans[number_of_page].append(bean)
+            if row.iterchildren():
+                task(row)
+
     def clear_tree(self):
         self.model.clear()
 

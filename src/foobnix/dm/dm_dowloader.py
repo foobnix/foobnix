@@ -3,18 +3,21 @@ Created on Oct 27, 2010
 
 @author: ivan
 '''
+
 from __future__ import with_statement
-import threading
-import logging
-from urllib import FancyURLopener
-from foobnix.util.const import DOWNLOAD_STATUS_COMPLETED, \
-    DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_INACTIVE
+
 import os
-from foobnix.util.time_utils import size2text
+import time
+import logging
+import threading
 from foobnix.fc.fc import FC
+from urllib import FancyURLopener
+from foobnix.util.time_utils import size2text
 from foobnix.util.file_utils import get_file_extension
 from foobnix.util.bean_utils import get_bean_download_path
-import time
+from foobnix.util.const import DOWNLOAD_STATUS_COMPLETED, \
+    DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_INACTIVE
+
 
 class Dowloader(threading.Thread):
     def __init__(self, update, bean, notify_finish):

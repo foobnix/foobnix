@@ -7,12 +7,15 @@ Created on Feb 26, 2010
 import os
 import gtk
 import urllib
+import shutil
+import thread
 import logging
 
 from foobnix.fc.fc import FC
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.helpers.textarea import ScrolledText
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+import time
 
 
 def open_in_filemanager(path, managers=None):
@@ -146,7 +149,7 @@ def copy_move_files_dialog(files, dest_folder, copy=None):
     cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL) #@UnusedVariable
     
     ok_button.grab_default()
-    label = gtk.Label(_("\nAre you really want to %s this item(s) to %s ?") % (action, dest_folder))      
+    label = gtk.Label('\n' + _("Are you really want to %s this item(s) to %s ?") % (action, dest_folder))      
     area = ScrolledText()
     area.text.set_editable(False)
     area.text.set_cursor_visible(False)
@@ -205,3 +208,104 @@ def get_file_path_from_dnd_dropped_uri(uri):
     path = path.strip('\r\n\x00') # remove \r\n and NULL
 
     return path
+
+def get_dir_size(dirpath):
+    folder_size = 0
+    for (path, dirs, files) in os.walk(dirpath): #@UnusedVariable
+        for file in files:
+            filename = os.path.join(path, file)
+            folder_size += os.path.getsize(filename)
+    return folder_size
+
+def get_full_size(path_list):
+    size = 0
+    for path in path_list:
+        if os.path.exists(path):
+            if os.path.isdir(path):
+                size += get_dir_size(path)
+            else:
+                size += os.path.getsize(path)
+    return size
+
+def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=False, ignore=None):
+    '''changed shutil.copytree(src, dst, symlinks, ignore)'''
+    func = shutil.move if move else shutil.copy2
+    if os.path.isfile(src):
+        def task():
+            name_begin = pr_window.label_from.get_text().split()[0]
+            pr_window.label_from.set_text(name_begin + " " + os.path.basename(src) + "\n")
+            pr_window.progress(src, dst_folder)
+        thread.start_new_thread(task, ())
+        func(src, dst_folder)
+        return
+    
+    """Recursively copy a directory tree using copy2().
+
+    The destination directory must not already exist.
+    If exception(s) occur, an Error is raised with a list of reasons.
+
+    If the optional symlinks flag is true, symbolic links in the
+    source tree result in symbolic links in the destination tree; if
+    it is false, the contents of the files pointed to by symbolic
+    links are copied.
+
+    The optional ignore argument is a callable. If given, it
+    is called with the `src` parameter, which is the directory
+    being visited by copytree(), and `names` which is the list of
+    `src` contents, as returned by os.listdir():
+
+        callable(src, names) -> ignored_names
+
+    Since copytree() is called recursively, the callable will be
+    called once for each directory that is copied. It returns a
+    list of names relative to the `src` directory that should
+    not be copied.
+
+    XXX Consider this example code rather than the ultimate tool.
+
+    """
+    try:
+        names = os.listdir(src)
+    except OSError, why:
+        logging.error(why)
+    if ignore is not None:
+        ignored_names = ignore(src, names)
+    else:
+        ignored_names = set()
+    
+    if not os.path.exists(dst_folder):
+        os.makedirs(dst_folder)
+    errors = []
+    for name in names:
+        if name in ignored_names:
+            continue
+        srcname = os.path.join(src, name)
+        dstname = os.path.join(dst_folder, name)
+        try:
+            if symlinks and os.path.islink(srcname):
+                linkto = os.readlink(srcname)
+                os.symlink(linkto, dstname)
+            elif os.path.isdir(srcname):
+                copy_move_with_progressbar(pr_window, srcname, dstname, move, symlinks, ignore)
+            else:
+                def task1():
+                    name_begin = pr_window.label_from.get_text().split()[0]
+                    pr_window.label_from.set_text(name_begin + " " + name + "\n")
+                    pr_window.progress(srcname, dst_folder)
+                    
+                thread.start_new_thread(task1, ())
+                func(srcname, dstname)
+              
+                # XXX What about devices, sockets etc.?
+        except (IOError, os.error), why:
+            errors.append((srcname, dstname, str(why)))
+        # catch the Error from the recursive copytree so that we can
+        # continue with other files
+    if move:
+        os.rmdir(src)
+    if not move:
+        try:
+            shutil.copystat(src, dst_folder)
+        except OSError, why:
+            errors.extend((src, dst_folder, str(why)))
+    
