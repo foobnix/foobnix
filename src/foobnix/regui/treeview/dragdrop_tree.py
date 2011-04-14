@@ -20,6 +20,9 @@ from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progressbar
 from foobnix.helpers.window import CopyProgressWindow
 import thread
+import threading
+import multiprocessing
+from foobnix.helpers.threads import MyThreadLooping
 
 
 VIEW_PLAIN = 0
@@ -340,9 +343,14 @@ class DragDropTree(gtk.TreeView):
                 else:
                     copy_move_with_progressbar(self.pr_window, old_path, dest_folder)
                 self.pr_window.response(gtk.RESPONSE_OK)
-            thread.start_new_thread(task, ())
-            self.pr_window.run()
-            #gobject.timeout_add(1000, task)
+                            
+            t = threading.Thread(target=task)
+            t.start()
+                        
+            if self.pr_window.run() == gtk.RESPONSE_REJECT:
+                self.pr_window.exit = True
+                t.join()
+           
             return new_path
         else:
             logging.debug("Destination folder same as file folder. Skipping")

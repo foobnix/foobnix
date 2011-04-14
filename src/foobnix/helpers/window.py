@@ -15,6 +15,8 @@ from foobnix.util.key_utils import is_key
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util.file_utils import get_full_size
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+import thread
+import threading
 
 
 
@@ -39,7 +41,6 @@ class ChildTopWindow(gtk.Window):
         self.set_opacity(FC().window_opacity)
         self.is_rendered = True
         
-    
     def set_hide_on_escape(self, hide_on_escape=True):
         self.hide_on_escape = hide_on_escape
         
@@ -109,13 +110,13 @@ class CopyProgressWindow(gtk.Dialog):
         self.total_pr_bar = gtk.ProgressBar()
         
         self.add_button(_("Stop"), gtk.RESPONSE_REJECT)
-                
+        
         self.vbox.pack_start(self.label_from, False)
         self.vbox.pack_start(self.label_to, False)
         self.vbox.pack_start(self.pr_bar, False)
         self.vbox.pack_start(self.pr_label, False)
         self.vbox.pack_start(self.total_pr_bar, False)
-                
+        self.exit = False        
         self.show_all()
     
     def progress(self, file, dest_folder):
@@ -126,10 +127,12 @@ class CopyProgressWindow(gtk.Dialog):
         while True:
             if not os.path.exists(new_file):
                 counter += 1
-                if counter > 10000:
+                time.sleep(0.1)
+                if counter > 100:
                     logging.error("Can't create file %s" % new_file)
                     return
                 continue
+                
             got = os.path.getsize(new_file)
             definite = got - got_store
             got_store = got
@@ -142,6 +145,8 @@ class CopyProgressWindow(gtk.Dialog):
             self.total_pr_bar.set_fraction(fraction)
             self.total_pr_bar.set_text("%.0f%%" % (100 * fraction))
             time.sleep(0.1)
+            if self.exit:
+                raise threading.ThreadError("the thread is stopped")
             if got == size:
                 break
-            
+        

@@ -15,7 +15,10 @@ from foobnix.fc.fc import FC
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.helpers.textarea import ScrolledText
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
-import time
+from subprocess import Popen
+
+from multiprocessing import Process
+import threading
 
 
 def open_in_filemanager(path, managers=None):
@@ -229,16 +232,27 @@ def get_full_size(path_list):
 
 def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=False, ignore=None):
     '''changed shutil.copytree(src, dst, symlinks, ignore)'''
-    func = shutil.move if move else shutil.copy2
-    if os.path.isfile(src):
+    
+    def copy_move_one_file(src, dst_folder):
+        m = Process(target=func, args=(src, dst_folder))
+        m.start()
         def task():
-            name_begin = pr_window.label_from.get_text().split()[0]
-            pr_window.label_from.set_text(name_begin + " " + os.path.basename(src) + "\n")
-            pr_window.progress(src, dst_folder)
+            try:
+                name_begin = pr_window.label_from.get_text().split()[0]
+                pr_window.label_from.set_text(name_begin + " " + os.path.basename(src) + "\n")
+                pr_window.progress(src, dst_folder)
+            except threading.ThreadError, a:
+                m.terminate()
+                os.remove(os.path.join(dst_folder, os.path.basename(src)))
         thread.start_new_thread(task, ())
-        func(src, dst_folder)
+        if m.is_alive():
+            m.join()
         return
     
+    func = shutil.move if move else shutil.copy2
+    if os.path.isfile(src):
+        copy_move_one_file(src, dst_folder)
+        return
     """Recursively copy a directory tree using copy2().
 
     The destination directory must not already exist.
@@ -275,26 +289,23 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
     
     if not os.path.exists(dst_folder):
         os.makedirs(dst_folder)
+    subfolder = os.path.join(dst_folder, os.path.basename(src))
+    if not os.path.exists(subfolder):
+        os.makedirs(subfolder)
     errors = []
     for name in names:
         if name in ignored_names:
             continue
         srcname = os.path.join(src, name)
-        dstname = os.path.join(dst_folder, name)
+        dstname = os.path.join(subfolder, name)
         try:
             if symlinks and os.path.islink(srcname):
                 linkto = os.readlink(srcname)
                 os.symlink(linkto, dstname)
             elif os.path.isdir(srcname):
-                copy_move_with_progressbar(pr_window, srcname, dstname, move, symlinks, ignore)
+                copy_move_with_progressbar(pr_window, srcname, subfolder, move, symlinks, ignore)
             else:
-                def task1():
-                    name_begin = pr_window.label_from.get_text().split()[0]
-                    pr_window.label_from.set_text(name_begin + " " + name + "\n")
-                    pr_window.progress(srcname, dst_folder)
-                    
-                thread.start_new_thread(task1, ())
-                func(srcname, dstname)
+                copy_move_one_file(srcname, subfolder)
               
                 # XXX What about devices, sockets etc.?
         except (IOError, os.error), why:
@@ -303,7 +314,7 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
         # continue with other files
     if move:
         os.rmdir(src)
-    if not move:
+    else:
         try:
             shutil.copystat(src, dst_folder)
         except OSError, why:
