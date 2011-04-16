@@ -162,7 +162,7 @@ class DragDropTree(gtk.TreeView):
                 self.remove_replaced(ff_model)
                 self.pr_window.destroy()
                 self.save_beans_from_tree()
-                return
+            return
                
         for ff_row_ref in ff_row_refs:        
             self.one_row_replacing(ff_row_ref, ff_path, ff_model, from_tree,
