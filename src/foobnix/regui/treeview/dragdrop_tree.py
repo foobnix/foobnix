@@ -10,6 +10,7 @@ import uuid
 import gobject
 import logging
 import os.path
+import threading
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
@@ -19,10 +20,6 @@ from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progressbar
 from foobnix.helpers.window import CopyProgressWindow
-import thread
-import threading
-import multiprocessing
-from foobnix.helpers.threads import MyThreadLooping
 
 
 VIEW_PLAIN = 0
