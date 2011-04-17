@@ -5,10 +5,12 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
+import logging
+
 from foobnix.fc.fc import FC
 from foobnix.regui.model.signal import FControl
-import logging
 from foobnix.regui.state import LoadSave
+
 class BaseFoobnixLayout(FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
@@ -41,7 +43,12 @@ class BaseFoobnixLayout(FControl, LoadSave):
     
         self.hpaned_left.show_all()
         
-        vbox.pack_start(self.hpaned_left, True, True)        
+        self.hpaned_right = gtk.HPaned()
+        self.hpaned_right.connect("motion-notify-event", self.on_save_and_normilize_columns)
+        self.hpaned_right.pack1(child=self.hpaned_left, resize=True, shrink=True)
+        self.hpaned_right.pack2(child=controls.coverlyrics, resize=True, shrink=True)
+        
+        vbox.pack_start(self.hpaned_right, True, True)        
         vbox.pack_start(controls.statusbar, False, True)
         vbox.show_all()
         
@@ -64,11 +71,24 @@ class BaseFoobnixLayout(FControl, LoadSave):
             self.hpaned_left.set_position(0)
             
         FC().is_view_music_tree_panel = flag
-
+        
+    def set_visible_coverlyrics_panel(self, flag):
+        logging.info("set_visible_coverlyrics_panel" + str(flag))
+        if flag:
+            self.hpaned_right.set_position(FC().hpaned_right)
+            self.controls.coverlyrics.show()
+        else:
+            self.controls.coverlyrics.hide()
+            
     def on_save_and_normilize_columns(self, *a): 
         if self.hpaned_left.get_position() > 0:   
             FC().hpaned_left = self.hpaned_left.get_position()
-                
+        if self.hpaned_right.get_position() > 0:   
+            FC().hpaned_right = self.hpaned_right.get_position()
+            image = self.controls.coverlyrics.image
+            image.size = self.controls.coverlyrics.lyrics.get_allocation().width
+            image.set_from_pixbuf(self.controls.coverlyrics.get_pixbuf())
+               
         for page in xrange(self.controls.tabhelper.get_n_pages()):
             tab_content = self.controls.tabhelper.get_nth_page(page)
             tree = tab_content.get_child()
@@ -77,7 +97,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
     def on_load(self):
         self.set_visible_search_panel(FC().is_view_search_panel)
         self.set_visible_musictree_panel(FC().is_view_music_tree_panel)
-        
-        
+        self.set_visible_coverlyrics_panel(FC().is_view_coverlyrics_panel)
+                
         
                              

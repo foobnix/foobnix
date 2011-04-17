@@ -33,12 +33,15 @@ class MenuBarWidget(FControl):
 
         """View"""
         view = top.add_submenu(_("_View"))
-        self.view_music_tree = view.add_ckeck_item(_("Left Panel"), FC().is_view_music_tree_panel)
+        self.view_music_tree = view.add_check_item(_("Left Panel"), FC().is_view_music_tree_panel)
         self.view_music_tree.connect("activate", lambda w: controls.layout.set_visible_musictree_panel(w.get_active()))
 
-        self.view_search_panel = view.add_ckeck_item(_("Search Panel"), FC().is_view_search_panel)            
+        self.view_search_panel = view.add_check_item(_("Search Panel"), FC().is_view_search_panel)            
         self.view_search_panel.connect("activate", lambda w: controls.layout.set_visible_search_panel(w.get_active()))
 
+        self.view_cover_lyrics = view.add_check_item(_("Cover & Lyrics Panel"), FC().is_view_coverlyrics_panel)
+        self.view_cover_lyrics.connect("activate", lambda w: controls.layout.set_visible_coverlyrics_panel(w.get_active()))
+        
         view.separator()
         view.add_image_item(_("Equalizer"), None, self.controls.eq.show)
         view.add_image_item(_("Download Manager"), None, self.controls.dm.show)
@@ -130,10 +133,12 @@ class MenuBarWidget(FControl):
     def on_load(self):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
         self.view_search_panel.set_active(FC().is_view_search_panel)
+        self.view_cover_lyrics.set_active(FC().is_view_coverlyrics_panel)
         
     def on_save(self):
         FC().is_view_music_tree_panel = self.view_music_tree.get_active()
-        FC().is_view_search_panel = self.view_search_panel.get_active()        
+        FC().is_view_search_panel = self.view_search_panel.get_active()
+        FC().is_view_coverlyrics_panel = self.view_cover_lyrics.get_active()      
 
 class MyMenu(gtk.Menu):
     """My custom menu class for helping buildings"""
@@ -163,7 +168,7 @@ class MyMenu(gtk.Menu):
         separator.show()
         self.append(separator)
 
-    def add_ckeck_item(self, title, active=False, func=None, param=None):
+    def add_check_item(self, title, active=False, func=None, param=None):
         check = gtk.CheckMenuItem(title)
 
         if param and func:

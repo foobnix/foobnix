@@ -32,6 +32,7 @@ from foobnix.regui.treeview.lastfm_integration_tree import LastFmIntegrationCont
 from foobnix.regui.treeview.vk_integration_tree import VKIntegrationControls
 from foobnix.regui.controls.record import RadioRecord
 from foobnix.fc.fc import FC
+from foobnix.regui.coverlyrics import CoverLyricsPanel
 
 foobnix_localization()
 
@@ -71,6 +72,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.trayicon = TrayIconControls(self)
         
         self.main_window = MainWindow(self)
+        self.coverlyrics = CoverLyricsPanel(self)
         self.notetabs = NoteTabControl(self)
         
 
@@ -95,6 +97,7 @@ class FoobnixCore(BaseFoobnixControls):
 
         """layout panels"""
         self.top_panel = TopWidgets(self)
+        
         
         """layout"""
         self.layout = BaseFoobnixLayout(self)
