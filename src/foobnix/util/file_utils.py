@@ -15,7 +15,6 @@ from foobnix.fc.fc import FC
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.helpers.textarea import ScrolledText
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
-from subprocess import Popen
 
 from multiprocessing import Process
 import threading

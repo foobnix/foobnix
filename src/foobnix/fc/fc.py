@@ -81,8 +81,8 @@ class FC():
         """support file formats"""
                 
         audio_container = [".cue", ".iso.wv"]
-        video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mpg", ".rm", ".swf", ".vob", ".wmv",".mkv"] 
-        self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".ac3", ".mp4", ".m4a", ".ra", ".m4p", ".wv"]        
+        video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mpg", ".rm", ".swf", ".vob", ".wmv",".mkv",".m4v"] 
+        self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".ac3", ".mp4", ".m4a", ".ra", ".m4p", ".wv", ".shn"]        
         self.all_support_formats = self.audio_formats + video_formats + audio_container
         self.all_support_formats.sort()
         
