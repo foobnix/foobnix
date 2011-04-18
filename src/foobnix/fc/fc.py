@@ -27,6 +27,7 @@ class FC():
         self.is_view_info_panel = True
         self.is_view_search_panel = True
         self.is_view_music_tree_panel = True
+        self.is_view_coverlyrics_panel = True
         self.is_view_lyric_panel = True
         self.is_view_video_panel = True
         self.is_order_random = False
@@ -61,9 +62,9 @@ class FC():
         self.agent_line = get_ranmom_agent()
 
         """main window controls"""
-        self.main_window_size = [119, 154, 884, 479]
+        self.main_window_size = [119, 154, 1024, 479]
         self.hpaned_left = 280;
-        #self.hpaned_right = 350;
+        self.hpaned_right = 850;
         self.vpaned_small = 100;
         self.background_image_themes = ["theme/cat.jpg", "theme/flower.jpg"]
         self.background_image = None
@@ -152,7 +153,7 @@ class FC():
         '''columns configuration'''        
         '''for playlists'''
         """translations of key words must match exactly with the translations of column.key names in PlaylistTreeControl"""
-        self.columns = {'*': [True, 0, 40], '№': [True, 1, 30], 'Composer': [False, 2, 80], 'Artist': [False, 3, 90], 'Title': [False, 4, 70], 'Track': [True, 5, -1], 'Time': [True, 6, 50]}         
+        self.columns = {'*': [True, 0, 40], '№': [True, 1, 30], 'Composer': [False, 2, 80], 'Artist': [False, 3, 90], 'Title': [False, 4, 70], 'Track': [True, 5, 450], 'Time': [True, 6, 50]}         
         
         '''for navigation tree'''
         self.show_full_filename = False

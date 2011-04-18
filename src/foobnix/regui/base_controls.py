@@ -235,14 +235,14 @@ class BaseFoobnixControls():
             FCache().cache_music_tree_beans[number_of_page].append(bean)
         try:
             self.perspective.hide_add_button()
-        except AttributeError: 
+        except AttributeError:
             logging.warn("Object perspective not exists yet")
         
         if not all:
             tree.is_empty = True
             try:
                 self.perspective.show_add_button()
-            except AttributeError: 
+            except AttributeError:
                 logging.warn("Object perspective not exists yet")
             all.append(FModel(_("Music not found in folder(s):")))        
             for path in FCache().music_paths[number_of_page]:            
@@ -251,7 +251,7 @@ class BaseFoobnixControls():
         
         tree.append_all(all)
         tree.ext_width = tree.ext_column.get_width()
-        
+          
     def set_visible_video_panel(self, flag):
         FC().is_view_video_panel = flag
         if flag:
@@ -379,6 +379,7 @@ class BaseFoobnixControls():
         self.start_time = False      
         
         self.update_info_panel(bean)
+        self.coverlyrics.set_lyrics()
 
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)

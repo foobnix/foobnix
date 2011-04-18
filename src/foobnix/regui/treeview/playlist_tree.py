@@ -7,7 +7,6 @@ Created on 25 сент. 2010
 
 import re
 import gtk
-import gobject
 import logging
 
 from foobnix.fc.fc import FC
@@ -22,6 +21,7 @@ from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release, \
     is_rigth_click
+import gobject
 
 foobnix_localization()
 
@@ -342,6 +342,5 @@ class PlaylistTreeControl(CommonTreeControl):
                     self.menu.append(column.item)
                     column.item.set_active(False)
                 column.set_visible(False)
-        if FC().columns["Track"][2] < 0:
-            self.description_col.set_fixed_width(self.time_col.get_width() - FC().columns["Time"][2])
-                            
+        '''if FC().columns["Track"][2] < 0:
+             self.description_col.set_fixed_width(self.get_allocation().width - (FC().columns["Time"][2]+70))'''

@@ -3,23 +3,26 @@ Created on Oct 26, 2010
 
 @author: ivan
 '''
+
 import gtk
+import time
+import thread
+import logging
 import threading
+
+from foobnix.fc.fc import FC
+from foobnix.dm.dm_dowloader import Dowloader
+from foobnix.helpers.toolbar import MyToolbar
+from foobnix.regui.model import FDModel, FModel
+from foobnix.helpers.window import ChildTopWindow
+from foobnix.preferences.configs import CONFIG_OTHER
+from foobnix.helpers.dialog_entry import directory_chooser_dialog
 from foobnix.regui.treeview.dm_tree import DownloadManagerTreeControl
+from foobnix.regui.treeview.dm_nav_tree import DMNavigationTreeControl
 from foobnix.util.const import DOWNLOAD_STATUS_INACTIVE, DOWNLOAD_STATUS_ACTIVE, \
     DOWNLOAD_STATUS_COMPLETED, DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_ALL, \
     DOWNLOAD_STATUS_STOP, DOWNLOAD_STATUS_ERROR
-from foobnix.regui.treeview.dm_nav_tree import DMNavigationTreeControl
-import thread
-import time
-from foobnix.regui.model import FDModel, FModel
-from foobnix.dm.dm_dowloader import Dowloader
-from foobnix.helpers.window import ChildTopWindow
-from foobnix.helpers.toolbar import MyToolbar
-import logging
-from foobnix.preferences.configs import CONFIG_OTHER
-from foobnix.helpers.dialog_entry import directory_chooser_dialog
-from foobnix.fc.fc import FC
+
 
 class DMControls(MyToolbar):
     def __init__(self, controls, dm_tree): 

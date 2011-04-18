@@ -38,7 +38,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
     def __init__(self, controls): 
         gtk.Frame.__init__(self)
         FControl.__init__(self, controls)
-               
+        
         self.album_label = gtk.Label()
         self.album_label.set_line_wrap(True)
         self.album_label.set_markup("<b></b>")
@@ -208,6 +208,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                 FCache().album_titles[bean.text] = info_line
         info_line.replace('&', '&amp;')
         self.album_label.set_markup("<b>%s</b>" % info_line)
+        self.controls.coverlyrics.album_title.set_markup("<b>%s</b>" % info_line)
         
     def show_disc_cover(self):
         bean = self.bean
@@ -252,6 +253,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                 self.image.get_pixbuf().save(os.path.join(COVERS_DIR, url_basename + '.jpg'), "jpeg", {"quality":"90"})
             
         self.controls.trayicon.update_info_from(bean)
+        self.controls.coverlyrics.set_cover()
         
         
     def show_similar_lyrics(self):
@@ -274,6 +276,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                 text = "The text not found"
         
         self.lyrics.set_text(text, lyrics_title)
+        self.controls.coverlyrics.lyrics.set_text(text, lyrics_title)
         
     def show_wiki_info(self):
         if not self.bean:

@@ -7,10 +7,10 @@ Created on Oct 14, 2010
 import gtk
 import copy
 import uuid
-import shutil
 import gobject
 import logging
 import os.path
+import threading
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
@@ -18,7 +18,9 @@ from foobnix.util.m3u_utils import m3u_reader
 from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.id3_file import update_id3_wind_filtering
-from foobnix.util.file_utils import copy_move_files_dialog
+from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progressbar
+from foobnix.helpers.window import CopyProgressWindow
+
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
@@ -34,7 +36,7 @@ class DragDropTree(gtk.TreeView):
         """init values"""
         self.hash = {None:None}
         self.current_view = None
-    
+                
     def configure_recive_drag(self):
         self.enable_model_drag_dest([("example1", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
     
@@ -129,31 +131,39 @@ class DragDropTree(gtk.TreeView):
         if not from_tree: return None
         
         ff_model, ff_paths = from_tree.get_selection().get_selected_rows()
-        
-        
+                
         new_iter = None
         self.row_to_remove = []
-                
+        
+        ff_row_refs = [gtk.TreeRowReference(ff_model, ff_path) for ff_path in ff_paths]
+        
         """to tree is NavigationTreeControl"""
         is_copy_move = False
         if isinstance(self, self.controls.tree.__class__) and from_tree is to_tree:
-            rows = [to_model[ff_path] for ff_path in ff_paths]
-            files = [row[self.path[0]] for row in rows]
             dest_folder = self.get_dest_folder(to_filter_model, to_filter_iter, to_filter_path)
-            if copy_move_files_dialog(files, dest_folder, self.copy):
+            rows = [to_model[ff_path] for ff_path in ff_paths]
+            files = [row[self.path[0]] for row in rows if os.path.dirname(row[self.path[0]]) != dest_folder]
+            if (to_filter_pos and ((to_filter_pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE)
+                or (to_filter_pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER))
+            	and os.path.isfile(to_filter_model[to_filter_path][self.path[0]])):
+                    to_filter_pos = gtk.TREE_VIEW_DROP_AFTER
+            if files and copy_move_files_dialog(files, dest_folder, self.copy):
                 is_copy_move = True
-                for ff_path, file in zip(ff_paths, files):
-                    ff_row_ref = gtk.TreeRowReference(ff_model, ff_path)
+                text = _("Copying:") if self.copy == gtk.gdk.ACTION_COPY else _("Replacing:") #@UndefinedVariable
+                self.pr_window = CopyProgressWindow(_("Progress"), files, 300, 100)
+                self.pr_window.label_from.set_text(text)
+                self.pr_window.label_to.set_text(_("To: ") + dest_folder + "\n")
+                for ff_path, ff_row_ref, file in zip(ff_paths, ff_row_refs, files):
                     new_path = self.replace_inside_navig_tree(file, dest_folder)
                     if not new_path: continue
                     self.one_row_replacing(ff_row_ref, ff_path, ff_model, from_tree,
                         to_model, to_tree, to_iter, to_filter_pos, to_filter_path,
                         new_iter, new_path, is_copy_move)
                 self.remove_replaced(ff_model)
+                self.pr_window.destroy()
+                self.save_beans_from_tree()
             return
-
-        ff_row_refs = [gtk.TreeRowReference(ff_model, ff_path) for ff_path in ff_paths]
-                
+               
         for ff_row_ref in ff_row_refs:        
             self.one_row_replacing(ff_row_ref, ff_path, ff_model, from_tree,
                                   to_model, to_tree, to_iter, to_filter_pos, to_filter_path,
@@ -164,12 +174,12 @@ class DragDropTree(gtk.TreeView):
             
         self.row_to_remove = []
    
-        self.rebuild_tree(to_tree)
-        
+        self.rebuild_tree(to_tree)        
         
     def one_row_replacing(self, ff_row_ref, ff_path, ff_model, from_tree,
                            to_model, to_tree, to_iter, to_filter_pos, to_filter_path, 
                            new_iter, new_path=None, is_copy_move=False):
+        
         ff_iter = self.get_iter_from_row_reference(ff_row_ref)
                     
         """do not copy to himself"""
@@ -235,7 +245,7 @@ class DragDropTree(gtk.TreeView):
             filter_iter = self.get_iter_from_row_reference(ref)
             iter = ff_model.convert_iter_to_child_iter(filter_iter)
             ff_model.get_model().remove(iter)
-                 
+    
     def add_m3u(self, from_model, from_iter, to_model, to_iter, pos):
         if ((from_model.get_value(from_iter, 0).lower().endswith(".m3u") 
         or from_model.get_value(from_iter, 0).lower().endswith(".m3u8"))
@@ -324,10 +334,20 @@ class DragDropTree(gtk.TreeView):
         if old_path != new_path:
             logging.debug('old file: ' + old_path)
             logging.debug('new file: ' + new_path)
-            if self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
-                shutil.move(old_path, new_path)
-            else:
-                shutil.copy(old_path, new_path)
+            def task():
+                if self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
+                    copy_move_with_progressbar(self.pr_window, old_path, dest_folder, move=True)
+                else:
+                    copy_move_with_progressbar(self.pr_window, old_path, dest_folder)
+                self.pr_window.response(gtk.RESPONSE_OK)
+                            
+            t = threading.Thread(target=task)
+            t.start()
+                        
+            if self.pr_window.run() == gtk.RESPONSE_REJECT:
+                self.pr_window.exit = True
+                t.join()
+           
             return new_path
         else:
             logging.debug("Destination folder same as file folder. Skipping")
