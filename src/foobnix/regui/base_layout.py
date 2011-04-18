@@ -79,6 +79,8 @@ class BaseFoobnixLayout(FControl, LoadSave):
             self.controls.coverlyrics.show()
         else:
             self.controls.coverlyrics.hide()
+        
+        FC().is_view_coverlyrics_panel = flag
             
     def on_save_and_normilize_columns(self, *a): 
         if self.hpaned_left.get_position() > 0:   

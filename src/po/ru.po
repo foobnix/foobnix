@@ -945,7 +945,7 @@ msgstr "Время"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:206
 msgid "Download To..."
-msgstr "Скачать"
+msgstr "Скачать в папку"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:210
 msgid "Edit Tags"
