@@ -5,6 +5,7 @@ Created on Oct 14, 2010
 '''
 
 import gtk
+import sys
 import copy
 import uuid
 import gobject
@@ -140,6 +141,8 @@ class DragDropTree(gtk.TreeView):
         """to tree is NavigationTreeControl"""
         is_copy_move = False
         if isinstance(self, self.controls.tree.__class__) and from_tree is to_tree:
+            if sys.version_info < (2, 6):
+                return
             dest_folder = self.get_dest_folder(to_filter_model, to_filter_iter, to_filter_path)
             rows = [to_model[ff_path] for ff_path in ff_paths]
             files = [row[self.path[0]] for row in rows if os.path.dirname(row[self.path[0]]) != dest_folder]
