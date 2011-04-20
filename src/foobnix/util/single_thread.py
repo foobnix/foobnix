@@ -4,10 +4,12 @@ Created on 27 сент. 2010
 
 @author: ivan
 '''
-import thread
-from threading import Lock
-import logging
 import time
+import thread
+import logging
+
+from threading import Lock
+
 
 class SingleThread():
     def __init__(self, progressbar):
@@ -23,8 +25,7 @@ class SingleThread():
         else:
             self.progressbar.start(text)
             self._run(method, args)
-            
-    
+                
     def _run(self, method, args=None):
         if not self.lock.locked():            
             self.lock.acquire()            

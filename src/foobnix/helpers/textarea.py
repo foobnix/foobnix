@@ -19,13 +19,10 @@ class TextArea(gtk.ScrolledWindow):
         
         texttagtable.add(self.tag_bold)
         
-
         text = gtk.TextView(self.buffer)
         text.set_wrap_mode(gtk.WRAP_WORD)
         text.set_editable(False)
-        
                 
-        
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         self.add(text)
         

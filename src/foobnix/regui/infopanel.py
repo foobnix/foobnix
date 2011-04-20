@@ -97,13 +97,10 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         for l_widget in self.left_widget:        
             lbox.pack_start(l_widget.line_title)
-        
-
-        
+                
         ibox.pack_start(self.image, False, False)
         ibox.pack_start(lbox, True, True)
-        
-        
+                
         """image and similar artists"""
         sbox = gtk.VBox(False, 0)
         
@@ -143,8 +140,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         self.info_cache.active_method = widget.line_title.func1
         self.controls.in_thread.run_with_progressbar(widget.line_title.func1)
-        
-    
+            
     def clear(self):
         self.image.set_no_image()
         self.tracks.clear_tree()
@@ -156,16 +152,15 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             return None
         def task():
             self.show_disc_cover()
-            
             self.show_album_title()
+            if self.controls.coverlyrics.get_property("visible"):
+                self.show_similar_lyrics()
             if self.info_cache.active_method:
                 self.info_cache.active_method()
     
         self.controls.in_thread.run_with_progressbar(task)
         
     def update(self, bean):        
-        #self.bean = bean
-        
         if bean.type == FTYPE_NOT_UPDATE_INFO_PANEL:
             return False
         
@@ -240,9 +235,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.image.update_info_from(bean)
         
         if not bean.image:
-            logging.warning("Can't get cover image. Check the correctness of the artist's name and track title")
-            return
-        
+            logging.warning("""""Can't get cover image. Check the correctness of the artist's name and track title""""")
+            
         '''make .jpg image and store it in cache'''        
         if bean.image and bean.image.startswith("http://"):
             url_basename = os.path.splitext(os.path.basename(bean.image))[0]
@@ -251,7 +245,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             else:
                 dict[url_basename] = [bean.text]
                 self.image.get_pixbuf().save(os.path.join(COVERS_DIR, url_basename + '.jpg'), "jpeg", {"quality":"90"})
-            
+        
         self.controls.trayicon.update_info_from(bean)
         self.controls.coverlyrics.set_cover()
         

@@ -6,9 +6,10 @@ Created on Apr 17, 2011
 
 import gtk
 from foobnix.fc.fc import FC
-from foobnix.util.const import ICON_BLANK_DISK
+
 from foobnix.helpers.image import ImageBase
 from foobnix.helpers.textarea import TextArea
+from foobnix.util.const import ICON_BLANK_DISK
 
 
 class CoverLyricsPanel(gtk.Frame):
@@ -18,8 +19,8 @@ class CoverLyricsPanel(gtk.Frame):
         self.controls = controls
         
         self.album_title = gtk.Label(_("Album title"))
-        
-        self.image = ImageBase(ICON_BLANK_DISK, size=161)
+        image_size = FC().main_window_size[2] - (FC().hpaned_right + 16)
+        self.image = ImageBase(ICON_BLANK_DISK, size=image_size)
         image_frame = gtk.Frame()
         image_frame.add(self.image)
         image_frame.set_label_widget(gtk.Label(_("Cover:")))
@@ -28,7 +29,7 @@ class CoverLyricsPanel(gtk.Frame):
         self.lyrics = TextArea()
         lyrics_frame = gtk.Frame()
         lyrics_frame.add(self.lyrics)
-        lyrics_frame.set_label_widget(gtk.Label(_("Lyrics:")))
+        lyrics_frame.set_label_widget(gtk.Label(_("Lyric:")))
         vbox.pack_start(lyrics_frame, True)
         
         self.add(vbox)
@@ -41,12 +42,4 @@ class CoverLyricsPanel(gtk.Frame):
     def set_cover(self):
         pixbuf = self.get_pixbuf()
         self.image.set_from_pixbuf(pixbuf)
-        
-    def set_lyrics(self):
-        self.controls.info_panel.show_similar_lyrics()
-    
-    def on_show(self):
-        self.set_cover()
-        self.set_lyrics()
-        self.show_all()
-        
+       
