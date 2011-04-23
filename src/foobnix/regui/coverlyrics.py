@@ -5,8 +5,8 @@ Created on Apr 17, 2011
 '''
 
 import gtk
-from foobnix.fc.fc import FC
 
+from foobnix.fc.fc import FC
 from foobnix.helpers.image import ImageBase
 from foobnix.helpers.textarea import TextArea
 from foobnix.util.const import ICON_BLANK_DISK
@@ -42,4 +42,3 @@ class CoverLyricsPanel(gtk.Frame):
     def set_cover(self):
         pixbuf = self.get_pixbuf()
         self.image.set_from_pixbuf(pixbuf)
-       

@@ -392,7 +392,8 @@ class NoteTabControl(TabGeneral, LoadSave):
                 FCache().tab_pl_names.append(self.get_text_label_from_tab(tab_content))
                 for i, column in enumerate(pl_tree.get_columns()):
                     FC().columns[column.key][1] = i
-                    FC().columns[column.key][2] = column.get_width()
+                    if column.get_visible(): #to avoid recording of zero width in config
+                        FC().columns[column.key][2] = column.get_width()
                 
     def equalize_columns_size(self, notebook, page_pointer, page_num):
         try:
