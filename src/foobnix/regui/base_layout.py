@@ -55,7 +55,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         controls.main_window.add(vbox)        
         
     def set_visible_search_panel(self, flag=True):
-        logging.info("set_visible_search_panel" + str(flag))
+        logging.info("set_visible_search_panel " + str(flag))
         if flag:
             self.controls.searchPanel.show_all()
         else:
@@ -64,7 +64,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         FC().is_view_search_panel = flag   
     
     def set_visible_musictree_panel(self, flag):
-        logging.info("set_visible_musictree_panel" + str(flag))
+        logging.info("set_visible_musictree_panel " + str(flag))
         if flag:
             self.hpaned_left.set_position(FC().hpaned_left)
         else:
@@ -73,7 +73,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         FC().is_view_music_tree_panel = flag
         
     def set_visible_coverlyrics_panel(self, flag):
-        logging.info("set_visible_coverlyrics_panel" + str(flag))
+        logging.info("set_visible_coverlyrics_panel " + str(flag))
         if flag:
             self.hpaned_right.set_position(FC().hpaned_right)
             self.controls.coverlyrics.show()

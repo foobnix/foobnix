@@ -313,6 +313,7 @@ class BaseFoobnixControls():
         self.record.hide()
         self.media_engine.state_stop(remeber_position)
         self.statusbar.set_text(_("Stopped"))
+        self.seek_bar.clear()
         
     def state_play_pause(self):
         self.media_engine.state_play_pause()
