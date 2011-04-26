@@ -162,10 +162,9 @@ class OtherConfig(ConfigPlugin):
     def on_change_menu_type(self, *a):
         if self.old_style.get_active():
             FC().menu_style = "old"
-            
         elif self.new_style.get_active():
             FC().menu_style = "new"
-        
+                
         self.controls.top_panel.update_menu_style()
     
     def on_change_folder(self, *a):
