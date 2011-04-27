@@ -6,18 +6,17 @@ Created on Feb 26, 2010
 
 import os
 import gtk
+import sys
 import urllib
 import shutil
 import thread
 import logging
+import threading
 
 from foobnix.fc.fc import FC
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.helpers.textarea import ScrolledText
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
-
-from multiprocessing import Process
-import threading
 
 
 def open_in_filemanager(path, managers=None):
@@ -231,8 +230,13 @@ def get_full_size(path_list):
 
 def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=False, ignore=None):
     '''changed shutil.copytree(src, dst, symlinks, ignore)'''
-    
+    if sys.version_info < (2, 6):
+        logging.warning("your python version is too old")
+        return
+    else:
+        from multiprocessing import Process
     def copy_move_one_file(src, dst_folder):
+        
         m = Process(target=func, args=(src, dst_folder))
         m.start()
         def task():
@@ -240,7 +244,7 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
                 name_begin = pr_window.label_from.get_text().split()[0]
                 pr_window.label_from.set_text(name_begin + " " + os.path.basename(src) + "\n")
                 pr_window.progress(src, dst_folder)
-            except threading.ThreadError, a:
+            except threading.ThreadError:
                 m.terminate()
                 os.remove(os.path.join(dst_folder, os.path.basename(src)))
         thread.start_new_thread(task, ())

@@ -305,7 +305,8 @@ class PlaylistTreeControl(CommonTreeControl):
         number_music_tabs = self.controls.notetabs.get_n_pages() - 1
         for i, column in enumerate(self.get_columns()):
             FC().columns[column.key][1] = i
-            FC().columns[column.key][2] = column.get_width()
+            if column.get_width() > 1: #to avoid recording of zero width in config 
+                FC().columns[column.key][2] = column.get_width()
         
         for page in xrange(number_music_tabs, 0, -1):
             tab_content = self.controls.notetabs.get_nth_page(page)

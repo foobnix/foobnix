@@ -33,6 +33,7 @@ class MenuBarWidget(FControl):
 
         """View"""
         view = top.add_submenu(_("_View"))
+        view.set_no_show_all(True)
         self.view_music_tree = view.add_check_item(_("Left Panel"), FC().is_view_music_tree_panel)
         self.view_music_tree.connect("activate", lambda w: controls.layout.set_visible_musictree_panel(w.get_active()))
 
@@ -42,12 +43,18 @@ class MenuBarWidget(FControl):
         self.view_cover_lyrics = view.add_check_item(_("Cover & Lyrics Panel"), FC().is_view_coverlyrics_panel)
         self.view_cover_lyrics.connect("activate", lambda w: controls.layout.set_visible_coverlyrics_panel(w.get_active()))
         
-        view.separator()
+        separator1 = view.separator() #@UnusedVariable
         view.add_image_item(_("Equalizer"), None, self.controls.eq.show)
         view.add_image_item(_("Download Manager"), None, self.controls.dm.show)
-        view.separator()
-        view.add_image_item(_("Preferences"), gtk.STOCK_PREFERENCES, self.controls.show_preferences)
-
+        separator2 = view.separator()
+        preferences_item = view.add_image_item(_("Preferences"), gtk.STOCK_PREFERENCES, self.controls.show_preferences)
+        
+        """if new style menu - remove preferences from View"""
+        if not isinstance(parent, TopMenuBar):
+            print "hide"
+            separator2.hide()
+            preferences_item.hide()
+        
         """Playback"""
         playback = top.add_submenu(_("_Playback"))
 
@@ -134,11 +141,12 @@ class MenuBarWidget(FControl):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
         self.view_search_panel.set_active(FC().is_view_search_panel)
         self.view_cover_lyrics.set_active(FC().is_view_coverlyrics_panel)
-        
+                
     def on_save(self):
         FC().is_view_music_tree_panel = self.view_music_tree.get_active()
         FC().is_view_search_panel = self.view_search_panel.get_active()
-        FC().is_view_coverlyrics_panel = self.view_cover_lyrics.get_active()      
+        FC().is_view_coverlyrics_panel = self.view_cover_lyrics.get_active()
+             
 
 class MyMenu(gtk.Menu):
     """My custom menu class for helping buildings"""
@@ -160,13 +168,14 @@ class MyMenu(gtk.Menu):
             item.connect("activate", lambda * a: func(param))
         elif func:
             item.connect("activate", lambda * a: func())
-            
         self.append(item)
+        return item
 
     def separator(self):
         separator = gtk.SeparatorMenuItem()
         separator.show()
         self.append(separator)
+        return separator
 
     def add_check_item(self, title, active=False, func=None, param=None):
         check = gtk.CheckMenuItem(title)

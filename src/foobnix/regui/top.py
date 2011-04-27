@@ -36,7 +36,6 @@ class TopWidgets(FControl, LoadSave, gtk.HBox):
         self.pack_start(controls.record, False, False)
         self.pack_start(controls.seek_bar, True, True)
         
-        self.show_all()
         """menu init"""
         menu = Popup()
         decorator = MenuStyleDecorator()
@@ -56,7 +55,7 @@ class TopWidgets(FControl, LoadSave, gtk.HBox):
         else:
             self.old_menu.widget.show()
             self.new_menu_button.hide()
-        
+                    
     def on_save(self):
         self.controls.volume.on_save()
         self.old_menu.on_save()       
@@ -66,7 +65,6 @@ class TopWidgets(FControl, LoadSave, gtk.HBox):
         self.old_menu.on_load()
         self.controls.os.on_load()
         self.update_menu_style()
-        
-        
+                
     def on_button_press(self, w, e):       
         self.menu.show(e)

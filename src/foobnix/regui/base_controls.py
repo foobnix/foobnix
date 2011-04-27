@@ -313,6 +313,7 @@ class BaseFoobnixControls():
         self.record.hide()
         self.media_engine.state_stop(remeber_position)
         self.statusbar.set_text(_("Stopped"))
+        self.seek_bar.clear()
         
     def state_play_pause(self):
         self.media_engine.state_play_pause()
@@ -379,8 +380,7 @@ class BaseFoobnixControls():
         self.start_time = False      
         
         self.update_info_panel(bean)
-        self.coverlyrics.set_lyrics()
-
+        
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
         sec = int(sec) 

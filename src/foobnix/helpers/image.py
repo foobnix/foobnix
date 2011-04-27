@@ -20,7 +20,7 @@ class ImageBase(gtk.Image):
     def set_no_image(self):
         self.pixbuf = create_pixbuf_from_resource(self.resource, self.size)
         self.set_from_pixbuf(self.pixbuf)
-        
+                
     def set_from_resource(self, resource_name):
         self.pixbuf = create_pixbuf_from_resource(resource_name, self.size)
         self.set_from_pixbuf(self.pixbuf)
@@ -54,3 +54,4 @@ class ImageBase(gtk.Image):
             self.set_image_from_url(bean.image)
         else:
             self.set_image_from_path(bean.image)
+                    

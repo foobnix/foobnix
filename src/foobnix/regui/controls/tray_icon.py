@@ -47,6 +47,7 @@ class PopupWindowMenu(gtk.Window, FControl):
         self.hide()
         
     def set_text(self, text):
+        text = unicode(text)
         self.poopup_text.set_text(text[:40])
 
     def on_leave_window(self, w, event):

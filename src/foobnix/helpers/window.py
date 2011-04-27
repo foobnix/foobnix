@@ -58,39 +58,6 @@ class ChildTopWindow(gtk.Window):
     def show(self):
         self.show_all()
 
-'''class CopyProgressWindow(ChildTopWindow):
-    def __init__(self, title, file_list, width=None, hight=None):
-        ChildTopWindow.__init__(self, title)
-        if width and hight:
-            self.set_default_size(width, hight)
-        
-        self.set_resizable(True)
-        
-        self.total_size = get_full_size(file_list)
-        
-        self.label_from = gtk.Label()
-        self.label_to = gtk.Label()
-        self.pr_label = gtk.Label(_("Total progress"))
-        
-        self.pr_bar = gtk.ProgressBar()
-        self.total_pr_bar = gtk.ProgressBar()
-        
-        self.button = gtk.Button(_('Stop'))
-        self.button.set_size_request(80, -1)
-        self.button_hbox = gtk.HBox()
-        self.button_hbox.pack_end(self.button, False)
-        
-        self.vbox = gtk.VBox(False, 10)
-        self.vbox.pack_start(self.label_from, False)
-        self.vbox.pack_start(self.label_to, False)
-        self.vbox.pack_start(self.pr_bar, False)
-        self.vbox.pack_start(self.pr_label, False)
-        self.vbox.pack_start(self.total_pr_bar, False)
-        self.vbox.pack_start(self.button_hbox, False)
-        self.add(self.vbox)
-        
-        self.show_all()'''
-    
 class CopyProgressWindow(gtk.Dialog):
     def __init__(self, title, file_list, width=None, hight=None):
         gtk.Dialog.__init__(self, title)
