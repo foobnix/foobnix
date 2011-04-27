@@ -2,6 +2,7 @@
 * Fix banned VK users
 * Search song via VK API
 * Configure amount of downloading threads
+* Download to for any files
 
 2.5.11
 * Fixed show title and artist for radios, added manually
