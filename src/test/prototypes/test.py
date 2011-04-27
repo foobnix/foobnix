@@ -1,53 +1,41 @@
-from foobnix.thirdparty.urllib2 import OpenerDirector, BaseHandler, Request
-from foobnix.thirdparty import urllib2
-from urllib import unwrap, splittag
+import pygtk
+pygtk.require('2.0')
+import gtk
 
-class MyOpenerDirector(OpenerDirector):
+class Winder( gtk.Window):
     def __init__(self):
-        OpenerDirector.__init__(self)
+        gtk.Window.__init__(self)
+
+        box = gtk.HBox()
+        self.add(box)
+
+        model = gtk.TreeStore(str)
+        tree = gtk.TreeView(model)
+        box.pack_start(tree)
+
+        cell = gtk.CellRendererText()
+        col = gtk.TreeViewColumn('woot', cell, text=0)
+        tree.append_column(col)
+
+        #tree.enable_model_drag_dest([("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
+        
     
-class MyHTTPCookieProcessor(BaseHandler):
-    def __init__(self):
-        pass
 
-    def http_request(self, request):
-        print "request",request
-        return request
+        targets = [('text/uri-list', 0, 0)]
+        
+        tree.drag_source_set(gtk.gdk.BUTTON1_MASK, targets,gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE)
+        #tree.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
+        #tree.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [('text/uri-list', 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
+        #tree.enable_model_drag_dest(targets,
+        #    gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE)
+        
+        #tree.drag_source_set_icon_stock('gtk-dnd-multiple')
 
-    def http_response(self, request, response):
-        print "response",response
-        return response
-    
+        for i in range(0, 100):
+            model.append(None,['test_%d' % i])
 
-    https_request = http_request
-    https_response = http_response
+        self.set_size_request(500, 500)
+        self.show_all()
 
-
-myProcessor = MyHTTPCookieProcessor()
-#opener = MyOpenerDirector()
-opener = urllib2.build_opener(myProcessor)
-#opener.add_handler(redirect_hadler)
-urllib2.install_opener(opener)
-
-class MyReq(Request):
-    def __init__(self, url):
-        self.original = unwrap(url)
-        self.fragment = splittag(self.original)
-        Request.__init__(self,url)
-    
-    def get_full_url(self):
-        print "get_full_url", self.fragment 
-        if self.fragment:    
-            return '%s#%s' % (self.original, self.fragment)    
-        else:    
-            return self.original
-    
-req = MyReq("http://www.foobnix.com/test_base")
-url = opener.open(req)
-print url.geturl()
-
-
-#print urllib.urlopen("http://16.foobnix-cms.appspot.com/test_base").geturl()
-#print urllib2.urlopen("http://16.foobnix-cms.appspot.com/test_base").geturl()
-
-
+Winder()
+gtk.main()
