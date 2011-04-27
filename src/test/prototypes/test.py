@@ -26,10 +26,9 @@ class Winder( gtk.Window):
         tree.drag_source_set(gtk.gdk.BUTTON1_MASK, targets,gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE)
         #tree.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
         #tree.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [('text/uri-list', 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
-        #tree.enable_model_drag_dest(targets,
-        #    gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE)
+        tree.enable_model_drag_dest(targets, gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE)
         
-        #tree.drag_source_set_icon_stock('gtk-dnd-multiple')
+        tree.drag_source_set_icon_stock('gtk-dnd-multiple')
 
         for i in range(0, 100):
             model.append(None,['test_%d' % i])

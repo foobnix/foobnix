@@ -245,8 +245,9 @@ class VKVideoResultsPage:
         if video:
             link = self.get_link(video)
             title = self.get_title(html)
+            time = self.get_time(html)
             if link and title:
-                return FModel(title, link)
+                return FModel(title, link).add_time(time)
         return None
     
     def get_json(self, html):
@@ -273,6 +274,14 @@ class VKVideoResultsPage:
         logging.debug(link)
         return link
 
+    def get_time(self, html):
+        try:
+            text = re.findall("<div class=\"ainfo\"><b style='color:#000'>(?!</a>)(.*)</b>", html, re.IGNORECASE | re.UNICODE)[0]
+            text = unicode(text, 'cp1251')
+            return html_decode(text)
+        except IndexError:
+            return None
+        
     def get_title(self, html):
         try:
             text = re.findall('<a href="video[^"]*noiphone">(?!</a>)(.*)</a>', html, re.IGNORECASE | re.UNICODE)[0]

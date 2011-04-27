@@ -44,7 +44,7 @@ class DragDropTree(gtk.TreeView):
     def configure_send_drag(self):
         #self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
         self.drag_source_set(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)],gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE)
-        self.drag_source_set_icon_stock('gtk-dnd-multiple')
+        self.drag_source_set_icon_stock(gtk.STOCK_DND)
     
     
     def append_all(self, beans):
