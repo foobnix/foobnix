@@ -31,22 +31,28 @@ class DragDropTree(gtk.TreeView):
         self.controls = controls
         gtk.TreeView.__init__(self)
         
+        self.connect("drag-begin", self.on_drag_begin)
         self.connect("drag-drop", self.on_drag_drop)
         self.copy = False
         
         """init values"""
         self.hash = {None:None}
         self.current_view = None
+    
+    def on_drag_begin(self, widget, drag_context):
+        ff_model, ff_paths = widget.get_selection().get_selected_rows() #@UnusedVariable
+        if len(ff_paths) > 1:
+            self.drag_source_set_icon_stock('gtk-dnd-multiple')
+        else:
+            self.drag_source_set_icon_stock('gtk-dnd')
                 
     def configure_recive_drag(self):
         self.enable_model_drag_dest([("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
     
     def configure_send_drag(self):
         #self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
-        self.drag_source_set(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)],gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE)
-        self.drag_source_set_icon_stock('gtk-dnd-multiple')
-    
-    
+        self.drag_source_set(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)],gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE) #@UndefinedVariable
+          
     def append_all(self, beans):
         logging.debug("begin append all")
         if self.current_view == VIEW_PLAIN:
