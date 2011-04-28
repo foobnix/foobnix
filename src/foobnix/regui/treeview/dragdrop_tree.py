@@ -148,7 +148,9 @@ class DragDropTree(gtk.TreeView):
         
         """to tree is NavigationTreeControl"""
         is_copy_move = False
-        if isinstance(self, self.controls.tree.__class__) and from_tree is to_tree:
+        if isinstance(self, self.controls.tree.__class__):
+            if from_tree is not to_tree:
+                return
             if sys.version_info < (2, 6):
                 return
             dest_folder = self.get_dest_folder(to_filter_model, to_filter_iter, to_filter_path)
