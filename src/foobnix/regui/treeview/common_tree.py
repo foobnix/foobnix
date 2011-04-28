@@ -194,7 +194,10 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             path = paths[0]
             logging.debug("path " + repr(path))
             position = path[0]
-            selection.select_path(position - 1)
+            if path[0]:
+                selection.select_path(position - 1)
+            else:
+                selection.select_path(position)
 
     def get_selected_bean_paths(self):
         selection = self.get_selection()

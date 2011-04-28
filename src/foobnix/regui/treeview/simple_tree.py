@@ -92,5 +92,4 @@ class SimpleListTreeControl(SimpleTreeControl):
         
         if is_rigth_click(e):
             pass
-
-
+        

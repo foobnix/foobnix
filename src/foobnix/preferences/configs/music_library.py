@@ -181,7 +181,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         bt_add.show()
         
         bt_remove = gtk.Button(_("Remove"))
-        bt_remove.connect("clicked", lambda * a:self.files_controller.remove_selected())
+        bt_remove.connect("clicked", lambda *a: self.files_controller.delete_selected())
         bt_remove.set_size_request(80, -1)
         bt_remove.show()
         button_box.pack_start(bt_add, False, False, 0)
