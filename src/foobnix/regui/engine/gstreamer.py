@@ -4,18 +4,19 @@ Created on 28 сент. 2010
 
 @author: ivan
 '''
+
 import os
 import gst
 import time
 import thread
 import urllib
 import logging
+import threading
 
 from foobnix.fc.fc import FC
 from foobnix.regui.engine import MediaPlayerEngine
 from foobnix.util.plsparser import get_radio_source
 from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
-import threading
 from foobnix.util.file_utils import get_file_extension
 
 
@@ -40,11 +41,10 @@ class GStreamerEngine(MediaPlayerEngine):
     
     def set_state(self, state):        
         self.current_state = state
-
+    
     def gstreamer_player(self):
         playbin = gst.element_factory_make("playbin2", "player")
-        
-        
+                
         if FC().is_eq_enable:
             self.audiobin = gst.Bin('audiobin')
             audiosink = gst.element_factory_make('autoaudiosink', 'audiosink')
@@ -105,14 +105,15 @@ class GStreamerEngine(MediaPlayerEngine):
             
     def play(self, bean):
         self.bean = bean
+        
         if not bean:
             return None
+        
         path = bean.path
 
         if not path:
             logging.error("Can't play empty path!!!")
             return None
-
         
         self.state_stop()
         
@@ -147,7 +148,12 @@ class GStreamerEngine(MediaPlayerEngine):
         
         self.state_pause()
         time.sleep(0.1)        
-        self.seek_seconds(bean.start_sec)
+        if self.remembered_seek_position:
+            self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH | gst.SEEK_FLAG_KEY_UNIT, self.remembered_seek_position)
+        else:
+            self.seek_seconds(bean.start_sec)
+        
+        self.remembered_seek_position = 0
         
         self.state_play()
         
@@ -280,7 +286,7 @@ class GStreamerEngine(MediaPlayerEngine):
         if hasattr(self, 'pipeline'):
             if gst.STATE_PAUSED in self.pipeline.get_state()[1:]:
                 self.pipeline.set_state(gst.STATE_PLAYING)
-                                
+                                    
     def get_current_percent(self):
         duration = self.get_duration_seek_ns()
         postion = self.get_position_seek_ns()
@@ -294,13 +300,6 @@ class GStreamerEngine(MediaPlayerEngine):
         self.seek(self.get_current_percent(), offset)
         logging.debug("SEEK DOWN")
     
-    def restore_seek_ns(self):
-        time.sleep(0.5)
-        self.state_pause()
-        time.sleep(0.1)        
-        self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH | gst.SEEK_FLAG_KEY_UNIT, self.remembered_seek_position)
-        
-        
     def state_stop(self, remember_position=False):
         if remember_position:
             self.player.set_state(gst.STATE_PAUSED)
@@ -318,7 +317,7 @@ class GStreamerEngine(MediaPlayerEngine):
         if hasattr(self, 'pipeline'):
             if gst.STATE_PLAYING in self.pipeline.get_state()[1:]:
                 self.controls.record.set_active(False)#it will call "on toggle" method from self.record
-                
+                       
     def state_pause(self):
         self.player.set_state(gst.STATE_PAUSED)
         self.set_state(STATE_PAUSE)
