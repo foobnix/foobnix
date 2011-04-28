@@ -293,15 +293,17 @@ class BaseFoobnixControls():
         else:
             self.main_window.show()
 
-    def state_play(self, remeber_position=False):
+    def state_play(self, remember_position=False):
+        if remember_position:
+            self.media_engine.restore_seek_ns()
+            
         if self.media_engine.get_state() == STATE_PAUSE:
             self.media_engine.state_play()
             self.statusbar.set_text(self.media_engine.bean.info)
         else:
             self.play_selected_song()
         
-        if remeber_position:
-            self.media_engine.restore_seek_ns()
+        
     
     def show_preferences(self):
         self.preferences.show()
@@ -309,11 +311,12 @@ class BaseFoobnixControls():
     def state_pause(self):
         self.media_engine.state_pause()
     
-    def state_stop(self, remeber_position=False):
+    def state_stop(self, remember_position=False):
         self.record.hide()
-        self.media_engine.state_stop(remeber_position)
-        self.statusbar.set_text(_("Stopped"))
-        self.seek_bar.clear()
+        self.media_engine.state_stop(remember_position)
+        if not remember_position:
+            self.statusbar.set_text(_("Stopped"))
+            self.seek_bar.clear()
         
     def state_play_pause(self):
         self.media_engine.state_play_pause()

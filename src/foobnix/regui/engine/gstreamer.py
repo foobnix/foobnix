@@ -15,6 +15,8 @@ from foobnix.fc.fc import FC
 from foobnix.regui.engine import MediaPlayerEngine
 from foobnix.util.plsparser import get_radio_source
 from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
+import threading
+from foobnix.util.file_utils import get_file_extension
 
 
 class GStreamerEngine(MediaPlayerEngine):
@@ -144,13 +146,21 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.set_property("uri", uri)
         
         self.state_pause()
-        time.sleep(0.2)        
+        time.sleep(0.1)        
         self.seek_seconds(bean.start_sec)
+        
         self.state_play()
-        self.volume(FC().volume)
+        
+        '''trick to mask bug with ape playing'''
+        if get_file_extension(bean.path) == '.ape' and bean.start_sec != '0':
+            self.volume(0)
+            threading.Timer(1.8, lambda: self.volume(FC().volume)).start()
+        else:
+            self.volume(FC().volume)
         
         logging.debug("current state before thread" + str(self.get_state()) + str(self.play_thread_id))
         self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
+        self.pause_thread_id = False
 
     
     def set_all_bands(self, pre, values):
@@ -213,6 +223,9 @@ class GStreamerEngine(MediaPlayerEngine):
         self.set_state(STATE_PLAY)
         
         while thread_id == self.play_thread_id:
+            if self.pause_thread_id:
+                time.sleep(0.1)
+                continue
             try:
                 position_int = self.get_position_seek_ns()
                 if position_int > 0 and self.bean.start_sec > 0:
@@ -260,6 +273,7 @@ class GStreamerEngine(MediaPlayerEngine):
         #self.player.get_by_name("volume").set_property('volume', value + 0.0)
 
     def state_play(self):
+        self.pause_thread_id = False
         self.player.set_state(gst.STATE_PLAYING)
         self.current_state = STATE_PLAY        
         self.on_chage_state()
@@ -281,16 +295,21 @@ class GStreamerEngine(MediaPlayerEngine):
         logging.debug("SEEK DOWN")
     
     def restore_seek_ns(self):
-        time.sleep(1)        
-        self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
+        time.sleep(0.5)
+        self.state_pause()
+        time.sleep(0.1)        
+        self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH | gst.SEEK_FLAG_KEY_UNIT, self.remembered_seek_position)
         
-    def state_stop(self, remeber_position=False):
-        if remeber_position:
+        
+    def state_stop(self, remember_position=False):
+        if remember_position:
             self.player.set_state(gst.STATE_PAUSED)
             time.sleep(0.1)
             self.remembered_seek_position = self.get_position_seek_ns();
-                        
-        self.play_thread_id = None        
+            self.pause_thread_id = True
+        else:
+            self.play_thread_id = None        
+        
         self.player.set_state(gst.STATE_NULL)
         self.set_state(STATE_STOP)
         
