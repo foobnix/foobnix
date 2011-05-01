@@ -13,18 +13,18 @@ import threading
 from foobnix.fc.fc import FC
 from foobnix.util import const
 from foobnix.fc.fc_cache import FCache
-from foobnix.regui.model import FModel, FTreeModel
 from foobnix.helpers.menu import Popup
 from foobnix.regui.state import LoadSave
 from foobnix.util.key_utils import is_key
 from foobnix.util.m3u_utils import m3u_writer
 from foobnix.regui.model.signal import FControl
+from foobnix.regui.model import FModel, FTreeModel
+from foobnix.helpers.dialog_entry import FileSavingDialog
 from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
 from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
 from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 from foobnix.util.mouse_utils import is_double_left_click, is_double_middle_click, \
     is_middle_click, is_rigth_click
-from foobnix.helpers.dialog_entry import FileSavingDialog
 
 
 class TabGeneral(gtk.Notebook, FControl):
