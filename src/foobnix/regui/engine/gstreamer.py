@@ -149,7 +149,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.state_pause()
         time.sleep(0.1)        
         if self.remembered_seek_position:
-            self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH | gst.SEEK_FLAG_KEY_UNIT, self.remembered_seek_position)
+            self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
         else:
             self.seek_seconds(bean.start_sec)
         
