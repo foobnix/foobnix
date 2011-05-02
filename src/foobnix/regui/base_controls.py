@@ -378,7 +378,9 @@ class BaseFoobnixControls():
         self.start_time = False      
         
         self.update_info_panel(bean)
-        
+        if not get_file_extension(bean.path) in FC().video_formats:
+            self.set_visible_video_panel(False)
+            
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
         sec = int(sec) 
