@@ -3,9 +3,12 @@ Created on Oct 29, 2010
 
 @author: ivan
 '''
+
 import gtk
 import pango
+
 from foobnix.helpers.image import ImageBase
+
 
 class TextArea(gtk.ScrolledWindow):
     def __init__(self):

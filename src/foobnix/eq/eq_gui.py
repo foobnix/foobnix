@@ -4,7 +4,11 @@ Created on Sep 8, 2010
 
 @author: ivan
 '''
+
 import gtk
+import copy
+import logging
+
 from foobnix.regui.model.signal import FControl
 from foobnix.util.const import EQUALIZER_LABLES
 from foobnix.regui.model.eq_model import EqModel
@@ -12,9 +16,7 @@ from foobnix.fc.fc import FC
 from foobnix.util.mouse_utils import is_rigth_click
 from foobnix.helpers.menu import Popup
 from foobnix.helpers.my_widgets import ImageButton
-import copy
 from foobnix.helpers.window import ChildTopWindow
-import logging
 
 
 def label(): 
@@ -82,15 +84,17 @@ class EqWindow(ChildTopWindow, FControl):
         self.db_text.set_text(pre + "db")
         self.collback()
     
-    def set_custom_title(self):
+    def set_custom_title_and_button_label(self):
         status = _("Disabled")
+        self.on.set_label(_("Enable EQ")) 
         if FC().is_eq_enable:
-            status = _("Enabled")        
+            status = _("Enabled")
+            self.on.set_label(_("Disable EQ"))       
         self.set_title(_("Equalizer %s") % status)
-            
+
     def on_enable_eq(self, w):
         FC().is_eq_enable = w.get_active()
-        self.set_custom_title()
+        self.set_custom_title_and_button_label()
         self.controls.state_stop(True)
         self.controls.state_play(True)
     
@@ -281,7 +285,9 @@ class EqWindow(ChildTopWindow, FControl):
         
     def on_load(self):
         self.on.set_active(FC().is_eq_enable)
-        
+        if FC().is_eq_enable:
+            self.on.set_label(_("Disable EQ"))
+            
 class EqLine(gtk.VBox):
         def __init__(self, text, callback, def_value=0):
             self.callback = callback

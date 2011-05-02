@@ -6,13 +6,15 @@ Created on 20 окт. 2010
 '''
 
 import gtk
-from foobnix.regui.model import FTreeModel, FModel
-from foobnix.regui.model.signal import FControl
-from random import randint
-from foobnix.regui.treeview.filter_tree import FilterTreeControls
-import logging
 import gobject
+import logging
+
+from random import randint
 from foobnix.fc.fc_cache import FCache
+from foobnix.regui.model.signal import FControl
+from foobnix.regui.model import FTreeModel, FModel
+from foobnix.regui.treeview.filter_tree import FilterTreeControls
+
 
 class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
@@ -194,7 +196,10 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             path = paths[0]
             logging.debug("path " + repr(path))
             position = path[0]
-            selection.select_path(position - 1)
+            if path[0]:
+                selection.select_path(position - 1)
+            else:
+                selection.select_path(position)
 
     def get_selected_bean_paths(self):
         selection = self.get_selection()

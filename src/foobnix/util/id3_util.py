@@ -14,8 +14,8 @@ from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.bean_utils import update_bean_from_normalized_text
 from foobnix.util.file_utils import file_extension, get_file_extension
-
 from foobnix.util.audio import get_mutagen_audio
+from subprocess import Popen, PIPE
 
 RUS_ALPHABITE = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 
@@ -75,6 +75,15 @@ def udpate_id3_for_beans(beans):
                 udpate_id3(bean)
             except Exception, e:
                 logging.warn("update id3 error - % s" % e)
+        elif get_file_extension(bean.text) in FC().video_formats:
+            list = ["ffmpeg", "-i", bean.path, "|", "grep", "1"]#, "|", "cut", "-d", "\' \'", "-f", "4", "|", "sed", "s/,//"
+            ffmpeg = Popen(list, universal_newlines=True, stderr=PIPE)
+            for line in ffmpeg.stderr:
+                if line.strip().startswith('Duration:'):
+                    bean.time = os.path.splitext(line.strip().split(" ")[1])[0]
+                    break
+        if "/" in bean.text:
+            bean.text = os.path.basename(bean.text)
     return beans
 
 def udpate_id3(bean):

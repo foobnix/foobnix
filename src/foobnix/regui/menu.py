@@ -3,14 +3,17 @@ Created on Sep 22, 2010
 
 @author: ivan
 '''
+
 import gtk
 import logging
-from foobnix.util import const
+
 from foobnix.fc.fc import FC
+from foobnix.util import const
 from foobnix.regui.model.signal import FControl
-from foobnix.helpers.my_widgets import open_link_in_browser
-from foobnix.util.widget_utils import MenuStyleDecorator
 from foobnix.regui.about.about import AboutWindow
+from foobnix.util.widget_utils import MenuStyleDecorator
+from foobnix.helpers.my_widgets import open_link_in_browser
+
 
 class MenuBarWidget(FControl):
     def __init__(self, controls, parent=None):
@@ -29,7 +32,6 @@ class MenuBarWidget(FControl):
         file.add_image_item(_("Add Folder(s)"), gtk.STOCK_OPEN, self.controls.on_add_folders)
         file.separator()
         file.add_image_item(_("Quit"), gtk.STOCK_QUIT, self.controls.quit)
-
 
         """View"""
         view = top.add_submenu(_("_View"))
@@ -51,7 +53,6 @@ class MenuBarWidget(FControl):
         
         """if new style menu - remove preferences from View"""
         if not isinstance(parent, TopMenuBar):
-            print "hide"
             separator2.hide()
             preferences_item.hide()
         
@@ -71,9 +72,6 @@ class MenuBarWidget(FControl):
         self.playback_order_random = order.add_radio_item(_("Random"), self.playback_order_linear, FC().is_order_random)
         self.playback_order_random.connect("activate", lambda w: set_random(True))
         
-        #order.separator()
-        #order.add_image_item("Shuffle", gtk.STOCK_UNDELETE)
-
         """Playback - Repeat"""
         repeat = playback.add_text_item(_("Repeat"))
         self.lopping_all = repeat.add_radio_item(_("All"), None, FC().repeat_state == const.REPEAT_ALL)

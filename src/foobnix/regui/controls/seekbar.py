@@ -4,9 +4,13 @@ Created on 28 сент. 2010
 
 @author: ivan
 '''
-from foobnix.regui.model.signal import FControl
+
 import gtk
+
+from foobnix.regui.model.signal import FControl
 from foobnix.util.time_utils import convert_seconds_to_text
+
+
 class SeekProgressBarControls(FControl, gtk.Alignment):
     def __init__(self, controls, seek_bar_movie=None):
         FControl.__init__(self, controls)
@@ -15,17 +19,38 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         
         self.set_padding(padding_top=7, padding_bottom=7, padding_left=0, padding_right=7)
         
+        self.tooltip = gtk.Window(gtk.WINDOW_POPUP)
+        self.tooltip.set_position(gtk.WIN_POS_CENTER)
+        self.tooltip_label = gtk.Label()
+        self.tooltip.add(self.tooltip_label)
+        
         self.progresbar = gtk.ProgressBar()
         self.progresbar.set_text("00:00 / 00:00")
-        
+        self.progresbar.set_has_tooltip(True)
+        self.progresbar.connect("leave-notify-event", lambda *a: self.tooltip.hide())
+        self.progresbar.connect("motion-notify-event", self.on_pointer_motion)
+                
         event = gtk.EventBox()
-        event.connect("button-press-event", self.on_seek)
         event.add(self.progresbar)
+        event.connect("button-press-event", self.on_seek)
         
         self.add(event)
-        
         self.show_all()
-    
+        self.tooltip.hide()
+        
+    def on_pointer_motion(self, widget, event):
+        width = widget.allocation.width
+        x = event.x
+        duration = self.controls.media_engine.duration_sec
+        seek_percent = (x + 0.0) / width
+        sec = int(duration * seek_percent)
+        sec = convert_seconds_to_text(sec)
+        self.tooltip_label.set_text(sec)
+        self.tooltip.show_all()
+        
+        x, y, mask = gtk.gdk.get_default_root_window().get_pointer() #@UndefinedVariable @UnusedVariable
+        self.tooltip.move(x+15, y+15)
+                
     def on_seek(self, widget, event):
         width = widget.allocation.width
         x = event.x

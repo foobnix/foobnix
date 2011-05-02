@@ -5,49 +5,38 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import gtk
+import gobject
 import logging
 
 from foobnix.fc.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 
+
 class BaseFoobnixLayout(FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-         
-        vbox = gtk.VBox(False, 0)
-        vbox.pack_start(controls.top_panel, False, False)
-               
-        center_box = gtk.VBox(False, 0)
-        
-        #self.hpaned_right = gtk.HPaned()
-        
+          
         bbox = gtk.VBox(False, 0)
-        
         bbox.pack_start(controls.notetabs, True, True)        
         bbox.pack_start(controls.movie_window, False, False)
-        #self.hpaned_right.pack1(child=bbox, resize=True, shrink=True)
-        #self.hpaned_right.pack2(child=controls.info_panel, resize=True, shrink=True)
-          
         
+        center_box = gtk.VBox(False, 0)        
         center_box.pack_start(controls.searchPanel, False, False)
         center_box.pack_start(bbox, True, True)
         
         self.hpaned_left = gtk.HPaned()
         self.hpaned_left.connect("motion-notify-event", self.on_save_and_normilize_columns)
-        
-             
-        
         self.hpaned_left.pack1(child=controls.perspective, resize=True, shrink=True)
         self.hpaned_left.pack2(child=center_box, resize=True, shrink=True)
-    
-        self.hpaned_left.show_all()
         
         self.hpaned_right = gtk.HPaned()
         self.hpaned_right.connect("motion-notify-event", self.on_save_and_normilize_columns)
         self.hpaned_right.pack1(child=self.hpaned_left, resize=True, shrink=True)
         self.hpaned_right.pack2(child=controls.coverlyrics, resize=True, shrink=True)
         
+        vbox = gtk.VBox(False, 0)
+        vbox.pack_start(controls.top_panel, False, False)
         vbox.pack_start(self.hpaned_right, True, True)        
         vbox.pack_start(controls.statusbar, False, True)
         vbox.show_all()
@@ -98,8 +87,11 @@ class BaseFoobnixLayout(FControl, LoadSave):
             
     def on_load(self):
         self.set_visible_search_panel(FC().is_view_search_panel)
-        self.set_visible_musictree_panel(FC().is_view_music_tree_panel)
+        gobject.idle_add(self.set_visible_musictree_panel, FC().is_view_music_tree_panel, 
+                         priority = gobject.PRIORITY_DEFAULT_IDLE - 10)
         self.set_visible_coverlyrics_panel(FC().is_view_coverlyrics_panel)
+        
+        
                 
         
                              
