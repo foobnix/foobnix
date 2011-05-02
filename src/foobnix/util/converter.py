@@ -6,12 +6,14 @@ Created on Jan 25, 2011
 '''
 
 from __future__ import with_statement
+
 import os
 import re
 import gtk
 import time
 import thread
 import gobject
+import logging
 
 from subprocess import Popen, PIPE
 from foobnix.fc.fc_helper import CONFIG_DIR
@@ -21,7 +23,6 @@ from foobnix.util.localization import foobnix_localization
 from foobnix.helpers.textarea import ScrolledText
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
-import logging
 
 foobnix_localization()
 
