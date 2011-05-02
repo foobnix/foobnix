@@ -1,13 +1,16 @@
 #-*- coding: utf-8 -*-
 
 from foobnix.regui.model.signal import FControl
+
 import gtk
-from foobnix.helpers.my_widgets import notetab_label, ImageButton
+import logging
+
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.util.mouse_utils import is_double_left_click
-from foobnix.util.key_utils import is_key, is_key_alt, get_key
-import logging
 from foobnix.regui.controls.playback import PlaybackControls
+from foobnix.util.key_utils import is_key, is_key_alt, get_key
+from foobnix.helpers.my_widgets import notetab_label, ImageButton
+
 
 class AdvancedDrawingArea(gtk.DrawingArea):
     def __init__(self, controls):  
