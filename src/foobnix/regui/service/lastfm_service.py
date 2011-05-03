@@ -13,6 +13,8 @@ from foobnix.regui.model import FModel
 from foobnix.thirdparty.google.translate import translate
 from foobnix.fc.fc_base import FCBase
 from foobnix.fc.fc import FC
+from foobnix.util.file_utils import file_extension
+from foobnix.util.const import FTYPE_VIDEO
 
 API_KEY = FCBase().API_KEY
 API_SECRET = FCBase().API_SECRET
@@ -189,6 +191,14 @@ class LastFmService():
         
         def task(bean):
             if bean.artist and bean.title:
+                if bean.path.startswith("http") and file_extension(bean.path) in FC().video_formats:
+                    #skip video scrobbler
+                    return;
+                
+                if bean.type == FTYPE_VIDEO:
+                    #skip video results
+                    return ;
+                
                 try:
                     bean.artist , bean.title = bean.artist.encode("utf-8") , bean.title.encode("utf-8")
                     self.get_scrobbler().scrobble(bean.artist, bean.title, start_time, "P", "", int(duration_sec))

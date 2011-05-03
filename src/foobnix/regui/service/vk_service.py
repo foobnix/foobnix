@@ -17,6 +17,7 @@ from foobnix.thirdparty import vkontakte
 from foobnix.util.time_utils import convert_seconds_to_text
 
 import sys
+from foobnix.util.const import FTYPE_RADIO, FTYPE_VIDEO
 
 #FIN BUG IN PYTHON 2.7
 #http://bugs.python.org/issue11703
@@ -237,6 +238,7 @@ class VKVideoResultsPage:
             if html.find('showVideoBoxCommon') == -1: continue
             track = self.generate_track(html)
             if track:
+                track.type = FTYPE_VIDEO
                 tracks.append(track)
         return tracks
     
