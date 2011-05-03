@@ -42,6 +42,9 @@ class BaseFoobnixControls():
         self.is_scrobbled = False
         self.start_time = None
         
+        self.chache_text = None
+        
+        
     def check_for_media(self, args):         
         dirs = []
         files = []
@@ -407,9 +410,15 @@ class BaseFoobnixControls():
         t_bean = FModel(text).create_from_text(text)                       
         self.update_info_panel(t_bean)
         
-        self.lastfm_service.report_now_playing(t_bean)
-        
-    
+        if FC().enable_radio_scrobbler:
+            start_time = str(int(time.time()))
+            self.lastfm_service.report_now_playing(t_bean)
+                    
+            if self.chache_text != text:
+                text = self.chache_text
+                self.lastfm_service.report_scrobbled(t_bean, start_time, 200);
+                
+
     def notify_error(self, msg):
         logging.error("notify error" + msg)
         self.seek_bar.set_text(msg)
