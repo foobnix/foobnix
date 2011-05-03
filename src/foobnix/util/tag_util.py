@@ -13,7 +13,7 @@ from foobnix.util.localization import foobnix_localization
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.id3_util import decode_cp866
 from foobnix.helpers.window import ChildTopWindow
-from mutagen.mp4 import MP4, MP4MetadataValueError
+from foobnix.thirdparty.mutagen.mp4 import MP4, MP4MetadataValueError
 
 
 foobnix_localization()

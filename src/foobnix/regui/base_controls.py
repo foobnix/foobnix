@@ -406,6 +406,9 @@ class BaseFoobnixControls():
         self.seek_bar.set_text(text)       
         t_bean = FModel(text).create_from_text(text)                       
         self.update_info_panel(t_bean)
+        
+        self.lastfm_service.report_now_playing(t_bean)
+        
     
     def notify_error(self, msg):
         logging.error("notify error" + msg)

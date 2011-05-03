@@ -8,7 +8,7 @@ import os
 import re
 import logging
 
-from mutagen.mp4 import MP4
+from foobnix.thirdparty.mutagen.mp4 import MP4
 from foobnix.fc.fc import FC
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
