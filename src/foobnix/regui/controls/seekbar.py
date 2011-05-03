@@ -26,7 +26,7 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         
         self.progresbar = gtk.ProgressBar()
         self.progresbar.set_text("00:00 / 00:00")
-        self.progresbar.set_has_tooltip(True)
+        #self.progresbar.set_has_tooltip(True)
         self.progresbar.connect("leave-notify-event", lambda *a: self.tooltip.hide())
         self.progresbar.connect("motion-notify-event", self.on_pointer_motion)
                 
