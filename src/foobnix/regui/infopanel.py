@@ -202,7 +202,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             
             if isinstance(info_line, unicode) or isinstance(info_line, str) :
                 FCache().album_titles[bean.text] = info_line
-        info_line.replace('&', '&amp;')
+        if info_line:
+            info_line.replace('&', '&amp;')
         self.album_label.set_markup("<b>%s</b>" % info_line)
         self.controls.coverlyrics.album_title.set_markup("<b>%s</b>" % info_line)
         

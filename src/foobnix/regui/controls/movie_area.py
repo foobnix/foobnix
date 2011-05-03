@@ -56,7 +56,7 @@ class FullScreanArea(ChildTopWindow):
             ChildTopWindow.__init__(self, "movie")
             self.set_hide_on_escape(False)
             self.on_hide_callback = on_hide_callback
-            
+            self.set_flags(gtk.CAN_FOCUS)
             self.layout = gtk.VBox(False)
             
             self.drow = AdvancedDrawingArea(controls)
@@ -86,14 +86,14 @@ class FullScreanArea(ChildTopWindow):
             self.add(self.layout)
             self.set_opacity(1)
             
-            def my_event(w, e):
-                if e.y > gtk.gdk.screen_height() - 50: #@UndefinedVariable
-                    line.show()
-                else:
-                    line.hide()          
+            self.drow.connect("enter-notify-event", lambda *a: line.hide())
             
+            def my_event(w, e):
+                if e.y > gtk.gdk.screen_height() - 5: #@UndefinedVariable
+                    line.show()
+                    
             self.connect("motion-notify-event", my_event)
-        
+                      
         def volume_changed(self, volumebutton, value):
             self.controls.volume.set_value(float(value * 100))
         
