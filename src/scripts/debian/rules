@@ -1,5 +1,12 @@
 #!/usr/bin/make -f
 
+#DEB_PYTHON_SYSTEM=pysupport
+
+#include /usr/share/cdbs/1/rules/debhelper.mk
+#include /usr/share/cdbs/1/class/python-distutils.mk
+
+# Add here any variable or target overrides you need.
+
 %:
 	dh $@
 
@@ -7,7 +14,11 @@ override_dh_auto_build:
 	dh_auto_build -- all
 
 override_dh_auto_install:
-	dh_auto_install -- PREFIX=$(CURDIR)/debian/foobnix/usr
+	dh_auto_install -Spython_distutils
+
+override_dh_auto_clean:
+	dh_auto_clean -Spython_distutils
+	$(MAKE) clean
 
 override_dh_installchangelogs:
 	dh_installchangelogs CHANGELOG
