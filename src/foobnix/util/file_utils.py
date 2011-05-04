@@ -166,7 +166,42 @@ def copy_move_files_dialog(files, dest_folder, copy=None):
         return True
     dialog.destroy()
     return False
-        
+
+def create_folder_dialog(path):
+    dirname = path if os.path.isdir(path) else os.path.dirname(path)
+    dialog = gtk.Dialog(_("Make folder dialog"))
+    ok_button = dialog.add_button(_("Create folder"), gtk.RESPONSE_OK)
+    label1 = gtk.Label(_("You want to create subfolder in folder") + " " + os.path.basename(dirname))
+    label2 = gtk.Label(_("Enter new folder's name:"))
+    entry = gtk.Entry()
+    dialog.set_border_width(5)
+    dialog.vbox.pack_start(label1)
+    dialog.vbox.pack_start(label2)
+    dialog.vbox.pack_start(entry)
+    dialog.show_all()
+    ok_button.grab_default()
+    def task():
+        if dialog.run() == gtk.RESPONSE_OK:
+            folder_name = entry.get_text()
+            if folder_name:
+                full_path = os.path.join(dirname, folder_name)
+                try:
+                    os.mkdir(full_path)
+                except OSError, e:
+                    logging.error(e)
+                    if str(e).startswith("[Errno 17]"):
+                        er_message = _("So folder already exists")
+                    else:
+                        er_message = str(e)
+                    warning = gtk.MessageDialog(parent=dialog, flags=gtk.DIALOG_DESTROY_WITH_PARENT, type=gtk.MESSAGE_ERROR, message_format=er_message)
+                    if warning.run() == gtk.RESPONSE_DELETE_EVENT:
+                        warning.destroy()
+                    full_path = task()
+                return full_path
+    full_path = task()
+    dialog.destroy()
+    return full_path
+     
 def isDirectory(path):
     return os.path.isdir(path)
 
