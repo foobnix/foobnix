@@ -27,12 +27,21 @@ def open_in_filemanager(path, managers=None):
         managers = FC().file_managers
     
     def search_mgr(managers):
+        files = []
+        for path in os.environ['PATH'].split(":"):
+            files += get_files_from_folder(path)
+            
         if os.environ.has_key('DESKTOP_SESSION'):
             for fm in managers:
-                if os.system(fm + ' \"' + dirname + '\" 2>>/dev/null'):
+                if fm not in files:
                     continue
                 else:
+                    arguments = (os.P_NOWAIT, fm, dirname)
+                    if fm == 'krusader':
+                        arguments = (os.P_NOWAIT, fm, '--left', dirname)
+                    t = threading.Thread(target=os.spawnlp, args=arguments)
                     logging.info("Folder " + dirname + " has been opened in " + fm)
+                    t.start()
                     return True
         else:
             if not os.system('explorer ' + dirname):
@@ -47,7 +56,10 @@ def open_in_filemanager(path, managers=None):
                 logging.warning("None file manager found")
         else:
             logging.warning("None file manager found")          
-    
+
+def get_files_from_folder(folder):
+    return [file for file in os.listdir(folder) if not os.path.isdir(file)]
+        
 def rename_file_on_disk(row, index_path, index_text):
     path = row[index_path]
     name = os.path.basename(path)

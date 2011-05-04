@@ -239,6 +239,7 @@ class OtherConfig(ConfigPlugin):
         combobox.append_text('Thunar')
         combobox.append_text('PCManFM')
         combobox.append_text('Explorer')
+        combobox.append_text('Krusader')
         combobox.set_active(0)
         
         return combobox
