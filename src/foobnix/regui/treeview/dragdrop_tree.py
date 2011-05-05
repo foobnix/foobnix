@@ -200,6 +200,8 @@ class DragDropTree(gtk.TreeView):
             return None
            
         """if m3u is dropped"""
+        
+        
         if self.add_m3u(ff_model, ff_iter, to_model, to_iter, to_filter_pos):
             return
             
@@ -264,6 +266,10 @@ class DragDropTree(gtk.TreeView):
         and from_model.get_model() is not to_model):
             m3u_file_path = from_model.get_value(from_iter, 5)
             m3u_title = from_model.get_value(from_iter, 0)
+            
+            if m3u_file_path.startswith("http"):
+                return None
+            
             paths = m3u_reader(m3u_file_path)
             paths.insert(0, os.path.splitext(m3u_title)[0])
             list = paths[0].split("/")

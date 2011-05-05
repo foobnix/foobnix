@@ -414,7 +414,7 @@ class BaseFoobnixControls():
             start_time = str(int(time.time()))
             self.lastfm_service.report_now_playing(t_bean)
                     
-            if self.chache_text != text:
+            if "-" in text and self.chache_text != text:
                 text = self.chache_text
                 self.lastfm_service.report_scrobbled(t_bean, start_time, 200);
                 

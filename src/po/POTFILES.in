@@ -42,6 +42,7 @@
 ./foobnix/preferences/configs/vk_conf.py
 ./foobnix/regui/base_controls.py
 ./foobnix/regui/base_layout.py
+./foobnix/regui/coverlyrics.py
 ./foobnix/regui/foobnix_core.py
 ./foobnix/regui/infopanel.py
 ./foobnix/regui/__init__.py

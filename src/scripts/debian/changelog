@@ -1,3 +1,13 @@
+foobnix (2.5.13.1-0ubuntu1~natty0) natty; urgency=low
+
+  * debian/control: added debhelper, removed cdbs
+  * debian/rules:
+    - Switched to debhelper
+    - Used the Makefile file (and not directly setup.py)
+    - Added the Upstream's ChangeLog
+
+ -- Matthieu Baerts (matttbe) <matttbe@gmail.com>  Wed, 04 May 2011 22:26:07 +0200
+
 foobnix (0.2.2-5) maverick; urgency=low
 
   * Initial release (Closes: #5)  Localization, Debian Integration
