@@ -10,6 +10,7 @@ from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.regui.controls.playback import PlaybackControls
 from foobnix.util.key_utils import is_key, is_key_alt, get_key
 from foobnix.helpers.my_widgets import notetab_label, ImageButton
+import gobject
 
 
 class AdvancedDrawingArea(gtk.DrawingArea):
@@ -56,7 +57,7 @@ class FullScreanArea(ChildTopWindow):
             ChildTopWindow.__init__(self, "movie")
             self.set_hide_on_escape(False)
             self.on_hide_callback = on_hide_callback
-            
+            self.set_flags(gtk.CAN_FOCUS)
             self.layout = gtk.VBox(False)
             
             self.drow = AdvancedDrawingArea(controls)
@@ -86,14 +87,14 @@ class FullScreanArea(ChildTopWindow):
             self.add(self.layout)
             self.set_opacity(1)
             
-            def my_event(w, e):
-                if e.y > gtk.gdk.screen_height() - 50: #@UndefinedVariable
-                    line.show()
-                else:
-                    line.hide()          
+            self.drow.connect("enter-notify-event", lambda *a: line.hide())
             
+            def my_event(w, e):
+                if e.y > gtk.gdk.screen_height() - 5: #@UndefinedVariable
+                    line.show()
+                    
             self.connect("motion-notify-event", my_event)
-        
+                      
         def volume_changed(self, volumebutton, value):
             self.controls.volume.set_value(float(value * 100))
         
@@ -108,9 +109,10 @@ class FullScreanArea(ChildTopWindow):
             return True
         
         def show_window(self):
-            self.show_all()
             self.fullscreen()
             self.volume_button.set_value(float(self.controls.volume.volume_scale.get_value()/ 100))
+            self.show_all()
+            
 
 class MovieDrawingArea(FControl, gtk.Frame):
     def __init__(self, controls):
@@ -141,11 +143,11 @@ class MovieDrawingArea(FControl, gtk.Frame):
         return self.smallscree_area
      
     def on_full_screen(self):
-        self.controls.state_stop(True)
-        self.fullscrean_area.show_window()        
+        
+                
         self.set_out(self.fullscrean_area.get_draw())      
-        self.controls.state_play(True)
-    
+        
+        self.fullscrean_area.show_window()
     def set_text(self, text):
         self.fullscrean_area.set_text(text)
         

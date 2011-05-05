@@ -145,7 +145,7 @@ class FC():
         
         self.order_repeat_style = "ToggleButtons"
         
-        self.file_managers = ['nautilus', 'dolphin', 'konqueror', 'thunar', 'pcmanfm']
+        self.file_managers = ['nautilus', 'dolphin', 'konqueror', 'thunar', 'pcmanfm', 'krusader', 'explorer']
         self.active_manager = [0, ""]
         
         self.numbering_by_order = True

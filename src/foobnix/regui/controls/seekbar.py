@@ -14,7 +14,7 @@ from foobnix.util.time_utils import convert_seconds_to_text
 class SeekProgressBarControls(FControl, gtk.Alignment):
     def __init__(self, controls, seek_bar_movie=None):
         FControl.__init__(self, controls)
-        self.seek_bar_movie =seek_bar_movie
+        self.seek_bar_movie = seek_bar_movie
         gtk.Alignment.__init__(self, xalign=0.5, yalign=0.5, xscale=1.0, yscale=1.0)
         
         self.set_padding(padding_top=7, padding_bottom=7, padding_left=0, padding_right=7)
@@ -26,18 +26,14 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         
         self.progresbar = gtk.ProgressBar()
         self.progresbar.set_text("00:00 / 00:00")
-        
-        try:
-            self.progresbar.set_has_tooltip(True)
-        except:
-            pass
+        self.progresbar.set_has_tooltip(True)
         
         self.progresbar.connect("leave-notify-event", lambda *a: self.tooltip.hide())
-        self.progresbar.connect("motion-notify-event", self.on_pointer_motion)
-                
+        self.progresbar.connect("motion-notify-event", self.on_pointer_motion)        
         event = gtk.EventBox()
         event.add(self.progresbar)
         event.connect("button-press-event", self.on_seek)
+        
         
         self.add(event)
         self.show_all()
@@ -54,7 +50,7 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         self.tooltip.show_all()
         
         x, y, mask = gtk.gdk.get_default_root_window().get_pointer() #@UndefinedVariable @UnusedVariable
-        self.tooltip.move(x+15, y+15)
+        self.tooltip.move(x+5, y-15)
                 
     def on_seek(self, widget, event):
         width = widget.allocation.width

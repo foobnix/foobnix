@@ -12,12 +12,13 @@ import gobject
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
+from foobnix.regui.model import FModel
 from foobnix.helpers.menu import Popup
 from foobnix.regui.state import LoadSave
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
-    delete_files_from_disk
+    delete_files_from_disk, create_folder_dialog
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
     is_middle_click_release, is_middle_click
     
@@ -127,6 +128,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 row_refs = [gtk.TreeRowReference(model, t_path) for t_path in t_paths]
                 menu.add_separator()
                 menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
+                menu.add_item(_("Create folder"), None, self.create_folder, (model, f_t_paths[0], row))
                 menu.add_item(_("Rename file (folder)"), None, self.rename_files, (row, self.path[0], self.text[0]))    
                 menu.add_item(_("Delete file(s) / folder(s)"), None, self.delete_files, (row_refs, paths, self.get_iter_from_row_reference))
             
@@ -160,6 +162,24 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             for bean in beans[:] :
                 if bean.path in copy_paths:
                     beans.remove(bean)
+    
+    def create_folder(self, a):
+        model, tree_path, row = a
+        file_path = row[self.path[0]]
+        new_folder_path = create_folder_dialog(file_path)
+        if os.path.isfile(file_path):
+            iter = model.get_iter(tree_path)
+            parent = model.iter_parent(iter)
+        elif os.path.isdir(file_path):
+            parent = model.get_iter(tree_path)
+        else:
+            logging.error("So path doesn't exist")
+        bean = FModel(os.path.basename(new_folder_path), new_folder_path).add_parent(row[self.level[0]]).add_is_file(False)
+        bean.font = "bold"
+        bean.visible = True
+        row = self.get_row_from_bean(bean)
+        model.prepend(parent, row)
+        self.save_beans_from_tree()
                 
     def add_to_tab(self, current=False):
         paths = self.get_selected_bean_paths()

@@ -13,6 +13,7 @@ import thread
 import logging
 import threading
 
+from subprocess import Popen
 from foobnix.fc.fc import FC
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.helpers.textarea import ScrolledText
@@ -26,28 +27,44 @@ def open_in_filemanager(path, managers=None):
     else:
         managers = FC().file_managers
     
-    def search_mgr(managers):
-        if os.environ.has_key('DESKTOP_SESSION'):
-            for fm in managers:
-                if os.system(fm + ' \"' + dirname + '\" 2>>/dev/null'):
-                    continue
-                else:
-                    logging.info("Folder " + dirname + " has been opened in " + fm)
-                    return True
-        else:
-            if not os.system('explorer ' + dirname):
-                logging.info("Folder " + dirname + " has been opened in explorer")
+    def search_mgr(managers, dirname):
+        files = []
+        for path in os.environ['PATH'].split(":"):
+            files += get_files_from_folder(path)
+            
+        for fm in managers:
+            if fm not in files:
+                continue
+            else:
+                path = dirname
+                if os.name == "nt":
+                    path = dirname.replace("/", "\\")
+                arguments = [fm,]
+                if fm == 'krusader':
+                    arguments.append('--left')
+                arguments.append(path)
+                logging.info("Folder " + dirname + " has been opened in " + fm)
+                
+                def task():
+                    Popen(arguments)
+                try:
+                    Popen(task())
+                except TypeError:
+                    pass
                 return True
-    
-    if not search_mgr(managers):
+            
+    if not search_mgr(managers, dirname):
         if FC().active_manager[0]:
             logging.warning(FC().active_manager[1] + "not installed in system")
             logging.info("Try open other file manager")
-            if not search_mgr(FC().file_managers):
+            if not search_mgr(FC().file_managers, dirname):
                 logging.warning("None file manager found")
         else:
             logging.warning("None file manager found")          
-    
+
+def get_files_from_folder(folder):
+    return [file for file in os.listdir(folder) if not os.path.isdir(file)]
+        
 def rename_file_on_disk(row, index_path, index_text):
     path = row[index_path]
     name = os.path.basename(path)
@@ -166,7 +183,42 @@ def copy_move_files_dialog(files, dest_folder, copy=None):
         return True
     dialog.destroy()
     return False
-        
+
+def create_folder_dialog(path):
+    dirname = path if os.path.isdir(path) else os.path.dirname(path)
+    dialog = gtk.Dialog(_("Make folder dialog"))
+    ok_button = dialog.add_button(_("Create folder"), gtk.RESPONSE_OK)
+    label1 = gtk.Label(_("You want to create subfolder in folder") + " " + os.path.basename(dirname))
+    label2 = gtk.Label(_("Enter new folder's name:"))
+    entry = gtk.Entry()
+    dialog.set_border_width(5)
+    dialog.vbox.pack_start(label1)
+    dialog.vbox.pack_start(label2)
+    dialog.vbox.pack_start(entry)
+    dialog.show_all()
+    ok_button.grab_default()
+    def task():
+        if dialog.run() == gtk.RESPONSE_OK:
+            folder_name = entry.get_text()
+            if folder_name:
+                full_path = os.path.join(dirname, folder_name)
+                try:
+                    os.mkdir(full_path)
+                except OSError, e:
+                    logging.error(e)
+                    if str(e).startswith("[Errno 17]"):
+                        er_message = _("So folder already exists")
+                    else:
+                        er_message = str(e)
+                    warning = gtk.MessageDialog(parent=dialog, flags=gtk.DIALOG_DESTROY_WITH_PARENT, type=gtk.MESSAGE_ERROR, message_format=er_message)
+                    if warning.run() == gtk.RESPONSE_DELETE_EVENT:
+                        warning.destroy()
+                    full_path = task()
+                return full_path
+    full_path = task()
+    dialog.destroy()
+    return full_path
+     
 def isDirectory(path):
     return os.path.isdir(path)
 
