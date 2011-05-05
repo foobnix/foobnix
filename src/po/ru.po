@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-11 17:46+0300\n"
-"PO-Revision-Date: 2011-03-22 16:00+0000\n"
-"Last-Translator: Ivan Ivanenko <Unknown>\n"
+"PO-Revision-Date: 2011-04-15 20:53+0000\n"
+"Last-Translator: Ivan Ivanenko <foobnix developer> <Unknown>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-03-23 05:25+0000\n"
-"X-Generator: Launchpad (build 12559)\n"
+"X-Launchpad-Export-Date: 2011-04-16 05:53+0000\n"
+"X-Generator: Launchpad (build 12735)\n"
+"Language: \n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -503,14 +503,12 @@ msgid "Music not found in folder(s):"
 msgstr "Музыка не найдена в папках"
 
 #: .././foobnix/regui/base_controls.py:315
-#, fuzzy
 msgid "Stopped"
-msgstr "Стоп"
+msgstr ""
 
 #: .././foobnix/regui/base_controls.py:323
-#, fuzzy
 msgid "Paused | "
-msgstr "Пауза"
+msgstr ""
 
 #: .././foobnix/regui/infopanel.py:49
 msgid "Best Songs"
@@ -776,9 +774,8 @@ msgid "Next"
 msgstr "Следующая"
 
 #: .././foobnix/regui/controls/record.py:26
-#, fuzzy
 msgid "Record radio"
-msgstr "Обновить папку с радио"
+msgstr ""
 
 #: .././foobnix/regui/controls/record.py:43
 msgid "So file doesn't exist. Pehaps it wasn't create yet."
@@ -811,9 +808,8 @@ msgid "Close tab"
 msgstr "Закрыть вкладку"
 
 #: .././foobnix/regui/notetab/__init__.py:346
-#, fuzzy
 msgid "It's need not empty playlist"
-msgstr "Удалить плейлист"
+msgstr ""
 
 #: .././foobnix/regui/notetab/__init__.py:349
 msgid "Choose folder to save playlist"
@@ -873,18 +869,16 @@ msgid "Copy to Search Line"
 msgstr "Скопировать в строку поиска"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:35
-#, fuzzy
 msgid "File"
-msgstr "_Файл"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:55
 msgid "Name"
 msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:60
-#, fuzzy
 msgid "Ext"
-msgstr "Выход"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:110
 msgid "Append to playlist"
@@ -1130,16 +1124,16 @@ msgid "Replace"
 msgstr ""
 
 #: .././foobnix/util/file_utils.py:143
-#, fuzzy, python-format
+#, python-format
 msgid "%s file(s) / folder(s)"
-msgstr "Удалить файл(ы) / папку(и)"
+msgstr ""
 
 #: .././foobnix/util/file_utils.py:149
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Are you really want to %s this item(s) to %s ?"
-msgstr "Вы действительно хотите удалить файл(ы) с диска?"
+msgstr ""
 
 #: .././foobnix/util/m3u_utils.py:51
 msgid "Choose window"
@@ -1287,9 +1281,11 @@ msgstr ""
 #~ "Do you wish to continue?"
 #~ msgstr "Существующие файлы будут перезаписаны"
 
+#, python-format
 #~ msgid "Convert  %d of %d file(s)"
 #~ msgstr "Конвертирую %d из %d файл(ов)"
 
+#, python-format
 #~ msgid "Finished (%d of %d)"
 #~ msgstr "Завершено (%d из %d)"
 

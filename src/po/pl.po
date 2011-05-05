@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-11 17:46+0300\n"
-"PO-Revision-Date: 2011-03-16 14:27+0000\n"
+"PO-Revision-Date: 2011-04-15 07:56+0000\n"
 "Last-Translator: KamilSPL <Unknown>\n"
 "Language-Team: Polish <pl@li.org>\n"
-"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-03-23 05:25+0000\n"
-"X-Generator: Launchpad (build 12559)\n"
+"X-Launchpad-Export-Date: 2011-04-16 05:53+0000\n"
+"X-Generator: Launchpad (build 12735)\n"
+"Language: pl\n"
 
 #: .././foobnix/dm/dm.py:28 .././foobnix/preferences/preferences_window.py:61
 #: .././foobnix/regui/menu.py:46 .././foobnix/regui/top.py:45
@@ -101,7 +101,7 @@ msgstr "Pobierz"
 
 #: .././foobnix/helpers/dialog_entry.py:147
 msgid "We hope you like the player. We will make it even better."
-msgstr "Mamy nadzieję, że polubiłeś odtwarzacz. Zrobimy go jeszcze lepszym."
+msgstr "Mamy nadzieję, że polubiłeś odtwarzacz. Ciągle go ulepszamy."
 
 #: .././foobnix/helpers/dialog_entry.py:148
 #: .././foobnix/preferences/configs/notification_conf.py:19
@@ -129,7 +129,7 @@ msgstr "Zamknij"
 
 #: .././foobnix/preferences/configs/category_info.py:10
 msgid "Category Info"
-msgstr "Informacja kategorii"
+msgstr "Informacje o kategorii"
 
 #: .././foobnix/preferences/configs/dm_config.py:23
 msgid "Save online music"
@@ -145,7 +145,7 @@ msgstr "Działanie"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:56
 msgid "Hotkey"
-msgstr "Klawisz skrótu"
+msgstr "Skrót klawiszowy"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:64
 #: .././foobnix/preferences/configs/music_library.py:65
@@ -188,11 +188,11 @@ msgstr "Poprzedni utwór"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:160
 msgid "Volume up"
-msgstr "Zwiększ głośność"
+msgstr "Głośniej"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:161
 msgid "Volume down"
-msgstr "Zmniejsz głośność"
+msgstr "Ciszej"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:162
 msgid "Show-Hide"
@@ -433,7 +433,7 @@ msgstr "Pokaż ikonkę w tacce systemowej"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:39
 msgid "Hide player in tray on start"
-msgstr ""
+msgstr "Od włączenia ukrywaj odtwarzacz na tacce"
 
 #. self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
 #: .././foobnix/preferences/configs/tray_icon_conf.py:42
@@ -478,7 +478,7 @@ msgstr "Vkontakte"
 
 #: .././foobnix/preferences/configs/vk_conf.py:47
 msgid "Check Foobnix Access (Require)"
-msgstr ""
+msgstr "Sprawdź dostęp Foobnix (wymagane)"
 
 #: .././foobnix/regui/base_controls.py:111
 msgid "Choose folders to open"
@@ -501,18 +501,16 @@ msgid "Music not found in folder(s):"
 msgstr "Nie znaleziono muzyki w folderze"
 
 #: .././foobnix/regui/base_controls.py:315
-#, fuzzy
 msgid "Stopped"
-msgstr "Zatrzymaj"
+msgstr "Zatrzymane"
 
 #: .././foobnix/regui/base_controls.py:323
-#, fuzzy
 msgid "Paused | "
-msgstr "Pauza"
+msgstr "Wstrymane | "
 
 #: .././foobnix/regui/infopanel.py:49
 msgid "Best Songs"
-msgstr "Najlepszy utwór"
+msgstr "Najlepsze utwory"
 
 #: .././foobnix/regui/infopanel.py:52
 msgid "Similar Artists"
@@ -532,7 +530,7 @@ msgstr "Tekst utworu"
 
 #: .././foobnix/regui/infopanel.py:70
 msgid "About Artist"
-msgstr ""
+msgstr "O wykonawcy"
 
 #: .././foobnix/regui/menu.py:27
 msgid "_File"
@@ -572,7 +570,7 @@ msgstr "Kolejność"
 
 #: .././foobnix/regui/menu.py:58
 msgid "Linear"
-msgstr "Liniowo"
+msgstr "Po kolei"
 
 #: .././foobnix/regui/menu.py:61
 msgid "Random"
@@ -660,7 +658,7 @@ msgstr "Panel informacyjny (Alt+4)"
 
 #: .././foobnix/regui/perspectives.py:100
 msgid "Last.Fm"
-msgstr ""
+msgstr "Last.fm"
 
 #: .././foobnix/regui/perspectives.py:100
 msgid "Last.fm Panel (Alt+5)"
@@ -668,11 +666,11 @@ msgstr "Last.fm panel (Alt+5)"
 
 #: .././foobnix/regui/perspectives.py:103
 msgid "VK"
-msgstr ""
+msgstr "VK"
 
 #: .././foobnix/regui/perspectives.py:103
 msgid "VK Panel (Alt+6)"
-msgstr ""
+msgstr "VK Panel (Alt+6)"
 
 #: .././foobnix/regui/search.py:15
 msgid "Search music online"
@@ -732,7 +730,7 @@ msgstr "Szukaj folderu"
 
 #: .././foobnix/regui/controls/movie_area.py:73
 msgid "Exit Fullscrean"
-msgstr ""
+msgstr "Opuść tryb pełnoekranowy"
 
 #: .././foobnix/regui/controls/playback.py:50
 #: .././foobnix/regui/controls/playback.py:141
@@ -774,17 +772,16 @@ msgid "Next"
 msgstr "Następny"
 
 #: .././foobnix/regui/controls/record.py:26
-#, fuzzy
 msgid "Record radio"
-msgstr "Załaduj ponownie folder radia"
+msgstr "Nagraj radio"
 
 #: .././foobnix/regui/controls/record.py:43
 msgid "So file doesn't exist. Pehaps it wasn't create yet."
-msgstr ""
+msgstr "Plik nie istnieje. Pewnie jeszcze nie został stworzony."
 
 #: .././foobnix/regui/controls/record.py:52
 msgid "Save file as ..."
-msgstr ""
+msgstr "Zapisz plik jako ..."
 
 #: .././foobnix/regui/controls/tray_icon.py:37
 msgid "Exit"
@@ -809,9 +806,8 @@ msgid "Close tab"
 msgstr "Zamknij kartę"
 
 #: .././foobnix/regui/notetab/__init__.py:346
-#, fuzzy
 msgid "It's need not empty playlist"
-msgstr "Skasuj listę odtwarzania"
+msgstr "Lista odtwarzania nie może być pusta"
 
 #: .././foobnix/regui/notetab/__init__.py:349
 msgid "Choose folder to save playlist"
@@ -871,18 +867,16 @@ msgid "Copy to Search Line"
 msgstr "Kopiuj do linii wyszukiwania"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:35
-#, fuzzy
 msgid "File"
-msgstr "_Plik"
+msgstr "Plik"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:55
 msgid "Name"
-msgstr ""
+msgstr "Nazwa"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:60
-#, fuzzy
 msgid "Ext"
-msgstr "Wyjście"
+msgstr "Ext"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:110
 msgid "Append to playlist"
@@ -1032,7 +1026,7 @@ msgstr "Utwórz nową listę odtwarzania"
 
 #: .././foobnix/regui/treeview/vk_integration_tree.py:27
 msgid "VK Integration "
-msgstr ""
+msgstr "Integracja z VK "
 
 #: .././foobnix/util/const.py:43
 msgid "Active"
@@ -1104,7 +1098,7 @@ msgstr "Ostrzeżenie"
 
 #: .././foobnix/util/converter.py:337
 msgid "Converter require specially compiled ffmpeg module for work.\n"
-msgstr ""
+msgstr "Konwerter potrzebuje specjalnego modułu ffmpeg do prawy.\n"
 
 #: .././foobnix/util/file_utils.py:56
 msgid "Rename folder"
@@ -1120,24 +1114,26 @@ msgstr "Na pewno chcesz usunąć plik(i) z dysku?"
 
 #: .././foobnix/util/file_utils.py:140
 msgid "Copy"
-msgstr ""
+msgstr "Kopiuj"
 
 #. @UndefinedVariable
 #: .././foobnix/util/file_utils.py:141
 msgid "Replace"
-msgstr ""
+msgstr "Podmień"
 
 #: .././foobnix/util/file_utils.py:143
-#, fuzzy, python-format
+#, python-format
 msgid "%s file(s) / folder(s)"
-msgstr "Skasuj plik(i) / Folder(y)"
+msgstr "%s plik(ów) / folder(ów)"
 
 #: .././foobnix/util/file_utils.py:149
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Are you really want to %s this item(s) to %s ?"
-msgstr "Na pewno chcesz usunąć plik(i) z dysku?"
+msgstr ""
+"\n"
+"Naprawdę chcesz %s te plik(i) do %s ?"
 
 #: .././foobnix/util/m3u_utils.py:51
 msgid "Choose window"
@@ -1163,6 +1159,22 @@ msgid ""
 "\n"
 "\tDo you want to save the playlist with relative paths?\n"
 msgstr ""
+"<big><b>\t\t\t\t\t\t\t\tUwaga!\n"
+"</b></big>\tWzględna lokalizacja plików muzycznych i list odtwarzania "
+"pozwoli Ci zapisać względne\n"
+"ścieżki do plików na Twoich listach. Pozwoli to przenosić listy odtwarzania "
+"z plikami \n"
+"dźwiękowymi (koniecznie razem) w dowolne miejsce na dysku, nawet na inny "
+"komputer\n"
+"Ponadto biblioteka będzie kompatybilna z systemem Windows. Jednakże, w tym "
+"przypadku nie możesz\n"
+"zmienić względnych ścieżek listy i plików muzycznych.\n"
+"\tCałkowie ścieżki sprawią, że nia da się przenieść listy na inny komputer\n"
+"albo używać jej na Windowsie, ale plik listy będzie mógł być przeniesiony w "
+"dowolnemiejsce na komputerze,\n"
+"bez przenoszenia muzyki (lista będzie działała).\n"
+"\n"
+"\tCzy chcesz zapisać liste za pomocą względnych ścieżek?\n"
 
 #: .././foobnix/util/tag_util.py:23
 msgid "Tag Editor"
@@ -1280,9 +1292,11 @@ msgstr ""
 #~ msgid "Audio Converter"
 #~ msgstr "Konwerter dźwięku"
 
+#, python-format
 #~ msgid "Convert  %d of %d file(s)"
 #~ msgstr "Konwertuj %d z %d plik(ów)"
 
+#, python-format
 #~ msgid "Finished (%d of %d)"
 #~ msgstr "Zakończono (%d z %d)"
 

@@ -11,12 +11,12 @@ msgstr ""
 "PO-Revision-Date: 2011-03-13 23:27+0000\n"
 "Last-Translator: north <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
-"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-03-23 05:25+0000\n"
-"X-Generator: Launchpad (build 12559)\n"
+"X-Launchpad-Export-Date: 2011-04-12 05:12+0000\n"
+"X-Generator: Launchpad (build 12735)\n"
+"Language: uk\n"
 
 #: .././foobnix/dm/dm.py:28 .././foobnix/preferences/preferences_window.py:61
 #: .././foobnix/regui/menu.py:46 .././foobnix/regui/top.py:45
@@ -501,14 +501,12 @@ msgid "Music not found in folder(s):"
 msgstr "У теках не знайдено музики"
 
 #: .././foobnix/regui/base_controls.py:315
-#, fuzzy
 msgid "Stopped"
-msgstr "Зупинити"
+msgstr ""
 
 #: .././foobnix/regui/base_controls.py:323
-#, fuzzy
 msgid "Paused | "
-msgstr "Пауза"
+msgstr ""
 
 #: .././foobnix/regui/infopanel.py:49
 msgid "Best Songs"
@@ -774,9 +772,8 @@ msgid "Next"
 msgstr "Наступна"
 
 #: .././foobnix/regui/controls/record.py:26
-#, fuzzy
 msgid "Record radio"
-msgstr "Оновити радіо теку"
+msgstr ""
 
 #: .././foobnix/regui/controls/record.py:43
 msgid "So file doesn't exist. Pehaps it wasn't create yet."
@@ -809,9 +806,8 @@ msgid "Close tab"
 msgstr "Закрити вкладку"
 
 #: .././foobnix/regui/notetab/__init__.py:346
-#, fuzzy
 msgid "It's need not empty playlist"
-msgstr "Вилучити плейлист"
+msgstr ""
 
 #: .././foobnix/regui/notetab/__init__.py:349
 msgid "Choose folder to save playlist"
@@ -871,18 +867,16 @@ msgid "Copy to Search Line"
 msgstr "Скопіювати в рядок пошуку"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:35
-#, fuzzy
 msgid "File"
-msgstr "_Файл"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:55
 msgid "Name"
 msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:60
-#, fuzzy
 msgid "Ext"
-msgstr "Вихід"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:110
 msgid "Append to playlist"
@@ -1126,9 +1120,9 @@ msgid "Replace"
 msgstr ""
 
 #: .././foobnix/util/file_utils.py:143
-#, fuzzy, python-format
+#, python-format
 msgid "%s file(s) / folder(s)"
-msgstr "Видалити файл(и) / теку(-и)"
+msgstr ""
 
 #: .././foobnix/util/file_utils.py:149
 #, python-format

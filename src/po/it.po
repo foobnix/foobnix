@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-11 17:46+0300\n"
-"PO-Revision-Date: 2011-02-08 00:10+0000\n"
+"PO-Revision-Date: 2011-05-04 21:14+0000\n"
 "Last-Translator: Martino Barbon <Unknown>\n"
 "Language-Team: ITALIAN <bmsavone@gmail.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-03-23 05:25+0000\n"
-"X-Generator: Launchpad (build 12559)\n"
+"X-Launchpad-Export-Date: 2011-05-05 05:19+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 "X-Poedit-Country: ITALY\n"
+"Language: \n"
 "X-Poedit-Language: Italian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -41,7 +41,7 @@ msgstr "Download Manager"
 
 #: .././foobnix/dm/dm.py:110
 msgid "Choose Folder"
-msgstr ""
+msgstr "Scegli Cartella"
 
 #: .././foobnix/eq/eq_gui.py:40 .././foobnix/regui/menu.py:43
 msgid "Equalizer"
@@ -49,11 +49,11 @@ msgstr "Equalizzatore"
 
 #: .././foobnix/eq/eq_gui.py:86
 msgid "Disabled"
-msgstr ""
+msgstr "Disabilitato"
 
 #: .././foobnix/eq/eq_gui.py:88
 msgid "Enabled"
-msgstr ""
+msgstr "Abilitato"
 
 #: .././foobnix/eq/eq_gui.py:89
 #, python-format
@@ -62,7 +62,7 @@ msgstr "Equalizzatore %s"
 
 #: .././foobnix/eq/eq_gui.py:166
 msgid "Enable EQ"
-msgstr ""
+msgstr "Abilita EQ"
 
 #: .././foobnix/eq/eq_gui.py:167
 msgid "To enable EQ set ON"
@@ -70,7 +70,7 @@ msgstr "Per abilitare EQ spunta ON"
 
 #: .././foobnix/eq/eq_gui.py:172
 msgid "Auto"
-msgstr ""
+msgstr "Automatico"
 
 #: .././foobnix/eq/eq_gui.py:187
 msgid "Save"
@@ -346,11 +346,11 @@ msgstr "Prova finestra notifiche per nuova versione di foobnix disponibile"
 
 #: .././foobnix/preferences/configs/other_conf.py:35
 msgid "Save music to folder:"
-msgstr ""
+msgstr "Salva musica nella cartella:"
 
 #: .././foobnix/preferences/configs/other_conf.py:39
 msgid "Automatic music save"
-msgstr ""
+msgstr "Salva musica automaticamente"
 
 #: .././foobnix/preferences/configs/other_conf.py:46
 msgid "Disc cover size:"
@@ -379,7 +379,7 @@ msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:96
 msgid "Toggle Buttons"
-msgstr ""
+msgstr "Commuta pulsanti"
 
 #. self.buttons.connect("toggled", self.on_change_o_r_style)
 #: .././foobnix/preferences/configs/other_conf.py:99
@@ -388,11 +388,11 @@ msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:110
 msgid "Opacity:"
-msgstr ""
+msgstr "Opacità:"
 
 #: .././foobnix/preferences/configs/other_conf.py:123
 msgid "Choose your preferred file manager:"
-msgstr ""
+msgstr "Scegli il tuo gestore file preferito:"
 
 #: .././foobnix/preferences/configs/tabs.py:13
 msgid "Tabs"
@@ -408,7 +408,7 @@ msgstr ""
 
 #: .././foobnix/preferences/configs/tabs.py:54
 msgid "Tab position:"
-msgstr ""
+msgstr "Posizione della scheda:"
 
 #: .././foobnix/preferences/configs/tabs.py:58
 msgid "Left"
@@ -424,7 +424,7 @@ msgstr "Senza schede"
 
 #: .././foobnix/preferences/configs/tabs.py:76
 msgid "Close tab sign:"
-msgstr ""
+msgstr "Simbolo chiusura scheda:"
 
 #: .././foobnix/preferences/configs/tabs.py:91
 msgid "None"
@@ -473,7 +473,7 @@ msgstr ""
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:109
 msgid "Time Notification (sec): "
-msgstr ""
+msgstr "Tempo della notifica (sec): "
 
 #: .././foobnix/preferences/configs/vk_conf.py:14
 msgid "Vkontakte"
@@ -504,14 +504,12 @@ msgid "Music not found in folder(s):"
 msgstr "Musica non trovata nella cartella(e)"
 
 #: .././foobnix/regui/base_controls.py:315
-#, fuzzy
 msgid "Stopped"
-msgstr "Stop"
+msgstr "Interrottto"
 
 #: .././foobnix/regui/base_controls.py:323
-#, fuzzy
 msgid "Paused | "
-msgstr "Pausa"
+msgstr ""
 
 #: .././foobnix/regui/infopanel.py:49
 msgid "Best Songs"
@@ -663,15 +661,15 @@ msgstr "Info Panel (Alt+4)"
 
 #: .././foobnix/regui/perspectives.py:100
 msgid "Last.Fm"
-msgstr ""
+msgstr "Last.Fm"
 
 #: .././foobnix/regui/perspectives.py:100
 msgid "Last.fm Panel (Alt+5)"
-msgstr ""
+msgstr "Pannello Last.fm (Alt+5)"
 
 #: .././foobnix/regui/perspectives.py:103
 msgid "VK"
-msgstr ""
+msgstr "VK"
 
 #: .././foobnix/regui/perspectives.py:103
 msgid "VK Panel (Alt+6)"
@@ -723,7 +721,7 @@ msgstr "Video"
 
 #: .././foobnix/regui/about/about.py:20
 msgid "Simple and Powerful player"
-msgstr ""
+msgstr "Riproduttore semplice e potente"
 
 #: .././foobnix/regui/controls/filter.py:24
 msgid "File search"
@@ -777,9 +775,8 @@ msgid "Next"
 msgstr "Successivo"
 
 #: .././foobnix/regui/controls/record.py:26
-#, fuzzy
 msgid "Record radio"
-msgstr "Ricarica la cartella radio"
+msgstr ""
 
 #: .././foobnix/regui/controls/record.py:43
 msgid "So file doesn't exist. Pehaps it wasn't create yet."
@@ -812,9 +809,8 @@ msgid "Close tab"
 msgstr "Chiudi scheda"
 
 #: .././foobnix/regui/notetab/__init__.py:346
-#, fuzzy
 msgid "It's need not empty playlist"
-msgstr "Elimina playlist"
+msgstr ""
 
 #: .././foobnix/regui/notetab/__init__.py:349
 msgid "Choose folder to save playlist"
@@ -874,18 +870,16 @@ msgid "Copy to Search Line"
 msgstr "Copia nella riga di Ricerca"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:35
-#, fuzzy
 msgid "File"
-msgstr "_File"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:55
 msgid "Name"
 msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:60
-#, fuzzy
 msgid "Ext"
-msgstr "Esci"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:110
 msgid "Append to playlist"

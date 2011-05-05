@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-11 17:46+0300\n"
-"PO-Revision-Date: 2011-03-31 11:10+0000\n"
+"PO-Revision-Date: 2011-04-15 16:59+0000\n"
 "Last-Translator: Fitoschido <fitoschido@gmail.com>\n"
 "Language-Team: SPANISH <bmsavone@gmail.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-04-01 05:14+0000\n"
-"X-Generator: Launchpad (build 12559)\n"
+"X-Launchpad-Export-Date: 2011-04-16 05:53+0000\n"
+"X-Generator: Launchpad (build 12735)\n"
 "X-Poedit-Country: SPAIN\n"
+"Language: \n"
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -437,7 +437,7 @@ msgstr "Muestra tray icon"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:39
 msgid "Hide player in tray on start"
-msgstr ""
+msgstr "Ocultar reproductor en la bandeja al iniciar"
 
 #. self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
 #: .././foobnix/preferences/configs/tray_icon_conf.py:42
@@ -505,14 +505,12 @@ msgid "Music not found in folder(s):"
 msgstr "No se ha encontrado música en la carpeta(s):"
 
 #: .././foobnix/regui/base_controls.py:315
-#, fuzzy
 msgid "Stopped"
-msgstr "Stop"
+msgstr "Detenido"
 
 #: .././foobnix/regui/base_controls.py:323
-#, fuzzy
 msgid "Paused | "
-msgstr "Pausa"
+msgstr "Pausado | "
 
 #: .././foobnix/regui/infopanel.py:49
 msgid "Best Songs"
@@ -736,7 +734,7 @@ msgstr "Busca carpeta"
 
 #: .././foobnix/regui/controls/movie_area.py:73
 msgid "Exit Fullscrean"
-msgstr ""
+msgstr "Salir Pantalla Completa"
 
 #: .././foobnix/regui/controls/playback.py:50
 #: .././foobnix/regui/controls/playback.py:141
@@ -778,17 +776,16 @@ msgid "Next"
 msgstr "Siguiente"
 
 #: .././foobnix/regui/controls/record.py:26
-#, fuzzy
 msgid "Record radio"
-msgstr "Recarga la carpeta de radios"
+msgstr "Grabar radio"
 
 #: .././foobnix/regui/controls/record.py:43
 msgid "So file doesn't exist. Pehaps it wasn't create yet."
-msgstr ""
+msgstr "El archivo no existe. Quizás no ha sido creado aún."
 
 #: .././foobnix/regui/controls/record.py:52
 msgid "Save file as ..."
-msgstr ""
+msgstr "Guardar archivo como..."
 
 #: .././foobnix/regui/controls/tray_icon.py:37
 msgid "Exit"
@@ -813,9 +810,8 @@ msgid "Close tab"
 msgstr "Cerrar pestaña"
 
 #: .././foobnix/regui/notetab/__init__.py:346
-#, fuzzy
 msgid "It's need not empty playlist"
-msgstr "Elimina playlist"
+msgstr "Se necesita una lista de reproducción no vacía"
 
 #: .././foobnix/regui/notetab/__init__.py:349
 msgid "Choose folder to save playlist"
@@ -875,18 +871,16 @@ msgid "Copy to Search Line"
 msgstr "Copia en el Campo de Búsqueda"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:35
-#, fuzzy
 msgid "File"
-msgstr "_Archivo"
+msgstr "Archivo"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:55
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:60
-#, fuzzy
 msgid "Ext"
-msgstr "Salir"
+msgstr "Ext"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:110
 msgid "Append to playlist"
@@ -1124,24 +1118,26 @@ msgstr "Estás seguro que quieres eliminar este item (s) del disco?"
 
 #: .././foobnix/util/file_utils.py:140
 msgid "Copy"
-msgstr ""
+msgstr "Copiar"
 
 #. @UndefinedVariable
 #: .././foobnix/util/file_utils.py:141
 msgid "Replace"
-msgstr ""
+msgstr "Reemplazar"
 
 #: .././foobnix/util/file_utils.py:143
-#, fuzzy, python-format
+#, python-format
 msgid "%s file(s) / folder(s)"
-msgstr "Eliminar archivo(s) / carpeta(s)"
+msgstr "%s Archivo(s) / Carpeta(s)"
 
 #: .././foobnix/util/file_utils.py:149
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Are you really want to %s this item(s) to %s ?"
-msgstr "Estás seguro que quieres eliminar este item (s) del disco?"
+msgstr ""
+"\n"
+"Estas realmente seguro que quieres %s este elemento(s) a %s ?"
 
 #: .././foobnix/util/m3u_utils.py:51
 msgid "Choose window"

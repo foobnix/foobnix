@@ -11,12 +11,12 @@ msgstr ""
 "PO-Revision-Date: 2011-03-04 13:46+0000\n"
 "Last-Translator: Florian Heissenberger <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-03-23 05:25+0000\n"
-"X-Generator: Launchpad (build 12559)\n"
+"X-Launchpad-Export-Date: 2011-04-12 05:12+0000\n"
+"X-Generator: Launchpad (build 12735)\n"
+"Language: de\n"
 
 #: .././foobnix/dm/dm.py:28 .././foobnix/preferences/preferences_window.py:61
 #: .././foobnix/regui/menu.py:46 .././foobnix/regui/top.py:45
@@ -503,14 +503,12 @@ msgid "Music not found in folder(s):"
 msgstr "Keine Musik im Ordner gefunden:"
 
 #: .././foobnix/regui/base_controls.py:315
-#, fuzzy
 msgid "Stopped"
-msgstr "Stop"
+msgstr ""
 
 #: .././foobnix/regui/base_controls.py:323
-#, fuzzy
 msgid "Paused | "
-msgstr "Pause"
+msgstr ""
 
 #: .././foobnix/regui/infopanel.py:49
 msgid "Best Songs"
@@ -776,9 +774,8 @@ msgid "Next"
 msgstr "Nächster Titel"
 
 #: .././foobnix/regui/controls/record.py:26
-#, fuzzy
 msgid "Record radio"
-msgstr "Radioordner neu laden"
+msgstr ""
 
 #: .././foobnix/regui/controls/record.py:43
 msgid "So file doesn't exist. Pehaps it wasn't create yet."
@@ -811,9 +808,8 @@ msgid "Close tab"
 msgstr "Tab schließen"
 
 #: .././foobnix/regui/notetab/__init__.py:346
-#, fuzzy
 msgid "It's need not empty playlist"
-msgstr "Wiedergabeliste entfernen"
+msgstr ""
 
 #: .././foobnix/regui/notetab/__init__.py:349
 msgid "Choose folder to save playlist"
@@ -873,18 +869,16 @@ msgid "Copy to Search Line"
 msgstr "In die Suchleiste kopieren"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:35
-#, fuzzy
 msgid "File"
-msgstr "_Datei"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:55
 msgid "Name"
 msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:60
-#, fuzzy
 msgid "Ext"
-msgstr "Schließen"
+msgstr ""
 
 #: .././foobnix/regui/treeview/navigation_tree.py:110
 msgid "Append to playlist"
@@ -1128,16 +1122,16 @@ msgid "Replace"
 msgstr ""
 
 #: .././foobnix/util/file_utils.py:143
-#, fuzzy, python-format
+#, python-format
 msgid "%s file(s) / folder(s)"
-msgstr "Datei(en) / Ordner löschen"
+msgstr ""
 
 #: .././foobnix/util/file_utils.py:149
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Are you really want to %s this item(s) to %s ?"
-msgstr "Datei(en) wirklich von Festplatte löschen?"
+msgstr ""
 
 #: .././foobnix/util/m3u_utils.py:51
 msgid "Choose window"
@@ -1223,9 +1217,11 @@ msgstr ""
 #~ msgid "Audio Converter"
 #~ msgstr "Audio Converter"
 
+#, python-format
 #~ msgid "Convert  %d of %d file(s)"
 #~ msgstr "Konvertiere %d von %d Datei(en)"
 
+#, python-format
 #~ msgid "Finished (%d of %d)"
 #~ msgstr "Fertig (%d von %d)"
 

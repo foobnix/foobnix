@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-11 17:46+0300\n"
-"PO-Revision-Date: 2011-03-22 18:05+0000\n"
+"PO-Revision-Date: 2011-04-16 01:38+0000\n"
 "Last-Translator: Sérgio Marques <Unknown>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
-"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-03-23 05:25+0000\n"
-"X-Generator: Launchpad (build 12559)\n"
+"X-Launchpad-Export-Date: 2011-04-17 05:13+0000\n"
+"X-Generator: Launchpad (build 12735)\n"
+"Language: pt\n"
 
 #: .././foobnix/dm/dm.py:28 .././foobnix/preferences/preferences_window.py:61
 #: .././foobnix/regui/menu.py:46 .././foobnix/regui/top.py:45
@@ -433,7 +433,7 @@ msgstr "Mostrar ícone na área de notificação"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:39
 msgid "Hide player in tray on start"
-msgstr ""
+msgstr "Ao iniciar, ocultar ícone na área de notificação"
 
 #. self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
 #: .././foobnix/preferences/configs/tray_icon_conf.py:42
@@ -501,14 +501,12 @@ msgid "Music not found in folder(s):"
 msgstr "Não foram encontradas músicas na(s) pasta(s):"
 
 #: .././foobnix/regui/base_controls.py:315
-#, fuzzy
 msgid "Stopped"
-msgstr "Parar"
+msgstr "Parado"
 
 #: .././foobnix/regui/base_controls.py:323
-#, fuzzy
 msgid "Paused | "
-msgstr "Pausar"
+msgstr "Pausado "
 
 #: .././foobnix/regui/infopanel.py:49
 msgid "Best Songs"
@@ -732,7 +730,7 @@ msgstr "Pesquisa de pasta(s)"
 
 #: .././foobnix/regui/controls/movie_area.py:73
 msgid "Exit Fullscrean"
-msgstr ""
+msgstr "Sair de ecrã completo"
 
 #: .././foobnix/regui/controls/playback.py:50
 #: .././foobnix/regui/controls/playback.py:141
@@ -774,17 +772,16 @@ msgid "Next"
 msgstr "Seguinte"
 
 #: .././foobnix/regui/controls/record.py:26
-#, fuzzy
 msgid "Record radio"
-msgstr "Recarregar pasta de rádios"
+msgstr "Gravar emissão de rádio"
 
 #: .././foobnix/regui/controls/record.py:43
 msgid "So file doesn't exist. Pehaps it wasn't create yet."
-msgstr ""
+msgstr "O ficheiro não existe. Talvez ainda não tenha sido criado."
 
 #: .././foobnix/regui/controls/record.py:52
 msgid "Save file as ..."
-msgstr ""
+msgstr "Gravar ficheiro como..."
 
 #: .././foobnix/regui/controls/tray_icon.py:37
 msgid "Exit"
@@ -809,9 +806,8 @@ msgid "Close tab"
 msgstr "Fechar separador"
 
 #: .././foobnix/regui/notetab/__init__.py:346
-#, fuzzy
 msgid "It's need not empty playlist"
-msgstr "Apagar lista de reprodução"
+msgstr "Não precisa de uma lista vazia"
 
 #: .././foobnix/regui/notetab/__init__.py:349
 msgid "Choose folder to save playlist"
@@ -871,18 +867,16 @@ msgid "Copy to Search Line"
 msgstr "Copiar para a linha de pesquisa"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:35
-#, fuzzy
 msgid "File"
-msgstr "_Ficheiro"
+msgstr "Ficheiro"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:55
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:60
-#, fuzzy
 msgid "Ext"
-msgstr "Sair"
+msgstr "Ext"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:110
 msgid "Append to playlist"
@@ -1121,24 +1115,26 @@ msgstr "Pretende realmente apagar os itens do disco?"
 
 #: .././foobnix/util/file_utils.py:140
 msgid "Copy"
-msgstr ""
+msgstr "Copiar"
 
 #. @UndefinedVariable
 #: .././foobnix/util/file_utils.py:141
 msgid "Replace"
-msgstr ""
+msgstr "Substituir"
 
 #: .././foobnix/util/file_utils.py:143
-#, fuzzy, python-format
+#, python-format
 msgid "%s file(s) / folder(s)"
-msgstr "Apagar ficheiro(s)/pasta(s)"
+msgstr "%s ficheiro(s) / pasta(s)"
 
 #: .././foobnix/util/file_utils.py:149
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Are you really want to %s this item(s) to %s ?"
-msgstr "Pretende realmente apagar os itens do disco?"
+msgstr ""
+"\n"
+"Tem a certeza que quer to %s este(s) item(ns) para %s ?"
 
 #: .././foobnix/util/m3u_utils.py:51
 msgid "Choose window"
@@ -1164,6 +1160,23 @@ msgid ""
 "\n"
 "\tDo you want to save the playlist with relative paths?\n"
 msgstr ""
+"<big><b>\t\t\t\t\t\t\t\tAtenção!\n"
+"</b></big>\tOs locais relativos da lista de reprodução e dos ficheiros "
+"permitem-lhe gravar os\n"
+"caminho relativos dos ficheiros na lista de reprodução. Assim, consegue "
+"mover a lista de reprodução\n"
+"e os ficheiros (só em conjunto) para qualquer local do seu computador ou até "
+"mesmo outro computador.\n"
+"Para além disso, torna a coleção compatível com o sistema Windows. No "
+"entanto, neste caso, você\n"
+"não pode alterar a localização relativa do ficheiro da lista de reprodução "
+"nem dos ficheiros de música.\n"
+"\tOs caminhos absolutos criam uma impossibilidade de transferir a lista de "
+"reprodução\n"
+"para outro computador que utilize o sistema Windows (mas a coleção continua "
+"a funcionar).\n"
+"\n"
+"\tPretende gravar a lista de reprodução e os caminhos relativos?\n"
 
 #: .././foobnix/util/tag_util.py:23
 msgid "Tag Editor"
@@ -1218,9 +1231,11 @@ msgstr ""
 #~ msgid "Audio Converter"
 #~ msgstr "Conversor de áudio"
 
+#, python-format
 #~ msgid "Convert  %d of %d file(s)"
 #~ msgstr "Convertido(s)  %d de %d ficheiro(s)"
 
+#, python-format
 #~ msgid "Finished (%d of %d)"
 #~ msgstr "Concluído (%d de %d)"
 
