@@ -1,8 +1,25 @@
-2.5.13
-* Fix banned VK users
+2.5.14
+* Record of radio in file
+* Full supporting of Ubuntu Natty
+* Cover & Lyric panel (optional)
+* Popup with virtual timestamp when mouse pointer over playback bar
+* Supporting of .m4v format
+* Show video files's duration
+* Possibility to create folders in music library panel
 * Search song via VK API
 * Configure amount of downloading threads
 * Download to for any files
+* Columns for music library panel
+* Possibility to change columns mode (on click)
+* Composer column was added
+* Moving and copy (with Ctrl) of files by drag and drop in music library panel
+* Fix banned VK users
+* Fix bug with playing of ape+cue
+* Fix tag editor's bug (create tags in tagless files)
+* Fix bug with enabling/disabling equalizer
+* Fix bug (impossible to edit list of extensions) 
+* Optimization of interaction with PCManFM and Thunar file managers
+* Add Krusader in file manager list
 
 2.5.11
 * Fixed show title and artist for radios, added manually
