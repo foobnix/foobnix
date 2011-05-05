@@ -37,18 +37,14 @@ def open_in_filemanager(path, managers=None):
                 continue
             else:
                 path = dirname
-                if os.name == "nt":
-                    path = dirname.replace("/", "\\")
-                arguments = [fm,]
+                arguments = [fm, dirname]
                 if fm == 'krusader':
-                    arguments.append('--left')
-                arguments.append(path)
+                    arguments.insert(-1, '--left')
+                    
                 logging.info("Folder " + dirname + " has been opened in " + fm)
                 
-                def task():
-                    Popen(arguments)
                 try:
-                    Popen(task())
+                    Popen(Popen(arguments))
                 except TypeError:
                     pass
                 return True
