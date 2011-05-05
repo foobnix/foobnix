@@ -31,23 +31,18 @@ def open_in_filemanager(path, managers=None):
         for path in os.environ['PATH'].split(":"):
             files += get_files_from_folder(path)
             
-        if os.environ.has_key('DESKTOP_SESSION'):
-            for fm in managers:
-                if fm not in files:
-                    continue
-                else:
-                    arguments = (os.P_NOWAIT, fm, dirname)
-                    if fm == 'krusader':
-                        arguments = (os.P_NOWAIT, fm, '--left', dirname)
-                    t = threading.Thread(target=os.spawnlp, args=arguments)
-                    logging.info("Folder " + dirname + " has been opened in " + fm)
-                    t.start()
-                    return True
-        else:
-            if not os.system('explorer ' + dirname):
-                logging.info("Folder " + dirname + " has been opened in explorer")
+        for fm in managers:
+            if fm not in files:
+                continue
+            else:
+                arguments = (os.P_NOWAIT, fm, dirname)
+                if fm == 'krusader':
+                    arguments = (os.P_NOWAIT, fm, '--left', dirname)
+                t = threading.Thread(target=os.spawnlp, args=arguments)
+                logging.info("Folder " + dirname + " has been opened in " + fm)
+                t.start()
                 return True
-    
+            
     if not search_mgr(managers):
         if FC().active_manager[0]:
             logging.warning(FC().active_manager[1] + "not installed in system")
