@@ -13,6 +13,7 @@ import thread
 import logging
 import threading
 
+from subprocess import Popen
 from foobnix.fc.fc import FC
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.helpers.textarea import ScrolledText
@@ -26,7 +27,7 @@ def open_in_filemanager(path, managers=None):
     else:
         managers = FC().file_managers
     
-    def search_mgr(managers):
+    def search_mgr(managers, dirname):
         files = []
         for path in os.environ['PATH'].split(":"):
             files += get_files_from_folder(path)
@@ -35,19 +36,28 @@ def open_in_filemanager(path, managers=None):
             if fm not in files:
                 continue
             else:
-                arguments = (os.P_NOWAIT, fm, dirname)
+                path = dirname
+                if os.name == "nt":
+                    path = dirname.replace("/", "\\")
+                arguments = [fm,]
                 if fm == 'krusader':
-                    arguments = (os.P_NOWAIT, fm, '--left', dirname)
-                t = threading.Thread(target=os.spawnlp, args=arguments)
+                    arguments.append('--left')
+                arguments.append(path)
                 logging.info("Folder " + dirname + " has been opened in " + fm)
-                t.start()
+                
+                def task():
+                    Popen(arguments)
+                try:
+                    Popen(task())
+                except TypeError:
+                    pass
                 return True
             
-    if not search_mgr(managers):
+    if not search_mgr(managers, dirname):
         if FC().active_manager[0]:
             logging.warning(FC().active_manager[1] + "not installed in system")
             logging.info("Try open other file manager")
-            if not search_mgr(FC().file_managers):
+            if not search_mgr(FC().file_managers, dirname):
                 logging.warning("None file manager found")
         else:
             logging.warning("None file manager found")          
