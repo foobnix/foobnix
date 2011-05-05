@@ -10,8 +10,6 @@ from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.regui.controls.playback import PlaybackControls
 from foobnix.util.key_utils import is_key, is_key_alt, get_key
 from foobnix.helpers.my_widgets import notetab_label, ImageButton
-import gobject
-
 
 class AdvancedDrawingArea(gtk.DrawingArea):
     def __init__(self, controls):  
@@ -143,11 +141,12 @@ class MovieDrawingArea(FControl, gtk.Frame):
         return self.smallscree_area
      
     def on_full_screen(self):
-        
-                
+        self.controls.state_stop(True)
+        self.fullscrean_area.show_window()        
         self.set_out(self.fullscrean_area.get_draw())      
+        self.controls.state_play(True)
         
-        self.fullscrean_area.show_window()
+        
     def set_text(self, text):
         self.fullscrean_area.set_text(text)
         
