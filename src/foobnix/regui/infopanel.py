@@ -5,7 +5,6 @@ Created on Sep 23, 2010
 '''
 import os
 import gtk
-
 import logging
 
 from foobnix.fc.fc import FC

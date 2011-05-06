@@ -143,16 +143,17 @@ class GStreamerEngine(MediaPlayerEngine):
             if os.name == 'nt':
                 uri = 'file:' + urllib.pathname2url(path)
 
-        logging.info("Gstreamer try to play" + uri)
+        logging.info("Gstreamer try to play " + uri)
+        
         self.player.set_property("uri", uri)
         
         self.state_pause()
-        time.sleep(0.1)        
+        time.sleep(0.2)        
         if self.remembered_seek_position:
             self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
         else:
             self.seek_seconds(bean.start_sec)
-        
+
         self.remembered_seek_position = 0
         
         self.state_play()
@@ -167,8 +168,7 @@ class GStreamerEngine(MediaPlayerEngine):
         logging.debug("current state before thread" + str(self.get_state()) + str(self.play_thread_id))
         self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
         self.pause_thread_id = False
-
-    
+        
     def set_all_bands(self, pre, values):
         if self.equalizer:
             for i, value in enumerate(values):      
