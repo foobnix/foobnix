@@ -137,6 +137,7 @@ class PlaylistTreeControl(CommonTreeControl):
     def next(self):
         bean = self.common_single_random()       
         if bean:
+            self.scroll_follow_play_icon()  
             return bean
         
         bean = self.get_next_bean(FC().repeat_state == const.REPEAT_ALL)
