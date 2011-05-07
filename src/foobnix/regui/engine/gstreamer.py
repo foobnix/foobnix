@@ -148,7 +148,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.set_property("uri", uri)
         
         self.state_pause()
-        time.sleep(0.2)        
+        time.sleep(0.3)        
         if self.remembered_seek_position:
             self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
         else:
