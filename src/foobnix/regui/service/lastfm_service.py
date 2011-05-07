@@ -191,7 +191,7 @@ class LastFmService():
         
         def task(bean):
             if bean.artist and bean.title:
-                if bean.path and bean.path.startswith("http") and file_extension(bean.path) in FC().video_formats:
+                if bean.path and file_extension(bean.path) in FC().video_formats:
                     #skip video scrobbler
                     return;
                 
