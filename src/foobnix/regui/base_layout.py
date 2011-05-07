@@ -27,6 +27,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         
         self.hpaned_left = gtk.HPaned()
         self.hpaned_left.connect("motion-notify-event", self.on_save_and_normilize_columns)
+        
         self.hpaned_left.pack1(child=controls.perspective, resize=True, shrink=True)
         self.hpaned_left.pack2(child=center_box, resize=True, shrink=True)
         
@@ -40,8 +41,8 @@ class BaseFoobnixLayout(FControl, LoadSave):
         vbox.pack_start(self.hpaned_right, True, True)        
         vbox.pack_start(controls.statusbar, False, True)
         vbox.show_all()
-        
-        controls.main_window.add(vbox)        
+        controls.main_window.connect("configure-event", self.on_change_window_size)
+        controls.main_window.add(vbox)
         
     def set_visible_search_panel(self, flag=True):
         logging.info("set_visible_search_panel " + str(flag))
@@ -66,32 +67,33 @@ class BaseFoobnixLayout(FControl, LoadSave):
         if flag:
             self.hpaned_right.set_position(FC().hpaned_right)
             self.controls.coverlyrics.show()
+            gobject.idle_add(self.on_save_and_normilize_columns, None)
         else:
             self.controls.coverlyrics.hide()
         
         FC().is_view_coverlyrics_panel = flag
             
-    def on_save_and_normilize_columns(self, *a): 
+    def on_save_and_normilize_columns(self, *a):
         if self.hpaned_left.get_position() > 0:   
             FC().hpaned_left = self.hpaned_left.get_position()
         if self.hpaned_right.get_position() > 0:   
             FC().hpaned_right = self.hpaned_right.get_position()
-            image = self.controls.coverlyrics.image
-            image.size = self.controls.coverlyrics.lyrics.get_allocation().width
-            image.set_from_pixbuf(self.controls.coverlyrics.get_pixbuf())
+            self.controls.coverlyrics.adapt_image()
                
         for page in xrange(self.controls.tabhelper.get_n_pages()):
             tab_content = self.controls.tabhelper.get_nth_page(page)
             tree = tab_content.get_child()
             tree.normalize_columns_width()
-            
+    
+    def on_change_window_size(self, *a):
+        gobject.idle_add(self.on_save_and_normilize_columns, None)
+        
     def on_load(self):
         self.set_visible_search_panel(FC().is_view_search_panel)
         gobject.idle_add(self.set_visible_musictree_panel, FC().is_view_music_tree_panel, 
                          priority = gobject.PRIORITY_DEFAULT_IDLE - 10)
         self.set_visible_coverlyrics_panel(FC().is_view_coverlyrics_panel)
-        
-        
+                
                 
         
                              

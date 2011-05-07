@@ -10,6 +10,7 @@ from foobnix.fc.fc import FC
 from foobnix.helpers.image import ImageBase
 from foobnix.helpers.textarea import TextArea
 from foobnix.util.const import ICON_BLANK_DISK
+import gobject
 
 
 class CoverLyricsPanel(gtk.Frame):
@@ -35,10 +36,16 @@ class CoverLyricsPanel(gtk.Frame):
         self.add(vbox)
         self.set_label_widget(self.album_title) 
         self.show_all()
-        
+                
     def get_pixbuf(self):
         return self.controls.info_panel.image.pixbuf
         
     def set_cover(self):
         pixbuf = self.get_pixbuf()
         self.image.set_from_pixbuf(pixbuf)
+        
+    def adapt_image(self):
+        if self.lyrics.get_property("visible"):
+            self.image.size = self.lyrics.get_allocation().width
+            self.image.set_from_pixbuf(self.controls.coverlyrics.get_pixbuf())
+        
