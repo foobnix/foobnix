@@ -125,8 +125,10 @@ class MovieDrawingArea(FControl, gtk.Frame):
         self.smallscree_area = AdvancedDrawingArea(controls)
         self.smallscree_area.action_function = self.on_full_screen
         self.add(self.smallscree_area)
-        
         self.fullscrean_area = FullScreanArea(controls, self.on_small_screen)
+        for state in (gtk.STATE_NORMAL, gtk.STATE_PRELIGHT, gtk.STATE_ACTIVE, gtk.STATE_SELECTED, gtk.STATE_INSENSITIVE):
+            self.smallscree_area.modify_bg(state, self.smallscree_area.get_colormap().alloc_color("black"))
+            self.fullscrean_area.drow.modify_bg(state, self.fullscrean_area.get_colormap().alloc_color("black"))
         
         self.out = None
         self.set_out(self.smallscree_area)
