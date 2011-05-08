@@ -693,7 +693,7 @@ class BaseFoobnixControls():
             pixbuf = gtk.gdk.pixbuf_new_from_file(img) #@UndefinedVariable
             pixmap, mask = pixbuf.render_pixmap_and_mask()
             win.set_app_paintable(True)
-            #win.realize()
+            win.realize()
             win.window.set_back_pixmap(pixmap, False)
         else:
             win.set_app_paintable(False)

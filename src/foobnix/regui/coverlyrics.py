@@ -10,7 +10,6 @@ from foobnix.fc.fc import FC
 from foobnix.helpers.image import ImageBase
 from foobnix.helpers.textarea import TextArea
 from foobnix.util.const import ICON_BLANK_DISK
-import gobject
 
 
 class CoverLyricsPanel(gtk.Frame):
