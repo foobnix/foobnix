@@ -14,7 +14,7 @@ from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.id3_util import decode_cp866
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.thirdparty.mutagen.mp4 import MP4, MP4MetadataValueError
-
+from foobnix.thirdparty.mutagen.easyid3 import EasyID3
 
 foobnix_localization()
 
@@ -110,17 +110,19 @@ class TagEditor(ChildTopWindow):
         
         for path in self.store.keys():
             if self.store[path][0] and self.store[path][1]:
-                texts[path] = self.store[path][0] + ' - ' + self.store[path][1]
                 artists[path] = self.store[path][0]
                 titles[path] = self.store[path][1]
             elif self.store[path][0] and not self.store[path][1]:
                 texts[path] = self.store[path][0]
                 artists[path] = self.store[path][0] 
-                titles[path] = ''
+                titles[path] = _('Unknown title')
             elif self.store[path][1] and not self.store[path][0]:
                 texts[path] = self.store[path][1]
-                artists[path] = ''
+                artists[path] = _('Unknown artist')
                 titles[path] = self.store[path][1]
+            
+            texts[path] = artists[path] + ' - ' + titles[path]
+            
             if self.store[path][2]:
                 composers[path] = self.store[path][2]
         
@@ -151,6 +153,12 @@ class TagEditor(ChildTopWindow):
                 self.paths.remove(path)
                 continue
             audio = get_mutagen_audio(path)
+            
+            if not audio:
+                try:
+                    audio.add_tags(ID3=EasyID3)
+                except Exception as e:
+                    print "Ex", e
             
             self.decoding_cp866(audio)
             self.audious.append(audio)
@@ -185,19 +193,22 @@ class TagEditor(ChildTopWindow):
         def set_tags(audio, path, tag_name):
             if not self.store.has_key(path):
                 self.store[path] = ["", "", ""]
+            
             if isinstance(audio, MP4):
                 tag_name = tag_mp4_name
             try:
                 if audio.has_key(tag_name):
                     if not tag_value:
                         del audio[tag_name]
+                        audio.save()
                         return
                     audio[tag_name] = tag_value
                 else:
                     if tag_value:
                         audio[tag_name] = [tag_value]
                 audio.save()
-            except AttributeError:
+            except AttributeError as e:
+                print "123", e
                 logging.warn('Can\'t save tags. Perhaps' + os.path.split(path)[1] + ' is not audio file') 
             except MP4MetadataValueError:
                 '''for mp4 trkn is tuple'''
@@ -235,6 +246,7 @@ class TagEditor(ChildTopWindow):
                         continue
                     set_tags(audio, path, tag_name)
             else:
+                print self.audious[0]
                 set_tags(self.audious[0], self.paths[0], tag_name)
             check_button.set_active(False)
         

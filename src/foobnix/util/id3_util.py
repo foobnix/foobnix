@@ -120,7 +120,13 @@ def udpate_id3(bean):
         if audio.info.__dict__:
             bean.info = normalized_info(audio.info, bean)
                        
-        if bean.artist and bean.title:
+        if bean.artist or bean.title:
+            if bean.artist and bean.title:
+                pass
+            elif bean.artist:
+                bean.title = _("Unknown title")
+            elif bean.title:
+                bean.artist = _("Unknown artist")
             bean.text = bean.artist + " - " + bean.title
         
         if bean.tracknumber:
