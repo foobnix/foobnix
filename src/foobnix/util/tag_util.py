@@ -105,6 +105,7 @@ class TagEditor(ChildTopWindow):
         artists = {}
         titles = {}
         composers = {}
+        albums = {}
         
         playlist_tree = self.controls.notetabs.get_current_tree()
         
@@ -123,6 +124,8 @@ class TagEditor(ChildTopWindow):
             
             if self.store[path][2]:
                 composers[path] = self.store[path][2]
+            if self.store[path][3]:
+                albums[path] = self.store[path][3]
                 
         for path in self.store.keys():
             for row in playlist_tree.model:
@@ -133,6 +136,8 @@ class TagEditor(ChildTopWindow):
                         row[playlist_tree.title[0]] = titles[path]
                     if path in composers:
                         row[playlist_tree.composer[0]] = composers[path]
+                    if path in albums:
+                        row[playlist_tree.album[0]] = albums[path]
         self.store = {}
     
     def get_audio_tags(self, paths):
@@ -189,7 +194,7 @@ class TagEditor(ChildTopWindow):
         
         def set_tags(audio, path, tag_name):
             if not self.store.has_key(path):
-                self.store[path] = ["", "", ""]
+                self.store[path] = ["", "", "", ""]
             
             if isinstance(audio, MP4):
                 tag_name = tag_mp4_name
@@ -234,7 +239,9 @@ class TagEditor(ChildTopWindow):
                     pass
             if (tag_name == "composer" or tag_name == '\xa9wrt') and tag_value:
                 self.store[path][2] = tag_value
-                
+            if (tag_name == "album" or tag_name == '\xa9alb') and tag_value:
+                self.store[path][3] = tag_value
+
         for tag_name, tag_mp4_name, tag_entry, check_button in zip(self.tag_names, self.tag_mp4_names, self.tag_entries, self.check_buttons):
             tag_value = tag_entry.get_text()
             if check_button.get_active():
@@ -253,7 +260,7 @@ class TagEditor(ChildTopWindow):
         if not isinstance(audio, MP4):
             for value, key in zip(audio.values(), audio.keys()):
                 audio[key] = decode_cp866(value[0])
-                                  
+
 def edit_tags(a):
     controls, paths = a 
     if not globals().has_key("tag_editor"):

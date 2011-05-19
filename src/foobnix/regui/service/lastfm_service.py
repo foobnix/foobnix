@@ -95,7 +95,7 @@ class LastFmService():
     def ping(self):
         def task():
             time.sleep(5)
-            if not sp.returncode:
+            if sp.returncode == None: #mistake 'if not sp.returncode:'
                 sp.kill()
                 self.connection = None
                            

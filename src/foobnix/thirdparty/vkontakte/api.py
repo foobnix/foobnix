@@ -1,11 +1,13 @@
 # coding: utf-8
+
+import time
 import urllib
+import logging
 import warnings
+import simplejson
+
 from hashlib import md5
 from functools import partial
-import simplejson
-import logging
-import time
 
 try:
     import json
@@ -38,7 +40,6 @@ def signature1(mid, params, secret):
     param_str = "".join(["%s=%s" % (str(key), _to_utf8(params[key])) for key in keys])
     url = str(mid) + param_str + str(secret)
     return md5(url).hexdigest()
-
 
 def _sig(api_secret, **kwargs):
     msg = 'vkontakte.api._sig is deprecated and will be removed. Please use `vkontakte.signature`'
@@ -90,12 +91,11 @@ class API(object):
         logging.debug(url)
         try:
             self.json =  simplejson.loads(url)
-        except Exception, e:
+        except Exception:
             logging.error("Error decoding url %s" % url)
         logging.debug(json)
         self.my_user_id =self.json['mid'] 
         
-
     def get(self, method, timeout=DEFAULT_TIMEOUT, **kwargs):
         time.sleep(0.5)
         response = request(self.api_id, self.api_secret,self.opener, method,self.json, timeout = timeout, **kwargs)
