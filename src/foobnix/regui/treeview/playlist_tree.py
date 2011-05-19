@@ -21,7 +21,6 @@ from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release, \
     is_rigth_click
-import gobject
 
 foobnix_localization()
 
@@ -89,7 +88,20 @@ class PlaylistTreeControl(CommonTreeControl):
         self.title_col.label = gtk.Label(_("Title"))
         self.title_col.item = gtk.CheckMenuItem(_("Title"))
         self._append_column(self.title_col)
-
+        
+        """column album"""
+        self.album_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.album[0])
+        self.album_col.key = "Album"
+        
+        
+        if not FC().columns.has_key(self.album_col.key):
+            FC().columns[self.album_col.key] = [False, 7, 90]
+        self.album_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        self.album_col.set_resizable(True)
+        self.album_col.label = gtk.Label(_("Album"))
+        self.album_col.item = gtk.CheckMenuItem(_("Album"))
+        self._append_column(self.album_col)
+        
         """column time"""
         self.time_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.time[0])
         self.time_col.key = "Time"

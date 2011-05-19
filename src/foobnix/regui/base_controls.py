@@ -20,6 +20,7 @@ from foobnix.regui.model import FModel
 from foobnix.regui.state import LoadSave
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.m3u_utils import m3u_reader
+from foobnix.thirdparty.urllib2 import urlopen
 from foobnix.util.text_utils import normalize_text
 from foobnix.util.file_utils import get_file_extension
 from foobnix.regui.service.vk_service import VKService
@@ -73,6 +74,7 @@ class BaseFoobnixControls():
             beans.append(FModel('Google not found %s' % query))
             
         return beans
+    
     def get_active_bean(self):
         return self.notetabs.get_current_tree().get_selected_or_current_bean()
      
@@ -83,10 +85,27 @@ class BaseFoobnixControls():
         logging.debug("play current bean is %s" % str(current.text))
         if current and current.is_file:
             self.notetabs.get_current_tree().set_play_icon_to_bean_to_selected()
-        
+            if current.path and current.path.startswith("http://"):
+                if not self.check_path(current):
+                    current.path = self.vk_service.find_one_track(current.get_display_name()).path
+                    
             """play song"""
             self.play(current)
-        
+    
+    def check_path(self, bean):
+        if bean.path:
+            if not bean.path.startswith("http://"):
+                if os.path.exists(bean.path):
+                    return True
+            else:
+                try:
+                    u = urlopen(bean.path, timeout = 7) #@UnusedVariable
+                    if not vars().has_key("u"):
+                        return False
+                    return True
+                except:
+                    return False
+        return False
     
     def save_beans_to(self, beans):
         return None    
@@ -357,7 +376,7 @@ class BaseFoobnixControls():
                     time.sleep(0.5)
                     self.count_errors += 1
                     self.next()
-                
+               
         
         if bean.path and os.path.isdir(bean.path):
             self.state_stop()
@@ -379,7 +398,6 @@ class BaseFoobnixControls():
         self.media_engine.play(bean)  
         self.is_scrobbled = False
         self.start_time = False      
-        
         self.update_info_panel(bean)
         if not get_file_extension(bean.path) in FC().video_formats:
             self.set_visible_video_panel(False)
@@ -387,19 +405,24 @@ class BaseFoobnixControls():
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
         sec = int(sec) 
+        
         if sec > 10 and sec % 11 == 0:
+           
             self.lastfm_service.report_now_playing(bean)
-            
+                    
         if not self.start_time:
             self.start_time = str(int(time.time()))
         
         if not self.is_scrobbled:            
+            
             if sec > dur_sec / 2 or sec > 60:
+                
                 self.is_scrobbled = True
                 self.lastfm_service.report_scrobbled(bean, self.start_time, dur_sec)
                 """download music"""
                 if FC().automatic_online_save:
                     self.dm.append_task(bean)
+
             
     def notify_title(self, text):
         logging.debug("Notify title" + text)
@@ -691,7 +714,7 @@ class BaseFoobnixControls():
             if not img:
                 return None
             pixbuf = gtk.gdk.pixbuf_new_from_file(img) #@UndefinedVariable
-            pixmap, mask = pixbuf.render_pixmap_and_mask()
+            pixmap, mask = pixbuf.render_pixmap_and_mask() #@UnusedVariable
             win.set_app_paintable(True)
             win.realize()
             win.window.set_back_pixmap(pixmap, False)

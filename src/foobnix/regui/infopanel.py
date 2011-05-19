@@ -173,7 +173,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         """check connection"""
         if not self.controls.lastfm_service.connect():
             return
-
+       
         """update bean info form text if possible"""
         bean = update_bean_from_normalized_text(bean)
         

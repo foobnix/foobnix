@@ -72,7 +72,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
             self.controls.coverlyrics.hide()
         
         FC().is_view_coverlyrics_panel = flag
-            
+        
     def on_save_and_normilize_columns(self, *a):
         if self.hpaned_left.get_position() > 0:   
             FC().hpaned_left = self.hpaned_left.get_position()
@@ -93,7 +93,4 @@ class BaseFoobnixLayout(FControl, LoadSave):
         gobject.idle_add(self.set_visible_musictree_panel, FC().is_view_music_tree_panel, 
                          priority = gobject.PRIORITY_DEFAULT_IDLE - 10)
         self.set_visible_coverlyrics_panel(FC().is_view_coverlyrics_panel)
-                
-                
-        
-                             
+                                

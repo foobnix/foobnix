@@ -4,20 +4,20 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
-import time
-import logging
-import urllib
 import re
+import sys
+import time
+import thread
+import urllib
+import logging
+import simplejson
+
 from foobnix.regui.model import FModel
 from foobnix.util.text_utils import html_decode
-import simplejson
-import thread
 from foobnix.fc.fc_base import get_random_vk, FCBase
 from foobnix.thirdparty import vkontakte
 from foobnix.util.time_utils import convert_seconds_to_text
-
-import sys
-from foobnix.util.const import FTYPE_RADIO, FTYPE_VIDEO
+from foobnix.util.const import FTYPE_VIDEO
 
 #FIN BUG IN PYTHON 2.7
 #http://bugs.python.org/issue11703
@@ -81,6 +81,7 @@ class VKService:
         childs = []
         
         for i, line in enumerate(results):
+            
             if i ==0:
                 continue
             
@@ -103,7 +104,7 @@ class VKService:
         vk_audio = VKAudioResultsPage(page)
         return vk_audio.tracks()
         
-    def search(self, query, type='audio'):   
+    def search(self, query, type='audio'): 
         return self.get("http://vk.com/gsearch.php?section=" + type + "&q=" + urllib.quote(query.encode('utf-8')) + "&name=1")
 
     def find_videos_by_query(self, query):

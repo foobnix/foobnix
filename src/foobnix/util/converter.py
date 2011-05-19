@@ -363,7 +363,7 @@ def convert_files(paths):
             cancel_button.connect("released", on_close)
             def task():
                 with open(ffmpeg_path,'wb') as local_file:
-                    for byte in xrange(int(size/100)):
+                    for byte in xrange(int(size/100)): #@UnusedVariable
                         local_file.write(remote_file.read(1000))
                         got = os.path.getsize(ffmpeg_path)
                         prog_bar.set_fraction(got/size)

@@ -61,8 +61,9 @@ def request(api_id, api_secret, opener, method, json,timestamp=None, timeout=DEF
     params['sig'] = signature1(json['mid'], params,json['secret'])
     params['sid'] = json['sid']
     #params['sig'] = signature(api_secret, params)
+    print params
     data = urllib.urlencode(params)
-
+    print data
     # urllib2 doesn't support timeouts for python 2.5 so
     # custom function is used for making http requests
     headers = {"Accept": "application/json", "Content-Type": "application/x-www-form-urlencoded"}
@@ -102,8 +103,9 @@ class API(object):
         response = request(self.api_id, self.api_secret,self.opener, method,self.json, timeout = timeout, **kwargs)
         #if not (status >= 200 and status <= 299):
         #    raise VKError(status, "HTTP error", kwargs)
-
+        print response
         data = json.loads(response)
+        print data
         if "error" in data:
             raise VKError(data["error"]["error_code"], data["error"]["error_msg"], data["error"]["request_params"])
         return data['response']
