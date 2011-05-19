@@ -4,17 +4,21 @@ Created on 27 сент. 2010
 
 @author: ivan
 '''
+
+import time
 import thread
 import logging
 
-from foobnix.thirdparty import pylast
-from foobnix.thirdparty.pylast import WSError, Tag
-from foobnix.regui.model import FModel
-from foobnix.thirdparty.google.translate import translate
-from foobnix.fc.fc_base import FCBase
+from threading import Thread
 from foobnix.fc.fc import FC
-from foobnix.util.file_utils import file_extension
+from subprocess import Popen, PIPE
+from foobnix.fc.fc_base import FCBase
+from foobnix.thirdparty import pylast
+from foobnix.regui.model import FModel
 from foobnix.util.const import FTYPE_VIDEO
+from foobnix.util.file_utils import file_extension
+from foobnix.thirdparty.pylast import WSError, Tag
+from foobnix.thirdparty.google.translate import translate
 
 API_KEY = FCBase().API_KEY
 API_SECRET = FCBase().API_SECRET
@@ -25,7 +29,7 @@ class Cache():
         self.cache_tracks = {}
         self.cache_albums = {}
         self.cache_images = {}
-
+        
     def get_key(self, artist, title):
         return artist + "-" + title
 
@@ -71,25 +75,49 @@ class Cache():
 
 class LastFmService():
     def __init__(self, controls):
-        
+        self.connection = None
         self.network = None
         self.scrobbler = None
         self.preferences_window = None
         self.controls = controls
         thread.start_new_thread(self.init_thread, ())
-            
+        thread.start_new_thread(self.ping, ()) 
+           
     def connect(self):
+        if not self.connection:
+            logging.warning("no connection")
+            return False
+        
         if self.network and self.scrobbler:
             return True
         return self.init_thread()
-    
+        
+    def ping(self):
+        def task():
+            time.sleep(5)
+            if not sp.returncode:
+                sp.kill()
+                self.connection = None
+                           
+        list = ['ping', 'google.com', '-c 4']
+        
+        while True:
+            sp = Popen(list, stdout=PIPE, stderr=PIPE)
+            timer = Thread(target=task)    
+            timer.start()
+            out, err = sp.communicate()
+            if err:
+                self.connection = None
+            elif out:
+                self.connection = True
+            time.sleep(2)
+            
     def init_thread(self):
         logging.debug("RUN INIT LAST.FM")
         username = FCBase().lfm_login
         password_hash = pylast.md5(FCBase().lfm_password)
         self.cache = None
         try:
-            
             self.network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
             self.cache = Cache(self.network)
             if FC().proxy_enable and FC().proxy_url:
@@ -99,7 +127,6 @@ class LastFmService():
                 port = proxy_rul[index + 1:]
                 self.network.enable_proxy(proxy, port)
                 logging.info("Enable proxy for last fm" + str(proxy) + str(port))
-
 
             """scrobbler"""
             scrobbler_network = pylast.get_lastfm_network(username=username, password_hash=password_hash)
@@ -116,8 +143,8 @@ class LastFmService():
                 FC().lfm_password = val[1]
             return False
             """
-
         return True
+    
     def get_network(self):
         return self.network
     
