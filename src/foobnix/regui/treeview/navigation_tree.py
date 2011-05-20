@@ -264,6 +264,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 self.controls.update_music_tree(tree, number_of_tab)
                 FC().save()
             self.controls.in_thread.run_with_progressbar(task, with_lock=False)
+            
         elif response == gtk.RESPONSE_CANCEL:
             logging.info('Closed, no files selected')
             chooser.destroy()       

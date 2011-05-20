@@ -18,6 +18,7 @@ class SingleThread():
     
     def run_with_progressbar(self, method, args=None, text=None, no_thread=False, with_lock=True):
         #with_lock - shows, does it necessarily to do a lock or not
+        
         if no_thread:
             if method and args:
                 method(args)
