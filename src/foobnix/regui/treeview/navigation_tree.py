@@ -270,7 +270,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             chooser.destroy()       
     
     def normalize_columns_width(self):
-        if not hasattr(self, 'ext_width'):
+        if not hasattr(self, 'ext_width') or not self.ext_width:
             self.ext_width = self.ext_column.get_width()
         
         increase = 0
