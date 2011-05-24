@@ -30,7 +30,8 @@ def open_in_filemanager(path, managers=None):
     def search_mgr(managers, dirname):
         files = []
         for path in os.environ['PATH'].split(":"):
-            files += get_files_from_folder(path)
+            if os.path.exists(path):
+                files += get_files_from_folder(path)
             
         for fm in managers:
             if fm not in files:
