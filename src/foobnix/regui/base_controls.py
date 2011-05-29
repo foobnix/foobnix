@@ -685,6 +685,7 @@ class BaseFoobnixControls():
     
     
     def on_load(self):
+        
         """load controls"""
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):
@@ -694,7 +695,9 @@ class BaseFoobnixControls():
         
         """load others"""
         self.movie_window.hide_all()
-        self.info_panel.hide()        
+        
+        self.info_panel.hide()
+                
         self.change_backgound()
         self.search_progress.stop()
         
@@ -709,22 +712,20 @@ class BaseFoobnixControls():
            
     def change_backgound(self):
         win = self.main_window
+        win.show()
         if FC().background_image:
             img = get_foobnix_resourse_path_by_name(FC().background_image)
             if not img:
                 return None
             pixbuf = gtk.gdk.pixbuf_new_from_file(img) #@UndefinedVariable
             pixmap, mask = pixbuf.render_pixmap_and_mask() #@UnusedVariable
-            win.set_app_paintable(True)
-            win.realize()
-            win.window.set_back_pixmap(pixmap, False)
+            win.set_app_paintable(True)            
+            win.window.set_back_pixmap(pixmap, False)        
         else:
             win.set_app_paintable(False)
-            win.realize()
             win.window.set_back_pixmap(None, False)
-        win.hide()
-        #time.sleep(0.5)
-        win.show()
+        
+        
         
     def play_first_file_in_playlist(self):    
         active_playlist_tree = self.notetabs.get_current_tree()

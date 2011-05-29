@@ -22,8 +22,8 @@ export DEBEMAIL="ivan.ivanenko@gmail.com"
 cp -r scripts/debian ../build/foobnix_$FOOBNIX_VERSION/debian
 cd ../build
 
-#LIST=("oneiric","natty" "lucid" "maverick")
-LIST=("natty")
+LIST=("oneiric" "natty" "lucid" "maverick")
+#LIST=("natty")
 
 for UBUNTU in ${LIST[@]}
 do

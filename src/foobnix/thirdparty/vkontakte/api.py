@@ -90,11 +90,13 @@ class API(object):
     
         logging.debug(url)
         try:
-            self.json =  simplejson.loads(url)
-        except Exception:
+            self.json =  simplejson.loads(url)        
             logging.error("Error decoding url %s" % url)
-        logging.debug(json)
-        self.my_user_id =self.json['mid'] 
+            logging.debug(json)
+            self.my_user_id =self.json['mid']
+        except Exception, e:
+            logging.error(e);
+             
         
     def get(self, method, timeout=DEFAULT_TIMEOUT, **kwargs):
         time.sleep(0.5)

@@ -7,7 +7,7 @@ from test.all import run_all_tests
 if os.name == 'nt':
     import py2exe #@UnresolvedImport @UnusedImport
 
-VERSION = "2.5.14"
+VERSION = "2.5.15"
 
 data_files = [
     ('share/foobnix', ['README']),
