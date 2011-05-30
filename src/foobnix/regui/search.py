@@ -95,7 +95,7 @@ class SearchControls(FControl, gtk.VBox):
         liststore = gtk.ListStore(str)
         
         
-        liststore.append([_("Artist")])
+        liststore.append([_("Tracks")])
         list_func.append(self.controls.search_top_tracks)
         
 
@@ -112,8 +112,8 @@ class SearchControls(FControl, gtk.VBox):
         liststore.append([_("Audio")])
         list_func.append(self.controls.search_all_tracks)
         
-        liststore.append([_("Video")])
-        list_func.append(self.controls.search_all_videos)
+        #liststore.append([_("Video")])
+        #list_func.append(self.controls.search_all_videos)
                
         combobox = gtk.ComboBox(liststore)
         cell = gtk.CellRendererText()

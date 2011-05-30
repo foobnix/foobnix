@@ -81,20 +81,21 @@ class LastFmService():
         self.preferences_window = None
         self.controls = controls
         thread.start_new_thread(self.init_thread, ())
-        thread.start_new_thread(self.ping, ()) 
+        #thread.start_new_thread(self.ping, ()) 
            
     def connect(self):
-        if not self.connection:
-            logging.warning("no connection")
-            return False
         
+        """
+        if not self.connection:
+            logging.error("no last.fm connection")
+            return False
+        """
         if self.network and self.scrobbler:
             return True
         return self.init_thread()
         
     def ping(self):
-        def task():
-            time.sleep(5)
+        def task():            
             if sp.returncode == None: #mistake 'if not sp.returncode:'
                 sp.kill()
                 self.connection = None
@@ -110,7 +111,7 @@ class LastFmService():
                 self.connection = None
             elif out:
                 self.connection = True
-            time.sleep(2)
+            time.sleep(5)
             
     def init_thread(self):
         logging.debug("RUN INIT LAST.FM")

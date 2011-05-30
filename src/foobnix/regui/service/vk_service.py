@@ -7,17 +7,17 @@ Created on Sep 29, 2010
 import re
 import sys
 import time
-import thread
 import urllib
 import logging
 import simplejson
 
 from foobnix.regui.model import FModel
 from foobnix.util.text_utils import html_decode
-from foobnix.fc.fc_base import get_random_vk, FCBase
-from foobnix.thirdparty import vkontakte
 from foobnix.util.time_utils import convert_seconds_to_text
-from foobnix.util.const import FTYPE_VIDEO
+from foobnix.helpers.window import ChildTopWindow
+import gtk
+import webkit
+from foobnix.fc.fc import FC
 
 #FIN BUG IN PYTHON 2.7
 #http://bugs.python.org/issue11703
@@ -26,66 +26,126 @@ if sys.version_info > (2, 6):
     from foobnix.thirdparty.urllib2 import HTTPError, URLError
 else:
     import urllib2
-    
 
-class VKService:
-    
-    def __init__(self, forse=False):
-        if forse:
-            self.in_thread_init()
-        else:
-            thread.start_new_thread(self.in_thread_init, ())
-    
-    
-    #We need to start inside thread to fast player start
-    def in_thread_init(self):
-        self.initialize_urllib2()
-        self.login()
-        self.api = vkontakte.API('2234333', '0kCUFX5mK3McLmkxPHHB',self.opener)
+class VKAuthorizationWindow(ChildTopWindow):
+    REDIRECT_URL = "http://android.foobnix.com/vk"
+    def __init__(self, service):
+        self.service = service
+        ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"), 640, 480)
         
-    def initialize_urllib2(self):
-        self.cookie_processor = urllib2.HTTPCookieProcessor()
-        self.redirect_hadler = urllib2.HTTPRedirectHandler()
-        self.opener = urllib2.build_opener(self.cookie_processor,self.redirect_hadler)
-        urllib2.install_opener(self.opener)
-
-    def login(self):
-        post = {
-                'email' : FCBase().vk_login,
-                'pass' : FCBase().vk_password,
-                'act' : 'login',
-                'q' : '1',
-                'al_frame' : '1'
-        }
-        self.get('http://login.vk.com/?act=login', post)
-        if (not self.is_connected()):
-            logging.error("failed connection to vk")
-
-    def is_connected(self):
-        return (str(self.cookie_processor.cookiejar).find('remixsid') > -1)
+        vbox = gtk.VBox(False, 0)
+        self.access_token = None
+        
+        default_button = gtk.Button("Get Default Login Password")
+        default_button.connect("clicked", self.on_defauls)
+        
+        self.web_view = webkit.WebView()
     
-    def check_connection(self):
-        if (not self.is_connected()):
-            logging.warning("vk is not connected!")
+        
+        url = "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=26&redirect_uri=" + self.REDIRECT_URL + "&response_type=token"
+    
+        self.web_view.load_uri(url)
+        self.web_view.connect("navigation-policy-decision-requested", self._nav_request_policy_decision_cb)
+        
+               
+        vbox.pack_start(self.web_view, True, True)
+        vbox.pack_start(default_button, False, False)
+        self.add(vbox)
+    
+    def get_response(self, line):
+        id = line.find("#")
+        fragment = line[id + 1:]
+        res = {}
+        for line in fragment.split("&"):
+            key = line.split('=')[0]
+            val = line.split('=')[1]
+            res[key] = val
+        
+        return res
+
+    def _nav_request_policy_decision_cb(self, view, frame, net_req, nav_act, pol_dec):
+        uri = net_req.get_uri()       
+        logging.debug("response url" + uri) 
+        if "access_token" in uri:
+            FC().access_token = self.get_response(uri)["access_token"]
+            FC().user_id= self.get_response(uri)["user_id"]
+            logging.debug("access token is " + FC().access_token)
+            self.service.connect(FC().access_token, FC().user_id)
+            FC().save()
+            self.hide()
+             
+        return False
+        
+    def on_defauls(self, *a):
+        f = urllib.urlopen("http://android.foobnix.com/vk", "")
+        result = f.read().split(":")
+        self.web_view.execute_script("javascript:(function() {document.getElementsByName('email')[0].value='%s'})()" % result[0])
+        self.web_view.execute_script("javascript:(function() {document.getElementsByName('pass')[0].value='%s'})()" % result[1])           
+
+        
+    
+class VKService:
+    def __init__(self, token, user_id):
+        self.vk_window = VKAuthorizationWindow(self)
+        self.token = token
+        self.user_id = user_id
+        #self.is_show_authorization()
+        
+    def connect(self, token, user_id):
+        self.token = token
+        self.user_id = user_id
+    
+        
+        
+    def get_result(self, method, data):
+        result  = self.get(method, data)
+        object = self.to_json(result)        
+        return object["response"]
+        
+    def get(self, method, data):
+        time.sleep(0.6)
+        #data = urllib.quote(data.encode('utf-8'))
+        url = "https://api.vkontakte.ru/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
+        logging.debug("GET" + url)
+        response = urllib.urlopen(url)
+        result = response.read()
+        logging.debug("get VK API result", result)
+        return  result
+    
+    def to_json(self, json):
+        json_code = html_decode(json) 
+        return simplejson.loads(json_code)
+    
+    def is_show_authorization(self):
+        if not self.is_connected():
+            self.vk_window.show()
+            return True
+        return False
+        
+    def is_connected(self):
+        if not self.token or not self.user_id:
+            return False
+        
+        res = self.get("getProfiles", "uid="+self.user_id)
+        if "error" in res:
+            self.vk_window.show()            
+            return False
+        else:
+            return True
+        
     
     def find_tracks_by_query(self, query):
-        if not self.is_connected():
-            return []
-        logging.info("start search songs" + query)
-        page = self.search(query)
-        if not page:
-            return []
-         
-        results = self.api.get('audio.search',q=query, count=50)
-            
-        childs = []
+        if self.is_show_authorization():
+            return 
         
-        for i, line in enumerate(results):
+        logging.info("start search songs" + query)
+        
+        list = self.get_result("audio.search", "q=" + query)
+        childs = []
+        for line in list[1:]:
+          
             
-            if i ==0:
-                continue
-            
-            bean = FModel(line['artist']+' - '+line['title'])
+            bean = FModel(line['artist'] + ' - ' + line['title'])
             bean.aritst = line['artist']
             bean.title = line['title']
             bean.time = convert_seconds_to_text(line['duration'])
@@ -93,46 +153,6 @@ class VKService:
             childs.append(bean)
              
         return childs
-    
-    def _find_tracks_by_query(self, query):
-        if not self.is_connected():
-            return []
-        logging.info("start search songs" + query)
-        page = self.search(query)
-        if not page:
-            return []
-        vk_audio = VKAudioResultsPage(page)
-        return vk_audio.tracks()
-        
-    def search(self, query, type='audio'): 
-        return self.get("http://vk.com/gsearch.php?section=" + type + "&q=" + urllib.quote(query.encode('utf-8')) + "&name=1")
-
-    def find_videos_by_query(self, query):
-        page = self.search(query, "video")
-        if not page:
-            return []
-        vk_videos = VKVideoResultsPage(page)
-        return vk_videos.tracks()
-    
-    def get(self, url, data=None, headers={}):
-        if data:
-            data = urllib.urlencode(data)
-        time.sleep(0.6)
-        try:
-            handler = self.opener.open(url, data)
-            data = handler.read()
-            handler.close()
-            return data
-        except HTTPError, e:
-            logging.error("VK Connection Error:" + str(e) + "( Searching: " + str(url) + " with data " + str(data) + ") [" + FCBase().vk_login + ":" + FCBase().vk_password + "]")
-            if e.code == 400:
-                FCBase().vk_login, FCBase().vk_password = get_random_vk()
-                self.initialize_urllib2()
-                self.login()
-            return None
-        except URLError, e:
-            logging.error("Network not available")
-            
 
     def find_tracks_by_url(self, url):
         logging.debug("Search By URL")
@@ -144,16 +164,16 @@ class VKService:
         if index < 0:
             return None
         
-        id = url[index+3:]
+        id = url[index + 3:]
         id = int(id)
         if id > 0:
-            results = self.api.get('audio.get',uid=id)
+            results = self.get_result('audio.get', "uid="+id)
         else:
-            results = self.api.get('audio.get',gid=abs(id))
+            results = self.get_result('audio.get', "gid="+abs(id))
             
         childs = []
         for line in results:
-            bean = FModel(line['artist']+' - '+line['title'])
+            bean = FModel(line['artist'] + ' - ' + line['title'])
             bean.aritst = line['artist']
             bean.title = line['title']
             bean.time = convert_seconds_to_text(line['duration'])
@@ -194,102 +214,7 @@ class VKService:
                 return i
         return None 
 
-class VKAudioResultsPage:
-
-    def __init__(self, page):
-        self.page = page
-
-    def tracks(self):
-        tracks = []
-        for html in self.page.split('<table><tbody>'):
-            if html.find('audioTitle') == -1: continue
-            tracks.append(self.generate_track(html))
-        return tracks
-        
-    def generate_track(self, html):
-        ids = re.findall("return operate\(([\w() ,']*)\);", html, re.IGNORECASE)[0]
-        url = self.track_url(ids)
-        artist = self.field('<b id="performer[_0-9]*">', html)
-        title = self.field('<span id="title[_0-9]*">', html)
-        duration = self.field('<div class="duration">', html)
-        text = artist + " - " + title
-        return FModel(text, url).add_artist(artist).add_title(title).add_time(duration)
-    
-    def track_url(self, parameters):
-        id, id_server, id_folder, id_file, trash = parameters.replace("'", "").split(',')
-        return "http://cs" + id_server + ".vkontakte.ru/u" + id_folder + "/audio/" + id_file + ".mp3"
-
-    def field(self, regexp_before, html):
-        reg_all = "([^<>]*)"
-        try:
-            text = re.findall(regexp_before + reg_all + '<', html, re.IGNORECASE | re.UNICODE)[0]
-            text = unicode(text, 'cp1251')
-            return html_decode(text)
-        except IndexError:
-            return ""
-
-class VKVideoResultsPage:
-
-    def __init__(self, page):
-        self.page = page
-        
-    def tracks(self):
-        tracks = []
-        for html in self.page.split('<table cellpadding=0 cellspacing=0 border=0>'):
-            if html.find('showVideoBoxCommon') == -1: continue
-            track = self.generate_track(html)
-            if track:
-                track.type = FTYPE_VIDEO
-                tracks.append(track)
-        return tracks
-    
-    def generate_track(self, html):
-        video = self.get_json(html)
-        if video:
-            link = self.get_link(video)
-            title = self.get_title(html)
-            time = self.get_time(html)
-            if link and title:
-                return FModel(title, link).add_time(time)
-        return None
-    
-    def get_json(self, html):
-        json_code = re.findall("(\{.*\})", html)[0]
-        json_code = html_decode(json_code)
-        try:
-            video = simplejson.loads(json_code)
-        except:
-            return None #if is not valid json 
-        if 'host' not in video:
-            return None
-        return video
-
-    def get_link(self, video):
-        if "http://" in video['host']:
-            if video["no_flv"] == "0":
-                link = video['host'] + "u" + video["uid"] + "/video/" + video["vtag"] + ".flv"
-            else:
-                quality_list = ("240", "360", "480", "720")
-                quality = quality_list[int(video["hd"])]                    
-                link = video['host'] + "u" + video["uid"] + "/video/" + video["vtag"] + ".%s.mp4" % quality
-        else:
-            link = "http://" + video['host'] + "/assets/videos/" + video["vtag"] + video["vkid"] + ".vk.flv"
-        logging.debug(link)
-        return link
-
-    def get_time(self, html):
-        try:
-            text = re.findall("<div class=\"ainfo\"><b style='color:#000'>(?!</a>)(.*)</b>", html, re.IGNORECASE | re.UNICODE)[0]
-            text = unicode(text, 'cp1251')
-            return html_decode(text)
-        except IndexError:
-            return None
-        
-    def get_title(self, html):
-        try:
-            text = re.findall('<a href="video[^"]*noiphone">(?!</a>)(.*)</a>', html, re.IGNORECASE | re.UNICODE)[0]
-            text = unicode(text, 'cp1251')
-            text = text.replace('<span class="match">', '').replace('</span>', '')
-            return html_decode(text)
-        except IndexError:
-            return None
+if __name__ == '__main__':
+    vk = VKAuthorizationWindow()
+    vk.show()            
+    gtk.main()

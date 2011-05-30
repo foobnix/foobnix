@@ -33,11 +33,12 @@ from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
 from foobnix.util.version import compare_versions
+from foobnix.helpers.window import ChildTopWindow
 
 class BaseFoobnixControls():
     def __init__(self):
         
-        self.vk_service = VKService()
+        self.vk_service = VKService(FC().access_token, FC().user_id)
 
         self.count_errors = 0
         self.is_scrobbled = False
@@ -347,7 +348,8 @@ class BaseFoobnixControls():
         return self.media_engine.get_state() == STATE_PLAY
 
     def fill_bean_from_vk(self, bean):
-        
+        if self.vk_service.is_show_authorization():
+            return None
         vk = self.vk_service.find_one_track(bean.get_display_name())
         if vk:
             bean.path = vk.path
@@ -684,8 +686,8 @@ class BaseFoobnixControls():
 
     
     
+    
     def on_load(self):
-        
         """load controls"""
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):
@@ -698,7 +700,7 @@ class BaseFoobnixControls():
         
         self.info_panel.hide()
                 
-        self.change_backgound()
+        #self.change_backgound()
         self.search_progress.stop()
         
         """base layout"""

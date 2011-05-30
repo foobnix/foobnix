@@ -39,6 +39,9 @@ class FC():
         self.is_eq_enable = False
         self.eq_presets = None
         self.eq_presets_default = "CUSTOM"
+        #VK
+        self.access_token =  None
+        self.user_id =  None
 
         """tabs"""
         self.len_of_tab = 30
