@@ -14,7 +14,6 @@ from foobnix.regui.model.signal import FControl
 from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.preferences.configs.last_fm import LastFmConfig
-from foobnix.preferences.configs.vk_conf import VkontakteConfig
 from foobnix.preferences.configs.tabs import TabsConfig
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 from foobnix.preferences.configs.other_conf import OtherConfig
@@ -36,7 +35,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         #self.configs.append(DMConfig(controls))
         self.configs.append(TabsConfig(controls))
         self.configs.append(LastFmConfig(controls))
-        self.configs.append(VkontakteConfig(controls))        
+        #self.configs.append(VkontakteConfig(controls))        
         #self.configs.append(InfoPagenConfig(controls))
         self.configs.append(TrayIconConfig(controls))
         #self.configs.append(NetworkConfig(controls))

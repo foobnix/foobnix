@@ -24,7 +24,7 @@ class VKIntegrationControls(CommonTreeControl):
         CommonTreeControl.__init__(self, controls)
         
         """column config"""
-        column = gtk.TreeViewColumn(_("VK Integration ") + FCBase().vk_login, gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = gtk.TreeViewColumn(_("VK Integration "), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)
@@ -41,11 +41,11 @@ class VKIntegrationControls(CommonTreeControl):
         self.controls.in_thread.run_with_progressbar(self._lazy_load)
     
     def _lazy_load(self):
-        if self.lazy or not hasattr(self.controls.vk_service,"api"):
+        if self.controls.vk_service.is_show_authorization():
             return True
         
         def get_users_by_uuid(uuidd):
-            for user in self.controls.vk_service.api.get('getProfiles',uids=uuidd):
+            for user in self.controls.vk_service.get_result('getProfiles','uids='+uuidd):
                 logging.debug(user)
                 name =  user['first_name']+ " "+ user['last_name']
             
@@ -56,12 +56,13 @@ class VKIntegrationControls(CommonTreeControl):
                 self.append(parent)        
                 self.append(bean)
         
-        get_users_by_uuid(self.controls.vk_service.api.my_user_id)
+        get_users_by_uuid(FC().user_id)
         
-        uids = self.controls.vk_service.api.get('friends.get')
+        uids = self.controls.vk_service.get_result('friends.get','uid='+FC().user_id)
+        print uids
         if uids:
-            get_users_by_uuid(uids)
-        
+            get_users_by_uuid(",".join(["%s" % (i) for i in uids ]))
+                    
         self.lazy = True
         
     def activate_perspective(self):   
@@ -91,7 +92,7 @@ class VKIntegrationControls(CommonTreeControl):
         def task():
             old_iters = self.get_child_iters_by_parent(self.model, self.get_iter_from_bean(parent));
             childs = []
-            for line in self.controls.vk_service.api.get('audio.get',uid=parent.user_id):
+            for line in self.controls.vk_service.get_result('audio.get',"uid="+parent.user_id):
                 bean = FModel(line['artist']+' - '+line['title'])
                 bean.aritst = line['artist']
                 bean.title = line['title']

@@ -11,16 +11,6 @@ import random
 import uuid
 import os
 
-def get_random_vk():
-    vks = {
-       "c892009@bofthew.com":"c892009",
-       "c892406@bofthew.com":"c892406",
-       "c892588@bofthew.com":"c892588"
-       }
-
-    return random.choice(vks.items())
-
-
 CONFIG_BASE_FILE = os.path.join(CONFIG_DIR, "foobnix_base.pkl") 
 
 """Foobnix base configuration, not change after installation, stable"""
@@ -33,10 +23,6 @@ class FCBase():
     LASTFM_PASSWORD = "l_pass_"
     
     def __init__(self):
-        """vk"""
-        self.vk_login, self.vk_password = get_random_vk()
-        self.vk_cookie = None
-        
         """last fm"""
         self.lfm_login = self.LASTFM_USER
         self.lfm_password = self.LASTFM_PASSWORD

@@ -711,7 +711,9 @@ class BaseFoobnixControls():
             self.check_version()
         else:
             thread.start_new_thread(self.check_version, ())
-           
+        
+        self.vk_service.is_show_authorization()
+        
     def change_backgound(self):
         win = self.main_window
         win.show()
