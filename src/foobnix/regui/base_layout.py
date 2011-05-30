@@ -69,7 +69,6 @@ class BaseFoobnixLayout(FControl, LoadSave):
         if flag:
             self.hpaned_right.set_position(FC().hpaned_right)
             self.controls.coverlyrics.show()
-            print 4
             gobject.idle_add(self.on_save_and_normilize_columns, None)
         else:
             self.controls.coverlyrics.hide()
