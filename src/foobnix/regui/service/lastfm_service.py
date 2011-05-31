@@ -5,13 +5,10 @@ Created on 27 сент. 2010
 @author: ivan
 '''
 
-import time
 import thread
 import logging
 
-from threading import Thread
 from foobnix.fc.fc import FC
-from subprocess import Popen, PIPE
 from foobnix.fc.fc_base import FCBase
 from foobnix.thirdparty import pylast
 from foobnix.regui.model import FModel
@@ -19,6 +16,7 @@ from foobnix.util.const import FTYPE_VIDEO
 from foobnix.util.file_utils import file_extension
 from foobnix.thirdparty.pylast import WSError, Tag
 from foobnix.thirdparty.google.translate import translate
+
 
 API_KEY = FCBase().API_KEY
 API_SECRET = FCBase().API_SECRET
@@ -81,37 +79,12 @@ class LastFmService():
         self.preferences_window = None
         self.controls = controls
         thread.start_new_thread(self.init_thread, ())
-        thread.start_new_thread(self.ping, ()) 
-           
+            
     def connect(self):
-        if not self.connection:
-            logging.warning("no connection")
-            return False
-        
         if self.network and self.scrobbler:
             return True
         return self.init_thread()
-        
-    def ping(self):
-        def task():
-            time.sleep(5)
-            if sp.returncode == None: #mistake 'if not sp.returncode:'
-                sp.kill()
-                self.connection = None
-                           
-        list = ['ping', 'google.com', '-c 4']
-        
-        while True:
-            sp = Popen(list, stdout=PIPE, stderr=PIPE)
-            timer = Thread(target=task)    
-            timer.start()
-            out, err = sp.communicate()
-            if err:
-                self.connection = None
-            elif out:
-                self.connection = True
-            time.sleep(2)
-            
+    
     def init_thread(self):
         logging.debug("RUN INIT LAST.FM")
         username = FCBase().lfm_login

@@ -4,6 +4,7 @@ from foobnix.regui.model.signal import FControl
 import logging
 from foobnix.util.text_utils import capitalize_query
 from foobnix.util.key_utils import is_key_enter
+from foobnix.util.connect import net_exec
 
 class SearchControls(FControl, gtk.VBox):
     def __init__(self, controls):        
@@ -42,9 +43,9 @@ class SearchControls(FControl, gtk.VBox):
     def on_search(self, *w):
         if self.get_query():
             if self.get_query().startswith("http://vk"):
-                self.controls.search_vk_page_tracks(self.get_query())                
+                net_exec(self.controls.search_vk_page_tracks, self.get_query())                
             else:
-                self.search_function(self.get_query())
+                net_exec(self.search_function, self.get_query())
     
     def get_query(self):
         query = self.entry.get_text()
