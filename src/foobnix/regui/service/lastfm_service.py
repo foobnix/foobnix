@@ -16,6 +16,7 @@ from foobnix.util.const import FTYPE_VIDEO
 from foobnix.util.file_utils import file_extension
 from foobnix.thirdparty.pylast import WSError, Tag
 from foobnix.thirdparty.google.translate import translate
+from foobnix.util.connect import CONNECTION
 
 
 API_KEY = FCBase().API_KEY
@@ -81,6 +82,9 @@ class LastFmService():
         thread.start_new_thread(self.init_thread, ())
             
     def connect(self):
+        if not CONNECTION:
+            logging.warning("no internet connection")
+            return
         if self.network and self.scrobbler:
             return True
         return self.init_thread()

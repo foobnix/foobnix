@@ -22,7 +22,7 @@ from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
     LEFT_PERSPECTIVE_INFO, ICON_BLANK_DISK, SITE_LOCALE
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
-from foobnix.util.connect import net_exec
+
 
 class InfoCache():
     def __init__(self):
@@ -172,7 +172,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             return
         
         """check connection"""
-        if not net_exec(self.controls.lastfm_service.connect):
+        if not self.controls.lastfm_service.connect():
             return
        
         """update bean info form text if possible"""

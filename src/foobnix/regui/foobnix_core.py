@@ -1,5 +1,5 @@
 #-*- coding: utf-8 -*-
-
+from foobnix.fc.fc import FC
 from foobnix.regui.notetab import NoteTabControl
 from foobnix.regui.base_layout import BaseFoobnixLayout
 from foobnix.regui.base_controls import BaseFoobnixControls
@@ -31,7 +31,6 @@ from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.regui.treeview.lastfm_integration_tree import LastFmIntegrationControls
 from foobnix.regui.treeview.vk_integration_tree import VKIntegrationControls
 from foobnix.regui.controls.record import RadioRecord
-from foobnix.fc.fc import FC
 from foobnix.regui.coverlyrics import CoverLyricsPanel
 from foobnix.util.connect import ConnectionChecker
 
@@ -42,10 +41,10 @@ class FoobnixCore(BaseFoobnixControls):
         BaseFoobnixControls.__init__(self)
         self.layout = None
         
-        self.statusbar = StatusbarControls(self)
-        
         self.con_checker = ConnectionChecker()
         
+        self.statusbar = StatusbarControls(self)
+                
         self.lastfm_service = LastFmService(self)
                 
         self.media_engine = GStreamerEngine(self)
