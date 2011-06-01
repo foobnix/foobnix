@@ -6,30 +6,38 @@ Created on 31 may 2011
 '''
 
 import time
+import thread
 import logging
-import threading
 
 from threading import Thread
 from subprocess import Popen, PIPE
+
 
 CONNECTION = False
 
 class ConnectionChecker():
     def __init__(self):
-        self.ping_thread = self.start_ping()
         self.stop = False
+        self.start_ping()
+        
     
     def start_ping(self):
         self.stop = False
+        thread.start_new_thread(self.ping, ()) 
+        
+        """ OR USE SO METHOD (but thread must be only daemon thread):
+        import threading
         ping_thread = threading.Thread(target=self.ping)
-        ping_thread.start()
-        return ping_thread
+        ping_thread.daemon = True
+        ping_thread.start()"""
+        
         
     def stop_ping(self):
         self.stop = True
             
     def ping(self):
         def task():
+            
             time.sleep(5)
             if sp.returncode == None: #mistake 'if not sp.returncode:'
                 sp.kill()
@@ -70,4 +78,4 @@ def net_exec(func, *args):
     else:
             #print "not"
             logging.warning("no connection to internet")
-            
+            return func(*args) if args else func()
