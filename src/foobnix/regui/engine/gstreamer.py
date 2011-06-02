@@ -355,8 +355,8 @@ class GStreamerEngine(MediaPlayerEngine):
         if type == gst.MESSAGE_BUFFERING:
             return
         
-        logging.debug("Message type %s" % type)
-        logging.debug("Message %s" % message)
+        #logging.debug("Message type %s" % type)
+        #logging.debug("Message %s" % message)
         
         if type in [ gst.MESSAGE_STATE_CHANGED, gst.MESSAGE_STREAM_STATUS]:            
             pass

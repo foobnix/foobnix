@@ -351,8 +351,6 @@ class BaseFoobnixControls():
         return self.media_engine.get_state() == STATE_PLAY
 
     def fill_bean_from_vk(self, bean):
-        if self.vk_service.is_show_authorization():
-            return None
         vk = self.vk_service.find_one_track(bean.get_display_name())
         if vk:
             bean.path = vk.path
@@ -376,8 +374,9 @@ class BaseFoobnixControls():
                     
         if not bean.path:            
             if not self.fill_bean_from_vk(bean):
+                if self.vk_service.is_show_authorization():
+                    return None
                 if self.count_errors < 4:
-                    logging.debug("Error happen [%s] %s" % (self.count_errors, FCBase().vk_login))
                     time.sleep(0.5)
                     self.count_errors += 1
                     self.next()

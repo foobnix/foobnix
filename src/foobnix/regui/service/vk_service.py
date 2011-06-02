@@ -18,6 +18,7 @@ from foobnix.helpers.window import ChildTopWindow
 import gtk
 import webkit
 from foobnix.fc.fc import FC
+from foobnix.util import LOG
 
 #FIN BUG IN PYTHON 2.7
 #http://bugs.python.org/issue11703
@@ -89,6 +90,7 @@ class VKService:
         self.vk_window=VKAuthorizationWindow(self)
         self.token = token
         self.user_id = user_id
+        self.connected = None
         
     def connect(self, token, user_id):
         self.token = token
@@ -112,6 +114,7 @@ class VKService:
         return  result
     
     def to_json(self, json):
+        logging.debug("Recive json",json)
         json_code = html_decode(json) 
         return simplejson.loads(json_code)
     
@@ -122,14 +125,19 @@ class VKService:
         return False
         
     def is_connected(self):
+        if self.connected:
+            return True
+        
         if not self.token or not self.user_id:
             return False
         
         res = self.get("getProfiles", "uid="+self.user_id)
         if "error" in res:
             self.vk_window.show()            
+            self.connected =  False
             return False
         else:
+            self.connected =  True
             return True
         
     
