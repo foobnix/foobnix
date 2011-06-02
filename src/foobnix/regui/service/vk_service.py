@@ -86,10 +86,9 @@ class VKAuthorizationWindow(ChildTopWindow):
     
 class VKService:
     def __init__(self, token, user_id):
-        self.vk_window = VKAuthorizationWindow(self)
+        self.vk_window=VKAuthorizationWindow(self)
         self.token = token
         self.user_id = user_id
-        #self.is_show_authorization()
         
     def connect(self, token, user_id):
         self.token = token

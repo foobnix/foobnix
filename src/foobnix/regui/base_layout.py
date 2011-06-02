@@ -35,7 +35,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         self.hpaned_right = gtk.HPaned()
         self.hpaned_right.connect("motion-notify-event", self.on_save_and_normilize_columns)
         self.hpaned_right.pack1(child=self.hpaned_left, resize=True, shrink=True)
-        self.hpaned_right.pack2(child=controls.coverlyrics, shrink=True)
+        self.hpaned_right.pack2(child=controls.coverlyrics, shrink=False)
         
         vbox = gtk.VBox(False, 0)
         vbox.pack_start(controls.top_panel, False, False)
@@ -69,7 +69,6 @@ class BaseFoobnixLayout(FControl, LoadSave):
         if flag:
             self.hpaned_right.set_position(FC().hpaned_right)
             self.controls.coverlyrics.show()
-            print 4
             gobject.idle_add(self.on_save_and_normilize_columns, None)
         else:
             self.controls.coverlyrics.hide()
@@ -79,6 +78,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
     def on_save_and_normilize_columns(self, *a):
         if self.hpaned_left.get_position() > 0:   
             FC().hpaned_left = self.hpaned_left.get_position()
+       
         if self.hpaned_right.get_position() > 0:   
             FC().hpaned_right = self.hpaned_right.get_position()
             self.controls.coverlyrics.adapt_image()

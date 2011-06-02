@@ -1,4 +1,4 @@
-#Thu May 05 21:03:16 EEST 2011
+#Thu Jun 02 10:00:17 EEST 2011
 eclipse.preferences.version=1
 encoding//src/foobnix/fc/fc.py=utf-8
 encoding//src/foobnix/fc/fc_base.py=utf-8
@@ -16,5 +16,7 @@ encoding//src/foobnix/regui/foobnix_core.py=utf-8
 encoding//src/foobnix/regui/service/lastfm_service.py=utf-8
 encoding//src/foobnix/regui/service/vk_service.py=utf-8
 encoding//src/foobnix/thirdparty/vkontakte/api.py=utf-8
+encoding//src/foobnix/util/connect.py=utf-8
 encoding//src/foobnix/util/const.py=utf-8
 encoding//src/foobnix/util/m3u_utils.py=utf-8
+encoding//src/foobnix/util/single_thread.py=utf-8

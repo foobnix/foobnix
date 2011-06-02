@@ -42,7 +42,7 @@ def foobnix():
             gobject.threads_init()    #@UndefinedVariable
             core = FoobnixCore(True)
             core.run()
-            core.dbus.parse_arguments(sys.argv)
+            #core.dbus.parse_arguments(sys.argv)
             print ("******Foobnix run in", time.time() - init_time, " seconds******")
             gtk.main()
     

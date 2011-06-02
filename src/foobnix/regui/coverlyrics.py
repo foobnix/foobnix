@@ -17,7 +17,7 @@ class CoverLyricsPanel(gtk.Frame):
         gtk.Frame.__init__(self)
         vbox = gtk.VBox(False, 5)
         self.controls = controls
-        
+        self.set_size_request(100, 200)
         self.album_title = gtk.Label(_("Album title"))
         image_size = FC().main_window_size[2] - (FC().hpaned_right + 16)
         self.image = ImageBase(ICON_BLANK_DISK, size=image_size)

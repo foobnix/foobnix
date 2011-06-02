@@ -23,6 +23,7 @@ from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
 
+
 class InfoCache():
     def __init__(self):
         self.best_songs_bean = None
