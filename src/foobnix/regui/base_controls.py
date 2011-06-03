@@ -20,7 +20,7 @@ from foobnix.regui.model import FModel
 from foobnix.regui.state import LoadSave
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.m3u_utils import m3u_reader
-from foobnix.thirdparty.urllib2 import urlopen
+from urllib2 import urlopen
 from foobnix.util.text_utils import normalize_text
 from foobnix.util.file_utils import get_file_extension
 from foobnix.regui.service.vk_service import VKService
@@ -103,7 +103,9 @@ class BaseFoobnixControls():
                     return True
             else:
                 try:
-                    u = urlopen(bean.path, timeout = 7) #@UnusedVariable
+                    """Timiout not compatible with python 2.5"""
+                    #u = urlopen(bean.path, timeout = 7) #@UnusedVariable
+                    u = urlopen(bean.path) #@UnusedVariable
                     if not vars().has_key("u"):
                         return False
                     return True

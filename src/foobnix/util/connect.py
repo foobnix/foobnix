@@ -13,12 +13,12 @@ from threading import Thread
 from subprocess import Popen, PIPE
 
 
-CONNECTION = True
+CONNECTION = False
 
 class ConnectionChecker():
     def __init__(self):
         self.stop = False
-        #self.start_ping()
+        self.start_ping()
         
     
     def start_ping(self):
@@ -36,27 +36,26 @@ class ConnectionChecker():
         self.stop = True
             
     def ping(self):
-        def task():
-            
-            time.sleep(5)
+        def task(sp):
+            time.sleep(15)
             if sp.returncode == None: #mistake 'if not sp.returncode:'
                 sp.kill()
                 self.set_connection(False)
                            
-        list = ['ping', 'google.com', '-c 4']
+        list = ['ping', 'google.com', '-c 2']
         
         while True:
             if self.stop:
                 return
             sp = Popen(list, stdout=PIPE, stderr=PIPE)
-            timer = Thread(target=task)    
+            timer = Thread(target=task, args=(sp,))    
             timer.start()
             out, err = sp.communicate()
             if err:
                 self.set_connection(False)
             elif out:
                 self.set_connection(True)
-            time.sleep(2)
+            time.sleep(30)
       
     def break_connection(self):
         self.stop_ping()
@@ -66,12 +65,12 @@ class ConnectionChecker():
         self.start_ping()
     
     def set_connection(self, to_connect):
+        logging.debug("Sec connection" + str(to_connect))
         global CONNECTION
         CONNECTION = True if to_connect else False
         
     
 def net_exec(func, *args):
-    return func(*args) if args else func()
     if CONNECTION:
             logging.info("Connection to internet exists")
             #print "is", func, args

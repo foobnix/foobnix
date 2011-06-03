@@ -4,8 +4,6 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
-import re
-import sys
 import time
 import urllib
 import logging
@@ -18,15 +16,6 @@ from foobnix.helpers.window import ChildTopWindow
 import gtk
 import webkit
 from foobnix.fc.fc import FC
-from foobnix.util import LOG
-
-#FIN BUG IN PYTHON 2.7
-#http://bugs.python.org/issue11703
-if sys.version_info > (2, 6):
-    from foobnix.thirdparty import urllib2
-    from foobnix.thirdparty.urllib2 import HTTPError, URLError
-else:
-    import urllib2
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://android.foobnix.com/vk"

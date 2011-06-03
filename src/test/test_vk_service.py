@@ -5,7 +5,7 @@ Created on 21 нояб. 2010
 @author: ivan
 '''
 import unittest
-from foobnix.regui.service.vk_service import VKService, VKAudioResultsPage
+from foobnix.regui.service.vk_service import VKService
 from foobnix.util.url_utils import get_url_type
 
 class TestVKService(unittest.TestCase):
@@ -17,11 +17,6 @@ class TestVKService(unittest.TestCase):
     def test_search_page(self):
         self.assertTrue(self.vk_service.search("Madonna").find("Madonna") > -1)
 
-    def test_find_tracks_in_page(self):
-        page = self.vk_service.search("Madonna")
-        vk_search = VKAudioResultsPage(page)
-        self.assertTrue(len(vk_search.tracks()) > 0)
-    
     def test_find_videos(self):
         list = self.vk_service.find_videos_by_query("Мадонна")
         for bean in list[:10]:
