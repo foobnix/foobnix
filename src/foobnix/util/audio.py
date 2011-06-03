@@ -4,15 +4,15 @@ Created on Nov 10, 2010
 @author: ivan
 '''
 from foobnix.util.file_utils import get_file_extension
-from foobnix.thirdparty.mutagen.mp3 import MP3
-from foobnix.thirdparty.mutagen.wavpack import WavPack
-from foobnix.thirdparty.mutagen.oggvorbis import OggVorbis
+from mutagen.mp3 import MP3
+from mutagen.wavpack import WavPack
+from mutagen.oggvorbis import OggVorbis
 
-from foobnix.thirdparty.mutagen.easyid3 import EasyID3
-from foobnix.thirdparty.mutagen.mp4 import MP4
+from mutagen.easyid3 import EasyID3
+from mutagen.mp4 import MP4
 import logging
-from foobnix.thirdparty.mutagen.flac import FLAC
-from foobnix.thirdparty.mutagen.monkeysaudio import MonkeysAudio
+from mutagen.flac import FLAC
+from mutagen.monkeysaudio import MonkeysAudio
 
 def get_mutagen_audio (path):
     logging.debug("GET mutagen audio" + path)
@@ -30,15 +30,15 @@ def get_mutagen_audio (path):
         try:
             audio = OggVorbis(path)
         except:
-            from foobnix.thirdparty.mutagen.oggtheora import OggTheora
+            from mutagen.oggtheora import OggTheora
             try:
                 audio = OggTheora(path)
             except:
-                from foobnix.thirdparty.mutagen.oggflac import OggFLAC
+                from mutagen.oggflac import OggFLAC
                 try:
                     audio = OggFLAC(path)
                 except:
-                    from foobnix.thirdparty.mutagen.oggspeex import OggSpeex
+                    from mutagen.oggspeex import OggSpeex
                     try:
                         audio = OggSpeex(path)
                     except:
