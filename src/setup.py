@@ -10,8 +10,6 @@ if os.name == 'nt':
 VERSION = "2.5.25"
 
 data_files = [
-    ('share/foobnix', ['README']),
-    ('share/foobnix', ['CHANGELOG']),
     ('share/applications', ['foobnix.desktop']),
     ('share/pixmaps/theme', glob.glob('foobnix/pixmaps/theme/*')),
     ('share/pixmaps', glob.glob('foobnix/pixmaps/*.png')),
