@@ -90,6 +90,8 @@ class BaseFoobnixLayout(FControl, LoadSave):
             tree.normalize_columns_width()
     
     def on_allocate_window_size(self, *a):
+        if not self.controls.coverlyrics.get_property("visible"):
+            return
         if (self.hpaned_right.allocation.width - FC().hpaned_right) != FC().hpaned_right_right_side_width:
             self.hpaned_right.set_position(self.hpaned_right.allocation.width - FC().hpaned_right_right_side_width)
             gobject.idle_add(self.on_save_and_normilize_columns, None)

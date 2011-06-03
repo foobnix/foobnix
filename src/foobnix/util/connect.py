@@ -56,26 +56,24 @@ class ConnectionChecker():
                 self.set_connection(False)
             elif out:
                 self.set_connection(True)
-            time.sleep(2)
+            time.sleep(3)
       
     def break_connection(self):
         self.stop_ping()
-        self.connection = False
+        self.set_connection(False)
           
     def restore_connection(self):
         self.start_ping()
     
     def set_connection(self, to_connect):
         global CONNECTION
-        CONNECTION = True if to_connect else False
+        CONNECTION = to_connect
         
     
 def net_exec(func, *args):
     if CONNECTION:
             logging.info("Connection to internet exists")
-            #print "is", func, args
             return func(*args) if args else func()
     else:
-            #print "not"
             logging.warning("no connection to internet")
             return func(*args) if args else func()
