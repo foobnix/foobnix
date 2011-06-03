@@ -32,7 +32,7 @@ from foobnix.regui.treeview.lastfm_integration_tree import LastFmIntegrationCont
 from foobnix.regui.treeview.vk_integration_tree import VKIntegrationControls
 from foobnix.regui.controls.record import RadioRecord
 from foobnix.regui.coverlyrics import CoverLyricsPanel
-from foobnix.util.connect import ConnectionChecker
+from foobnix.util.net_wrapper import NetWrapper
 
 foobnix_localization()
 
@@ -41,7 +41,7 @@ class FoobnixCore(BaseFoobnixControls):
         BaseFoobnixControls.__init__(self)
         self.layout = None
         
-        self.con_checker = ConnectionChecker()
+        self.net_wrapper = NetWrapper()
         
         self.statusbar = StatusbarControls(self)
                 

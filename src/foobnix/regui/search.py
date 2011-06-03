@@ -1,7 +1,6 @@
 import gtk
 import logging
 
-from foobnix.util.connect import CONNECTION
 from foobnix.util.key_utils import is_key_enter
 from foobnix.regui.model.signal import FControl
 from foobnix.util.text_utils import capitalize_query
@@ -43,9 +42,6 @@ class SearchControls(FControl, gtk.VBox):
         
     
     def on_search(self, *w):
-        if not CONNECTION:
-            logging.error("no internet connection")
-            return
         if self.get_query():
             if self.get_query().startswith("http://vk"):
                 self.controls.search_vk_page_tracks, self.get_query()                

@@ -14,32 +14,57 @@ from foobnix.util.text_utils import html_decode
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.helpers.window import ChildTopWindow
 import gtk
-import webkit
+
 from foobnix.fc.fc import FC
+from foobnix.helpers.pref_widgets import VBoxDecorator, HBoxDecorator
+from foobnix.helpers.image import ImageBase
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://android.foobnix.com/vk"
     def __init__(self, service):
         self.service = service
-        ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"), 640, 480)
+        #ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"), 640, 480)
+        ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"))
         
         vbox = gtk.VBox(False, 0)
         self.access_token = None
         
         default_button = gtk.Button("Get Default Login Password")
         default_button.connect("clicked", self.on_defauls)
-        
-        self.web_view = webkit.WebView()
-    
-        
+
         url = "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=26&redirect_uri=" + self.REDIRECT_URL + "&response_type=token"
-    
-        self.web_view.load_uri(url)
-        self.web_view.connect("navigation-policy-decision-requested", self._nav_request_policy_decision_cb)
         
+        try:
+            import webkit            
+            self.web_view = webkit.WebView()
+            self.web_view.load_uri(url)
+            self.web_view.connect("navigation-policy-decision-requested", self._nav_request_policy_decision_cb)
                
-        vbox.pack_start(self.web_view, True, True)
-        vbox.pack_start(default_button, False, False)
+            vbox.pack_start(self.web_view, True, True)
+            vbox.pack_start(default_button, False, False)
+
+        except:
+            self.token = gtk.Entry()
+            self.user_id = gtk.Entry()
+            
+            link = gtk.LinkButton(url,"1: Generate token")
+            
+            apply = gtk.Button(_("2: Apply Token"))
+            apply.connect("clicked", self.on_apply)
+            
+            self.info_line = gtk.Label(_("Please generate token..."))
+            
+            vbox.pack_start(ImageBase("vk.png"), False, False)
+            vbox.pack_start(link, False, False)
+            
+            vbox.pack_start(HBoxDecorator(gtk.Label(_("Token:")) , self.token))
+            vbox.pack_start(HBoxDecorator(gtk.Label(_("User ID:")) , self.user_id))
+            
+            vbox.pack_start(apply, False, False)
+            vbox.pack_start(self.info_line, False, False)
+            
+            
+    
         self.add(vbox)
     
     def get_response(self, line):
@@ -53,17 +78,35 @@ class VKAuthorizationWindow(ChildTopWindow):
         
         return res
 
+    def on_apply(self, *a):
+        token, user_id = self.token.get_text(), self.user_id.get_text()
+        if token and user_id:
+            self.apply(token, user_id)
+            if self.service.is_authentified:
+                self.hide()
+            else:
+                self.info_line.set_text("Token incorrect or expired");
+                
+        else:
+            self.info_line.set_text("Token or user is empty");
+            
+        
+    
+    def apply(self, token, userid):
+        FC().access_token = token
+        FC().user_id= userid
+        logging.debug("access token is " + FC().access_token)
+        self.service.connect(FC().access_token, FC().user_id)
+        FC().save()
+        self.hide()
+    
     def _nav_request_policy_decision_cb(self, view, frame, net_req, nav_act, pol_dec):
         uri = net_req.get_uri()       
         logging.debug("response url" + uri) 
         if "access_token" in uri:
-            FC().access_token = self.get_response(uri)["access_token"]
-            FC().user_id= self.get_response(uri)["user_id"]
-            logging.debug("access token is " + FC().access_token)
-            self.service.connect(FC().access_token, FC().user_id)
-            FC().save()
-            self.hide()
-             
+            token = self.get_response(uri)["access_token"]
+            userid= self.get_response(uri)["user_id"]
+            self.apply(token, userid)             
         return False
         
     def on_defauls(self, *a):
@@ -128,7 +171,15 @@ class VKService:
         else:
             self.connected =  True
             return True
-        
+    
+    def is_authentified(self):
+        res = self.get("getProfiles", "uid="+self.user_id)
+        if "error" in res:
+            self.vk_window.show()            
+            return False
+        else:
+            return True
+            
     
     def find_tracks_by_query(self, query):
         if self.is_show_authorization():
@@ -211,6 +262,6 @@ class VKService:
         return None 
 
 if __name__ == '__main__':
-    vk = VKAuthorizationWindow()
+    vk = VKAuthorizationWindow(None)
     vk.show()            
     gtk.main()

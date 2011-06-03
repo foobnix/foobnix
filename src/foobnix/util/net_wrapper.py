@@ -12,13 +12,11 @@ import logging
 from threading import Thread
 from subprocess import Popen, PIPE
 
-
-CONNECTION = False
-
-class ConnectionChecker():
+class NetWrapper():
     def __init__(self):
         self.stop = False
         self.start_ping()
+        self.is_connected = False
         
     
     def start_ping(self):
@@ -37,12 +35,12 @@ class ConnectionChecker():
             
     def ping(self):
         def task(sp):
-            time.sleep(15)
+            time.sleep(10)
             if sp.returncode == None: #mistake 'if not sp.returncode:'
                 sp.kill()
                 self.set_connection(False)
                            
-        list = ['ping', 'google.com', '-c 2']
+        list = ['ping', 'google.com', '-c 1']
         
         while True:
             if self.stop:
@@ -52,10 +50,10 @@ class ConnectionChecker():
             timer.start()
             out, err = sp.communicate()
             if err:
-                self.set_connection(False)
+                self.is_connected = False
             elif out:
-                self.set_connection(True)
-            time.sleep(30)
+                self.is_connected = True
+            time.sleep(20)
       
     def break_connection(self):
         self.stop_ping()
@@ -64,18 +62,11 @@ class ConnectionChecker():
     def restore_connection(self):
         self.start_ping()
     
-    def set_connection(self, to_connect):
-        logging.debug("Sec connection" + str(to_connect))
-        global CONNECTION
-        CONNECTION = True if to_connect else False
-        
     
-def net_exec(func, *args):
-    if CONNECTION:
-            logging.info("Connection to internet exists")
-            #print "is", func, args
-            return func(*args) if args else func()
-    else:
-            #print "not"
-            logging.warning("no connection to internet")
+    def execute(self,func, *args):
+        if not self.is_connected:
+            logging.info("Connection to internet NOT exists")
+            return None
+        else:
+            logging.info("connectioned to internet success")
             return func(*args) if args else func()

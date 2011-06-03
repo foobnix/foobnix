@@ -34,9 +34,6 @@ from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
 from foobnix.util.version import compare_versions
 
-from foobnix.util.connect import net_exec
-
-
 class BaseFoobnixControls():
     def __init__(self):
         
@@ -90,7 +87,7 @@ class BaseFoobnixControls():
             self.notetabs.get_current_tree().set_play_icon_to_bean_to_selected()
             if current.path and current.path.startswith("http://"):
                 if not self.check_path(current):
-                    path = net_exec(self.vk_service.find_one_track, current.get_display_name()).path
+                    path = self.net_wrapper.execute(self.vk_service.find_one_track, current.get_display_name()).path
                     if path:
                         current.path = path
             """play song"""
@@ -414,7 +411,7 @@ class BaseFoobnixControls():
         
         if sec > 10 and sec % 11 == 0:
            
-            net_exec(self.lastfm_service.report_now_playing, bean)
+            self.net_wrapper.execute(self.lastfm_service.report_now_playing, bean)
                     
         if not self.start_time:
             self.start_time = str(int(time.time()))
@@ -424,7 +421,7 @@ class BaseFoobnixControls():
             if sec > dur_sec / 2 or sec > 60:
                 
                 self.is_scrobbled = True
-                net_exec(self.lastfm_service.report_scrobbled, bean, self.start_time, dur_sec)
+                self.net_wrapper.execute(self.lastfm_service.report_scrobbled, bean, self.start_time, dur_sec)
                 """download music"""
                 if FC().automatic_online_save:
                     self.dm.append_task(bean)
@@ -441,11 +438,11 @@ class BaseFoobnixControls():
         
         if FC().enable_radio_scrobbler:
             start_time = str(int(time.time()))
-            net_exec(self.lastfm_service.report_now_playing, t_bean)
+            self.net_wrapper.execute(self.lastfm_service.report_now_playing, t_bean)
                     
             if "-" in text and self.chache_text != text:
                 text = self.chache_text
-                net_exec(self.lastfm_service.report_scrobbled, t_bean, start_time, 200)
+                self.net_wrapper.execute(self.lastfm_service.report_scrobbled, t_bean, start_time, 200)
                 
 
     def notify_error(self, msg):
