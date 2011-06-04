@@ -53,7 +53,6 @@ class NetWrapper():
         if self.is_connected:
             return True
         else:
-            self._dialog()
             return False
             
     def execute(self,func, *args):

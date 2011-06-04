@@ -16,6 +16,7 @@ from foobnix.util.const import FTYPE_VIDEO
 from foobnix.util.file_utils import file_extension
 from foobnix.thirdparty.pylast import WSError, Tag
 from foobnix.thirdparty.google.translate import translate
+import time
 
 
 API_KEY = FCBase().API_KEY
@@ -87,6 +88,10 @@ class LastFmService():
 
         
     def init_thread(self):
+        time.sleep(10)
+        if not self.controls.net_wrapper.is_internet():
+            return None
+            
         logging.debug("RUN INIT LAST.FM")
         username = FCBase().lfm_login
         password_hash = pylast.md5(FCBase().lfm_password)
