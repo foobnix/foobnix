@@ -99,7 +99,7 @@ class VKAuthorizationWindow(ChildTopWindow):
     def apply(self, token, userid):
         FC().access_token = token
         FC().user_id= userid
-        logging.debug("access token is " + FC().access_token)
+        logging.debug("access token is " + str(FC().access_token))
         self.service.connect(FC().access_token, FC().user_id)
         FC().save()
         self.hide()
@@ -107,7 +107,7 @@ class VKAuthorizationWindow(ChildTopWindow):
     def _nav_request_policy_decision_cb(self, view, frame, net_req, nav_act, pol_dec):
         uri = net_req.get_uri()       
         logging.debug("response url" + uri) 
-        if uri.strtswith(self.REDIRECT_URL):
+        if uri.startswith(self.REDIRECT_URL):
             token = self.get_response(uri)["access_token"]
             userid= self.get_response(uri)["user_id"]
             self.apply(token, userid)             
