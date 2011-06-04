@@ -11,6 +11,7 @@ import logging
 from threading import Thread
 from subprocess import Popen, PIPE
 from foobnix.helpers import dialog_entry
+import os
 
 class NetWrapper():
     def __init__(self):
@@ -26,9 +27,13 @@ class NetWrapper():
                 logging.debug("internet not connected sp.returncode")            
                 sp.kill()
         
+        if os.name == 'nt':
+            cmd = ['ping', 'google.com', '-n 2']
+        else:
+            cmd = ['ping', 'google.com', '-c 2']
          
         while self.flag:
-            sp = Popen(['ping', 'google.com', '-c 2'], stdout=PIPE, stderr=PIPE)
+            sp = Popen(cmd, stdout=PIPE, stderr=PIPE)
             timer = Thread(target=task, args=(sp,))    
             timer.start()
             out, err = sp.communicate()
