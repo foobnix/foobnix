@@ -97,7 +97,20 @@ def two_line_dialog(title, description, line1, line2):
         password_text = password_entry.get_text()
         dialog.destroy()
         return [login_text, password_text]      
-        
+
+def info_dialog(title, message):
+        dialog = gtk.MessageDialog(
+            None,
+            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            gtk.MESSAGE_INFO,
+            gtk.BUTTONS_OK,
+            None)
+        dialog.set_title(title)
+        dialog.set_markup(title)
+        dialog.format_secondary_markup(message)        
+        dialog.show_all()
+        dialog.run()
+        dialog.destroy()      
         
 def info_dialog_with_link(title, version, link):
         dialog = gtk.MessageDialog(

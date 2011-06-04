@@ -124,6 +124,9 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         FC().left_perspective = LEFT_PERSPECTIVE_INFO
     
     def show_current(self, widget):
+        if not self.controls.net_wrapper.is_internet():
+            return;
+        
         self.empty.hide()
         if widget.line_title.selected:
             widget.scroll.hide()
@@ -149,6 +152,9 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.artists.clear_tree()
         
     def update_info_panel(self):
+        if not self.controls.net_wrapper.is_internet():
+            return;
+        
         if not self.bean:
             return None
         def task():
@@ -161,7 +167,10 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
     
         self.controls.in_thread.run_with_progressbar(task)
         
-    def update(self, bean):        
+    def update(self, bean):
+        if not self.controls.net_wrapper.is_internet():
+            return;
+                
         if bean.type == FTYPE_NOT_UPDATE_INFO_PANEL:
             return False
         

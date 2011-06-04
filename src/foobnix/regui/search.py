@@ -42,11 +42,13 @@ class SearchControls(FControl, gtk.VBox):
         
     
     def on_search(self, *w):
-        if self.get_query():
-            if self.get_query().startswith("http://vk"):
-                self.controls.search_vk_page_tracks, self.get_query()                
-            else:
-                self.search_function(self.get_query())
+        def task():
+            if self.get_query():
+                if self.get_query().startswith("http://vk"):
+                    self.controls.search_vk_page_tracks, self.get_query()                
+                else:
+                    self.search_function(self.get_query())
+        self.controls.net_wrapper.connect(task)
     
     def get_query(self):
         query = self.entry.get_text()

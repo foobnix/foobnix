@@ -139,6 +139,13 @@ class HBoxDecorator(gtk.HBox):
         for widget in args:
             self.pack_start(widget, False, False)   
         self.show_all()
+
+class HBoxLableEntry(gtk.HBox):
+    def __init__(self, text, entry):
+        gtk.HBox.__init__(self, False, 0)                    
+        self.pack_start(text, False, False)
+        self.pack_start(entry, True, True)   
+        self.show_all()
         
 class ModelConstructor():
     

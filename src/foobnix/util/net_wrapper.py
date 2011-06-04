@@ -4,57 +4,57 @@ Created on 31 may 2011
 
 @author: zavlab1
 '''
-
 import time
 import thread
 import logging
 
 from threading import Thread
 from subprocess import Popen, PIPE
+from foobnix.helpers import dialog_entry
 
 class NetWrapper():
     def __init__(self):
         self.flag = True
-        self.start_ping()
         self.is_connected = False
-        
-    def start_ping(self):
-        self.flag = True
         thread.start_new_thread(self.ping, ())
-         
-    def stop_ping(self):
-        self.flag = False
             
     def ping(self):
         def task(sp):
-            time.sleep(10)
+            time.sleep(8)
             if sp.returncode == None: #mistake 'if not sp.returncode:'
-                sp.kill()
                 self.is_connected = False
-                           
-        sp = Popen(['ping', 'google.com', '-c 1'], stdout=PIPE, stderr=PIPE)
+                logging.debug("internet not connected sp.returncode")            
+                sp.kill()
+        
+         
         while self.flag:
+            sp = Popen(['ping', 'google.com', '-c 2'], stdout=PIPE, stderr=PIPE)
             timer = Thread(target=task, args=(sp,))    
             timer.start()
             out, err = sp.communicate()
             if err:
                 self.is_connected = False
+                logging.debug("internet not connected err")
             elif out:
                 self.is_connected = True
             
-            time.sleep(20)
-      
-    def break_connection(self):
-        self.stop_ping()
-        self.connection = False
-          
-    def restore_connection(self):
-        self.start_ping()
-        
-    def execute(self,func, *args):
-        if not self.is_connected:
-            logging.warning("No internet connection")
-            return None
+            time.sleep(10)
+    
+    def _dialog(self):
+        logging.warning("No internet connection")
+        dialog_entry.info_dialog("Internet Connection", "Internet not available")
+    
+    def is_internet(self):
+        if self.is_connected:
+            return True
         else:
+            self._dialog()
+            return False
+            
+    def execute(self,func, *args):
+        if self.is_connected:
             logging.info("Success internet connection")
             return func(*args) if args else func()
+        else:
+            self._dialog()
+            return None

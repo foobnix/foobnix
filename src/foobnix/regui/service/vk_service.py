@@ -16,15 +16,17 @@ from foobnix.helpers.window import ChildTopWindow
 import gtk
 
 from foobnix.fc.fc import FC
-from foobnix.helpers.pref_widgets import VBoxDecorator, HBoxDecorator
+from foobnix.helpers.pref_widgets import VBoxDecorator, HBoxDecorator,\
+    HBoxLableEntry
 from foobnix.helpers.image import ImageBase
 
 class VKAuthorizationWindow(ChildTopWindow):
-    REDIRECT_URL = "http://android.foobnix.com/vk"
+    REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
     def __init__(self, service):
         self.service = service
         #ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"), 640, 480)
         ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"))
+        self.set_keep_above(True)
         
         vbox = gtk.VBox(False, 0)
         self.access_token = None
@@ -42,10 +44,12 @@ class VKAuthorizationWindow(ChildTopWindow):
                
             vbox.pack_start(self.web_view, True, True)
             vbox.pack_start(default_button, False, False)
-
         except:
-            self.token = gtk.Entry()
+            self.token = gtk.Entry() 
+            self.set_size_request(550, -1)           
             self.user_id = gtk.Entry()
+            if FC().user_id:
+                self.user_id.set_text(FC().user_id) 
             
             link = gtk.LinkButton(url,"1: Generate token")
             
@@ -57,8 +61,8 @@ class VKAuthorizationWindow(ChildTopWindow):
             vbox.pack_start(ImageBase("vk.png"), False, False)
             vbox.pack_start(link, False, False)
             
-            vbox.pack_start(HBoxDecorator(gtk.Label(_("Token:")) , self.token))
-            vbox.pack_start(HBoxDecorator(gtk.Label(_("User ID:")) , self.user_id))
+            vbox.pack_start(HBoxLableEntry(gtk.Label(_("Token:")) , self.token))
+            vbox.pack_start(HBoxLableEntry(gtk.Label(_("User ID:")) , self.user_id))
             
             vbox.pack_start(apply, False, False)
             vbox.pack_start(self.info_line, False, False)
@@ -132,6 +136,7 @@ class VKService:
         
     def get_result(self, method, data):
         result  = self.get(method, data)
+        logging.debug("result " + result)
         object = self.to_json(result)        
         return object["response"]
         
@@ -146,9 +151,8 @@ class VKService:
         return  result
     
     def to_json(self, json):
-        logging.debug("Recive json",json)
-        json_code = html_decode(json) 
-        return simplejson.loads(json_code)
+        logging.debug("json " + json)
+        return simplejson.loads(json)
     
     def is_show_authorization(self):
         if not self.is_connected():
