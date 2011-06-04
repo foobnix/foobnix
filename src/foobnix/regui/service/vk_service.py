@@ -26,7 +26,7 @@ class VKAuthorizationWindow(ChildTopWindow):
     def __init__(self, service):
         self.service = service
         ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"))
-        
+        self.set_resizable(True)
         vbox = gtk.VBox(False, 0)
         self.access_token = None
         
