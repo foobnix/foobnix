@@ -39,7 +39,6 @@
 ./foobnix/preferences/configs/other_conf.py
 ./foobnix/preferences/configs/tabs.py
 ./foobnix/preferences/configs/tray_icon_conf.py
-./foobnix/preferences/configs/vk_conf.py
 ./foobnix/regui/base_controls.py
 ./foobnix/regui/base_layout.py
 ./foobnix/regui/coverlyrics.py
@@ -92,15 +91,6 @@
 ./foobnix/regui/treeview/simple_tree.py
 ./foobnix/regui/treeview/virtual_tree.py
 ./foobnix/regui/treeview/vk_integration_tree.py
-./foobnix/thirdparty/__init__.py
-./foobnix/thirdparty/lyr.py
-./foobnix/thirdparty/pylast.py
-./foobnix/thirdparty/urllib2.py
-./foobnix/thirdparty/google/BeautifulSoup.py
-./foobnix/thirdparty/google/browser.py
-./foobnix/thirdparty/google/__init__.py
-./foobnix/thirdparty/google/search.py
-./foobnix/thirdparty/google/translate.py
 ./foobnix/util/agent.py
 ./foobnix/util/audio.py
 ./foobnix/util/bean_utils.py
@@ -118,6 +108,7 @@
 ./foobnix/util/LOG.py
 ./foobnix/util/m3u_utils.py
 ./foobnix/util/mouse_utils.py
+./foobnix/util/net_wrapper.py
 ./foobnix/util/pix_buffer.py
 ./foobnix/util/plsparser.py
 ./foobnix/util/proxy_connect.py
@@ -146,6 +137,7 @@
 ./foobnix/util/LOG.py
 ./foobnix/util/m3u_utils.py
 ./foobnix/util/mouse_utils.py
+./foobnix/util/net_wrapper.py
 ./foobnix/util/pix_buffer.py
 ./foobnix/util/plsparser.py
 ./foobnix/util/proxy_connect.py

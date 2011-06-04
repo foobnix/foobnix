@@ -35,8 +35,6 @@ LIST=(
 "foobnix.regui.notetab"
 "foobnix.regui.service"
 "foobnix.regui.treeview"
-"foobnix.thirdparty"
-"foobnix.thirdparty.google"
 "foobnix.util"
 )
 
