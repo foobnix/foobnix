@@ -13,6 +13,10 @@ cd ../
 BASE=`pwd`
 echo $BASE
 
+cd $BASE
+rm -rf $BASE/po
+bzr branch lp:foobnix po
+
 POF=`pwd`/po/POTFILES.in
 
 rm $POF
@@ -44,8 +48,6 @@ do
 	writelines $POF ./${NAME//.//}/
 done
 
-writelines $POF ./foobnix/util/
-
 
 cd $BASE/po
 
@@ -64,5 +66,16 @@ for i in *.po
 done
 
 echo Cleaning up...
-
 rm untitled.pot
+
+cd $BASE/po
+echo Launchpad commit....
+echo phd
+bzr whoami 
+bzr commit -m "Update foobnix.po"
+bzr push lp:foobnix
+
+rm -rf $BASE/po
+cd $BASE
+echo Get Last transtations
+bzr branch lp:~foobnix-team/+junk/foobnix po
