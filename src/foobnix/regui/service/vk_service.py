@@ -10,16 +10,14 @@ import logging
 import simplejson
 
 from foobnix.regui.model import FModel
-from foobnix.util.text_utils import html_decode
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.helpers.window import ChildTopWindow
 import gtk
 
 from foobnix.fc.fc import FC
-from foobnix.helpers.pref_widgets import VBoxDecorator, HBoxDecorator,\
-    HBoxLableEntry
 from foobnix.helpers.image import ImageBase
 import os
+from foobnix.helpers.pref_widgets import HBoxLableEntry
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
@@ -30,7 +28,7 @@ class VKAuthorizationWindow(ChildTopWindow):
         vbox = gtk.VBox(False, 0)
         self.access_token = None
         
-        default_button = gtk.Button("Get Default Login Password")
+        default_button = gtk.Button(_("Get Default Login Password"))
         default_button.connect("clicked", self.on_defauls)
 
         url = "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=26&redirect_uri=" + self.REDIRECT_URL + "&response_type=token"
@@ -54,7 +52,7 @@ class VKAuthorizationWindow(ChildTopWindow):
             if FC().user_id:
                 self.user_id.set_text(FC().user_id) 
             
-            link = gtk.LinkButton(url,"1: Generate token")
+            link = gtk.LinkButton(url,_("1: Generate token (push or open the link url in the browser)"))
             
             apply = gtk.Button(_("2: Apply Token"))
             apply.connect("clicked", self.on_apply)
@@ -100,14 +98,17 @@ class VKAuthorizationWindow(ChildTopWindow):
             if self.service.is_authentified:
                 self.hide()
             else:
-                self.info_line.set_text("Token incorrect or expired");
+                self.info_line.set_text(_("Token incorrect or expired"));
                 
         else:
-            self.info_line.set_text("Token or user is empty");
+            self.info_line.set_text(_("Token or user is empty"));
             
         
     
     def apply(self, token, userid):
+        token = token.strip()
+        userid = userid.strip()
+        
         FC().access_token = token
         FC().user_id= userid
         logging.debug("access token is " + str(FC().access_token))

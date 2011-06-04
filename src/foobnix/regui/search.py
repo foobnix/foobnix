@@ -47,7 +47,7 @@ class SearchControls(FControl, gtk.VBox):
                 return
             if self.get_query():
                 if self.get_query().startswith("http://vk"):
-                    self.controls.search_vk_page_tracks, self.get_query()                
+                    self.controls.search_vk_page_tracks(self.get_query())                
                 else:
                     self.search_function(self.get_query())
         self.controls.net_wrapper.execute(task)
