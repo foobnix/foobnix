@@ -42,7 +42,7 @@ class NetWrapper():
     
     def _dialog(self):
         logging.warning("No internet connection")
-        dialog_entry.info_dialog("Internet Connection", "Internet not available")
+        dialog_entry.info_dialog("Internet Connection", "Foobnix not connected \n or internet not available \n Please try later")
     
     def is_internet(self):
         if self.is_connected:

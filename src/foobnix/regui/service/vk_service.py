@@ -19,14 +19,13 @@ from foobnix.fc.fc import FC
 from foobnix.helpers.pref_widgets import VBoxDecorator, HBoxDecorator,\
     HBoxLableEntry
 from foobnix.helpers.image import ImageBase
+import os
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
     def __init__(self, service):
         self.service = service
-        #ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"), 640, 480)
         ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"))
-        self.set_keep_above(True)
         
         vbox = gtk.VBox(False, 0)
         self.access_token = None
@@ -36,15 +35,19 @@ class VKAuthorizationWindow(ChildTopWindow):
 
         url = "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=26&redirect_uri=" + self.REDIRECT_URL + "&response_type=token"
         
-        try:
+        def web_kit_token():
             import webkit            
             self.web_view = webkit.WebView()
+            self.web_view.set_size_request(640, -1) 
             self.web_view.load_uri(url)
             self.web_view.connect("navigation-policy-decision-requested", self._nav_request_policy_decision_cb)
                
             vbox.pack_start(self.web_view, True, True)
             vbox.pack_start(default_button, False, False)
-        except:
+            
+
+        def dialog_token():
+            self.set_keep_above(True)
             self.token = gtk.Entry() 
             self.set_size_request(550, -1)           
             self.user_id = gtk.Entry()
@@ -66,10 +69,18 @@ class VKAuthorizationWindow(ChildTopWindow):
             
             vbox.pack_start(apply, False, False)
             vbox.pack_start(self.info_line, False, False)
-            
-            
+            self.add(vbox)
+        
+        if os.name == 'nt':
+            dialog_token()
+        else:
+            try:
+                web_kit_token()
+            except:
+                dialog_token()
     
         self.add(vbox)
+    
     
     def get_response(self, line):
         id = line.find("#")
