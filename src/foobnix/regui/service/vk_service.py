@@ -67,7 +67,6 @@ class VKAuthorizationWindow(ChildTopWindow):
             
             vbox.pack_start(apply, False, False)
             vbox.pack_start(self.info_line, False, False)
-            self.add(vbox)
         
         if os.name == 'nt':
             dialog_token()
