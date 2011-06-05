@@ -230,9 +230,9 @@ class VKService:
         id = url[index + 3:]
         id = int(id)
         if id > 0:
-            results = self.get_result('audio.get', "uid="+id)
+            results = self.get_result('audio.get', "uid="+str(id))
         else:
-            results = self.get_result('audio.get', "gid="+abs(id))
+            results = self.get_result('audio.get', "gid="+str(abs(id)))
             
         childs = []
         for line in results:
