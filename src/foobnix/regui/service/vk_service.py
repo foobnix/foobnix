@@ -92,26 +92,27 @@ class VKAuthorizationWindow(ChildTopWindow):
 
     def on_apply(self, *a):
         token, user_id = self.token.get_text(), self.user_id.get_text()
+        token = token.strip()
+        user_id = user_id.strip()
         if token and user_id:
-            self.apply(token, user_id)
-            if self.service.is_authentified:
+            if self.service.is_authentified(token, user_id):
+                self.apply(token, user_id)
                 self.hide()
             else:
-                self.info_line.set_text(_("Token incorrect or expired"));
-                
+                self.info_line.set_text(_("Token incorrect or expired"))                
         else:
             self.info_line.set_text(_("Token or user is empty"));
             
         
     
     def apply(self, token, userid):
-        token = token.strip()
-        userid = userid.strip()
-        
         FC().access_token = token
-        FC().user_id= userid
+        FC().user_id= userid        
+        self.service.token  = token
+        self.service.user_id = userid
+        
         logging.debug("access token is " + str(FC().access_token))
-        self.service.connect(FC().access_token, FC().user_id)
+        
         FC().save()
         self.hide()
     
@@ -138,12 +139,6 @@ class VKService:
         self.token = token
         self.user_id = user_id
         self.connected = None
-        
-    def connect(self, token, user_id):
-        self.token = token
-        self.user_id = user_id
-    
-        
         
     def get_result(self, method, data):
         result  = self.get(method, data)
@@ -187,10 +182,11 @@ class VKService:
             self.connected =  True
             return True
     
-    def is_authentified(self):
+    def is_authentified(self, token,user_id):
+        self.token = token
+        self.user_id = user_id
         res = self.get("getProfiles", "uid="+self.user_id)
         if "error" in res:
-            self.vk_window.show()            
             return False
         else:
             return True
