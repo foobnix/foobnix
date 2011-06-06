@@ -15,7 +15,6 @@ from foobnix.util.key_utils import is_key
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util.file_utils import get_full_size
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
-import thread
 import threading
 
 

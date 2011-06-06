@@ -21,6 +21,7 @@ from foobnix.helpers.pref_widgets import HBoxLableEntry
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
+    API_URL = "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=26&redirect_uri=" + REDIRECT_URL + "&response_type=token"
     def __init__(self, service):
         self.service = service
         ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"))
@@ -31,18 +32,18 @@ class VKAuthorizationWindow(ChildTopWindow):
         default_button = gtk.Button(_("Get Default Login Password"))
         default_button.connect("clicked", self.on_defauls)
 
-        url = "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=26&redirect_uri=" + self.REDIRECT_URL + "&response_type=token"
         
         def web_kit_token():
             import webkit            
             self.web_view = webkit.WebView()
             self.web_view.set_size_request(640, -1) 
-            self.web_view.load_uri(url)
+            self.web_view.load_uri(self.API_URL)
             self.web_view.connect("navigation-policy-decision-requested", self._nav_request_policy_decision_cb)
                
             vbox.pack_start(self.web_view, True, True)
             vbox.pack_start(default_button, False, False)
-            
+        
+       
 
         def dialog_token():
             self.set_keep_above(True)
@@ -52,7 +53,7 @@ class VKAuthorizationWindow(ChildTopWindow):
             if FC().user_id:
                 self.user_id.set_text(FC().user_id) 
             
-            link = gtk.LinkButton(url,_("1: Generate token (push or open the link url in the browser)"))
+            link = gtk.LinkButton(self.API_URL,_("1: Generate token (push or open the link url in the browser)"))
             
             apply = gtk.Button(_("2: Apply Token"))
             apply.connect("clicked", self.on_apply)
@@ -77,7 +78,6 @@ class VKAuthorizationWindow(ChildTopWindow):
                 dialog_token()
     
         self.add(vbox)
-    
     
     def get_response(self, line):
         id = line.find("#")
@@ -105,13 +105,11 @@ class VKAuthorizationWindow(ChildTopWindow):
             
         
     
-    def apply(self, token, userid):
-        FC().access_token = token
-        FC().user_id= userid        
-        self.service.token  = token
-        self.service.user_id = userid
-        
-        logging.debug("access token is " + str(FC().access_token))
+    def apply(self, access_token, user_id):
+        FC().access_token = access_token
+        FC().user_id= user_id        
+        self.service.set_token_user(access_token, user_id)
+        logging.debug("access token is " + str(access_token))
         
         FC().save()
         self.hide()
@@ -122,7 +120,8 @@ class VKAuthorizationWindow(ChildTopWindow):
         if uri.startswith(self.REDIRECT_URL):
             token = self.get_response(uri)["access_token"]
             userid= self.get_response(uri)["user_id"]
-            self.apply(token, userid)             
+            self.apply(token, userid)   
+            self.hide(); 
         return False
         
     def on_defauls(self, *a):
@@ -135,10 +134,13 @@ class VKAuthorizationWindow(ChildTopWindow):
     
 class VKService:
     def __init__(self, token, user_id):
+        self.set_token_user(token, user_id)
         self.vk_window=VKAuthorizationWindow(self)
+        self.connected = None
+    
+    def set_token_user(self, token, user_id):
         self.token = token
         self.user_id = user_id
-        self.connected = None
         
     def get_result(self, method, data):
         result  = self.get(method, data)
@@ -148,7 +150,6 @@ class VKService:
         
     def get(self, method, data):
         time.sleep(0.6)
-        #data = urllib.quote(data.encode('utf-8'))
         url = "https://api.vkontakte.ru/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
         logging.debug("GET" + url)
         response = urllib.urlopen(url)
@@ -197,6 +198,7 @@ class VKService:
             return 
         
         logging.info("start search songs" + query)
+        query = urllib.quote(query)
         
         list = self.get_result("audio.search", "q=" + query)
         childs = []
