@@ -4,6 +4,8 @@ Created on 31 may 2011
 
 @author: zavlab1
 '''
+
+import os
 import time
 import thread
 import logging
@@ -11,7 +13,7 @@ import logging
 from threading import Thread
 from subprocess import Popen, PIPE
 from foobnix.helpers import dialog_entry
-import os
+
 
 class NetWrapper():
     def __init__(self):
@@ -21,10 +23,17 @@ class NetWrapper():
             
     def ping(self):
         def task(sp):
-            time.sleep(8)
-            if sp.returncode == None: #mistake 'if not sp.returncode:'
+            i = 0
+            while i < 10:
+                if sp.poll:
+                    return
+                else:
+                    i += 1
+                    time.sleep(0.5)
+            #if sp.returncode == None: #mistake 'if not sp.returncode:'
+            if not self.out:
                 self.is_connected = False
-                logging.debug("internet not connected sp.returncode")            
+                logging.debug("internet not connected \"not self.out\" ")            
                 sp.kill()
         
         if os.name == 'nt':
@@ -36,14 +45,13 @@ class NetWrapper():
             sp = Popen(cmd, stdout=PIPE, stderr=PIPE)
             timer = Thread(target=task, args=(sp,))    
             timer.start()
-            out, err = sp.communicate()
-            if err:
+            self.out, self.error = sp.communicate()
+            if self.error:
                 self.is_connected = False
-                logging.debug("internet not connected err")
-            elif out:
+                logging.debug("internet is not connected - error")
+            elif self.out:
                 self.is_connected = True
-            
-            time.sleep(10)
+            time.sleep(2)
     
     def _dialog(self):
         logging.warning("No internet connection")
