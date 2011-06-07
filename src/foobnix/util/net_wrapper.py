@@ -18,8 +18,12 @@ from foobnix.helpers import dialog_entry
 class NetWrapper():
     def __init__(self):
         self.flag = True
-        self.is_connected = False
-        thread.start_new_thread(self.ping, ())
+        self.is_connected = True
+        
+        """in win ping successfully works, but console with ping appears and hide periodically"""
+        if os.name != 'nt':
+            self.is_connected = False
+            thread.start_new_thread(self.ping, ())
             
     def ping(self):
         def task(sp):
