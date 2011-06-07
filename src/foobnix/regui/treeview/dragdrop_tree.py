@@ -52,6 +52,7 @@ class DragDropTree(gtk.TreeView):
     def configure_send_drag(self):
         #self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
         self.drag_source_set(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)],gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE) #@UndefinedVariable
+    
     def append_all(self, beans):
         logging.debug("begin append all")
         if self.current_view == VIEW_PLAIN:
@@ -524,7 +525,7 @@ class DragDropTree(gtk.TreeView):
               
         counter = 0
         for bean in beans:
-            if bean.path and not bean.path.lower().endswith(".cue"):                                        
+            if not bean.path or not bean.path.lower().endswith(".cue"):                                        
                 if bean.is_file and FC().numbering_by_order:
                     counter += 1
                     bean.tracknumber = counter

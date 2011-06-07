@@ -37,7 +37,7 @@ class NetWrapper():
             #if sp.returncode == None: #mistake 'if not sp.returncode:'
             if not self.out:
                 self.is_connected = False
-                logging.debug("internet not connected \"not self.out\" ")            
+                logging.debug("internet is not connected \"not self.out\" ")            
                 sp.kill()
         
         if os.name == 'nt':

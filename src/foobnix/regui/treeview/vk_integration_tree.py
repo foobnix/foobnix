@@ -59,7 +59,6 @@ class VKIntegrationControls(CommonTreeControl):
         get_users_by_uuid(FC().user_id)
         
         uids = self.controls.vk_service.get_result('friends.get','uid='+FC().user_id)
-        print uids
         if uids:
             get_users_by_uuid(",".join(["%s" % (i) for i in uids ]))
                     
