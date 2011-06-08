@@ -77,7 +77,8 @@ class BaseFoobnixControls():
     
     def get_active_bean(self):
         return self.notetabs.get_current_tree().get_selected_or_current_bean()
-     
+    
+         
     def play_selected_song(self):    
         current = self.get_active_bean()
         if not current:
@@ -334,10 +335,14 @@ class BaseFoobnixControls():
         else:
             self.main_window.show()
 
-    def state_play(self, remember_position=False):
+    def state_play(self, remember_position=False, under_pointer_icon=False):
         if self.media_engine.get_state() == STATE_PAUSE and not remember_position:
             self.media_engine.state_play()
             self.statusbar.set_text(self.media_engine.bean.info)
+        elif under_pointer_icon:
+            tree = self.notetabs.get_current_tree()
+            bean = tree.get_bean_under_pointer_icon()
+            self.play(bean)
         else:
             self.play_selected_song()
     
@@ -417,8 +422,9 @@ class BaseFoobnixControls():
         self.media_engine.play(bean)  
         self.is_scrobbled = False
         self.start_time = False      
-        self.update_info_panel(bean)
+        
         if not get_file_extension(bean.path) in FC().video_formats:
+            self.update_info_panel(bean)
             self.set_visible_video_panel(False)
             
     def notify_playing(self, pos_sec, dur_sec, bean, sec):

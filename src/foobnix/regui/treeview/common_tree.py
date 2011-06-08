@@ -236,7 +236,6 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             return self.get_current_bean_by_UUID();
     
     def set_play_icon_to_bean_to_selected(self):
-        
         for row in self.model:
             row[self.play_icon[0]] = None
         

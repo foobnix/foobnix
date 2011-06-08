@@ -136,6 +136,13 @@ class PlaylistTreeControl(CommonTreeControl):
         elif is_key(e, 'Right'):
             self.controls.seek_up()
     
+    def get_bean_under_pointer_icon(self):
+        for row in self.model:
+            if row[self.play_icon[0]]:
+                bean = self.get_bean_from_row(row)
+                return bean
+            
+            
     def common_single_random(self):
         logging.debug("Repeat state" + str(FC().repeat_state))
         if FC().repeat_state == const.REPEAT_SINGLE:
