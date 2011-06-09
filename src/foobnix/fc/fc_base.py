@@ -27,6 +27,7 @@ class FCBase():
         self.lfm_login = self.LASTFM_USER
         self.lfm_password = self.LASTFM_PASSWORD
         
+        
         self.uuid = uuid.uuid4().hex
 
          

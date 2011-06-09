@@ -14,11 +14,15 @@ from threading import Thread
 from subprocess import Popen, PIPE
 from foobnix.helpers import dialog_entry
 
-
 class NetWrapper():
-    def __init__(self):
+    def __init__(self, is_ping=True):
         self.flag = True
         self.is_connected = True
+        
+        if not is_ping:
+            logging.debug("Ping functional is disabled")
+            """disable net wrapper functional"""
+            return
         
         """in win ping successfully works, but console with ping appears and hide periodically"""
         if os.name != 'nt':
