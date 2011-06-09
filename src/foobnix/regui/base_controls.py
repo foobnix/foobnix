@@ -77,7 +77,8 @@ class BaseFoobnixControls():
     
     def get_active_bean(self):
         return self.notetabs.get_current_tree().get_selected_or_current_bean()
-     
+    
+         
     def play_selected_song(self):    
         current = self.get_active_bean()
         if not current:
@@ -176,26 +177,42 @@ class BaseFoobnixControls():
                         tab_name = os.path.basename(path)[:-len(ext)]
                     break
         if paths: 
-                        
             if paths[0]:
-                path = paths[0]
-                list = paths[0].split("/")
+                if isinstance(paths[0], list):
+                    path = paths[0][0]
+                else:
+                    path = paths[0]
             else:
-                path = paths[1]
-                list = paths[1].split("/")
-                
-            if not tab_name:
-                tab_name = os.path.split(os.path.dirname(path))[1]
-                
-            FC().last_dir = path[:path.rfind("/")]
-            name = list[len(list) - 2]
-            self.append_to_new_notebook(tab_name, [])
-            
-            parent = FModel(name)
-            self.append_to_current_notebook([parent])
+                if isinstance(path, list):
+                    path = paths[1][0]
+                else:
+                    path = paths[1]
+               
+            if path:
+                list_path = path.split("/")
+                name = list_path[len(list_path) - 2]
+                if not tab_name:
+                    tab_name = os.path.split(os.path.dirname(path))[1]
+                FC().last_dir = path[:path.rfind("/")]
+                self.append_to_new_notebook(tab_name, [])
+                parent = FModel(name)
+                self.append_to_current_notebook([parent])
+            else:
+                self.append_to_new_notebook(tab_name, [])
+                parent = FModel(tab_name)
+                self.append_to_current_notebook([parent])
+                              
             beans = []
             for path in paths:
-                bean = FModel(path, path).parent(parent)
+                text = None 
+                if isinstance(path, list):
+                    text = path[1]
+                    path = path[0]
+                    bean = FModel(path, path).add_is_file(True)
+                else:
+                    bean = FModel(path, path).parent(parent)
+                if text: 
+                    bean.text = text
                 beans.append(bean)
             if not beans:
                 self.append_to_current_notebook([FModel(_("Nothing found to play in the file(s)") + paths[0])])
@@ -318,10 +335,14 @@ class BaseFoobnixControls():
         else:
             self.main_window.show()
 
-    def state_play(self, remember_position=False):
+    def state_play(self, remember_position=False, under_pointer_icon=False):
         if self.media_engine.get_state() == STATE_PAUSE and not remember_position:
             self.media_engine.state_play()
             self.statusbar.set_text(self.media_engine.bean.info)
+        elif under_pointer_icon:
+            tree = self.notetabs.get_current_tree()
+            bean = tree.get_bean_under_pointer_icon()
+            self.play(bean)
         else:
             self.play_selected_song()
     
@@ -401,8 +422,9 @@ class BaseFoobnixControls():
         self.media_engine.play(bean)  
         self.is_scrobbled = False
         self.start_time = False      
-        self.update_info_panel(bean)
+        
         if not get_file_extension(bean.path) in FC().video_formats:
+            self.update_info_panel(bean)
             self.set_visible_video_panel(False)
             
     def notify_playing(self, pos_sec, dur_sec, bean, sec):

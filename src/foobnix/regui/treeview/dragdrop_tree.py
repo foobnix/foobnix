@@ -52,6 +52,7 @@ class DragDropTree(gtk.TreeView):
     def configure_send_drag(self):
         #self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
         self.drag_source_set(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)],gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE) #@UndefinedVariable
+    
     def append_all(self, beans):
         logging.debug("begin append all")
         if self.current_view == VIEW_PLAIN:
@@ -272,12 +273,21 @@ class DragDropTree(gtk.TreeView):
             
             paths = m3u_reader(m3u_file_path)
             paths.insert(0, os.path.splitext(m3u_title)[0])
-            list = paths[0].split("/")
-            name = list[len(list) - 2]
-            parent = FModel(name)
+            first_path = paths[0][0] if isinstance(paths[0], list) else paths[0]
+            if first_path:
+                list_path = first_path[0].split("/")
+                name = list_path[len(list_path) - 2]
+                parent = FModel(name)
+            
             new_iter = None
             for i, path in enumerate(paths):
-                if not i:
+                if isinstance(path, list):
+                    text = path[1]
+                    path = path[0]
+                    bean = FModel(path, path).add_is_file(True)
+                    if text: bean.text = text
+                
+                elif not i:
                     bean = FModel(path)
                 else:
                     bean = FModel(path, path).parent(parent)
@@ -524,7 +534,7 @@ class DragDropTree(gtk.TreeView):
               
         counter = 0
         for bean in beans:
-            if bean.path and not bean.path.lower().endswith(".cue"):                                        
+            if not bean.path or not bean.path.lower().endswith(".cue"):                                        
                 if bean.is_file and FC().numbering_by_order:
                     counter += 1
                     bean.tracknumber = counter

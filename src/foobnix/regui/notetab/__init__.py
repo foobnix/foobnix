@@ -336,12 +336,19 @@ class NoteTabControl(TabGeneral, LoadSave):
     
     def on_save_playlist(self, tab_child):
         name = self.get_text_label_from_tab(tab_child)
-        current_name = name + ".m3u"
+        current_name = name.strip() + ".m3u"
         tree = tab_child.get_child()
         def func(filename, folder):
             beans = tree.get_all_beans()
             if beans:
-                paths = [bean.path for bean in beans if bean.is_file]
+                paths = []
+                for bean in beans:
+                    if bean.is_file:
+                        if not bean.path or bean.path.startswith("http://"):
+                            paths.append("##" + bean.text)
+                        else:
+                            paths.append(bean.path)
+                #paths = [bean.path for bean in beans if bean.is_file]
             else:
                 logging.warning(_("It's need not empty playlist"))
             m3u_writer(filename, folder, paths)

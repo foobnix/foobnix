@@ -10,16 +10,39 @@ from foobnix.util.const import ICON_FOOBNIX
 def m3u_reader(m3u_file_path):
     try:
         lines = open(unicode(m3u_file_path)).readlines()
-        paths = [os.path.normpath(line) for line in lines if not line.startswith("#")]
+        paths = [os.path.normpath(line) for line in lines if line.startswith("##") or not line.startswith("#")]
         dirname = os.path.dirname(m3u_file_path)
         full_paths = []
+        paths = iter(paths)       
         for path in paths:
-            if (paths[0][0] in "\\/"):
-                full_paths.append(path.replace("\\", "/").strip('\r\n'))
-            elif paths[0].startswith('http'):
-                full_paths.append(path.strip('\r\n').replace('/', '//', 1))
+            text = None
+            if path.startswith("##"):
+                def task(path):
+                    #artist = path[2 : path.find(" - ")]
+                    #name = path[(path.rfind(" - ")+3) : ]
+                    text = path[2 : ]
+                    try:
+                        next_path = paths.next()
+                        path = next_path if not next_path.startswith("##") else None
+                    except StopIteration:
+                        path = None
+                        next_path = None
+                    if not path:
+                        full_paths.append( [path, text.strip('\r\n')] )
+                        if next_path:
+                            path, text = task(next_path)
+                    
+                    return path, text
+                
+                path, text = task(path)    
+                if not path:
+                    break           
+            if (path in "\\/"):
+                full_paths.append( [path.replace("\\", "/").strip('\r\n'), text.strip('\r\n')] )
+            elif path.startswith('http'):
+                full_paths.append( [path.strip('\r\n').replace('/', '//', 1), text.strip('\r\n')] )
             else:
-                full_paths.append(os.path.join(dirname, path).replace("\\", "/").strip('\r\n'))
+                full_paths.append([os.path.join(dirname, path).replace("\\", "/").strip('\r\n'), text.strip('\r\n')] )
         return full_paths
     except IndexError: 
         logging.warn("You try to load empty playlist")
