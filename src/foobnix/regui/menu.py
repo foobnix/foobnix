@@ -30,6 +30,8 @@ class MenuBarWidget(FControl):
         file = top.add_submenu(_("_File"))
         file.add_image_item(_("Add File(s)"), gtk.STOCK_OPEN, self.controls.on_add_files)
         file.add_image_item(_("Add Folder(s)"), gtk.STOCK_OPEN, self.controls.on_add_folders)
+        file.add_image_item(_("Save Playlist As"), gtk.STOCK_SAVE_AS, 
+                            lambda: self.controls.notetabs.on_save_playlist(self.controls.notetabs.get_current_tree().scroll))
         file.separator()
         file.add_image_item(_("Quit"), gtk.STOCK_QUIT, self.controls.quit)
 

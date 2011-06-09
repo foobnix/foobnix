@@ -345,8 +345,6 @@ class NoteTabControl(TabGeneral, LoadSave):
                 for bean in beans:
                     if bean.is_file:
                         if not bean.path or bean.path.startswith("http://"):
-                            #artist = bean.artist if bean.artist else ""
-                            #title = bean.title if bean.title else ""
                             paths.append("##" + bean.text)
                         else:
                             paths.append(bean.path)
