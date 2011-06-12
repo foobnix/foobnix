@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-04 16:05+0300\n"
+"POT-Creation-Date: 2011-06-06 11:18+0300\n"
 "PO-Revision-Date: 2011-06-05 17:24+0000\n"
 "Last-Translator: Ivan Ivanenko <foobnix developer> <Unknown>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-06-06 05:18+0000\n"
+"X-Launchpad-Export-Date: 2011-06-07 04:47+0000\n"
 "X-Generator: Launchpad (build 12959)\n"
 "Language: \n"
 "X-Poedit-Language: Russian\n"
@@ -854,8 +854,8 @@ msgid "Get Default Login Password"
 msgstr "Заполнить логином паролем по умолчанию"
 
 #: .././foobnix/regui/service/vk_service.py:55
-msgid "1: Generate token"
-msgstr "Генерировать код"
+msgid "1: Generate token (push or open the link url in the browser)"
+msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:57
 msgid "2: Apply Token"
@@ -873,11 +873,11 @@ msgstr "Код"
 msgid "User ID:"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:101
+#: .././foobnix/regui/service/vk_service.py:100
 msgid "Token incorrect or expired"
 msgstr "Код не правильный или закончился срок дейстивия"
 
-#: .././foobnix/regui/service/vk_service.py:104
+#: .././foobnix/regui/service/vk_service.py:103
 msgid "Token or user is empty"
 msgstr "Код или пользователь пустой"
 
@@ -1412,3 +1412,6 @@ msgstr ""
 
 #~ msgid "Install"
 #~ msgstr "Установить"
+
+#~ msgid "1: Generate token"
+#~ msgstr "Генерировать код"

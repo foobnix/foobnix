@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-04 16:05+0300\n"
-"PO-Revision-Date: 2011-04-15 07:56+0000\n"
+"POT-Creation-Date: 2011-06-06 11:18+0300\n"
+"PO-Revision-Date: 2011-06-08 08:19+0000\n"
 "Last-Translator: KamilSPL <Unknown>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-06-05 05:16+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2011-06-09 04:49+0000\n"
+"X-Generator: Launchpad (build 13168)\n"
 "Language: pl\n"
 
 #: .././foobnix/dm/dm.py:31 .././foobnix/preferences/preferences_window.py:60
@@ -59,7 +59,7 @@ msgstr "Włączony"
 
 #: .././foobnix/eq/eq_gui.py:92 .././foobnix/eq/eq_gui.py:289
 msgid "Disable EQ"
-msgstr ""
+msgstr "Wyłączony korektor"
 
 #: .././foobnix/eq/eq_gui.py:93
 #, python-format
@@ -116,7 +116,7 @@ msgstr "Sprawdzaj podczas włączania, czy jest nowa wersja foobnix."
 
 #: .././foobnix/helpers/window.py:74
 msgid "Total progress"
-msgstr ""
+msgstr "Całkowity postęp"
 
 #: .././foobnix/helpers/window.py:79
 #: .././foobnix/preferences/configs/hotkey_conf.py:157
@@ -359,7 +359,7 @@ msgstr "Automatycznie zapisuj muzykę"
 
 #: .././foobnix/preferences/configs/other_conf.py:45
 msgid "Download in threads"
-msgstr ""
+msgstr "Pobierz w wątkach"
 
 #: .././foobnix/preferences/configs/other_conf.py:62
 msgid "Disc cover size:"
@@ -514,15 +514,15 @@ msgstr "Wstrymane | "
 
 #: .././foobnix/regui/coverlyrics.py:21
 msgid "Album title"
-msgstr ""
+msgstr "O tytule"
 
 #: .././foobnix/regui/coverlyrics.py:26
 msgid "Cover:"
-msgstr ""
+msgstr "Okładka:"
 
 #: .././foobnix/regui/coverlyrics.py:32
 msgid "Lyric:"
-msgstr ""
+msgstr "Tekst:"
 
 #: .././foobnix/regui/infopanel.py:50
 msgid "Best Songs"
@@ -578,7 +578,7 @@ msgstr "Panel wyszukiwania"
 
 #: .././foobnix/regui/menu.py:45
 msgid "Cover & Lyrics Panel"
-msgstr ""
+msgstr "Okładka i tekst utworu"
 
 #: .././foobnix/regui/menu.py:60
 msgid "_Playback"
@@ -710,7 +710,7 @@ msgstr "Szukaj w sieci"
 
 #: .././foobnix/regui/search.py:104
 msgid "Tracks"
-msgstr ""
+msgstr "Wykonawcy"
 
 #: .././foobnix/regui/search.py:108
 msgid "Albums"
@@ -845,39 +845,39 @@ msgstr "Wyczyść listę muzyki"
 
 #: .././foobnix/regui/service/vk_service.py:26
 msgid "VKontakte Authorization (require for music search)"
-msgstr ""
+msgstr "Autoryzacja VKontakte (wymagane dla szukania muzyki)"
 
 #: .././foobnix/regui/service/vk_service.py:31
 msgid "Get Default Login Password"
-msgstr ""
+msgstr "Zrób domyślny login i hasło"
 
 #: .././foobnix/regui/service/vk_service.py:55
-msgid "1: Generate token"
-msgstr ""
+msgid "1: Generate token (push or open the link url in the browser)"
+msgstr "1: Generuj znak (kliknij albo otwórz link w przeglądarce)"
 
 #: .././foobnix/regui/service/vk_service.py:57
 msgid "2: Apply Token"
-msgstr ""
+msgstr "2: Zatwierdź znak"
 
 #: .././foobnix/regui/service/vk_service.py:60
 msgid "Please generate token..."
-msgstr ""
+msgstr "Proszę wygenerować znak..."
 
 #: .././foobnix/regui/service/vk_service.py:65
 msgid "Token:"
-msgstr ""
+msgstr "Znak:"
 
 #: .././foobnix/regui/service/vk_service.py:66
 msgid "User ID:"
-msgstr ""
+msgstr "ID użytkownika:"
 
-#: .././foobnix/regui/service/vk_service.py:101
+#: .././foobnix/regui/service/vk_service.py:100
 msgid "Token incorrect or expired"
-msgstr ""
+msgstr "Znak jest nieprawidłowy lub przedawniony"
 
-#: .././foobnix/regui/service/vk_service.py:104
+#: .././foobnix/regui/service/vk_service.py:103
 msgid "Token or user is empty"
-msgstr ""
+msgstr "Znak lub użytkownik jest pusty"
 
 #: .././foobnix/regui/treeview/dm_tree.py:92
 #: .././foobnix/regui/treeview/dm_tree.py:94
@@ -887,20 +887,20 @@ msgstr "Otwórz menadżer plików"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:164
 msgid "Copying:"
-msgstr ""
+msgstr "Kopiowanie:"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:164
 msgid "Replacing:"
-msgstr ""
+msgstr "Zastępowanie:"
 
 #. @UndefinedVariable
 #: .././foobnix/regui/treeview/dragdrop_tree.py:165
 msgid "Progress"
-msgstr ""
+msgstr "Postęp"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:167
 msgid "To: "
-msgstr ""
+msgstr "Do: "
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:25
 msgid "Lasm.fm Integration "
@@ -967,7 +967,7 @@ msgstr "Uaktualnij"
 #: .././foobnix/regui/treeview/navigation_tree.py:131
 #: .././foobnix/util/file_utils.py:187
 msgid "Create folder"
-msgstr ""
+msgstr "Utwórz folder"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:132
 msgid "Rename file (folder)"
@@ -1213,31 +1213,31 @@ msgstr "%s plik(ów) / folder(ów)"
 #: .././foobnix/util/file_utils.py:167
 #, python-format
 msgid "Are you really want to %s this item(s) to %s ?"
-msgstr ""
+msgstr "Czy naprawdę chcesz %s ten plik(i) do %s ?"
 
 #: .././foobnix/util/file_utils.py:186
 msgid "Make folder dialog"
-msgstr ""
+msgstr "Okno folderu"
 
 #: .././foobnix/util/file_utils.py:188
 msgid "You want to create subfolder in folder"
-msgstr ""
+msgstr "Chcesz stworzyć podfolder"
 
 #: .././foobnix/util/file_utils.py:189
 msgid "Enter new folder's name:"
-msgstr ""
+msgstr "Wprowadź nową nazwę folderu:"
 
 #: .././foobnix/util/file_utils.py:207
 msgid "So folder already exists"
-msgstr ""
+msgstr "Folder istnieje"
 
 #: .././foobnix/util/id3_util.py:127 .././foobnix/util/tag_util.py:118
 msgid "Unknown title"
-msgstr ""
+msgstr "Nieznany tytuł"
 
 #: .././foobnix/util/id3_util.py:129 .././foobnix/util/tag_util.py:120
 msgid "Unknown artist"
-msgstr ""
+msgstr "Nieznany artysta"
 
 #: .././foobnix/util/m3u_utils.py:51
 msgid "Choose window"
@@ -1282,7 +1282,7 @@ msgstr ""
 
 #: .././foobnix/util/net_wrapper.py:50
 msgid "Internet Connection"
-msgstr ""
+msgstr "Połączenie internetowe"
 
 #: .././foobnix/util/net_wrapper.py:50
 msgid ""
@@ -1290,6 +1290,9 @@ msgid ""
 " or internet not available. \n"
 " Please try again a little bit later."
 msgstr ""
+"Foobnix nie połączony \n"
+" albo internet jest niedostepny. \n"
+" Spróbuj ponownie trochę później."
 
 #: .././foobnix/util/tag_util.py:23
 msgid "Tag Editor"
@@ -1436,3 +1439,6 @@ msgstr ""
 #~ msgstr ""
 #~ "\n"
 #~ "Naprawdę chcesz %s te plik(i) do %s ?"
+
+#~ msgid "1: Generate token"
+#~ msgstr "1: Generuj znak"

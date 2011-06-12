@@ -38,12 +38,12 @@ class VKIntegrationControls(CommonTreeControl):
         self.cache =[]
     
     def lazy_load(self):
-        self.controls.in_thread.run_with_progressbar(self._lazy_load)
+        if self.controls.vk_service.is_show_authorization():
+                    return None
+        if not self.lazy:
+            self.controls.in_thread.run_with_progressbar(self._lazy_load)
     
     def _lazy_load(self):
-        if self.controls.vk_service.is_show_authorization():
-            return True
-        
         def get_users_by_uuid(uuidd):
             for user in self.controls.vk_service.get_result('getProfiles','uids='+uuidd):
                 logging.debug(user)

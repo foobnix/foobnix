@@ -145,8 +145,11 @@ class VKService:
     def get_result(self, method, data):
         result  = self.get(method, data)
         logging.debug("result " + result)
-        object = self.to_json(result)        
-        return object["response"]
+        object = self.to_json(result)
+        if object.has_key("response"):        
+            return object["response"]
+        else:
+            return None
         
     def get(self, method, data):
         time.sleep(0.6)
@@ -166,7 +169,10 @@ class VKService:
             self.vk_window.show()
             return True
         return False
-        
+    
+    def show_vk(self):
+        self.vk_window.show()
+    
     def is_connected(self):
         if self.connected:
             return True
@@ -182,6 +188,10 @@ class VKService:
         else:
             self.connected =  True
             return True
+    
+    def get_profile(self):
+        return self.get_result("getProfiles", "uid="+str(self.user_id))
+        
     
     def is_authentified(self, token,user_id):
         self.token = token

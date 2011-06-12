@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-04 16:05+0300\n"
-"PO-Revision-Date: 2011-06-04 10:09+0000\n"
+"POT-Creation-Date: 2011-06-06 11:18+0300\n"
+"PO-Revision-Date: 2011-06-07 18:51+0000\n"
 "Last-Translator: Maks Lyashuk aka Ma)(imuM <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-06-05 05:16+0000\n"
+"X-Launchpad-Export-Date: 2011-06-08 04:55+0000\n"
 "X-Generator: Launchpad (build 12959)\n"
 "Language: uk\n"
 
@@ -59,7 +59,7 @@ msgstr "Увімк."
 
 #: .././foobnix/eq/eq_gui.py:92 .././foobnix/eq/eq_gui.py:289
 msgid "Disable EQ"
-msgstr ""
+msgstr "Відключити EQ"
 
 #: .././foobnix/eq/eq_gui.py:93
 #, python-format
@@ -116,7 +116,7 @@ msgstr "Перевіряти наявність нової версії при �
 
 #: .././foobnix/helpers/window.py:74
 msgid "Total progress"
-msgstr ""
+msgstr "Загальний процес"
 
 #: .././foobnix/helpers/window.py:79
 #: .././foobnix/preferences/configs/hotkey_conf.py:157
@@ -514,15 +514,15 @@ msgstr ""
 
 #: .././foobnix/regui/coverlyrics.py:21
 msgid "Album title"
-msgstr ""
+msgstr "Назва альбому"
 
 #: .././foobnix/regui/coverlyrics.py:26
 msgid "Cover:"
-msgstr ""
+msgstr "Обкладинка:"
 
 #: .././foobnix/regui/coverlyrics.py:32
 msgid "Lyric:"
-msgstr ""
+msgstr "Текст:"
 
 #: .././foobnix/regui/infopanel.py:50
 msgid "Best Songs"
@@ -710,7 +710,7 @@ msgstr "Шукати"
 
 #: .././foobnix/regui/search.py:104
 msgid "Tracks"
-msgstr ""
+msgstr "Треки"
 
 #: .././foobnix/regui/search.py:108
 msgid "Albums"
@@ -820,7 +820,7 @@ msgstr "Закрити вкладку"
 
 #: .././foobnix/regui/notetab/__init__.py:346
 msgid "It's need not empty playlist"
-msgstr ""
+msgstr "Пустий список програвання непотрібен"
 
 #: .././foobnix/regui/notetab/__init__.py:349
 msgid "Choose folder to save playlist"
@@ -845,14 +845,14 @@ msgstr "Очистити дерево музики"
 
 #: .././foobnix/regui/service/vk_service.py:26
 msgid "VKontakte Authorization (require for music search)"
-msgstr ""
+msgstr "Авторизація VKontakte (потрібна для пошуку музики)"
 
 #: .././foobnix/regui/service/vk_service.py:31
 msgid "Get Default Login Password"
 msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:55
-msgid "1: Generate token"
+msgid "1: Generate token (push or open the link url in the browser)"
 msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:57
@@ -869,13 +869,13 @@ msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:66
 msgid "User ID:"
-msgstr ""
+msgstr "ID користувача:"
 
-#: .././foobnix/regui/service/vk_service.py:101
+#: .././foobnix/regui/service/vk_service.py:100
 msgid "Token incorrect or expired"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:104
+#: .././foobnix/regui/service/vk_service.py:103
 msgid "Token or user is empty"
 msgstr ""
 
@@ -887,20 +887,20 @@ msgstr "Відкрити у файловому менеджері"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:164
 msgid "Copying:"
-msgstr ""
+msgstr "Копіювання:"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:164
 msgid "Replacing:"
-msgstr ""
+msgstr "Заміна:"
 
 #. @UndefinedVariable
 #: .././foobnix/regui/treeview/dragdrop_tree.py:165
 msgid "Progress"
-msgstr ""
+msgstr "Виконання"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:167
 msgid "To: "
-msgstr ""
+msgstr "До: "
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:25
 msgid "Lasm.fm Integration "
@@ -967,7 +967,7 @@ msgstr "Оновити"
 #: .././foobnix/regui/treeview/navigation_tree.py:131
 #: .././foobnix/util/file_utils.py:187
 msgid "Create folder"
-msgstr ""
+msgstr "Створити теку"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:132
 msgid "Rename file (folder)"
@@ -1173,10 +1173,12 @@ msgid ""
 "So file(s)  already exist(s) and will be overwritten.\n"
 "Do you wish to continue?"
 msgstr ""
+"Отож, файли присутні і будуть перезаписані!\n"
+"Ви дійсно хочете продовжити?"
 
 #: .././foobnix/util/converter.py:336
 msgid "Attention"
-msgstr ""
+msgstr "Увага"
 
 #: .././foobnix/util/converter.py:338
 msgid "Converter require specially compiled ffmpeg module for work.\n"
@@ -1193,7 +1195,7 @@ msgstr "Перейменувати файл"
 
 #: .././foobnix/util/file_utils.py:112
 msgid "Do you really want to delete item(s) from disk?"
-msgstr ""
+msgstr "Ви дійсно хочете вилучити елемент(и) з диску ?"
 
 #: .././foobnix/util/file_utils.py:158
 msgid "Copy"
@@ -1212,7 +1214,7 @@ msgstr "%s файл(ів) / тек(и)"
 #: .././foobnix/util/file_utils.py:167
 #, python-format
 msgid "Are you really want to %s this item(s) to %s ?"
-msgstr ""
+msgstr "Ви дійсно бажаєте %s ці елементи в %s ?"
 
 #: .././foobnix/util/file_utils.py:186
 msgid "Make folder dialog"
