@@ -62,7 +62,7 @@ class DBusManager(dbus.service.Object, FControl):
             dbus.service.Object.__init__(self, bus_name, object_path)
     
             self._player = MprisPlayer(controls)
-        
+            #dbus_interface = 
             dbus_interface = 'org.gnome.SettingsDaemon.MediaKeys'
             mm_object = bus.get_object('org.gnome.SettingsDaemon', '/org/gnome/SettingsDaemon/MediaKeys')
             mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
