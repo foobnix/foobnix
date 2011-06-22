@@ -129,7 +129,7 @@ class DM(ChildTopWindow):
             semaphore.acquire()
             bean = dm_list.get_next_bean_to_dowload()            
             if bean:
-                if not bean.path or not self.controls.check_path(bean.path):                 
+                if not bean.path or not self.controls.check_path(bean):                 
                     vk = self.controls.vk_service.find_one_track(bean.get_display_name())
                     if not vk:
                         bean.status = DOWNLOAD_STATUS_ERROR
