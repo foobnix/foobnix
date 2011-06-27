@@ -40,7 +40,7 @@ def foobnix():
         if "--debug" in sys.argv or not iface:
             print ("start program")
             gobject.threads_init()    #@UndefinedVariable
-            core = FoobnixCore(True, "--ping" in sys.argv)
+            core = FoobnixCore(True)
             core.run()
             #core.dbus.parse_arguments(sys.argv)
             print ("******Foobnix run in", time.time() - init_time, " seconds******")
