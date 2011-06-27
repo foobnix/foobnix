@@ -18,6 +18,7 @@ from foobnix.fc.fc import FC
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.helpers.textarea import ScrolledText
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.helpers.dialog_entry import directory_chooser_dialog
 
 
 def open_in_filemanager(path, managers=None):
@@ -374,3 +375,20 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
         except OSError, why:
             errors.extend((src, dst_folder, str(why)))
     
+def copy_to(old_paths):
+        destinations = directory_chooser_dialog(_("Choose Folder"), FC().last_dir)
+        from foobnix.helpers.window import CopyProgressWindow
+        pr_window = CopyProgressWindow(_("Progress"), old_paths, 300, 100)
+        pr_window.label_to.set_text(_("To: ") + destinations[0] + "\n")
+        if destinations:
+            for old_path in old_paths:
+                pr_window.label_from.set_text(_("Copying: ") + os.path.dirname(old_path))
+                def task():
+                    copy_move_with_progressbar(pr_window, old_path, destinations[0])
+                    pr_window.response(gtk.RESPONSE_OK)
+                t = threading.Thread(target=task)
+                t.start()
+                if pr_window.run() == gtk.RESPONSE_REJECT:
+                    pr_window.exit = True
+                    t.join()
+        pr_window.destroy()
