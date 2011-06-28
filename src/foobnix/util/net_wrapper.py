@@ -29,16 +29,20 @@ class NetWrapper():
             thread.start_new_thread(self.ping, ())
             
     def ping(self):
+        print "start ping"
         def task(sp):
             i = 0
             while i < 10:
                 if sp.poll():
+                    print "in sp.poll()"
                     return
                 else:
+                    print "in else"
                     i += 1
                     time.sleep(0.5)
             #if sp.returncode == None: #mistake 'if not sp.returncode:'
             if not self.out:
+                print "in if not self.out"
                 self.is_connected = False
                 logging.debug("internet is not connected \"not self.out\" ")            
                 sp.kill()
@@ -54,9 +58,11 @@ class NetWrapper():
             timer.start()
             self.out, self.error = sp.communicate()
             if self.error:
+                print "self.error", self.error
                 self.is_connected = False
                 logging.debug("internet is not connected - error")
             elif self.out:
+                print "self.out", self.out
                 self.is_connected = True
             time.sleep(2)
     
@@ -72,8 +78,10 @@ class NetWrapper():
             
     def execute(self,func, *args):
         if self.is_connected:
+            print "Success internet connection"
             logging.info("Success internet connection")
             return func(*args) if args else func()
         else:
+            print "dialog"
             self._dialog()
             return None
