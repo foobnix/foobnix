@@ -32,12 +32,13 @@ class NetWrapper():
         print "start ping"
         def task(sp):
             i = 0
-            while i < 10:
-                if sp.poll():
+            while i < 100:
+                print sp.poll()
+                if sp.poll() != None:
                     print "in sp.poll()"
                     return
                 else:
-                    print "in else"
+                    print "in else", i
                     i += 1
                     time.sleep(0.5)
             #if sp.returncode == None: #mistake 'if not sp.returncode:'
@@ -53,6 +54,8 @@ class NetWrapper():
             cmd = ['ping', 'google.com', '-c 2']
          
         while self.flag:
+            self.out = None
+            self.error = None
             sp = Popen(cmd, stdout=PIPE, stderr=PIPE)
             timer = Thread(target=task, args=(sp,))    
             timer.start()
@@ -62,6 +65,10 @@ class NetWrapper():
                 self.is_connected = False
                 logging.debug("internet is not connected - error")
             elif self.out:
+                if len(self.out.split('\n')) < 5:
+                    print "in len"
+                    self.is_connected = False
+                    logging.debug("internet is not connected - error")
                 print "self.out", self.out
                 self.is_connected = True
             time.sleep(2)
