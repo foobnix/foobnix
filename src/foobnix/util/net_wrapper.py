@@ -16,8 +16,12 @@ from foobnix.helpers import dialog_entry
 
 class NetWrapper():
     def __init__(self, is_ping=True):
+        return
         self.flag = True
-        self.is_connected = True
+        self.is_connected = False
+        
+        "only for self.execute() method"
+        self.previous_connect = False
         
         if not is_ping:
             logging.debug("Ping functional is disabled")
@@ -32,8 +36,7 @@ class NetWrapper():
         print "start ping"
         def task(sp):
             i = 0
-            while i < 100:
-                print sp.poll()
+            while i < 15:
                 if sp.poll() != None:
                     print "in sp.poll()"
                     return
@@ -60,21 +63,23 @@ class NetWrapper():
             timer = Thread(target=task, args=(sp,))    
             timer.start()
             self.out, self.error = sp.communicate()
+            print "after communicate"
             if self.error:
                 print "self.error", self.error
                 self.is_connected = False
                 logging.debug("internet is not connected - error")
             elif self.out:
-                if len(self.out.split('\n')) < 5:
+                print "len", len(self.out.split('\n'))
+                if "100%" in self.out:
                     print "in len"
                     self.is_connected = False
                     logging.debug("internet is not connected - error")
                 print "self.out", self.out
                 self.is_connected = True
             time.sleep(2)
+            print self.is_internet()
     
-    def _dialog(self):
-        logging.warning("No internet connection")
+    def disconnect_dialog(self):
         dialog_entry.info_dialog(_("Internet Connection"), _("Foobnix not connected \n or internet not available. \n Please try again a little bit later."))
     
     def is_internet(self):
@@ -85,10 +90,13 @@ class NetWrapper():
             
     def execute(self,func, *args):
         if self.is_connected:
+            self.previous_connect = True
             print "Success internet connection"
             logging.info("Success internet connection")
             return func(*args) if args else func()
         else:
-            print "dialog"
-            self._dialog()
+            if self.previous_connect:
+                print "dialog"
+            self.disconnect_dialog    
+            logging.warning("No internet connection")
             return None
