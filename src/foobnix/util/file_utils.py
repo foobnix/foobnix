@@ -382,6 +382,9 @@ def copy_to(old_paths):
         pr_window.label_to.set_text(_("To: ") + destinations[0] + "\n")
         if destinations:
             for old_path in old_paths:
+                if not os.path.exists(old_path):
+                    logging.warning("File " + old_path + " not exists")
+                    continue
                 pr_window.label_from.set_text(_("Copying: ") + os.path.dirname(old_path))
                 def task():
                     copy_move_with_progressbar(pr_window, old_path, destinations[0])

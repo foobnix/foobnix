@@ -115,4 +115,9 @@ class CopyProgressWindow(gtk.Dialog):
                 raise threading.ThreadError("the thread is stopped")
             if got == size:
                 break
-        
+
+class MessageWindow(gtk.MessageDialog):
+    def __init__(self, title, type=gtk.MESSAGE_INFO, text=None, parent=None, buttons=None, flags=0):
+        gtk.MessageDialog.__init__(self, parent, flags, type, buttons, text)
+        self.set_title(title)
+        self.show_all()
