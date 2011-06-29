@@ -16,7 +16,6 @@ from foobnix.helpers import dialog_entry
 
 class NetWrapper():
     def __init__(self, is_ping=True):
-        return
         self.flag = True
         self.is_connected = False
         
