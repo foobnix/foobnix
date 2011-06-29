@@ -76,7 +76,9 @@ class BaseFoobnixControls():
         return beans
     
     def get_active_bean(self):
-        return self.notetabs.get_current_tree().get_selected_or_current_bean()
+        tree = self.notetabs.get_current_tree()
+        if tree:
+            return tree.get_selected_or_current_bean()
     
          
     def play_selected_song(self):    
@@ -176,7 +178,7 @@ class BaseFoobnixControls():
                         ext = os.path.splitext(path)[1]
                         tab_name = os.path.basename(path)[:-len(ext)]
                     break
-        if paths: 
+        if paths:
             if paths[0]:
                 if isinstance(paths[0], list):
                     path = paths[0][0]
