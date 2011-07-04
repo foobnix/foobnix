@@ -30,6 +30,8 @@ class NetWrapper():
         """in win ping successfully works, but console with ping appears and hide periodically"""
         if os.name != 'nt':
             thread.start_new_thread(self.ping, ())
+        else:
+            self.is_connected = True
             
     def ping(self):
         def task(sp):
