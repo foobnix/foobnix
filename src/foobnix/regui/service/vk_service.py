@@ -21,7 +21,11 @@ from foobnix.helpers.pref_widgets import HBoxLableEntry
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
-    API_URL = "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=26&redirect_uri=" + REDIRECT_URL + "&response_type=token"
+    API_URL = "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=audio&redirect_uri=" + REDIRECT_URL + "&display=touch&response_type=token"
+    
+    def get_web_url(self):
+        return "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=audio&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
+                             
     def __init__(self, service):
         self.service = service
         ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"))
@@ -37,7 +41,8 @@ class VKAuthorizationWindow(ChildTopWindow):
             import webkit            
             self.web_view = webkit.WebView()
             self.web_view.set_size_request(640, -1) 
-            self.web_view.load_uri(self.API_URL)
+            
+            self.web_view.load_uri(self.get_web_url())
             self.web_view.connect("navigation-policy-decision-requested", self._nav_request_policy_decision_cb)
                
             vbox.pack_start(self.web_view, True, True)
@@ -117,7 +122,7 @@ class VKAuthorizationWindow(ChildTopWindow):
     def _nav_request_policy_decision_cb(self, view, frame, net_req, nav_act, pol_dec):
         uri = net_req.get_uri()       
         logging.debug("response url" + uri) 
-        if uri.startswith(self.REDIRECT_URL):
+        if "access_token" in uri:
             token = self.get_response(uri)["access_token"]
             userid= self.get_response(uri)["user_id"]
             self.apply(token, userid)   
