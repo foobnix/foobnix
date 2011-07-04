@@ -162,6 +162,8 @@ class FC():
         '''for navigation tree'''
         self.show_full_filename = False
         
+        self.antiscreensaver = False
+        
         self.load();
     
     def delete(self):

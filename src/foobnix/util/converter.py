@@ -363,11 +363,17 @@ def convert_files(paths):
             cancel_button.connect("released", on_close)
             def task():
                 with open(ffmpeg_path,'wb') as local_file:
-                    for byte in xrange(int(size/100)): #@UnusedVariable
-                        local_file.write(remote_file.read(1000))
+                    got = 0
+                    cycle = True
+                    while cycle:
+                        local_file.write(remote_file.read(20000))
+                        if got + 20000 >= size: 
+                            cycle = False 
                         got = os.path.getsize(ffmpeg_path)
                         prog_bar.set_fraction(got/size)
                         prog_bar.set_text("Downloaded  %.2f of %.2fMb" % (float(got)/1024/1024, size/1024/1024))
+                        time.sleep(0.05) #for stability
+                    
                 os.chmod(ffmpeg_path, 0777)
                 time.sleep(1) #for stability
                 gobject.idle_add(convert_files, paths)

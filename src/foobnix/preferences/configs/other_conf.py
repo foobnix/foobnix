@@ -13,6 +13,7 @@ from foobnix.fc.fc import FC
 from foobnix.helpers.dialog_entry import info_dialog_with_link_and_donate
 from foobnix.helpers.pref_widgets import IconBlock
 from foobnix.preferences.configs import CONFIG_OTHER
+from foobnix.util.antiscreensaver import antiscreensaver
 
 class OtherConfig(ConfigPlugin):
     
@@ -40,8 +41,7 @@ class OtherConfig(ConfigPlugin):
         
         """download threads"""
         thbox = gtk.HBox(False, 5)
-        
-        
+                
         tab_label = gtk.Label(_("Download in threads"))
         tab_label.show()
         
@@ -51,10 +51,7 @@ class OtherConfig(ConfigPlugin):
         
         thbox.pack_start(tab_label, False, False)
         thbox.pack_start(self.threads_count, False, True)
-        
-        
-        
-        
+              
         """disc cover size"""
         cbox = gtk.HBox(False, 5)
         cbox.show()
@@ -95,10 +92,8 @@ class OtherConfig(ConfigPlugin):
         label = gtk.Label(_("Menu type: "))
         
         self.old_style = gtk.RadioButton(None, _("Old Style (Menu Bar)"))
-        #self.old_style.connect("toggled", self.on_change_menu_type)
-        
+                
         self.new_style = gtk.RadioButton(self.old_style, _("New Style (Button)"))
-        #self.new_style.connect("toggled", self.on_change_menu_type)
         
         pbox.pack_start(label, False, False, 0)
         pbox.pack_start(self.new_style, False, True, 0)
@@ -110,10 +105,8 @@ class OtherConfig(ConfigPlugin):
         o_r_label = gtk.Label(_("Order-Repeat Switcher Style:"))
         
         self.buttons = gtk.RadioButton(None, _("Toggle Buttons"))
-        #self.buttons.connect("toggled", self.on_change_o_r_style)
         
         self.labels = gtk.RadioButton(self.buttons, _("Text Labels"))
-        #self.labels.connect("toggled", self.on_change_o_r_style)
         
         o_r_box.pack_start(o_r_label, False, False, 0)
         o_r_box.pack_start(self.buttons, False, True, 0)
@@ -138,6 +131,8 @@ class OtherConfig(ConfigPlugin):
         hcombobox = gtk.HBox(False, 5)
         hcombobox.pack_start(gtk.Label(_('Choose your preferred file manager:')), False, False)
         hcombobox.pack_start(self.fmgrs_combo, False, False)
+        
+        self.disable_screensaver = gtk.CheckButton(label=_("Disable Xscreensaver"), use_underline=True)
                 
         """packaging"""        
         box.pack_start(hbox, False, True, 0)
@@ -151,6 +146,7 @@ class OtherConfig(ConfigPlugin):
         box.pack_start(o_r_box, False, False, 0)
         box.pack_start(obox, False, False, 0)
         box.pack_start(hcombobox, False, False, 0)
+        box.pack_start(self.disable_screensaver)
         
         self.widget = box
     
@@ -172,7 +168,6 @@ class OtherConfig(ConfigPlugin):
         FC().online_save_to_folder = path        
         logging.info("Change music online folder: " + path)  
                 
-    
     def on_load(self):
         self.online_dir.set_current_folder(FC().online_save_to_folder)
         self.online_dir.set_sensitive(FC().is_save_online)
@@ -201,6 +196,10 @@ class OtherConfig(ConfigPlugin):
             self.labels.set_active(True)
         
         self.fmgrs_combo.set_active(FC().active_manager[0])
+        
+        if FC().antiscreensaver == True:
+            self.disable_screensaver.set_active(True)
+            antiscreensaver()
             
     def on_save(self):
         self.is_background_image = FC().background_image
@@ -228,6 +227,13 @@ class OtherConfig(ConfigPlugin):
             self.controls.preferences.hide()            
             self.controls.preferences.show()        
         FC().active_manager = [self.fmgrs_combo.get_active(), self.fmgrs_combo.get_active_text().lower()]
+        
+        if self.disable_screensaver.get_active():
+            FC().antiscreensaver = True
+            antiscreensaver()
+        else:
+            FC().antiscreensaver = False
+            
         self.on_change_menu_type()
         
     def fmgr_combobox(self):

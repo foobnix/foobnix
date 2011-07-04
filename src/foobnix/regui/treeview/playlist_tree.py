@@ -15,7 +15,7 @@ from foobnix.helpers.menu import Popup
 from foobnix.util.tag_util import edit_tags
 from foobnix.util.converter import convert_files
 from foobnix.util.audio import get_mutagen_audio
-from foobnix.util.file_utils import open_in_filemanager
+from foobnix.util.file_utils import open_in_filemanager, copy_to
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
@@ -222,10 +222,27 @@ class PlaylistTreeControl(CommonTreeControl):
             if beans:
                 menu = Popup()
                 menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
-                menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
-                menu.add_item(_('Download To...'), gtk.STOCK_ADD, self.controls.dm.append_tasks_with_dialog, self.get_all_selected_beans())
+                               
+                paths = []
+                inet_paths = []
+                local_paths = []
+                for bean in beans:
+                    if bean.path in paths:
+                        continue
+                    paths.append(bean.path)
+                    if not bean.path or bean.path.startswith("http://"):
+                        inet_paths.append(bean.path)
+                    else:
+                        local_paths.append(bean.path)
+                                                    
+                if local_paths:
+                    menu.add_item(_('Copy To...'), gtk.STOCK_ADD, copy_to, local_paths)
+                if inet_paths:
+                    menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
+                    menu.add_item(_('Download To...'), gtk.STOCK_ADD, self.controls.dm.append_tasks_with_dialog, self.get_all_selected_beans())
+                                
                 menu.add_separator()
-                paths = [bean.path for bean in beans]
+                
                 if paths[0]:
                     menu.add_item(_('Edit Tags'), gtk.STOCK_EDIT, edit_tags, (self.controls, paths))
                     menu.add_item(_('Format Converter'), gtk.STOCK_CONVERT, convert_files, paths)
