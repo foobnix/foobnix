@@ -21,10 +21,10 @@ from foobnix.helpers.pref_widgets import HBoxLableEntry
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
-    API_URL = "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=audio&redirect_uri=" + REDIRECT_URL + "&display=touch&response_type=token"
+    API_URL = "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=" + REDIRECT_URL + "&display=touch&response_type=token"
     
     def get_web_url(self):
-        return "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=audio&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
+        return "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
                              
     def __init__(self, service):
         self.service = service
