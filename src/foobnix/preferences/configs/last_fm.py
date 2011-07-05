@@ -11,11 +11,16 @@ from foobnix.fc.fc_base import FCBase
 
 class LastFmConfig(ConfigPlugin):
     
-    name = _("Last FM")
+    name = _("Last FM + VK")
     
     def __init__(self, controls):
         box = gtk.VBox(False, 0)        
         box.hide()
+        
+        """LAST.FM"""
+        l_frame = gtk.Frame(label=_("Last.FM"))
+        l_frame.set_border_width(0)
+        l_layout = gtk.VBox(False, 0)
         
         """LOGIN"""
         lbox = gtk.HBox(False, 0)
@@ -53,11 +58,41 @@ class LastFmConfig(ConfigPlugin):
         pbox.pack_start(password, False, False, 0)
         pbox.pack_start(self.password_text, False, True, 0)
         
+        l_layout.pack_start(lbox, False, True, 0)
+        l_layout.pack_start(pbox, False, True, 0)
+        l_layout.pack_start(self.music_scrobbler, False, True, 0)
+        l_layout.pack_start(self.radio_scrobbler, False, True, 0)
+        l_frame.add(l_layout)
         
-        box.pack_start(lbox, False, True, 0)
-        box.pack_start(pbox, False, True, 0)
-        box.pack_start(self.music_scrobbler, False, True, 0)
-        box.pack_start(self.radio_scrobbler, False, True, 0)
+        """VK"""
+        
+        vk_frame = gtk.Frame(label=_("VKontakte"))
+        vk_frame.set_border_width(0)
+        
+        vk_layout = gtk.VBox(False, 0)
+        
+        profile = controls.vk_service.get_profile()
+        fname, sname = _("VKontakte"), _("Disable")
+        if profile:
+            fname = profile[0]["first_name"] 
+            sname = profile[0]["last_name"]
+        
+            
+        
+        vk_layout.pack_start(gtk.Label(_("You vk account is:") + " %s %s" % (fname, sname)), False,False)
+        vk_exit = gtk.Button(_("Authorization (then need player restart)"))
+        def show_vk(*a):
+            controls.vk_service.show_vk()
+        vk_exit.connect("clicked",show_vk)
+        
+        vk_layout.pack_start(vk_exit, False, False)
+        
+        vk_frame.add(vk_layout)
+        
+        """all"""        
+        box.pack_start(l_frame, False, True, 0)
+        box.pack_start(vk_frame, False, True, 0)
+        
         
         self.widget = box
     
