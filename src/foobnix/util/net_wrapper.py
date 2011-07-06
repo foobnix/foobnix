@@ -6,16 +6,18 @@ Created on 31 may 2011
 '''
 
 import os
+import gtk
 import time
 import thread
 import logging
 
 from threading import Thread
 from subprocess import Popen, PIPE
-from foobnix.helpers import dialog_entry
+from foobnix.helpers.window import MessageWindow
 
 class NetWrapper():
-    def __init__(self, is_ping=True):
+    def __init__(self, contorls, is_ping=True):
+        self.controls = contorls
         self.flag = True
         self.is_connected = False
         
@@ -32,7 +34,7 @@ class NetWrapper():
             thread.start_new_thread(self.ping, ())
         else:
             self.is_connected = True
-            
+                        
     def ping(self):
         def task(sp):
             i = 0
@@ -71,8 +73,12 @@ class NetWrapper():
             time.sleep(2)
                 
     def disconnect_dialog(self):
-        dialog_entry.info_dialog(_("Internet Connection"), _("Foobnix not connected \n or internet not available. \n Please try again a little bit later."))
-    
+        def task():
+            self.disconnect_message = MessageWindow(title=_("Internet Connection"), 
+                                                text=_("Foobnix not connected or internet not available. Please try again a little bit later."),
+                                                parent=self.controls.main_window, buttons=gtk.BUTTONS_OK)
+        thread.start_new_thread(task, ())
+        
     def is_internet(self):
         if self.is_connected:
             return True
@@ -86,6 +92,7 @@ class NetWrapper():
             return func(*args) if args else func()
         else:
             if self.previous_connect:
-                self.disconnect_dialog()    
+                self.previous_connect = False
+                self.disconnect_dialog()
             logging.warning("No internet connection")
             return None

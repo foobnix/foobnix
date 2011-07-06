@@ -41,7 +41,7 @@ class FoobnixCore(BaseFoobnixControls):
         BaseFoobnixControls.__init__(self)
         self.layout = None
         
-        self.net_wrapper = NetWrapper(is_ping)
+        self.net_wrapper = NetWrapper(self, is_ping)
         
         self.statusbar = StatusbarControls(self)
                 

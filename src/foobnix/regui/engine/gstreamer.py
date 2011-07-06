@@ -18,6 +18,7 @@ from foobnix.regui.engine import MediaPlayerEngine
 from foobnix.util.plsparser import get_radio_source
 from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
 from foobnix.util.file_utils import get_file_extension
+from foobnix.util.id3_util import decode_cp866
 
 
 class GStreamerEngine(MediaPlayerEngine):
@@ -102,7 +103,7 @@ class GStreamerEngine(MediaPlayerEngine):
         #self.pipeline = gst.parse_launch("""souphttpsrc location=%s ! tee name=t ! queue ! decodebin2 ! audioconvert ! audioresample ! autoaudiosink  t. ! queue ! filesink location=%s""" % (self.radio_rec_path, file_name))
         self.pipeline = gst.parse_launch("""alsasrc ! audioconvert ! vorbisenc bitrate=128000 ! oggmux ! filesink location=%s""" % file_name)
         self.pipeline.set_state(gst.STATE_PLAYING)
-            
+
     def play(self, bean):
         self.bean = bean
         
@@ -236,7 +237,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 position_int = self.get_position_seek_ns()
                 if position_int > 0 and self.bean.start_sec > 0:
                     position_int = position_int - float(self.bean.start_sec) * self.NANO_SECONDS
-                    logging.debug(str(position_int) + str(self.bean.start_sec) + str(duration_int))
+                    #logging.debug(str(position_int) + str(self.bean.start_sec) + str(duration_int))
                     if position_int + self.NANO_SECONDS > duration_int:
                         self.notify_eos()
                 
@@ -364,6 +365,8 @@ class GStreamerEngine(MediaPlayerEngine):
         if type == gst.MESSAGE_TAG  and message.parse_tag():
             if message.structure.has_field("title"):
                 title = message.structure['title']
+                title = decode_cp866(title)
+                print "title", title
                 self.notify_title(title)
 
         elif type == gst.MESSAGE_EOS:
