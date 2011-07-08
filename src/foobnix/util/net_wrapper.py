@@ -38,7 +38,7 @@ class NetWrapper():
     def ping(self):
         def task(sp):
             i = 0
-            while i < 15:
+            while i < 20:
                 if sp.poll() != None:
                     return
                 else:
@@ -70,7 +70,7 @@ class NetWrapper():
                     self.is_connected = False
                     logging.debug("internet is not connected - error")
                 self.is_connected = True
-            time.sleep(2)
+            time.sleep(3)
                 
     def disconnect_dialog(self):
         def task():
