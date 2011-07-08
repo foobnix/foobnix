@@ -34,7 +34,7 @@ class VKAuthorizationWindow(ChildTopWindow):
         self.access_token = None
         
         default_button = gtk.Button(_("Get Default Login Password"))
-        default_button.connect("clicked", self.on_defauls)
+        default_button.connect("clicked", self.on_defaults)
 
         
         def web_kit_token():
@@ -129,12 +129,16 @@ class VKAuthorizationWindow(ChildTopWindow):
             self.hide(); 
         return False
         
-    def on_defauls(self, *a):
-        f = urllib.urlopen("http://android.foobnix.com/vk", "")
+    def on_defaults(self, *a):
+        url = "http://android.foobnix.com/vk"
+        try:
+            f = urllib.urlopen(url, "")
+        except IOError:
+            logging.error("Can't get default login and password because no response from " + url)
+            return
         result = f.read().split(":")
         self.web_view.execute_script("javascript:(function() {document.getElementsByName('email')[0].value='%s'})()" % result[0])
         self.web_view.execute_script("javascript:(function() {document.getElementsByName('pass')[0].value='%s'})()" % result[1])           
-
         
     
 class VKService:
@@ -149,6 +153,8 @@ class VKService:
         
     def get_result(self, method, data):
         result  = self.get(method, data)
+        if not result:
+            return
         logging.debug("result " + result)
         object = self.to_json(result)
         if object.has_key("response"):        
@@ -163,7 +169,8 @@ class VKService:
         try:
             response = urllib.urlopen(url)
         except IOError:
-            logging.error("Cah't to get response from " + url)
+            logging.error("Can't get response from " + url)
+            return
         result = response.read()
         logging.debug("get VK API result ", result)
         return  result
