@@ -71,18 +71,18 @@ class LastFmConfig(ConfigPlugin):
         
         vk_layout = gtk.VBox(False, 0)
         
-        profile = controls.vk_service.get_profile()
+        profile = controls.net_wrapper.execute(controls.vk_service.get_profile)
         fname, sname = _("VKontakte"), _("Disable")
         if profile:
             fname = profile[0]["first_name"] 
             sname = profile[0]["last_name"]
-        
-            
-        
+               
         vk_layout.pack_start(gtk.Label(_("You vk account is:") + " %s %s" % (fname, sname)), False,False)
         vk_exit = gtk.Button(_("Authorization (then need player restart)"))
+        
         def show_vk(*a):
             controls.vk_service.show_vk()
+        
         vk_exit.connect("clicked",show_vk)
         
         vk_layout.pack_start(vk_exit, False, False)

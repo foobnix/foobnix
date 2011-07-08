@@ -159,10 +159,13 @@ class VKService:
     def get(self, method, data):
         time.sleep(0.6)
         url = "https://api.vkontakte.ru/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
-        logging.debug("GET" + url)
-        response = urllib.urlopen(url)
+        logging.debug("GET " + url)
+        try:
+            response = urllib.urlopen(url)
+        except IOError:
+            logging.error("Cah't to get response from " + url)
         result = response.read()
-        logging.debug("get VK API result", result)
+        logging.debug("get VK API result ", result)
         return  result
     
     def to_json(self, json):
@@ -179,6 +182,8 @@ class VKService:
         self.vk_window.show()
     
     def is_connected(self):
+        
+        
         if self.connected:
             return True
         
