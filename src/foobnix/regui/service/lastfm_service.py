@@ -478,7 +478,16 @@ class LastFmService():
             return None
         album = self.cache.get_album(artist, title);
         if album:
-            return album.get_release_year()
+            st_date = str(album.get_release_date())
+            try:
+                dt = datetime.datetime.strptime(st_date, "%d %b %Y, %H:%M")
+            except:
+                if st_date:
+                    i = st_date.find(",")
+                    return st_date[i - 4:i]
+                else:
+                    return st_date
+            return str(dt.year)
 
     def get_album_image_url(self, artist, title, size=pylast.COVER_LARGE):
         if not self.connect():
