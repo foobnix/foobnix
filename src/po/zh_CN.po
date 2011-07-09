@@ -1,0 +1,1402 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: foobnix\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-06 11:18+0300\n"
+"PO-Revision-Date: 2011-04-15 00:07+0000\n"
+"Last-Translator: XsLiDian <xslidian@gmail.com>\n"
+"Language-Team: Chinese Simplified <xslidian+foobnix@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2011-06-07 04:47+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
+"Language: \n"
+"X-Poedit-Language: Chinese\n"
+
+#: .././foobnix/dm/dm.py:31 .././foobnix/preferences/preferences_window.py:60
+#: .././foobnix/regui/menu.py:52 .././foobnix/regui/top.py:44
+msgid "Preferences"
+msgstr "偏好设置"
+
+#: .././foobnix/dm/dm.py:33
+msgid "Start Downloading"
+msgstr "开始下载"
+
+#: .././foobnix/dm/dm.py:34
+msgid "Stop Downloading"
+msgstr "停止下载"
+
+#: .././foobnix/dm/dm.py:49 .././foobnix/preferences/configs/__init__.py:3
+#: .././foobnix/regui/menu.py:50
+msgid "Download Manager"
+msgstr "下载管理器"
+
+#: .././foobnix/dm/dm.py:113
+msgid "Choose Folder"
+msgstr "选择文件夹"
+
+#. @UnusedVariable
+#: .././foobnix/eq/eq_gui.py:42 .././foobnix/regui/menu.py:49
+msgid "Equalizer"
+msgstr "均衡器"
+
+#: .././foobnix/eq/eq_gui.py:88
+msgid "Disabled"
+msgstr "已禁用"
+
+#: .././foobnix/eq/eq_gui.py:89 .././foobnix/eq/eq_gui.py:170
+msgid "Enable EQ"
+msgstr "启用 EQ"
+
+#: .././foobnix/eq/eq_gui.py:91
+msgid "Enabled"
+msgstr "已启用"
+
+#: .././foobnix/eq/eq_gui.py:92 .././foobnix/eq/eq_gui.py:289
+msgid "Disable EQ"
+msgstr ""
+
+#: .././foobnix/eq/eq_gui.py:93
+#, python-format
+msgid "Equalizer %s"
+msgstr "均衡器 %s"
+
+#: .././foobnix/eq/eq_gui.py:171
+msgid "To enable EQ set ON"
+msgstr "启用 EQ 设置"
+
+#: .././foobnix/eq/eq_gui.py:176
+msgid "Auto"
+msgstr "自动"
+
+#: .././foobnix/eq/eq_gui.py:191
+msgid "Save"
+msgstr "保存"
+
+#: .././foobnix/eq/eq_gui.py:199
+msgid "Restore defaults presets"
+msgstr "恢复默认预设"
+
+#: .././foobnix/fc/fc_cache.py:29 .././foobnix/fc/fc_cache.py:37
+#: .././foobnix/regui/notetab/__init__.py:114
+#: .././foobnix/regui/notetab/__init__.py:120
+msgid "Empty tab"
+msgstr "清空标签"
+
+#: .././foobnix/helpers/dialog_entry.py:139
+#: .././foobnix/helpers/dialog_entry.py:140
+msgid "New foobnix release avaliable"
+msgstr "foobnix 有新版可用"
+
+#: .././foobnix/helpers/dialog_entry.py:145
+msgid "Download and Donate"
+msgstr "下载与捐助"
+
+#. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
+#: .././foobnix/helpers/dialog_entry.py:147
+#: .././foobnix/regui/treeview/playlist_tree.py:218
+#: .././foobnix/util/converter.py:341
+msgid "Download"
+msgstr "下载"
+
+#: .././foobnix/helpers/dialog_entry.py:160
+msgid "We hope you like the player. We will make it even better."
+msgstr "希望您喜欢这款播放器。我们将努力让它更加优秀。"
+
+#: .././foobnix/helpers/dialog_entry.py:161
+#: .././foobnix/preferences/configs/notification_conf.py:19
+#: .././foobnix/preferences/configs/other_conf.py:73
+msgid "Check for new foobnix release on start"
+msgstr "启动时检查 foobnix 是否有新版本"
+
+#: .././foobnix/helpers/window.py:74
+msgid "Total progress"
+msgstr ""
+
+#: .././foobnix/helpers/window.py:79
+#: .././foobnix/preferences/configs/hotkey_conf.py:157
+#: .././foobnix/regui/controls/playback.py:195 .././foobnix/util/const.py:46
+#: .././foobnix/util/converter.py:95
+msgid "Stop"
+msgstr "停止"
+
+#: .././foobnix/preferences/preferences_window.py:71
+msgid "Categories"
+msgstr "分类"
+
+#: .././foobnix/preferences/preferences_window.py:133
+msgid "Restore Defaults Settings"
+msgstr "恢复默认设置"
+
+#: .././foobnix/preferences/preferences_window.py:137
+#: .././foobnix/util/tag_util.py:85
+msgid "Apply"
+msgstr "应用"
+
+#: .././foobnix/preferences/preferences_window.py:142
+#: .././foobnix/util/converter.py:86 .././foobnix/util/tag_util.py:86
+msgid "Close"
+msgstr "关闭"
+
+#: .././foobnix/preferences/configs/category_info.py:10
+msgid "Category Info"
+msgstr "分类信息"
+
+#: .././foobnix/preferences/configs/dm_config.py:23
+msgid "Save online music"
+msgstr "保存在线音乐"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:42
+msgid "Global Hotkeys"
+msgstr "全局热键"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:55
+msgid "Action"
+msgstr "操作"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:56
+msgid "Hotkey"
+msgstr "热键"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:64
+#: .././foobnix/preferences/configs/music_library.py:65
+#: .././foobnix/preferences/configs/music_library.py:178
+msgid "Add"
+msgstr "添加"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:69
+#: .././foobnix/preferences/configs/music_library.py:70
+#: .././foobnix/preferences/configs/music_library.py:183
+msgid "Remove"
+msgstr "移除"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:155
+#: .././foobnix/regui/controls/playback.py:196
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:61
+#: .././foobnix/regui/treeview/playlist_tree.py:217
+#: .././foobnix/regui/treeview/vk_integration_tree.py:75
+msgid "Play"
+msgstr "播放"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:156
+#: .././foobnix/regui/controls/playback.py:197
+msgid "Pause"
+msgstr "暂停"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:158
+msgid "Next song"
+msgstr "下一首"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:159
+msgid "Previous song"
+msgstr "上一首"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:160
+msgid "Volume up"
+msgstr "音量增大"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:161
+msgid "Volume down"
+msgstr "音量减小"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:162
+msgid "Show-Hide"
+msgstr "显示/隐藏"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:163
+msgid "Play-Pause"
+msgstr "播放/暂停"
+
+#: .././foobnix/preferences/configs/info_panel_conf.py:12
+msgid "Info panel"
+msgstr "信息面板"
+
+#: .././foobnix/preferences/configs/info_panel_conf.py:22
+msgid "Disc cover size"
+msgstr "封面尺寸"
+
+#: .././foobnix/preferences/configs/info_panel_conf.py:36
+msgid "Lyric panel size"
+msgstr "歌词面板尺寸"
+
+#: .././foobnix/preferences/configs/info_panel_conf.py:47
+msgid "Show Tags list"
+msgstr "显示标签列表"
+
+#: .././foobnix/preferences/configs/__init__.py:4
+msgid "Music Library"
+msgstr "音乐库"
+
+#: .././foobnix/preferences/configs/__init__.py:5
+msgid "Other Options"
+msgstr "其他选项"
+
+#: .././foobnix/preferences/configs/last_fm.py:14
+msgid "Last FM"
+msgstr "Last.FM"
+
+#: .././foobnix/preferences/configs/last_fm.py:24
+#: .././foobnix/preferences/configs/network_conf.py:58
+msgid "Login"
+msgstr "登录"
+
+#: .././foobnix/preferences/configs/last_fm.py:38
+#: .././foobnix/preferences/configs/network_conf.py:72
+msgid "Password"
+msgstr "密码"
+
+#: .././foobnix/preferences/configs/last_fm.py:47
+msgid "Enable Music Scrobbler"
+msgstr "启用 Music Scrobbler"
+
+#: .././foobnix/preferences/configs/last_fm.py:50
+msgid "Enable Radio Scrobbler"
+msgstr "启用 Radio Scrobbler"
+
+#: .././foobnix/preferences/configs/music_library.py:34
+msgid "Update library on start (more slow) "
+msgstr "启动时更新库 (较慢) "
+
+#: .././foobnix/preferences/configs/music_library.py:44
+msgid "Music dirs"
+msgstr "音乐目录"
+
+#: .././foobnix/preferences/configs/music_library.py:53
+msgid "Paths"
+msgstr "路径"
+
+#: .././foobnix/preferences/configs/music_library.py:56
+msgid "Reload"
+msgstr "重载"
+
+#: .././foobnix/preferences/configs/music_library.py:141
+#: .././foobnix/regui/treeview/navigation_tree.py:214
+msgid "Choose directory with music"
+msgstr "选择含音乐的目录"
+
+#: .././foobnix/preferences/configs/music_library.py:164
+msgid "File Types"
+msgstr "文件类型"
+
+#: .././foobnix/preferences/configs/music_library.py:172
+msgid "Extensions"
+msgstr "扩展名"
+
+#: .././foobnix/preferences/configs/music_library.py:204
+msgid "Please add audio extension"
+msgstr "请添加音频扩展名"
+
+#: .././foobnix/preferences/configs/music_library.py:204
+msgid "Extension should be like '.mp3'"
+msgstr "扩展名应类似于“.mp3”"
+
+#: .././foobnix/preferences/configs/music_library.py:211
+msgid "Gap between tracks: "
+msgstr "轨道间隔: "
+
+#: .././foobnix/preferences/configs/music_library.py:227
+msgid "Multi tab mode"
+msgstr "多标签模式"
+
+#: .././foobnix/preferences/configs/music_library.py:233
+msgid "Single tab mode"
+msgstr "单标签模式"
+
+#: .././foobnix/preferences/configs/network_conf.py:16
+msgid "Network Settings"
+msgstr "网络设置"
+
+#: .././foobnix/preferences/configs/network_conf.py:23
+msgid "Enable HTTP proxy"
+msgstr "启用 HTTP 代理"
+
+#: .././foobnix/preferences/configs/network_conf.py:27
+msgid "Settings"
+msgstr "设置"
+
+#: .././foobnix/preferences/configs/network_conf.py:39
+msgid "Server"
+msgstr "服务器"
+
+#: .././foobnix/preferences/configs/network_conf.py:46
+msgid "example: 66.42.182.178:3128"
+msgstr "例: 66.42.182.178:3128"
+
+#: .././foobnix/preferences/configs/network_conf.py:93
+msgid "Check Connection"
+msgstr "检查连接"
+
+#: .././foobnix/preferences/configs/network_conf.py:98
+#: .././foobnix/preferences/configs/network_conf.py:137
+msgid "Result:"
+msgstr "结果:"
+
+#: .././foobnix/preferences/configs/network_conf.py:137
+msgid " OK in seconds: "
+msgstr " 正常，秒数: "
+
+#: .././foobnix/preferences/configs/notification_conf.py:13
+msgid "Notifications"
+msgstr "通知"
+
+#: .././foobnix/preferences/configs/notification_conf.py:22
+#: .././foobnix/preferences/configs/other_conf.py:76
+msgid "Show new foobnix release avaliable demo dialog"
+msgstr "显示“foobnix 有新版可用”演示对话框"
+
+#: .././foobnix/preferences/configs/other_conf.py:35
+msgid "Save music to folder:"
+msgstr "将音乐保存到文件夹:"
+
+#: .././foobnix/preferences/configs/other_conf.py:39
+msgid "Automatic music save"
+msgstr "自动保存音乐"
+
+#: .././foobnix/preferences/configs/other_conf.py:45
+msgid "Download in threads"
+msgstr ""
+
+#: .././foobnix/preferences/configs/other_conf.py:62
+msgid "Disc cover size:"
+msgstr "光盘封面尺寸:"
+
+#: .././foobnix/preferences/configs/other_conf.py:86
+msgid "Enable theme image"
+msgstr "启用主题图像"
+
+#: .././foobnix/preferences/configs/other_conf.py:95
+msgid "Menu type: "
+msgstr "菜单类型: "
+
+#: .././foobnix/preferences/configs/other_conf.py:97
+msgid "Old Style (Menu Bar)"
+msgstr "旧式 (菜单栏)"
+
+#. self.old_style.connect("toggled", self.on_change_menu_type)
+#: .././foobnix/preferences/configs/other_conf.py:100
+msgid "New Style (Button)"
+msgstr "新式 (按钮)"
+
+#: .././foobnix/preferences/configs/other_conf.py:110
+msgid "Order-Repeat Switcher Style:"
+msgstr "重复顺序切换器样式:"
+
+#: .././foobnix/preferences/configs/other_conf.py:112
+msgid "Toggle Buttons"
+msgstr "切换按钮"
+
+#. self.buttons.connect("toggled", self.on_change_o_r_style)
+#: .././foobnix/preferences/configs/other_conf.py:115
+msgid "Text Labels"
+msgstr "文本标签"
+
+#: .././foobnix/preferences/configs/other_conf.py:126
+msgid "Opacity:"
+msgstr "不透明度:"
+
+#: .././foobnix/preferences/configs/other_conf.py:139
+msgid "Choose your preferred file manager:"
+msgstr "选择您首选的文件管理器:"
+
+#: .././foobnix/preferences/configs/tabs.py:13
+msgid "Tabs"
+msgstr "标签"
+
+#: .././foobnix/preferences/configs/tabs.py:24
+msgid "Count of tabs:"
+msgstr "标签页数:"
+
+#: .././foobnix/preferences/configs/tabs.py:39
+msgid "Max length of tab:"
+msgstr "标签页最大长度:"
+
+#: .././foobnix/preferences/configs/tabs.py:54
+msgid "Tab position:"
+msgstr "标签页位置:"
+
+#: .././foobnix/preferences/configs/tabs.py:58
+msgid "Left"
+msgstr "左边"
+
+#: .././foobnix/preferences/configs/tabs.py:61
+msgid "Top"
+msgstr "顶部"
+
+#: .././foobnix/preferences/configs/tabs.py:64
+msgid "No Tabs"
+msgstr "无标签"
+
+#: .././foobnix/preferences/configs/tabs.py:76
+msgid "Close tab sign:"
+msgstr "关闭标签页符号:"
+
+#: .././foobnix/preferences/configs/tabs.py:91
+msgid "None"
+msgstr "无"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:38
+msgid "Show tray icon"
+msgstr "显示托盘图标"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:39
+msgid "Hide player in tray on start"
+msgstr "启动时将播放器隐藏到托盘"
+
+#. self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
+#: .././foobnix/preferences/configs/tray_icon_conf.py:42
+msgid "On close window - close player"
+msgstr "关闭窗口时——关闭播放器"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:44
+msgid "On close window - hide player"
+msgstr "关闭窗口时——隐藏播放器"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:47
+msgid "On close window - minimize player"
+msgstr "关闭窗口时——最小化播放器"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:50
+msgid "System Icon Static"
+msgstr "系统图标静态"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:58
+msgid "System Icons Dynamic"
+msgstr "系统图标动态"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:62
+msgid "Disc cover image"
+msgstr "光盘封面图像"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:64
+msgid "Notification pop-up"
+msgstr "通知弹出"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:82
+msgid "Notification"
+msgstr "通知"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:109
+msgid "Time Notification (sec): "
+msgstr "时间通知 (秒): "
+
+#: .././foobnix/regui/base_controls.py:136
+msgid "Choose folders to open"
+msgstr "选择要打开的文件夹"
+
+#: .././foobnix/regui/base_controls.py:162
+msgid "Nothing found to play in the folder(s)"
+msgstr "文件夹中无可播放文件"
+
+#: .././foobnix/regui/base_controls.py:169
+msgid "Choose file to open"
+msgstr "选择要打开的文件"
+
+#: .././foobnix/regui/base_controls.py:201
+msgid "Nothing found to play in the file(s)"
+msgstr "无可播放文件"
+
+#: .././foobnix/regui/base_controls.py:272
+msgid "Music not found in folder(s):"
+msgstr "文件夹中未找到音乐:"
+
+#: .././foobnix/regui/base_controls.py:338
+msgid "Stopped"
+msgstr "已停止"
+
+#: .././foobnix/regui/base_controls.py:347
+msgid "Paused | "
+msgstr "已暂停 | "
+
+#: .././foobnix/regui/coverlyrics.py:21
+msgid "Album title"
+msgstr ""
+
+#: .././foobnix/regui/coverlyrics.py:26
+msgid "Cover:"
+msgstr ""
+
+#: .././foobnix/regui/coverlyrics.py:32
+msgid "Lyric:"
+msgstr ""
+
+#: .././foobnix/regui/infopanel.py:50
+msgid "Best Songs"
+msgstr "最佳歌曲"
+
+#: .././foobnix/regui/infopanel.py:53
+msgid "Similar Artists"
+msgstr "类似歌手"
+
+#: .././foobnix/regui/infopanel.py:56
+msgid "Similar Songs"
+msgstr "类似歌曲"
+
+#: .././foobnix/regui/infopanel.py:59
+msgid "Similar Tags"
+msgstr "类似标签"
+
+#: .././foobnix/regui/infopanel.py:64
+msgid "Lyrics"
+msgstr "歌词"
+
+#: .././foobnix/regui/infopanel.py:71
+msgid "About Artist"
+msgstr "关于歌手"
+
+#: .././foobnix/regui/menu.py:30
+msgid "_File"
+msgstr "文件(_F)"
+
+#: .././foobnix/regui/menu.py:31
+msgid "Add File(s)"
+msgstr "添加文件"
+
+#: .././foobnix/regui/menu.py:32
+msgid "Add Folder(s)"
+msgstr "添加文件夹"
+
+#: .././foobnix/regui/menu.py:34 .././foobnix/regui/top.py:46
+msgid "Quit"
+msgstr "退出"
+
+#: .././foobnix/regui/menu.py:37
+msgid "_View"
+msgstr "查看(_V)"
+
+#: .././foobnix/regui/menu.py:39
+msgid "Left Panel"
+msgstr "左面板"
+
+#: .././foobnix/regui/menu.py:42
+msgid "Search Panel"
+msgstr "搜索面板"
+
+#: .././foobnix/regui/menu.py:45
+msgid "Cover & Lyrics Panel"
+msgstr ""
+
+#: .././foobnix/regui/menu.py:60
+msgid "_Playback"
+msgstr "回放(_P)"
+
+#: .././foobnix/regui/menu.py:68
+msgid "Order"
+msgstr "顺序"
+
+#: .././foobnix/regui/menu.py:69
+msgid "Linear"
+msgstr "线性"
+
+#: .././foobnix/regui/menu.py:72
+msgid "Random"
+msgstr "随机"
+
+#: .././foobnix/regui/menu.py:76
+msgid "Repeat"
+msgstr "重复"
+
+#: .././foobnix/regui/menu.py:77 .././foobnix/util/const.py:44
+msgid "All"
+msgstr "全部"
+
+#: .././foobnix/regui/menu.py:78
+msgid "Single"
+msgstr "单首"
+
+#: .././foobnix/regui/menu.py:79
+msgid "Disable"
+msgstr "禁用"
+
+#: .././foobnix/regui/menu.py:110
+msgid "_Help"
+msgstr "帮助(_H)"
+
+#: .././foobnix/regui/menu.py:111
+msgid "About"
+msgstr "关于"
+
+#: .././foobnix/regui/menu.py:113
+msgid "Project page"
+msgstr "项目主页"
+
+#: .././foobnix/regui/menu.py:113
+msgid "http://www.foobnix.com/news/eng"
+msgstr "http://www.foobnix.com/news/eng"
+
+#: .././foobnix/regui/menu.py:114
+msgid "Issue report"
+msgstr "报告问题"
+
+#: .././foobnix/regui/menu.py:116
+msgid "Donate Participate"
+msgstr "参与捐助"
+
+#: .././foobnix/regui/menu.py:116
+msgid "http://www.foobnix.com/donate/eng"
+msgstr "http://www.foobnix.com/donate/eng"
+
+#: .././foobnix/regui/perspectives.py:35
+msgid "Add Folder(s) in tree"
+msgstr "将文件夹添加到音乐树"
+
+#: .././foobnix/regui/perspectives.py:81
+msgid "Music"
+msgstr "音乐"
+
+#: .././foobnix/regui/perspectives.py:81
+msgid "Music Navigation (Alt+1)"
+msgstr "音乐导航 (Alt+1)"
+
+#: .././foobnix/regui/perspectives.py:86
+msgid "Radio"
+msgstr "广播"
+
+#: .././foobnix/regui/perspectives.py:86
+msgid "Radio Stantions (Alt+2)"
+msgstr "广播电台 (Alt+2)"
+
+#: .././foobnix/regui/perspectives.py:93
+msgid "Playlist"
+msgstr "播放列表"
+
+#: .././foobnix/regui/perspectives.py:93
+msgid "Virtual Play Lists (Alt+3)"
+msgstr "虚拟播放列表 (Alt+3)"
+
+#: .././foobnix/regui/perspectives.py:97
+msgid "Info"
+msgstr "信息"
+
+#: .././foobnix/regui/perspectives.py:97
+msgid "Info Panel (Alt+4)"
+msgstr "信息面板 (Alt+4)"
+
+#: .././foobnix/regui/perspectives.py:100
+msgid "Last.Fm"
+msgstr "Last.Fm"
+
+#: .././foobnix/regui/perspectives.py:100
+msgid "Last.fm Panel (Alt+5)"
+msgstr "Last.fm 面板 (Alt+5)"
+
+#: .././foobnix/regui/perspectives.py:103
+msgid "VK"
+msgstr "VK"
+
+#: .././foobnix/regui/perspectives.py:103
+msgid "VK Panel (Alt+6)"
+msgstr "VK 面板 (Alt+6)"
+
+#: .././foobnix/regui/search.py:17
+msgid "Search music online"
+msgstr "在线搜索音乐"
+
+#: .././foobnix/regui/search.py:61
+msgid "Online Music Search, Play, Download"
+msgstr "在线搜索、播放与下载音乐"
+
+#: .././foobnix/regui/search.py:75
+msgid "Search"
+msgstr "搜索"
+
+#: .././foobnix/regui/search.py:80
+msgid "Online Search"
+msgstr "在线搜索"
+
+#: .././foobnix/regui/search.py:104
+msgid "Tracks"
+msgstr ""
+
+#: .././foobnix/regui/search.py:108
+msgid "Albums"
+msgstr "专辑"
+
+#: .././foobnix/regui/search.py:111
+msgid "Similar"
+msgstr "类似"
+
+#. @UnusedVariable
+#: .././foobnix/regui/search.py:114 .././foobnix/util/tag_util.py:40
+msgid "Genre"
+msgstr "流派"
+
+#: .././foobnix/regui/search.py:118
+msgid "Audio"
+msgstr "音频"
+
+#: .././foobnix/regui/about/about.py:20
+msgid "Simple and Powerful player"
+msgstr "简单而强大的播放器"
+
+#: .././foobnix/regui/controls/filter.py:24
+msgid "File search"
+msgstr "文件搜索"
+
+#: .././foobnix/regui/controls/filter.py:28
+msgid "Folder search"
+msgstr "文件夹搜索"
+
+#: .././foobnix/regui/controls/movie_area.py:75
+msgid "Exit Fullscrean"
+msgstr "退出全屏"
+
+#: .././foobnix/regui/controls/playback.py:50
+#: .././foobnix/regui/controls/playback.py:141
+#: .././foobnix/regui/controls/playback.py:161
+msgid "Shuffle on"
+msgstr "Shuffle 开启"
+
+#: .././foobnix/regui/controls/playback.py:54
+#: .././foobnix/regui/controls/playback.py:144
+#: .././foobnix/regui/controls/playback.py:163
+msgid "Shuffle off"
+msgstr "Shuffle 关闭"
+
+#: .././foobnix/regui/controls/playback.py:58
+#: .././foobnix/regui/controls/playback.py:127
+#: .././foobnix/regui/controls/playback.py:148
+#: .././foobnix/regui/controls/playback.py:172
+msgid "Repeat all"
+msgstr "全部重复"
+
+#: .././foobnix/regui/controls/playback.py:61
+#: .././foobnix/regui/controls/playback.py:130
+#: .././foobnix/regui/controls/playback.py:152
+#: .././foobnix/regui/controls/playback.py:181
+msgid "Repeat single"
+msgstr "单曲重复"
+
+#: .././foobnix/regui/controls/playback.py:64
+#: .././foobnix/regui/controls/playback.py:156
+msgid "Repeat off"
+msgstr "关闭重复"
+
+#: .././foobnix/regui/controls/playback.py:198
+msgid "Previous"
+msgstr "向前"
+
+#: .././foobnix/regui/controls/playback.py:199
+msgid "Next"
+msgstr "向后"
+
+#: .././foobnix/regui/controls/record.py:26
+msgid "Record radio"
+msgstr "录制广播"
+
+#: .././foobnix/regui/controls/record.py:43
+msgid "So file doesn't exist. Pehaps it wasn't create yet."
+msgstr "不存在该文件。可能尚未创建。"
+
+#: .././foobnix/regui/controls/record.py:52
+msgid "Save file as ..."
+msgstr "另存文件为..."
+
+#: .././foobnix/regui/controls/tray_icon.py:37
+msgid "Exit"
+msgstr "退出"
+
+#: .././foobnix/regui/controls/tray_icon.py:38
+msgid "Close Popup"
+msgstr "关闭弹出窗口"
+
+#: .././foobnix/regui/notetab/__init__.py:274
+#: .././foobnix/regui/notetab/tab_library.py:36
+msgid "Rename tab"
+msgstr "重命名标签"
+
+#: .././foobnix/regui/notetab/__init__.py:275
+msgid "Save playlist as"
+msgstr "播放列表另存为"
+
+#: .././foobnix/regui/notetab/__init__.py:276
+#: .././foobnix/regui/notetab/tab_library.py:41
+msgid "Close tab"
+msgstr "关闭标签"
+
+#: .././foobnix/regui/notetab/__init__.py:346
+msgid "It's need not empty playlist"
+msgstr "无需清空播放列表"
+
+#: .././foobnix/regui/notetab/__init__.py:349
+msgid "Choose folder to save playlist"
+msgstr "选择保存播放列表的文件夹"
+
+#: .././foobnix/regui/notetab/tab_library.py:37
+msgid "Update Music Tree"
+msgstr "更新音乐树"
+
+#: .././foobnix/regui/notetab/tab_library.py:38
+msgid "Add folder"
+msgstr "添加文件夹"
+
+#: .././foobnix/regui/notetab/tab_library.py:39
+#: .././foobnix/regui/treeview/navigation_tree.py:118
+msgid "Add folder in new tab"
+msgstr "将文件夹添加为新标签"
+
+#: .././foobnix/regui/notetab/tab_library.py:40
+msgid "Clear Music Tree"
+msgstr "清空音乐树"
+
+#: .././foobnix/regui/service/vk_service.py:26
+msgid "VKontakte Authorization (require for music search)"
+msgstr ""
+
+#: .././foobnix/regui/service/vk_service.py:31
+msgid "Get Default Login Password"
+msgstr ""
+
+#: .././foobnix/regui/service/vk_service.py:55
+msgid "1: Generate token (push or open the link url in the browser)"
+msgstr ""
+
+#: .././foobnix/regui/service/vk_service.py:57
+msgid "2: Apply Token"
+msgstr ""
+
+#: .././foobnix/regui/service/vk_service.py:60
+msgid "Please generate token..."
+msgstr ""
+
+#: .././foobnix/regui/service/vk_service.py:65
+msgid "Token:"
+msgstr ""
+
+#: .././foobnix/regui/service/vk_service.py:66
+msgid "User ID:"
+msgstr ""
+
+#: .././foobnix/regui/service/vk_service.py:100
+msgid "Token incorrect or expired"
+msgstr ""
+
+#: .././foobnix/regui/service/vk_service.py:103
+msgid "Token or user is empty"
+msgstr ""
+
+#: .././foobnix/regui/treeview/dm_tree.py:92
+#: .././foobnix/regui/treeview/dm_tree.py:94
+#: .././foobnix/regui/treeview/navigation_tree.py:130
+msgid "Open in file manager"
+msgstr "在文件管理器中打开"
+
+#: .././foobnix/regui/treeview/dragdrop_tree.py:164
+msgid "Copying:"
+msgstr ""
+
+#: .././foobnix/regui/treeview/dragdrop_tree.py:164
+msgid "Replacing:"
+msgstr ""
+
+#. @UndefinedVariable
+#: .././foobnix/regui/treeview/dragdrop_tree.py:165
+msgid "Progress"
+msgstr ""
+
+#: .././foobnix/regui/treeview/dragdrop_tree.py:167
+msgid "To: "
+msgstr ""
+
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:25
+msgid "Lasm.fm Integration "
+msgstr "Lasm.fm 整合 "
+
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:37
+msgid "My loved tracks"
+msgstr "我最爱听的音轨"
+
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:38
+msgid "My top tracks"
+msgstr "我最常听的音轨"
+
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:39
+msgid "My recent tracks"
+msgstr "我最近听的音轨"
+
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:40
+msgid "My top artists"
+msgstr "我最常听的歌手"
+
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:48
+#: .././foobnix/regui/treeview/vk_integration_tree.py:54
+msgid "loading..."
+msgstr "正在加载..."
+
+#: .././foobnix/regui/treeview/lastfm_integration_tree.py:62
+#: .././foobnix/regui/treeview/vk_integration_tree.py:76
+msgid "Copy to Search Line"
+msgstr "复制到搜索行"
+
+#: .././foobnix/regui/treeview/navigation_tree.py:36
+msgid "File"
+msgstr "文件"
+
+#: .././foobnix/regui/treeview/navigation_tree.py:56
+msgid "Name"
+msgstr "名称"
+
+#: .././foobnix/regui/treeview/navigation_tree.py:61
+msgid "Ext"
+msgstr ""
+
+#: .././foobnix/regui/treeview/navigation_tree.py:111
+msgid "Append to playlist"
+msgstr "追加到播放列表"
+
+#: .././foobnix/regui/treeview/navigation_tree.py:112
+msgid "Open in new playlist"
+msgstr "在新播放列表中打开"
+
+#: .././foobnix/regui/treeview/navigation_tree.py:114
+msgid "Add folder here"
+msgstr "将文件夹添加到这里"
+
+#: .././foobnix/regui/treeview/navigation_tree.py:119
+msgid "Clear"
+msgstr "清除"
+
+#: .././foobnix/regui/treeview/navigation_tree.py:120
+msgid "Update"
+msgstr "更新"
+
+#: .././foobnix/regui/treeview/navigation_tree.py:131
+#: .././foobnix/util/file_utils.py:187
+msgid "Create folder"
+msgstr ""
+
+#: .././foobnix/regui/treeview/navigation_tree.py:132
+msgid "Rename file (folder)"
+msgstr "重命名文件 (文件夹)"
+
+#: .././foobnix/regui/treeview/navigation_tree.py:133
+#: .././foobnix/util/file_utils.py:111
+msgid "Delete file(s) / folder(s)"
+msgstr "删除文件 / 文件夹"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:54
+msgid "Number"
+msgstr "编号"
+
+#. @UnusedVariable
+#: .././foobnix/regui/treeview/playlist_tree.py:62
+#: .././foobnix/regui/treeview/playlist_tree.py:63
+#: .././foobnix/util/tag_util.py:42
+msgid "Composer"
+msgstr "作曲"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:70
+#: .././foobnix/regui/treeview/playlist_tree.py:71
+msgid "Track"
+msgstr "音轨"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:79
+#: .././foobnix/regui/treeview/playlist_tree.py:80
+#: .././foobnix/util/tag_util.py:35
+msgid "Artist"
+msgstr "歌手"
+
+#. @UnusedVariable
+#: .././foobnix/regui/treeview/playlist_tree.py:88
+#: .././foobnix/regui/treeview/playlist_tree.py:89
+#: .././foobnix/util/tag_util.py:36
+msgid "Title"
+msgstr "标题"
+
+#. @UnusedVariable
+#: .././foobnix/regui/treeview/playlist_tree.py:101
+#: .././foobnix/regui/treeview/playlist_tree.py:102
+#: .././foobnix/util/tag_util.py:37
+msgid "Album"
+msgstr "专辑"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:108
+#: .././foobnix/regui/treeview/playlist_tree.py:109
+msgid "Time"
+msgstr "时长"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:219
+msgid "Download To..."
+msgstr "下载到..."
+
+#: .././foobnix/regui/treeview/playlist_tree.py:223
+msgid "Edit Tags"
+msgstr "编辑标签"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:224
+msgid "Format Converter"
+msgstr "格式转换器"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:226
+msgid "Copy To Search Line"
+msgstr "复制到搜索行"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:228
+msgid "Copy №-Title-Time"
+msgstr "复制 编号-标题-时长"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:229
+msgid "Copy Artist-Title-Album"
+msgstr "复制 歌手-标题-专辑"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:231
+msgid "Love This Track(s)"
+msgstr "喜欢该音轨"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:234
+msgid "Open In File Manager"
+msgstr "在文件管理器中打开"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:300
+msgid "Numbering by order"
+msgstr "按顺序编号"
+
+#: .././foobnix/regui/treeview/playlist_tree.py:302
+msgid "Numbering by tags"
+msgstr "按标签编号"
+
+#: .././foobnix/regui/treeview/radio_tree.py:31
+msgid "Radio Stations"
+msgstr "广播电台"
+
+#: .././foobnix/regui/treeview/radio_tree.py:54
+msgid "Add Station"
+msgstr "添加电台"
+
+#: .././foobnix/regui/treeview/radio_tree.py:55
+msgid "Delete Station"
+msgstr "删除电台"
+
+#: .././foobnix/regui/treeview/radio_tree.py:56
+msgid "Edit Radio"
+msgstr "编辑广播"
+
+#: .././foobnix/regui/treeview/radio_tree.py:58
+msgid "Reload radio folder"
+msgstr "重载广播文件夹"
+
+#: .././foobnix/regui/treeview/radio_tree.py:63
+msgid "Change Radio Station name and path"
+msgstr "更改广播电台名称与路径"
+
+#: .././foobnix/regui/treeview/radio_tree.py:63
+msgid "Url"
+msgstr "Url"
+
+#: .././foobnix/regui/treeview/virtual_tree.py:24
+msgid "Virtual PlayLists"
+msgstr "虚拟播放列表"
+
+#: .././foobnix/regui/treeview/virtual_tree.py:55
+msgid "Add playlist"
+msgstr "添加播放列表"
+
+#: .././foobnix/regui/treeview/virtual_tree.py:56
+#: .././foobnix/regui/treeview/virtual_tree.py:73
+msgid "Rename playlist"
+msgstr "重命名播放列表"
+
+#: .././foobnix/regui/treeview/virtual_tree.py:57
+msgid "Delete playlist"
+msgstr "删除播放列表"
+
+#: .././foobnix/regui/treeview/virtual_tree.py:63
+msgid "Create new playlist"
+msgstr "新建播放列表"
+
+#: .././foobnix/regui/treeview/vk_integration_tree.py:27
+msgid "VK Integration "
+msgstr "VK 整合 "
+
+#: .././foobnix/util/const.py:45
+msgid "Active"
+msgstr "活动"
+
+#: .././foobnix/util/const.py:47
+msgid "Downloading"
+msgstr "正在下载"
+
+#: .././foobnix/util/const.py:48
+msgid "Complete"
+msgstr "完成"
+
+#: .././foobnix/util/const.py:49
+msgid "Inactive"
+msgstr "挂起"
+
+#: .././foobnix/util/const.py:51
+msgid "Lock"
+msgstr "锁定"
+
+#: .././foobnix/util/const.py:52
+msgid "Error"
+msgstr "错误"
+
+#: .././foobnix/util/converter.py:44
+msgid "Format"
+msgstr "格式"
+
+#: .././foobnix/util/converter.py:45
+msgid "Bitrate"
+msgstr "码率"
+
+#: .././foobnix/util/converter.py:46
+msgid "Channels"
+msgstr "声道"
+
+#: .././foobnix/util/converter.py:47
+msgid "Frequency"
+msgstr "频率"
+
+#: .././foobnix/util/converter.py:89
+msgid "Convert"
+msgstr "转换"
+
+#: .././foobnix/util/converter.py:99
+msgid "Show files"
+msgstr "显示文件"
+
+#: .././foobnix/util/converter.py:121
+msgid "Choose directory to save converted files"
+msgstr "选择转换文件保存的目录"
+
+#: .././foobnix/util/converter.py:224
+msgid "Warning!!!"
+msgstr "警告!!!"
+
+#: .././foobnix/util/converter.py:228
+msgid ""
+"So file(s)  already exist(s) and will be overwritten.\n"
+"Do you wish to continue?"
+msgstr ""
+"已存在此文件，将被覆写。\n"
+"是否继续?"
+
+#: .././foobnix/util/converter.py:336
+msgid "Attention"
+msgstr "注意"
+
+#: .././foobnix/util/converter.py:338
+msgid "Converter require specially compiled ffmpeg module for work.\n"
+msgstr "转换器需要特别编译的 ffmpeg 模块方可工作。\n"
+
+#: .././foobnix/util/file_utils.py:74
+msgid "Rename folder"
+msgstr "重命名文件夹"
+
+#: .././foobnix/util/file_utils.py:83
+msgid "Rename file"
+msgstr "重命名文件"
+
+#: .././foobnix/util/file_utils.py:112
+msgid "Do you really want to delete item(s) from disk?"
+msgstr "是否确定要从磁盘删除项目?"
+
+#: .././foobnix/util/file_utils.py:158
+msgid "Copy"
+msgstr "复制"
+
+#. @UndefinedVariable
+#: .././foobnix/util/file_utils.py:159
+msgid "Replace"
+msgstr "替换"
+
+#: .././foobnix/util/file_utils.py:161
+#, python-format
+msgid "%s file(s) / folder(s)"
+msgstr "%s 文件 / 文件夹"
+
+#: .././foobnix/util/file_utils.py:167
+#, python-format
+msgid "Are you really want to %s this item(s) to %s ?"
+msgstr ""
+
+#: .././foobnix/util/file_utils.py:186
+msgid "Make folder dialog"
+msgstr ""
+
+#: .././foobnix/util/file_utils.py:188
+msgid "You want to create subfolder in folder"
+msgstr ""
+
+#: .././foobnix/util/file_utils.py:189
+msgid "Enter new folder's name:"
+msgstr ""
+
+#: .././foobnix/util/file_utils.py:207
+msgid "So folder already exists"
+msgstr ""
+
+#: .././foobnix/util/id3_util.py:127 .././foobnix/util/tag_util.py:118
+msgid "Unknown title"
+msgstr ""
+
+#: .././foobnix/util/id3_util.py:129 .././foobnix/util/tag_util.py:120
+msgid "Unknown artist"
+msgstr ""
+
+#: .././foobnix/util/m3u_utils.py:51
+msgid "Choose window"
+msgstr "选择窗口"
+
+#: .././foobnix/util/m3u_utils.py:55
+msgid ""
+"<big><b>\t\t\t\t\t\t\t\tAttention!\n"
+"</b></big>\tThe relative location of the playlist and music files allows you "
+"to save a relative\n"
+"paths to the files in your playlist. This will allow to carry along the "
+"playlist with the\n"
+"files (only together) at any place of the computer or even at another "
+"computer.\n"
+"Also, it will make library compatible with OS Windows. However, in this case "
+"you can't\n"
+"change the relative location of the playlist file  and music files.\n"
+"\tAbsolute file paths make it impossible to transfer a playlist on other "
+"computer\n"
+"or use it in OS Windows, but it will put the library anywhere in the file "
+"system sepa-\n"
+"rate from the music files (the library will be working).\n"
+"\n"
+"\tDo you want to save the playlist with relative paths?\n"
+msgstr ""
+
+#: .././foobnix/util/net_wrapper.py:50
+msgid "Internet Connection"
+msgstr ""
+
+#: .././foobnix/util/net_wrapper.py:50
+msgid ""
+"Foobnix not connected \n"
+" or internet not available. \n"
+" Please try again a little bit later."
+msgstr ""
+
+#: .././foobnix/util/tag_util.py:23
+msgid "Tag Editor"
+msgstr "标签编辑器"
+
+#. @UnusedVariable
+#: .././foobnix/util/tag_util.py:38
+msgid "Year"
+msgstr "年份"
+
+#. @UnusedVariable
+#: .././foobnix/util/tag_util.py:39
+msgid "Track number"
+msgstr "音轨编号"
+
+#. @UnusedVariable
+#: .././foobnix/util/tag_util.py:41
+msgid "Author text"
+msgstr "作者文字"
+
+#: .././foobnix/util/tag_util.py:65
+msgid ""
+"Apply for all selected tracks\n"
+"(active on multi selection)"
+msgstr ""
+"应用到全部已选音轨\n"
+"(多选时有效)"
+
+#~ msgid "Cancel"
+#~ msgstr "取消"
+
+#~ msgid "Count of tabs"
+#~ msgstr "标签数"
+
+#~ msgid "Max length of tab"
+#~ msgstr "标签最大长度"
+
+#~ msgid "Tab position"
+#~ msgstr "标签位置"
+
+#~ msgid "Close tab sign"
+#~ msgstr "关闭标签图标"
+
+#~ msgid "Vkontakte"
+#~ msgstr "Vkontakte"
+
+#~ msgid "Video"
+#~ msgstr "视频"
+
+#~ msgid "Last.fm connection error"
+#~ msgstr "Last.fm 连接错误"
+
+#~ msgid "Verify user and password"
+#~ msgstr "验证用户与密码"
+
+#~ msgid "VKontakte connection error"
+#~ msgstr "VKontakte 连接错误"
+
+#~ msgid "Restore Defaults"
+#~ msgstr "恢复默认"
+
+#~ msgid "Set focus on search line (Alt+G) Google :)"
+#~ msgstr "选中搜索行 (Alt+G) Google :)"
+
+#~ msgid "Top by artist"
+#~ msgstr "按歌手排序"
+
+#~ msgid "_Tracks"
+#~ msgstr "音轨(_T)"
+
+#~ msgid "Other"
+#~ msgstr "其他"
+
+#~ msgid "Off"
+#~ msgstr "关"
+
+#~ msgid "On"
+#~ msgstr "开"
+
+#~ msgid "OK"
+#~ msgstr "确定"
+
+#~ msgid "http://www.foobnix.com/download/eng"
+#~ msgstr "http://www.foobnix.com/download/eng"
+
+#~ msgid "Save music to folder"
+#~ msgstr "将音乐保存到文件夹"
+
+#~ msgid "Menu type"
+#~ msgstr "菜单类型"
+
+#~ msgid "Opacity"
+#~ msgstr "不透明度"
+
+#~ msgid "Biography"
+#~ msgstr "传记"
+
+#~ msgid "Play Lists"
+#~ msgstr "播放列表"
+
+#~ msgid "About Window"
+#~ msgstr "关于窗口"
+
+#~ msgid "Credential"
+#~ msgstr "凭证"
+
+#~ msgid "Changelog"
+#~ msgstr "更新日志"
+
+#~ msgid "Add to new tab"
+#~ msgstr "添加到新标签"
+
+#~ msgid "Add to current tab"
+#~ msgstr "添加到当前标签"
+
+#~ msgid "Check Foobnix Access (Require)"
+#~ msgstr "检查 Foobnix 权限 (必须)"
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "Are you really want to %s this item(s) to %s ?"
+#~ msgstr ""
+#~ "\n"
+#~ "是否确实要将该项 %s 到 %s ?"
