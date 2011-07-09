@@ -19,10 +19,10 @@ class NetWrapper():
     def __init__(self, contorls, is_ping=True):
         self.controls = contorls
         self.flag = True
-        self.is_connected = False
+        self.is_connected = True
         
         "only for self.execute() method"
-        self.previous_connect = False
+        self.previous_connect = True
         
         if not is_ping:
             logging.debug("Ping functional is disabled")
