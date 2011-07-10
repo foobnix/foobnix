@@ -16,6 +16,7 @@ from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util.file_utils import get_full_size
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 import threading
+from foobnix.util.text_utils import split_string
 
 
 
@@ -117,7 +118,20 @@ class CopyProgressWindow(gtk.Dialog):
                 break
 
 class MessageWindow(gtk.MessageDialog):
-    def __init__(self, title, type=gtk.MESSAGE_INFO, text=None, parent=None, buttons=None, flags=0):
+    def __init__(self, title, type=gtk.MESSAGE_INFO, text=None, parent=None, buttons=None, flags=0, func=None, args=(), func1=None, args1=()):
+        text = split_string(text, 40)
         gtk.MessageDialog.__init__(self, parent, flags, type, buttons, text)
         self.set_title(title)
+        self.connect('delete-event', self.delete_event)
         self.show_all()
+        id = self.run()
+        if id != gtk.RESPONSE_NONE:
+            if func and id in [gtk.RESPONSE_OK, gtk.RESPONSE_APPLY, gtk.RESPONSE_ACCEPT, gtk.RESPONSE_YES]:
+                func(args) if args else func()
+            if func1 and id in [gtk.RESPONSE_NO, gtk.RESPONSE_CLOSE, gtk.RESPONSE_CANCEL, gtk.RESPONSE_REJECT]:
+                func1(args1) if args else func1()
+        self.destroy()
+        
+    def delete_event(self, widget, event, data=None):
+        self.response(gtk.RESPONSE_NONE)
+        return True

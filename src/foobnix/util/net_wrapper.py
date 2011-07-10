@@ -8,68 +8,39 @@ Created on 31 may 2011
 import os
 import gtk
 import time
+import socket
 import thread
 import logging
 
-from threading import Thread
-from subprocess import Popen, PIPE
 from foobnix.helpers.window import MessageWindow
 
 class NetWrapper():
     def __init__(self, contorls, is_ping=True):
         self.controls = contorls
         self.flag = True
-        self.is_connected = True
-        
+                
         "only for self.execute() method"
-        self.previous_connect = True
+        self.previous_connect = False
         
-        if not is_ping:
-            logging.debug("Ping functional is disabled")
-            """disable net wrapper functional"""
-            return
-        
-        """in win ping successfully works, but console with ping appears and hide periodically"""
         if os.name != 'nt':
+            self.is_connected = False
             thread.start_new_thread(self.ping, ())
         else:
             self.is_connected = True
-                        
+            thread.start_new_thread(self.ping, ())            
+    
     def ping(self):
-        def task(sp):
-            i = 0
-            while i < 20:
-                if sp.poll() != None:
-                    return
-                else:
-                    i += 1
-                    time.sleep(0.5)
-            
-            if not self.out:
-                self.is_connected = False
-                logging.debug("internet is not connected \"not self.out\" ")            
-                sp.kill()
-        
-        if os.name == 'nt':
-            cmd = ['ping', 'google.com', '-n 2']
-        else:
-            cmd = ['ping', 'google.com', '-c 2']
-         
         while self.flag:
-            self.out = None
-            self.error = None
-            sp = Popen(cmd, stdout=PIPE, stderr=PIPE)
-            timer = Thread(target=task, args=(sp,))    
-            timer.start()
-            self.out, self.error = sp.communicate()
-            if self.error:
+            s = socket.socket()
+            s.settimeout(7.0)
+            port = 80 # port number is a number, not string
+            try:
+                s.connect(('google.com', port))
+                self.is_connected = True 
+                logging.info("Success internet connection")
+            except Exception, e:
                 self.is_connected = False
-                logging.debug("internet is not connected - error")
-            elif self.out:
-                if "100%" in self.out:
-                    self.is_connected = False
-                    logging.debug("internet is not connected - error")
-                self.is_connected = True
+                logging.warning("Can\'t connect to internet. Reason - " + str(e))
             time.sleep(3)
                 
     def disconnect_dialog(self):
@@ -88,11 +59,12 @@ class NetWrapper():
     def execute(self,func, *args):
         if self.is_connected:
             self.previous_connect = True
-            logging.info("Success internet connection")
+            logging.info("In execute. Success internet connection")
             return func(*args) if args else func()
         else:
             if self.previous_connect:
                 self.previous_connect = False
                 self.disconnect_dialog()
-            logging.warning("No internet connection")
+            logging.warning("In execute. No internet connection")
             return None
+
