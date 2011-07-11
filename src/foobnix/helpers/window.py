@@ -9,15 +9,14 @@ import os
 import gtk
 import time
 import logging
+import threading
 
 from foobnix.fc.fc import FC
 from foobnix.util.key_utils import is_key
 from foobnix.util.const import ICON_FOOBNIX
+from foobnix.util.text_utils import split_string
 from foobnix.util.file_utils import get_full_size
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
-import threading
-from foobnix.util.text_utils import split_string
-
 
 
 class ChildTopWindow(gtk.Window):
@@ -118,11 +117,12 @@ class CopyProgressWindow(gtk.Dialog):
                 break
 
 class MessageWindow(gtk.MessageDialog):
-    def __init__(self, title, type=gtk.MESSAGE_INFO, text=None, parent=None, buttons=None, flags=0, func=None, args=(), func1=None, args1=()):
+    def __init__(self, title, type=gtk.MESSAGE_INFO, text=None, parent=None,
+                 buttons=None, flags=0, func=None, args=(), func1=None, args1=()):
         text = split_string(text, 40)
         gtk.MessageDialog.__init__(self, parent, flags, type, buttons, text)
+        
         self.set_title(title)
-        self.connect('delete-event', self.delete_event)
         self.show_all()
         id = self.run()
         if id != gtk.RESPONSE_NONE:
@@ -130,7 +130,10 @@ class MessageWindow(gtk.MessageDialog):
                 func(args) if args else func()
             if func1 and id in [gtk.RESPONSE_NO, gtk.RESPONSE_CLOSE, gtk.RESPONSE_CANCEL, gtk.RESPONSE_REJECT]:
                 func1(args1) if args else func1()
+        time.sleep(0.1) #otherwise can be freezes
         self.destroy()
+        #gobject.timeout_add(100, self.destroy)
+        
         
     def delete_event(self, widget, event, data=None):
         self.response(gtk.RESPONSE_NONE)
