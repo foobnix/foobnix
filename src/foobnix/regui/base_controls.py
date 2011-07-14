@@ -641,9 +641,16 @@ class BaseFoobnixControls():
         bean = self.notetabs.next()
         gap = FC().gap_secs
         time.sleep(gap) 
-        if bean and bean.path and os.path.isdir(bean.path):
-            return None
-            
+        logging.debug("play current bean is %s" % str(bean.text))
+        if bean and bean.path:
+            if os.path.isdir(bean.path):
+                return None
+            if bean.path.startswith("http://"):
+                if not self.check_path(bean):
+                    path = self.net_wrapper.execute(self.vk_service.find_one_track, bean.get_display_name()).path
+                    if path:
+                        bean.path = path
+                   
         self.play(bean)
 
     def prev(self):
