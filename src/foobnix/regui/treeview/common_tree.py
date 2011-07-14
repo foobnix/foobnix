@@ -173,6 +173,25 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             FCache().cache_music_tree_beans[number_of_page].append(bean)
             if row.iterchildren():
                 task(row)
+    
+    def find_rows_by_element(self, element, value):
+        '''element - member of FTreeModel class
+        for example self.UUID)'''
+        
+        result = []
+                      
+        def task(row):
+            if row[element[0]] == value:
+                result.append(row)
+            if row.iterchildren():
+                for child_row in row.iterchildren():
+                    task(child_row)
+        
+        for row in self.model:
+            task(row)
+        
+        return result    
+                    
         
     def clear_tree(self):
         self.model.clear()
@@ -258,11 +277,13 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def update_bean(self, bean):
         for row in self.model:
             if row[self.UUID[0]] == bean.UUID:
+                print "yes"
                 dict = FTreeModel().__dict__
                 for key in dict:
                     value = getattr(bean, key)
                     row_num = dict[key][0]
                     row[row_num] = value
+                print row
                 break
         
     def _get_bean_by_path(self, path):

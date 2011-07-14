@@ -63,7 +63,6 @@ class RadioTreeControl(CommonTreeControl):
         name, url = two_line_dialog(_("Change Radio Station name and path"), _("Url"), bean.text, bean.path)
         if not name or not url:
             return
-        
         if os.path.isfile(CACHE_RADIO_FILE) and os.path.getsize(CACHE_RADIO_FILE)>0:
             with open(CACHE_RADIO_FILE, 'r') as f:
                 list = f.readlines()
@@ -76,8 +75,12 @@ class RadioTreeControl(CommonTreeControl):
 
         bean.add_text(name)
         bean.add_path(url)
-        self.update_bean(bean)
-    
+        
+        rows = self.find_rows_by_element(self.UUID, bean.UUID)
+        if rows:
+            rows[0][self.text[0]] = name
+            rows[0][self.path[0]] = url
+                
     def on_add_station(self):
         name, url = two_line_dialog("Add New Radio Station", "Enter Name and URL", "", "http://")
         with open(CACHE_RADIO_FILE, 'a') as f:

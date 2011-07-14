@@ -640,7 +640,7 @@ class BaseFoobnixControls():
     def next(self):        
         bean = self.notetabs.next()
         gap = FC().gap_secs
-        time.sleep(gap) 
+        time.sleep(gap)
         logging.debug("play current bean is %s" % str(bean.text))
         if bean and bean.path:
             if os.path.isdir(bean.path):
