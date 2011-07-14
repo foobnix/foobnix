@@ -277,13 +277,11 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def update_bean(self, bean):
         for row in self.model:
             if row[self.UUID[0]] == bean.UUID:
-                print "yes"
                 dict = FTreeModel().__dict__
                 for key in dict:
                     value = getattr(bean, key)
                     row_num = dict[key][0]
                     row[row_num] = value
-                print row
                 break
         
     def _get_bean_by_path(self, path):
