@@ -76,7 +76,7 @@ class NetWrapper():
     "wrapper for Internet function"        
     def execute(self,func, *args):
         if self.is_connected:
-            self.previous_connect = True
+            #self.previous_connect = True
             logging.info("In execute. Success internet connection")
             return func(*args) if args else func()
         else:
