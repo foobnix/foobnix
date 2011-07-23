@@ -53,6 +53,7 @@ class NetWrapper():
                     if self.previous_connect:
                         self.previous_connect = False
                         self.disconnect_dialog()
+                        logging.info("Disconnect dialog is shown")
                     self.counter = 0
             time.sleep(3)
                
