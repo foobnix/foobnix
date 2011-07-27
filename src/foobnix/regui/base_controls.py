@@ -656,8 +656,14 @@ class BaseFoobnixControls():
     def prev(self):
         bean = self.notetabs.prev()
         
-        if bean and  bean.path and os.path.isdir(bean.path):
-            return None
+        if bean and bean.path:
+            if os.path.isdir(bean.path):
+                return None
+            if bean.path.startswith("http://"):
+                if not self.check_path(bean):
+                    path = self.net_wrapper.execute(self.vk_service.find_one_track, bean.get_display_name()).path
+                    if path:
+                        bean.path = path
         
         thread.start_new_thread(self.play, (bean,))
 
