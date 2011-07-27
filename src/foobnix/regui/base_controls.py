@@ -94,7 +94,7 @@ class BaseFoobnixControls():
                     if path:
                         current.path = path
             """play song"""
-            self.play(current)
+            thread.start_new_thread(self.play, (current,))
     
     def check_path(self, bean):
         if bean.path:
@@ -344,7 +344,7 @@ class BaseFoobnixControls():
         elif under_pointer_icon:
             tree = self.notetabs.get_current_tree()
             bean = tree.get_bean_under_pointer_icon()
-            self.play(bean)
+            thread.start_new_thread(self.play, (bean,))
         else:
             self.play_selected_song()
     
@@ -651,7 +651,7 @@ class BaseFoobnixControls():
                     if path:
                         bean.path = path
                    
-        self.play(bean)
+        thread.start_new_thread(self.play, (bean,))
 
     def prev(self):
         bean = self.notetabs.prev()
@@ -659,7 +659,7 @@ class BaseFoobnixControls():
         if bean and  bean.path and os.path.isdir(bean.path):
             return None
         
-        self.play(bean)
+        thread.start_new_thread(self.play, (bean,))
 
     def filter_by_folder(self, value):
         tree = self.tabhelper.get_current_tree()
@@ -775,7 +775,7 @@ class BaseFoobnixControls():
                 return
                   
             if bean.is_file:
-                self.play(bean)
+                thread.start_new_thread(self.play, (bean,))
                 tree_selection = active_playlist_tree.get_selection()
                 filter_iter = filter_model.convert_child_iter_to_iter(iter)
                 tree_selection.select_iter(filter_iter)
