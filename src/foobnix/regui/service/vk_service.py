@@ -121,7 +121,7 @@ class VKAuthorizationWindow(ChildTopWindow):
     
     def _nav_request_policy_decision_cb(self, view, frame, net_req, nav_act, pol_dec):
         uri = net_req.get_uri()       
-        logging.debug("response url" + uri) 
+        logging.debug("response url " + uri) 
         if "access_token" in uri:
             token = self.get_response(uri)["access_token"]
             userid= self.get_response(uri)["user_id"]
@@ -224,7 +224,7 @@ class VKService:
         if self.is_show_authorization():
             return 
         
-        logging.info("start search songs" + query)
+        logging.info("start search songs " + query)
         query = urllib.quote(query)
         
         list = self.get_result("audio.search", "q=" + query)
@@ -286,8 +286,8 @@ class VKService:
         #get most relatives times time
         r_count = max(times_count.values())
         r_time = self.find_time_value(times_count, r_count)
-        logging.info("Song time" + str(r_time))
-        logging.info("Count of songs with this time" + str(r_count))
+        logging.info("Song time " + str(r_time))
+        logging.info("Count of songs with this time " + str(r_count))
         
         for song in vkSongs:
             if song.time == r_time:        

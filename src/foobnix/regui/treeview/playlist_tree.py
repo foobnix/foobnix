@@ -144,7 +144,7 @@ class PlaylistTreeControl(CommonTreeControl):
             
             
     def common_single_random(self):
-        logging.debug("Repeat state" + str(FC().repeat_state))
+        logging.debug("Repeat state " + str(FC().repeat_state))
         if FC().repeat_state == const.REPEAT_SINGLE:
             return self.get_current_bean_by_UUID();
         
@@ -168,7 +168,7 @@ class PlaylistTreeControl(CommonTreeControl):
            
         self.scroll_follow_play_icon()            
         
-        logging.debug("Next bean" + str(bean) + bean.text)
+        logging.debug("Next bean " + str(bean) + bean.text)
         
         return bean
 

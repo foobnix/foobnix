@@ -31,7 +31,7 @@ def update_bean_from_normalized_text(bean):
 
 
 def get_bean_posible_paths(bean):
-    logging.debug("get bean pat %s" % bean)
+    logging.debug("get bean path: %s" % bean)
     path = get_bean_download_path(bean, path=FC().online_save_to_folder)
     if path and os.path.exists(path):
         return path
@@ -56,7 +56,7 @@ def get_bean_download_path(bean, path=FC().online_save_to_folder):
         logging.debug("bean path %s" % path)
         return path
     else:
-        logging.debug("get bean pat %s" % bean)
+        logging.debug("get bean path: %s" % bean)
         path = os.path.join(path, bean.get_display_name() + ext)
         logging.debug("bean path %s" % path)
         return path   

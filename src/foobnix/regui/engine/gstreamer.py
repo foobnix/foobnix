@@ -70,7 +70,7 @@ class GStreamerEngine(MediaPlayerEngine):
         return playbin
     
     def notify_init(self, duration_int):
-        logging.debug("Pre init thread" + str(duration_int))
+        logging.debug("Pre init thread: " + str(duration_int))
 
     def notify_playing(self, position_int, duration_int, sec):
         #LOG.debug("Notify playing", position_int)
@@ -131,7 +131,7 @@ class GStreamerEngine(MediaPlayerEngine):
         
         if path.startswith("http://"):
             self.radio_path = get_radio_source(path)
-            logging.debug("Try To play path" + self.radio_path)
+            logging.debug("Try To play path " + self.radio_path)
             
             if self.bean.type == FTYPE_RADIO:
                 time.sleep(2)
@@ -184,14 +184,14 @@ class GStreamerEngine(MediaPlayerEngine):
         try:
             return self.player.query_position(gst.Format(gst.FORMAT_TIME), None)[0]
         except Exception, e:
-            logging.warn("GET query_position" + str(e))
+            logging.warn("GET query_position: " + str(e))
             return - 1
     
     def get_duration_seek_ns(self):
         try:
             return self.player.query_duration(gst.Format(gst.FORMAT_TIME), None)[0]
         except Exception, e:
-            logging.warn("GET query_duration" + str(e))
+            logging.warn("GET query_duration: " + str(e))
             return - 1
     
     def playing_thread(self):
@@ -199,7 +199,7 @@ class GStreamerEngine(MediaPlayerEngine):
         error_count = 0
         sec = 0
         
-        logging.debug("current state in thread" + str(self.get_state()))
+        logging.debug("current state in thread: " + str(self.get_state()))
          
         while thread_id == self.play_thread_id:
             try:
@@ -211,7 +211,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 self.notify_init(duration_int)
                 break
             except Exception, e:
-                logging.info("Init playing thread " + str(e))
+                logging.info("Init playing thread: " + str(e))
                 time.sleep(1)
                 if error_count > 3:
                     logging.warn("shit happens")

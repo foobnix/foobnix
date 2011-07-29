@@ -37,7 +37,7 @@ class Cache():
             return None
         if self.cache_tracks.has_key(self.get_key(artist, title)):
             track = self.cache_tracks[self.get_key(artist, title)]
-            logging.debug("Get track from cache" + str(track))
+            logging.debug("Get track from cache " + str(track))
             return track
         else:
             track = self.network.get_track(artist, title)
