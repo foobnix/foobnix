@@ -58,7 +58,14 @@ class VKAuthorizationWindow(ChildTopWindow):
             if FC().user_id:
                 self.user_id.set_text(FC().user_id) 
             
-            link = gtk.LinkButton(self.API_URL,_("1: Generate token (push or open the link url in the browser)"))
+            
+            edit = gtk.Entry()
+            edit.set_text(self.API_URL)
+            link = gtk.LinkButton(self.API_URL,_("Open"))
+            
+            line = gtk.HBox(False, 0)                    
+            line.pack_start(edit, True, True)
+            line.pack_start(link, False, False)
             
             apply = gtk.Button(_("2: Apply Token"))
             apply.connect("clicked", self.on_apply)
@@ -66,7 +73,7 @@ class VKAuthorizationWindow(ChildTopWindow):
             self.info_line = gtk.Label(_("Please generate token..."))
             
             vbox.pack_start(ImageBase("vk.png"), False, False)
-            vbox.pack_start(link, False, False)
+            vbox.pack_start(line, False, False)
             
             vbox.pack_start(HBoxLableEntry(gtk.Label(_("Token:")) , self.token))
             vbox.pack_start(HBoxLableEntry(gtk.Label(_("User ID:")) , self.user_id))

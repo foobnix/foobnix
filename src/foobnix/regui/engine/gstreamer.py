@@ -366,7 +366,6 @@ class GStreamerEngine(MediaPlayerEngine):
             if message.structure.has_field("title"):
                 title = message.structure['title']
                 title = decode_cp866(title)
-                print "title", title
                 self.notify_title(title)
 
         elif type == gst.MESSAGE_EOS:
