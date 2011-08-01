@@ -350,6 +350,8 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         
     def get_next_bean(self, repeat_all=False):
         rows = self.get_all_file_rows()
+        if not rows:
+            return
         for i, row in enumerate(rows):
             if row[self.play_icon[0]] and i + 1 < len(rows):
                 next_row = rows[i + 1]
@@ -360,7 +362,9 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             return self.get_bean_from_row(rows[0])
     
     def get_prev_bean(self, repeat_all=False):
-        rows = self.get_all_file_rows() 
+        rows = self.get_all_file_rows()
+        if not rows:
+            return
         for i, row in enumerate(rows):
             if row[self.play_icon[0]] and i > 0:
                 prev_row = rows[i - 1]

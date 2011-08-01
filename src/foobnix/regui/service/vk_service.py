@@ -179,7 +179,6 @@ class VKService:
             logging.error("Can't get response from " + url)
             return
         result = response.read()
-        logging.debug("get VK API result ", result)
         return  result
     
     def to_json(self, json):
