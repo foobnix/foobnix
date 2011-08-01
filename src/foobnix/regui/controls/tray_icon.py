@@ -117,16 +117,17 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         if FC().notifier:
             try:
                 import pynotify
-                if not pynotify.init('org.mpris.foobnix'):
-                    logging.warning("Can't initialize pynotify")
-                    return
-                notification = pynotify.Notification("Foobnix", "<b><i> " + artist + "\n\n " + title + "</i></b>")
-                notification.set_urgency(pynotify.URGENCY_LOW)
-                notification.set_timeout(FC().notify_time)
-                notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
-                notification.show()
             except:
                 logging.warn("Pynotify not found in your system")
+            if not pynotify.init('org.mpris.foobnix'):
+                logging.warning("Can't initialize pynotify")
+                return
+            notification = pynotify.Notification("Foobnix", "<b><i> " + artist + "\n\n " + title + "</i></b>")
+            notification.set_urgency(pynotify.URGENCY_LOW)
+            notification.set_timeout(FC().notify_time)
+            notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
+            notification.show()
+            
 
     def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip):
         artist = "Artist"

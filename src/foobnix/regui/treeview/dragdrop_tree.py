@@ -543,7 +543,7 @@ class DragDropTree(gtk.TreeView):
             self._plain_append(bean, parent_iter)
             
     def _plain_append(self, bean, parent_iter):
-        logging.debug("Plain append task: " + str(bean.text) + str(bean.path))
+        logging.debug("Plain append task: " + str(bean.text) + " " + str(bean.path))
         if not bean:
             return
         if bean.is_file == True:

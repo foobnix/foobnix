@@ -380,36 +380,18 @@ class BaseFoobnixControls():
             return True
         else:
             return False
-    def play(self, bean):
-        thread.start_new_thread(self._play, (bean,))
     
-    def _play(self, bean):
+    def play(self, bean):
+        def task():
+            #thread.start_new_thread(self._play, (bean,))
+            gobject.idle_add(self._play, bean)
+        #gobject.idle_add(task)
+        #thread.start_new_thread(task, ())
+        #thread.start_new_thread(self._play, (bean,))
+        self.state_stop()
         self.statusbar.set_text("")
-        if not bean:
-            self.state_stop()
-            return None
-        
-        if not bean.is_file: 
-            self.state_stop()
-            return None
-        
-        if not bean.path:
-            bean.path = get_bean_posible_paths(bean)
-                    
-        if not bean.path:            
-            if not self.fill_bean_from_vk(bean):
-                if self.vk_service.is_show_authorization():
-                    return None
-                if self.count_errors < 4:
-                    time.sleep(0.5)
-                    self.count_errors += 1
-                    self.next()
-               
-        
-        if bean.path and os.path.isdir(bean.path):
-            self.state_stop()
-            return None
-        
+        if not bean or not bean.is_file:
+            return
         if bean.type == FTYPE_RADIO:
             self.record.show()
         else:
@@ -422,7 +404,25 @@ class BaseFoobnixControls():
         
         self.movie_window.set_text(bean.text)        
         self.main_window.set_title(bean.text)
+        thread.start_new_thread(self._play, (bean,))     
         
+    def _play(self, bean):
+        
+        if not bean.path:
+            bean.path = get_bean_posible_paths(bean)
+                    
+        if not bean.path:            
+            if not self.fill_bean_from_vk(bean):
+                if self.vk_service.is_show_authorization():
+                    return None
+                if self.count_errors < 4:
+                    time.sleep(0.5)
+                    self.count_errors += 1
+                    self.next()
+                
+        if bean.path and os.path.isdir(bean.path):
+            return None
+               
         self.media_engine.play(bean)  
         self.is_scrobbled = False
         self.start_time = False      
@@ -718,7 +718,7 @@ class BaseFoobnixControls():
         new_version_line = f.read()
         
         
-        logging.info("version" + current_version + "|" + new_version_line + "|" + str(uuid))
+        logging.info("version " + current_version + "|" + new_version_line + "|" + str(uuid))
         
         f.close()
         if FC().check_new_version and compare_versions(current_version, new_version_line) == 1:

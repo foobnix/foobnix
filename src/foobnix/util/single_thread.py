@@ -33,7 +33,7 @@ class SingleThread():
             self.progressbar.start(text)
             thread.start_new_thread(self._thread_task, (method, args,))
         else:
-            logging.warning("Previous thread not finished" + str(method) + str(args))
+            logging.warning("Previous thread not finished " + str(method) + " " + str(args))
             if not with_lock:
                 logging.info("Try to run method without progress bar")
                 thread.start_new_thread(self._thread_task, (method, args))  

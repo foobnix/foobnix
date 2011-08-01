@@ -166,7 +166,7 @@ class GStreamerEngine(MediaPlayerEngine):
         else:
             self.volume(FC().volume)
         
-        logging.debug("current state before thread" + str(self.get_state()) + str(self.play_thread_id))
+        logging.debug("current state before thread " + str(self.get_state()) + " thread_id: " + str(self.play_thread_id))
         self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
         self.pause_thread_id = False
         
@@ -225,7 +225,7 @@ class GStreamerEngine(MediaPlayerEngine):
         if self.bean.duration_sec > 0:
             duration_int = float(self.bean.duration_sec) * self.NANO_SECONDS
         
-        logging.debug("current state before while" + str(self.get_state()))
+        logging.debug("current state before while " + str(self.get_state()))
         
         self.set_state(STATE_PLAY)
         
@@ -246,7 +246,7 @@ class GStreamerEngine(MediaPlayerEngine):
                     
                 self.notify_playing(position_int, duration_int, sec)
             except Exception, e:
-                logging.info("Playing thread error..." + str(e))
+                logging.info("Playing thread error... " + str(e))
 
             time.sleep(1)
 
@@ -263,15 +263,15 @@ class GStreamerEngine(MediaPlayerEngine):
     def seek_seconds(self, seconds):
         if not seconds:
             return
-        logging.info("Start with seconds" + str(seconds))
+        logging.info("Start with seconds " + str(seconds))
         seek_ns = (float(seconds) + 0.0) * self.NANO_SECONDS
-        logging.info("SEC SEEK SEC" + str(seek_ns))
+        logging.info("SEC SEEK SEC " + str(seek_ns))
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, seek_ns)
     
     def seek_ns(self, ns):
         if not ns:
             return        
-        logging.info("SEC ns" + str(ns))
+        logging.info("SEC ns " + str(ns))
         self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, ns)
 
     def volume(self, percent):
