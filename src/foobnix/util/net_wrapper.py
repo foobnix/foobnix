@@ -18,11 +18,18 @@ class NetWrapper():
         self.controls = contorls
         self.flag = False
         self.counter = 0 #to count how many times in row was disconnect
-        self.is_connected = False        
-        "only for self.execute() method"
-        self.previous_connect = False #show the message only if a connection existed and then there was a disconnect
-                       
-        self.start_ping()
+        
+        if is_ping:
+            self.is_connected = False        
+            "only for self.execute() method"
+            self.previous_connect = False #show the message only if a connection existed and then there was a disconnect                       
+            self.start_ping()
+            logging.debug("ping enable")
+        else:
+            self.is_connected = True
+            self.previous_connect = True
+            logging.debug("ping disable")
+            
                   
     def start_ping(self):
         if self.flag: #means there is already one active ping process
@@ -55,7 +62,7 @@ class NetWrapper():
                         self.disconnect_dialog()
                         logging.info("Disconnect dialog is shown")
                     self.counter = 0
-            time.sleep(3)
+            time.sleep(10)
                
     def disconnect_dialog(self):
         def task():

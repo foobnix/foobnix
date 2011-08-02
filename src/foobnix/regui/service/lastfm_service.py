@@ -99,22 +99,17 @@ class LastFmService():
         try:
             self.network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET, username=username, password_hash=password_hash)
             self.cache = Cache(self.network)
-            print 0
             if FC().proxy_enable and FC().proxy_url:
-                print 1
                 proxy_rul = FC().proxy_url
                 index = proxy_rul.find(":")
                 proxy = proxy_rul[:index]
                 port = proxy_rul[index + 1:]
                 self.network.enable_proxy(proxy, port)
                 logging.info("Enable proxy for last fm" + str(proxy) + str(port))
-            print 2
             """scrobbler"""
             scrobbler_network = pylast.get_lastfm_network(username=username, password_hash=password_hash)
             self.scrobbler = scrobbler_network.get_scrobbler("fbx", "1.0")
-            print 3
         except:
-            print 4
             self.network = None
             self.scrobbler = None
             self.controls.statusbar.set_text("Error last.fm connection with %s/%s" % (username, FCBase().lfm_password))
