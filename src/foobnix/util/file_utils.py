@@ -377,6 +377,8 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
     
 def copy_to(old_paths):
         destinations = directory_chooser_dialog(_("Choose Folder"), FC().last_dir)
+        if not destinations:
+            return
         from foobnix.helpers.window import CopyProgressWindow
         pr_window = CopyProgressWindow(_("Progress"), old_paths, 300, 100)
         pr_window.label_to.set_text(_("To: ") + destinations[0] + "\n")
