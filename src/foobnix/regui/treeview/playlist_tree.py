@@ -222,6 +222,7 @@ class PlaylistTreeControl(CommonTreeControl):
             if beans:
                 menu = Popup()
                 menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
+                menu.add_item(_('Delete from playlist'), gtk.STOCK_DELETE, self.delete_selected, None)
                                
                 paths = []
                 inet_paths = []
