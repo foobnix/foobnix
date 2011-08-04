@@ -183,8 +183,9 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 
     def add_to_tab(self, current=False):
         paths = self.get_selected_bean_paths()
+        to_tree = self.controls.notetabs.get_current_tree()
         try:
-            to_model = self.controls.notetabs.get_current_tree().get_model().get_model()
+            to_model = to_tree.get_model().get_model()
         except AttributeError:
             pass
         from_model = self.get_model()
@@ -195,17 +196,20 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             if not i and not current:
                 name = row[0]
                 self.controls.notetabs._append_tab(name)
-                to_model = self.controls.notetabs.get_current_tree().get_model().get_model()
+                to_tree = self.controls.notetabs.get_current_tree() # because to_tree has changed
+                to_model = to_tree.get_model().get_model()
                 
-            if self.add_m3u(from_model, from_iter, to_model, None, None): continue
+            if self.add_m3u(from_model, from_iter, to_tree, to_model, None, None): continue
             if from_model.iter_has_child(from_iter):
-                new_iter = self.to_add_drag_item(to_model, None, None, None, True, row=row)
+                new_iter = self.to_add_drag_item(to_tree, to_model, None, None, None, True, row=row)
                 from_ref = self.get_row_reference_from_iter(from_model, from_iter)
-                self.iter_is_parent(from_ref, from_model, to_model, new_iter)
+                self.iter_is_parent(from_ref, from_model, to_tree, to_model, new_iter)
             else:
-                new_iter = self.to_add_drag_item(to_model, None, None, None, row=row)
+                new_iter = self.to_add_drag_item(to_tree, to_model, None, None, None, row=row)
                 
-        self.controls.notetabs.get_current_tree().rebuild_as_plain()
+        #self.controls.notetabs.get_current_tree().rebuild_as_plain()
+        to_tree.update_tracknumber()
+        
         if not current:
             '''gobject because rebuild_as_plain use it too'''
             gobject.idle_add(self.controls.play_first_file_in_playlist)
