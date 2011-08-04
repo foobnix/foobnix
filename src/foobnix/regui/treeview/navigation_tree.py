@@ -200,12 +200,14 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 to_model = to_tree.get_model().get_model()
                 
             if self.add_m3u(from_model, from_iter, to_tree, to_model, None, None): continue
-            if from_model.iter_has_child(from_iter):
-                new_iter = self.to_add_drag_item(to_tree, to_model, None, None, None, True, row=row)
-                from_ref = self.get_row_reference_from_iter(from_model, from_iter)
-                self.iter_is_parent(from_ref, from_model, to_tree, to_model, new_iter)
-            else:
-                new_iter = self.to_add_drag_item(to_tree, to_model, None, None, None, row=row)
+            rows = self.fill_bean_and_get_rows(self.get_bean_from_model_iter(from_model, from_iter))
+            for row in rows:
+                if from_model.iter_has_child(from_iter):
+                    new_iter = self.to_add_drag_item(to_tree, to_model, None, None, None, True, row=row)
+                    from_ref = self.get_row_reference_from_iter(from_model, from_iter)
+                    self.iter_is_parent(from_ref, from_model, to_tree, to_model, new_iter)
+                else:
+                    new_iter = self.to_add_drag_item(to_tree, to_model, None, None, None, row=row)
                 
         #self.controls.notetabs.get_current_tree().rebuild_as_plain()
         to_tree.update_tracknumber()
