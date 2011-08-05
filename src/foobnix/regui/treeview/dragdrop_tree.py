@@ -210,14 +210,9 @@ class DragDropTree(gtk.TreeView):
             if is_copy_move:
                 self.change_filepaths_in_row(to_model, new_iter, new_path)
         else:
-            print "in else"
-            
             if new_iter and to_iter and not to_model.iter_has_child(to_iter):
                 to_iter = new_iter
-            print "new0",new_iter
-            print "to",to_iter
             new_iter = self.to_add_drag_item(to_tree, to_model, to_iter, to_filter_pos, ff_row_ref)
-            print "new",new_iter
             if is_copy_move:
                 self.change_filepaths_in_row(to_model, new_iter, new_path)
             if to_filter_pos == gtk.TREE_VIEW_DROP_BEFORE:
@@ -319,14 +314,10 @@ class DragDropTree(gtk.TreeView):
             from_iter = self.get_iter_from_row_reference(ref)
             from_model = ref.get_model()
             row = self.get_row_from_model_iter(from_model, from_iter)
-            print row
             if not child and self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
                 self.row_to_remove.append(ref)
         if to_iter:
             if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
-                #if to_tree.current_view == VIEW_PLAIN:
-                    
-                
                 if child:
                     new_iter = to_model.append(to_iter, row)
                 else:
