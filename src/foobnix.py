@@ -29,7 +29,7 @@ def foobnix():
     
     if "--nt" in sys.argv or os.name == 'nt':    
         gobject.threads_init() #@UndefinedVariable
-        core = FoobnixCore(False)
+        core = FoobnixCore(False, False)
         core.run()
         print ("******Foobnix run in", time.time() - init_time, " seconds******")
         gtk.main()
