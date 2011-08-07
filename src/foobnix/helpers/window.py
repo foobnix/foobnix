@@ -130,7 +130,7 @@ class MessageWindow(gtk.MessageDialog):
                 func(args) if args else func()
             if func1 and id in [gtk.RESPONSE_NO, gtk.RESPONSE_CLOSE, gtk.RESPONSE_CANCEL, gtk.RESPONSE_REJECT]:
                 func1(args1) if args else func1()
-        time.sleep(0.1) #otherwise can be freezes
+        time.sleep(0.2) #otherwise can be freezes
         self.destroy()
         #gobject.timeout_add(100, self.destroy)
         

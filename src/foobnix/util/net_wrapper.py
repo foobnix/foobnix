@@ -18,6 +18,7 @@ class NetWrapper():
         self.controls = contorls
         self.flag = False
         self.counter = 0 #to count how many times in row was disconnect
+        self.dd_count = 0
         
         if is_ping:
             self.is_connected = False        
@@ -60,15 +61,23 @@ class NetWrapper():
                     if self.previous_connect:
                         self.previous_connect = False
                         self.disconnect_dialog()
-                        logging.info("Disconnect dialog is shown")
                     self.counter = 0
             time.sleep(10)
                
     def disconnect_dialog(self):
+        # only one dialog must be shown
+        if self.dd_count: 
+                logging.debug("one disconnect dialog is showing yet")
+                return
+        
+        logging.info("Disconnect dialog is shown")
         def task():
+            self.dd_count += 1
             MessageWindow(title=_("Internet Connection"), 
                           text=_("Foobnix not connected or Internet not available. Please try again a little bit later."),
                           parent=self.controls.main_window, buttons=gtk.BUTTONS_OK)
+            self.dd_count -= 1
+            
         thread.start_new_thread(task, ())
         
     def is_internet(self):
