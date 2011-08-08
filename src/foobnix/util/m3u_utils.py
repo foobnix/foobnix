@@ -18,8 +18,6 @@ def m3u_reader(m3u_file_path):
             text = None
             if path.startswith("##"):
                 def task(path):
-                    #artist = path[2 : path.find(" - ")]
-                    #name = path[(path.rfind(" - ")+3) : ]
                     text = path[2 : ]
                     try:
                         next_path = paths.next()
@@ -37,12 +35,16 @@ def m3u_reader(m3u_file_path):
                 path, text = task(path)    
                 if not path:
                     break           
+            
+            if text:
+                text = text.strip('\r\n')
+            
             if (path in "\\/"):
-                full_paths.append( [path.replace("\\", "/").strip('\r\n'), text.strip('\r\n')] )
+                full_paths.append( [path.replace("\\", "/").strip('\r\n'), text] )
             elif path.startswith('http'):
-                full_paths.append( [path.strip('\r\n').replace('/', '//', 1), text.strip('\r\n')] )
+                full_paths.append( [path.strip('\r\n').replace('/', '//', 1), text] )
             else:
-                full_paths.append([os.path.join(dirname, path).replace("\\", "/").strip('\r\n'), text.strip('\r\n')] )
+                full_paths.append([os.path.join(dirname, path).replace("\\", "/").strip('\r\n'), text] )
         return full_paths
     except IndexError: 
         logging.warn("You try to load empty playlist")

@@ -212,7 +212,7 @@ class BaseFoobnixControls():
                     path = path[0]
                     bean = FModel(path, path).add_is_file(True)
                 else:
-                    bean = FModel(path, path).parent(parent)
+                    bean = FModel(path, path).parent(parent).add_is_file(True)
                 if text: 
                     bean.text = text
                 beans.append(bean)
@@ -493,7 +493,7 @@ class BaseFoobnixControls():
         all.append(p_bean)
         for i, bean in enumerate(results):
             bean.tracknumber = i + 1
-            bean.parent(p_bean)
+            bean.parent(p_bean).add_is_file(True)
             all.append(bean)        
             
         self.notetabs.append_tab(vk_ulr, all)
@@ -506,7 +506,7 @@ class BaseFoobnixControls():
             all.append(p_bean)
             for i, bean in enumerate(results):
                 bean.tracknumber = i + 1
-                bean.parent(p_bean)
+                bean.parent(p_bean).add_is_file(True)
                 all.append(bean)
             
             if not results:
@@ -524,7 +524,7 @@ class BaseFoobnixControls():
             all.append(p_bean)
             for i, bean in enumerate(results):
                 bean.tracknumber = i + 1
-                bean.parent(p_bean)
+                bean.parent(p_bean).add_is_file(True)
                 all.append(bean)
                 
             if not results:
@@ -543,7 +543,7 @@ class BaseFoobnixControls():
             all.append(parent_bean)
             for i, bean in enumerate(results):
                 bean.tracknumber = i + 1
-                bean.parent(parent_bean)                
+                bean.parent(parent_bean).add_is_file(True)                
                 all.append(bean)
             
             if not results:
@@ -568,7 +568,7 @@ class BaseFoobnixControls():
                 tracks = self.lastfm_service.search_album_tracks(album.artist, album.album)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
-                    track.parent(album)                    
+                    track.parent(album).add_is_file(True)                    
                     all.append(track)
                 if (len(all) > 0):
                     all = [album] + all
@@ -594,7 +594,7 @@ class BaseFoobnixControls():
                 tracks = self.lastfm_service.search_top_tracks(artist.artist)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
-                    track.parent(artist)
+                    track.parent(artist).add_is_file(True)
                     all.append(track)
                 
                 self.notetabs.append_all(all)
@@ -619,7 +619,7 @@ class BaseFoobnixControls():
                 tracks = self.lastfm_service.search_top_tag_tracks(tag.text)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
-                    track.parent(tag)
+                    track.parent(tag).add_is_file(True)
                     all.append(track)
                 
                 self.notetabs.append_all(all)

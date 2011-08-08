@@ -118,7 +118,7 @@ class RadioTreeControl(CommonTreeControl):
                 parent = FModel(fpl.name).add_is_file(False)
                 self.append(parent)
                 for radio, urls in fpl.urls_dict.iteritems():
-                    child = FModel(radio, urls[0]).parent(parent).add_type(FTYPE_RADIO)
+                    child = FModel(radio, urls[0]).parent(parent).add_type(FTYPE_RADIO).add_is_file(True)
                     self.append(child)
             self.auto_add_user_station()
             FC().cache_radio_tree_beans = self.get_all_beans()

@@ -13,7 +13,7 @@ from foobnix.fc.fc_cache import FCache
 
 def update_parent_for_beans(beans, parent):
     for bean in beans:
-        bean.parent(parent)
+        bean.parent(parent).add_is_file(True)
     
 
 """update bean info form text if possible"""
