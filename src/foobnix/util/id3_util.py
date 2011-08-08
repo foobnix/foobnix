@@ -93,7 +93,6 @@ def udpate_id3(bean):
         except Exception, e:
             logging.warn("ID3 NOT MP3" + str(e) + bean.path)
             return bean
-        
         if audio:
             if isinstance(audio, MP4):
                 if audio.has_key('\xa9ART'): bean.artist = audio["\xa9ART"][0]
@@ -110,7 +109,8 @@ def udpate_id3(bean):
                 if audio.has_key('composer'): bean.composer = decode_cp866(audio['composer'][0])
                 if audio.has_key('tracknumber'):
                     if not FC().numbering_by_order:
-                        bean.tracknumber = audio["tracknumber"][0]   
+                        bean.tracknumber = audio["tracknumber"][0]
+                        bean.tracknumber
         
         duration_sec = bean.duration_sec
         

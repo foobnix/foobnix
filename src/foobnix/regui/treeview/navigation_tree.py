@@ -18,7 +18,7 @@ from foobnix.regui.state import LoadSave
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
-    delete_files_from_disk, create_folder_dialog
+    delete_files_from_disk, create_folder_dialog, get_file_extension
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
     is_middle_click_release, is_middle_click
     
@@ -199,16 +199,15 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 to_tree = self.controls.notetabs.get_current_tree() # because to_tree has changed
                 to_model = to_tree.get_model().get_model()
                 
-            if self.add_m3u(from_model, from_iter, to_tree, to_model, None, None): continue
-            rows = self.fill_bean_and_get_rows(self.get_bean_from_model_iter(from_model, from_iter))
+            if self.add_m3u(from_model, from_iter, to_tree, to_model, None, None): 
+                continue
+            beans = self.get_all_beans_by_parent(from_model, from_iter)
+            rows = self.fill_beans_and_get_rows(beans, self.simple_content_filter)
             for row in rows:
-                if from_model.iter_has_child(from_iter):
-                    new_iter = self.to_add_drag_item(to_tree, to_model, None, None, None, True, row=row)
-                    from_ref = self.get_row_reference_from_iter(from_model, from_iter)
-                    self.iter_is_parent(from_ref, from_model, to_tree, to_model, new_iter)
-                else:
-                    new_iter = self.to_add_drag_item(to_tree, to_model, None, None, None, row=row)
-                
+                if get_file_extension(row[self.path[0]]) in [".m3u", ".m3u8"]:
+                    if self.add_m3u(to_model=to_model, row=row):
+                        continue
+                self.to_add_drag_item(to_tree, to_model, None, None, None, row=row)
         #self.controls.notetabs.get_current_tree().rebuild_as_plain()
         to_tree.update_tracknumber()
         
@@ -265,7 +264,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                         pass
                     else:
                         FCache().music_paths[number_of_tab].append(path) 
-                        self.controls.preferences.on_load()
+                        #self.controls.preferences.on_load()
                         logging.info("New music paths" + str(FCache().music_paths[number_of_tab]))
                 self.controls.update_music_tree(tree, number_of_tab)
                 FC().save()

@@ -19,8 +19,12 @@ from foobnix.util.m3u_utils import m3u_reader
 from foobnix.regui.model import FModel, FTreeModel
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util.id3_file import update_id3_wind_filtering
-from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progressbar
+from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progressbar,\
+    get_file_extension
 from foobnix.helpers.window import CopyProgressWindow
+from foobnix.cue.cue_reader import CueReader
+#from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
+#from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 
 
 VIEW_PLAIN = 0
@@ -141,6 +145,19 @@ class DragDropTree(gtk.TreeView):
         
         ff_model, ff_paths = from_tree.get_selection().get_selected_rows()
         
+        if "PlaylistTreeControl" in str(to_tree) and "NavigationTreeControl" in str(from_tree):
+            for ff_path in ff_paths:
+                ff_iter = ff_model.get_iter(ff_path)
+                beans = self.get_all_beans_by_parent(ff_model, ff_iter)
+                rows = self.fill_beans_and_get_rows(beans, self.simple_content_filter)
+                for i, row in enumerate(rows):
+                    pos = gtk.TREE_VIEW_DROP_AFTER if i else to_filter_pos
+                    if get_file_extension(row[self.path[0]]) in [".m3u", ".m3u8"]:
+                        self.add_m3u(ff_model, ff_iter, to_tree, to_model, to_iter, pos)
+                        continue
+                    to_iter = self.to_add_drag_item(to_tree, to_model, to_iter, pos, None, row=row)
+            self.update_tracknumber()
+            return       
         new_iter = None
         self.row_to_remove = []
         
@@ -263,47 +280,58 @@ class DragDropTree(gtk.TreeView):
             iter = ff_model.convert_iter_to_child_iter(filter_iter)
             ff_model.get_model().remove(iter)
     
-    def add_m3u(self, from_model, from_iter, to_tree, to_model, to_iter, pos):
-        if ((from_model.get_value(from_iter, 0).lower().endswith(".m3u") 
-        or from_model.get_value(from_iter, 0).lower().endswith(".m3u8"))
-        and from_model.get_model() is not to_model):
-            m3u_file_path = from_model.get_value(from_iter, 5)
-            m3u_title = from_model.get_value(from_iter, 0)
+    def add_m3u(self, from_model=None, from_iter=None, to_tree=None, to_model=None,
+                to_iter=None, pos=None, row=None):
+        if row:
+            if get_file_extension(row[self.path[0]]) in [".m3u", ".m3u8"]:
+                m3u_file_path = row[self.path[0]]
+                m3u_title = row[self.text[0]]
+            else:
+                return
+        else:
+            if ((from_model.get_value(from_iter, 0).lower().endswith(".m3u") 
+            or from_model.get_value(from_iter, 0).lower().endswith(".m3u8"))
+            and from_model.get_model() is not to_model):
+                    m3u_file_path = from_model.get_value(from_iter, self.path[0])
+                    m3u_title = from_model.get_value(from_iter, self.text[0])
+            else:
+                return
             
-            if m3u_file_path.startswith("http"):
+            if m3u_file_path.startswith("http//"):
                 return None
             
-            paths = m3u_reader(m3u_file_path)
-            paths.insert(0, os.path.splitext(m3u_title)[0])
-            first_path = paths[0][0] if isinstance(paths[0], list) else paths[0]
-            if first_path:
-                list_path = first_path[0].split("/")
-                name = list_path[len(list_path) - 2]
-                parent = FModel(name)
+        paths = m3u_reader(m3u_file_path)
+        paths.insert(0, os.path.splitext(m3u_title)[0])
+        first_path = paths[0][0] if isinstance(paths[0], list) else paths[0]
+        if first_path:
+            list_path = first_path[0].split("/")
+            name = list_path[len(list_path) - 2]
+            parent = FModel(name)
             
-            new_iter = None
-            for i, path in enumerate(paths):
-                if isinstance(path, list):
-                    text = path[1]
-                    path = path[0]
-                    bean = FModel(path, path).add_is_file(True)
-                    if text: bean.text = text
+        new_iter = None
+        for i, path in enumerate(paths):
+            if isinstance(path, list):
+                text = path[1]
+                path = path[0]
+                bean = FModel(path, path).add_is_file(True)
+                if text: bean.text = text
                 
-                elif not i:
-                    bean = FModel(path)
-                else:
-                    bean = FModel(path, path).parent(parent)
-                
-                row = self.get_row_from_bean(bean)
-                
-                if new_iter:
-                    to_iter = new_iter
-                new_iter = self.to_add_drag_item(to_tree, to_model, to_iter, pos, None,  row=row)
-                
-            return True
+                        
+            elif not i:
+                bean = FModel(_("m3u playlist: ") + path).add_is_file(False).add_font("bold")
+            else:
+                bean = FModel(path, path).parent(parent)
+            
+            row = self.fill_beans_and_get_rows([bean])[0]                               
+                        
+            if new_iter:
+                to_iter = new_iter
+            new_iter = self.to_add_drag_item(to_tree, to_model, to_iter, pos, None,  row=row)
+            
+        return True
     
     def to_add_drag_item(self, to_tree, to_model, to_iter,  pos, ref=None, child=False, row=None):    
-        if to_tree.current_view == VIEW_PLAIN:
+        if to_tree and to_tree.current_view == VIEW_PLAIN:
             
                 if pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE:
                     pos = gtk.TREE_VIEW_DROP_BEFORE
@@ -338,7 +366,18 @@ class DragDropTree(gtk.TreeView):
         ff_iter = self.get_iter_from_row_reference(ff_row_ref)
         refs = self.content_filter(ff_iter, ff_model) 
         for ref in refs:
-            to_child_iter = self.to_add_drag_item(to_tree, to_model, to_parent_iter, pos, ref, child=True)
+            iter = self.get_iter_from_row_reference(ref)
+            file_name = ff_model.get_value(iter, self.path[0])
+            ext = get_file_extension(file_name)
+            if ext == ".cue" and to_tree.current_view == VIEW_PLAIN:
+                last_iter = to_parent_iter
+                cue_beans = CueReader(file_name).get_common_beans()
+                for bean in cue_beans:
+                    row = self.get_row_from_bean(bean)
+                    to_child_iter = self.to_add_drag_item(to_tree, to_model, last_iter, None, None, child=True, row=row)
+                    last_iter = to_child_iter
+            else:
+                to_child_iter = self.to_add_drag_item(to_tree, to_model, to_parent_iter, pos, ref, child=True)
             
             """Iters have already changed. Redefine"""
             iter = self.get_iter_from_row_reference(ref)
@@ -356,11 +395,11 @@ class DragDropTree(gtk.TreeView):
         for n in xrange(from_model.iter_n_children(from_iter)):
             from_child_iter = from_model.iter_nth_child(from_iter, n)
             row_reference = self.get_row_reference_from_iter(from_model, from_child_iter)
-            if (from_model.get_value(from_child_iter, 0).endswith(".m3u") 
-                or from_model.get_value(from_child_iter, 0).endswith(".m3u8")):
+            ext = get_file_extension(from_model.get_value(from_child_iter, self.path[0]))
+            if ext in [".m3u", ".m3u8"]: 
                 logging.info("m3u is found. Skip it")
                 continue
-            elif from_model.get_value(from_child_iter, 0).endswith(".cue"):
+            elif ext == ".cue":
                 logging.info("Cue is found. Skip other files")
                 cue_refs.append(row_reference)
             else:
@@ -369,6 +408,37 @@ class DragDropTree(gtk.TreeView):
                 not_cue_refs.append(row_reference)
         
         return cue_refs + folder_refs if cue_refs else not_cue_refs
+    
+    def simple_content_filter(self, beans):
+        checked_cue_beans = []
+        checked_m3u_beans = []
+        m3u_beans_for_delete = []
+        def task(beans):
+            for bean in beans:
+                path = bean.path
+                if (get_file_extension(path) in [".m3u", ".m3u8"]
+                    and bean not in checked_m3u_beans):
+                    checked_m3u_beans.append(bean)
+                    for b in beans:
+                        if (os.path.dirname(b.path) == os.path.dirname(path) and os.path.isfile(b.path)
+                            and get_file_extension(b.path) not in [".m3u", ".m3u8"]):
+                                m3u_beans_for_delete.append(bean)
+                                break
+                    task(beans)
+                    
+                if (get_file_extension(path) == ".cue" 
+                    and bean not in checked_cue_beans):
+                    
+                    checked_cue_beans.append(bean)
+                    filtered_beans = [b for b in beans if (os.path.dirname(b.path) != os.path.dirname(path)
+                                                           or os.path.isdir(b.path) 
+                                                           or get_file_extension(b.path) == ".cue")]
+                    return task(filtered_beans)
+            return beans
+        
+        all_filtered_beans = task(beans)
+        return [bean for bean in all_filtered_beans 
+                if bean not in m3u_beans_for_delete] if m3u_beans_for_delete else all_filtered_beans
     
     def replace_inside_navig_tree(self, old_path, dest_folder):
         logging.debug('drag inside navigation tree')
@@ -459,26 +529,19 @@ class DragDropTree(gtk.TreeView):
         self.plain_append_all(copy_beans)
     
     def update_tracknumber(self):
-        '''for bean in beans:
-            if not bean.path or not bean.path.lower().endswith(".cue"):                                        
-                if bean.is_file and FC().numbering_by_order:
-                    counter += 1
-                    bean.tracknumber = counter
-                else: 
-                    counter = 0
-            self._plain_append(bean, parent_iter)'''
         self.current_view = VIEW_PLAIN
         tn = self.tracknumber[0]
         path = self.path[0]
         isfile = self.is_file[0]
         counter = 0
         for row in self.model:
-            if not row[path] or not row[path].lower().endswith(".cue"):
+            if not row[path] or not get_file_extension(row[path]) == ".cue":
                 if row[isfile] and FC().numbering_by_order:
                     counter += 1
                 else:
                     counter = 0
-                row[tn] = counter if counter else None
+                if counter:
+                    row[tn] = counter
     
     def tree_append_all(self, beans):
         def task():
@@ -522,7 +585,7 @@ class DragDropTree(gtk.TreeView):
     
     def get_child_beans_by_parent(self, model, iter):
         list = []
-        if model.iter_has_child(iter):
+        if model.iter_has_child(iter): 
             for i in xrange(model.iter_n_children(iter)):
                 next_iter = model.iter_nth_child(iter, i)
                 
@@ -537,7 +600,11 @@ class DragDropTree(gtk.TreeView):
                 
         return list
     
-    
+    def get_all_beans_by_parent(self, model, iter):
+        bean = self.get_bean_from_model_iter(model, iter)
+        beans = [bean] + self.get_child_beans_by_parent(model, iter)
+        return beans
+        
     def plain_append_all(self, beans, parent=None):
         def task():
             self._plain_append_all(beans, parent)
@@ -599,18 +666,13 @@ class DragDropTree(gtk.TreeView):
             logging.debug(row)
             self.model.append(parent_iter, row)            
             
-    def fill_bean_and_get_rows(self, bean):
-        if not bean:
-            return
-        if bean.is_file == True:
-            bean.font = "normal"
-        else:
-            bean.font = "bold"
-            
-        bean.visible = True
+    def fill_beans_and_get_rows(self, beans, filter=None):
+        if filter:
+            beans = filter(beans)
+        full_beans = update_id3_wind_filtering(beans)
         rows = []
-        beans = update_id3_wind_filtering([bean])
-        for one in beans:
+        for one in full_beans:
+            one.visible = True
             one.update_uuid() 
             row = self.get_row_from_bean(one)
             rows.append(row)          

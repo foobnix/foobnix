@@ -273,7 +273,7 @@ class PlaylistTreeControl(CommonTreeControl):
             tab_content = self.controls.notetabs.get_nth_page(page)
             pl_tree = tab_content.get_child()
             if FC().numbering_by_order:
-                pl_tree.rebuild_as_plain()
+                pl_tree.update_tracknumber()
                 pl_tree.num_order.set_active(True)
                 continue
             pl_tree.num_tags.set_active(True)
