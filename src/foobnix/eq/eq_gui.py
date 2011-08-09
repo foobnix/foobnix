@@ -10,7 +10,7 @@ import copy
 import logging
 
 from foobnix.regui.model.signal import FControl
-from foobnix.util.const import EQUALIZER_LABLES
+from foobnix.util.const import EQUALIZER_LABLES, STATE_PLAY
 from foobnix.regui.model.eq_model import EqModel
 from foobnix.fc.fc import FC
 from foobnix.util.mouse_utils import is_rigth_click
@@ -95,9 +95,10 @@ class EqWindow(ChildTopWindow, FControl):
     def on_enable_eq(self, w):
         FC().is_eq_enable = w.get_active()
         self.set_custom_title_and_button_label()
-        self.controls.state_stop(True)
-        self.controls.state_play(True)
-    
+        if self.controls.media_engine.get_state() == STATE_PLAY:
+            self.controls.state_stop(True)
+            self.controls.state_play(True)
+            
     def on_save(self, *args):
         text = self.combo.get_active_text()
         

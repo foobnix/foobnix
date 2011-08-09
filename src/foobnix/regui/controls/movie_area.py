@@ -147,21 +147,17 @@ class MovieDrawingArea(FControl, gtk.Frame):
         self.fullscrean_area.show_window()        
         self.set_out(self.fullscrean_area.get_draw())      
         self.controls.state_play(True, under_pointer_icon=True)
-        
-        
+                
     def set_text(self, text):
         self.fullscrean_area.set_text(text)
         
-                                      
     def on_small_screen(self):
         self.controls.state_stop(True)
         self.set_out(self.smallscree_area)
         self.fullscrean_area.hide_window()
         self.controls.state_play(True, under_pointer_icon=True)
-        
-    
+            
     def draw_video(self, message):
-        
         message_name = message.structure.get_name()
         if message_name == "prepare-xwindow-id":
             imagesink = message.src
