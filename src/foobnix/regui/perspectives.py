@@ -26,7 +26,6 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
                      LEFT_PERSPECTIVE_INFO:controls.info_panel,
                      LEFT_PERSPECTIVE_LASTFM:controls.lastfm_integration.scroll,
                      LEFT_PERSPECTIVE_VK:controls.vk_integration.scroll
-                                     
                      }
         
         self.buttons = PerspectiveButtonControlls(self.activate_perspective, controls)
@@ -85,11 +84,7 @@ class PerspectiveButtonControlls(gtk.HBox):
                 
         radios = PespectiveToogledButton(_("Radio"), gtk.STOCK_NETWORK, _("Radio Stantions (Alt+2)"))
         radios.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_RADIO))
-        radios.connect("clicked", lambda * a:controls.radio.lazy_load())
-        
-        
-        
-        
+              
         virtuals = PespectiveToogledButton(_("Playlist"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
         virtuals.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
         
