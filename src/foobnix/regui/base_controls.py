@@ -632,10 +632,12 @@ class BaseFoobnixControls():
 
     def next(self):        
         bean = self.notetabs.next()
+        if not bean:
+            return
         gap = FC().gap_secs
         time.sleep(gap)
         logging.debug("play current bean is %s" % str(bean.text))
-        if bean and bean.path:
+        if bean.path:
             if os.path.isdir(bean.path):
                 return None
             if bean.path.startswith("http://"):
@@ -648,8 +650,9 @@ class BaseFoobnixControls():
 
     def prev(self):
         bean = self.notetabs.prev()
-        
-        if bean and bean.path:
+        if not bean:
+            return
+        if bean.path:
             if os.path.isdir(bean.path):
                 return None
             if bean.path.startswith("http://"):

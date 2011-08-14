@@ -162,6 +162,7 @@ class PlaylistTreeControl(CommonTreeControl):
         bean = self.get_next_bean(FC().repeat_state == const.REPEAT_ALL)
         
         if not bean:
+            self.controls.state_stop()
             return
         
         self.set_play_icon_to_bean(bean)
@@ -180,7 +181,9 @@ class PlaylistTreeControl(CommonTreeControl):
         bean = self.get_prev_bean(FC().repeat_state == const.REPEAT_ALL)
         
         if not bean:
+            self.controls.state_stop()
             return
+        
                 
         self.set_play_icon_to_bean(bean)
         
