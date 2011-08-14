@@ -7,12 +7,12 @@ Created on 1 дек. 2010
 import subprocess
 import os
 import logging
-from foobnix.regui.service.music_service import get_all_music_by_path
+from foobnix.regui.service.music_service import get_all_music_by_paths
 
 def get_beans_from_iso_wv(path):
     if path and path.lower().endswith("iso.wv"):
         mount_path = mount_tmp_iso(path)        
-        return get_all_music_by_path(mount_path)  
+        return get_all_music_by_paths([mount_path])  
 
 def mount_tmp_iso(path):
     name = os.path.basename(path)

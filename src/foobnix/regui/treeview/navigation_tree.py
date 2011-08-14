@@ -21,6 +21,8 @@ from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
     delete_files_from_disk, create_folder_dialog, get_file_extension
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
     is_middle_click_release, is_middle_click
+import threading
+import time
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
@@ -189,31 +191,51 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         except AttributeError:
             pass
         from_model = self.get_model()
-        for i, path in enumerate(paths):
-            from_iter = from_model.get_iter(path)
-            row = self.get_row_from_model_iter(from_model, from_iter)
+        
+        self.controls.search_progress.start()
+        self.spinner = True
+        def task(to_tree, to_model):
+            all_rows = []
+            for i, path in enumerate(paths):
+                from_iter = from_model.get_iter(path)
+                row = self.get_row_from_model_iter(from_model, from_iter)
             
-            if not i and not current:
-                name = row[0]
-                self.controls.notetabs._append_tab(name)
-                to_tree = self.controls.notetabs.get_current_tree() # because to_tree has changed
-                to_model = to_tree.get_model().get_model()
+                if not i and not current:
+                    name = row[0]
+                    self.controls.notetabs._append_tab(name)
+                    to_tree = self.controls.notetabs.get_current_tree() # because to_tree has changed
+                    to_model = to_tree.get_model().get_model()
                 
-            if self.add_m3u(from_model, from_iter, to_tree, to_model, None, None): 
-                continue
-            beans = self.get_all_beans_by_parent(from_model, from_iter)
-            rows = self.fill_beans_and_get_rows(beans, self.simple_content_filter)
-            for row in rows:
+                if self.add_m3u(from_model, from_iter, to_tree, to_model, None, None): 
+                    continue
+                beans = self.get_all_beans_by_parent(from_model, from_iter)
+                all_rows += self.fill_beans_and_get_rows(beans, self.simple_content_filter)
+            self.spinner = False
+            for row in all_rows:
                 if get_file_extension(row[self.path[0]]) in [".m3u", ".m3u8"]:
                     if self.add_m3u(to_model=to_model, row=row):
                         continue
                 self.to_add_drag_item(to_tree, to_model, None, None, None, row=row)
-        #self.controls.notetabs.get_current_tree().rebuild_as_plain()
-        to_tree.update_tracknumber()
+            to_tree.update_tracknumber()
+            self.controls.search_progress.stop()
         
-        if not current:
-            '''gobject because rebuild_as_plain use it too'''
-            gobject.idle_add(self.controls.play_first_file_in_playlist)
+            if not current:
+                '''gobject because rebuild_as_plain use it too'''
+                gobject.idle_add(self.controls.play_first_file_in_playlist)
+        
+        t = threading.Thread(target=task, args=(to_tree, to_model))
+        t.start()
+        
+        """trick to show spinner before end of handling"""
+        while t.isAlive():
+            time.sleep(0.1)
+            while gtk.events_pending():
+                if self.spinner:#self.controls.search_progress.get_property('active'):
+                    gtk.main_iteration()
+                else:
+                    break # otherwise endless cycle'''
+        #self.controls.notetabs.get_current_tree().rebuild_as_plain()
+        
 
     def add_folder(self, in_new_tab=False):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"),

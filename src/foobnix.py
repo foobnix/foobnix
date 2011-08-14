@@ -45,7 +45,6 @@ def foobnix():
             #core.dbus.parse_arguments(sys.argv)
             print ("******Foobnix run in", time.time() - init_time, " seconds******")
             gtk.main()
-    
         else:
             print (iface.parse_arguments(sys.argv))
 

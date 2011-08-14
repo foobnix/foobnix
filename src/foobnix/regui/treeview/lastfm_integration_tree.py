@@ -46,7 +46,7 @@ class LastFmIntegrationControls(CommonTreeControl):
         for name in self.services:          
             parent = FModel(name)
             bean = FDModel(_("loading...")).parent(parent).add_is_file(True)
-            self.append(parent)        
+            self.append(parent)      
             self.append(bean)
                
                

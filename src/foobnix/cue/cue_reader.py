@@ -81,6 +81,11 @@ class CueReader():
         self.cue_path = cue_path
         self.is_valid = True
         self.cue_file = CueFile()
+        try:
+            self.audio = get_mutagen_audio(cue_path)
+        except Exception, e:
+            logging.warn(str(e) + " " + file)
+            self.audio = None
         
     def get_line_value(self, str):
         first = str.find('"') or str.find("'")
@@ -88,8 +93,9 @@ class CueReader():
         return str[first + 1:end]
     
     def get_full_duration (self, file):        
-        audio = get_mutagen_audio(file)
-        return audio.info.length
+        if not self.audio:
+            return 0
+        return self.audio.info.length
     
     def normalize(self):
         duration_tracks = []
@@ -134,7 +140,8 @@ class CueReader():
             bean.duration_sec = track.duration
             bean.time = convert_seconds_to_text(track.duration)
             bean.is_file = True
-            bean.info = foobnix.util.id3_util.normalized_info(get_mutagen_audio(bean.path).info, bean)
+            if self.audio:
+                bean.info = foobnix.util.id3_util.normalized_info(self.audio.info, bean)
             
             if not bean.title or not bean.artist:
                 bean = udpate_id3(bean)
@@ -167,7 +174,7 @@ class CueReader():
         performer = ""
         index = "00:00:00"
         full_file = None
-
+        
         self.cue_file.image = get_image_by_path(self.cue_path)
 
         self.files_count = 0

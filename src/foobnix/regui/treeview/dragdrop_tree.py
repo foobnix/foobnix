@@ -23,6 +23,7 @@ from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progr
     get_file_extension
 from foobnix.helpers.window import CopyProgressWindow
 from foobnix.cue.cue_reader import CueReader
+import time
 #from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
 #from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 
@@ -145,19 +146,40 @@ class DragDropTree(gtk.TreeView):
         
         ff_model, ff_paths = from_tree.get_selection().get_selected_rows()
         
-        if "PlaylistTreeControl" in str(to_tree) and "NavigationTreeControl" in str(from_tree):
-            for ff_path in ff_paths:
-                ff_iter = ff_model.get_iter(ff_path)
-                beans = self.get_all_beans_by_parent(ff_model, ff_iter)
-                rows = self.fill_beans_and_get_rows(beans, self.simple_content_filter)
-                for i, row in enumerate(rows):
-                    pos = gtk.TREE_VIEW_DROP_AFTER if i else to_filter_pos
-                    if get_file_extension(row[self.path[0]]) in [".m3u", ".m3u8"]:
-                        self.add_m3u(ff_model, ff_iter, to_tree, to_model, to_iter, pos)
-                        continue
-                    to_iter = self.to_add_drag_item(to_tree, to_model, to_iter, pos, None, row=row)
-            self.update_tracknumber()
-            return       
+        if "PlaylistTreeControl" in str(to_tree):
+            self.controls.search_progress.start()
+            self.spinner = True
+            def task(to_iter):
+                all_rows = []
+                for ff_path in ff_paths:
+                    ff_iter = ff_model.get_iter(ff_path)
+                    beans = self.get_all_beans_by_parent(ff_model, ff_iter)
+                    all_rows += self.fill_beans_and_get_rows(beans, self.simple_content_filter)
+                
+                self.spinner = False
+                    
+                for i, row in enumerate(all_rows):
+                        pos = gtk.TREE_VIEW_DROP_AFTER if i else to_filter_pos
+                        if row[self.path[0]] and get_file_extension(row[self.path[0]]) in [".m3u", ".m3u8"]:
+                            self.add_m3u(ff_model, ff_iter, to_tree, to_model, to_iter, pos)
+                            continue
+                        to_iter = self.to_add_drag_item(to_tree, to_model, to_iter, pos, None, row=row)
+                self.controls.search_progress.stop()
+                self.update_tracknumber()
+                                          
+            t = threading.Thread(target=task, args=(to_iter,))
+            t.start()
+            """trick to show spinner before end of handling"""
+            while t.isAlive():
+                time.sleep(0.1)
+                while gtk.events_pending():
+                    if self.spinner:#self.controls.search_progress.get_property('active'):
+                        gtk.main_iteration()
+                    else:
+                        break # otherwise endless cycle'''
+                    
+            return 
+        
         new_iter = None
         self.row_to_remove = []
         
@@ -416,7 +438,7 @@ class DragDropTree(gtk.TreeView):
         def task(beans):
             for bean in beans:
                 path = bean.path
-                if (get_file_extension(path) in [".m3u", ".m3u8"]
+                if path and (get_file_extension(path) in [".m3u", ".m3u8"]
                     and bean not in checked_m3u_beans):
                     checked_m3u_beans.append(bean)
                     for b in beans:
@@ -426,7 +448,7 @@ class DragDropTree(gtk.TreeView):
                                 break
                     task(beans)
                     
-                if (get_file_extension(path) == ".cue" 
+                if path and (get_file_extension(path) == ".cue" 
                     and bean not in checked_cue_beans):
                     
                     checked_cue_beans.append(bean)
@@ -467,6 +489,9 @@ class DragDropTree(gtk.TreeView):
     
     def get_dest_folder(self, to_f_model, to_filter_iter, to_filter_path):
         if to_filter_iter:
+            path = to_f_model.get_value(to_filter_iter, self.path[0])
+            if os.path.isdir(path):
+                return path            
             parent_iter = to_f_model.iter_parent(to_filter_iter)
         else:
             return FCache().music_paths[self.controls.tabhelper.get_current_page()][-1]
@@ -475,13 +500,14 @@ class DragDropTree(gtk.TreeView):
             if to_filter_path[-1] > 0:
                 previous_iter = to_f_model.get_iter( (to_filter_path[-1] -1,) )
                 previous_path = to_f_model.get_value(previous_iter , self.path[0])
-                dest_folder = os.path.dirname(previous_path)                                        
+                dest_folder = os.path.dirname(previous_path) 
             else:
                 logging.debug("item is top in tree")
                 next_path = to_f_model.get_value(to_f_model.get_iter_root(), self.path[0])
                 dest_folder = os.path.dirname(next_path)
         else:
             dest_folder = to_f_model.get_value(parent_iter, self.path[0])
+            
         return dest_folder
         
     def child_by_recursion(self, row, plain):
@@ -525,7 +551,6 @@ class DragDropTree(gtk.TreeView):
             copy_beans.append(bean)
             
         self.clear_tree()
-        
         self.plain_append_all(copy_beans)
     
     def update_tracknumber(self):
@@ -654,7 +679,6 @@ class DragDropTree(gtk.TreeView):
             bean.font = "bold"
             
         bean.visible = True
-    
         beans = update_id3_wind_filtering([bean])
         for one in beans:
             one.update_uuid() 
@@ -675,7 +699,7 @@ class DragDropTree(gtk.TreeView):
             one.visible = True
             one.update_uuid() 
             row = self.get_row_from_bean(one)
-            rows.append(row)          
+            rows.append(row)
         return rows
         
     def tree_append(self, bean):
@@ -689,7 +713,7 @@ class DragDropTree(gtk.TreeView):
         """copy beans"""
         bean = copy.copy(bean)
         bean.visible = True
-    
+
         if self.hash.has_key(bean.get_parent()):
             parent_iter_exists = self.hash[bean.get_parent()]
         else:

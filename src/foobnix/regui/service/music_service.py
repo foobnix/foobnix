@@ -5,21 +5,49 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import os
-from foobnix.fc.fc import FC
-from foobnix.util.file_utils import file_extension
+import gtk
+import time
+import thread
+import gobject
 import logging
+
+from foobnix.fc.fc import FC
 from foobnix.regui.model import FModel
+from foobnix.helpers.window import ChildTopWindow
+from foobnix.util.file_utils import file_extension
 from foobnix.util.list_utils import sort_by_song_name
 from foobnix.util.id3_file import update_id3_wind_filtering
+
+
+def get_all_music_by_paths(paths, controls):
+    pr_window = ProgWindow(controls)
+    gobject.idle_add(pr_window.show_all)
     
-def get_all_music_by_path(path):
-    return _scanner(path, None) 
+    pr_window.analyzed_folders += 1
+    end_scanning = False
+    def task():
+        while not end_scanning:
+            time.sleep(0.5)
+            gobject.idle_add(pr_window.update_window)
+            
+    thread.start_new_thread(task, ())
+    result = []
+    for path in paths:
+        if path == "/":
+            logging.info("Skip root folder")
+            continue;
+        current_result = _scanner(path, None, pr_window)
+        result = result + current_result
+    time.sleep(1)
+    end_scanning = True
+    pr_window.hide()
+    return result
 
 def get_all_music_with_id3_by_path(path):
     all = _scanner(path, None)
     return update_id3_wind_filtering(all)
 
-def _scanner(path, level):
+def _scanner(path, level, pr_window):
     try:
         path = path.encode("utf-8")
     except:
@@ -31,19 +59,26 @@ def _scanner(path, level):
     dir = os.path.abspath(path)
     list = os.listdir(dir)
     list = sort_by_name(path, list)
-
+    
     for file in list:
+        
         full_path = os.path.join(path, file)
         
-        if os.path.isfile(full_path) and file_extension(file) not in FC().all_support_formats:
-            continue;
+        if os.path.isfile(full_path):
+            pr_window.analyzed_files += 1
+            if file_extension(file) not in FC().all_support_formats:
+                continue;
         
-        if is_dir_with_music(full_path):
-            b_bean = FModel(file, full_path).add_parent(level).add_is_file(False)
-            results.append(b_bean)
-            results.extend(_scanner(full_path, b_bean.get_level()))
+        if os.path.isdir(full_path):
+            pr_window.analyzed_folders += 1
+            if is_dir_with_music(full_path):
+                pr_window.media_folders += 1
+                b_bean = FModel(file, full_path).add_parent(level).add_is_file(False)
+                results.append(b_bean)
+                results.extend(_scanner(full_path, b_bean.get_level(), pr_window))
         elif os.path.isfile(full_path):
             results.append(FModel(file, full_path).add_parent(level).add_is_file(True))
+            pr_window.media_files +=1
     return results
 
 def sort_by_name(path, list):
@@ -59,22 +94,70 @@ def sort_by_name(path, list):
     return sorted(directories) + sort_by_song_name(files)
 
 def is_dir_with_music(path):
-    if os.path.isdir(path):
-        list = None
-        try:
-            list = os.listdir(path)
-        except OSError, e:
-            logging.info("Can't get list of dir"+ str(e))
+    list = None
+    try:
+        list = os.listdir(path)
+    except OSError, e:
+        logging.info("Can't get list of dir"+ str(e))
 
-        if not list:
-            return False
+    if not list:
+        return False
 
-        for file in list:
-            full_path = os.path.join(path, file)
-            if os.path.isdir(full_path):
-                if is_dir_with_music(full_path):
-                    return True
-            else:
-                if file_extension(file) in FC().all_support_formats:
-                    return True
+    for file in list:
+        full_path = os.path.join(path, file)
+        if os.path.isdir(full_path):
+            
+            if is_dir_with_music(full_path):
+                return True
+        else:
+            if file_extension(file) in FC().all_support_formats:
+                return True
     return False
+
+class ProgWindow(ChildTopWindow):
+    def __init__(self, controls):
+        ChildTopWindow.__init__(self, "Progress", 500, 100)
+        
+        self.set_transient_for(controls.main_window)
+        
+        self.label = gtk.Label("Total analyzed folders: ")
+        self.label1 = gtk.Label("Total analyzed files: ")
+        self.label2 = gtk.Label("Folders with media files found: ")
+        self.label3 = gtk.Label("Media files found: ")
+        
+        self.analyzed_files_label = gtk.Label("0")
+        self.analyzed_folders_label = gtk.Label("0")
+        self.media_files_label = gtk.Label("0")
+        self.media_folders_label = gtk.Label("0")
+        
+        self.analyzed_files = 0
+        self.analyzed_folders = 0
+        self.media_files = 0
+        self.media_folders = 0
+        
+        left_box = gtk.VBox()
+        left_box.pack_start(self.label)
+        left_box.pack_start(self.label1)
+        left_box.pack_start(self.label2)
+        left_box.pack_start(self.label3)
+        
+        right_box = gtk.VBox()
+        right_box.pack_start(self.analyzed_folders_label)
+        right_box.pack_start(self.analyzed_files_label)
+        right_box.pack_start(self.media_folders_label)
+        right_box.pack_start(self.media_files_label)
+        
+        box = gtk.HBox()
+        box.pack_start(left_box)
+        box.pack_start(right_box)
+        
+        self.add(box)
+        
+        gobject.idle_add(self.show_all)
+                
+    def update_window(self):
+        self.analyzed_folders_label.set_text(str(self.analyzed_folders))
+        self.analyzed_files_label.set_text(str(self.analyzed_files))
+        self.media_files_label.set_text(str(self.media_files))
+        self.media_folders_label.set_text(str(self.media_folders))
+        

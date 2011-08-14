@@ -116,7 +116,7 @@ class GStreamerEngine(MediaPlayerEngine):
             logging.error("Can't play empty path!!!")
             return None
         
-        self.state_stop()
+        self.state_stop(show_in_tray=False)
         
         if hasattr(self, "pipeline"):
             self.pipeline.set_state(gst.STATE_NULL)
@@ -148,7 +148,7 @@ class GStreamerEngine(MediaPlayerEngine):
         
         self.player.set_property("uri", uri)
         
-        self.state_pause()
+        self.state_pause(show_in_tray=False)
         time.sleep(0.3)        
         if self.remembered_seek_position:
             self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
@@ -301,7 +301,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.seek(self.get_current_percent(), offset)
         logging.debug("SEEK DOWN")
     
-    def state_stop(self, remember_position=False):
+    def state_stop(self, remember_position=False, show_in_tray=True):
         if remember_position:
             self.player.set_state(gst.STATE_PAUSED)
             time.sleep(0.1)
@@ -313,16 +313,18 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.set_state(gst.STATE_NULL)
         self.set_state(STATE_STOP)
         
-        self.on_chage_state()
+        if show_in_tray:
+            self.on_chage_state()
         logging.debug("state STOP")
         if hasattr(self, 'pipeline'):
             if gst.STATE_PLAYING in self.pipeline.get_state()[1:]:
                 self.controls.record.set_active(False)#it will call "on toggle" method from self.record
                        
-    def state_pause(self):
+    def state_pause(self, show_in_tray=True):
         self.player.set_state(gst.STATE_PAUSED)
         self.set_state(STATE_PAUSE)
-        self.on_chage_state()
+        if show_in_tray:
+            self.on_chage_state()
         '''if hasattr(self, 'pipeline'):
             print "in pause", self.pipeline.get_state()[1:]
             if gst.STATE_PLAYING in self.pipeline.get_state()[1:]:
