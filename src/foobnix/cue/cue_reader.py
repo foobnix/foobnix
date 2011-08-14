@@ -81,11 +81,7 @@ class CueReader():
         self.cue_path = cue_path
         self.is_valid = True
         self.cue_file = CueFile()
-        try:
-            self.audio = get_mutagen_audio(cue_path)
-        except Exception, e:
-            logging.warn(str(e) + " " + file)
-            self.audio = None
+        
         
     def get_line_value(self, str):
         first = str.find('"') or str.find("'")
@@ -93,32 +89,39 @@ class CueReader():
         return str[first + 1:end]
     
     def get_full_duration (self, file):        
-        if not self.audio:
-            return 0
-        return self.audio.info.length
+        try:
+            audio = get_mutagen_audio(file)
+        except Exception, e:
+            logging.warn(str(e) + " " + file)
+            return
+        
+        return audio.info.length
     
     def normalize(self):
         duration_tracks = []
         tracks = self.cue_file.tracks
         for i in xrange(len(tracks)):
             track = tracks[i]
-            if i == len(tracks) - 1: #for last track in cue
-                duration = self.get_full_duration(track.path) - track.get_start_time_sec()
-            else:
-                next_track = tracks[i + 1]
-                if next_track.get_start_time_sec() > track.get_start_time_sec():
-                    #for cue "one file - several tracks"
-                    duration = next_track.get_start_time_sec() - track.get_start_time_sec()
-                else: #for cue  "several files - each file involve several tracks"
+            full_duration = self.get_full_duration(track.path)
+            if full_duration:
+                if i == len(tracks) - 1: #for last track in cue
                     duration = self.get_full_duration(track.path) - track.get_start_time_sec()
+                else:
+                    next_track = tracks[i + 1]
+                    if next_track.get_start_time_sec() > track.get_start_time_sec():
+                        #for cue "one file - several tracks"
+                        duration = next_track.get_start_time_sec() - track.get_start_time_sec()
+                    else: #for cue  "several files - each file involve several tracks"
+                        duration = self.get_full_duration(track.path) - track.get_start_time_sec()
                         
-            track.duration = duration
+                    track.duration = duration
+            else:
+                track.duration = None
             if not track.path:
                 track.path = self.cue_file.file
             
             track.path = get_any_supported_audio_file(track.path)
-                
-            
+                  
             duration_tracks.append(track)
 
         self.cue_file.tracks = duration_tracks
@@ -140,9 +143,12 @@ class CueReader():
             bean.duration_sec = track.duration
             bean.time = convert_seconds_to_text(track.duration)
             bean.is_file = True
-            if self.audio:
-                bean.info = foobnix.util.id3_util.normalized_info(self.audio.info, bean)
-            
+            try:
+                bean.info = foobnix.util.id3_util.normalized_info(get_mutagen_audio(track.path).info, bean)
+            except Exception, e:
+                logging.warn(str(e) + " " + bean.path)
+                bean.info = ""
+                                       
             if not bean.title or not bean.artist:
                 bean = udpate_id3(bean)
             
@@ -167,8 +173,6 @@ class CueReader():
         file = open(self.cue_path, "r")
         code = self.code_detecter(self.cue_path);
         logging.debug("File encoding is" + str(code))
-
-        
 
         title = ""
         performer = ""
