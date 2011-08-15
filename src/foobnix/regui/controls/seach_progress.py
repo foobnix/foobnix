@@ -21,8 +21,9 @@ class SearchProgressBarOld(gtk.ProgressBar):
         self.set_text("...")
 
             
-    def start(self, text):
-        #self.progresbar.set_text(text)
+    def start(self, text=None):
+        if text:
+            self.progresbar.set_text(text)
         if self.started:
             return None
             
