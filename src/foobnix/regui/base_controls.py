@@ -157,7 +157,7 @@ class BaseFoobnixControls():
                 for bean in get_all_music_by_paths(paths, self):
                     if not bean.is_file:
                         bean.parent(parent).add_is_file(False)
-                        all_beans.append(bean)
+                    all_beans.append(bean)
         
                 if all_beans:
                     self.append_to_current_notebook(all_beans)

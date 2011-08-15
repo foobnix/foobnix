@@ -189,7 +189,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         try:
             to_model = to_tree.get_model().get_model()
         except AttributeError:
-            pass
+            current = False
+            to_model = None
         from_model = self.get_model()
         
         self.controls.search_progress.start()
