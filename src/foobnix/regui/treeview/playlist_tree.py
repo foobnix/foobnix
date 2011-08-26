@@ -173,10 +173,9 @@ class PlaylistTreeControl(CommonTreeControl):
         return bean
 
     def prev(self):
-        bean = self.common_single_random()       
-        if bean:
-            return bean
-    
+        if FC().repeat_state == const.REPEAT_SINGLE:
+            return self.get_current_bean_by_UUID()
+        
         bean = self.get_prev_bean(FC().repeat_state == const.REPEAT_ALL)
         
         if not bean:
