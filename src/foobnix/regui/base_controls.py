@@ -25,7 +25,7 @@ from foobnix.util.text_utils import normalize_text
 from foobnix.util.file_utils import get_file_extension
 from foobnix.regui.service.vk_service import VKService
 from foobnix.util.bean_utils import get_bean_posible_paths
-from foobnix.regui.service.music_service import get_all_music_by_path
+from foobnix.regui.service.music_service import get_all_music_by_paths
 from foobnix.regui.service.google_service import google_search_results
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
@@ -83,13 +83,19 @@ class BaseFoobnixControls():
          
     def play_selected_song(self):    
         current = self.get_active_bean()
+        tree = self.notetabs.get_current_tree()
         if not current:
-            return None
+            try:
+                current = tree.get_bean_under_pointer_icon()
+            except AttributeError:
+                return
+        if not current:
+            return None    
         logging.debug("play current bean is %s" % str(current.text))
         if current and current.is_file:
-            self.notetabs.get_current_tree().set_play_icon_to_bean_to_selected()
+            tree.set_play_icon_to_bean(current)
             if current.path and current.path.startswith("http://"):
-                if not self.check_path(current):
+                if self.check_path(current):
                     path = self.net_wrapper.execute(self.vk_service.find_one_track, current.get_display_name()).path
                     if path:
                         current.path = path
@@ -148,16 +154,10 @@ class BaseFoobnixControls():
         
                 all_beans = []
                 all_beans.append(parent)
-                for path in paths:
-                    if path == "/":
-                        logging.info("Skip root folder")
-                        continue;
-                    beans = get_all_music_by_path(path)
-                    
-                    for bean in beans:
-                        if not bean.is_file:
-                            bean.parent(parent).add_is_file(False)
-                        all_beans.append(bean)
+                for bean in get_all_music_by_paths(paths, self):
+                    if not bean.is_file:
+                        bean.parent(parent).add_is_file(False)
+                    all_beans.append(bean)
         
                 if all_beans:
                     self.append_to_current_notebook(all_beans)
@@ -270,11 +270,9 @@ class BaseFoobnixControls():
                
         all = []
         
-        for path in FCache().music_paths[number_of_page]:
-            all_in_folder = get_all_music_by_path(path)
-            if all_in_folder:
-                for bean in all_in_folder:
-                    all.append(bean)
+        
+        all = get_all_music_by_paths(FCache().music_paths[number_of_page], self)
+            
         for bean in all:
             FCache().cache_music_tree_beans[number_of_page].append(bean)
         try:
@@ -382,9 +380,6 @@ class BaseFoobnixControls():
             return False
     
     def play(self, bean):
-        self.state_stop()
-        time.sleep(0.1) #for stability
-        
         if not bean or not bean.is_file:
             return
         if bean.type == FTYPE_RADIO:
@@ -403,9 +398,10 @@ class BaseFoobnixControls():
         
     def _play(self, bean):
         self.count_errors = 0
+        
         if not bean.path:
             bean.path = get_bean_posible_paths(bean)
-                    
+               
         if not bean.path:            
             if not self.fill_bean_from_vk(bean):
                 if self.vk_service.is_show_authorization():
@@ -414,10 +410,10 @@ class BaseFoobnixControls():
                     time.sleep(0.5)
                     self.count_errors += 1
                     self.next()
-                
+           
         if bean.path and os.path.isdir(bean.path):
             return None
-               
+        
         self.media_engine.play(bean)  
         self.is_scrobbled = False
         self.start_time = False      
@@ -636,10 +632,12 @@ class BaseFoobnixControls():
 
     def next(self):        
         bean = self.notetabs.next()
+        if not bean:
+            return
         gap = FC().gap_secs
         time.sleep(gap)
         logging.debug("play current bean is %s" % str(bean.text))
-        if bean and bean.path:
+        if bean.path:
             if os.path.isdir(bean.path):
                 return None
             if bean.path.startswith("http://"):
@@ -652,8 +650,9 @@ class BaseFoobnixControls():
 
     def prev(self):
         bean = self.notetabs.prev()
-        
-        if bean and bean.path:
+        if not bean:
+            return
+        if bean.path:
             if os.path.isdir(bean.path):
                 return None
             if bean.path.startswith("http://"):

@@ -4,18 +4,20 @@ Created on 24 авг. 2010
 
 @author: ivan
 '''
-from foobnix.preferences.config_plugin import ConfigPlugin
+
 import gtk
-from foobnix.helpers.dialog_entry import show_entry_dialog,\
-    directory_chooser_dialog
+import os.path
 import logging
+
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
+from foobnix.regui.model import FDModel
 from foobnix.regui.model.signal import FControl
+from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 from foobnix.regui.treeview.simple_tree import  SimpleListTreeControl
-from foobnix.regui.model import FDModel
-import os.path
+from foobnix.helpers.dialog_entry import show_entry_dialog,\
+    directory_chooser_dialog
 
 
 class MusicLibraryConfig(ConfigPlugin, FControl):
@@ -91,7 +93,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
     def on_load(self):
         self.tree_controller.clear_tree()
         for path in FCache().music_paths[0]:
-            self.tree_controller.append(FDModel(os.path.basename(path), path))
+            self.tree_controller.append(FDModel(os.path.basename(path), path).add_is_file(False))
             
         self.files_controller.clear_tree()
         for ext in FC().all_support_formats:
@@ -138,7 +140,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         FCache().last_music_path = path[:path.rfind("/")]          
         for path in paths:            
             if path not in self.temp_music_paths:
-                self.tree_controller.append(FDModel(os.path.basename(path), path))
+                self.tree_controller.append(FDModel(os.path.basename(path), path).add_is_file(False))
                 self.temp_music_paths.append(path)
                                  
     def remove_dir(self, *a):
@@ -219,13 +221,9 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         def on_toggle_singletab(widget, data=None):
             self.tree_controller.clear_tree()
             for path in FCache().music_paths[0]:
-                self.tree_controller.append(FDModel(os.path.basename(path), path))
+                self.tree_controller.append(FDModel(os.path.basename(path), path).add_is_file(False))
             self.temp_music_paths = FCache().music_paths[0][:]
             self.frame.show()
         self.singletab_button.connect("toggled", on_toggle_singletab)
         hbox.pack_end(self.singletab_button, True, False)
         return hbox
-        
-            
-        
-        

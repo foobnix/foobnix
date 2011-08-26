@@ -121,7 +121,7 @@ class TabGeneral(gtk.Notebook, FControl):
         logging.info("append new tab")
         self.last_notebook_page = name
         try:
-            logging.info("encoding of tab name is" + name)
+            logging.info("encoding of tab name is " + name)
             name = unicode(name) #convert from any encoding in ascii
             logging.info("encoding finished " + name)
         except:

@@ -21,8 +21,9 @@ class SearchProgressBarOld(gtk.ProgressBar):
         self.set_text("...")
 
             
-    def start(self, text):
-        #self.progresbar.set_text(text)
+    def start(self, text=None):
+        if text:
+            self.progresbar.set_text(text)
         if self.started:
             return None
             
@@ -46,6 +47,7 @@ if gtk.pygtk_version >= (2, 21, 0):
     class SearchProgressBarNew(gtk.Spinner):
         def __init__(self):
             super(SearchProgressBarNew, self).__init__()
+            self.set_no_show_all(True)
     
         def start(self, trash=""):
             self.show()

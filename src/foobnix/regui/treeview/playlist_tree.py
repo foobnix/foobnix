@@ -122,7 +122,7 @@ class PlaylistTreeControl(CommonTreeControl):
         
     def set_playlist_tree(self):
         self.rebuild_as_tree()
-        
+                
     def set_playlist_plain(self):
         self.rebuild_as_plain()
         
@@ -162,6 +162,7 @@ class PlaylistTreeControl(CommonTreeControl):
         bean = self.get_next_bean(FC().repeat_state == const.REPEAT_ALL)
         
         if not bean:
+            self.controls.state_stop()
             return
         
         self.set_play_icon_to_bean(bean)
@@ -179,7 +180,9 @@ class PlaylistTreeControl(CommonTreeControl):
         bean = self.get_prev_bean(FC().repeat_state == const.REPEAT_ALL)
         
         if not bean:
+            self.controls.state_stop()
             return
+        
                 
         self.set_play_icon_to_bean(bean)
         
@@ -237,6 +240,7 @@ class PlaylistTreeControl(CommonTreeControl):
                                                     
                 if local_paths:
                     menu.add_item(_('Copy To...'), gtk.STOCK_ADD, copy_to, local_paths)
+                    menu.add_item(_("Open in file manager"), None, open_in_filemanager, local_paths[0])
                 if inet_paths:
                     menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
                     menu.add_item(_('Download To...'), gtk.STOCK_ADD, self.controls.dm.append_tasks_with_dialog, self.get_all_selected_beans())

@@ -180,7 +180,7 @@ def get_support_music_beans_from_all(beans):
 
 def add_upadte_image_paths(beans):
     for bean in beans:
-        if bean.path:
+        if bean.path and bean.is_file:
             bean.image = get_image_by_path(bean.path)
     return beans
 

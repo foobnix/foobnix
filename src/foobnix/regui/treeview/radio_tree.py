@@ -3,13 +3,13 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
-
 from __future__ import with_statement
 
 import gtk
 import gobject
 import logging
 import os.path
+import thread
 
 from foobnix.fc.fc import FC
 from foobnix.regui.model import FModel
@@ -36,7 +36,8 @@ class RadioTreeControl(CommonTreeControl):
         self.configure_send_drag()
 
         self.set_type_tree()
-        self.is_lazy_load = False
+        #self.is_lazy_load = False
+        thread.start_new_thread(self.lazy_load, ())
     
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_RADIO
@@ -138,13 +139,13 @@ class RadioTreeControl(CommonTreeControl):
                         
     
     def lazy_load(self):
-        if not self.is_lazy_load:
+        
             logging.debug("radio Lazy loading")
             self.populate_all(FCache().cache_radio_tree_beans)
             if not FCache().cache_radio_tree_beans:
                 logging.debug("populdate from file system")
                 self.update_radio_tree()
-            self.is_lazy_load = True                          
+                               
         
     def on_quit(self):
         FCache().cache_radio_tree_beans = self.get_all_beans()
