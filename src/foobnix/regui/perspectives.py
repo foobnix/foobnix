@@ -54,7 +54,7 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         FC().left_perspective = name
         self.perspectivs[name].show()
         
-        if name in (LEFT_PERSPECTIVE_INFO,LEFT_PERSPECTIVE_VK,LEFT_PERSPECTIVE_LASTFM):
+        if name in (LEFT_PERSPECTIVE_INFO,LEFT_PERSPECTIVE_LASTFM):
             self.controls.filter.hide()
         else:
             self.controls.filter.show()

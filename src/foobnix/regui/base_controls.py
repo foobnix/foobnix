@@ -674,6 +674,7 @@ class BaseFoobnixControls():
         tree.filter_by_file(value)
         self.radio.filter_by_file(value)
         self.virtual.filter_by_file(value)
+        self.vk_integration.filter_by_folder(query=value, expand=False)
 
     def quit(self, *a):
         self.state_stop()

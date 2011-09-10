@@ -82,28 +82,48 @@ class VKIntegrationControls(CommonTreeControl):
             self.controls.notetabs._append_tab(selected.text, [selected] + beans, optimization=True)
             "run radio channel"
             self.controls.play_first_file_in_playlist()
+            
+    def on_row_expanded(self, widget, iter, path):
+        bean = self.get_bean_from_path(path)
+        self.on_bean_expanded(bean, iter)
+             
 
-    def on_bean_expanded(self, parent):
+    def on_bean_expanded(self, parent, parent_iter):
         logging.debug("expanded %s" % parent)
         if parent.user_id in self.cache:
             return None
         
+        p_iter = self.get_model().convert_iter_to_child_iter(parent_iter)
+        old_iters = self.get_child_iters_by_parent(self.model, p_iter);
+        
+        
         def task():
-            old_iters = self.get_child_iters_by_parent(self.model, self.get_iter_from_bean(parent));
-            childs = []
             for line in self.controls.vk_service.get_result('audio.get',"uid="+parent.user_id):
                 bean = FModel(line['artist']+' - '+line['title'])
+                
                 bean.aritst = line['artist']
                 bean.title = line['title']
                 bean.time = convert_seconds_to_text(line['duration'])
                 bean.path = line['url']
-                childs.append(bean)
-                        
-            update_parent_for_beans(childs, parent)
+                
+                logging.debug("find bean " + bean.text);
+                
+                def sub():
+                    row = self.get_row_from_bean(bean);
+                    self.model.append(p_iter, row)
+                
+                #gobject.idle_add(sub)
+                sub()
+                
+            for rem in old_iters:
+                self.model.remove(rem)
+                #gobject.idle_add(self.model.remove, rem)
+                #self.model.remove(rem)
+          
+                         
+                    
+        #def task1():
+        #    gobject.idle_add(task)
             
-            self.append_all(childs)            
-            gobject.idle_add(self.remove_iters,old_iters)        
-            
-            #gobject.idle_add(sub_task)
-        #task()
-        self.controls.in_thread.run_with_progressbar(task)
+        task()
+        #self.controls.in_thread.run_with_progressbar(task)

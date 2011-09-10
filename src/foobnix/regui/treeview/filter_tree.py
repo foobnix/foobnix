@@ -93,12 +93,13 @@ class FilterTreeControls(DragDropTree):
         else:
             self.collapse_all()
     
-    def filter_by_folder(self, query, column_num=FTreeModel().text[0]):        
+    def filter_by_folder(self, query, column_num=FTreeModel().text[0], expand=True):        
         self.show_all_lines()
         
         if query and len(query.strip()) > 0:
             query = query.decode().strip().lower()
             self.folder_filter(query, column_num)
-            self.expand_all()
+            if expand:
+                self.expand_all()
         else:
             self.collapse_all()
