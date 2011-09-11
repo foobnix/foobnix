@@ -79,22 +79,28 @@ class VKIntegrationControls(CommonTreeControl):
         
         if is_double_left_click(e):
             selected = self.get_selected_bean()
+            if not selected:
+                return
             beans = self.get_all_child_beans_by_selected()  
             self.controls.notetabs._append_tab(selected.text, [selected] + beans, optimization=True)
             "run radio channel"
             self.controls.play_first_file_in_playlist()
             
     def on_row_expanded(self, widget, iter, path):
-        bean = self.get_bean_from_path(path)
-        self.on_bean_expanded(bean, iter)
+        self.on_bean_expanded(iter)
              
 
-    def on_bean_expanded(self, parent, parent_iter):
-        logging.debug("expanded %s" % parent)
+    def on_bean_expanded(self, parent_iter):
+        logging.debug("expanded %s" % parent_iter)
+        
+        p_iter = self.get_model().convert_iter_to_child_iter(parent_iter)
+        parent = self.get_bean_from_iter(p_iter)
+        
         if parent.user_id in self.cache:
             return None
         
-        p_iter = self.get_model().convert_iter_to_child_iter(parent_iter)
+        self.cache.append(parent.user_id)
+        
         old_iters = self.get_child_iters_by_parent(self.model, p_iter);
         
         
@@ -108,8 +114,6 @@ class VKIntegrationControls(CommonTreeControl):
                 bean.time = convert_seconds_to_text(line['duration'])
                 bean.path = line['url']
                 bean.is_file = True
-                
-                print bean.text, bean.path, bean.is_file
                 
                 row = self.get_row_from_bean(bean);
                 self.model.append(p_iter, row)
