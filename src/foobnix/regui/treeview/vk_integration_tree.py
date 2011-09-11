@@ -118,8 +118,8 @@ class VKIntegrationControls(CommonTreeControl):
                 self.model.remove(rem)   
                          
                     
-        def task1():
+        def g_task():
             gobject.idle_add(task)
 
-        self.controls.in_thread.run_with_progressbar(gobject.idle_add, task)
+        self.controls.in_thread.run_with_progressbar(g_task)
         
