@@ -17,6 +17,7 @@ from foobnix.util.bean_utils import update_parent_for_beans
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.mouse_utils import is_rigth_click, is_double_left_click
+import time
 
 
 class VKIntegrationControls(CommonTreeControl):
@@ -99,31 +100,26 @@ class VKIntegrationControls(CommonTreeControl):
         
         def task():
             for line in self.controls.vk_service.get_result('audio.get',"uid="+parent.user_id):
+                logging.debug(line);
                 bean = FModel(line['artist']+' - '+line['title'])
                 
                 bean.aritst = line['artist']
                 bean.title = line['title']
                 bean.time = convert_seconds_to_text(line['duration'])
                 bean.path = line['url']
+                bean.is_file = True
                 
-                logging.debug("find bean " + bean.text);
+                print bean.text, bean.path, bean.is_file
                 
-                def sub():
-                    row = self.get_row_from_bean(bean);
-                    self.model.append(p_iter, row)
-                
-                #gobject.idle_add(sub)
-                sub()
-                
+                row = self.get_row_from_bean(bean);
+                self.model.append(p_iter, row)
+            
             for rem in old_iters:
-                self.model.remove(rem)
-                #gobject.idle_add(self.model.remove, rem)
-                #self.model.remove(rem)
-          
+                self.model.remove(rem)   
                          
                     
-        #def task1():
-        #    gobject.idle_add(task)
-            
-        task()
-        #self.controls.in_thread.run_with_progressbar(task)
+        def task1():
+            gobject.idle_add(task)
+
+        self.controls.in_thread.run_with_progressbar(gobject.idle_add, task)
+        

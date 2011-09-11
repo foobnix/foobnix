@@ -28,7 +28,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         self.number_inits = 0
-        thread.start_new_thread(self.lazy_init, ())
+        self.lazy_init()
     
     def lazy_init(self):
         self.number_inits += 1
