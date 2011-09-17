@@ -94,9 +94,19 @@ class BaseFoobnixControls():
         logging.debug("play current bean is %s" % str(current.text))
         if current and current.is_file:
             tree.set_play_icon_to_bean(current)
+            
+            """play radio, do not check VK"""
+            if current.type and current.type == FTYPE_RADIO:
+                self.play(current)
+                return
+            
             if current.path and current.path.startswith("http://"):
                 if self.check_path(current):
-                    path = self.net_wrapper.execute(self.vk_service.find_one_track, current.get_display_name()).path
+                    res = self.net_wrapper.execute(self.vk_service.find_one_track, current.get_display_name())
+                    if not res:
+                        return
+                    
+                    path = res.path
                     if path:
                         current.path = path
             """play song"""

@@ -133,6 +133,8 @@ class OtherConfig(ConfigPlugin):
         hcombobox.pack_start(self.fmgrs_combo, False, False)
         
         self.disable_screensaver = gtk.CheckButton(label=_("Disable Xscreensaver"), use_underline=True)
+        
+        self.net_ping = gtk.CheckButton(label=_("Enable Network Checker"), use_underline=True)
                 
         """packaging"""        
         box.pack_start(hbox, False, True, 0)
@@ -147,6 +149,7 @@ class OtherConfig(ConfigPlugin):
         box.pack_start(obox, False, False, 0)
         box.pack_start(hcombobox, False, False, 0)
         box.pack_start(self.disable_screensaver)
+        box.pack_start(self.net_ping)
         
         self.widget = box
     
@@ -201,6 +204,9 @@ class OtherConfig(ConfigPlugin):
             self.disable_screensaver.set_active(True)
             antiscreensaver()
             
+        if FC().net_ping == True:
+            self.net_ping.set_active(True)
+            
     def on_save(self):
         self.is_background_image = FC().background_image
         if self.is_show.get_active():    
@@ -233,6 +239,11 @@ class OtherConfig(ConfigPlugin):
             antiscreensaver()
         else:
             FC().antiscreensaver = False
+            
+        if self.net_ping.get_active():
+            FC().net_ping = True
+        else:
+            FC().net_ping = False
             
         self.on_change_menu_type()
         

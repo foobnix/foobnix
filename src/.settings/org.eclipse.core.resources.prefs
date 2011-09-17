@@ -1,4 +1,4 @@
-#Sat Sep 10 11:53:38 EEST 2011
+#Sat Sep 17 22:35:13 EEST 2011
 eclipse.preferences.version=1
 encoding//foobnix/eq/eq_controller.py=utf-8
 encoding//foobnix/eq/eq_gui.py=utf-8
@@ -34,6 +34,7 @@ encoding//foobnix/regui/treeview/filter_tree.py=utf-8
 encoding//foobnix/regui/treeview/navigation_tree.py=utf-8
 encoding//foobnix/regui/treeview/playlist_tree.py=utf-8
 encoding//foobnix/regui/window.py=utf-8
+encoding//foobnix/util/antiscreensaver.py=utf-8
 encoding//foobnix/util/bean_utils.py=utf-8
 encoding//foobnix/util/const.py=utf-8
 encoding//foobnix/util/converter.py=utf-8

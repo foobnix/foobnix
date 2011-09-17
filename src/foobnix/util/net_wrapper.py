@@ -19,7 +19,7 @@ class NetWrapper():
         self.flag = False
         self.counter = 0 #to count how many times in row was disconnect
         self.dd_count = 0
-        
+        self.is_ping = is_ping
         if is_ping:
             self.is_connected = False        
             "only for self.execute() method"

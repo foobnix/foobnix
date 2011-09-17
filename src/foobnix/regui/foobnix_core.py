@@ -37,11 +37,11 @@ from foobnix.util.net_wrapper import NetWrapper
 foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):
-    def __init__(self, with_dbus=False, is_ping=True):
+    def __init__(self, with_dbus=False):
         BaseFoobnixControls.__init__(self)
         self.layout = None
         
-        self.net_wrapper = NetWrapper(self, is_ping)
+        self.net_wrapper = NetWrapper(self, FC().net_ping)
         
         self.statusbar = StatusbarControls(self)
                 

@@ -74,6 +74,9 @@ class FC():
         self.background_image = None
         self.window_opacity = 1
         
+        """Check network available"""
+        self.net_ping = False
+        
         self.menu_style = "new"
 
         """main window action"""
