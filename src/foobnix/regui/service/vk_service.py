@@ -33,7 +33,7 @@ class VKAuthorizationWindow(ChildTopWindow):
         vbox = gtk.VBox(False, 0)
         self.access_token = None
         
-        default_button = gtk.Button(_("Get Default Login Password"))
+        default_button = gtk.Button(_("Get Login and Password"))
         default_button.connect("clicked", self.on_defaults)
 
         

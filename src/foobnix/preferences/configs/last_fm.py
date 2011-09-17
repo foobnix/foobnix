@@ -78,6 +78,43 @@ class LastFmConfig(ConfigPlugin):
             sname = profile[0]["last_name"]
                
         vk_layout.pack_start(gtk.Label(_("You vk account is:") + " %s %s" % (fname, sname)), False,False)
+        
+        
+        """VK LOGIN"""
+        vlbox = gtk.HBox(False, 0)
+        vlbox.show()
+        
+        vlogin = gtk.Label(_("Login"))
+        vlogin.set_size_request(150, -1)
+        vlogin.show()
+        
+        
+        self.vlogin_text = gtk.Entry()
+        self.vlogin_text.set_text(fname)
+        self.vlogin_text.show()
+        
+        vlbox.pack_start(vlogin, False, False, 0)
+        vlbox.pack_start(self.vlogin_text, False, True, 0)
+        
+        """VK PASSWORD"""
+        vpbox = gtk.HBox(False, 0)
+        vpbox.show()
+        
+        vpassword = gtk.Label(_("Password"))
+        vpassword.set_size_request(150, -1)
+        vpassword.show()
+        
+        self.vpassword_text = gtk.Entry()
+        self.vpassword_text.set_visibility(False)
+        self.vpassword_text.set_invisible_char("*")
+        self.vpassword_text.show()
+        
+        vpbox.pack_start(vpassword, False, False, 0)
+        vpbox.pack_start(self.vpassword_text, False, True, 0)
+        
+        #vk_layout.pack_start(vlbox)
+        #vk_layout.pack_start(vpbox)
+        
         vk_exit = gtk.Button(_("Authorization (then need player restart)"))
         
         def show_vk(*a):
