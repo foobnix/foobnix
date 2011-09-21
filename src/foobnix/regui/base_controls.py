@@ -13,6 +13,7 @@ import gobject
 import logging
 import urllib2
 
+from urllib2 import urlopen
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
 from foobnix.fc.fc_cache import FCache
@@ -20,7 +21,7 @@ from foobnix.regui.model import FModel
 from foobnix.regui.state import LoadSave
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.m3u_utils import m3u_reader
-from urllib2 import urlopen
+from foobnix.util.version import compare_versions
 from foobnix.util.text_utils import normalize_text
 from foobnix.util.file_utils import get_file_extension
 from foobnix.regui.service.vk_service import VKService
@@ -32,7 +33,7 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
-from foobnix.util.version import compare_versions
+
 
 class BaseFoobnixControls():
     def __init__(self):
@@ -119,7 +120,7 @@ class BaseFoobnixControls():
                     return True
             else:
                 try:
-                    """Timiout not compatible with python 2.5"""
+                    """Timeout not compatible with python 2.5"""
                     #u = urlopen(bean.path, timeout = 7) #@UnusedVariable
                     u = urlopen(bean.path) #@UnusedVariable
                     if not vars().has_key("u"):
@@ -404,7 +405,8 @@ class BaseFoobnixControls():
             self.movie_window.set_text(bean.text)        
             self.main_window.set_title(bean.text)
         gobject.idle_add(task)
-        thread.start_new_thread(self._play, (bean,))     
+        self.single_play_thread._run(self._play, bean)
+        #thread.start_new_thread(self._play, (bean,))     
         
     def _play(self, bean):
         self.count_errors = 0

@@ -12,10 +12,10 @@ from threading import Lock
 
 
 class SingleThread():
-    def __init__(self, progressbar):
+    def __init__(self, progressbar=None):
         self.lock = Lock()
         self.progressbar = progressbar
-    
+        
     def run_with_progressbar(self, method, args=None, text=None, no_thread=False, with_lock=True):
         #with_lock - shows, does it necessarily to do a lock or not
         
@@ -30,7 +30,8 @@ class SingleThread():
     def _run(self, method, args=None, text=None, with_lock=True):
         if not self.lock.locked():            
             self.lock.acquire()
-            self.progressbar.start(text)
+            if self.progressbar:
+                self.progressbar.start(text)
             thread.start_new_thread(self._thread_task, (method, args,))
         else:
             logging.warning("Previous thread not finished " + str(method) + " " + str(args))
@@ -49,6 +50,7 @@ class SingleThread():
             logging.error(method.__name__ + "(" + str(args) + "):" + str(e))
         finally:
             if self.lock.locked():
-                self.progressbar.stop()        
+                if self.progressbar:
+                    self.progressbar.stop()        
                 self.lock.release()
             
