@@ -4,6 +4,7 @@ Created on 25 сент. 2010
 
 @author: ivan
 '''
+
 import os
 import gtk
 import copy
@@ -399,14 +400,12 @@ class BaseFoobnixControls():
             self.record.hide()
         def task():       
             self.seek_bar.clear()
-            self.statusbar.set_text("") 
             self.statusbar.set_text(bean.info)
             self.trayicon.set_text(bean.text)
             self.movie_window.set_text(bean.text)        
             self.main_window.set_title(bean.text)
         gobject.idle_add(task)
-        self.single_play_thread._run(self._play, bean)
-        #thread.start_new_thread(self._play, (bean,))     
+        thread.start_new_thread(self._play, (bean,))     
         
     def _play(self, bean):
         self.count_errors = 0
@@ -475,7 +474,7 @@ class BaseFoobnixControls():
                 
 
     def notify_error(self, msg):
-        logging.error("notify error" + msg)
+        logging.error("notify error " + msg)
         self.seek_bar.set_text(msg)
         self.info_panel.clear()
         
