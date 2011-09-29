@@ -94,7 +94,7 @@ class CueReader():
         except Exception, e:
             logging.warn(str(e) + " " + file)
             return
-        z
+
         return audio.info.length
     
     def normalize(self):
