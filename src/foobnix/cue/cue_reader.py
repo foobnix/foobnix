@@ -94,7 +94,7 @@ class CueReader():
         except Exception, e:
             logging.warn(str(e) + " " + file)
             return
-        
+        z
         return audio.info.length
     
     def normalize(self):
@@ -114,7 +114,7 @@ class CueReader():
                     else: #for cue  "several files - each file involve several tracks"
                         duration = self.get_full_duration(track.path) - track.get_start_time_sec()
                         
-                    track.duration = duration
+                track.duration = duration
             else:
                 track.duration = None
             if not track.path:
