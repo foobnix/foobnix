@@ -41,15 +41,28 @@ class TextArea(gtk.ScrolledWindow):
         self.buffer.insert_pixbuf(enditer, image.get_pixbuf())
         
     def set_text(self, text="", bold_text=""):
-        if not text:
-            text = ""
-
-        self.buffer.set_text(bold_text + "\n" + text)
+        full_text = bold_text + "\n" + text + "\n"
+        self.buffer.set_text(full_text)
+        if text:
+            self.clear_tags (full_text)
         start = self.buffer.get_iter_at_offset(0)            
         end = self.buffer.get_iter_at_offset(len(bold_text))
         self.buffer.apply_tag(self.tag_bold, start, end)
-
-    
+        
+    def clear_tags (self, text):
+        start_index = 0
+        text_length = len(text)
+        while (start_index != -1):
+            buf_text = self.buffer.get_text(self.buffer.get_iter_at_offset(0),
+                                        self.buffer.get_iter_at_offset(text_length))
+            start_index = buf_text.find ("<")
+            if start_index != -1:
+                end_index = buf_text.find (">", start_index)
+                if end_index != -1:
+                    start = self.buffer.get_iter_at_offset(start_index)
+                    end = self.buffer.get_iter_at_offset(end_index + 1) 
+                    self.buffer.delete(start, end)
+                                        
 class ScrolledText():
     def __init__(self):
         self.buffer = gtk.TextBuffer()
