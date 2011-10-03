@@ -6,6 +6,7 @@ Created on 30 авг. 2010
 '''
 import gtk
 from foobnix.helpers.pref_widgets import HBoxDecorator
+from foobnix.fc.fc import FC
 #from desktopcouch.replication_services.example import is_active
 
 def open_link_in_browser(uri):
@@ -191,7 +192,7 @@ def notetab_label(func=None, arg=None, angle=0, symbol="×"):
     event.show()
     event.add(label)    
     event.set_visible_window(False)
-                
+    
     event.connect("enter-notify-event", lambda w, e:w.get_child().set_markup("<u>" + symbol + "</u>"))
     event.connect("leave-notify-event", lambda w, e:w.get_child().set_markup(symbol))
     if func and arg:                    
@@ -201,3 +202,54 @@ def notetab_label(func=None, arg=None, angle=0, symbol="×"):
     event.show()
     return event
 
+class AlternateVolumeControl (gtk.DrawingArea):
+    def __init__(self, levels, h_border=None, v_border=None):
+        gtk.DrawingArea.__init__(self)
+        self.show ()
+        self.volume = FC().volume
+        self.connect("expose-event", self.expose_handler, levels, h_border, v_border)
+       
+    def set_volume (self, vol):
+        self.volume = vol
+        self.queue_draw()
+        
+    def expose_handler(self, area, event, levels, h_border, v_border) :
+        gc = self.window.new_gc ()
+        area_width = area.get_allocation().width
+        area_height = area.get_allocation().height
+        if not h_border:
+            h_border = area_width/100
+        if not v_border:
+            v_border = area_height/100 
+        width = area_width - 2*h_border
+        height = area_height - 2*v_border
+        
+        '''to get the height times the number levels of volume 
+           (for the smooth growth of the height)'''
+        height = height - height%levels if height >= levels else levels
+        
+        step = width/(levels - 1)
+        gc.line_width = step/2
+        x = h_border
+        y = height + v_border
+        label = width * self.volume/100.0 + h_border
+        
+        i = 1
+        while i < levels:
+            if x < label:
+                gc.set_rgb_fg_color(gtk.gdk.color_parse("orange red"))#@UndefinedVariable
+            else:
+                gc.set_rgb_fg_color(gtk.gdk.color_parse("white"))#@UndefinedVariable
+            if x != h_border:
+                area.window.draw_line (gc, x, y, x, 
+                    (int) (round (y - height / (width *1.0 / (x - h_border))))) 
+            i += 1
+            x += step
+        
+        
+        
+        
+        
+        
+        
+        
