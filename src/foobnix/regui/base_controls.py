@@ -484,7 +484,7 @@ class BaseFoobnixControls():
     def player_seek(self, percent):
         self.media_engine.seek(percent)
 
-    def player_volue(self, percent):
+    def player_volume(self, percent):
         self.media_engine.volume(percent)
     
     def search_vk_page_tracks(self, vk_ulr):

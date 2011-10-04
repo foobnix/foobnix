@@ -13,6 +13,7 @@ from foobnix.util.file_utils import open_in_filemanager
 import logging
 from foobnix.fc.fc import FC
 from foobnix.helpers.menu import Popup
+
 class DownloadManagerTreeControl(CommonTreeControl):
     def __init__(self, navigation):
         self.navigation = navigation

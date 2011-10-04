@@ -4,11 +4,14 @@ Created on 28 сент. 2010
 
 @author: ivan
 '''
+
 import gtk
-from foobnix.regui.state import LoadSave
+
 from foobnix.fc.fc import FC
+from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
+
 class VolumeControls(LoadSave, gtk.HBox, FControl):
     MAX_VALUE = 100
     def __init__(self, controls):

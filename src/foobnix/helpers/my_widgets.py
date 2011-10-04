@@ -203,50 +203,58 @@ def notetab_label(func=None, arg=None, angle=0, symbol="×"):
     return event
 
 class AlternateVolumeControl (gtk.DrawingArea):
-    def __init__(self, levels, h_border=None, v_border=None):
+    def __init__(self, levels, s_width, interval, v_step):
         gtk.DrawingArea.__init__(self)
         self.show ()
         self.volume = FC().volume
-        self.connect("expose-event", self.expose_handler, levels, h_border, v_border)
+        self.connect("expose-event", self.expose_handler, levels, s_width, interval, v_step)
        
     def set_volume (self, vol):
         self.volume = vol
         self.queue_draw()
         
-    def expose_handler(self, area, event, levels, h_border, v_border) :
-        gc = self.window.new_gc ()
+    def expose_handler(self, area, event, levels, s_width, interval, v_step) :
+        #levels = a number of volume levels (a number of sticks equals level-1)
+        #s_width - width of stick
+        #interval - interval between sticks
+        #v_step - increase the height of the stick
+        #all parameters must be integer type
+        
+        gc = self.window.new_gc()
         area_width = area.get_allocation().width
         area_height = area.get_allocation().height
-        if not h_border:
-            h_border = area_width/100
-        if not v_border:
-            v_border = area_height/100 
-        width = area_width - 2*h_border
-        height = area_height - 2*v_border
         
-        '''to get the height times the number levels of volume 
-           (for the smooth growth of the height)'''
-        height = height - height%levels if height >= levels else levels
+        h_step = s_width + interval
+        width = (levels - 1) * (s_width + interval)
+        height = v_step * (levels - 1)
         
-        step = width/(levels - 1)
-        gc.line_width = step/2
-        x = h_border
-        y = height + v_border
-        label = width * self.volume/100.0 + h_border
+        if width < area_width:
+            start_x = (area_width-width)/2
+        else:
+            start_x = 1
+            
+        if height < area_height:
+            start_y = area_height - (area_height - height)/2
+        else:
+            start_y = area_height - 1
         
+        x = start_x
+        y = start_y
+        
+        label = width * self.volume/100.0 + x
+                
         i = 1
         while i < levels:
             if x < label:
                 gc.set_rgb_fg_color(gtk.gdk.color_parse("orange red"))#@UndefinedVariable
             else:
                 gc.set_rgb_fg_color(gtk.gdk.color_parse("white"))#@UndefinedVariable
-            if x != h_border:
-                area.window.draw_line (gc, x, y, x, 
-                    (int) (round (y - height / (width *1.0 / (x - h_border))))) 
+            if x != start_x:
+                area.window.draw_line (gc, x, start_y, x, y)
             i += 1
-            x += step
-        
-        
+            x += h_step
+            y -= v_step
+                    
         
         
         
