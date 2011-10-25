@@ -44,8 +44,7 @@ def get_all_music_by_paths(paths, controls):
     return result
 
 def get_all_music_with_id3_by_path(path):
-    all = _scanner(path, None)
-    return update_id3_wind_filtering(all)
+    return update_id3_wind_filtering(_scanner(path, None))
 
 def _scanner(path, level, pr_window):
     try:
@@ -55,13 +54,12 @@ def _scanner(path, level, pr_window):
      
     results = []
     if not os.path.exists(path):
-        return None
+        return
     dir = os.path.abspath(path)
-    list = os.listdir(dir)
-    list = sort_by_name(path, list)
+    
+    list = sort_by_name(path, os.listdir(dir))
     
     for file in list:
-        print 1
         full_path = os.path.join(path, file)
         
         if os.path.isfile(full_path):
@@ -79,7 +77,7 @@ def _scanner(path, level, pr_window):
         elif os.path.isfile(full_path):
             results.append(FModel(file, full_path).add_parent(level).add_is_file(True))
             pr_window.media_files +=1
-        print 2
+        
     return results
 
 def sort_by_name(path, list):
@@ -107,7 +105,6 @@ def is_dir_with_music(path):
     for file in list:
         full_path = os.path.join(path, file)
         if os.path.isdir(full_path):
-            
             if is_dir_with_music(full_path):
                 return True
         else:
