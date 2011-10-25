@@ -45,7 +45,8 @@ class PopupMenuWindow(PopupTrayWindow):
         playcontrols.pack_start(ImageButton(gtk.STOCK_QUIT, controls.quit, _("Exit")))
         playcontrols.pack_start(ImageButton(gtk.STOCK_OK, self.hide, _("Close Popup")))
 
-        self.poopup_text = gtk.Label("Foobnix")
+        self.poopup_text = gtk.Label()
+        self.set_text("Foobnix")
         self.poopup_text.set_line_wrap(True)
 
         vbox.pack_start(playcontrols, False, False)
@@ -56,8 +57,13 @@ class PopupMenuWindow(PopupTrayWindow):
         
     def set_text(self, text):
         text = unicode(text)
+        
         self.poopup_text.set_text(text[:40])
-
+        
+        '''set colour of text'''
+        self.poopup_text.modify_fg(gtk.STATE_NORMAL,
+                                   gtk.gdk.color_parse('#FFFFFF')) #@UndefinedVariable
+        
 class PopupVolumeWindow(PopupTrayWindow):
     def __init__(self, controls, popup_menu_window):
         PopupTrayWindow.__init__(self, controls)

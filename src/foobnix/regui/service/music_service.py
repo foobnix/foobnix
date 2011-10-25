@@ -21,7 +21,7 @@ from foobnix.util.id3_file import update_id3_wind_filtering
 
 def get_all_music_by_paths(paths, controls):
     pr_window = ProgWindow(controls)
-    gobject.idle_add(pr_window.show_all)
+    #gobject.idle_add(pr_window.show_all)
     
     pr_window.analyzed_folders += 1
     end_scanning = False
@@ -40,7 +40,7 @@ def get_all_music_by_paths(paths, controls):
         result = result + current_result
     time.sleep(1)
     end_scanning = True
-    pr_window.hide()
+    gobject.idle_add(pr_window.hide)
     return result
 
 def get_all_music_with_id3_by_path(path):
@@ -61,7 +61,7 @@ def _scanner(path, level, pr_window):
     list = sort_by_name(path, list)
     
     for file in list:
-        
+        print 1
         full_path = os.path.join(path, file)
         
         if os.path.isfile(full_path):
@@ -79,6 +79,7 @@ def _scanner(path, level, pr_window):
         elif os.path.isfile(full_path):
             results.append(FModel(file, full_path).add_parent(level).add_is_file(True))
             pr_window.media_files +=1
+        print 2
     return results
 
 def sort_by_name(path, list):

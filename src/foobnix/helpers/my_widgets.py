@@ -219,6 +219,12 @@ class AlternateVolumeControl (gtk.DrawingArea):
         #interval - interval between sticks
         #v_step - increase the height of the stick
         #all parameters must be integer type
+        '''
+        context = area.window.cairo_create()
+        context.rectangle(0,0,10,10)
+        context.set_source_color(self.get_style ().dark[gtk.STATE_ACTIVE])
+        context.fill_preserve()
+        '''
         
         gc = self.window.new_gc()
         area_width = area.get_allocation().width
