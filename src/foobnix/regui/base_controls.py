@@ -4,6 +4,7 @@ Created on 25 сент. 2010
 
 @author: ivan
 '''
+
 import os
 import gtk
 import copy
@@ -13,6 +14,7 @@ import gobject
 import logging
 import urllib2
 
+from urllib2 import urlopen
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
 from foobnix.fc.fc_cache import FCache
@@ -20,7 +22,7 @@ from foobnix.regui.model import FModel
 from foobnix.regui.state import LoadSave
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util.m3u_utils import m3u_reader
-from urllib2 import urlopen
+from foobnix.util.version import compare_versions
 from foobnix.util.text_utils import normalize_text
 from foobnix.util.file_utils import get_file_extension
 from foobnix.regui.service.vk_service import VKService
@@ -32,7 +34,7 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
-from foobnix.util.version import compare_versions
+
 
 class BaseFoobnixControls():
     def __init__(self):
@@ -119,7 +121,7 @@ class BaseFoobnixControls():
                     return True
             else:
                 try:
-                    """Timiout not compatible with python 2.5"""
+                    """Timeout not compatible with python 2.5"""
                     #u = urlopen(bean.path, timeout = 7) #@UnusedVariable
                     u = urlopen(bean.path) #@UnusedVariable
                     if not vars().has_key("u"):
@@ -398,7 +400,6 @@ class BaseFoobnixControls():
             self.record.hide()
         def task():       
             self.seek_bar.clear()
-            self.statusbar.set_text("") 
             self.statusbar.set_text(bean.info)
             self.trayicon.set_text(bean.text)
             self.movie_window.set_text(bean.text)        
@@ -473,7 +474,7 @@ class BaseFoobnixControls():
                 
 
     def notify_error(self, msg):
-        logging.error("notify error" + msg)
+        logging.error("notify error " + msg)
         self.seek_bar.set_text(msg)
         self.info_panel.clear()
         
@@ -483,7 +484,7 @@ class BaseFoobnixControls():
     def player_seek(self, percent):
         self.media_engine.seek(percent)
 
-    def player_volue(self, percent):
+    def player_volume(self, percent):
         self.media_engine.volume(percent)
     
     def search_vk_page_tracks(self, vk_ulr):

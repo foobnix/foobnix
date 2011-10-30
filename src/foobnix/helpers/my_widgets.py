@@ -6,6 +6,7 @@ Created on 30 авг. 2010
 '''
 import gtk
 from foobnix.helpers.pref_widgets import HBoxDecorator
+from foobnix.fc.fc import FC
 #from desktopcouch.replication_services.example import is_active
 
 def open_link_in_browser(uri):
@@ -191,7 +192,7 @@ def notetab_label(func=None, arg=None, angle=0, symbol="×"):
     event.show()
     event.add(label)    
     event.set_visible_window(False)
-                
+    
     event.connect("enter-notify-event", lambda w, e:w.get_child().set_markup("<u>" + symbol + "</u>"))
     event.connect("leave-notify-event", lambda w, e:w.get_child().set_markup(symbol))
     if func and arg:                    
@@ -201,3 +202,68 @@ def notetab_label(func=None, arg=None, angle=0, symbol="×"):
     event.show()
     return event
 
+class AlternateVolumeControl (gtk.DrawingArea):
+    def __init__(self, levels, s_width, interval, v_step):
+        gtk.DrawingArea.__init__(self)
+        self.show ()
+        self.volume = FC().volume
+        self.connect("expose-event", self.expose_handler, levels, s_width, interval, v_step)
+       
+    def set_volume (self, vol):
+        self.volume = vol
+        self.queue_draw()
+        
+    def expose_handler(self, area, event, levels, s_width, interval, v_step) :
+        #levels = a number of volume levels (a number of sticks equals level-1)
+        #s_width - width of stick
+        #interval - interval between sticks
+        #v_step - increase the height of the stick
+        #all parameters must be integer type
+        '''
+        context = area.window.cairo_create()
+        context.rectangle(0,0,10,10)
+        context.set_source_color(self.get_style ().dark[gtk.STATE_ACTIVE])
+        context.fill_preserve()
+        '''
+        
+        gc = self.window.new_gc()
+        area_width = area.get_allocation().width
+        area_height = area.get_allocation().height
+        
+        h_step = s_width + interval
+        width = (levels - 1) * (s_width + interval)
+        height = v_step * (levels - 1)
+        
+        if width < area_width:
+            start_x = (area_width-width)/2
+        else:
+            start_x = 1
+            
+        if height < area_height:
+            start_y = area_height - (area_height - height)/2
+        else:
+            start_y = area_height - 1
+        
+        x = start_x
+        y = start_y
+        
+        label = width * self.volume/100.0 + x
+                
+        i = 1
+        while i < levels:
+            if x < label:
+                gc.set_rgb_fg_color(gtk.gdk.color_parse("orange red"))#@UndefinedVariable
+            else:
+                gc.set_rgb_fg_color(gtk.gdk.color_parse("white"))#@UndefinedVariable
+            if x != start_x:
+                area.window.draw_line (gc, x, start_y, x, y)
+            i += 1
+            x += h_step
+            y -= v_step
+                    
+        
+        
+        
+        
+        
+        

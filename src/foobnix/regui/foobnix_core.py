@@ -61,7 +61,7 @@ class FoobnixCore(BaseFoobnixControls):
         
         self.search_progress = SearchProgressBar()
         self.in_thread = SingleThread(self.search_progress)
-
+        
         self.info_panel = InfoPanelWidget(self)
         
         

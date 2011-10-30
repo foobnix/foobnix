@@ -4,11 +4,14 @@ Created on 28 сент. 2010
 
 @author: ivan
 '''
+
 import gtk
-from foobnix.regui.state import LoadSave
+
 from foobnix.fc.fc import FC
+from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
+
 class VolumeControls(LoadSave, gtk.HBox, FControl):
     MAX_VALUE = 100
     def __init__(self, controls):
@@ -69,14 +72,16 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
             self.volume_scale.set_value(value + 3)
         else:
             self.volume_scale.set_value(value - 3)
-        self.controls.player_volue(value)
+        self.controls.player_volume(value)
         return True
 
     
-    def on_value_changed(self, widget):        
+    def on_value_changed(self, widget): 
+            
         percent = widget.get_value()
-        self.controls.player_volue(percent)
+        self.controls.player_volume(percent)
         FC().volume = percent
+        self.controls.trayicon.popup_volume_contol.avc.set_volume(percent)
     
     def on_save(self):
         pass

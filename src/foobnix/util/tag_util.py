@@ -120,7 +120,17 @@ class TagEditor(ChildTopWindow):
                 artists[path] = _('Unknown artist')
                 titles[path] = self.store[path][1]
             
-            texts[path] = artists[path] + ' - ' + titles[path]
+            if artists.has_key(path):   
+                texts[path] = artists[path] + ' - ' + titles[path]
+            else:
+                texts[path] = os.path.basename(path)
+                artists[path] = ""
+                titles[path] = ""
+                
+            if artists[path] == _('Unknown artist'):
+                artists[path] = ""
+            if titles[path] == _('Unknown title'):
+                titles[path] == ""
             
             if self.store[path][2]:
                 composers[path] = self.store[path][2]

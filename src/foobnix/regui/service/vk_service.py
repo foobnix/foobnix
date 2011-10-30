@@ -163,11 +163,14 @@ class VKService:
         if not result:
             return
         logging.debug("result " + result)
-        object = self.to_json(result)
+        try:
+            object = self.to_json(result)
+        except simplejson.JSONDecodeError, e:
+            logging.error(e)
+            return
         if object.has_key("response"):        
             return object["response"]
-        else:
-            return None
+        
         
     def get(self, method, data):
         time.sleep(0.6)
