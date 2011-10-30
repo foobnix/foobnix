@@ -234,7 +234,7 @@ class VKService:
             return 
         
         logging.info("start search songs " + query)
-        query = urllib.quote(query)
+        query = urllib.quote(query.encode("utf-8"))
         
         list = self.get_result("audio.search", "q=" + query)
         childs = []

@@ -115,7 +115,7 @@ class SearchControls(FControl, gtk.VBox):
         list_func.append(self.controls.search_top_tags)
         
         
-        liststore.append([_("Audio")])
+        liststore.append([_("VKontakte")])
         list_func.append(self.controls.search_all_tracks)
         
         #liststore.append([_("Video")])

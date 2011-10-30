@@ -34,6 +34,8 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
+from foobnix.util.url_utils import is_exists
+from foobnix.util import url_utils
 
 
 class BaseFoobnixControls():
@@ -405,14 +407,19 @@ class BaseFoobnixControls():
             self.movie_window.set_text(bean.text)        
             self.main_window.set_title(bean.text)
         gobject.idle_add(task)
-        thread.start_new_thread(self._play, (bean,))     
+        #thread.start_new_thread(self._play, (bean,))
+        self._play(bean)     
         
     def _play(self, bean):
         self.count_errors = 0
         
         if not bean.path:
             bean.path = get_bean_posible_paths(bean)
-               
+        
+        if bean.path and bean.type != FTYPE_RADIO and bean.path.startswith("http"):
+            if not url_utils.is_exists(bean.path):
+                bean.path = None
+        
         if not bean.path:            
             if not self.fill_bean_from_vk(bean):
                 if self.vk_service.is_show_authorization():
@@ -424,6 +431,8 @@ class BaseFoobnixControls():
            
         if bean.path and os.path.isdir(bean.path):
             return None
+        
+        
         
         self.media_engine.play(bean)  
         self.is_scrobbled = False

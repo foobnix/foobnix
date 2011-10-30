@@ -5,6 +5,9 @@ Created on 1 дек. 2010
 @author: ivan
 '''
 import urllib
+import httplib
+import urlparse
+from httplib import HTTP
 
 """"
 Server: nginx/0.8.53
@@ -21,4 +24,14 @@ def get_url_length(path):
 def get_url_type(path):
     open = urllib.urlopen(path)
     return open.info().getheaders("Content-Type")[0]
+
+def is_exists(url):
+    p = urlparse.urlparse(url)
+    h = httplib.HTTP(p[1])
+    h.putrequest('HEAD', p[2])
+    h.endheaders()
+    if h.getreply()[0] == 200: 
+        return 1
+    else: 
+        return 0
 
