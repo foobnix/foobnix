@@ -12,7 +12,6 @@ from foobnix.regui.model import FModel
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.image import ImageBase
 from foobnix.helpers.textarea import TextArea
-from lyricwiki import get_lyrics
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
 from foobnix.helpers.pref_widgets import HBoxDecorator
@@ -22,6 +21,7 @@ from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
     LEFT_PERSPECTIVE_INFO, ICON_BLANK_DISK, SITE_LOCALE
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
+from foobnix.thirdparty.lyr import get_lyrics
 
 
 class InfoCache():

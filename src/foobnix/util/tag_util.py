@@ -12,9 +12,9 @@ import os.path
 from foobnix.util.id3_util import decode_cp866
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.helpers.window import ChildTopWindow
-from mutagen.easyid3 import EasyID3
+from foobnix.thirdparty.mutagen.easyid3 import EasyID3
 from foobnix.util.localization import foobnix_localization
-from mutagen.mp4 import MP4, MP4MetadataValueError
+from foobnix.thirdparty.mutagen.mp4 import MP4, MP4MetadataValueError
 
 foobnix_localization()
 

@@ -10,13 +10,15 @@ import logging
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
-import pylast
+
 from foobnix.regui.model import FModel
 from foobnix.util.const import FTYPE_VIDEO
 from foobnix.util.file_utils import file_extension
-from pylast import WSError, Tag
-from xgoogle import translate
 import time
+from foobnix.thirdparty.google.translate import translate
+from foobnix.thirdparty.pylast import WSError, Tag
+from foobnix.thirdparty import pylast
+import datetime
 
 
 API_KEY = FCBase().API_KEY
