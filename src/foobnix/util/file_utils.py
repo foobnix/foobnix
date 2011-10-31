@@ -222,8 +222,12 @@ def isDirectory(path):
 
 """extentsion linke .mp3, .mp4"""
 def get_file_extension(fileName):
-    if fileName and fileName.startswith("http"):
-        return None    
+    if not fileName:
+        return None
+    
+    if fileName.startswith("http"):
+        return None
+        
     return os.path.splitext(fileName)[1].lower().strip()
 
 def file_extension(file_name):
