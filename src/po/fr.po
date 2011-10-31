@@ -7,18 +7,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-06-06 11:18+0300\n"
-"PO-Revision-Date: 2011-05-06 10:44+0000\n"
+"POT-Creation-Date: 2011-09-11 21:49+0300\n"
+"PO-Revision-Date: 2011-07-13 12:36+0000\n"
 "Last-Translator: Tubuntu <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-06-07 04:47+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2011-09-12 05:10+0000\n"
+"X-Generator: Launchpad (build 13900)\n"
 
-#: .././foobnix/dm/dm.py:31 .././foobnix/preferences/preferences_window.py:60
-#: .././foobnix/regui/menu.py:52 .././foobnix/regui/top.py:44
+#: .././foobnix/dm/dm.py:31 .././foobnix/preferences/preferences_window.py:62
+#: .././foobnix/regui/menu.py:54 .././foobnix/regui/top.py:44
 msgid "Preferences"
 msgstr "Préférences"
 
@@ -31,16 +31,16 @@ msgid "Stop Downloading"
 msgstr "Arrêter le téléchargement"
 
 #: .././foobnix/dm/dm.py:49 .././foobnix/preferences/configs/__init__.py:3
-#: .././foobnix/regui/menu.py:50
+#: .././foobnix/regui/menu.py:52
 msgid "Download Manager"
 msgstr "Gestionnaire de téléchargements"
 
-#: .././foobnix/dm/dm.py:113
+#: .././foobnix/dm/dm.py:113 .././foobnix/util/file_utils.py:379
 msgid "Choose Folder"
 msgstr "Choisir un dossier"
 
 #. @UnusedVariable
-#: .././foobnix/eq/eq_gui.py:42 .././foobnix/regui/menu.py:49
+#: .././foobnix/eq/eq_gui.py:42 .././foobnix/regui/menu.py:51
 msgid "Equalizer"
 msgstr "Équaliseur"
 
@@ -48,7 +48,7 @@ msgstr "Équaliseur"
 msgid "Disabled"
 msgstr "Désactivé"
 
-#: .././foobnix/eq/eq_gui.py:89 .././foobnix/eq/eq_gui.py:170
+#: .././foobnix/eq/eq_gui.py:89 .././foobnix/eq/eq_gui.py:171
 msgid "Enable EQ"
 msgstr "Activer EQ"
 
@@ -56,28 +56,28 @@ msgstr "Activer EQ"
 msgid "Enabled"
 msgstr "Activé"
 
-#: .././foobnix/eq/eq_gui.py:92 .././foobnix/eq/eq_gui.py:289
+#: .././foobnix/eq/eq_gui.py:92 .././foobnix/eq/eq_gui.py:290
 msgid "Disable EQ"
-msgstr ""
+msgstr "Désactiver EQ"
 
 #: .././foobnix/eq/eq_gui.py:93
 #, python-format
 msgid "Equalizer %s"
 msgstr "Équaliseur %s"
 
-#: .././foobnix/eq/eq_gui.py:171
+#: .././foobnix/eq/eq_gui.py:172
 msgid "To enable EQ set ON"
 msgstr "Activer/Désactiver EQ"
 
-#: .././foobnix/eq/eq_gui.py:176
+#: .././foobnix/eq/eq_gui.py:177
 msgid "Auto"
 msgstr "Automatique"
 
-#: .././foobnix/eq/eq_gui.py:191
+#: .././foobnix/eq/eq_gui.py:192
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: .././foobnix/eq/eq_gui.py:199
+#: .././foobnix/eq/eq_gui.py:200
 msgid "Restore defaults presets"
 msgstr "Restaurer les paramètres par défaut"
 
@@ -98,7 +98,7 @@ msgstr "Télécharger et faire un don"
 
 #. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:147
-#: .././foobnix/regui/treeview/playlist_tree.py:218
+#: .././foobnix/regui/treeview/playlist_tree.py:245
 #: .././foobnix/util/converter.py:341
 msgid "Download"
 msgstr "Téléchargement"
@@ -110,36 +110,36 @@ msgstr ""
 
 #: .././foobnix/helpers/dialog_entry.py:161
 #: .././foobnix/preferences/configs/notification_conf.py:19
-#: .././foobnix/preferences/configs/other_conf.py:73
+#: .././foobnix/preferences/configs/other_conf.py:70
 msgid "Check for new foobnix release on start"
 msgstr ""
 "Vérifier au démarrage si une nouvelle version de Foobnix est disponible"
 
-#: .././foobnix/helpers/window.py:74
+#: .././foobnix/helpers/window.py:73
 msgid "Total progress"
-msgstr ""
+msgstr "Progression totale"
 
-#: .././foobnix/helpers/window.py:79
+#: .././foobnix/helpers/window.py:78
 #: .././foobnix/preferences/configs/hotkey_conf.py:157
 #: .././foobnix/regui/controls/playback.py:195 .././foobnix/util/const.py:46
 #: .././foobnix/util/converter.py:95
 msgid "Stop"
 msgstr "Arrêter"
 
-#: .././foobnix/preferences/preferences_window.py:71
+#: .././foobnix/preferences/preferences_window.py:73
 msgid "Categories"
 msgstr "Catégories"
 
-#: .././foobnix/preferences/preferences_window.py:133
+#: .././foobnix/preferences/preferences_window.py:134
 msgid "Restore Defaults Settings"
 msgstr "Restaurer les préférences par défaut"
 
-#: .././foobnix/preferences/preferences_window.py:137
+#: .././foobnix/preferences/preferences_window.py:138
 #: .././foobnix/util/tag_util.py:85
 msgid "Apply"
 msgstr "Appliquer"
 
-#: .././foobnix/preferences/preferences_window.py:142
+#: .././foobnix/preferences/preferences_window.py:143
 #: .././foobnix/util/converter.py:86 .././foobnix/util/tag_util.py:86
 msgid "Close"
 msgstr "Fermer"
@@ -165,21 +165,21 @@ msgid "Hotkey"
 msgstr "Raccourci clavier"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:64
-#: .././foobnix/preferences/configs/music_library.py:65
-#: .././foobnix/preferences/configs/music_library.py:178
+#: .././foobnix/preferences/configs/music_library.py:62
+#: .././foobnix/preferences/configs/music_library.py:165
 msgid "Add"
 msgstr "Ajouter"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:69
-#: .././foobnix/preferences/configs/music_library.py:70
-#: .././foobnix/preferences/configs/music_library.py:183
+#: .././foobnix/preferences/configs/music_library.py:67
+#: .././foobnix/preferences/configs/music_library.py:170
 msgid "Remove"
 msgstr "Enlever"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:155
 #: .././foobnix/regui/controls/playback.py:196
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:61
-#: .././foobnix/regui/treeview/playlist_tree.py:217
+#: .././foobnix/regui/treeview/playlist_tree.py:226
 #: .././foobnix/regui/treeview/vk_integration_tree.py:75
 msgid "Play"
 msgstr "Lire"
@@ -238,73 +238,91 @@ msgid "Other Options"
 msgstr "Autres options"
 
 #: .././foobnix/preferences/configs/last_fm.py:14
-msgid "Last FM"
-msgstr "Last FM"
+msgid "Last FM + VK"
+msgstr "Last FM + VK"
 
-#: .././foobnix/preferences/configs/last_fm.py:24
+#: .././foobnix/preferences/configs/last_fm.py:21
+msgid "Last.FM"
+msgstr "Last.FM"
+
+#: .././foobnix/preferences/configs/last_fm.py:29
 #: .././foobnix/preferences/configs/network_conf.py:58
 msgid "Login"
 msgstr "Connexion"
 
-#: .././foobnix/preferences/configs/last_fm.py:38
+#: .././foobnix/preferences/configs/last_fm.py:43
 #: .././foobnix/preferences/configs/network_conf.py:72
 msgid "Password"
 msgstr "Mot de passe"
 
-#: .././foobnix/preferences/configs/last_fm.py:47
+#: .././foobnix/preferences/configs/last_fm.py:52
 msgid "Enable Music Scrobbler"
 msgstr "Activer Music Scrobbler"
 
-#: .././foobnix/preferences/configs/last_fm.py:50
+#: .././foobnix/preferences/configs/last_fm.py:55
 msgid "Enable Radio Scrobbler"
 msgstr "Activer Radio Scrobbler"
 
-#: .././foobnix/preferences/configs/music_library.py:34
+#: .././foobnix/preferences/configs/last_fm.py:69
+#: .././foobnix/preferences/configs/last_fm.py:75
+msgid "VKontakte"
+msgstr "VKontakte"
+
+#: .././foobnix/preferences/configs/last_fm.py:75
+#: .././foobnix/regui/menu.py:81
+msgid "Disable"
+msgstr "Désactiver"
+
+#: .././foobnix/preferences/configs/last_fm.py:80
+msgid "You vk account is:"
+msgstr "votre compte VK est:"
+
+#: .././foobnix/preferences/configs/last_fm.py:81
+msgid "Authorization (then need player restart)"
+msgstr "Autorisation (nécessite le redémarrage du lecteur)"
+
+#: .././foobnix/preferences/configs/music_library.py:38
 msgid "Update library on start (more slow) "
 msgstr "Mettre à jour la bibliothèque au démarrage (plus lent) "
 
-#: .././foobnix/preferences/configs/music_library.py:44
+#: .././foobnix/preferences/configs/music_library.py:48
 msgid "Music dirs"
 msgstr "Répertoires de musique"
 
-#: .././foobnix/preferences/configs/music_library.py:53
+#: .././foobnix/preferences/configs/music_library.py:56
 msgid "Paths"
 msgstr "Chemins"
 
-#: .././foobnix/preferences/configs/music_library.py:56
-msgid "Reload"
-msgstr "Actualiser"
-
-#: .././foobnix/preferences/configs/music_library.py:141
-#: .././foobnix/regui/treeview/navigation_tree.py:214
+#: .././foobnix/preferences/configs/music_library.py:136
+#: .././foobnix/regui/treeview/navigation_tree.py:242
 msgid "Choose directory with music"
 msgstr "Choisir le répertoire de musique"
 
-#: .././foobnix/preferences/configs/music_library.py:164
+#: .././foobnix/preferences/configs/music_library.py:151
 msgid "File Types"
 msgstr "Types de fichiers"
 
-#: .././foobnix/preferences/configs/music_library.py:172
+#: .././foobnix/preferences/configs/music_library.py:159
 msgid "Extensions"
 msgstr "Extensions"
 
-#: .././foobnix/preferences/configs/music_library.py:204
+#: .././foobnix/preferences/configs/music_library.py:191
 msgid "Please add audio extension"
 msgstr "Veuillez ajouter l'extension audio"
 
-#: .././foobnix/preferences/configs/music_library.py:204
+#: .././foobnix/preferences/configs/music_library.py:191
 msgid "Extension should be like '.mp3'"
 msgstr "L'extension devrait ressembler à '.mp3 '"
 
-#: .././foobnix/preferences/configs/music_library.py:211
+#: .././foobnix/preferences/configs/music_library.py:198
 msgid "Gap between tracks: "
 msgstr "Silence entre les morceaux: "
 
-#: .././foobnix/preferences/configs/music_library.py:227
+#: .././foobnix/preferences/configs/music_library.py:214
 msgid "Multi tab mode"
 msgstr "Mode onglets multiples"
 
-#: .././foobnix/preferences/configs/music_library.py:233
+#: .././foobnix/preferences/configs/music_library.py:220
 msgid "Single tab mode"
 msgstr "Mode onglet unique"
 
@@ -346,63 +364,65 @@ msgid "Notifications"
 msgstr "Notifications"
 
 #: .././foobnix/preferences/configs/notification_conf.py:22
-#: .././foobnix/preferences/configs/other_conf.py:76
+#: .././foobnix/preferences/configs/other_conf.py:73
 msgid "Show new foobnix release avaliable demo dialog"
 msgstr "Afficher la fenêtre de disponibilité de nouvelle version de Foobnix"
 
-#: .././foobnix/preferences/configs/other_conf.py:35
+#: .././foobnix/preferences/configs/other_conf.py:36
 msgid "Save music to folder:"
 msgstr "Sauvegarder la musique dans le répertoire:"
 
-#: .././foobnix/preferences/configs/other_conf.py:39
+#: .././foobnix/preferences/configs/other_conf.py:40
 msgid "Automatic music save"
 msgstr "Sauvegarde automatique de la musique"
 
 #: .././foobnix/preferences/configs/other_conf.py:45
 msgid "Download in threads"
-msgstr ""
+msgstr "Télécharger par fils"
 
-#: .././foobnix/preferences/configs/other_conf.py:62
+#: .././foobnix/preferences/configs/other_conf.py:59
 msgid "Disc cover size:"
 msgstr "Taille du panneau de la pochette:"
 
-#: .././foobnix/preferences/configs/other_conf.py:86
+#: .././foobnix/preferences/configs/other_conf.py:83
 msgid "Enable theme image"
 msgstr "Activer une image de thème"
 
-#: .././foobnix/preferences/configs/other_conf.py:95
+#: .././foobnix/preferences/configs/other_conf.py:92
 msgid "Menu type: "
 msgstr "Type de menu: "
 
-#: .././foobnix/preferences/configs/other_conf.py:97
+#: .././foobnix/preferences/configs/other_conf.py:94
 msgid "Old Style (Menu Bar)"
 msgstr "Ancien style (Barre de menu)"
 
-#. self.old_style.connect("toggled", self.on_change_menu_type)
-#: .././foobnix/preferences/configs/other_conf.py:100
+#: .././foobnix/preferences/configs/other_conf.py:96
 msgid "New Style (Button)"
 msgstr "Nouveau style (Boutons)"
 
-#: .././foobnix/preferences/configs/other_conf.py:110
+#: .././foobnix/preferences/configs/other_conf.py:105
 msgid "Order-Repeat Switcher Style:"
 msgstr "Style des commutateurs Ordre-Lecture en boucle"
 
-#: .././foobnix/preferences/configs/other_conf.py:112
+#: .././foobnix/preferences/configs/other_conf.py:107
 msgid "Toggle Buttons"
 msgstr "Boutons"
 
-#. self.buttons.connect("toggled", self.on_change_o_r_style)
-#: .././foobnix/preferences/configs/other_conf.py:115
+#: .././foobnix/preferences/configs/other_conf.py:109
 msgid "Text Labels"
 msgstr "Lettres"
 
-#: .././foobnix/preferences/configs/other_conf.py:126
+#: .././foobnix/preferences/configs/other_conf.py:119
 msgid "Opacity:"
 msgstr "Opacité:"
 
-#: .././foobnix/preferences/configs/other_conf.py:139
+#: .././foobnix/preferences/configs/other_conf.py:132
 msgid "Choose your preferred file manager:"
 msgstr "Gestionnaire de fichiers préféré:"
+
+#: .././foobnix/preferences/configs/other_conf.py:135
+msgid "Disable Xscreensaver"
+msgstr "Désactiver Xscreensaver"
 
 #: .././foobnix/preferences/configs/tabs.py:13
 msgid "Tabs"
@@ -485,45 +505,45 @@ msgstr "Notification"
 msgid "Time Notification (sec): "
 msgstr "Temps de notification (sec): "
 
-#: .././foobnix/regui/base_controls.py:136
+#: .././foobnix/regui/base_controls.py:145
 msgid "Choose folders to open"
 msgstr "Choisir le(s) répertoire(s) à ouvrir"
 
-#: .././foobnix/regui/base_controls.py:162
+#: .././foobnix/regui/base_controls.py:165
 msgid "Nothing found to play in the folder(s)"
 msgstr "Aucune musique trouvée dans le(s) répertoire(s)"
 
-#: .././foobnix/regui/base_controls.py:169
+#: .././foobnix/regui/base_controls.py:172
 msgid "Choose file to open"
 msgstr "Choisir le(s) fichiers(s) à ouvrir"
 
-#: .././foobnix/regui/base_controls.py:201
+#: .././foobnix/regui/base_controls.py:220
 msgid "Nothing found to play in the file(s)"
 msgstr "Aucune musique trouvée dans le(s) fichiers(s)"
 
-#: .././foobnix/regui/base_controls.py:272
+#: .././foobnix/regui/base_controls.py:289
 msgid "Music not found in folder(s):"
 msgstr "Aucune musique trouvée dans le(s) répertoire(s):"
 
-#: .././foobnix/regui/base_controls.py:338
+#: .././foobnix/regui/base_controls.py:359
 msgid "Stopped"
 msgstr "Arrêté"
 
-#: .././foobnix/regui/base_controls.py:347
+#: .././foobnix/regui/base_controls.py:368
 msgid "Paused | "
 msgstr "En pause | "
 
 #: .././foobnix/regui/coverlyrics.py:21
 msgid "Album title"
-msgstr ""
+msgstr "Titre d'album"
 
 #: .././foobnix/regui/coverlyrics.py:26
 msgid "Cover:"
-msgstr ""
+msgstr "Pochette:"
 
 #: .././foobnix/regui/coverlyrics.py:32
 msgid "Lyric:"
-msgstr ""
+msgstr "Paroles:"
 
 #: .././foobnix/regui/infopanel.py:50
 msgid "Best Songs"
@@ -561,135 +581,135 @@ msgstr "Ajout de fichier(s)"
 msgid "Add Folder(s)"
 msgstr "Ajout de répertoire(s)"
 
-#: .././foobnix/regui/menu.py:34 .././foobnix/regui/top.py:46
+#: .././foobnix/regui/menu.py:33
+msgid "Save Playlist As"
+msgstr "Sauvegarder la liste de lecture sous"
+
+#: .././foobnix/regui/menu.py:36 .././foobnix/regui/top.py:46
 msgid "Quit"
 msgstr "Quitter"
 
-#: .././foobnix/regui/menu.py:37
+#: .././foobnix/regui/menu.py:39
 msgid "_View"
 msgstr "_Voir"
 
-#: .././foobnix/regui/menu.py:39
+#: .././foobnix/regui/menu.py:41
 msgid "Left Panel"
 msgstr "Panneau de gauche"
 
-#: .././foobnix/regui/menu.py:42
+#: .././foobnix/regui/menu.py:44
 msgid "Search Panel"
 msgstr "Panneau de recherche"
 
-#: .././foobnix/regui/menu.py:45
+#: .././foobnix/regui/menu.py:47
 msgid "Cover & Lyrics Panel"
-msgstr ""
+msgstr "Panneau Pochette et Paroles"
 
-#: .././foobnix/regui/menu.py:60
+#: .././foobnix/regui/menu.py:62
 msgid "_Playback"
 msgstr "_Lecture"
 
-#: .././foobnix/regui/menu.py:68
+#: .././foobnix/regui/menu.py:70
 msgid "Order"
 msgstr "Ordre de lecture"
 
-#: .././foobnix/regui/menu.py:69
+#: .././foobnix/regui/menu.py:71
 msgid "Linear"
 msgstr "Linéaire"
 
-#: .././foobnix/regui/menu.py:72
+#: .././foobnix/regui/menu.py:74
 msgid "Random"
 msgstr "Aléatoire"
 
-#: .././foobnix/regui/menu.py:76
+#: .././foobnix/regui/menu.py:78
 msgid "Repeat"
 msgstr "Lecture en boucle"
 
-#: .././foobnix/regui/menu.py:77 .././foobnix/util/const.py:44
+#: .././foobnix/regui/menu.py:79 .././foobnix/util/const.py:44
 msgid "All"
 msgstr "Tout"
 
-#: .././foobnix/regui/menu.py:78
+#: .././foobnix/regui/menu.py:80
 msgid "Single"
 msgstr "Unique"
 
-#: .././foobnix/regui/menu.py:79
-msgid "Disable"
-msgstr "Désactiver"
-
-#: .././foobnix/regui/menu.py:110
+#: .././foobnix/regui/menu.py:112
 msgid "_Help"
 msgstr "Aide"
 
-#: .././foobnix/regui/menu.py:111
+#: .././foobnix/regui/menu.py:113
 msgid "About"
 msgstr "À propos"
 
-#: .././foobnix/regui/menu.py:113
+#: .././foobnix/regui/menu.py:115
 msgid "Project page"
 msgstr "Page web du projet"
 
-#: .././foobnix/regui/menu.py:113
+#: .././foobnix/regui/menu.py:115
 msgid "http://www.foobnix.com/news/eng"
 msgstr "http://www.foobnix.com/"
 
-#: .././foobnix/regui/menu.py:114
+#: .././foobnix/regui/menu.py:116
 msgid "Issue report"
 msgstr "Rapport de problème"
 
-#: .././foobnix/regui/menu.py:116
+#: .././foobnix/regui/menu.py:118
 msgid "Donate Participate"
 msgstr "Faire un don ou participer"
 
-#: .././foobnix/regui/menu.py:116
+#: .././foobnix/regui/menu.py:118
 msgid "http://www.foobnix.com/donate/eng"
 msgstr "http://www.foobnix.com/support"
 
-#: .././foobnix/regui/perspectives.py:35
+#: .././foobnix/regui/perspectives.py:34
 msgid "Add Folder(s) in tree"
 msgstr "Ajout de répertoire(s) à l'arborescence"
 
-#: .././foobnix/regui/perspectives.py:81
+#: .././foobnix/regui/perspectives.py:80
 msgid "Music"
 msgstr "Musique"
 
-#: .././foobnix/regui/perspectives.py:81
+#: .././foobnix/regui/perspectives.py:80
 msgid "Music Navigation (Alt+1)"
 msgstr "Panneau de musique (Alt+1)"
 
-#: .././foobnix/regui/perspectives.py:86
+#: .././foobnix/regui/perspectives.py:85
 msgid "Radio"
 msgstr "Radio"
 
-#: .././foobnix/regui/perspectives.py:86
+#: .././foobnix/regui/perspectives.py:85
 msgid "Radio Stantions (Alt+2)"
 msgstr "Panneau des stations de radios (Alt+2)"
 
-#: .././foobnix/regui/perspectives.py:93
+#: .././foobnix/regui/perspectives.py:88
 msgid "Playlist"
 msgstr "Liste de lecture"
 
-#: .././foobnix/regui/perspectives.py:93
+#: .././foobnix/regui/perspectives.py:88
 msgid "Virtual Play Lists (Alt+3)"
 msgstr "Listes de lecture virtuelles (Alt+3)"
 
-#: .././foobnix/regui/perspectives.py:97
+#: .././foobnix/regui/perspectives.py:92
 msgid "Info"
 msgstr "Informations"
 
-#: .././foobnix/regui/perspectives.py:97
+#: .././foobnix/regui/perspectives.py:92
 msgid "Info Panel (Alt+4)"
 msgstr "Panneau d'informations (Alt+4)"
 
-#: .././foobnix/regui/perspectives.py:100
+#: .././foobnix/regui/perspectives.py:95
 msgid "Last.Fm"
 msgstr "Last.fm"
 
-#: .././foobnix/regui/perspectives.py:100
+#: .././foobnix/regui/perspectives.py:95
 msgid "Last.fm Panel (Alt+5)"
 msgstr "Panneau d'intégration Last.fm (Alt+5)"
 
-#: .././foobnix/regui/perspectives.py:103
+#: .././foobnix/regui/perspectives.py:98
 msgid "VK"
 msgstr "VK"
 
-#: .././foobnix/regui/perspectives.py:103
+#: .././foobnix/regui/perspectives.py:98
 msgid "VK Panel (Alt+6)"
 msgstr "Panneau d'intégration VKontakte (Alt+6)"
 
@@ -711,7 +731,7 @@ msgstr "Recherche en ligne"
 
 #: .././foobnix/regui/search.py:104
 msgid "Tracks"
-msgstr ""
+msgstr "Pistes"
 
 #: .././foobnix/regui/search.py:108
 msgid "Albums"
@@ -819,11 +839,11 @@ msgstr "Enregistrer la liste de lecture sous"
 msgid "Close tab"
 msgstr "Fermer l'onglet"
 
-#: .././foobnix/regui/notetab/__init__.py:346
+#: .././foobnix/regui/notetab/__init__.py:353
 msgid "It's need not empty playlist"
 msgstr "Nécessite une liste non vide"
 
-#: .././foobnix/regui/notetab/__init__.py:349
+#: .././foobnix/regui/notetab/__init__.py:356
 msgid "Choose folder to save playlist"
 msgstr "Choisir le répertoire où sauvegarder la liste de lecture"
 
@@ -836,7 +856,7 @@ msgid "Add folder"
 msgstr "Ajouter un dossier"
 
 #: .././foobnix/regui/notetab/tab_library.py:39
-#: .././foobnix/regui/treeview/navigation_tree.py:118
+#: .././foobnix/regui/treeview/navigation_tree.py:120
 msgid "Add folder in new tab"
 msgstr "Ajouter un dossier dans un nouvel onglet"
 
@@ -844,63 +864,70 @@ msgstr "Ajouter un dossier dans un nouvel onglet"
 msgid "Clear Music Tree"
 msgstr "Effacer l'arborescence Musique"
 
-#: .././foobnix/regui/service/vk_service.py:26
-msgid "VKontakte Authorization (require for music search)"
-msgstr ""
-
 #: .././foobnix/regui/service/vk_service.py:31
+msgid "VKontakte Authorization (require for music search)"
+msgstr "Autorisation VKontakte (requis pour recherche musicale)"
+
+#: .././foobnix/regui/service/vk_service.py:36
 msgid "Get Default Login Password"
+msgstr "Obtenir le mot de passe de connexion par défaut"
+
+#: .././foobnix/regui/service/vk_service.py:64
+msgid "Open"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:55
-msgid "1: Generate token (push or open the link url in the browser)"
-msgstr ""
-
-#: .././foobnix/regui/service/vk_service.py:57
+#: .././foobnix/regui/service/vk_service.py:70
 msgid "2: Apply Token"
-msgstr ""
+msgstr "2: Appliquer le token"
 
-#: .././foobnix/regui/service/vk_service.py:60
+#: .././foobnix/regui/service/vk_service.py:73
 msgid "Please generate token..."
-msgstr ""
+msgstr "Géréner le token, s'il vous plaît..."
 
-#: .././foobnix/regui/service/vk_service.py:65
+#: .././foobnix/regui/service/vk_service.py:78
 msgid "Token:"
-msgstr ""
+msgstr "Token:"
 
-#: .././foobnix/regui/service/vk_service.py:66
+#: .././foobnix/regui/service/vk_service.py:79
 msgid "User ID:"
-msgstr ""
+msgstr "Identifiant de l'utilisateur :"
 
-#: .././foobnix/regui/service/vk_service.py:100
+#: .././foobnix/regui/service/vk_service.py:114
 msgid "Token incorrect or expired"
-msgstr ""
+msgstr "Token incorrect ou expiré"
 
-#: .././foobnix/regui/service/vk_service.py:103
+#: .././foobnix/regui/service/vk_service.py:116
 msgid "Token or user is empty"
-msgstr ""
+msgstr "Token ou utilisateur est vide"
 
 #: .././foobnix/regui/treeview/dm_tree.py:92
 #: .././foobnix/regui/treeview/dm_tree.py:94
-#: .././foobnix/regui/treeview/navigation_tree.py:130
+#: .././foobnix/regui/treeview/navigation_tree.py:132
+#: .././foobnix/regui/treeview/playlist_tree.py:243
 msgid "Open in file manager"
 msgstr "Ouvrir avec le gestionnaire de fichiers"
 
-#: .././foobnix/regui/treeview/dragdrop_tree.py:164
+#: .././foobnix/regui/treeview/dragdrop_tree.py:204
 msgid "Copying:"
-msgstr ""
+msgstr "Copie:"
 
-#: .././foobnix/regui/treeview/dragdrop_tree.py:164
+#: .././foobnix/regui/treeview/dragdrop_tree.py:204
 msgid "Replacing:"
-msgstr ""
+msgstr "Remplacement:"
 
 #. @UndefinedVariable
-#: .././foobnix/regui/treeview/dragdrop_tree.py:165
+#: .././foobnix/regui/treeview/dragdrop_tree.py:205
+#: .././foobnix/util/file_utils.py:383
 msgid "Progress"
-msgstr ""
+msgstr "Avancement"
 
-#: .././foobnix/regui/treeview/dragdrop_tree.py:167
+#: .././foobnix/regui/treeview/dragdrop_tree.py:207
+#: .././foobnix/util/file_utils.py:384
 msgid "To: "
+msgstr "À: "
+
+#: .././foobnix/regui/treeview/dragdrop_tree.py:343
+msgid "m3u playlist: "
 msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:25
@@ -924,7 +951,7 @@ msgid "My top artists"
 msgstr "Mes artistes les plus écoutés"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:48
-#: .././foobnix/regui/treeview/vk_integration_tree.py:54
+#: .././foobnix/regui/treeview/vk_integration_tree.py:55
 msgid "loading..."
 msgstr "chargement..."
 
@@ -933,49 +960,49 @@ msgstr "chargement..."
 msgid "Copy to Search Line"
 msgstr "Copier le contenu du champs de recherche"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:36
+#: .././foobnix/regui/treeview/navigation_tree.py:38
 msgid "File"
 msgstr "Fichier"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:56
+#: .././foobnix/regui/treeview/navigation_tree.py:58
 msgid "Name"
 msgstr "Nom"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:61
+#: .././foobnix/regui/treeview/navigation_tree.py:63
 msgid "Ext"
 msgstr "Ext"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:111
+#: .././foobnix/regui/treeview/navigation_tree.py:113
 msgid "Append to playlist"
 msgstr "Ajouter à la liste de lecture"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:112
+#: .././foobnix/regui/treeview/navigation_tree.py:114
 msgid "Open in new playlist"
 msgstr "Ouvrir dans une nouvelle liste de lecture"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:114
+#: .././foobnix/regui/treeview/navigation_tree.py:116
 msgid "Add folder here"
 msgstr "Ajouter un répertoire ici"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:119
+#: .././foobnix/regui/treeview/navigation_tree.py:121
 msgid "Clear"
 msgstr "Effacer"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:120
+#: .././foobnix/regui/treeview/navigation_tree.py:122
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:131
-#: .././foobnix/util/file_utils.py:187
+#: .././foobnix/regui/treeview/navigation_tree.py:133
+#: .././foobnix/util/file_utils.py:188
 msgid "Create folder"
-msgstr ""
+msgstr "Créer un dossier"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:132
+#: .././foobnix/regui/treeview/navigation_tree.py:134
 msgid "Rename file (folder)"
 msgstr "Renommer le fichier/répertoire"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:133
-#: .././foobnix/util/file_utils.py:111
+#: .././foobnix/regui/treeview/navigation_tree.py:135
+#: .././foobnix/util/file_utils.py:112
 msgid "Delete file(s) / folder(s)"
 msgstr "Effacer le(s) fichier(s)/répertoire(s)"
 
@@ -1020,43 +1047,51 @@ msgstr "Album"
 msgid "Time"
 msgstr "Durée"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:219
+#: .././foobnix/regui/treeview/playlist_tree.py:227
+msgid "Delete from playlist"
+msgstr ""
+
+#: .././foobnix/regui/treeview/playlist_tree.py:242
+msgid "Copy To..."
+msgstr "Copier vers..."
+
+#: .././foobnix/regui/treeview/playlist_tree.py:246
 msgid "Download To..."
 msgstr "Télécharger vers..."
 
-#: .././foobnix/regui/treeview/playlist_tree.py:223
+#: .././foobnix/regui/treeview/playlist_tree.py:251
 msgid "Edit Tags"
 msgstr "Modifier les étiquettes"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:224
+#: .././foobnix/regui/treeview/playlist_tree.py:252
 msgid "Format Converter"
 msgstr "Convertisseur de format"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:226
+#: .././foobnix/regui/treeview/playlist_tree.py:254
 msgid "Copy To Search Line"
 msgstr "Copier dans le contenu du champs de recherche"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:228
+#: .././foobnix/regui/treeview/playlist_tree.py:256
 msgid "Copy №-Title-Time"
 msgstr "Copier n°-Titre-Durée"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:229
+#: .././foobnix/regui/treeview/playlist_tree.py:257
 msgid "Copy Artist-Title-Album"
 msgstr "Copier Artiste-Titre-Album"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:231
+#: .././foobnix/regui/treeview/playlist_tree.py:259
 msgid "Love This Track(s)"
 msgstr "J'adore ce(s) morceau(x)"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:234
+#: .././foobnix/regui/treeview/playlist_tree.py:262
 msgid "Open In File Manager"
 msgstr "Ouvrir dans le gestionnaire de fichiers"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:300
+#: .././foobnix/regui/treeview/playlist_tree.py:328
 msgid "Numbering by order"
 msgstr "Numéroter par ordre"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:302
+#: .././foobnix/regui/treeview/playlist_tree.py:330
 msgid "Numbering by tags"
 msgstr "Numéroter par étiquettes"
 
@@ -1064,27 +1099,27 @@ msgstr "Numéroter par étiquettes"
 msgid "Radio Stations"
 msgstr "Stations de radio"
 
-#: .././foobnix/regui/treeview/radio_tree.py:54
+#: .././foobnix/regui/treeview/radio_tree.py:55
 msgid "Add Station"
 msgstr "Ajouter une station"
 
-#: .././foobnix/regui/treeview/radio_tree.py:55
+#: .././foobnix/regui/treeview/radio_tree.py:56
 msgid "Delete Station"
 msgstr "Supprimer la station"
 
-#: .././foobnix/regui/treeview/radio_tree.py:56
+#: .././foobnix/regui/treeview/radio_tree.py:57
 msgid "Edit Radio"
 msgstr "Modifier la radio"
 
-#: .././foobnix/regui/treeview/radio_tree.py:58
+#: .././foobnix/regui/treeview/radio_tree.py:59
 msgid "Reload radio folder"
 msgstr "Recharger la liste des radios"
 
-#: .././foobnix/regui/treeview/radio_tree.py:63
+#: .././foobnix/regui/treeview/radio_tree.py:64
 msgid "Change Radio Station name and path"
 msgstr "Changer le nom de la station radio"
 
-#: .././foobnix/regui/treeview/radio_tree.py:63
+#: .././foobnix/regui/treeview/radio_tree.py:64
 msgid "Url"
 msgstr "URL"
 
@@ -1109,7 +1144,7 @@ msgstr "Effacer la liste de lecture"
 msgid "Create new playlist"
 msgstr "Créer une nouvelle liste de lecture"
 
-#: .././foobnix/regui/treeview/vk_integration_tree.py:27
+#: .././foobnix/regui/treeview/vk_integration_tree.py:28
 msgid "VK Integration "
 msgstr "Intégration VK "
 
@@ -1186,66 +1221,70 @@ msgid "Converter require specially compiled ffmpeg module for work.\n"
 msgstr ""
 "Le convertisseur requiert le module compilé ffmpeg pour fonctionner.\n"
 
-#: .././foobnix/util/file_utils.py:74
+#: .././foobnix/util/file_utils.py:75
 msgid "Rename folder"
 msgstr "Renommer le répertoire"
 
-#: .././foobnix/util/file_utils.py:83
+#: .././foobnix/util/file_utils.py:84
 msgid "Rename file"
 msgstr "Renommer le fichier"
 
-#: .././foobnix/util/file_utils.py:112
+#: .././foobnix/util/file_utils.py:113
 msgid "Do you really want to delete item(s) from disk?"
 msgstr "Voulez-vous vraiment effacer l'/les élément(s) du disque?"
 
-#: .././foobnix/util/file_utils.py:158
+#: .././foobnix/util/file_utils.py:159
 msgid "Copy"
 msgstr "Copier"
 
 #. @UndefinedVariable
-#: .././foobnix/util/file_utils.py:159
+#: .././foobnix/util/file_utils.py:160
 msgid "Replace"
 msgstr "Remplacer"
 
-#: .././foobnix/util/file_utils.py:161
+#: .././foobnix/util/file_utils.py:162
 #, python-format
 msgid "%s file(s) / folder(s)"
 msgstr "%s fichier(s) / répertoire(s)"
 
-#: .././foobnix/util/file_utils.py:167
+#: .././foobnix/util/file_utils.py:168
 #, python-format
 msgid "Are you really want to %s this item(s) to %s ?"
-msgstr ""
+msgstr "Voulez-vous vraiment %s cet/ces élément(s) vers %s ?"
 
-#: .././foobnix/util/file_utils.py:186
+#: .././foobnix/util/file_utils.py:187
 msgid "Make folder dialog"
-msgstr ""
-
-#: .././foobnix/util/file_utils.py:188
-msgid "You want to create subfolder in folder"
-msgstr ""
+msgstr "Créer un dialogue de dossier"
 
 #: .././foobnix/util/file_utils.py:189
-msgid "Enter new folder's name:"
-msgstr ""
+msgid "You want to create subfolder in folder"
+msgstr "Vous voulez crééer un sous-répertoire dans le répertoire"
 
-#: .././foobnix/util/file_utils.py:207
+#: .././foobnix/util/file_utils.py:190
+msgid "Enter new folder's name:"
+msgstr "Introduisez le nouveau nom de répertoire"
+
+#: .././foobnix/util/file_utils.py:208
 msgid "So folder already exists"
-msgstr ""
+msgstr "Le répertoire existe déjà"
+
+#: .././foobnix/util/file_utils.py:390
+msgid "Copying: "
+msgstr "Copie en cours: "
 
 #: .././foobnix/util/id3_util.py:127 .././foobnix/util/tag_util.py:118
 msgid "Unknown title"
-msgstr ""
+msgstr "Titre inconnu"
 
 #: .././foobnix/util/id3_util.py:129 .././foobnix/util/tag_util.py:120
 msgid "Unknown artist"
-msgstr ""
+msgstr "Artiste inconnu"
 
-#: .././foobnix/util/m3u_utils.py:51
+#: .././foobnix/util/m3u_utils.py:76
 msgid "Choose window"
 msgstr "Choisissez la fenêtre"
 
-#: .././foobnix/util/m3u_utils.py:55
+#: .././foobnix/util/m3u_utils.py:80
 msgid ""
 "<big><b>\t\t\t\t\t\t\t\tAttention!\n"
 "</b></big>\tThe relative location of the playlist and music files allows you "
@@ -1280,15 +1319,14 @@ msgstr ""
 "\n"
 "\tVoulez-vous sauvegarder la liste de lecture avec un chemin relatif?\n"
 
-#: .././foobnix/util/net_wrapper.py:50
+#: .././foobnix/util/net_wrapper.py:76
 msgid "Internet Connection"
-msgstr ""
+msgstr "Connexion internet"
 
-#: .././foobnix/util/net_wrapper.py:50
+#: .././foobnix/util/net_wrapper.py:77
 msgid ""
-"Foobnix not connected \n"
-" or internet not available. \n"
-" Please try again a little bit later."
+"Foobnix not connected or Internet not available. Please try again a little "
+"bit later."
 msgstr ""
 
 #: .././foobnix/util/tag_util.py:23
@@ -1317,20 +1355,3 @@ msgid ""
 msgstr ""
 "Appliquer à toutes les pistes sélectionnées\n"
 "(actif en sélection multiple)"
-
-#~ msgid "Vkontakte"
-#~ msgstr "Vkontakte"
-
-#~ msgid "Check Foobnix Access (Require)"
-#~ msgstr "Vérifier l'accès à Foobnix (requis)"
-
-#~ msgid "Video"
-#~ msgstr "Vidéo"
-
-#, python-format
-#~ msgid ""
-#~ "\n"
-#~ "Are you really want to %s this item(s) to %s ?"
-#~ msgstr ""
-#~ "\n"
-#~ "Désirez-vous vraiment %s cet/ces élément(s) de %s ?"

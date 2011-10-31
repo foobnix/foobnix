@@ -7,7 +7,7 @@ from test.all import run_all_tests
 if os.name == 'nt':
     import py2exe #@UnresolvedImport @UnusedImport
 
-VERSION = "2.5.26"
+VERSION = "2.5.28"
 
 data_files = [
     ('share/applications', ['foobnix.desktop']),
@@ -99,6 +99,9 @@ setup(name='foobnix',
                 "foobnix.regui.notetab",
                 "foobnix.regui.service",
                 "foobnix.regui.treeview",
+                "foobnix.thirdparty",
+                "foobnix.thirdparty.google",
+                "foobnix.thirdparty.mutagen",
                 "foobnix.util",
                 ],
         scripts=['foobnix/foobnix'],
