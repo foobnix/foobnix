@@ -10,8 +10,6 @@ if os.name == 'nt':
 VERSION = "2.5.26"
 
 data_files = [
-    ('share/foobnix', ['README']),
-    ('share/foobnix', ['CHANGELOG']),
     ('share/applications', ['foobnix.desktop']),
     ('share/pixmaps/theme', glob.glob('foobnix/pixmaps/theme/*')),
     ('share/pixmaps', glob.glob('foobnix/pixmaps/*.png')),
@@ -101,9 +99,6 @@ setup(name='foobnix',
                 "foobnix.regui.notetab",
                 "foobnix.regui.service",
                 "foobnix.regui.treeview",
-                "foobnix.thirdparty",
-                "foobnix.thirdparty.google",
-                "foobnix.thirdparty.mutagen",
                 "foobnix.util",
                 ],
         scripts=['foobnix/foobnix'],

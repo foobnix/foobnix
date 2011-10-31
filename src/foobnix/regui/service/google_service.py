@@ -4,7 +4,7 @@ Created on Oct 25, 2010
 @author: ivan
 '''
 import logging
-from foobnix.thirdparty.google.search import GoogleSearch
+from xgoogle.search import GoogleSearch
 def google_search_results(query, results_count=10):
     results = []
     try:

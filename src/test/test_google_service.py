@@ -6,7 +6,7 @@ Created on 22 нояб. 2010
 '''
 import unittest
 from foobnix.regui.service.google_service import google_search_results
-from foobnix.thirdparty.google.translate import translate
+from xgoogle import translate
 class TestGoogleService(unittest.TestCase):
         
     def test_find_word(self):

@@ -12,7 +12,7 @@ from foobnix.regui.model import FModel
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.image import ImageBase
 from foobnix.helpers.textarea import TextArea
-from foobnix.thirdparty.lyr import get_lyrics
+from lyricwiki import get_lyrics
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
 from foobnix.helpers.pref_widgets import HBoxDecorator
