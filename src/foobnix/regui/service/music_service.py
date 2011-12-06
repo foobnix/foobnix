@@ -14,7 +14,7 @@ import logging
 from foobnix.fc.fc import FC
 from foobnix.regui.model import FModel
 from foobnix.helpers.window import ChildTopWindow
-from foobnix.util.file_utils import file_extension
+from foobnix.util.file_utils import file_extension, get_file_extension
 from foobnix.util.list_utils import sort_by_song_name
 from foobnix.util.id3_file import update_id3_wind_filtering
 
@@ -43,8 +43,15 @@ def get_all_music_by_paths(paths, controls):
     gobject.idle_add(pr_window.hide)
     return result
 
-def get_all_music_with_id3_by_path(path):
-    return update_id3_wind_filtering(_scanner(path, None))
+def get_all_music_with_id3_by_path(path, with_cue_filter=None):
+    beans = simple_scanner(path, None)
+    all = []
+    if with_cue_filter:
+        for bean in beans:
+            if get_file_extension(bean.path) == ".cue":
+                all.append(bean)
+    beans = all if all else beans
+    return update_id3_wind_filtering(beans)
 
 def _scanner(path, level, pr_window):
     try:
@@ -78,6 +85,36 @@ def _scanner(path, level, pr_window):
             results.append(FModel(file, full_path).add_parent(level).add_is_file(True))
             pr_window.media_files +=1
         
+    return results
+
+def simple_scanner(path, level):
+    try:
+        path = path.encode("utf-8")
+    except:
+        pass
+     
+    results = []
+    if not os.path.exists(path):
+        return
+    dir = os.path.abspath(path)
+    
+    list = sort_by_name(path, os.listdir(dir))
+    
+    for file in list:
+        full_path = os.path.join(path, file)
+        
+        if os.path.isfile(full_path):
+            if file_extension(file) not in FC().all_support_formats:
+                continue;
+        
+        if os.path.isdir(full_path):
+            if is_dir_with_music(full_path):
+                b_bean = FModel(file, full_path).add_parent(level).add_is_file(False)
+                results.append(b_bean)
+                results.extend(simple_scanner(full_path, b_bean.get_level()))
+        elif os.path.isfile(full_path):
+            results.append(FModel(file, full_path).add_parent(level).add_is_file(True))
+                    
     return results
 
 def sort_by_name(path, list):

@@ -7,6 +7,7 @@ Created on Oct 14, 2010
 import gtk
 import sys
 import copy
+import time
 import uuid
 import gobject
 import logging
@@ -23,7 +24,7 @@ from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progr
     get_file_extension
 from foobnix.helpers.window import CopyProgressWindow
 from foobnix.cue.cue_reader import CueReader
-import time
+
 #from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
 #from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 
@@ -353,7 +354,7 @@ class DragDropTree(gtk.TreeView):
         return True
     
     def to_add_drag_item(self, to_tree, to_model, to_iter,  pos, ref=None, child=False, row=None):    
-        if to_tree and to_tree.current_view == VIEW_PLAIN:
+        if to_tree and hasattr(to_tree, "current_view") and to_tree.current_view == VIEW_PLAIN:
             
                 if pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE:
                     pos = gtk.TREE_VIEW_DROP_BEFORE
@@ -610,24 +611,31 @@ class DragDropTree(gtk.TreeView):
     
     def get_child_beans_by_parent(self, model, iter):
         list = []
+        def add_to_list(beans):
+            for i, bean in enumerate(beans):
+                if i: bean.parent(parent)
+                if bean.path.lower().endswith(".iso.wv"):
+                    add_to_list(get_beans_from_iso_wv(bean.path))               
+                else:
+                    list.append(bean)
+            
         if model.iter_has_child(iter): 
             for i in xrange(model.iter_n_children(iter)):
                 next_iter = model.iter_nth_child(iter, i)
                 
                 parent = self.get_bean_from_model_iter(model, next_iter)                
-                list.append(parent)
+                add_to_list([parent])
                  
                 beans = self.get_child_beans_by_parent(model, next_iter)
-                
-                for bean in beans:
-                    bean.parent(parent)                
-                    list.append(bean)
-                
+                add_to_list(beans)
+                                
         return list
     
     def get_all_beans_by_parent(self, model, iter):
-        bean = self.get_bean_from_model_iter(model, iter)
-        beans = [bean] + self.get_child_beans_by_parent(model, iter)
+        bean = [self.get_bean_from_model_iter(model, iter)]
+        if bean[0].path.lower().endswith(".iso.wv"):
+            bean = get_beans_from_iso_wv(bean[0].path)
+        beans = bean + self.get_child_beans_by_parent(model, iter)
         return beans
         
     def plain_append_all(self, beans, parent=None):
@@ -651,17 +659,19 @@ class DragDropTree(gtk.TreeView):
             if model.path and model.path.lower().endswith(".iso.wv"):
                 logging.debug("begin normalize iso.wv" + str(model.path))
                 all = get_beans_from_iso_wv(model.path)
+                
                 if not all:
                     break
                 for inner in all:
                     normalized.append(inner)
             else:
                 normalized.append(model)
+        
         beans = normalized
               
         counter = 0
         for bean in beans:
-            if not bean.path or not bean.path.lower().endswith(".cue"):                                        
+            if not bean.path or not get_file_extension(bean.path) == ".cue":                                        
                 if bean.is_file and FC().numbering_by_order:
                     counter += 1
                     bean.tracknumber = counter

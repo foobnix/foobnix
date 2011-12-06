@@ -726,7 +726,7 @@ class BaseFoobnixControls():
             f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname() + "&version=" + current_version + "&platform=" + system)
             #f = urllib2.urlopen("http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version)
         except Exception, e:
-            logging.error("Check version error" + str(e))
+            logging.error("Check version error: " + str(e))
             return None
 
         new_version_line = f.read()
