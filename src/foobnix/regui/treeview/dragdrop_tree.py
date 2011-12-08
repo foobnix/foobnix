@@ -24,6 +24,7 @@ from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progr
     get_file_extension
 from foobnix.helpers.window import CopyProgressWindow
 from foobnix.cue.cue_reader import CueReader
+from foobnix.helpers.dialog_entry import info_dialog
 
 #from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
 #from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
@@ -147,7 +148,7 @@ class DragDropTree(gtk.TreeView):
         
         ff_model, ff_paths = from_tree.get_selection().get_selected_rows()
         
-        if "PlaylistTreeControl" in str(to_tree):
+        if "PlaylistTreeControl" in str(to_tree) and to_tree != from_tree:
             self.controls.search_progress.start()
             self.spinner = True
             def task(to_iter):
@@ -196,10 +197,17 @@ class DragDropTree(gtk.TreeView):
             dest_folder = self.get_dest_folder(to_filter_model, to_filter_iter, to_filter_path)
             rows = [to_model[ff_path] for ff_path in ff_paths]
             files = [row[self.path[0]] for row in rows if os.path.dirname(row[self.path[0]]) != dest_folder]
-            if (to_filter_pos and ((to_filter_pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE)
-                or (to_filter_pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER))
-            	and os.path.isfile(to_filter_model[to_filter_path][self.path[0]])):
-                    to_filter_pos = gtk.TREE_VIEW_DROP_AFTER
+            if to_filter_pos:
+                if os.path.isfile(to_filter_model[to_filter_path][self.path[0]]):
+                    if to_filter_pos != gtk.TREE_VIEW_DROP_BEFORE:
+                        to_filter_pos = gtk.TREE_VIEW_DROP_AFTER
+                elif to_filter_pos in (gtk.TREE_VIEW_DROP_BEFORE, 
+                                       gtk.TREE_VIEW_DROP_AFTER):
+                    info_dialog(_("Attention!!!"), 
+                                _("When you release the mouse button the mouse" +
+                                 " pointer must be over the folder exactly." +
+                                 " Please retry!"))
+                    return
             if files and copy_move_files_dialog(files, dest_folder, self.copy):
                 is_copy_move = True
                 text = _("Copying:") if self.copy == gtk.gdk.ACTION_COPY else _("Replacing:") #@UndefinedVariable
@@ -210,18 +218,18 @@ class DragDropTree(gtk.TreeView):
                     new_path = self.replace_inside_navig_tree(file, dest_folder)
                     if not new_path: continue
                     self.one_row_replacing(ff_row_ref, ff_path, ff_model, from_tree,
-                        to_model, to_tree, to_iter, to_filter_pos, to_filter_path,
+                        to_tree, to_model, to_iter, to_filter_pos, to_filter_path,
                         new_iter, new_path, is_copy_move)
                 self.remove_replaced(ff_model)
                 self.pr_window.destroy()
                 self.save_beans_from_tree()
             return
-                       
-        for ff_row_ref in ff_row_refs:        
+                      
+        for ff_row_ref in ff_row_refs: 
             new_iter = self.one_row_replacing(ff_row_ref, ff_path, ff_model, from_tree,
                                   to_tree, to_model, to_iter, to_filter_pos, to_filter_path,
                                   new_iter)
-    
+        
         if from_tree == to_tree:
             self.remove_replaced(ff_model)
             
@@ -354,12 +362,12 @@ class DragDropTree(gtk.TreeView):
         return True
     
     def to_add_drag_item(self, to_tree, to_model, to_iter,  pos, ref=None, child=False, row=None):    
-        if to_tree and hasattr(to_tree, "current_view") and to_tree.current_view == VIEW_PLAIN:
-            
-                if pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE:
-                    pos = gtk.TREE_VIEW_DROP_BEFORE
-                elif pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER:
-                    pos = gtk.TREE_VIEW_DROP_AFTER
+        if (to_tree and hasattr(to_tree, "current_view") 
+                    and to_tree.current_view == VIEW_PLAIN):
+            if pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE:
+                pos = gtk.TREE_VIEW_DROP_BEFORE
+            elif pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER:
+                pos = gtk.TREE_VIEW_DROP_AFTER
         
         if not row:
             from_iter = self.get_iter_from_row_reference(ref)
@@ -614,7 +622,7 @@ class DragDropTree(gtk.TreeView):
         def add_to_list(beans):
             for i, bean in enumerate(beans):
                 if i: bean.parent(parent)
-                if bean.path.lower().endswith(".iso.wv"):
+                if bean.path and bean.path.lower().endswith(".iso.wv"):
                     add_to_list(get_beans_from_iso_wv(bean.path))               
                 else:
                     list.append(bean)

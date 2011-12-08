@@ -20,6 +20,7 @@ def responseToDialog(entry, dialog, response):
         
 def file_chooser_dialog(title, current_folder=None):
     chooser = gtk.FileChooserDialog(title, action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+    chooser.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
     chooser.set_default_response(gtk.RESPONSE_OK)
     chooser.set_select_multiple(True)
     paths = None
@@ -105,6 +106,7 @@ def info_dialog(title, message):
             gtk.MESSAGE_INFO,
             gtk.BUTTONS_OK,
             None)
+        dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_title(title)
         dialog.set_markup(title)
         dialog.format_secondary_markup(message)        
@@ -119,6 +121,7 @@ def info_dialog_with_link(title, version, link):
             gtk.MESSAGE_INFO,
             gtk.BUTTONS_OK,
             None)
+        dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_title(title)
         dialog.set_markup(title)
         dialog.format_secondary_markup("<b>" + version + "</b>")
@@ -136,6 +139,7 @@ def info_dialog_with_link_and_donate(version):
             gtk.MESSAGE_INFO,
             gtk.BUTTONS_OK,
             None)
+        dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_title(_("New foobnix release avaliable"))
         dialog.set_markup(_("New foobnix release avaliable"))
         dialog.format_secondary_markup("<b>" + version + "</b>")
@@ -177,6 +181,7 @@ def show_entry_dialog(title, description):
             gtk.MESSAGE_QUESTION,
             gtk.BUTTONS_OK,
             None)
+        dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_markup(title)
         entry = gtk.Entry()
         entry.connect("activate", responseToDialog, dialog, gtk.RESPONSE_OK)
@@ -198,6 +203,7 @@ def show_login_password_error_dialog(title, description, login, password):
             gtk.MESSAGE_ERROR,
             gtk.BUTTONS_OK,
             title)
+        dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_markup(str(title))
         dialog.format_secondary_markup(description)
         
@@ -224,6 +230,7 @@ def show_login_password_error_dialog(title, description, login, password):
 
 def file_saving_dialog(title, current_folder=None):
     chooser = gtk.FileChooserDialog(title, action=gtk.FILE_CHOOSER_ACTION_SAVE, buttons=(gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+    chooser.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
     chooser.set_default_response(gtk.RESPONSE_OK)
     chooser.set_select_multiple(False)
     if current_folder:
