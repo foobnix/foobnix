@@ -137,13 +137,15 @@ class VKAuthorizationWindow(ChildTopWindow):
         return False
         
     def on_defaults(self, *a):
-        url = "http://android.foobnix.com/vk"
+        url = "http://www.foobnix.com/vk"
         try:
             f = urllib.urlopen(url, "")
         except IOError:
             logging.error("Can't get default login and password because no response from " + url)
             return
-        result = f.read().split(":")
+        response = f.read()
+        logging.debug("response:" + response);
+        result = response.split(":")
         self.web_view.execute_script("javascript:(function() {document.getElementsByName('email')[0].value='%s'})()" % result[0])
         self.web_view.execute_script("javascript:(function() {document.getElementsByName('pass')[0].value='%s'})()" % result[1])           
         
