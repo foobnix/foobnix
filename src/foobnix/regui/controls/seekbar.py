@@ -9,6 +9,7 @@ import gtk
 
 from foobnix.regui.model.signal import FControl
 from foobnix.util.time_utils import convert_seconds_to_text
+from foobnix.util.const import FTYPE_RADIO
 
 
 class SeekProgressBarControls(FControl, gtk.Alignment):
@@ -57,6 +58,10 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         self.tooltip.move(x+5, y-15)
                 
     def on_seek(self, widget, event):
+        bean = self.controls.media_engine.bean
+        if bean and bean.type == FTYPE_RADIO:
+            return None
+        
         width = widget.allocation.width
         x = event.x
         seek_percent = (x + 0.0) / width * 100        

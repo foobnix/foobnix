@@ -51,7 +51,6 @@ class BaseFoobnixControls():
         self.play_lock = Lock()
         
         
-        
     def check_for_media(self, args):         
         dirs = []
         files = []
@@ -398,6 +397,10 @@ class BaseFoobnixControls():
     def play(self, bean):
         if not bean or not bean.is_file:
             return
+        
+        """ lock playing """        
+        self.play_lock.acquire()
+        
         if bean.type == FTYPE_RADIO:
             self.record.show()
         else:
@@ -409,13 +412,17 @@ class BaseFoobnixControls():
             self.movie_window.set_text(bean.text)        
             self.main_window.set_title(bean.text)
         gobject.idle_add(task)
-        thread.start_new_thread(self._play, (bean,))
+        thread.start_new_thread(self._one_thread_play, (bean,))
         #self._play(bean)     
     
+    def _one_thread_play(self,bean):
+        self._play(bean)
+        
+        """unlock playing"""
+        self.play_lock.release()
+    
     def _play(self, bean):
-        if not self.play_lock.acquire():
-            logging.debug("is init ... wait");
-            return None
+        
         
         self.count_errors = 0
         
@@ -429,7 +436,6 @@ class BaseFoobnixControls():
         if not bean.path:            
             if not self.fill_bean_from_vk(bean):
                 if self.vk_service.is_show_authorization():
-                    self.play_lock.release();
                     return None
                     
                 if self.count_errors < 4:
@@ -438,7 +444,6 @@ class BaseFoobnixControls():
                     self.next()
            
         if bean.path and os.path.isdir(bean.path):
-            self.play_lock.release();
             return None
         
         
@@ -450,8 +455,6 @@ class BaseFoobnixControls():
         if not get_file_extension(bean.path) in FC().video_formats:
             self.update_info_panel(bean)
             self.set_visible_video_panel(False)
-        
-        self.play_lock.release();
             
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)

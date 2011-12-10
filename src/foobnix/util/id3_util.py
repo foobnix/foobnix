@@ -82,8 +82,9 @@ def udpate_id3_for_beans(beans):
                 if line.strip().startswith('Duration:'):
                     bean.time = os.path.splitext(line.strip().split(" ")[1])[0]
                     break
-        if (bean.text[0] == "/") or (len(bean.text)>1 and bean.text[1] == ":"):
-            bean.text = os.path.basename(bean.text)
+        if bean.text:
+            if (bean.text[0] == "/") or (len(bean.text)>1 and bean.text[1] == ":"):
+                bean.text = os.path.basename(bean.text)
     return beans
 
 def udpate_id3(bean):
