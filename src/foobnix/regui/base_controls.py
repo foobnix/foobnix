@@ -35,6 +35,7 @@ from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
 from foobnix.util import url_utils
+from threading import Lock
 
 
 class BaseFoobnixControls():
@@ -47,6 +48,8 @@ class BaseFoobnixControls():
         self.start_time = None
         
         self.chache_text = None
+        self.play_lock = Lock()
+        
         
         
     def check_for_media(self, args):         
@@ -408,8 +411,12 @@ class BaseFoobnixControls():
         gobject.idle_add(task)
         thread.start_new_thread(self._play, (bean,))
         #self._play(bean)     
-        
+    
     def _play(self, bean):
+        if not self.play_lock.acquire():
+            logging.debug("is init ... wait");
+            return None
+        
         self.count_errors = 0
         
         if not bean.path:
@@ -422,13 +429,16 @@ class BaseFoobnixControls():
         if not bean.path:            
             if not self.fill_bean_from_vk(bean):
                 if self.vk_service.is_show_authorization():
+                    self.play_lock.release();
                     return None
+                    
                 if self.count_errors < 4:
                     time.sleep(0.5)
                     self.count_errors += 1
                     self.next()
            
         if bean.path and os.path.isdir(bean.path):
+            self.play_lock.release();
             return None
         
         
@@ -440,6 +450,8 @@ class BaseFoobnixControls():
         if not get_file_extension(bean.path) in FC().video_formats:
             self.update_info_panel(bean)
             self.set_visible_video_panel(False)
+        
+        self.play_lock.release();
             
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
