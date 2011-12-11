@@ -312,6 +312,8 @@ class LastFmService():
         return self.tracks_to_models(tracks)
 
     def search_top_tags(self, tag):
+        
+        logging.debug("Search tag " + tag);
         if not self.connect():
             return None
         if not tag:
@@ -327,6 +329,7 @@ class LastFmService():
         return beans
 
     def search_top_tag_tracks(self, tag_name):
+        logging.warn("search_top_tag tracks"+tag_name)
         if not self.connect():
             return None
         if not tag_name:
@@ -353,7 +356,7 @@ class LastFmService():
             text = artist + " - " + title
             bean = FModel(text).add_artist(artist).add_title(title)
             beans.append(bean)
-
+        
         return beans
 
     def search_top_tracks(self, artist_name):
