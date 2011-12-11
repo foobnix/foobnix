@@ -4,16 +4,20 @@ Created on 22 сент. 2010
 
 @author: ivan
 '''
+
 import gtk
-from foobnix.helpers.toggled import OneActiveToggledButton
-from foobnix.regui.model.signal import FControl
+
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_base import FCBase
+from foobnix.regui.state import LoadSave
+from foobnix.regui.model.signal import FControl
+from foobnix.helpers.toggled import OneActiveToggledButton
+from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
 from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, \
     LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_LASTFM,\
     LEFT_PERSPECTIVE_VK
-from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
-from foobnix.regui.state import LoadSave
-from foobnix.fc.fc_base import FCBase
+
+
 class PerspectiveControls(FControl, gtk.VBox, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)

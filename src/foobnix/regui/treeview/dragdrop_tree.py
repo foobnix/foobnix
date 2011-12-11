@@ -26,9 +26,6 @@ from foobnix.helpers.window import CopyProgressWindow
 from foobnix.cue.cue_reader import CueReader
 from foobnix.helpers.dialog_entry import info_dialog
 
-#from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
-#from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
-
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1

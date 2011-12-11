@@ -14,8 +14,10 @@ import gobject
 import logging
 import urllib2
 
+from threading import Lock
 from urllib2 import urlopen
 from foobnix.fc.fc import FC
+from foobnix.util import url_utils
 from foobnix.fc.fc_base import FCBase
 from foobnix.fc.fc_cache import FCache
 from foobnix.regui.model import FModel
@@ -34,8 +36,8 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
-from foobnix.util import url_utils
-from threading import Lock
+
+
 
 
 class BaseFoobnixControls():
