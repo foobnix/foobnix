@@ -638,7 +638,7 @@ class DragDropTree(gtk.TreeView):
     
     def get_all_beans_by_parent(self, model, iter):
         bean = [self.get_bean_from_model_iter(model, iter)]
-        if bean[0].path.lower().endswith(".iso.wv"):
+        if bean and bean[0].path and bean[0].path.lower().endswith(".iso.wv"):
             bean = get_beans_from_iso_wv(bean[0].path)
         beans = bean + self.get_child_beans_by_parent(model, iter)
         return beans

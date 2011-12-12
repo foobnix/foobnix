@@ -108,7 +108,7 @@ class BaseFoobnixControls():
                 return
             
             if current.path and current.path.startswith("http://"):
-                if self.check_path(current):
+                if not self.check_path(current.path):
                     res = self.net_wrapper.execute(self.vk_service.find_one_track, current.get_display_name())
                     if not res:
                         return
@@ -119,16 +119,16 @@ class BaseFoobnixControls():
             """play song"""
             self.play(current)
     
-    def check_path(self, bean):
-        if bean.path:
-            if not bean.path.startswith("http://"):
-                if os.path.exists(bean.path):
+    def check_path(self, path):
+        if path:
+            if not path.startswith("http://"):
+                if os.path.exists(path):
                     return True
             else:
                 try:
                     """Timeout not compatible with python 2.5"""
                     #u = urlopen(bean.path, timeout = 7) #@UnusedVariable
-                    u = urlopen(bean.path) #@UnusedVariable
+                    u = urlopen(path) #@UnusedVariable
                     if not vars().has_key("u"):
                         return False
                     return True
@@ -448,8 +448,6 @@ class BaseFoobnixControls():
         if bean.path and os.path.isdir(bean.path):
             return None
         
-        
-        
         self.media_engine.play(bean)  
         self.is_scrobbled = False
         self.start_time = False      
@@ -637,6 +635,7 @@ class BaseFoobnixControls():
         def inline(query):
             results = self.lastfm_service.search_top_tags(query)
             if not results:
+                logging.debug("tag result not found")
                 results = []
             self.notetabs.append_tab(query, None)
             for tag in results[:15]:
@@ -655,6 +654,7 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
                 self.notetabs.append_all(all)
         
+        #inline(query)
         self.in_thread.run_with_progressbar(inline, query)
 
     def update_info_panel(self, bean):
