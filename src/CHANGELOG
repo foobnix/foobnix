@@ -1,8 +1,29 @@
 2.5.30
-Fixed Search by Tag
-Fixed Search by Vkontakte
-Fixed crashed with fast switch next track
-Fixed iso.wv playgin
+* Added statistic window during adding in playlist
+* Added net checking (optional).
+* Added possibility to remove rows from playlist by context menu
+* Added "Copy to..." function in playlist context menu
+* Added antiscreensaver (optional)
+* Added possibility to save online playlists in m3u files
+* Added visual volume control from tray (mouse wheel)
+* Optimization of adding tracks into playlist
+* Improved finding of covers in song folders and subfolders
+* Changed color of tray popups in black
+* Playing track under pointer if no selected track
+* Removed blinking "pause" and "stop" icons in tray during song changing
+* Fixed Search by Tag
+* Fixed Search by Vkontakte
+* Fixed crashed with fast switch next track
+* Fixed iso.wv playing
+* Fixed copy/move files inside music library
+* Fixed drag and drop in playlists and music library
+* Fixed some bugs in tag editor
+* Fixed cue reader (shown zero time for last track)
+* Fixed previous track playing in shuffle mode
+* Fixed bugs with disconnect dialog.
+* Fixed problems with music library in singletab mode
+* Fixed bug with equalizer
+* Fixed impossibility to edit radio from deep levels of radio tree
 
 2.5.14
 * Record of radio in file
