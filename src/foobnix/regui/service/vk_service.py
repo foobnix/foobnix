@@ -240,9 +240,11 @@ class VKService:
         
         list = self.get_result("audio.search", "q=" + query)
         childs = []
-        for line in list[1:]:
-          
-            
+        
+        if not list:
+            return childs
+
+        for line in list[1:]:                      
             bean = FModel(line['artist'] + ' - ' + line['title'])
             bean.aritst = line['artist']
             bean.title = line['title']
