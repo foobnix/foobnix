@@ -13,13 +13,13 @@ import chardet
 import foobnix.util.id3_util
 
 from foobnix.fc.fc import FC
-from foobnix.gui.model import FModel
+from foobnix.regui.model import FModel
 from foobnix.util import file_utils
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.file_utils import get_any_supported_audio_file
-from foobnix.util.id3_util import update_id3, correct_encoding
+from foobnix.util.id3_util import udpate_id3
 
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
@@ -77,7 +77,7 @@ class CueFile():
 
 class CueReader():
 
-    def __init__(self, cue_path, embedded_cue=None):
+    def __init__(self, cue_path):
         self.cue_path = cue_path
         self.embedded_cue = embedded_cue
         self.is_valid = True
@@ -192,6 +192,7 @@ class CueReader():
             else: self.is_valid = True
 
             try:
+                pass
                 line = unicode(line, code)
             except:
                 logging.error("There is some problems while converting in unicode")
@@ -240,7 +241,7 @@ class CueReader():
                             full_file = try_name
                             logging.debug("Found source for cue file name" + try_name)
                             find_source = True
-                            break
+                            break;
 
                     if not find_source:
                         self.is_valid = False
@@ -264,11 +265,11 @@ class CueReader():
 def update_id3_for_cue(beans):
     result = []
     for bean in beans:
-        if (bean.path and bean.path.lower().endswith(".cue")) or bean.cue:
-            reader = CueReader(bean.path, bean.cue)
-            cue_beans = reader.get_common_beans()
-            for cue in cue_beans:
-                result.append(cue)
+        if bean.path and bean.path.lower().endswith(".cue"):
+                reader = CueReader(bean.path)
+                cue_beans = reader.get_common_beans()
+                for cue in cue_beans:
+                    result.append(cue)
         else:
             result.append(bean)
     return result
