@@ -36,6 +36,7 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
+from foobnix.util.iso_util import mount_tmp_iso
 
 
 
@@ -445,8 +446,15 @@ class BaseFoobnixControls():
                     self.count_errors += 1
                     self.next()
            
-        if bean.path and os.path.isdir(bean.path):
-            return None
+        if bean.path:
+            if not os.path.exists(bean.path):
+                if bean.iso_path and os.path.exists(bean.iso_path):
+                    logging.info("Try to remount " + bean.iso_path)
+                    mount_tmp_iso(bean.iso_path)
+                else:
+                    logging.error("File " + bean.path + " not found")
+            elif os.path.isdir(bean.path):
+                    return None
         
         self.media_engine.play(bean)  
         self.is_scrobbled = False

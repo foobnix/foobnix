@@ -29,13 +29,14 @@ class FTreeModel():
         self.UUID = 18 , str
         self.parent_level = 19 , str
         self.type = 20 , str
-        self.status = 21, str
-        self.progress = 22, str
-        self.save_to = 23, str
-        self.persent = 24, int
-        self.size = 25, str        
+        self.status = 21 , str
+        self.progress = 22 , str
+        self.save_to = 23 , str
+        self.persent = 24 , int
+        self.size = 25 , str        
         self.composer = 26 , str
         self.user_id = 27 , str
+        self.iso_path = 28 , str
     
     def cut(self):
     
@@ -189,6 +190,10 @@ class FModel(FTreeModel):
     
     def add_path(self, path):
         self.path = path
+        return self
+    
+    def add_iso_path(self, iso_path):
+        self.iso_path = iso_path
         return self
     
     def __str__(self):
