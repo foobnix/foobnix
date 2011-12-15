@@ -3,16 +3,20 @@ Created on Nov 10, 2010
 
 @author: ivan
 '''
-from foobnix.util.file_utils import get_file_extension
+
+import logging
+
+from foobnix.thirdparty.mutagen.asf import ASF
 from foobnix.thirdparty.mutagen.mp3 import MP3
+from foobnix.thirdparty.mutagen.mp4 import MP4
+from foobnix.thirdparty.mutagen.flac import FLAC
+from foobnix.thirdparty.mutagen.easyid3 import EasyID3
 from foobnix.thirdparty.mutagen.wavpack import WavPack
 from foobnix.thirdparty.mutagen.oggvorbis import OggVorbis
-
-from foobnix.thirdparty.mutagen.easyid3 import EasyID3
-import logging
-from foobnix.thirdparty.mutagen.flac import FLAC
 from foobnix.thirdparty.mutagen.monkeysaudio import MonkeysAudio
-from foobnix.thirdparty.mutagen.mp4 import MP4
+
+from foobnix.util.file_utils import get_file_extension
+
 
 def get_mutagen_audio (path):
     logging.debug("GET mutagen audio" + path)
@@ -26,6 +30,8 @@ def get_mutagen_audio (path):
         audio = MP3(path, ID3=EasyID3)
     if ext == ".wv":
         audio = WavPack(path)
+    if ext == ".wma":
+        audio = ASF(path)
     if ext == ".ogg":
         try:
             audio = OggVorbis(path)
