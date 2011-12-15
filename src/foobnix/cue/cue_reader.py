@@ -44,7 +44,7 @@ class CueTrack():
     def get_start_time_sec(self):
         time = self.get_start_time_str()
 
-        times = re.findall("([0-9]{1,2}):", time)
+        times = re.findall("([0-9]{1,3}):", time)
 
         if not times or len(times) < 2:
             return 0
