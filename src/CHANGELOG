@@ -6,6 +6,7 @@
 * Added antiscreensaver (optional)
 * Added possibility to save online playlists in m3u files
 * Added visual volume control from tray (mouse wheel)
+* Added autoremount iso.wv files
 * Optimization of adding tracks into playlist
 * Improved finding of covers in song folders and subfolders
 * Changed color of tray popups in black
@@ -24,6 +25,7 @@
 * Fixed problems with music library in singletab mode
 * Fixed bug with equalizer
 * Fixed impossibility to edit radio from deep levels of radio tree
+* Fixed wma files duration reading
 
 2.5.14
 * Record of radio in file

@@ -1,11 +1,15 @@
 #!/usr/bin/env python
-import sys
-import time
-import gtk
-import gobject
+
 import os
+import sys
+import gtk
+import time
+import gobject
+
+from threading import Timer
 from foobnix.util import LOG
 from foobnix.fc.fc import FC
+
 
 def foobnix():
     if "--debug" in sys.argv:
@@ -44,6 +48,8 @@ def foobnix():
             core.run()
             #core.dbus.parse_arguments(sys.argv)
             print ("******Foobnix run in", time.time() - init_time, " seconds******")
+            if sys.argv:
+                Timer(0.5, core.check_for_media, [sys.argv]).start()
             gtk.main()
         else:
             print (iface.parse_arguments(sys.argv))
