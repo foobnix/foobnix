@@ -64,8 +64,10 @@ class BaseFoobnixControls():
                 files.append(arg)
         if dirs:
             self.on_add_folders(dirs)
+            gobject.idle_add(self.play_first_file_in_playlist)
         elif files:            
             self.on_add_files(files)
+            gobject.idle_add(self.play_first_file_in_playlist)
     
     def love_this_tracks(self, beans=None):        
         if not beans:
