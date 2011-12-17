@@ -13,12 +13,13 @@ from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
 from foobnix.helpers.window import ChildTopWindow
-from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs.tabs import TabsConfig
+from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 from foobnix.preferences.configs.other_conf import OtherConfig
 from foobnix.preferences.configs.tray_icon_conf import TrayIconConfig
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
+
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
@@ -28,30 +29,23 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         self.number_inits = 0
-        self.lazy_init()
+        thread.start_new_thread(self.lazy_init, () )
     
     def lazy_init(self):
         self.number_inits += 1
         controls = self.controls
         self.configs.append(MusicLibraryConfig(controls))
-        #self.configs.append(DMConfig(controls))
         self.configs.append(TabsConfig(controls))
         self.configs.append(LastFmConfig(controls))
-        #self.configs.append(VkontakteConfig(controls))        
-        #self.configs.append(InfoPagenConfig(controls))
         self.configs.append(TrayIconConfig(controls))
-        #self.configs.append(NetworkConfig(controls))
-        #self.configs.append(NotificationConfig(controls))
-        
-        
+               
         try:
             """check keybinder installed, debian"""
             import keybinder #@UnresolvedImport @UnusedImport
             from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
             self.configs.append(HotKeysConfig(controls))
         except Exception, e:
-            logging.warn("Keybinder not installed" + str(e)) 
-        
+            logging.warn("Keybinder not installed" + str(e))         
         
         self.configs.append(OtherConfig(controls))
         
@@ -60,7 +54,6 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         mainVBox = gtk.VBox(False, 0)
         
         ChildTopWindow.__init__(self, _("Preferences"), 900, 550)
-        
 
         paned = gtk.HPaned()
         paned.set_position(250)
@@ -82,7 +75,6 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         cbox = gtk.VBox(False, 0)
         for plugin in self.configs:
             cbox.pack_start(plugin.widget, False, True)
-
 
         self.container = self.create_container(cbox)
         paned.add2(self.container)
@@ -110,9 +102,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         FC().save()
         bean = self.navigation.get_selected_bean() 
         if bean:
-            self.populate_config_category(bean.text)
-            
-                
+            self.populate_config_category(bean.text)               
                 
     def hide_window(self, *a):
         self.hide()
@@ -123,7 +113,10 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         for plugin in self.configs:
             if plugin.name == name:
                 plugin.widget.show()
-                self.update_label(name)
+                try:
+                    self.update_label(name)
+                except:
+                    pass                
             else:
                 plugin.widget.hide()
 
@@ -145,7 +138,6 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         button_close.connect("clicked", self.hide_window)
         button_close.show()
         
-
         empty = gtk.Label("")
         empty.show()
 
