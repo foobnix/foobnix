@@ -18,6 +18,7 @@ from foobnix.fc.fc import FC
 from foobnix.helpers.image import ImageBase
 import os
 from foobnix.helpers.pref_widgets import HBoxLableEntry
+import sys
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
@@ -25,6 +26,18 @@ class VKAuthorizationWindow(ChildTopWindow):
     
     def get_web_url(self):
         return "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
+    
+    
+    
+    def show(self, post_task=None):
+        super(VKAuthorizationWindow, self).show() 
+        self.post_task = post_task
+        try:
+            import webkit
+            self.init_pass()
+        except:
+            pass
+        
                              
     def __init__(self, service):
         self.service = service
@@ -35,6 +48,10 @@ class VKAuthorizationWindow(ChildTopWindow):
         
         default_button = gtk.Button(_("Get Login and Password"))
         default_button.connect("clicked", self.on_defaults)
+        
+        apply_button = gtk.Button(_("Sing In"))
+        apply_button.connect("clicked", self.on_apply_vk)
+        self.finished = False
 
         
         def web_kit_token():
@@ -44,11 +61,61 @@ class VKAuthorizationWindow(ChildTopWindow):
             
             self.web_view.load_uri(self.get_web_url())
             self.web_view.connect("navigation-policy-decision-requested", self._nav_request_policy_decision_cb)
+            self.web_view.connect("load-finished", self.load_finished)
+            
                
             vbox.pack_start(self.web_view, True, True)
-            vbox.pack_start(default_button, False, False)
+            
+            
+            """VK"""
         
-       
+            vk_frame = gtk.Frame(label=_("VKontakte"))
+            vk_frame.set_border_width(0)
+            
+            vk_layout = gtk.VBox(False, 0)
+            
+            """VK LOGIN"""
+            vlbox = gtk.HBox(False, 0)
+            vlbox.show()
+            
+            vlogin = gtk.Label(_("Login"))
+            vlogin.set_size_request(150, -1)
+            vlogin.show()
+            
+            
+            self.vlogin_text = gtk.Entry()
+            self.vlogin_text.show()
+            
+            vlbox.pack_start(vlogin, False, False, 0)
+            vlbox.pack_start(self.vlogin_text, True, True, 0)
+            
+            """VK PASSWORD"""
+            vpbox = gtk.HBox(False, 0)
+            vpbox.show()
+            
+            vpassword = gtk.Label(_("Password"))
+            vpassword.set_size_request(150, -1)
+            vpassword.show()
+            
+            self.vpassword_text = gtk.Entry()
+            self.vpassword_text.set_visibility(False)
+            self.vpassword_text.set_invisible_char("*")
+            self.vpassword_text.show()
+            
+            vpbox.pack_start(vpassword, False, False, 0)
+            vpbox.pack_start(self.vpassword_text, True, True, 0)
+            
+            vk_layout.pack_start(vlbox)
+            vk_layout.pack_start(vpbox)
+            
+            """apply"""
+            vk_layout.pack_start(apply_button, False, False)
+            
+            vk_frame.add(vk_layout)
+            vbox.pack_start(vk_frame)
+            
+            self.init_pass()
+            
 
         def dialog_token():
             self.set_keep_above(True)
@@ -88,8 +155,22 @@ class VKAuthorizationWindow(ChildTopWindow):
                 web_kit_token()
             except:
                 dialog_token()
+                
     
         self.add(vbox)
+    
+    def init_pass(self):
+        if not FC().vk_user or not FC().vk_pass:
+            result = self.get_vk_login_pass()
+            FC().vk_user = result[0]
+            FC().vk_pass = result[1]
+        else:
+            #self.on_apply_vk()
+            pass
+            
+
+        self.vlogin_text.set_text(FC().vk_user)
+        self.vpassword_text.set_text(FC().vk_pass)
     
     def get_response(self, line):
         id = line.find("#")
@@ -121,22 +202,38 @@ class VKAuthorizationWindow(ChildTopWindow):
         FC().access_token = access_token
         FC().user_id= user_id        
         self.service.set_token_user(access_token, user_id)
+        
         logging.debug("access token is " + str(access_token))
         
+        FC().vk_user = self.vlogin_text.get_text()
+        FC().vk_pass = self.vpassword_text.get_text()
+
         FC().save()
         self.hide()
-    
+                
+        if self.post_task:
+            logging.debug("post task executed")
+            self.post_task()
+        
+    def load_finished(self, *a):
+        pass
+        
+        
     def _nav_request_policy_decision_cb(self, view, frame, net_req, nav_act, pol_dec):
-        uri = net_req.get_uri()       
-        logging.debug("response url " + uri) 
+        uri = net_req.get_uri()  
+        logging.debug("response url " + uri)
         if "access_token" in uri:
             token = self.get_response(uri)["access_token"]
             userid= self.get_response(uri)["user_id"]
             self.apply(token, userid)   
-            self.hide(); 
         return False
-        
-    def on_defaults(self, *a):
+    
+    def on_apply_vk(self, *a):
+        self.web_view.execute_script("javascript:(function() {document.getElementsByName('email')[0].value='%s'})()" % self.vlogin_text.get_text())
+        self.web_view.execute_script("javascript:(function() {document.getElementsByName('pass')[0].value='%s'})()" % self.vpassword_text.get_text())
+        self.web_view.execute_script("javascript:(function() {document.getElementById('install_allow').click()})()")
+    
+    def get_vk_login_pass(self):
         url = "http://www.foobnix.com/vk"
         try:
             f = urllib.urlopen(url, "")
@@ -146,6 +243,10 @@ class VKAuthorizationWindow(ChildTopWindow):
         response = f.read()
         logging.debug("response:" + response);
         result = response.split(":")
+        return [result[0],result[1]]
+    
+    def on_defaults(self, *a):
+        result = self.get_vk_login_pass()
         self.web_view.execute_script("javascript:(function() {document.getElementsByName('email')[0].value='%s'})()" % result[0])
         self.web_view.execute_script("javascript:(function() {document.getElementsByName('pass')[0].value='%s'})()" % result[1])           
         
@@ -190,9 +291,9 @@ class VKService:
         logging.debug("json " + json)
         return simplejson.loads(json)
     
-    def is_show_authorization(self):
+    def is_show_authorization(self, post_task=None):
         if not self.is_connected():
-            self.vk_window.show()
+            self.vk_window.show(post_task)
             return True
         return False
     
@@ -232,7 +333,10 @@ class VKService:
             
     
     def find_tracks_by_query(self, query):
-        if self.is_show_authorization():
+        def post():
+            self.find_tracks_by_query(self, query)
+            
+        if self.is_show_authorization(post):
             return 
         
         logging.info("start search songs " + query)

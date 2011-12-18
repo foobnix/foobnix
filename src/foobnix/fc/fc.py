@@ -42,6 +42,8 @@ class FC():
         #VK
         self.access_token =  None
         self.user_id =  None
+        self.vk_user =  None
+        self.vk_pass =  None
 
         """tabs"""
         self.len_of_tab = 30

@@ -441,7 +441,9 @@ class BaseFoobnixControls():
         
         if not bean.path:            
             if not self.fill_bean_from_vk(bean):
-                if self.vk_service.is_show_authorization():
+                def post_task():
+                    self._play(bean)
+                if self.vk_service.is_show_authorization(post_task):
                     return None
                     
                 if self.count_errors < 4:

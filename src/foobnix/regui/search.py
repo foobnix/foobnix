@@ -42,9 +42,9 @@ class SearchControls(FControl, gtk.VBox):
         
     
     def on_search(self, *w):
-        def task():
-            if self.controls.vk_service.is_show_authorization():
+        if self.controls.vk_service.is_show_authorization(self.on_search):
                 return
+        def task():
             if self.get_query():
                 if self.get_query().startswith("http://vk"):
                     self.controls.search_vk_page_tracks(self.get_query())                
