@@ -19,6 +19,7 @@ from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 from foobnix.preferences.configs.other_conf import OtherConfig
 from foobnix.preferences.configs.tray_icon_conf import TrayIconConfig
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
+import time
 
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
@@ -32,6 +33,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         thread.start_new_thread(self.lazy_init, () )
     
     def lazy_init(self):
+        time.sleep(1)
         self.number_inits += 1
         controls = self.controls
         self.configs.append(MusicLibraryConfig(controls))
