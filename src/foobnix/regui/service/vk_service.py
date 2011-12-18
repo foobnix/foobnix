@@ -18,7 +18,6 @@ from foobnix.fc.fc import FC
 from foobnix.helpers.image import ImageBase
 import os
 from foobnix.helpers.pref_widgets import HBoxLableEntry
-import sys
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
@@ -205,8 +204,11 @@ class VKAuthorizationWindow(ChildTopWindow):
         
         logging.debug("access token is " + str(access_token))
         
-        FC().vk_user = self.vlogin_text.get_text()
-        FC().vk_pass = self.vpassword_text.get_text()
+        try:
+            FC().vk_user = self.vlogin_text.get_text()
+            FC().vk_pass = self.vpassword_text.get_text()
+        except:
+            pass
 
         FC().save()
         self.hide()
