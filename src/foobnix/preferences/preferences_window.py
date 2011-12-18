@@ -20,6 +20,8 @@ from foobnix.preferences.configs.other_conf import OtherConfig
 from foobnix.preferences.configs.tray_icon_conf import TrayIconConfig
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
 from threading import Lock
+import time
+import threading
 
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
@@ -29,11 +31,10 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        self.lock = Lock()
-        thread.start_new_thread(self.lazy_init, () )
+        #thread.start_new_thread(self.lazy_init, (True,) )
+        self.lazy_init()
     
-    def lazy_init(self):
-        self.lock.acquire()
+    def lazy_init(self, sleep=False):
         controls = self.controls
         self.configs.append(MusicLibraryConfig(controls))
         self.configs.append(TabsConfig(controls))
@@ -82,13 +83,11 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
         mainVBox.pack_start(paned, True, True, 0)
         mainVBox.pack_start(self.create_save_cancel_buttons(), False, False, 0)
-        if self.add:
-            self.add(mainVBox)
-        self.lock.release()
         
+        self.add(mainVBox)
             
     def show(self, current=CONFIG_MUSIC_LIBRARY):
-        self.lazy_init()
+        #self.lazy_init()
         self.show_all()
         self.populate_config_category(current)
         self.on_load()
