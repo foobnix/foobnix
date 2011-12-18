@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-11 21:49+0300\n"
-"PO-Revision-Date: 2011-09-11 19:39+0000\n"
+"POT-Creation-Date: 2011-10-31 22:23+0300\n"
+"PO-Revision-Date: 2011-10-31 20:18+0000\n"
 "Last-Translator: Ivan Ivanenko <Unknown>\n"
 "Language-Team: ITALIAN <bmsavone@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-09-12 05:10+0000\n"
-"X-Generator: Launchpad (build 13900)\n"
+"X-Launchpad-Export-Date: 2011-11-01 05:10+0000\n"
+"X-Generator: Launchpad (build 14197)\n"
 "X-Poedit-Country: ITALY\n"
 "Language: \n"
 "X-Poedit-Language: Italian\n"
@@ -39,7 +39,7 @@ msgstr "Ferma Scaricamento"
 msgid "Download Manager"
 msgstr "Download Manager"
 
-#: .././foobnix/dm/dm.py:113 .././foobnix/util/file_utils.py:379
+#: .././foobnix/dm/dm.py:113 .././foobnix/util/file_utils.py:383
 msgid "Choose Folder"
 msgstr "Scegli Cartella"
 
@@ -248,11 +248,13 @@ msgid "Last.FM"
 msgstr "Last.FM"
 
 #: .././foobnix/preferences/configs/last_fm.py:29
+#: .././foobnix/preferences/configs/last_fm.py:87
 #: .././foobnix/preferences/configs/network_conf.py:58
 msgid "Login"
 msgstr "Login"
 
 #: .././foobnix/preferences/configs/last_fm.py:43
+#: .././foobnix/preferences/configs/last_fm.py:103
 #: .././foobnix/preferences/configs/network_conf.py:72
 msgid "Password"
 msgstr "Password"
@@ -267,6 +269,7 @@ msgstr "Attiva Radio Srobbler"
 
 #: .././foobnix/preferences/configs/last_fm.py:69
 #: .././foobnix/preferences/configs/last_fm.py:75
+#: .././foobnix/regui/search.py:118
 msgid "VKontakte"
 msgstr "VKontakte"
 
@@ -279,7 +282,9 @@ msgstr "Disabilita"
 msgid "You vk account is:"
 msgstr "Il tuo account vk é:"
 
-#: .././foobnix/preferences/configs/last_fm.py:81
+#. vk_layout.pack_start(vlbox)
+#. vk_layout.pack_start(vpbox)
+#: .././foobnix/preferences/configs/last_fm.py:118
 msgid "Authorization (then need player restart)"
 msgstr "Autorizzazione (poi bisogna riavviare il player)"
 
@@ -426,6 +431,10 @@ msgstr "Scegli il tuo gestore file preferito:"
 msgid "Disable Xscreensaver"
 msgstr "Disabilita Xscreensaver"
 
+#: .././foobnix/preferences/configs/other_conf.py:137
+msgid "Enable Network Checker"
+msgstr ""
+
 #: .././foobnix/preferences/configs/tabs.py:13
 msgid "Tabs"
 msgstr "Schede"
@@ -507,31 +516,31 @@ msgstr "Notificazioni"
 msgid "Time Notification (sec): "
 msgstr "Tempo della notifica (sec): "
 
-#: .././foobnix/regui/base_controls.py:145
+#: .././foobnix/regui/base_controls.py:158
 msgid "Choose folders to open"
 msgstr "Scegli le cartelle da aprire"
 
-#: .././foobnix/regui/base_controls.py:165
+#: .././foobnix/regui/base_controls.py:178
 msgid "Nothing found to play in the folder(s)"
 msgstr "Nulla trovato da riprodurre nella cartella(e)"
 
-#: .././foobnix/regui/base_controls.py:172
+#: .././foobnix/regui/base_controls.py:185
 msgid "Choose file to open"
 msgstr "Scegli il file da aprire"
 
-#: .././foobnix/regui/base_controls.py:220
+#: .././foobnix/regui/base_controls.py:233
 msgid "Nothing found to play in the file(s)"
 msgstr "Nulla trovato da riprodurre nel file"
 
-#: .././foobnix/regui/base_controls.py:289
+#: .././foobnix/regui/base_controls.py:302
 msgid "Music not found in folder(s):"
 msgstr "Musica non trovata nella cartella(e)"
 
-#: .././foobnix/regui/base_controls.py:359
+#: .././foobnix/regui/base_controls.py:372
 msgid "Stopped"
 msgstr "Interrottto"
 
-#: .././foobnix/regui/base_controls.py:368
+#: .././foobnix/regui/base_controls.py:381
 msgid "Paused | "
 msgstr "In pausa | "
 
@@ -748,10 +757,6 @@ msgstr "Simile"
 msgid "Genre"
 msgstr "Genere"
 
-#: .././foobnix/regui/search.py:118
-msgid "Audio"
-msgstr "Audio"
-
 #: .././foobnix/regui/about/about.py:20
 msgid "Simple and Powerful player"
 msgstr "Riproduttore semplice e potente"
@@ -819,11 +824,11 @@ msgstr "Il file non esiste. Forse non è stato creato ancora."
 msgid "Save file as ..."
 msgstr "Salva file come ..."
 
-#: .././foobnix/regui/controls/tray_icon.py:37
+#: .././foobnix/regui/controls/tray_icon.py:45
 msgid "Exit"
 msgstr "Esci"
 
-#: .././foobnix/regui/controls/tray_icon.py:38
+#: .././foobnix/regui/controls/tray_icon.py:46
 msgid "Close Popup"
 msgstr "Chiudi Popup"
 
@@ -871,8 +876,8 @@ msgid "VKontakte Authorization (require for music search)"
 msgstr "Autorizzazione VKontakte (richiesta per la ricerca musicale)"
 
 #: .././foobnix/regui/service/vk_service.py:36
-msgid "Get Default Login Password"
-msgstr "Ottenere Password predefinita"
+msgid "Get Login and Password"
+msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:64
 msgid "Open"
@@ -902,8 +907,8 @@ msgstr "Token non corretto o scaduto"
 msgid "Token or user is empty"
 msgstr "Token o utente è vuoto"
 
-#: .././foobnix/regui/treeview/dm_tree.py:92
-#: .././foobnix/regui/treeview/dm_tree.py:94
+#: .././foobnix/regui/treeview/dm_tree.py:93
+#: .././foobnix/regui/treeview/dm_tree.py:95
 #: .././foobnix/regui/treeview/navigation_tree.py:132
 #: .././foobnix/regui/treeview/playlist_tree.py:243
 msgid "Open in file manager"
@@ -919,12 +924,12 @@ msgstr "Sostituendo:"
 
 #. @UndefinedVariable
 #: .././foobnix/regui/treeview/dragdrop_tree.py:205
-#: .././foobnix/util/file_utils.py:383
+#: .././foobnix/util/file_utils.py:387
 msgid "Progress"
 msgstr "Avanzamento"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:207
-#: .././foobnix/util/file_utils.py:384
+#: .././foobnix/util/file_utils.py:388
 msgid "To: "
 msgstr "A: "
 
@@ -1271,15 +1276,17 @@ msgstr "Inserisci il nome della nuova cartella:"
 msgid "So folder already exists"
 msgstr "La cartella esiste già"
 
-#: .././foobnix/util/file_utils.py:390
+#: .././foobnix/util/file_utils.py:394
 msgid "Copying: "
 msgstr "Copiando: "
 
 #: .././foobnix/util/id3_util.py:127 .././foobnix/util/tag_util.py:118
+#: .././foobnix/util/tag_util.py:132
 msgid "Unknown title"
 msgstr "Titolo sconosciuto"
 
 #: .././foobnix/util/id3_util.py:129 .././foobnix/util/tag_util.py:120
+#: .././foobnix/util/tag_util.py:130
 msgid "Unknown artist"
 msgstr "Artista sconosciuto"
 

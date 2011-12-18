@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-11 21:49+0300\n"
-"PO-Revision-Date: 2011-10-15 01:02+0000\n"
-"Last-Translator: Alexander 'FONTER' Zinin <spore_09@mail.ru>\n"
+"POT-Creation-Date: 2011-10-31 22:23+0300\n"
+"PO-Revision-Date: 2011-10-31 20:18+0000\n"
+"Last-Translator: Ivan Ivanenko <Unknown>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-10-16 05:22+0000\n"
-"X-Generator: Launchpad (build 14124)\n"
+"X-Launchpad-Export-Date: 2011-11-01 05:10+0000\n"
+"X-Generator: Launchpad (build 14197)\n"
 "Language: \n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -38,7 +38,7 @@ msgstr "Остановить закачку"
 msgid "Download Manager"
 msgstr "Менеджер закачек"
 
-#: .././foobnix/dm/dm.py:113 .././foobnix/util/file_utils.py:379
+#: .././foobnix/dm/dm.py:113 .././foobnix/util/file_utils.py:383
 msgid "Choose Folder"
 msgstr "Выберите папки для открытия"
 
@@ -247,11 +247,13 @@ msgid "Last.FM"
 msgstr "Last.FM"
 
 #: .././foobnix/preferences/configs/last_fm.py:29
+#: .././foobnix/preferences/configs/last_fm.py:87
 #: .././foobnix/preferences/configs/network_conf.py:58
 msgid "Login"
 msgstr "Логин"
 
 #: .././foobnix/preferences/configs/last_fm.py:43
+#: .././foobnix/preferences/configs/last_fm.py:103
 #: .././foobnix/preferences/configs/network_conf.py:72
 msgid "Password"
 msgstr "Пароль"
@@ -266,6 +268,7 @@ msgstr "Включить радио скроблер"
 
 #: .././foobnix/preferences/configs/last_fm.py:69
 #: .././foobnix/preferences/configs/last_fm.py:75
+#: .././foobnix/regui/search.py:118
 msgid "VKontakte"
 msgstr "ВКонтакте"
 
@@ -278,7 +281,9 @@ msgstr "Выключено"
 msgid "You vk account is:"
 msgstr "Ваш аккаунт ВКонтакте:"
 
-#: .././foobnix/preferences/configs/last_fm.py:81
+#. vk_layout.pack_start(vlbox)
+#. vk_layout.pack_start(vpbox)
+#: .././foobnix/preferences/configs/last_fm.py:118
 msgid "Authorization (then need player restart)"
 msgstr "Авторизация(потребуется перезапуск программы)"
 
@@ -425,6 +430,10 @@ msgstr "Выберите предпочитаемый файловый мене�
 msgid "Disable Xscreensaver"
 msgstr "Блокировать Xscreensaver"
 
+#: .././foobnix/preferences/configs/other_conf.py:137
+msgid "Enable Network Checker"
+msgstr ""
+
 #: .././foobnix/preferences/configs/tabs.py:13
 msgid "Tabs"
 msgstr "Табы"
@@ -506,31 +515,31 @@ msgstr "Уведомления"
 msgid "Time Notification (sec): "
 msgstr "Время показа уведомления: "
 
-#: .././foobnix/regui/base_controls.py:145
+#: .././foobnix/regui/base_controls.py:158
 msgid "Choose folders to open"
 msgstr "Выберите папки для открытия"
 
-#: .././foobnix/regui/base_controls.py:165
+#: .././foobnix/regui/base_controls.py:178
 msgid "Nothing found to play in the folder(s)"
 msgstr "Не найдено музыки в папках"
 
-#: .././foobnix/regui/base_controls.py:172
+#: .././foobnix/regui/base_controls.py:185
 msgid "Choose file to open"
 msgstr "Выберите файлы для открытия"
 
-#: .././foobnix/regui/base_controls.py:220
+#: .././foobnix/regui/base_controls.py:233
 msgid "Nothing found to play in the file(s)"
 msgstr "Музыка не найдена в файлах"
 
-#: .././foobnix/regui/base_controls.py:289
+#: .././foobnix/regui/base_controls.py:302
 msgid "Music not found in folder(s):"
 msgstr "Музыка не найдена в папках"
 
-#: .././foobnix/regui/base_controls.py:359
+#: .././foobnix/regui/base_controls.py:372
 msgid "Stopped"
 msgstr "Остановлено"
 
-#: .././foobnix/regui/base_controls.py:368
+#: .././foobnix/regui/base_controls.py:381
 msgid "Paused | "
 msgstr "Приостановлено | "
 
@@ -747,10 +756,6 @@ msgstr "Похожие"
 msgid "Genre"
 msgstr "Жанр"
 
-#: .././foobnix/regui/search.py:118
-msgid "Audio"
-msgstr "Аудио"
-
 #: .././foobnix/regui/about/about.py:20
 msgid "Simple and Powerful player"
 msgstr "Простой и мощный плеер"
@@ -818,11 +823,11 @@ msgstr "Файл не существует. Возможно файл ещё н�
 msgid "Save file as ..."
 msgstr "Сохранить файл как ..."
 
-#: .././foobnix/regui/controls/tray_icon.py:37
+#: .././foobnix/regui/controls/tray_icon.py:45
 msgid "Exit"
 msgstr "Выход"
 
-#: .././foobnix/regui/controls/tray_icon.py:38
+#: .././foobnix/regui/controls/tray_icon.py:46
 msgid "Close Popup"
 msgstr "Закрыть"
 
@@ -870,8 +875,8 @@ msgid "VKontakte Authorization (require for music search)"
 msgstr "Авторизация ВКонтакте (требуется для поиска музыки)"
 
 #: .././foobnix/regui/service/vk_service.py:36
-msgid "Get Default Login Password"
-msgstr "Заполнить логином паролем по умолчанию"
+msgid "Get Login and Password"
+msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:64
 msgid "Open"
@@ -901,8 +906,8 @@ msgstr "Код не правильный или закончился срок д
 msgid "Token or user is empty"
 msgstr "Код или пользователь пустой"
 
-#: .././foobnix/regui/treeview/dm_tree.py:92
-#: .././foobnix/regui/treeview/dm_tree.py:94
+#: .././foobnix/regui/treeview/dm_tree.py:93
+#: .././foobnix/regui/treeview/dm_tree.py:95
 #: .././foobnix/regui/treeview/navigation_tree.py:132
 #: .././foobnix/regui/treeview/playlist_tree.py:243
 msgid "Open in file manager"
@@ -918,12 +923,12 @@ msgstr "Замена:"
 
 #. @UndefinedVariable
 #: .././foobnix/regui/treeview/dragdrop_tree.py:205
-#: .././foobnix/util/file_utils.py:383
+#: .././foobnix/util/file_utils.py:387
 msgid "Progress"
 msgstr "Индикатор выполнения"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:207
-#: .././foobnix/util/file_utils.py:384
+#: .././foobnix/util/file_utils.py:388
 msgid "To: "
 msgstr "Кому: "
 
@@ -1268,15 +1273,17 @@ msgstr "Введите новое имя папки"
 msgid "So folder already exists"
 msgstr "Такая папка уже существует"
 
-#: .././foobnix/util/file_utils.py:390
+#: .././foobnix/util/file_utils.py:394
 msgid "Copying: "
 msgstr "Копирование "
 
 #: .././foobnix/util/id3_util.py:127 .././foobnix/util/tag_util.py:118
+#: .././foobnix/util/tag_util.py:132
 msgid "Unknown title"
 msgstr "Неиствестный заголовок"
 
 #: .././foobnix/util/id3_util.py:129 .././foobnix/util/tag_util.py:120
+#: .././foobnix/util/tag_util.py:130
 msgid "Unknown artist"
 msgstr "Неизвестный артист"
 

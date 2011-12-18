@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-11 21:49+0300\n"
-"PO-Revision-Date: 2011-09-11 19:39+0000\n"
-"Last-Translator: Fitoschido <fitoschido@gmail.com>\n"
+"POT-Creation-Date: 2011-10-31 22:23+0300\n"
+"PO-Revision-Date: 2011-11-07 23:06+0000\n"
+"Last-Translator: Miguel Valdiri Badillo <catastro1@tutopia.com>\n"
 "Language-Team: SPANISH <bmsavone@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-09-12 05:10+0000\n"
-"X-Generator: Launchpad (build 13900)\n"
+"X-Launchpad-Export-Date: 2011-11-08 06:12+0000\n"
+"X-Generator: Launchpad (build 14231)\n"
 "X-Poedit-Country: SPAIN\n"
 "Language: \n"
 "X-Poedit-Language: Spanish\n"
@@ -39,7 +39,7 @@ msgstr "Detener descarga"
 msgid "Download Manager"
 msgstr "Gestor de descargas"
 
-#: .././foobnix/dm/dm.py:113 .././foobnix/util/file_utils.py:379
+#: .././foobnix/dm/dm.py:113 .././foobnix/util/file_utils.py:383
 msgid "Choose Folder"
 msgstr "Elegir carpeta"
 
@@ -248,11 +248,13 @@ msgid "Last.FM"
 msgstr "Last.FM"
 
 #: .././foobnix/preferences/configs/last_fm.py:29
+#: .././foobnix/preferences/configs/last_fm.py:87
 #: .././foobnix/preferences/configs/network_conf.py:58
 msgid "Login"
 msgstr "Login"
 
 #: .././foobnix/preferences/configs/last_fm.py:43
+#: .././foobnix/preferences/configs/last_fm.py:103
 #: .././foobnix/preferences/configs/network_conf.py:72
 msgid "Password"
 msgstr "Password"
@@ -267,6 +269,7 @@ msgstr "Habilita Radio Scrobbler"
 
 #: .././foobnix/preferences/configs/last_fm.py:69
 #: .././foobnix/preferences/configs/last_fm.py:75
+#: .././foobnix/regui/search.py:118
 msgid "VKontakte"
 msgstr "VKontakte"
 
@@ -279,7 +282,9 @@ msgstr "Deshabilita"
 msgid "You vk account is:"
 msgstr "Su cuenta vk es:"
 
-#: .././foobnix/preferences/configs/last_fm.py:81
+#. vk_layout.pack_start(vlbox)
+#. vk_layout.pack_start(vpbox)
+#: .././foobnix/preferences/configs/last_fm.py:118
 msgid "Authorization (then need player restart)"
 msgstr "Autorización (luego necesita reiniciar el player"
 
@@ -427,6 +432,10 @@ msgstr "Elija su gestor de archivos preferido:"
 msgid "Disable Xscreensaver"
 msgstr "Desactivar Salvapantallas"
 
+#: .././foobnix/preferences/configs/other_conf.py:137
+msgid "Enable Network Checker"
+msgstr "Activar verificación de red"
+
 #: .././foobnix/preferences/configs/tabs.py:13
 msgid "Tabs"
 msgstr "Tabs"
@@ -508,31 +517,31 @@ msgstr "Notificación"
 msgid "Time Notification (sec): "
 msgstr "Duracion de la Notificación (seg): "
 
-#: .././foobnix/regui/base_controls.py:145
+#: .././foobnix/regui/base_controls.py:158
 msgid "Choose folders to open"
 msgstr "Elija que carpetas abrir"
 
-#: .././foobnix/regui/base_controls.py:165
+#: .././foobnix/regui/base_controls.py:178
 msgid "Nothing found to play in the folder(s)"
 msgstr "No se ha encontrado nada que reproducir en la carpeta(s)"
 
-#: .././foobnix/regui/base_controls.py:172
+#: .././foobnix/regui/base_controls.py:185
 msgid "Choose file to open"
 msgstr "Elija que archivo abrir"
 
-#: .././foobnix/regui/base_controls.py:220
+#: .././foobnix/regui/base_controls.py:233
 msgid "Nothing found to play in the file(s)"
 msgstr "No se ha encontrado nada que reproducir en el archivo(s)"
 
-#: .././foobnix/regui/base_controls.py:289
+#: .././foobnix/regui/base_controls.py:302
 msgid "Music not found in folder(s):"
 msgstr "No se ha encontrado música en la carpeta(s):"
 
-#: .././foobnix/regui/base_controls.py:359
+#: .././foobnix/regui/base_controls.py:372
 msgid "Stopped"
 msgstr "Detenido"
 
-#: .././foobnix/regui/base_controls.py:368
+#: .././foobnix/regui/base_controls.py:381
 msgid "Paused | "
 msgstr "Pausado | "
 
@@ -749,10 +758,6 @@ msgstr "Similar"
 msgid "Genre"
 msgstr "Género"
 
-#: .././foobnix/regui/search.py:118
-msgid "Audio"
-msgstr "Audio"
-
 #: .././foobnix/regui/about/about.py:20
 msgid "Simple and Powerful player"
 msgstr "Simple y Potente reproductor"
@@ -820,11 +825,11 @@ msgstr "El archivo no existe. Quizás no ha sido creado aún."
 msgid "Save file as ..."
 msgstr "Guardar archivo como..."
 
-#: .././foobnix/regui/controls/tray_icon.py:37
+#: .././foobnix/regui/controls/tray_icon.py:45
 msgid "Exit"
 msgstr "Salir"
 
-#: .././foobnix/regui/controls/tray_icon.py:38
+#: .././foobnix/regui/controls/tray_icon.py:46
 msgid "Close Popup"
 msgstr "Cerrar Popup"
 
@@ -872,8 +877,8 @@ msgid "VKontakte Authorization (require for music search)"
 msgstr "Autorización VKontakte (requerido para la búsqueda de música)"
 
 #: .././foobnix/regui/service/vk_service.py:36
-msgid "Get Default Login Password"
-msgstr "Obtener usuario y contraseña por defecto"
+msgid "Get Login and Password"
+msgstr "Obtener un usuario y contraseña"
 
 #: .././foobnix/regui/service/vk_service.py:64
 msgid "Open"
@@ -903,8 +908,8 @@ msgstr "Token incorrecto o ha expirado"
 msgid "Token or user is empty"
 msgstr "Token o usuario está vacío"
 
-#: .././foobnix/regui/treeview/dm_tree.py:92
-#: .././foobnix/regui/treeview/dm_tree.py:94
+#: .././foobnix/regui/treeview/dm_tree.py:93
+#: .././foobnix/regui/treeview/dm_tree.py:95
 #: .././foobnix/regui/treeview/navigation_tree.py:132
 #: .././foobnix/regui/treeview/playlist_tree.py:243
 msgid "Open in file manager"
@@ -920,12 +925,12 @@ msgstr "Reemplazar:"
 
 #. @UndefinedVariable
 #: .././foobnix/regui/treeview/dragdrop_tree.py:205
-#: .././foobnix/util/file_utils.py:383
+#: .././foobnix/util/file_utils.py:387
 msgid "Progress"
 msgstr "Progreso"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:207
-#: .././foobnix/util/file_utils.py:384
+#: .././foobnix/util/file_utils.py:388
 msgid "To: "
 msgstr "A: "
 
@@ -1270,15 +1275,17 @@ msgstr "Introducir nombre de la carpeta:"
 msgid "So folder already exists"
 msgstr "La carpeta ya existe"
 
-#: .././foobnix/util/file_utils.py:390
+#: .././foobnix/util/file_utils.py:394
 msgid "Copying: "
 msgstr "Copiando: "
 
 #: .././foobnix/util/id3_util.py:127 .././foobnix/util/tag_util.py:118
+#: .././foobnix/util/tag_util.py:132
 msgid "Unknown title"
 msgstr "Título desconocido"
 
 #: .././foobnix/util/id3_util.py:129 .././foobnix/util/tag_util.py:120
+#: .././foobnix/util/tag_util.py:130
 msgid "Unknown artist"
 msgstr "Artista desconocido"
 
