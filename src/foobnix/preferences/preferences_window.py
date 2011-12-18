@@ -22,6 +22,7 @@ from foobnix.preferences.configs.music_library import MusicLibraryConfig
 from threading import Lock
 import time
 import threading
+import gobject
 
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
@@ -31,8 +32,8 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        #thread.start_new_thread(self.lazy_init, (True,) )
-        self.lazy_init()
+        thread.start_new_thread(self.lazy_init, (True,) )
+        #self.lazy_init()
     
     def lazy_init(self, sleep=False):
         controls = self.controls
@@ -84,7 +85,8 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         mainVBox.pack_start(paned, True, True, 0)
         mainVBox.pack_start(self.create_save_cancel_buttons(), False, False, 0)
         
-        self.add(mainVBox)
+        #self.add(mainVBox)
+        gobject.idle_add(self.add, mainVBox)
             
     def show(self, current=CONFIG_MUSIC_LIBRARY):
         #self.lazy_init()
