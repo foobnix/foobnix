@@ -64,8 +64,10 @@ class BaseFoobnixControls():
                 files.append(arg)
         if dirs:
             self.on_add_folders(dirs)
+            gobject.idle_add(self.play_first_file_in_playlist)
         elif files:            
             self.on_add_files(files)
+            gobject.idle_add(self.play_first_file_in_playlist)
     
     def love_this_tracks(self, beans=None):        
         if not beans:
@@ -188,14 +190,15 @@ class BaseFoobnixControls():
         
         if not paths:       
             paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
-            copy_paths = copy.deepcopy(paths) 
-            for i, path in enumerate(copy_paths):
-                if path.lower().endswith(".m3u") or path.lower().endswith(".m3u8"):
-                    paths[i:i + 1] = m3u_reader(path)
-                    if len(copy_paths) == 1:
-                        ext = os.path.splitext(path)[1]
-                        tab_name = os.path.basename(path)[:-len(ext)]
-                    break
+        copy_paths = copy.deepcopy(paths) 
+        for i, path in enumerate(copy_paths):
+            if path.lower().endswith(".m3u") or path.lower().endswith(".m3u8"):
+                paths[i:i + 1] = m3u_reader(path)
+                if len(copy_paths) == 1:
+                    ext = os.path.splitext(path)[1]
+                    tab_name = os.path.basename(path)[:-len(ext)]
+                break
+        
         if paths:
             if paths[0]:
                 if isinstance(paths[0], list):

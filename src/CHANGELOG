@@ -1,3 +1,8 @@
+2.5.31
+* Possibility add files from file manager by clicking
+* Fixed adding m3u in playlist by click in file manager
+* Optimization of start player time
+
 2.5.30
 * Added statistic window during adding in playlist
 * Added net checking (optional).
@@ -6,6 +11,7 @@
 * Added antiscreensaver (optional)
 * Added possibility to save online playlists in m3u files
 * Added visual volume control from tray (mouse wheel)
+* Added autoremount iso.wv files
 * Optimization of adding tracks into playlist
 * Improved finding of covers in song folders and subfolders
 * Changed color of tray popups in black
@@ -24,6 +30,7 @@
 * Fixed problems with music library in singletab mode
 * Fixed bug with equalizer
 * Fixed impossibility to edit radio from deep levels of radio tree
+* Fixed wma files duration reading
 
 2.5.14
 * Record of radio in file
