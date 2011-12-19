@@ -14,7 +14,7 @@ from foobnix.helpers.image import ImageBase
 from foobnix.helpers.textarea import TextArea
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
-from foobnix.helpers.pref_widgets import HBoxDecorator
+from foobnix.helpers.pref_widgets import HBoxDecorator, HBoxDecoratorTrue
 from foobnix.fc.fc_cache import FCache, COVERS_DIR, LYRICS_DIR 
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
@@ -73,13 +73,29 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         wBox.line_title = EventLabel(wiki_title, func=self.show_current, arg=wBox, func1=self.show_wiki_info)
         
-        self.last_fm_label = gtk.LinkButton("http://www.last.fm", "last.fm")
-        self.wiki_label = gtk.LinkButton("http://www.wikipedia.org", "wikipedia")
+        """info"""
+        info_frame = gtk.Frame(_("Info"))
+        
+        self.last_fm_label = gtk.LinkButton("http://www.last.fm", "Last.Fm")
+        self.wiki_label = gtk.LinkButton("http://www.wikipedia.org", "Wikipedia")
+        
+        info_line = HBoxDecoratorTrue(self.last_fm_label, self.wiki_label)
+        info_frame.add(info_line)
+        
+        """downloads"""
+        dm_frame = gtk.Frame(_("Downloads"))
+                
+        self.exua_label = gtk.LinkButton("http://www.wikipedia.org", "EX.ua")
+        self.rutracker_label = gtk.LinkButton("http://www.wikipedia.org", "Rutracker")
+        
+        dm_line = HBoxDecoratorTrue(self.exua_label, self.rutracker_label)
+        dm_frame.add(dm_line)
+        
         
         self.wiki = TextArea()
         self.wiki.set_text("", wiki_title)
         
-        wBox.pack_start(HBoxDecorator(self.last_fm_label, self.wiki_label), False, False)
+        wBox.pack_start(HBoxDecoratorTrue(info_frame, dm_frame), False, False)
         wBox.pack_start(self.wiki, True, True)
         
         wBox.scroll = wBox
@@ -292,9 +308,10 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         
         self.wiki_label.set_uri("http://%s.wikipedia.org/w/index.php?&search=%s" %(SITE_LOCALE, self.bean.artist))
-        
-        
         self.last_fm_label.set_uri("http://www.last.fm/search?q=%s" % self.bean.artist)
+        
+        self.exua_label.set_uri("http://www.ex.ua/search?s=%s" % self.bean.artist)
+        self.rutracker_label.set_uri("http://rutracker.org/forum/tracker.php?nm=%s" % self.bean.artist)
         
         artist = self.controls.lastfm_service.get_network().get_artist(self.bean.artist)        
         self.wiki.set_text(artist.get_bio_content(), self.bean.artist)

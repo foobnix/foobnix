@@ -140,6 +140,14 @@ class HBoxDecorator(gtk.HBox):
             self.pack_start(widget, False, False)   
         self.show_all()
 
+class HBoxDecoratorTrue(gtk.HBox):
+    def __init__(self, *args):
+        gtk.HBox.__init__(self, False, 0)
+        for widget in args:
+            self.pack_start(widget, True, True)   
+        self.show_all()
+
+
 class HBoxLableEntry(gtk.HBox):
     def __init__(self, text, entry):
         gtk.HBox.__init__(self, False, 0)                    
