@@ -606,6 +606,7 @@ class BaseFoobnixControls():
                 tracks = self.lastfm_service.search_album_tracks(album.artist, album.album)
                 for i, track in enumerate(tracks):
                     track.tracknumber = i + 1
+                    track.album = album.album
                     track.parent(album).add_is_file(True)                    
                     all.append(track)
                 if (len(all) > 0):

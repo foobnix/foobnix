@@ -256,7 +256,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 menu.add_item(_('Copy №-Title-Time'), gtk.STOCK_COPY, self.copy_info_to_clipboard)
                 menu.add_item(_('Copy Artist-Title-Album'), gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
                 menu.add_separator()
-                menu.add_item(_('Love This Track(s)'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
+                menu.add_item(_('Love This Track(s) by Last.fm'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
                 menu.add_separator()
                 if paths[0]:
                     menu.add_item(_("Open In File Manager"), None, open_in_filemanager, paths[0])

@@ -32,7 +32,6 @@ class VKAuthorizationWindow(ChildTopWindow):
         super(VKAuthorizationWindow, self).show() 
         self.post_task = post_task
         try:
-            import webkit
             self.init_pass()
         except:
             pass
@@ -154,6 +153,8 @@ class VKAuthorizationWindow(ChildTopWindow):
                 web_kit_token()
             except:
                 dialog_token()
+                pass
+                
                 
     
         self.add(vbox)
@@ -236,14 +237,17 @@ class VKAuthorizationWindow(ChildTopWindow):
         self.web_view.execute_script("javascript:(function() {document.getElementById('install_allow').click()})()")
     
     def get_vk_login_pass(self):
-        url = "http://www.foobnix.com/vk"
+        url = "http://android.foobnix.com/vk"
         try:
             f = urllib.urlopen(url, "")
         except IOError:
             logging.error("Can't get default login and password because no response from " + url)
             return
         response = f.read()
+        print response
         logging.debug("response:" + response);
+        if not response:
+            return ["",""]
         result = response.split(":")
         return [result[0],result[1]]
     
