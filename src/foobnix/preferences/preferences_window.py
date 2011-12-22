@@ -6,6 +6,7 @@ import os
 import gtk
 import thread
 import logging
+import gobject
 
 from foobnix.fc.fc import FC
 from foobnix.regui.model import FDModel
@@ -19,7 +20,7 @@ from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 from foobnix.preferences.configs.other_conf import OtherConfig
 from foobnix.preferences.configs.tray_icon_conf import TrayIconConfig
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
-import gobject
+
 
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
