@@ -21,7 +21,7 @@ def activate_hot_key(command):
     thread.start_new_thread(os.system, (command,))    
     
 def add_key_binder(command, hotkey):
-    try:                      
+    try:
         keybinder.bind(hotkey, activate_hot_key, command)
     except Exception, e:
         logging.warn("add_key_binder exception" + str(hotkey) + str(e))
@@ -113,24 +113,23 @@ class HotKeysConfig(ConfigPlugin):
         command = self.action_text.get_text()
         hotkey = self.hotkey_text.get_text()
         if command and hotkey: 
-            if command not in self.get_all_items():
-                self.model.append([command, hotkey])
-                add_key_binder(command, hotkey);
-            
+            if hotkey not in self.get_all_items():
+                if command in self.get_all_items():
+                    for item in self.model:
+                        if item[0] == command:
+                            item[1] = hotkey
+                else:
+                    self.model.append([command, hotkey])
+                            
         self.action_text.set_text("")
         self.hotkey_text.set_text("")
-    
-        
+            
     def on_remove_row(self, *args):
         selection = self.tree_widget.get_selection()
         model, selected = selection.get_selected()
         model.remove(selected)   
         keystring = self.model.get_value(selected, 1)
-        try:
-            keybinder.unbind(keystring)
-        except:
-            pass 
-    
+            
     def unbind_all(self):
         items = self.get_all_items()
         for keystring in items: 
@@ -172,9 +171,10 @@ class HotKeysConfig(ConfigPlugin):
             self.model.append([command, hotkey])  
             
     def on_save(self):
-        FC().action_hotkey = self.get_all_items()
-        bind_all(self.get_all_items())
         self.unbind_all()
+        FC().action_hotkey = self.get_all_items()
+        bind_all(FC().action_hotkey)
+        
     
     def get_all_items(self):
         items = {}
