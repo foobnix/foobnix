@@ -3,6 +3,7 @@ Created on Oct 21, 2010
 
 @author: ivan
 '''
+
 import gtk
 
 KEY_DELETE = 'Delete'
@@ -12,7 +13,6 @@ def is_key(event, key_const):
     const = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
     #LOG.debug("KEY", const)
     return const == key_const
-
 
 def get_key(event):
     const = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable

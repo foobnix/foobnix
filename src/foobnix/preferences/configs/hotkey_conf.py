@@ -17,7 +17,7 @@ from foobnix.util.key_utils import is_key_control, is_key_shift, is_key_super, \
     
 
 def activate_hot_key(command):
-    logging.debug("Run command: " + str(command))         
+    logging.debug("Run command: " + str(command)) 
     thread.start_new_thread(os.system, (command,))    
     
 def add_key_binder(command, hotkey):
@@ -27,10 +27,14 @@ def add_key_binder(command, hotkey):
         logging.warn("add_key_binder exception" + str(hotkey) + str(e))
 
 def bind_all(items):
+    for mmkey in FC().multimedia_keys:
+        command = mmkey
+        hotkey = FC().multimedia_keys[mmkey]
+        add_key_binder(command, hotkey)
     for key in items:
         command = key
         hotkey = items[key]
-        add_key_binder(command, hotkey);                
+        add_key_binder(command, hotkey)               
 
 def load_foobnix_hotkeys():
     bind_all(FC().action_hotkey)

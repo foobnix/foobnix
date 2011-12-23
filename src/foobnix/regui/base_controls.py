@@ -89,7 +89,6 @@ class BaseFoobnixControls():
         tree = self.notetabs.get_current_tree()
         if tree:
             return tree.get_selected_or_current_bean()
-    
          
     def play_selected_song(self):    
         current = self.get_active_bean()
@@ -327,6 +326,9 @@ class BaseFoobnixControls():
 
     def volume_down(self):
         self.volume.volume_down()
+        
+    def mute(self):
+        self.volume.mute()
     
     def hide(self):
         self.main_window.hide()

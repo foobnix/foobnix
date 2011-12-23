@@ -93,6 +93,8 @@ class DBusManager(dbus.service.Object, FControl):
             self.controls.volume_up()
         elif "--volume-down" == command:
             self.controls.volume_down()
+        elif "--mute" == command:
+            self.controls.mute()
         elif "--show-hide" == command:
             self.controls.show_hide()
         elif "--show" == command:

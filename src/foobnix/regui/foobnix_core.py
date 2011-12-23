@@ -63,8 +63,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.in_thread = SingleThread(self.search_progress)
         
         self.info_panel = InfoPanelWidget(self)
-        
-        
+                
         self.movie_window = MovieDrawingArea(self)
 
         self.searchPanel = SearchControls(self)
@@ -77,30 +76,24 @@ class FoobnixCore(BaseFoobnixControls):
         self.coverlyrics = CoverLyricsPanel(self)
         self.notetabs = NoteTabControl(self)
         
-
         self.filter = FilterControl(self)
 
-        
         self.radio = RadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
         self.lastfm_integration = LastFmIntegrationControls(self)
         self.vk_integration = VKIntegrationControls(self)
-        
-        
+                
         self.perspective = PerspectiveControls(self)
         
         """preferences"""
         self.preferences = PreferencesWindow(self)
         
-        
-
         self.eq = EqController(self)
         self.dm = DM(self)
 
         """layout panels"""
         self.top_panel = TopWidgets(self)
-        
-        
+                
         """layout"""
         self.layout = BaseFoobnixLayout(self)
         
