@@ -145,7 +145,7 @@ class FC():
         self.proxy_user = None
         self.proxy_password = None
         
-        self.action_hotkey = {'foobnix --volume-up': '<SUPER>Up', 'foobnix --volume-down': '<SUPER>Down', 'foobnix --show-hide': '<SUPER>a', 'foobnix --prev': '<SUPER>Left', 'foobnix --play': '<SUPER>x', 'foobnix --pause': '<SUPER>z', 'foobnix --next': '<SUPER>Right'}
+        self.action_hotkey = {'foobnix --volume-up': '<SUPER>Up', 'foobnix --volume-down': '<SUPER>Down', 'foobnix --show-hide': '<SUPER>a', 'foobnix --prev': '<SUPER>Left', 'foobnix --play': '<SUPER>x', 'foobnix --play-pause': '<SUPER>z', 'foobnix --next': '<SUPER>Right'}
         self.multimedia_keys = {'foobnix --prev': 'XF86AudioPrev', 'foobnix --next': 'XF86AudioNext', 'foobnix --play-pause': 'XF86AudioPlay', 'foobnix --stop': 'XF86AudioStop', 'foobnix --volume-up': 'XF86AudioRaiseVolume', 'foobnix --volume-down': 'XF86AudioLowerVolume', 'foobnix --mute': 'XF86AudioMute'}
         
         self.left_perspective = "info" 
