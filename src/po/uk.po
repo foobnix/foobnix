@@ -7,18 +7,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-31 22:23+0300\n"
-"PO-Revision-Date: 2011-11-20 00:00+0000\n"
-"Last-Translator: Maks Lyashuk aka Ma)(imuM <Unknown>\n"
+"POT-Creation-Date: 2011-12-19 00:20+0200\n"
+"PO-Revision-Date: 2011-12-18 23:51+0000\n"
+"Last-Translator: Ivan Ivanenko <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-11-20 06:02+0000\n"
-"X-Generator: Launchpad (build 14299)\n"
+"X-Launchpad-Export-Date: 2011-12-20 04:56+0000\n"
+"X-Generator: Launchpad (build 14538)\n"
 "Language: uk\n"
 
-#: .././foobnix/dm/dm.py:31 .././foobnix/preferences/preferences_window.py:62
+#: .././foobnix/dm/dm.py:31 .././foobnix/preferences/preferences_window.py:56
 #: .././foobnix/regui/menu.py:54 .././foobnix/regui/top.py:44
 msgid "Preferences"
 msgstr "Налаштування"
@@ -88,27 +88,27 @@ msgstr "Відновити установки за замовчуванням"
 msgid "Empty tab"
 msgstr "Порожня вкладка"
 
-#: .././foobnix/helpers/dialog_entry.py:139
-#: .././foobnix/helpers/dialog_entry.py:140
+#: .././foobnix/helpers/dialog_entry.py:143
+#: .././foobnix/helpers/dialog_entry.py:144
 msgid "New foobnix release avaliable"
 msgstr "Доступна нова версія foobnix"
 
-#: .././foobnix/helpers/dialog_entry.py:145
+#: .././foobnix/helpers/dialog_entry.py:149
 msgid "Download and Donate"
 msgstr "Завантажити або Сплатити"
 
 #. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
-#: .././foobnix/helpers/dialog_entry.py:147
+#: .././foobnix/helpers/dialog_entry.py:151
 #: .././foobnix/regui/treeview/playlist_tree.py:245
 #: .././foobnix/util/converter.py:341
 msgid "Download"
 msgstr "Завантажити"
 
-#: .././foobnix/helpers/dialog_entry.py:160
+#: .././foobnix/helpers/dialog_entry.py:164
 msgid "We hope you like the player. We will make it even better."
 msgstr "Сподіваємось, вам сподобався плеєр. Разом ми зробимо його кращим."
 
-#: .././foobnix/helpers/dialog_entry.py:161
+#: .././foobnix/helpers/dialog_entry.py:165
 #: .././foobnix/preferences/configs/notification_conf.py:19
 #: .././foobnix/preferences/configs/other_conf.py:70
 msgid "Check for new foobnix release on start"
@@ -125,20 +125,20 @@ msgstr "Загальний процес"
 msgid "Stop"
 msgstr "Зупинити"
 
-#: .././foobnix/preferences/preferences_window.py:73
+#: .././foobnix/preferences/preferences_window.py:66
 msgid "Categories"
 msgstr "Розділи"
 
-#: .././foobnix/preferences/preferences_window.py:134
+#: .././foobnix/preferences/preferences_window.py:127
 msgid "Restore Defaults Settings"
 msgstr "Відновити початкові налаштування"
 
-#: .././foobnix/preferences/preferences_window.py:138
+#: .././foobnix/preferences/preferences_window.py:131
 #: .././foobnix/util/tag_util.py:85
 msgid "Apply"
 msgstr "Застосувати"
 
-#: .././foobnix/preferences/preferences_window.py:143
+#: .././foobnix/preferences/preferences_window.py:136
 #: .././foobnix/util/converter.py:86 .././foobnix/util/tag_util.py:86
 msgid "Close"
 msgstr "Закрити"
@@ -247,12 +247,14 @@ msgstr "Last.FM"
 #: .././foobnix/preferences/configs/last_fm.py:29
 #: .././foobnix/preferences/configs/last_fm.py:87
 #: .././foobnix/preferences/configs/network_conf.py:58
+#: .././foobnix/regui/service/vk_service.py:80
 msgid "Login"
 msgstr "Логін"
 
 #: .././foobnix/preferences/configs/last_fm.py:43
 #: .././foobnix/preferences/configs/last_fm.py:103
 #: .././foobnix/preferences/configs/network_conf.py:72
+#: .././foobnix/regui/service/vk_service.py:95
 msgid "Password"
 msgstr "Пароль"
 
@@ -267,6 +269,7 @@ msgstr "Увімк. радіо скроблер"
 #: .././foobnix/preferences/configs/last_fm.py:69
 #: .././foobnix/preferences/configs/last_fm.py:75
 #: .././foobnix/regui/search.py:118
+#: .././foobnix/regui/service/vk_service.py:71
 msgid "VKontakte"
 msgstr "VKontakte"
 
@@ -513,31 +516,31 @@ msgstr "Сповіщення"
 msgid "Time Notification (sec): "
 msgstr "Час показу (сек): "
 
-#: .././foobnix/regui/base_controls.py:158
+#: .././foobnix/regui/base_controls.py:165
 msgid "Choose folders to open"
 msgstr "Виберіть теки для відкриття"
 
-#: .././foobnix/regui/base_controls.py:178
+#: .././foobnix/regui/base_controls.py:185
 msgid "Nothing found to play in the folder(s)"
 msgstr "В теках немає чого програвати"
 
-#: .././foobnix/regui/base_controls.py:185
+#: .././foobnix/regui/base_controls.py:192
 msgid "Choose file to open"
 msgstr "Оберіть файл для відкриття"
 
-#: .././foobnix/regui/base_controls.py:233
+#: .././foobnix/regui/base_controls.py:241
 msgid "Nothing found to play in the file(s)"
 msgstr "Немає чого програвати"
 
-#: .././foobnix/regui/base_controls.py:302
+#: .././foobnix/regui/base_controls.py:310
 msgid "Music not found in folder(s):"
 msgstr "У теках не знайдено музики"
 
-#: .././foobnix/regui/base_controls.py:372
+#: .././foobnix/regui/base_controls.py:380
 msgid "Stopped"
 msgstr "Зупинено"
 
-#: .././foobnix/regui/base_controls.py:381
+#: .././foobnix/regui/base_controls.py:389
 msgid "Paused | "
 msgstr "На паузі | "
 
@@ -669,55 +672,55 @@ msgstr "Підтримати проект"
 msgid "http://www.foobnix.com/donate/eng"
 msgstr "http://www.foobnix.com/donate"
 
-#: .././foobnix/regui/perspectives.py:34
+#: .././foobnix/regui/perspectives.py:38
 msgid "Add Folder(s) in tree"
 msgstr "Додати теку(и)"
 
-#: .././foobnix/regui/perspectives.py:80
+#: .././foobnix/regui/perspectives.py:84
 msgid "Music"
 msgstr "Музика"
 
-#: .././foobnix/regui/perspectives.py:80
+#: .././foobnix/regui/perspectives.py:84
 msgid "Music Navigation (Alt+1)"
 msgstr "Дерево музики (Alt+1)"
 
-#: .././foobnix/regui/perspectives.py:85
+#: .././foobnix/regui/perspectives.py:89
 msgid "Radio"
 msgstr "Радіо"
 
-#: .././foobnix/regui/perspectives.py:85
+#: .././foobnix/regui/perspectives.py:89
 msgid "Radio Stantions (Alt+2)"
 msgstr "Радіостанції (Alt+2)"
 
-#: .././foobnix/regui/perspectives.py:88
+#: .././foobnix/regui/perspectives.py:92
 msgid "Playlist"
 msgstr "Список програвання"
 
-#: .././foobnix/regui/perspectives.py:88
+#: .././foobnix/regui/perspectives.py:92
 msgid "Virtual Play Lists (Alt+3)"
 msgstr "Віртуальні плейлисти (Alt+3)"
 
-#: .././foobnix/regui/perspectives.py:92
+#: .././foobnix/regui/perspectives.py:96
 msgid "Info"
 msgstr "Інфо"
 
-#: .././foobnix/regui/perspectives.py:92
+#: .././foobnix/regui/perspectives.py:96
 msgid "Info Panel (Alt+4)"
 msgstr "Інформаційна панель (Alt+4)"
 
-#: .././foobnix/regui/perspectives.py:95
+#: .././foobnix/regui/perspectives.py:99
 msgid "Last.Fm"
 msgstr "Last.Fm"
 
-#: .././foobnix/regui/perspectives.py:95
+#: .././foobnix/regui/perspectives.py:99
 msgid "Last.fm Panel (Alt+5)"
 msgstr "Last.fm панель (Alt+5)"
 
-#: .././foobnix/regui/perspectives.py:98
+#: .././foobnix/regui/perspectives.py:102
 msgid "VK"
 msgstr "VK"
 
-#: .././foobnix/regui/perspectives.py:98
+#: .././foobnix/regui/perspectives.py:102
 msgid "VK Panel (Alt+6)"
 msgstr "Панель VK (Alt+6)"
 
@@ -868,39 +871,43 @@ msgstr "Додати теку в нову вкладку"
 msgid "Clear Music Tree"
 msgstr "Очистити дерево музики"
 
-#: .././foobnix/regui/service/vk_service.py:31
+#: .././foobnix/regui/service/vk_service.py:43
 msgid "VKontakte Authorization (require for music search)"
 msgstr "Авторизація VKontakte (потрібна для пошуку музики)"
 
-#: .././foobnix/regui/service/vk_service.py:36
+#: .././foobnix/regui/service/vk_service.py:48
 msgid "Get Login and Password"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:64
+#: .././foobnix/regui/service/vk_service.py:51
+msgid "Sing In"
+msgstr ""
+
+#: .././foobnix/regui/service/vk_service.py:130
 msgid "Open"
 msgstr "Відкрити"
 
-#: .././foobnix/regui/service/vk_service.py:70
+#: .././foobnix/regui/service/vk_service.py:136
 msgid "2: Apply Token"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:73
+#: .././foobnix/regui/service/vk_service.py:139
 msgid "Please generate token..."
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:78
+#: .././foobnix/regui/service/vk_service.py:144
 msgid "Token:"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:79
+#: .././foobnix/regui/service/vk_service.py:145
 msgid "User ID:"
 msgstr "ID користувача:"
 
-#: .././foobnix/regui/service/vk_service.py:114
+#: .././foobnix/regui/service/vk_service.py:194
 msgid "Token incorrect or expired"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:116
+#: .././foobnix/regui/service/vk_service.py:196
 msgid "Token or user is empty"
 msgstr ""
 
@@ -911,26 +918,34 @@ msgstr ""
 msgid "Open in file manager"
 msgstr "Відкрити у файловому менеджері"
 
+#: .././foobnix/regui/treeview/dragdrop_tree.py:203
+msgid "Attention!!!"
+msgstr ""
+
 #: .././foobnix/regui/treeview/dragdrop_tree.py:204
+msgid "When you release the mouse button the mouse"
+msgstr ""
+
+#: .././foobnix/regui/treeview/dragdrop_tree.py:210
 msgid "Copying:"
 msgstr "Копіювання:"
 
-#: .././foobnix/regui/treeview/dragdrop_tree.py:204
+#: .././foobnix/regui/treeview/dragdrop_tree.py:210
 msgid "Replacing:"
 msgstr "Заміна:"
 
 #. @UndefinedVariable
-#: .././foobnix/regui/treeview/dragdrop_tree.py:205
+#: .././foobnix/regui/treeview/dragdrop_tree.py:211
 #: .././foobnix/util/file_utils.py:387
 msgid "Progress"
 msgstr "Виконання"
 
-#: .././foobnix/regui/treeview/dragdrop_tree.py:207
+#: .././foobnix/regui/treeview/dragdrop_tree.py:213
 #: .././foobnix/util/file_utils.py:388
 msgid "To: "
 msgstr "До: "
 
-#: .././foobnix/regui/treeview/dragdrop_tree.py:343
+#: .././foobnix/regui/treeview/dragdrop_tree.py:349
 msgid "m3u playlist: "
 msgstr "Список програвання m3u: "
 
@@ -1276,12 +1291,12 @@ msgstr "Тека вже існує"
 msgid "Copying: "
 msgstr "Права: "
 
-#: .././foobnix/util/id3_util.py:127 .././foobnix/util/tag_util.py:118
+#: .././foobnix/util/id3_util.py:128 .././foobnix/util/tag_util.py:118
 #: .././foobnix/util/tag_util.py:132
 msgid "Unknown title"
 msgstr "Невідомий заголовок"
 
-#: .././foobnix/util/id3_util.py:129 .././foobnix/util/tag_util.py:120
+#: .././foobnix/util/id3_util.py:130 .././foobnix/util/tag_util.py:120
 #: .././foobnix/util/tag_util.py:130
 msgid "Unknown artist"
 msgstr "Невідомий виконавець"
