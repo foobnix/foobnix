@@ -85,8 +85,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         """downloads"""
         dm_frame = gtk.Frame(_("Downloads"))
                 
-        self.exua_label = gtk.LinkButton("http://www.wikipedia.org", "EX.ua")
-        self.rutracker_label = gtk.LinkButton("http://www.wikipedia.org", "Rutracker")
+        self.exua_label = gtk.LinkButton("http://www.ex.ua", "EX.ua")
+        self.rutracker_label = gtk.LinkButton("http://rutracker.org", "Rutracker")
         
         dm_line = HBoxDecoratorTrue(self.exua_label, self.rutracker_label)
         dm_frame.add(dm_line)

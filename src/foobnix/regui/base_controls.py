@@ -405,8 +405,7 @@ class BaseFoobnixControls():
     def play(self, bean):
         if not bean or not bean.is_file:
             return
-        
-        """ lock playing """        
+               
         self.play_lock.acquire()
         
         if bean.type == FTYPE_RADIO:
@@ -424,14 +423,14 @@ class BaseFoobnixControls():
         #self._play(bean)     
     
     def _one_thread_play(self,bean):
-        self._play(bean)
+        try:
+            self._play(bean)
+        finally:
+            if self.play_lock.locked():
+                self.play_lock.release()
         
-        """unlock playing"""
-        self.play_lock.release()
     
     def _play(self, bean):
-        
-        
         self.count_errors = 0
         
         if not bean.path:
@@ -451,6 +450,8 @@ class BaseFoobnixControls():
                 if self.count_errors < 4:
                     time.sleep(0.5)
                     self.count_errors += 1
+                    if self.play_lock.locked():
+                        self.play_lock.release()
                     self.next()
            
         if bean.path:
