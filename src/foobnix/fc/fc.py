@@ -36,6 +36,7 @@ class FC():
 
         """player controls"""
         self.volume = 10
+        self.temp_volume = self.volume
         self.is_eq_enable = False
         self.eq_presets = None
         self.eq_presets_default = "CUSTOM"
@@ -145,8 +146,9 @@ class FC():
         self.proxy_password = None
         
         self.action_hotkey = {'foobnix --volume-up': '<SUPER>Up', 'foobnix --volume-down': '<SUPER>Down', 'foobnix --show-hide': '<SUPER>a', 'foobnix --prev': '<SUPER>Left', 'foobnix --play': '<SUPER>x', 'foobnix --pause': '<SUPER>z', 'foobnix --next': '<SUPER>Right'}
-
-        self.left_perspective = "info"        
+        self.multimedia_keys = {'foobnix --prev': 'XF86AudioPrev', 'foobnix --next': 'XF86AudioNext', 'foobnix --play-pause': 'XF86AudioPlay', 'foobnix --stop': 'XF86AudioStop', 'foobnix --volume-up': 'XF86AudioRaiseVolume', 'foobnix --volume-down': 'XF86AudioLowerVolume', 'foobnix --mute': 'XF86AudioMute'}
+        
+        self.left_perspective = "info" 
         
         self.gap_secs = 0
         

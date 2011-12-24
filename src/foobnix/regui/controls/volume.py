@@ -65,7 +65,14 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
         value = self.volume_scale.get_value()
         self.volume_scale.set_value(value - 3)
     
-    
+    def mute(self):
+        value = self.volume_scale.get_value()
+        if value == 0:
+            self.volume_scale.set_value(FC().temp_volume)
+        else:
+            FC().temp_volume = value
+            self.volume_scale.set_value(0)
+        
     def on_scroll_event(self, button, event):
         value = self.volume_scale.get_value()
         if event.direction == gtk.gdk.SCROLL_UP: #@UndefinedVariable
@@ -74,10 +81,8 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
             self.volume_scale.set_value(value - 3)
         self.controls.player_volume(value)
         return True
-
     
     def on_value_changed(self, widget): 
-            
         percent = widget.get_value()
         self.controls.player_volume(percent)
         FC().volume = percent

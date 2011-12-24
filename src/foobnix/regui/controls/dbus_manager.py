@@ -88,11 +88,13 @@ class DBusManager(dbus.service.Object, FControl):
         elif "--pause" == command:
             self.controls.state_pause()
         elif "--play" == command:
-            self.controls.playState()
+            self.controls.state_play()
         elif "--volume-up" == command:
             self.controls.volume_up()
         elif "--volume-down" == command:
             self.controls.volume_down()
+        elif "--mute" == command:
+            self.controls.mute()
         elif "--show-hide" == command:
             self.controls.show_hide()
         elif "--show" == command:
