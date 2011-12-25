@@ -9,16 +9,17 @@ import gtk
 import logging
 
 from foobnix.fc.fc import FC
-from foobnix.util.mouse_utils import is_middle_click
-from foobnix.regui.state import LoadSave
-from foobnix.regui.model.signal import FControl
-from foobnix.helpers.image import ImageBase
-from foobnix.regui.model import FModel
-from foobnix.helpers.pref_widgets import VBoxDecorator
-from foobnix.util.text_utils import split_string
 from foobnix.regui.controls.playback import PlaybackControls
+from foobnix.regui.model import FModel
+from foobnix.regui.model.signal import FControl
+from foobnix.regui.state import LoadSave
+from foobnix.helpers.image import ImageBase
 from foobnix.helpers.my_widgets import ImageButton, AlternateVolumeControl
+from foobnix.helpers.pref_widgets import VBoxDecorator
 from foobnix.util.const import ICON_FOOBNIX
+from foobnix.util.mouse_utils import is_middle_click
+from foobnix.util.text_utils import split_string
+
 
 class PopupTrayWindow (gtk.Window, FControl):
     def __init__(self, controls):
