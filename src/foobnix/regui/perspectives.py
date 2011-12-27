@@ -14,8 +14,8 @@ from foobnix.regui.model.signal import FControl
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
 from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, \
-    LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_LASTFM,\
-    LEFT_PERSPECTIVE_VK
+    LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_MY_RADIO, \
+    LEFT_PERSPECTIVE_LASTFM, LEFT_PERSPECTIVE_VK
 
 
 class PerspectiveControls(FControl, gtk.VBox, LoadSave):
@@ -26,23 +26,28 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         self.perspectivs = {
                      LEFT_PERSPECTIVE_NAVIGATION:controls.tabhelper,
                      LEFT_PERSPECTIVE_RADIO:controls.radio.scroll,
+                     LEFT_PERSPECTIVE_MY_RADIO:controls.my_radio.scroll,
                      LEFT_PERSPECTIVE_VIRTUAL:controls.virtual.scroll,
                      LEFT_PERSPECTIVE_INFO:controls.info_panel,
                      LEFT_PERSPECTIVE_LASTFM:controls.lastfm_integration.scroll,
                      LEFT_PERSPECTIVE_VK:controls.vk_integration.scroll
                      }
-        
+        self.switch_radio_button = gtk.Button()
+        self.switch_radio_button.connect("clicked", lambda *a: self.on_radio_buttons_click()) 
         self.buttons = PerspectiveButtonControlls(self.activate_perspective, controls)
         self.buttons.show_all()
         
         self.add_button = ButtonStockText(_("Add Folder(s) in tree"), gtk.STOCK_ADD)
         self.add_button.connect("clicked", lambda * a :controls.tree.add_folder())
         
+        self.switch_radio_button = gtk.Button()
+        self.switch_radio_button.connect("clicked", lambda *a: self.on_radio_buttons_click())        
+         
         self.pack_start(self.add_button, False, False)
         
         for widget in self.perspectivs.values():
             self.pack_start(widget, True, True)
-                
+        self.pack_start(self.switch_radio_button, False, False)
         self.pack_start(controls.filter, False, False)
         self.pack_start(self.buttons, False, False)
     
@@ -63,7 +68,24 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         else:
             self.controls.filter.show()
             
-        
+        if name in (LEFT_PERSPECTIVE_RADIO,LEFT_PERSPECTIVE_MY_RADIO):
+            self.switch_radio_button.set_label(self.perspectivs[name]
+                                               .get_child().switcher_label)
+            self.switch_radio_button.show()
+        else:
+            self.switch_radio_button.hide()
+            
+    def on_radio_buttons_click(self):
+        for name in self.perspectivs.keys():
+            if self.perspectivs[name].get_visible():
+                if name == LEFT_PERSPECTIVE_RADIO:
+                    perspective_name = LEFT_PERSPECTIVE_MY_RADIO
+                elif name == LEFT_PERSPECTIVE_MY_RADIO:
+                    perspective_name = LEFT_PERSPECTIVE_RADIO
+                break
+        self.activate_perspective(perspective_name)
+        self.switch_radio_button.set_label(self.perspectivs[perspective_name]
+                                           .get_child().switcher_label)
    
     def activate_perspective_key(self, name):
         self.buttons.activate_button(name)
