@@ -38,7 +38,10 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self._append_column(self.column, _("File"))
         
         def func(column, cell, model, iter, ext=False):
-            data = model.get_value(iter, self.text[0])
+            try:
+                data = model.get_value(iter, self.text[0])
+            except TypeError:
+                pass
             if not model.get_value(iter, self.path[0]): 
                 cell.set_property('text', '')
                 return

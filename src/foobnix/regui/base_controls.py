@@ -39,8 +39,6 @@ from foobnix.helpers.dialog_entry import file_chooser_dialog, \
 from foobnix.util.iso_util import mount_tmp_iso
 
 
-
-
 class BaseFoobnixControls():
     def __init__(self):
         
