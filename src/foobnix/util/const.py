@@ -6,6 +6,7 @@ Created on 30 авг. 2010
 '''
 from foobnix.util.localization import foobnix_localization
 import locale
+import gtk
 
 foobnix_localization()
 
@@ -67,3 +68,7 @@ ICON_FOOBNIX_STOP = "foobnix-stop.png"
 ICON_FOOBNIX_RADIO = "foobnix-radio.jpg"
 ICON_BLANK_DISK = "foobnix-blank-disc.jpg"
       
+BEFORE = gtk.TREE_VIEW_DROP_BEFORE
+AFTER = gtk.TREE_VIEW_DROP_AFTER
+INTO_OR_BEFORE = gtk.TREE_VIEW_DROP_INTO_OR_BEFORE
+INTO_OR_AFTER = gtk.TREE_VIEW_DROP_INTO_OR_AFTER

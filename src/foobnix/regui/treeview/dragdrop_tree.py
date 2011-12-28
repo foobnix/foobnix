@@ -14,17 +14,18 @@ import logging
 import os.path
 import threading
 
+from foobnix.cue.cue_reader import CueReader
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
-from foobnix.util.m3u_utils import m3u_reader
-from foobnix.regui.model import FModel, FTreeModel
-from foobnix.util.iso_util import get_beans_from_iso_wv
-from foobnix.util.id3_file import update_id3_wind_filtering
+from foobnix.helpers.dialog_entry import info_dialog
+from foobnix.helpers.window import CopyProgressWindow
+from foobnix.util.const import BEFORE, AFTER, INTO_OR_BEFORE, INTO_OR_AFTER
 from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progressbar,\
     get_file_extension
-from foobnix.helpers.window import CopyProgressWindow
-from foobnix.cue.cue_reader import CueReader
-from foobnix.helpers.dialog_entry import info_dialog
+from foobnix.util.m3u_utils import m3u_reader
+from foobnix.util.id3_file import update_id3_wind_filtering
+from foobnix.util.iso_util import get_beans_from_iso_wv
+from foobnix.regui.model import FModel, FTreeModel
 
 
 VIEW_PLAIN = 0
@@ -158,7 +159,7 @@ class DragDropTree(gtk.TreeView):
                 self.spinner = False
                     
                 for i, row in enumerate(all_rows):
-                        pos = gtk.TREE_VIEW_DROP_AFTER if i else to_filter_pos
+                        pos = AFTER if i else to_filter_pos
                         if row[self.path[0]] and get_file_extension(row[self.path[0]]) in [".m3u", ".m3u8"]:
                             self.add_m3u(ff_model, ff_iter, to_tree, to_model, to_iter, pos)
                             continue
@@ -196,10 +197,10 @@ class DragDropTree(gtk.TreeView):
             files = [row[self.path[0]] for row in rows if os.path.dirname(row[self.path[0]]) != dest_folder]
             if to_filter_pos:
                 if os.path.isfile(to_filter_model[to_filter_path][self.path[0]]):
-                    if to_filter_pos != gtk.TREE_VIEW_DROP_BEFORE:
-                        to_filter_pos = gtk.TREE_VIEW_DROP_AFTER
-                elif to_filter_pos in (gtk.TREE_VIEW_DROP_BEFORE, 
-                                       gtk.TREE_VIEW_DROP_AFTER):
+                    if to_filter_pos != BEFORE:
+                        to_filter_pos = AFTER
+                elif to_filter_pos in (BEFORE, 
+                                       AFTER):
                     info_dialog(_("Attention!!!"), 
                                 _("When you release the mouse button the mouse" +
                                  " pointer must be over the folder exactly." +
@@ -255,14 +256,14 @@ class DragDropTree(gtk.TreeView):
             if is_copy_move:
                 self.change_filepaths_in_row(to_model, new_iter, new_path)
         else:
-            if new_iter and to_iter and not to_model.iter_has_child(to_iter):
+            if new_iter and to_iter:
                 to_iter = new_iter
             new_iter = self.to_add_drag_item(to_tree, to_model, to_iter, to_filter_pos, ff_row_ref)
             if is_copy_move:
                 self.change_filepaths_in_row(to_model, new_iter, new_path)
-            if to_filter_pos == gtk.TREE_VIEW_DROP_BEFORE:
+            if to_filter_pos == BEFORE:
                 new_iter = to_model.iter_next(new_iter)
-            elif to_filter_pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE:
+            elif to_filter_pos == INTO_OR_BEFORE:
                 new_iter = to_iter
                 
         '''drag row with children from plain tree'''    
@@ -275,11 +276,11 @@ class DragDropTree(gtk.TreeView):
                     ref = self.get_row_reference_from_iter(ff_model, next_iter)
                     if to_tree.current_view == VIEW_TREE:
                         if _iter == new_iter:
-                            pos = gtk.TREE_VIEW_DROP_INTO_OR_AFTER
-                            if to_filter_pos == gtk.TREE_VIEW_DROP_BEFORE:
+                            pos = INTO_OR_AFTER
+                            if to_filter_pos == BEFORE:
                                 _iter = self.get_previous_iter(to_model, _iter)
                         else:
-                            pos = gtk.TREE_VIEW_DROP_AFTER
+                            pos = AFTER
                     else:
                         pos = to_filter_pos
                     _iter = self.to_add_drag_item(to_tree, to_model, _iter, pos, ref)
@@ -361,10 +362,10 @@ class DragDropTree(gtk.TreeView):
     def to_add_drag_item(self, to_tree, to_model, to_iter,  pos, ref=None, child=False, row=None):    
         if (to_tree and hasattr(to_tree, "current_view") 
                     and to_tree.current_view == VIEW_PLAIN):
-            if pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE:
-                pos = gtk.TREE_VIEW_DROP_BEFORE
-            elif pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER:
-                pos = gtk.TREE_VIEW_DROP_AFTER
+            if pos == INTO_OR_BEFORE:
+                pos = BEFORE
+            elif pos == INTO_OR_AFTER:
+                pos = AFTER
         
         if not row:
             from_iter = self.get_iter_from_row_reference(ref)
@@ -372,16 +373,20 @@ class DragDropTree(gtk.TreeView):
             row = self.get_row_from_model_iter(from_model, from_iter)
             if not child and self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
                 self.row_to_remove.append(ref)
+        
         if to_iter:
-            if (pos == gtk.TREE_VIEW_DROP_INTO_OR_BEFORE) or (pos == gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+            if (self.model.get_value(to_iter, FTreeModel().is_file[0]) and
+                pos in (INTO_OR_BEFORE,INTO_OR_AFTER)):
+                pos = AFTER
+            if pos in (INTO_OR_BEFORE,INTO_OR_AFTER):
                 if child:
                     new_iter = to_model.append(to_iter, row)
                 else:
                     new_iter = to_model.prepend(to_iter, row)
-            elif pos == gtk.TREE_VIEW_DROP_BEFORE:
+            elif pos == BEFORE:
                 new_iter = to_model.insert_before(None, to_iter, row)
                 
-            elif pos == gtk.TREE_VIEW_DROP_AFTER:
+            elif pos == AFTER:
                 new_iter = to_model.insert_after(None, to_iter, row)
             else:
                 new_iter = to_model.append(None, row)
@@ -390,7 +395,7 @@ class DragDropTree(gtk.TreeView):
      
         return new_iter
 
-    def iter_is_parent(self, ff_row_ref, ff_model, to_tree, to_model, to_parent_iter, pos=gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+    def iter_is_parent(self, ff_row_ref, ff_model, to_tree, to_model, to_parent_iter, pos=INTO_OR_AFTER):
         ff_iter = self.get_iter_from_row_reference(ff_row_ref)
         refs = self.content_filter(ff_iter, ff_model) 
         for ref in refs:

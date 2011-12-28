@@ -35,7 +35,7 @@ class RadioTreeControl(CommonTreeControl):
         self.append_column(column)
         
         self.configure_send_drag()
-
+        self.configure_recive_drag()
         self.set_type_tree()
         self.lazy_load()
         
@@ -174,7 +174,7 @@ class RadioTreeControl(CommonTreeControl):
         thread.start_new_thread(task, ())                      
             
     def on_quit(self):
-        FCache().cache_radio_tree_beans = self.controls.my_radio.get_all_beans()
+        FCache().cache_radio_tree_beans = self.controls.radio.get_all_beans()
         
                         
 class MyRadioTreeControl(RadioTreeControl):
@@ -183,9 +183,8 @@ class MyRadioTreeControl(RadioTreeControl):
         self.switcher_label = _("Common channels")
         
     def lazy_load(self):
-        if FCache().cache_radio_tree_beans:
-            logging.debug("updating My Radio tree")
-            self.auto_add_user_station()
+        logging.debug("updating My Radio tree")
+        self.auto_add_user_station()
        
     def on_button_press(self, w, e):
         if is_double_left_click(e):
