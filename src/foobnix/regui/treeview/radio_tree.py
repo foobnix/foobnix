@@ -85,28 +85,14 @@ class RadioTreeControl(CommonTreeControl):
                 
     def on_add_station(self):
         name, url = two_line_dialog("Add New Radio Station", "Enter Name and URL", "", "http://")
-        with open(CACHE_RADIO_FILE, 'a') as f:
-            f.write('#' + name + '\n' + url + '\n')
+        #with open(CACHE_RADIO_FILE, 'a') as f:
+           #f.write('#' + name + '\n' + url + '\n')
         bean = FModel(name, url).add_is_file(True)
         bean.type=FTYPE_RADIO
         self.append(bean)
     
     def on_save(self):
-        with open(CACHE_RADIO_FILE, 'a') as f:
-                   
-            def task(row):
-                iter = row.get_attribute("iter")
-                level = self.model.iter_depth(iter)
-                #bean = self.get_bean_from_model_iter(self.model, iter)
-                text = self.model.get_value(iter, FTreeModel().text[0])
-                path = self.model.get_value(iter, FTreeModel().path[0])
-                f.write(level * '-' + text + '#' + path + '\n') 
-                if row.iterchildren():
-                    for child_row in row.iterchildren():
-                        task(child_row)
-        
-            for row in self.model:
-                task(row)
+        pass
     
     def on_delete_station(self):
         bean = self.get_selected_bean()
@@ -147,12 +133,26 @@ class RadioTreeControl(CommonTreeControl):
         if os.path.isfile(CACHE_RADIO_FILE) and os.path.getsize(CACHE_RADIO_FILE) > 0:
             with open(CACHE_RADIO_FILE, 'r') as f:
                 list = f.readlines()
-                for i, line in enumerate(list):
-                    if line.startswith("#"):
-                        name = line[1:-1]
-                        url = list[i+1][0:-1]
-                        bean = FModel(name, url).add_is_file(True)
-                        self.append(bean)
+                parent_level_for_depth = {}
+                previous = {"bean": None, "depth": 0, "name": '', "url": ''} 
+                for line in list:
+                    depth = self.simbol_counter(line, '-')
+                    name = line[depth : line.index('#')]
+                    url = line[line.index('#') + 1 : -1]
+                    bean = FModel(name)
+                    if url:
+                        bean.add_is_file(True).add_path(url)
+                    if previous["depth"] < depth:
+                        bean.add_parent(previous["bean"].level)
+                    elif previous["depth"] > depth:
+                        bean.add_parent(parent_level_for_depth[depth]) 
+                    else:
+                        if previous["bean"]:
+                            bean.add_parent(previous["bean"].parent_level)
+                        
+                    self.append(bean)
+                    parent_level_for_depth[depth] = bean.parent_level
+                    previous = {"bean": bean, "depth": depth, "name": name, "url": url}
                         
     def simbol_counter(self, line, simbol):
         counter = 0
@@ -166,43 +166,27 @@ class RadioTreeControl(CommonTreeControl):
     def lazy_load(self):
         def task():
             logging.debug("radio Lazy loading")
-            self.update_radio_tree()
-           
+            if FCache().cache_radio_tree_beans:
+                self.populate_all(FCache().cache_radio_tree_beans)
+            else:
+                self.update_radio_tree()
+            self.is_radio_populated = True
         thread.start_new_thread(task, ())                      
-    
             
     def on_quit(self):
         FCache().cache_radio_tree_beans = self.controls.my_radio.get_all_beans()
-        with open(CACHE_RADIO_FILE, 'a') as f:
-                   
-            def task(row):
-                iter = row.iter
-                level = self.model.iter_depth(iter)
-                text = self.model.get_value(iter, FTreeModel().text[0])
-                path = self.model.get_value(iter, FTreeModel().path[0])
-                if not path:
-                    path = ""
-                f.write(level * '-' + text + '#' + path + '\n') 
-                if row.iterchildren():
-                    for child_row in row.iterchildren():
-                        task(child_row)
         
-            for row in self.model:
-                task(row)
-                
+                        
 class MyRadioTreeControl(RadioTreeControl):
     def __init__(self, controls):
         RadioTreeControl.__init__(self, controls)
         self.switcher_label = _("Common channels")
         
     def lazy_load(self):
-        self.populate_all(FCache().cache_radio_tree_beans)
-        if not FCache().cache_radio_tree_beans:
-            logging.debug("updating radio tree")
+        if FCache().cache_radio_tree_beans:
+            logging.debug("updating My Radio tree")
             self.auto_add_user_station()
-            FC().cache_radio_tree_beans = self.get_all_beans()
-        self.is_radio_populated = True
-        
+       
     def on_button_press(self, w, e):
         if is_double_left_click(e):
             selected = self.get_selected_bean()
@@ -220,3 +204,21 @@ class MyRadioTreeControl(RadioTreeControl):
             menu.add_separator()
             menu.add_item(_("Reload radio folder"), gtk.STOCK_REFRESH, self.update_radio_tree, None)            
             menu.show(e)
+            
+    def on_quit(self):
+        with open(CACHE_RADIO_FILE, 'w') as f:
+                   
+            def task(row):
+                iter = row.iter
+                level = self.model.iter_depth(iter)
+                text = self.model.get_value(iter, FTreeModel().text[0])
+                path = self.model.get_value(iter, FTreeModel().path[0])
+                if not path:
+                    path = ""
+                f.write(level * '-' + text + '#' + path + '\n') 
+                if row.iterchildren():
+                    for child_row in row.iterchildren():
+                        task(child_row)
+        
+            for row in self.model:
+                task(row)
