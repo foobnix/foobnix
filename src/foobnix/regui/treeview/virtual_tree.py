@@ -55,14 +55,18 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
                 right_click_optimization_for_trees(w, e)
                 menu = Popup()
                 menu.add_item(_("Add playlist"), gtk.STOCK_ADD, self.create_playlist, None)
-                menu.add_item(_("Rename playlist"), gtk.STOCK_EDIT, self.rename_playlist, None)
-                menu.add_item(_("Delete playlist"), gtk.STOCK_DELETE, self.delete_playlist, None)
+                if self.get_selected_bean().is_file:
+                    menu.add_item(_("Rename"), gtk.STOCK_EDIT, self.rename_selected, None)
+                    menu.add_item(_("Delete"), gtk.STOCK_DELETE, self.delete_selected, None)
+                else:
+                    menu.add_item(_("Rename playlist"), gtk.STOCK_EDIT, self.rename_selected, None)
+                    menu.add_item(_("Delete playlist"), gtk.STOCK_DELETE, self.delete_selected, None)
                 #menu.add_item(_("Save as"), gtk.STOCK_SAVE_AS, None, None)
                 #menu.add_item(_("Open as"), gtk.STOCK_OPEN, None, None)
                 menu.show(e)
     
     def create_playlist(self):
-        name = one_line_dialog(_("Create new playlist"), self.controls.main_window, message_text=_("Enter playlist name"))
+        name = one_line_dialog(_("Create new playlist"), self.controls.main_window, message_text1=_("Enter playlist name"))
         if not name:
             return
         bean = self.get_selected_bean()
@@ -71,13 +75,10 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
             folder_bean.add_parent(bean.parent_level)
         self.append(folder_bean)      
     
-    def delete_playlist(self):
-        self.delete_selected()
-    
-    def rename_playlist(self):
+    def rename_selected(self):
         bean = self.get_selected_bean()
-        name = one_line_dialog(_("Rename playlist"), self.controls.main_window,
-                               entry_text=bean.text, message_text=_("Enter new playlist name"))
+        name = one_line_dialog(_("Rename Dialog"), self.controls.main_window,
+                               entry_text=bean.text, message_text1=_("Enter new name"))
         if not name:
             return
         rows = self.find_rows_by_element(self.UUID, bean.UUID)

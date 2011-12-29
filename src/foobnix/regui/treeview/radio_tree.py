@@ -39,7 +39,6 @@ class RadioTreeControl(CommonTreeControl):
         self.set_type_tree()
         self.lazy_load()
         
-    
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_RADIO
     
@@ -52,21 +51,29 @@ class RadioTreeControl(CommonTreeControl):
             self.controls.play_first_file_in_playlist()
             
         if is_rigth_click(e): 
+            right_click_optimization_for_trees(w, e)
+            
             menu = Popup()
             bean = self.get_selected_bean()
             if bean:
-                menu.add_item(_("Delete Station (group)"), gtk.STOCK_DELETE, self.on_delete_station, None)
                 if self.get_selected_bean().is_file:
                     menu.add_item(_("Edit Station"), gtk.STOCK_EDIT, self.on_edit_radio, None)
+                    menu.add_item(_("Delete Station)"), gtk.STOCK_DELETE, self.delete_selected, None)
                 else:
                     menu.add_item(_("Rename Group"), gtk.STOCK_EDIT, self.on_rename_group, None)
+                    menu.add_item(_("Delete Group)"), gtk.STOCK_DELETE, self.delete_selected, None)
                 menu.add_separator()
             menu.add_item(_("Reload radio folder"), gtk.STOCK_REFRESH, self.update_radio_tree, None)            
             menu.show(e)
           
     def on_edit_radio(self):
         bean = self.get_selected_bean()
-        name, url = two_line_dialog(_("Change Radio Station name and path"), _("Url"), bean.text, bean.path, self.controls.main_window)
+        name, url = two_line_dialog(_("Edit Radio"),
+                                    parent = self.controls.main_window,
+                                    message_text1 = _("Enter new name and URL"),
+                                    message_text2 = None,
+                                    entry_text1=bean.text, 
+                                    entry_text2 = bean.path)
         if not name or not url:
             return
         bean.add_text(name)
@@ -79,8 +86,8 @@ class RadioTreeControl(CommonTreeControl):
     
     def on_rename_group(self):
         bean = self.get_selected_bean()
-        name = one_line_dialog(_("Edit group"), self.controls.main_window,
-                               entry_text=bean.text, message_text=_("Enter new group name"))
+        name = one_line_dialog(_("Rename Group"), self.controls.main_window,
+                               entry_text=bean.text, message_text1=_("Enter new group name"))
         if not name:
             return
         rows = self.find_rows_by_element(self.UUID, bean.UUID)
@@ -88,7 +95,12 @@ class RadioTreeControl(CommonTreeControl):
             rows[0][self.text[0]] = name
                 
     def on_add_station(self):
-        name, url = two_line_dialog("Add New Radio Station", "Enter Name and URL", "", "http://", self.controls.main_window)
+        name, url = two_line_dialog(_("Add New Radio Station"),
+                                    parent = self.controls.main_window,
+                                    message_text1 = _("Enter station name and URL"),
+                                    message_text2 = None,
+                                    entry_text1 = None, 
+                                    entry_text2 = "http://")
         if not name or not url:
             return
         bean = self.get_selected_bean()
@@ -99,9 +111,6 @@ class RadioTreeControl(CommonTreeControl):
             
     def on_save(self):
         pass
-    
-    def on_delete_station(self):
-        self.delete_selected()
     
     def update_radio_tree(self):
         self.controls.in_thread.run_with_progressbar(self._update_radio_tree)
@@ -192,18 +201,19 @@ class MyRadioTreeControl(RadioTreeControl):
             
             menu = Popup()
             menu.add_item(_("Add Station"), gtk.STOCK_ADD, self.on_add_station, None)
-            menu.add_item(_("Create group"), None, self.create_new_group, None)
+            menu.add_item(_("Create Group"), gtk.STOCK_ADD, self.create_new_group, None)
             bean = self.get_selected_bean()
             if bean:
-                menu.add_item(_("Delete Station (group)"), gtk.STOCK_DELETE, self.on_delete_station, None)
                 if self.get_selected_bean().is_file:
                     menu.add_item(_("Edit Station"), gtk.STOCK_EDIT, self.on_edit_radio, None)
+                    menu.add_item(_("Delete Station)"), gtk.STOCK_DELETE, self.delete_selected, None)
                 else:
                     menu.add_item(_("Rename Group"), gtk.STOCK_EDIT, self.on_rename_group, None)
+                    menu.add_item(_("Delete Group)"), gtk.STOCK_DELETE, self.delete_selected, None)
             menu.show(e)
     
     def create_new_group(self):
-        name = one_line_dialog(_("Create group"), self.controls.main_window, message_text=_("Enter group name"))
+        name = one_line_dialog(_("Create Group"), self.controls.main_window, message_text1=_("Enter group name"))
         if not name:
             return
         bean = self.get_selected_bean()
