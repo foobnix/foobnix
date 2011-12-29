@@ -53,3 +53,17 @@ def is_left_click_release(event):
         return True
     else:
         return False
+    
+def right_click_optimization_for_trees(treeview, event):
+    try:
+        path, col, cellx, celly = treeview.get_path_at_pos(int(event.x), int(event.y))
+        # just in case the view doesn't already have focus
+        treeview.grab_focus()
+        treeview.stop_emission('button-press-event')
+        selection = treeview.get_selection()
+        # if this row isn't already selected, then select it before popup
+        if not selection.path_is_selected(path):
+            selection.unselect_all()                                                
+            selection.select_path(path)
+    except TypeError:
+        pass

@@ -6,7 +6,8 @@ Created on Sep 29, 2010
 import gtk
 
 from foobnix.regui.state import LoadSave
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click
+from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click,\
+    right_click_optimization_for_trees
 from foobnix.helpers.menu import Popup
 from foobnix.helpers.dialog_entry import one_line_dialog
 from foobnix.regui.model import FModel
@@ -51,6 +52,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
             self.controls.play_first_file_in_playlist()
             
         if is_rigth_click(e): 
+                right_click_optimization_for_trees(w, e)
                 menu = Popup()
                 menu.add_item(_("Add playlist"), gtk.STOCK_ADD, self.create_playlist, None)
                 menu.add_item(_("Rename playlist"), gtk.STOCK_EDIT, self.rename_playlist, None)
@@ -60,22 +62,27 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
                 menu.show(e)
     
     def create_playlist(self):
-        text = one_line_dialog(_("Create new playlist"))
-        bean = FModel(text).add_font("bold")
-        self.append(bean)
-              
+        name = one_line_dialog(_("Create new playlist"), self.controls.main_window, message_text=_("Enter playlist name"))
+        if not name:
+            return
+        bean = self.get_selected_bean()
+        folder_bean = FModel(name)
+        if bean:
+            folder_bean.add_parent(bean.parent_level)
+        self.append(folder_bean)      
     
     def delete_playlist(self):
         self.delete_selected()
     
     def rename_playlist(self):
         bean = self.get_selected_bean()
-        text = one_line_dialog(_("Rename playlist"), bean.text)
-        if not text:
+        name = one_line_dialog(_("Rename playlist"), self.controls.main_window,
+                               entry_text=bean.text, message_text=_("Enter new playlist name"))
+        if not name:
             return
-        self.rename_selected(text)
-  
-        
+        rows = self.find_rows_by_element(self.UUID, bean.UUID)
+        if rows:
+            rows[0][self.text[0]] = name
     
     def on_load(self):
         self.scroll.hide()

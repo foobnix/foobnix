@@ -16,7 +16,8 @@ from foobnix.util.const import LEFT_PERSPECTIVE_VK
 from foobnix.util.bean_utils import update_parent_for_beans
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.regui.treeview.common_tree import CommonTreeControl
-from foobnix.util.mouse_utils import is_rigth_click, is_double_left_click
+from foobnix.util.mouse_utils import is_rigth_click, is_double_left_click,\
+    right_click_optimization_for_trees
 import time
 
 
@@ -69,12 +70,14 @@ class VKIntegrationControls(CommonTreeControl):
         FC().left_perspective = LEFT_PERSPECTIVE_VK
     
     def on_button_press(self, w, e):
-        active = self.get_selected_bean()
-        if active and is_rigth_click(e):
-            menu = Popup()
-            menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
-            menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            
-            menu.show(e)
+        if is_rigth_click(e):
+            right_click_optimization_for_trees(w, e)
+            active = self.get_selected_bean()
+            if active:
+                menu = Popup()
+                menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
+                menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            
+                menu.show(e)
          
         
         if is_double_left_click(e):

@@ -12,15 +12,15 @@ import os.path
 import thread
 
 from foobnix.fc.fc import FC
-from foobnix.regui.model import FModel, FTreeModel
-from foobnix.helpers.menu import Popup
-from foobnix.helpers.dialog_entry import two_line_dialog
 from foobnix.fc.fc_cache import FCache, CACHE_RADIO_FILE
+from foobnix.helpers.dialog_entry import two_line_dialog, one_line_dialog
+from foobnix.helpers.menu import Popup
+from foobnix.regui.model import FModel, FTreeModel
 from foobnix.regui.service.radio_service import RadioFolder
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click,\
-    is_left_click
+    right_click_optimization_for_trees
 
 
 class RadioTreeControl(CommonTreeControl):
@@ -53,28 +53,22 @@ class RadioTreeControl(CommonTreeControl):
             
         if is_rigth_click(e): 
             menu = Popup()
-            #menu.add_item(_("Add Station"), gtk.STOCK_ADD, self.on_add_station, None)
-            menu.add_item(_("Delete Station"), gtk.STOCK_DELETE, self.on_delete_station, None)
-            menu.add_item(_("Edit Radio"), gtk.STOCK_EDIT, self.on_edit_radio, None)
-            menu.add_separator()
+            bean = self.get_selected_bean()
+            if bean:
+                menu.add_item(_("Delete Station (group)"), gtk.STOCK_DELETE, self.on_delete_station, None)
+                if self.get_selected_bean().is_file:
+                    menu.add_item(_("Edit Station"), gtk.STOCK_EDIT, self.on_edit_radio, None)
+                else:
+                    menu.add_item(_("Rename Group"), gtk.STOCK_EDIT, self.on_rename_group, None)
+                menu.add_separator()
             menu.add_item(_("Reload radio folder"), gtk.STOCK_REFRESH, self.update_radio_tree, None)            
             menu.show(e)
           
     def on_edit_radio(self):
         bean = self.get_selected_bean()
-        name, url = two_line_dialog(_("Change Radio Station name and path"), _("Url"), bean.text, bean.path)
+        name, url = two_line_dialog(_("Change Radio Station name and path"), _("Url"), bean.text, bean.path, self.controls.main_window)
         if not name or not url:
             return
-        if os.path.isfile(CACHE_RADIO_FILE) and os.path.getsize(CACHE_RADIO_FILE)>0:
-            with open(CACHE_RADIO_FILE, 'r') as f:
-                list = f.readlines()
-                for i, line in enumerate(list):
-                    if line == "#" + bean.text + '\n' and list[i+1] == bean.path + '\n':
-                        list[i] = "#" + name + '\n'
-                        list[i+1] = url + '\n'
-            with open(CACHE_RADIO_FILE, 'w') as f:
-                f.writelines(list)
-
         bean.add_text(name)
         bean.add_path(url)
         
@@ -82,34 +76,33 @@ class RadioTreeControl(CommonTreeControl):
         if rows:
             rows[0][self.text[0]] = name
             rows[0][self.path[0]] = url
+    
+    def on_rename_group(self):
+        bean = self.get_selected_bean()
+        name = one_line_dialog(_("Edit group"), self.controls.main_window,
+                               entry_text=bean.text, message_text=_("Enter new group name"))
+        if not name:
+            return
+        rows = self.find_rows_by_element(self.UUID, bean.UUID)
+        if rows:
+            rows[0][self.text[0]] = name
                 
     def on_add_station(self):
-        name, url = two_line_dialog("Add New Radio Station", "Enter Name and URL", "", "http://")
-        #with open(CACHE_RADIO_FILE, 'a') as f:
-           #f.write('#' + name + '\n' + url + '\n')
-        bean = FModel(name, url).add_is_file(True)
-        bean.type=FTYPE_RADIO
-        self.append(bean)
-    
+        name, url = two_line_dialog("Add New Radio Station", "Enter Name and URL", "", "http://", self.controls.main_window)
+        if not name or not url:
+            return
+        bean = self.get_selected_bean()
+        new_bean = FModel(name).add_type(FTYPE_RADIO).add_is_file(True)
+        if bean:
+            new_bean.add_parent(bean.parent_level)
+        self.append(new_bean)
+            
     def on_save(self):
         pass
     
     def on_delete_station(self):
-        bean = self.get_selected_bean()
-        
-        if os.path.isfile(CACHE_RADIO_FILE) and os.path.getsize(CACHE_RADIO_FILE) > 0:
-            with open(CACHE_RADIO_FILE, 'r') as f:
-                list = f.readlines()
-                for i, line in enumerate(list):
-                    if line == "#" + bean.text + '\n' and list[i+1] == bean.path + '\n':
-                        del list[i+1]
-                        del list[i]
-                        
-            with open(CACHE_RADIO_FILE, 'w') as f:
-                f.writelines(list)
-        
         self.delete_selected()
-        
+    
     def update_radio_tree(self):
         self.controls.in_thread.run_with_progressbar(self._update_radio_tree)
         
@@ -141,7 +134,7 @@ class RadioTreeControl(CommonTreeControl):
                     url = line[line.index('#') + 1 : -1]
                     bean = FModel(name)
                     if url:
-                        bean.add_is_file(True).add_path(url)
+                        bean.add_is_file(True).add_path(url).add_type(FTYPE_RADIO)
                     if previous["depth"] < depth:
                         bean.add_parent(previous["bean"].level)
                     elif previous["depth"] > depth:
@@ -195,14 +188,29 @@ class MyRadioTreeControl(RadioTreeControl):
             self.controls.play_first_file_in_playlist()
             
         if is_rigth_click(e): 
+            right_click_optimization_for_trees(w, e)
+            
             menu = Popup()
             menu.add_item(_("Add Station"), gtk.STOCK_ADD, self.on_add_station, None)
-            if self.get_selected_bean():
-                menu.add_item(_("Delete Station"), gtk.STOCK_DELETE, self.on_delete_station, None)
-                menu.add_item(_("Edit Radio"), gtk.STOCK_EDIT, self.on_edit_radio, None)
-            menu.add_separator()
-            menu.add_item(_("Reload radio folder"), gtk.STOCK_REFRESH, self.update_radio_tree, None)            
+            menu.add_item(_("Create group"), None, self.create_new_group, None)
+            bean = self.get_selected_bean()
+            if bean:
+                menu.add_item(_("Delete Station (group)"), gtk.STOCK_DELETE, self.on_delete_station, None)
+                if self.get_selected_bean().is_file:
+                    menu.add_item(_("Edit Station"), gtk.STOCK_EDIT, self.on_edit_radio, None)
+                else:
+                    menu.add_item(_("Rename Group"), gtk.STOCK_EDIT, self.on_rename_group, None)
             menu.show(e)
+    
+    def create_new_group(self):
+        name = one_line_dialog(_("Create group"), self.controls.main_window, message_text=_("Enter group name"))
+        if not name:
+            return
+        bean = self.get_selected_bean()
+        folder_bean = FModel(name)
+        if bean:
+            folder_bean.add_parent(bean.parent_level)
+        self.append(folder_bean)
             
     def on_quit(self):
         with open(CACHE_RADIO_FILE, 'w') as f:

@@ -7,7 +7,7 @@ from foobnix.regui.state import LoadSave
 import gtk
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.mouse_utils import is_rigth_click, is_double_left_click, \
-    is_left_click
+    is_left_click, right_click_optimization_for_trees
 from foobnix.helpers.menu import Popup
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
      DOWNLOAD_STATUS_ALL
@@ -54,6 +54,7 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
             self.controls.play(active)
         
         if is_rigth_click(e):
+            right_click_optimization_for_trees(w, e)
             menu = Popup()
             menu.add_item('Play', gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
             menu.add_item('Copy to Search Line', gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            

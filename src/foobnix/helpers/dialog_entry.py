@@ -49,19 +49,20 @@ def directory_chooser_dialog(title, current_folder=None):
     chooser.destroy()
     return paths
 
-def one_line_dialog(dialog_title, text=None):
+def one_line_dialog(dialog_title, parent=None, entry_text=None, message_text=None):
         dialog = gtk.MessageDialog(
-            None,
+            parent,
             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
             gtk.MESSAGE_INFO,
             gtk.BUTTONS_OK,
             None)
         dialog.set_title(dialog_title)
-        dialog.set_markup(dialog_title)        
+        if message_text:
+            dialog.set_markup(message_text)        
         entry = gtk.Entry()
         
-        if text:
-            entry.set_text(text)
+        if entry_text:
+            entry.set_text(entry_text)
         dialog.vbox.pack_end(entry, True, True, 0)
         dialog.show_all()
         
@@ -69,10 +70,11 @@ def one_line_dialog(dialog_title, text=None):
         text = entry.get_text()
         
         dialog.destroy()    
-        return text
-def two_line_dialog(title, description, line1, line2):
+        return text if text else None
+    
+def two_line_dialog(title, description, line1="", line2="", parent=None):
         dialog = gtk.MessageDialog(
-            None,
+            parent,
             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
             gtk.MESSAGE_QUESTION,
             gtk.BUTTONS_OK,
@@ -97,7 +99,7 @@ def two_line_dialog(title, description, line1, line2):
         login_text = login_entry.get_text()
         password_text = password_entry.get_text()
         dialog.destroy()
-        return [login_text, password_text]      
+        return [login_text, password_text] if (login_text and password_text) else [None,None]     
 
 def info_dialog(title, message):
         dialog = gtk.MessageDialog(

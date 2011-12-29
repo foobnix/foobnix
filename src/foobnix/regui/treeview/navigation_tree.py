@@ -22,7 +22,7 @@ from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
     delete_files_from_disk, create_folder_dialog, get_file_extension
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
-    is_middle_click_release, is_middle_click
+    is_middle_click_release, is_middle_click, right_click_optimization_for_trees
 
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -112,6 +112,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             return
         
         if is_rigth_click(e):
+            right_click_optimization_for_trees(w, e)
             # on right click, show pop-up menu
             menu = Popup()
             menu.add_item(_("Append to playlist"), gtk.STOCK_ADD, lambda: self.add_to_tab(True), None)
