@@ -22,7 +22,8 @@ from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
     delete_files_from_disk, create_folder_dialog, get_file_extension
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
-    is_middle_click_release, is_middle_click, right_click_optimization_for_trees
+    is_middle_click_release, is_middle_click, right_click_optimization_for_trees,\
+    is_empty_click
 
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -99,6 +100,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         
     def on_button_press(self, w, e):
+        if is_empty_click(w, e):
+            w.get_selection().unselect_all()
         if is_middle_click(e):
             """to avoid unselect all selected items"""
             self.stop_emission('button-press-event')

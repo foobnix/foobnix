@@ -7,7 +7,7 @@ import gtk
 
 from foobnix.regui.state import LoadSave
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click,\
-    right_click_optimization_for_trees
+    right_click_optimization_for_trees, is_empty_click
 from foobnix.helpers.menu import Popup
 from foobnix.helpers.dialog_entry import one_line_dialog
 from foobnix.regui.model import FModel
@@ -44,6 +44,8 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         FC().save()        
         
     def on_button_press(self, w, e):
+        if is_empty_click(w, e):
+            w.get_selection().unselect_all()
         if is_double_left_click(e):
             
             selected = self.get_selected_bean()

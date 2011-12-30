@@ -9,7 +9,7 @@ from foobnix.util.const import DOWNLOAD_STATUS_ALL, DOWNLOAD_STATUS_ACTIVE, \
     DOWNLOAD_STATUS_LOCK
 from foobnix.regui.model import FTreeModel
 from foobnix.util.mouse_utils import is_rigth_click,\
-    right_click_optimization_for_trees
+    right_click_optimization_for_trees, is_empty_click
 from foobnix.util.file_utils import open_in_filemanager
 import logging
 from foobnix.fc.fc import FC
@@ -86,7 +86,9 @@ class DownloadManagerTreeControl(CommonTreeControl):
         #self.navigation.use_filter()
     
     def on_button_press(self, w, e):
-        logging.debug("on dm button release")
+        logging.debug("on dm button press")
+        if is_empty_click(w, e):
+            w.get_selection().unselect_all()
         if is_rigth_click(e):
             right_click_optimization_for_trees(w, e)
             try:

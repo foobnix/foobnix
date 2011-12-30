@@ -20,7 +20,7 @@ from foobnix.regui.service.radio_service import RadioFolder
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click,\
-    right_click_optimization_for_trees
+    right_click_optimization_for_trees, is_empty_click
 
 
 class RadioTreeControl(CommonTreeControl):
@@ -106,9 +106,12 @@ class RadioTreeControl(CommonTreeControl):
         bean = self.get_selected_bean()
         new_bean = FModel(name, url).add_type(FTYPE_RADIO).add_is_file(True)
         if bean:
-            new_bean.add_parent(bean.parent_level)
+            if bean.is_file:
+                new_bean.add_parent(bean.parent_level)
+            else:
+                new_bean.add_parent(bean.level)
         self.append(new_bean)
-            
+
     def on_save(self):
         pass
     
@@ -189,6 +192,9 @@ class MyRadioTreeControl(RadioTreeControl):
         self.auto_add_user_station()
        
     def on_button_press(self, w, e):
+        if is_empty_click(w, e):
+            w.get_selection().unselect_all()
+        
         if is_double_left_click(e):
             selected = self.get_selected_bean()
             beans = self.get_all_child_beans_by_selected()  
@@ -219,7 +225,10 @@ class MyRadioTreeControl(RadioTreeControl):
         bean = self.get_selected_bean()
         folder_bean = FModel(name)
         if bean:
-            folder_bean.add_parent(bean.parent_level)
+            if bean.is_file:
+                folder_bean.add_parent(bean.parent_level)
+            else:
+                folder_bean.add_parent(bean.level)
         self.append(folder_bean)
             
     def on_quit(self):

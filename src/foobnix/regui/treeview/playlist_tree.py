@@ -20,7 +20,7 @@ from foobnix.util.localization import foobnix_localization
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release, \
-    is_rigth_click, right_click_optimization_for_trees
+    is_rigth_click, right_click_optimization_for_trees, is_empty_click
 
 foobnix_localization()
 
@@ -202,7 +202,8 @@ class PlaylistTreeControl(CommonTreeControl):
         return super(PlaylistTreeControl, self).append(bean)
 
     def on_button_press(self, w, e):
-        #self.controls.notetabs.set_active_tree(self)
+        if is_empty_click(w, e):
+            w.get_selection().unselect_all()
         if is_double_left_click(e):
             self.controls.play_selected_song()
             

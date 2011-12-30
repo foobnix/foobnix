@@ -61,9 +61,17 @@ def right_click_optimization_for_trees(treeview, event):
         treeview.grab_focus()
         treeview.stop_emission('button-press-event')
         selection = treeview.get_selection()
+                 
         # if this row isn't already selected, then select it before popup
         if not selection.path_is_selected(path):
             selection.unselect_all()                                                
             selection.select_path(path)
     except TypeError:
-        pass
+        treeview.get_selection().unselect_all()
+    
+def is_empty_click(treeview, event):
+    try:
+        path, col, cellx, celly = treeview.get_path_at_pos(int(event.x), int(event.y))
+        return False
+    except TypeError:
+        return True
