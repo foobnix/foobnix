@@ -92,11 +92,13 @@ def two_line_dialog(dialog_title, parent=None, message_text1=None,
             dialog.format_secondary_markup(message_text2)
         
         login_entry = gtk.Entry()
-        login_entry.set_text(entry_text1)
+        if entry_text1:
+            login_entry.set_text(entry_text1)
         login_entry.show()
         
         password_entry = gtk.Entry()
-        password_entry.set_text(entry_text2)
+        if entry_text2:
+            password_entry.set_text(entry_text2)
         password_entry.show()
         
         hbox = gtk.VBox()
