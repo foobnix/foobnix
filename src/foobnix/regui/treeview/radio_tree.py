@@ -104,7 +104,7 @@ class RadioTreeControl(CommonTreeControl):
         if not name or not url:
             return
         bean = self.get_selected_bean()
-        new_bean = FModel(name).add_type(FTYPE_RADIO).add_is_file(True)
+        new_bean = FModel(name, url).add_type(FTYPE_RADIO).add_is_file(True)
         if bean:
             new_bean.add_parent(bean.parent_level)
         self.append(new_bean)
