@@ -185,7 +185,7 @@ class RadioTreeControl(CommonTreeControl):
 class MyRadioTreeControl(RadioTreeControl):
     def __init__(self, controls):
         RadioTreeControl.__init__(self, controls)
-        self.switcher_label = _("Common channels")
+        self.switcher_label = _("Autogenereted channels")
         
     def lazy_load(self):
         logging.debug("updating My Radio tree")
@@ -230,10 +230,10 @@ class MyRadioTreeControl(RadioTreeControl):
             else:
                 folder_bean.add_parent(bean.level)
         self.append(folder_bean)
-            
+
     def on_quit(self):
+        
         with open(CACHE_RADIO_FILE, 'w') as f:
-                   
             def task(row):
                 iter = row.iter
                 level = self.model.iter_depth(iter)

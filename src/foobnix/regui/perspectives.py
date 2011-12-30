@@ -67,7 +67,7 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
             self.controls.filter.hide()
         else:
             self.controls.filter.show()
-            
+
         if name in (LEFT_PERSPECTIVE_RADIO,LEFT_PERSPECTIVE_MY_RADIO):
             self.switch_radio_button.set_label(self.perspectivs[name]
                                                .get_child().switcher_label)
@@ -80,8 +80,10 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
             if self.perspectivs[name].get_visible():
                 if name == LEFT_PERSPECTIVE_RADIO:
                     perspective_name = LEFT_PERSPECTIVE_MY_RADIO
+                    FC().is_my_radio_active = True
                 elif name == LEFT_PERSPECTIVE_MY_RADIO:
                     perspective_name = LEFT_PERSPECTIVE_RADIO
+                    FC().is_my_radio_active = False
                 break
         self.activate_perspective(perspective_name)
         self.switch_radio_button.set_label(self.perspectivs[perspective_name]
@@ -89,6 +91,12 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
    
     def activate_perspective_key(self, name):
         self.buttons.activate_button(name)
+        
+    def activate_radio_perspective(self):
+        if FC().is_my_radio_active:
+            self.activate_perspective(LEFT_PERSPECTIVE_MY_RADIO)
+        else:
+            self.activate_perspective(LEFT_PERSPECTIVE_RADIO)
     
     def on_load(self):  
         self.activate_perspective(LEFT_PERSPECTIVE_NAVIGATION)
@@ -109,7 +117,8 @@ class PerspectiveButtonControlls(gtk.HBox):
         
                 
         radios = PespectiveToogledButton(_("Radio"), gtk.STOCK_NETWORK, _("Radio Stantions (Alt+2)"))
-        radios.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_RADIO))
+        radios.connect("clicked", lambda * a:
+                       controls.perspective.activate_radio_perspective())
               
         virtuals = PespectiveToogledButton(_("Playlist"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
         virtuals.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
@@ -151,4 +160,5 @@ class PerspectiveButtonControlls(gtk.HBox):
     
     def activate_button(self, name):
         self.button_list[name].set_active(True)
+        
 

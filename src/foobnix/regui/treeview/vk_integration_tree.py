@@ -78,7 +78,6 @@ class VKIntegrationControls(CommonTreeControl):
                 menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            
                 menu.show(e)
          
-        
         if is_double_left_click(e):
             selected = self.get_selected_bean()
             if not selected:
