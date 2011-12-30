@@ -49,16 +49,20 @@ def directory_chooser_dialog(title, current_folder=None):
     chooser.destroy()
     return paths
 
-def one_line_dialog(dialog_title, parent=None, entry_text=None, message_text=None):
+def one_line_dialog(dialog_title, parent=None, entry_text=None, message_text1=None, message_text2=None):
         dialog = gtk.MessageDialog(
             parent,
             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
             gtk.MESSAGE_INFO,
             gtk.BUTTONS_OK,
             None)
+        dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_title(dialog_title)
-        if message_text:
-            dialog.set_markup(message_text)        
+        if message_text1:
+            dialog.set_markup(message_text1)
+        if message_text2:
+            dialog.format_secondary_markup(message_text2)     
+        
         entry = gtk.Entry()
         
         if entry_text:
@@ -72,22 +76,27 @@ def one_line_dialog(dialog_title, parent=None, entry_text=None, message_text=Non
         dialog.destroy()    
         return text if text else None
     
-def two_line_dialog(title, description, line1="", line2="", parent=None):
+def two_line_dialog(dialog_title, parent=None, message_text1=None,
+                    message_text2=None, entry_text1="", entry_text2=""):
         dialog = gtk.MessageDialog(
             parent,
             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
             gtk.MESSAGE_QUESTION,
             gtk.BUTTONS_OK,
-            title)
-        dialog.set_markup(title)
-        dialog.format_secondary_markup(description)
+            None)
+        dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
+        dialog.set_title(dialog_title)
+        if message_text1:
+            dialog.set_markup(message_text1)
+        if message_text2:
+            dialog.format_secondary_markup(message_text2)
         
         login_entry = gtk.Entry()
-        login_entry.set_text(line1)
+        login_entry.set_text(entry_text1)
         login_entry.show()
         
         password_entry = gtk.Entry()
-        password_entry.set_text(line2)
+        password_entry.set_text(entry_text2)
         password_entry.show()
         
         hbox = gtk.VBox()
