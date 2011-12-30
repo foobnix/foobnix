@@ -57,12 +57,14 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
                 right_click_optimization_for_trees(w, e)
                 menu = Popup()
                 menu.add_item(_("Add playlist"), gtk.STOCK_ADD, self.create_playlist, None)
-                if self.get_selected_bean().is_file:
-                    menu.add_item(_("Rename"), gtk.STOCK_EDIT, self.rename_selected, None)
-                    menu.add_item(_("Delete"), gtk.STOCK_DELETE, self.delete_selected, None)
-                else:
-                    menu.add_item(_("Rename playlist"), gtk.STOCK_EDIT, self.rename_selected, None)
-                    menu.add_item(_("Delete playlist"), gtk.STOCK_DELETE, self.delete_selected, None)
+                bean = self.get_selected_bean()
+                if bean:
+                    if bean.is_file:
+                        menu.add_item(_("Rename"), gtk.STOCK_EDIT, self.rename_selected, None)
+                        menu.add_item(_("Delete"), gtk.STOCK_DELETE, self.delete_selected, None)
+                    else:
+                        menu.add_item(_("Rename playlist"), gtk.STOCK_EDIT, self.rename_selected, None)
+                        menu.add_item(_("Delete playlist"), gtk.STOCK_DELETE, self.delete_selected, None)
                 #menu.add_item(_("Save as"), gtk.STOCK_SAVE_AS, None, None)
                 #menu.add_item(_("Open as"), gtk.STOCK_OPEN, None, None)
                 menu.show(e)

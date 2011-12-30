@@ -733,12 +733,25 @@ class DragDropTree(gtk.TreeView):
         """copy beans"""
         bean = copy.copy(bean)
         bean.visible = True
+        
+        last_folder_iter = None
+        
+        row = self.get_row_from_bean(bean)    
 
         if self.hash.has_key(bean.get_parent()):
             parent_iter_exists = self.hash[bean.get_parent()]
+            if not bean.is_file:
+                for i in xrange(self.model.iter_n_children(parent_iter_exists)):
+                    iter = self.model.iter_nth_child(parent_iter_exists, i)
+                    if not self.model.get_value(iter, self.is_file[0]):
+                        last_folder_iter = iter
+                        
+                if last_folder_iter:
+                    new_iter = self.model.insert_after(None, last_folder_iter, row)
+                    self.hash[bean.level] = new_iter
+                    return
         else:
             parent_iter_exists = None
-        row = self.get_row_from_bean(bean)
-        
+               
         parent_iter = self.model.append(parent_iter_exists, row)
         self.hash[bean.level] = parent_iter
