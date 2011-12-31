@@ -11,7 +11,8 @@ from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
 from foobnix.helpers.menu import Popup
 from foobnix.regui.model import FModel, FDModel
-from foobnix.util.mouse_utils import is_rigth_click
+from foobnix.util.mouse_utils import is_rigth_click,\
+    right_click_optimization_for_trees, is_empty_click
 from foobnix.util.const import LEFT_PERSPECTIVE_LASTFM
 from foobnix.util.bean_utils import update_parent_for_beans
 from foobnix.regui.treeview.common_tree import CommonTreeControl
@@ -55,8 +56,11 @@ class LastFmIntegrationControls(CommonTreeControl):
         FC().left_perspective = LEFT_PERSPECTIVE_LASTFM
         
     def on_button_press(self, w, e):
-        active = self.get_selected_bean()
+        if is_empty_click(w, e):
+            w.get_selection().unselect_all()
         if is_rigth_click(e):
+            right_click_optimization_for_trees(w, e)
+            active = self.get_selected_bean()
             menu = Popup()
             menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
             menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            

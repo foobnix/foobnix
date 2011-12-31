@@ -17,7 +17,8 @@ from foobnix.regui.controls.status_bar import StatusbarControls
 from foobnix.regui.controls.tray_icon import TrayIconControls
 from foobnix.preferences.preferences_window import PreferencesWindow
 from foobnix.regui.top import TopWidgets
-from foobnix.regui.treeview.radio_tree import RadioTreeControl
+from foobnix.regui.treeview.radio_tree import RadioTreeControl,\
+    MyRadioTreeControl
 from foobnix.regui.treeview.virtual_tree import VirtualTreeControl
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.eq.eq_controller import EqController
@@ -79,6 +80,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.filter = FilterControl(self)
 
         self.radio = RadioTreeControl(self)
+        self.my_radio = MyRadioTreeControl(self)
         self.virtual = VirtualTreeControl(self)
         self.lastfm_integration = LastFmIntegrationControls(self)
         self.vk_integration = VKIntegrationControls(self)

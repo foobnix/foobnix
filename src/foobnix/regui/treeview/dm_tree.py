@@ -8,7 +8,8 @@ import gtk
 from foobnix.util.const import DOWNLOAD_STATUS_ALL, DOWNLOAD_STATUS_ACTIVE, \
     DOWNLOAD_STATUS_LOCK
 from foobnix.regui.model import FTreeModel
-from foobnix.util.mouse_utils import is_rigth_click
+from foobnix.util.mouse_utils import is_rigth_click,\
+    right_click_optimization_for_trees, is_empty_click
 from foobnix.util.file_utils import open_in_filemanager
 import logging
 from foobnix.fc.fc import FC
@@ -85,17 +86,21 @@ class DownloadManagerTreeControl(CommonTreeControl):
         #self.navigation.use_filter()
     
     def on_button_press(self, w, e):
-        logging.debug("on dm button release")
+        logging.debug("on dm button press")
+        if is_empty_click(w, e):
+            w.get_selection().unselect_all()
         if is_rigth_click(e):
-            menu = Popup()
-            try:            
+            right_click_optimization_for_trees(w, e)
+            try:
+                menu = Popup()            
                 if self.get_selected_bean():
                     menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
                 else:
                     menu.add_item(_("Open in file manager"), None, open_in_filemanager, FC().online_save_to_folder)
+                menu.show(e)
             except Exception, e:
                 logging.error(e)
-            menu.show(e)
+            
     
     def get_status_statisctics(self):
         all = self.get_all_beans()

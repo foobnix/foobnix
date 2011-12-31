@@ -6,6 +6,7 @@ Created on 30 авг. 2010
 '''
 from foobnix.util.localization import foobnix_localization
 import locale
+import gtk
 
 foobnix_localization()
 
@@ -54,7 +55,8 @@ DOWNLOAD_STATUS_ERROR = _("Error")
 LEFT_PERSPECTIVE_VK = "VK"
 LEFT_PERSPECTIVE_INFO = "info"
 LEFT_PERSPECTIVE_NAVIGATION = "navigation"
-LEFT_PERSPECTIVE_RADIO = "radion"
+LEFT_PERSPECTIVE_RADIO = "radio"
+LEFT_PERSPECTIVE_MY_RADIO = "my radio"
 LEFT_PERSPECTIVE_VIRTUAL = "virtual"
 LEFT_PERSPECTIVE_LASTFM = "last.fm"
 
@@ -66,3 +68,7 @@ ICON_FOOBNIX_STOP = "foobnix-stop.png"
 ICON_FOOBNIX_RADIO = "foobnix-radio.jpg"
 ICON_BLANK_DISK = "foobnix-blank-disc.jpg"
       
+BEFORE = gtk.TREE_VIEW_DROP_BEFORE
+AFTER = gtk.TREE_VIEW_DROP_AFTER
+INTO_OR_BEFORE = gtk.TREE_VIEW_DROP_INTO_OR_BEFORE
+INTO_OR_AFTER = gtk.TREE_VIEW_DROP_INTO_OR_AFTER

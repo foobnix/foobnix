@@ -49,19 +49,24 @@ def directory_chooser_dialog(title, current_folder=None):
     chooser.destroy()
     return paths
 
-def one_line_dialog(dialog_title, text=None):
+def one_line_dialog(dialog_title, parent=None, entry_text=None, message_text1=None, message_text2=None):
         dialog = gtk.MessageDialog(
-            None,
+            parent,
             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
             gtk.MESSAGE_INFO,
             gtk.BUTTONS_OK,
             None)
+        dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_title(dialog_title)
-        dialog.set_markup(dialog_title)        
+        if message_text1:
+            dialog.set_markup(message_text1)
+        if message_text2:
+            dialog.format_secondary_markup(message_text2)     
+        
         entry = gtk.Entry()
         
-        if text:
-            entry.set_text(text)
+        if entry_text:
+            entry.set_text(entry_text)
         dialog.vbox.pack_end(entry, True, True, 0)
         dialog.show_all()
         
@@ -69,23 +74,31 @@ def one_line_dialog(dialog_title, text=None):
         text = entry.get_text()
         
         dialog.destroy()    
-        return text
-def two_line_dialog(title, description, line1, line2):
+        return text if text else None
+    
+def two_line_dialog(dialog_title, parent=None, message_text1=None,
+                    message_text2=None, entry_text1="", entry_text2=""):
         dialog = gtk.MessageDialog(
-            None,
+            parent,
             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
             gtk.MESSAGE_QUESTION,
             gtk.BUTTONS_OK,
-            title)
-        dialog.set_markup(title)
-        dialog.format_secondary_markup(description)
+            None)
+        dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
+        dialog.set_title(dialog_title)
+        if message_text1:
+            dialog.set_markup(message_text1)
+        if message_text2:
+            dialog.format_secondary_markup(message_text2)
         
         login_entry = gtk.Entry()
-        login_entry.set_text(line1)
+        if entry_text1:
+            login_entry.set_text(entry_text1)
         login_entry.show()
         
         password_entry = gtk.Entry()
-        password_entry.set_text(line2)
+        if entry_text2:
+            password_entry.set_text(entry_text2)
         password_entry.show()
         
         hbox = gtk.VBox()
@@ -97,7 +110,7 @@ def two_line_dialog(title, description, line1, line2):
         login_text = login_entry.get_text()
         password_text = password_entry.get_text()
         dialog.destroy()
-        return [login_text, password_text]      
+        return [login_text, password_text] if (login_text and password_text) else [None,None]     
 
 def info_dialog(title, message):
         dialog = gtk.MessageDialog(

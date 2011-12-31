@@ -9,6 +9,8 @@ import os
 import gtk
 import logging
 import gobject
+import threading
+import time
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
@@ -20,9 +22,9 @@ from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
     delete_files_from_disk, create_folder_dialog, get_file_extension
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
-    is_middle_click_release, is_middle_click
-import threading
-import time
+    is_middle_click_release, is_middle_click, right_click_optimization_for_trees,\
+    is_empty_click
+
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
@@ -38,7 +40,10 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self._append_column(self.column, _("File"))
         
         def func(column, cell, model, iter, ext=False):
-            data = model.get_value(iter, self.text[0])
+            try:
+                data = model.get_value(iter, self.text[0])
+            except TypeError:
+                pass
             if not model.get_value(iter, self.path[0]): 
                 cell.set_property('text', '')
                 return
@@ -95,6 +100,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         
     def on_button_press(self, w, e):
+        if is_empty_click(w, e):
+            w.get_selection().unselect_all()
         if is_middle_click(e):
             """to avoid unselect all selected items"""
             self.stop_emission('button-press-event')
@@ -108,6 +115,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             return
         
         if is_rigth_click(e):
+            right_click_optimization_for_trees(w, e)
             # on right click, show pop-up menu
             menu = Popup()
             menu.add_item(_("Append to playlist"), gtk.STOCK_ADD, lambda: self.add_to_tab(True), None)

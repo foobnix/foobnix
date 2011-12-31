@@ -172,6 +172,8 @@ class FC():
         
         self.antiscreensaver = False
         
+        self.is_my_radio_active = False
+        
         self.load();
     
     def delete(self):

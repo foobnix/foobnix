@@ -20,7 +20,7 @@ from foobnix.util.localization import foobnix_localization
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release, \
-    is_rigth_click
+    is_rigth_click, right_click_optimization_for_trees, is_empty_click
 
 foobnix_localization()
 
@@ -114,7 +114,7 @@ class PlaylistTreeControl(CommonTreeControl):
         
         self.set_playlist_plain()
         
-        self.connect("button-release-event", self.on_button_release)
+        self.connect("button-release-event", self.on_button_press)
         
         self.on_load()
         
@@ -202,30 +202,19 @@ class PlaylistTreeControl(CommonTreeControl):
         return super(PlaylistTreeControl, self).append(bean)
 
     def on_button_press(self, w, e):
-        #self.controls.notetabs.set_active_tree(self)
-        if is_rigth_click(e):
-            """to avoid unselect all selected items"""
-            self.stop_emission('button-press-event')
+        if is_empty_click(w, e):
+            w.get_selection().unselect_all()
         if is_double_left_click(e):
             self.controls.play_selected_song()
             
-    def on_button_release(self, w, e):
-        if is_rigth_click_release(e):
-            """to select item under cursor"""
-            try:
-                path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y)) #@UnusedVariable
-                self.get_selection().select_path(path)
-            except TypeError:
-                pass
-            #menu.add_item('Save as', gtk.STOCK_SAVE_AS, self.controls.save_beans_to, self.get_all_selected_beans())
-            
+        if is_rigth_click(e):
+            right_click_optimization_for_trees(w, e)
             beans = self.get_selected_beans()
-            
             if beans:
                 menu = Popup()
                 menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
                 menu.add_item(_('Delete from playlist'), gtk.STOCK_DELETE, self.delete_selected, None)
-                               
+            
                 paths = []
                 inet_paths = []
                 local_paths = []
@@ -261,7 +250,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 if paths[0]:
                     menu.add_item(_("Open In File Manager"), None, open_in_filemanager, paths[0])
                 menu.show(e)
-            
+                  
     def on_click_header(self, w, e):
         if is_rigth_click(e):
             if w.__dict__.has_key("menu"):
