@@ -146,6 +146,9 @@ class DragDropTree(gtk.TreeView):
         
         ff_model, ff_paths = from_tree.get_selection().get_selected_rows()
         
+        if "RadioTreeControl" in str(to_tree) and to_tree != from_tree:
+            return
+        
         if "PlaylistTreeControl" in str(to_tree) and to_tree != from_tree:
             self.controls.search_progress.start()
             self.spinner = True
