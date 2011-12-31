@@ -462,8 +462,7 @@ class BaseFoobnixControls():
                     logging.error("File " + bean.path + " not found")
             elif os.path.isdir(bean.path):
                     return None
-        
-        self.media_engine.play(bean)  
+        self.media_engine.play(bean)
         self.is_scrobbled = False
         self.start_time = False      
         
@@ -683,8 +682,6 @@ class BaseFoobnixControls():
         self.notetabs.append_all(beans)
 
     def next(self):
-        if self.play_lock.locked():
-            self.play_lock.release()        
         bean = self.notetabs.next()
         if not bean:
             return
