@@ -244,7 +244,6 @@ class VKAuthorizationWindow(ChildTopWindow):
             logging.error("Can't get default login and password because no response from " + url)
             return
         response = f.read()
-        print response
         logging.debug("response:" + response);
         if not response:
             return ["",""]
