@@ -683,7 +683,9 @@ class BaseFoobnixControls():
     def append_to_current_notebook(self, beans):
         self.notetabs.append_all(beans)
 
-    def next(self):        
+    def next(self):
+        if self.play_lock.locked():
+            self.play_lock.release()        
         bean = self.notetabs.next()
         if not bean:
             return
@@ -694,7 +696,7 @@ class BaseFoobnixControls():
             if os.path.isdir(bean.path):
                 return None
             if bean.path.startswith("http://"):
-                if not self.check_path(bean):
+                if not self.check_path(bean.path):
                     path = self.net_wrapper.execute(self.vk_service.find_one_track, bean.get_display_name()).path
                     if path:
                         bean.path = path
