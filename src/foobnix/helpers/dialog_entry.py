@@ -63,11 +63,18 @@ def one_line_dialog(dialog_title, parent=None, entry_text=None, message_text1=No
         if message_text2:
             dialog.format_secondary_markup(message_text2)     
         
+        
         entry = gtk.Entry()
+        
+        '''set last widget in action area as default widget (button OK)'''
+        dialog.set_default_response(gtk.RESPONSE_OK) 
+        
+        '''activate default widget after Enter pressed in entry'''
+        entry.set_activates_default(True)
         
         if entry_text:
             entry.set_text(entry_text)
-        dialog.vbox.pack_end(entry, True, True, 0)
+        dialog.vbox.pack_start(entry, True, True, 0)
         dialog.show_all()
         
         dialog.run()
@@ -106,6 +113,14 @@ def two_line_dialog(dialog_title, parent=None, message_text1=None,
         hbox.pack_start(password_entry, False, False, 0)
         dialog.vbox.pack_start(hbox, True, True, 0)
         dialog.show_all()
+        
+        '''set last widget in action area as default widget (button OK)'''
+        dialog.set_default_response(gtk.RESPONSE_OK) 
+        
+        '''activate default widget after Enter pressed in entry'''
+        login_entry.set_activates_default(True)
+        password_entry.set_activates_default(True)
+        
         dialog.run()
         login_text = login_entry.get_text()
         password_text = password_entry.get_text()
