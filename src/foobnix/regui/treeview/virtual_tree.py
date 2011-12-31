@@ -35,9 +35,10 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
     def activate_perspective(self):
    
         FC().left_perspective = LEFT_PERSPECTIVE_VIRTUAL
+    
     def on_key_release(self, w, e):
         if is_key(e, KEY_DELETE):
-            self.delete_playlist()
+            self.delete_selected()
     
     def on_drag_drop_finish(self):
         FCache().cache_virtual_tree_beans = self.get_all_beans()
@@ -76,7 +77,10 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         bean = self.get_selected_bean()
         folder_bean = FModel(name)
         if bean:
-            folder_bean.add_parent(bean.parent_level)
+            if bean.is_file:
+                folder_bean.add_parent(bean.parent_level)
+            else:
+                folder_bean.add_parent(bean.level)
         self.append(folder_bean)      
     
     def rename_selected(self):

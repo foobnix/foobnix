@@ -750,6 +750,10 @@ class DragDropTree(gtk.TreeView):
                     new_iter = self.model.insert_after(None, last_folder_iter, row)
                     self.hash[bean.level] = new_iter
                     return
+                else:
+                    new_iter = self.model.prepend(parent_iter_exists, row)
+                    self.hash[bean.level] = new_iter
+                    return
         else:
             parent_iter_exists = None
                
