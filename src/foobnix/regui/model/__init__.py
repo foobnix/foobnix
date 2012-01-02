@@ -78,22 +78,22 @@ class FModel(FTreeModel):
            
     def create_from_text(self, text):
         self.text = text
-        if "-" in text:
-            list = text.split("-")
+        if " - " in text:
+            list = text.split(" - ")
             self.add_artist(list[0].strip()).add_title(list[1].strip())
         return self
     
     
     def get_artist_from_text(self):
-        if  "-" in self.text:
-            list = self.text.split("-")
+        if  " - " in self.text:
+            list = self.text.split(" - ")
             return list[0].strip() 
         else:
             return None;
     
     def get_title_from_text(self):
-        if "-" in self.text:
-            list = self.text.split("-")
+        if " - " in self.text:
+            list = self.text.split(" - ")
             return list[1].strip() 
         else:
             return None;
@@ -101,13 +101,13 @@ class FModel(FTreeModel):
     def get_display_name(self):
         if self.artist and self.title:
             text = self.artist + " - " + self.title
-            text.replace("/", "-")
-            text.replace("\\", "-")
+            text.replace("/", " - ")
+            text.replace("\\", " - ")
             return text.strip()
         else:
             text = "" + self.text
-            text.replace("/", "-")
-            text.replace("\\", "-")
+            text.replace("/", " - ")
+            text.replace("\\", " - ")
             return text.strip()
     
     def get_save_to(self):

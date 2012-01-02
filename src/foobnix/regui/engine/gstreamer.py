@@ -36,7 +36,8 @@ class GStreamerEngine(MediaPlayerEngine):
         
         self.current_state = STATE_STOP
         self.remembered_seek_position = 0
-
+        self.error_counter = 0
+        
     def get_state(self):
         return self.current_state
     
@@ -81,10 +82,11 @@ class GStreamerEngine(MediaPlayerEngine):
     def notify_eos(self):
         logging.debug("Notify eos, STOP State")
         self.controls.notify_eos()
-        
         self.set_state(STATE_STOP)
 
     def notify_title(self, text):
+        if not text:
+            return
         if self.bean.type == FTYPE_RADIO:
             "notify radio playing"
             self.controls.notify_title(text)
@@ -132,13 +134,11 @@ class GStreamerEngine(MediaPlayerEngine):
         if path.startswith("http://"):
             self.radio_path = get_radio_source(path)
             logging.debug("Try To play path " + self.radio_path)
-            
+            uri = self.radio_path
             if self.bean.type == FTYPE_RADIO:
                 time.sleep(2)
-                    
-            uri = self.radio_path
-
-            self.notify_title(uri)
+            else:
+                self.notify_title(uri)
         else:
             uri = 'file://' + urllib.pathname2url(path)
             if os.name == 'nt':
@@ -354,30 +354,56 @@ class GStreamerEngine(MediaPlayerEngine):
     def on_message(self, bus, message):
         type = message.type
         
-        
         if type == gst.MESSAGE_BUFFERING:
             return
         
         #logging.debug("Message type %s" % type)
         #logging.debug("Message %s" % message)
         
-        if type in [ gst.MESSAGE_STATE_CHANGED, gst.MESSAGE_STREAM_STATUS]:            
-            pass
+        if type == gst.MESSAGE_ERROR:
+            err, debug = message.parse_error()
+            logging.warn("Error: " + str(err) + str(debug) + str(err.domain) + str(err.code))
+            
+            if self.error_counter > 1 and err.code != 1:
+                self.notify_error(str(err))
+                self.error_counter = 0
+            else:
+                logging.warning("Error ocured, retry")
+                self.error_counter += 1
+                self.play(self.bean)
+                
+        
+        elif type in [gst.MESSAGE_STATE_CHANGED, gst.MESSAGE_STREAM_STATUS]:            
+            if (self.bean.type == FTYPE_RADIO and
+                message.structure.has_field("new-state") and
+                message.structure['old-state'] == gst.STATE_READY and
+                message.structure['new-state'] == gst.STATE_NULL):
+                logging.info("Reconnect")
+                self.play(self.bean)
+                return
+            
 
         if type == gst.MESSAGE_TAG  and message.parse_tag():
+            self.error_counter = 0
+            artist = ""; title = ""
+            
             if message.structure.has_field("title"):
                 title = message.structure['title']
                 title = decode_cp866(title)
-                self.notify_title(title)
-
+                text = title
+                if message.structure.has_field("artist"):
+                    artist = message.structure['artist']
+                    artist = decode_cp866(artist)
+                    text = artist + " - " + text
+                if (self.bean.type == FTYPE_RADIO and
+                    message.structure.has_field("bitrate")):
+                    text = text + " (bitrate: " + str(message.structure['bitrate']) + ")"
+                self.notify_title(text)
+        
         elif type == gst.MESSAGE_EOS:
+            self.error_counter = 0
             logging.info("MESSAGE_EOS")
             self.notify_eos()
-        elif type == gst.MESSAGE_ERROR:
-            err, debug = message.parse_error()
-            logging.warn("Error: " + str(err) + str(debug) + str(err.domain) + str(err.code))
-
-            if err.code != 1:
-                self.notify_error(str(err))
-
+            
+        
             
