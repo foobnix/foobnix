@@ -352,10 +352,10 @@ class DragDropTree(gtk.TreeView):
             elif not i:
                 bean = FModel(_("m3u playlist: ") + path).add_is_file(False).add_font("bold")
             else:
-                bean = FModel(path, path).parent(parent)
+                bean = FModel(path, path).add_is_file(True).parent(parent)
             
             row = self.fill_beans_and_get_rows([bean])[0]                               
-                        
+                       
             if new_iter:
                 to_iter = new_iter
             new_iter = self.to_add_drag_item(to_tree, to_model, to_iter, pos, None,  row=row)
@@ -378,7 +378,7 @@ class DragDropTree(gtk.TreeView):
                 self.row_to_remove.append(ref)
         
         if to_iter:
-            if (self.model.get_value(to_iter, FTreeModel().is_file[0]) and
+            if (to_model.get_value(to_iter, FTreeModel().is_file[0]) and
                 pos in (INTO_OR_BEFORE,INTO_OR_AFTER)):
                 pos = AFTER
             if pos in (INTO_OR_BEFORE,INTO_OR_AFTER):
