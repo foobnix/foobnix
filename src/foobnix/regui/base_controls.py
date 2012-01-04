@@ -458,7 +458,7 @@ class BaseFoobnixControls():
                 if bean.iso_path and os.path.exists(bean.iso_path):
                     logging.info("Try to remount " + bean.iso_path)
                     mount_tmp_iso(bean.iso_path)
-                else:
+                elif not bean.path.startswith("http"):
                     logging.error("File " + bean.path + " not found")
             elif os.path.isdir(bean.path):
                     return None
@@ -467,7 +467,8 @@ class BaseFoobnixControls():
         self.start_time = False      
         
         if not get_file_extension(bean.path) in FC().video_formats:
-            self.update_info_panel(bean)
+            if bean.type != FTYPE_RADIO:
+                self.update_info_panel(bean)
             self.set_visible_video_panel(False)
             
     def notify_playing(self, pos_sec, dur_sec, bean, sec):
@@ -497,15 +498,14 @@ class BaseFoobnixControls():
         
         self.statusbar.set_text(text)
         text = normalize_text(text)
-        self.seek_bar.set_text(text)       
-        t_bean = FModel(text).create_from_text(text)                       
+        self.seek_bar.set_text(text)    
+        t_bean = FModel(text).add_type(FTYPE_RADIO).create_from_text(text)                       
         self.update_info_panel(t_bean)
-        
         if FC().enable_radio_scrobbler:
             start_time = str(int(time.time()))
             self.net_wrapper.execute(self.lastfm_service.report_now_playing, t_bean)
                     
-            if "-" in text and self.chache_text != text:
+            if " - " in text and self.chache_text != text:
                 text = self.chache_text
                 self.net_wrapper.execute(self.lastfm_service.report_scrobbled, t_bean, start_time, 200)
                 

@@ -143,7 +143,11 @@ class RadioTreeControl(CommonTreeControl):
                 previous = {"bean": None, "depth": 0, "name": '', "url": ''} 
                 for line in list:
                     depth = self.simbol_counter(line, '-')
-                    name = line[depth : line.index('#')]
+                    try:
+                        name = line[depth : line.index('#')]
+                    except ValueError, e:
+                        logging.warning('\'#\' ' + str(e) + ' in line \"' + line + '\"')
+                        continue
                     url = line[line.index('#') + 1 : -1]
                     bean = FModel(name)
                     if url:
