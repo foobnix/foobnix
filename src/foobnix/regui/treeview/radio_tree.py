@@ -222,7 +222,7 @@ class MyRadioTreeControl(RadioTreeControl):
                     menu.add_item(_("Rename Group"), gtk.STOCK_EDIT, self.on_rename_group, None)
                     menu.add_item(_("Delete Group"), gtk.STOCK_DELETE, self.delete_selected, None)
             menu.show(e)
-    
+        
     def on_key_release(self, w, e):
         if is_key(e, KEY_DELETE):
             self.delete_selected()

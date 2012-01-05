@@ -14,7 +14,6 @@ import logging
 import os.path
 import threading
 
-from foobnix.cue.cue_reader import CueReader
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
 from foobnix.helpers.dialog_entry import info_dialog
@@ -90,15 +89,18 @@ class DragDropTree(gtk.TreeView):
         self.current_view = VIEW_TREE
     
     def updates_tree_structure(self):
+        self.hash.clear()
         for row in self.model:
             row[self.parent_level[0]] = None
-            row[self.level[0]] = uuid.uuid4().hex             
+            row[self.level[0]] = uuid.uuid4().hex
+            self.hash[row[self.level[0]]] = row.iter         
             self.update_tree_structure_row_requrcive(row)
     
     def update_tree_structure_row_requrcive(self, row):        
         for child in row.iterchildren():
             child[self.parent_level[0]] = row[self.level[0]]
-            child[self.level[0]] = uuid.uuid4().hex   
+            child[self.level[0]] = uuid.uuid4().hex
+            self.hash[child[self.level[0]]] = child.iter    
             self.update_tree_structure_row_requrcive(child)
    
     def get_bean_from_model_iter(self, model, iter):
@@ -246,7 +248,6 @@ class DragDropTree(gtk.TreeView):
                     
         """do not copy to himself"""
         if to_tree == from_tree and ff_path == to_filter_path:
-            #drag_context.finish(False, False)
             return None
            
         """if m3u is dropped"""
@@ -299,7 +300,6 @@ class DragDropTree(gtk.TreeView):
             self.updates_tree_structure()
                 
         if tree.current_view == VIEW_PLAIN:              
-            #self.rebuild_as_plain()
             self.update_tracknumber()
     
     def change_filepaths_in_row(self, model, iter, filepath):
@@ -363,13 +363,6 @@ class DragDropTree(gtk.TreeView):
         return True
     
     def to_add_drag_item(self, to_tree, to_model, to_iter,  pos, ref=None, child=False, row=None):    
-        if (to_tree and hasattr(to_tree, "current_view") 
-                    and to_tree.current_view == VIEW_PLAIN):
-            if pos == INTO_OR_BEFORE:
-                pos = BEFORE
-            elif pos == INTO_OR_AFTER:
-                pos = AFTER
-        
         if not row:
             from_iter = self.get_iter_from_row_reference(ref)
             from_model = ref.get_model()
@@ -377,8 +370,15 @@ class DragDropTree(gtk.TreeView):
             if not child and self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
                 self.row_to_remove.append(ref)
         
+        if (to_tree and hasattr(to_tree, "current_view") 
+                    and to_tree.current_view == VIEW_PLAIN):
+            if pos == INTO_OR_BEFORE:
+                pos = BEFORE
+            elif pos == INTO_OR_AFTER:
+                pos = AFTER
+                
         if to_iter:
-            if (to_model.get_value(to_iter, FTreeModel().is_file[0]) and
+            if (to_model.get_value(to_iter, self.is_file[0]) and
                 pos in (INTO_OR_BEFORE,INTO_OR_AFTER)):
                 pos = AFTER
             if pos in (INTO_OR_BEFORE,INTO_OR_AFTER):
@@ -395,25 +395,21 @@ class DragDropTree(gtk.TreeView):
                 new_iter = to_model.append(None, row)
         else:
             new_iter = to_model.append(None, row)
-     
+        
+        #to_tree.hash[row[self.level[0]]] = new_iter
         return new_iter
 
     def iter_is_parent(self, ff_row_ref, ff_model, to_tree, to_model, to_parent_iter, pos=INTO_OR_AFTER):
         ff_iter = self.get_iter_from_row_reference(ff_row_ref)
-        refs = self.content_filter(ff_iter, ff_model) 
+        #refs = self.content_filter(ff_iter, ff_model)
+        refs = []
+        for n in xrange(ff_model.iter_n_children(ff_iter)):
+            ff_child_iter = ff_model.iter_nth_child(ff_iter, n)
+            refs.append(self.get_row_reference_from_iter(ff_model, ff_child_iter)) 
+        
         for ref in refs:
             iter = self.get_iter_from_row_reference(ref)
-            file_name = ff_model.get_value(iter, self.path[0])
-            ext = get_file_extension(file_name)
-            if ext == ".cue" and to_tree.current_view == VIEW_PLAIN:
-                last_iter = to_parent_iter
-                cue_beans = CueReader(file_name).get_common_beans()
-                for bean in cue_beans:
-                    row = self.get_row_from_bean(bean)
-                    to_child_iter = self.to_add_drag_item(to_tree, to_model, last_iter, None, None, child=True, row=row)
-                    last_iter = to_child_iter
-            else:
-                to_child_iter = self.to_add_drag_item(to_tree, to_model, to_parent_iter, pos, ref, child=True)
+            to_child_iter = self.to_add_drag_item(to_tree, to_model, to_parent_iter, pos, ref, child=True)
             
             """Iters have already changed. Redefine"""
             iter = self.get_iter_from_row_reference(ref)
@@ -431,6 +427,7 @@ class DragDropTree(gtk.TreeView):
         for n in xrange(from_model.iter_n_children(from_iter)):
             from_child_iter = from_model.iter_nth_child(from_iter, n)
             row_reference = self.get_row_reference_from_iter(from_model, from_child_iter)
+                     
             ext = get_file_extension(from_model.get_value(from_child_iter, self.path[0]))
             if ext in [".m3u", ".m3u8"]: 
                 logging.info("m3u is found. Skip it")
@@ -706,10 +703,7 @@ class DragDropTree(gtk.TreeView):
         for one in beans:
             one.update_uuid() 
             row = self.get_row_from_bean(one)            
-            """append to tree thread safe"""
             
-            
-            """append to tree thread safe end"""
             logging.debug(row)
             self.model.append(parent_iter, row)            
             
@@ -724,7 +718,7 @@ class DragDropTree(gtk.TreeView):
             row = self.get_row_from_bean(one)
             rows.append(row)
         return rows
-        
+    
     def tree_append(self, bean):
         if not bean:
             return
@@ -739,8 +733,8 @@ class DragDropTree(gtk.TreeView):
         
         last_folder_iter = None
         
-        row = self.get_row_from_bean(bean)    
-
+        row = self.get_row_from_bean(bean)
+        
         if self.hash.has_key(bean.get_parent()):
             parent_iter_exists = self.hash[bean.get_parent()]
             if not bean.is_file:
@@ -748,7 +742,7 @@ class DragDropTree(gtk.TreeView):
                     iter = self.model.iter_nth_child(parent_iter_exists, i)
                     if not self.model.get_value(iter, self.is_file[0]):
                         last_folder_iter = iter
-                        
+                                                
                 if last_folder_iter:
                     new_iter = self.model.insert_after(None, last_folder_iter, row)
                     self.hash[bean.level] = new_iter
@@ -759,6 +753,6 @@ class DragDropTree(gtk.TreeView):
                     return
         else:
             parent_iter_exists = None
-               
+        
         parent_iter = self.model.append(parent_iter_exists, row)
         self.hash[bean.level] = parent_iter
