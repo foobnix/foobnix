@@ -102,12 +102,12 @@ def rename_file_on_disk(row, index_path, index_text):
     dialog.destroy()
 
 def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):            
-    for path in paths[:] :
+    '''for path in paths[:] :
         if os.path.isdir(path):
             for row_ref, _path in zip(row_refs[:], paths[:]):
                 if path != _path and _path.startswith(path):
                     paths.remove(_path)
-                    row_refs.remove(row_ref)
+                    row_refs.remove(row_ref)'''
             
     title = _('Delete file(s) / folder(s)')
     label = gtk.Label(_('Do you really want to delete item(s) from disk?'))

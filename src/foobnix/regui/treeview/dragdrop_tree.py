@@ -212,7 +212,6 @@ class DragDropTree(gtk.TreeView):
                                  " Please retry!"))
                     return
             if files and copy_move_files_dialog(files, dest_folder, self.copy):
-                is_copy_move = True
                 text = _("Copying:") if self.copy == gtk.gdk.ACTION_COPY else _("Replacing:") #@UndefinedVariable
                 self.pr_window = CopyProgressWindow(_("Progress"), files, 300, 100)
                 self.pr_window.label_from.set_text(text)
@@ -220,9 +219,37 @@ class DragDropTree(gtk.TreeView):
                 for ff_path, ff_row_ref, file in zip(ff_paths, ff_row_refs, files):
                     new_path = self.replace_inside_navig_tree(file, dest_folder)
                     if not new_path: continue
-                    self.one_row_replacing(ff_row_ref, ff_path, ff_model, from_tree,
-                        to_tree, to_model, to_iter, to_filter_pos, to_filter_path,
-                        new_iter, new_path, is_copy_move)
+                    row = to_model[ff_path]
+                    new_row = list(row)
+                    if to_iter:
+                        if to_model.get_value(to_iter, self.is_file[0]):
+                            new_row[self.parent_level[0]] = to_model.get_value(to_iter, self.parent_level[0])
+                            new_dir = os.path.dirname(to_model.get_value(to_iter, self.path[0]))
+                        else:
+                            new_row[self.parent_level[0]] = to_model.get_value(to_iter, self.level[0])
+                            new_dir = to_model.get_value(to_iter, self.path[0])
+                    else:
+                        new_row[self.parent_level[0]] = None
+                        if self.model[0][self.is_file[0]]:
+                            new_dir = os.path.dirname(self.model[0][self.path[0]])
+                        else:
+                            new_dir = self.model[0][self.path[0]]
+                    new_row[self.path[0]] = os.path.join(new_dir, os.path.basename(row[self.path[0]]))
+                               
+                    self.tree_insert_row(new_row)
+                    
+                    def task(row):
+                        for child_row in row.iterchildren():
+                            child_row[self.path[0]] = os.path.join(row[self.path[0]], os.path.basename(child_row[self.path[0]]))
+                            self.tree_insert_row(child_row)
+                            task(child_row)
+                            if self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
+                                self.row_to_remove.append(self.get_row_reference_from_iter(ff_model, 
+                                                            ff_model.convert_child_iter_to_iter(child_row.iter)))
+                    task(row)
+                    if self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
+                        self.row_to_remove.append(ff_row_ref)
+                    
                 self.remove_replaced(ff_model)
                 self.pr_window.destroy()
                 self.save_beans_from_tree()
@@ -756,3 +783,28 @@ class DragDropTree(gtk.TreeView):
         
         parent_iter = self.model.append(parent_iter_exists, row)
         self.hash[bean.level] = parent_iter
+        
+    def tree_insert_row(self, row):
+        last_folder_iter = None
+        
+        if self.hash.has_key(row[self.parent_level[0]]):
+            parent_iter_exists = self.hash[row[self.parent_level[0]]]
+            if not row[self.is_file[0]]:
+                for i in xrange(self.model.iter_n_children(parent_iter_exists)):
+                    iter = self.model.iter_nth_child(parent_iter_exists, i)
+                    if not self.model.get_value(iter, self.is_file[0]):
+                        last_folder_iter = iter
+                                                
+                if last_folder_iter:
+                    new_iter = self.model.insert_after(None, last_folder_iter, row)
+                    self.hash[row[self.level[0]]] = new_iter
+                    return
+                else:
+                    new_iter = self.model.prepend(parent_iter_exists, row)
+                    self.hash[row[self.level[0]]] = new_iter
+                    return
+        else:
+            parent_iter_exists = None
+        
+        parent_iter = self.model.append(parent_iter_exists, row)
+        self.hash[row[self.level[0]]] = parent_iter
