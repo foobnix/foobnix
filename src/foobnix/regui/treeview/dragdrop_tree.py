@@ -460,7 +460,7 @@ class DragDropTree(gtk.TreeView):
                             and get_file_extension(b.path) not in [".m3u", ".m3u8"]):
                                 m3u_beans_for_delete.append(bean)
                                 break
-                    task(beans)
+                    return task(beans)
                     
                 if path and (get_file_extension(path) == ".cue" 
                     and bean not in checked_cue_beans):
