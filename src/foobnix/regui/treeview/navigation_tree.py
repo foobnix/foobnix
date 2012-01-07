@@ -157,22 +157,10 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         row, index_path, index_text = a
         if rename_file_on_disk(row, index_path, index_text):
             self.save_beans_from_tree()
-            """old_bean = self.get_selected_bean()
-            beans = FCache().cache_music_tree_beans[self.controls.tabhelper.get_current_page()]
-            for bean in beans:
-                if old_bean == bean:
-                    bean.path = row[index_path]
-                    bean.text = row[index_text]
-                    break"""
-    
+                
     def delete_files(self, a):
         row_refs, paths, get_iter_from_row_reference = a
-        #copy_paths = paths[:]
         if delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
-            '''beans = FCache().cache_music_tree_beans[self.controls.tabhelper.get_current_page()]
-            for bean in beans[:] :
-                if bean.path in copy_paths:
-                    beans.remove(bean)'''
             self.delete_selected()
             self.save_beans_from_tree()
     
@@ -183,18 +171,11 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         bean = FModel(os.path.basename(new_folder_path), new_folder_path).add_is_file(False)
         if os.path.isfile(file_path):
             bean.add_parent(row[self.parent_level[0]])
-            '''iter = model.get_iter(tree_path)
-            parent = model.iter_parent(iter)'''
         elif os.path.isdir(file_path):
             bean.add_parent(row[self.level[0]])
-            '''parent = model.get_iter(tree_path)'''
         else:
             logging.error("So path doesn't exist")
         self.tree_append(bean)
-        '''bean.font = "bold"
-        bean.visible = True
-        row = self.get_row_from_bean(bean)
-        model.prepend(parent, row)'''
         self.save_beans_from_tree()
                 
     def add_to_tab(self, current=False):

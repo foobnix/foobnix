@@ -191,7 +191,6 @@ class DragDropTree(gtk.TreeView):
         ff_row_refs = [gtk.TreeRowReference(ff_model, ff_path) for ff_path in ff_paths]
         
         """to tree is NavigationTreeControl"""
-        is_copy_move = False
         if isinstance(self, self.controls.tree.__class__):
             if from_tree is not to_tree:
                 return
