@@ -173,15 +173,18 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         if not self.bean:
             return None
-        def task():
+        def update_info_panel_task():
             self.show_disc_cover()
             self.show_album_title()
             if self.controls.coverlyrics.get_property("visible"):
-                self.show_similar_lyrics()
+                try:
+                    self.show_similar_lyrics()
+                except Exception, e:
+                    logging.error("Can't get lyrics. " + type(e).__name__ + ": " + e.message) 
             if self.info_cache.active_method:
                 self.info_cache.active_method()
     
-        self.controls.in_thread.run_with_progressbar(task)
+        self.controls.in_thread.run_with_progressbar(update_info_panel_task)
         
     def update(self, bean):
         if not self.controls.net_wrapper.is_internet():

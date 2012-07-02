@@ -162,7 +162,7 @@ class BaseFoobnixControls():
         if not paths:
             paths = directory_chooser_dialog(_("Choose folders to open"), FC().last_dir)
         if paths:
-            def task():
+            def on_add_folders_task():
                 path = paths[0]
                 list = path.split("/")
                 FC().last_dir = path[:path.rfind("/")]
@@ -182,7 +182,7 @@ class BaseFoobnixControls():
                 else:
                     self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
                     
-            self.in_thread.run_with_progressbar(task)
+            self.in_thread.run_with_progressbar(on_add_folders_task)
     
     def on_add_files(self, paths=None, tab_name=None):
         
@@ -555,7 +555,7 @@ class BaseFoobnixControls():
         self.in_thread.run_with_progressbar(inline)
     
     def search_all_tracks(self, query):
-        def inline():
+        def search_all_tracks_task():
             results = self.vk_service.find_tracks_by_query(query)
             if not results:
                 results = []
@@ -571,10 +571,10 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
             
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline, no_thread=True)
+        self.in_thread.run_with_progressbar(search_all_tracks_task, no_thread=True)
 
     def search_top_tracks(self, query):
-        def inline(query):
+        def search_top_tracks_task(query):
             results = self.lastfm_service.search_top_tracks(query)
             if not results:
                 results = []
@@ -590,11 +590,11 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
                 
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline, query)
+        self.in_thread.run_with_progressbar(search_top_tracks_task, query)
 
 
     def search_top_albums(self, query):
-        def inline(query):
+        def search_top_albums_task(query):
             results = self.lastfm_service.search_top_albums(query)
             if not results:
                 results = []
@@ -620,10 +620,10 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
                 self.notetabs.append_all(all)
                                    
-        self.in_thread.run_with_progressbar(inline, query)
+        self.in_thread.run_with_progressbar(search_top_albums_task, query)
 
     def search_top_similar(self, query):
-        def inline(query):
+        def search_top_similar_task(query):
             results = self.lastfm_service.search_top_similar_artist(query)
             if not results:
                 results = []
@@ -645,10 +645,10 @@ class BaseFoobnixControls():
                      
             
         #inline(query)
-        self.in_thread.run_with_progressbar(inline, query)
+        self.in_thread.run_with_progressbar(search_top_similar_task, query)
 
     def search_top_tags(self, query):
-        def inline(query):
+        def search_top_tags_task(query):
             results = self.lastfm_service.search_top_tags(query)
             if not results:
                 logging.debug("tag result not found")
@@ -671,7 +671,7 @@ class BaseFoobnixControls():
                 self.notetabs.append_all(all)
         
         #inline(query)
-        self.in_thread.run_with_progressbar(inline, query)
+        self.in_thread.run_with_progressbar(search_top_tags_task, query)
 
     def update_info_panel(self, bean):
         self.info_panel.update(bean)
