@@ -255,11 +255,11 @@ class BaseFoobnixControls():
             self.tree.is_empty = True
             
             if FCache().tab_names[0]:
-                self.tabhelper.label.set_label(FCache().tab_names[0] + " ")
+                self.tabhelper.get_nth_page(0).get_child().label.set_label(FCache().tab_names[0] + " ")
         else:
             tabs = len(FCache().cache_music_tree_beans)
             self.tree.simple_append_all(FCache().cache_music_tree_beans[tabs - 1])
-            self.tabhelper.label.set_label(FCache().tab_names[tabs - 1] + " ")
+            self.tabhelper.get_nth_page(0).get_child().label.set_label(FCache().tab_names[tabs - 1] + " ")
             for tab in xrange(tabs - 2, -1, -1):
                 
                 tree = NavigationTreeControl(self)

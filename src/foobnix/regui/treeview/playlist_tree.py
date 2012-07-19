@@ -31,12 +31,15 @@ class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
         
+        self.menu = Popup()
+        self.full_name = ""
+        self.label = gtk.Label()
+        
         self.set_headers_visible(True)
         self.set_headers_clickable(True)
         self.set_reorderable(True)
+           
         
-        self.menu = Popup()
-
         """Column icon"""
         self.icon_col = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         self.icon_col.key = "*"

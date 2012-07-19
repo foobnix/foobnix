@@ -25,6 +25,7 @@ from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
 from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 from foobnix.util.mouse_utils import is_double_left_click, is_double_middle_click, \
     is_middle_click, is_rigth_click
+from foobnix.util.string_utils import crop_string
 
 
 class TabGeneral(gtk.Notebook, FControl):
@@ -33,7 +34,7 @@ class TabGeneral(gtk.Notebook, FControl):
         FControl.__init__(self, controls)
         self.controls = controls
         self.set_scrollable(True)
-        
+                
     def to_eventbox(self, widget, tab_child):
         event = gtk.EventBox()
         event.add(widget)
@@ -48,9 +49,17 @@ class TabGeneral(gtk.Notebook, FControl):
             return tab_close_button(func=self.on_delete_tab, arg=tab_child)
         elif FC().tab_close_element == "label":
             return notetab_label(func=self.on_delete_tab, arg=tab_child, angle=90)
-            
-    def get_text_label_from_tab(self, tab_child, need_box_lenth=False):
-        eventbox = self.get_tab_label(tab_child)
+    
+    def get_full_tab_name(self, tab):
+        tab_content = tab.get_child()
+        return tab_content.full_name
+    
+    def set_full_tab_name(self, tab, name):
+        tab_content = tab.get_child()
+        tab_content.full_name = name
+        
+    def get_text_label_from_tab(self, tab, need_box_lenth=False):
+        eventbox = self.get_tab_label(tab)
         box = eventbox.get_child()
         box_lenth = len(box.get_children())
         
@@ -64,52 +73,59 @@ class TabGeneral(gtk.Notebook, FControl):
             return text_of_label, box_lenth
         else: return text_of_label
     
-    def on_rename_tab(self, tab_child, angle=0, name_list=None):
-        """get old label value"""
-        n = self.page_num(tab_child)
-        old_label_text, box_lenth = self.get_text_label_from_tab(tab_child, True)
+    def rename_tab(self, tab, new_full_name, name_list=None):
+        try:
+            logging.info("encoding of tab name is " + new_full_name)
+            new_full_name = unicode(new_full_name) #convert from any encoding in ascii
+            logging.info("encoding finished " + new_full_name)
+        except:
+            logging.warn("problem of encoding definition for tab name is occured")
+        self.set_full_tab_name(tab, new_full_name)
+        new_label_text = crop_string(new_full_name, FC().len_of_tab)
+        self.get_tab_label(tab).activate()
+        tab.get_child().label.set_text(new_label_text + ' ')
+        if name_list:
+            n = self.page_num(tab)
+            name_list[n] = new_label_text
+                
+    def on_rename_tab(self, tab, angle=0, name_list=None):
+               
+        old_name = self.get_full_tab_name(tab)
         
         window = gtk.Window()
         window.set_decorated(False)
         window.set_position(gtk.WIN_POS_MOUSE)
         window.set_border_width(5)
         entry = gtk.Entry()
-        entry.set_text(old_label_text)
+        entry.set_text(old_name)
         entry.show()
         
-        def on_key_press(w, e):
+        def on_key_press(window, e):
             if is_key(e, 'Escape'):
                 window.hide()
-                entry.set_text(old_label_text)
+                entry.set_text(old_name)
             elif is_key(e, 'Return'):
                 window.hide()
-                new_label_text = entry.get_text()
-                if new_label_text:
-                    label = gtk.Label(new_label_text + ' ')
-                    label.set_angle(angle)
-                    if angle:
-                        new_box = gtk.VBox()
-                        if box_lenth > 1:
-                            new_box.pack_start(self.button(tab_child.get_child()), False, False)
-                        new_box.pack_end(label, False, False)
-                    else:
-                        new_box = gtk.HBox()
-                        if box_lenth > 1:
-                            new_box.pack_end(self.button(tab_child.get_child()), False, False)
-                        new_box.pack_start(label, False, False)
-                    event = self.to_eventbox(new_box, tab_child)
-                    self.set_tab_label(tab_child, event)
-                    if name_list:
-                        name_list[n] = new_label_text
+                new_full_name = entry.get_text()
+                if new_full_name:
+                    self.rename_tab(tab, new_full_name, name_list)
         
-        def on_focus_out(*a):
+        def on_focus_out(window, e):
             window.hide()
-            entry.set_text(old_label_text)
+            entry.set_text(old_name)
             
         window.connect("key_press_event", on_key_press)
         window.connect("focus-out-event", on_focus_out)
         window.add(entry)
         window.show_all()
+        
+    def crop_all_tab_names(self):
+        number_of_tabs = self.get_n_pages()
+        if number_of_tabs > 0:
+            min = 1 if self.navig else 0
+            for page in xrange(number_of_tabs - 1, min, -1):
+                tab = self.get_nth_page(page)
+                self.rename_tab(tab, tab.get_child().full_name)
     
     def append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None, optimization=False):
         def task():
@@ -117,56 +133,59 @@ class TabGeneral(gtk.Notebook, FControl):
         gobject.idle_add(task)
         
         
-    def _append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None, optimization=False):
+    def _append_tab(self, full_name=_("Empty tab"), beans=None, navig_tree=None, optimization=False):
         logging.info("append new tab")
-        self.last_notebook_page = name
+        self.last_notebook_page = full_name
         try:
-            logging.info("encoding of tab name is " + name)
-            name = unicode(name) #convert from any encoding in ascii
-            logging.info("encoding finished " + name)
+            logging.info("encoding of tab name is " + full_name)
+            full_name = unicode(full_name) #convert from any encoding in ascii
+            logging.info("encoding finished " + full_name)
         except:
             logging.warn("problem of encoding definition for tab name is occured")
         
-        if name and (FC().len_of_tab > -1) and (len(name) > FC().len_of_tab):
-            name = name[:FC().len_of_tab]
-        
-        """label"""
-        if name.endswith(" "):
-            self.label = gtk.Label(name)
-        else:
-            self.label = gtk.Label(name + " ")
+        visible_name = crop_string(full_name, FC().len_of_tab)
         
         if navig_tree:
             self.navig = True
-            tab_content = navig_tree.scroll
-            self.label.set_angle(90)
+            tab = navig_tree.scroll
+            tab_content = navig_tree
+            tab_content.label.set_angle(90)
         else:
             self.navig = False
-            tab_content = self.create_notebook_tab(beans, optimization)
-            self.label.set_angle(self.default_angle)
-        self.label.show()    
+            tab_content = self.create_notebook_content(beans, optimization)
+            tab_content.label.set_angle(self.default_angle)
+            tab = self.create_notebook_tab(tab_content)
+        
+        tab_content.full_name = full_name
+        
+        """label"""
+        if visible_name.endswith(" "):
+            tab_content.label.set_text(visible_name)
+        else:
+            tab_content.label.set_text(visible_name + " ")
+        tab_content.label.show()    
         
         if FC().tab_position == "left" or navig_tree:
             """container Vertical Tab"""
             box = gtk.VBox(False, 0)
             box.show()
             if FC().tab_close_element:
-                box.pack_start(self.button(tab_content), False, False, 0)
-            box.pack_end(self.label, False, False, 0)
+                box.pack_start(self.button(tab), False, False, 0)
+            box.pack_end(tab_content.label, False, False, 0)
         else: 
             """container Horizontal Tab"""
             box = gtk.HBox(False, 0)
             box.show()
             if FC().tab_close_element:
-                box.pack_end(self.button(tab_content), False, False, 0)
-            box.pack_start(self.label, False, False, 0)
+                box.pack_end(self.button(tab), False, False, 0)
+            box.pack_start(tab_content.label, False, False, 0)
             
-        event = self.to_eventbox(box, tab_content)
+        eventbox = self.to_eventbox(box, tab)
                         
         """append tab"""
-        self.prepend_page(tab_content, event)
+        self.prepend_page(tab, eventbox)
                 
-        self.set_tab_reorderable(tab_content, True)
+        self.set_tab_reorderable(tab, True)
         
         if navig_tree:
             self.show_all()
@@ -292,45 +311,58 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.default_angle = 90
         self.set_show_tabs(True)
         for page in xrange(self.get_n_pages() - 1, 0, -1):
-            tab_content = self.get_nth_page(page)
-            label_text = self.get_text_label_from_tab(tab_content)
+            tab = self.get_nth_page(page)
             vbox = gtk.VBox()
-            label = gtk.Label(label_text)
-            label.set_angle(90)
+            label = tab.get_child().label
+            label.set_angle(self.default_angle)
+            
+            old_box = label.get_parent()
+            old_box.remove(label)
+            
             if FC().tab_close_element:
-                vbox.pack_start(self.button(tab_content), False, False, 0)
+                vbox.pack_start(self.button(tab), False, False, 0)
             vbox.pack_end(label, False, False, 0)
-            event = self.to_eventbox(vbox, tab_content)
-            self.set_tab_label(tab_content, event)
-        
+            vbox.set_child_visible(True)
+            vbox.show_all()
+            event = self.to_eventbox(vbox, tab)
+            self.set_tab_label(tab, event)
+            
     def set_tab_top(self):
         logging.info("Set tabs top")
         self.set_tab_pos(gtk.POS_TOP)
         self.default_angle = 0
         self.set_show_tabs(True)
         for page in xrange(self.get_n_pages() - 1, 0, -1):
-            tab_content = self.get_nth_page(page)
-            label_text = self.get_text_label_from_tab(tab_content)
+            tab = self.get_nth_page(page)
             hbox = gtk.HBox()
-            label = gtk.Label(label_text)
-            label.set_angle(0)
+            label = tab.get_child().label
+            label.set_angle(self.default_angle)
+            
+            old_box = label.get_parent()
+            old_box.remove(label)
+            
             if FC().tab_close_element:
-                hbox.pack_end(self.button(tab_content), False, False, 0)
+                hbox.pack_end(self.button(tab), False, False, 0)
             hbox.pack_start(label, False, False, 0)
-            event = self.to_eventbox(hbox, tab_content)
-            self.set_tab_label(tab_content, event)
+            hbox.set_child_visible(True)
+            hbox.show_all()
+            event = self.to_eventbox(hbox, tab)
+            self.set_tab_label(tab, event)
         
     def set_tab_no(self):
         logging.info("Set tabs no")
         self.set_show_tabs(False)
-        
-    def create_notebook_tab(self, beans, optimization=False):
+    
+    def create_notebook_content(self, beans, optimization=False):
         treeview = PlaylistTreeControl(self.controls)
         if beans: 
             if optimization:
                 treeview.simple_append_all(beans)
             else:
                 treeview.append_all(beans)
+        return treeview
+        
+    def create_notebook_tab(self, treeview):
         treeview.scroll.show_all()
         return  treeview.scroll
     
@@ -393,10 +425,10 @@ class NoteTabControl(TabGeneral, LoadSave):
         FCache().tab_pl_names = []
         if number_music_tabs > 0:
             for page in xrange(number_music_tabs, 0, -1):
-                tab_content = self.get_nth_page(page)
-                pl_tree = tab_content.get_child()
+                tab = self.get_nth_page(page)
+                pl_tree = tab.get_child()
                 FCache().cache_pl_tab_contents.append([list(row) for row in pl_tree.model])
-                FCache().tab_pl_names.append(self.get_text_label_from_tab(tab_content))
+                FCache().tab_pl_names.append(self.get_full_tab_name(tab))
                 for i, column in enumerate(pl_tree.get_columns()):
                     FC().columns[column.key][1] = i
                     if column.get_width() > 1: #to avoid recording of zero width in config
