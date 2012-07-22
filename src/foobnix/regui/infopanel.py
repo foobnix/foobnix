@@ -14,7 +14,7 @@ from foobnix.helpers.image import ImageBase
 from foobnix.helpers.textarea import TextArea
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
-from foobnix.helpers.pref_widgets import HBoxDecorator, HBoxDecoratorTrue
+from foobnix.helpers.pref_widgets import HBoxDecoratorTrue
 from foobnix.fc.fc_cache import FCache, COVERS_DIR, LYRICS_DIR 
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
@@ -170,18 +170,21 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
     def update_info_panel(self):
         if not self.controls.net_wrapper.is_internet():
             return;
-        
         if not self.bean:
             return None
-        def task():
+        
+        def update_info_panel_task():
             self.show_disc_cover()
             self.show_album_title()
             if self.controls.coverlyrics.get_property("visible"):
-                self.show_similar_lyrics()
+                try:
+                    self.show_similar_lyrics()
+                except Exception, e:
+                    logging.error("Can't get lyrics. " + type(e).__name__ + ": " + e.message) 
             if self.info_cache.active_method:
                 self.info_cache.active_method()
     
-        self.controls.in_thread.run_with_progressbar(task)
+        self.controls.in_thread.run_with_progressbar(update_info_panel_task)
         
     def update(self, bean):
         if not self.controls.net_wrapper.is_internet():
@@ -247,7 +250,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                     del dict[key]
             '''remove extra files'''
             for file in list_images:
-                if os.path.splitext(file)[0] not in dict.keys():
+                if (os.path.splitext(file)[0] not in dict.keys() 
+                   and os.path.isfile(os.path.join(COVERS_DIR, file))):
                     os.remove(os.path.join(COVERS_DIR, file))
             
             for list, key in zip(dict.values(), dict.keys()):

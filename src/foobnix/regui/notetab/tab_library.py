@@ -16,8 +16,7 @@ from foobnix.regui.notetab import TabGeneral
 class TabHelperControl(TabGeneral):
     def __init__(self, controls):
         TabGeneral.__init__(self, controls)
-        
-        
+                
         self.set_tab_pos(gtk.POS_LEFT)
         self._append_tab(navig_tree=self.controls.tree)
         

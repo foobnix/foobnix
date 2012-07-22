@@ -31,6 +31,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         CommonTreeControl.__init__(self, controls)
         
         self.controls = controls
+        self.full_name = ""
+        self.label = gtk.Label()
         
         self.set_headers_visible(True)
         self.set_headers_clickable(True)

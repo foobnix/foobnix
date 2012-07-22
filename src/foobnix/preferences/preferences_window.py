@@ -103,8 +103,8 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         FC().save()
         bean = self.navigation.get_selected_bean() 
         if bean:
-            self.populate_config_category(bean.text)               
-                
+            self.populate_config_category(bean.text) 
+               
     def hide_window(self, *a):
         self.hide()
         self.navigation.set_cursor_on_cell(0)
