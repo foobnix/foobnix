@@ -9,16 +9,28 @@ import gobject
 from threading import Timer
 from foobnix.util import LOG
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_helper import CONFIG_DIR
 
 
 def foobnix():
+    
     if "--debug" in sys.argv:
-        LOG.setup("debug")
+        for param in sys.argv:
+            if param.startswith("--log"):
+                if "=" in param:
+                    filepath = param[param.index("=")+1 : ]
+                    if filepath.startswith('~'):
+                        filepath = os.path.expanduser("~") + filepath[1 : ]
+                else:
+                    filepath = os.path.join(CONFIG_DIR, "foobnix.log")
+                print filepath
+                LOG.setup("debug", filename=filepath)
+        else:
+            LOG.setup("debug")
         LOG.print_platform_info()
     else:
         LOG.setup("error")
-        #LOG.setup("debug")
-    
+            
     from foobnix.regui.foobnix_core import FoobnixCore
     
     if "--test" in sys.argv:

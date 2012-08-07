@@ -261,7 +261,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         paths = self.get_selected_bean_paths()
         if not paths:
             return None
-        
+        logging.debug("Set play icon to selected bean")
         path = paths[0]  
                  
         iter = self.model.get_iter(path)
@@ -311,6 +311,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         return None
     
     def set_play_icon_to_bean(self, bean):
+        logging.debug("Set play icon to bean")
         def task():
             for row in self.model:
                 if row[self.UUID[0]] == bean.UUID:
