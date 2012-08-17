@@ -26,18 +26,23 @@ def add_key_binder(command, hotkey):
     except Exception, e:
         logging.warn("add_key_binder exception" + str(hotkey) + str(e))
 
-def bind_all(items):
+def bind_all():
+    for key in FC().action_hotkey:
+        command = key
+        hotkey = FC().action_hotkey[key]
+        add_key_binder(command, hotkey)
+    
+    if not FC().media_keys_enabled:
+        return
+    
     for mmkey in FC().multimedia_keys:
         command = mmkey
         hotkey = FC().multimedia_keys[mmkey]
         add_key_binder(command, hotkey)
-    for key in items:
-        command = key
-        hotkey = items[key]
-        add_key_binder(command, hotkey)               
+                   
 
 def load_foobnix_hotkeys():
-    bind_all(FC().action_hotkey)
+    bind_all()
     logging.debug("LOAD HOT KEYS")    
 
     
@@ -101,10 +106,13 @@ class HotKeysConfig(ConfigPlugin):
         hotbox.pack_start(self.hotkey_text, False, True, 0)
         hotbox.pack_start(self.hotkey_auto, False, True, 0)
         
+        self.disable_mediakeys = gtk.CheckButton(label=_("Disable Multimedia Keys"), use_underline=True)
         
         box.pack_start(self.tree_widget, False, True, 0)
         box.pack_start(hotbox, False, True, 0)
         box.pack_start(hbox, False, True, 0)
+        box.pack_start(gtk.HSeparator())
+        box.pack_start(self.disable_mediakeys)
         self.widget = box
     
     def set_action_text(self, text):
@@ -141,7 +149,11 @@ class HotKeysConfig(ConfigPlugin):
                 keybinder.unbind(items[keystring])
             except Exception, e:
                 logging.warn("unbind error %s" % str(e))
-
+        for mmkey in FC().multimedia_keys:
+            try: 
+                keybinder.unbind(FC().multimedia_keys[mmkey])
+            except Exception, e:
+                logging.warn("unbind mmkeys error %s" % str(e))
     
     def on_populate_click(self, w, event):
         if is_double_left_click(event):            
@@ -167,6 +179,8 @@ class HotKeysConfig(ConfigPlugin):
         menu.show(event)     
    
     def on_load(self):
+        if FC().media_keys_enabled == False:
+            self.disable_mediakeys.set_active(True)
         items = FC().action_hotkey
         self.model.clear()
         for key in items:
@@ -175,9 +189,13 @@ class HotKeysConfig(ConfigPlugin):
             self.model.append([command, hotkey])  
             
     def on_save(self):
+        if self.disable_mediakeys.get_active():
+            FC().media_keys_enabled = False
+        else:
+            FC().media_keys_enabled = True
         self.unbind_all()
         FC().action_hotkey = self.get_all_items()
-        bind_all(FC().action_hotkey)
+        bind_all()
         
     
     def get_all_items(self):

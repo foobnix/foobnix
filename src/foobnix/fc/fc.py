@@ -174,6 +174,8 @@ class FC():
         
         self.is_my_radio_active = False
         
+        self.media_keys_enabled = True
+        
         self.load();
     
     def delete(self):

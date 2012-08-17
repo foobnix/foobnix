@@ -23,7 +23,6 @@ def foobnix():
                         filepath = os.path.expanduser("~") + filepath[1 : ]
                 else:
                     filepath = os.path.join(CONFIG_DIR, "foobnix.log")
-                print filepath
                 LOG.setup("debug", filename=filepath)
         else:
             LOG.setup("debug")

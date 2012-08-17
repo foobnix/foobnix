@@ -203,7 +203,7 @@ class OtherConfig(ConfigPlugin):
         if FC().antiscreensaver == True:
             self.disable_screensaver.set_active(True)
             antiscreensaver()
-            
+        
         if FC().net_ping == True:
             self.net_ping.set_active(True)
             
@@ -239,7 +239,7 @@ class OtherConfig(ConfigPlugin):
             antiscreensaver()
         else:
             FC().antiscreensaver = False
-            
+                    
         if self.net_ping.get_active():
             FC().net_ping = True
         else:
