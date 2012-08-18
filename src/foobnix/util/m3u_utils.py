@@ -10,7 +10,7 @@ from foobnix.util.const import ICON_FOOBNIX
 def m3u_reader(m3u_file_path):
     try:
         lines = open(unicode(m3u_file_path)).readlines()
-        paths = [os.path.normpath(line) for line in lines if line.startswith("##") or not line.startswith("#")]
+        paths = [os.path.normpath(line).strip('\r\n') for line in lines if line.startswith("##") or not line.startswith("#")]
         dirname = os.path.dirname(m3u_file_path)
         full_paths = []
         paths = iter(paths)       
@@ -40,11 +40,13 @@ def m3u_reader(m3u_file_path):
                 text = text.strip('\r\n')
             
             if (path in "\\/"):
-                full_paths.append( [path.replace("\\", "/").strip('\r\n'), text] )
+                full_paths.append( [path.replace("\\", "/"), text] )
             elif path.startswith('http'):
-                full_paths.append( [path.strip('\r\n').replace('/', '//', 1), text] )
+                if not text: 
+                    text = path.rsplit('/', 1)[-1]
+                full_paths.append( [path.replace('/', '//', 1), text] )
             else:
-                full_paths.append([os.path.join(dirname, path).replace("\\", "/").strip('\r\n'), text] )
+                full_paths.append([os.path.join(dirname, path).replace("\\", "/"), text] )
         return full_paths
     except IndexError: 
         logging.warn("You try to load empty playlist")

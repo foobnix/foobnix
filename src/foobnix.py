@@ -13,7 +13,7 @@ from foobnix.fc.fc_helper import CONFIG_DIR
 
 
 def foobnix():
-    
+
     if "--debug" in sys.argv:
         for param in sys.argv:
             if param.startswith("--log"):
@@ -29,9 +29,9 @@ def foobnix():
         LOG.print_platform_info()
     else:
         LOG.setup("error")
-            
+  
     from foobnix.regui.foobnix_core import FoobnixCore
-    
+
     if "--test" in sys.argv:
         from test.all import run_all_tests
         print ("""TEST MODE""")
@@ -39,9 +39,9 @@ def foobnix():
         if not result:        
             raise SystemExit("Test failures are listed above.")
         exit()
-    
+
     init_time = time.time()
-    
+
     if "--nt" in sys.argv or os.name == 'nt':    
         gobject.threads_init() #@UndefinedVariable
         core = FoobnixCore(False)
@@ -74,4 +74,3 @@ else:
     except Exception, e:
         print e
         FC().save()
-    

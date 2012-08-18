@@ -18,7 +18,8 @@ from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
 from foobnix.helpers.dialog_entry import info_dialog
 from foobnix.helpers.window import CopyProgressWindow
-from foobnix.util.const import BEFORE, AFTER, INTO_OR_BEFORE, INTO_OR_AFTER
+from foobnix.util.const import BEFORE, AFTER, INTO_OR_BEFORE, INTO_OR_AFTER,\
+    FTYPE_RADIO
 from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progressbar,\
     get_file_extension
 from foobnix.util.m3u_utils import m3u_reader
@@ -359,27 +360,20 @@ class DragDropTree(gtk.TreeView):
                 return None
             
         paths = m3u_reader(m3u_file_path)
-        paths.insert(0, os.path.splitext(m3u_title)[0])
-        first_path = paths[0][0] if isinstance(paths[0], list) else paths[0]
-        if first_path:
-            list_path = first_path[0].split("/")
-            name = list_path[len(list_path) - 2]
-            parent = FModel(name)
+        paths.insert(0, [None, os.path.splitext(m3u_title)[0]])
             
         new_iter = None
         for i, path in enumerate(paths):
-            if isinstance(path, list):
+            if i == 0:
+                bean = FModel(_("m3u playlist: ") + path[1]).add_is_file(False).add_font("bold")
+            else:
                 text = path[1]
                 path = path[0]
                 bean = FModel(path, path).add_is_file(True)
+                if path.startswith("http"):
+                    bean.add_type(FTYPE_RADIO)
                 if text: bean.text = text
-                
                         
-            elif not i:
-                bean = FModel(_("m3u playlist: ") + path).add_is_file(False).add_font("bold")
-            else:
-                bean = FModel(path, path).add_is_file(True).parent(parent)
-            
             row = self.fill_beans_and_get_rows([bean])[0]                               
                        
             if new_iter:

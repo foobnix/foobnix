@@ -340,7 +340,7 @@ class VKService:
     def find_tracks_by_query(self, query):
         def post():
             self.find_tracks_by_query(self, query)
-            
+        
         if self.is_show_authorization(post):
             return 
         

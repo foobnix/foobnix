@@ -193,7 +193,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if bean.type == FTYPE_NOT_UPDATE_INFO_PANEL:
             return False
         
-        self.clear()    
+        self.clear()
         
         if not FC().is_view_info_panel:
             logging.debug("Info panel disabled")  

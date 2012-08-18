@@ -404,7 +404,7 @@ class BaseFoobnixControls():
     def play(self, bean):
         if not bean or not bean.is_file:
             return
-               
+
         self.play_lock.acquire()
         
         if bean.type == FTYPE_RADIO:
@@ -430,28 +430,15 @@ class BaseFoobnixControls():
         
     
     def _play(self, bean):
-        self.count_errors = 0
         
         if not bean.path:
             bean.path = get_bean_posible_paths(bean)
         
-        if bean.path and bean.type != FTYPE_RADIO and bean.path.startswith("http"):
-            if not url_utils.is_exists(bean.path):
-                bean.path = None
-        
         if not bean.path:            
             if not self.fill_bean_from_vk(bean):
-                def post_task():
-                    self._play(bean)
-                if self.vk_service.is_show_authorization(post_task):
-                    return None
-                    
-                if self.count_errors < 4:
-                    time.sleep(0.5)
-                    self.count_errors += 1
-                    if self.play_lock.locked():
+                if self.play_lock.locked():
                         self.play_lock.release()
-                    self.next()
+                self.next()
            
         if bean.path:
             if not os.path.exists(bean.path):
