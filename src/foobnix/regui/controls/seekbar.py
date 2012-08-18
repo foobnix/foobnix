@@ -91,7 +91,8 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         seek_persent = (position_sec + 0.0) / (duration_sec)
         seek_text = position_str + " / " + duration_str
         
-        def task():                              
+        def task():
+                                          
             if 0 <= seek_persent <= 1: 
                 self.progresbar.set_text(seek_text)
                 self.progresbar.set_fraction(seek_persent)

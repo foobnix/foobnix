@@ -19,7 +19,7 @@ from foobnix.util.file_utils import open_in_filemanager, copy_to
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release, \
+from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
 
 foobnix_localization()

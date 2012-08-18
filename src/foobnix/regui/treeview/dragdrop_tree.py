@@ -370,8 +370,8 @@ class DragDropTree(gtk.TreeView):
                 text = path[1]
                 path = path[0]
                 bean = FModel(path, path).add_is_file(True)
-                if path.startswith("http"):
-                    bean.add_type(FTYPE_RADIO)
+                #if path.startswith("http"):
+                    #bean.add_type(FTYPE_RADIO)
                 if text: bean.text = text
                         
             row = self.fill_beans_and_get_rows([bean])[0]                               

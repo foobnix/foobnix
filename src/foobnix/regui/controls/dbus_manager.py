@@ -69,7 +69,7 @@ class DBusManager(dbus.service.Object, FControl):
             
             mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
             mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
-            mm_object.ReleaseMediaPlayerKeys("MyMultimediaThingy", dbus_interface=dbus_interface)
+            #mm_object.ReleaseMediaPlayerKeys("MyMultimediaThingy", dbus_interface=dbus_interface)
         except Exception, e:
             logging.error("DBUS Initialization Error" + str(e))
     
