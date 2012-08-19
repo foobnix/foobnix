@@ -18,6 +18,7 @@ from foobnix.fc.fc import FC
 from foobnix.helpers.image import ImageBase
 import os
 from foobnix.helpers.pref_widgets import HBoxLableEntry
+import gobject
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
@@ -25,17 +26,14 @@ class VKAuthorizationWindow(ChildTopWindow):
     
     def get_web_url(self):
         return "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
-    
-    
-    
+   
     def show(self, post_task=None):
-        super(VKAuthorizationWindow, self).show() 
+        gobject.idle_add(super(VKAuthorizationWindow, self).show) 
         self.post_task = post_task
         try:
             self.init_pass()
         except:
             pass
-        
                              
     def __init__(self, service):
         self.service = service
