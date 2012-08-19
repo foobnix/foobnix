@@ -6,6 +6,7 @@ Created on Oct 29, 2010
 
 import gtk
 import pango
+import gobject
 
 from foobnix.helpers.image import ImageBase
 
@@ -38,16 +39,18 @@ class TextArea(gtk.ScrolledWindow):
         enditer = self.buffer.get_end_iter()
         image = ImageBase(None)
         image.set_image_from_url(url)
-        self.buffer.insert_pixbuf(enditer, image.get_pixbuf())
+        gobject.idle_add(self.buffer.insert_pixbuf, enditer, image.get_pixbuf())
         
     def set_text(self, text="", bold_text=""):
-        full_text = bold_text + "\n" + text + "\n"
-        self.buffer.set_text(full_text)
-        if text:
-            self.clear_tags (full_text)
-        start = self.buffer.get_iter_at_offset(0)            
-        end = self.buffer.get_iter_at_offset(len(bold_text))
-        self.buffer.apply_tag(self.tag_bold, start, end)
+        def safe_task():
+            full_text = bold_text + "\n" + text + "\n"
+            self.buffer.set_text(full_text)
+            if text:
+                self.clear_tags (full_text)
+            start = self.buffer.get_iter_at_offset(0)            
+            end = self.buffer.get_iter_at_offset(len(bold_text))
+            self.buffer.apply_tag(self.tag_bold, start, end)
+        gobject.idle_add(safe_task)
         
     def clear_tags (self, text):
         start_index = 0

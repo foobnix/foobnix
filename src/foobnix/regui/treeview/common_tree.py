@@ -99,18 +99,11 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         self.append(bean)
     
     def populate_all(self, beans):
-        def task():
-            self._populate_all(beans)
-            
-        gobject.idle_add(task)
-        
-    def _populate_all(self, beans):
         self.clear_tree()
-        self.append_all(beans)
+        gobject.idle_add(self.append_all, beans)
     
     def get_bean_from_iter(self, iter):
         return self.get_bean_from_model_iter(self.model, iter)
-
     
     def get_bean_from_row(self, row):
         bean = FModel()
@@ -194,7 +187,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                     
         
     def clear_tree(self):
-        self.model.clear()
+        gobject.idle_add(self.model.clear)
 
     def on_button_press(self, w, e):
         pass
@@ -255,24 +248,28 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             return self.get_current_bean_by_UUID();
     
     def set_play_icon_to_bean_to_selected(self):
-        for row in self.model:
-            row[self.play_icon[0]] = None
+        def safe_task():
+            for row in self.model:
+                row[self.play_icon[0]] = None
         
-        paths = self.get_selected_bean_paths()
-        if not paths:
-            return None
-        logging.debug("Set play icon to selected bean")
-        path = paths[0]  
+            paths = self.get_selected_bean_paths()
+            if not paths:
+                return None
+            logging.debug("Set play icon to selected bean")
+            path = paths[0]  
                  
-        iter = self.model.get_iter(path)
-        self.model.set_value(iter, FTreeModel().play_icon[0], gtk.STOCK_GO_FORWARD)
-        self.active_UUID = self.model.get_value(iter, FTreeModel().UUID[0])
+            iter = self.model.get_iter(path)
+            self.model.set_value(iter, FTreeModel().play_icon[0], gtk.STOCK_GO_FORWARD)
+            self.active_UUID = self.model.get_value(iter, FTreeModel().UUID[0])
+        gobject.idle_add(safe_task)
         
     def set_bean_column_value(self, bean, colum_num, value):
-        for row in self.model:
-            if row[self.UUID[0]] == bean.UUID:
-                row[colum_num] = value
-                break
+        def safe_task():
+            for row in self.model:
+                if row[self.UUID[0]] == bean.UUID:
+                    row[colum_num] = value
+                    break
+        gobject.idle_add(safe_task)
               
     def update_bean(self, bean):
         for row in self.model:
@@ -312,15 +309,14 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     
     def set_play_icon_to_bean(self, bean):
         logging.debug("Set play icon to bean")
-        def task():
+        def safe_task():
             for row in self.model:
                 if row[self.UUID[0]] == bean.UUID:
                     row[self.play_icon[0]] = gtk.STOCK_GO_FORWARD
                     self.active_UUID = bean.UUID                
                 else:
                     row[self.play_icon[0]] = None
-        #gobject.idle_add(task)
-        task()
+        gobject.idle_add(safe_task)
 
     def get_next_bean_by_UUID(self, repeat_all=False):
         '''not correct method after rebuild beans'''

@@ -29,7 +29,6 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.regui.service.vk_service import VKService
 from foobnix.regui.state import LoadSave
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
-from foobnix.util import url_utils
 from foobnix.util.bean_utils import get_bean_posible_paths
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.util.file_utils import get_file_extension
@@ -298,9 +297,9 @@ class BaseFoobnixControls():
     def set_visible_video_panel(self, flag):
         FC().is_view_video_panel = flag
         if flag:
-            self.movie_window.show()
+            gobject.idle_add(self.movie_window.show)
         else:
-            self.movie_window.hide()
+            gobject.idle_add(self.movie_window.hide)
 
     def volume_up(self):
         self.volume.volume_up()
@@ -312,13 +311,13 @@ class BaseFoobnixControls():
         self.volume.mute()
     
     def hide(self):
-        self.main_window.hide()
+        gobject.idle_add(self.main_window.hide)
     
     def show_hide(self):
-        self.main_window.show_hide()
+        gobject.idle_add(self.main_window.show_hide)
         
     def show(self):
-        self.main_window.show()
+        gobject.idle_add(self.main_window.show)
     
     def play_pause(self):
         if self.media_engine.get_state() == STATE_PLAY:
@@ -335,9 +334,9 @@ class BaseFoobnixControls():
     def windows_visibility(self):
         visible = self.main_window.get_property('visible')
         if visible:
-            self.main_window.hide()
+            gobject.idle_add(self.main_window.hide)
         else:
-            self.main_window.show()
+            gobject.idle_add(self.main_window.show)
 
     def state_play(self, remember_position=False, under_pointer_icon=False):
         if self.media_engine.get_state() == STATE_PAUSE and not remember_position:
@@ -388,20 +387,20 @@ class BaseFoobnixControls():
             return
 
         self.play_lock.acquire()
+        
+        self.seek_bar.clear()
+        self.statusbar.set_text(bean.info)
+        self.trayicon.set_text(bean.text)
+        self.movie_window.set_text(bean.text)
         def task():
             if bean.type == FTYPE_RADIO:
                 self.record.show()
             else:
-                self.record.hide()
-               
-            self.seek_bar.clear()
-            self.statusbar.set_text(bean.info)
-            self.trayicon.set_text(bean.text)
-            self.movie_window.set_text(bean.text)        
+                self.record.hide()          
+                    
             self.main_window.set_title(bean.text)
         gobject.idle_add(task)
-        thread.start_new_thread(self._one_thread_play, (bean,))
-        #self._play(bean)     
+        thread.start_new_thread(self._one_thread_play, (bean,))   
     
     def _one_thread_play(self,bean):
         try:
@@ -416,33 +415,32 @@ class BaseFoobnixControls():
             bean.path = get_bean_posible_paths(bean)
         
         if not bean.path:            
-            if not self.fill_bean_from_vk(bean):
-                if self.play_lock.locked():
-                    self.play_lock.release()
-                self.next()
-         
-        if bean.path:
-            if not self.check_path(bean.path):
-                if bean.iso_path and os.path.exists(bean.iso_path):
-                    logging.info("Try to remount " + bean.iso_path)
-                    mount_tmp_iso(bean.iso_path)
-                else:
-                    logging.error("Resourse " + bean.path + " not found")
+            self.fill_bean_from_vk(bean)
+                                 
+        if not self.check_path(bean.path):
+            if bean.iso_path and os.path.exists(bean.iso_path):
+                logging.info("Try to remount " + bean.iso_path)
+                mount_tmp_iso(bean.iso_path)
+            else:
+                resource = bean.path if bean.path else bean.text
+                logging.error("Resourse " + resource + " not found")
+                self.media_engine.state_stop(show_in_tray=False)
+                self.statusbar.set_text(_("Resource not found"))
+                self.seek_bar.set_text(_("Resource not found"))
+                self.count_errors += 1
+                time.sleep(2)
+                if self.count_errors < 4:
                     if self.play_lock.locked():
                         self.play_lock.release()
-                    self.media_engine.state_stop(show_in_tray=False)
-                    gobject.idle_add(self.statusbar.set_text, _("Resource not found"))
-                    gobject.idle_add(self.seek_bar.set_text, _("Resource not found"))
-                    self.count_errors += 1
-                    time.sleep(2)
-                    if self.count_errors < 4:
-                        self.next()
-                    else:
-                        gobject.idle_add(self.seek_bar.set_text, _("Stopped. Too many errors"))
-                    return
+                    self.next()
+                else:
+                    self.seek_bar.set_text(_("Stopped. Too many errors"))
                 
-            elif os.path.isdir(bean.path):
-                return None
+                return
+                
+        elif os.path.isdir(bean.path):
+            return
+        
         self.count_errors = 0
         self.media_engine.play(bean)
         self.is_scrobbled = False
@@ -799,7 +797,7 @@ class BaseFoobnixControls():
                 self.play(bean)
                 tree_selection = active_playlist_tree.get_selection()
                 filter_iter = filter_model.convert_child_iter_to_iter(iter)
-                tree_selection.select_iter(filter_iter)
+                gobject.idle_add(tree_selection.select_iter, filter_iter)
                 active_playlist_tree.set_play_icon_to_bean_to_selected()
             else:
                 iter = current_model.iter_next(iter)

@@ -52,12 +52,13 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         seek_percent = (x + 0.0) / width
         sec = int(duration * seek_percent)
         sec = convert_seconds_to_text(sec)
-        self.tooltip_label.set_text(sec)
-        self.tooltip.show_all()
-        
-        x, y, mask = gtk.gdk.get_default_root_window().get_pointer() #@UndefinedVariable @UnusedVariable
-        self.tooltip.move(x+5, y-15)
-                
+        def safe_task():
+            self.tooltip_label.set_text(sec)
+            self.tooltip.show_all()
+            x, y, mask = gtk.gdk.get_default_root_window().get_pointer() #@UndefinedVariable @UnusedVariable
+            self.tooltip.move(x+5, y-15)
+        gobject.idle_add(safe_task)
+    
     def on_seek(self, widget, event):
         bean = self.controls.media_engine.bean
         if bean and bean.type == FTYPE_RADIO:
@@ -78,12 +79,15 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         if self.seek_bar_movie:
             self.seek_bar_movie.set_text(text)
         
-    def clear(self):
-        self.progresbar.set_text("00:00 / 00:00")
-        self.progresbar.set_fraction(0)
         
-        if self.seek_bar_movie:
-            self.seek_bar_movie.clear()
+    def clear(self):
+        def task():
+            self.progresbar.set_text("00:00 / 00:00")
+            gobject.idle_add(self.progresbar.set_fraction, 0)
+        
+            if self.seek_bar_movie:
+                self.seek_bar_movie.clear()
+        
     
     def update_seek_status(self, position_sec, duration_sec):
         duration_str = convert_seconds_to_text(duration_sec)
@@ -91,11 +95,9 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         seek_persent = (position_sec + 0.0) / (duration_sec)
         seek_text = position_str + " / " + duration_str
         
-        def task():
-                                          
-            if 0 <= seek_persent <= 1: 
-                self.progresbar.set_text(seek_text)
-                self.progresbar.set_fraction(seek_persent)
-        gobject.idle_add(task)
+        if 0 <= seek_persent <= 1: 
+            self.progresbar.set_text(seek_text)
+            gobject.idle_add(self.progresbar.set_fraction, seek_persent)
+        
         if self.seek_bar_movie:
             self.seek_bar_movie.update_seek_status(position_sec, duration_sec)
