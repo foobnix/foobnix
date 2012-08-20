@@ -29,7 +29,6 @@ def add_key_binder(command, hotkey):
 
 def bind_all():
     for key in FC().action_hotkey:
-        print "bind", key
         command = key
         hotkey = FC().action_hotkey[key]
         add_key_binder(command, hotkey)
@@ -146,7 +145,6 @@ class HotKeysConfig(ConfigPlugin):
     def unbind_all(self):
         for keystring in FC().action_hotkey:
             try:
-                print "bind", keystring
                 keybinder.unbind(FC().action_hotkey[keystring])
             except Exception, e:
                 logging.warn("unbind error %s" % str(e))
