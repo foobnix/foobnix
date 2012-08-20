@@ -34,7 +34,7 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
             #fix debian compability
             pass
         
-        self.progresbar.connect("leave-notify-event", lambda *a: self.tooltip.hide())
+        self.progresbar.connect("leave-notify-event", lambda *a: self.safe_hide_tooltip())
         self.progresbar.connect("motion-notify-event", self.on_pointer_motion)        
         event = gtk.EventBox()
         event.add(self.progresbar)
@@ -45,6 +45,8 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         self.show_all()
         self.tooltip.hide()
         
+    def safe_hide_tooltip(self):
+        gobject.idle_add(self.tooltip.hide)
     def on_pointer_motion(self, widget, event):
         width = widget.allocation.width
         x = event.x

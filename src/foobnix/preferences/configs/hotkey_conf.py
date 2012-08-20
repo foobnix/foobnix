@@ -100,12 +100,10 @@ class HotKeysConfig(ConfigPlugin):
         
         self.hotkey_auto = gtk.CheckButton("Auto key")
         self.hotkey_auto.set_active(True)        
-        
-        
+     
         hotbox.pack_start(self.action_text, False, True, 0)
         hotbox.pack_start(self.hotkey_text, False, True, 0)
         hotbox.pack_start(self.hotkey_auto, False, True, 0)
-        
         
         self.disable_mediakeys = gtk.CheckButton(label=_("Disable Multimedia Keys"), use_underline=True)
         self.mm_frame_decorator = FrameDecorator(_("Multimedia keys"), self.disable_mediakeys)
