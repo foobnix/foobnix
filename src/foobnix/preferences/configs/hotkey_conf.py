@@ -3,18 +3,19 @@ Created on Sep 7, 2010
 
 @author: ivan
 '''
-from foobnix.preferences.config_plugin import ConfigPlugin
-import gtk
-from foobnix.helpers.menu import Popup
-import keybinder
 import os
-import logging
+import gtk
 import thread
-from foobnix.util.mouse_utils import is_double_left_click
+import logging
+import keybinder
+
 from foobnix.fc.fc import FC
+from foobnix.helpers.menu import Popup
+from foobnix.util.mouse_utils import is_double_left_click
+from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.key_utils import is_key_control, is_key_shift, is_key_super, \
     is_key_alt
-    
+
 
 def activate_hot_key(command):
     logging.debug("Run command: " + str(command)) 
@@ -28,6 +29,7 @@ def add_key_binder(command, hotkey):
 
 def bind_all():
     for key in FC().action_hotkey:
+        print "bind", key
         command = key
         hotkey = FC().action_hotkey[key]
         add_key_binder(command, hotkey)
@@ -140,13 +142,12 @@ class HotKeysConfig(ConfigPlugin):
         selection = self.tree_widget.get_selection()
         model, selected = selection.get_selected()
         model.remove(selected)   
-        keystring = self.model.get_value(selected, 1)
-            
+                    
     def unbind_all(self):
-        items = self.get_all_items()
-        for keystring in items: 
-            try:          
-                keybinder.unbind(items[keystring])
+        for keystring in FC().action_hotkey:
+            try:
+                print "bind", keystring
+                keybinder.unbind(FC().action_hotkey[keystring])
             except Exception, e:
                 logging.warn("unbind error %s" % str(e))
         for mmkey in FC().multimedia_keys:
@@ -156,7 +157,7 @@ class HotKeysConfig(ConfigPlugin):
                 logging.warn("unbind mmkeys error %s" % str(e))
     
     def on_populate_click(self, w, event):
-        if is_double_left_click(event):            
+        if is_double_left_click(event):
             selection = self.tree_widget.get_selection()
             model, selected = selection.get_selected()
             
@@ -164,7 +165,7 @@ class HotKeysConfig(ConfigPlugin):
             keystring = self.model.get_value(selected, 1)
             self.action_text.set_text(command)
             self.hotkey_text.set_text(keystring)
-        
+
     def on_mouse_click(self, w, event):
         menu = Popup()
         menu.add_item(_("Play"), gtk.STOCK_MEDIA_PLAY, self.set_action_text, "--play")
@@ -196,7 +197,6 @@ class HotKeysConfig(ConfigPlugin):
         self.unbind_all()
         FC().action_hotkey = self.get_all_items()
         bind_all()
-        
     
     def get_all_items(self):
         items = {}
@@ -212,7 +212,8 @@ class HotKeysConfig(ConfigPlugin):
             return None 
         self.hotkey_text.set_editable(False)
         
-        self.unbind_all() 
+        self.unbind_all()
+        
         keyname = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
         logging.debug("Key %s (%d) was pressed. %s" % (keyname, event.keyval, str(event.state)))
         if is_key_control(event):           
@@ -224,7 +225,9 @@ class HotKeysConfig(ConfigPlugin):
         elif is_key_alt(event):
             self.set_hotkey_text("<Alt>" + keyname)    
         else:            
-            self.set_hotkey_text(keyname)       
+            self.set_hotkey_text(keyname)
+        
+        bind_all()     
             
     def on_key_release(self, w, event): 
         keyname = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
