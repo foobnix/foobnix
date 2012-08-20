@@ -107,6 +107,9 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
                
     def hide_window(self, *a):
         self.hide()
+        for plugin in self.configs:
+            if hasattr(plugin, "on_close"):
+                plugin.on_close()
         self.navigation.set_cursor_on_cell(0)
         return True
         

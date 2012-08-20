@@ -11,6 +11,7 @@ import keybinder
 
 from foobnix.fc.fc import FC
 from foobnix.helpers.menu import Popup
+from foobnix.helpers.pref_widgets import FrameDecorator
 from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.key_utils import is_key_control, is_key_shift, is_key_super, \
@@ -40,7 +41,7 @@ def bind_all():
         command = mmkey
         hotkey = FC().multimedia_keys[mmkey]
         add_key_binder(command, hotkey)
-                   
+    HotKeysConfig.binded = True               
 
 def load_foobnix_hotkeys():
     bind_all()
@@ -50,6 +51,7 @@ def load_foobnix_hotkeys():
 class HotKeysConfig(ConfigPlugin):
     
     name = _("Global Hotkeys")
+    binded = True
     
     def __init__(self, controls):
         box = gtk.VBox(False, 0)        
@@ -83,10 +85,7 @@ class HotKeysConfig(ConfigPlugin):
         
         hbox.pack_start(add_button, False, True, 0)
         hbox.pack_start(remove_button, False, True, 0)
-        
-        
-        
-        
+       
         hotbox = gtk.HBox(False, 0)
         hotbox.show()
         
@@ -107,13 +106,14 @@ class HotKeysConfig(ConfigPlugin):
         hotbox.pack_start(self.hotkey_text, False, True, 0)
         hotbox.pack_start(self.hotkey_auto, False, True, 0)
         
+        
         self.disable_mediakeys = gtk.CheckButton(label=_("Disable Multimedia Keys"), use_underline=True)
+        self.mm_frame_decorator = FrameDecorator(_("Multimedia keys"), self.disable_mediakeys)
         
         box.pack_start(self.tree_widget, False, True, 0)
         box.pack_start(hotbox, False, True, 0)
         box.pack_start(hbox, False, True, 0)
-        box.pack_start(gtk.HSeparator())
-        box.pack_start(self.disable_mediakeys)
+        box.pack_start(self.mm_frame_decorator)
         self.widget = box
     
     def set_action_text(self, text):
@@ -140,7 +140,8 @@ class HotKeysConfig(ConfigPlugin):
     def on_remove_row(self, *args):
         selection = self.tree_widget.get_selection()
         model, selected = selection.get_selected()
-        model.remove(selected)   
+        if selected:
+            model.remove(selected)   
                     
     def unbind_all(self):
         for keystring in FC().action_hotkey:
@@ -153,6 +154,7 @@ class HotKeysConfig(ConfigPlugin):
                 keybinder.unbind(FC().multimedia_keys[mmkey])
             except Exception, e:
                 logging.warn("unbind mmkeys error %s" % str(e))
+        HotKeysConfig.binded = False
     
     def on_populate_click(self, w, event):
         if is_double_left_click(event):
@@ -180,12 +182,15 @@ class HotKeysConfig(ConfigPlugin):
     def on_load(self):
         if FC().media_keys_enabled == False:
             self.disable_mediakeys.set_active(True)
+        self.fill_hotkey_list()
+        
+    def fill_hotkey_list(self):
         items = FC().action_hotkey
         self.model.clear()
         for key in items:
             command = key
             hotkey = items[key]            
-            self.model.append([command, hotkey])  
+            self.model.append([command, hotkey])
             
     def on_save(self):
         if self.disable_mediakeys.get_active():
@@ -213,6 +218,7 @@ class HotKeysConfig(ConfigPlugin):
         self.unbind_all()
         
         keyname = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
+        
         logging.debug("Key %s (%d) was pressed. %s" % (keyname, event.keyval, str(event.state)))
         if is_key_control(event):           
             self.set_hotkey_text("<Control>" + keyname)
@@ -224,9 +230,13 @@ class HotKeysConfig(ConfigPlugin):
             self.set_hotkey_text("<Alt>" + keyname)    
         else:            
             self.set_hotkey_text(keyname)
-        
-        bind_all()     
-            
+
     def on_key_release(self, w, event): 
         keyname = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
         logging.debug("Key release %s (%d) was pressed" % (keyname, event.keyval))        
+
+    def on_close(self):
+        if not HotKeysConfig.binded:
+            self.fill_hotkey_list()
+            bind_all()
+            
