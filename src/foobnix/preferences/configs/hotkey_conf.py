@@ -16,6 +16,7 @@ from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.key_utils import is_key_control, is_key_shift, is_key_super, \
     is_key_alt
+from copy import copy
 
 
 def activate_hot_key(command):
@@ -29,24 +30,32 @@ def add_key_binder(command, hotkey):
         logging.warn("add_key_binder exception" + str(hotkey) + str(e))
 
 def bind_all():
-    for key in FC().action_hotkey:
+    binder(FC().action_hotkey)
+    if FC().media_keys_enabled:
+        items = to_form_dict_of_mmkeys()
+        if items:
+            binder(items)
+
+    HotKeysConfig.binded = True
+    
+def binder(items):
+    for key in items:
         command = key
-        hotkey = FC().action_hotkey[key]
-        add_key_binder(command, hotkey)
-    
-    if not FC().media_keys_enabled:
-        return
-    
-    for mmkey in FC().multimedia_keys:
-        command = mmkey
-        hotkey = FC().multimedia_keys[mmkey]
-        add_key_binder(command, hotkey)
-    HotKeysConfig.binded = True               
+        hotkey = items[key]
+        add_key_binder(command, hotkey)               
 
 def load_foobnix_hotkeys():
     bind_all()
     logging.debug("LOAD HOT KEYS")    
 
+def to_form_dict_of_mmkeys():
+    if FC().media_keys_enabled:
+        items = copy(FC().multimedia_keys)
+        if not FC().media_volume_keys_enabled:
+            for key in FC().media_volume_keys:
+                if key in items:
+                    del items[key]
+        return items
     
 class HotKeysConfig(ConfigPlugin):
     
@@ -106,7 +115,19 @@ class HotKeysConfig(ConfigPlugin):
         hotbox.pack_start(self.hotkey_auto, False, True, 0)
         
         self.disable_mediakeys = gtk.CheckButton(label=_("Disable Multimedia Keys"), use_underline=True)
-        self.mm_frame_decorator = FrameDecorator(_("Multimedia keys"), self.disable_mediakeys)
+        self.disable_volume_keys = gtk.CheckButton(label=_("Don't try to bind volume control keys"), use_underline=True)
+        def on_toggle(*a):
+            if self.disable_mediakeys.get_active():
+                self.disable_volume_keys.set_sensitive(False)
+            else:
+                self.disable_volume_keys.set_sensitive(True)
+        
+        self.disable_mediakeys.connect("toggled", on_toggle)
+        
+        mmbox = gtk.VBox(False, 0)
+        mmbox.pack_start(self.disable_mediakeys)
+        mmbox.pack_start(self.disable_volume_keys)
+        self.mm_frame_decorator = FrameDecorator(_("Multimedia keys"), mmbox)
         
         box.pack_start(self.tree_widget, False, True, 0)
         box.pack_start(hotbox, False, True, 0)
@@ -142,16 +163,17 @@ class HotKeysConfig(ConfigPlugin):
             model.remove(selected)   
                     
     def unbind_all(self):
-        for keystring in FC().action_hotkey:
-            try:
-                keybinder.unbind(FC().action_hotkey[keystring])
-            except Exception, e:
-                logging.warn("unbind error %s" % str(e))
-        for mmkey in FC().multimedia_keys:
+        self.unbinder(FC().action_hotkey)
+        self.unbinder(FC().multimedia_keys)
+        
+        HotKeysConfig.binded = False
+    
+    def unbinder(self, items):
+        for keystring in items:
             try: 
-                keybinder.unbind(FC().multimedia_keys[mmkey])
-            except Exception, e:
-                logging.warn("unbind mmkeys error %s" % str(e))
+                keybinder.unbind(items[keystring])
+            except:
+                pass
         HotKeysConfig.binded = False
     
     def on_populate_click(self, w, event):
@@ -180,6 +202,8 @@ class HotKeysConfig(ConfigPlugin):
     def on_load(self):
         if FC().media_keys_enabled == False:
             self.disable_mediakeys.set_active(True)
+        if FC().media_volume_keys_enabled == False:
+            self.disable_volume_keys.set_active(True)
         self.fill_hotkey_list()
         
     def fill_hotkey_list(self):
@@ -195,6 +219,10 @@ class HotKeysConfig(ConfigPlugin):
             FC().media_keys_enabled = False
         else:
             FC().media_keys_enabled = True
+        if self.disable_volume_keys.get_active():
+            FC().media_volume_keys_enabled = False
+        else:
+            FC().media_volume_keys_enabled = True
         self.unbind_all()
         FC().action_hotkey = self.get_all_items()
         bind_all()
