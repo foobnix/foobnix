@@ -23,7 +23,7 @@ class SearchProgressBarOld(gtk.ProgressBar):
             
     def start(self, text=None):
         if text:
-            self.progresbar.set_text(text)
+            self.set_text(text)
         if self.started:
             return None
             

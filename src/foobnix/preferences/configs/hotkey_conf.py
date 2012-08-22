@@ -9,6 +9,7 @@ import thread
 import logging
 import keybinder
 
+from copy import copy
 from foobnix.fc.fc import FC
 from foobnix.helpers.menu import Popup
 from foobnix.helpers.pref_widgets import FrameDecorator
@@ -16,7 +17,6 @@ from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.key_utils import is_key_control, is_key_shift, is_key_super, \
     is_key_alt
-from copy import copy
 
 
 def activate_hot_key(command):

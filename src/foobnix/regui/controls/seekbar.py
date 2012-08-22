@@ -26,18 +26,18 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         self.tooltip_label = gtk.Label()
         self.tooltip.add(self.tooltip_label)
         
-        self.progresbar = gtk.ProgressBar()
-        self.progresbar.set_text("00:00 / 00:00")
+        self.progressbar = gtk.ProgressBar()
+        self.progressbar.set_text("00:00 / 00:00")
         try:
-            self.progresbar.set_has_tooltip(True)
+            self.progressbar.set_has_tooltip(True)
         except:
             #fix debian compability
             pass
         
-        self.progresbar.connect("leave-notify-event", lambda *a: self.safe_hide_tooltip())
-        self.progresbar.connect("motion-notify-event", self.on_pointer_motion)        
+        self.progressbar.connect("leave-notify-event", lambda *a: self.safe_hide_tooltip())
+        self.progressbar.connect("motion-notify-event", self.on_pointer_motion)        
         event = gtk.EventBox()
-        event.add(self.progresbar)
+        event.add(self.progressbar)
         event.connect("button-press-event", self.on_seek)
         
         
@@ -76,7 +76,7 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
     
     def set_text(self, text):
         if text:
-            self.progresbar.set_text(text[:200])    
+            self.progressbar.set_text(text[:200])    
         
         if self.seek_bar_movie:
             self.seek_bar_movie.set_text(text)
@@ -84,8 +84,8 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         
     def clear(self):
         def task():
-            self.progresbar.set_text("00:00 / 00:00")
-            gobject.idle_add(self.progresbar.set_fraction, 0)
+            self.progressbar.set_text("00:00 / 00:00")
+            gobject.idle_add(self.progressbar.set_fraction, 0)
         
             if self.seek_bar_movie:
                 self.seek_bar_movie.clear()
@@ -98,8 +98,8 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         seek_text = position_str + " / " + duration_str
         
         if 0 <= seek_persent <= 1: 
-            self.progresbar.set_text(seek_text)
-            gobject.idle_add(self.progresbar.set_fraction, seek_persent)
+            self.progressbar.set_text(seek_text)
+            gobject.idle_add(self.progressbar.set_fraction, seek_persent)
         
         if self.seek_bar_movie:
             self.seek_bar_movie.update_seek_status(position_sec, duration_sec)

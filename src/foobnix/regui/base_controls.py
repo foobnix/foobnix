@@ -438,7 +438,7 @@ class BaseFoobnixControls():
                         self.play_lock.release()
                     self.next()
                 else:
-                    self.seek_bar.set_text(_("Stopped. Too many errors"))
+                    self.seek_bar.set_text(_("Stopped. No resources found"))
                 
                 return
                 
@@ -482,7 +482,8 @@ class BaseFoobnixControls():
         
         self.statusbar.set_text(text)
         text = normalize_text(text)
-        self.seek_bar.set_text(text)    
+        self.seek_bar.set_text(text)
+        gobject.idle_add(self.seek_bar.progressbar.set_fraction, 0)
         t_bean = FModel(text).add_type(FTYPE_RADIO).create_from_text(text)                       
         self.update_info_panel(t_bean)
         if FC().enable_radio_scrobbler:
