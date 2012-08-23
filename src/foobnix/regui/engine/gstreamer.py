@@ -168,6 +168,7 @@ class GStreamerEngine(MediaPlayerEngine):
         
         logging.debug("current state before thread " + str(self.get_state()) + " thread_id: " + str(self.play_thread_id))
         self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
+        print self.play_thread_id
         self.pause_thread_id = False
         
     def set_all_bands(self, pre, values):
@@ -195,30 +196,29 @@ class GStreamerEngine(MediaPlayerEngine):
             return - 1
     
     def playing_thread(self):
+        if not self.play_thread_id:
+            print "wait"
+            self.play_thread_id = 1
         thread_id = self.play_thread_id
         error_count = 0
         sec = 0
         
         logging.debug("current state in thread: " + str(self.get_state()))
          
-        while thread_id == self.play_thread_id:
-            try:
+        for i in xrange(3):
+            if thread_id == self.play_thread_id and i < 3:
                 time.sleep(0.2)
                 duration_int = self.get_duration_seek_ns()
                 if duration_int == -1:
+                    print 20
                     time.sleep(1)
                     continue
                 self.notify_init(duration_int)
                 break
-            except Exception, e:
-                logging.info("Init playing thread: " + str(e))
-                time.sleep(1)
-                if error_count > 3:
-                    logging.warn("shit happens")
-                    self.state_stop()
-                    time.sleep(1)
-                    self.state_play()
-                error_count += 1
+            else:
+                return
+            print 30
+                        
 
         time.sleep(0.2)
 
@@ -367,6 +367,8 @@ class GStreamerEngine(MediaPlayerEngine):
             if self.error_counter > 1 and err.code != 1:
                 self.notify_error(str(err))
                 self.error_counter = 0
+                self.state_stop()
+                print "if"
             else:
                 logging.warning("Error ocured, retry")
                 self.error_counter += 1
