@@ -135,9 +135,7 @@ class GStreamerEngine(MediaPlayerEngine):
             self.radio_path = get_radio_source(path)
             logging.debug("Try To play path " + self.radio_path)
             uri = self.radio_path
-            if self.bean.type == FTYPE_RADIO:
-                time.sleep(2)
-            else:
+            if not self.bean.type == FTYPE_RADIO:
                 self.notify_title(uri)
         else:
             uri = 'file://' + urllib.pathname2url(path)
@@ -201,9 +199,10 @@ class GStreamerEngine(MediaPlayerEngine):
         sec = 0
         
         logging.debug("current state in thread: " + str(self.get_state()))
-         
-        for i in xrange(3):
-            if thread_id == self.play_thread_id and i < 3:
+        
+        attemps = 3
+        for i in xrange(attemps):
+            if thread_id == self.play_thread_id and i < attemps:
                 time.sleep(0.2)
                 duration_int = self.get_duration_seek_ns()
                 if duration_int == -1:
@@ -212,7 +211,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 self.notify_init(duration_int)
                 break
             else:
-                return
+                break
 
         time.sleep(0.2)
 
