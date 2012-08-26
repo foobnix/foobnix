@@ -7,20 +7,19 @@ Created on 27 сент. 2010
 import gtk
 import time
 import thread
+import gobject
+import threading
 
 class SearchProgressBarOld(gtk.ProgressBar):
     def __init__(self):
         gtk.ProgressBar.__init__(self)
         self.set_size_request(20, -1)
-        
-        #self.hide()
         self.set_pulse_step(0.2)
         self.set_fraction(0)
         self.flag = True
         self.started = False
         self.set_text("...")
 
-            
     def start(self, text=None):
         if text:
             self.set_text(text)
@@ -48,18 +47,74 @@ if gtk.pygtk_version >= (2, 21, 0):
         def __init__(self):
             super(SearchProgressBarNew, self).__init__()
             self.set_no_show_all(True)
-    
-        def start(self, trash=""):
-            self.show()
-            super(SearchProgressBarNew, self).start()
-        
-        def stop(self):
-            super(SearchProgressBarNew, self).stop()
-            self.hide()
+             
+
     class SearchProgressBar(SearchProgressBarNew):
-        def __init__(self):
-                SearchProgressBarNew.__init__(self)
-                self.hide()
+        def __init__(self, controls):
+            SearchProgressBarNew.__init__(self)
+            self.controls = controls
+            self.set_size_request(30, 30)
+            self.show()
+            self.label=gtk.Label(_("Process..."))
+            self.label.show()
+            self.spinner_popup = self.create_spinner_popup()
+            self.spinner_popup.hide()
+            
+        def start(self, text=None):
+            def safe_task():
+                self.spinner_popup.show()
+                super(SearchProgressBarNew, self).start()
+                self.move_to_coord()
+            gobject.idle_add(safe_task)   
+            
+        def stop(self):
+            def safe_task():
+                super(SearchProgressBarNew, self).stop()
+                self.spinner_popup.hide()
+            gobject.idle_add(safe_task)
+            
+        def background_spinner_wrapper(self, task, *args):
+            self.start()
+            def safe_task(*args):
+                t = threading.Thread(target=task, args=(args))
+                t.start()
+                while t.isAlive():
+                    time.sleep(0.1)
+                    while gtk.events_pending():
+                        gtk.main_iteration(True)
+                self.stop()
+            gobject.idle_add(safe_task, *args)
+            
+        def create_spinner_popup(self):
+            window = self.controls.main_window
+            window.connect("configure-event", self.move_to_coord)
+            popup = gtk.Window(gtk.WINDOW_POPUP)
+            hbox = gtk.HBox()
+            hbox.pack_start(self)
+            hbox.pack_start(self.label)
+            hbox.show()
+            popup.add(hbox)
+            popup.set_opacity(0.6)
+            popup.show()
+            return popup
+        
+        def move_to_coord(self, *a):
+            rect = self.controls.main_window.window.get_frame_extents()
+            window_width = rect.width
+            window_height = rect.height
+            window_x = rect.x
+            window_y = rect.y
+            popup_width = self.spinner_popup.get_allocation().width
+            popup_height = self.spinner_popup.get_allocation().height
+            if self.controls.coverlyrics.get_property("visible"):
+                coverlyrics_width = self.controls.coverlyrics.get_allocation().width
+            else:
+                coverlyrics_width = 0
+            statusbar_height = self.controls.statusbar.get_allocation().height
+            pl_tree_width = self.controls.notetabs.get_current_tree().get_allocation().width
+            notetabs_width = self.controls.notetabs.get_allocation().width
+            self.spinner_popup.move(window_x + window_width - popup_width - coverlyrics_width - (notetabs_width - pl_tree_width),
+                                    window_y + window_height - popup_height - statusbar_height - (notetabs_width - pl_tree_width))
 else:
     class SearchProgressBar(SearchProgressBarOld):
         def __init__(self):

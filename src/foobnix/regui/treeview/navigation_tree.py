@@ -10,7 +10,6 @@ import gtk
 import logging
 import gobject
 import threading
-import time
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
@@ -189,9 +188,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             current = False
             to_model = None
         from_model = self.get_model()
-        
-        self.controls.search_progress.start()
-        self.spinner = True
+      
+
         def task(to_tree, to_model):
             all_rows = []
             for i, path in enumerate(paths):
@@ -208,24 +206,24 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                     continue
                 beans = self.get_all_beans_by_parent(from_model, from_iter)
                 all_rows += self.fill_beans_and_get_rows(beans, self.simple_content_filter)
-            self.spinner = False
+            
             for row in all_rows:
                 if get_file_extension(row[self.path[0]]) in [".m3u", ".m3u8"]:
                     if self.add_m3u(to_model=to_model, row=row):
                         continue
                 self.to_add_drag_item(to_tree, to_model, None, None, None, row=row)
             to_tree.update_tracknumber()
-            self.controls.search_progress.stop()
+            
         
             if not current:
                 '''gobject because rebuild_as_plain use it too'''
                 gobject.idle_add(self.controls.play_first_file_in_playlist)
         
-        t = threading.Thread(target=task, args=(to_tree, to_model))
-        t.start()
-        
+        #t = threading.Thread(target=task, args=(to_tree, to_model))
+        #t.start()
+        self.controls.search_progress.background_spinner_wrapper(task, to_tree, to_model)
         """trick to show spinner before end of handling"""
-        while t.isAlive():
+        '''while t.isAlive():
             time.sleep(0.1)
             while gtk.events_pending():
                 if self.spinner:#self.controls.search_progress.get_property('active'):

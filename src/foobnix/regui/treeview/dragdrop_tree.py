@@ -153,16 +153,12 @@ class DragDropTree(gtk.TreeView):
             return
         
         if "PlaylistTreeControl" in str(to_tree) and to_tree != from_tree:
-            self.controls.search_progress.start()
-            self.spinner = True
             def task(to_iter):
                 all_rows = []
                 for ff_path in ff_paths:
                     ff_iter = ff_model.get_iter(ff_path)
                     beans = self.get_all_beans_by_parent(ff_model, ff_iter)
                     all_rows += self.fill_beans_and_get_rows(beans, self.simple_content_filter)
-                
-                self.spinner = False
                     
                 for i, row in enumerate(all_rows):
                         pos = AFTER if i else to_filter_pos
@@ -170,20 +166,11 @@ class DragDropTree(gtk.TreeView):
                             self.add_m3u(ff_model, ff_iter, to_tree, to_model, to_iter, pos)
                             continue
                         to_iter = self.to_add_drag_item(to_tree, to_model, to_iter, pos, None, row=row)
-                self.controls.search_progress.stop()
+               
                 self.update_tracknumber()
-                                          
-            t = threading.Thread(target=task, args=(to_iter,))
-            t.start()
-            """trick to show spinner before end of handling"""
-            while t.isAlive():
-                time.sleep(0.1)
-                while gtk.events_pending():
-                    if self.spinner:#self.controls.search_progress.get_property('active'):
-                        gtk.main_iteration()
-                    else:
-                        break # otherwise endless cycle'''
-                    
+            
+            self.controls.search_progress.background_spinner_wrapper(task, to_iter)                              
+              
             return 
         
         new_iter = None

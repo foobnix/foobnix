@@ -40,13 +40,13 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         event.add(self.progressbar)
         event.connect("button-press-event", self.on_seek)
         
-        
         self.add(event)
         self.show_all()
         self.tooltip.hide()
         
     def safe_hide_tooltip(self):
         gobject.idle_add(self.tooltip.hide)
+        
     def on_pointer_motion(self, widget, event):
         width = widget.allocation.width
         x = event.x

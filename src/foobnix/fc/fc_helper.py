@@ -85,4 +85,5 @@ class FCHelper():
     def print_info(self, object):
         dict = object.__dict__
         for i in object.__dict__:
-            logging.debug(i + str(dict[i])[:500])        
+            if i not in ["user_id", "access_token", "vk_user", "vk_pass", "lfm_login", "lfm_password", "uuid"]:
+                logging.debug(i + " " + str(dict[i])[:500])        

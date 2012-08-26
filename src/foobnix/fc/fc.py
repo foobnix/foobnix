@@ -124,7 +124,7 @@ class FC():
         """Notification"""
         self.notifier = True
         self.notify_time = 3000
-               
+        
         """download manager controls"""
         self.auto_start_donwload = True
         self.amount_dm_threads = 3

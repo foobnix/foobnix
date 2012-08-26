@@ -152,7 +152,7 @@ class VKAuthorizationWindow(ChildTopWindow):
             except:
                 dialog_token()
                 pass
-                
+        
                 
     
         self.add(vbox)
@@ -222,7 +222,7 @@ class VKAuthorizationWindow(ChildTopWindow):
         
     def _nav_request_policy_decision_cb(self, view, frame, net_req, nav_act, pol_dec):
         uri = net_req.get_uri()  
-        logging.debug("response url " + uri)
+        #logging.debug("response url " + uri)
         if "access_token" in uri:
             token = self.get_response(uri)["access_token"]
             userid= self.get_response(uri)["user_id"]
@@ -281,11 +281,12 @@ class VKService:
     def get(self, method, data):
         time.sleep(0.6)
         url = "https://api.vkontakte.ru/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
-        logging.debug("GET " + url)
+        #logging.debug("GET " + url)
+        logging.debug("Try to get response from vkontakte")
         try:
             response = urllib.urlopen(url)
         except IOError:
-            logging.error("Can't get response from " + url)
+            logging.error("Can't get response from vkontakte")
             return
         result = response.read()
         return  result
