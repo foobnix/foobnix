@@ -395,8 +395,9 @@ class BaseFoobnixControls():
         def task():
             if bean.type == FTYPE_RADIO:
                 self.record.show()
+                self.seek_bar.progressbar.set_fraction(0)
             else:
-                self.record.hide()          
+                self.record.hide()
                     
             self.main_window.set_title(bean.text)
         gobject.idle_add(task)
@@ -483,7 +484,6 @@ class BaseFoobnixControls():
         self.statusbar.set_text(text)
         text = normalize_text(text)
         self.seek_bar.set_text(text)
-        gobject.idle_add(self.seek_bar.progressbar.set_fraction, 0)
         t_bean = FModel(text).add_type(FTYPE_RADIO).create_from_text(text)                       
         self.update_info_panel(t_bean)
         if FC().enable_radio_scrobbler:
