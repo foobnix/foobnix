@@ -59,6 +59,7 @@ if gtk.pygtk_version >= (2, 21, 0):
             self.label.show()
             self.spinner_popup = self.create_spinner_popup()
             self.spinner_popup.hide()
+            self.spinner_popup.connect_after('map', self.configure_popup, self.controls.main_window) 
             
         def start(self, text=None):
             def safe_task():
@@ -88,14 +89,18 @@ if gtk.pygtk_version >= (2, 21, 0):
         def create_spinner_popup(self):
             window = self.controls.main_window
             window.connect("configure-event", self.move_to_coord)
-            popup = gtk.Window(gtk.WINDOW_POPUP)
             hbox = gtk.HBox()
             hbox.pack_start(self)
             hbox.pack_start(self.label)
             hbox.show()
-            popup.add(hbox)
+            popup = gtk.Window()
+            popup.set_transient_for(window)
+            popup.set_destroy_with_parent(True)
+            popup.set_decorated(False)
+            popup.set_accept_focus(False)
+            popup.set_property("skip-taskbar-hint", True)
             popup.set_opacity(0.6)
-            popup.show()
+            popup.add(hbox)
             return popup
         
         def move_to_coord(self, *a):
@@ -115,6 +120,12 @@ if gtk.pygtk_version >= (2, 21, 0):
             notetabs_width = self.controls.notetabs.get_allocation().width
             self.spinner_popup.move(window_x + window_width - popup_width - coverlyrics_width - (notetabs_width - pl_tree_width),
                                     window_y + window_height - popup_height - statusbar_height - (notetabs_width - pl_tree_width))
+            
+        def configure_popup(self, popup, parent):
+            popup.window.set_keep_above(False)
+            popup.set_transient_for(parent)
+
+        
 else:
     class SearchProgressBar(SearchProgressBarOld):
         def __init__(self):
