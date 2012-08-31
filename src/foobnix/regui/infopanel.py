@@ -24,6 +24,7 @@ from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
 from foobnix.thirdparty.lyr import get_lyrics
+from foobnix.regui.service.lyricsmania_service import get_lyrics_from_lyricsmania
 
 
 class InfoCache():
@@ -308,13 +309,25 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             os.mkdir(LYRICS_DIR)
         lyrics_list = os.listdir(LYRICS_DIR)
         lyrics_title = "*** %s - %s *** \n" % (bean.artist, bean.title)
+        text = None
         if lyrics_title in lyrics_list:
             text = "".join(open(os.path.join(LYRICS_DIR, lyrics_title), 'r').readlines())
         else:
-            text = get_lyrics(bean.artist, bean.title)
+            try:
+                logging.debug("Try to get lyrics from lyrics.wikia.com")
+                text = get_lyrics(bean.artist, bean.title)
+            except:
+                logging.info("Error occurred when getting lyrics from lyrics.wikia.com")
+            if not text:
+                try:
+                    logging.debug("Try to get lyrics from lyricsmania.com")
+                    text = get_lyrics_from_lyricsmania(bean.artist, bean.title)
+                except:
+                    logging.info("Error occurred when getting lyrics from lyricsmania.com")
             if text:
                 open(os.path.join(LYRICS_DIR, lyrics_title), 'w').write(text)
             else:
+                logging.info("The text not found")
                 text = "The text not found"
         if bean.UUID == self.bean.UUID:
             self.lyrics.set_text(text, lyrics_title)
