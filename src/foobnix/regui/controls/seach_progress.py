@@ -36,11 +36,11 @@ class SearchProgressBarOld(gtk.ProgressBar):
                 time.sleep(0.1)
             self.started = False
         thread.start_new_thread(pulse_thread, ())
-    
+
     def stop(self):
         self.flag = False
         self.set_fraction(0)
-        #self.hide()        
+     
 
 if gtk.pygtk_version >= (2, 21, 0):
     class SearchProgressBarNew(gtk.Spinner):
@@ -60,14 +60,14 @@ if gtk.pygtk_version >= (2, 21, 0):
             self.spinner_popup = self.create_spinner_popup()
             self.spinner_popup.hide()
             self.spinner_popup.connect_after('map', self.configure_popup, self.controls.main_window) 
-            
+    
         def start(self, text=None):
             def safe_task():
                 self.spinner_popup.show()
                 super(SearchProgressBarNew, self).start()
                 self.move_to_coord()
-            gobject.idle_add(safe_task)   
-            
+            gobject.idle_add(safe_task, priority = gobject.PRIORITY_DEFAULT_IDLE - 10)
+
         def stop(self):
             def safe_task():
                 super(SearchProgressBarNew, self).stop()
@@ -76,15 +76,18 @@ if gtk.pygtk_version >= (2, 21, 0):
             
         def background_spinner_wrapper(self, task, *args):
             self.start()
-            def safe_task(*args):
-                t = threading.Thread(target=task, args=(args))
-                t.start()
-                while t.isAlive():
-                    time.sleep(0.1)
-                    while gtk.events_pending():
-                        gtk.main_iteration(True)
-                self.stop()
-            gobject.idle_add(safe_task, *args)
+            def thread_task(*args):
+                
+                def safe_task(*args):
+                    try:
+                        task(*args)
+                    finally:
+                        self.stop()
+                gobject.idle_add(safe_task, *args)
+          
+            t = threading.Thread(target=thread_task, args=(args))
+            t.start()
+            
             
         def create_spinner_popup(self):
             window = self.controls.main_window
@@ -118,8 +121,10 @@ if gtk.pygtk_version >= (2, 21, 0):
             statusbar_height = self.controls.statusbar.get_allocation().height
             pl_tree_width = self.controls.notetabs.get_current_tree().get_allocation().width
             notetabs_width = self.controls.notetabs.get_allocation().width
+            pl_tree_height = self.controls.notetabs.get_current_tree().get_allocation().height
+            notetabs_height = self.controls.notetabs.get_current_tree().scroll.get_allocation().height + 5
             self.spinner_popup.move(window_x + window_width - popup_width - coverlyrics_width - (notetabs_width - pl_tree_width),
-                                    window_y + window_height - popup_height - statusbar_height - (notetabs_width - pl_tree_width))
+                                    window_y + window_height - popup_height - statusbar_height - (notetabs_height - pl_tree_height))
             
         def configure_popup(self, popup, parent):
             popup.window.set_keep_above(False)

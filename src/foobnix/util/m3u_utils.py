@@ -5,6 +5,7 @@ import os.path
 
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import ICON_FOOBNIX
+from foobnix.util.file_utils import get_file_extension
 
 
 def m3u_reader(m3u_file_path):
@@ -72,6 +73,11 @@ def m3u_writer(name, current_folder, paths):
         map(m3u_file.write, paths)
     except UnboundLocalError:
         logging.warn("You try to save empty playlist")
+
+def is_m3u(path):
+    if path and get_file_extension(path) in [".m3u", ".m3u8"]:
+        return True
+    return False
 
 def message_on_save(absolute=True):
     dialog = gtk.Dialog(buttons=("Yes", gtk.RESPONSE_OK, "No", gtk.RESPONSE_REJECT))

@@ -368,7 +368,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 
         
         elif type in [gst.MESSAGE_STATE_CHANGED, gst.MESSAGE_STREAM_STATUS]:            
-            if (self.bean.type == FTYPE_RADIO and
+            if (self.bean and self.bean.type == FTYPE_RADIO and
                 message.structure.has_field("new-state") and
                 message.structure['old-state'] == gst.STATE_READY and
                 message.structure['new-state'] == gst.STATE_NULL):

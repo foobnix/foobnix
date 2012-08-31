@@ -22,7 +22,7 @@ from foobnix.util.const import BEFORE, AFTER, INTO_OR_BEFORE, INTO_OR_AFTER,\
     FTYPE_RADIO
 from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progressbar,\
     get_file_extension
-from foobnix.util.m3u_utils import m3u_reader
+from foobnix.util.m3u_utils import m3u_reader, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.regui.model import FModel, FTreeModel
@@ -162,15 +162,14 @@ class DragDropTree(gtk.TreeView):
                     
                 for i, row in enumerate(all_rows):
                         pos = AFTER if i else to_filter_pos
-                        if row[self.path[0]] and get_file_extension(row[self.path[0]]) in [".m3u", ".m3u8"]:
+                        if is_m3u(row[self.path[0]]):
                             self.add_m3u(ff_model, ff_iter, to_tree, to_model, to_iter, pos)
                             continue
                         to_iter = self.to_add_drag_item(to_tree, to_model, to_iter, pos, None, row=row)
-               
                 self.update_tracknumber()
-            
+           
             self.controls.search_progress.background_spinner_wrapper(task, to_iter)                              
-              
+            
             return 
         
         new_iter = None
@@ -265,7 +264,8 @@ class DragDropTree(gtk.TreeView):
             return None
            
         """if m3u is dropped"""
-        if self.add_m3u(ff_model, ff_iter, to_tree, to_model, to_iter, to_filter_pos):
+        if is_m3u(ff_model.get_value(ff_iter, self.path[0]).lower()):
+            self.add_m3u(ff_model, ff_iter, to_tree, to_model, to_iter, to_filter_pos)
             return
             
         if ff_model.iter_has_child(ff_iter):
@@ -326,25 +326,23 @@ class DragDropTree(gtk.TreeView):
             iter = ff_model.convert_iter_to_child_iter(filter_iter)
             ff_model.get_model().remove(iter)
     
+    
+    
     def add_m3u(self, from_model=None, from_iter=None, to_tree=None, to_model=None,
                 to_iter=None, pos=None, row=None):
         if row:
-            if get_file_extension(row[self.path[0]]) in [".m3u", ".m3u8"]:
-                m3u_file_path = row[self.path[0]]
-                m3u_title = row[self.text[0]]
-            else:
-                return
+            m3u_file_path = row[self.path[0]]
+            m3u_title = row[self.text[0]]
+
         else:
-            if ((from_model.get_value(from_iter, 0).lower().endswith(".m3u") 
-            or from_model.get_value(from_iter, 0).lower().endswith(".m3u8"))
-            and from_model.get_model() is not to_model):
-                    m3u_file_path = from_model.get_value(from_iter, self.path[0])
-                    m3u_title = from_model.get_value(from_iter, self.text[0])
+            if from_model.get_model() is not to_model:
+                m3u_file_path = from_model.get_value(from_iter, self.path[0])
+                m3u_title = from_model.get_value(from_iter, self.text[0])
             else:
                 return
             
-            if m3u_file_path.startswith("http//"):
-                return None
+        if m3u_file_path.startswith("http//"):
+            return None
             
         paths = m3u_reader(m3u_file_path)
         paths.insert(0, [None, os.path.splitext(m3u_title)[0]])
@@ -369,7 +367,7 @@ class DragDropTree(gtk.TreeView):
             
         return True
     
-    def to_add_drag_item(self, to_tree, to_model, to_iter,  pos, ref=None, child=False, row=None):    
+    def to_add_drag_item(self, to_tree=None, to_model=None, to_iter=None,  pos=None, ref=None, child=False, row=None):    
         if not row:
             from_iter = self.get_iter_from_row_reference(ref)
             from_model = ref.get_model()

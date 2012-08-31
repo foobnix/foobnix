@@ -9,7 +9,6 @@ import thread
 import logging
 
 from threading import Lock
-import gobject
 
 
 class SingleThread():
@@ -32,7 +31,7 @@ class SingleThread():
         if not self.lock.locked():            
             self.lock.acquire()
             if self.progressbar:
-                gobject.idle_add(self.progressbar.start, text)
+                self.progressbar.start(text)
             thread.start_new_thread(self._thread_task, (method, args,))
         else:
             logging.warning("Previous thread not finished " + str(method) + " " + str(args))
@@ -43,7 +42,8 @@ class SingleThread():
     def _thread_task(self, method, args, with_lock=True):
         try:
             if method and args:
-                method(args)
+                print args
+                method(*args)
             elif method:
                 method()
             time.sleep(0.1)
