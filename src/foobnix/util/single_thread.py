@@ -42,7 +42,6 @@ class SingleThread():
     def _thread_task(self, method, args, with_lock=True):
         try:
             if method and args:
-                print args
                 method(*args)
             elif method:
                 method()
