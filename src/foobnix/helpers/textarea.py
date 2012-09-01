@@ -48,7 +48,7 @@ class TextArea(gtk.ScrolledWindow):
             if text:
                 self.clear_tags (full_text)
             start = self.buffer.get_iter_at_offset(0)            
-            end = self.buffer.get_iter_at_offset(len(bold_text))
+            end = self.buffer.get_iter_at_offset(len(unicode(bold_text)))
             self.buffer.apply_tag(self.tag_bold, start, end)
         gobject.idle_add(safe_task)
         

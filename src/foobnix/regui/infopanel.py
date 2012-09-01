@@ -6,8 +6,8 @@ Created on Sep 23, 2010
 import os
 import gtk
 import copy
-import logging
 import gobject
+import logging
 
 from foobnix.fc.fc import FC
 from foobnix.regui.model import FModel
@@ -24,7 +24,7 @@ from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
 from foobnix.thirdparty.lyr import get_lyrics
-from foobnix.regui.service.lyricsmania_service import get_lyrics_from_lyricsmania
+from foobnix.regui.service.lyrics_parsing_service import get_lyrics_by_parsing
 
 
 class InfoCache():
@@ -319,11 +319,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             except:
                 logging.info("Error occurred when getting lyrics from lyrics.wikia.com")
             if not text:
-                try:
-                    logging.debug("Try to get lyrics from lyricsmania.com")
-                    text = get_lyrics_from_lyricsmania(bean.artist, bean.title)
-                except:
-                    logging.info("Error occurred when getting lyrics from lyricsmania.com")
+                text = get_lyrics_by_parsing(bean.artist, bean.title)
             if text:
                 open(os.path.join(LYRICS_DIR, lyrics_title), 'w').write(text)
             else:
