@@ -47,7 +47,7 @@ class SingleThread():
                 method()
             time.sleep(0.1)
         except Exception, e:
-            logging.error(method.__name__ + "(" + str(args) + "):" + str(e))
+            logging.error(str(e))
         finally:
             if self.lock.locked():
                 if self.progressbar:
