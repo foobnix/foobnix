@@ -1,179 +1,178 @@
-# Polish translation for foobnix
-# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# Estonian translation for foobnix
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
 # This file is distributed under the same license as the foobnix package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-05-03 08:52+0300\n"
-"PO-Revision-Date: 2012-05-03 07:54+0000\n"
-"Last-Translator: Ivan Ivanenko <Unknown>\n"
-"Language-Team: Polish <pl@li.org>\n"
+"PO-Revision-Date: 2012-07-23 13:13+0000\n"
+"Last-Translator: Erkki Liba <spil99@hotmail.com>\n"
+"Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-04 05:07+0000\n"
-"X-Generator: Launchpad (build 15195)\n"
-"Language: pl\n"
+"X-Launchpad-Export-Date: 2012-07-24 05:05+0000\n"
+"X-Generator: Launchpad (build 15668)\n"
 
 #: .././foobnix/dm/dm.py:31 .././foobnix/preferences/preferences_window.py:57
 #: .././foobnix/regui/menu.py:54 .././foobnix/regui/top.py:44
 msgid "Preferences"
-msgstr "Preferencje"
+msgstr "Eelistused"
 
 #: .././foobnix/dm/dm.py:33
 msgid "Start Downloading"
-msgstr "Rozpocznij pobieranie"
+msgstr "Alusta allalaadimist"
 
 #: .././foobnix/dm/dm.py:34
 msgid "Stop Downloading"
-msgstr "Zatrzymaj pobieranie"
+msgstr "Peata allalaadimine"
 
 #: .././foobnix/dm/dm.py:49 .././foobnix/preferences/configs/__init__.py:3
 #: .././foobnix/regui/menu.py:52
 msgid "Download Manager"
-msgstr "Menadżer pobierania"
+msgstr "Allalaadimiste haldur"
 
 #: .././foobnix/dm/dm.py:113 .././foobnix/util/file_utils.py:376
 msgid "Choose Folder"
-msgstr "Wybierz folder"
+msgstr "Vali kaust"
 
 #. @UnusedVariable
 #: .././foobnix/eq/eq_gui.py:42 .././foobnix/regui/menu.py:51
 msgid "Equalizer"
-msgstr "Korektor dźwięku"
+msgstr "Ekvalaiser"
 
 #: .././foobnix/eq/eq_gui.py:88
 msgid "Disabled"
-msgstr "Wyłączony"
+msgstr "Keelatud"
 
 #: .././foobnix/eq/eq_gui.py:89 .././foobnix/eq/eq_gui.py:171
 msgid "Enable EQ"
-msgstr "Włączony korektor"
+msgstr "Luba EQ"
 
 #: .././foobnix/eq/eq_gui.py:91
 msgid "Enabled"
-msgstr "Włączony"
+msgstr "Lubatud"
 
 #: .././foobnix/eq/eq_gui.py:92 .././foobnix/eq/eq_gui.py:290
 msgid "Disable EQ"
-msgstr "Wyłączony korektor"
+msgstr "Keela EQ"
 
 #: .././foobnix/eq/eq_gui.py:93
 #, python-format
 msgid "Equalizer %s"
-msgstr "Korektor dźwięku %s"
+msgstr "Ekvalaiser %s"
 
 #: .././foobnix/eq/eq_gui.py:172
 msgid "To enable EQ set ON"
-msgstr "Aby włączyć korektor kliknij wł."
+msgstr ""
 
 #: .././foobnix/eq/eq_gui.py:177
 msgid "Auto"
-msgstr "Automatycznie"
+msgstr "Auto"
 
 #: .././foobnix/eq/eq_gui.py:192
 msgid "Save"
-msgstr "Zapisz"
+msgstr "Salvesta"
 
 #: .././foobnix/eq/eq_gui.py:200
 msgid "Restore defaults presets"
-msgstr "Przywróć domyślne ustawienia"
+msgstr "Taasta algseis"
 
 #: .././foobnix/fc/fc_cache.py:29 .././foobnix/fc/fc_cache.py:37
 #: .././foobnix/regui/notetab/__init__.py:114
 #: .././foobnix/regui/notetab/__init__.py:120
 msgid "Empty tab"
-msgstr "Pusta karta"
+msgstr "Tühi kaart"
 
 #: .././foobnix/helpers/dialog_entry.py:171
 #: .././foobnix/helpers/dialog_entry.py:172
 msgid "New foobnix release avaliable"
-msgstr "Nowa wersja foobnix jest dostępna"
+msgstr "Uus foobnixi versioon on saadaval"
 
 #: .././foobnix/helpers/dialog_entry.py:177
 msgid "Download and Donate"
-msgstr "Pobierz i wspomóż"
+msgstr "Lae alla ja toeta"
 
 #. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:179
 #: .././foobnix/regui/treeview/playlist_tree.py:234
 #: .././foobnix/util/converter.py:341
 msgid "Download"
-msgstr "Pobierz"
+msgstr "Lae alla"
 
 #: .././foobnix/helpers/dialog_entry.py:192
 msgid "We hope you like the player. We will make it even better."
-msgstr "Mamy nadzieję, że polubiłeś odtwarzacz. Ciągle go ulepszamy."
+msgstr ""
 
 #: .././foobnix/helpers/dialog_entry.py:193
 #: .././foobnix/preferences/configs/notification_conf.py:19
 #: .././foobnix/preferences/configs/other_conf.py:70
 msgid "Check for new foobnix release on start"
-msgstr "Sprawdzaj podczas włączania, czy jest nowa wersja foobnix."
+msgstr "Käivitamisel kontrolli uue foobnixi versiooni saadavust"
 
 #: .././foobnix/helpers/window.py:73
 msgid "Total progress"
-msgstr "Całkowity postęp"
+msgstr "Üldine progress"
 
 #: .././foobnix/helpers/window.py:78
 #: .././foobnix/preferences/configs/hotkey_conf.py:160
 #: .././foobnix/regui/controls/playback.py:195 .././foobnix/util/const.py:47
 #: .././foobnix/util/converter.py:95
 msgid "Stop"
-msgstr "Zatrzymaj"
+msgstr "Peata"
 
 #: .././foobnix/preferences/preferences_window.py:67
 msgid "Categories"
-msgstr "Kategorie"
+msgstr "Kategooriad"
 
 #: .././foobnix/preferences/preferences_window.py:128
 msgid "Restore Defaults Settings"
-msgstr "Przywróć domyślne ustawienia"
+msgstr "Taasta algsätted"
 
 #: .././foobnix/preferences/preferences_window.py:132
 #: .././foobnix/util/tag_util.py:85
 msgid "Apply"
-msgstr "Zastosuj"
+msgstr "Rakenda"
 
 #: .././foobnix/preferences/preferences_window.py:137
 #: .././foobnix/util/converter.py:86 .././foobnix/util/tag_util.py:86
 msgid "Close"
-msgstr "Zamknij"
+msgstr "Sulge"
 
 #: .././foobnix/preferences/configs/category_info.py:10
 msgid "Category Info"
-msgstr "Informacje o kategorii"
+msgstr ""
 
 #: .././foobnix/preferences/configs/dm_config.py:23
 msgid "Save online music"
-msgstr "Zapisz muzyką on-line"
+msgstr ""
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:46
 msgid "Global Hotkeys"
-msgstr "Skróty globalne"
+msgstr "Üldised kiirklahvid"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:59
 msgid "Action"
-msgstr "Działanie"
+msgstr ""
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:60
 msgid "Hotkey"
-msgstr "Skrót klawiszowy"
+msgstr "Kiirklahv"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:68
 #: .././foobnix/preferences/configs/music_library.py:62
 #: .././foobnix/preferences/configs/music_library.py:165
 msgid "Add"
-msgstr "Dodaj"
+msgstr "Lisa"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:73
 #: .././foobnix/preferences/configs/music_library.py:67
 #: .././foobnix/preferences/configs/music_library.py:170
 msgid "Remove"
-msgstr "Usuń"
+msgstr "Eemalda"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:158
 #: .././foobnix/regui/controls/playback.py:196
@@ -181,64 +180,64 @@ msgstr "Usuń"
 #: .././foobnix/regui/treeview/playlist_tree.py:215
 #: .././foobnix/regui/treeview/vk_integration_tree.py:77
 msgid "Play"
-msgstr "Odtwórz"
+msgstr "Esita"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:159
 #: .././foobnix/regui/controls/playback.py:197
 msgid "Pause"
-msgstr "Pauza"
+msgstr "Paus"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:161
 msgid "Next song"
-msgstr "Następny utwór"
+msgstr "Järgmine lugu"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:162
 msgid "Previous song"
-msgstr "Poprzedni utwór"
+msgstr "Eelmine lugu"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:163
 msgid "Volume up"
-msgstr "Głośniej"
+msgstr "Valjemaks"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:164
 msgid "Volume down"
-msgstr "Ciszej"
+msgstr "Vaiksemaks"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:165
 msgid "Show-Hide"
-msgstr "Pokaż - Ukryj"
+msgstr "Näita-peida"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:166
 msgid "Play-Pause"
-msgstr "Odtwórz - Zatrzymaj"
+msgstr "Mängi-peata"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:12
 msgid "Info panel"
-msgstr "Panel informacyjny"
+msgstr "Infopaneel"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:22
 msgid "Disc cover size"
-msgstr "Rozmiar okładki albumu:"
+msgstr "Plaadiümbrise suurus"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:36
 msgid "Lyric panel size"
-msgstr "Rozmiar panelu z napisami"
+msgstr "Laulusõnade paneeli suurus"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:47
 msgid "Show Tags list"
-msgstr "Pokaż tagi listy"
+msgstr ""
 
 #: .././foobnix/preferences/configs/__init__.py:4
 msgid "Music Library"
-msgstr "Biblioteka muzyki"
+msgstr "Muusikakogu"
 
 #: .././foobnix/preferences/configs/__init__.py:5
 msgid "Other Options"
-msgstr "Inne opcje"
+msgstr "Muud valikud"
 
 #: .././foobnix/preferences/configs/last_fm.py:14
 msgid "Last FM + VK"
-msgstr "LastFM + VK"
+msgstr "Last FM + VK"
 
 #: .././foobnix/preferences/configs/last_fm.py:21
 msgid "Last.FM"
@@ -249,22 +248,22 @@ msgstr "Last.FM"
 #: .././foobnix/preferences/configs/network_conf.py:58
 #: .././foobnix/regui/service/vk_service.py:79
 msgid "Login"
-msgstr "Login"
+msgstr "Kasutaja"
 
 #: .././foobnix/preferences/configs/last_fm.py:43
 #: .././foobnix/preferences/configs/last_fm.py:103
 #: .././foobnix/preferences/configs/network_conf.py:72
 #: .././foobnix/regui/service/vk_service.py:94
 msgid "Password"
-msgstr "Hasło"
+msgstr "Salasõna"
 
 #: .././foobnix/preferences/configs/last_fm.py:52
 msgid "Enable Music Scrobbler"
-msgstr "Włącz scrobblowanie muzyki"
+msgstr "Luba muusika scrobbler"
 
 #: .././foobnix/preferences/configs/last_fm.py:55
 msgid "Enable Radio Scrobbler"
-msgstr "Włącz scrobblowanie z radia"
+msgstr "Luba raadio scrobbler"
 
 #: .././foobnix/preferences/configs/last_fm.py:69
 #: .././foobnix/preferences/configs/last_fm.py:75
@@ -276,449 +275,449 @@ msgstr "VKontakte"
 #: .././foobnix/preferences/configs/last_fm.py:75
 #: .././foobnix/regui/menu.py:81
 msgid "Disable"
-msgstr "Wyłącz"
+msgstr "Keela"
 
 #: .././foobnix/preferences/configs/last_fm.py:80
 msgid "You vk account is:"
-msgstr "Twoim kontem VK jest:"
+msgstr ""
 
 #. vk_layout.pack_start(vlbox)
 #. vk_layout.pack_start(vpbox)
 #: .././foobnix/preferences/configs/last_fm.py:118
 msgid "Authorization (then need player restart)"
-msgstr "Autoryzacja (potem trzeba zresetować odtwarzacz)"
+msgstr "Autoriseerimine (vajab restarti)"
 
 #: .././foobnix/preferences/configs/music_library.py:38
 msgid "Update library on start (more slow) "
-msgstr "Aktualizuj bibliotekę na starcie (powolne) "
+msgstr "Käivitumisel värskenda muusikakogu (aeglasem) "
 
 #: .././foobnix/preferences/configs/music_library.py:48
 msgid "Music dirs"
-msgstr "Foldery z muzyką"
+msgstr "Muusika kaustad"
 
 #: .././foobnix/preferences/configs/music_library.py:56
 msgid "Paths"
-msgstr "Ścieżki"
+msgstr "Asukohad"
 
 #: .././foobnix/preferences/configs/music_library.py:136
 #: .././foobnix/regui/treeview/navigation_tree.py:237
 msgid "Choose directory with music"
-msgstr "Wybierz folder z muzyką"
+msgstr ""
 
 #: .././foobnix/preferences/configs/music_library.py:151
 msgid "File Types"
-msgstr "Rodzaje plików"
+msgstr "Failitüübid"
 
 #: .././foobnix/preferences/configs/music_library.py:159
 msgid "Extensions"
-msgstr "Rozszerzenia"
+msgstr "Laiendid"
 
 #: .././foobnix/preferences/configs/music_library.py:191
 msgid "Please add audio extension"
-msgstr "Proszę dodać rozszerzenie audio"
+msgstr "Palun lisa audiolaiend"
 
 #: .././foobnix/preferences/configs/music_library.py:191
 msgid "Extension should be like '.mp3'"
-msgstr "Rozszerzenia powinny być typu \".mp3\""
+msgstr "Laiendid peavad olema kujul nagu '.mp3'"
 
 #: .././foobnix/preferences/configs/music_library.py:198
 msgid "Gap between tracks: "
-msgstr "Odstępy między utworami: "
+msgstr "Paus lugude vahel "
 
 #: .././foobnix/preferences/configs/music_library.py:214
 msgid "Multi tab mode"
-msgstr "Tryb wielu kart"
+msgstr ""
 
 #: .././foobnix/preferences/configs/music_library.py:220
 msgid "Single tab mode"
-msgstr "Tryb pojedynczej karty"
+msgstr ""
 
 #: .././foobnix/preferences/configs/network_conf.py:16
 msgid "Network Settings"
-msgstr "Ustawienia sieciowe"
+msgstr "Võrgusätted"
 
 #: .././foobnix/preferences/configs/network_conf.py:23
 msgid "Enable HTTP proxy"
-msgstr "Włącz HTTP proxy"
+msgstr "Luba HTTP proksi"
 
 #: .././foobnix/preferences/configs/network_conf.py:27
 msgid "Settings"
-msgstr "Ustawienia"
+msgstr "Seaded"
 
 #: .././foobnix/preferences/configs/network_conf.py:39
 msgid "Server"
-msgstr "Serwer"
+msgstr "Server"
 
 #: .././foobnix/preferences/configs/network_conf.py:46
 msgid "example: 66.42.182.178:3128"
-msgstr "przykład: 66.42.182.178:3128"
+msgstr "näide: 66.42.182.178:3128"
 
 #: .././foobnix/preferences/configs/network_conf.py:93
 msgid "Check Connection"
-msgstr "Sprawdź połączenie"
+msgstr "Kontrolli ühendust"
 
 #: .././foobnix/preferences/configs/network_conf.py:98
 #: .././foobnix/preferences/configs/network_conf.py:137
 msgid "Result:"
-msgstr "Wynik:"
+msgstr "Tulemus:"
 
 #: .././foobnix/preferences/configs/network_conf.py:137
 msgid " OK in seconds: "
-msgstr " Ok w sekundach: "
+msgstr ""
 
 #: .././foobnix/preferences/configs/notification_conf.py:13
 msgid "Notifications"
-msgstr "Powiadomienia"
+msgstr "Märguanded"
 
 #: .././foobnix/preferences/configs/notification_conf.py:22
 #: .././foobnix/preferences/configs/other_conf.py:73
 msgid "Show new foobnix release avaliable demo dialog"
-msgstr "Pokaż okno z nowym wydaniem foobnix"
+msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:36
 msgid "Save music to folder:"
-msgstr "Zapisz muzykę do folderu:"
+msgstr "Salvesta muusika kausta:"
 
 #: .././foobnix/preferences/configs/other_conf.py:40
 msgid "Automatic music save"
-msgstr "Automatycznie zapisuj muzykę"
+msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:45
 msgid "Download in threads"
-msgstr "Pobierz w wątkach"
+msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:59
 msgid "Disc cover size:"
-msgstr "Rozmiar okładki:"
+msgstr "Plaadiümbrise suurus"
 
 #: .././foobnix/preferences/configs/other_conf.py:83
 msgid "Enable theme image"
-msgstr "Włącz motyw obrazu"
+msgstr "Luba teemapilt"
 
 #: .././foobnix/preferences/configs/other_conf.py:92
 msgid "Menu type: "
-msgstr "Rodzaj menu: "
+msgstr "Menüü tüüp: "
 
 #: .././foobnix/preferences/configs/other_conf.py:94
 msgid "Old Style (Menu Bar)"
-msgstr "Styl klasyczny (pasek menu)"
+msgstr "Vana stiil (menüüriba)"
 
 #: .././foobnix/preferences/configs/other_conf.py:96
 msgid "New Style (Button)"
-msgstr "Nowy styl (przyciski)"
+msgstr "Uus stiil (nupp)"
 
 #: .././foobnix/preferences/configs/other_conf.py:105
 msgid "Order-Repeat Switcher Style:"
-msgstr "Styl przełączników Kolejność-Powtórz"
+msgstr "Järjekord-kordus nuppude stiil:"
 
 #: .././foobnix/preferences/configs/other_conf.py:107
 msgid "Toggle Buttons"
-msgstr "Przyciski"
+msgstr "Pildid"
 
 #: .././foobnix/preferences/configs/other_conf.py:109
 msgid "Text Labels"
-msgstr "Etykiety tekstowe"
+msgstr "Tekstisümbolid"
 
 #: .././foobnix/preferences/configs/other_conf.py:119
 msgid "Opacity:"
-msgstr "Nieprzezroczystość:"
+msgstr "Läbipaistmatus:"
 
 #: .././foobnix/preferences/configs/other_conf.py:132
 msgid "Choose your preferred file manager:"
-msgstr "Wybierz menadżer plików:"
+msgstr "Kasuta failihaldurit:"
 
 #: .././foobnix/preferences/configs/other_conf.py:135
 msgid "Disable Xscreensaver"
-msgstr "Wyłącz wygaszacz"
+msgstr "Keela Xscreensaver"
 
 #: .././foobnix/preferences/configs/other_conf.py:137
 msgid "Enable Network Checker"
-msgstr "Włącz sprawdzanie połączenia"
+msgstr "Luba võrguühenduse testija"
 
 #: .././foobnix/preferences/configs/tabs.py:13
 msgid "Tabs"
-msgstr "Karty"
+msgstr "Sakid"
 
 #: .././foobnix/preferences/configs/tabs.py:24
 msgid "Count of tabs:"
-msgstr "Ilość kart:"
+msgstr "Sakkide arv:"
 
 #: .././foobnix/preferences/configs/tabs.py:39
 msgid "Max length of tab:"
-msgstr "Maksymalna szerokość:"
+msgstr "Saki max pikkus:"
 
 #: .././foobnix/preferences/configs/tabs.py:54
 msgid "Tab position:"
-msgstr "Pozycja karty:"
+msgstr "Saki asukoht:"
 
 #: .././foobnix/preferences/configs/tabs.py:58
 msgid "Left"
-msgstr "Po lewej"
+msgstr "Vasakul"
 
 #: .././foobnix/preferences/configs/tabs.py:61
 msgid "Top"
-msgstr "Do góry"
+msgstr "Üleval"
 
 #: .././foobnix/preferences/configs/tabs.py:64
 msgid "No Tabs"
-msgstr "Brak kart"
+msgstr "Ilma sakkideta"
 
 #: .././foobnix/preferences/configs/tabs.py:76
 msgid "Close tab sign:"
-msgstr "Znak zamknięcia karty:"
+msgstr "Saki sulgemise tähis:"
 
 #: .././foobnix/preferences/configs/tabs.py:91
 msgid "None"
-msgstr "Brak"
+msgstr "Puudub"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:38
 msgid "Show tray icon"
-msgstr "Pokaż ikonkę w tacce systemowej"
+msgstr "Näita ikooni süsteemisalves"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:39
 msgid "Hide player in tray on start"
-msgstr "Od włączenia ukrywaj odtwarzacz na tacce"
+msgstr "Ava süsteemisalves"
 
 #. self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
 #: .././foobnix/preferences/configs/tray_icon_conf.py:42
 msgid "On close window - close player"
-msgstr "Wyłączaj odtwarzacz przy zamykaniu okna"
+msgstr "akna sulgemisel - sulge rakendus"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:44
 msgid "On close window - hide player"
-msgstr "Ukrywaj odtwarzacz podczas zamykania okna"
+msgstr "akna sulgemisel - peida rakendus"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:47
 msgid "On close window - minimize player"
-msgstr "Minimalizuj odtwarzacz podczas zamykania okna"
+msgstr "akna sulgemisel - minimeeri rakendus"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:50
 msgid "System Icon Static"
-msgstr "Ikony statyczne"
+msgstr "Staatiline salve ikoon"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:58
 msgid "System Icons Dynamic"
-msgstr "Ikony dynamiczne"
+msgstr "Dünaamiline salve ikoon"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:62
 msgid "Disc cover image"
-msgstr "Obraz okładki albumu"
+msgstr "Plaadiümbrise pilt"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:64
 msgid "Notification pop-up"
-msgstr "Wyświetlaj powiadomienia"
+msgstr "Märguande hüpikaken"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:82
 msgid "Notification"
-msgstr "Powiadomienia"
+msgstr "Märguanne"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:109
 msgid "Time Notification (sec): "
-msgstr "Czas wyświetlania powiadomień (sek.): "
+msgstr "Märguande aeg (sek): "
 
 #: .././foobnix/regui/base_controls.py:163
 msgid "Choose folders to open"
-msgstr "Wybierz foldery do otwarcia"
+msgstr ""
 
 #: .././foobnix/regui/base_controls.py:183
 msgid "Nothing found to play in the folder(s)"
-msgstr "Folder nie zawiera nic do zagrania"
+msgstr ""
 
 #: .././foobnix/regui/base_controls.py:190
 msgid "Choose file to open"
-msgstr "Wybierz plik do otwarcia"
+msgstr "Vali fail avamiseks"
 
 #: .././foobnix/regui/base_controls.py:239
 msgid "Nothing found to play in the file(s)"
-msgstr "Plik nie zawiera nic do zagrania"
+msgstr ""
 
 #: .././foobnix/regui/base_controls.py:308
 msgid "Music not found in folder(s):"
-msgstr "Nie znaleziono muzyki w folderze"
+msgstr ""
 
 #: .././foobnix/regui/base_controls.py:381
 msgid "Stopped"
-msgstr "Zatrzymane"
+msgstr "Seisatud"
 
 #: .././foobnix/regui/base_controls.py:390
 msgid "Paused | "
-msgstr "Wstrymane | "
+msgstr "Peatatud | "
 
 #: .././foobnix/regui/coverlyrics.py:21
 msgid "Album title"
-msgstr "O tytule"
+msgstr "Albumi nimi"
 
 #: .././foobnix/regui/coverlyrics.py:26
 msgid "Cover:"
-msgstr "Okładka:"
+msgstr "Ümbris"
 
 #: .././foobnix/regui/coverlyrics.py:32
 msgid "Lyric:"
-msgstr "Tekst:"
+msgstr "Sõnad"
 
 #: .././foobnix/regui/infopanel.py:50
 msgid "Best Songs"
-msgstr "Najlepsze utwory"
+msgstr ""
 
 #: .././foobnix/regui/infopanel.py:53
 msgid "Similar Artists"
-msgstr "Podobni wykonawcy"
+msgstr "Sarnased esitajad"
 
 #: .././foobnix/regui/infopanel.py:56
 msgid "Similar Songs"
-msgstr "Podobne utwory"
+msgstr "Sarnased lood"
 
 #: .././foobnix/regui/infopanel.py:59
 msgid "Similar Tags"
-msgstr "Podobne tagi"
+msgstr "Sarnased märgendid"
 
 #: .././foobnix/regui/infopanel.py:64
 msgid "Lyrics"
-msgstr "Tekst utworu"
+msgstr "Sõnad"
 
 #: .././foobnix/regui/infopanel.py:71
 msgid "About Artist"
-msgstr "O wykonawcy"
+msgstr "Esitajast"
 
 #: .././foobnix/regui/infopanel.py:77 .././foobnix/regui/perspectives.py:127
 msgid "Info"
-msgstr "Informacje"
+msgstr "Info"
 
 #: .././foobnix/regui/infopanel.py:86
 msgid "Downloads"
-msgstr ""
+msgstr "Allalaadimised"
 
 #: .././foobnix/regui/menu.py:30
 msgid "_File"
-msgstr "_Plik"
+msgstr "_Fail"
 
 #: .././foobnix/regui/menu.py:31
 msgid "Add File(s)"
-msgstr "Dodaj Plik(i)"
+msgstr "Lisa fail(e)"
 
 #: .././foobnix/regui/menu.py:32
 msgid "Add Folder(s)"
-msgstr "Dodaj folder(y)"
+msgstr "Lisa kaust(u)"
 
 #: .././foobnix/regui/menu.py:33
 msgid "Save Playlist As"
-msgstr "Zapisz listę odtwarzania jako"
+msgstr "Salvesta esitlusloend"
 
 #: .././foobnix/regui/menu.py:36 .././foobnix/regui/top.py:46
 msgid "Quit"
-msgstr "Zakończ"
+msgstr "Välju"
 
 #: .././foobnix/regui/menu.py:39
 msgid "_View"
-msgstr "_Widok"
+msgstr "_Vaade"
 
 #: .././foobnix/regui/menu.py:41
 msgid "Left Panel"
-msgstr "Lewy panel"
+msgstr "Vasak paneel"
 
 #: .././foobnix/regui/menu.py:44
 msgid "Search Panel"
-msgstr "Panel wyszukiwania"
+msgstr "Otsingupaneel"
 
 #: .././foobnix/regui/menu.py:47
 msgid "Cover & Lyrics Panel"
-msgstr "Okładka i tekst utworu"
+msgstr "Ümbris  & laulusõnad"
 
 #: .././foobnix/regui/menu.py:62
 msgid "_Playback"
-msgstr "_Odtwarzanie"
+msgstr "_Esitamine"
 
 #: .././foobnix/regui/menu.py:70
 msgid "Order"
-msgstr "Kolejność"
+msgstr "Järjestus"
 
 #: .././foobnix/regui/menu.py:71
 msgid "Linear"
-msgstr "Po kolei"
+msgstr "Lineaarne"
 
 #: .././foobnix/regui/menu.py:74
 msgid "Random"
-msgstr "Losowo"
+msgstr "Juhuslik"
 
 #: .././foobnix/regui/menu.py:78
 msgid "Repeat"
-msgstr "Powtórz"
+msgstr "Kordus"
 
 #: .././foobnix/regui/menu.py:79 .././foobnix/util/const.py:45
 msgid "All"
-msgstr "Wszystko"
+msgstr "Kõik"
 
 #: .././foobnix/regui/menu.py:80
 msgid "Single"
-msgstr "Pojedynczo"
+msgstr "Üksik"
 
 #: .././foobnix/regui/menu.py:112
 msgid "_Help"
-msgstr "_Pomoc"
+msgstr "_Abi"
 
 #: .././foobnix/regui/menu.py:113
 msgid "About"
-msgstr "O programie"
+msgstr "Programmist"
 
 #: .././foobnix/regui/menu.py:115
 msgid "Project page"
-msgstr "Strona projektu"
+msgstr "Veebileht"
 
 #: .././foobnix/regui/menu.py:115
 msgid "http://www.foobnix.com/news/eng"
-msgstr "http://www.foobnix.com/news/eng"
+msgstr ""
 
 #: .././foobnix/regui/menu.py:116
 msgid "Issue report"
-msgstr "Raport wydań"
+msgstr "Vearaport"
 
 #: .././foobnix/regui/menu.py:118
 msgid "Donate Participate"
-msgstr "Przekaż datek"
+msgstr ""
 
 #: .././foobnix/regui/menu.py:118
 msgid "http://www.foobnix.com/donate/eng"
-msgstr "http://www.foobnix.com/donate/eng"
+msgstr ""
 
 #: .././foobnix/regui/perspectives.py:40
 msgid "Add Folder(s) in tree"
-msgstr "Dodaj folder(y) do drzewa"
+msgstr ""
 
 #: .././foobnix/regui/perspectives.py:114
 msgid "Music"
-msgstr "Muzyka"
+msgstr "Muusika"
 
 #: .././foobnix/regui/perspectives.py:114
 msgid "Music Navigation (Alt+1)"
-msgstr "Nawigacja w muzyce (Alt+1)"
+msgstr "Muusika sirvimine (Alt+1)"
 
 #: .././foobnix/regui/perspectives.py:119
 msgid "Radio"
-msgstr "Radio"
+msgstr "Raadio"
 
 #: .././foobnix/regui/perspectives.py:119
 msgid "Radio Stantions (Alt+2)"
-msgstr "Stacja radiowe (Alt+2)"
+msgstr "Raadiojaamad (Alt+2)"
 
 #: .././foobnix/regui/perspectives.py:123
 msgid "Playlist"
-msgstr "Lista otwarzania"
+msgstr "Esitusloend"
 
 #: .././foobnix/regui/perspectives.py:123
 msgid "Virtual Play Lists (Alt+3)"
-msgstr "Wirtualna lista otwarzania (Alt+3)"
+msgstr "Virtuaalsed esitusloendid (Alt+3)"
 
 #: .././foobnix/regui/perspectives.py:127
 msgid "Info Panel (Alt+4)"
-msgstr "Panel informacyjny (Alt+4)"
+msgstr "Infopaneel (Alt+4)"
 
 #: .././foobnix/regui/perspectives.py:130
 msgid "Last.Fm"
-msgstr "Last.fm"
+msgstr "Last.Fm"
 
 #: .././foobnix/regui/perspectives.py:130
 msgid "Last.fm Panel (Alt+5)"
-msgstr "Last.fm panel (Alt+5)"
+msgstr "Last.fm paneel (Alt+5)"
 
 #: .././foobnix/regui/perspectives.py:133
 msgid "VK"
@@ -726,205 +725,205 @@ msgstr "VK"
 
 #: .././foobnix/regui/perspectives.py:133
 msgid "VK Panel (Alt+6)"
-msgstr "VK Panel (Alt+6)"
+msgstr "VK paneel (Alt+6)"
 
 #: .././foobnix/regui/search.py:17
 msgid "Search music online"
-msgstr "Szukaj muzyki w sieci"
+msgstr ""
 
 #: .././foobnix/regui/search.py:61
 msgid "Online Music Search, Play, Download"
-msgstr "Szukaj muzyki w sieci, słuchaj, pobieraj"
+msgstr ""
 
 #: .././foobnix/regui/search.py:75
 msgid "Search"
-msgstr "Szukaj"
+msgstr "Otsi"
 
 #: .././foobnix/regui/search.py:80
 msgid "Online Search"
-msgstr "Szukaj w sieci"
+msgstr "Otsi veebist"
 
 #: .././foobnix/regui/search.py:104
 msgid "Tracks"
-msgstr "Wykonawcy"
+msgstr "Lood"
 
 #: .././foobnix/regui/search.py:108
 msgid "Albums"
-msgstr "Albumy"
+msgstr "Albumid"
 
 #: .././foobnix/regui/search.py:111
 msgid "Similar"
-msgstr "Podobne"
+msgstr "Sarnased"
 
 #. @UnusedVariable
 #: .././foobnix/regui/search.py:114 .././foobnix/util/tag_util.py:40
 msgid "Genre"
-msgstr "Gatunek"
+msgstr "Žanr"
 
 #: .././foobnix/regui/about/about.py:20
 msgid "Simple and Powerful player"
-msgstr "Prosty i bogaty w opcje odtwarzacz"
+msgstr ""
 
 #: .././foobnix/regui/controls/filter.py:24
 msgid "File search"
-msgstr "Szukaj pliku"
+msgstr "Faili otsimine"
 
 #: .././foobnix/regui/controls/filter.py:28
 msgid "Folder search"
-msgstr "Szukaj folderu"
+msgstr "Kausta otsimine"
 
 #: .././foobnix/regui/controls/movie_area.py:75
 msgid "Exit Fullscrean"
-msgstr "Opuść tryb pełnoekranowy"
+msgstr "Välju täisekraanist"
 
 #: .././foobnix/regui/controls/playback.py:50
 #: .././foobnix/regui/controls/playback.py:141
 #: .././foobnix/regui/controls/playback.py:161
 msgid "Shuffle on"
-msgstr "Odtwarzanie losowe włączone"
+msgstr "Juhuesitus sees"
 
 #: .././foobnix/regui/controls/playback.py:54
 #: .././foobnix/regui/controls/playback.py:144
 #: .././foobnix/regui/controls/playback.py:163
 msgid "Shuffle off"
-msgstr "Odtwarzanie losowe wyłączone"
+msgstr "Juhuesitus väljas"
 
 #: .././foobnix/regui/controls/playback.py:58
 #: .././foobnix/regui/controls/playback.py:127
 #: .././foobnix/regui/controls/playback.py:148
 #: .././foobnix/regui/controls/playback.py:172
 msgid "Repeat all"
-msgstr "Powtarzaj wszystko"
+msgstr "Korda kõiki"
 
 #: .././foobnix/regui/controls/playback.py:61
 #: .././foobnix/regui/controls/playback.py:130
 #: .././foobnix/regui/controls/playback.py:152
 #: .././foobnix/regui/controls/playback.py:181
 msgid "Repeat single"
-msgstr "Powtarzaj pojedynczy"
+msgstr "Korda üksikut"
 
 #: .././foobnix/regui/controls/playback.py:64
 #: .././foobnix/regui/controls/playback.py:156
 msgid "Repeat off"
-msgstr "Powtarzanie wyłączone"
+msgstr "Kordus väljas"
 
 #: .././foobnix/regui/controls/playback.py:198
 msgid "Previous"
-msgstr "Poprzedni"
+msgstr "Eelmine"
 
 #: .././foobnix/regui/controls/playback.py:199
 msgid "Next"
-msgstr "Następny"
+msgstr "Järgmine"
 
 #: .././foobnix/regui/controls/record.py:26
 msgid "Record radio"
-msgstr "Nagraj radio"
+msgstr ""
 
 #: .././foobnix/regui/controls/record.py:43
 msgid "So file doesn't exist. Pehaps it wasn't create yet."
-msgstr "Plik nie istnieje. Pewnie jeszcze nie został stworzony."
+msgstr ""
 
 #: .././foobnix/regui/controls/record.py:52
 msgid "Save file as ..."
-msgstr "Zapisz plik jako ..."
+msgstr "Salvesta fail ..."
 
 #: .././foobnix/regui/controls/tray_icon.py:46
 msgid "Exit"
-msgstr "Wyjście"
+msgstr "Välju"
 
 #: .././foobnix/regui/controls/tray_icon.py:47
 msgid "Close Popup"
-msgstr "Zamknij dymek"
+msgstr ""
 
 #: .././foobnix/regui/notetab/__init__.py:274
 #: .././foobnix/regui/notetab/tab_library.py:36
 msgid "Rename tab"
-msgstr "Zmień nazwę karty"
+msgstr "Muuda saki nime"
 
 #: .././foobnix/regui/notetab/__init__.py:275
 msgid "Save playlist as"
-msgstr "Zapisz listę odtwarzania jako"
+msgstr "Salvesta esitusloend"
 
 #: .././foobnix/regui/notetab/__init__.py:276
 #: .././foobnix/regui/notetab/tab_library.py:41
 msgid "Close tab"
-msgstr "Zamknij kartę"
+msgstr "Sulge sakk"
 
 #: .././foobnix/regui/notetab/__init__.py:353
 msgid "It's need not empty playlist"
-msgstr "Lista odtwarzania nie może być pusta"
+msgstr ""
 
 #: .././foobnix/regui/notetab/__init__.py:356
 msgid "Choose folder to save playlist"
-msgstr "Wybierz folder do zapisania listy odtwarzania"
+msgstr "Vali kaust loendi salvestamiseks"
 
 #: .././foobnix/regui/notetab/tab_library.py:37
 msgid "Update Music Tree"
-msgstr "Aktualizuj listę muzyki"
+msgstr ""
 
 #: .././foobnix/regui/notetab/tab_library.py:38
 msgid "Add folder"
-msgstr "Dodaj folder"
+msgstr "Lisa kaust"
 
 #: .././foobnix/regui/notetab/tab_library.py:39
 #: .././foobnix/regui/treeview/navigation_tree.py:128
 msgid "Add folder in new tab"
-msgstr "Dodaj folder w nowej karcie"
+msgstr "Ava kaust uuel kaardil"
 
 #: .././foobnix/regui/notetab/tab_library.py:40
 msgid "Clear Music Tree"
-msgstr "Wyczyść listę muzyki"
+msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:42
 msgid "VKontakte Authorization (require for music search)"
-msgstr "Autoryzacja VKontakte (wymagane dla szukania muzyki)"
+msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:47
 msgid "Get Login and Password"
-msgstr "Pobierz login i hasło"
+msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:50
 msgid "Sing In"
-msgstr ""
+msgstr "Logi sisse"
 
 #: .././foobnix/regui/service/vk_service.py:129
 msgid "Open"
-msgstr "Otwórz"
+msgstr "Ava"
 
 #: .././foobnix/regui/service/vk_service.py:135
 msgid "2: Apply Token"
-msgstr "2: Zatwierdź znak"
+msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:138
 msgid "Please generate token..."
-msgstr "Proszę wygenerować znak..."
+msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:143
 msgid "Token:"
-msgstr "Znak:"
+msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:144
 msgid "User ID:"
-msgstr "ID użytkownika:"
+msgstr "Kasutaja ID:"
 
 #: .././foobnix/regui/service/vk_service.py:195
 msgid "Token incorrect or expired"
-msgstr "Znak jest nieprawidłowy lub przedawniony"
+msgstr ""
 
 #: .././foobnix/regui/service/vk_service.py:197
 msgid "Token or user is empty"
-msgstr "Znak lub użytkownik jest pusty"
+msgstr ""
 
 #: .././foobnix/regui/treeview/dm_tree.py:97
 #: .././foobnix/regui/treeview/dm_tree.py:99
 #: .././foobnix/regui/treeview/navigation_tree.py:140
 #: .././foobnix/regui/treeview/playlist_tree.py:232
 msgid "Open in file manager"
-msgstr "Otwórz menadżer plików"
+msgstr "Ava failihalduris"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:208
 msgid "Attention!!!"
-msgstr ""
+msgstr "Tähelepanu!!!"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:209
 msgid "When you release the mouse button the mouse"
@@ -932,131 +931,131 @@ msgstr ""
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:214
 msgid "Copying:"
-msgstr "Kopiowanie:"
+msgstr "Kopeerimine:"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:214
 msgid "Replacing:"
-msgstr "Zastępowanie:"
+msgstr "Asendamine:"
 
 #. @UndefinedVariable
 #: .././foobnix/regui/treeview/dragdrop_tree.py:215
 #: .././foobnix/util/file_utils.py:380
 msgid "Progress"
-msgstr "Postęp"
+msgstr "Progress"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:217
 #: .././foobnix/util/file_utils.py:381
 msgid "To: "
-msgstr "Do: "
+msgstr "Saaja: "
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:379
 msgid "m3u playlist: "
-msgstr "Lista odtwarzania .m3u: "
+msgstr "m3u esitusloend: "
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:26
 msgid "Lasm.fm Integration "
-msgstr "Integracja z Last.fm "
+msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:38
 msgid "My loved tracks"
-msgstr "Moje ulubione utwory"
+msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:39
 msgid "My top tracks"
-msgstr "Moje najlepsze utwory"
+msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:40
 msgid "My recent tracks"
-msgstr "Moje ostatnie utwory"
+msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:41
 msgid "My top artists"
-msgstr "Moi ulubieni artyści"
+msgstr ""
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:49
 #: .././foobnix/regui/treeview/vk_integration_tree.py:53
 msgid "loading..."
-msgstr "ładowanie..."
+msgstr "laadimine..."
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:66
 #: .././foobnix/regui/treeview/vk_integration_tree.py:78
 msgid "Copy to Search Line"
-msgstr "Kopiuj do linii wyszukiwania"
+msgstr "Kopeeri otsingureale"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:40
 msgid "File"
-msgstr "Plik"
+msgstr "Fail"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:63
 msgid "Name"
-msgstr "Nazwa"
+msgstr "Nimi"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:68
 msgid "Ext"
-msgstr "Ext"
+msgstr "Laiend"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:121
 msgid "Append to playlist"
-msgstr "Dodaj do listy odtwarzania"
+msgstr "Lisa esitusnimekirja"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:122
 msgid "Open in new playlist"
-msgstr "Otwórz nową listę odtwarzania"
+msgstr "Ava uues loendis"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:124
 msgid "Add folder here"
-msgstr "Dodaj tutaj folder"
+msgstr "Lisa kaust siia"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:129
 msgid "Clear"
-msgstr "Wyczyść"
+msgstr "Tühjenda"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:130
 msgid "Update"
-msgstr "Uaktualnij"
+msgstr "Värskenda"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:141
 #: .././foobnix/util/file_utils.py:181
 msgid "Create folder"
-msgstr "Utwórz folder"
+msgstr "Loo kaust"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:142
 msgid "Rename file (folder)"
-msgstr "Zmień nazwę pliku (folderu)"
+msgstr "Nimeta fail (kaust) ümber"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:143
 #: .././foobnix/util/file_utils.py:105
 msgid "Delete file(s) / folder(s)"
-msgstr "Skasuj plik(i) / Folder(y)"
+msgstr "Kustuta fail(e) / kaust(u)"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:54
 msgid "Number"
-msgstr "Numer"
+msgstr "Number"
 
 #. @UnusedVariable
 #: .././foobnix/regui/treeview/playlist_tree.py:62
 #: .././foobnix/regui/treeview/playlist_tree.py:63
 #: .././foobnix/util/tag_util.py:42
 msgid "Composer"
-msgstr "Kompozytor"
+msgstr "Autor"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:70
 #: .././foobnix/regui/treeview/playlist_tree.py:71
 msgid "Track"
-msgstr "Utwór"
+msgstr "Lugu"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:79
 #: .././foobnix/regui/treeview/playlist_tree.py:80
 #: .././foobnix/util/tag_util.py:35
 msgid "Artist"
-msgstr "Wykonawca"
+msgstr "Esitaja"
 
 #. @UnusedVariable
 #: .././foobnix/regui/treeview/playlist_tree.py:88
 #: .././foobnix/regui/treeview/playlist_tree.py:89
 #: .././foobnix/util/tag_util.py:36
 msgid "Title"
-msgstr "Tytuł"
+msgstr "Pealkiri"
 
 #. @UnusedVariable
 #: .././foobnix/regui/treeview/playlist_tree.py:101
@@ -1068,39 +1067,39 @@ msgstr "Album"
 #: .././foobnix/regui/treeview/playlist_tree.py:108
 #: .././foobnix/regui/treeview/playlist_tree.py:109
 msgid "Time"
-msgstr "Czas"
+msgstr "Kestus"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:216
 msgid "Delete from playlist"
-msgstr "Usuń z listy odtwarzania"
+msgstr "Eemalda loendist"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:231
 msgid "Copy To..."
-msgstr "Kopiuj do..."
+msgstr "Kopeeri..."
 
 #: .././foobnix/regui/treeview/playlist_tree.py:235
 msgid "Download To..."
-msgstr "Pobierz do..."
+msgstr "Salvesta..."
 
 #: .././foobnix/regui/treeview/playlist_tree.py:240
 msgid "Edit Tags"
-msgstr "Edytuj tagi"
+msgstr "Muuda andmeid"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:241
 msgid "Format Converter"
-msgstr "Konwerter"
+msgstr "Muuda vormingut"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:243
 msgid "Copy To Search Line"
-msgstr "Kopiuj do linii wyszukiwania"
+msgstr "Kopeeri otsingureale"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:245
 msgid "Copy №-Title-Time"
-msgstr "Kopiuj Nr-Tytuł-Czas"
+msgstr "Kopeeri №-pealkiri-kestus"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:246
 msgid "Copy Artist-Title-Album"
-msgstr "Kopiuj wykonawcę-tytuł-album"
+msgstr "Kopeeri esitaja-pealkiri-album"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:248
 msgid "Love This Track(s) by Last.fm"
@@ -1108,117 +1107,117 @@ msgstr ""
 
 #: .././foobnix/regui/treeview/playlist_tree.py:251
 msgid "Open In File Manager"
-msgstr "Otwórz w menadżerze plików"
+msgstr "Ava failihalduris"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:317
 msgid "Numbering by order"
-msgstr "Numeracja wg kolejności"
+msgstr "Numbrite lisamine järjestuse alusel"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:319
 msgid "Numbering by tags"
-msgstr "Numeracja wg tagów"
+msgstr ""
 
 #: .././foobnix/regui/treeview/radio_tree.py:31
 msgid "My channels"
-msgstr ""
+msgstr "Minu kanalid"
 
 #: .././foobnix/regui/treeview/radio_tree.py:33
 msgid "Radio Stations"
-msgstr "Stacje radiowe"
+msgstr "Raadiojaamad"
 
 #: .././foobnix/regui/treeview/radio_tree.py:61
 #: .././foobnix/regui/treeview/radio_tree.py:219
 msgid "Edit Station"
-msgstr ""
+msgstr "Muuda jaama"
 
 #: .././foobnix/regui/treeview/radio_tree.py:62
 #: .././foobnix/regui/treeview/radio_tree.py:220
 msgid "Delete Station"
-msgstr "Usuń stacje"
+msgstr "Kustuta jaam"
 
 #: .././foobnix/regui/treeview/radio_tree.py:64
 #: .././foobnix/regui/treeview/radio_tree.py:90
 #: .././foobnix/regui/treeview/radio_tree.py:222
 msgid "Rename Group"
-msgstr ""
+msgstr "Nimeta rühm ümber"
 
 #: .././foobnix/regui/treeview/radio_tree.py:65
 #: .././foobnix/regui/treeview/radio_tree.py:223
 msgid "Delete Group"
-msgstr ""
+msgstr "Kustuta rühm"
 
 #: .././foobnix/regui/treeview/radio_tree.py:67
 msgid "Reload radio folder"
-msgstr "Załaduj ponownie folder radia"
+msgstr "Värskenda raadio kausta"
 
 #: .././foobnix/regui/treeview/radio_tree.py:72
 msgid "Edit Radio"
-msgstr "Edytuj radio"
+msgstr "Muuda raadiot"
 
 #: .././foobnix/regui/treeview/radio_tree.py:74
 msgid "Enter new name and URL"
-msgstr ""
+msgstr "Sisesta uus nimi ja URL"
 
 #: .././foobnix/regui/treeview/radio_tree.py:91
 msgid "Enter new group name"
-msgstr ""
+msgstr "Sisesta uus rühma nimi"
 
 #: .././foobnix/regui/treeview/radio_tree.py:99
 msgid "Add New Radio Station"
-msgstr ""
+msgstr "Lisa uus raadiojaam"
 
 #: .././foobnix/regui/treeview/radio_tree.py:101
 msgid "Enter station name and URL"
-msgstr ""
+msgstr "Sisesta raadiojaama nimi ja URL"
 
 #: .././foobnix/regui/treeview/radio_tree.py:193
 msgid "Autogenerated channels"
-msgstr ""
+msgstr "Autogenereeritud kanalid"
 
 #: .././foobnix/regui/treeview/radio_tree.py:214
 msgid "Add Station"
-msgstr "Dodaj stację"
+msgstr "Lisa raadiojaam"
 
 #: .././foobnix/regui/treeview/radio_tree.py:215
 #: .././foobnix/regui/treeview/radio_tree.py:231
 msgid "Create Group"
-msgstr ""
+msgstr "Loo rühm"
 
 #: .././foobnix/regui/treeview/radio_tree.py:231
 msgid "Enter group name"
-msgstr ""
+msgstr "Sisesta rühma nimi"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:25
 msgid "Virtual PlayLists"
-msgstr "Wirtualne listy odtwarzania"
+msgstr "Virtuaalsed esitusloendid"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:60
 msgid "Add playlist"
-msgstr "Dodaj listę odtwarzania"
+msgstr "Lisa esitusloend"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:64
 msgid "Rename"
-msgstr ""
+msgstr "Nimeta ümber"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:65
 msgid "Delete"
-msgstr ""
+msgstr "Kustuta"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:67
 msgid "Rename playlist"
-msgstr "Zmień nazwę"
+msgstr "Muuda esitusloendi nime"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:68
 msgid "Delete playlist"
-msgstr "Skasuj listę odtwarzania"
+msgstr "Kustuta esitusloend"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:74
 msgid "Create new playlist"
-msgstr "Utwórz nową listę odtwarzania"
+msgstr "Loo esitusloend"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:74
 msgid "Enter playlist name"
-msgstr ""
+msgstr "Sisesta esitusloendi nimi"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:88
 msgid "Rename Dialog"
@@ -1226,148 +1225,149 @@ msgstr ""
 
 #: .././foobnix/regui/treeview/virtual_tree.py:89
 msgid "Enter new name"
-msgstr ""
+msgstr "Sisesta uus nimi"
 
 #: .././foobnix/regui/treeview/vk_integration_tree.py:26
 msgid "VK Integration "
-msgstr "Integracja z VK "
+msgstr ""
 
 #: .././foobnix/util/const.py:46
 msgid "Active"
-msgstr "Aktywne"
+msgstr ""
 
 #: .././foobnix/util/const.py:48
 msgid "Downloading"
-msgstr "Pobieranie"
+msgstr "Allalaadimine"
 
 #: .././foobnix/util/const.py:49
 msgid "Complete"
-msgstr "Kompletne"
+msgstr "Lõpetatud"
 
 #: .././foobnix/util/const.py:50
 msgid "Inactive"
-msgstr "Interaktywne"
+msgstr "Mitteaktiivne"
 
 #: .././foobnix/util/const.py:52
 msgid "Lock"
-msgstr "Zablokuj"
+msgstr ""
 
 #: .././foobnix/util/const.py:53
 msgid "Error"
-msgstr "Błąd"
+msgstr "Viga"
 
 #: .././foobnix/util/converter.py:44
 msgid "Format"
-msgstr "Format"
+msgstr "Vorming"
 
 #: .././foobnix/util/converter.py:45
 msgid "Bitrate"
-msgstr "Przepływ"
+msgstr "Bitikiirus"
 
 #: .././foobnix/util/converter.py:46
 msgid "Channels"
-msgstr "Kanały"
+msgstr "Kanaleid"
 
 #: .././foobnix/util/converter.py:47
 msgid "Frequency"
-msgstr "Częstotliwość"
+msgstr "Sagedus"
 
 #: .././foobnix/util/converter.py:89
 msgid "Convert"
-msgstr "Konwertuj"
+msgstr "Konverdi"
 
 #: .././foobnix/util/converter.py:99
 msgid "Show files"
-msgstr "Pokarz pliki"
+msgstr "Näita faile"
 
 #: .././foobnix/util/converter.py:121
 msgid "Choose directory to save converted files"
-msgstr "Wybierz folder do zapisania konwertowanej muzyki"
+msgstr "Vali kaust konverteeritud failidele"
 
 #: .././foobnix/util/converter.py:224
 msgid "Warning!!!"
-msgstr "Uwaga!!!"
+msgstr "Hoiatus!!!"
 
 #: .././foobnix/util/converter.py:228
 msgid ""
 "So file(s)  already exist(s) and will be overwritten.\n"
 "Do you wish to continue?"
 msgstr ""
-"Plik(i) aktualnie istnieje(ą) i zostaną nadpisane.\n"
-"Kontynuować?"
+"Olemasolevad failid nimetatakse ümber.\n"
+"Kas soovid jätkata?"
 
 #: .././foobnix/util/converter.py:336
 msgid "Attention"
-msgstr "Ostrzeżenie"
+msgstr "Tähelepanu"
 
 #: .././foobnix/util/converter.py:338
 msgid "Converter require specially compiled ffmpeg module for work.\n"
-msgstr "Konwerter potrzebuje specjalnego modułu ffmpeg do prawy.\n"
+msgstr ""
+"Konverter vajab töötamiseks spetsiaalselt kompileeritud ffmpeg moodulit\n"
 
 #: .././foobnix/util/file_utils.py:75
 msgid "Rename folder"
-msgstr "Zmień nazwę folderu"
+msgstr "Nimeta kaust ümber"
 
 #: .././foobnix/util/file_utils.py:84
 msgid "Rename file"
-msgstr "Zmień nazwę pliku"
+msgstr "Muuda faili nime"
 
 #: .././foobnix/util/file_utils.py:106
 msgid "Do you really want to delete item(s) from disk?"
-msgstr "Na pewno chcesz usunąć plik(i) z dysku?"
+msgstr "Kas sa tahad tõesti kettalt kustutada?"
 
 #: .././foobnix/util/file_utils.py:152
 msgid "Copy"
-msgstr "Kopiuj"
+msgstr "Kopeeri"
 
 #. @UndefinedVariable
 #: .././foobnix/util/file_utils.py:153
 msgid "Replace"
-msgstr "Podmień"
+msgstr "Asenda"
 
 #: .././foobnix/util/file_utils.py:155
 #, python-format
 msgid "%s file(s) / folder(s)"
-msgstr "%s plik(ów) / folder(ów)"
+msgstr "%s fail(i) / kaust(a)"
 
 #: .././foobnix/util/file_utils.py:161
 #, python-format
 msgid "Are you really want to %s this item(s) to %s ?"
-msgstr "Czy naprawdę chcesz %s ten plik(i) do %s ?"
+msgstr ""
 
 #: .././foobnix/util/file_utils.py:180
 msgid "Make folder dialog"
-msgstr "Okno folderu"
+msgstr ""
 
 #: .././foobnix/util/file_utils.py:182
 msgid "You want to create subfolder in folder"
-msgstr "Chcesz stworzyć podfolder"
+msgstr ""
 
 #: .././foobnix/util/file_utils.py:183
 msgid "Enter new folder's name:"
-msgstr "Wprowadź nową nazwę folderu:"
+msgstr "Sisesta uus kausta nimi:"
 
 #: .././foobnix/util/file_utils.py:201
 msgid "So folder already exists"
-msgstr "Folder istnieje"
+msgstr "Kaust on juba olemas"
 
 #: .././foobnix/util/file_utils.py:387
 msgid "Copying: "
-msgstr "Kopiowanie: "
+msgstr "Kopeerimine: "
 
 #: .././foobnix/util/id3_util.py:128 .././foobnix/util/tag_util.py:118
 #: .././foobnix/util/tag_util.py:132
 msgid "Unknown title"
-msgstr "Nieznany tytuł"
+msgstr "Tundmatu pealkiri"
 
 #: .././foobnix/util/id3_util.py:130 .././foobnix/util/tag_util.py:120
 #: .././foobnix/util/tag_util.py:130
 msgid "Unknown artist"
-msgstr "Nieznany artysta"
+msgstr "Tundmatu esitaja"
 
 #: .././foobnix/util/m3u_utils.py:76
 msgid "Choose window"
-msgstr "Wybierz okno"
+msgstr "Vali aken"
 
 #: .././foobnix/util/m3u_utils.py:80
 msgid ""
@@ -1389,56 +1389,40 @@ msgid ""
 "\n"
 "\tDo you want to save the playlist with relative paths?\n"
 msgstr ""
-"<big><b>\t\t\t\t\t\t\t\tUwaga!\n"
-"</b></big>\tWzględna lokalizacja plików muzycznych i list odtwarzania "
-"pozwoli Ci zapisać względne\n"
-"ścieżki do plików na Twoich listach. Pozwoli to przenosić listy odtwarzania "
-"z plikami \n"
-"dźwiękowymi (koniecznie razem) w dowolne miejsce na dysku, nawet na inny "
-"komputer\n"
-"Ponadto biblioteka będzie kompatybilna z systemem Windows. Jednakże, w tym "
-"przypadku nie możesz\n"
-"zmienić względnych ścieżek listy i plików muzycznych.\n"
-"\tCałkowie ścieżki sprawią, że nia da się przenieść listy na inny komputer\n"
-"albo używać jej na Windowsie, ale plik listy będzie mógł być przeniesiony w "
-"dowolnemiejsce na komputerze,\n"
-"bez przenoszenia muzyki (lista będzie działała).\n"
-"\n"
-"\tCzy chcesz zapisać liste za pomocą względnych ścieżek?\n"
 
 #: .././foobnix/util/net_wrapper.py:76
 msgid "Internet Connection"
-msgstr "Połączenie internetowe"
+msgstr "Internetiühendus"
 
 #: .././foobnix/util/net_wrapper.py:77
 msgid ""
 "Foobnix not connected or Internet not available. Please try again a little "
 "bit later."
-msgstr "Foobnix nie może połączyć się z internetem, spróbuj później."
+msgstr ""
+"Foobnix pole ühendatud või internetiühedus puudub. Palun proovi hiljem "
+"uuesti."
 
 #: .././foobnix/util/tag_util.py:23
 msgid "Tag Editor"
-msgstr "Edytor tagów"
+msgstr "Märgendiredaktor"
 
 #. @UnusedVariable
 #: .././foobnix/util/tag_util.py:38
 msgid "Year"
-msgstr "Rok"
+msgstr "Aasta"
 
 #. @UnusedVariable
 #: .././foobnix/util/tag_util.py:39
 msgid "Track number"
-msgstr "Numer utworu"
+msgstr "Loo number"
 
 #. @UnusedVariable
 #: .././foobnix/util/tag_util.py:41
 msgid "Author text"
-msgstr "Autor tekstu"
+msgstr ""
 
 #: .././foobnix/util/tag_util.py:65
 msgid ""
 "Apply for all selected tracks\n"
 "(active on multi selection)"
 msgstr ""
-"Zastosuj dla wybranych utworów\n"
-"(aktywne przy wybieraniu wielu)"

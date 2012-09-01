@@ -1,4 +1,4 @@
-# Polish translation for foobnix
+# Turkish translation for foobnix
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the foobnix package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
@@ -6,174 +6,174 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-05-03 08:52+0300\n"
-"PO-Revision-Date: 2012-05-03 07:54+0000\n"
-"Last-Translator: Ivan Ivanenko <Unknown>\n"
-"Language-Team: Polish <pl@li.org>\n"
+"PO-Revision-Date: 2012-07-10 00:06+0000\n"
+"Last-Translator: Irmak Bıçakçıgil <Unknown>\n"
+"Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-04 05:07+0000\n"
-"X-Generator: Launchpad (build 15195)\n"
-"Language: pl\n"
+"X-Launchpad-Export-Date: 2012-07-11 05:23+0000\n"
+"X-Generator: Launchpad (build 15593)\n"
 
 #: .././foobnix/dm/dm.py:31 .././foobnix/preferences/preferences_window.py:57
 #: .././foobnix/regui/menu.py:54 .././foobnix/regui/top.py:44
 msgid "Preferences"
-msgstr "Preferencje"
+msgstr "Tercihler"
 
 #: .././foobnix/dm/dm.py:33
 msgid "Start Downloading"
-msgstr "Rozpocznij pobieranie"
+msgstr "İndirmeyi Başlat"
 
 #: .././foobnix/dm/dm.py:34
 msgid "Stop Downloading"
-msgstr "Zatrzymaj pobieranie"
+msgstr "İndirmeyi Durdur"
 
 #: .././foobnix/dm/dm.py:49 .././foobnix/preferences/configs/__init__.py:3
 #: .././foobnix/regui/menu.py:52
 msgid "Download Manager"
-msgstr "Menadżer pobierania"
+msgstr "İndirme Yöneticisi"
 
 #: .././foobnix/dm/dm.py:113 .././foobnix/util/file_utils.py:376
 msgid "Choose Folder"
-msgstr "Wybierz folder"
+msgstr "Klasör Seç"
 
 #. @UnusedVariable
 #: .././foobnix/eq/eq_gui.py:42 .././foobnix/regui/menu.py:51
 msgid "Equalizer"
-msgstr "Korektor dźwięku"
+msgstr "Ekolayzer"
 
 #: .././foobnix/eq/eq_gui.py:88
 msgid "Disabled"
-msgstr "Wyłączony"
+msgstr "Devre dışı"
 
 #: .././foobnix/eq/eq_gui.py:89 .././foobnix/eq/eq_gui.py:171
 msgid "Enable EQ"
-msgstr "Włączony korektor"
+msgstr "EQ etkinleştir"
 
 #: .././foobnix/eq/eq_gui.py:91
 msgid "Enabled"
-msgstr "Włączony"
+msgstr "Etkinleştirildi"
 
 #: .././foobnix/eq/eq_gui.py:92 .././foobnix/eq/eq_gui.py:290
 msgid "Disable EQ"
-msgstr "Wyłączony korektor"
+msgstr "Ekolayzeri kapat"
 
 #: .././foobnix/eq/eq_gui.py:93
 #, python-format
 msgid "Equalizer %s"
-msgstr "Korektor dźwięku %s"
+msgstr "Ekolayzer %s"
 
 #: .././foobnix/eq/eq_gui.py:172
 msgid "To enable EQ set ON"
-msgstr "Aby włączyć korektor kliknij wł."
+msgstr "Ekolayzeri açmak için tıklayın"
 
 #: .././foobnix/eq/eq_gui.py:177
 msgid "Auto"
-msgstr "Automatycznie"
+msgstr "Otomatik"
 
 #: .././foobnix/eq/eq_gui.py:192
 msgid "Save"
-msgstr "Zapisz"
+msgstr "Kaydet"
 
 #: .././foobnix/eq/eq_gui.py:200
 msgid "Restore defaults presets"
-msgstr "Przywróć domyślne ustawienia"
+msgstr "Varsayılan ön ayarları geri yükle"
 
 #: .././foobnix/fc/fc_cache.py:29 .././foobnix/fc/fc_cache.py:37
 #: .././foobnix/regui/notetab/__init__.py:114
 #: .././foobnix/regui/notetab/__init__.py:120
 msgid "Empty tab"
-msgstr "Pusta karta"
+msgstr "Boş sekme"
 
 #: .././foobnix/helpers/dialog_entry.py:171
 #: .././foobnix/helpers/dialog_entry.py:172
 msgid "New foobnix release avaliable"
-msgstr "Nowa wersja foobnix jest dostępna"
+msgstr "Yeni foobnix sürümü mevcut"
 
 #: .././foobnix/helpers/dialog_entry.py:177
 msgid "Download and Donate"
-msgstr "Pobierz i wspomóż"
+msgstr "İndir ve Bağış Yap"
 
 #. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:179
 #: .././foobnix/regui/treeview/playlist_tree.py:234
 #: .././foobnix/util/converter.py:341
 msgid "Download"
-msgstr "Pobierz"
+msgstr "İndir"
 
 #: .././foobnix/helpers/dialog_entry.py:192
 msgid "We hope you like the player. We will make it even better."
-msgstr "Mamy nadzieję, że polubiłeś odtwarzacz. Ciągle go ulepszamy."
+msgstr ""
+"Umarız oynatıcıyı beğenmişsinizdir. Biz onu daha iyi hale getireceğiz."
 
 #: .././foobnix/helpers/dialog_entry.py:193
 #: .././foobnix/preferences/configs/notification_conf.py:19
 #: .././foobnix/preferences/configs/other_conf.py:70
 msgid "Check for new foobnix release on start"
-msgstr "Sprawdzaj podczas włączania, czy jest nowa wersja foobnix."
+msgstr "Açılışta yeni foobnix sürümünü olup olmadığını kontrol et."
 
 #: .././foobnix/helpers/window.py:73
 msgid "Total progress"
-msgstr "Całkowity postęp"
+msgstr "Toplam ilerleme"
 
 #: .././foobnix/helpers/window.py:78
 #: .././foobnix/preferences/configs/hotkey_conf.py:160
 #: .././foobnix/regui/controls/playback.py:195 .././foobnix/util/const.py:47
 #: .././foobnix/util/converter.py:95
 msgid "Stop"
-msgstr "Zatrzymaj"
+msgstr "Durdur"
 
 #: .././foobnix/preferences/preferences_window.py:67
 msgid "Categories"
-msgstr "Kategorie"
+msgstr "Kategoriler"
 
 #: .././foobnix/preferences/preferences_window.py:128
 msgid "Restore Defaults Settings"
-msgstr "Przywróć domyślne ustawienia"
+msgstr "Varsayılan Ayarları Geri Yükle"
 
 #: .././foobnix/preferences/preferences_window.py:132
 #: .././foobnix/util/tag_util.py:85
 msgid "Apply"
-msgstr "Zastosuj"
+msgstr "Uygula"
 
 #: .././foobnix/preferences/preferences_window.py:137
 #: .././foobnix/util/converter.py:86 .././foobnix/util/tag_util.py:86
 msgid "Close"
-msgstr "Zamknij"
+msgstr "Kapat"
 
 #: .././foobnix/preferences/configs/category_info.py:10
 msgid "Category Info"
-msgstr "Informacje o kategorii"
+msgstr "Kategori Bilgisi"
 
 #: .././foobnix/preferences/configs/dm_config.py:23
 msgid "Save online music"
-msgstr "Zapisz muzyką on-line"
+msgstr "Çevrimiçi müzik kaydet"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:46
 msgid "Global Hotkeys"
-msgstr "Skróty globalne"
+msgstr "Global Kısayol Tuşları"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:59
 msgid "Action"
-msgstr "Działanie"
+msgstr "Eylem"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:60
 msgid "Hotkey"
-msgstr "Skrót klawiszowy"
+msgstr "Kısayol Tuşu"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:68
 #: .././foobnix/preferences/configs/music_library.py:62
 #: .././foobnix/preferences/configs/music_library.py:165
 msgid "Add"
-msgstr "Dodaj"
+msgstr "Ekle"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:73
 #: .././foobnix/preferences/configs/music_library.py:67
 #: .././foobnix/preferences/configs/music_library.py:170
 msgid "Remove"
-msgstr "Usuń"
+msgstr "Kaldır"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:158
 #: .././foobnix/regui/controls/playback.py:196
@@ -181,64 +181,64 @@ msgstr "Usuń"
 #: .././foobnix/regui/treeview/playlist_tree.py:215
 #: .././foobnix/regui/treeview/vk_integration_tree.py:77
 msgid "Play"
-msgstr "Odtwórz"
+msgstr "Oynat"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:159
 #: .././foobnix/regui/controls/playback.py:197
 msgid "Pause"
-msgstr "Pauza"
+msgstr "Duraklat"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:161
 msgid "Next song"
-msgstr "Następny utwór"
+msgstr "Sonraki şarkı"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:162
 msgid "Previous song"
-msgstr "Poprzedni utwór"
+msgstr "Önceki şarkı"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:163
 msgid "Volume up"
-msgstr "Głośniej"
+msgstr "Sesi arttır"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:164
 msgid "Volume down"
-msgstr "Ciszej"
+msgstr "Sesi azalt"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:165
 msgid "Show-Hide"
-msgstr "Pokaż - Ukryj"
+msgstr "Göster-Gizle"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:166
 msgid "Play-Pause"
-msgstr "Odtwórz - Zatrzymaj"
+msgstr "Oynat-Duraklat"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:12
 msgid "Info panel"
-msgstr "Panel informacyjny"
+msgstr "Bilgi paneli"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:22
 msgid "Disc cover size"
-msgstr "Rozmiar okładki albumu:"
+msgstr "Disk kapak boyutu"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:36
 msgid "Lyric panel size"
-msgstr "Rozmiar panelu z napisami"
+msgstr "Şarkı sözü paneli boyutu"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:47
 msgid "Show Tags list"
-msgstr "Pokaż tagi listy"
+msgstr "Etiketler listesini göster"
 
 #: .././foobnix/preferences/configs/__init__.py:4
 msgid "Music Library"
-msgstr "Biblioteka muzyki"
+msgstr "Müzik Kütüphanesi"
 
 #: .././foobnix/preferences/configs/__init__.py:5
 msgid "Other Options"
-msgstr "Inne opcje"
+msgstr "Diğer Seçenekler"
 
 #: .././foobnix/preferences/configs/last_fm.py:14
 msgid "Last FM + VK"
-msgstr "LastFM + VK"
+msgstr "Last FM + VK"
 
 #: .././foobnix/preferences/configs/last_fm.py:21
 msgid "Last.FM"
@@ -249,22 +249,22 @@ msgstr "Last.FM"
 #: .././foobnix/preferences/configs/network_conf.py:58
 #: .././foobnix/regui/service/vk_service.py:79
 msgid "Login"
-msgstr "Login"
+msgstr "Oturum Aç"
 
 #: .././foobnix/preferences/configs/last_fm.py:43
 #: .././foobnix/preferences/configs/last_fm.py:103
 #: .././foobnix/preferences/configs/network_conf.py:72
 #: .././foobnix/regui/service/vk_service.py:94
 msgid "Password"
-msgstr "Hasło"
+msgstr "Parola"
 
 #: .././foobnix/preferences/configs/last_fm.py:52
 msgid "Enable Music Scrobbler"
-msgstr "Włącz scrobblowanie muzyki"
+msgstr "Müzik Scrobblerı aç"
 
 #: .././foobnix/preferences/configs/last_fm.py:55
 msgid "Enable Radio Scrobbler"
-msgstr "Włącz scrobblowanie z radia"
+msgstr "Radyo Scrobblerı aç"
 
 #: .././foobnix/preferences/configs/last_fm.py:69
 #: .././foobnix/preferences/configs/last_fm.py:75
@@ -276,393 +276,393 @@ msgstr "VKontakte"
 #: .././foobnix/preferences/configs/last_fm.py:75
 #: .././foobnix/regui/menu.py:81
 msgid "Disable"
-msgstr "Wyłącz"
+msgstr "Devre Dışı Bırak"
 
 #: .././foobnix/preferences/configs/last_fm.py:80
 msgid "You vk account is:"
-msgstr "Twoim kontem VK jest:"
+msgstr "Vk hesabınız:"
 
 #. vk_layout.pack_start(vlbox)
 #. vk_layout.pack_start(vpbox)
 #: .././foobnix/preferences/configs/last_fm.py:118
 msgid "Authorization (then need player restart)"
-msgstr "Autoryzacja (potem trzeba zresetować odtwarzacz)"
+msgstr "Yetkilendirme (yeniden başlatma gerektirir)"
 
 #: .././foobnix/preferences/configs/music_library.py:38
 msgid "Update library on start (more slow) "
-msgstr "Aktualizuj bibliotekę na starcie (powolne) "
+msgstr "Kütüphaneyi açılışta güncelleştir (daha yavaş) "
 
 #: .././foobnix/preferences/configs/music_library.py:48
 msgid "Music dirs"
-msgstr "Foldery z muzyką"
+msgstr "Müzik konumları"
 
 #: .././foobnix/preferences/configs/music_library.py:56
 msgid "Paths"
-msgstr "Ścieżki"
+msgstr "Yollar"
 
 #: .././foobnix/preferences/configs/music_library.py:136
 #: .././foobnix/regui/treeview/navigation_tree.py:237
 msgid "Choose directory with music"
-msgstr "Wybierz folder z muzyką"
+msgstr "Müzik içeren bir dizin seçin"
 
 #: .././foobnix/preferences/configs/music_library.py:151
 msgid "File Types"
-msgstr "Rodzaje plików"
+msgstr "Dosya Türleri"
 
 #: .././foobnix/preferences/configs/music_library.py:159
 msgid "Extensions"
-msgstr "Rozszerzenia"
+msgstr "Eklentiler"
 
 #: .././foobnix/preferences/configs/music_library.py:191
 msgid "Please add audio extension"
-msgstr "Proszę dodać rozszerzenie audio"
+msgstr "Lütfen ses dosyası uzantısı ekleyin"
 
 #: .././foobnix/preferences/configs/music_library.py:191
 msgid "Extension should be like '.mp3'"
-msgstr "Rozszerzenia powinny być typu \".mp3\""
+msgstr "Uzantı '.mp3' gibi olmalı"
 
 #: .././foobnix/preferences/configs/music_library.py:198
 msgid "Gap between tracks: "
-msgstr "Odstępy między utworami: "
+msgstr "Parçalar arasında boşluk: "
 
 #: .././foobnix/preferences/configs/music_library.py:214
 msgid "Multi tab mode"
-msgstr "Tryb wielu kart"
+msgstr "Çoklu sekme modu"
 
 #: .././foobnix/preferences/configs/music_library.py:220
 msgid "Single tab mode"
-msgstr "Tryb pojedynczej karty"
+msgstr "Tek sekme modu"
 
 #: .././foobnix/preferences/configs/network_conf.py:16
 msgid "Network Settings"
-msgstr "Ustawienia sieciowe"
+msgstr "Ağ Ayarları"
 
 #: .././foobnix/preferences/configs/network_conf.py:23
 msgid "Enable HTTP proxy"
-msgstr "Włącz HTTP proxy"
+msgstr "HTTP vekil sunucusunu aktifleştir"
 
 #: .././foobnix/preferences/configs/network_conf.py:27
 msgid "Settings"
-msgstr "Ustawienia"
+msgstr "Ayarlar"
 
 #: .././foobnix/preferences/configs/network_conf.py:39
 msgid "Server"
-msgstr "Serwer"
+msgstr "Sunucu"
 
 #: .././foobnix/preferences/configs/network_conf.py:46
 msgid "example: 66.42.182.178:3128"
-msgstr "przykład: 66.42.182.178:3128"
+msgstr "örnek: 66.42.182.178:3128"
 
 #: .././foobnix/preferences/configs/network_conf.py:93
 msgid "Check Connection"
-msgstr "Sprawdź połączenie"
+msgstr "Bağlantıyı Kontrol Et"
 
 #: .././foobnix/preferences/configs/network_conf.py:98
 #: .././foobnix/preferences/configs/network_conf.py:137
 msgid "Result:"
-msgstr "Wynik:"
+msgstr "Sonuç:"
 
 #: .././foobnix/preferences/configs/network_conf.py:137
 msgid " OK in seconds: "
-msgstr " Ok w sekundach: "
+msgstr " Saniyeler içinde TAMAM: "
 
 #: .././foobnix/preferences/configs/notification_conf.py:13
 msgid "Notifications"
-msgstr "Powiadomienia"
+msgstr "Bildirimler"
 
 #: .././foobnix/preferences/configs/notification_conf.py:22
 #: .././foobnix/preferences/configs/other_conf.py:73
 msgid "Show new foobnix release avaliable demo dialog"
-msgstr "Pokaż okno z nowym wydaniem foobnix"
+msgstr "Kullanılabilir yeni foobnix sürümünü iletişim kutusunda göster"
 
 #: .././foobnix/preferences/configs/other_conf.py:36
 msgid "Save music to folder:"
-msgstr "Zapisz muzykę do folderu:"
+msgstr "Müziği bu klasöre kaydet:"
 
 #: .././foobnix/preferences/configs/other_conf.py:40
 msgid "Automatic music save"
-msgstr "Automatycznie zapisuj muzykę"
+msgstr "Otomatik müzik kaydet"
 
 #: .././foobnix/preferences/configs/other_conf.py:45
 msgid "Download in threads"
-msgstr "Pobierz w wątkach"
+msgstr "Başlıklar halinde indir"
 
 #: .././foobnix/preferences/configs/other_conf.py:59
 msgid "Disc cover size:"
-msgstr "Rozmiar okładki:"
+msgstr "Disk kapak boyutu:"
 
 #: .././foobnix/preferences/configs/other_conf.py:83
 msgid "Enable theme image"
-msgstr "Włącz motyw obrazu"
+msgstr "Tema görünümünü etkinleştir"
 
 #: .././foobnix/preferences/configs/other_conf.py:92
 msgid "Menu type: "
-msgstr "Rodzaj menu: "
+msgstr "Menü tipi: "
 
 #: .././foobnix/preferences/configs/other_conf.py:94
 msgid "Old Style (Menu Bar)"
-msgstr "Styl klasyczny (pasek menu)"
+msgstr "Eski Stil (Menü Çubuğu)"
 
 #: .././foobnix/preferences/configs/other_conf.py:96
 msgid "New Style (Button)"
-msgstr "Nowy styl (przyciski)"
+msgstr "Yeni Stil (Düğme)"
 
 #: .././foobnix/preferences/configs/other_conf.py:105
 msgid "Order-Repeat Switcher Style:"
-msgstr "Styl przełączników Kolejność-Powtórz"
+msgstr "Sıralama-Tekrarlama Geçiş Biçimi"
 
 #: .././foobnix/preferences/configs/other_conf.py:107
 msgid "Toggle Buttons"
-msgstr "Przyciski"
+msgstr "Geçiş Düğmeleri"
 
 #: .././foobnix/preferences/configs/other_conf.py:109
 msgid "Text Labels"
-msgstr "Etykiety tekstowe"
+msgstr "Metin Etiketleri"
 
 #: .././foobnix/preferences/configs/other_conf.py:119
 msgid "Opacity:"
-msgstr "Nieprzezroczystość:"
+msgstr "Opaklık:"
 
 #: .././foobnix/preferences/configs/other_conf.py:132
 msgid "Choose your preferred file manager:"
-msgstr "Wybierz menadżer plików:"
+msgstr "Tercih edilen dosya yöneticisini seçin:"
 
 #: .././foobnix/preferences/configs/other_conf.py:135
 msgid "Disable Xscreensaver"
-msgstr "Wyłącz wygaszacz"
+msgstr "X ekran koruyucuyu devre dışı bırak"
 
 #: .././foobnix/preferences/configs/other_conf.py:137
 msgid "Enable Network Checker"
-msgstr "Włącz sprawdzanie połączenia"
+msgstr "Şebeke kontrolünü aktifleştir"
 
 #: .././foobnix/preferences/configs/tabs.py:13
 msgid "Tabs"
-msgstr "Karty"
+msgstr "Sekmeler"
 
 #: .././foobnix/preferences/configs/tabs.py:24
 msgid "Count of tabs:"
-msgstr "Ilość kart:"
+msgstr "Sekmelerin sayısı:"
 
 #: .././foobnix/preferences/configs/tabs.py:39
 msgid "Max length of tab:"
-msgstr "Maksymalna szerokość:"
+msgstr "Sekmenin maksimum uzunluğu:"
 
 #: .././foobnix/preferences/configs/tabs.py:54
 msgid "Tab position:"
-msgstr "Pozycja karty:"
+msgstr "Sekme konumu:"
 
 #: .././foobnix/preferences/configs/tabs.py:58
 msgid "Left"
-msgstr "Po lewej"
+msgstr "Sol"
 
 #: .././foobnix/preferences/configs/tabs.py:61
 msgid "Top"
-msgstr "Do góry"
+msgstr "Üst"
 
 #: .././foobnix/preferences/configs/tabs.py:64
 msgid "No Tabs"
-msgstr "Brak kart"
+msgstr "Sekme yok"
 
 #: .././foobnix/preferences/configs/tabs.py:76
 msgid "Close tab sign:"
-msgstr "Znak zamknięcia karty:"
+msgstr "Sekme kapatma işareti:"
 
 #: .././foobnix/preferences/configs/tabs.py:91
 msgid "None"
-msgstr "Brak"
+msgstr "Yok"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:38
 msgid "Show tray icon"
-msgstr "Pokaż ikonkę w tacce systemowej"
+msgstr "Tepsi simgesini göster"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:39
 msgid "Hide player in tray on start"
-msgstr "Od włączenia ukrywaj odtwarzacz na tacce"
+msgstr "Açılışta oynatıcıyı sistem tepsisine gizle"
 
 #. self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
 #: .././foobnix/preferences/configs/tray_icon_conf.py:42
 msgid "On close window - close player"
-msgstr "Wyłączaj odtwarzacz przy zamykaniu okna"
+msgstr "Pencereyi kapattığında - oynatıcıyı kapat"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:44
 msgid "On close window - hide player"
-msgstr "Ukrywaj odtwarzacz podczas zamykania okna"
+msgstr "Pencereyi kapattığında - oynatıcıyı gizle"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:47
 msgid "On close window - minimize player"
-msgstr "Minimalizuj odtwarzacz podczas zamykania okna"
+msgstr "Pencereyi kapattığında - oynatıcıyı küçült"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:50
 msgid "System Icon Static"
-msgstr "Ikony statyczne"
+msgstr "Statik Sistem Simgesi"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:58
 msgid "System Icons Dynamic"
-msgstr "Ikony dynamiczne"
+msgstr "Dinamik Sistem Simgeleri"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:62
 msgid "Disc cover image"
-msgstr "Obraz okładki albumu"
+msgstr "Disk kapak görüntüsü"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:64
 msgid "Notification pop-up"
-msgstr "Wyświetlaj powiadomienia"
+msgstr "Bildirim mesajı"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:82
 msgid "Notification"
-msgstr "Powiadomienia"
+msgstr "Bildirim"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:109
 msgid "Time Notification (sec): "
-msgstr "Czas wyświetlania powiadomień (sek.): "
+msgstr "Bildirim Süresi (sn): "
 
 #: .././foobnix/regui/base_controls.py:163
 msgid "Choose folders to open"
-msgstr "Wybierz foldery do otwarcia"
+msgstr "Açılacak klasörleri seç"
 
 #: .././foobnix/regui/base_controls.py:183
 msgid "Nothing found to play in the folder(s)"
-msgstr "Folder nie zawiera nic do zagrania"
+msgstr "Klasör(ler)de oynatılacak hiçbir şey bulunamadı"
 
 #: .././foobnix/regui/base_controls.py:190
 msgid "Choose file to open"
-msgstr "Wybierz plik do otwarcia"
+msgstr "Açılacak dosyaları seç"
 
 #: .././foobnix/regui/base_controls.py:239
 msgid "Nothing found to play in the file(s)"
-msgstr "Plik nie zawiera nic do zagrania"
+msgstr "Dosya(lar)da oynatılacak bir şey bulunamadı"
 
 #: .././foobnix/regui/base_controls.py:308
 msgid "Music not found in folder(s):"
-msgstr "Nie znaleziono muzyki w folderze"
+msgstr "Müzik klasör(ler)de bulunamadı:"
 
 #: .././foobnix/regui/base_controls.py:381
 msgid "Stopped"
-msgstr "Zatrzymane"
+msgstr "Durduruldu"
 
 #: .././foobnix/regui/base_controls.py:390
 msgid "Paused | "
-msgstr "Wstrymane | "
+msgstr "Duraklatıldı | "
 
 #: .././foobnix/regui/coverlyrics.py:21
 msgid "Album title"
-msgstr "O tytule"
+msgstr "Albüm ismi"
 
 #: .././foobnix/regui/coverlyrics.py:26
 msgid "Cover:"
-msgstr "Okładka:"
+msgstr "Kapak:"
 
 #: .././foobnix/regui/coverlyrics.py:32
 msgid "Lyric:"
-msgstr "Tekst:"
+msgstr "Şarkı Sözü:"
 
 #: .././foobnix/regui/infopanel.py:50
 msgid "Best Songs"
-msgstr "Najlepsze utwory"
+msgstr "En İyi Şarkılar"
 
 #: .././foobnix/regui/infopanel.py:53
 msgid "Similar Artists"
-msgstr "Podobni wykonawcy"
+msgstr "Benzer Sanatçılar"
 
 #: .././foobnix/regui/infopanel.py:56
 msgid "Similar Songs"
-msgstr "Podobne utwory"
+msgstr "Benzer Şarkılar"
 
 #: .././foobnix/regui/infopanel.py:59
 msgid "Similar Tags"
-msgstr "Podobne tagi"
+msgstr "Benzer Etiketler"
 
 #: .././foobnix/regui/infopanel.py:64
 msgid "Lyrics"
-msgstr "Tekst utworu"
+msgstr "Şarkı Sözleri"
 
 #: .././foobnix/regui/infopanel.py:71
 msgid "About Artist"
-msgstr "O wykonawcy"
+msgstr "Sanatçı Hakkında"
 
 #: .././foobnix/regui/infopanel.py:77 .././foobnix/regui/perspectives.py:127
 msgid "Info"
-msgstr "Informacje"
+msgstr "Bilgi"
 
 #: .././foobnix/regui/infopanel.py:86
 msgid "Downloads"
-msgstr ""
+msgstr "İndirilenler"
 
 #: .././foobnix/regui/menu.py:30
 msgid "_File"
-msgstr "_Plik"
+msgstr "_Dosya"
 
 #: .././foobnix/regui/menu.py:31
 msgid "Add File(s)"
-msgstr "Dodaj Plik(i)"
+msgstr "Dosya(lar) ekle"
 
 #: .././foobnix/regui/menu.py:32
 msgid "Add Folder(s)"
-msgstr "Dodaj folder(y)"
+msgstr "Klasör(ler) ekle"
 
 #: .././foobnix/regui/menu.py:33
 msgid "Save Playlist As"
-msgstr "Zapisz listę odtwarzania jako"
+msgstr "Çalma Listesini Farklı Kaydet"
 
 #: .././foobnix/regui/menu.py:36 .././foobnix/regui/top.py:46
 msgid "Quit"
-msgstr "Zakończ"
+msgstr "Çıkış"
 
 #: .././foobnix/regui/menu.py:39
 msgid "_View"
-msgstr "_Widok"
+msgstr "_Görünüm"
 
 #: .././foobnix/regui/menu.py:41
 msgid "Left Panel"
-msgstr "Lewy panel"
+msgstr "Sol Panel"
 
 #: .././foobnix/regui/menu.py:44
 msgid "Search Panel"
-msgstr "Panel wyszukiwania"
+msgstr "Arama Paneli"
 
 #: .././foobnix/regui/menu.py:47
 msgid "Cover & Lyrics Panel"
-msgstr "Okładka i tekst utworu"
+msgstr "Albüm Kapağı ve Şarkı Sözleri Paneli"
 
 #: .././foobnix/regui/menu.py:62
 msgid "_Playback"
-msgstr "_Odtwarzanie"
+msgstr "_Oynat"
 
 #: .././foobnix/regui/menu.py:70
 msgid "Order"
-msgstr "Kolejność"
+msgstr "Sırala"
 
 #: .././foobnix/regui/menu.py:71
 msgid "Linear"
-msgstr "Po kolei"
+msgstr "Sıralı"
 
 #: .././foobnix/regui/menu.py:74
 msgid "Random"
-msgstr "Losowo"
+msgstr "Rasgele"
 
 #: .././foobnix/regui/menu.py:78
 msgid "Repeat"
-msgstr "Powtórz"
+msgstr "Tekrarla"
 
 #: .././foobnix/regui/menu.py:79 .././foobnix/util/const.py:45
 msgid "All"
-msgstr "Wszystko"
+msgstr "Tümü"
 
 #: .././foobnix/regui/menu.py:80
 msgid "Single"
-msgstr "Pojedynczo"
+msgstr "Tek"
 
 #: .././foobnix/regui/menu.py:112
 msgid "_Help"
-msgstr "_Pomoc"
+msgstr "_Yardım"
 
 #: .././foobnix/regui/menu.py:113
 msgid "About"
-msgstr "O programie"
+msgstr "Hakkında"
 
 #: .././foobnix/regui/menu.py:115
 msgid "Project page"
-msgstr "Strona projektu"
+msgstr "Proje sayfası"
 
 #: .././foobnix/regui/menu.py:115
 msgid "http://www.foobnix.com/news/eng"
@@ -670,11 +670,11 @@ msgstr "http://www.foobnix.com/news/eng"
 
 #: .././foobnix/regui/menu.py:116
 msgid "Issue report"
-msgstr "Raport wydań"
+msgstr "Sorun raporu"
 
 #: .././foobnix/regui/menu.py:118
 msgid "Donate Participate"
-msgstr "Przekaż datek"
+msgstr "Bağışa Katıl"
 
 #: .././foobnix/regui/menu.py:118
 msgid "http://www.foobnix.com/donate/eng"
@@ -682,43 +682,43 @@ msgstr "http://www.foobnix.com/donate/eng"
 
 #: .././foobnix/regui/perspectives.py:40
 msgid "Add Folder(s) in tree"
-msgstr "Dodaj folder(y) do drzewa"
+msgstr "Klasörü(leri) ağaç görünümüne ekle"
 
 #: .././foobnix/regui/perspectives.py:114
 msgid "Music"
-msgstr "Muzyka"
+msgstr "Müzik"
 
 #: .././foobnix/regui/perspectives.py:114
 msgid "Music Navigation (Alt+1)"
-msgstr "Nawigacja w muzyce (Alt+1)"
+msgstr "Müzik Navigasyon (Alt+1)"
 
 #: .././foobnix/regui/perspectives.py:119
 msgid "Radio"
-msgstr "Radio"
+msgstr "Radyo"
 
 #: .././foobnix/regui/perspectives.py:119
 msgid "Radio Stantions (Alt+2)"
-msgstr "Stacja radiowe (Alt+2)"
+msgstr "Radyo İstasyonları (Alt+2)"
 
 #: .././foobnix/regui/perspectives.py:123
 msgid "Playlist"
-msgstr "Lista otwarzania"
+msgstr "Çalma Listesi"
 
 #: .././foobnix/regui/perspectives.py:123
 msgid "Virtual Play Lists (Alt+3)"
-msgstr "Wirtualna lista otwarzania (Alt+3)"
+msgstr "Sanal Çalma Listeleri (Alt+3)"
 
 #: .././foobnix/regui/perspectives.py:127
 msgid "Info Panel (Alt+4)"
-msgstr "Panel informacyjny (Alt+4)"
+msgstr "Bilgi Paneli (Alt+4)"
 
 #: .././foobnix/regui/perspectives.py:130
 msgid "Last.Fm"
-msgstr "Last.fm"
+msgstr "Last.Fm"
 
 #: .././foobnix/regui/perspectives.py:130
 msgid "Last.fm Panel (Alt+5)"
-msgstr "Last.fm panel (Alt+5)"
+msgstr "Last.fm Paneli (Alt+5)"
 
 #: .././foobnix/regui/perspectives.py:133
 msgid "VK"
@@ -726,205 +726,205 @@ msgstr "VK"
 
 #: .././foobnix/regui/perspectives.py:133
 msgid "VK Panel (Alt+6)"
-msgstr "VK Panel (Alt+6)"
+msgstr "VK Paneli (Alt+6)"
 
 #: .././foobnix/regui/search.py:17
 msgid "Search music online"
-msgstr "Szukaj muzyki w sieci"
+msgstr "Çevrimiçi müzik ara"
 
 #: .././foobnix/regui/search.py:61
 msgid "Online Music Search, Play, Download"
-msgstr "Szukaj muzyki w sieci, słuchaj, pobieraj"
+msgstr "Çevrimiçi Müzik Ara, Oynat, İndir"
 
 #: .././foobnix/regui/search.py:75
 msgid "Search"
-msgstr "Szukaj"
+msgstr "Ara"
 
 #: .././foobnix/regui/search.py:80
 msgid "Online Search"
-msgstr "Szukaj w sieci"
+msgstr "Çevrimiçi Ara"
 
 #: .././foobnix/regui/search.py:104
 msgid "Tracks"
-msgstr "Wykonawcy"
+msgstr "Parçalar"
 
 #: .././foobnix/regui/search.py:108
 msgid "Albums"
-msgstr "Albumy"
+msgstr "Albümler"
 
 #: .././foobnix/regui/search.py:111
 msgid "Similar"
-msgstr "Podobne"
+msgstr "Benzer"
 
 #. @UnusedVariable
 #: .././foobnix/regui/search.py:114 .././foobnix/util/tag_util.py:40
 msgid "Genre"
-msgstr "Gatunek"
+msgstr "Tür"
 
 #: .././foobnix/regui/about/about.py:20
 msgid "Simple and Powerful player"
-msgstr "Prosty i bogaty w opcje odtwarzacz"
+msgstr "Sade ve Güçlü oynatıcı"
 
 #: .././foobnix/regui/controls/filter.py:24
 msgid "File search"
-msgstr "Szukaj pliku"
+msgstr "Dosya arama"
 
 #: .././foobnix/regui/controls/filter.py:28
 msgid "Folder search"
-msgstr "Szukaj folderu"
+msgstr "Klasör arama"
 
 #: .././foobnix/regui/controls/movie_area.py:75
 msgid "Exit Fullscrean"
-msgstr "Opuść tryb pełnoekranowy"
+msgstr "Tam ekrandan çık"
 
 #: .././foobnix/regui/controls/playback.py:50
 #: .././foobnix/regui/controls/playback.py:141
 #: .././foobnix/regui/controls/playback.py:161
 msgid "Shuffle on"
-msgstr "Odtwarzanie losowe włączone"
+msgstr "Karıştırmayı aç"
 
 #: .././foobnix/regui/controls/playback.py:54
 #: .././foobnix/regui/controls/playback.py:144
 #: .././foobnix/regui/controls/playback.py:163
 msgid "Shuffle off"
-msgstr "Odtwarzanie losowe wyłączone"
+msgstr "Karıştırmayı kapat"
 
 #: .././foobnix/regui/controls/playback.py:58
 #: .././foobnix/regui/controls/playback.py:127
 #: .././foobnix/regui/controls/playback.py:148
 #: .././foobnix/regui/controls/playback.py:172
 msgid "Repeat all"
-msgstr "Powtarzaj wszystko"
+msgstr "Tümünü tekrar oynat"
 
 #: .././foobnix/regui/controls/playback.py:61
 #: .././foobnix/regui/controls/playback.py:130
 #: .././foobnix/regui/controls/playback.py:152
 #: .././foobnix/regui/controls/playback.py:181
 msgid "Repeat single"
-msgstr "Powtarzaj pojedynczy"
+msgstr "Bir kez tekrar et"
 
 #: .././foobnix/regui/controls/playback.py:64
 #: .././foobnix/regui/controls/playback.py:156
 msgid "Repeat off"
-msgstr "Powtarzanie wyłączone"
+msgstr "Tekrarı kapat"
 
 #: .././foobnix/regui/controls/playback.py:198
 msgid "Previous"
-msgstr "Poprzedni"
+msgstr "Önceki"
 
 #: .././foobnix/regui/controls/playback.py:199
 msgid "Next"
-msgstr "Następny"
+msgstr "Sonraki"
 
 #: .././foobnix/regui/controls/record.py:26
 msgid "Record radio"
-msgstr "Nagraj radio"
+msgstr "Radyoyu kaydet"
 
 #: .././foobnix/regui/controls/record.py:43
 msgid "So file doesn't exist. Pehaps it wasn't create yet."
-msgstr "Plik nie istnieje. Pewnie jeszcze nie został stworzony."
+msgstr ""
 
 #: .././foobnix/regui/controls/record.py:52
 msgid "Save file as ..."
-msgstr "Zapisz plik jako ..."
+msgstr "Farklı kaydet ..."
 
 #: .././foobnix/regui/controls/tray_icon.py:46
 msgid "Exit"
-msgstr "Wyjście"
+msgstr "Çıkış"
 
 #: .././foobnix/regui/controls/tray_icon.py:47
 msgid "Close Popup"
-msgstr "Zamknij dymek"
+msgstr "Bildirimi Kapat"
 
 #: .././foobnix/regui/notetab/__init__.py:274
 #: .././foobnix/regui/notetab/tab_library.py:36
 msgid "Rename tab"
-msgstr "Zmień nazwę karty"
+msgstr "Sekmeyi yeniden isimlendir"
 
 #: .././foobnix/regui/notetab/__init__.py:275
 msgid "Save playlist as"
-msgstr "Zapisz listę odtwarzania jako"
+msgstr "Çalma listesini farklı kaydet"
 
 #: .././foobnix/regui/notetab/__init__.py:276
 #: .././foobnix/regui/notetab/tab_library.py:41
 msgid "Close tab"
-msgstr "Zamknij kartę"
+msgstr "Sekmeyi kapat"
 
 #: .././foobnix/regui/notetab/__init__.py:353
 msgid "It's need not empty playlist"
-msgstr "Lista odtwarzania nie może być pusta"
+msgstr "Bu, boş olmayan bir çalma listesine gereksiniyor"
 
 #: .././foobnix/regui/notetab/__init__.py:356
 msgid "Choose folder to save playlist"
-msgstr "Wybierz folder do zapisania listy odtwarzania"
+msgstr "Çalma listesini kaydetmek için klasör seç"
 
 #: .././foobnix/regui/notetab/tab_library.py:37
 msgid "Update Music Tree"
-msgstr "Aktualizuj listę muzyki"
+msgstr "Ağaç Görünümünü Güncelleştir"
 
 #: .././foobnix/regui/notetab/tab_library.py:38
 msgid "Add folder"
-msgstr "Dodaj folder"
+msgstr "Klasör ekle"
 
 #: .././foobnix/regui/notetab/tab_library.py:39
 #: .././foobnix/regui/treeview/navigation_tree.py:128
 msgid "Add folder in new tab"
-msgstr "Dodaj folder w nowej karcie"
+msgstr "Yeni sekmeye klasör ekle"
 
 #: .././foobnix/regui/notetab/tab_library.py:40
 msgid "Clear Music Tree"
-msgstr "Wyczyść listę muzyki"
+msgstr "Ağaç Görünümünü Temizle"
 
 #: .././foobnix/regui/service/vk_service.py:42
 msgid "VKontakte Authorization (require for music search)"
-msgstr "Autoryzacja VKontakte (wymagane dla szukania muzyki)"
+msgstr "VKontakte Yetkilendirme (müzik aramak için gerekli)"
 
 #: .././foobnix/regui/service/vk_service.py:47
 msgid "Get Login and Password"
-msgstr "Pobierz login i hasło"
+msgstr "Kullanıcı adı ve şifresini al"
 
 #: .././foobnix/regui/service/vk_service.py:50
 msgid "Sing In"
-msgstr ""
+msgstr "Giriş Yap"
 
 #: .././foobnix/regui/service/vk_service.py:129
 msgid "Open"
-msgstr "Otwórz"
+msgstr "Aç"
 
 #: .././foobnix/regui/service/vk_service.py:135
 msgid "2: Apply Token"
-msgstr "2: Zatwierdź znak"
+msgstr "2: Simgeyi Uygula"
 
 #: .././foobnix/regui/service/vk_service.py:138
 msgid "Please generate token..."
-msgstr "Proszę wygenerować znak..."
+msgstr "Lütfen simge oluşturun..."
 
 #: .././foobnix/regui/service/vk_service.py:143
 msgid "Token:"
-msgstr "Znak:"
+msgstr "Simge:"
 
 #: .././foobnix/regui/service/vk_service.py:144
 msgid "User ID:"
-msgstr "ID użytkownika:"
+msgstr "Kullanıcı Kimliği:"
 
 #: .././foobnix/regui/service/vk_service.py:195
 msgid "Token incorrect or expired"
-msgstr "Znak jest nieprawidłowy lub przedawniony"
+msgstr "Simge yanlış ya da süresi dolmuş"
 
 #: .././foobnix/regui/service/vk_service.py:197
 msgid "Token or user is empty"
-msgstr "Znak lub użytkownik jest pusty"
+msgstr "Simge ya da kullanıcı boş"
 
 #: .././foobnix/regui/treeview/dm_tree.py:97
 #: .././foobnix/regui/treeview/dm_tree.py:99
 #: .././foobnix/regui/treeview/navigation_tree.py:140
 #: .././foobnix/regui/treeview/playlist_tree.py:232
 msgid "Open in file manager"
-msgstr "Otwórz menadżer plików"
+msgstr "Dosya yöneticisini aç"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:208
 msgid "Attention!!!"
-msgstr ""
+msgstr "Dikkat!!"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:209
 msgid "When you release the mouse button the mouse"
@@ -932,442 +932,443 @@ msgstr ""
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:214
 msgid "Copying:"
-msgstr "Kopiowanie:"
+msgstr "Kopyalanıyor:"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:214
 msgid "Replacing:"
-msgstr "Zastępowanie:"
+msgstr "Değiştiriliyor:"
 
 #. @UndefinedVariable
 #: .././foobnix/regui/treeview/dragdrop_tree.py:215
 #: .././foobnix/util/file_utils.py:380
 msgid "Progress"
-msgstr "Postęp"
+msgstr "İlerleme"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:217
 #: .././foobnix/util/file_utils.py:381
 msgid "To: "
-msgstr "Do: "
+msgstr ""
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:379
 msgid "m3u playlist: "
-msgstr "Lista odtwarzania .m3u: "
+msgstr "m3u çalma listesi: "
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:26
 msgid "Lasm.fm Integration "
-msgstr "Integracja z Last.fm "
+msgstr "Last.fm Entegresyonu "
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:38
 msgid "My loved tracks"
-msgstr "Moje ulubione utwory"
+msgstr "Sevdiğim parçalar"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:39
 msgid "My top tracks"
-msgstr "Moje najlepsze utwory"
+msgstr "En sevdiğim parçalar"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:40
 msgid "My recent tracks"
-msgstr "Moje ostatnie utwory"
+msgstr "Son dinlediğim parçalar"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:41
 msgid "My top artists"
-msgstr "Moi ulubieni artyści"
+msgstr "En sevdiğim sanatçılar"
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:49
 #: .././foobnix/regui/treeview/vk_integration_tree.py:53
 msgid "loading..."
-msgstr "ładowanie..."
+msgstr "yükleniyor..."
 
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:66
 #: .././foobnix/regui/treeview/vk_integration_tree.py:78
 msgid "Copy to Search Line"
-msgstr "Kopiuj do linii wyszukiwania"
+msgstr "Arama Satırı'na kopyala"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:40
 msgid "File"
-msgstr "Plik"
+msgstr "Dosya"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:63
 msgid "Name"
-msgstr "Nazwa"
+msgstr "İsim"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:68
 msgid "Ext"
-msgstr "Ext"
+msgstr "Uzantı"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:121
 msgid "Append to playlist"
-msgstr "Dodaj do listy odtwarzania"
+msgstr "Çalma listesine ekle"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:122
 msgid "Open in new playlist"
-msgstr "Otwórz nową listę odtwarzania"
+msgstr "Yeni çalma listesinde aç"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:124
 msgid "Add folder here"
-msgstr "Dodaj tutaj folder"
+msgstr "Buraya klasör ekle"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:129
 msgid "Clear"
-msgstr "Wyczyść"
+msgstr "Temizle"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:130
 msgid "Update"
-msgstr "Uaktualnij"
+msgstr "Güncelle"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:141
 #: .././foobnix/util/file_utils.py:181
 msgid "Create folder"
-msgstr "Utwórz folder"
+msgstr "Klasör oluştur"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:142
 msgid "Rename file (folder)"
-msgstr "Zmień nazwę pliku (folderu)"
+msgstr "Dosyayı (klasörü) yeniden isimlendir"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:143
 #: .././foobnix/util/file_utils.py:105
 msgid "Delete file(s) / folder(s)"
-msgstr "Skasuj plik(i) / Folder(y)"
+msgstr "Dosya(ları) / klasör(leri) sil"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:54
 msgid "Number"
-msgstr "Numer"
+msgstr "Numara"
 
 #. @UnusedVariable
 #: .././foobnix/regui/treeview/playlist_tree.py:62
 #: .././foobnix/regui/treeview/playlist_tree.py:63
 #: .././foobnix/util/tag_util.py:42
 msgid "Composer"
-msgstr "Kompozytor"
+msgstr "Besteci"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:70
 #: .././foobnix/regui/treeview/playlist_tree.py:71
 msgid "Track"
-msgstr "Utwór"
+msgstr "Parça"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:79
 #: .././foobnix/regui/treeview/playlist_tree.py:80
 #: .././foobnix/util/tag_util.py:35
 msgid "Artist"
-msgstr "Wykonawca"
+msgstr "Sanatçı"
 
 #. @UnusedVariable
 #: .././foobnix/regui/treeview/playlist_tree.py:88
 #: .././foobnix/regui/treeview/playlist_tree.py:89
 #: .././foobnix/util/tag_util.py:36
 msgid "Title"
-msgstr "Tytuł"
+msgstr "Başlık"
 
 #. @UnusedVariable
 #: .././foobnix/regui/treeview/playlist_tree.py:101
 #: .././foobnix/regui/treeview/playlist_tree.py:102
 #: .././foobnix/util/tag_util.py:37
 msgid "Album"
-msgstr "Album"
+msgstr "Albüm"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:108
 #: .././foobnix/regui/treeview/playlist_tree.py:109
 msgid "Time"
-msgstr "Czas"
+msgstr "Süre"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:216
 msgid "Delete from playlist"
-msgstr "Usuń z listy odtwarzania"
+msgstr "Çalma listesinden sil"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:231
 msgid "Copy To..."
-msgstr "Kopiuj do..."
+msgstr "Buraya Kopyala..."
 
 #: .././foobnix/regui/treeview/playlist_tree.py:235
 msgid "Download To..."
-msgstr "Pobierz do..."
+msgstr "Buraya İndir..."
 
 #: .././foobnix/regui/treeview/playlist_tree.py:240
 msgid "Edit Tags"
-msgstr "Edytuj tagi"
+msgstr "Etiketleri Düzenle"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:241
 msgid "Format Converter"
-msgstr "Konwerter"
+msgstr "Format Dönüştürücü"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:243
 msgid "Copy To Search Line"
-msgstr "Kopiuj do linii wyszukiwania"
+msgstr "Arama Satırına Kopyala"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:245
 msgid "Copy №-Title-Time"
-msgstr "Kopiuj Nr-Tytuł-Czas"
+msgstr "Parça Sıra Numarasını-Başlığını-Süresini Kopyala"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:246
 msgid "Copy Artist-Title-Album"
-msgstr "Kopiuj wykonawcę-tytuł-album"
+msgstr "Sanatçı-Başlık-Albüm Kopyala"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:248
 msgid "Love This Track(s) by Last.fm"
-msgstr ""
+msgstr "Bu şarkıyı(ları) Last.fm üzerinde beğen"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:251
 msgid "Open In File Manager"
-msgstr "Otwórz w menadżerze plików"
+msgstr "Dosya Yöneticisinde Aç"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:317
 msgid "Numbering by order"
-msgstr "Numeracja wg kolejności"
+msgstr "Sıraya göre numaralandır"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:319
 msgid "Numbering by tags"
-msgstr "Numeracja wg tagów"
+msgstr "Etiketlere göre numaralandır"
 
 #: .././foobnix/regui/treeview/radio_tree.py:31
 msgid "My channels"
-msgstr ""
+msgstr "Benim kanallarım"
 
 #: .././foobnix/regui/treeview/radio_tree.py:33
 msgid "Radio Stations"
-msgstr "Stacje radiowe"
+msgstr "Radyo İstasyonları"
 
 #: .././foobnix/regui/treeview/radio_tree.py:61
 #: .././foobnix/regui/treeview/radio_tree.py:219
 msgid "Edit Station"
-msgstr ""
+msgstr "İstasyonu Düzenle:"
 
 #: .././foobnix/regui/treeview/radio_tree.py:62
 #: .././foobnix/regui/treeview/radio_tree.py:220
 msgid "Delete Station"
-msgstr "Usuń stacje"
+msgstr "İstasyonu Sil"
 
 #: .././foobnix/regui/treeview/radio_tree.py:64
 #: .././foobnix/regui/treeview/radio_tree.py:90
 #: .././foobnix/regui/treeview/radio_tree.py:222
 msgid "Rename Group"
-msgstr ""
+msgstr "Grubu Yeniden İsimlendir"
 
 #: .././foobnix/regui/treeview/radio_tree.py:65
 #: .././foobnix/regui/treeview/radio_tree.py:223
 msgid "Delete Group"
-msgstr ""
+msgstr "Grubu Sil"
 
 #: .././foobnix/regui/treeview/radio_tree.py:67
 msgid "Reload radio folder"
-msgstr "Załaduj ponownie folder radia"
+msgstr "Radyo klasörünü tekrar yükle"
 
 #: .././foobnix/regui/treeview/radio_tree.py:72
 msgid "Edit Radio"
-msgstr "Edytuj radio"
+msgstr "Radyoyu Düzenle"
 
 #: .././foobnix/regui/treeview/radio_tree.py:74
 msgid "Enter new name and URL"
-msgstr ""
+msgstr "Yeni isim ve URL girin"
 
 #: .././foobnix/regui/treeview/radio_tree.py:91
 msgid "Enter new group name"
-msgstr ""
+msgstr "Yeni grup ismi girin"
 
 #: .././foobnix/regui/treeview/radio_tree.py:99
 msgid "Add New Radio Station"
-msgstr ""
+msgstr "Yeni Radyo İstasyonu Ekle"
 
 #: .././foobnix/regui/treeview/radio_tree.py:101
 msgid "Enter station name and URL"
-msgstr ""
+msgstr "İstasyon ismi ve URL girin"
 
 #: .././foobnix/regui/treeview/radio_tree.py:193
 msgid "Autogenerated channels"
-msgstr ""
+msgstr "Otomatik oluşturulan kanallar"
 
 #: .././foobnix/regui/treeview/radio_tree.py:214
 msgid "Add Station"
-msgstr "Dodaj stację"
+msgstr "İstasyon Ekle"
 
 #: .././foobnix/regui/treeview/radio_tree.py:215
 #: .././foobnix/regui/treeview/radio_tree.py:231
 msgid "Create Group"
-msgstr ""
+msgstr "Grup Oluştur"
 
 #: .././foobnix/regui/treeview/radio_tree.py:231
 msgid "Enter group name"
-msgstr ""
+msgstr "Grup ismi gir"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:25
 msgid "Virtual PlayLists"
-msgstr "Wirtualne listy odtwarzania"
+msgstr "Sanal Çalma Listeleri"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:60
 msgid "Add playlist"
-msgstr "Dodaj listę odtwarzania"
+msgstr "Çalma listesine ekle"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:64
 msgid "Rename"
-msgstr ""
+msgstr "Yeniden Adlandır"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:65
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:67
 msgid "Rename playlist"
-msgstr "Zmień nazwę"
+msgstr "Çalma listesini yeniden adlandır"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:68
 msgid "Delete playlist"
-msgstr "Skasuj listę odtwarzania"
+msgstr "Çalma listesini sil"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:74
 msgid "Create new playlist"
-msgstr "Utwórz nową listę odtwarzania"
+msgstr "Yeni çalma listesi oluştur"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:74
 msgid "Enter playlist name"
-msgstr ""
+msgstr "Çalma Listesi adı gir"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:88
 msgid "Rename Dialog"
-msgstr ""
+msgstr "Diyaloğu Yeniden İsimlendir"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:89
 msgid "Enter new name"
-msgstr ""
+msgstr "Yeni bir isim gir"
 
 #: .././foobnix/regui/treeview/vk_integration_tree.py:26
 msgid "VK Integration "
-msgstr "Integracja z VK "
+msgstr "VK Bütünleşmesi "
 
 #: .././foobnix/util/const.py:46
 msgid "Active"
-msgstr "Aktywne"
+msgstr "Etkin"
 
 #: .././foobnix/util/const.py:48
 msgid "Downloading"
-msgstr "Pobieranie"
+msgstr "İndiriliyor"
 
 #: .././foobnix/util/const.py:49
 msgid "Complete"
-msgstr "Kompletne"
+msgstr "Tamamlandı"
 
 #: .././foobnix/util/const.py:50
 msgid "Inactive"
-msgstr "Interaktywne"
+msgstr "Etkin Olmayan"
 
 #: .././foobnix/util/const.py:52
 msgid "Lock"
-msgstr "Zablokuj"
+msgstr ""
 
 #: .././foobnix/util/const.py:53
 msgid "Error"
-msgstr "Błąd"
+msgstr "Hata"
 
 #: .././foobnix/util/converter.py:44
 msgid "Format"
-msgstr "Format"
+msgstr "Biçim"
 
 #: .././foobnix/util/converter.py:45
 msgid "Bitrate"
-msgstr "Przepływ"
+msgstr "Bit hızı"
 
 #: .././foobnix/util/converter.py:46
 msgid "Channels"
-msgstr "Kanały"
+msgstr "Kanallar"
 
 #: .././foobnix/util/converter.py:47
 msgid "Frequency"
-msgstr "Częstotliwość"
+msgstr "Frekans"
 
 #: .././foobnix/util/converter.py:89
 msgid "Convert"
-msgstr "Konwertuj"
+msgstr "Dönüştür"
 
 #: .././foobnix/util/converter.py:99
 msgid "Show files"
-msgstr "Pokarz pliki"
+msgstr "Dosyaları göster"
 
 #: .././foobnix/util/converter.py:121
 msgid "Choose directory to save converted files"
-msgstr "Wybierz folder do zapisania konwertowanej muzyki"
+msgstr "Dönüştürülen dosyaları kaydetmek için dizin seç"
 
 #: .././foobnix/util/converter.py:224
 msgid "Warning!!!"
-msgstr "Uwaga!!!"
+msgstr "Uyarı'''"
 
 #: .././foobnix/util/converter.py:228
 msgid ""
 "So file(s)  already exist(s) and will be overwritten.\n"
 "Do you wish to continue?"
 msgstr ""
-"Plik(i) aktualnie istnieje(ą) i zostaną nadpisane.\n"
-"Kontynuować?"
+"Dosya(lar) zaten bulunuyor, üzerine yazılacak.\n"
+"Devam etmek istiyor musunuz?"
 
 #: .././foobnix/util/converter.py:336
 msgid "Attention"
-msgstr "Ostrzeżenie"
+msgstr "Dikkat"
 
 #: .././foobnix/util/converter.py:338
 msgid "Converter require specially compiled ffmpeg module for work.\n"
-msgstr "Konwerter potrzebuje specjalnego modułu ffmpeg do prawy.\n"
+msgstr ""
+"Dönüştürücü bu iş için özel olarak derlenmiş ffmpeg modülü gerektirir.\n"
 
 #: .././foobnix/util/file_utils.py:75
 msgid "Rename folder"
-msgstr "Zmień nazwę folderu"
+msgstr "Klasörü yeniden isimlendir"
 
 #: .././foobnix/util/file_utils.py:84
 msgid "Rename file"
-msgstr "Zmień nazwę pliku"
+msgstr "Dosyayı yeniden isimlendir"
 
 #: .././foobnix/util/file_utils.py:106
 msgid "Do you really want to delete item(s) from disk?"
-msgstr "Na pewno chcesz usunąć plik(i) z dysku?"
+msgstr "Bu öğe(leri)yi diskten gerçekten silmek istiyor musunuz?"
 
 #: .././foobnix/util/file_utils.py:152
 msgid "Copy"
-msgstr "Kopiuj"
+msgstr "Kopyala"
 
 #. @UndefinedVariable
 #: .././foobnix/util/file_utils.py:153
 msgid "Replace"
-msgstr "Podmień"
+msgstr "Değiştir"
 
 #: .././foobnix/util/file_utils.py:155
 #, python-format
 msgid "%s file(s) / folder(s)"
-msgstr "%s plik(ów) / folder(ów)"
+msgstr "%s dosya(lar) / klasör(ler)"
 
 #: .././foobnix/util/file_utils.py:161
 #, python-format
 msgid "Are you really want to %s this item(s) to %s ?"
-msgstr "Czy naprawdę chcesz %s ten plik(i) do %s ?"
+msgstr ""
 
 #: .././foobnix/util/file_utils.py:180
 msgid "Make folder dialog"
-msgstr "Okno folderu"
+msgstr ""
 
 #: .././foobnix/util/file_utils.py:182
 msgid "You want to create subfolder in folder"
-msgstr "Chcesz stworzyć podfolder"
+msgstr "Klasör içinde alt klasör oluşturmak istediniz"
 
 #: .././foobnix/util/file_utils.py:183
 msgid "Enter new folder's name:"
-msgstr "Wprowadź nową nazwę folderu:"
+msgstr "Klasör adını yazınız:"
 
 #: .././foobnix/util/file_utils.py:201
 msgid "So folder already exists"
-msgstr "Folder istnieje"
+msgstr "Klasör zaten bulunuyor"
 
 #: .././foobnix/util/file_utils.py:387
 msgid "Copying: "
-msgstr "Kopiowanie: "
+msgstr "Kopyalanıyor: "
 
 #: .././foobnix/util/id3_util.py:128 .././foobnix/util/tag_util.py:118
 #: .././foobnix/util/tag_util.py:132
 msgid "Unknown title"
-msgstr "Nieznany tytuł"
+msgstr "Bilinmeyen başlık"
 
 #: .././foobnix/util/id3_util.py:130 .././foobnix/util/tag_util.py:120
 #: .././foobnix/util/tag_util.py:130
 msgid "Unknown artist"
-msgstr "Nieznany artysta"
+msgstr "Bilinmeyen sanatçı"
 
 #: .././foobnix/util/m3u_utils.py:76
 msgid "Choose window"
-msgstr "Wybierz okno"
+msgstr "Pencere seç"
 
 #: .././foobnix/util/m3u_utils.py:80
 msgid ""
@@ -1389,56 +1390,42 @@ msgid ""
 "\n"
 "\tDo you want to save the playlist with relative paths?\n"
 msgstr ""
-"<big><b>\t\t\t\t\t\t\t\tUwaga!\n"
-"</b></big>\tWzględna lokalizacja plików muzycznych i list odtwarzania "
-"pozwoli Ci zapisać względne\n"
-"ścieżki do plików na Twoich listach. Pozwoli to przenosić listy odtwarzania "
-"z plikami \n"
-"dźwiękowymi (koniecznie razem) w dowolne miejsce na dysku, nawet na inny "
-"komputer\n"
-"Ponadto biblioteka będzie kompatybilna z systemem Windows. Jednakże, w tym "
-"przypadku nie możesz\n"
-"zmienić względnych ścieżek listy i plików muzycznych.\n"
-"\tCałkowie ścieżki sprawią, że nia da się przenieść listy na inny komputer\n"
-"albo używać jej na Windowsie, ale plik listy będzie mógł być przeniesiony w "
-"dowolnemiejsce na komputerze,\n"
-"bez przenoszenia muzyki (lista będzie działała).\n"
-"\n"
-"\tCzy chcesz zapisać liste za pomocą względnych ścieżek?\n"
 
 #: .././foobnix/util/net_wrapper.py:76
 msgid "Internet Connection"
-msgstr "Połączenie internetowe"
+msgstr "İnternet Bağlantısı"
 
 #: .././foobnix/util/net_wrapper.py:77
 msgid ""
 "Foobnix not connected or Internet not available. Please try again a little "
 "bit later."
-msgstr "Foobnix nie może połączyć się z internetem, spróbuj później."
+msgstr ""
+"Foobnix bağlı değil ya da İnternet kullanılabilir değil. Lütfen biraz sonra "
+"tekrar deneyin."
 
 #: .././foobnix/util/tag_util.py:23
 msgid "Tag Editor"
-msgstr "Edytor tagów"
+msgstr "Etiket Düzenleyici"
 
 #. @UnusedVariable
 #: .././foobnix/util/tag_util.py:38
 msgid "Year"
-msgstr "Rok"
+msgstr "Yıl"
 
 #. @UnusedVariable
 #: .././foobnix/util/tag_util.py:39
 msgid "Track number"
-msgstr "Numer utworu"
+msgstr "Parça numarası"
 
 #. @UnusedVariable
 #: .././foobnix/util/tag_util.py:41
 msgid "Author text"
-msgstr "Autor tekstu"
+msgstr "Otomatik Portakal!!!"
 
 #: .././foobnix/util/tag_util.py:65
 msgid ""
 "Apply for all selected tracks\n"
 "(active on multi selection)"
 msgstr ""
-"Zastosuj dla wybranych utworów\n"
-"(aktywne przy wybieraniu wielu)"
+"Tüm seçilen parçalara uygula \n"
+"(çoklu seçimde aktif)"
