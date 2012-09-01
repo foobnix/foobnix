@@ -16,7 +16,7 @@ class SingleThread():
         self.lock = Lock()
         self.progressbar = progressbar
         
-    def run_with_progressbar(self, method, args=None, text=None, no_thread=False, with_lock=True):
+    def run_with_progressbar(self, method, args=None, text='', no_thread=False, with_lock=True):
         #with_lock - shows, does it necessarily to do a lock or not
         
         if no_thread:
@@ -27,7 +27,7 @@ class SingleThread():
         else:
             self._run(method, args, text, with_lock)
                 
-    def _run(self, method, args=None, text=None, with_lock=True):
+    def _run(self, method, args=None, text='', with_lock=True):
         if not self.lock.locked():            
             self.lock.acquire()
             if self.progressbar:
@@ -42,7 +42,7 @@ class SingleThread():
     def _thread_task(self, method, args, with_lock=True):
         try:
             if method and args:
-                method(*args)
+                method(args)
             elif method:
                 method()
             time.sleep(0.1)

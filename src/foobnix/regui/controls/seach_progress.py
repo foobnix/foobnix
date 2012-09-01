@@ -61,8 +61,10 @@ if gtk.pygtk_version >= (2, 21, 0):
             self.spinner_popup.hide()
             self.spinner_popup.connect_after('map', self.configure_popup, self.controls.main_window) 
     
-        def start(self, text=_("Process...")):
-            def safe_task():
+        def start(self, text=None):
+            if not text:
+                text = _("Process...")
+            def safe_task():                
                 self.label.set_text(text)
                 self.spinner_popup.show()
                 super(SearchProgressBarNew, self).start()
@@ -120,10 +122,17 @@ if gtk.pygtk_version >= (2, 21, 0):
             else:
                 coverlyrics_width = 0
             statusbar_height = self.controls.statusbar.get_allocation().height
-            pl_tree_width = self.controls.notetabs.get_current_tree().get_allocation().width
+            try:
+                pl_tree_width = self.controls.notetabs.get_current_tree().get_allocation().width
+            except:
+                pl_tree_width = 7
             notetabs_width = self.controls.notetabs.get_allocation().width
-            pl_tree_height = self.controls.notetabs.get_current_tree().get_allocation().height
-            notetabs_height = self.controls.notetabs.get_current_tree().scroll.get_allocation().height + 5
+            try:
+                pl_tree_height = self.controls.notetabs.get_current_tree().get_allocation().height
+                notetabs_height = self.controls.notetabs.get_current_tree().scroll.get_allocation().height + 5
+            except:
+                pl_tree_height = 0
+                notetabs_height = 7
             self.spinner_popup.move(window_x + window_width - popup_width - coverlyrics_width - (notetabs_width - pl_tree_width),
                                     window_y + window_height - popup_height - statusbar_height - (notetabs_height - pl_tree_height))
             
