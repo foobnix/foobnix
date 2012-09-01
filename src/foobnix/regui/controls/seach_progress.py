@@ -55,14 +55,15 @@ if gtk.pygtk_version >= (2, 21, 0):
             self.controls = controls
             self.set_size_request(30, 30)
             self.show()
-            self.label=gtk.Label(_("Process..."))
+            self.label=gtk.Label()
             self.label.show()
             self.spinner_popup = self.create_spinner_popup()
             self.spinner_popup.hide()
             self.spinner_popup.connect_after('map', self.configure_popup, self.controls.main_window) 
     
-        def start(self, text=None):
+        def start(self, text=_("Process...")):
             def safe_task():
+                self.label.set_text(text)
                 self.spinner_popup.show()
                 super(SearchProgressBarNew, self).start()
                 self.move_to_coord()
