@@ -9,6 +9,7 @@ from dbus.mainloop.glib import DBusGMainLoop
 from foobnix.regui.model.signal import FControl
 from foobnix.version import FOOBNIX_VERSION
 import logging
+from foobnix.fc.fc import FC
 
 DBusGMainLoop(set_as_default=True)
 
@@ -65,8 +66,10 @@ class DBusManager(dbus.service.Object, FControl):
             #dbus_interface = 
             dbus_interface = 'org.gnome.SettingsDaemon.MediaKeys'
             mm_object = bus.get_object('org.gnome.SettingsDaemon', '/org/gnome/SettingsDaemon/MediaKeys')
+            
             mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
             mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
+            #mm_object.ReleaseMediaPlayerKeys("MyMultimediaThingy", dbus_interface=dbus_interface)
         except Exception, e:
             logging.error("DBUS Initialization Error" + str(e))
     
@@ -128,6 +131,8 @@ class DBusManager(dbus.service.Object, FControl):
         
                 
     def on_mediakey(self, comes_from, what):
+        if not FC().media_keys_enabled:
+            return
         logging.debug("Multi media key pressed" + what)
         """
         gets called when multimedia keys are pressed down.

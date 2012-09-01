@@ -8,6 +8,7 @@ from foobnix.util.pix_buffer import create_pixbuf_from_resource, \
     create_pixbuf_from_url, create_pixbuf_from_path, resize_pixbuf
 import logging
 import os
+import gobject
 
 class ImageBase(gtk.Image):
     def __init__(self, resource, size=None):
@@ -28,8 +29,7 @@ class ImageBase(gtk.Image):
     
     def set_from_pixbuf(self, pix):
         self.pixbuf = resize_pixbuf(pix, self.size)
-        super(ImageBase, self).set_from_pixbuf(self.pixbuf)
-        
+        gobject.idle_add(super(ImageBase, self).set_from_pixbuf, self.pixbuf)
         
     def set_image_from_url(self, url):
         self.pixbuf = create_pixbuf_from_url(url, self.size)

@@ -10,6 +10,7 @@ import gtk
 from foobnix.regui.model.signal import FControl
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.const import FTYPE_RADIO
+import gobject
 
 
 class SeekProgressBarControls(FControl, gtk.Alignment):
@@ -25,24 +26,26 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         self.tooltip_label = gtk.Label()
         self.tooltip.add(self.tooltip_label)
         
-        self.progresbar = gtk.ProgressBar()
-        self.progresbar.set_text("00:00 / 00:00")
+        self.progressbar = gtk.ProgressBar()
+        self.progressbar.set_text("00:00 / 00:00")
         try:
-            self.progresbar.set_has_tooltip(True)
+            self.progressbar.set_has_tooltip(True)
         except:
             #fix debian compability
             pass
         
-        self.progresbar.connect("leave-notify-event", lambda *a: self.tooltip.hide())
-        self.progresbar.connect("motion-notify-event", self.on_pointer_motion)        
+        self.progressbar.connect("leave-notify-event", lambda *a: self.safe_hide_tooltip())
+        self.progressbar.connect("motion-notify-event", self.on_pointer_motion)        
         event = gtk.EventBox()
-        event.add(self.progresbar)
+        event.add(self.progressbar)
         event.connect("button-press-event", self.on_seek)
-        
         
         self.add(event)
         self.show_all()
         self.tooltip.hide()
+        
+    def safe_hide_tooltip(self):
+        gobject.idle_add(self.tooltip.hide)
         
     def on_pointer_motion(self, widget, event):
         width = widget.allocation.width
@@ -51,12 +54,13 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
         seek_percent = (x + 0.0) / width
         sec = int(duration * seek_percent)
         sec = convert_seconds_to_text(sec)
-        self.tooltip_label.set_text(sec)
-        self.tooltip.show_all()
-        
-        x, y, mask = gtk.gdk.get_default_root_window().get_pointer() #@UndefinedVariable @UnusedVariable
-        self.tooltip.move(x+5, y-15)
-                
+        def safe_task():
+            self.tooltip_label.set_text(sec)
+            self.tooltip.show_all()
+            x, y, mask = gtk.gdk.get_default_root_window().get_pointer() #@UndefinedVariable @UnusedVariable
+            self.tooltip.move(x+5, y-15)
+        gobject.idle_add(safe_task)
+    
     def on_seek(self, widget, event):
         bean = self.controls.media_engine.bean
         if bean and bean.type == FTYPE_RADIO:
@@ -72,28 +76,30 @@ class SeekProgressBarControls(FControl, gtk.Alignment):
     
     def set_text(self, text):
         if text:
-            self.progresbar.set_text(text[:200])    
+            self.progressbar.set_text(text[:200])    
         
         if self.seek_bar_movie:
             self.seek_bar_movie.set_text(text)
         
-    def clear(self):
-        self.progresbar.set_text("00:00 / 00:00")
-        self.progresbar.set_fraction(0)
         
-        if self.seek_bar_movie:
-            self.seek_bar_movie.clear()
+    def clear(self):
+        def task():
+            self.progressbar.set_text("00:00 / 00:00")
+            gobject.idle_add(self.progressbar.set_fraction, 0)
+        
+            if self.seek_bar_movie:
+                self.seek_bar_movie.clear()
+        
     
     def update_seek_status(self, position_sec, duration_sec):
         duration_str = convert_seconds_to_text(duration_sec)
         position_str = convert_seconds_to_text(position_sec)
-        
+        seek_persent = (position_sec + 0.0) / (duration_sec)
         seek_text = position_str + " / " + duration_str
-        seek_persent = (position_sec + 0.0) / (duration_sec)                
-                              
-        self.progresbar.set_text(seek_text)
+        
         if 0 <= seek_persent <= 1: 
-            self.progresbar.set_fraction(seek_persent)
+            self.progressbar.set_text(seek_text)
+            gobject.idle_add(self.progressbar.set_fraction, seek_persent)
         
         if self.seek_bar_movie:
             self.seek_bar_movie.update_seek_status(position_sec, duration_sec)

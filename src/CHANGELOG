@@ -1,3 +1,16 @@
+2.5.36
+*Add lyrics from lyricsmania.com and megalyrics.ru
+*New progress indicator (spinner) for background tasks
+*Stability improvement
+*Add possibility to write debug in file (options --debug --log=path_to_file)
+*Add option of enable/disable multimedia keys
+*Add option "Don't try to bind volume control keys" 
+*Changed program icon (as experiment)
+*Add support of radio m3u playlists (for supported stream types only)
+*reducing the time for the start of the radio
+*Updated radio channels list
+*Many bugs have been fixed
+
 2.5.31
 * Possibility add files from file manager by clicking
 * Fixed adding m3u in playlist by click in file manager

@@ -42,6 +42,7 @@ class SearchControls(FControl, gtk.VBox):
         
     
     def on_search(self, *w):
+        
         if self.controls.vk_service.is_show_authorization(self.on_search):
                 return
         def task():
@@ -79,7 +80,7 @@ class SearchControls(FControl, gtk.VBox):
         searchLable = gtk.Label()
         searchLable.set_markup("<b>%s</b>" % _("Online Search"))
         
-        hbox.pack_start(self.controls.search_progress, False, False)
+        #hbox.pack_start(self.controls.search_progress, False, False)
         
         hbox.pack_start(combobox, False, False)        
         hbox.pack_start(self.entry, True, True)

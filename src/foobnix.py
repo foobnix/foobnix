@@ -9,18 +9,29 @@ import gobject
 from threading import Timer
 from foobnix.util import LOG
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_helper import CONFIG_DIR
 
 
 def foobnix():
+
     if "--debug" in sys.argv:
-        LOG.setup("debug")
+        for param in sys.argv:
+            if param.startswith("--log"):
+                if "=" in param:
+                    filepath = param[param.index("=")+1 : ]
+                    if filepath.startswith('~'):
+                        filepath = os.path.expanduser("~") + filepath[1 : ]
+                else:
+                    filepath = os.path.join(CONFIG_DIR, "foobnix.log")
+                LOG.setup("debug", filename=filepath)
+        else:
+            LOG.setup("debug")
         LOG.print_platform_info()
     else:
         LOG.setup("error")
-        #LOG.setup("debug")
-    
+  
     from foobnix.regui.foobnix_core import FoobnixCore
-    
+
     if "--test" in sys.argv:
         from test.all import run_all_tests
         print ("""TEST MODE""")
@@ -28,9 +39,9 @@ def foobnix():
         if not result:        
             raise SystemExit("Test failures are listed above.")
         exit()
-    
+
     init_time = time.time()
-    
+
     if "--nt" in sys.argv or os.name == 'nt':    
         gobject.threads_init() #@UndefinedVariable
         core = FoobnixCore(False)
@@ -63,4 +74,3 @@ else:
     except Exception, e:
         print e
         FC().save()
-    

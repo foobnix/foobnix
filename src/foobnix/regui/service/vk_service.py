@@ -19,6 +19,7 @@ from foobnix.fc.fc import FC
 from foobnix.helpers.image import ImageBase
 import os
 from foobnix.helpers.pref_widgets import HBoxLableEntry
+import gobject
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
@@ -26,17 +27,14 @@ class VKAuthorizationWindow(ChildTopWindow):
     
     def get_web_url(self):
         return "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
-    
-    
-    
+   
     def show(self, post_task=None):
-        super(VKAuthorizationWindow, self).show() 
+        gobject.idle_add(super(VKAuthorizationWindow, self).show) 
         self.post_task = post_task
         try:
             self.init_pass()
         except:
             pass
-        
                              
     def __init__(self, service):
         self.service = service
@@ -155,7 +153,7 @@ class VKAuthorizationWindow(ChildTopWindow):
             except:
                 dialog_token()
                 pass
-                
+        
                 
     
         self.add(vbox)
@@ -225,7 +223,7 @@ class VKAuthorizationWindow(ChildTopWindow):
         
     def _nav_request_policy_decision_cb(self, view, frame, net_req, nav_act, pol_dec):
         uri = net_req.get_uri()  
-        logging.debug("response url " + uri)
+        #logging.debug("response url " + uri)
         if "access_token" in uri:
             token = self.get_response(uri)["access_token"]
             userid= self.get_response(uri)["user_id"]
@@ -284,11 +282,12 @@ class VKService:
     def get(self, method, data):
         time.sleep(0.6)
         url = "https://api.vkontakte.ru/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
-        logging.debug("GET " + url)
+        #logging.debug("GET " + url)
+        logging.debug("Try to get response from vkontakte")
         try:
             response = urllib.urlopen(url)
         except IOError:
-            logging.error("Can't get response from " + url)
+            logging.error("Can't get response from vkontakte")
             return
         result = response.read()
         return  result
@@ -341,7 +340,7 @@ class VKService:
     def find_tracks_by_query(self, query):
         def post():
             self.find_tracks_by_query(self, query)
-            
+        
         if self.is_show_authorization(post):
             return 
         

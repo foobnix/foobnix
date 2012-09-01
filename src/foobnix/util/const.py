@@ -11,7 +11,7 @@ import gtk
 foobnix_localization()
 
 SITE_LOCALE="en"
-if "ru" in locale.getdefaultlocale()[0]:
+if locale.getdefaultlocale()[0] != None and "ru" in locale.getdefaultlocale()[0]:
     SITE_LOCALE="ru"
 
 ORDER_LINEAR = "ORDER_LINEAR"

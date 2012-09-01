@@ -142,11 +142,11 @@ class TabsConfig(ConfigPlugin):
         
         if self.radio_tab_label.get_active():
             FC().tab_close_element = "label"
-            
         elif self.radio_tab_button.get_active():
             FC().tab_close_element = "button"
-        else: FC().tab_close_element = None
-            
+        else: 
+            FC().tab_close_element = None
+        
         if self.radio_tab_left.get_active():
             FC().tab_position = "left"
             self.controls.notetabs.set_tab_left()
@@ -156,4 +156,5 @@ class TabsConfig(ConfigPlugin):
         else: 
             FC().tab_position = "no"
             self.controls.notetabs.set_tab_no()
-        
+            
+        self.controls.notetabs.crop_all_tab_names()

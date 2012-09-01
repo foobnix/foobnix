@@ -42,7 +42,7 @@ class SingleThread():
     def _thread_task(self, method, args, with_lock=True):
         try:
             if method and args:
-                method(args)
+                method(*args)
             elif method:
                 method()
             time.sleep(0.1)

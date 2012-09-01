@@ -60,8 +60,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.seek_bar_movie = SeekProgressBarControls(self)
         self.seek_bar = SeekProgressBarControls(self, self.seek_bar_movie)
         
-        self.search_progress = SearchProgressBar()
-        self.in_thread = SingleThread(self.search_progress)
+        
         
         self.info_panel = InfoPanelWidget(self)
                 
@@ -74,6 +73,8 @@ class FoobnixCore(BaseFoobnixControls):
         self.trayicon = TrayIconControls(self)
         
         self.main_window = MainWindow(self)
+        self.search_progress = SearchProgressBar(self)
+        self.in_thread = SingleThread(self.search_progress)
         self.coverlyrics = CoverLyricsPanel(self)
         self.notetabs = NoteTabControl(self)
         

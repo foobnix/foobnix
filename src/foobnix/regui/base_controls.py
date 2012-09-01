@@ -29,7 +29,6 @@ from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.regui.service.vk_service import VKService
 from foobnix.regui.state import LoadSave
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
-from foobnix.util import url_utils
 from foobnix.util.bean_utils import get_bean_posible_paths
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.util.file_utils import get_file_extension
@@ -89,7 +88,7 @@ class BaseFoobnixControls():
         if tree:
             return tree.get_selected_or_current_bean()
          
-    def play_selected_song(self):    
+    def play_selected_song(self):   
         current = self.get_active_bean()
         tree = self.notetabs.get_current_tree()
         if not current:
@@ -102,22 +101,6 @@ class BaseFoobnixControls():
         logging.debug("play current bean is %s" % str(current.text))
         if current and current.is_file:
             tree.set_play_icon_to_bean(current)
-            
-            """play radio, do not check VK"""
-            if current.type and current.type == FTYPE_RADIO:
-                self.play(current)
-                return
-            
-            if current.path and current.path.startswith("http://"):
-                if not self.check_path(current.path):
-                    res = self.net_wrapper.execute(self.vk_service.find_one_track, current.get_display_name())
-                    if not res:
-                        return
-                    
-                    path = res.path
-                    if path:
-                        current.path = path
-            """play song"""
             self.play(current)
     
     def check_path(self, path):
@@ -127,9 +110,7 @@ class BaseFoobnixControls():
                     return True
             else:
                 try:
-                    """Timeout not compatible with python 2.5"""
-                    #u = urlopen(bean.path, timeout = 7) #@UnusedVariable
-                    u = urlopen(path) #@UnusedVariable
+                    u = urlopen(path, timeout = 5) #@UnusedVariable
                     if not vars().has_key("u"):
                         return False
                     return True
@@ -162,7 +143,7 @@ class BaseFoobnixControls():
         if not paths:
             paths = directory_chooser_dialog(_("Choose folders to open"), FC().last_dir)
         if paths:
-            def task():
+            def on_add_folders_task():
                 path = paths[0]
                 list = path.split("/")
                 FC().last_dir = path[:path.rfind("/")]
@@ -182,7 +163,7 @@ class BaseFoobnixControls():
                 else:
                     self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
                     
-            self.in_thread.run_with_progressbar(task)
+            self.in_thread.run_with_progressbar(on_add_folders_task)
     
     def on_add_files(self, paths=None, tab_name=None):
         
@@ -255,11 +236,11 @@ class BaseFoobnixControls():
             self.tree.is_empty = True
             
             if FCache().tab_names[0]:
-                self.tabhelper.label.set_label(FCache().tab_names[0] + " ")
+                self.tabhelper.get_nth_page(0).get_child().label.set_label(FCache().tab_names[0] + " ")
         else:
             tabs = len(FCache().cache_music_tree_beans)
             self.tree.simple_append_all(FCache().cache_music_tree_beans[tabs - 1])
-            self.tabhelper.label.set_label(FCache().tab_names[tabs - 1] + " ")
+            self.tabhelper.get_nth_page(0).get_child().label.set_label(FCache().tab_names[tabs - 1] + " ")
             for tab in xrange(tabs - 2, -1, -1):
                 
                 tree = NavigationTreeControl(self)
@@ -316,9 +297,9 @@ class BaseFoobnixControls():
     def set_visible_video_panel(self, flag):
         FC().is_view_video_panel = flag
         if flag:
-            self.movie_window.show()
+            gobject.idle_add(self.movie_window.show)
         else:
-            self.movie_window.hide()
+            gobject.idle_add(self.movie_window.hide)
 
     def volume_up(self):
         self.volume.volume_up()
@@ -330,13 +311,13 @@ class BaseFoobnixControls():
         self.volume.mute()
     
     def hide(self):
-        self.main_window.hide()
+        gobject.idle_add(self.main_window.hide)
     
     def show_hide(self):
-        self.main_window.show_hide()
+        gobject.idle_add(self.main_window.show_hide)
         
     def show(self):
-        self.main_window.show()
+        gobject.idle_add(self.main_window.show)
     
     def play_pause(self):
         if self.media_engine.get_state() == STATE_PLAY:
@@ -353,9 +334,9 @@ class BaseFoobnixControls():
     def windows_visibility(self):
         visible = self.main_window.get_property('visible')
         if visible:
-            self.main_window.hide()
+            gobject.idle_add(self.main_window.hide)
         else:
-            self.main_window.show()
+            gobject.idle_add(self.main_window.show)
 
     def state_play(self, remember_position=False, under_pointer_icon=False):
         if self.media_engine.get_state() == STATE_PAUSE and not remember_position:
@@ -404,22 +385,23 @@ class BaseFoobnixControls():
     def play(self, bean):
         if not bean or not bean.is_file:
             return
-               
+
         self.play_lock.acquire()
         
-        if bean.type == FTYPE_RADIO:
-            self.record.show()
-        else:
-            self.record.hide()
-        def task():       
-            self.seek_bar.clear()
-            self.statusbar.set_text(bean.info)
-            self.trayicon.set_text(bean.text)
-            self.movie_window.set_text(bean.text)        
+        self.seek_bar.clear()
+        self.statusbar.set_text(bean.info)
+        self.trayicon.set_text(bean.text)
+        self.movie_window.set_text(bean.text)
+        def task():
+            if bean.type == FTYPE_RADIO:
+                self.record.show()
+                self.seek_bar.progressbar.set_fraction(0)
+            else:
+                self.record.hide()
+                    
             self.main_window.set_title(bean.text)
         gobject.idle_add(task)
-        thread.start_new_thread(self._one_thread_play, (bean,))
-        #self._play(bean)     
+        thread.start_new_thread(self._one_thread_play, (bean,))   
     
     def _one_thread_play(self,bean):
         try:
@@ -430,38 +412,41 @@ class BaseFoobnixControls():
         
     
     def _play(self, bean):
-        self.count_errors = 0
-        
         if not bean.path:
             bean.path = get_bean_posible_paths(bean)
-        
-        if bean.path and bean.type != FTYPE_RADIO and bean.path.startswith("http"):
-            if not url_utils.is_exists(bean.path):
-                bean.path = None
         
         if not bean.path:            
             if not self.fill_bean_from_vk(bean):
                 def post_task():
                     self._play(bean)
                 if self.vk_service.is_show_authorization(post_task):
-                    return None
-                    
+                    return
+                                 
+        if not self.check_path(bean.path):
+            if bean.iso_path and os.path.exists(bean.iso_path):
+                logging.info("Try to remount " + bean.iso_path)
+                mount_tmp_iso(bean.iso_path)
+            else:
+                resource = bean.path if bean.path else bean.text
+                logging.error("Resourse " + resource + " not found")
+                self.media_engine.state_stop(show_in_tray=False)
+                self.statusbar.set_text(_("Resource not found"))
+                self.seek_bar.set_text(_("Resource not found"))
+                self.count_errors += 1
+                time.sleep(2)
                 if self.count_errors < 4:
-                    time.sleep(0.5)
-                    self.count_errors += 1
                     if self.play_lock.locked():
                         self.play_lock.release()
                     self.next()
-           
-        if bean.path:
-            if not os.path.exists(bean.path):
-                if bean.iso_path and os.path.exists(bean.iso_path):
-                    logging.info("Try to remount " + bean.iso_path)
-                    mount_tmp_iso(bean.iso_path)
-                elif not bean.path.startswith("http"):
-                    logging.error("File " + bean.path + " not found")
-            elif os.path.isdir(bean.path):
-                    return None
+                else:
+                    self.seek_bar.set_text(_("Stopped. No resources found"))
+                
+                return
+                
+        elif os.path.isdir(bean.path):
+            return
+        
+        self.count_errors = 0
         self.media_engine.play(bean)
         self.is_scrobbled = False
         self.start_time = False      
@@ -498,7 +483,7 @@ class BaseFoobnixControls():
         
         self.statusbar.set_text(text)
         text = normalize_text(text)
-        self.seek_bar.set_text(text)    
+        self.seek_bar.set_text(text)
         t_bean = FModel(text).add_type(FTYPE_RADIO).create_from_text(text)                       
         self.update_info_panel(t_bean)
         if FC().enable_radio_scrobbler:
@@ -554,7 +539,7 @@ class BaseFoobnixControls():
         self.in_thread.run_with_progressbar(inline)
     
     def search_all_tracks(self, query):
-        def inline():
+        def search_all_tracks_task():
             results = self.vk_service.find_tracks_by_query(query)
             if not results:
                 results = []
@@ -570,10 +555,10 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
             
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline, no_thread=True)
+        self.in_thread.run_with_progressbar(search_all_tracks_task, no_thread=True)
 
     def search_top_tracks(self, query):
-        def inline(query):
+        def search_top_tracks_task(query):
             results = self.lastfm_service.search_top_tracks(query)
             if not results:
                 results = []
@@ -589,11 +574,11 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
                 
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline, query)
+        self.in_thread.run_with_progressbar(search_top_tracks_task, query)
 
 
     def search_top_albums(self, query):
-        def inline(query):
+        def search_top_albums_task(query):
             results = self.lastfm_service.search_top_albums(query)
             if not results:
                 results = []
@@ -619,10 +604,10 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
                 self.notetabs.append_all(all)
                                    
-        self.in_thread.run_with_progressbar(inline, query)
+        self.in_thread.run_with_progressbar(search_top_albums_task, query)
 
     def search_top_similar(self, query):
-        def inline(query):
+        def search_top_similar_task(query):
             results = self.lastfm_service.search_top_similar_artist(query)
             if not results:
                 results = []
@@ -644,10 +629,10 @@ class BaseFoobnixControls():
                      
             
         #inline(query)
-        self.in_thread.run_with_progressbar(inline, query)
+        self.in_thread.run_with_progressbar(search_top_similar_task, query)
 
     def search_top_tags(self, query):
-        def inline(query):
+        def search_top_tags_task(query):
             results = self.lastfm_service.search_top_tags(query)
             if not results:
                 logging.debug("tag result not found")
@@ -670,7 +655,7 @@ class BaseFoobnixControls():
                 self.notetabs.append_all(all)
         
         #inline(query)
-        self.in_thread.run_with_progressbar(inline, query)
+        self.in_thread.run_with_progressbar(search_top_tags_task, query)
 
     def update_info_panel(self, bean):
         self.info_panel.update(bean)
@@ -688,29 +673,13 @@ class BaseFoobnixControls():
         gap = FC().gap_secs
         time.sleep(gap)
         logging.debug("play current bean is %s" % str(bean.text))
-        if bean.path:
-            if os.path.isdir(bean.path):
-                return None
-            if bean.path.startswith("http://"):
-                if not self.check_path(bean.path):
-                    path = self.net_wrapper.execute(self.vk_service.find_one_track, bean.get_display_name()).path
-                    if path:
-                        bean.path = path
-                   
+        
         self.play(bean)
 
     def prev(self):
         bean = self.notetabs.prev()
         if not bean:
             return
-        if bean.path:
-            if os.path.isdir(bean.path):
-                return None
-            if bean.path.startswith("http://"):
-                if not self.check_path(bean.path):
-                    path = self.net_wrapper.execute(self.vk_service.find_one_track, bean.get_display_name()).path
-                    if path:
-                        bean.path = path
         
         self.play(bean)
 
@@ -833,7 +802,7 @@ class BaseFoobnixControls():
                 self.play(bean)
                 tree_selection = active_playlist_tree.get_selection()
                 filter_iter = filter_model.convert_child_iter_to_iter(iter)
-                tree_selection.select_iter(filter_iter)
+                gobject.idle_add(tree_selection.select_iter, filter_iter)
                 active_playlist_tree.set_play_icon_to_bean_to_selected()
             else:
                 iter = current_model.iter_next(iter)

@@ -135,9 +135,7 @@ class GStreamerEngine(MediaPlayerEngine):
             self.radio_path = get_radio_source(path)
             logging.debug("Try To play path " + self.radio_path)
             uri = self.radio_path
-            if self.bean.type == FTYPE_RADIO:
-                time.sleep(2)
-            else:
+            if not self.bean.type == FTYPE_RADIO:
                 self.notify_title(uri)
         else:
             uri = 'file://' + urllib.pathname2url(path)
@@ -195,14 +193,16 @@ class GStreamerEngine(MediaPlayerEngine):
             return - 1
     
     def playing_thread(self):
+        if not self.play_thread_id:
+            self.play_thread_id = 1
         thread_id = self.play_thread_id
-        error_count = 0
         sec = 0
         
         logging.debug("current state in thread: " + str(self.get_state()))
-         
-        while thread_id == self.play_thread_id:
-            try:
+        
+        attemps = 3
+        for i in xrange(attemps):
+            if thread_id == self.play_thread_id and i < attemps:
                 time.sleep(0.2)
                 duration_int = self.get_duration_seek_ns()
                 if duration_int == -1:
@@ -210,15 +210,8 @@ class GStreamerEngine(MediaPlayerEngine):
                     continue
                 self.notify_init(duration_int)
                 break
-            except Exception, e:
-                logging.info("Init playing thread: " + str(e))
-                time.sleep(1)
-                if error_count > 3:
-                    logging.warn("shit happens")
-                    self.state_stop()
-                    time.sleep(1)
-                    self.state_play()
-                error_count += 1
+            else:
+                break
 
         time.sleep(0.2)
 
@@ -367,6 +360,7 @@ class GStreamerEngine(MediaPlayerEngine):
             if self.error_counter > 1 and err.code != 1:
                 self.notify_error(str(err))
                 self.error_counter = 0
+                self.state_stop()
             else:
                 logging.warning("Error ocured, retry")
                 self.error_counter += 1
@@ -374,7 +368,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 
         
         elif type in [gst.MESSAGE_STATE_CHANGED, gst.MESSAGE_STREAM_STATUS]:            
-            if (self.bean.type == FTYPE_RADIO and
+            if (self.bean and self.bean.type == FTYPE_RADIO and
                 message.structure.has_field("new-state") and
                 message.structure['old-state'] == gst.STATE_READY and
                 message.structure['new-state'] == gst.STATE_NULL):

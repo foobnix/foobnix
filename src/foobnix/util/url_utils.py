@@ -25,13 +25,16 @@ def get_url_type(path):
     open = urllib.urlopen(path)
     return open.info().getheaders("Content-Type")[0]
 
+"""method is not reliable. too dependent on the server configuration"""
 def is_exists(url):
     p = urlparse.urlparse(url)
     h = httplib.HTTP(p[1])
     h.putrequest('HEAD', p[2])
     h.endheaders()
-    if h.getreply()[0] == 200: 
+    if h.getreply()[0] == 200:
         return 1
-    else: 
+    else:
         return 0
 
+if __name__ == '__main__':
+    is_exists("")

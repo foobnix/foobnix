@@ -19,7 +19,7 @@ from foobnix.util.file_utils import open_in_filemanager, copy_to
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
-from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click_release, \
+from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
 
 foobnix_localization()
@@ -31,12 +31,15 @@ class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
         
+        self.menu = Popup()
+        self.full_name = ""
+        self.label = gtk.Label()
+        
         self.set_headers_visible(True)
         self.set_headers_clickable(True)
         self.set_reorderable(True)
+           
         
-        self.menu = Popup()
-
         """Column icon"""
         self.icon_col = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         self.icon_col.key = "*"

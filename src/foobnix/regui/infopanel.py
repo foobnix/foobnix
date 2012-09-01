@@ -5,6 +5,8 @@ Created on Sep 23, 2010
 '''
 import os
 import gtk
+import copy
+import gobject
 import logging
 
 from foobnix.fc.fc import FC
@@ -14,7 +16,7 @@ from foobnix.helpers.image import ImageBase
 from foobnix.helpers.textarea import TextArea
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
-from foobnix.helpers.pref_widgets import HBoxDecorator, HBoxDecoratorTrue
+from foobnix.helpers.pref_widgets import HBoxDecoratorTrue
 from foobnix.fc.fc_cache import FCache, COVERS_DIR, LYRICS_DIR 
 from foobnix.regui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
@@ -22,6 +24,7 @@ from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
 from foobnix.thirdparty.lyr import get_lyrics
+from foobnix.regui.service.lyrics_parsing_service import get_lyrics_by_parsing
 
 
 class InfoCache():
@@ -143,23 +146,25 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if not self.controls.net_wrapper.is_internet():
             return;
         
-        self.empty.hide()
-        if widget.line_title.selected:
-            widget.scroll.hide()
-            self.empty.show()
-            widget.line_title.set_not_active()
-            self.info_cache.active_method
-            return
+        def safe_task():
+            self.empty.hide()
+            if widget.line_title.selected:
+                widget.scroll.hide()
+                self.empty.show()
+                widget.line_title.set_not_active()
+                self.info_cache.active_method
+                return
         
-        for w in self.left_widget:
-            w.scroll.hide()
-            w.line_title.set_not_active()
+            for w in self.left_widget:
+                w.scroll.hide()
+                w.line_title.set_not_active()
         
-        widget.scroll.show_all()
-        widget.line_title.set_active()
+            widget.scroll.show_all()
+            widget.line_title.set_active()
         
-        self.info_cache.active_method = widget.line_title.func1
-        self.controls.in_thread.run_with_progressbar(widget.line_title.func1)
+            self.info_cache.active_method = widget.line_title.func1
+            self.controls.in_thread.run_with_progressbar(widget.line_title.func1)
+        gobject.idle_add(safe_task)
             
     def clear(self):
         self.image.set_no_image()
@@ -170,18 +175,22 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
     def update_info_panel(self):
         if not self.controls.net_wrapper.is_internet():
             return;
-        
         if not self.bean:
             return None
-        def task():
-            self.show_disc_cover()
-            self.show_album_title()
+        bean = copy.copy(self.bean)
+        
+        def update_info_panel_task():
+            self.show_disc_cover(bean)
+            self.show_album_title(bean)
             if self.controls.coverlyrics.get_property("visible"):
-                self.show_similar_lyrics()
+                try:
+                    self.show_similar_lyrics(bean)
+                except Exception, e:
+                    logging.error("Can't get lyrics. " + type(e).__name__ + ": " + e.message) 
             if self.info_cache.active_method:
                 self.info_cache.active_method()
     
-        self.controls.in_thread.run_with_progressbar(task)
+        self.controls.in_thread.run_with_progressbar(update_info_panel_task)
         
     def update(self, bean):
         if not self.controls.net_wrapper.is_internet():
@@ -190,7 +199,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if bean.type == FTYPE_NOT_UPDATE_INFO_PANEL:
             return False
         
-        self.clear()    
+        self.clear()
         
         if not FC().is_view_info_panel:
             logging.debug("Info panel disabled")  
@@ -211,8 +220,12 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.update_info_panel()
         
     
-    def show_album_title(self):
-        bean = self.bean
+    def show_album_title(self, bean=None):
+        if not bean:
+            bean = self.bean
+        if bean.UUID != self.bean.UUID:
+            return
+        
         """update info album and year"""
         info_line = bean.artist
         if FCache().album_titles.has_key(bean.text):
@@ -227,13 +240,16 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             
             if isinstance(info_line, unicode) or isinstance(info_line, str) :
                 FCache().album_titles[bean.text] = info_line
-        if info_line:
+        if info_line and bean.UUID == self.bean.UUID:
             info_line = info_line.replace('&', '&amp;')
             self.album_label.set_markup("<b>%s</b>" % info_line)
             self.controls.coverlyrics.album_title.set_markup("<b>%s</b>" % info_line)
         
-    def show_disc_cover(self):
-        bean = self.bean
+    def show_disc_cover(self, bean=None):
+        if not bean:
+            bean = self.bean
+        if bean.UUID != self.bean.UUID:
+            return
         dict = FCache().covers
         
         """update image"""
@@ -247,7 +263,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                     del dict[key]
             '''remove extra files'''
             for file in list_images:
-                if os.path.splitext(file)[0] not in dict.keys():
+                if (os.path.splitext(file)[0] not in dict.keys() 
+                   and os.path.isfile(os.path.join(COVERS_DIR, file))):
                     os.remove(os.path.join(COVERS_DIR, file))
             
             for list, key in zip(dict.values(), dict.keys()):
@@ -257,9 +274,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             
             if not bean.image:
                 '''get image url'''
-                bean.image = self.controls.lastfm_service.get_album_image_url(bean.artist, bean.title)
-                              
-        self.image.update_info_from(bean)
+                bean.image = self.controls.lastfm_service.get_album_image_url(bean.artist, bean.title)       
         
         if not bean.image:
             logging.warning("""""Can't get cover image. Check the correctness of the artist's name and track title""""")
@@ -273,31 +288,46 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                 dict[url_basename] = [bean.text]
                 self.image.get_pixbuf().save(os.path.join(COVERS_DIR, url_basename + '.jpg'), "jpeg", {"quality":"90"})
         
-        self.controls.trayicon.update_info_from(bean)
-        self.controls.coverlyrics.set_cover()
+        if bean.UUID == self.bean.UUID:
+            self.image.update_info_from(bean)
+            self.controls.trayicon.update_info_from(bean)
+            self.controls.coverlyrics.set_cover()
         
         
-    def show_similar_lyrics(self):
-        if self.info_cache.lyric_bean == self.bean:
+    def show_similar_lyrics(self, bean=None):
+        if not bean:
+            bean = self.bean
+        if bean.UUID != self.bean.UUID:
+            return
+        if self.info_cache.lyric_bean == bean:
             return None
-        self.info_cache.lyric_bean = self.bean
+        
+        self.info_cache.lyric_bean = bean
         
         """lyrics"""
         if not os.path.isdir(LYRICS_DIR):
             os.mkdir(LYRICS_DIR)
         lyrics_list = os.listdir(LYRICS_DIR)
-        lyrics_title = "*** %s - %s *** \n" % (self.bean.artist, self.bean.title)
+        lyrics_title = "*** %s - %s *** \n" % (bean.artist, bean.title)
+        text = None
         if lyrics_title in lyrics_list:
             text = "".join(open(os.path.join(LYRICS_DIR, lyrics_title), 'r').readlines())
         else:
-            text = get_lyrics(self.bean.artist, self.bean.title)
+            try:
+                logging.debug("Try to get lyrics from lyrics.wikia.com")
+                text = get_lyrics(bean.artist, bean.title)
+            except:
+                logging.info("Error occurred when getting lyrics from lyrics.wikia.com")
+            if not text:
+                text = get_lyrics_by_parsing(bean.artist, bean.title)
             if text:
                 open(os.path.join(LYRICS_DIR, lyrics_title), 'w').write(text)
             else:
+                logging.info("The text not found")
                 text = "The text not found"
-        
-        self.lyrics.set_text(text, lyrics_title)
-        self.controls.coverlyrics.lyrics.set_text(text, lyrics_title)
+        if bean.UUID == self.bean.UUID:
+            self.lyrics.set_text(text, lyrics_title)
+            self.controls.coverlyrics.lyrics.set_text(text, lyrics_title)
         
     def show_wiki_info(self):
         if not self.bean:

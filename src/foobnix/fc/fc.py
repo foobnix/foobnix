@@ -93,7 +93,7 @@ class FC():
                 
         audio_container = [".cue", ".iso.wv"]
         self.video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mpg", ".rm", ".swf", ".vob", ".wmv",".mkv",".m4v", ".mp4"] 
-        self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".ac3", ".m4a", ".ra", ".m4p", ".wv", ".shn"]        
+        self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".ac3", ".m4a", ".ra", ".m4p", ".wv", ".shn", ".wav"]        
         self.all_support_formats = self.audio_formats + self.video_formats + audio_container
         self.all_support_formats.sort()
         
@@ -124,7 +124,7 @@ class FC():
         """Notification"""
         self.notifier = True
         self.notify_time = 3000
-               
+        
         """download manager controls"""
         self.auto_start_donwload = True
         self.amount_dm_threads = 3
@@ -146,8 +146,13 @@ class FC():
         self.proxy_user = None
         self.proxy_password = None
         
+        '''Multimedia and hot keys'''
         self.action_hotkey = {'foobnix --volume-up': '<SUPER>Up', 'foobnix --volume-down': '<SUPER>Down', 'foobnix --show-hide': '<SUPER>a', 'foobnix --prev': '<SUPER>Left', 'foobnix --play': '<SUPER>x', 'foobnix --play-pause': '<SUPER>z', 'foobnix --next': '<SUPER>Right'}
         self.multimedia_keys = {'foobnix --prev': 'XF86AudioPrev', 'foobnix --next': 'XF86AudioNext', 'foobnix --play-pause': 'XF86AudioPlay', 'foobnix --stop': 'XF86AudioStop', 'foobnix --volume-up': 'XF86AudioRaiseVolume', 'foobnix --volume-down': 'XF86AudioLowerVolume', 'foobnix --mute': 'XF86AudioMute'}
+        self.media_volume_keys = {'foobnix --volume-up': 'XF86AudioRaiseVolume', 'foobnix --volume-down': 'XF86AudioLowerVolume', 'foobnix --mute': 'XF86AudioMute'}
+        
+        self.media_keys_enabled = True
+        self.media_volume_keys_enabled = True
         
         self.left_perspective = "info" 
         

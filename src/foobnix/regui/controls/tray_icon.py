@@ -7,6 +7,7 @@ Created on 29 сент. 2010
 
 import gtk
 import logging
+import gobject
 
 from foobnix.fc.fc import FC
 from foobnix.regui.controls.playback import PlaybackControls
@@ -57,13 +58,14 @@ class PopupMenuWindow(PopupTrayWindow):
         self.hide()
         
     def set_text(self, text):
-        text = unicode(text)
+        text = unicode(text) 
+        def safe_task():
+            self.poopup_text.set_text(text[:40])
         
-        self.poopup_text.set_text(text[:40])
-        
-        '''set colour of text'''
-        self.poopup_text.modify_fg(gtk.STATE_NORMAL,
-                                   gtk.gdk.color_parse('#FFFFFF')) #@UndefinedVariable
+            '''set colour of text'''
+            self.poopup_text.modify_fg(gtk.STATE_NORMAL,
+                                       gtk.gdk.color_parse('#FFFFFF')) #@UndefinedVariable
+        gobject.idle_add(safe_task)
         
 class PopupVolumeWindow(PopupTrayWindow):
     def __init__(self, controls, popup_menu_window):
@@ -215,5 +217,5 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
 
     def set_text(self, text):
         self.popup_menu.set_text(text)
-        self.set_tooltip(text)
+        gobject.idle_add(self.set_tooltip, text)
        

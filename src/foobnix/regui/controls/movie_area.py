@@ -3,6 +3,7 @@
 from foobnix.regui.model.signal import FControl
 
 import gtk
+import gobject
 import logging
 
 from foobnix.helpers.window import ChildTopWindow
@@ -10,6 +11,7 @@ from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.regui.controls.playback import PlaybackControls
 from foobnix.util.key_utils import is_key, is_key_alt, get_key
 from foobnix.helpers.my_widgets import notetab_label, ImageButton
+
 
 class AdvancedDrawingArea(gtk.DrawingArea):
     def __init__(self, controls):  
@@ -97,7 +99,7 @@ class FullScreanArea(ChildTopWindow):
             self.controls.volume.set_value(float(value * 100))
         
         def set_text(self, text):
-            self.text_label.set_text(text)
+            gobject.idle_add(self.text_label.set_text, text)
         
         def get_draw(self):
             return self.drow
