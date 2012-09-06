@@ -59,21 +59,20 @@ class FullScreanArea(ChildTopWindow):
             self.on_hide_callback = on_hide_callback
             self.set_flags(gtk.CAN_FOCUS)
             self.layout = gtk.VBox(False)
-            
-            self.drow = AdvancedDrawingArea(controls)
-            self.drow.action_function = on_hide_callback 
+            self.set_property("skip-taskbar-hint", True)
+            self.set_keep_above(True)
+            self.draw = AdvancedDrawingArea(controls)
+            self.draw.action_function = on_hide_callback 
             self.set_resizable(True)
             self.set_border_width(0)
             
-            self.layout.pack_start(self.drow, True)
-            
-            
+            self.layout.pack_start(self.draw, True)
+                        
             self.text_label = gtk.Label("foobnix")
             self.volume_button= gtk.VolumeButton()
             self.volume_button.connect("value-changed", self.volume_changed)
             
             line = gtk.HBox(False)            
-            
             line.pack_start(ImageButton(gtk.STOCK_FULLSCREEN, on_hide_callback, _("Exit Fullscrean")), False)
             line.pack_start(PlaybackControls(controls), False)
             line.pack_start(controls.seek_bar_movie, True)
@@ -81,17 +80,23 @@ class FullScreanArea(ChildTopWindow):
             line.pack_start(self.text_label, False)
             line.pack_start(gtk.SeparatorToolItem(),False)
             line.pack_start(self.volume_button, False)
+            line.show_all()
             
-            self.layout.pack_start(line,False)
+            control_panel = gtk.Window(gtk.WINDOW_POPUP)
+            control_panel.set_size_request(800, -1)
+            control_panel.add(line)
             
             self.add(self.layout)
-            self.set_opacity(1)
-            
-            self.drow.connect("enter-notify-event", lambda *a: line.hide())
+                       
+            self.draw.connect("enter-notify-event", lambda *a: gobject.idle_add(control_panel.hide))
             
             def my_event(w, e):
                 if e.y > gtk.gdk.screen_height() - 5: #@UndefinedVariable
-                    line.show()
+                    def safe_task():
+                        control_panel.show()
+                        control_panel.set_size_request(gtk.gdk.screen_width(), -1)#@UndefinedVariable
+                        control_panel.move(0, gtk.gdk.screen_height() - control_panel.get_allocation().height)#@UndefinedVariable
+                    gobject.idle_add(safe_task)
                     
             self.connect("motion-notify-event", my_event)
                       
@@ -102,16 +107,17 @@ class FullScreanArea(ChildTopWindow):
             gobject.idle_add(self.text_label.set_text, text)
         
         def get_draw(self):
-            return self.drow
+            return self.draw
             
         def hide_window(self, *a):
-            self.hide()            
-            return True
-        
+            gobject.idle_add(self.hide)         
+                    
         def show_window(self):
-            self.fullscreen()
-            self.volume_button.set_value(float(self.controls.volume.volume_scale.get_value()/ 100))
-            self.show_all()
+            def safe_task():
+                self.fullscreen()
+                self.volume_button.set_value(float(self.controls.volume.volume_scale.get_value()/ 100))
+                self.show_all()
+            gobject.idle_add(safe_task)
             
 
 class MovieDrawingArea(FControl, gtk.Frame):
@@ -122,24 +128,29 @@ class MovieDrawingArea(FControl, gtk.Frame):
         self.set_label_widget(notetab_label(self.hide))
         self.set_label_align(1.0, 0.0)
         self.set_border_width(0)
-        
-        
+               
         self.smallscree_area = AdvancedDrawingArea(controls)
         self.smallscree_area.action_function = self.on_full_screen
-        self.add(self.smallscree_area)
-        self.fullscrean_area = FullScreanArea(controls, self.on_small_screen)
-        for state in (gtk.STATE_NORMAL, gtk.STATE_PRELIGHT, gtk.STATE_ACTIVE, gtk.STATE_SELECTED, gtk.STATE_INSENSITIVE):
-            self.smallscree_area.modify_bg(state, self.smallscree_area.get_colormap().alloc_color("black"))
-            self.fullscrean_area.drow.modify_bg(state, self.fullscrean_area.get_colormap().alloc_color("black"))
         
-        self.out = None
-        self.set_out(self.smallscree_area)
+        self.add(self.smallscree_area)
+        
+        self.fullscrean_area = FullScreanArea(controls, self.on_small_screen)
+        
+        def modyfy_background():
+            for state in (gtk.STATE_NORMAL, gtk.STATE_PRELIGHT, gtk.STATE_ACTIVE, gtk.STATE_SELECTED, gtk.STATE_INSENSITIVE):
+                self.smallscree_area.modify_bg(state, self.smallscree_area.get_colormap().alloc_color("black"))
+                self.fullscrean_area.draw.modify_bg(state, self.fullscrean_area.get_colormap().alloc_color("black"))
+        gobject.idle_add(modyfy_background)
+        
+        self.output = None
+        self.set_output(self.smallscree_area)
     
-    def set_out(self, area):
-        self.out = area
+    def set_output(self, area):
+        self.output = area
+        
     
-    def get_out(self):
-        return self.out
+    def get_output(self):
+        return self.output
     
     def get_draw(self):
         return self.smallscree_area
@@ -147,26 +158,33 @@ class MovieDrawingArea(FControl, gtk.Frame):
     def on_full_screen(self):
         self.controls.state_stop(True)
         self.fullscrean_area.show_window()        
-        self.set_out(self.fullscrean_area.get_draw())      
+        self.set_output(self.fullscrean_area.get_draw())      
         self.controls.state_play(True, under_pointer_icon=True)
                 
     def set_text(self, text):
-        self.fullscrean_area.set_text(text)
+        gobject.idle_add(self.fullscrean_area.set_text, text)
         
     def on_small_screen(self):
         self.controls.state_stop(True)
-        self.set_out(self.smallscree_area)
+        self.set_output(self.smallscree_area)
         self.fullscrean_area.hide_window()
         self.controls.state_play(True, under_pointer_icon=True)
             
     def draw_video(self, message):
         message_name = message.structure.get_name()
+        
         if message_name == "prepare-xwindow-id":
             imagesink = message.src
-            imagesink.set_property("force-aspect-ratio", True)
-            self.show_all()
-            self.get_out().set_size_request(-1, 400)
-            imagesink.set_xwindow_id(self.get_out().window.xid)          
+            
+            def safe_task():
+                imagesink.set_property("force-aspect-ratio", True)
+                self.show_all()
+                imagesink.set_xwindow_id(self.get_output().window.xid)
+                self.get_output().set_size_request(-1, 400)
+            gobject.idle_add(safe_task)
+            
+
+                  
             
             
 
