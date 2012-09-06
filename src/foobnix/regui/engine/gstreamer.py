@@ -89,7 +89,7 @@ class GStreamerEngine(MediaPlayerEngine):
             return
         if self.bean.type == FTYPE_RADIO:
             "notify radio playing"
-            self.controls.notify_title(text)
+            self.controls.notify_title(self.bean, text)
 
     def notify_error(self, msg):
         logging.debug("Notify error, STOP state")

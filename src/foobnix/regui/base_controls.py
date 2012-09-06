@@ -169,7 +169,9 @@ class BaseFoobnixControls():
         
         if not paths:       
             paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
-        copy_paths = copy.deepcopy(paths) 
+            if not paths: return
+        copy_paths = copy.deepcopy(paths)
+        
         for i, path in enumerate(copy_paths):
             if path.lower().endswith(".m3u") or path.lower().endswith(".m3u8"):
                 paths[i:i + 1] = m3u_reader(path)
@@ -478,13 +480,13 @@ class BaseFoobnixControls():
                     self.dm.append_task(bean)
 
             
-    def notify_title(self, text):
+    def notify_title(self, bean, text):
         logging.debug("Notify title" + text)
         
         self.statusbar.set_text(text)
         text = normalize_text(text)
         self.seek_bar.set_text(text)
-        t_bean = FModel(text).add_type(FTYPE_RADIO).create_from_text(text)                       
+        t_bean = bean.create_from_text(text)                       
         self.update_info_panel(t_bean)
         if FC().enable_radio_scrobbler:
             start_time = str(int(time.time()))
