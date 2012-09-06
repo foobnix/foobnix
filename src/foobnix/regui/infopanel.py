@@ -251,7 +251,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if bean.UUID != self.bean.UUID:
             return
         dict = FCache().covers
-        
+
         """update image"""
         if not bean.image:
             if not os.path.isdir(COVERS_DIR):
@@ -346,7 +346,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         artist = self.controls.lastfm_service.get_network().get_artist(self.bean.artist)        
         self.wiki.set_text(artist.get_bio_content(), self.bean.artist)
         
-        images = artist.get_images(limit=5)
+        images = artist.get_images(limit=6)
         
         for image in images:
             try:

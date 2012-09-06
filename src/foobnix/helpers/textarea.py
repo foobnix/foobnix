@@ -34,12 +34,14 @@ class TextArea(gtk.ScrolledWindow):
         self.line_title = None
         
     def append_image(self, url):
-        if not url:
-            return None
-        enditer = self.buffer.get_end_iter()
-        image = ImageBase(None)
-        image.set_image_from_url(url)
-        gobject.idle_add(self.buffer.insert_pixbuf, enditer, image.get_pixbuf())
+        def safe_task():
+            if not url:
+                return None
+            enditer = self.buffer.get_end_iter()
+            image = ImageBase(None)
+            image.set_image_from_url(url)
+            self.buffer.insert_pixbuf(enditer, image.get_pixbuf())
+        gobject.idle_add(safe_task)
         
     def set_text(self, text="", bold_text=""):
         def safe_task():
@@ -47,14 +49,15 @@ class TextArea(gtk.ScrolledWindow):
             self.buffer.set_text(full_text)
             if text:
                 self.clear_tags (full_text)
-            start = self.buffer.get_iter_at_offset(0)            
+            start = self.buffer.get_iter_at_offset(0)
             end = self.buffer.get_iter_at_offset(len(unicode(bold_text)))
             self.buffer.apply_tag(self.tag_bold, start, end)
         gobject.idle_add(safe_task)
+
         
     def clear_tags (self, text):
         start_index = 0
-        text_length = len(text)
+        text_length = len(unicode(text))
         while (start_index != -1):
             buf_text = self.buffer.get_text(self.buffer.get_iter_at_offset(0),
                                         self.buffer.get_iter_at_offset(text_length))
@@ -65,6 +68,9 @@ class TextArea(gtk.ScrolledWindow):
                     start = self.buffer.get_iter_at_offset(start_index)
                     end = self.buffer.get_iter_at_offset(end_index + 1) 
                     self.buffer.delete(start, end)
+                else:
+                    return
+
                                         
 class ScrolledText():
     def __init__(self):
