@@ -5,21 +5,19 @@ Created on 27 сент. 2010
 @author: ivan
 '''
 
+import time
 import thread
 import logging
+import datetime
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
-
 from foobnix.regui.model import FModel
 from foobnix.util.const import FTYPE_VIDEO
 from foobnix.util.file_utils import file_extension
-import time
 from foobnix.thirdparty.google.translate import translate
 from foobnix.thirdparty.pylast import WSError, Tag
 from foobnix.thirdparty import pylast
-import datetime
-
 
 API_KEY = FCBase().API_KEY
 API_SECRET = FCBase().API_SECRET
@@ -90,7 +88,7 @@ class LastFmService():
 
         
     def init_thread(self):
-        time.sleep(10)
+        time.sleep(5)
         if not self.controls.net_wrapper.is_internet():
             return None
             

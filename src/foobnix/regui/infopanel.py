@@ -354,7 +354,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             except AttributeError:
                 url = image.sizes["large"]
             self.wiki.append_image(url)
-    
+
     def show_similar_tags(self):
         if self.info_cache.similar_tags_bean == self.bean:
             return None

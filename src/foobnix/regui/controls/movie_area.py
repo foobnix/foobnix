@@ -11,6 +11,7 @@ from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.regui.controls.playback import PlaybackControls
 from foobnix.util.key_utils import is_key, is_key_alt, get_key
 from foobnix.helpers.my_widgets import notetab_label, ImageButton
+import threading
 
 
 class AdvancedDrawingArea(gtk.DrawingArea):
@@ -180,7 +181,10 @@ class MovieDrawingArea(FControl, gtk.Frame):
                 imagesink.set_property("force-aspect-ratio", True)
                 self.show_all()
                 imagesink.set_xwindow_id(self.get_output().window.xid)
-                self.get_output().set_size_request(-1, 400)
+                
+                '''trick to amoid possible black screen in movie_area'''
+                threading.Timer(0.5, lambda: self.get_output().set_size_request(-1, 400)).start()
+                
             gobject.idle_add(safe_task)
             
 
