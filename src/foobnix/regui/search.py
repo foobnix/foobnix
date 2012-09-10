@@ -24,8 +24,9 @@ class SearchControls(FControl, gtk.VBox):
                 
         
         self.pack_start(self.search_line(), False, False, 0)
-                
-        #self.pack_start(controls.search_progress, False, False, 0)
+        
+        if gtk.pygtk_version < (2, 22, 0):        
+            self.pack_start(controls.search_progress, False, False, 0)
         
         self.show_all()
         """search on enter"""
@@ -38,7 +39,7 @@ class SearchControls(FControl, gtk.VBox):
     
     def set_search_function(self, search_function):
         logging.info("Set search function" + str(search_function))
-        self.search_function = search_function    
+        self.search_function = search_function
         
     
     def on_search(self, *w):

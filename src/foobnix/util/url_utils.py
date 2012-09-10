@@ -7,7 +7,7 @@ Created on 1 дек. 2010
 import urllib
 import httplib
 import urlparse
-from httplib import HTTP
+
 
 """"
 Server: nginx/0.8.53

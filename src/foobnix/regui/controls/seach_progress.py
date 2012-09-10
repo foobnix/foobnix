@@ -42,7 +42,7 @@ class SearchProgressBarOld(gtk.ProgressBar):
         self.set_fraction(0)
      
 
-if gtk.pygtk_version >= (2, 21, 0):
+if gtk.pygtk_version >= (2, 22, 0):
     class SearchProgressBarNew(gtk.Spinner):
         def __init__(self):
             super(SearchProgressBarNew, self).__init__()
@@ -143,5 +143,5 @@ if gtk.pygtk_version >= (2, 21, 0):
         
 else:
     class SearchProgressBar(SearchProgressBarOld):
-        def __init__(self):
+        def __init__(self, controls):
                 SearchProgressBarOld.__init__(self)
