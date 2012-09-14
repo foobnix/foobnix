@@ -9,6 +9,8 @@ import time
 import thread
 import gobject
 import threading
+import os
+import logging
 
 class SearchProgressBarOld(gtk.ProgressBar):
     def __init__(self):
@@ -62,6 +64,13 @@ if gtk.pygtk_version >= (2, 22, 0):
             self.spinner_popup.connect_after('map', self.configure_popup, self.controls.main_window) 
     
         def start(self, text=None):
+            try:
+                if (os.environ['XDG_CURRENT_DESKTOP'].lower() == 'unity' 
+                    and not self.controls.main_window.props.is_active):
+                    return
+            except KeyError, e:
+                logging.info(str(e) + " environment not found")
+                
             if not text:
                 text = _("Process...")
             def safe_task():                
