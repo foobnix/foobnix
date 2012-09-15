@@ -24,14 +24,15 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         
         self.set_title("Foobnix " + FOOBNIX_VERSION)
         self.set_position(gtk.WIN_POS_CENTER)
-        self.set_resizable(True)        
+        self.set_resizable(True)
+        self.connect("window-state-event", self.on_change_state)      
         self.connect("delete-event", self.hide_window)
         self.connect("configure-event", self.on_configure_event)
         self.connect("key-press-event", self.on_key_press)
         self.set_icon(self.controls.trayicon.get_pixbuf())
         
         self.set_opacity(FC().window_opacity)
-        
+        self.iconified = False
         
     def on_key_press(self, w, e):
         if is_key(e, 'Escape'):
@@ -82,3 +83,19 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         logging.debug("On close window action %s" % FC().on_close_window)
         
         return True
+    
+    def on_change_state(self, w, e):
+        if int(e.new_window_state) == 0:
+            """window restored"""
+            self.iconified = False
+            
+        elif e.new_window_state & gtk.gdk.WINDOW_STATE_ICONIFIED:#@UndefinedVariable
+            """minimized"""
+            self.iconified = True
+                
+        elif e.new_window_state & gtk.gdk.WINDOW_STATE_MAXIMIZED:#@UndefinedVariable
+            """maximized"""
+            self.iconified = False
+                
+                
+                

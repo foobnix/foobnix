@@ -4,13 +4,15 @@ Created on 27 сент. 2010
 
 @author: ivan
 '''
+
+import os
 import gtk
 import time
 import thread
 import gobject
-import threading
-import os
 import logging
+import threading
+
 
 class SearchProgressBarOld(gtk.ProgressBar):
     def __init__(self):
@@ -55,6 +57,7 @@ if gtk.pygtk_version >= (2, 22, 0):
         def __init__(self, controls):
             SearchProgressBarNew.__init__(self)
             self.controls = controls
+            self.main_window = self.controls.main_window
             self.set_size_request(30, 30)
             self.show()
             self.label=gtk.Label()
@@ -65,8 +68,9 @@ if gtk.pygtk_version >= (2, 22, 0):
     
         def start(self, text=None):
             try:
-                if (os.environ['XDG_CURRENT_DESKTOP'].lower() == 'unity' 
-                    and not self.controls.main_window.props.is_active):
+                """to avoid bugs in Unity and GnomeFallback"""
+                if (not self.main_window.iconified
+                   or (self.main_window.is_active and os.environ['XDG_CURRENT_DESKTOP'].lower() == 'unity')):
                     return
             except KeyError, e:
                 logging.info(str(e) + " environment not found")
