@@ -20,6 +20,8 @@ from foobnix.helpers.image import ImageBase
 import os
 from foobnix.helpers.pref_widgets import HBoxLableEntry
 import gobject
+import urllib2
+import thread
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
@@ -111,7 +113,7 @@ class VKAuthorizationWindow(ChildTopWindow):
             vk_frame.add(vk_layout)
             vbox.pack_start(vk_frame)
             
-            self.init_pass()
+            thread.start_new_thread(self.init_pass, ())
             
 
         def dialog_token():
@@ -161,15 +163,12 @@ class VKAuthorizationWindow(ChildTopWindow):
     def init_pass(self):
         if not FC().vk_user or not FC().vk_pass:
             result = self.get_vk_login_pass()
-            FC().vk_user = result[0]
-            FC().vk_pass = result[1]
-        else:
-            #self.on_apply_vk()
-            pass
-            
-
-        self.vlogin_text.set_text(FC().vk_user)
-        self.vpassword_text.set_text(FC().vk_pass)
+            if result:
+                FC().vk_user = result[0]
+                FC().vk_pass = result[1]
+                self.vlogin_text.set_text(FC().vk_user)
+                self.vpassword_text.set_text(FC().vk_pass)
+        
     
     def get_response(self, line):
         id = line.find("#")
@@ -238,7 +237,7 @@ class VKAuthorizationWindow(ChildTopWindow):
     def get_vk_login_pass(self):
         url = "http://android.foobnix.com/vk"
         try:
-            f = urllib.urlopen(url, "")
+            f = urllib2.urlopen(url, "", timeout=5)
         except IOError:
             logging.error("Can't get default login and password because no response from " + url)
             return
@@ -285,12 +284,15 @@ class VKService:
         #logging.debug("GET " + url)
         logging.debug("Try to get response from vkontakte")
         try:
-            response = urllib.urlopen(url)
+            response = urllib2.urlopen(url, timeout=5)
+            if not vars().has_key("response"):
+                logging.error("Can't get response from vkontakte")
+                return
         except IOError:
             logging.error("Can't get response from vkontakte")
             return
         result = response.read()
-        return  result
+        return result
     
     def to_json(self, json):
         logging.debug("json " + json)
@@ -306,8 +308,7 @@ class VKService:
         self.vk_window.show()
     
     def is_connected(self):
-        
-        
+                
         if self.connected:
             return True
         

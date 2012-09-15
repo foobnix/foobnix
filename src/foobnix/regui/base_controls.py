@@ -12,7 +12,6 @@ import os
 import time
 import thread
 import logging
-import urllib2
 
 from threading import Lock
 from urllib2 import urlopen
@@ -727,7 +726,7 @@ class BaseFoobnixControls():
                 
         try:
             from socket import gethostname
-            f = urllib2.urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname() + "&version=" + current_version + "&platform=" + system)
+            f = urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname() + "&version=" + current_version + "&platform=" + system, timeout=7)
             #f = urllib2.urlopen("http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version)
         except Exception, e:
             logging.error("Check version error: " + str(e))

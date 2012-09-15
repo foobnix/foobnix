@@ -13,7 +13,7 @@ def get_content(url):
         return None
 
     try:       
-        connect = urllib2.urlopen(url)
+        connect = urllib2.urlopen(url, timeout=5)
         data = connect.read()
         return data
     except:
@@ -29,7 +29,7 @@ def getStationPath(url):
     _file_url = url
     urls = [] 
     try:       
-        connect = urllib2.urlopen(url)
+        connect = urllib2.urlopen(url, timeout=5)
         data = connect.read()
         urls = getStations(data, urls)
     except Exception, e:

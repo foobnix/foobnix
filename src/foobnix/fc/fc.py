@@ -85,7 +85,7 @@ class FC():
 
         """main window action"""
         if os.name == 'nt':
-            self.on_close_window = const.ON_CLOSE_MINIMIZE
+            self.on_close_window = const.ON_CLOSE_CLOSE
         else:
             self.on_close_window = const.ON_CLOSE_HIDE
 
@@ -102,12 +102,12 @@ class FC():
         """proxy"""
         self.proxy_enable = False
         self.proxy_url = None
-        
-        self.hide_on_start = False
+       
         
         """tray icon"""
         self.show_tray_icon = True
-        self.tray_icon_auto_hide = True
+        self.hide_on_start = False
+        #self.tray_icon_auto_hide = True
         self.static_tray_icon = True
         self.system_icons_dinamic = False
         self.change_tray_icon = False

@@ -19,6 +19,7 @@
 #       MA 02110-1301, USA.
 
 import simplejson, urllib, os, hashlib, time
+import urllib2
 
 def _download(args):
     """
@@ -33,7 +34,7 @@ def _download(args):
     
     args = urllib.urlencode(str_args)
     
-    return urllib.urlopen(base + args).read()
+    return urllib2.urlopen(base + args, timeout=5).read()
 
 def _get_page_titles(artist, title):
     """

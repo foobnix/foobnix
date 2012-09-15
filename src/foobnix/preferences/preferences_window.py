@@ -31,7 +31,6 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         thread.start_new_thread(self.lazy_init, (True,) )
-        #self.lazy_init()
     
     def lazy_init(self, sleep=False):
         controls = self.controls
@@ -87,7 +86,6 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         gobject.idle_add(self.add, mainVBox)
             
     def show(self, current=CONFIG_MUSIC_LIBRARY):
-        #self.lazy_init()
         self.show_all()
         self.populate_config_category(current)
         self.on_load()

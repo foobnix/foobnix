@@ -13,7 +13,7 @@ from foobnix.fc.fc import FC
 
 DBusGMainLoop(set_as_default=True)
 
-DBUS_NAME = "org.mpris.foobnix"
+DBUS_NAME = "org.mpris.MediaPlayer2.foobnix"
 MPRIS_ROOT_PATH = "/"
 MPRIS_PLAYER_PATH = "/Player"
 MPRIS_TRACKLIST_PATH = "/TrackList"

@@ -29,7 +29,7 @@ class PlaybackControlsNotUsedOld(FControl, MyToolbar, LoadSave):
     def on_save(self): pass
 
 class OrderShuffleControls(FControl, gtk.HBox, LoadSave):
-    def __init__(self, controls): 
+    def __init__(self, controls):
         gtk.HBox.__init__(self, False)
         
         self.toggle_buttons = OrderShuffleControls_ZAVLAB(controls)
