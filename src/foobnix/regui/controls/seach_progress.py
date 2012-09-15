@@ -69,8 +69,8 @@ if gtk.pygtk_version >= (2, 22, 0):
         def start(self, text=None):
             try:
                 """to avoid bugs in Unity and GnomeFallback"""
-                if (not self.main_window.iconified
-                   or (self.main_window.is_active and os.environ['XDG_CURRENT_DESKTOP'].lower() == 'unity')):
+                if (self.main_window.iconified
+                   or (not self.main_window.is_active and os.environ['XDG_CURRENT_DESKTOP'].lower() == 'unity')):
                     return
             except KeyError, e:
                 logging.info(str(e) + " environment not found")
