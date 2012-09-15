@@ -1,10 +1,13 @@
 #-*- coding: utf-8 -*-
 '''
-Created on 24 авг. 2010
+Created on 24 аАаВаГ. 2010
 
 @author: ivan
 '''
 import gtk
+import gobject
+import thread
+
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
@@ -71,13 +74,21 @@ class LastFmConfig(ConfigPlugin):
         
         vk_layout = gtk.VBox(False, 0)
         
-        profile = controls.net_wrapper.execute(controls.vk_service.get_profile)
         fname, sname = _("VKontakte"), _("Disable")
-        if profile:
-            fname = profile[0]["first_name"] 
-            sname = profile[0]["last_name"]
-               
-        vk_layout.pack_start(gtk.Label(_("You vk account is:") + " %s %s" % (fname, sname)), False,False)
+        
+        frase_begin = _("You vk account is:")
+        vk_account_label = gtk.Label(frase_begin + " %s" % sname)
+    
+    
+        def get_profile():
+            profile = controls.net_wrapper.execute(controls.vk_service.get_profile)
+            if profile:
+                fname = profile[0]["first_name"] 
+                sname = profile[0]["last_name"]
+                gobject.idle_add(vk_account_label.set_text, frase_begin + " %s %s" % (fname, sname))
+        thread.start_new_thread(get_profile, () )
+        
+        vk_layout.pack_start(vk_account_label, False, False)
         
         
         """VK LOGIN"""
@@ -129,7 +140,6 @@ class LastFmConfig(ConfigPlugin):
         """all"""        
         box.pack_start(l_frame, False, True, 0)
         box.pack_start(vk_frame, False, True, 0)
-        
         
         self.widget = box
     
