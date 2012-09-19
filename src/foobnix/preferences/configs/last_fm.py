@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 '''
-Created on 24 аАаВаГ. 2010
+Created on 24 авг. 2010
 
 @author: ivan
 '''

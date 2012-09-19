@@ -106,18 +106,18 @@ if gtk.pygtk_version >= (2, 22, 0):
             
             
         def create_spinner_popup(self):
-            window = self.controls.main_window
-            window.connect("configure-event", self.move_to_coord)
+            self.main_window.connect("configure-event", self.move_to_coord)
             hbox = gtk.HBox()
             hbox.pack_start(self)
             hbox.pack_start(self.label)
             hbox.show()
             popup = gtk.Window()
-            popup.set_transient_for(window)
+            popup.set_transient_for(self.main_window)
             popup.set_destroy_with_parent(True)
             popup.set_decorated(False)
             popup.set_accept_focus(False)
-            popup.set_property("skip-taskbar-hint", True)
+            popup.set_skip_pager_hint(True)
+            popup.set_skip_taskbar_hint(True)
             popup.set_opacity(0.6)
             popup.add(hbox)
             return popup
