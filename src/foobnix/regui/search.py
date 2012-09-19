@@ -25,8 +25,8 @@ class SearchControls(FControl, gtk.VBox):
         
         self.pack_start(self.search_line(), False, False, 0)
         
-        if gtk.pygtk_version < (2, 22, 0):        
-            self.pack_start(controls.search_progress, False, False, 0)
+               
+        #self.pack_start(controls.search_progress, False, False, 0)
         
         self.show_all()
         """search on enter"""
@@ -81,7 +81,8 @@ class SearchControls(FControl, gtk.VBox):
         searchLable = gtk.Label()
         searchLable.set_markup("<b>%s</b>" % _("Online Search"))
         
-        #hbox.pack_start(self.controls.search_progress, False, False)
+        if gtk.pygtk_version < (2, 22, 0): 
+            hbox.pack_start(self.controls.search_progress, False, False)
         
         hbox.pack_start(combobox, False, False)        
         hbox.pack_start(self.entry, True, True)
