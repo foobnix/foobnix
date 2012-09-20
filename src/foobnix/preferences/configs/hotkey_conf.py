@@ -19,13 +19,14 @@ from foobnix.util.key_utils import is_key_control, is_key_shift, is_key_super, \
     is_key_alt
 
 
-def activate_hot_key(command):
+def activate_hot_key(command, hotkey):
+    print hotkey
     logging.debug("Run command: " + str(command)) 
     thread.start_new_thread(os.system, (command,))    
     
 def add_key_binder(command, hotkey):
     try:
-        keybinder.bind(hotkey, activate_hot_key, command)
+        keybinder.bind(hotkey, activate_hot_key, command, hotkey)
     except Exception, e:
         logging.warn("add_key_binder exception" + str(hotkey) + str(e))
 
@@ -139,6 +140,7 @@ class HotKeysConfig(ConfigPlugin):
         self.action_text.set_text("foobnix " + text)
         
     def set_hotkey_text(self, text):
+        text = text.replace("<Shift>", "")
         text = text.replace("Super_L", "<SUPER>").replace("Super_R", "<SUPER>").replace("Control_L", "<Control>").replace("Control_R", "<Control>").replace("Shift_L", "<Shift>").replace("Shift_R", "<Shift>").replace("Alt_L", "<Alt>").replace("Alt_R", "<Alt>")
         if text.count("<") > 2 or text.endswith("ISO_Next_Group"): return
         self.hotkey_text.set_text(text) 

@@ -5,7 +5,6 @@ Created on 27 сент. 2010
 @author: ivan
 '''
 
-import os
 import gtk
 import time
 import thread
@@ -69,8 +68,7 @@ if gtk.pygtk_version >= (2, 22, 0):
         def start(self, text=None):
             try:
                 """to avoid bugs in Unity and GnomeFallback"""
-                if (self.main_window.iconified
-                   or (not self.main_window.props.is_active and os.environ['XDG_CURRENT_DESKTOP'].lower() == 'unity')):
+                if (self.main_window.iconified or not self.main_window.props.is_active):
                     return
             except KeyError, e:
                 logging.info(str(e) + " environment not found")
