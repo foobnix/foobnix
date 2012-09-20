@@ -140,8 +140,8 @@ class HotKeysConfig(ConfigPlugin):
         self.action_text.set_text("foobnix " + text)
         
     def set_hotkey_text(self, text):
-        text = text.replace("<Shift>", "")
         text = text.replace("Super_L", "<SUPER>").replace("Super_R", "<SUPER>").replace("Control_L", "<Control>").replace("Control_R", "<Control>").replace("Shift_L", "<Shift>").replace("Shift_R", "<Shift>").replace("Alt_L", "<Alt>").replace("Alt_R", "<Alt>")
+        text = text.replace("<Shift>", "") #because of bug in python-keybinder https://bugs.launchpad.net/kupfer/+bug/826075
         if text.count("<") > 2 or text.endswith("ISO_Next_Group"): return
         self.hotkey_text.set_text(text) 
     
