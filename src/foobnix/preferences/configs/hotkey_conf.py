@@ -140,10 +140,14 @@ class HotKeysConfig(ConfigPlugin):
         
     def set_hotkey_text(self, text):
         text = text.replace("Super_L", "<SUPER>").replace("Super_R", "<SUPER>").replace("Control_L", "<Control>").replace("Control_R", "<Control>").replace("Shift_L", "<Shift>").replace("Shift_R", "<Shift>").replace("Alt_L", "<Alt>").replace("Alt_R", "<Alt>")
+        if text.count("<") > 2 or text.endswith("ISO_Next_Group"): return
         self.hotkey_text.set_text(text) 
     
     def get_hotkey_text(self):
-        return self.hotkey_text.get_text() 
+        text = self.hotkey_text.get_text()
+        if not text:
+            text = ""
+        return text
     
     def on_add_row(self, *args):
         command = self.action_text.get_text()
