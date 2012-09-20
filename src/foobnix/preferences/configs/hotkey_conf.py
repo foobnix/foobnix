@@ -139,8 +139,12 @@ class HotKeysConfig(ConfigPlugin):
         self.action_text.set_text("foobnix " + text)
         
     def set_hotkey_text(self, text):
+        text = text.replace("Super_L", "<SUPER>").replace("Super_R", "<SUPER>").replace("Control_L", "<Control>").replace("Control_R", "<Control>").replace("Shift_L", "<Shift>").replace("Shift_R", "<Shift>").replace("Alt_L", "<Alt>").replace("Alt_R", "<Alt>")
         self.hotkey_text.set_text(text) 
-        
+    
+    def get_hotkey_text(self):
+        return self.hotkey_text.get_text() 
+    
     def on_add_row(self, *args):
         command = self.action_text.get_text()
         hotkey = self.hotkey_text.get_text()
@@ -244,16 +248,16 @@ class HotKeysConfig(ConfigPlugin):
         self.unbind_all()
         
         keyname = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
-        
+        print keyname, event.keyval, str(event.state)
         logging.debug("Key %s (%d) was pressed. %s" % (keyname, event.keyval, str(event.state)))
         if is_key_control(event):           
-            self.set_hotkey_text("<Control>" + keyname)
-        elif is_key_shift(event) :
-            self.set_hotkey_text("<Shift>" + keyname)
+            self.set_hotkey_text(self.get_hotkey_text() + keyname)
+        elif is_key_shift(event):
+            self.set_hotkey_text(self.get_hotkey_text() + keyname)
         elif is_key_super(event):            
-            self.set_hotkey_text("<SUPER>" + keyname)
+            self.set_hotkey_text(self.get_hotkey_text() + keyname)
         elif is_key_alt(event):
-            self.set_hotkey_text("<Alt>" + keyname)    
+            self.set_hotkey_text(self.get_hotkey_text() + keyname)    
         else:            
             self.set_hotkey_text(keyname)
 
