@@ -248,7 +248,7 @@ class HotKeysConfig(ConfigPlugin):
         self.unbind_all()
         
         keyname = gtk.gdk.keyval_name(event.keyval) #@UndefinedVariable
-        print keyname, event.keyval, str(event.state)
+        
         logging.debug("Key %s (%d) was pressed. %s" % (keyname, event.keyval, str(event.state)))
         if is_key_control(event):           
             self.set_hotkey_text(self.get_hotkey_text() + keyname)
