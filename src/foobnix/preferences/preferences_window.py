@@ -18,6 +18,7 @@ from foobnix.preferences.configs.tabs import TabsConfig
 from foobnix.preferences.configs.last_fm import LastFmConfig
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 from foobnix.preferences.configs.other_conf import OtherConfig
+from foobnix.preferences.configs.network_conf import NetworkConfig
 from foobnix.preferences.configs.tray_icon_conf import TrayIconConfig
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
 
@@ -38,6 +39,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.configs.append(TabsConfig(controls))
         self.configs.append(LastFmConfig(controls))
         self.configs.append(TrayIconConfig(controls))
+        self.configs.append(NetworkConfig(controls))
                
         try:
             """check keybinder installed, debian"""

@@ -139,10 +139,8 @@ class NetworkConfig(ConfigPlugin):
     def on_enable_http_proxy(self, *a):
         if  self.enable_proxy.get_active():
             self.frame.set_sensitive(True)
-            FC().proxy_enable = True
         else:
             self.frame.set_sensitive(False)
-            FC().proxy_enable = False
 
     def on_load(self):
         self.enable_proxy.set_active(FC().proxy_enable)
@@ -160,6 +158,11 @@ class NetworkConfig(ConfigPlugin):
             
             
     def on_save(self):
+        if self.enable_proxy.get_active():
+            FC().proxy_enable = True
+        else:
+            FC().proxy_enable = False
+            
         if self.proxy_server.get_text():
             FC().proxy_url = self.proxy_server.get_text()
         else:
@@ -174,3 +177,5 @@ class NetworkConfig(ConfigPlugin):
             FC().proxy_password = self.password_text.get_text()
         else:     
             FC().proxy_password = None
+
+        set_proxy_settings()

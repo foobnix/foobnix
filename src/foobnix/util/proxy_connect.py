@@ -32,3 +32,7 @@ def set_proxy_settings():
         urllib2.install_opener(opener)
     else:
         logging.info("Proxy not enable")
+        opener = urllib2.build_opener()
+        urllib2.install_opener(opener)
+        
+        

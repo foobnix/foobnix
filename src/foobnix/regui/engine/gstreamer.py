@@ -61,7 +61,10 @@ class GStreamerEngine(MediaPlayerEngine):
             
             self.audiobin.get_pad('sink').set_target(self.equalizer.get_pad('sink'))
             self.equalizer.link(audiosink)
-    
+        
+        if FC().proxy_enable and FC().proxy_url:
+            playbin.get_by_name("source").set_property("proxy", FC().proxy_url)
+        
         bus = playbin.get_bus()
         bus.add_signal_watch()
         bus.enable_sync_message_emission()

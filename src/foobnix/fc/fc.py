@@ -99,11 +99,7 @@ class FC():
         
         self.enable_music_scrobbler = True
         self.enable_radio_scrobbler = True
-        """proxy"""
-        self.proxy_enable = False
-        self.proxy_url = None
-       
-        
+             
         """tray icon"""
         self.show_tray_icon = True
         self.hide_on_start = False
@@ -141,6 +137,7 @@ class FC():
 
         self.last_dir = None
         
+        """proxy"""
         self.proxy_enable = False
         self.proxy_url = None
         self.proxy_user = None
