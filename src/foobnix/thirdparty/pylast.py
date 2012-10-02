@@ -22,6 +22,7 @@ import datetime
 from foobnix.fc.fc import FC
 import base64
 import urllib2
+import logging
     
 __version__ = '0.4'
 __author__ = 'Amr Hassan'
@@ -290,6 +291,16 @@ class Network(object):
         self.cache_backend = None
         self.proxy_enabled = False
         self.proxy = None
+        
+        """zablab1 changes"""
+        if FC().proxy_enable and FC().proxy_url:
+            proxy_rul = FC().proxy_url
+            index = proxy_rul.find(":")
+            proxy = proxy_rul[:index]
+            port = proxy_rul[index + 1:]
+            self.enable_proxy(proxy, port)
+            logging.info("Enable proxy for last fm" + str(proxy) + str(port))
+                
         self.last_call_time = 0
         
         #generate a session_key if necessary
@@ -793,12 +804,12 @@ class _Request(object):
         (HOST_NAME, HOST_SUBDIR) = self.network.ws_server
         
         if self.network.is_proxy_enabled():
-            
             proxy_rul = FC().proxy_url
             index = proxy_rul.find(":")
             proxy = proxy_rul[:index]
             port = proxy_rul[index + 1:]                
             
+            """zablab1 changes"""
             if FC().proxy_user and FC().proxy_password:
                 user = urllib2.unquote(FC().proxy_user)
                 password = urllib2.unquote(FC().proxy_password)
