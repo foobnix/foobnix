@@ -20,6 +20,8 @@
 # http://code.google.com/p/pylast/
 import datetime
 from foobnix.fc.fc import FC
+import base64
+import urllib2
     
 __version__ = '0.4'
 __author__ = 'Amr Hassan'
@@ -796,6 +798,12 @@ class _Request(object):
             index = proxy_rul.find(":")
             proxy = proxy_rul[:index]
             port = proxy_rul[index + 1:]                
+            
+            if FC().proxy_user and FC().proxy_password:
+                user = urllib2.unquote(FC().proxy_user)
+                password = urllib2.unquote(FC().proxy_password)
+                auth = base64.b64encode(user + ":" + password).strip()
+                headers['Proxy-Authorization'] =  '''Basic %s''' % auth
             
             conn = httplib.HTTPConnection(host=proxy, port=port)
             conn.request(method='POST', url="http://" + HOST_NAME + HOST_SUBDIR,
