@@ -25,10 +25,10 @@ import thread
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
-    API_URL = "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=" + REDIRECT_URL + "&display=touch&response_type=token"
+    API_URL = "http://api.vk.com/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=" + REDIRECT_URL + "&display=touch&response_type=token"
     
     def get_web_url(self):
-        return "http://api.vkontakte.ru/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
+        return "http://api.vk.com/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
    
     def show(self, post_task=None):
         gobject.idle_add(super(VKAuthorizationWindow, self).show) 
@@ -280,7 +280,7 @@ class VKService:
         
     def get(self, method, data):
         time.sleep(0.6)
-        url = "https://api.vkontakte.ru/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
+        url = "https://api.vk.com/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
         #logging.debug("GET " + url)
         logging.debug("Try to get response from vkontakte")
         try:
