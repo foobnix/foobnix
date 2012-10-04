@@ -811,7 +811,6 @@ class _Request(object):
             index = proxy_rul.find(":")
             proxy = proxy_rul[:index]
             port = proxy_rul[index + 1:]                
-            print "PROXY"
             """Changed by zavlab1"""
             if FC().proxy_user and FC().proxy_password:
                 user = urllib2.unquote(FC().proxy_user)
@@ -823,7 +822,6 @@ class _Request(object):
             conn.request(method='POST', url="http://" + HOST_NAME + HOST_SUBDIR,
                 body=data, headers=headers)
         else:
-            print "NO PROXY"
             conn = httplib.HTTPConnection(host=HOST_NAME)
             conn.request(method='POST', url=HOST_SUBDIR, body=data, headers=headers)
         
