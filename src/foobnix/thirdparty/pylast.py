@@ -18,23 +18,15 @@
 # USA
 #
 # http://code.google.com/p/pylast/
+
 import datetime
-from foobnix.fc.fc import FC
 import base64
 import urllib2
 import logging
-    
-__version__ = '0.4'
-__author__ = 'Amr Hassan'
-__copyright__ = "Copyright (C) 2008-2009  Amr Hassan"
-__license__ = "gpl"
-__email__ = 'amr.hassan@gmail.com'
-
 import hashlib
 import httplib
 import urllib
 import threading
-from xml.dom import minidom
 import xml.dom
 import time
 import shelve
@@ -46,6 +38,15 @@ try:
     import collections
 except ImportError:
     pass
+
+from xml.dom import minidom
+from foobnix.fc.fc import FC
+
+__version__ = '0.4'
+__author__ = 'Amr Hassan'
+__copyright__ = "Copyright (C) 2008-2009  Amr Hassan"
+__license__ = "gpl"
+__email__ = 'amr.hassan@gmail.com'
 
 STATUS_INVALID_SERVICE = 2
 STATUS_INVALID_METHOD = 3
@@ -292,15 +293,10 @@ class Network(object):
         self.proxy_enabled = False
         self.proxy = None
         
-        """zablab1 changes"""
+        """Changed by zablab1"""
         if FC().proxy_enable and FC().proxy_url:
-            proxy_rul = FC().proxy_url
-            index = proxy_rul.find(":")
-            proxy = proxy_rul[:index]
-            port = proxy_rul[index + 1:]
-            self.enable_proxy(proxy, port)
-            logging.info("Enable proxy for last fm" + str(proxy) + str(port))
-                
+            self.enable_proxy(FC().proxy_url)
+                            
         self.last_call_time = 0
         
         #generate a session_key if necessary
@@ -454,11 +450,18 @@ class Network(object):
         
         return seq
 
-    def enable_proxy(self, host, port):
-        """Enable a default web proxy"""
-        
+    def enable_proxy(self, proxy):
+        """Enable a web proxy"""
+        """Changed by zavlab1"""
+        if not proxy:
+            logging.warn("No proxy url is specified")
+            return
+        index = proxy.find(":")
+        host = proxy[:index]
+        port = proxy[index + 1:]
         self.proxy = [host, _number(port)]
         self.proxy_enabled = True
+        logging.info("Enable proxy for last fm" + str(proxy) + str(port))
 
     def disable_proxy(self):
         """Disable using the web proxy"""
@@ -808,8 +811,8 @@ class _Request(object):
             index = proxy_rul.find(":")
             proxy = proxy_rul[:index]
             port = proxy_rul[index + 1:]                
-            
-            """zablab1 changes"""
+            print "PROXY"
+            """Changed by zavlab1"""
             if FC().proxy_user and FC().proxy_password:
                 user = urllib2.unquote(FC().proxy_user)
                 password = urllib2.unquote(FC().proxy_password)
@@ -820,6 +823,7 @@ class _Request(object):
             conn.request(method='POST', url="http://" + HOST_NAME + HOST_SUBDIR,
                 body=data, headers=headers)
         else:
+            print "NO PROXY"
             conn = httplib.HTTPConnection(host=HOST_NAME)
             conn.request(method='POST', url=HOST_SUBDIR, body=data, headers=headers)
         

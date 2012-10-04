@@ -4,18 +4,24 @@ Created on 1 сент. 2010
 
 @author: ivan
 '''
-from foobnix.preferences.config_plugin import ConfigPlugin
+
 import gtk
-from foobnix.util.proxy_connect import set_proxy_settings
 import time
-import urllib2
 import logging
+import urllib2
+
 from foobnix.fc.fc import FC
+from foobnix.preferences.config_plugin import ConfigPlugin
+from foobnix.util.proxy_connect import set_proxy_settings
+
+
 class NetworkConfig(ConfigPlugin):
     
     name = _("Network Settings")
     
     def __init__(self, controls):
+        
+        self.controls = controls
                 
         box = gtk.VBox(False, 0)        
         box.hide()
@@ -158,16 +164,20 @@ class NetworkConfig(ConfigPlugin):
             
             
     def on_save(self):
-        if self.enable_proxy.get_active():
-            FC().proxy_enable = True
-        else:
-            FC().proxy_enable = False
+        
             
         if self.proxy_server.get_text():
             FC().proxy_url = self.proxy_server.get_text()
         else:
             FC().proxy_url = None
-        
+            
+        if self.enable_proxy.get_active():
+            FC().proxy_enable = True
+            self.controls.lastfm_service.network.enable_proxy(FC().proxy_url)
+        else:
+            FC().proxy_enable = False
+            self.controls.lastfm_service.network.disable_proxy()
+            
         if self.login_text.get_text():
             FC().proxy_user = self.login_text.get_text()
         else:

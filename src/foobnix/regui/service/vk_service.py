@@ -277,7 +277,7 @@ class VKService:
         if object.has_key("response"):        
             return object["response"]
         
-        
+
     def get(self, method, data):
         time.sleep(0.6)
         url = "https://api.vkontakte.ru/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
