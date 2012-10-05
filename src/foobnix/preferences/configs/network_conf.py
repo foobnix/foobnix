@@ -13,6 +13,7 @@ import urllib2
 from foobnix.fc.fc import FC
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.proxy_connect import set_proxy_settings
+from foobnix.regui.service.lastfm_service import LastFmService
 
 
 class NetworkConfig(ConfigPlugin):
@@ -173,7 +174,7 @@ class NetworkConfig(ConfigPlugin):
             
         if self.enable_proxy.get_active():
             FC().proxy_enable = True
-            self.controls.lastfm_service.network.enable_proxy(FC().proxy_url)
+            self.controls.lastfm_service.network = LastFmService(self.controls)
         else:
             FC().proxy_enable = False
             self.controls.lastfm_service.network.disable_proxy()

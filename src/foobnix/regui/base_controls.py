@@ -388,7 +388,6 @@ class BaseFoobnixControls():
             return
 
         self.play_lock.acquire()
-        
         self.seek_bar.clear()
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
@@ -397,12 +396,13 @@ class BaseFoobnixControls():
             if bean.type == FTYPE_RADIO:
                 self.record.show()
                 self.seek_bar.progressbar.set_fraction(0)
+                self.seek_bar.set_text(_("Radio ") + bean.text)
             else:
                 self.record.hide()
                     
             self.main_window.set_title(bean.text)
         gobject.idle_add(task)
-        thread.start_new_thread(self._one_thread_play, (bean,))   
+        thread.start_new_thread(self._one_thread_play, (bean,))
     
     def _one_thread_play(self,bean):
         try:
