@@ -396,7 +396,7 @@ class BaseFoobnixControls():
             if bean.type == FTYPE_RADIO:
                 self.record.show()
                 self.seek_bar.progressbar.set_fraction(0)
-                self.seek_bar.set_text(_("Radio ") + bean.text)
+                self.seek_bar.set_text(_("Radio ") + bean.text.capitalize())
             else:
                 self.record.hide()
                     

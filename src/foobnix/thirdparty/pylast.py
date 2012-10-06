@@ -461,7 +461,7 @@ class Network(object):
         port = proxy[index + 1:]
         self.proxy = [host, _number(port)]
         self.proxy_enabled = True
-        logging.info("Enable proxy for last fm" + str(proxy) + str(port))
+        logging.info("Enable proxy for last.fm " + proxy)
 
     def disable_proxy(self):
         """Disable using the web proxy"""
