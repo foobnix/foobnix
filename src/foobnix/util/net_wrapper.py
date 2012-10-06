@@ -50,7 +50,10 @@ class NetWrapper():
     def ping(self):
         while self.flag:
             if FC().proxy_enable and FC().proxy_url:
-                self.ping_with_proxy()
+                try:
+                    self.ping_with_proxy()
+                except Exception as e:
+                    print str(e)
                 return
             s = socket.socket()
             s.settimeout(self.timeout)
@@ -114,7 +117,7 @@ class NetWrapper():
             finally:
                 s.close()
                 
-            time.sleep(self.check_pause)
+            time.sleep(self.pause)
                
     def disconnect_dialog(self):
         # only one dialog must be shown

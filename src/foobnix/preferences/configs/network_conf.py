@@ -172,9 +172,12 @@ class NetworkConfig(ConfigPlugin):
         else:
             FC().proxy_url = None
             
-        if self.enable_proxy.get_active():
+        if self.enable_proxy.get_active() and FC().proxy_url:
             FC().proxy_enable = True
-            self.controls.lastfm_service.network = LastFmService(self.controls)
+            if not self.controls.lastfm_service.network:
+                self.controls.lastfm_service.network = LastFmService(self.controls)
+            else:
+                self.controls.lastfm_service.network.enable_proxy(FC().proxy_url)
         else:
             FC().proxy_enable = False
             self.controls.lastfm_service.network.disable_proxy()
