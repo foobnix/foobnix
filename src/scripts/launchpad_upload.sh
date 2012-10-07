@@ -23,8 +23,8 @@ cp -r scripts/debian ../build/foobnix_$FOOBNIX_VERSION/debian
 
 cd ../build
 
-LIST=("oneiric" "natty" "lucid" "maverick" "precise")
-#LIST=("natty")
+#LIST=("oneiric" "natty" "lucid" "maverick" "precise" "quantal")
+LIST=("quantal")
 
 for UBUNTU in ${LIST[@]}
 do
