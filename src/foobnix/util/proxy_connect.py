@@ -4,10 +4,16 @@ Created on 1 сент. 2010
 
 @author: ivan
 '''
-import urllib2
-import logging
-from foobnix.fc.fc import FC
+
 import base64
+import socket
+import urllib
+import httplib
+import logging
+import urllib2
+
+from foobnix.fc.fc import FC
+
 class ProxyPasswordMgr:
     def __init__(self):
         self.user = self.passwd = None
@@ -36,11 +42,8 @@ def set_proxy_settings():
         opener = urllib2.build_opener()
         urllib2.install_opener(opener)
         
-import urllib
-import httplib
-import socket
 
-
+""" idea from http://code.activestate.com/recipes/456195/ """
 class ProxyHTTPConnection(httplib.HTTPConnection):
 
     _ports = {'http' : 80, 'https' : 443}
@@ -66,8 +69,6 @@ class ProxyHTTPConnection(httplib.HTTPConnection):
         self._real_port = port
         path = urllib2.urlparse.urlparse(url).path
         httplib.HTTPConnection.request(self, method, path, body, headers)
-
-        
 
     def connect(self):
         httplib.HTTPConnection.connect(self)
@@ -125,7 +126,7 @@ class ConnectHTTPHandler(urllib2.HTTPHandler):
             req.set_proxy(self.proxy, 'http')
         return urllib2.HTTPHandler.do_open(self, ProxyHTTPConnection, req)
 
-'''this class not used''' 
+"""this class not used""" 
 class ConnectHTTPSHandler(urllib2.HTTPSHandler):
 
     def __init__(self, proxy=None, debuglevel=0):
@@ -137,13 +138,11 @@ class ConnectHTTPSHandler(urllib2.HTTPSHandler):
             req.set_proxy(self.proxy, 'https')
         return urllib2.HTTPSHandler.do_open(self, ProxyHTTPSConnection, req)
 
+def get_https_response(url):
+    proxy = FC().proxy_url if FC().proxy_enable and FC().proxy_url else None
+    opener = urllib2.build_opener(ConnectHTTPHandler(proxy))
+    return opener.open(url)
+
 if __name__ == '__main__':
-        
-    p = '127.0.0.1:3128'
-    opener = urllib2.build_opener(
-        ConnectHTTPHandler(proxy=p))
-    #urllib2.install_opener(opener)
-    req = urllib2.Request(url='https://mail.ru')
-    #req.set_proxy('192.168.1.254:3128', 'https')
-    f = urllib2.urlopen(req)
-    print f.read()        
+    res =  get_https_response('https://mail.ru')
+    print res.read()
