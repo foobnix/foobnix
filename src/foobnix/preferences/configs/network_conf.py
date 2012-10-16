@@ -153,8 +153,8 @@ class NetworkConfig(ConfigPlugin):
         self.enable_proxy.set_active(FC().proxy_enable)
         self.frame.set_sensitive(FC().proxy_enable)
         
-        if  FC().proxy_enable and FC().proxy_url:
-            set_proxy_settings()
+        if  self.enable_proxy.get_active():
+            FC().cookie = None
         
         if FC().proxy_url:
             self.proxy_server.set_text(FC().proxy_url)
