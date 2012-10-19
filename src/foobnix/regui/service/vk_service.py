@@ -165,8 +165,7 @@ class VKAuthorizationWindow(ChildTopWindow):
         else:
             try:
                 web_kit_token()
-            except Exception as e:
-                print str(e)
+            except:
                 dialog_token()
                 pass
         
