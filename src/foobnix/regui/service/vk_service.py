@@ -54,10 +54,23 @@ class VKAuthorizationWindow(ChildTopWindow):
 
         
         def web_kit_token():
-            import webkit            
+            import webkit
             self.web_view = webkit.WebView()
             self.web_view.set_size_request(640, -1) 
             
+            if  FC().proxy_enable and FC().proxy_url:
+                import ctypes
+                libgobject = ctypes.CDLL('libgobject-2.0.so.0')
+                libsoup = ctypes.CDLL('libsoup-2.4.so.1')
+                libwebkit = ctypes.CDLL('libwebkitgtk-1.0.so.0')
+                if FC().proxy_user and FC().proxy_password:
+                    full_proxy = "http://%s:%s@%s" % (FC().proxy_user, FC().proxy_password, FC().proxy_url)
+                else:
+                    full_proxy = "http://%s" % FC().proxy_url
+                proxy_uri = libsoup.soup_uri_new(full_proxy) # set your proxy url
+                session = libwebkit.webkit_get_default_session()
+                libgobject.g_object_set(session, "proxy-uri", proxy_uri, None)
+                
             self.web_view.load_uri(self.get_web_url())
             self.web_view.connect("navigation-policy-decision-requested", self._nav_request_policy_decision_cb)
             self.web_view.connect("load-finished", self.load_finished)
@@ -152,7 +165,8 @@ class VKAuthorizationWindow(ChildTopWindow):
         else:
             try:
                 web_kit_token()
-            except:
+            except Exception as e:
+                print str(e)
                 dialog_token()
                 pass
         

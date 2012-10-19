@@ -37,6 +37,8 @@ class MainWindow(gtk.Window, FControl, LoadSave):
     def on_key_press(self, w, e):
         if is_key(e, 'Escape'):
             self.hide_window()
+        elif is_key(e, 'space'):
+            self.controls.play_pause()
         elif is_key_alt(e) and is_key(e, "1"):
             self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_NAVIGATION)
         elif is_key_alt(e) and is_key(e, "2"):
@@ -45,9 +47,9 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_VIRTUAL)
         elif is_key_alt(e) and is_key(e, "4"):
             self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_INFO)
-        elif is_key_control(e) and is_key(e, "q"):
+        elif is_key_control(e) and (is_key(e, "q") or is_key(e, "Cyrillic_shorti")):
             self.controls.quit()
-        elif is_key_control(e) and is_key(e, "s"):    
+        elif is_key_control(e) and (is_key(e, "s") or is_key(e, "Cyrillic_yeru")):    
             self.controls.notetabs.on_save_playlist(self.controls.notetabs.get_current_tree().scroll)
         
                     
