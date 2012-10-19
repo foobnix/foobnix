@@ -166,11 +166,8 @@ class VKAuthorizationWindow(ChildTopWindow):
             try:
                 web_kit_token()
             except Exception as e:
-                print str(e)
-                dialog_token()
-                pass
-        
-                
+                logging.error(str(e))
+                dialog_token()               
     
         self.add(vbox)
     
@@ -253,7 +250,7 @@ class VKAuthorizationWindow(ChildTopWindow):
         try:
             f = urllib2.urlopen(url, "", timeout=5)
         except IOError:
-            logging.error("Can't get default login and password because no response from " + url)
+            logging.error("Can't get default login and password because no or bad response from " + url)
             return
         response = f.read()
         logging.debug("response:" + response);
@@ -329,8 +326,8 @@ class VKService:
         if not self.token or not self.user_id:
             return False
         
-        res = self.get("getProfiles", "uid="+self.user_id)
-        if "error" in res:
+        res = self.get("getProfiles", "uid=" + self.user_id)
+        if not res or "error" in res:
             self.vk_window.show()            
             self.connected =  False
             return False
