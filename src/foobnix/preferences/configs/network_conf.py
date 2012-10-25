@@ -14,6 +14,7 @@ from foobnix.fc.fc import FC
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.proxy_connect import set_proxy_settings
 from foobnix.regui.service.lastfm_service import LastFmService
+from foobnix.regui.service.vk_service import VKAuthorizationWindow
 
 
 class NetworkConfig(ConfigPlugin):
@@ -152,6 +153,12 @@ class NetworkConfig(ConfigPlugin):
         else:
             self.frame.set_sensitive(False)
 
+    def is_proxy_changed(self):
+        if [FC().proxy_enable, FC().proxy_url, FC().proxy_user, FC().proxy_password] != [self.enable_proxy.get_active(), self.proxy_server.get_text(), self.login_text.get_text(), self.password_text.get_text()]:
+            return True
+        else:
+            return False    
+    
     def on_load(self):
         self.enable_proxy.set_active(FC().proxy_enable)
         self.frame.set_sensitive(FC().proxy_enable)
@@ -165,8 +172,9 @@ class NetworkConfig(ConfigPlugin):
             
             
     def on_save(self):
+        if not self.is_proxy_changed():
+            return
         
-            
         if self.proxy_server.get_text():
             FC().proxy_url = self.proxy_server.get_text()
         else:
@@ -174,6 +182,7 @@ class NetworkConfig(ConfigPlugin):
             
         if self.enable_proxy.get_active() and FC().proxy_url:
             FC().proxy_enable = True
+            
             if not self.controls.lastfm_service.network:
                 self.controls.lastfm_service.network = LastFmService(self.controls)
             else:
@@ -181,7 +190,7 @@ class NetworkConfig(ConfigPlugin):
         else:
             FC().proxy_enable = False
             self.controls.lastfm_service.network.disable_proxy()
-            
+        
         if self.login_text.get_text():
             FC().proxy_user = self.login_text.get_text()
         else:
@@ -193,3 +202,4 @@ class NetworkConfig(ConfigPlugin):
             FC().proxy_password = None
 
         set_proxy_settings()
+        self.controls.vk_service.vk_window = VKAuthorizationWindow(self.controls.vk_service)

@@ -175,6 +175,8 @@ class VKAuthorizationWindow(ChildTopWindow):
     
         self.add(vbox)
     
+    
+    
     def init_pass(self):
         if not FC().vk_user or not FC().vk_pass:
             result = self.get_vk_login_pass()
