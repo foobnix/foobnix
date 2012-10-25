@@ -3570,11 +3570,31 @@ class _ScrobblerRequest(object):
             "User-Agent": "pylast" + "/" + __version__,
             "HOST": self.hostname
             }
-        
-        if self.type == "GET":
-            connection.request("GET", self.subdir + "?" + data, headers=headers)
+        if self.network.is_proxy_enabled():
+            proxy_rul = FC().proxy_url
+            index = proxy_rul.find(":")
+            proxy = proxy_rul[:index]
+            port = proxy_rul[index + 1:]                
+            """Changed by zavlab1"""
+            if FC().proxy_user and FC().proxy_password:
+                user = urllib2.unquote(FC().proxy_user)
+                password = urllib2.unquote(FC().proxy_password)
+                auth = base64.b64encode(user + ":" + password).strip()
+                headers['Proxy-Authorization'] =  '''Basic %s''' % auth
+            
+            connection = httplib.HTTPConnection(host=proxy, port=port)
+            if self.type == "GET":
+                connection.request(method="GET", url="http://" + self.hostname + self.subdir + "?" + data,
+                                   headers=headers)
+            else:
+                connection.request(method="POST", url="http://" + self.hostname + self.subdir,
+                                   body=data, headers=headers)
         else:
-            connection.request("POST", self.subdir, data, headers)
+            if self.type == "GET":
+                connection.request("GET", self.subdir + "?" + data, headers=headers)
+            else:
+                connection.request("POST", self.subdir, data, headers)
+        
         response = connection.getresponse().read()
         
         self._check_response_for_errors(response)

@@ -5,23 +5,24 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
+
+import os
+import gtk
 import time
 import urllib
+import thread
+import gobject
 import logging
+import urllib2
 import simplejson
 
-from foobnix.regui.model import FModel
-from foobnix.util.time_utils import convert_seconds_to_text
-from foobnix.helpers.window import ChildTopWindow
-import gtk
-
 from foobnix.fc.fc import FC
+from foobnix.regui.model import FModel
 from foobnix.helpers.image import ImageBase
-import os
+from foobnix.helpers.window import ChildTopWindow
 from foobnix.helpers.pref_widgets import HBoxLableEntry
-import gobject
-import urllib2
-import thread
+from foobnix.util.time_utils import convert_seconds_to_text
+
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
