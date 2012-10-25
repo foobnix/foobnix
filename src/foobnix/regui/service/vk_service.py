@@ -5,23 +5,24 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
+
+import os
+import gtk
 import time
 import urllib
+import thread
+import gobject
+import urllib2
 import logging
 import simplejson
 
-from foobnix.regui.model import FModel
-from foobnix.util.time_utils import convert_seconds_to_text
-from foobnix.helpers.window import ChildTopWindow
-import gtk
-
 from foobnix.fc.fc import FC
+from foobnix.regui.model import FModel
 from foobnix.helpers.image import ImageBase
-import os
+from foobnix.helpers.window import ChildTopWindow
 from foobnix.helpers.pref_widgets import HBoxLableEntry
-import gobject
-import urllib2
-import thread
+from foobnix.util.time_utils import convert_seconds_to_text
+
 
 class VKAuthorizationWindow(ChildTopWindow):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
@@ -74,13 +75,11 @@ class VKAuthorizationWindow(ChildTopWindow):
             self.web_view.load_uri(self.get_web_url())
             self.web_view.connect("navigation-policy-decision-requested", self._nav_request_policy_decision_cb)
             self.web_view.connect("load-finished", self.load_finished)
-            
-               
+                        
             vbox.pack_start(self.web_view, True, True)
             
             
             """VK"""
-        
             vk_frame = gtk.Frame(label=_("VKontakte"))
             vk_frame.set_border_width(0)
             
