@@ -4,15 +4,16 @@ Created on 25 сент. 2010
 
 @author: ivan
 '''
+
 import gtk
 import logging
 
-from foobnix.regui.model.signal import FControl
-from foobnix.regui.state import LoadSave
 from foobnix.fc.fc import FC
 from foobnix.util import const
-from foobnix.util.key_utils import is_key, is_key_alt, is_key_control
+from foobnix.regui.state import LoadSave
 from foobnix.version import FOOBNIX_VERSION
+from foobnix.regui.model.signal import FControl
+from foobnix.util.key_utils import is_key, is_key_alt, is_key_control
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION, \
     LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_VIRTUAL, LEFT_PERSPECTIVE_INFO
 
@@ -37,7 +38,7 @@ class MainWindow(gtk.Window, FControl, LoadSave):
     def on_key_press(self, w, e):
         if is_key(e, 'Escape'):
             self.hide_window()
-        elif is_key(e, 'space'):
+        elif is_key(e, 'space') and not isinstance(self.get_focus(), gtk.Entry): 
             self.controls.play_pause()
         elif is_key_alt(e) and is_key(e, "1"):
             self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_NAVIGATION)
