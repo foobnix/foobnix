@@ -317,7 +317,7 @@ class VKService:
     
     def is_show_authorization(self, post_task=None):
         if not self.is_connected():
-            self.vk_window.show(post_task)
+            self.vk_window.show()
             return True
         return False
     
@@ -333,8 +333,13 @@ class VKService:
             return False
         
         res = self.get("getProfiles", "uid="+self.user_id)
-        if not res or "error" in res:
+        if not res:
             self.vk_window.show()            
+            self.connected =  False
+            return False
+        elif "error" in res:
+            self.vk_window = VKAuthorizationWindow(self)
+            self.vk_window.show()          
             self.connected =  False
             return False
         else:
