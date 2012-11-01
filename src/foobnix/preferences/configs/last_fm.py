@@ -17,7 +17,9 @@ class LastFmConfig(ConfigPlugin):
     name = _("Last FM + VK")
     
     def __init__(self, controls):
-        box = gtk.VBox(False, 0)        
+        self.controls = controls
+        
+        box = VBox(self, False, 0)        
         box.hide()
         
         """LAST.FM"""
@@ -74,67 +76,14 @@ class LastFmConfig(ConfigPlugin):
         
         vk_layout = gtk.VBox(False, 0)
         
-        fname, sname = _("VKontakte"), _("Disable")
+        self.default_label_value = _("Not connected")
         
-        frase_begin = _("You vk account is:")
-        vk_account_label = gtk.Label(frase_begin + " %s" % sname)
-    
-    
-        def get_profile():
-            profile = controls.net_wrapper.execute(controls.vk_service.get_profile)
-            if profile:
-                fname = profile[0]["first_name"] 
-                sname = profile[0]["last_name"]
-                gobject.idle_add(vk_account_label.set_text, frase_begin + " %s %s" % (fname, sname))
-        thread.start_new_thread(get_profile, () )
-        
-        vk_layout.pack_start(vk_account_label, False, False)
-        
-        
-        """VK LOGIN"""
-        vlbox = gtk.HBox(False, 0)
-        vlbox.show()
-        
-        vlogin = gtk.Label(_("Login"))
-        vlogin.set_size_request(150, -1)
-        vlogin.show()
-        
-        
-        self.vlogin_text = gtk.Entry()
-        self.vlogin_text.set_text(fname)
-        self.vlogin_text.show()
-        
-        vlbox.pack_start(vlogin, False, False, 0)
-        vlbox.pack_start(self.vlogin_text, False, True, 0)
-        
-        """VK PASSWORD"""
-        vpbox = gtk.HBox(False, 0)
-        vpbox.show()
-        
-        vpassword = gtk.Label(_("Password"))
-        vpassword.set_size_request(150, -1)
-        vpassword.show()
-        
-        self.vpassword_text = gtk.Entry()
-        self.vpassword_text.set_visibility(False)
-        self.vpassword_text.set_invisible_char("*")
-        self.vpassword_text.show()
-        
-        vpbox.pack_start(vpassword, False, False, 0)
-        vpbox.pack_start(self.vpassword_text, False, True, 0)
-        
-        #vk_layout.pack_start(vlbox)
-        #vk_layout.pack_start(vpbox)
-        
-        vk_exit = gtk.Button(_("Authorization (then need player restart)"))
-        
-        def show_vk(*a):
-            controls.vk_service.show_vk()
-        
-        vk_exit.connect("clicked",show_vk)
-        
-        vk_layout.pack_start(vk_exit, False, False)
-        
+        self.frase_begin = _("You vk account is:")
+        self.vk_account_label = gtk.Label(self.frase_begin + " %s" % self.default_label_value)
+        self.reset_vk_auth_button = gtk.Button(_("Reset vk authorization"))
+        self.reset_vk_auth_button.connect("button-release-event", self.on_reset_vk_click)
+        vk_layout.pack_start(self.vk_account_label, False, False)
+        vk_layout.pack_start(self.reset_vk_auth_button, False, False)
         vk_frame.add(vk_layout)
         
         """all"""        
@@ -142,6 +91,21 @@ class LastFmConfig(ConfigPlugin):
         box.pack_start(vk_frame, False, True, 0)
         
         self.widget = box
+     
+    
+    
+    def on_reset_vk_click(self, *a):
+        self.controls.vk_service.reset_vk()
+        gobject.idle_add(self.vk_account_label.set_text, self.frase_begin + " %s" % self.default_label_value)
+    
+    def get_and_set_profile(self):
+        def task_get_and_set_profile():
+            profile = self.controls.net_wrapper.execute(self.controls.vk_service.get_profile)
+            if profile:
+                fname = profile[0]["first_name"] 
+                sname = profile[0]["last_name"]
+                gobject.idle_add(self.vk_account_label.set_text, self.frase_begin + " %s %s" % (fname, sname))
+        thread.start_new_thread(task_get_and_set_profile, () )
     
     def on_load(self):
         self.login_text.set_text(FCBase().lfm_login)
@@ -158,3 +122,13 @@ class LastFmConfig(ConfigPlugin):
         
         FC().enable_music_scrobbler = self.music_scrobbler.get_active()
         FC().enable_radio_scrobbler = self.radio_scrobbler.get_active()
+        
+class VBox(gtk.VBox):   
+    def __init__(self, config, *args):
+            gtk.VBox.__init__(self, args)
+            self.config = config
+            
+    def show(self):
+            self.config.get_and_set_profile()
+            super(VBox, self).show()
+            

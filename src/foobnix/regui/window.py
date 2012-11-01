@@ -68,8 +68,8 @@ class MainWindow(gtk.Window, FControl, LoadSave):
    
     def show_hide(self):
         visible = self.get_property('visible')
-        if visible:            
-            self.hide_window()
+        if visible:   
+            self.hide()
         else:
             self.show()
         

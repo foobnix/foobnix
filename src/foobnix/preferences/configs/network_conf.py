@@ -122,9 +122,12 @@ class NetworkConfig(ConfigPlugin):
         frame_box.set_border_width(5)
         frame_box.show()
         
+        self.net_ping = gtk.CheckButton(label=_("Enable Network Checker"), use_underline=True)
+        
+        box.pack_start(self.net_ping, False, True, 0)
         box.pack_start(self.enable_proxy, False, True, 0)
         box.pack_start(self.frame, False, True, 0)
-        
+                
         self.widget = box
         
         if  FC().proxy_enable and FC().proxy_url:
@@ -170,6 +173,9 @@ class NetworkConfig(ConfigPlugin):
         if FC().proxy_password:
             self.password_text.set_text(FC().proxy_password)
             
+        if FC().net_ping == True:
+            self.net_ping.set_active(True)
+            
             
     def on_save(self):
         if not self.is_proxy_changed():
@@ -200,6 +206,11 @@ class NetworkConfig(ConfigPlugin):
             FC().proxy_password = self.password_text.get_text()
         else:     
             FC().proxy_password = None
+            
+        if self.net_ping.get_active():
+            FC().net_ping = True
+        else:
+            FC().net_ping = False
 
         set_proxy_settings()
         self.controls.vk_service.vk_window = VKAuthorizationWindow(self.controls.vk_service)
