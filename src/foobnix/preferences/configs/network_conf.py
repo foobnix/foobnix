@@ -122,7 +122,7 @@ class NetworkConfig(ConfigPlugin):
         frame_box.set_border_width(5)
         frame_box.show()
         
-        self.net_ping = gtk.CheckButton(label=_("Enable Network Checker"), use_underline=True)
+        self.net_ping = gtk.CheckButton(label=_("Enable Network Control Window"), use_underline=True)
         
         box.pack_start(self.net_ping, False, True, 0)
         box.pack_start(self.enable_proxy, False, True, 0)
@@ -190,7 +190,7 @@ class NetworkConfig(ConfigPlugin):
             FC().proxy_enable = True
             
             if not self.controls.lastfm_service.network:
-                self.controls.lastfm_service.network = LastFmService(self.controls)
+                self.controls.lastfm_service = LastFmService(self.controls)
             else:
                 self.controls.lastfm_service.network.enable_proxy(FC().proxy_url)
         else:
@@ -208,9 +208,9 @@ class NetworkConfig(ConfigPlugin):
             FC().proxy_password = None
             
         if self.net_ping.get_active():
-            FC().net_ping = True
+            self.controls.net_wrapper.set_ping(True)
         else:
-            FC().net_ping = False
+            self.controls.net_wrapper.set_ping(False)
 
         set_proxy_settings()
         self.controls.vk_service.vk_window = VKAuthorizationWindow(self.controls.vk_service)

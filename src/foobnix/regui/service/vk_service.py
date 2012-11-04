@@ -9,6 +9,7 @@ Created on Sep 29, 2010
 import os
 import gtk
 import time
+import thread
 import urllib
 import gobject
 import logging
@@ -32,12 +33,12 @@ class VKAuthorizationWindow(ChildTopWindow):
         return "http://api.vk.com/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
    
     def show(self, post_task=None):
-        gobject.idle_add(super(VKAuthorizationWindow, self).show) 
+        #super(VKAuthorizationWindow, self).show()
+        gobject.idle_add(super(VKAuthorizationWindow, self).show)
+        #while True:
+        #    time.sleep(1)
+         
         self.post_task = post_task
-        try:
-            self.init_pass()
-        except:
-            pass
                              
     def __init__(self, service):
         self.service = service
@@ -51,10 +52,11 @@ class VKAuthorizationWindow(ChildTopWindow):
         
         def web_kit_token():
             import webkit
+            import ctypes
+            
             self.web_view = webkit.WebView()
             self.web_view.set_size_request(640, -1) 
-            
-            import ctypes
+                        
             libgobject = ctypes.CDLL('libgobject-2.0.so.0')
             libsoup = ctypes.CDLL('libsoup-2.4.so.1')
             libwebkit = ctypes.CDLL('libwebkitgtk-1.0.so.0')
@@ -162,7 +164,7 @@ class VKAuthorizationWindow(ChildTopWindow):
         FC().user_id= user_id        
         self.service.set_token_user(access_token, user_id)
 
-        FC().save()
+        thread.start_new_thread(FC().save, ())
         self.hide()
                 
         if self.post_task:
@@ -212,7 +214,7 @@ class VKService:
     def reset_vk(self):
         if os.path.isfile(self.vk_window.cooky_file):
             os.remove(self.vk_window.cooky_file)
-             
+        
         FC().access_token = None
         FC().user_id = None
         self.token = None
@@ -239,6 +241,8 @@ class VKService:
     
     def is_show_authorization(self, post_task=None):
         if not self.is_connected():
+            if self.vk_window and self.vk_window.get_property("visible"):
+                return True
             self.vk_window = VKAuthorizationWindow(self)
             self.vk_window.show(post_task)
             return True
@@ -347,7 +351,6 @@ class VKService:
                 times_count[time] = times_count[time] + 1
             else:
                 times_count[time] = 1 
-        
         #get most relatives times time
         r_count = max(times_count.values())
         r_time = self.find_time_value(times_count, r_count)

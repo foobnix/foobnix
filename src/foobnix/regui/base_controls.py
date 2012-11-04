@@ -418,10 +418,7 @@ class BaseFoobnixControls():
         
         if not bean.path:            
             if not self.fill_bean_from_vk(bean):
-                def post_task():
-                    self._play(bean)
-                if self.vk_service.is_show_authorization(post_task):
-                    return
+                return
                                  
         if not self.check_path(bean.path):
             if bean.iso_path and os.path.exists(bean.iso_path):

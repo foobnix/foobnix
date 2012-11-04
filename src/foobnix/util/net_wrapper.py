@@ -14,6 +14,9 @@ import logging
 
 from foobnix.helpers.window import MessageWindow
 from foobnix.fc.fc import FC
+from foobnix.regui.service.lastfm_service import LastFmService
+from foobnix.regui.service.vk_service import VKService
+import gobject
 
 
 class NetWrapper():
@@ -22,28 +25,30 @@ class NetWrapper():
         self.flag = False
         self.counter = 0 #to count how many times in row was disconnect
         self.dd_count = 0
-        self.is_ping = is_ping
+        self.is_ping = None
+        self.set_ping(is_ping)
         self.timeout = 7
         self.pause = 10
-        if is_ping:
-            self.is_connected = False        
-            "only for self.execute() method"
-            self.previous_connect = False #show the message only if a connection existed and then there was a disconnect                       
-            self.start_ping()
-            logging.debug("ping enable")
-        else:
-            self.is_connected = True
-            self.previous_connect = True
-            logging.debug("ping disable")
+        self.is_connected = False        
+        "only for self.execute() method"
+        self.previous_connect = True #show the message only if a connection existed and then there was a disconnect                       
+        self.start_ping()
             
-                  
+    def set_ping(self, is_ping=True):
+        FC().net_ping = is_ping
+        if not self.is_ping and is_ping:
+            logging.info("ping enabled")
+        elif self.is_ping and not is_ping:
+            logging.info("ping disabled")
+        self.is_ping = is_ping
+
     def start_ping(self):
         if self.flag: #means there is already one active ping process
             logging.warning("You may not have more one ping process simultaneously")
             return
         self.flag = True
         thread.start_new_thread(self.ping, ())
-         
+        
     def stop_ping(self):
         self.flag = False
             
@@ -53,7 +58,7 @@ class NetWrapper():
                 try:
                     self.ping_with_proxy()
                 except Exception as e:
-                    print str(e)
+                    logging.error(str(e))
                 return
             s = socket.socket()
             s.settimeout(self.timeout)
@@ -61,18 +66,23 @@ class NetWrapper():
             try:
                 s.connect(('google.com', port))
                 self.is_connected = True
-                self.previous_connect = True 
-                logging.info("Success Internet connection")
+                if not self.previous_connect:
+                    self.restore_connection()
+                self.previous_connect = True
+                if self.is_ping:
+                    logging.info("Success Internet connection")
                 self.counter = 0
             except Exception, e:
                 
                 self.is_connected = False
-                logging.warning("Can\'t connect to Internet. Reason - " + str(e))
+                if self.is_ping:
+                    logging.warning("Can\'t connect to Internet. Reason - " + str(e))
                 self.counter += 1
                 if self.counter == 2: #if disconnect was two times in row, show message
                     if self.previous_connect:
                         self.previous_connect = False
-                        self.disconnect_dialog()
+                        if self.is_ping:
+                            self.disconnect_dialog()
                     self.counter = 0
             finally:
                 s.close()
@@ -101,18 +111,23 @@ class NetWrapper():
                 if "407" in data:
                     raise Exception("Proxy Authentication Required")
                 self.is_connected = True
+                if not self.previous_connect:
+                    self.restore_connection()
                 self.previous_connect = True
-                logging.info("Success Internet connection")
+                if self.is_ping:
+                    logging.info("Success Internet connection")
                 self.counter = 0
             except Exception, e:
                 s.close()
                 self.is_connected = False
-                logging.warning("Can\'t connect to Internet. Reason - " + str(e))
+                if self.is_ping:
+                    logging.warning("Can\'t connect to Internet. Reason - " + str(e))
                 self.counter += 1
                 if self.counter == 2: #if disconnect was two times in row, show message
                     if self.previous_connect:
                         self.previous_connect = False
-                        self.disconnect_dialog()
+                        if self.is_ping:
+                            self.disconnect_dialog()
                     self.counter = 0
             finally:
                 s.close()
@@ -133,7 +148,7 @@ class NetWrapper():
                           parent=self.controls.main_window, buttons=gtk.BUTTONS_OK)
             self.dd_count -= 1
             
-        thread.start_new_thread(task, ())
+        gobject.idle_add(task)
         
     def is_internet(self):
         return True if self.is_connected else False
@@ -144,9 +159,19 @@ class NetWrapper():
             
     def restore_connection(self):   
         self.start_ping()
+        logging.info("Try to restore connection")
+        def task_restore_connection():
+            logging.info("Try to restore vk_service")
+            self.controls.vk_service = VKService(FC().access_token, FC().user_id)
+            logging.info("Try to restore lastfm_service")
+            self.controls.lastfm_service = LastFmService(self.controls)
+        thread.start_new_thread(task_restore_connection, ())
+        
         
     "wrapper for Internet function"        
     def execute(self,func, *args):
+        if not self.is_ping:
+            return func(*args) if args else func()
         if self.is_connected:
             #self.previous_connect = True
             logging.info("In execute. Success internet connection")
