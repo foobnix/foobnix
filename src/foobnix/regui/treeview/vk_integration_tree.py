@@ -37,7 +37,7 @@ class VKIntegrationControls(CommonTreeControl):
         self.cache =[]
     
     def lazy_load(self):
-        if not self.controls.vk_service.is_authorized:
+        if not self.controls.vk_service.is_authorized():
             return
         if not self.lazy:
             self.controls.in_thread.run_with_progressbar(self._lazy_load)

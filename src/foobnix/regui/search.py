@@ -5,6 +5,7 @@ from foobnix.util.key_utils import is_key_enter
 from foobnix.regui.model.signal import FControl
 from foobnix.util.text_utils import capitalize_query
 from foobnix.helpers.toggled import OneActiveToggledButton
+import thread
 
 
 class SearchControls(FControl, gtk.VBox):
@@ -15,17 +16,13 @@ class SearchControls(FControl, gtk.VBox):
         
         label = gtk.Label()
         label.set_markup("<b>%s:</b>" % _("Search music online"))
-        #self.set_label_widget(label)
-        #self.set_border_width(0)
         
         """default search function"""
         self.search_function = self.controls.search_top_tracks
-        self.buttons = []
-                
+        self.buttons = []      
         
         self.pack_start(self.search_line(), False, False, 0)
-        
-               
+
         #self.pack_start(controls.search_progress, False, False, 0)
         
         self.show_all()
@@ -41,8 +38,12 @@ class SearchControls(FControl, gtk.VBox):
         logging.info("Set search function" + str(search_function))
         self.search_function = search_function
         
-    
     def on_search(self, *w):
+        thread.start_new_thread(self._on_search, ())
+        #Otherwise you can't call authorization window,
+        #it can be called only from not main loop
+
+    def _on_search(self):
         if not self.controls.vk_service.is_authorized():
             return
         def task():
@@ -95,8 +96,9 @@ class SearchControls(FControl, gtk.VBox):
     
     def on_search_key_press(self, w, e):
         if is_key_enter(e):
-            self.on_search();
+            self.on_search()
             self.entry.grab_focus()
+            
     
     def combobox_creator(self):
         list_func = []

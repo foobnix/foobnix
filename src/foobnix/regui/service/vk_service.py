@@ -125,9 +125,7 @@ class VKAuthorizationWindow(gtk.Dialog):
                 logging.error(str(e))
                 dialog_token()
                 pass
-
-        #self.add(self.vbox)
-    
+   
     def get_response(self, line):
         id = line.find("#")
         fragment = line[id + 1:]
