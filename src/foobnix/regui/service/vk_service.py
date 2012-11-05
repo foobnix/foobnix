@@ -19,35 +19,31 @@ import simplejson
 from foobnix.fc.fc import FC
 from foobnix.regui.model import FModel
 from foobnix.fc.fc_helper import CONFIG_DIR
+from foobnix.util.const import ICON_FOOBNIX
 from foobnix.helpers.image import ImageBase
-from foobnix.helpers.window import ChildTopWindow
 from foobnix.helpers.pref_widgets import HBoxLableEntry
 from foobnix.util.time_utils import convert_seconds_to_text
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 
-class VKAuthorizationWindow(ChildTopWindow):
+class VKAuthorizationWindow(gtk.Dialog):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
     API_URL = "http://api.vk.com/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=" + REDIRECT_URL + "&display=touch&response_type=token"
     
     def get_web_url(self):
         return "http://api.vk.com/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
    
-    def show(self, post_task=None):
-        #super(VKAuthorizationWindow, self).show()
-        gobject.idle_add(super(VKAuthorizationWindow, self).show)
-        #while True:
-        #    time.sleep(1)
-         
-        self.post_task = post_task
-                             
+    def show(self):
+        super(VKAuthorizationWindow, self).show()
+                            
     def __init__(self, service):
         self.service = service
-        ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"))
+        gtk.Dialog.__init__(self, _("VKontakte Authorization (is required for music search)"))
         self.set_resizable(True)
-        vbox = gtk.VBox(False, 0)
         self.access_token = None
-        self.post_task = None
-        self.finished = False
+        try:
+            self.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
+        except TypeError: pass
 
         
         def web_kit_token():
@@ -86,8 +82,8 @@ class VKAuthorizationWindow(ChildTopWindow):
             self.web_view.connect("navigation-policy-decision-requested", self._nav_request_policy_decision_cb)
             self.web_view.connect("load-finished", self.load_finished)
             
-               
-            vbox.pack_start(self.web_view, True, True)
+            self.web_view.show()   
+            self.vbox.pack_start(self.web_view, True, True)
             
             
         def dialog_token():
@@ -97,7 +93,6 @@ class VKAuthorizationWindow(ChildTopWindow):
             self.user_id = gtk.Entry()
             if FC().user_id:
                 self.user_id.set_text(FC().user_id) 
-            
             
             edit = gtk.Entry()
             edit.set_text(self.API_URL)
@@ -112,14 +107,14 @@ class VKAuthorizationWindow(ChildTopWindow):
             
             self.info_line = gtk.Label(_("Please generate token..."))
             
-            vbox.pack_start(ImageBase("vk.png"), False, False)
-            vbox.pack_start(line, False, False)
+            self.vbox.pack_start(ImageBase("vk.png"), False, False)
+            self.vbox.pack_start(line, False, False)
             
-            vbox.pack_start(HBoxLableEntry(gtk.Label(_("Token:")) , self.token))
-            vbox.pack_start(HBoxLableEntry(gtk.Label(_("User ID:")) , self.user_id))
+            self.vbox.pack_start(HBoxLableEntry(gtk.Label(_("Token:")) , self.token))
+            self.vbox.pack_start(HBoxLableEntry(gtk.Label(_("User ID:")) , self.user_id))
             
-            vbox.pack_start(apply, False, False)
-            vbox.pack_start(self.info_line, False, False)
+            self.vbox.pack_start(apply, False, False)
+            self.vbox.pack_start(self.info_line, False, False)
         
         if os.name == 'nt':
             dialog_token()
@@ -131,7 +126,7 @@ class VKAuthorizationWindow(ChildTopWindow):
                 dialog_token()
                 pass
 
-        self.add(vbox)
+        #self.add(self.vbox)
     
     def get_response(self, line):
         id = line.find("#")
@@ -166,10 +161,7 @@ class VKAuthorizationWindow(ChildTopWindow):
 
         thread.start_new_thread(FC().save, ())
         self.hide()
-                
-        if self.post_task:
-            logging.debug("post task executed")
-            self.post_task()
+        self.response(gtk.RESPONSE_APPLY)
         
     def load_finished(self, *a):
         pass
@@ -239,15 +231,27 @@ class VKService:
         logging.debug("json " + json)
         return simplejson.loads(json)
     
-    def is_show_authorization(self, post_task=None):
-        if not self.is_connected():
-            if self.vk_window and self.vk_window.get_property("visible"):
-                return True
+    def is_authorized(self):
+        self.result = None
+        
+        def task_is_authorized():
+            if self.is_connected():
+                self.result = True
+                return
             self.vk_window = VKAuthorizationWindow(self)
-            self.vk_window.show(post_task)
-            return True
-        return False
-    
+            response = self.vk_window.run()
+            if response == gtk.RESPONSE_APPLY:
+                self.vk_window.destroy()
+                self.result = True
+            else:
+                self.vk_window.destroy()
+                self.result = False
+
+        gobject.idle_add(task_is_authorized)
+        while self.result == None:
+            time.sleep(0.3)
+        return self.result
+
     def show_vk(self):
         self.vk_window.show()
     
@@ -288,8 +292,8 @@ class VKService:
         def post():
             self.find_tracks_by_query(self, query)
         
-        if self.is_show_authorization(post):
-            return 
+        if not self.is_authorized():
+            return
         
         logging.info("start search songs " + query)
         query = urllib.quote(query.encode("utf-8"))

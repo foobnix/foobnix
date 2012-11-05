@@ -422,7 +422,12 @@ class BaseFoobnixControls():
             if bean.iso_path and os.path.exists(bean.iso_path):
                 logging.info("Try to remount " + bean.iso_path)
                 mount_tmp_iso(bean.iso_path)
-            elif not self.fill_bean_from_vk(bean):
+            elif not bean.path or bean.path.startswith("http"):
+                if not self.vk_service.is_authorized():
+                    return
+                else:
+                    self.fill_bean_from_vk(bean)
+            else:
                 resource = bean.path if bean.path else bean.text
                 logging.error("Resourse " + resource + " not found")
                 self.media_engine.state_stop(show_in_tray=False)

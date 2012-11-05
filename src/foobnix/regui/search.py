@@ -43,9 +43,8 @@ class SearchControls(FControl, gtk.VBox):
         
     
     def on_search(self, *w):
-        
-        if self.controls.vk_service.is_show_authorization(self.on_search):
-                return
+        if not self.controls.vk_service.is_authorized():
+            return
         def task():
             if self.get_query():
                 if self.get_query().startswith("http://vk"):
