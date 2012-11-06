@@ -1,11 +1,12 @@
 import gtk
+import thread
 import logging
 
 from foobnix.util.key_utils import is_key_enter
 from foobnix.regui.model.signal import FControl
 from foobnix.util.text_utils import capitalize_query
 from foobnix.helpers.toggled import OneActiveToggledButton
-import thread
+
 
 
 class SearchControls(FControl, gtk.VBox):

@@ -188,7 +188,7 @@ class VKService:
         self.token = token
         self.user_id = user_id
         
-    def get_result(self, method, data):
+    def get_result(self, method, data, attempt_count=0):
         result  = self.get(method, data)
         if not result:
             return
@@ -197,6 +197,11 @@ class VKService:
             object = self.to_json(result)
         except simplejson.JSONDecodeError, e:
             logging.error(e)
+            if attempt_count: return
+            logging.info("Try to get new access token and search again")
+            self.vk_window=VKAuthorizationWindow(self)
+            attempt_count += 1
+            self.get_result(method, data, attempt_count)
             return
         if object.has_key("response"):        
             return object["response"]

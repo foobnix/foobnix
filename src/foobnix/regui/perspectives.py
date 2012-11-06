@@ -6,6 +6,7 @@ Created on 22 сент. 2010
 '''
 
 import gtk
+import thread
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
@@ -16,7 +17,6 @@ from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
 from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, \
     LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_MY_RADIO, \
     LEFT_PERSPECTIVE_LASTFM, LEFT_PERSPECTIVE_VK
-import thread
 
 
 class PerspectiveControls(FControl, gtk.VBox, LoadSave):
@@ -160,9 +160,8 @@ class PerspectiveButtonControlls(gtk.HBox):
     
     def activate_button(self, name):
         self.button_list[name].set_active(True)
-        
+
     def on_vk_click(self):
         thread.start_new_thread(self.controls.vk_integration.lazy_load, ()) 
         #Otherwise you can't call authorization window,
         #it can be called only from not main loop
-                                                
