@@ -189,13 +189,18 @@ class VKService:
         self.user_id = user_id
         
     def get_result(self, method, data, attempt_count=0):
+        print "in get result"
         result  = self.get(method, data)
+        print "result", result
         if "error" in result:
             print "This place for bug", result
             if attempt_count:
                 return
             logging.info("Try to get new access token and search again")
+            self.vk_window.destroy()
+            print "after destroy"
             self.vk_window=VKAuthorizationWindow(self)
+            print "after initialisation"
             attempt_count += 1
             return self.get_result(method, data, attempt_count)
         if not result:
