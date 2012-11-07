@@ -50,7 +50,11 @@ class ButtonStockText(gtk.Button):
         box.add(gtk.Label(title))
         box.show_all()
         
-        self.add(box)        
+        alignment = gtk.Alignment(xalign=0.5)
+        #alignment.set_padding(padding_top=0, padding_bottom=0, padding_left=10, padding_right=10)
+        alignment.add(box)
+        
+        self.add(alignment)    
         
 class InsensetiveImageButton(gtk.EventBox):
     def __init__(self, stock_image, size=gtk.ICON_SIZE_LARGE_TOOLBAR):

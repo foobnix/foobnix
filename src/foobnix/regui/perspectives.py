@@ -38,7 +38,7 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         self.buttons = PerspectiveButtonControlls(self.activate_perspective, controls)
         self.buttons.show_all()
         
-        self.add_button = ButtonStockText(_("Add Folder(s) in tree"), gtk.STOCK_ADD)
+        self.add_button = ButtonStockText(_(" Add Folder(s) in tree"), gtk.STOCK_ADD)
         self.add_button.connect("clicked", lambda * a :controls.tree.add_folder())
         
         self.switch_radio_button = gtk.Button()
