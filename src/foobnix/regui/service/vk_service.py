@@ -190,7 +190,7 @@ class VKService:
         
     def get_result(self, method, data, attempt_count=0):
         result  = self.get(method, data)
-        if result.has_key("error"):
+        if "error" in result:
             print "This place for bug", result
             if attempt_count:
                 return
