@@ -196,15 +196,15 @@ class VKService:
         try:
             object = self.to_json(result)
             print "This place for bug"
-        except simplejson.JSONDecodeError, e:
-            print "in exception", attempt_count
-            logging.error(e)
-            if attempt_count: return
-            print "after return"
+            if attempt_count:
+                return
             logging.info("Try to get new access token and search again")
             self.vk_window=VKAuthorizationWindow(self)
             attempt_count += 1
-            self.get_result(method, data, attempt_count)
+            return self.get_result(method, data, attempt_count)
+        except simplejson.JSONDecodeError, e:
+            print "in exception", attempt_count
+            logging.error(e)
             return
         if object.has_key("response"):        
             return object["response"]
