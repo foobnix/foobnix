@@ -153,6 +153,7 @@ class VKAuthorizationWindow(gtk.Dialog):
         
     
     def apply(self, access_token, user_id):
+        print "apply"
         FC().access_token = access_token
         FC().user_id= user_id        
         self.service.set_token_user(access_token, user_id)
@@ -162,10 +163,12 @@ class VKAuthorizationWindow(gtk.Dialog):
         self.response(gtk.RESPONSE_APPLY)
         
     def load_finished(self, *a):
+        print 123
         pass
         
         
     def _nav_request_policy_decision_cb(self, view, frame, net_req, nav_act, pol_dec):
+        print "_nav_request_policy_decision_cb"
         uri = net_req.get_uri()  
         if "access_token" in uri:
             token = self.get_response(uri)["access_token"]
@@ -189,17 +192,20 @@ class VKService:
         self.user_id = user_id
         
     def get_result(self, method, data, attempt_count=0):
-        print "in get result"
+        print "in get result", method, data
         result  = self.get(method, data)
         print "result", result
         if "error" in result:
             print "This place for bug", result
+            print "ac", attempt_count
             if attempt_count:
                 return
             logging.info("Try to get new access token and search again")
-            self.vk_window.destroy()
-            print "after destroy"
-            self.vk_window=VKAuthorizationWindow(self)
+            #print "after destroy"
+            self.vk_window.web_view.load_uri(self.vk_window.get_web_url())
+            #self.vk_window=VKAuthorizationWindow(self)
+            #return
+            #self.vk_window=VKAuthorizationWindow(self)
             print "after initialisation"
             attempt_count += 1
             return self.get_result(method, data, attempt_count)
@@ -227,16 +233,21 @@ class VKService:
         self.connected =  False  
 
     def get(self, method, data):
+        print "in get"
         url = "https://api.vk.com/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
         logging.debug("Try to get response from vkontakte")
         try:
+            print 1
+            print url
             response = urllib2.urlopen(url, timeout=7)
+            print 2
             if not vars().has_key("response"):
                 logging.error("Can't get response from vkontakte")
                 return
         except IOError:
             logging.error("Can't get response from vkontakte")
             return
+        print 3
         result = response.read()
         return result
     
