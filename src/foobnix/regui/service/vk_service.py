@@ -172,6 +172,7 @@ class VKAuthorizationWindow(gtk.Dialog):
         uri = net_req.get_uri()  
         if "access_token" in uri:
             token = self.get_response(uri)["access_token"]
+            print "token", token
             userid= self.get_response(uri)["user_id"]
             self.apply(token, userid)
         elif "error" in uri:
@@ -195,15 +196,16 @@ class VKService:
         print "in get result", method, data
         result  = self.get(method, data)
         print "result", result
-        if "error" in result:
+        if True:
             print "This place for bug", result
             print "ac", attempt_count
             if attempt_count:
                 return
             logging.info("Try to get new access token and search again")
             #print "after destroy"
-            self.vk_window.web_view.load_uri(self.vk_window.get_web_url())
+            gobject.idle_add(self.vk_window.web_view.load_uri, self.vk_window.get_web_url())
             #self.vk_window=VKAuthorizationWindow(self)
+            time.sleep(3)
             #return
             #self.vk_window=VKAuthorizationWindow(self)
             print "after initialisation"
