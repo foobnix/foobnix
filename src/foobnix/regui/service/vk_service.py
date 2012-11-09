@@ -181,7 +181,7 @@ class VKAuthorizationWindow(gtk.Dialog):
         
         return False
         
-    
+
 class VKService:
     def __init__(self, token, user_id):
         self.set_token_user(token, user_id)
@@ -196,7 +196,7 @@ class VKService:
         print "in get result", method, data
         result  = self.get(method, data)
         print "result", result
-        if True:
+        if "error" in result:
             print "This place for bug", result
             print "ac", attempt_count
             if attempt_count:
