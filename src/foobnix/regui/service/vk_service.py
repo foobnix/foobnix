@@ -163,13 +163,14 @@ class VKAuthorizationWindow(gtk.Dialog):
         self.response(gtk.RESPONSE_APPLY)
         
     def load_finished(self, *a):
-        print 123
+        print "load finished"
         pass
         
         
     def _nav_request_policy_decision_cb(self, view, frame, net_req, nav_act, pol_dec):
         print "_nav_request_policy_decision_cb"
         uri = net_req.get_uri()  
+        print "uri", uri
         if "access_token" in uri:
             token = self.get_response(uri)["access_token"]
             print "token", token
