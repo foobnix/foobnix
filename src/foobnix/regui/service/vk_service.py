@@ -197,7 +197,7 @@ class VKService:
         print "in get result", method, data
         result  = self.get(method, data)
         print "result", result
-        if True:
+        if "error" in result:
             print "This place for bug", result
             print "ac", attempt_count
             if attempt_count:
