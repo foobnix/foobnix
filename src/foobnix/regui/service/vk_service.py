@@ -55,19 +55,19 @@ class VKAuthorizationWindow(gtk.Dialog):
                         
             libgobject = ctypes.CDLL('libgobject-2.0.so.0')
             libsoup = ctypes.CDLL('libsoup-2.4.so.1')
-            libwebkit = ctypes.CDLL('libwebkitgtk-1.0.so.0')
-            session = libwebkit.webkit_get_default_session()
+            self.libwebkit = ctypes.CDLL('libwebkitgtk-1.0.so.0')
+            self.session = self.libwebkit.webkit_get_default_session()
             
             if  FC().proxy_enable and FC().proxy_url:
                 libgobject = ctypes.CDLL('libgobject-2.0.so.0')
                 libsoup = ctypes.CDLL('libsoup-2.4.so.1')
-                libwebkit = ctypes.CDLL('libwebkitgtk-1.0.so.0')
+                self.libwebkit = ctypes.CDLL('libwebkitgtk-1.0.so.0')
                 if FC().proxy_user and FC().proxy_password:
                     full_proxy = "http://%s:%s@%s" % (FC().proxy_user, FC().proxy_password, FC().proxy_url)
                 else:
                     full_proxy = "http://%s" % FC().proxy_url
                 proxy_uri = libsoup.soup_uri_new(full_proxy) # set your proxy url
-                libgobject.g_object_set(session, "proxy-uri", proxy_uri, None)
+                libgobject.g_object_set(self.session, "proxy-uri", proxy_uri, None)
 
             #'''remove all cookiejars'''
             #generic_cookiejar_type = libgobject.g_type_from_name('SoupCookieJar')
@@ -76,7 +76,7 @@ class VKAuthorizationWindow(gtk.Dialog):
             '''and replace with a new persistent jar'''
             self.cooky_file = os.path.join(CONFIG_DIR, "vk_cooky")
             cookiejar = libsoup.soup_cookie_jar_text_new(self.cooky_file, False)
-            libsoup.soup_session_add_feature(session, cookiejar)    
+            libsoup.soup_session_add_feature(self.session, cookiejar)    
             
             self.web_view.load_uri(self.get_web_url())
             self.web_view.connect("navigation-policy-decision-requested", self._nav_request_policy_decision_cb)
@@ -197,13 +197,14 @@ class VKService:
         print "in get result", method, data
         result  = self.get(method, data)
         print "result", result
-        if "error" in result:
+        if True:
             print "This place for bug", result
             print "ac", attempt_count
             if attempt_count:
                 return
             logging.info("Try to get new access token and search again")
             #print "after destroy"
+            self.vk_window.libwebkit.soup_session_abort(self.vk_window.session)
             gobject.idle_add(self.vk_window.web_view.load_uri, self.vk_window.get_web_url())
             #self.vk_window=VKAuthorizationWindow(self)
             time.sleep(3)
