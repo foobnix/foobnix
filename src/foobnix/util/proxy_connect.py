@@ -12,6 +12,8 @@ from foobnix.fc.fc import FC
 
 def set_proxy_settings():
     if not FC().proxy_url or not FC().proxy_enable:
+        opener = urllib2.build_opener()
+        urllib2.install_opener(opener)
         return
     if FC().proxy_user and FC().proxy_password:
         http_proxy = "http://%s:%s@%s" % (FC().proxy_user, FC().proxy_password, FC().proxy_url)

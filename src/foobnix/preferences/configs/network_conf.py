@@ -15,6 +15,7 @@ from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.proxy_connect import set_proxy_settings
 from foobnix.regui.service.lastfm_service import LastFmService
 from foobnix.regui.service.vk_service import VKAuthorizationWindow
+import gobject
 
 
 class NetworkConfig(ConfigPlugin):
@@ -188,14 +189,17 @@ class NetworkConfig(ConfigPlugin):
             
         if self.enable_proxy.get_active() and FC().proxy_url:
             FC().proxy_enable = True
-            
             if not self.controls.lastfm_service.network:
                 self.controls.lastfm_service = LastFmService(self.controls)
             else:
                 self.controls.lastfm_service.network.enable_proxy(FC().proxy_url)
         else:
             FC().proxy_enable = False
-            self.controls.lastfm_service.network.disable_proxy()
+            if not self.controls.lastfm_service.network:
+                self.controls.lastfm_service = LastFmService(self.controls)
+            else:
+                self.controls.lastfm_service.network.disable_proxy()
+
         
         if self.login_text.get_text():
             FC().proxy_user = self.login_text.get_text()
@@ -213,4 +217,8 @@ class NetworkConfig(ConfigPlugin):
             self.controls.net_wrapper.set_ping(False)
 
         set_proxy_settings()
-        self.controls.vk_service.vk_window = VKAuthorizationWindow(self.controls.vk_service)
+
+        def set_new_vk_window():
+            self.controls.vk_service.vk_window = VKAuthorizationWindow(self.controls.vk_service)
+        gobject.idle_add(set_new_vk_window)
+

@@ -68,7 +68,8 @@ class VKAuthorizationWindow(gtk.Dialog):
                     full_proxy = "http://%s" % FC().proxy_url
                 proxy_uri = libsoup.soup_uri_new(full_proxy) # set your proxy url
                 libgobject.g_object_set(self.session, "proxy-uri", proxy_uri, None)
-
+            else:
+                libgobject.g_object_set(self.session, "proxy-uri", None, None)
             #'''remove all cookiejars'''
             #generic_cookiejar_type = libgobject.g_type_from_name('SoupCookieJar')
             #libsoup.soup_session_remove_feature_by_type(session, generic_cookiejar_type)
@@ -174,7 +175,11 @@ class VKAuthorizationWindow(gtk.Dialog):
         elif "error" in uri:
             logging.error("error in response: " + uri)
             self.hide()
-        
+        elif "login?act=blocked" in uri:
+            logging.warning("blocked in response: " + uri)
+            self.service.reset_vk()
+            zavlab_string = "<html><body><p>The login is blocked</p></body></html>"
+            self.web_view.load_html_string(zavlab_string, "file:///")
         return False
         
 
@@ -190,6 +195,9 @@ class VKService:
         
     def get_result(self, method, data, attempt_count=0):
         result  = self.get(method, data)
+        if not result:
+            return
+        logging.debug("result " + result)
         if "error" in result:
             if attempt_count:
                 return
@@ -199,9 +207,6 @@ class VKService:
             time.sleep(3)
             attempt_count += 1
             return self.get_result(method, data, attempt_count)
-        if not result:
-            return
-        logging.debug("result " + result)
         try:
             object = self.to_json(result)
         except simplejson.JSONDecodeError, e:
