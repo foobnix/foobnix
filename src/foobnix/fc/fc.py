@@ -9,12 +9,13 @@ import os
 
 from foobnix.util import const
 from foobnix.fc.fc_base import FCBase
+from foobnix.fc.fc_cache import FCache
 from foobnix.util.singleton import Singleton
 from foobnix.util.agent import get_ranmom_agent
 from foobnix.fc.fc_helper import FCStates, CONFIG_DIR
 from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
-from foobnix.fc.fc_cache import FCache
+
 
 CONFIG_FILE = os.path.join(CONFIG_DIR , "foobnix.pkl")
 #CONFIG_FILE = os.path.join(CONFIG_DIR , "foobnix_winter.pkl")
@@ -24,6 +25,7 @@ class FC():
     __metaclass__ = Singleton
     
     def __init__(self):
+        
         """init default values"""
         self.is_view_info_panel = True
         self.is_view_search_panel = True
@@ -41,11 +43,10 @@ class FC():
         self.is_eq_enable = False
         self.eq_presets = None
         self.eq_presets_default = "CUSTOM"
-        #VK
+        
+        """VK"""
         self.access_token =  None
         self.user_id =  None
-        self.vk_user =  None
-        self.vk_pass =  None
 
         """tabs"""
         self.len_of_tab = 30
@@ -84,13 +85,9 @@ class FC():
         self.menu_style = "new"
 
         """main window action"""
-        if os.name == 'nt':
-            self.on_close_window = const.ON_CLOSE_CLOSE
-        else:
-            self.on_close_window = const.ON_CLOSE_HIDE
-
+        self.on_close_window = const.ON_CLOSE_CLOSE
+        
         """support file formats"""
-                
         audio_container = [".cue", ".iso.wv"]
         self.video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mpg", ".rm", ".swf", ".vob", ".wmv",".mkv",".m4v", ".mp4"] 
         self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".ac3", ".m4a", ".ra", ".m4p", ".wv", ".shn", ".wav"]        
@@ -99,15 +96,10 @@ class FC():
         
         self.enable_music_scrobbler = True
         self.enable_radio_scrobbler = True
-        """proxy"""
-        self.proxy_enable = False
-        self.proxy_url = None
-       
-        
+             
         """tray icon"""
         self.show_tray_icon = True
         self.hide_on_start = False
-        #self.tray_icon_auto_hide = True
         self.static_tray_icon = True
         self.system_icons_dinamic = False
         self.change_tray_icon = False
@@ -141,6 +133,7 @@ class FC():
 
         self.last_dir = None
         
+        """proxy"""
         self.proxy_enable = False
         self.proxy_url = None
         self.proxy_user = None
@@ -152,7 +145,7 @@ class FC():
         self.media_volume_keys = {'foobnix --volume-up': 'XF86AudioRaiseVolume', 'foobnix --volume-down': 'XF86AudioLowerVolume', 'foobnix --mute': 'XF86AudioMute'}
         
         self.media_keys_enabled = True
-        self.media_volume_keys_enabled = True
+        self.media_volume_keys_enabled = False
         
         self.left_perspective = "info" 
         

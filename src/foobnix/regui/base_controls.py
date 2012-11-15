@@ -375,6 +375,8 @@ class BaseFoobnixControls():
         return self.media_engine.get_state() == STATE_PLAY
 
     def fill_bean_from_vk(self, bean):
+        if bean.type and bean.type == FTYPE_RADIO:
+            return False
         vk = self.vk_service.find_one_track(bean.get_display_name())
         if vk:
             bean.path = vk.path
@@ -388,7 +390,6 @@ class BaseFoobnixControls():
             return
 
         self.play_lock.acquire()
-        
         self.seek_bar.clear()
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
@@ -397,12 +398,13 @@ class BaseFoobnixControls():
             if bean.type == FTYPE_RADIO:
                 self.record.show()
                 self.seek_bar.progressbar.set_fraction(0)
+                self.seek_bar.set_text(_("Radio ") + bean.text.capitalize())
             else:
                 self.record.hide()
                     
             self.main_window.set_title(bean.text)
         gobject.idle_add(task)
-        thread.start_new_thread(self._one_thread_play, (bean,))   
+        thread.start_new_thread(self._one_thread_play, (bean,))
     
     def _one_thread_play(self,bean):
         try:
@@ -416,17 +418,15 @@ class BaseFoobnixControls():
         if not bean.path:
             bean.path = get_bean_posible_paths(bean)
         
-        if not bean.path:            
-            if not self.fill_bean_from_vk(bean):
-                def post_task():
-                    self._play(bean)
-                if self.vk_service.is_show_authorization(post_task):
-                    return
-                                 
         if not self.check_path(bean.path):
             if bean.iso_path and os.path.exists(bean.iso_path):
                 logging.info("Try to remount " + bean.iso_path)
                 mount_tmp_iso(bean.iso_path)
+            elif not bean.path or bean.path.startswith("http"):
+                if not self.vk_service.is_authorized():
+                    return
+                else:
+                    self.fill_bean_from_vk(bean)
             else:
                 resource = bean.path if bean.path else bean.text
                 logging.error("Resourse " + resource + " not found")

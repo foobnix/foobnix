@@ -20,7 +20,6 @@ from foobnix.util.key_utils import is_key_control, is_key_shift, is_key_super, \
 
 
 def activate_hot_key(command, hotkey):
-    print hotkey
     logging.debug("Run command: " + str(command)) 
     thread.start_new_thread(os.system, (command,))    
     

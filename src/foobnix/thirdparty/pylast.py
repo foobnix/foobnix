@@ -18,20 +18,15 @@
 # USA
 #
 # http://code.google.com/p/pylast/
-import datetime
-from foobnix.fc.fc import FC
-    
-__version__ = '0.4'
-__author__ = 'Amr Hassan'
-__copyright__ = "Copyright (C) 2008-2009  Amr Hassan"
-__license__ = "gpl"
-__email__ = 'amr.hassan@gmail.com'
 
+import datetime
+import base64
+import urllib2
+import logging
 import hashlib
 import httplib
 import urllib
 import threading
-from xml.dom import minidom
 import xml.dom
 import time
 import shelve
@@ -43,6 +38,15 @@ try:
     import collections
 except ImportError:
     pass
+
+from xml.dom import minidom
+from foobnix.fc.fc import FC
+
+__version__ = '0.4'
+__author__ = 'Amr Hassan'
+__copyright__ = "Copyright (C) 2008-2009  Amr Hassan"
+__license__ = "gpl"
+__email__ = 'amr.hassan@gmail.com'
 
 STATUS_INVALID_SERVICE = 2
 STATUS_INVALID_METHOD = 3
@@ -288,6 +292,11 @@ class Network(object):
         self.cache_backend = None
         self.proxy_enabled = False
         self.proxy = None
+        
+        """Changed by zablab1"""
+        if FC().proxy_enable and FC().proxy_url:
+            self.enable_proxy(FC().proxy_url)
+                            
         self.last_call_time = 0
         
         #generate a session_key if necessary
@@ -441,11 +450,18 @@ class Network(object):
         
         return seq
 
-    def enable_proxy(self, host, port):
-        """Enable a default web proxy"""
-        
+    def enable_proxy(self, proxy):
+        """Enable a web proxy"""
+        """Changed by zavlab1"""
+        if not proxy:
+            logging.warn("No proxy url is specified")
+            return
+        index = proxy.find(":")
+        host = proxy[:index]
+        port = proxy[index + 1:]
         self.proxy = [host, _number(port)]
         self.proxy_enabled = True
+        logging.info("Enable proxy for last.fm " + proxy)
 
     def disable_proxy(self):
         """Disable using the web proxy"""
@@ -791,11 +807,16 @@ class _Request(object):
         (HOST_NAME, HOST_SUBDIR) = self.network.ws_server
         
         if self.network.is_proxy_enabled():
-            
             proxy_rul = FC().proxy_url
             index = proxy_rul.find(":")
             proxy = proxy_rul[:index]
             port = proxy_rul[index + 1:]                
+            """Changed by zavlab1"""
+            if FC().proxy_user and FC().proxy_password:
+                user = urllib2.unquote(FC().proxy_user)
+                password = urllib2.unquote(FC().proxy_password)
+                auth = base64.b64encode(user + ":" + password).strip()
+                headers['Proxy-Authorization'] =  '''Basic %s''' % auth
             
             conn = httplib.HTTPConnection(host=proxy, port=port)
             conn.request(method='POST', url="http://" + HOST_NAME + HOST_SUBDIR,
@@ -3549,11 +3570,31 @@ class _ScrobblerRequest(object):
             "User-Agent": "pylast" + "/" + __version__,
             "HOST": self.hostname
             }
-        
-        if self.type == "GET":
-            connection.request("GET", self.subdir + "?" + data, headers=headers)
+        if self.network.is_proxy_enabled():
+            proxy_rul = FC().proxy_url
+            index = proxy_rul.find(":")
+            proxy = proxy_rul[:index]
+            port = proxy_rul[index + 1:]                
+            """Changed by zavlab1"""
+            if FC().proxy_user and FC().proxy_password:
+                user = urllib2.unquote(FC().proxy_user)
+                password = urllib2.unquote(FC().proxy_password)
+                auth = base64.b64encode(user + ":" + password).strip()
+                headers['Proxy-Authorization'] =  '''Basic %s''' % auth
+            
+            connection = httplib.HTTPConnection(host=proxy, port=port)
+            if self.type == "GET":
+                connection.request(method="GET", url="http://" + self.hostname + self.subdir + "?" + data,
+                                   headers=headers)
+            else:
+                connection.request(method="POST", url="http://" + self.hostname + self.subdir,
+                                   body=data, headers=headers)
         else:
-            connection.request("POST", self.subdir, data, headers)
+            if self.type == "GET":
+                connection.request("GET", self.subdir + "?" + data, headers=headers)
+            else:
+                connection.request("POST", self.subdir, data, headers)
+        
         response = connection.getresponse().read()
         
         self._check_response_for_errors(response)

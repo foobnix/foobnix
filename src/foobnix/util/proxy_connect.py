@@ -1,34 +1,32 @@
 #-*- coding: utf-8 -*-
 '''
-Created on 1 сент. 2010
+Created on 1 sep. 2010
 
 @author: ivan
 '''
-import urllib2
+
 import logging
+import urllib2
+
 from foobnix.fc.fc import FC
-class ProxyPasswordMgr:
-    def __init__(self):
-        self.user = self.passwd = None
-    def add_password(self, realm, uri, user, passwd):
-        self.user = user
-        self.passwd = passwd
-    def find_user_password(self, realm, authuri):
-        return self.user, self.passwd
 
 def set_proxy_settings():
-    if FC().proxy_enable and FC().proxy_url:
-        #http://spys.ru/proxylist/
-        proxy = FC().proxy_url
-        user = FC().proxy_user
-        password = FC().proxy_password
-        
-        logging.info("Proxy enable:"+ proxy+ user+ password)
-        
-        proxy = urllib2.ProxyHandler({"http" : proxy})
-        proxy_auth_handler = urllib2.ProxyBasicAuthHandler(ProxyPasswordMgr())
-        proxy_auth_handler.add_password(None, None, user, password)
-        opener = urllib2.build_opener(proxy, proxy_auth_handler)
+    if not FC().proxy_url or not FC().proxy_enable:
+        opener = urllib2.build_opener()
         urllib2.install_opener(opener)
+        return
+    if FC().proxy_user and FC().proxy_password:
+        http_proxy = "http://%s:%s@%s" % (FC().proxy_user, FC().proxy_password, FC().proxy_url)
+        https_proxy = "https://%s:%s@%s" % (FC().proxy_user, FC().proxy_password, FC().proxy_url)
     else:
-        logging.info("Proxy not enable")
+        http_proxy = "http://%s" % FC().proxy_url
+        https_proxy = "https://%s" % FC().proxy_url
+    proxy = urllib2.ProxyHandler({"http" : http_proxy, "https" : https_proxy})
+    opener = urllib2.build_opener(proxy)
+    urllib2.install_opener(opener)
+    logging.info("The proxy " + FC().proxy_url + " for http and https has been set")
+    
+if __name__ == '__main__':
+    set_proxy_settings()
+    res = urllib2.urlopen('https://mail.ru')
+    print res.read()

@@ -14,24 +14,25 @@ import logging
 import threading
 
 from foobnix.fc.fc import FC
+from foobnix.util.id3_util import decode_cp866
 from foobnix.regui.engine import MediaPlayerEngine
 from foobnix.util.plsparser import get_radio_source
-from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
 from foobnix.util.file_utils import get_file_extension
-from foobnix.util.id3_util import decode_cp866
+from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
+
 
 
 class GStreamerEngine(MediaPlayerEngine):
     NANO_SECONDS = 1000000000
     def __init__(self, controls):
         MediaPlayerEngine.__init__(self, controls)
-
+        self.bean = None
         self.player = self.gstreamer_player()
         self.position_sec = 0
         self.duration_sec = 0
 
         self.prev_path = None
-        self.bean = None
+        
         self.equalizer = None
         
         self.current_state = STATE_STOP
@@ -45,8 +46,31 @@ class GStreamerEngine(MediaPlayerEngine):
         self.current_state = state
     
     def gstreamer_player(self):
-        playbin = gst.element_factory_make("playbin2", "player")
-                
+        
+        if FC().proxy_enable and FC().proxy_url and self.bean and (self.bean.path.startswith("http://") or self.bean.type == FTYPE_RADIO):
+            playbin = gst.Pipeline()
+            source = gst.element_factory_make("souphttpsrc", "source")
+            volume = gst.element_factory_make("volume", "volume")
+            audioconvert = gst.element_factory_make("audioconvert", "audioconvert")
+            alsasink = gst.element_factory_make("alsasink", "alsasink")
+            decodebin = gst.element_factory_make("decodebin2", "decode")
+            source.set_property("user-agent", "Fooobnix music player")
+            source.set_property("automatic-redirect", "false")
+            source.set_property("proxy", FC().proxy_url)
+            source.set_property("proxy-id", FC().proxy_user)
+            source.set_property("proxy-pw", FC().proxy_password)
+            def on_new_decoded_pad(dbin, pad, islast):
+                pad.link(audioconvert.get_pad("sink"))
+
+            decodebin.connect("new-decoded-pad", on_new_decoded_pad)
+                        
+            playbin.add(source, decodebin, volume, audioconvert, alsasink)
+            gst.element_link_many(source, decodebin)
+            gst.element_link_many(audioconvert, volume, alsasink)
+        else:
+            playbin = gst.element_factory_make("playbin2", "player")
+            logging.debug("LOCAL gstreamer")
+        
         if FC().is_eq_enable:
             self.audiobin = gst.Bin('audiobin')
             audiosink = gst.element_factory_make('autoaudiosink', 'audiosink')
@@ -61,13 +85,13 @@ class GStreamerEngine(MediaPlayerEngine):
             
             self.audiobin.get_pad('sink').set_target(self.equalizer.get_pad('sink'))
             self.equalizer.link(audiosink)
-    
+                            
         bus = playbin.get_bus()
         bus.add_signal_watch()
         bus.enable_sync_message_emission()
         bus.connect("message", self.on_message)
         bus.connect("sync-message::element", self.on_sync_message)
-        logging.debug("LOCAL gstreamer")
+        
         return playbin
     
     def notify_init(self, duration_int):
@@ -124,7 +148,7 @@ class GStreamerEngine(MediaPlayerEngine):
             self.pipeline.set_state(gst.STATE_NULL)
         
         self.player = self.gstreamer_player()
-        
+                
         """equlizer settings"""
         if FC().is_eq_enable:
             pre = self.controls.eq.get_preamp()
@@ -135,6 +159,7 @@ class GStreamerEngine(MediaPlayerEngine):
             self.radio_path = get_radio_source(path)
             logging.debug("Try To play path " + self.radio_path)
             uri = self.radio_path
+            
             if not self.bean.type == FTYPE_RADIO:
                 self.notify_title(uri)
         else:
@@ -144,7 +169,10 @@ class GStreamerEngine(MediaPlayerEngine):
 
         logging.info("Gstreamer try to play " + uri)
         
-        self.player.set_property("uri", uri)
+        if FC().proxy_enable and FC().proxy_url and uri.startswith("http://"):
+            self.player.get_by_name("source").set_property("location", uri)
+        else:
+            self.player.set_property("uri", uri)
         
         self.state_pause(show_in_tray=False)
         time.sleep(0.3)        
@@ -269,7 +297,10 @@ class GStreamerEngine(MediaPlayerEngine):
 
     def volume(self, percent):
         value = percent / 100.0
-        self.player.set_property('volume', value)
+        try:
+            self.player.set_property('volume', value)
+        except:
+            self.player.get_by_name("volume").set_property('volume', value)
         #self.player.get_by_name("volume").set_property('volume', value + 0.0)
 
     def state_play(self):
@@ -349,10 +380,7 @@ class GStreamerEngine(MediaPlayerEngine):
         
         if type == gst.MESSAGE_BUFFERING:
             return
-        
-        #logging.debug("Message type %s" % type)
-        #logging.debug("Message %s" % message)
-        
+                
         if type == gst.MESSAGE_ERROR:
             err, debug = message.parse_error()
             logging.warn("Error: " + str(err) + str(debug) + str(err.domain) + str(err.code))

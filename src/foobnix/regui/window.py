@@ -4,15 +4,16 @@ Created on 25 сент. 2010
 
 @author: ivan
 '''
+
 import gtk
 import logging
 
-from foobnix.regui.model.signal import FControl
-from foobnix.regui.state import LoadSave
 from foobnix.fc.fc import FC
 from foobnix.util import const
-from foobnix.util.key_utils import is_key, is_key_alt, is_key_control
+from foobnix.regui.state import LoadSave
 from foobnix.version import FOOBNIX_VERSION
+from foobnix.regui.model.signal import FControl
+from foobnix.util.key_utils import is_key, is_key_alt, is_key_control
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION, \
     LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_VIRTUAL, LEFT_PERSPECTIVE_INFO
 
@@ -37,6 +38,8 @@ class MainWindow(gtk.Window, FControl, LoadSave):
     def on_key_press(self, w, e):
         if is_key(e, 'Escape'):
             self.hide_window()
+        elif is_key(e, 'space') and not isinstance(self.get_focus(), gtk.Entry): 
+            self.controls.play_pause()
         elif is_key_alt(e) and is_key(e, "1"):
             self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_NAVIGATION)
         elif is_key_alt(e) and is_key(e, "2"):
@@ -45,9 +48,9 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_VIRTUAL)
         elif is_key_alt(e) and is_key(e, "4"):
             self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_INFO)
-        elif is_key_control(e) and is_key(e, "q"):
+        elif is_key_control(e) and (is_key(e, "q") or is_key(e, "Cyrillic_shorti")):
             self.controls.quit()
-        elif is_key_control(e) and is_key(e, "s"):    
+        elif is_key_control(e) and (is_key(e, "s") or is_key(e, "Cyrillic_yeru")):    
             self.controls.notetabs.on_save_playlist(self.controls.notetabs.get_current_tree().scroll)
         
                     
@@ -65,8 +68,8 @@ class MainWindow(gtk.Window, FControl, LoadSave):
    
     def show_hide(self):
         visible = self.get_property('visible')
-        if visible:            
-            self.hide_window()
+        if visible:   
+            self.hide()
         else:
             self.show()
         

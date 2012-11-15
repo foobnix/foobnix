@@ -5,117 +5,88 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
+
+import os
+import gtk
 import time
+import thread
 import urllib
+import gobject
 import logging
+import urllib2
 import simplejson
 
-from foobnix.regui.model import FModel
-from foobnix.util.time_utils import convert_seconds_to_text
-from foobnix.helpers.window import ChildTopWindow
-import gtk
-
 from foobnix.fc.fc import FC
+from foobnix.regui.model import FModel
+from foobnix.fc.fc_helper import CONFIG_DIR
+from foobnix.util.const import ICON_FOOBNIX
 from foobnix.helpers.image import ImageBase
-import os
 from foobnix.helpers.pref_widgets import HBoxLableEntry
-import gobject
-import urllib2
-import thread
+from foobnix.util.time_utils import convert_seconds_to_text
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
-class VKAuthorizationWindow(ChildTopWindow):
+
+class VKAuthorizationWindow(gtk.Dialog):
     REDIRECT_URL = "http://www.foobnix.com/welcome/vk-token-user-id"
     API_URL = "http://api.vk.com/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=" + REDIRECT_URL + "&display=touch&response_type=token"
     
     def get_web_url(self):
         return "http://api.vk.com/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
    
-    def show(self, post_task=None):
-        gobject.idle_add(super(VKAuthorizationWindow, self).show) 
-        self.post_task = post_task
-        try:
-            self.init_pass()
-        except:
-            pass
-                             
+    def show(self):
+        super(VKAuthorizationWindow, self).show()
+                            
     def __init__(self, service):
         self.service = service
-        ChildTopWindow.__init__(self, _("VKontakte Authorization (require for music search)"))
+        gtk.Dialog.__init__(self, _("VKontakte Authorization (is required for music search)"))
         self.set_resizable(True)
-        vbox = gtk.VBox(False, 0)
         self.access_token = None
-        
-        default_button = gtk.Button(_("Get Login and Password"))
-        default_button.connect("clicked", self.on_defaults)
-        
-        apply_button = gtk.Button(_("Sing In"))
-        apply_button.connect("clicked", self.on_apply_vk)
-        self.finished = False
+        try:
+            self.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
+        except TypeError: pass
 
         
         def web_kit_token():
-            import webkit            
+            import webkit
+            import ctypes
+            
             self.web_view = webkit.WebView()
             self.web_view.set_size_request(640, -1) 
+                        
+            libgobject = ctypes.CDLL('libgobject-2.0.so.0')
+            libsoup = ctypes.CDLL('libsoup-2.4.so.1')
+            self.libwebkit = ctypes.CDLL('libwebkitgtk-1.0.so.0')
+            self.session = self.libwebkit.webkit_get_default_session()
+            
+            if  FC().proxy_enable and FC().proxy_url:
+                libgobject = ctypes.CDLL('libgobject-2.0.so.0')
+                libsoup = ctypes.CDLL('libsoup-2.4.so.1')
+                self.libwebkit = ctypes.CDLL('libwebkitgtk-1.0.so.0')
+                if FC().proxy_user and FC().proxy_password:
+                    full_proxy = "http://%s:%s@%s" % (FC().proxy_user, FC().proxy_password, FC().proxy_url)
+                else:
+                    full_proxy = "http://%s" % FC().proxy_url
+                proxy_uri = libsoup.soup_uri_new(full_proxy) # set your proxy url
+                libgobject.g_object_set(self.session, "proxy-uri", proxy_uri, None)
+            else:
+                libgobject.g_object_set(self.session, "proxy-uri", None, None)
+            #'''remove all cookiejars'''
+            #generic_cookiejar_type = libgobject.g_type_from_name('SoupCookieJar')
+            #libsoup.soup_session_remove_feature_by_type(session, generic_cookiejar_type)
+
+            '''and replace with a new persistent jar'''
+            self.cooky_file = os.path.join(CONFIG_DIR, "vk_cooky")
+            cookiejar = libsoup.soup_cookie_jar_text_new(self.cooky_file, False)
+            libsoup.soup_session_add_feature(self.session, cookiejar)    
             
             self.web_view.load_uri(self.get_web_url())
             self.web_view.connect("navigation-policy-decision-requested", self._nav_request_policy_decision_cb)
             self.web_view.connect("load-finished", self.load_finished)
             
-               
-            vbox.pack_start(self.web_view, True, True)
+            self.web_view.show()   
+            self.vbox.pack_start(self.web_view, True, True)
             
             
-            """VK"""
-        
-            vk_frame = gtk.Frame(label=_("VKontakte"))
-            vk_frame.set_border_width(0)
-            
-            vk_layout = gtk.VBox(False, 0)
-            
-            """VK LOGIN"""
-            vlbox = gtk.HBox(False, 0)
-            vlbox.show()
-            
-            vlogin = gtk.Label(_("Login"))
-            vlogin.set_size_request(150, -1)
-            vlogin.show()
-            
-            
-            self.vlogin_text = gtk.Entry()
-            self.vlogin_text.show()
-            
-            vlbox.pack_start(vlogin, False, False, 0)
-            vlbox.pack_start(self.vlogin_text, True, True, 0)
-            
-            """VK PASSWORD"""
-            vpbox = gtk.HBox(False, 0)
-            vpbox.show()
-            
-            vpassword = gtk.Label(_("Password"))
-            vpassword.set_size_request(150, -1)
-            vpassword.show()
-            
-            self.vpassword_text = gtk.Entry()
-            self.vpassword_text.set_visibility(False)
-            self.vpassword_text.set_invisible_char("*")
-            self.vpassword_text.show()
-            
-            vpbox.pack_start(vpassword, False, False, 0)
-            vpbox.pack_start(self.vpassword_text, True, True, 0)
-            
-            vk_layout.pack_start(vlbox)
-            vk_layout.pack_start(vpbox)
-            
-            """apply"""
-            vk_layout.pack_start(apply_button, False, False)
-            
-            vk_frame.add(vk_layout)
-            vbox.pack_start(vk_frame)
-            
-            thread.start_new_thread(self.init_pass, ())
-            
-
         def dialog_token():
             self.set_keep_above(True)
             self.token = gtk.Entry() 
@@ -123,7 +94,6 @@ class VKAuthorizationWindow(ChildTopWindow):
             self.user_id = gtk.Entry()
             if FC().user_id:
                 self.user_id.set_text(FC().user_id) 
-            
             
             edit = gtk.Entry()
             edit.set_text(self.API_URL)
@@ -134,42 +104,29 @@ class VKAuthorizationWindow(ChildTopWindow):
             line.pack_start(link, False, False)
             
             apply = gtk.Button(_("2: Apply Token"))
-            apply.connect("clicked", self.on_apply)
+            apply.connect("clicked", self.on_dt_apply)
             
             self.info_line = gtk.Label(_("Please generate token..."))
             
-            vbox.pack_start(ImageBase("vk.png"), False, False)
-            vbox.pack_start(line, False, False)
+            self.vbox.pack_start(ImageBase("vk.png"), False, False)
+            self.vbox.pack_start(line, False, False)
             
-            vbox.pack_start(HBoxLableEntry(gtk.Label(_("Token:")) , self.token))
-            vbox.pack_start(HBoxLableEntry(gtk.Label(_("User ID:")) , self.user_id))
+            self.vbox.pack_start(HBoxLableEntry(gtk.Label(_("Token:")) , self.token))
+            self.vbox.pack_start(HBoxLableEntry(gtk.Label(_("User ID:")) , self.user_id))
             
-            vbox.pack_start(apply, False, False)
-            vbox.pack_start(self.info_line, False, False)
+            self.vbox.pack_start(apply, False, False)
+            self.vbox.pack_start(self.info_line, False, False)
         
         if os.name == 'nt':
             dialog_token()
         else:
             try:
                 web_kit_token()
-            except:
+            except Exception, e:
+                logging.error(str(e))
                 dialog_token()
                 pass
-        
-                
-    
-        self.add(vbox)
-    
-    def init_pass(self):
-        if not FC().vk_user or not FC().vk_pass:
-            result = self.get_vk_login_pass()
-            if result:
-                FC().vk_user = result[0]
-                FC().vk_pass = result[1]
-                self.vlogin_text.set_text(FC().vk_user)
-                self.vpassword_text.set_text(FC().vk_pass)
-        
-    
+   
     def get_response(self, line):
         id = line.find("#")
         fragment = line[id + 1:]
@@ -181,7 +138,7 @@ class VKAuthorizationWindow(ChildTopWindow):
         
         return res
 
-    def on_apply(self, *a):
+    def on_dt_apply(self, *a):
         token, user_id = self.token.get_text(), self.user_id.get_text()
         token = token.strip()
         user_id = user_id.strip()
@@ -200,21 +157,10 @@ class VKAuthorizationWindow(ChildTopWindow):
         FC().access_token = access_token
         FC().user_id= user_id        
         self.service.set_token_user(access_token, user_id)
-        
-        logging.debug("access token is " + str(access_token))
-        
-        try:
-            FC().vk_user = self.vlogin_text.get_text()
-            FC().vk_pass = self.vpassword_text.get_text()
-        except:
-            pass
 
-        FC().save()
+        thread.start_new_thread(FC().save, ())
         self.hide()
-                
-        if self.post_task:
-            logging.debug("post task executed")
-            self.post_task()
+        self.response(gtk.RESPONSE_APPLY)
         
     def load_finished(self, *a):
         pass
@@ -222,38 +168,21 @@ class VKAuthorizationWindow(ChildTopWindow):
         
     def _nav_request_policy_decision_cb(self, view, frame, net_req, nav_act, pol_dec):
         uri = net_req.get_uri()  
-        #logging.debug("response url " + uri)
         if "access_token" in uri:
             token = self.get_response(uri)["access_token"]
             userid= self.get_response(uri)["user_id"]
-            self.apply(token, userid)   
+            self.apply(token, userid)
+        elif "error" in uri:
+            logging.error("error in response: " + uri)
+            self.hide()
+        elif "login?act=blocked" in uri:
+            logging.warning("blocked in response: " + uri)
+            self.service.reset_vk()
+            zavlab_string = "<html><body><p>The login is blocked</p></body></html>"
+            self.web_view.load_html_string(zavlab_string, "file:///")
         return False
-    
-    def on_apply_vk(self, *a):
-        self.web_view.execute_script("javascript:(function() {document.getElementsByName('email')[0].value='%s'})()" % self.vlogin_text.get_text())
-        self.web_view.execute_script("javascript:(function() {document.getElementsByName('pass')[0].value='%s'})()" % self.vpassword_text.get_text())
-        self.web_view.execute_script("javascript:(function() {document.getElementById('install_allow').click()})()")
-    
-    def get_vk_login_pass(self):
-        url = "http://android.foobnix.com/vk"
-        try:
-            f = urllib2.urlopen(url, "", timeout=5)
-        except IOError:
-            logging.error("Can't get default login and password because no response from " + url)
-            return
-        response = f.read()
-        logging.debug("response:" + response);
-        if not response:
-            return ["",""]
-        result = response.split(":")
-        return [result[0],result[1]]
-    
-    def on_defaults(self, *a):
-        result = self.get_vk_login_pass()
-        self.web_view.execute_script("javascript:(function() {document.getElementsByName('email')[0].value='%s'})()" % result[0])
-        self.web_view.execute_script("javascript:(function() {document.getElementsByName('pass')[0].value='%s'})()" % result[1])           
         
-    
+
 class VKService:
     def __init__(self, token, user_id):
         self.set_token_user(token, user_id)
@@ -264,11 +193,20 @@ class VKService:
         self.token = token
         self.user_id = user_id
         
-    def get_result(self, method, data):
+    def get_result(self, method, data, attempt_count=0):
         result  = self.get(method, data)
         if not result:
             return
         logging.debug("result " + result)
+        if "error" in result:
+            if attempt_count:
+                return
+            logging.info("Try to get new access token and search again")
+            self.vk_window.libwebkit.soup_session_abort(self.vk_window.session)
+            gobject.idle_add(self.vk_window.web_view.load_uri, self.vk_window.get_web_url())
+            time.sleep(3)
+            attempt_count += 1
+            return self.get_result(method, data, attempt_count)
         try:
             object = self.to_json(result)
         except simplejson.JSONDecodeError, e:
@@ -276,15 +214,24 @@ class VKService:
             return
         if object.has_key("response"):        
             return object["response"]
+    
+    def reset_vk(self):
+        if os.path.isfile(self.vk_window.cooky_file):
+            os.remove(self.vk_window.cooky_file)
         
-        
+        FC().access_token = None
+        FC().user_id = None
+        self.token = None
+        self.user_id = None
+        self.connected =  False  
+
     def get(self, method, data):
         time.sleep(0.6)
         url = "https://api.vk.com/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
         #logging.debug("GET " + url)
         logging.debug("Try to get response from vkontakte")
         try:
-            response = urllib2.urlopen(url, timeout=5)
+            response = urllib2.urlopen(url, timeout=7)
             if not vars().has_key("response"):
                 logging.error("Can't get response from vkontakte")
                 return
@@ -298,12 +245,27 @@ class VKService:
         logging.debug("json " + json)
         return simplejson.loads(json)
     
-    def is_show_authorization(self, post_task=None):
-        if not self.is_connected():
-            self.vk_window.show(post_task)
-            return True
-        return False
-    
+    def is_authorized(self):
+        self.result = None
+        
+        def task_is_authorized():
+            if self.is_connected():
+                self.result = True
+                return
+            self.vk_window = VKAuthorizationWindow(self)
+            response = self.vk_window.run()
+            if response == gtk.RESPONSE_APPLY:
+                self.vk_window.destroy()
+                self.result = True
+            else:
+                self.vk_window.destroy()
+                self.result = False
+
+        gobject.idle_add(task_is_authorized)
+        while self.result == None:
+            time.sleep(0.3)
+        return self.result
+
     def show_vk(self):
         self.vk_window.show()
     
@@ -316,8 +278,10 @@ class VKService:
             return False
         
         res = self.get("getProfiles", "uid="+self.user_id)
-        if "error" in res:
-            self.vk_window.show()            
+        if not res:
+            self.connected =  False
+            return False
+        elif "error" in res:
             self.connected =  False
             return False
         else:
@@ -342,8 +306,8 @@ class VKService:
         def post():
             self.find_tracks_by_query(self, query)
         
-        if self.is_show_authorization(post):
-            return 
+        if not self.is_authorized():
+            return
         
         logging.info("start search songs " + query)
         query = urllib.quote(query.encode("utf-8"))
@@ -405,7 +369,6 @@ class VKService:
                 times_count[time] = times_count[time] + 1
             else:
                 times_count[time] = 1 
-        
         #get most relatives times time
         r_count = max(times_count.values())
         r_time = self.find_time_value(times_count, r_count)

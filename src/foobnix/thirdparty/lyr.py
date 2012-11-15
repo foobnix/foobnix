@@ -34,7 +34,7 @@ def _download(args):
     
     args = urllib.urlencode(str_args)
     
-    return urllib2.urlopen(base + args, timeout=5).read()
+    return urllib2.urlopen(base + args, timeout=7).read()
 
 def _get_page_titles(artist, title):
     """

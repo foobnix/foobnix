@@ -6,6 +6,7 @@ Created on 22 сент. 2010
 '''
 
 import gtk
+import thread
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
@@ -37,7 +38,7 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         self.buttons = PerspectiveButtonControlls(self.activate_perspective, controls)
         self.buttons.show_all()
         
-        self.add_button = ButtonStockText(_("Add Folder(s) in tree"), gtk.STOCK_ADD)
+        self.add_button = ButtonStockText(_(" Add Folder(s) in tree"), gtk.STOCK_ADD)
         self.add_button.connect("clicked", lambda * a :controls.tree.add_folder())
         
         self.switch_radio_button = gtk.Button()
@@ -108,31 +109,31 @@ class PerspectiveButtonControlls(gtk.HBox):
     def __init__(self, activate_perspective, controls):
         
         gtk.HBox.__init__(self, False, 0)
-        
+        self.controls = controls
         self.active = None
                
         musics = PespectiveToogledButton(_("Music"), gtk.STOCK_HARDDISK, _("Music Navigation (Alt+1)"))
-        musics.connect("clicked", lambda * a: activate_perspective(LEFT_PERSPECTIVE_NAVIGATION))        
+        musics.connect("button-press-event", lambda * a: activate_perspective(LEFT_PERSPECTIVE_NAVIGATION))        
         musics.set_active(True)
         
                 
         radios = PespectiveToogledButton(_("Radio"), gtk.STOCK_NETWORK, _("Radio Stantions (Alt+2)"))
-        radios.connect("clicked", lambda * a:
+        radios.connect("button-press-event", lambda * a:
                        controls.perspective.activate_radio_perspective())
               
         virtuals = PespectiveToogledButton(_("Playlist"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
-        virtuals.connect("clicked", lambda * a:activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
+        virtuals.connect("button-press-event", lambda * a:activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
         
         
         info = PespectiveToogledButton(_("Info"), gtk.STOCK_INFO, _("Info Panel (Alt+4)"))
-        info.connect("clicked", lambda * a: activate_perspective(LEFT_PERSPECTIVE_INFO))
+        info.connect("button-press-event", lambda * a: activate_perspective(LEFT_PERSPECTIVE_INFO))
         
         lastfm = PespectiveToogledButton(_("Last.Fm"), gtk.STOCK_CONNECT, _("Last.fm Panel (Alt+5)"))
-        lastfm.connect("clicked", lambda * a: activate_perspective(LEFT_PERSPECTIVE_LASTFM))
+        lastfm.connect("button-press-event", lambda * a: activate_perspective(LEFT_PERSPECTIVE_LASTFM))
         
         vk = PespectiveToogledButton(_("VK"), gtk.STOCK_UNINDENT, _("VK Panel (Alt+6)"))
-        vk.connect("clicked", lambda * a:controls.vk_integration.lazy_load())
-        vk.connect("clicked", lambda * a: activate_perspective(LEFT_PERSPECTIVE_VK))
+        vk.connect("button-press-event", lambda * a: self.on_vk_click())
+        vk.connect("button-press-event", lambda * a: activate_perspective(LEFT_PERSPECTIVE_VK))
         
                 
         self.button_list = {
@@ -151,8 +152,7 @@ class PerspectiveButtonControlls(gtk.HBox):
         
         if "l_user_" != FCBase().lfm_login:
             self.pack_start(lastfm, False, False, 0)
-        
-         
+ 
         self.pack_start(vk, False, False, 0)
                 
         self.pack_start(virtuals, False, False, 0)
@@ -160,5 +160,8 @@ class PerspectiveButtonControlls(gtk.HBox):
     
     def activate_button(self, name):
         self.button_list[name].set_active(True)
-        
 
+    def on_vk_click(self):
+        thread.start_new_thread(self.controls.vk_integration.lazy_load, ()) 
+        #Otherwise you can't call authorization window,
+        #it can be called only from not main loop

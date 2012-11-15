@@ -4,18 +4,27 @@ Created on 1 сент. 2010
 
 @author: ivan
 '''
-from foobnix.preferences.config_plugin import ConfigPlugin
+
 import gtk
-from foobnix.util.proxy_connect import set_proxy_settings
 import time
-import urllib2
 import logging
+import urllib2
+
 from foobnix.fc.fc import FC
+from foobnix.preferences.config_plugin import ConfigPlugin
+from foobnix.util.proxy_connect import set_proxy_settings
+from foobnix.regui.service.lastfm_service import LastFmService
+from foobnix.regui.service.vk_service import VKAuthorizationWindow
+import gobject
+
+
 class NetworkConfig(ConfigPlugin):
     
     name = _("Network Settings")
     
     def __init__(self, controls):
+        
+        self.controls = controls
                 
         box = gtk.VBox(False, 0)        
         box.hide()
@@ -114,11 +123,17 @@ class NetworkConfig(ConfigPlugin):
         frame_box.set_border_width(5)
         frame_box.show()
         
+        self.net_ping = gtk.CheckButton(label=_("Enable Network Control Window"), use_underline=True)
+        
+        box.pack_start(self.net_ping, False, True, 0)
         box.pack_start(self.enable_proxy, False, True, 0)
         box.pack_start(self.frame, False, True, 0)
-        
+                
         self.widget = box
-    
+        
+        if  FC().proxy_enable and FC().proxy_url:
+            set_proxy_settings()
+        
     
     def text_connection(self, *a):
         self.on_save()
@@ -139,17 +154,18 @@ class NetworkConfig(ConfigPlugin):
     def on_enable_http_proxy(self, *a):
         if  self.enable_proxy.get_active():
             self.frame.set_sensitive(True)
-            FC().proxy_enable = True
         else:
             self.frame.set_sensitive(False)
-            FC().proxy_enable = False
 
+    def is_proxy_changed(self):
+        if [FC().proxy_enable, FC().proxy_url, FC().proxy_user, FC().proxy_password] != [self.enable_proxy.get_active(), self.proxy_server.get_text(), self.login_text.get_text(), self.password_text.get_text()]:
+            return True
+        else:
+            return False    
+    
     def on_load(self):
         self.enable_proxy.set_active(FC().proxy_enable)
         self.frame.set_sensitive(FC().proxy_enable)
-        
-        if  self.enable_proxy.get_active():
-            FC().cookie = None
         
         if FC().proxy_url:
             self.proxy_server.set_text(FC().proxy_url)
@@ -158,12 +174,32 @@ class NetworkConfig(ConfigPlugin):
         if FC().proxy_password:
             self.password_text.set_text(FC().proxy_password)
             
+        if FC().net_ping == True:
+            self.net_ping.set_active(True)
+            
             
     def on_save(self):
+        if not self.is_proxy_changed():
+            return
+        
         if self.proxy_server.get_text():
             FC().proxy_url = self.proxy_server.get_text()
         else:
             FC().proxy_url = None
+            
+        if self.enable_proxy.get_active() and FC().proxy_url:
+            FC().proxy_enable = True
+            if not self.controls.lastfm_service.network:
+                self.controls.lastfm_service = LastFmService(self.controls)
+            else:
+                self.controls.lastfm_service.network.enable_proxy(FC().proxy_url)
+        else:
+            FC().proxy_enable = False
+            if not self.controls.lastfm_service.network:
+                self.controls.lastfm_service = LastFmService(self.controls)
+            else:
+                self.controls.lastfm_service.network.disable_proxy()
+
         
         if self.login_text.get_text():
             FC().proxy_user = self.login_text.get_text()
@@ -174,3 +210,15 @@ class NetworkConfig(ConfigPlugin):
             FC().proxy_password = self.password_text.get_text()
         else:     
             FC().proxy_password = None
+            
+        if self.net_ping.get_active():
+            self.controls.net_wrapper.set_ping(True)
+        else:
+            self.controls.net_wrapper.set_ping(False)
+
+        set_proxy_settings()
+
+        def set_new_vk_window():
+            self.controls.vk_service.vk_window = VKAuthorizationWindow(self.controls.vk_service)
+        gobject.idle_add(set_new_vk_window)
+

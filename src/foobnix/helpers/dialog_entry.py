@@ -269,7 +269,7 @@ def file_saving_dialog(title, current_folder=None):
     elif response == gtk.RESPONSE_CANCEL:
         logging.info('Closed, no files selected')
     chooser.destroy()
-    
+
 class FileSavingDialog(gtk.FileChooserDialog):
     def __init__(self, title, func, args = None, current_folder=None, current_name=None):
         gtk.FileChooserDialog.__init__(self, title, action=gtk.FILE_CHOOSER_ACTION_SAVE, buttons=(gtk.STOCK_SAVE, gtk.RESPONSE_OK))
