@@ -9,6 +9,7 @@ from __future__ import with_statement
 import os
 from foobnix.util.singleton import Singleton
 from foobnix.fc.fc_helper import CONFIG_DIR, FCStates
+import shutil
 
 CACHE_FILE = os.path.join(CONFIG_DIR, "foobnix_cache.pkl")
 COVERS_DIR = os.path.join(CONFIG_DIR, 'covers','')
@@ -40,6 +41,7 @@ class FCache:
         
     def save(self):
         FCStates().save(self, CACHE_FILE)
+        shutil.copy2(CACHE_FILE, CACHE_FILE + "_backup")
     
     def load(self):
         FCStates().load(self, CACHE_FILE)

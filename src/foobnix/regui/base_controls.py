@@ -405,7 +405,7 @@ class BaseFoobnixControls():
             self.main_window.set_title(bean.text)
         gobject.idle_add(task)
         thread.start_new_thread(self._one_thread_play, (bean,))
-    
+
     def _one_thread_play(self,bean):
         try:
             self._play(bean)

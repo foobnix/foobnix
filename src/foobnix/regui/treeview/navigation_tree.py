@@ -7,9 +7,9 @@ Created on 25 сент. 2010
 
 import os
 import gtk
+import thread
 import logging
 import gobject
-import threading
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
@@ -19,11 +19,12 @@ from foobnix.regui.state import LoadSave
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
-    delete_files_from_disk, create_folder_dialog, get_file_extension
+    delete_files_from_disk, create_folder_dialog
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
     is_middle_click_release, is_middle_click, right_click_optimization_for_trees,\
     is_empty_click
 from foobnix.util.m3u_utils import is_m3u
+
 
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -219,7 +220,10 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 '''gobject because rebuild_as_plain use it too'''
                 gobject.idle_add(self.controls.play_first_file_in_playlist)
             
+            thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
+            
         self.controls.search_progress.background_spinner_wrapper(task, to_tree, to_model)
+        
         
         
 

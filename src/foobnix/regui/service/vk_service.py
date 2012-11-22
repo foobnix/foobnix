@@ -245,7 +245,7 @@ class VKService:
     
     def is_authorized(self):
         self.result = None
-        
+
         def task_is_authorized():
             if self.is_connected():
                 self.result = True

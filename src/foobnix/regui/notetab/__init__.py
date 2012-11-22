@@ -18,6 +18,7 @@ from foobnix.regui.state import LoadSave
 from foobnix.util.key_utils import is_key
 from foobnix.util.m3u_utils import m3u_writer
 from foobnix.regui.model.signal import FControl
+from foobnix.util.string_utils import crop_string
 from foobnix.regui.model import FModel, FTreeModel
 from foobnix.helpers.dialog_entry import FileSavingDialog
 from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
@@ -25,7 +26,6 @@ from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
 from foobnix.helpers.my_widgets import tab_close_button, notetab_label
 from foobnix.util.mouse_utils import is_double_left_click, is_double_middle_click, \
     is_middle_click, is_rigth_click
-from foobnix.util.string_utils import crop_string
 
 
 class TabGeneral(gtk.Notebook, FControl):
@@ -34,7 +34,9 @@ class TabGeneral(gtk.Notebook, FControl):
         FControl.__init__(self, controls)
         self.controls = controls
         self.set_scrollable(True)
-                
+        self.save_lock = threading.Lock()
+        self.connect("page-reordered", self.reorder_callback)
+        
     def to_eventbox(self, widget, tab_child):
         event = gtk.EventBox()
         event.add(widget)
@@ -43,7 +45,7 @@ class TabGeneral(gtk.Notebook, FControl):
         event = self.tab_menu_creator(event, tab_child)
         event.show_all()
         return event
-    
+
     def button(self, tab_child):
         if FC().tab_close_element == "button":
             return tab_close_button(func=self.on_delete_tab, arg=tab_child)
@@ -87,6 +89,7 @@ class TabGeneral(gtk.Notebook, FControl):
         if name_list:
             n = self.page_num(tab)
             name_list[n] = new_label_text
+        self.on_save_tabs()
                 
     def on_rename_tab(self, tab, angle=0, name_list=None):
                
@@ -195,6 +198,7 @@ class TabGeneral(gtk.Notebook, FControl):
             self.set_current_page(1)
             if self.get_n_pages() - 1 > FC().count_of_tabs:
                 self.remove_page(self.get_n_pages() - 1)
+            
         
     def on_delete_tab(self, child):
         n = self.page_num(child)
@@ -204,13 +208,23 @@ class TabGeneral(gtk.Notebook, FControl):
             del FCache().tab_names[n]
             del FCache().music_paths[n]
             del FCache().cache_music_tree_beans[n]
+        self.on_save_tabs()
             
     def get_current_tree(self):
         n = self.get_current_page()
         tab_child = self.get_nth_page(n)
         if tab_child:
             return tab_child.get_child()
-
+    
+    def on_save_tabs(self):
+        self.save_lock.acquire()
+        try:
+            self.save_tabs()
+            FCache().save()
+        finally:
+            if self.save_lock.locked():
+                self.save_lock.release()
+    
 TARGET_TYPE_URI_LIST = 80
 dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
 
@@ -224,6 +238,8 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.set_show_border(True)
         self.stop_handling = False
         
+        
+        
         self.connect("button-press-event", self.on_button_press) 
         self.connect('drag-data-received', self.on_system_drag_data_received)
         self.connect('switch-page', self.equalize_columns_size)
@@ -232,6 +248,9 @@ class NoteTabControl(TabGeneral, LoadSave):
         
         if not FCache().cache_pl_tab_contents:
             self.empty_tab()
+    
+    def reorder_callback(self, notebook, child, new_page_num):
+        self.on_save_tabs()
         
     def on_system_drag_data_received(self, widget, context, x, y, selection, target_type, timestamp):
         if target_type == TARGET_TYPE_URI_LIST:
@@ -361,7 +380,7 @@ class NoteTabControl(TabGeneral, LoadSave):
             else:
                 treeview.append_all(beans)
         return treeview
-        
+
     def create_notebook_tab(self, treeview):
         treeview.scroll.show_all()
         return  treeview.scroll
@@ -419,21 +438,29 @@ class NoteTabControl(TabGeneral, LoadSave):
     def on_save(self):
         pass
     
-    def on_quit(self):
+    def save_tabs(self):
         number_music_tabs = self.get_n_pages() - 1
         FCache().cache_pl_tab_contents = []
         FCache().tab_pl_names = []
         if number_music_tabs > 0:
-            for page in xrange(number_music_tabs, 0, -1):
-                tab = self.get_nth_page(page)
-                pl_tree = tab.get_child()
-                FCache().cache_pl_tab_contents.append([list(row) for row in pl_tree.model])
-                FCache().tab_pl_names.append(self.get_full_tab_name(tab))
-                for i, column in enumerate(pl_tree.get_columns()):
-                    FC().columns[column.key][1] = i
-                    if column.get_width() > 1: #to avoid recording of zero width in config
-                        FC().columns[column.key][2] = column.get_width()
-                
+            for tab_number in xrange(number_music_tabs, 0, -1):
+                self.save_nth_tab(tab_number)
+    
+    def save_nth_tab(self, tab_number):
+        tab = self.get_nth_page(tab_number)
+        pl_tree = tab.get_child()
+        FCache().cache_pl_tab_contents.append([list(row) for row in pl_tree.model])
+        FCache().tab_pl_names.append(self.get_full_tab_name(tab))
+        for i, column in enumerate(pl_tree.get_columns()):
+            FC().columns[column.key][1] = i
+            if column.get_width() > 1: #to avoid recording of zero width in config
+                FC().columns[column.key][2] = column.get_width()
+    
+    
+                        
+    def on_quit(self):
+        self.save_tabs()
+
     def equalize_columns_size(self, notebook, page_pointer, page_num):
         try:
             old_pl_tree_columns =  self.get_current_tree().get_columns()

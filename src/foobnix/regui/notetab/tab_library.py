@@ -23,13 +23,13 @@ class TabHelperControl(TabGeneral):
         """the only signal lets get the previous number of moved page"""
         self.connect("button-release-event", self.get_page_number)
         
-        self.connect("page-reordered", self.reorder_callback)
+        
         
     def on_button_press(self, w, e, *a):
         if e.button == 3:
             w.menu.show_all()
             w.menu.popup(None, None, None, e.button, e.time)
-     
+            
     def tab_menu_creator(self, widget, tab_child):
         widget.menu = Popup()
         widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, 90, FCache().tab_names), None)
@@ -43,6 +43,7 @@ class TabHelperControl(TabGeneral):
     def reorder_callback(self, notebook, child, new_page_num):
         for list in [FCache().music_paths, FCache().tab_names, FCache().cache_music_tree_beans]:
             reorderer_list(list, new_page_num, self.page_number,)
+        self.on_save_tabs()
         
     def get_page_number(self, *a):
             self.page_number = self.get_current_page()
@@ -63,4 +64,6 @@ class TabHelperControl(TabGeneral):
         tree = tab_child.get_child()
         self.controls.update_music_tree(tree, n)
         
-    
+    def save_tabs(self):
+        '''need for one_thread_save method'''
+        pass

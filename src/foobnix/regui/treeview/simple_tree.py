@@ -3,15 +3,18 @@ Created on Sep 28, 2010
 
 @author: ivan
 '''
-from foobnix.regui.state import LoadSave
+
 import gtk
+
+from foobnix.helpers.menu import Popup
+from foobnix.regui.state import LoadSave
+from foobnix.regui.model import FTreeModel
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.mouse_utils import is_rigth_click, is_double_left_click, \
     is_left_click, right_click_optimization_for_trees, is_empty_click
-from foobnix.helpers.menu import Popup
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
      DOWNLOAD_STATUS_ALL
-from foobnix.regui.model import FTreeModel
+
 
 class SimpleTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, title_name, controls, head_visible=True):        

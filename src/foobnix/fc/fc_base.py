@@ -4,12 +4,15 @@ Created on 23 сент. 2010
 
 @author: ivan
 '''
+
 from __future__ import with_statement
+
+import os
+import uuid
+
 from foobnix.fc.fc_helper import FCStates, CONFIG_DIR
 from foobnix.util.singleton import Singleton
-import random
-import uuid
-import os
+
 
 CONFIG_BASE_FILE = os.path.join(CONFIG_DIR, "foobnix_base.pkl") 
 
