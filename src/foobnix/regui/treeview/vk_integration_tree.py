@@ -126,8 +126,7 @@ class VKIntegrationControls(CommonTreeControl):
                     self.model.append(p_iter, row)
             
             for rem in old_iters:
-                self.model.remove(rem)   
-                         
+                self.model.remove(rem)     
                     
         def g_task():
             gobject.idle_add(task)
