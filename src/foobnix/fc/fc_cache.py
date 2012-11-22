@@ -6,10 +6,12 @@ Created on 20 February 2010
 '''
 
 from __future__ import with_statement
+
 import os
+import shutil
 from foobnix.util.singleton import Singleton
 from foobnix.fc.fc_helper import CONFIG_DIR, FCStates
-import shutil
+
 
 CACHE_FILE = os.path.join(CONFIG_DIR, "foobnix_cache.pkl")
 COVERS_DIR = os.path.join(CONFIG_DIR, 'covers','')

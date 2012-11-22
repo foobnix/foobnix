@@ -459,7 +459,7 @@ class NoteTabControl(TabGeneral, LoadSave):
     
                         
     def on_quit(self):
-        self.save_tabs()
+        self.on_save_tabs()
 
     def equalize_columns_size(self, notebook, page_pointer, page_num):
         try:
