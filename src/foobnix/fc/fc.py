@@ -47,6 +47,9 @@ class FC():
         """VK"""
         self.access_token =  None
         self.user_id =  None
+        
+        """LastFM"""
+        self.search_limit = 50
 
         """tabs"""
         self.len_of_tab = 30

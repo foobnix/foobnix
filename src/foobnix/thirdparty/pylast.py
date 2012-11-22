@@ -720,7 +720,6 @@ class _Request(object):
     """Representing an abstract web service operation."""
     
     def __init__(self, network, method_name, params={}):
-        
         self.params = params
         self.network = network
         
@@ -728,10 +727,10 @@ class _Request(object):
         
         self.params["api_key"] = self.api_key
         self.params["method"] = method_name
-        
+
         if network.is_caching_enabled():
             self.cache = network._get_cache_backend()
-        
+
         if self.session_key:
             self.params["sk"] = self.session_key
             self.sign_it()
@@ -770,7 +769,7 @@ class _Request(object):
         for key in keys:
             if key != "api_sig" and key != "api_key" and key != "sk":
                 cache_key += key + _string(self.params[key])
-        
+
         return hashlib.sha1(cache_key).hexdigest()
     
     def _get_cached_response(self):
@@ -779,7 +778,7 @@ class _Request(object):
         if not self._is_cached():
             response = self._download_response()
             self.cache.set_xml(self._get_cache_key(), response)
-        
+
         return self.cache.get_xml(self._get_cache_key())
     
     def _is_cached(self):
@@ -796,6 +795,7 @@ class _Request(object):
         data = []
         for name in self.params.keys():
             data.append('='.join((name, urllib.quote_plus(_string(self.params[name])))))
+        
         data = '&'.join(data)
         
         headers = {
@@ -826,6 +826,7 @@ class _Request(object):
             conn.request(method='POST', url=HOST_SUBDIR, body=data, headers=headers)
         
         response = conn.getresponse()
+        
         response_text = _unicode(response.read())
         self._check_response_for_errors(response_text)
         return response_text
@@ -837,7 +838,6 @@ class _Request(object):
             response = self._get_cached_response()
         else:
             response = self._download_response()
-        
         return minidom.parseString(_string(response))
     
     def _check_response_for_errors(self, response):
@@ -978,10 +978,17 @@ class _BaseObject(object):
     
     def __init__(self, network):
         self.network = network
+        
+        """Added by zavlab1"""
+        self.limit = FC().search_limit
     
     def _request(self, method_name, cacheable=False, params=None):
         if not params:
             params = self._get_params()
+        
+        """Added by zavlab1"""
+        if self.limit:
+            params["limit"] = str(self.limit)
             
         return _Request(self.network, method_name, params).execute(cacheable)
     
