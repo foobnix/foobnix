@@ -3497,7 +3497,6 @@ def _number(string):
     """
         Extracts an int from a string. Returns a 0 if None or an empty string was passed
     """
-    
     if not string:
         return 0
     elif string == "":

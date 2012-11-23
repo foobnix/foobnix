@@ -181,9 +181,12 @@ class NetworkConfig(ConfigPlugin):
     def on_save(self):
         if not self.is_proxy_changed():
             return
-        
-        if self.proxy_server.get_text():
-            FC().proxy_url = self.proxy_server.get_text()
+        proxy_url = self.proxy_server.get_text()
+        if proxy_url:
+            if not ":" in proxy_url:
+                logging.error("No port specified")
+                proxy_url = proxy_url + ":3128"
+            FC().proxy_url = proxy_url.strip()  
         else:
             FC().proxy_url = None
             
