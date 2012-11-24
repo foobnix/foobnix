@@ -19,7 +19,6 @@ class TabHelperControl(TabGeneral):
         TabGeneral.__init__(self, controls)
                 
         self.set_tab_pos(gtk.POS_LEFT)
-        #self._append_tab()
                
         """the only signal lets get the previous number of moved page"""
         self.connect("button-release-event", self.get_page_number)

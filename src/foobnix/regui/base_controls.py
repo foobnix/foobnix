@@ -229,15 +229,8 @@ class BaseFoobnixControls():
         self.notetabs.set_playlist_plain()
     
     def load_music_tree(self):
-        '''if not FCache().cache_music_tree_beans[0] and len(FCache().cache_music_tree_beans) == 1:
-            if FCache().tab_names[0]:
-                self.tabhelper.get_nth_page(0).get_child().label.set_label(FCache().tab_names[0] + " ")'''
         tabs = len(FCache().cache_music_tree_beans)
-        #self.tree.simple_append_all(FCache().cache_music_tree_beans[tabs - 1])
-        #self.tabhelper.get_nth_page(0).get_child().label.set_label(FCache().tab_names[tabs - 1] + " ")
         for tab in xrange(tabs - 1, -1, -1):
-            #tree = NavigationTreeControl(self)
-            #tree.simple_append_all(FCache().cache_music_tree_beans[tab])
             self.tabhelper._append_tab(FCache().tab_names[tab],
                                        beans=FCache().cache_music_tree_beans[tab],
                                        optimization=True)
@@ -275,15 +268,10 @@ class BaseFoobnixControls():
             logging.warn("Object perspective not exists yet")
         
         if not all:
-            #tree.is_empty = True
             try:
                 self.perspective.show_add_button()
             except AttributeError:
                 logging.warn("Object perspective not exists yet")
-            #all.append(FModel(_("Music not found in folder(s):")))        
-            #for path in FCache().music_paths[number_of_page]:            
-                #all.append(FModel(path).add_is_file(True))
-        #else: tree.is_empty = False
         
         tree.append_all(all)
         tree.ext_width = tree.ext_column.get_width()

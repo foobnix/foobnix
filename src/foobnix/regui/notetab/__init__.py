@@ -218,8 +218,6 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
         self.show_all()
         self.set_current_page(0) #only after show_all()
         if not self.navig:
-            #self.create_plus_tab()
-            #self.set_current_page(1)
             if self.get_n_pages() > FC().count_of_tabs:
                 self.remove_page(self.get_n_pages() - 1)
             
@@ -412,7 +410,7 @@ class NoteTabControl(TabGeneral):
                             paths.append("##" + bean.text)
                         else:
                             paths.append(bean.path)
-                #paths = [bean.path for bean in beans if bean.is_file]
+
             else:
                 logging.warning(_("It's need not empty playlist"))
             m3u_writer(filename, folder, paths)
