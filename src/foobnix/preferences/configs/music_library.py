@@ -144,8 +144,19 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
                 self.temp_music_paths.append(path)
                                  
     def remove_dir(self, *a):
+        selection = self.tree_controller.get_selection()
+        fm, paths = selection.get_selected_rows()#@UnusedVariable
+        paths.reverse()
+        for path in paths:
+            del FCache().music_paths[0][path[0]]
+            del FCache().cache_music_tree_beans[0][path[0]]
+        
         self.tree_controller.delete_selected()
-        self.temp_music_paths = [bean.path for bean in self.tree_controller.get_all_beans()]
+        remaining_beans = self.tree_controller.get_all_beans()
+        if remaining_beans:
+            self.temp_music_paths = [bean.path for bean in self.tree_controller.get_all_beans()]
+        else:
+            self.temp_music_paths = []
             
     def formats(self):
         frame = gtk.Frame(label=_("File Types"))

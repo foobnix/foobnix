@@ -157,6 +157,8 @@ class DragDropTree(gtk.TreeView):
         
         if "PlaylistTreeControl" in str(to_tree) and to_tree != from_tree:
             def task(to_iter):
+                if not to_model.get_iter_root():
+                    self.controls.notetabs.rename_tab(to_tree.scroll, "Foobnix")
                 all_rows = []
                 for ff_path in ff_paths:
                     ff_iter = ff_model.get_iter(ff_path)
@@ -181,10 +183,8 @@ class DragDropTree(gtk.TreeView):
         ff_row_refs = [gtk.TreeRowReference(ff_model, ff_path) for ff_path in ff_paths]
         
         """to tree is NavigationTreeControl"""
-        if isinstance(self, self.controls.tree.__class__):
+        if "NavigationTreeControl" in str(to_tree):
             if from_tree is not to_tree:
-                return
-            if sys.version_info < (2, 6):
                 return
             dest_folder = self.get_dest_folder(to_filter_model, to_filter_iter, to_filter_path)
             rows = [to_model[ff_path] for ff_path in ff_paths]

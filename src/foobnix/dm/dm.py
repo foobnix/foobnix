@@ -122,7 +122,7 @@ class DM(ChildTopWindow):
     def dowloader(self, dm_list):
         semaphore = threading.Semaphore(FC().amount_dm_threads)
         while True:
-            time.sleep(2)
+            time.sleep(3)
             #self.navigation.use_filter()
             semaphore.acquire()
             bean = dm_list.get_next_bean_to_dowload()            

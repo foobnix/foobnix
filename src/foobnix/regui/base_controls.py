@@ -229,27 +229,23 @@ class BaseFoobnixControls():
         self.notetabs.set_playlist_plain()
     
     def load_music_tree(self):
-        self.perspective.hide_add_button()
-        if not FCache().cache_music_tree_beans[0] and len(FCache().cache_music_tree_beans) == 1:
-            
-            self.perspective.show_add_button()
-            
-            self.tree.is_empty = True
-            
+        '''if not FCache().cache_music_tree_beans[0] and len(FCache().cache_music_tree_beans) == 1:
             if FCache().tab_names[0]:
-                self.tabhelper.get_nth_page(0).get_child().label.set_label(FCache().tab_names[0] + " ")
-        else:
-            tabs = len(FCache().cache_music_tree_beans)
-            self.tree.simple_append_all(FCache().cache_music_tree_beans[tabs - 1])
-            self.tabhelper.get_nth_page(0).get_child().label.set_label(FCache().tab_names[tabs - 1] + " ")
-            for tab in xrange(tabs - 2, -1, -1):
-                
-                tree = NavigationTreeControl(self)
-                tree.simple_append_all(FCache().cache_music_tree_beans[tab])
-                self.tabhelper._append_tab(FCache().tab_names[tab], navig_tree=tree)
-                if not FCache().cache_music_tree_beans[tab]: 
-                    tree.is_empty = True
-                    self.perspective.show_add_button()
+                self.tabhelper.get_nth_page(0).get_child().label.set_label(FCache().tab_names[0] + " ")'''
+        tabs = len(FCache().cache_music_tree_beans)
+        #self.tree.simple_append_all(FCache().cache_music_tree_beans[tabs - 1])
+        #self.tabhelper.get_nth_page(0).get_child().label.set_label(FCache().tab_names[tabs - 1] + " ")
+        for tab in xrange(tabs - 1, -1, -1):
+            #tree = NavigationTreeControl(self)
+            #tree.simple_append_all(FCache().cache_music_tree_beans[tab])
+            self.tabhelper._append_tab(FCache().tab_names[tab],
+                                       beans=FCache().cache_music_tree_beans[tab],
+                                       optimization=True)
+            tree = self.tabhelper.get_current_tree()
+            if not FCache().cache_music_tree_beans[tab]: 
+                self.perspective.show_add_button()
+            else:
+                self.perspective.hide_add_button()
             
             logging.info("Tree loaded from cache")
         
@@ -261,16 +257,13 @@ class BaseFoobnixControls():
                     self.update_music_tree(tree, n)
             gobject.idle_add(cycle)
     
-    def update_music_tree(self, tree=None, number_of_page=0):
-        if not tree:
-            tree = self.tree
-
+    def update_music_tree(self, tree, number_of_page=0):
+        
         logging.info("Update music tree" + str(FCache().music_paths[number_of_page]))
         tree.clear_tree()
         FCache().cache_music_tree_beans[number_of_page] = []
                
         all = []
-        
         
         all = get_all_music_by_paths(FCache().music_paths[number_of_page], self)
             
@@ -282,15 +275,15 @@ class BaseFoobnixControls():
             logging.warn("Object perspective not exists yet")
         
         if not all:
-            tree.is_empty = True
+            #tree.is_empty = True
             try:
                 self.perspective.show_add_button()
             except AttributeError:
                 logging.warn("Object perspective not exists yet")
-            all.append(FModel(_("Music not found in folder(s):")))        
-            for path in FCache().music_paths[number_of_page]:            
-                all.append(FModel(path).add_is_file(True))
-        else: tree.is_empty = False
+            #all.append(FModel(_("Music not found in folder(s):")))        
+            #for path in FCache().music_paths[number_of_page]:            
+                #all.append(FModel(path).add_is_file(True))
+        #else: tree.is_empty = False
         
         tree.append_all(all)
         tree.ext_width = tree.ext_column.get_width()
@@ -749,7 +742,7 @@ class BaseFoobnixControls():
         """load controls"""
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):
-                init = time.time()                
+                init = time.time()
                 self.__dict__[element].on_load()
                 logging.debug("%f LOAD ON START %s" % (time.time() - init, str(self.__dict__[element])))
         
@@ -795,7 +788,7 @@ class BaseFoobnixControls():
         current_model = filter_model.get_model()
                              
         def play_item(iter, active_playlist_tree, filter_model, current_model):
-            bean = self.tree.get_bean_from_model_iter(current_model, iter)
+            bean = active_playlist_tree.get_bean_from_model_iter(current_model, iter)
             if not bean:
                 return
                   

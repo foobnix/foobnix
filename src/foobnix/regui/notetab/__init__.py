@@ -4,6 +4,7 @@ Created on Dec 20, 2010
 
 @author: zavlab1
 '''
+
 import gtk
 import thread
 import gobject
@@ -23,19 +24,27 @@ from foobnix.regui.model import FModel, FTreeModel
 from foobnix.helpers.dialog_entry import FileSavingDialog
 from foobnix.regui.treeview.playlist_tree import PlaylistTreeControl
 from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
-from foobnix.helpers.my_widgets import tab_close_button, notetab_label
+from foobnix.helpers.my_widgets import tab_close_button, notetab_label,\
+    ImageButton
 from foobnix.util.mouse_utils import is_double_left_click, is_double_middle_click, \
     is_middle_click, is_rigth_click
+from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 
 
-class TabGeneral(gtk.Notebook, FControl):
+class TabGeneral(gtk.Notebook, FControl, LoadSave):
     def __init__(self, controls):
         gtk.Notebook.__init__(self)
         FControl.__init__(self, controls)
         self.controls = controls
+        self.set_properties("tab-expand", True)
         self.set_scrollable(True)
         self.save_lock = threading.Lock()
         self.connect("page-reordered", self.reorder_callback)
+        add_button = ImageButton(gtk.STOCK_ADD, func=self.on_add_button_click, size=gtk.ICON_SIZE_BUTTON)
+        add_button.show()
+        self.set_action_widget(add_button, gtk.PACK_START)
+        self.default_angle = 0
+        self.navig = False if isinstance(self, NoteTabControl) else True
         
     def to_eventbox(self, widget, tab_child):
         event = gtk.EventBox()
@@ -45,12 +54,33 @@ class TabGeneral(gtk.Notebook, FControl):
         event = self.tab_menu_creator(event, tab_child)
         event.show_all()
         return event
-
+    
+    def on_add_button_click(self):
+        '''abstract method'''
+        pass
+    
     def button(self, tab_child):
         if FC().tab_close_element == "button":
             return tab_close_button(func=self.on_delete_tab, arg=tab_child)
         elif FC().tab_close_element == "label":
             return notetab_label(func=self.on_delete_tab, arg=tab_child, angle=90)
+    
+    def create_notebook_content(self, beans=None, optimization=False):
+        if not self.navig:
+            treeview = PlaylistTreeControl(self.controls)
+        else:
+            treeview = NavigationTreeControl(self.controls)
+         
+        if beans: 
+            if optimization:
+                treeview.simple_append_all(beans)
+            else:
+                treeview.append_all(beans)
+        return treeview
+    
+    def create_notebook_tab(self, treeview):
+        treeview.scroll.show_all()
+        return  treeview.scroll
     
     def get_full_tab_name(self, tab):
         tab_content = tab.get_child()
@@ -130,13 +160,13 @@ class TabGeneral(gtk.Notebook, FControl):
                 tab = self.get_nth_page(page)
                 self.rename_tab(tab, tab.get_child().full_name)
     
-    def append_tab(self, name=_("Empty tab"), beans=None, navig_tree=None, optimization=False):
+    def append_tab(self, name=_("Empty tab"), beans=None, optimization=False):
         def task():
-            self._append_tab(name, beans, navig_tree, optimization)
+            self._append_tab(name, beans, optimization)
         gobject.idle_add(task)
         
         
-    def _append_tab(self, full_name=_("Empty tab"), beans=None, navig_tree=None, optimization=False):
+    def _append_tab(self, full_name=_("Empty tab"), beans=None, optimization=False):
         logging.info("append new tab")
         self.last_notebook_page = full_name
         try:
@@ -148,17 +178,12 @@ class TabGeneral(gtk.Notebook, FControl):
         
         visible_name = crop_string(full_name, FC().len_of_tab)
         
-        if navig_tree:
-            self.navig = True
-            tab = navig_tree.scroll
-            tab_content = navig_tree
+        tab_content = self.create_notebook_content(beans, optimization)
+        tab_content.label.set_angle(self.default_angle)
+        tab = self.create_notebook_tab(tab_content)
+        if self.navig:
             tab_content.label.set_angle(90)
-        else:
-            self.navig = False
-            tab_content = self.create_notebook_content(beans, optimization)
-            tab_content.label.set_angle(self.default_angle)
-            tab = self.create_notebook_tab(tab_content)
-        
+       
         tab_content.full_name = full_name
         
         """label"""
@@ -168,7 +193,7 @@ class TabGeneral(gtk.Notebook, FControl):
             tab_content.label.set_text(visible_name + " ")
         tab_content.label.show()    
         
-        if FC().tab_position == "left" or navig_tree:
+        if FC().tab_position == "left" or self.navig:
             """container Vertical Tab"""
             box = gtk.VBox(False, 0)
             box.show()
@@ -187,16 +212,15 @@ class TabGeneral(gtk.Notebook, FControl):
                         
         """append tab"""
         self.prepend_page(tab, eventbox)
-                
+        
         self.set_tab_reorderable(tab, True)
         
-        if navig_tree:
-            self.show_all()
-            self.set_current_page(0) #only after show_all()
-        else:
-            self.create_plus_tab()
-            self.set_current_page(1)
-            if self.get_n_pages() - 1 > FC().count_of_tabs:
+        self.show_all()
+        self.set_current_page(0) #only after show_all()
+        if not self.navig:
+            #self.create_plus_tab()
+            #self.set_current_page(1)
+            if self.get_n_pages() > FC().count_of_tabs:
                 self.remove_page(self.get_n_pages() - 1)
             
         
@@ -228,18 +252,15 @@ class TabGeneral(gtk.Notebook, FControl):
 TARGET_TYPE_URI_LIST = 80
 dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
 
-class NoteTabControl(TabGeneral, LoadSave):
+class NoteTabControl(TabGeneral):
     def __init__(self, controls):
         TabGeneral.__init__(self, controls)
-        
-        self.default_angle = 0
+                
         self.last_notebook_page = ""
         self.active_tree = None
         self.set_show_border(True)
         self.stop_handling = False
-        
-        
-        
+                
         self.connect("button-press-event", self.on_button_press) 
         self.connect('drag-data-received', self.on_system_drag_data_received)
         self.connect('switch-page', self.equalize_columns_size)
@@ -247,7 +268,7 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP, dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY) #@UndefinedVariable
         
         if not FCache().cache_pl_tab_contents:
-            self.empty_tab()
+            self.append_tab()
     
     def reorder_callback(self, notebook, child, new_page_num):
         self.on_save_tabs()
@@ -322,7 +343,8 @@ class NoteTabControl(TabGeneral, LoadSave):
         self.plus_tab_child = notetab_label(func=self.empty_tab, arg=None, angle=0, symbol="Click me")
         self.prepend_page(self.plus_tab_child, append_label)
       
-    
+    def on_add_button_click(self):
+        self._append_tab()
         
     def set_tab_left(self):
         logging.info("Set tabs Left")
@@ -372,18 +394,9 @@ class NoteTabControl(TabGeneral, LoadSave):
         logging.info("Set tabs no")
         self.set_show_tabs(False)
     
-    def create_notebook_content(self, beans, optimization=False):
-        treeview = PlaylistTreeControl(self.controls)
-        if beans: 
-            if optimization:
-                treeview.simple_append_all(beans)
-            else:
-                treeview.append_all(beans)
-        return treeview
+    
 
-    def create_notebook_tab(self, treeview):
-        treeview.scroll.show_all()
-        return  treeview.scroll
+    
     
     def on_save_playlist(self, tab_child):
         name = self.get_text_label_from_tab(tab_child)
@@ -414,13 +427,12 @@ class NoteTabControl(TabGeneral, LoadSave):
             self.set_tab_left()
         else: 
             self.set_tab_top()
-            
+
         for page in xrange(0, len(FCache().cache_pl_tab_contents)):
             if FCache().cache_pl_tab_contents[page] == []:
                 self._append_tab(FCache().tab_pl_names[page])
                 continue
             self._append_tab(FCache().tab_pl_names[page])
-            
             model_len = len(FTreeModel().__dict__)
             cache_len = len(FCache().cache_pl_tab_contents[page][0])
             
@@ -439,13 +451,13 @@ class NoteTabControl(TabGeneral, LoadSave):
         pass
     
     def save_tabs(self):
-        number_music_tabs = self.get_n_pages() - 1
+        number_music_tabs = self.get_n_pages()
         FCache().cache_pl_tab_contents = []
         FCache().tab_pl_names = []
         if number_music_tabs > 0:
-            for tab_number in xrange(number_music_tabs, 0, -1):
+            for tab_number in xrange(self.get_n_pages() -1, -1, -1):
                 self.save_nth_tab(tab_number)
-    
+        
     def save_nth_tab(self, tab_number):
         tab = self.get_nth_page(tab_number)
         pl_tree = tab.get_child()
@@ -455,8 +467,6 @@ class NoteTabControl(TabGeneral, LoadSave):
             FC().columns[column.key][1] = i
             if column.get_width() > 1: #to avoid recording of zero width in config
                 FC().columns[column.key][2] = column.get_width()
-    
-    
                         
     def on_quit(self):
         self.on_save_tabs()

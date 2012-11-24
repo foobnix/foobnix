@@ -88,7 +88,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     
     def rename_selected(self, text):
         selection = self.get_selection()
-        fm, paths = selection.get_selected_rows()
+        fm, paths = selection.get_selected_rows()#@UnusedVariable
         path = paths[0]
         path = self.filter_model.convert_path_to_child_path(path)        
         iter = self.model.get_iter(path)
@@ -197,7 +197,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
     def delete_selected(self):
         selection = self.get_selection()
-        fm, paths = selection.get_selected_rows()
+        fm, paths = selection.get_selected_rows()#@UnusedVariable
         paths.reverse()
         for path in paths:
             path = self.filter_model.convert_path_to_child_path(path)
@@ -217,7 +217,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         selection = self.get_selection()
         if not selection:
             return None
-        model, paths = selection.get_selected_rows()
+        model, paths = selection.get_selected_rows()#@UnusedVariable
         if not paths:
             return None
         return paths
@@ -388,7 +388,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
         results = []
 
-        for i in xrange(n):
+        for i in xrange(n):#@UnusedVariable
             path = model.get_path(iterch)
             bean = self._get_bean_by_path(path)
             results.append(bean)
@@ -407,7 +407,6 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def get_all_beans(self):
         results = []
         next = self.model.get_iter_first()
-        
         if next:
             parent = self.get_bean_from_iter(next) 
             results += [parent] + self.get_child_beans_by_parent(self.model, next)
@@ -440,7 +439,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 
     def get_all_selected_beans(self):
         selection = self.get_selection()
-        model, paths = selection.get_selected_rows()
+        model, paths = selection.get_selected_rows()#@UnusedVariable
         if not paths:
             return None
         beans = []
@@ -497,3 +496,9 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             callback(values)
         self.connect("row-expanded", on_expand_collapse)
         self.connect("row-collapsed", on_expand_collapse)
+    
+    def is_empty(self):
+        if not self.get_model().get_iter_root():
+            return True
+        else:
+            return False

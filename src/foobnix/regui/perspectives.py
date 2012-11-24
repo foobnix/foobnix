@@ -10,6 +10,7 @@ import thread
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
+from foobnix.fc.fc_cache import FCache
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.toggled import OneActiveToggledButton
@@ -17,6 +18,7 @@ from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
 from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, \
     LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_MY_RADIO, \
     LEFT_PERSPECTIVE_LASTFM, LEFT_PERSPECTIVE_VK
+
 
 
 class PerspectiveControls(FControl, gtk.VBox, LoadSave):
@@ -39,7 +41,7 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         self.buttons.show_all()
         
         self.add_button = ButtonStockText(_(" Add Folder(s) in tree"), gtk.STOCK_ADD)
-        self.add_button.connect("clicked", lambda * a :controls.tree.add_folder())
+        self.add_button.connect("clicked", lambda * a :controls.tabhelper.get_current_tree().add_folder())
         
         self.switch_radio_button = gtk.Button()
         self.switch_radio_button.connect("clicked", lambda *a: self.on_radio_buttons_click())        
@@ -101,6 +103,7 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
     
     def on_load(self):  
         self.activate_perspective(LEFT_PERSPECTIVE_NAVIGATION)
+        
         
     def on_save(self):
         pass
