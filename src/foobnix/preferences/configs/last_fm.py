@@ -54,6 +54,17 @@ class LastFmConfig(ConfigPlugin):
         self.password_text.set_invisible_char("*")
         self.password_text.show()
         
+        limit_text = gtk.Label(_("Limit search results:  "))
+        limit_text.show()
+        
+        self.adjustment = gtk.Adjustment(value=50, lower=10, upper=200, step_incr=10)
+        limit = gtk.SpinButton(self.adjustment, climb_rate=0.0, digits=0)
+        limit.show()
+        
+        limitbox = gtk.HBox(False, 0)
+        limitbox.pack_start(limit_text, False, False)
+        limitbox.pack_start(limit, False, False)
+        
         self.music_scrobbler = gtk.CheckButton(label=_("Enable Music Scrobbler"), use_underline=True)
         self.music_scrobbler.show()
         
@@ -62,11 +73,13 @@ class LastFmConfig(ConfigPlugin):
         
         pbox.pack_start(password, False, False, 0)
         pbox.pack_start(self.password_text, False, True, 0)
-        
+                
         l_layout.pack_start(lbox, False, True, 0)
         l_layout.pack_start(pbox, False, True, 0)
+        l_layout.pack_start(limitbox, False, True, 10)
         l_layout.pack_start(self.music_scrobbler, False, True, 0)
         l_layout.pack_start(self.radio_scrobbler, False, True, 0)
+        
         l_frame.add(l_layout)
         
         """VK"""
@@ -110,6 +123,7 @@ class LastFmConfig(ConfigPlugin):
     def on_load(self):
         self.login_text.set_text(FCBase().lfm_login)
         self.password_text.set_text(FCBase().lfm_password)
+        self.adjustment.set_value(FC().search_limit)
         self.music_scrobbler.set_active(FC().enable_music_scrobbler)
         self.radio_scrobbler.set_active(FC().enable_radio_scrobbler)
     
@@ -119,7 +133,7 @@ class LastFmConfig(ConfigPlugin):
         
         FCBase().lfm_login = self.login_text.get_text()
         FCBase().lfm_password = self.password_text.get_text() 
-        
+        FC().search_limit = self.adjustment.get_value()
         FC().enable_music_scrobbler = self.music_scrobbler.get_active()
         FC().enable_radio_scrobbler = self.radio_scrobbler.get_active()
         

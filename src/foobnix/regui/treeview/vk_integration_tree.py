@@ -106,22 +106,27 @@ class VKIntegrationControls(CommonTreeControl):
         
         
         def task():
-            for line in self.controls.vk_service.get_result('audio.get',"uid="+parent.user_id):
-                logging.debug(line);
-                bean = FModel(line['artist']+' - '+line['title'])
-                
-                bean.aritst = line['artist']
-                bean.title = line['title']
-                bean.time = convert_seconds_to_text(line['duration'])
-                bean.path = line['url']
-                bean.is_file = True
-                
+            result = self.controls.vk_service.get_result('audio.get',"uid="+parent.user_id)
+            if not result:
+                bean = FDModel(_("No results found")).parent(parent).add_is_file(True)
                 row = self.get_row_from_bean(bean);
                 self.model.append(p_iter, row)
+            else:
+                for line in result:
+                    logging.debug(line);
+                    bean = FModel(line['artist']+' - '+line['title'])
+                
+                    bean.aritst = line['artist']
+                    bean.title = line['title']
+                    bean.time = convert_seconds_to_text(line['duration'])
+                    bean.path = line['url']
+                    bean.is_file = True
+                
+                    row = self.get_row_from_bean(bean);
+                    self.model.append(p_iter, row)
             
             for rem in old_iters:
-                self.model.remove(rem)   
-                         
+                self.model.remove(rem)     
                     
         def g_task():
             gobject.idle_add(task)

@@ -174,11 +174,13 @@ class VKAuthorizationWindow(gtk.Dialog):
             self.apply(token, userid)
         elif "error" in uri:
             logging.error("error in response: " + uri)
-            self.hide()
+            self.service.reset_vk()
+            zavlab_string = "<html><body><p align='center'>There was an error when entering the service vkontakte<br>Your authorization data have been reset<br>Try to enter again</p></body></html>"
+            self.web_view.load_html_string(zavlab_string, "file:///")
         elif "login?act=blocked" in uri:
             logging.warning("blocked in response: " + uri)
             self.service.reset_vk()
-            zavlab_string = "<html><body><p>The login is blocked</p></body></html>"
+            zavlab_string = "<html><body><p align='center'>The login is blocked</p></body></html>"
             self.web_view.load_html_string(zavlab_string, "file:///")
         return False
         
@@ -247,7 +249,7 @@ class VKService:
     
     def is_authorized(self):
         self.result = None
-        
+
         def task_is_authorized():
             if self.is_connected():
                 self.result = True

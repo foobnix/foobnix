@@ -7,9 +7,9 @@ Created on 25 сент. 2010
 
 import os
 import gtk
+import thread
 import logging
 import gobject
-import threading
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
@@ -19,11 +19,12 @@ from foobnix.regui.state import LoadSave
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
-    delete_files_from_disk, create_folder_dialog, get_file_extension
+    delete_files_from_disk, create_folder_dialog
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
     is_middle_click_release, is_middle_click, right_click_optimization_for_trees,\
     is_empty_click
 from foobnix.util.m3u_utils import is_m3u
+
 
     
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -73,7 +74,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.configure_recive_drag()
         
         self.set_type_tree()
-        self.is_empty = False
+        #self.is_empty = False
         self.connect("button-release-event", self.on_button_release)
         
         '''to force the ext_column to take the minimum size'''
@@ -219,7 +220,10 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 '''gobject because rebuild_as_plain use it too'''
                 gobject.idle_add(self.controls.play_first_file_in_playlist)
             
+            thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
+            
         self.controls.search_progress.background_spinner_wrapper(task, to_tree, to_model)
+        
         
         
 
@@ -242,17 +246,17 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 FCache().last_music_path = path[:path.rfind("/")]
                 tree = self
                 number_of_tab = self.controls.tabhelper.page_num(tree.scroll)
-                          
+                       
                 if in_new_tab:
-                    tree = NavigationTreeControl(self.controls)
                     tab_name = unicode(path[path.rfind("/") + 1:])
-                    self.controls.tabhelper._append_tab(tab_name, navig_tree=tree)
+                    self.controls.tabhelper._append_tab(tab_name)
+                    tree = self.controls.tabhelper.get_current_tree()
                     number_of_tab = self.controls.tabhelper.get_current_page()
                     FCache().music_paths.insert(0, [])
                     FCache().tab_names.insert(0, tab_name)
                     FCache().cache_music_tree_beans.insert(0, [])
                 
-                elif tree.is_empty:
+                elif tree.is_empty():
                     tab_name = unicode(path[path.rfind("/") + 1:])
                     vbox = gtk.VBox()
                     label = gtk.Label(tab_name + " ")
@@ -315,7 +319,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             self.normalize_columns_width()
         
     def on_load(self):
-        self.controls.load_music_tree()
+        #self.controls.load_music_tree()
         self.restore_expand(FC().nav_expand_paths)
         self.restore_selection(FC().nav_selected_paths)
         
@@ -327,10 +331,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             
         self.expand_updated(set_expand_path)
         self.selection_changed(set_selected_path)
-        
-        """tab choose"""
-        if FC().tabs_mode == "Single":
-            self.controls.tabhelper.set_show_tabs(False)
         
     def on_save(self):
         pass

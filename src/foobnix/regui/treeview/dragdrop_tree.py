@@ -7,8 +7,8 @@ Created on Oct 14, 2010
 import gtk
 import sys
 import copy
-import time
 import uuid
+import thread
 import gobject
 import logging
 import os.path
@@ -26,6 +26,7 @@ from foobnix.util.m3u_utils import m3u_reader, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.regui.model import FModel, FTreeModel
+
 
 
 VIEW_PLAIN = 0
@@ -61,7 +62,7 @@ class DragDropTree(gtk.TreeView):
     def append_all(self, beans):
         logging.debug("begin append all")
         if self.current_view == VIEW_PLAIN:
-            self.plain_append_all(beans)            
+            self.plain_append_all(beans)
         else:
             self.tree_append_all(beans)
     
@@ -73,10 +74,12 @@ class DragDropTree(gtk.TreeView):
             logging.debug("simple_append_all")
             for bean in beans:
                 row = self.get_row_from_bean(bean)            
-                self.model.append(None, row)               
+                self.model.append(None, row)
+            if "PlaylistTreeControl" in str(self):
+                thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())         
         else:
             self.tree_append_all(beans)
-    
+
     def append(self, bean):
         if self.current_view == VIEW_PLAIN:
             self.plain_append_all([bean])
@@ -154,6 +157,8 @@ class DragDropTree(gtk.TreeView):
         
         if "PlaylistTreeControl" in str(to_tree) and to_tree != from_tree:
             def task(to_iter):
+                if not to_model.get_iter_root():
+                    self.controls.notetabs.rename_tab(to_tree.scroll, "Foobnix")
                 all_rows = []
                 for ff_path in ff_paths:
                     ff_iter = ff_model.get_iter(ff_path)
@@ -178,10 +183,8 @@ class DragDropTree(gtk.TreeView):
         ff_row_refs = [gtk.TreeRowReference(ff_model, ff_path) for ff_path in ff_paths]
         
         """to tree is NavigationTreeControl"""
-        if isinstance(self, self.controls.tree.__class__):
+        if "NavigationTreeControl" in str(to_tree):
             if from_tree is not to_tree:
-                return
-            if sys.version_info < (2, 6):
                 return
             dest_folder = self.get_dest_folder(to_filter_model, to_filter_iter, to_filter_path)
             rows = [to_model[ff_path] for ff_path in ff_paths]
@@ -655,7 +658,11 @@ class DragDropTree(gtk.TreeView):
         
     def plain_append_all(self, beans, parent=None):
         def task():
-            self._plain_append_all(beans, parent)
+            try:
+                self._plain_append_all(beans, parent)
+            finally:
+                if "PlaylistTreeControl" in str(self):
+                    thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
         gobject.idle_add(task)
     
     def _plain_append_all(self, beans, parent=None):

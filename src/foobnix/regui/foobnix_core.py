@@ -51,7 +51,7 @@ class FoobnixCore(BaseFoobnixControls):
         self.media_engine = GStreamerEngine(self)
         
         """elements"""
-        self.tree = NavigationTreeControl(self)
+        
         self.tabhelper = TabHelperControl(self)
                 
         self.volume = VolumeControls(self)

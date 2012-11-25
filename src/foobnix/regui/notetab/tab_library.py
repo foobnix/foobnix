@@ -7,6 +7,7 @@ Created on Dec 7, 2010
 
 import gtk
 
+from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
 from foobnix.util.list_utils import reorderer_list
 from foobnix.helpers.menu import Popup
@@ -18,18 +19,22 @@ class TabHelperControl(TabGeneral):
         TabGeneral.__init__(self, controls)
                 
         self.set_tab_pos(gtk.POS_LEFT)
-        self._append_tab(navig_tree=self.controls.tree)
-        
+               
         """the only signal lets get the previous number of moved page"""
         self.connect("button-release-event", self.get_page_number)
         
-        self.connect("page-reordered", self.reorder_callback)
-        
+    def on_add_button_click(self):
+        self._append_tab()
+        self.controls.perspective.show_add_button()
+        FCache().music_paths.insert(0, [])
+        FCache().tab_names.insert(0, self.get_full_tab_name(self.get_current_tree().scroll))
+        FCache().cache_music_tree_beans.insert(0, [])
+    
     def on_button_press(self, w, e, *a):
         if e.button == 3:
             w.menu.show_all()
             w.menu.popup(None, None, None, e.button, e.time)
-     
+            
     def tab_menu_creator(self, widget, tab_child):
         widget.menu = Popup()
         widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, 90, FCache().tab_names), None)
@@ -43,6 +48,7 @@ class TabHelperControl(TabGeneral):
     def reorder_callback(self, notebook, child, new_page_num):
         for list in [FCache().music_paths, FCache().tab_names, FCache().cache_music_tree_beans]:
             reorderer_list(list, new_page_num, self.page_number,)
+        self.on_save_tabs()
         
     def get_page_number(self, *a):
             self.page_number = self.get_current_page()
@@ -56,11 +62,19 @@ class TabHelperControl(TabGeneral):
         tree = tab_child.get_child()
         tree.clear_tree()
         FCache().cache_music_tree_beans[n] = []
-        tree.is_empty = True
             
     def on_update_music_tree(self, tab_child):
         n = self.page_num(tab_child)
         tree = tab_child.get_child()
         self.controls.update_music_tree(tree, n)
+    
+    def on_load(self):
+        if FC().tabs_mode == "Single":
+            self.set_show_tabs(False)
         
+        self.controls.load_music_tree()
+        
+    def save_tabs(self):
+        '''need for one_thread_save method'''
+        pass
     

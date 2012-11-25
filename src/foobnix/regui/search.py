@@ -64,7 +64,7 @@ class SearchControls(FControl, gtk.VBox):
         online_text = _("Online Music Search, Play, Download")        
         
         def on_activate():
-            logging.debug("on_activate" + self.entry.get_text())
+            logging.debug("on_activate " + self.entry.get_text())
             if online_text == self.entry.get_text():
                 self.entry.set_text("")
             

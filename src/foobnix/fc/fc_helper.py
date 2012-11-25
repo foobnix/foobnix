@@ -9,6 +9,7 @@ from __future__ import with_statement
 import os
 import logging
 import cPickle
+import threading
 
 CONFIG_DIR = os.path.join(os.path.expanduser("~") , ".config", "foobnix", "")
 if not os.path.exists(CONFIG_DIR):
@@ -23,7 +24,7 @@ class FCStates:
         #    thread.start_new_thread(FCHelper().save, (fc,))
         #else:
         FCHelper().save(fc, file)
-        
+
     def load(self, fc, file):
         """restore from file"""
         object = FCHelper().load(file)
@@ -47,22 +48,31 @@ class FCStates:
         
 class FCHelper():
     def __init__(self):
+        self.save_lock = threading.Lock()
         pass
 
     def save(self, object, file_path):
-        save_file = file(file_path, 'w')
+        self.save_lock.acquire()
         try:
-            cPickle.dump(object, save_file)
-        except Exception, e:
-            logging.error("Erorr dumping pickle conf" + str(e))
-        save_file.close()
-        logging.debug("Config save")
-        self.print_info(object);
+            save_file = file(file_path, 'w')
+            try:
+                cPickle.dump(object, save_file)
+            except Exception, e:
+                logging.error("Erorr dumping pickle conf" + str(e))
+            save_file.close()
+            logging.debug("Config save")
+            self.print_info(object)
+        finally:
+            if self.save_lock.locked():
+                self.save_lock.release()
 
 
     def load(self, file_path):
         if not os.path.exists(file_path):
             logging.debug("Config file not found" + file_path)
+            if not file_path.endswith("_backup"):
+                logging.info("Try to load config backup")
+                return self.load(file_path + "_backup")
             return None
 
         with file(file_path, 'r') as load_file:
@@ -76,6 +86,9 @@ class FCHelper():
                 return object
             except Exception, e:
                 logging.error("Error load config" + str(e))
+                if not file_path.endswith("_backup"):
+                    logging.info("Try to load config backup")
+                    return self.load(file_path + "_backup")
         return None
 
 
