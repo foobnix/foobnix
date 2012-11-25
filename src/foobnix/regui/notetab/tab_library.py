@@ -25,6 +25,7 @@ class TabHelperControl(TabGeneral):
         
     def on_add_button_click(self):
         self._append_tab()
+        self.controls.perspective.show_add_button()
         FCache().music_paths.insert(0, [])
         FCache().tab_names.insert(0, self.get_full_tab_name(self.get_current_tree().scroll))
         FCache().cache_music_tree_beans.insert(0, [])
