@@ -55,7 +55,7 @@ def end_session():
 """ User  Type in  Player """    
 def error(exDescription="Error"):
     send(d={"t":"exception","exd":exDescription})
-    logging.debug("analytics: error"+exDescription);
+    logging.debug("analytics: error");
      
 if __name__ == '__main__':
     begin_session()
