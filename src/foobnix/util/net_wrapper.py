@@ -11,12 +11,12 @@ import base64
 import socket
 import thread
 import logging
-
-from foobnix.helpers.window import MessageWindow
-from foobnix.fc.fc import FC
-from foobnix.regui.service.lastfm_service import LastFmService
-from foobnix.regui.service.vk_service import VKService
 import gobject
+
+from foobnix.fc.fc import FC
+from foobnix.helpers.window import MessageWindow
+from foobnix.regui.service.vk_service import VKService
+from foobnix.regui.service.lastfm_service import LastFmService
 
 
 class NetWrapper():
@@ -103,7 +103,7 @@ class NetWrapper():
             auth = base64.b64encode(FC().proxy_user + ":" + FC().proxy_password).strip()
             try:
                 s.connect((host, int(port)))
-                s.action('GET %s HTTP/1.1' % url + '\r\n' + 'Proxy-Authorization: Basic %s' % auth + '\r\n\r\n')
+                s.send('GET %s HTTP/1.1' % url + '\r\n' + 'Proxy-Authorization: Basic %s' % auth + '\r\n\r\n')
                 data = s.recv(1024)
                 s.close()
                 if not data:

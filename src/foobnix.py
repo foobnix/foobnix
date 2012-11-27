@@ -7,8 +7,8 @@ import time
 import gobject
 
 from threading import Timer
-from foobnix.util import LOG
 from foobnix.fc.fc import FC
+from foobnix.util import LOG, analytics
 from foobnix.fc.fc_helper import CONFIG_DIR
 
 
@@ -61,6 +61,8 @@ def foobnix():
             print ("******Foobnix run in", time.time() - init_time, " seconds******")
             if sys.argv:
                 Timer(1, gobject.idle_add, [core.check_for_media, sys.argv]).start()
+            else:
+                analytics.action("Start")
             gtk.main()
         else:
             print (iface.parse_arguments(sys.argv))

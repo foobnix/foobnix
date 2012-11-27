@@ -3,12 +3,14 @@ Created on Nov 27, 2012
 
 @author: iivanenko
 '''
-import urllib2
+
 import urllib
-from foobnix.version import FOOBNIX_VERSION
-from foobnix.fc.fc_base import FCBase
 import logging
+import urllib2
+
+from foobnix.fc.fc_base import FCBase
 from foobnix.util.const import SITE_LOCALE
+from foobnix.version import FOOBNIX_VERSION
 
 """
 https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide
@@ -35,8 +37,8 @@ def action(event_type="unknown"):
     response = urllib2.urlopen(api_url, enq, timeout=7)
     
     logging.debug("action analytics" + enq);
-    print enq    
-    print response.read()
+    #print enq    
+    #print response.read()
 
 """ User  Start Player """    
 def begin_session():
