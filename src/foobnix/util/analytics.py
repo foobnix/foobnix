@@ -19,7 +19,8 @@ https://developers.google.com/analytics/devguides/collection/protocol/v1/paramet
 
 api_url = "http://www.google-analytics.com/collect" 
 
-def send(event_type="unknown"):
+""" User Open or user Some Feature"""
+def action(event_type="unknown"):
     params = {"v":"1",
               "tid":"UA-36625986-1",
                "cid":FCBase().uuid,
@@ -33,17 +34,24 @@ def send(event_type="unknown"):
     enq = urllib.urlencode(params)
     response = urllib2.urlopen(api_url, enq, timeout=7)
     
-    logging.debug("send analytics" + enq);
+    logging.debug("action analytics" + enq);
     print enq    
     print response.read()
-    
+
+""" User  Start Player """    
 def begin_session():
-    "To Future"
+    """ To implement """
     None
     
+""" User  Stop Player """    
 def end_session():
-    "To Future"
+    """ To implement """
     None   
+
+""" User  Type in  Player """    
+def error(error_type=""):
+    """ To implement """
+    None    
      
 if __name__ == '__main__':
-    send("Radio")  
+    action("Radio")  

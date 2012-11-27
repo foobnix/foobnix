@@ -103,7 +103,7 @@ class NetWrapper():
             auth = base64.b64encode(FC().proxy_user + ":" + FC().proxy_password).strip()
             try:
                 s.connect((host, int(port)))
-                s.send('GET %s HTTP/1.1' % url + '\r\n' + 'Proxy-Authorization: Basic %s' % auth + '\r\n\r\n')
+                s.action('GET %s HTTP/1.1' % url + '\r\n' + 'Proxy-Authorization: Basic %s' % auth + '\r\n\r\n')
                 data = s.recv(1024)
                 s.close()
                 if not data:
