@@ -75,6 +75,7 @@ else:
         foobnix()
         analytics.end_session()
     except Exception, e:
+        analytics.end_session()
         analytics.error("Main Exception"+str(e))
         print e
         FC().save()
