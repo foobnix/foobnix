@@ -10,6 +10,7 @@ from foobnix.regui.state import LoadSave
 from foobnix.regui.model.eq_model import EqModel
 from foobnix.fc.fc import FC
 import logging
+from foobnix.util import analytics
 
 class EqController(FControl, LoadSave):
     def __init__(self, controls):
@@ -21,6 +22,7 @@ class EqController(FControl, LoadSave):
     
     def show(self):
         self.eq_view.show_all()
+        analytics.action("EqController");
         
     def hide(self):
         self.eq_view.hide()

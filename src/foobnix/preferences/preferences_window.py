@@ -21,6 +21,7 @@ from foobnix.preferences.configs.other_conf import OtherConfig
 from foobnix.preferences.configs.network_conf import NetworkConfig
 from foobnix.preferences.configs.tray_icon_conf import TrayIconConfig
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
+from foobnix.util import analytics
 
 
 
@@ -91,6 +92,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.show_all()
         self.populate_config_category(current)
         self.on_load()
+        analytics.action("PreferencesWindow");
     
     def on_load(self):
         logging.debug("LOAD PreferencesWindow")

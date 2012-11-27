@@ -62,4 +62,7 @@ def print_platform_info():
     logging.debug('interpreter:' + str(platform.architecture()))
     logging.debug('/bin/ls    :' + str(platform.architecture('/bin/ls')))
     logging.debug('*******************************************************')
-        
+
+if __name__ == '__main__':
+    setup("debug")
+    print_platform_info()     

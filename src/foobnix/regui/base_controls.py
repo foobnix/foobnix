@@ -36,6 +36,7 @@ from foobnix.util.m3u_utils import m3u_reader
 from foobnix.util.text_utils import normalize_text
 from foobnix.util.version import compare_versions
 from foobnix.version import FOOBNIX_VERSION
+from foobnix.util import analytics
 
 
 class BaseFoobnixControls():
@@ -522,6 +523,7 @@ class BaseFoobnixControls():
     
     def search_all_tracks(self, query):
         def search_all_tracks_task():
+            analytics.action("SEARCH_search_all_tracks");
             results = self.vk_service.find_tracks_by_query(query)
             if not results:
                 results = []
@@ -541,6 +543,7 @@ class BaseFoobnixControls():
 
     def search_top_tracks(self, query):
         def search_top_tracks_task(query):
+            analytics.action("SEARCH_search_top_tracks");
             results = self.lastfm_service.search_top_tracks(query)
             if not results:
                 results = []
@@ -556,11 +559,15 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
                 
             self.notetabs.append_tab(query, all)
+            
+            
         self.in_thread.run_with_progressbar(search_top_tracks_task, query)
 
 
     def search_top_albums(self, query):
+       
         def search_top_albums_task(query):
+            analytics.action("SEARCH_search_top_albums");
             results = self.lastfm_service.search_top_albums(query)
             if not results:
                 results = []
@@ -589,7 +596,9 @@ class BaseFoobnixControls():
         self.in_thread.run_with_progressbar(search_top_albums_task, query)
 
     def search_top_similar(self, query):
+       
         def search_top_similar_task(query):
+            analytics.action("SEARCH_search_top_similar");
             results = self.lastfm_service.search_top_similar_artist(query)
             if not results:
                 results = []
@@ -614,7 +623,9 @@ class BaseFoobnixControls():
         self.in_thread.run_with_progressbar(search_top_similar_task, query)
 
     def search_top_tags(self, query):
+       
         def search_top_tags_task(query):
+            analytics.action("SEARCH_search_top_tags");
             results = self.lastfm_service.search_top_tags(query)
             if not results:
                 logging.debug("tag result not found")

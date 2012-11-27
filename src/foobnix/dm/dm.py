@@ -22,6 +22,7 @@ from foobnix.regui.treeview.dm_nav_tree import DMNavigationTreeControl
 from foobnix.util.const import DOWNLOAD_STATUS_INACTIVE, DOWNLOAD_STATUS_ACTIVE, \
     DOWNLOAD_STATUS_COMPLETED, DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_ALL, \
     DOWNLOAD_STATUS_STOP, DOWNLOAD_STATUS_ERROR
+from foobnix.util import analytics
 
 
 class DMControls(MyToolbar):
@@ -96,6 +97,7 @@ class DM(ChildTopWindow):
         
     def show(self):
         self.show_all()
+        analytics.action("DM");
     
     def append_task(self, bean, save_to=None):
         """download only remote files"""

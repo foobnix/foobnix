@@ -18,6 +18,7 @@ from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
 from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, \
     LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_MY_RADIO, \
     LEFT_PERSPECTIVE_LASTFM, LEFT_PERSPECTIVE_VK
+from foobnix.util import analytics
 
 
 
@@ -77,6 +78,8 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
             self.switch_radio_button.show()
         else:
             self.switch_radio_button.hide()
+        
+        analytics.action("PERSPECTIVE_"+name);
             
     def on_radio_buttons_click(self):
         for name in self.perspectivs.keys():

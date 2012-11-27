@@ -1,4 +1,4 @@
-#Mon Oct 31 21:02:05 EET 2011
+#Tue Nov 27 22:14:44 EET 2012
 eclipse.preferences.version=1
 encoding//foobnix/eq/eq_controller.py=utf-8
 encoding//foobnix/eq/eq_gui.py=utf-8
@@ -18,11 +18,13 @@ encoding//foobnix/regui/base_controls.py=utf-8
 encoding//foobnix/regui/base_layout.py=utf-8
 encoding//foobnix/regui/controls/dbus_manager.py=utf-8
 encoding//foobnix/regui/controls/filter.py=utf-8
+encoding//foobnix/regui/controls/movie_area.py=utf-8
 encoding//foobnix/regui/controls/seach_progress.py=utf-8
 encoding//foobnix/regui/controls/seekbar.py=utf-8
 encoding//foobnix/regui/controls/tray_icon.py=utf-8
 encoding//foobnix/regui/engine/gstreamer.py=utf-8
 encoding//foobnix/regui/foobnix_core.py=utf-8
+encoding//foobnix/regui/model/signal.py=utf-8
 encoding//foobnix/regui/notetab/__init__.py=utf-8
 encoding//foobnix/regui/notetab/tab_library.py=utf-8
 encoding//foobnix/regui/perspectives.py=utf-8
@@ -43,8 +45,10 @@ encoding//foobnix/util/converter.py=utf-8
 encoding//foobnix/util/id3_util.py=utf-8
 encoding//foobnix/util/image_util.py=utf-8
 encoding//foobnix/util/list_utils.py=utf-8
+encoding//foobnix/util/localization.py=utf-8
 encoding//foobnix/util/m3u_utils.py=utf-8
 encoding//foobnix/util/net_wrapper.py=utf-8
+encoding//foobnix/util/proxy_connect.py=utf-8
 encoding//foobnix/util/single_thread.py=utf-8
 encoding//foobnix/util/tag_util.py=utf-8
 encoding//foobnix/util/url_utils.py=utf-8

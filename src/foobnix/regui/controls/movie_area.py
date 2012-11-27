@@ -12,6 +12,7 @@ from foobnix.regui.controls.playback import PlaybackControls
 from foobnix.util.key_utils import is_key, is_key_alt, get_key
 from foobnix.helpers.my_widgets import notetab_label, ImageButton
 import threading
+from foobnix.util import analytics
 
 
 class AdvancedDrawingArea(gtk.DrawingArea):
@@ -161,6 +162,7 @@ class MovieDrawingArea(FControl, gtk.Frame):
         self.fullscrean_area.show_window()        
         self.set_output(self.fullscrean_area.get_draw())      
         self.controls.state_play(True, under_pointer_icon=True)
+        analytics.action("FullScreanArea");
                 
     def set_text(self, text):
         gobject.idle_add(self.fullscrean_area.set_text, text)

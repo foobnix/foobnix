@@ -7,7 +7,7 @@ import time
 import gobject
 
 from threading import Timer
-from foobnix.util import LOG
+from foobnix.util import LOG, analytics
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_helper import CONFIG_DIR
 
@@ -70,7 +70,10 @@ if "--profile" in sys.argv:
     cProfile.run('foobnix()')
 else:    
     try:
+        analytics.begin_session()
         foobnix()
+        analytics.end_session()
     except Exception, e:
+        analytics.error("Main Exception"+str(e))
         print e
         FC().save()
