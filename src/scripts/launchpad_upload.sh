@@ -1,6 +1,7 @@
 #!/bin/bash
 pwd
 rm -rf ../../build/*.*
+mkdir ../../build
 cd ../
 
 python setup.py build
@@ -40,12 +41,15 @@ do
 	
 	#dch -e
 	
-	debuild -S -sd -kB8C27E00
+	#debuild -S -sd -kB8C27E00
+	debuild -S -sd -k316EC1F3
+	
 	
 	#debuild -us -uc
 	
 	cd ../	
-	dput ppa:foobnix-player/foobnix foobnix_${FOOBNIX_VERSION}${UBUNTU:0:1}_source.changes
+	#dput ppa:foobnix-player/foobnix foobnix_${FOOBNIX_VERSION}${UBUNTU:0:1}_source.changes
+	 dput ppa:foobnix-team/foobnix-player foobnix_${FOOBNIX_VERSION}${UBUNTU:0:1}_source.changes
 	#read text
 done
 

@@ -46,6 +46,7 @@ def foobnix():
         gobject.threads_init() #@UndefinedVariable
         core = FoobnixCore(False)
         core.run()
+        analytics.begin_session()
         print ("******Foobnix run in", time.time() - init_time, " seconds******")
         gtk.main()
     else:
@@ -57,6 +58,7 @@ def foobnix():
             gobject.threads_init()    #@UndefinedVariable
             core = FoobnixCore(True)
             core.run()
+            analytics.begin_session()
             #core.dbus.parse_arguments(sys.argv)
             print ("******Foobnix run in", time.time() - init_time, " seconds******")
             if sys.argv:
@@ -71,7 +73,6 @@ if "--profile" in sys.argv:
     cProfile.run('foobnix()')
 else:    
     try:
-        analytics.begin_session()
         foobnix()
         analytics.end_session()
     except Exception, e:
