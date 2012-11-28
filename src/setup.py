@@ -7,7 +7,7 @@ from test.all import run_all_tests
 if os.name == 'nt':
     import py2exe #@UnresolvedImport @UnusedImport
 
-VERSION = "2.6.04"
+VERSION = "2.6.05"
 
 data_files = [
     ('share/applications', ['foobnix.desktop']),
