@@ -5,10 +5,11 @@ import sys
 import gtk
 import time
 import gobject
+import traceback
 
 from threading import Timer
-from foobnix.util import LOG, analytics
 from foobnix.fc.fc import FC
+from foobnix.util import LOG, analytics
 from foobnix.fc.fc_helper import CONFIG_DIR
 
 
@@ -60,6 +61,7 @@ def foobnix():
             core.run()
             analytics.begin_session()
             #core.dbus.parse_arguments(sys.argv)
+            analytics.begin_session()
             print ("******Foobnix run in", time.time() - init_time, " seconds******")
             if sys.argv:
                 Timer(1, gobject.idle_add, [core.check_for_media, sys.argv]).start()
@@ -78,5 +80,6 @@ else:
     except Exception, e:
         analytics.end_session()
         analytics.error("Main Exception"+str(e))
-        print e
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stdout)
         FC().save()

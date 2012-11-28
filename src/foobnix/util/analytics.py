@@ -3,13 +3,18 @@ Created on Nov 27, 2012
 
 @author: iivanenko
 '''
-import urllib2
+
+import thread
 import urllib
+import urllib2
+import logging
+import platform
+
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.fc.fc_base import FCBase
 from foobnix.util.const import SITE_LOCALE
-import platform
-import logging
+
+
 
 """
 https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide
@@ -34,7 +39,7 @@ def send(d={"t":"appview"}):
     params.update(d)
     #print params
     enq = urllib.urlencode(params)
-    urllib2.urlopen(api_url, enq)
+    thread.start_new_thread(urllib2.urlopen, (api_url, enq))
     
 
 """ User Open or user Some Feature"""

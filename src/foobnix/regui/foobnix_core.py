@@ -20,7 +20,6 @@ from foobnix.regui.top import TopWidgets
 from foobnix.regui.treeview.radio_tree import RadioTreeControl,\
     MyRadioTreeControl
 from foobnix.regui.treeview.virtual_tree import VirtualTreeControl
-from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.eq.eq_controller import EqController
 from foobnix.dm.dm import DM
 from foobnix.regui.controls.movie_area import MovieDrawingArea
