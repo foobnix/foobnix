@@ -71,7 +71,7 @@ rm untitled.pot
 cd $BASE/po
 echo Launchpad commit to lp:foobnix
 
-bzr whoami 
+bzr whoami
 bzr commit -m "Update foobnix.po"
 bzr push lp:foobnix
 

@@ -123,7 +123,7 @@ class NetworkConfig(ConfigPlugin):
         frame_box.set_border_width(5)
         frame_box.show()
         
-        self.net_ping = gtk.CheckButton(label=_("Enable Network Control Window"), use_underline=True)
+        self.net_ping = gtk.CheckButton(label=_("Show message on network disconnection"), use_underline=True)
         
         box.pack_start(self.net_ping, False, True, 0)
         box.pack_start(self.enable_proxy, False, True, 0)

@@ -74,7 +74,7 @@ class FC():
 
         """main window controls"""
         self.main_window_size = [119, 154, 1024, 479]
-        self.hpaned_left = 280;
+        self.hpaned_left = 340;
         self.hpaned_right = 850;
         self.hpaned_right_right_side_width = 174 #self.main_window_size[3] - self.hpaned_right
         self.vpaned_small = 100;
