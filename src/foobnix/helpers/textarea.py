@@ -45,7 +45,7 @@ class TextArea(gtk.ScrolledWindow):
         
     def set_text(self, text="", bold_text=""):
         def safe_task():
-            full_text = bold_text + "\n" + text + "\n"
+            full_text = bold_text + "\n\n" + text + "\n"
             self.buffer.set_text(full_text)
             if text:
                 self.clear_tags (full_text)

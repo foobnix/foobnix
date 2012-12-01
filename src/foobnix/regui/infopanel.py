@@ -308,10 +308,11 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if not os.path.isdir(LYRICS_DIR):
             os.mkdir(LYRICS_DIR)
         lyrics_list = os.listdir(LYRICS_DIR)
-        lyrics_title = "*** %s - %s *** \n" % (bean.artist, bean.title)
+        lyrics_title = "%s - %s" % (bean.artist, bean.title)
         text = None
-        if lyrics_title in lyrics_list:
-            text = "".join(open(os.path.join(LYRICS_DIR, lyrics_title), 'r').readlines())
+
+        if lyrics_title.lower().strip() in lyrics_list:
+            text = "".join(open(os.path.join(LYRICS_DIR, lyrics_title.lower().strip()), 'r').readlines())
         else:
             try:
                 logging.debug("Try to get lyrics from lyrics.wikia.com")
@@ -321,7 +322,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             if not text:
                 text = get_lyrics_by_parsing(bean.artist, bean.title)
             if text:
-                open(os.path.join(LYRICS_DIR, lyrics_title), 'w').write(text)
+                open(os.path.join(LYRICS_DIR, lyrics_title.lower().strip()), 'w').write(text)
             else:
                 logging.info("The text not found")
                 text = "The text not found"
