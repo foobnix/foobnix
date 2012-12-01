@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-29 01:36+0400\n"
+"POT-Creation-Date: 2012-11-29 11:03+0400\n"
 "PO-Revision-Date: 2011-02-27 20:27+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-11-29 05:22+0000\n"
+"X-Launchpad-Export-Date: 2012-11-30 05:18+0000\n"
 "X-Generator: Launchpad (build 16319)\n"
 "Language: \n"
 
@@ -370,7 +370,7 @@ msgid "Result:"
 msgstr ""
 
 #: .././foobnix/preferences/configs/network_conf.py:126
-msgid "Enable Network Control Window"
+msgid "Show message on network disconnection"
 msgstr ""
 
 #: .././foobnix/preferences/configs/network_conf.py:152

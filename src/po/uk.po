@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-29 01:36+0400\n"
+"POT-Creation-Date: 2012-11-29 11:03+0400\n"
 "PO-Revision-Date: 2012-11-28 23:51+0000\n"
 "Last-Translator: Dmitry-Kogura <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-11-29 05:22+0000\n"
+"X-Launchpad-Export-Date: 2012-11-30 05:18+0000\n"
 "X-Generator: Launchpad (build 16319)\n"
 "Language: uk\n"
 
@@ -370,7 +370,7 @@ msgid "Result:"
 msgstr "Результат:"
 
 #: .././foobnix/preferences/configs/network_conf.py:126
-msgid "Enable Network Control Window"
+msgid "Show message on network disconnection"
 msgstr ""
 
 #: .././foobnix/preferences/configs/network_conf.py:152
@@ -1449,90 +1449,3 @@ msgid ""
 msgstr ""
 "Застосувати до вибраних треків\n"
 "(активне коли вибрано декілька)"
-
-#~ msgid "Music not found in folder(s):"
-#~ msgstr "У теках не знайдено музики"
-
-#~ msgid "Url"
-#~ msgstr "Веб адреса"
-
-#~ msgid "Audio"
-#~ msgstr "Аудіо"
-
-#~ msgid "Reload"
-#~ msgstr "Оновити"
-
-#~ msgid "Video"
-#~ msgstr "Відео"
-
-#~ msgid "Off"
-#~ msgstr "Вимкнено"
-
-#~ msgid "On"
-#~ msgstr "Увімкнено"
-
-#~ msgid "OK"
-#~ msgstr "Так"
-
-#~ msgid "http://www.foobnix.com/download/eng"
-#~ msgstr "http://www.foobnix.com/download"
-
-#~ msgid "Cancel"
-#~ msgstr "Скасувати"
-
-#~ msgid "Save music to folder"
-#~ msgstr "Зберігати музику до"
-
-#~ msgid "Menu type"
-#~ msgstr "Тип меню"
-
-#~ msgid "Opacity"
-#~ msgstr "Прозорість"
-
-#~ msgid "Count of tabs"
-#~ msgstr "Кількість вкладок"
-
-#~ msgid "Max length of tab"
-#~ msgstr "Максимальна довжина вкладки"
-
-#~ msgid "Tab position"
-#~ msgstr "Позиція вкладок"
-
-#~ msgid "Close tab sign"
-#~ msgstr "Значок закриття"
-
-#~ msgid "Biography"
-#~ msgstr "Біографія"
-
-#~ msgid "Play Lists"
-#~ msgstr "Плейлисти"
-
-#~ msgid "About Window"
-#~ msgstr "Про програму"
-
-#~ msgid "Credential"
-#~ msgstr "Учасники"
-
-#~ msgid "Changelog"
-#~ msgstr "Журнал змін"
-
-#~ msgid "Add to new tab"
-#~ msgstr "Додати до нової вкладки"
-
-#~ msgid "Add to current tab"
-#~ msgstr "Додати до поточної вкладки"
-
-#~ msgid "Last.fm connection error"
-#~ msgstr "Помилка з'єднання з Last.fm"
-
-#~ msgid "Order-Repeat Switcher Style: "
-#~ msgstr "Стиль кнопок Випадково-Повторювати: "
-
-#~ msgid "Choose your preferred file manager: "
-#~ msgstr "Оберіть пріоритетний файловий менеджер: "
-
-#~ msgid "Edit tags"
-#~ msgstr "Правити теги"
-
-#~ msgid "Love this track(s)"
-#~ msgstr "Люблю цю композицію(ї)"

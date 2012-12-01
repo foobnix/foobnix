@@ -31,7 +31,7 @@ class VKAuthorizationWindow(gtk.Dialog):
     API_URL = "http://api.vk.com/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=" + REDIRECT_URL + "&display=touch&response_type=token"
     
     def get_web_url(self):
-        return "http://api.vk.com/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
+        return "https://api.vk.com/oauth/authorize?client_id=2234333&scope=audio,friends&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token"
    
     def show(self):
         super(VKAuthorizationWindow, self).show()

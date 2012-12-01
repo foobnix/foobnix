@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-29 01:36+0400\n"
+"POT-Creation-Date: 2012-11-29 11:03+0400\n"
 "PO-Revision-Date: 2012-11-28 23:51+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: SPANISH <bmsavone@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-11-29 05:22+0000\n"
+"X-Launchpad-Export-Date: 2012-11-30 05:18+0000\n"
 "X-Generator: Launchpad (build 16319)\n"
 "X-Poedit-Country: SPAIN\n"
 "Language: \n"
@@ -373,7 +373,7 @@ msgid "Result:"
 msgstr "Resultado:"
 
 #: .././foobnix/preferences/configs/network_conf.py:126
-msgid "Enable Network Control Window"
+msgid "Show message on network disconnection"
 msgstr ""
 
 #: .././foobnix/preferences/configs/network_conf.py:152
@@ -1470,111 +1470,3 @@ msgid ""
 msgstr ""
 "Aplica para todas las pistas seleccionadas\n"
 "(activo en la selección múltiple)"
-
-#~ msgid "Music not found in folder(s):"
-#~ msgstr "No se ha encontrado música en la carpeta(s):"
-
-#~ msgid "Url"
-#~ msgstr "Url"
-
-#~ msgid "Audio"
-#~ msgstr "Audio"
-
-#~ msgid "Reload"
-#~ msgstr "Recarga"
-
-#~ msgid "Check Foobnix Access (Require)"
-#~ msgstr "Compruebe que Foobnix tenga acceso (requerido)"
-
-#~ msgid "Video"
-#~ msgstr "Video"
-
-#~ msgid "Off"
-#~ msgstr "Off"
-
-#~ msgid "On"
-#~ msgstr "On"
-
-#~ msgid "http://www.foobnix.com/download/eng"
-#~ msgstr "http://www.foobnix.com/download/eng"
-
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgid "Cancel"
-#~ msgstr "Cancela"
-
-#~ msgid "Save music to folder"
-#~ msgstr "Guardar la música en la carpeta"
-
-#~ msgid "Menu type"
-#~ msgstr "Tipo de menu"
-
-#~ msgid "Opacity"
-#~ msgstr "Opacidad"
-
-#~ msgid "Count of tabs"
-#~ msgstr "Número de tabs"
-
-#~ msgid "Max length of tab"
-#~ msgstr "Longitud máxima de las tab"
-
-#~ msgid "Tab position"
-#~ msgstr "Posición de las tab"
-
-#~ msgid "Close tab sign"
-#~ msgstr "Signo de cierre tab"
-
-#~ msgid "Play Lists"
-#~ msgstr "Play Lists"
-
-#~ msgid "About Window"
-#~ msgstr "Ventana Info"
-
-#~ msgid "Changelog"
-#~ msgstr "Changelog"
-
-#~ msgid "Credential"
-#~ msgstr "Credencial"
-
-#~ msgid "Last.fm connection error"
-#~ msgstr "Last.fm error de conexión"
-
-#~ msgid "Add to current tab"
-#~ msgstr "Agregar en la tab actual"
-
-#~ msgid "VKontakte connection error"
-#~ msgstr "VKontakte error de conexión"
-
-#~ msgid "Restore Defaults"
-#~ msgstr "Restaura predeterminadas"
-
-#~ msgid "Adding Folders of Music"
-#~ msgstr "Agrega Carpetas con Música"
-
-#~ msgid "Set focus on search line (Alt+G) Google :)"
-#~ msgstr "Establecer el foco en el campo búsqueda (Alt+G) Google :)"
-
-#~ msgid "Top by artist"
-#~ msgstr "Top por artista"
-
-#~ msgid "Other"
-#~ msgstr "Otros"
-
-#~ msgid "Biography"
-#~ msgstr "Biografía"
-
-#~ msgid "Add to new tab"
-#~ msgstr "Añadir a una nueva pestaña"
-
-#~ msgid "Love this track(s)"
-#~ msgstr "Amo este tema(s)"
-
-#~ msgid "Edit tags"
-#~ msgstr "Editar etiquetas"
-
-#~ msgid "Choose your preferred file manager: "
-#~ msgstr "Elija su gestor de archivos preferido: "
-
-#~ msgid "Order-Repeat Switcher Style: "
-#~ msgstr "Orden-Repetir Estilo Conmutador: "

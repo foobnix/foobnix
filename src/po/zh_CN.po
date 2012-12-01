@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-29 01:36+0400\n"
+"POT-Creation-Date: 2012-11-29 11:03+0400\n"
 "PO-Revision-Date: 2012-11-28 23:51+0000\n"
 "Last-Translator: XsLiDian <xslidian@gmail.com>\n"
 "Language-Team: Chinese Simplified <xslidian+foobnix@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-11-29 05:22+0000\n"
+"X-Launchpad-Export-Date: 2012-11-30 05:18+0000\n"
 "X-Generator: Launchpad (build 16319)\n"
 "Language: \n"
 "X-Poedit-Language: Chinese\n"
@@ -371,7 +371,7 @@ msgid "Result:"
 msgstr "结果:"
 
 #: .././foobnix/preferences/configs/network_conf.py:126
-msgid "Enable Network Control Window"
+msgid "Show message on network disconnection"
 msgstr ""
 
 #: .././foobnix/preferences/configs/network_conf.py:152
@@ -1457,93 +1457,3 @@ msgid ""
 msgstr ""
 "应用到全部已选音轨\n"
 "(多选时有效)"
-
-#~ msgid "Music not found in folder(s):"
-#~ msgstr "文件夹中未找到音乐:"
-
-#~ msgid "Url"
-#~ msgstr "Url"
-
-#~ msgid "Audio"
-#~ msgstr "音频"
-
-#~ msgid "Reload"
-#~ msgstr "重载"
-
-#~ msgid "Video"
-#~ msgstr "视频"
-
-#~ msgid "Cancel"
-#~ msgstr "取消"
-
-#~ msgid "Count of tabs"
-#~ msgstr "标签数"
-
-#~ msgid "Max length of tab"
-#~ msgstr "标签最大长度"
-
-#~ msgid "Tab position"
-#~ msgstr "标签位置"
-
-#~ msgid "Close tab sign"
-#~ msgstr "关闭标签图标"
-
-#~ msgid "Last.fm connection error"
-#~ msgstr "Last.fm 连接错误"
-
-#~ msgid "VKontakte connection error"
-#~ msgstr "VKontakte 连接错误"
-
-#~ msgid "Restore Defaults"
-#~ msgstr "恢复默认"
-
-#~ msgid "Set focus on search line (Alt+G) Google :)"
-#~ msgstr "选中搜索行 (Alt+G) Google :)"
-
-#~ msgid "Top by artist"
-#~ msgstr "按歌手排序"
-
-#~ msgid "Other"
-#~ msgstr "其他"
-
-#~ msgid "Off"
-#~ msgstr "关"
-
-#~ msgid "On"
-#~ msgstr "开"
-
-#~ msgid "OK"
-#~ msgstr "确定"
-
-#~ msgid "http://www.foobnix.com/download/eng"
-#~ msgstr "http://www.foobnix.com/download/eng"
-
-#~ msgid "Save music to folder"
-#~ msgstr "将音乐保存到文件夹"
-
-#~ msgid "Menu type"
-#~ msgstr "菜单类型"
-
-#~ msgid "Opacity"
-#~ msgstr "不透明度"
-
-#~ msgid "Biography"
-#~ msgstr "传记"
-
-#~ msgid "Play Lists"
-#~ msgstr "播放列表"
-
-#~ msgid "About Window"
-#~ msgstr "关于窗口"
-
-#~ msgid "Credential"
-#~ msgstr "凭证"
-
-#~ msgid "Changelog"
-#~ msgstr "更新日志"
-
-#~ msgid "Add to new tab"
-#~ msgstr "添加到新标签"
-
-#~ msgid "Add to current tab"
-#~ msgstr "添加到当前标签"

@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-29 01:36+0400\n"
+"POT-Creation-Date: 2012-11-29 11:03+0400\n"
 "PO-Revision-Date: 2012-11-28 23:51+0000\n"
 "Last-Translator: Dmitry-Kogura <Unknown>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-11-29 05:22+0000\n"
+"X-Launchpad-Export-Date: 2012-11-30 05:18+0000\n"
 "X-Generator: Launchpad (build 16319)\n"
 "Language: pl\n"
 
@@ -370,7 +370,7 @@ msgid "Result:"
 msgstr "Wynik:"
 
 #: .././foobnix/preferences/configs/network_conf.py:126
-msgid "Enable Network Control Window"
+msgid "Show message on network disconnection"
 msgstr ""
 
 #: .././foobnix/preferences/configs/network_conf.py:152
@@ -1462,112 +1462,3 @@ msgid ""
 msgstr ""
 "Zastosuj dla wybranych utworów\n"
 "(aktywne przy wybieraniu wielu)"
-
-#~ msgid "Music not found in folder(s):"
-#~ msgstr "Nie znaleziono muzyki w folderze"
-
-#~ msgid "Url"
-#~ msgstr "Scieżka"
-
-#~ msgid "Audio"
-#~ msgstr "Audio"
-
-#~ msgid "Reload"
-#~ msgstr "Załaduj ponownie"
-
-#~ msgid "Video"
-#~ msgstr "Wideo"
-
-#~ msgid "Off"
-#~ msgstr "Wył."
-
-#~ msgid "On"
-#~ msgstr "Wł."
-
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgid "Cancel"
-#~ msgstr "Anuluj"
-
-#~ msgid "Save music to folder"
-#~ msgstr "Zapisz muzykę do folderu"
-
-#~ msgid "Choose your preferred file manager: "
-#~ msgstr "Wybierz swój menadżer plików: "
-
-#~ msgid "Close tab sign"
-#~ msgstr "Znak zamknięcia karty"
-
-#~ msgid "Count of tabs"
-#~ msgstr "Ilość kart"
-
-#~ msgid "Max length of tab"
-#~ msgstr "Maksymalny rozmiar karty"
-
-#~ msgid "Tab position"
-#~ msgstr "Pozycja karty"
-
-#~ msgid "http://www.foobnix.com/download/eng"
-#~ msgstr "http://www.foobnix.com/download"
-
-#~ msgid "Order-Repeat Switcher Style: "
-#~ msgstr "Styl przycisków kolejność - powatarzanie "
-
-#~ msgid "Biography"
-#~ msgstr "Biografia"
-
-#~ msgid "Opacity"
-#~ msgstr "Nieprzezroczystość:"
-
-#~ msgid "Edit tags"
-#~ msgstr "Edytuj tagi"
-
-#~ msgid "Love this track(s)"
-#~ msgstr "Lubię ten utwór"
-
-#~ msgid "Play Lists"
-#~ msgstr "Lista odtwarzania"
-
-#~ msgid "About Window"
-#~ msgstr "O programie"
-
-#~ msgid "Changelog"
-#~ msgstr "Lista zmian"
-
-#~ msgid "Credential"
-#~ msgstr "Uczestnicy"
-
-#~ msgid "Last.fm connection error"
-#~ msgstr "Błąd połączenia z Last.fm"
-
-#~ msgid "Add to current tab"
-#~ msgstr "Dodaj do obecnej karty"
-
-#~ msgid "Add to new tab"
-#~ msgstr "Dodaj nową kartę"
-
-#~ msgid "Menu type"
-#~ msgstr "Typ menu"
-
-#~ msgid "Convert files (alpha)"
-#~ msgstr "Konwertuj pliki (prototyp)"
-
-#~ msgid "Audio Converter"
-#~ msgstr "Konwerter dźwięku"
-
-#~ msgid "Convert  %d of %d file(s)"
-#~ msgstr "Konwertuj %d z %d plik(ów)"
-
-#~ msgid "Finished (%d of %d)"
-#~ msgstr "Zakończono (%d z %d)"
-
-#~ msgid ""
-#~ "Existing files will be overwritten.\n"
-#~ "Do you wish to continue?"
-#~ msgstr ""
-#~ "Istniejące pliki zostaną nadpisane\n"
-#~ "Kontynuować?"
-
-#~ msgid "Install"
-#~ msgstr "Instaluj"

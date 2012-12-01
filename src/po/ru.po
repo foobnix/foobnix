@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-29 11:03+0400\n"
-"PO-Revision-Date: 2012-11-29 08:38+0000\n"
+"POT-Creation-Date: 2012-12-02 00:24+0400\n"
+"PO-Revision-Date: 2012-12-01 20:46+0000\n"
 "Last-Translator: Dmitry-Kogura <Unknown>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-11-29 08:40+0000\n"
+"X-Launchpad-Export-Date: 2012-12-01 20:48+0000\n"
 "X-Generator: Launchpad (build 16319)\n"
 "Language: \n"
 "X-Poedit-Language: Russian\n"
@@ -123,7 +123,7 @@ msgid "Total progress"
 msgstr "Общий прогресс"
 
 #: .././foobnix/helpers/window.py:78
-#: .././foobnix/preferences/configs/hotkey_conf.py:202
+#: .././foobnix/preferences/configs/hotkey_conf.py:204
 #: .././foobnix/regui/controls/playback.py:195 .././foobnix/util/const.py:47
 #: .././foobnix/util/converter.py:95
 msgid "Stop"
@@ -155,43 +155,47 @@ msgstr "Информация о категориях"
 msgid "Save online music"
 msgstr "Сохранить музыку из сети"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:62
+#: .././foobnix/preferences/configs/hotkey_conf.py:64
 msgid "Global Hotkeys"
 msgstr "Клавиши быстрого доступа"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:76
+#: .././foobnix/preferences/configs/hotkey_conf.py:78
 msgid "Action"
 msgstr "Действие"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:77
+#: .././foobnix/preferences/configs/hotkey_conf.py:79
 msgid "Hotkey"
 msgstr "Комбинация клавиш"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:85
+#: .././foobnix/preferences/configs/hotkey_conf.py:87
 #: .././foobnix/preferences/configs/music_library.py:62
 #: .././foobnix/preferences/configs/music_library.py:176
 msgid "Add"
 msgstr "Добавить"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:90
+#: .././foobnix/preferences/configs/hotkey_conf.py:92
 #: .././foobnix/preferences/configs/music_library.py:67
 #: .././foobnix/preferences/configs/music_library.py:181
 msgid "Remove"
 msgstr "Удалить"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:117
+#: .././foobnix/preferences/configs/hotkey_conf.py:112
+msgid "Auto key"
+msgstr "Авто клавиша"
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:119
 msgid "Disable Multimedia Keys"
 msgstr "Отключить мультимедиа-клавиши"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:118
+#: .././foobnix/preferences/configs/hotkey_conf.py:120
 msgid "Don't try to bind volume control keys"
 msgstr "Не пытаться перехватить клавиши управления громкостью"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:130
+#: .././foobnix/preferences/configs/hotkey_conf.py:132
 msgid "Multimedia keys"
 msgstr "Мультимедиа-клавиши"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:200
+#: .././foobnix/preferences/configs/hotkey_conf.py:202
 #: .././foobnix/regui/controls/playback.py:196
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:65
 #: .././foobnix/regui/treeview/playlist_tree.py:218
@@ -199,32 +203,32 @@ msgstr "Мультимедиа-клавиши"
 msgid "Play"
 msgstr "Воспроизвести"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:201
+#: .././foobnix/preferences/configs/hotkey_conf.py:203
 #: .././foobnix/regui/controls/playback.py:197
 msgid "Pause"
 msgstr "Приостановить"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:203
+#: .././foobnix/preferences/configs/hotkey_conf.py:205
 msgid "Next song"
 msgstr "Следующая композиция"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:204
+#: .././foobnix/preferences/configs/hotkey_conf.py:206
 msgid "Previous song"
 msgstr "Предыдущая композиция"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:205
+#: .././foobnix/preferences/configs/hotkey_conf.py:207
 msgid "Volume up"
 msgstr "Увеличить громкость"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:206
+#: .././foobnix/preferences/configs/hotkey_conf.py:208
 msgid "Volume down"
 msgstr "Уменьшить громкость"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:207
+#: .././foobnix/preferences/configs/hotkey_conf.py:209
 msgid "Show-Hide"
 msgstr "Показать-Скрыть"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:208
+#: .././foobnix/preferences/configs/hotkey_conf.py:210
 msgid "Play-Pause"
 msgstr "Воспроизвести-приостановить"
 
@@ -293,7 +297,7 @@ msgstr "Нет соединения"
 
 #: .././foobnix/preferences/configs/last_fm.py:94
 msgid "You vk account is:"
-msgstr "Чётная запись ВКонтакте:"
+msgstr "Учётная запись ВКонтакте"
 
 #: .././foobnix/preferences/configs/last_fm.py:96
 msgid "Reset vk authorization"
@@ -575,6 +579,33 @@ msgstr "Обложка"
 #: .././foobnix/regui/coverlyrics.py:32
 msgid "Lyric:"
 msgstr "Текст песни:"
+
+#: .././foobnix/regui/foobnix_core.py:118
+#: .././foobnix/regui/treeview/dragdrop_tree.py:198
+msgid "Attention!!!"
+msgstr "Внимание!!!"
+
+#: .././foobnix/regui/foobnix_core.py:118
+msgid ""
+"Our ppa repository has been changed.\n"
+"You need run next commands in terminal and restart player:\n"
+"\n"
+"sudo ppa-purge ppa:foobnix-player/foobnix\n"
+"sudo add-apt-repository ppa:foobnix-team/foobnix-player\n"
+"sudo apt-get update\n"
+"sudo apt-get upgrade\n"
+"\n"
+"This message will be removed after it."
+msgstr ""
+"Наш ppa репозиторий был изменён.\n"
+"Вам нужно выполнить следующие команды в терминале и перезапустить плеер:\n"
+"\n"
+"sudo ppa-purge ppa:foobnix-player/foobnix\n"
+"sudo add-apt-repository ppa:foobnix-team/foobnix-player\n"
+"sudo apt-get update\n"
+"sudo apt-get upgrade\n"
+"\n"
+"Это сообщение будет удалено после этого."
 
 #: .././foobnix/regui/infopanel.py:53
 msgid "Best Songs"
@@ -941,10 +972,6 @@ msgstr "Токен или логин пустой"
 #: .././foobnix/regui/treeview/playlist_tree.py:235
 msgid "Open in file manager"
 msgstr "Открыть в файловом менеджере"
-
-#: .././foobnix/regui/treeview/dragdrop_tree.py:198
-msgid "Attention!!!"
-msgstr "Внимание!!!"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:199
 msgid "When you release the mouse button the mouse"
@@ -1466,113 +1493,3 @@ msgid ""
 msgstr ""
 "Применить для всех выделенных композиций\n"
 "(активно при множественном выделении)"
-
-#~ msgid "Enable Network Control Window"
-#~ msgstr "Сообщать о разрывах сети"
-
-#~ msgid "Music not found in folder(s):"
-#~ msgstr "Музыка не найдена в папках"
-
-#~ msgid "Url"
-#~ msgstr "Ссылка"
-
-#~ msgid "Audio"
-#~ msgstr "Аудио"
-
-#~ msgid "Reload"
-#~ msgstr "Обновить"
-
-#~ msgid "Video"
-#~ msgstr "Видео"
-
-#~ msgid "Off"
-#~ msgstr "Выключен"
-
-#~ msgid "On"
-#~ msgstr "Включен"
-
-#~ msgid "http://www.foobnix.com/download/eng"
-#~ msgstr "http://www.foobnix.com/download"
-
-#~ msgid "OK"
-#~ msgstr "ОК"
-
-#~ msgid "Cancel"
-#~ msgstr "Отменить"
-
-#~ msgid "Save music to folder"
-#~ msgstr "Сохранять музыку в"
-
-#~ msgid "Opacity"
-#~ msgstr "Прозрачность"
-
-#~ msgid "Count of tabs"
-#~ msgstr "Количество табов"
-
-#~ msgid "Max length of tab"
-#~ msgstr "Максимальная длина таба"
-
-#~ msgid "Tab position"
-#~ msgstr "Позиция табов"
-
-#~ msgid "Play Lists"
-#~ msgstr "Списки"
-
-#~ msgid "About Window"
-#~ msgstr "О программе"
-
-#~ msgid "Changelog"
-#~ msgstr "Изменения"
-
-#~ msgid "Credential"
-#~ msgstr "Учасники"
-
-#~ msgid "Last.fm connection error"
-#~ msgstr "Ошбика подлюкчения к last.fm"
-
-#~ msgid "Add to current tab"
-#~ msgstr "Добавить в очередь"
-
-#~ msgid "Add to new tab"
-#~ msgstr "Добавить в новую табу"
-
-#~ msgid "Menu type"
-#~ msgstr "Тип меню"
-
-#~ msgid "Choose your preferred file manager: "
-#~ msgstr "Выберите файловый менеджер "
-
-#~ msgid "Order-Repeat Switcher Style: "
-#~ msgstr "Тип кнопок \"Случайная песня\" "
-
-#~ msgid "Love this track(s)"
-#~ msgstr "Нравится эта песня(и)"
-
-#~ msgid "Edit tags"
-#~ msgstr "Редактировать теги"
-
-#~ msgid "Close tab sign"
-#~ msgstr "Значок закрытия"
-
-#~ msgid "Biography"
-#~ msgstr "Биография"
-
-#~ msgid "Audio Converter"
-#~ msgstr "Аудио Конвертер"
-
-#~ msgid "Convert files (alpha)"
-#~ msgstr "Конвертировать файлы (альфа)"
-
-#~ msgid ""
-#~ "Existing files will be overwritten.\n"
-#~ "Do you wish to continue?"
-#~ msgstr "Существующие файлы будут перезаписаны"
-
-#~ msgid "Convert  %d of %d file(s)"
-#~ msgstr "Конвертирую %d из %d файл(ов)"
-
-#~ msgid "Finished (%d of %d)"
-#~ msgstr "Завершено (%d из %d)"
-
-#~ msgid "Install"
-#~ msgstr "Установить"

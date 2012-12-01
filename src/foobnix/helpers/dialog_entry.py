@@ -127,9 +127,9 @@ def two_line_dialog(dialog_title, parent=None, message_text1=None,
         dialog.destroy()
         return [login_text, password_text] if (login_text and password_text) else [None,None]     
 
-def info_dialog(title, message):
+def info_dialog(title, message, parent=None):
         dialog = gtk.MessageDialog(
-            None,
+            parent,
             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
             gtk.MESSAGE_INFO,
             gtk.BUTTONS_OK,

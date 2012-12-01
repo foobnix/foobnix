@@ -34,6 +34,8 @@ from foobnix.regui.controls.record import RadioRecord
 from foobnix.regui.coverlyrics import CoverLyricsPanel
 from foobnix.util.net_wrapper import NetWrapper
 
+from foobnix.helpers.dialog_entry import info_dialog
+
 foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):
@@ -113,4 +115,5 @@ class FoobnixCore(BaseFoobnixControls):
         self.on_load()
         if FC().hide_on_start:
             self.main_window.hide()
+        info_dialog(_("Attention!!!"), _("Our ppa repository has been changed.\nYou need run next commands in terminal and restart player:\n\nsudo ppa-purge ppa:foobnix-player/foobnix\nsudo add-apt-repository ppa:foobnix-team/foobnix-player\nsudo apt-get update\nsudo apt-get upgrade\n\nThis message will be removed after it."), self.main_window)
         

@@ -3,6 +3,8 @@ Created on Sep 7, 2010
 
 @author: ivan
 '''
+
+
 import os
 import gtk
 import thread
@@ -107,7 +109,7 @@ class HotKeysConfig(ConfigPlugin):
         self.hotkey_text.connect("key-press-event", self.on_key_press)
         self.hotkey_text.set_size_request(150, -1)
         
-        self.hotkey_auto = gtk.CheckButton("Auto key")
+        self.hotkey_auto = gtk.CheckButton(_("Auto key"))
         self.hotkey_auto.set_active(True)        
      
         hotbox.pack_start(self.action_text, False, True, 0)
