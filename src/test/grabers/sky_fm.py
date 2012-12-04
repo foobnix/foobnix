@@ -1,5 +1,5 @@
 '''
-Created on 2  2012
+Created on 2 dec 2012
 
 @author: Dmitry Kogura (zavlab1)
 '''
