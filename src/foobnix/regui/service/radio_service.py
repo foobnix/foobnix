@@ -53,7 +53,7 @@ class RadioFolder():
             """get name and stations"""
             with open(full_path) as file:
                 for line in file:
-                    if  line or not line.startswith("#") and "=" in line:                
+                    if  line and not line.startswith("#") and "=" in line:                
                         name_end = line.find("=")
                         name = line[:name_end].strip()
                         stations = line[name_end + 1:].split(",")

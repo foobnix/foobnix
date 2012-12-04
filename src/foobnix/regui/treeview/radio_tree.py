@@ -128,11 +128,12 @@ class RadioTreeControl(CommonTreeControl):
             for fpl in files:
                 parent = FModel(fpl.name).add_is_file(False)
                 self.append(parent)
-                for radio, urls in fpl.urls_dict.iteritems():
-                    child = FModel(radio, urls[0]).parent(parent).add_type(FTYPE_RADIO).add_is_file(True)
+                keys = fpl.urls_dict.keys()
+                keys.sort()
+                for radio in keys:
+                    child = FModel(radio, fpl.urls_dict[radio][0]).parent(parent).add_type(FTYPE_RADIO).add_is_file(True)
                     self.append(child)
-            
-            
+
         gobject.idle_add(task)            
 
     def auto_add_user_station(self):

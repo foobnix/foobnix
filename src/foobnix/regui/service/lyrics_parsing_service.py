@@ -10,12 +10,12 @@ from HTMLParser import HTMLParser
 
 
 class LyricsFinder(HTMLParser):
-    def __init__(self):
+    def __init__(self, tagname=None, attr=None, attr_value=None):
         HTMLParser.__init__(self)
         self.data = []
         self.needed_tag = 0
-        self.tagname = None
-        self.attr = None
+        self.tagname = tagname
+        self.attr = attr
         self.attr_value = None
     
     def get_lyrics_from_lyricsmania(self, artist, title):
@@ -51,6 +51,7 @@ class LyricsFinder(HTMLParser):
         if tag == self.tagname:
             for name, value in attrs:
                 if name == self.attr and value == self.attr_value:
+                    print name, value
                     self.needed_tag = 1
                    
     def handle_endtag(self, tag):
@@ -59,6 +60,7 @@ class LyricsFinder(HTMLParser):
 
     def handle_data(self, data):
         if self.needed_tag:
+            print data
             self.data.append(data.strip())
 
 

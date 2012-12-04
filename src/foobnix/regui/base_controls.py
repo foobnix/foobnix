@@ -27,7 +27,6 @@ from foobnix.regui.service.google_service import google_search_results
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.regui.service.vk_service import VKService
 from foobnix.regui.state import LoadSave
-from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 from foobnix.util.bean_utils import get_bean_posible_paths
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.util.file_utils import get_file_extension
@@ -404,7 +403,7 @@ class BaseFoobnixControls():
             if bean.iso_path and os.path.exists(bean.iso_path):
                 logging.info("Try to remount " + bean.iso_path)
                 mount_tmp_iso(bean.iso_path)
-            elif not bean.path or bean.path.startswith("http"):
+            elif not bean.path or bean.path.startswith("http://vk"):
                 if not self.vk_service.is_authorized():
                     return
                 else:
