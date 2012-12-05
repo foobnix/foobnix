@@ -403,7 +403,7 @@ class BaseFoobnixControls():
             if bean.iso_path and os.path.exists(bean.iso_path):
                 logging.info("Try to remount " + bean.iso_path)
                 mount_tmp_iso(bean.iso_path)
-            elif not bean.path or bean.path.startswith("http://vk"):
+            elif not bean.path or "userapi" in bean.path:
                 if not self.vk_service.is_authorized():
                     return
                 else:

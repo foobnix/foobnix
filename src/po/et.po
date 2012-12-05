@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-11-29 11:03+0400\n"
+"POT-Creation-Date: 2012-12-02 00:24+0400\n"
 "PO-Revision-Date: 2012-07-23 13:13+0000\n"
 "Last-Translator: spil <spil99@hotmail.com>\n"
 "Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-11-30 05:18+0000\n"
+"X-Launchpad-Export-Date: 2012-12-02 04:44+0000\n"
 "X-Generator: Launchpad (build 16319)\n"
 
 #: .././foobnix/dm/dm.py:32 .././foobnix/preferences/preferences_window.py:59
@@ -118,7 +118,7 @@ msgid "Total progress"
 msgstr "Üldine progress"
 
 #: .././foobnix/helpers/window.py:78
-#: .././foobnix/preferences/configs/hotkey_conf.py:202
+#: .././foobnix/preferences/configs/hotkey_conf.py:204
 #: .././foobnix/regui/controls/playback.py:195 .././foobnix/util/const.py:47
 #: .././foobnix/util/converter.py:95
 msgid "Stop"
@@ -150,43 +150,47 @@ msgstr ""
 msgid "Save online music"
 msgstr ""
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:62
+#: .././foobnix/preferences/configs/hotkey_conf.py:64
 msgid "Global Hotkeys"
 msgstr "Üldised kiirklahvid"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:76
+#: .././foobnix/preferences/configs/hotkey_conf.py:78
 msgid "Action"
 msgstr ""
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:77
+#: .././foobnix/preferences/configs/hotkey_conf.py:79
 msgid "Hotkey"
 msgstr "Kiirklahv"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:85
+#: .././foobnix/preferences/configs/hotkey_conf.py:87
 #: .././foobnix/preferences/configs/music_library.py:62
 #: .././foobnix/preferences/configs/music_library.py:176
 msgid "Add"
 msgstr "Lisa"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:90
+#: .././foobnix/preferences/configs/hotkey_conf.py:92
 #: .././foobnix/preferences/configs/music_library.py:67
 #: .././foobnix/preferences/configs/music_library.py:181
 msgid "Remove"
 msgstr "Eemalda"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:117
+#: .././foobnix/preferences/configs/hotkey_conf.py:112
+msgid "Auto key"
+msgstr ""
+
+#: .././foobnix/preferences/configs/hotkey_conf.py:119
 msgid "Disable Multimedia Keys"
 msgstr ""
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:118
+#: .././foobnix/preferences/configs/hotkey_conf.py:120
 msgid "Don't try to bind volume control keys"
 msgstr ""
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:130
+#: .././foobnix/preferences/configs/hotkey_conf.py:132
 msgid "Multimedia keys"
 msgstr ""
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:200
+#: .././foobnix/preferences/configs/hotkey_conf.py:202
 #: .././foobnix/regui/controls/playback.py:196
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:65
 #: .././foobnix/regui/treeview/playlist_tree.py:218
@@ -194,32 +198,32 @@ msgstr ""
 msgid "Play"
 msgstr "Esita"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:201
+#: .././foobnix/preferences/configs/hotkey_conf.py:203
 #: .././foobnix/regui/controls/playback.py:197
 msgid "Pause"
 msgstr "Paus"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:203
+#: .././foobnix/preferences/configs/hotkey_conf.py:205
 msgid "Next song"
 msgstr "Järgmine lugu"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:204
+#: .././foobnix/preferences/configs/hotkey_conf.py:206
 msgid "Previous song"
 msgstr "Eelmine lugu"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:205
+#: .././foobnix/preferences/configs/hotkey_conf.py:207
 msgid "Volume up"
 msgstr "Valjemaks"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:206
+#: .././foobnix/preferences/configs/hotkey_conf.py:208
 msgid "Volume down"
 msgstr "Vaiksemaks"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:207
+#: .././foobnix/preferences/configs/hotkey_conf.py:209
 msgid "Show-Hide"
 msgstr "Näita-peida"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:208
+#: .././foobnix/preferences/configs/hotkey_conf.py:210
 msgid "Play-Pause"
 msgstr "Mängi-peata"
 
@@ -570,6 +574,24 @@ msgstr "Ümbris"
 #: .././foobnix/regui/coverlyrics.py:32
 msgid "Lyric:"
 msgstr "Sõnad"
+
+#: .././foobnix/regui/foobnix_core.py:118
+#: .././foobnix/regui/treeview/dragdrop_tree.py:198
+msgid "Attention!!!"
+msgstr "Tähelepanu!!!"
+
+#: .././foobnix/regui/foobnix_core.py:118
+msgid ""
+"Our ppa repository has been changed.\n"
+"You need run next commands in terminal and restart player:\n"
+"\n"
+"sudo ppa-purge ppa:foobnix-player/foobnix\n"
+"sudo add-apt-repository ppa:foobnix-team/foobnix-player\n"
+"sudo apt-get update\n"
+"sudo apt-get upgrade\n"
+"\n"
+"This message will be removed after it."
+msgstr ""
 
 #: .././foobnix/regui/infopanel.py:53
 msgid "Best Songs"
@@ -936,10 +958,6 @@ msgstr ""
 #: .././foobnix/regui/treeview/playlist_tree.py:235
 msgid "Open in file manager"
 msgstr "Ava failihalduris"
-
-#: .././foobnix/regui/treeview/dragdrop_tree.py:198
-msgid "Attention!!!"
-msgstr "Tähelepanu!!!"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:199
 msgid "When you release the mouse button the mouse"

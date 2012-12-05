@@ -16,7 +16,7 @@ class LyricsFinder(HTMLParser):
         self.needed_tag = 0
         self.tagname = tagname
         self.attr = attr
-        self.attr_value = None
+        self.attr_value = attr_value
     
     def get_lyrics_from_lyricsmania(self, artist, title):
         base = "http://www.lyricsmania.com/"
@@ -51,7 +51,6 @@ class LyricsFinder(HTMLParser):
         if tag == self.tagname:
             for name, value in attrs:
                 if name == self.attr and value == self.attr_value:
-                    print name, value
                     self.needed_tag = 1
                    
     def handle_endtag(self, tag):
@@ -60,7 +59,6 @@ class LyricsFinder(HTMLParser):
 
     def handle_data(self, data):
         if self.needed_tag:
-            print data
             self.data.append(data.strip())
 
 
