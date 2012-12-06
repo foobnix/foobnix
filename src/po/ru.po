@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-02 00:24+0400\n"
-"PO-Revision-Date: 2012-12-01 20:46+0000\n"
+"POT-Creation-Date: 2012-12-05 22:30+0400\n"
+"PO-Revision-Date: 2012-12-06 08:25+0000\n"
 "Last-Translator: Dmitry-Kogura <Unknown>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-01 20:48+0000\n"
-"X-Generator: Launchpad (build 16319)\n"
+"X-Launchpad-Export-Date: 2012-12-06 08:28+0000\n"
+"X-Generator: Launchpad (build 16341)\n"
 "Language: \n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -531,40 +531,40 @@ msgstr "Уведомления"
 msgid "Time Notification (sec): "
 msgstr "Время показа уведомления: "
 
-#: .././foobnix/regui/base_controls.py:144
+#: .././foobnix/regui/base_controls.py:143
 msgid "Choose folders to open"
 msgstr "Выберите папки для открытия"
 
-#: .././foobnix/regui/base_controls.py:164
+#: .././foobnix/regui/base_controls.py:163
 msgid "Nothing found to play in the folder(s)"
 msgstr "Не найдено музыки в папке(ах)"
 
-#: .././foobnix/regui/base_controls.py:171
+#: .././foobnix/regui/base_controls.py:170
 msgid "Choose file to open"
 msgstr "Выберите файлы для открытия"
 
-#: .././foobnix/regui/base_controls.py:222
+#: .././foobnix/regui/base_controls.py:221
 msgid "Nothing found to play in the file(s)"
 msgstr "Музыка не найдена среди файлов"
 
-#: .././foobnix/regui/base_controls.py:345
+#: .././foobnix/regui/base_controls.py:344
 msgid "Stopped"
 msgstr "Остановлено"
 
-#: .././foobnix/regui/base_controls.py:354
+#: .././foobnix/regui/base_controls.py:353
 msgid "Paused | "
 msgstr "Приостановлено | "
 
-#: .././foobnix/regui/base_controls.py:383
+#: .././foobnix/regui/base_controls.py:382
 msgid "Radio "
 msgstr "Радио "
 
+#: .././foobnix/regui/base_controls.py:415
 #: .././foobnix/regui/base_controls.py:416
-#: .././foobnix/regui/base_controls.py:417
 msgid "Resource not found"
 msgstr "Ресурс не найден"
 
-#: .././foobnix/regui/base_controls.py:425
+#: .././foobnix/regui/base_controls.py:424
 msgid "Stopped. No resources found"
 msgstr "Остановлено. Ресурсы не найдены"
 
@@ -579,33 +579,6 @@ msgstr "Обложка"
 #: .././foobnix/regui/coverlyrics.py:32
 msgid "Lyric:"
 msgstr "Текст песни:"
-
-#: .././foobnix/regui/foobnix_core.py:118
-#: .././foobnix/regui/treeview/dragdrop_tree.py:198
-msgid "Attention!!!"
-msgstr "Внимание!!!"
-
-#: .././foobnix/regui/foobnix_core.py:118
-msgid ""
-"Our ppa repository has been changed.\n"
-"You need run next commands in terminal and restart player:\n"
-"\n"
-"sudo ppa-purge ppa:foobnix-player/foobnix\n"
-"sudo add-apt-repository ppa:foobnix-team/foobnix-player\n"
-"sudo apt-get update\n"
-"sudo apt-get upgrade\n"
-"\n"
-"This message will be removed after it."
-msgstr ""
-"Наш ppa репозиторий был изменён.\n"
-"Вам нужно выполнить следующие команды в терминале и перезапустить плеер:\n"
-"\n"
-"sudo ppa-purge ppa:foobnix-player/foobnix\n"
-"sudo add-apt-repository ppa:foobnix-team/foobnix-player\n"
-"sudo apt-get update\n"
-"sudo apt-get upgrade\n"
-"\n"
-"Это сообщение будет удалено после этого."
 
 #: .././foobnix/regui/infopanel.py:53
 msgid "Best Songs"
@@ -653,7 +626,7 @@ msgstr "Добавить папку(и)"
 
 #: .././foobnix/regui/menu.py:33
 msgid "Save Playlist As"
-msgstr "Сохранить список воспроизведения как..."
+msgstr "Сохранить плейлист как..."
 
 #: .././foobnix/regui/menu.py:36 .././foobnix/regui/top.py:46
 msgid "Quit"
@@ -757,7 +730,7 @@ msgstr "Радиостанции (Alt+2)"
 
 #: .././foobnix/regui/perspectives.py:130
 msgid "Playlist"
-msgstr "Список воспроизведения"
+msgstr "Виртуальный плейлист"
 
 #: .././foobnix/regui/perspectives.py:130
 msgid "Virtual Play Lists (Alt+3)"
@@ -902,7 +875,7 @@ msgstr "Переименовать вкладку"
 
 #: .././foobnix/regui/notetab/__init__.py:332
 msgid "Save playlist as"
-msgstr "Сохранить список воспроизведения как"
+msgstr "Сохранить плейлист как"
 
 #: .././foobnix/regui/notetab/__init__.py:333
 #: .././foobnix/regui/notetab/tab_library.py:45
@@ -911,11 +884,11 @@ msgstr "Закрыть вкладку"
 
 #: .././foobnix/regui/notetab/__init__.py:415
 msgid "It's need not empty playlist"
-msgstr "Требуется не пустой список воспроизведения"
+msgstr "Требуется не пустой плейлист"
 
 #: .././foobnix/regui/notetab/__init__.py:418
 msgid "Choose folder to save playlist"
-msgstr "Выберите папку для сохранения списка воспроизведения"
+msgstr "Выберите папку для сохранения плейлиста"
 
 #: .././foobnix/regui/notetab/tab_library.py:41
 msgid "Update Music Tree"
@@ -972,6 +945,10 @@ msgstr "Токен или логин пустой"
 #: .././foobnix/regui/treeview/playlist_tree.py:235
 msgid "Open in file manager"
 msgstr "Открыть в файловом менеджере"
+
+#: .././foobnix/regui/treeview/dragdrop_tree.py:198
+msgid "Attention!!!"
+msgstr "Внимание!!!"
 
 #: .././foobnix/regui/treeview/dragdrop_tree.py:199
 msgid "When you release the mouse button the mouse"
@@ -1044,11 +1021,11 @@ msgstr "Расш"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:124
 msgid "Append to playlist"
-msgstr "Добавить в список воспроизведения"
+msgstr "Добавить в плейлист"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:125
 msgid "Open in new playlist"
-msgstr "Открыть в новом списке воспроизведения"
+msgstr "Открыть в новом плейлисте"
 
 #: .././foobnix/regui/treeview/navigation_tree.py:127
 msgid "Add folder here"
@@ -1119,7 +1096,7 @@ msgstr "Время"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:219
 msgid "Delete from playlist"
-msgstr "Удалить из списка воспроизведения"
+msgstr "Удалить из плейлиста"
 
 #: .././foobnix/regui/treeview/playlist_tree.py:234
 msgid "Copy To..."
@@ -1174,23 +1151,23 @@ msgid "Radio Stations"
 msgstr "Радиостанции"
 
 #: .././foobnix/regui/treeview/radio_tree.py:61
-#: .././foobnix/regui/treeview/radio_tree.py:219
+#: .././foobnix/regui/treeview/radio_tree.py:220
 msgid "Edit Station"
 msgstr "Свойства станции"
 
 #: .././foobnix/regui/treeview/radio_tree.py:62
-#: .././foobnix/regui/treeview/radio_tree.py:220
+#: .././foobnix/regui/treeview/radio_tree.py:221
 msgid "Delete Station"
 msgstr "Удалить радиостанцию"
 
 #: .././foobnix/regui/treeview/radio_tree.py:64
 #: .././foobnix/regui/treeview/radio_tree.py:90
-#: .././foobnix/regui/treeview/radio_tree.py:222
+#: .././foobnix/regui/treeview/radio_tree.py:223
 msgid "Rename Group"
 msgstr "Переименовать группу"
 
 #: .././foobnix/regui/treeview/radio_tree.py:65
-#: .././foobnix/regui/treeview/radio_tree.py:223
+#: .././foobnix/regui/treeview/radio_tree.py:224
 msgid "Delete Group"
 msgstr "Удалить группу"
 
@@ -1218,30 +1195,30 @@ msgstr "Добавить новую радиостанцию"
 msgid "Enter station name and URL"
 msgstr "Введите имя станции и ее адрес"
 
-#: .././foobnix/regui/treeview/radio_tree.py:193
+#: .././foobnix/regui/treeview/radio_tree.py:194
 msgid "Autogenerated channels"
 msgstr "Автосгенерированные каналы"
 
-#: .././foobnix/regui/treeview/radio_tree.py:214
+#: .././foobnix/regui/treeview/radio_tree.py:215
 msgid "Add Station"
 msgstr "Добавить радиостанцию"
 
-#: .././foobnix/regui/treeview/radio_tree.py:215
-#: .././foobnix/regui/treeview/radio_tree.py:231
+#: .././foobnix/regui/treeview/radio_tree.py:216
+#: .././foobnix/regui/treeview/radio_tree.py:232
 msgid "Create Group"
 msgstr "Создать группу"
 
-#: .././foobnix/regui/treeview/radio_tree.py:231
+#: .././foobnix/regui/treeview/radio_tree.py:232
 msgid "Enter group name"
 msgstr "Введите имя группы"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:25
 msgid "Virtual PlayLists"
-msgstr "Виртуальные списки воспроизведения"
+msgstr "Виртуальный плейлист"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:60
 msgid "Add playlist"
-msgstr "Добавить список воспроизведения"
+msgstr "Добавить плейлист"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:64
 msgid "Rename"
@@ -1253,19 +1230,19 @@ msgstr "Удалить"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:67
 msgid "Rename playlist"
-msgstr "Переименовать список воспроизведения"
+msgstr "Переименовать плейлист"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:68
 msgid "Delete playlist"
-msgstr "Удалить список воспроизведения"
+msgstr "Удалить плейлист"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:74
 msgid "Create new playlist"
-msgstr "Создать новый список воспроизведения"
+msgstr "Создать новый плейлист"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:74
 msgid "Enter playlist name"
-msgstr "Введите название списка воспроизведения"
+msgstr "Введите название плейлиста"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:88
 msgid "Rename Dialog"
@@ -1493,3 +1470,131 @@ msgid ""
 msgstr ""
 "Применить для всех выделенных композиций\n"
 "(активно при множественном выделении)"
+
+#~ msgid ""
+#~ "Our ppa repository has been changed.\n"
+#~ "You need run next commands in terminal and restart player:\n"
+#~ "\n"
+#~ "sudo ppa-purge ppa:foobnix-player/foobnix\n"
+#~ "sudo add-apt-repository ppa:foobnix-team/foobnix-player\n"
+#~ "sudo apt-get update\n"
+#~ "sudo apt-get upgrade\n"
+#~ "\n"
+#~ "This message will be removed after it."
+#~ msgstr ""
+#~ "Наш ppa репозиторий был изменён.\n"
+#~ "Вам нужно выполнить следующие команды в терминале и перезапустить плеер:\n"
+#~ "\n"
+#~ "sudo ppa-purge ppa:foobnix-player/foobnix\n"
+#~ "sudo add-apt-repository ppa:foobnix-team/foobnix-player\n"
+#~ "sudo apt-get update\n"
+#~ "sudo apt-get upgrade\n"
+#~ "\n"
+#~ "Это сообщение будет удалено после этого."
+
+#~ msgid "Music not found in folder(s):"
+#~ msgstr "Музыка не найдена в папках"
+
+#~ msgid "Url"
+#~ msgstr "Ссылка"
+
+#~ msgid "Audio"
+#~ msgstr "Аудио"
+
+#~ msgid "Reload"
+#~ msgstr "Обновить"
+
+#~ msgid "Video"
+#~ msgstr "Видео"
+
+#~ msgid "Off"
+#~ msgstr "Выключен"
+
+#~ msgid "On"
+#~ msgstr "Включен"
+
+#~ msgid "http://www.foobnix.com/download/eng"
+#~ msgstr "http://www.foobnix.com/download"
+
+#~ msgid "OK"
+#~ msgstr "ОК"
+
+#~ msgid "Cancel"
+#~ msgstr "Отменить"
+
+#~ msgid "Save music to folder"
+#~ msgstr "Сохранять музыку в"
+
+#~ msgid "Opacity"
+#~ msgstr "Прозрачность"
+
+#~ msgid "Count of tabs"
+#~ msgstr "Количество табов"
+
+#~ msgid "Max length of tab"
+#~ msgstr "Максимальная длина таба"
+
+#~ msgid "Tab position"
+#~ msgstr "Позиция табов"
+
+#~ msgid "Play Lists"
+#~ msgstr "Списки"
+
+#~ msgid "About Window"
+#~ msgstr "О программе"
+
+#~ msgid "Changelog"
+#~ msgstr "Изменения"
+
+#~ msgid "Credential"
+#~ msgstr "Учасники"
+
+#~ msgid "Last.fm connection error"
+#~ msgstr "Ошбика подлюкчения к last.fm"
+
+#~ msgid "Add to current tab"
+#~ msgstr "Добавить в очередь"
+
+#~ msgid "Add to new tab"
+#~ msgstr "Добавить в новую табу"
+
+#~ msgid "Menu type"
+#~ msgstr "Тип меню"
+
+#~ msgid "Choose your preferred file manager: "
+#~ msgstr "Выберите файловый менеджер "
+
+#~ msgid "Order-Repeat Switcher Style: "
+#~ msgstr "Тип кнопок \"Случайная песня\" "
+
+#~ msgid "Love this track(s)"
+#~ msgstr "Нравится эта песня(и)"
+
+#~ msgid "Edit tags"
+#~ msgstr "Редактировать теги"
+
+#~ msgid "Close tab sign"
+#~ msgstr "Значок закрытия"
+
+#~ msgid "Biography"
+#~ msgstr "Биография"
+
+#~ msgid "Audio Converter"
+#~ msgstr "Аудио Конвертер"
+
+#~ msgid "Convert files (alpha)"
+#~ msgstr "Конвертировать файлы (альфа)"
+
+#~ msgid ""
+#~ "Existing files will be overwritten.\n"
+#~ "Do you wish to continue?"
+#~ msgstr "Существующие файлы будут перезаписаны"
+
+#~ msgid "Convert  %d of %d file(s)"
+#~ msgstr "Конвертирую %d из %d файл(ов)"
+
+#~ msgid "Finished (%d of %d)"
+#~ msgstr "Завершено (%d из %d)"
+
+#~ msgid "Install"
+#~ msgstr "Установить"
