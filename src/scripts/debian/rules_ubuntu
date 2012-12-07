@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	dh_auto_build -- all
+
+override_dh_auto_install:
+	dh_auto_install -- PREFIX=/opt/extras.ubuntu.com/foobnix
+
+override_dh_auto_clean:
+	dh_auto_clean -- PREFIX=/opt/extras.ubuntu.com/foobnix
+	$(MAKE) clean
+
+override_dh_installchangelogs:
+	dh_installchangelogs CHANGELOG
