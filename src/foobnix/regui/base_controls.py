@@ -653,7 +653,7 @@ class BaseFoobnixControls():
         self.info_panel.update(bean)
 
     def append_to_new_notebook(self, text, beans, optimization=False):
-        self.notetabs._append_tab(text, beans, None, optimization)
+        self.notetabs._append_tab(text, beans, optimization)
 
     def append_to_current_notebook(self, beans):
         self.notetabs.append_all(beans)
