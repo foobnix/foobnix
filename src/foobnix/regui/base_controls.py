@@ -253,7 +253,7 @@ class BaseFoobnixControls():
     def update_music_tree(self, tree, number_of_page=0):
         
         logging.info("Update music tree" + str(FCache().music_paths[number_of_page]))
-        tree.clear_tree()
+        tree.clear_tree() #safe method
         FCache().cache_music_tree_beans[number_of_page] = []
                
         all = []
@@ -272,9 +272,9 @@ class BaseFoobnixControls():
                 self.perspective.show_add_button()
             except AttributeError:
                 logging.warn("Object perspective not exists yet")
-        
-        tree.append_all(all)
+        tree.append_all(all) #safe method
         tree.ext_width = tree.ext_column.get_width()
+        gobject.idle_add(self.tabhelper.on_save_tabs) #for true order
           
     def set_visible_video_panel(self, flag):
         FC().is_view_video_panel = flag
@@ -320,8 +320,8 @@ class BaseFoobnixControls():
         else:
             gobject.idle_add(self.main_window.show)
 
-    def state_play(self, remember_position=False, under_pointer_icon=False):
-        if self.media_engine.get_state() == STATE_PAUSE and not remember_position:
+    def state_play(self, under_pointer_icon=False):
+        if self.media_engine.get_state() == STATE_PAUSE:
             self.media_engine.state_play()
             self.statusbar.set_text(self.media_engine.bean.info)
         elif under_pointer_icon:

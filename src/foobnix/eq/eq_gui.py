@@ -96,8 +96,8 @@ class EqWindow(ChildTopWindow, FControl):
         FC().is_eq_enable = w.get_active()
         self.set_custom_title_and_button_label()
         if self.controls.media_engine.get_state() == STATE_PLAY:
-            self.controls.state_stop(True)
-            self.controls.state_play(True)
+            self.controls.state_stop(remember_position=True)
+            self.controls.state_play(under_pointer_icon=True)
             
     def on_save(self, *args):
         text = self.combo.get_active_text()
