@@ -52,7 +52,7 @@ class GStreamerEngine(MediaPlayerEngine):
             source = gst.element_factory_make("souphttpsrc", "source")
             volume = gst.element_factory_make("volume", "volume")
             audioconvert = gst.element_factory_make("audioconvert", "audioconvert")
-            alsasink = gst.element_factory_make("autoaudiosink", "autoaudiosink")
+            audiosink = gst.element_factory_make("autoaudiosink", "autoaudiosink")
             decodebin = gst.element_factory_make("decodebin2", "decode")
             self.equalizer = gst.element_factory_make('equalizer-10bands', 'equalizer')
             source.set_property("user-agent", "Fooobnix music player")
@@ -66,13 +66,13 @@ class GStreamerEngine(MediaPlayerEngine):
 
             decodebin.connect("new-decoded-pad", on_new_decoded_pad)
             
-            playbin.add(source, decodebin, volume, audioconvert, alsasink)
+            playbin.add(source, decodebin, volume, audioconvert, audiosink)
             gst.element_link_many(source, decodebin)
             if FC().is_eq_enable:
                 playbin.add(self.equalizer)
-                gst.element_link_many(audioconvert, volume, self.equalizer, alsasink)
+                gst.element_link_many(audioconvert, volume, self.equalizer, audiosink)
             else:
-                gst.element_link_many(audioconvert, volume, alsasink)                        
+                gst.element_link_many(audioconvert, volume, audiosink)                        
             
         else:
             playbin = gst.element_factory_make("playbin2", "player")
@@ -178,31 +178,41 @@ class GStreamerEngine(MediaPlayerEngine):
         else:
             self.player.set_property("uri", uri)
         
-        self.state_pause(show_in_tray=False)
-        time.sleep(0.3)        
+        #self.state_pause(show_in_tray=False)
+        #time.sleep(0.3)        
         
         self.state_play()
         
         if self.remembered_seek_position:
-            time.sleep(0.3)
-            self.player.seek_simple(gst.Format(gst.FORMAT_TIME), gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
+            self.wait_for_seek()
+            self.player.seek_simple(gst.FORMAT_TIME, gst.SEEK_FLAG_FLUSH, self.remembered_seek_position)
         else:
-            if bean.start_sec != '0':
-                time.sleep(0.3)
-            self.seek_seconds(bean.start_sec)
+            if bean.start_sec and bean.start_sec != '0':
+                self.wait_for_seek()
+                self.seek_seconds(bean.start_sec)
 
         self.remembered_seek_position = 0
-        '''trick to mask bug with ape playing'''
-        if get_file_extension(bean.path) == '.ape' and bean.start_sec != '0':
+        '''trick to mask bug with ape playing
+        if get_file_extension(bean.path) == '.ape' and bean.start_sec and bean.start_sec != '0':
             self.volume(0)
             threading.Timer(1.8, lambda: self.volume(FC().volume)).start()
         else:
-            self.volume(FC().volume)
+            self.volume(FC().volume)'''
         
         logging.debug("current state before thread " + str(self.get_state()) + " thread_id: " + str(self.play_thread_id))
         self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
         self.pause_thread_id = False
         
+    def wait_for_seek(self):
+        while True:
+            try:
+                init_time = time.time()
+                self.player.query_position(gst.FORMAT_TIME)
+                logging.debug("Wait for seek: " + str(time.time() - init_time)) 
+                return
+            except gst.QueryError:
+                continue
+    
     def set_all_bands(self, pre, values):
         if self.equalizer:
             for i, value in enumerate(values):      
