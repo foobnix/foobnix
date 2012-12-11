@@ -7,7 +7,6 @@ Created on 25 сент. 2010
 
 import gtk
 import logging
-import gobject
 
 from foobnix.fc.fc import FC
 from foobnix.util import const
@@ -17,7 +16,6 @@ from foobnix.regui.model.signal import FControl
 from foobnix.util.key_utils import is_key, is_key_alt, is_key_control
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION, \
     LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_VIRTUAL, LEFT_PERSPECTIVE_INFO
-import time
 
 
 class MainWindow(gtk.Window, FControl, LoadSave):
@@ -65,7 +63,9 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         cfg = FC().main_window_size
         if cfg:
             self.resize(cfg[2], cfg[3])            
-            self.move(cfg[0], cfg[1])         
+            self.move(cfg[0], cfg[1]) 
+        if FC().window_maximized:
+            self.maximize()
    
     def show_hide(self):
         visible = self.get_property('visible')
@@ -92,12 +92,15 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         if int(e.new_window_state) == 0:
             """window restored"""
             self.iconified = False
+            FC().window_maximized = False
                         
         elif e.new_window_state & gtk.gdk.WINDOW_STATE_ICONIFIED:#@UndefinedVariable
             """minimized"""
             self.iconified = True
+            FC().window_maximized = False
                 
         elif e.new_window_state & gtk.gdk.WINDOW_STATE_MAXIMIZED:#@UndefinedVariable
             """maximized"""
             self.iconified = False
+            FC().window_maximized = True
             
