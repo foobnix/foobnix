@@ -53,7 +53,17 @@ class MprisPlayer(dbus.service.Object, FControl):
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
     def PlayPause(self):
         self.controls.state_play_pause()
+    
+    #SeekUp ( )
+    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
+    def SeekUp(self):
+        self.controls.seek_up()
 
+    #SeekDown ( )
+    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
+    def SeekDown(self):
+        self.controls.seek_down()
+        
 class DBusManager(dbus.service.Object, FControl):
     def __init__(self, controls, object_path=MPRIS_ROOT_PATH):
         FControl.__init__(self, controls)
