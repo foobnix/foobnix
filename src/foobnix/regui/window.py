@@ -7,6 +7,7 @@ Created on 25 сент. 2010
 
 import gtk
 import logging
+import gobject
 
 from foobnix.fc.fc import FC
 from foobnix.util import const
@@ -16,6 +17,7 @@ from foobnix.regui.model.signal import FControl
 from foobnix.util.key_utils import is_key, is_key_alt, is_key_control
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION, \
     LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_VIRTUAL, LEFT_PERSPECTIVE_INFO
+import time
 
 
 class MainWindow(gtk.Window, FControl, LoadSave):
@@ -52,10 +54,9 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             self.controls.quit()
         elif is_key_control(e) and (is_key(e, "s") or is_key(e, "Cyrillic_yeru")):    
             self.controls.notetabs.on_save_playlist(self.controls.notetabs.get_current_tree().scroll)
-        
-                    
+
     def on_configure_event(self, w, e):
-        FC().main_window_size = [e.x, e.y, e.width, e.height]
+            FC().main_window_size = [e.x, e.y, e.width, e.height]
         
     def on_save(self, *a):        
         pass
@@ -91,7 +92,7 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         if int(e.new_window_state) == 0:
             """window restored"""
             self.iconified = False
-            
+                        
         elif e.new_window_state & gtk.gdk.WINDOW_STATE_ICONIFIED:#@UndefinedVariable
             """minimized"""
             self.iconified = True
@@ -99,6 +100,4 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         elif e.new_window_state & gtk.gdk.WINDOW_STATE_MAXIMIZED:#@UndefinedVariable
             """maximized"""
             self.iconified = False
-                
-                
-                
+            

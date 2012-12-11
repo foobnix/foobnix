@@ -4,6 +4,7 @@ Created on 25 сент. 2010
 
 @author: ivan
 '''
+
 import gtk
 import gobject
 import logging
@@ -27,13 +28,13 @@ class BaseFoobnixLayout(FControl, LoadSave):
         center_box.pack_start(bbox, True, True)
         
         self.hpaned_left = gtk.HPaned()
-        self.hpaned_left.connect("motion-notify-event", self.on_save_and_normilize_columns)
+        self.hpaned_left.connect("motion-notify-event", self.on_motion)
         
         self.hpaned_left.pack1(child=controls.perspective, resize=True, shrink=True)
         self.hpaned_left.pack2(child=center_box, resize=True, shrink=True)
         
         self.hpaned_right = gtk.HPaned()
-        self.hpaned_right.connect("motion-notify-event", self.on_save_and_normilize_columns)
+        self.hpaned_right.connect("motion-notify-event", self.on_motion)
         self.hpaned_right.pack1(child=self.hpaned_left, resize=True, shrink=True)
         self.hpaned_right.pack2(child=controls.coverlyrics, shrink=False)
         
@@ -42,8 +43,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         vbox.pack_start(self.hpaned_right, True, True)        
         vbox.pack_start(controls.statusbar, False, True)
         vbox.show_all()
-        #controls.main_window.connect("configure-event", self.on_change_window_size) #if pull sides of window 
-        controls.main_window.connect("size-allocate", self.on_allocate_window_size) #if maximize and restore window
+        self.allocate_id = controls.main_window.connect("size-allocate", self.on_allocate_window_size) #if maximize and restore window
         controls.main_window.add(vbox)
         
     def set_visible_search_panel(self, flag=True):
@@ -59,6 +59,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         logging.info("set_visible_musictree_panel " + str(flag))
         if flag:
             self.hpaned_left.set_position(FC().hpaned_left)
+            
         else:
             self.hpaned_left.set_position(0)
             
@@ -67,35 +68,43 @@ class BaseFoobnixLayout(FControl, LoadSave):
     def set_visible_coverlyrics_panel(self, flag):
         logging.info("set_visible_coverlyrics_panel " + str(flag))
         if flag:
-            self.hpaned_right.set_position(FC().hpaned_right)
+            self.hpaned_right.set_position(self.hpaned_right.allocation.width - FC().hpaned_right_right_side_width)
             self.controls.coverlyrics.show()
-            gobject.idle_add(self.on_save_and_normilize_columns, None)
         else:
             self.controls.coverlyrics.hide()
         
         FC().is_view_coverlyrics_panel = flag
-        
-    def on_save_and_normilize_columns(self, *a):
+    
+    def on_motion(self, *a):
+        self.save_panels()
+        self.controls.coverlyrics.adapt_image()
+        gobject.idle_add(self.normalize_columns)
+    
+    def save_panels(self):
         if self.hpaned_left.get_position() > 0:   
             FC().hpaned_left = self.hpaned_left.get_position()
-       
+        
         if self.hpaned_right.get_position() > 0:   
             FC().hpaned_right = self.hpaned_right.get_position()
-            self.controls.coverlyrics.adapt_image()
-        FC().hpaned_right_right_side_width = self.hpaned_right.allocation.width - FC().hpaned_right     
-        
+            
+        FC().hpaned_right_right_side_width = self.hpaned_right.allocation.width - FC().hpaned_right  
+
+    def normalize_columns(self):
         for page in xrange(self.controls.tabhelper.get_n_pages()):
             tab_content = self.controls.tabhelper.get_nth_page(page)
             tree = tab_content.get_child()
             tree.normalize_columns_width()
     
     def on_allocate_window_size(self, *a):
-        if not self.controls.coverlyrics.get_property("visible"):
-            return
-        if (self.hpaned_right.allocation.width - FC().hpaned_right) != FC().hpaned_right_right_side_width:
-            self.hpaned_right.set_position(self.hpaned_right.allocation.width - FC().hpaned_right_right_side_width)
-            gobject.idle_add(self.on_save_and_normilize_columns, None)
-    
+        if self.controls.coverlyrics.get_property("visible"):
+            if (self.hpaned_right.allocation.width - self.hpaned_right.get_position()) != FC().hpaned_right_right_side_width:
+                self.hpaned_right.set_position(self.hpaned_right.allocation.width - FC().hpaned_right_right_side_width)
+        if FC().is_view_music_tree_panel and self.hpaned_left.get_position() != FC().hpaned_left:
+            self.hpaned_left.set_position(FC().hpaned_left)
+            #self.controls.main_window.handler_block(self.allocate_id)
+            self.controls.coverlyrics.adapt_image()
+            #self.controls.main_window.handler_unblock(self.allocate_id)
+
     def on_load(self):
         self.set_visible_search_panel(FC().is_view_search_panel)
         gobject.idle_add(self.set_visible_musictree_panel, FC().is_view_music_tree_panel, 
