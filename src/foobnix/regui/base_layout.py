@@ -77,7 +77,8 @@ class BaseFoobnixLayout(FControl, LoadSave):
     
     def on_motion(self, *a):
         self.save_panels()
-        self.controls.coverlyrics.adapt_image()
+        if self.controls.coverlyrics.get_property("visible"):
+            self.controls.coverlyrics.adapt_image()
         gobject.idle_add(self.normalize_columns)
     
     def save_panels(self):
@@ -96,15 +97,17 @@ class BaseFoobnixLayout(FControl, LoadSave):
             tree.normalize_columns_width()
     
     def on_allocate_window_size(self, *a):
-        if self.controls.coverlyrics.get_property("visible"):
-            if (self.hpaned_right.allocation.width - self.hpaned_right.get_position()) != FC().hpaned_right_right_side_width:
-                self.hpaned_right.set_position(self.hpaned_right.allocation.width - FC().hpaned_right_right_side_width)
-        if FC().is_view_music_tree_panel and self.hpaned_left.get_position() != FC().hpaned_left:
-            self.hpaned_left.set_position(FC().hpaned_left)
-            #self.controls.main_window.handler_block(self.allocate_id)
-            self.controls.coverlyrics.adapt_image()
-            #self.controls.main_window.handler_unblock(self.allocate_id)
-
+        def task():
+            if self.controls.coverlyrics.get_property("visible"):
+                if (self.hpaned_right.allocation.width - self.hpaned_right.get_position()) != FC().hpaned_right_right_side_width:
+                    self.hpaned_right.set_position(self.hpaned_right.allocation.width - FC().hpaned_right_right_side_width)
+            if FC().is_view_music_tree_panel and self.hpaned_left.get_position() != FC().hpaned_left:
+                self.hpaned_left.set_position(FC().hpaned_left)
+                #self.controls.main_window.handler_block(self.allocate_id)
+                self.controls.coverlyrics.adapt_image()
+                #self.controls.main_window.handler_unblock(self.allocate_id)
+        gobject.idle_add(task)
+        
     def on_load(self):
         self.set_visible_search_panel(FC().is_view_search_panel)
         gobject.idle_add(self.set_visible_musictree_panel, FC().is_view_music_tree_panel, 
