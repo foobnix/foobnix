@@ -16,6 +16,7 @@ from foobnix.regui.model.signal import FControl
 from foobnix.util.key_utils import is_key, is_key_alt, is_key_control
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION, \
     LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_VIRTUAL, LEFT_PERSPECTIVE_INFO
+import gobject
 
 
 class MainWindow(gtk.Window, FControl, LoadSave):
@@ -54,7 +55,21 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             self.controls.notetabs.on_save_playlist(self.controls.notetabs.get_current_tree().scroll)
 
     def on_configure_event(self, w, e):
-            FC().main_window_size = [e.x, e.y, e.width, e.height]
+        FC().main_window_size = [e.x, e.y, e.width, e.height]
+        def task():
+            print 789
+            if self.controls.coverlyrics.get_property("visible"):
+                if (self.controls.layout.hpaned_right.allocation.width - self.controls.layout.hpaned_right.get_position()) != FC().hpaned_right_right_side_width:
+                    self.controls.layout.hpaned_right.set_position(self.controls.layout.hpaned_right.allocation.width - FC().hpaned_right_right_side_width)
+                    
+            if FC().is_view_music_tree_panel and self.controls.layout.hpaned_left.get_position() != FC().hpaned_left:
+                self.controls.layout.hpaned_left.set_position(FC().hpaned_left)
+                #self.controls.main_window.handler_block(self.allocate_id)
+                
+                print 2
+                #self.controls.main_window.handler_unblock(self.allocate_id)
+        
+        gobject.idle_add(task, priority = gobject.PRIORITY_DEFAULT_IDLE + 10)
         
     def on_save(self, *a):        
         pass
