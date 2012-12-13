@@ -222,7 +222,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             
             thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
             
-        self.controls.search_progress.background_spinner_wrapper(task, to_tree, to_model)
+        self.controls.search_progress.background_spinner_wrapper(task, False, to_tree, to_model)
         
         
         
@@ -240,7 +240,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         if response == gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
             chooser.destroy()
-            
+            self.controls.main_window.present()
             def task():
                 path = paths[0]
                 FCache().last_music_path = path[:path.rfind("/")]
@@ -279,9 +279,9 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                         #self.controls.preferences.on_load()
                         logging.info("New music paths" + str(FCache().music_paths[number_of_tab]))
                 self.controls.update_music_tree(tree, number_of_tab)
-                FC().save()
-            self.controls.in_thread.run_with_progressbar(task, with_lock=False)
-            
+                
+            #self.controls.in_thread.run_with_progressbar(task, with_lock=False)
+            self.controls.search_progress.background_spinner_wrapper(task, in_graphic_thread=False) 
         elif response == gtk.RESPONSE_CANCEL:
             logging.info('Closed, no files selected')
             chooser.destroy()       
