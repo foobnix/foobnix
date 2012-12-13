@@ -16,7 +16,6 @@ from foobnix.regui.model.signal import FControl
 from foobnix.util.key_utils import is_key, is_key_alt, is_key_control
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION, \
     LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_VIRTUAL, LEFT_PERSPECTIVE_INFO
-import gobject
 
 
 class MainWindow(gtk.Window, FControl, LoadSave):
@@ -29,7 +28,6 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         self.set_resizable(True)
         self.connect("window-state-event", self.on_change_state)      
         self.connect("delete-event", self.hide_window)
-        self.connect("configure-event", self.on_configure_event)
         self.connect("key-press-event", self.on_key_press)
         self.set_icon(self.controls.trayicon.get_pixbuf())
         
@@ -54,22 +52,7 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         elif is_key_control(e) and (is_key(e, "s") or is_key(e, "Cyrillic_yeru")):    
             self.controls.notetabs.on_save_playlist(self.controls.notetabs.get_current_tree().scroll)
 
-    def on_configure_event(self, w, e):
-        FC().main_window_size = [e.x, e.y, e.width, e.height]
-        def task():
-            print 789
-            if self.controls.coverlyrics.get_property("visible"):
-                if (self.controls.layout.hpaned_right.allocation.width - self.controls.layout.hpaned_right.get_position()) != FC().hpaned_right_right_side_width:
-                    self.controls.layout.hpaned_right.set_position(self.controls.layout.hpaned_right.allocation.width - FC().hpaned_right_right_side_width)
-                    
-            if FC().is_view_music_tree_panel and self.controls.layout.hpaned_left.get_position() != FC().hpaned_left:
-                self.controls.layout.hpaned_left.set_position(FC().hpaned_left)
-                #self.controls.main_window.handler_block(self.allocate_id)
-                
-                print 2
-                #self.controls.main_window.handler_unblock(self.allocate_id)
-        
-        gobject.idle_add(task, priority = gobject.PRIORITY_DEFAULT_IDLE + 10)
+
         
     def on_save(self, *a):        
         pass
