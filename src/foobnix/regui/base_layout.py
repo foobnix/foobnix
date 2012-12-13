@@ -46,12 +46,12 @@ class BaseFoobnixLayout(FControl, LoadSave):
                 
         self.hpaned_left.connect("button-release-event", self.save_panels)
         self.hpaned_right.connect("button-release-event", self.save_panels)
-        
-        #controls.main_window.connect("size-allocate", self.on_allocate_window_size) #if maximize and restore window
+        self.hpaned_left.connect("size-allocate", self.on_configure_hl_event)
+        self.hpaned_right.connect("size-allocate", self.on_configure_hr_event)
         controls.main_window.connect("configure-event", self.on_configure_event)
         controls.main_window.add(vbox)
-        if self.hpaned_right.get_property("visible"):
-            self.controls.coverlyrics.adapt_image()
+        #if self.hpaned_right.get_property("visible"):
+        #    self.controls.coverlyrics.adapt_image()
         
         
     def set_visible_search_panel(self, flag=True):
@@ -89,6 +89,8 @@ class BaseFoobnixLayout(FControl, LoadSave):
     
     def save_panels(self, *a):
         left_position = self.hpaned_left.get_position()
+        print "save", left_position, FC().hpaned_left
+        
         if left_position != FC().hpaned_left and left_position > 0:   
             FC().hpaned_left = left_position
             self.normalize_columns()
@@ -107,19 +109,33 @@ class BaseFoobnixLayout(FControl, LoadSave):
     
     def on_configure_event(self, w, e):
         FC().main_window_size = [e.x, e.y, e.width, e.height]
-        def task():
+        '''def task():
+            print "task"
             if self.controls.coverlyrics.get_property("visible"):
                 hrw = self.hpaned_right.allocation.width
                 if (hrw - self.hpaned_right.get_position()) != FC().hpaned_right_right_side_width:
                     self.hpaned_right.set_position(hrw - FC().hpaned_right_right_side_width)
-                    
+       
+            print "task1", FC().hpaned_left, self.hpaned_left.get_position()
+            
+            if FC().is_view_music_tree_panel and self.hpaned_left.get_position() != FC().hpaned_left:
+                self.hpaned_left.set_position(FC().hpaned_left)
+                print 1, self.hpaned_left.get_position()
+        gobject.idle_add(task)'''
+    
+    def on_configure_hl_event(self, *a):
             if FC().is_view_music_tree_panel and self.hpaned_left.get_position() != FC().hpaned_left:
                 self.hpaned_left.set_position(FC().hpaned_left)
         
-        gobject.idle_add(task)
-    
+    def on_configure_hr_event(self, *a):
+            if self.controls.coverlyrics.get_property("visible"):
+                hrw = self.hpaned_right.allocation.width
+                if (hrw - self.hpaned_right.get_position()) != FC().hpaned_right_right_side_width:
+                    self.hpaned_right.set_position(hrw - FC().hpaned_right_right_side_width)
+        
     def on_allocate_window_size(self, *a):
         return
+        
         
     def on_load(self):
         self.set_visible_search_panel(FC().is_view_search_panel)
