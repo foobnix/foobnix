@@ -203,7 +203,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                     to_tree = self.controls.notetabs.get_current_tree() # because to_tree has changed
                     to_model = to_tree.get_model().get_model()
                 
-                if is_m3u(from_model.get_value(from_iter, self.path[0]).lower()):
+                if is_m3u(from_model.get_value(from_iter, self.path[0])):
                     self.add_m3u(from_model, from_iter, to_tree, to_model) 
                     continue
                 beans = self.get_all_beans_by_parent(from_model, from_iter)
