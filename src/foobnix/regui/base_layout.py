@@ -43,11 +43,13 @@ class BaseFoobnixLayout(FControl, LoadSave):
         vbox.pack_start(self.hpaned_right, True, True)        
         vbox.pack_start(controls.statusbar, False, True)
         vbox.show_all()
-                
+        
+        self.hpaned_left.connect("button-press-event", self.on_border_press)
+        self.hpaned_right.connect("button-press-event", self.on_border_press)
         self.hpaned_left.connect("button-release-event", self.save_panels)
         self.hpaned_right.connect("button-release-event", self.save_panels)
-        self.hpaned_left.connect("size-allocate", self.on_configure_hl_event)
-        self.hpaned_right.connect("size-allocate", self.on_configure_hr_event)
+        self.id_handler_left = self.hpaned_left.connect("size-allocate", self.on_configure_hl_event)
+        self.id_handler_right = self.hpaned_right.connect("size-allocate", self.on_configure_hr_event)
         controls.main_window.connect("configure-event", self.on_configure_event)
         controls.main_window.add(vbox)
         
@@ -83,7 +85,16 @@ class BaseFoobnixLayout(FControl, LoadSave):
     def on_motion(self, *a):
         return
     
-    def save_panels(self, *a):
+    def on_border_press(self, *a):
+        self.hpaned_left.handler_block(self.id_handler_left)
+        self.hpaned_right.handler_block(self.id_handler_right)
+    
+    def save_panels(self, w, *a):
+        self.hpaned_left.handler_unblock(self.id_handler_left)
+        self.hpaned_right.handler_unblock(self.id_handler_right)
+        self.on_configure_hl_event()
+        self.on_configure_hr_event()
+        
         left_position = self.hpaned_left.get_position()
         if left_position != FC().hpaned_left and left_position > 0:   
             FC().hpaned_left = left_position
@@ -93,17 +104,17 @@ class BaseFoobnixLayout(FControl, LoadSave):
             if right_position != FC().hpaned_right and right_position > 0:   
                 FC().hpaned_right = right_position
             FC().hpaned_right_right_side_width = self.hpaned_right.allocation.width - right_position
-            self.controls.coverlyrics.adapt_image()  
+            self.controls.coverlyrics.adapt_image()
 
     def normalize_columns(self):
         for page in xrange(self.controls.tabhelper.get_n_pages()):
             tab_content = self.controls.tabhelper.get_nth_page(page)
             tree = tab_content.get_child()
             tree.normalize_columns_width()
-    
+
     def on_configure_event(self, w, e):
         FC().main_window_size = [e.x, e.y, e.width, e.height]
-    
+
     def on_configure_hl_event(self, *a):
         def task():
             if FC().is_view_music_tree_panel and self.hpaned_left.get_position() != FC().hpaned_left:
