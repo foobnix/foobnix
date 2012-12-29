@@ -14,7 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-06 08:28+0000\n"
+"X-Launchpad-Export-Date: 2012-12-07 04:48+0000\n"
 "X-Generator: Launchpad (build 16341)\n"
 "Language: \n"
 "X-Poedit-Language: Russian\n"
@@ -729,12 +729,12 @@ msgid "Radio Stantions (Alt+2)"
 msgstr "Радиостанции (Alt+2)"
 
 #: .././foobnix/regui/perspectives.py:130
-msgid "Playlist"
-msgstr "Виртуальный плейлист"
+msgid "Storage"
+msgstr "Архив"
 
 #: .././foobnix/regui/perspectives.py:130
-msgid "Virtual Play Lists (Alt+3)"
-msgstr "Виртуальные плейлисты (Alt+3)"
+msgid "Storage (Alt+3)"
+msgstr "Архив (Alt+3)"
 
 #: .././foobnix/regui/perspectives.py:134
 msgid "Info Panel (Alt+4)"
@@ -1470,131 +1470,3 @@ msgid ""
 msgstr ""
 "Применить для всех выделенных композиций\n"
 "(активно при множественном выделении)"
-
-#~ msgid ""
-#~ "Our ppa repository has been changed.\n"
-#~ "You need run next commands in terminal and restart player:\n"
-#~ "\n"
-#~ "sudo ppa-purge ppa:foobnix-player/foobnix\n"
-#~ "sudo add-apt-repository ppa:foobnix-team/foobnix-player\n"
-#~ "sudo apt-get update\n"
-#~ "sudo apt-get upgrade\n"
-#~ "\n"
-#~ "This message will be removed after it."
-#~ msgstr ""
-#~ "Наш ppa репозиторий был изменён.\n"
-#~ "Вам нужно выполнить следующие команды в терминале и перезапустить плеер:\n"
-#~ "\n"
-#~ "sudo ppa-purge ppa:foobnix-player/foobnix\n"
-#~ "sudo add-apt-repository ppa:foobnix-team/foobnix-player\n"
-#~ "sudo apt-get update\n"
-#~ "sudo apt-get upgrade\n"
-#~ "\n"
-#~ "Это сообщение будет удалено после этого."
-
-#~ msgid "Music not found in folder(s):"
-#~ msgstr "Музыка не найдена в папках"
-
-#~ msgid "Url"
-#~ msgstr "Ссылка"
-
-#~ msgid "Audio"
-#~ msgstr "Аудио"
-
-#~ msgid "Reload"
-#~ msgstr "Обновить"
-
-#~ msgid "Video"
-#~ msgstr "Видео"
-
-#~ msgid "Off"
-#~ msgstr "Выключен"
-
-#~ msgid "On"
-#~ msgstr "Включен"
-
-#~ msgid "http://www.foobnix.com/download/eng"
-#~ msgstr "http://www.foobnix.com/download"
-
-#~ msgid "OK"
-#~ msgstr "ОК"
-
-#~ msgid "Cancel"
-#~ msgstr "Отменить"
-
-#~ msgid "Save music to folder"
-#~ msgstr "Сохранять музыку в"
-
-#~ msgid "Opacity"
-#~ msgstr "Прозрачность"
-
-#~ msgid "Count of tabs"
-#~ msgstr "Количество табов"
-
-#~ msgid "Max length of tab"
-#~ msgstr "Максимальная длина таба"
-
-#~ msgid "Tab position"
-#~ msgstr "Позиция табов"
-
-#~ msgid "Play Lists"
-#~ msgstr "Списки"
-
-#~ msgid "About Window"
-#~ msgstr "О программе"
-
-#~ msgid "Changelog"
-#~ msgstr "Изменения"
-
-#~ msgid "Credential"
-#~ msgstr "Учасники"
-
-#~ msgid "Last.fm connection error"
-#~ msgstr "Ошбика подлюкчения к last.fm"
-
-#~ msgid "Add to current tab"
-#~ msgstr "Добавить в очередь"
-
-#~ msgid "Add to new tab"
-#~ msgstr "Добавить в новую табу"
-
-#~ msgid "Menu type"
-#~ msgstr "Тип меню"
-
-#~ msgid "Choose your preferred file manager: "
-#~ msgstr "Выберите файловый менеджер "
-
-#~ msgid "Order-Repeat Switcher Style: "
-#~ msgstr "Тип кнопок \"Случайная песня\" "
-
-#~ msgid "Love this track(s)"
-#~ msgstr "Нравится эта песня(и)"
-
-#~ msgid "Edit tags"
-#~ msgstr "Редактировать теги"
-
-#~ msgid "Close tab sign"
-#~ msgstr "Значок закрытия"
-
-#~ msgid "Biography"
-#~ msgstr "Биография"
-
-#~ msgid "Audio Converter"
-#~ msgstr "Аудио Конвертер"
-
-#~ msgid "Convert files (alpha)"
-#~ msgstr "Конвертировать файлы (альфа)"
-
-#~ msgid ""
-#~ "Existing files will be overwritten.\n"
-#~ "Do you wish to continue?"
-#~ msgstr "Существующие файлы будут перезаписаны"
-
-#~ msgid "Convert  %d of %d file(s)"
-#~ msgstr "Конвертирую %d из %d файл(ов)"
-
-#~ msgid "Finished (%d of %d)"
-#~ msgstr "Завершено (%d из %d)"
-
-#~ msgid "Install"
-#~ msgstr "Установить"
