@@ -10,7 +10,6 @@ import thread
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
-from foobnix.fc.fc_cache import FCache
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.toggled import OneActiveToggledButton
@@ -128,8 +127,8 @@ class PerspectiveButtonControlls(gtk.HBox):
         radios.connect("button-press-event", lambda * a:
                        controls.perspective.activate_radio_perspective())
               
-        virtuals = PespectiveToogledButton(_("Storage"), gtk.STOCK_INDEX, _("Storage (Alt+3)"))
-        virtuals.connect("button-press-event", lambda * a:activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
+        #virtuals = PespectiveToogledButton(_("Storage"), gtk.STOCK_INDEX, _("Storage (Alt+3)"))
+        #virtuals.connect("button-press-event", lambda * a:activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
         
         
         info = PespectiveToogledButton(_("Info"), gtk.STOCK_INFO, _("Info Panel (Alt+4)"))
@@ -146,7 +145,7 @@ class PerspectiveButtonControlls(gtk.HBox):
         self.button_list = {
                      LEFT_PERSPECTIVE_NAVIGATION:musics,
                      LEFT_PERSPECTIVE_RADIO:radios,
-                     LEFT_PERSPECTIVE_VIRTUAL:virtuals,
+                     #LEFT_PERSPECTIVE_VIRTUAL:virtuals,
                      LEFT_PERSPECTIVE_LASTFM:lastfm,
                      LEFT_PERSPECTIVE_VK:vk,
                      LEFT_PERSPECTIVE_INFO:info                     
