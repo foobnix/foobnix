@@ -1,13 +1,15 @@
 #!/usr/bin/env python
-import os, glob
+
 import shutil
+import os, glob
+
 from distutils.core import setup, Command
 from test.all import run_all_tests
 
 if os.name == 'nt':
     import py2exe #@UnresolvedImport @UnusedImport
 
-VERSION = "2.6.09"
+VERSION = "2.6.10"
 
 data_files = [
     ('share/applications', ['foobnix.desktop']),
