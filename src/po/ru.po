@@ -602,11 +602,11 @@ msgstr "Текст композиции"
 
 #: .././foobnix/regui/infopanel.py:74
 msgid "About Artist"
-msgstr "Сведения о исполнителе"
+msgstr "Об исполнителе"
 
 #: .././foobnix/regui/infopanel.py:80 .././foobnix/regui/perspectives.py:134
 msgid "Info"
-msgstr "Сведения"
+msgstr "Инфо"
 
 #: .././foobnix/regui/infopanel.py:89
 msgid "Downloads"
