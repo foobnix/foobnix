@@ -7,8 +7,10 @@ Created on 22 сент. 2010
 
 import gtk
 import thread
+import gobject
 
 from foobnix.fc.fc import FC
+from foobnix.util import analytics
 from foobnix.fc.fc_base import FCBase
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
@@ -17,9 +19,6 @@ from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
 from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, \
     LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_MY_RADIO, \
     LEFT_PERSPECTIVE_LASTFM, LEFT_PERSPECTIVE_VK
-from foobnix.util import analytics
-import gobject
-
 
 
 class PerspectiveControls(FControl, gtk.VBox, LoadSave):

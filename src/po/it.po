@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-05 22:30+0400\n"
-"PO-Revision-Date: 2012-12-05 23:02+0000\n"
+"POT-Creation-Date: 2012-12-30 14:25+0400\n"
+"PO-Revision-Date: 2012-12-30 17:42+0000\n"
 "Last-Translator: Dmitry-Kogura <Unknown>\n"
 "Language-Team: ITALIAN <bmsavone@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-07 04:48+0000\n"
-"X-Generator: Launchpad (build 16341)\n"
+"X-Launchpad-Export-Date: 2012-12-31 04:46+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 "X-Poedit-Country: ITALY\n"
 "Language: \n"
 "X-Poedit-Language: Italian\n"
@@ -48,40 +48,40 @@ msgstr "Scegli Cartella"
 msgid "Equalizer"
 msgstr "Equalizzatore"
 
-#: .././foobnix/eq/eq_gui.py:88
+#: .././foobnix/eq/eq_gui.py:83
 msgid "Disabled"
 msgstr "Disabilitato"
 
-#: .././foobnix/eq/eq_gui.py:89 .././foobnix/eq/eq_gui.py:171
+#: .././foobnix/eq/eq_gui.py:84 .././foobnix/eq/eq_gui.py:166
 msgid "Enable EQ"
 msgstr "Abilita EQ"
 
-#: .././foobnix/eq/eq_gui.py:91
+#: .././foobnix/eq/eq_gui.py:86
 msgid "Enabled"
 msgstr "Abilitato"
 
-#: .././foobnix/eq/eq_gui.py:92 .././foobnix/eq/eq_gui.py:290
+#: .././foobnix/eq/eq_gui.py:87 .././foobnix/eq/eq_gui.py:279
 msgid "Disable EQ"
 msgstr "Disabilita EQ"
 
-#: .././foobnix/eq/eq_gui.py:93
+#: .././foobnix/eq/eq_gui.py:88
 #, python-format
 msgid "Equalizer %s"
 msgstr "Equalizzatore %s"
 
-#: .././foobnix/eq/eq_gui.py:172
+#: .././foobnix/eq/eq_gui.py:167
 msgid "To enable EQ set ON"
 msgstr "Per abilitare EQ spunta ON"
 
-#: .././foobnix/eq/eq_gui.py:177
+#: .././foobnix/eq/eq_gui.py:172
 msgid "Auto"
 msgstr "Automatico"
 
-#: .././foobnix/eq/eq_gui.py:192
+#: .././foobnix/eq/eq_gui.py:184
 msgid "Save"
 msgstr "Salva"
 
-#: .././foobnix/eq/eq_gui.py:200
+#: .././foobnix/eq/eq_gui.py:191
 msgid "Restore defaults presets"
 msgstr "Ripristina impostazioni predefinite"
 
@@ -102,7 +102,7 @@ msgstr "Scarica e Contribuisci"
 
 #. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:179
-#: .././foobnix/regui/treeview/playlist_tree.py:237
+#: .././foobnix/regui/treeview/playlist_tree.py:240
 #: .././foobnix/util/converter.py:341
 msgid "Download"
 msgstr "Scarica"
@@ -197,7 +197,7 @@ msgstr ""
 #: .././foobnix/preferences/configs/hotkey_conf.py:202
 #: .././foobnix/regui/controls/playback.py:196
 #: .././foobnix/regui/treeview/lastfm_integration_tree.py:65
-#: .././foobnix/regui/treeview/playlist_tree.py:218
+#: .././foobnix/regui/treeview/playlist_tree.py:221
 #: .././foobnix/regui/treeview/vk_integration_tree.py:77
 msgid "Play"
 msgstr "Play"
@@ -728,12 +728,13 @@ msgid "Radio Stantions (Alt+2)"
 msgstr "Radio Stantions (Alt+2)"
 
 #: .././foobnix/regui/perspectives.py:130
-msgid "Playlist"
-msgstr "Playlist"
+#: .././foobnix/regui/treeview/virtual_tree.py:25
+msgid "Storage"
+msgstr ""
 
 #: .././foobnix/regui/perspectives.py:130
-msgid "Virtual Play Lists (Alt+3)"
-msgstr "Play Lists Virtuali (Alt+3)"
+msgid "Storage (Alt+3)"
+msgstr ""
 
 #: .././foobnix/regui/perspectives.py:134
 msgid "Info Panel (Alt+4)"
@@ -855,7 +856,7 @@ msgstr "Il file non esiste. Forse non è stato creato ancora."
 msgid "Save file as ..."
 msgstr "Salva file come ..."
 
-#: .././foobnix/regui/controls/seach_progress.py:77
+#: .././foobnix/regui/controls/seach_progress.py:72
 msgid "Process..."
 msgstr ""
 
@@ -941,7 +942,7 @@ msgstr "Token o utente è vuoto"
 #: .././foobnix/regui/treeview/dm_tree.py:97
 #: .././foobnix/regui/treeview/dm_tree.py:99
 #: .././foobnix/regui/treeview/navigation_tree.py:143
-#: .././foobnix/regui/treeview/playlist_tree.py:235
+#: .././foobnix/regui/treeview/playlist_tree.py:238
 msgid "Open in file manager"
 msgstr "Apri in file manager"
 
@@ -1052,92 +1053,92 @@ msgstr "Rinomina file (cartella)"
 msgid "Delete file(s) / folder(s)"
 msgstr "Elimina file / cartella(e)"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:57
+#: .././foobnix/regui/treeview/playlist_tree.py:58
 msgid "Number"
 msgstr "Numero"
 
 #. @UnusedVariable
-#: .././foobnix/regui/treeview/playlist_tree.py:65
 #: .././foobnix/regui/treeview/playlist_tree.py:66
+#: .././foobnix/regui/treeview/playlist_tree.py:67
 #: .././foobnix/util/tag_util.py:42
 msgid "Composer"
 msgstr "Autore"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:73
 #: .././foobnix/regui/treeview/playlist_tree.py:74
+#: .././foobnix/regui/treeview/playlist_tree.py:75
 msgid "Track"
 msgstr "Brano"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:82
 #: .././foobnix/regui/treeview/playlist_tree.py:83
+#: .././foobnix/regui/treeview/playlist_tree.py:84
 #: .././foobnix/util/tag_util.py:35
 msgid "Artist"
 msgstr "Artista"
 
 #. @UnusedVariable
-#: .././foobnix/regui/treeview/playlist_tree.py:91
 #: .././foobnix/regui/treeview/playlist_tree.py:92
+#: .././foobnix/regui/treeview/playlist_tree.py:93
 #: .././foobnix/util/tag_util.py:36
 msgid "Title"
 msgstr "Titolo"
 
 #. @UnusedVariable
-#: .././foobnix/regui/treeview/playlist_tree.py:104
 #: .././foobnix/regui/treeview/playlist_tree.py:105
+#: .././foobnix/regui/treeview/playlist_tree.py:106
 #: .././foobnix/util/tag_util.py:37
 msgid "Album"
 msgstr "Album"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:111
 #: .././foobnix/regui/treeview/playlist_tree.py:112
+#: .././foobnix/regui/treeview/playlist_tree.py:113
 msgid "Time"
 msgstr "Durata"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:219
+#: .././foobnix/regui/treeview/playlist_tree.py:222
 msgid "Delete from playlist"
 msgstr "Rimuovi dalla playlist"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:234
+#: .././foobnix/regui/treeview/playlist_tree.py:237
 msgid "Copy To..."
 msgstr "Copia In..."
 
-#: .././foobnix/regui/treeview/playlist_tree.py:238
+#: .././foobnix/regui/treeview/playlist_tree.py:241
 msgid "Download To..."
 msgstr "Scarica in..."
 
-#: .././foobnix/regui/treeview/playlist_tree.py:243
+#: .././foobnix/regui/treeview/playlist_tree.py:246
 msgid "Edit Tags"
 msgstr "Modifica Etichette"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:244
+#: .././foobnix/regui/treeview/playlist_tree.py:247
 msgid "Format Converter"
 msgstr "Convertitore di Formato"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:246
+#: .././foobnix/regui/treeview/playlist_tree.py:249
 msgid "Copy To Search Line"
 msgstr "Copia sulla riga di Ricerca"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:248
+#: .././foobnix/regui/treeview/playlist_tree.py:251
 msgid "Copy №-Title-Time"
 msgstr "Copia №-Titolo-Durata"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:249
+#: .././foobnix/regui/treeview/playlist_tree.py:252
 msgid "Copy Artist-Title-Album"
 msgstr "Copia Artista-Titolo-Album"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:251
+#: .././foobnix/regui/treeview/playlist_tree.py:254
 msgid "Love This Track(s) by Last.fm"
 msgstr "Mi Piace Questo Brano(i) di Last.fm"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:254
+#: .././foobnix/regui/treeview/playlist_tree.py:257
 msgid "Open In File Manager"
 msgstr "Apri in File Manager"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:320
+#: .././foobnix/regui/treeview/playlist_tree.py:323
 msgid "Numbering by order"
 msgstr "Numerazione per ordine"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:322
+#: .././foobnix/regui/treeview/playlist_tree.py:325
 msgid "Numbering by tags"
 msgstr "Numerazione per etichette"
 
@@ -1210,10 +1211,6 @@ msgstr "Crea Gruppo"
 #: .././foobnix/regui/treeview/radio_tree.py:232
 msgid "Enter group name"
 msgstr "Inserire nome gruppo"
-
-#: .././foobnix/regui/treeview/virtual_tree.py:25
-msgid "Virtual PlayLists"
-msgstr "PlayLists Virtuali"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:60
 msgid "Add playlist"
