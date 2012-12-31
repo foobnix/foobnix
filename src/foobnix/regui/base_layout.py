@@ -46,8 +46,8 @@ class BaseFoobnixLayout(FControl, LoadSave):
         
         self.hpaned_left.connect("button-press-event", self.on_border_press)
         self.hpaned_right.connect("button-press-event", self.on_border_press)
-        self.hpaned_left.connect("button-release-event", self.save_panels)
-        self.hpaned_right.connect("button-release-event", self.save_panels)
+        self.hpaned_left.connect("button-release-event", self.on_border_release)
+        self.hpaned_right.connect("button-release-event", self.on_border_release)
         self.id_handler_left = self.hpaned_left.connect("size-allocate", self.on_configure_hl_event)
         self.id_handler_right = self.hpaned_right.connect("size-allocate", self.on_configure_hr_event)
         controls.main_window.connect("configure-event", self.on_configure_event)
@@ -89,22 +89,29 @@ class BaseFoobnixLayout(FControl, LoadSave):
         self.hpaned_left.handler_block(self.id_handler_left)
         self.hpaned_right.handler_block(self.id_handler_right)
     
-    def save_panels(self, w, *a):
+    def on_border_release(self, w, *a):
         self.hpaned_left.handler_unblock(self.id_handler_left)
         self.hpaned_right.handler_unblock(self.id_handler_right)
-        self.on_configure_hl_event()
-        self.on_configure_hr_event()
+        self.save_right_panel()
+        if w is self.hpaned_left:
+            self.save_left_panel()
+        elif w is self.hpaned_right:
+            self.on_configure_hl_event()
+            gobject.idle_add(self.save_left_panel)
         
-        left_position = self.hpaned_left.get_position()
-        if left_position != FC().hpaned_left and left_position > 0:   
-            FC().hpaned_left = left_position
-            self.normalize_columns()
+    def save_right_panel(self):
         if self.hpaned_right.get_property("visible"):
             right_position = self.hpaned_right.get_position()
             if right_position != FC().hpaned_right and right_position > 0:   
                 FC().hpaned_right = right_position
             FC().hpaned_right_right_side_width = self.hpaned_right.allocation.width - right_position
             self.controls.coverlyrics.adapt_image()
+            
+    def save_left_panel(self):
+        left_position = self.hpaned_left.get_position()
+        if left_position != FC().hpaned_left and left_position > 0:   
+            FC().hpaned_left = left_position
+            self.normalize_columns()
 
     def normalize_columns(self):
         for page in xrange(self.controls.tabhelper.get_n_pages()):
