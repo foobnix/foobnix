@@ -1,10 +1,11 @@
 [Desktop Entry]
 Name=Foobnix
-Comment=Short description
 GenericName=Music Player
+GenericName[pt]=Reprodutor de músicas
 GenericName[ru]=Плеер музыки
 X-GNOME-FullName=Foobnix Music Player
 Comment=Simple and Powerful player for Linux
+Comment[pt]=Reprodutor de músicas para Linux
 Comment[ru]=Простой и мощный плеер для Linux
 Exec=foobnix %U
 Terminal=false
