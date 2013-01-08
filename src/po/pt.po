@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-12-02 00:24+0400\n"
-"PO-Revision-Date: 2012-12-02 00:01+0000\n"
-"Last-Translator: Dmitry-Kogura <Unknown>\n"
+"PO-Revision-Date: 2013-01-08 14:01-0000\n"
+"Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2012-12-03 04:40+0000\n"
-"X-Generator: Launchpad (build 16319)\n"
+"X-Generator: Poedit 1.5.4\n"
 "Language: Portuguese\n"
 
 #: .././foobnix/dm/dm.py:32 .././foobnix/preferences/preferences_window.py:59
@@ -91,7 +91,7 @@ msgstr "Separador vazio"
 #: .././foobnix/helpers/dialog_entry.py:171
 #: .././foobnix/helpers/dialog_entry.py:172
 msgid "New foobnix release avaliable"
-msgstr "Está disponível uma nova versão do foobnix"
+msgstr "Está disponível uma nova versão do foobnix."
 
 #: .././foobnix/helpers/dialog_entry.py:177
 msgid "Download and Donate"
@@ -106,7 +106,7 @@ msgstr "Transferir"
 
 #: .././foobnix/helpers/dialog_entry.py:192
 msgid "We hope you like the player. We will make it even better."
-msgstr "Esperamos que goste do reprodutor. Vamos torná-lo ainda melhor."
+msgstr "Esperamos que goste do programa. Vamos torná-lo ainda melhor."
 
 #: .././foobnix/helpers/dialog_entry.py:193
 #: .././foobnix/preferences/configs/notification_conf.py:19
@@ -177,7 +177,7 @@ msgstr "Remover"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:112
 msgid "Auto key"
-msgstr ""
+msgstr "Automático"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:119
 msgid "Disable Multimedia Keys"
@@ -222,11 +222,11 @@ msgstr "Diminuir volume"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:209
 msgid "Show-Hide"
-msgstr "Mostrar-Ocultar"
+msgstr "Mostrar/Ocultar"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:210
 msgid "Play-Pause"
-msgstr "Reproduzir-Pausa"
+msgstr "Reproduzir/Pausa"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:12
 msgid "Info panel"
@@ -242,7 +242,7 @@ msgstr "Tamanho do painel de letras"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:47
 msgid "Show Tags list"
-msgstr "Mostrar lista de \"tags\""
+msgstr "Mostrar lista de etiquetas"
 
 #: .././foobnix/preferences/configs/__init__.py:4
 msgid "Music Library"
@@ -272,7 +272,7 @@ msgstr "Senha"
 
 #: .././foobnix/preferences/configs/last_fm.py:57
 msgid "Limit search results:  "
-msgstr ""
+msgstr "Limitar reultados:"
 
 #: .././foobnix/preferences/configs/last_fm.py:68
 msgid "Enable Music Scrobbler"
@@ -289,7 +289,7 @@ msgstr "VKontakte"
 
 #: .././foobnix/preferences/configs/last_fm.py:92
 msgid "Not connected"
-msgstr ""
+msgstr "Não ligado"
 
 #: .././foobnix/preferences/configs/last_fm.py:94
 msgid "You vk account is:"
@@ -297,7 +297,7 @@ msgstr "A sua conta VK é:"
 
 #: .././foobnix/preferences/configs/last_fm.py:96
 msgid "Reset vk authorization"
-msgstr ""
+msgstr "Reiniciar autorização VK"
 
 #: .././foobnix/preferences/configs/music_library.py:38
 msgid "Update library on start (more slow) "
@@ -314,11 +314,11 @@ msgstr "Caminhos"
 #: .././foobnix/preferences/configs/music_library.py:136
 #: .././foobnix/regui/treeview/navigation_tree.py:231
 msgid "Choose directory with music"
-msgstr "Escolha o diretório de músicas"
+msgstr "Escolha o diretório de faixas"
 
 #: .././foobnix/preferences/configs/music_library.py:162
 msgid "File Types"
-msgstr "Tipo de ficheiros"
+msgstr "Tipos de ficheiro"
 
 #: .././foobnix/preferences/configs/music_library.py:170
 msgid "Extensions"
@@ -375,7 +375,7 @@ msgstr "Resultado:"
 
 #: .././foobnix/preferences/configs/network_conf.py:126
 msgid "Show message on network disconnection"
-msgstr ""
+msgstr "Mostrar mensagem ao desligar da rede"
 
 #: .././foobnix/preferences/configs/network_conf.py:152
 msgid " OK in seconds: "
@@ -444,7 +444,7 @@ msgstr "Escolha o seu gestor de ficheiros:"
 
 #: .././foobnix/preferences/configs/other_conf.py:135
 msgid "Disable Xscreensaver"
-msgstr "Desligar Xscreensaver"
+msgstr "Desligar XScreensaver"
 
 #: .././foobnix/preferences/configs/tabs.py:13
 msgid "Tabs"
@@ -493,19 +493,19 @@ msgstr "Ao iniciar, ocultar ícone na área de notificação"
 #. self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
 #: .././foobnix/preferences/configs/tray_icon_conf.py:42
 msgid "On close window - close player"
-msgstr "Ao fechar a janela - fechar foobnix"
+msgstr "Fechar o foobnix ao fechar a janela"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:44
 msgid "On close window - hide player"
-msgstr "Ao fechar a janela - ocultar foobnix"
+msgstr "Ocultar o foobnix ao fechar a janela"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:47
 msgid "On close window - minimize player"
-msgstr "Ao fechar a janela - minimizar foobnix"
+msgstr "Minimizar o foobnix ao fechar a janela"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:50
 msgid "System Icon Static"
-msgstr "Ícone do sistema"
+msgstr "Ícone estático"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:58
 msgid "System Icons Dynamic"
@@ -553,16 +553,16 @@ msgstr "Em pausa "
 
 #: .././foobnix/regui/base_controls.py:383
 msgid "Radio "
-msgstr ""
+msgstr "Rádio"
 
 #: .././foobnix/regui/base_controls.py:416
 #: .././foobnix/regui/base_controls.py:417
 msgid "Resource not found"
-msgstr "Recurso não encontrado"
+msgstr "Recurso não encontrado."
 
 #: .././foobnix/regui/base_controls.py:425
 msgid "Stopped. No resources found"
-msgstr "Parado. Recurso não encontrado"
+msgstr "Parado. Recurso não encontrado."
 
 #: .././foobnix/regui/coverlyrics.py:21
 msgid "Album title"
@@ -593,6 +593,15 @@ msgid ""
 "\n"
 "This message will be removed after it."
 msgstr ""
+"O noso repositório ppa foi alterado.\n"
+"Tem que executar estes comandos no terminal e reiniciar o foobnix:\n"
+"\n"
+"sudo ppa-purge ppa:foobnix-player/foobnix\n"
+"sudo add-apt-repository ppa:foobnix-team/foobnix-player\n"
+"sudo apt-get update\n"
+"sudo apt-get upgrade\n"
+"\n"
+"Esta mensagem será removida após a execução dos comandos."
 
 #: .././foobnix/regui/infopanel.py:53
 msgid "Best Songs"
@@ -612,7 +621,7 @@ msgstr "\"Tags\" semelhantes"
 
 #: .././foobnix/regui/infopanel.py:67
 msgid "Lyrics"
-msgstr "Letras musicais"
+msgstr "Letras"
 
 #: .././foobnix/regui/infopanel.py:74
 msgid "About Artist"
@@ -696,7 +705,7 @@ msgstr "Desativar"
 
 #: .././foobnix/regui/menu.py:112
 msgid "_Help"
-msgstr "_Ajuda"
+msgstr "Aj_uda"
 
 #: .././foobnix/regui/menu.py:113
 msgid "About"
@@ -724,7 +733,7 @@ msgstr "http://www.foobnix.com/donate/eng"
 
 #: .././foobnix/regui/perspectives.py:44
 msgid " Add Folder(s) in tree"
-msgstr ""
+msgstr "Adicionar pastas"
 
 #: .././foobnix/regui/perspectives.py:121
 msgid "Music"
@@ -732,7 +741,7 @@ msgstr "Música"
 
 #: .././foobnix/regui/perspectives.py:121
 msgid "Music Navigation (Alt+1)"
-msgstr "Navegação nas músicas (Alt+1)"
+msgstr "Explorar faixas (Alt+1)"
 
 #: .././foobnix/regui/perspectives.py:126
 msgid "Radio"
@@ -776,7 +785,7 @@ msgstr "Procurar músicas na web"
 
 #: .././foobnix/regui/search.py:64
 msgid "Online Music Search, Play, Download"
-msgstr "Procura web, Reproduzir, Transferir"
+msgstr "Procura web, reproduzir, transferir"
 
 #: .././foobnix/regui/search.py:78
 msgid "Search"
@@ -898,7 +907,7 @@ msgstr "Fechar separador"
 
 #: .././foobnix/regui/notetab/__init__.py:415
 msgid "It's need not empty playlist"
-msgstr "Não precisa de uma lista vazia"
+msgstr "Precisa de uma lista não vazia"
 
 #: .././foobnix/regui/notetab/__init__.py:418
 msgid "Choose folder to save playlist"
@@ -923,7 +932,7 @@ msgstr "Limpar coleção de faixas"
 
 #: .././foobnix/regui/service/vk_service.py:41
 msgid "VKontakte Authorization (is required for music search)"
-msgstr ""
+msgstr "Autorização VKontakte (para a procura de faixas)"
 
 #: .././foobnix/regui/service/vk_service.py:100
 msgid "Open"
@@ -1268,7 +1277,7 @@ msgstr "Integração VK "
 
 #: .././foobnix/regui/treeview/vk_integration_tree.py:111
 msgid "No results found"
-msgstr ""
+msgstr "Nenhum resultado"
 
 #: .././foobnix/util/const.py:46
 msgid "Active"
@@ -1331,7 +1340,7 @@ msgid ""
 "So file(s)  already exist(s) and will be overwritten.\n"
 "Do you wish to continue?"
 msgstr ""
-"Os ficheiros existentes serão substituídos\n"
+"Os ficheiros existentes serão substituídos.\n"
 "Continuar?"
 
 #: .././foobnix/util/converter.py:336
@@ -1340,7 +1349,7 @@ msgstr "Atenção"
 
 #: .././foobnix/util/converter.py:338
 msgid "Converter require specially compiled ffmpeg module for work.\n"
-msgstr "Para funcionar corretamente, o conversor precisa do módulo ffmpeg\n"
+msgstr "Para funcionar corretamente, o conversor precisa do módulo ffmpeg.\n"
 
 #: .././foobnix/util/file_utils.py:75
 msgid "Rename folder"
@@ -1371,7 +1380,7 @@ msgstr "%s ficheiro(s)/pasta(s)"
 #: .././foobnix/util/file_utils.py:161
 #, python-format
 msgid "Are you really want to %s this item(s) to %s ?"
-msgstr "Tem a certeza que pretende %s este(s) item(ns) para %s ?"
+msgstr "Tem a certeza que quer %s este(s) item(ns) para %s ?"
 
 #: .././foobnix/util/file_utils.py:180
 msgid "Make folder dialog"
@@ -1447,14 +1456,14 @@ msgstr ""
 
 #: .././foobnix/util/net_wrapper.py:146
 msgid "Internet Connection"
-msgstr "Ligação à internet"
+msgstr "Ligação web"
 
 #: .././foobnix/util/net_wrapper.py:147
 msgid ""
 "Foobnix not connected or Internet not available. Please try again a little "
 "bit later."
 msgstr ""
-"Não existe ligação à internet ou o Foobnix não se consegue ligar. Por favor "
+"Não existe ligação à Internet ou o foobnix não se consegue ligar. Por favor "
 "tente mais tarde."
 
 #: .././foobnix/util/tag_util.py:23
