@@ -100,7 +100,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
             gobject.idle_add(self.save_left_panel)
         
     def save_right_panel(self):
-        if self.hpaned_right.get_property("visible"):
+        if self.controls.coverlyrics.get_property("visible"):
             right_position = self.hpaned_right.get_position()
             if right_position != FC().hpaned_right and right_position > 0:   
                 FC().hpaned_right = right_position
