@@ -456,7 +456,7 @@ class BaseFoobnixControls():
                 self.is_scrobbled = True
                 self.net_wrapper.execute(self.lastfm_service.report_scrobbled, bean, self.start_time, dur_sec)
                 """download music"""
-                if FC().automatic_online_save:
+                if FC().automatic_online_save and bean.path and bean.path.startswith("http://"):
                     self.dm.append_task(bean)
 
             

@@ -33,11 +33,11 @@ class OtherConfig(ConfigPlugin):
         self.online_dir.connect("current-folder-changed", self.on_change_folder)        
         self.online_dir.show()
         
-        hbox.pack_start(gtk.Label(_("Save music to folder:")), False, True, 0)
+        hbox.pack_start(gtk.Label(_("Save online music to folder:")), False, True, 0)
         hbox.pack_start(self.online_dir, True, True, 0)
         
         """automatic save"""                
-        self.automatic_save_checkbutton = gtk.CheckButton(label=_("Automatic music save"), use_underline=True)
+        self.automatic_save_checkbutton = gtk.CheckButton(label=_("Automatic online music save"), use_underline=True)
         
         """download threads"""
         thbox = gtk.HBox(False, 5)
