@@ -15,8 +15,8 @@ import gobject
 import logging
 import urllib2
 import simplejson
-import HTMLParser
 
+from HTMLParser import HTMLParser 
 from foobnix.fc.fc import FC
 from foobnix.regui.model import FModel
 from foobnix.fc.fc_helper import CONFIG_DIR
