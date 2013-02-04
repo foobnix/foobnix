@@ -20,27 +20,26 @@ from foobnix.util.id3_file import update_id3_wind_filtering
 
 
 def get_all_music_by_paths(paths, controls):
+    '''end_scanning = False
     pr_window = ProgWindow(controls)
-    #gobject.idle_add(pr_window.show_all)
+    #pr_window.analyzed_folders += 1
     
-    pr_window.analyzed_folders += 1
-    end_scanning = False
     def task():
         while not end_scanning:
             time.sleep(0.5)
             gobject.idle_add(pr_window.update_window)
             
-    thread.start_new_thread(task, ())
+    thread.start_new_thread(task, ())'''
     result = []
     for path in paths:
         if path == "/":
             logging.info("Skip root folder")
             continue;
-        current_result = _scanner(path, None, pr_window)
+        current_result = _scanner(path, None)
         result = result + current_result
     time.sleep(1)
-    end_scanning = True
-    gobject.idle_add(pr_window.hide)
+    #end_scanning = True
+    #gobject.idle_add(pr_window.hide)
     return result
 
 def get_all_music_with_id3_by_path(path, with_cue_filter=None):
@@ -53,7 +52,7 @@ def get_all_music_with_id3_by_path(path, with_cue_filter=None):
     beans = all if all else beans
     return update_id3_wind_filtering(beans)
 
-def _scanner(path, level, pr_window):
+def _scanner(path, level):
     try:
         path = path.encode("utf-8")
     except:
@@ -70,20 +69,20 @@ def _scanner(path, level, pr_window):
         full_path = os.path.join(path, file)
         
         if os.path.isfile(full_path):
-            pr_window.analyzed_files += 1
+            #pr_window.analyzed_files += 1
             if file_extension(file) not in FC().all_support_formats:
                 continue;
         
         if os.path.isdir(full_path):
-            pr_window.analyzed_folders += 1
+            #pr_window.analyzed_folders += 1
             if is_dir_with_music(full_path):
-                pr_window.media_folders += 1
+                #pr_window.media_folders += 1
                 b_bean = FModel(file, full_path).add_parent(level).add_is_file(False)
                 results.append(b_bean)
-                results.extend(_scanner(full_path, b_bean.get_level(), pr_window))
+                results.extend(_scanner(full_path, b_bean.get_level()))
         elif os.path.isfile(full_path):
             results.append(FModel(file, full_path).add_parent(level).add_is_file(True))
-            pr_window.media_files +=1
+            #pr_window.media_files +=1
         
     return results
 

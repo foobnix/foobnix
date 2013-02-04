@@ -9,14 +9,14 @@ import gtk
 import copy
 import logging
 
-from foobnix.regui.model.signal import FControl
-from foobnix.util.const import EQUALIZER_LABLES, STATE_PLAY
-from foobnix.regui.model.eq_model import EqModel
 from foobnix.fc.fc import FC
-from foobnix.util.mouse_utils import is_rigth_click
 from foobnix.helpers.menu import Popup
-from foobnix.helpers.my_widgets import ImageButton
+from foobnix.regui.model.signal import FControl
+from foobnix.regui.model.eq_model import EqModel
 from foobnix.helpers.window import ChildTopWindow
+from foobnix.helpers.my_widgets import ImageButton
+from foobnix.util.mouse_utils import is_rigth_click
+from foobnix.util.const import EQUALIZER_LABLES, STATE_PLAY
 
 
 def label(): 
@@ -36,18 +36,15 @@ def text(text):
 
 class EqWindow(ChildTopWindow, FControl):
     
-    def __init__(self, controls, collback):
-        self.collback = collback 
+    def __init__(self, controls, callback):
+        self.callback = callback
         FControl.__init__(self, controls)        
         ChildTopWindow.__init__(self, _("Equalizer"))
-        
-        
+                
         self.eq_lines = []
         for label in EQUALIZER_LABLES:
-            self.eq_lines.append(EqLine(label, self.on_collback))
-            
-            
-       
+            self.eq_lines.append(EqLine(label, self.on_callback))
+        
         lbox = gtk.VBox(False, 0)
         lbox.show()
         
@@ -56,14 +53,12 @@ class EqWindow(ChildTopWindow, FControl):
         
         lbox.pack_start(self.top_row(), False, False, 0)
         lbox.pack_start(self.middle_lines_box(), False, False, 0)
-        
-        
+                
         self.add(lbox)
         
         self.models = []
         self.default_models = []
-        
-        
+                
     def on_restore_defaults(self, *a):
         self.models = []
         self.combo.get_model().clear()        
@@ -76,13 +71,13 @@ class EqWindow(ChildTopWindow, FControl):
             menu.add_item('Restore Defaults', gtk.STOCK_REFRESH, None)
             menu.show(e)
     
-    def on_collback(self):
+    def on_callback(self):
         pre = self.eq_lines[0].get_value()
         if float(pre) >= 0:
             pre = "+" + pre
             
         self.db_text.set_text(pre + "db")
-        self.collback()
+        self.callback()
     
     def set_custom_title_and_button_label(self):
         status = _("Disabled")
@@ -96,8 +91,8 @@ class EqWindow(ChildTopWindow, FControl):
         FC().is_eq_enable = w.get_active()
         self.set_custom_title_and_button_label()
         if self.controls.media_engine.get_state() == STATE_PLAY:
-            self.controls.state_stop(True)
-            self.controls.state_play(True)
+            self.controls.state_stop(remember_position=True)
+            self.controls.state_play(under_pointer_icon=True)
             
     def on_save(self, *args):
         text = self.combo.get_active_text()
@@ -150,10 +145,10 @@ class EqWindow(ChildTopWindow, FControl):
         
     def on_combo_chage(self, *a):        
         num = self.combo.get_active()
-        if num >= 0:        
+        if num >= 0:
             model = self.models[num]
             self.set_all_eq_span_values([model.preamp] + model.values)
-            self.collback()
+            self.callback()
         
     def populate(self, models):
         for model in models:
@@ -180,11 +175,8 @@ class EqWindow(ChildTopWindow, FControl):
         
         empt = empty()
         empt.set_size_request(65, -1)
-        
         #auto.set_size_request(50,-1)
         auto.show()
-        
-
         #combo = gtk.ComboBoxEntry()
         #self.combo.set_size_request(240, -1)
         self.combo.show()
@@ -193,8 +185,7 @@ class EqWindow(ChildTopWindow, FControl):
         save.connect("clicked", self.on_save)
         
         save.show()
-        
-        
+                
         resButton = ImageButton(gtk.STOCK_REFRESH)
         resButton.connect("clicked", self.on_restore_defaults)
         resButton.set_tooltip_text(_("Restore defaults presets"))
@@ -243,8 +234,6 @@ class EqWindow(ChildTopWindow, FControl):
         lines_box = gtk.HBox(False, 0)
         lines_box.show()
         
-        
-            
         eq_iter = iter(self.eq_lines)
         
         lines_box.pack_start(self.dash_line(), False, False, 0)

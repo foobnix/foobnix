@@ -7,10 +7,11 @@ Created on 22 сент. 2010
 
 import gtk
 import thread
+import gobject
 
 from foobnix.fc.fc import FC
+from foobnix.util import analytics
 from foobnix.fc.fc_base import FCBase
-from foobnix.fc.fc_cache import FCache
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.toggled import OneActiveToggledButton
@@ -18,8 +19,6 @@ from foobnix.helpers.my_widgets import PespectiveToogledButton, ButtonStockText
 from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, \
     LEFT_PERSPECTIVE_NAVIGATION, LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_MY_RADIO, \
     LEFT_PERSPECTIVE_LASTFM, LEFT_PERSPECTIVE_VK
-from foobnix.util import analytics
-
 
 
 class PerspectiveControls(FControl, gtk.VBox, LoadSave):
@@ -56,10 +55,10 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         self.pack_start(self.buttons, False, False)
     
     def show_add_button(self):
-        self.add_button.show()
+        gobject.idle_add(self.add_button.show)
     
     def hide_add_button(self):
-        self.add_button.hide()
+        gobject.idle_add(self.add_button.hide)
     
     def activate_perspective(self, name):
         for widget in self.perspectivs.values():
@@ -127,7 +126,7 @@ class PerspectiveButtonControlls(gtk.HBox):
         radios.connect("button-press-event", lambda * a:
                        controls.perspective.activate_radio_perspective())
               
-        virtuals = PespectiveToogledButton(_("Playlist"), gtk.STOCK_INDEX, _("Virtual Play Lists (Alt+3)"))
+        virtuals = PespectiveToogledButton(_("Storage"), gtk.STOCK_INDEX, _("Storage (Alt+3)"))
         virtuals.connect("button-press-event", lambda * a:activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
         
         

@@ -66,16 +66,17 @@ if gtk.pygtk_version >= (2, 22, 0):
             self.spinner_popup.connect_after('map', self.configure_popup, self.controls.main_window) 
     
         def start(self, text=None):
-            try:
-                """to avoid bugs in Unity and GnomeFallback"""
-                if (self.main_window.iconified or not self.main_window.props.is_active):
-                    return
-            except KeyError, e:
-                logging.info(str(e) + " environment not found")
+            
                 
             if not text:
                 text = _("Process...")
-            def safe_task():                
+            def safe_task():
+                try:
+                    """to avoid bugs in Unity and GnomeFallback"""
+                    if (self.main_window.iconified or not self.main_window.props.is_active):
+                        return
+                except KeyError, e:
+                    logging.info(str(e) + " environment not found")                
                 self.label.set_text(text)
                 self.spinner_popup.show()
                 super(SearchProgressBarNew, self).start()
@@ -88,7 +89,7 @@ if gtk.pygtk_version >= (2, 22, 0):
                 self.spinner_popup.hide()
             gobject.idle_add(safe_task)
             
-        def background_spinner_wrapper(self, task, *args):
+        def background_spinner_wrapper(self, task, in_graphic_thread, *args):
             self.start()
             def thread_task(*args):
                 
@@ -97,7 +98,10 @@ if gtk.pygtk_version >= (2, 22, 0):
                         task(*args)
                     finally:
                         self.stop()
-                gobject.idle_add(safe_task, *args)
+                if in_graphic_thread:
+                    gobject.idle_add(safe_task, *args)
+                else:
+                    safe_task(*args)
           
             t = threading.Thread(target=thread_task, args=(args))
             t.start()

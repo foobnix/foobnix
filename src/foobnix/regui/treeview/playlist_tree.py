@@ -18,7 +18,8 @@ from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.file_utils import open_in_filemanager, copy_to
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.treeview.common_tree import CommonTreeControl
-from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE
+from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE,\
+    is_modificator
 from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
 
@@ -130,7 +131,9 @@ class PlaylistTreeControl(CommonTreeControl):
         self.rebuild_as_plain()
         
     def on_key_release(self, w, e):
-        if is_key(e, KEY_RETURN):
+        if is_modificator(e):
+            return
+        elif is_key(e, KEY_RETURN):
             self.controls.play_selected_song()
         elif is_key(e, KEY_DELETE):
             self.delete_selected()     

@@ -161,7 +161,7 @@ class MovieDrawingArea(FControl, gtk.Frame):
         self.controls.state_stop(True)
         self.fullscrean_area.show_window()        
         self.set_output(self.fullscrean_area.get_draw())      
-        self.controls.state_play(True, under_pointer_icon=True)
+        self.controls.state_play(under_pointer_icon=True)
         analytics.action("FullScreanArea");
                 
     def set_text(self, text):
@@ -171,7 +171,7 @@ class MovieDrawingArea(FControl, gtk.Frame):
         self.controls.state_stop(True)
         self.set_output(self.smallscree_area)
         self.fullscrean_area.hide_window()
-        self.controls.state_play(True, under_pointer_icon=True)
+        self.controls.state_play(under_pointer_icon=True)
             
     def draw_video(self, message):
         message_name = message.structure.get_name()

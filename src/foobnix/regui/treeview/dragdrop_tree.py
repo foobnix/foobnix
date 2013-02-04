@@ -173,7 +173,7 @@ class DragDropTree(gtk.TreeView):
                         to_iter = self.to_add_drag_item(to_tree, to_model, to_iter, pos, None, row=row)
                 self.update_tracknumber()
            
-            self.controls.search_progress.background_spinner_wrapper(task, to_iter)                              
+            self.controls.search_progress.background_spinner_wrapper(task, False, to_iter)                              
             
             return 
         
@@ -267,7 +267,7 @@ class DragDropTree(gtk.TreeView):
             return None
            
         """if m3u is dropped"""
-        if is_m3u(ff_model.get_value(ff_iter, self.path[0]).lower()):
+        if is_m3u(ff_model.get_value(ff_iter, self.path[0])):
             self.add_m3u(ff_model, ff_iter, to_tree, to_model, to_iter, to_filter_pos)
             return
             

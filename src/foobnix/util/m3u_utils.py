@@ -75,7 +75,7 @@ def m3u_writer(name, current_folder, paths):
         logging.warn("You try to save empty playlist")
 
 def is_m3u(path):
-    if path and get_file_extension(path) in [".m3u", ".m3u8"]:
+    if path and get_file_extension(path).lower() in [".m3u", ".m3u8"]:
         return True
     return False
 

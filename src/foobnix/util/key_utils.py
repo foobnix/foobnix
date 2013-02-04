@@ -34,3 +34,8 @@ def is_key_super(event):
 def is_key_alt(event):
     return event.state & gtk.gdk.MOD1_MASK# | gtk.gdk.MOD2_MASK #@UndefinedVariable
 
+def is_modificator(event):
+    if is_key_control(event) or is_key_shift(event) or is_key_super(event) or is_key_alt(event):
+        return True
+
+

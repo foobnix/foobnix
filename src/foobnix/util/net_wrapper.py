@@ -57,7 +57,7 @@ class NetWrapper():
             if FC().proxy_enable and FC().proxy_url:
                 try:
                     self.ping_with_proxy()
-                except Exception as e:
+                except Exception, e:
                     logging.error(str(e))
                 return
             s = socket.socket()
@@ -161,8 +161,8 @@ class NetWrapper():
         self.start_ping()
         logging.info("Try to restore connection")
         def task_restore_connection():
-            logging.info("Try to restore vk_service")
-            self.controls.vk_service = VKService(FC().access_token, FC().user_id)
+            #logging.info("Try to restore vk_service")
+            #self.controls.vk_service = VKService(FC().access_token, FC().user_id)
             logging.info("Try to restore lastfm_service")
             self.controls.lastfm_service = LastFmService(self.controls)
         thread.start_new_thread(task_restore_connection, ())

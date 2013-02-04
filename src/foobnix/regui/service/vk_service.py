@@ -16,6 +16,7 @@ import logging
 import urllib2
 import simplejson
 
+from HTMLParser import HTMLParser 
 from foobnix.fc.fc import FC
 from foobnix.regui.model import FModel
 from foobnix.fc.fc_helper import CONFIG_DIR
@@ -245,6 +246,8 @@ class VKService:
     
     def to_json(self, json):
         logging.debug("json " + json)
+        p = HTMLParser()
+        json = p.unescape(json)
         return simplejson.loads(json)
     
     def is_authorized(self):

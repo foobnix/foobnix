@@ -28,7 +28,6 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         self.set_resizable(True)
         self.connect("window-state-event", self.on_change_state)      
         self.connect("delete-event", self.hide_window)
-        self.connect("configure-event", self.on_configure_event)
         self.connect("key-press-event", self.on_key_press)
         self.set_icon(self.controls.trayicon.get_pixbuf())
         
@@ -52,10 +51,8 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             self.controls.quit()
         elif is_key_control(e) and (is_key(e, "s") or is_key(e, "Cyrillic_yeru")):    
             self.controls.notetabs.on_save_playlist(self.controls.notetabs.get_current_tree().scroll)
-        
-                    
-    def on_configure_event(self, w, e):
-        FC().main_window_size = [e.x, e.y, e.width, e.height]
+
+
         
     def on_save(self, *a):        
         pass
@@ -64,7 +61,9 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         cfg = FC().main_window_size
         if cfg:
             self.resize(cfg[2], cfg[3])            
-            self.move(cfg[0], cfg[1])         
+            self.move(cfg[0], cfg[1]) 
+        if FC().window_maximized:
+            self.maximize()
    
     def show_hide(self):
         visible = self.get_property('visible')
@@ -91,14 +90,15 @@ class MainWindow(gtk.Window, FControl, LoadSave):
         if int(e.new_window_state) == 0:
             """window restored"""
             self.iconified = False
-            
+            FC().window_maximized = False
+                        
         elif e.new_window_state & gtk.gdk.WINDOW_STATE_ICONIFIED:#@UndefinedVariable
             """minimized"""
             self.iconified = True
+            FC().window_maximized = False
                 
         elif e.new_window_state & gtk.gdk.WINDOW_STATE_MAXIMIZED:#@UndefinedVariable
             """maximized"""
             self.iconified = False
-                
-                
-                
+            FC().window_maximized = True
+            
