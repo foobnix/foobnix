@@ -23,7 +23,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         bbox.pack_start(controls.notetabs, True, True)        
         bbox.pack_start(controls.movie_window, False, False)
         
-        center_box = gtk.VBox(False, 0)        
+        center_box = gtk.VBox(False, 0)     
         center_box.pack_start(controls.searchPanel, False, False)
         center_box.pack_start(bbox, True, True)
         
@@ -50,6 +50,9 @@ class BaseFoobnixLayout(FControl, LoadSave):
         self.hpaned_right.connect("button-release-event", self.on_border_release)
         self.id_handler_left = self.hpaned_left.connect("size-allocate", self.on_configure_hl_event)
         self.id_handler_right = self.hpaned_right.connect("size-allocate", self.on_configure_hr_event)
+        
+        self.hpaned_press_release_handler_blocked = False
+        
         controls.main_window.connect("configure-event", self.on_configure_event)
         controls.main_window.add(vbox)
         
@@ -86,12 +89,16 @@ class BaseFoobnixLayout(FControl, LoadSave):
         return
     
     def on_border_press(self, *a):
-        self.hpaned_left.handler_block(self.id_handler_left)
-        self.hpaned_right.handler_block(self.id_handler_right)
+        if not self.hpaned_press_release_handler_blocked:
+            self.hpaned_left.handler_block(self.id_handler_left)
+            self.hpaned_right.handler_block(self.id_handler_right)
+            self.hpaned_press_release_handler_blocked = True
     
     def on_border_release(self, w, *a):
-        self.hpaned_left.handler_unblock(self.id_handler_left)
-        self.hpaned_right.handler_unblock(self.id_handler_right)
+        if self.hpaned_press_release_handler_blocked:
+            self.hpaned_left.handler_unblock(self.id_handler_left)
+            self.hpaned_right.handler_unblock(self.id_handler_right)
+            self.hpaned_press_release_handler_blocked = False
         self.save_right_panel()
         if w is self.hpaned_left:
             self.save_left_panel()
