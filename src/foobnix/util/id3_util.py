@@ -4,6 +4,7 @@ Created on 24 нояб. 2010
 
 @author: ivan
 '''
+from _bsddb import api
 import os
 import re
 import logging
@@ -16,6 +17,7 @@ from foobnix.util.bean_utils import update_bean_from_normalized_text
 from foobnix.util.file_utils import file_extension, get_file_extension
 from foobnix.util.audio import get_mutagen_audio
 from subprocess import Popen, PIPE
+from foobnix.fc.fc_cache import COVERS_DIR
 
 RUS_ALPHABITE = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 
@@ -184,5 +186,34 @@ def add_upadte_image_paths(beans):
         if bean.path and bean.is_file:
             bean.image = get_image_by_path(bean.path)
     return beans
+
+def _get_extension_by_mime(mime):
+    if mime == "image/jpeg":
+        return ".jpg"
+    elif mime == "image/png":
+        return ".png"
+    logging.warning("Unknown cover mime-type: %s" % mime)
+    return None
+
+def get_cover_from_id3(bean):
+    from zlib import crc32
+    from foobnix.thirdparty.mutagen.id3 import ID3
+    ext = get_file_extension(bean.path)
+    if ext != ".mp3":
+        return None
+    audio = ID3(bean.path)
+    apics = [k for k in audio.keys() if k.startswith("APIC:")]
+    if apics:
+        apic = audio[apics[0]]
+        ext = _get_extension_by_mime(apic.mime)
+        if not ext:
+            return None
+        filename = "%s%s%s" % (COVERS_DIR, crc32(bean.path), ext)
+        fd = open(filename, "wb")
+        fd.write(apic.data)
+        fd.flush()
+        fd.close()
+        return filename
+    return None
 
 

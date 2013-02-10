@@ -25,6 +25,7 @@ from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
 from foobnix.thirdparty.lyr import get_lyrics
 from foobnix.regui.service.lyrics_parsing_service import get_lyrics_by_parsing
+from foobnix.util.id3_util import get_cover_from_id3
 
 
 class InfoCache():
@@ -271,7 +272,9 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                 if bean.text in list:
                     bean.image = os.path.join(COVERS_DIR, key + ".jpg")
                     break
-            
+
+            bean.image = get_cover_from_id3(bean)
+
             if not bean.image:
                 '''get image url'''
                 bean.image = self.controls.lastfm_service.get_album_image_url(bean.artist, bean.title)       
