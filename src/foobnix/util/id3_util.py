@@ -10,14 +10,20 @@ import re
 import logging
 
 from foobnix.thirdparty.mutagen.mp4 import MP4
+from foobnix.thirdparty.mutagen.id3 import ID3
+from foobnix.thirdparty.mutagen.flac import FLAC
+from foobnix.thirdparty.mutagen.apev2 import APEv2
 from foobnix.fc.fc import FC
+from foobnix.fc.fc_cache import COVERS_DIR
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.bean_utils import update_bean_from_normalized_text
 from foobnix.util.file_utils import file_extension, get_file_extension
 from foobnix.util.audio import get_mutagen_audio
 from subprocess import Popen, PIPE
-from foobnix.fc.fc_cache import COVERS_DIR
+from zlib import crc32
+from gtk.gdk import pixbuf_new_from_file
+from tempfile import NamedTemporaryFile
 
 RUS_ALPHABITE = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 
@@ -188,30 +194,49 @@ def add_upadte_image_paths(beans):
     return beans
 
 def _get_extension_by_mime(mime):
-    if mime == "image/jpeg":
+    if mime == "image/jpeg" or mime == "image/jpg":
         return ".jpg"
     elif mime == "image/png":
         return ".png"
     logging.warning("Unknown cover mime-type: %s" % mime)
     return None
 
-def get_cover_from_id3(bean):
-    from zlib import crc32
-    from foobnix.thirdparty.mutagen.id3 import ID3
-    ext = get_file_extension(bean.path)
-    if ext != ".mp3":
-        return None
-    audio = ID3(bean.path)
+def _get_pic_from_mp3(audio):
     apics = [k for k in audio.keys() if k.startswith("APIC:")]
     if apics:
-        apic = audio[apics[0]]
-        ext = _get_extension_by_mime(apic.mime)
+        return audio[apics[0]]
+    return None
+
+def _get_pic_from_flac(audio):
+    if audio.pictures:
+        return audio.pictures[0]
+    return None
+
+def _get_pic_from_ape(audio):
+    """Not implemented yet"""
+    return None
+
+def get_cover_from_tags(bean):
+    ext = get_file_extension(bean.path)
+    if ext == ".mp3":
+        data = _get_pic_from_mp3(ID3(bean.path))
+    elif ext == ".flac":
+        data = _get_pic_from_flac(FLAC(bean.path))
+    elif ext == ".ape":
+        data = _get_pic_from_ape(APEv2(bean.path))
+    else:
+        return None
+    if data:
+        ext = _get_extension_by_mime(data.mime)
         if not ext:
             return None
-        filename = "%s%s%s" % (COVERS_DIR, crc32(bean.path), ext)
-        fd = open(filename, "wb")
-        fd.write(apic.data)
+
+        filename = os.path.join(COVERS_DIR, str(crc32(bean.path)) + '.jpg')
+        fd = NamedTemporaryFile()
+        fd.write(data.data)
         fd.flush()
+        pixbuf = pixbuf_new_from_file(fd.name)
+        pixbuf.save(filename, "jpeg", {"quality":"90"})
         fd.close()
         return filename
     return None

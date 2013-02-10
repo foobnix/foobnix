@@ -25,7 +25,7 @@ from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
 from foobnix.thirdparty.lyr import get_lyrics
 from foobnix.regui.service.lyrics_parsing_service import get_lyrics_by_parsing
-from foobnix.util.id3_util import get_cover_from_id3
+from foobnix.util.id3_util import get_cover_from_tags
 
 
 class InfoCache():
@@ -273,9 +273,15 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                     bean.image = os.path.join(COVERS_DIR, key + ".jpg")
                     break
 
-            bean.image = get_cover_from_id3(bean)
-
-            if not bean.image:
+            if not bean.path.startswith("http://"):
+                bean.image = get_cover_from_tags(bean)
+            if bean.image:
+                basename = os.path.splitext(os.path.basename(bean.image))[0]
+                if basename in dict:
+                    dict[basename].append(bean.text)
+                else:
+                    dict[basename] = [bean.text]
+            else:
                 '''get image url'''
                 bean.image = self.controls.lastfm_service.get_album_image_url(bean.artist, bean.title)       
         
@@ -285,7 +291,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         '''make .jpg image and store it in cache'''        
         if bean.image and bean.image.startswith("http://"):
             url_basename = os.path.splitext(os.path.basename(bean.image))[0]
-            if dict.has_key(url_basename):
+            if url_basename in dict:
                 dict[url_basename].append(bean.text)
             else:
                 dict[url_basename] = [bean.text]
