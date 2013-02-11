@@ -13,7 +13,7 @@ from foobnix.thirdparty.mutagen.mp4 import MP4
 from foobnix.thirdparty.mutagen.id3 import ID3
 from foobnix.thirdparty.mutagen.flac import FLAC
 from foobnix.thirdparty.mutagen.apev2 import APEv2
-from foobnix.fc.fc import FC
+from foobnix.fc.fc import FC, FCache
 from foobnix.fc.fc_cache import COVERS_DIR
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
@@ -187,10 +187,12 @@ def get_support_music_beans_from_all(beans):
     return result
 
 
-def add_upadte_image_paths(beans):
+def add_update_image_paths(beans):
     for bean in beans:
         if bean.path and bean.is_file:
-            bean.image = get_image_by_path(bean.path)
+            set_cover_from_tags(bean)
+            if not bean.image:
+                bean.image = get_image_by_path(bean.path)
     return beans
 
 def _get_extension_by_mime(mime):
@@ -216,29 +218,39 @@ def _get_pic_from_ape(audio):
     """Not implemented yet"""
     return None
 
-def get_cover_from_tags(bean):
-    ext = get_file_extension(bean.path)
-    if ext == ".mp3":
-        data = _get_pic_from_mp3(ID3(bean.path))
-    elif ext == ".flac":
-        data = _get_pic_from_flac(FLAC(bean.path))
-    elif ext == ".ape":
-        data = _get_pic_from_ape(APEv2(bean.path))
-    else:
-        return None
-    if data:
-        ext = _get_extension_by_mime(data.mime)
-        if not ext:
+def set_cover_from_tags(bean):
+    try:
+        ext = get_file_extension(bean.path)
+        if ext == ".mp3":
+            data = _get_pic_from_mp3(ID3(bean.path))
+        elif ext == ".flac":
+            data = _get_pic_from_flac(FLAC(bean.path))
+        elif ext == ".ape":
+            data = _get_pic_from_ape(APEv2(bean.path))
+        else:
             return None
+        if data:
+            ext = _get_extension_by_mime(data.mime)
+            if not ext:
+                return None
 
-        filename = os.path.join(COVERS_DIR, str(crc32(bean.path)) + '.jpg')
-        fd = NamedTemporaryFile()
-        fd.write(data.data)
-        fd.flush()
-        pixbuf = pixbuf_new_from_file(fd.name)
-        pixbuf.save(filename, "jpeg", {"quality":"90"})
-        fd.close()
-        return filename
+            filename = os.path.join(COVERS_DIR, str(crc32(bean.path)) + '.jpg')
+            fd = NamedTemporaryFile()
+            fd.write(data.data)
+            fd.flush()
+            pixbuf = pixbuf_new_from_file(fd.name)
+            pixbuf.save(filename, "jpeg", {"quality":"90"})
+            fd.close()
+            bean.image = filename
+            basename = os.path.splitext(os.path.basename(filename))[0]
+            cache_dict = FCache().covers
+            if basename in cache_dict:
+                cache_dict[basename].append(bean.text)
+            else:
+                cache_dict[basename] = [bean.text]
+            return filename
+    except Exception:
+        pass
     return None
 
 
