@@ -4,13 +4,16 @@ Created on 24 окт. 2010
 
 @author: ivan
 '''
-from foobnix.eq.eq_gui import EqWindow
-from foobnix.regui.model.signal import FControl
-from foobnix.regui.state import LoadSave
-from foobnix.regui.model.eq_model import EqModel
-from foobnix.fc.fc import FC
+
 import logging
+
+from foobnix.fc.fc import FC
 from foobnix.util import analytics
+from foobnix.eq.eq_gui import EqWindow
+from foobnix.regui.state import LoadSave
+from foobnix.regui.model.signal import FControl
+from foobnix.regui.model.eq_model import EqModel
+
 
 class EqController(FControl, LoadSave):
     def __init__(self, controls):
@@ -50,11 +53,7 @@ class EqController(FControl, LoadSave):
         logging.debug("default_models %s" % self.default_models())
         logging.debug("FC().eq_presets_default %s" % FC().eq_presets_default)
         
-        
-        self.eq_view.on_load()
-        
-        
-        
+        self.eq_view.on_load()     
     
     def on_save(self):
         pass
