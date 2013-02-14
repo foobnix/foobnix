@@ -13,7 +13,6 @@ import logging
 from foobnix.thirdparty.mutagen.mp4 import MP4
 from foobnix.thirdparty.mutagen.id3 import ID3
 from foobnix.thirdparty.mutagen.flac import FLAC
-from foobnix.thirdparty.mutagen.apev2 import APEv2
 from foobnix.fc.fc import FC, FCache
 from foobnix.fc.fc_cache import COVERS_DIR
 from foobnix.util.image_util import get_image_by_path
@@ -179,13 +178,13 @@ def normalized_info(info, bean):
     if info.__dict__.has_key('sample_rate'):
         new_list.append(str(info.sample_rate) + 'Hz')
     if info.__dict__.has_key('bitrate'):
-        new_list.append(str(info.bitrate/1000) + ' kbps')
+        new_list.append(str(info.bitrate / 1000) + ' kbps')
     else:
-        kbps = int(round(bean.size*8/info.length/1000))
-        new_list.append(str(kbps+1 if kbps % 2 else kbps) + ' kbps')
+        kbps = int(round(bean.size * 8 / info.length / 1000))
+        new_list.append(str(kbps + 1 if kbps % 2 else kbps) + ' kbps')
     if info.__dict__.has_key('length'):
         new_list.append(convert_seconds_to_text(int(info.length)))
-    size = '%.2f MB' % (float(bean.size)/1024/1024)
+    size = '%.2f MB' % (float(bean.size) / 1024 / 1024)
     new_list.append(size)
     return " | ".join(new_list)
 
@@ -236,11 +235,6 @@ def _get_pic_from_flac(audio):
     return None
 
 
-def _get_pic_from_ape(audio):
-    """Not implemented yet"""
-    return None
-
-
 def set_cover_from_tags(bean):
     try:
         ext = get_file_extension(bean.path)
@@ -248,19 +242,12 @@ def set_cover_from_tags(bean):
             data = _get_pic_from_mp3(ID3(bean.path))
         elif ext == ".flac":
             data = _get_pic_from_flac(FLAC(bean.path))
-        elif ext == ".ape":
-            data = _get_pic_from_ape(APEv2(bean.path))
         else:
             return None
         if data:
-            ext = _get_extension_by_mime(data.mime)
-            if not ext:
-                return None
-
             filename = os.path.join(COVERS_DIR, str(crc32(bean.path)) + '.jpg')
             fd = NamedTemporaryFile()
             fd.write(data.data)
-            fd.flush()
             pixbuf = pixbuf_new_from_file(fd.name)
             pixbuf.save(filename, "jpeg", {"quality":"90"})
             fd.close()
@@ -272,7 +259,10 @@ def set_cover_from_tags(bean):
             else:
                 cache_dict[basename] = [bean.text]
             return filename
-    except Exception:
+        else:
+            print "data not found"
+    except Exception, e:
+        print e
         pass
     return None
 
