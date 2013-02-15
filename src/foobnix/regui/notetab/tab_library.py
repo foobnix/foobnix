@@ -22,6 +22,13 @@ class TabHelperControl(TabGeneral):
                
         """the only signal lets get the previous number of moved page"""
         self.connect("button-release-event", self.get_page_number)
+        self.connect('switch-page', self.save_selected_tab)
+        self.loaded = False
+
+    def save_selected_tab(self, notebook, page, page_num, *args):
+        if not self.loaded: #bbecause the "switch-page" event is fired after every tab's addtion
+            return
+        FC().nav_selected_tab = page_num
         
     def on_add_button_click(self):
         self._append_tab()
@@ -73,6 +80,8 @@ class TabHelperControl(TabGeneral):
             self.set_show_tabs(False)
         
         self.controls.load_music_tree()
+        self.set_current_page(FC().nav_selected_tab)
+        self.loaded = True
         
     def save_tabs(self):
         '''need for one_thread_save method'''

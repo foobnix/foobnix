@@ -68,8 +68,14 @@ class FC():
         self.nav_selected_paths = []
         self.radio_selected_paths = []
         self.virtual_selected_paths = []
-        
-        
+
+        """selected tabs"""
+        self.nav_selected_tab = 0
+        self.pl_selected_tab = 0
+
+        #"""selected perpective"""
+        #self.selected_perspective = None
+
         self.agent_line = get_ranmom_agent()
 
         """main window controls"""

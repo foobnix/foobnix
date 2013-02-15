@@ -258,6 +258,7 @@ class NoteTabControl(TabGeneral):
         self.active_tree = None
         self.set_show_border(True)
         self.stop_handling = False
+        self.loaded = False
                 
         self.connect("button-press-event", self.on_button_press) 
         self.connect('drag-data-received', self.on_system_drag_data_received)
@@ -324,8 +325,7 @@ class NoteTabControl(TabGeneral):
             if type(w) == gtk.EventBox:
                 w.menu.show_all()
                 w.menu.popup(None, None, None, e.button, e.time)    
- 
-               
+
     def tab_menu_creator(self, widget, tab_child):   
         widget.menu = Popup()
         widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, self.default_angle), None)
@@ -391,11 +391,7 @@ class NoteTabControl(TabGeneral):
     def set_tab_no(self):
         logging.info("Set tabs no")
         self.set_show_tabs(False)
-    
-    
 
-    
-    
     def on_save_playlist(self, tab_child):
         name = self.get_text_label_from_tab(tab_child)
         current_name = name.strip() + ".m3u"
@@ -416,8 +412,7 @@ class NoteTabControl(TabGeneral):
             m3u_writer(filename, folder, paths)
         
         FileSavingDialog(_("Choose folder to save playlist"), func, current_folder=FCache().last_music_path, current_name = current_name) 
-    
-       
+
     def on_load(self):
         if FC().tab_position == "no": 
             self.set_tab_no()
@@ -441,9 +436,11 @@ class NoteTabControl(TabGeneral):
                 elif model_len < cache_len:
                     for i in xrange(abs(model_len - cache_len)):                        
                         del row[-1]
-                    
-                                                
+
                 self.get_current_tree().model.append(None, row)
+
+        self.set_current_page(FC().pl_selected_tab)
+        self.loaded = True
             
     def on_save(self):
         pass
@@ -453,9 +450,9 @@ class NoteTabControl(TabGeneral):
         FCache().cache_pl_tab_contents = []
         FCache().tab_pl_names = []
         if number_music_tabs > 0:
-            for tab_number in xrange(self.get_n_pages() -1, -1, -1):
+            for tab_number in xrange(self.get_n_pages() - 1, -1, -1):
                 self.save_nth_tab(tab_number)
-        
+
     def save_nth_tab(self, tab_number):
         tab = self.get_nth_page(tab_number)
         pl_tree = tab.get_child()
@@ -465,13 +462,15 @@ class NoteTabControl(TabGeneral):
             FC().columns[column.key][1] = i
             if column.get_width() > 1: #to avoid recording of zero width in config
                 FC().columns[column.key][2] = column.get_width()
-                        
+
     def on_quit(self):
         self.on_save_tabs()
 
     def equalize_columns_size(self, notebook, page_pointer, page_num):
+        if self.loaded: #because the "switch-page" event is fired after every tab's addtion
+            FC().pl_selected_tab = page_num
         try:
-            old_pl_tree_columns =  self.get_current_tree().get_columns()
+            old_pl_tree_columns = self.get_current_tree().get_columns()
             new_pl_tree_columns = self.get_nth_page(page_num).get_child().get_columns()
             for old_pl_tree_column, new_pl_tree_column in zip(old_pl_tree_columns, new_pl_tree_columns):
                 gobject.idle_add(new_pl_tree_column.set_fixed_width,old_pl_tree_column.get_width())
