@@ -239,13 +239,15 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
             return tab_child.get_child()
     
     def on_save_tabs(self):
-        self.save_lock.acquire()
-        try:
-            self.save_tabs()
-            FCache().save()
-        finally:
-            if self.save_lock.locked():
-                self.save_lock.release()
+        def task():
+            self.save_lock.acquire()
+            try:
+                self.save_tabs()
+                FCache().save()
+            finally:
+                if self.save_lock.locked():
+                    self.save_lock.release()
+        thread.start_new_thread(task, ())
     
 TARGET_TYPE_URI_LIST = 80
 dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
