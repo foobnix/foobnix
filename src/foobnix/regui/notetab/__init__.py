@@ -220,11 +220,11 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
         if not self.navig:
             if self.get_n_pages() > FC().count_of_tabs:
                 self.remove_page(self.get_n_pages() - 1)
-            
-        
+
     def on_delete_tab(self, child):
         n = self.page_num(child)
-        if self.get_n_pages() == 1: return
+        if self.get_n_pages() == 1:
+            return
         self.remove_page(n)
         if self.navig:
             del FCache().tab_names[n]
@@ -247,10 +247,12 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
             finally:
                 if self.save_lock.locked():
                     self.save_lock.release()
-        thread.start_new_thread(task, ())
+        gobject.idle_add(task)
+        #thread.start_new_thread(task, ())
     
 TARGET_TYPE_URI_LIST = 80
-dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
+dnd_list = [('text/uri-list', 0, TARGET_TYPE_URI_LIST)]
+
 
 class NoteTabControl(TabGeneral):
     def __init__(self, controls):
@@ -293,6 +295,7 @@ class NoteTabControl(TabGeneral):
         if type(w) == gtk.EventBox: 
             self.stop_handling = True
             #add delay in the background
+
             def start_handling():
                 self.stop_handling = False
             threading.Timer(0.3, start_handling).start()
@@ -398,6 +401,7 @@ class NoteTabControl(TabGeneral):
         name = self.get_text_label_from_tab(tab_child)
         current_name = name.strip() + ".m3u"
         tree = tab_child.get_child()
+
         def func(filename, folder):
             beans = tree.get_all_beans()
             if beans:
