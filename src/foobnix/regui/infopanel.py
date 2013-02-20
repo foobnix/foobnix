@@ -271,7 +271,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
                 if bean.text in list:
                     bean.image = os.path.join(COVERS_DIR, key + ".jpg")
                     break
-            
+
             if not bean.image:
                 '''get image url'''
                 bean.image = self.controls.lastfm_service.get_album_image_url(bean.artist, bean.title)       
@@ -282,7 +282,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         '''make .jpg image and store it in cache'''        
         if bean.image and bean.image.startswith("http://"):
             url_basename = os.path.splitext(os.path.basename(bean.image))[0]
-            if dict.has_key(url_basename):
+            if url_basename in dict:
                 dict[url_basename].append(bean.text)
             else:
                 dict[url_basename] = [bean.text]

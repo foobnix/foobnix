@@ -220,11 +220,11 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
         if not self.navig:
             if self.get_n_pages() > FC().count_of_tabs:
                 self.remove_page(self.get_n_pages() - 1)
-            
-        
+
     def on_delete_tab(self, child):
         n = self.page_num(child)
-        if self.get_n_pages() == 1: return
+        if self.get_n_pages() == 1:
+            return
         self.remove_page(n)
         if self.navig:
             del FCache().tab_names[n]
@@ -239,16 +239,20 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
             return tab_child.get_child()
     
     def on_save_tabs(self):
-        self.save_lock.acquire()
-        try:
-            self.save_tabs()
-            FCache().save()
-        finally:
-            if self.save_lock.locked():
-                self.save_lock.release()
+        def task():
+            self.save_lock.acquire()
+            try:
+                self.save_tabs()
+                FCache().save()
+            finally:
+                if self.save_lock.locked():
+                    self.save_lock.release()
+        gobject.idle_add(task)
+        #thread.start_new_thread(task, ())
     
 TARGET_TYPE_URI_LIST = 80
-dnd_list = [ ('text/uri-list', 0, TARGET_TYPE_URI_LIST) ]
+dnd_list = [('text/uri-list', 0, TARGET_TYPE_URI_LIST)]
+
 
 class NoteTabControl(TabGeneral):
     def __init__(self, controls):
@@ -258,6 +262,7 @@ class NoteTabControl(TabGeneral):
         self.active_tree = None
         self.set_show_border(True)
         self.stop_handling = False
+        self.loaded = False
                 
         self.connect("button-press-event", self.on_button_press) 
         self.connect('drag-data-received', self.on_system_drag_data_received)
@@ -290,6 +295,7 @@ class NoteTabControl(TabGeneral):
         if type(w) == gtk.EventBox: 
             self.stop_handling = True
             #add delay in the background
+
             def start_handling():
                 self.stop_handling = False
             threading.Timer(0.3, start_handling).start()
@@ -324,8 +330,7 @@ class NoteTabControl(TabGeneral):
             if type(w) == gtk.EventBox:
                 w.menu.show_all()
                 w.menu.popup(None, None, None, e.button, e.time)    
- 
-               
+
     def tab_menu_creator(self, widget, tab_child):   
         widget.menu = Popup()
         widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, self.default_angle), None)
@@ -391,15 +396,12 @@ class NoteTabControl(TabGeneral):
     def set_tab_no(self):
         logging.info("Set tabs no")
         self.set_show_tabs(False)
-    
-    
 
-    
-    
     def on_save_playlist(self, tab_child):
         name = self.get_text_label_from_tab(tab_child)
         current_name = name.strip() + ".m3u"
         tree = tab_child.get_child()
+
         def func(filename, folder):
             beans = tree.get_all_beans()
             if beans:
@@ -416,8 +418,7 @@ class NoteTabControl(TabGeneral):
             m3u_writer(filename, folder, paths)
         
         FileSavingDialog(_("Choose folder to save playlist"), func, current_folder=FCache().last_music_path, current_name = current_name) 
-    
-       
+
     def on_load(self):
         if FC().tab_position == "no": 
             self.set_tab_no()
@@ -441,9 +442,11 @@ class NoteTabControl(TabGeneral):
                 elif model_len < cache_len:
                     for i in xrange(abs(model_len - cache_len)):                        
                         del row[-1]
-                    
-                                                
+
                 self.get_current_tree().model.append(None, row)
+
+        self.set_current_page(FC().pl_selected_tab)
+        self.loaded = True
             
     def on_save(self):
         pass
@@ -453,9 +456,9 @@ class NoteTabControl(TabGeneral):
         FCache().cache_pl_tab_contents = []
         FCache().tab_pl_names = []
         if number_music_tabs > 0:
-            for tab_number in xrange(self.get_n_pages() -1, -1, -1):
+            for tab_number in xrange(self.get_n_pages() - 1, -1, -1):
                 self.save_nth_tab(tab_number)
-        
+
     def save_nth_tab(self, tab_number):
         tab = self.get_nth_page(tab_number)
         pl_tree = tab.get_child()
@@ -465,13 +468,15 @@ class NoteTabControl(TabGeneral):
             FC().columns[column.key][1] = i
             if column.get_width() > 1: #to avoid recording of zero width in config
                 FC().columns[column.key][2] = column.get_width()
-                        
+
     def on_quit(self):
         self.on_save_tabs()
 
     def equalize_columns_size(self, notebook, page_pointer, page_num):
+        if self.loaded: #because the "switch-page" event is fired after every tab's addtion
+            FC().pl_selected_tab = page_num
         try:
-            old_pl_tree_columns =  self.get_current_tree().get_columns()
+            old_pl_tree_columns = self.get_current_tree().get_columns()
             new_pl_tree_columns = self.get_nth_page(page_num).get_child().get_columns()
             for old_pl_tree_column, new_pl_tree_column in zip(old_pl_tree_columns, new_pl_tree_columns):
                 gobject.idle_add(new_pl_tree_column.set_fixed_width,old_pl_tree_column.get_width())

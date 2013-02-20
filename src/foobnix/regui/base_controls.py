@@ -216,6 +216,8 @@ class BaseFoobnixControls():
                     bean = FModel(path, path).parent(parent).add_is_file(True)
                 if text: 
                     bean.text = text
+                if "://" in bean.path:
+                    bean.type = FTYPE_RADIO
                 beans.append(bean)
             if not beans:
                 self.append_to_current_notebook([FModel(_("Nothing found to play in the file(s)") + paths[0])])

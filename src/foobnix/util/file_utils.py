@@ -213,7 +213,7 @@ def create_folder_dialog(path):
 def isDirectory(path):
     return os.path.isdir(path)
 
-"""extentsion linke .mp3, .mp4"""
+"""extentsion like .mp3, .mp4"""
 def get_file_extension(fileName):
     if not fileName:
         return None

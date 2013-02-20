@@ -19,7 +19,7 @@ class AboutWindow(gtk.AboutDialog):
         self.set_copyright("(c) Ivan Ivanenko <ivan.ivanenko@gmail.com>")
         self.set_comments(_("Simple and Powerful player"))
         self.set_website("http://www.foobnix.com")
-        self.set_authors(["Dmitry Kozhura (zavlab1) <zavlab1@gmail.com>", "Pietro Campagnano <fain182@gmailcom>"])
+        self.set_authors(["Dmitry Kozhura (zavlab1) <zavlab1@gmail.com>", "Pietro Campagnano <fain182@gmailcom>", "Viktor Suprun <popsul1993@gmail.com>"])
         
         self.set_translator_credits("""Bernardo Miguel Savone
 Sérgio Marques
