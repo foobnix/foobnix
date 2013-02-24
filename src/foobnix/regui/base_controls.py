@@ -122,6 +122,8 @@ class BaseFoobnixControls():
    
     def on_chage_player_state(self, state, bean):
         logging.debug("bean state %s" % (state))
+
+        self.set_dbus_state(state, bean)
         
         if not FC().system_icons_dinamic:
             return None  
@@ -136,7 +138,15 @@ class BaseFoobnixControls():
         if bean and bean.type:
             logging.debug("bean state and type %s %s" % (state, bean.type))        
             if bean.type == FTYPE_RADIO:
-                return self.trayicon.set_image_from_path(FC().radio_icon_entry)    
+                return self.trayicon.set_image_from_path(FC().radio_icon_entry)
+
+    def set_dbus_state(self, state, bean):
+        if self.dbus:
+            self.dbus._update_info(bean)
+            if state is STATE_PLAY:
+                self.dbus._set_state_play()
+            else:
+                self.dbus._set_state_pause()
    
     def on_add_folders(self, paths=None):
         if not paths:

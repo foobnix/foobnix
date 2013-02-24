@@ -4,12 +4,17 @@ Created on 28 сент. 2010
 
 @author: anton.komolov
 '''
+from curses.ascii import SO
+import logging
+import gobject
 import dbus.service
+from foobnix.fc.fc import FC
+from foobnix.version import FOOBNIX_VERSION
 from dbus.mainloop.glib import DBusGMainLoop
 from foobnix.regui.model.signal import FControl
-from foobnix.version import FOOBNIX_VERSION
-import logging
-from foobnix.fc.fc import FC
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.thirdparty.sound_menu import SoundMenuControls
+from foobnix.util.const import STATE_PLAY, ICON_FOOBNIX
 
 DBusGMainLoop(set_as_default=True)
 
@@ -19,51 +24,7 @@ MPRIS_PLAYER_PATH = "/Player"
 MPRIS_TRACKLIST_PATH = "/TrackList"
 DBUS_MEDIAPLAYER_INTERFACE = 'org.freedesktop.MediaPlayer'
 
-class MprisPlayer(dbus.service.Object, FControl):
-    def __init__(self, controls, object_path=MPRIS_PLAYER_PATH):
-        dbus.service.Object.__init__(self, dbus.SessionBus(), object_path)
-        FControl.__init__(self, controls)
 
-    #Next ( )
-    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
-    def Next(self):
-        self.controls.next()
-
-    #Prev ( )
-    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
-    def Prev(self):
-        self.controls.prev()
-
-    #Pause ( )
-    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
-    def Pause(self):
-        self.controls.state_pause()
-
-    #Stop ( )
-    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
-    def Stop(self):
-        self.controls.state_stop()
-
-    #Play ( )
-    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
-    def Play(self):
-        self.controls.state_play()
-
-    #PlayPause for test
-    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
-    def PlayPause(self):
-        self.controls.state_play_pause()
-    
-    #SeekUp ( )
-    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
-    def SeekUp(self):
-        self.controls.seek_up()
-
-    #SeekDown ( )
-    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
-    def SeekDown(self):
-        self.controls.seek_down()
-        
 class DBusManager(dbus.service.Object, FControl):
     def __init__(self, controls, object_path=MPRIS_ROOT_PATH):
         FControl.__init__(self, controls)
@@ -72,7 +33,7 @@ class DBusManager(dbus.service.Object, FControl):
             bus_name = dbus.service.BusName(DBUS_NAME, bus=bus)
             dbus.service.Object.__init__(self, bus_name, object_path)
     
-            self._player = MprisPlayer(controls)
+            #self._player = MprisPlayer(controls)
             #dbus_interface = 
             dbus_interface = 'org.gnome.SettingsDaemon.MediaKeys'
             mm_object = bus.get_object('org.gnome.SettingsDaemon', '/org/gnome/SettingsDaemon/MediaKeys')
@@ -80,8 +41,55 @@ class DBusManager(dbus.service.Object, FControl):
             mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
             mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
             #mm_object.ReleaseMediaPlayerKeys("MyMultimediaThingy", dbus_interface=dbus_interface)
+
+            self.sound_menu = SoundMenuControls("foobnix")
+            self.sound_menu._sound_menu_next = self._sound_menu_next
+            self.sound_menu._sound_menu_previous = self._sound_menu_previous
+            self.sound_menu._sound_menu_is_playing = self._sound_menu_is_playing
+            self.sound_menu._sound_menu_play = self._sound_menu_play
+            self.sound_menu._sound_menu_pause = self._sound_menu_pause
+            self.sound_menu._sound_menu_raise = self._sound_menu_raise
         except Exception, e:
             logging.error("DBUS Initialization Error" + str(e))
+
+    def _sound_menu_next(self):
+        self.controls.next()
+
+    def _sound_menu_previous(self):
+        self.controls.prev()
+
+    def _sound_menu_is_playing(self):
+        return self.controls.media_engine.current_state is STATE_PLAY
+
+    def _sound_menu_play(self):
+        self.controls.state_play()
+
+    def _sound_menu_pause(self):
+        self.controls.state_pause()
+
+    def _sound_menu_raise(self):
+        gobject.idle_add(self.controls.main_window.show)
+
+    def _set_state_play(self):
+        self.sound_menu.signal_playing()
+
+    def _set_state_pause(self):
+        self.sound_menu.signal_paused()
+
+    def _update_info(self, bean):
+        image = "file:///" + get_foobnix_resourse_path_by_name(ICON_FOOBNIX)
+        if bean.image:
+            if bean.image.startswith("/"):
+                image = "file:///" + bean.image
+            else:
+                image = bean.image
+        artists = None
+        if bean.artist:
+            artists = [bean.artist]
+        self.sound_menu.song_changed(artists=artists,
+                                     title=bean.title or bean.text,
+                                     album=bean.album,
+                                     cover=image)
     
     def check_for_commands(self, args):
         if len(args) == 1:
@@ -138,8 +146,7 @@ class DBusManager(dbus.service.Object, FControl):
             if type(result).__name__ == 'str':        
                 return result
         return "Other copy of player is run"
-        
-                
+
     def on_mediakey(self, comes_from, what):
         if not FC().media_keys_enabled:
             return
@@ -163,18 +170,21 @@ class DBusManager(dbus.service.Object, FControl):
     def Identity(self):
         return "foobnix %s" % FOOBNIX_VERSION
 
-    @dbus.service.method (DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='(qq)')
-    def MprisVersion (self):
-        return (1, 0)
+    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='(qq)')
+    def MprisVersion(self):
+        return 1, 0
 
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
     def Quit(self):
         self.controls.quit()
 
+
 def foobnix_dbus_interface():
     try:
         bus = dbus.SessionBus()
-        dbus_objects = dbus.Interface(bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'), 'org.freedesktop.DBus').ListNames()
+        dbus_objects = dbus.Interface(bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'),
+                                      'org.freedesktop.DBus').ListNames()
+
         if not DBUS_NAME in dbus_objects:
             return None
         else:
