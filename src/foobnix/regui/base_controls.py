@@ -49,8 +49,7 @@ class BaseFoobnixControls():
         
         self.chache_text = None
         self.play_lock = Lock()
-        
-        
+
     def check_for_media(self, args):         
         dirs = []
         files = []
@@ -72,8 +71,7 @@ class BaseFoobnixControls():
         map(self.lastfm_service.love, beans)
     
     def show_google_results(self, query):
-        beans = []
-        beans.append(FModel('"%s" not found trying Google search' % query))
+        beans = [FModel('"%s" not found trying Google search' % query)]
         g_results = google_search_results(query)
         for line in g_results:
             beans.append(FModel(line).add_is_file(True))
@@ -109,8 +107,8 @@ class BaseFoobnixControls():
                     return True
             else:
                 try:
-                    u = urlopen(path, timeout = 5) #@UnusedVariable
-                    if not vars().has_key("u"):
+                    u = urlopen(path, timeout=5)    # @UnusedVariable
+                    if "u" not in vars():
                         return False
                     return True
                 except:
@@ -121,7 +119,7 @@ class BaseFoobnixControls():
         return None    
    
     def on_chage_player_state(self, state, bean):
-        logging.debug("bean state %s" % (state))
+        logging.debug("bean state %s" % state)
 
         self.set_dbus_state(state, bean)
         
@@ -145,8 +143,10 @@ class BaseFoobnixControls():
             self.dbus._update_info(bean)
             if state is STATE_PLAY:
                 self.dbus._set_state_play()
-            else:
+            elif state is STATE_PAUSE:
                 self.dbus._set_state_pause()
+            else:
+                self.dbus._set_state_stop()
    
     def on_add_folders(self, paths=None):
         if not paths:
@@ -160,8 +160,7 @@ class BaseFoobnixControls():
                 parent = FModel(name)
                 self.append_to_new_notebook(name, [])
         
-                all_beans = []
-                all_beans.append(parent)
+                all_beans = [parent]
                 for bean in get_all_music_by_paths(paths, self):
                     if not bean.is_file:
                         bean.parent(parent).add_is_file(False)
@@ -265,7 +264,7 @@ class BaseFoobnixControls():
     def update_music_tree(self, tree, number_of_page=0):
         
         logging.info("Update music tree" + str(FCache().music_paths[number_of_page]))
-        tree.clear_tree() #safe method
+        tree.clear_tree()   # safe method
         FCache().cache_music_tree_beans[number_of_page] = []
                
         all = []
@@ -284,9 +283,9 @@ class BaseFoobnixControls():
                 self.perspective.show_add_button()
             except AttributeError:
                 logging.warn("Object perspective not exists yet")
-        tree.append_all(all) #safe method
+        tree.append_all(all)     # safe method
         tree.ext_width = tree.ext_column.get_width()
-        gobject.idle_add(self.tabhelper.on_save_tabs) #for true order
+        gobject.idle_add(self.tabhelper.on_save_tabs)   # for true order
           
     def set_visible_video_panel(self, flag):
         FC().is_view_video_panel = flag
@@ -387,6 +386,7 @@ class BaseFoobnixControls():
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
         self.movie_window.set_text(bean.text)
+
         def task():
             if bean.type == FTYPE_RADIO:
                 self.record.show()
@@ -399,14 +399,13 @@ class BaseFoobnixControls():
         gobject.idle_add(task)
         thread.start_new_thread(self._one_thread_play, (bean,))
 
-    def _one_thread_play(self,bean):
+    def _one_thread_play(self, bean):
         try:
             self._play(bean)
         finally:
             if self.play_lock.locked():
                 self.play_lock.release()
-        
-    
+
     def _play(self, bean):
         if not bean.path:
             bean.path = get_bean_posible_paths(bean)
@@ -434,7 +433,6 @@ class BaseFoobnixControls():
                     self.next()
                 else:
                     self.seek_bar.set_text(_("Stopped. No resources found"))
-                
                 return
                 
         elif os.path.isdir(bean.path):
@@ -455,23 +453,19 @@ class BaseFoobnixControls():
         sec = int(sec) 
         
         if sec > 10 and sec % 11 == 0:
-           
             self.net_wrapper.execute(self.lastfm_service.report_now_playing, bean)
                     
         if not self.start_time:
             self.start_time = str(int(time.time()))
         
-        if not self.is_scrobbled:            
-            
+        if not self.is_scrobbled:
             if sec > dur_sec / 2 or sec > 60:
-                
                 self.is_scrobbled = True
                 self.net_wrapper.execute(self.lastfm_service.report_scrobbled, bean, self.start_time, dur_sec)
                 """download music"""
                 if FC().automatic_online_save and bean.path and bean.path.startswith("http://"):
                     self.dm.append_task(bean)
 
-            
     def notify_title(self, bean, text):
         logging.debug("Notify title" + text)
         
@@ -480,6 +474,7 @@ class BaseFoobnixControls():
         self.seek_bar.set_text(text)
         t_bean = bean.create_from_text(text)                       
         self.update_info_panel(t_bean)
+        self.set_dbus_state(STATE_PLAY, t_bean)
         if FC().enable_radio_scrobbler:
             start_time = str(int(time.time()))
             self.net_wrapper.execute(self.lastfm_service.report_now_playing, t_bean)
@@ -487,7 +482,6 @@ class BaseFoobnixControls():
             if " - " in text and self.chache_text != text:
                 text = self.chache_text
                 self.net_wrapper.execute(self.lastfm_service.report_scrobbled, t_bean, start_time, 200)
-                
 
     def notify_error(self, msg):
         logging.error("notify error " + msg)
@@ -534,7 +528,7 @@ class BaseFoobnixControls():
     
     def search_all_tracks(self, query):
         def search_all_tracks_task():
-            analytics.action("SEARCH_search_all_tracks");
+            analytics.action("SEARCH_search_all_tracks")
             results = self.vk_service.find_tracks_by_query(query)
             if not results:
                 results = []
@@ -554,7 +548,7 @@ class BaseFoobnixControls():
 
     def search_top_tracks(self, query):
         def search_top_tracks_task(query):
-            analytics.action("SEARCH_search_top_tracks");
+            analytics.action("SEARCH_search_top_tracks")
             results = self.lastfm_service.search_top_tracks(query)
             if not results:
                 results = []
@@ -570,15 +564,12 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
                 
             self.notetabs.append_tab(query, all)
-            
-            
+
         self.in_thread.run_with_progressbar(search_top_tracks_task, query)
 
-
     def search_top_albums(self, query):
-       
         def search_top_albums_task(query):
-            analytics.action("SEARCH_search_top_albums");
+            analytics.action("SEARCH_search_top_albums")
             results = self.lastfm_service.search_top_albums(query)
             if not results:
                 results = []
@@ -586,7 +577,7 @@ class BaseFoobnixControls():
             albums_already_inserted = []
             for album in results[:15]:
                 all = []
-                if (album.album.lower() in albums_already_inserted):
+                if album.album.lower() in albums_already_inserted:
                     continue
                 album.is_file = False
                 tracks = self.lastfm_service.search_album_tracks(album.artist, album.album)
@@ -595,7 +586,7 @@ class BaseFoobnixControls():
                     track.album = album.album
                     track.parent(album).add_is_file(True)                    
                     all.append(track)
-                if (len(all) > 0):
+                if len(all) > 0:
                     all = [album] + all
                     albums_already_inserted.append(album.album.lower())
                     self.notetabs.append_all(all)
@@ -609,7 +600,7 @@ class BaseFoobnixControls():
     def search_top_similar(self, query):
        
         def search_top_similar_task(query):
-            analytics.action("SEARCH_search_top_similar");
+            analytics.action("SEARCH_search_top_similar")
             results = self.lastfm_service.search_top_similar_artist(query)
             if not results:
                 results = []
@@ -628,15 +619,14 @@ class BaseFoobnixControls():
                 
             if not results:
                 all = self.show_google_results(query)
-                     
-            
+
         #inline(query)
         self.in_thread.run_with_progressbar(search_top_similar_task, query)
 
     def search_top_tags(self, query):
        
         def search_top_tags_task(query):
-            analytics.action("SEARCH_search_top_tags");
+            analytics.action("SEARCH_search_top_tags")
             results = self.lastfm_service.search_top_tags(query)
             if not results:
                 logging.debug("tag result not found")
@@ -729,26 +719,22 @@ class BaseFoobnixControls():
                 
         try:
             from socket import gethostname
-            f = urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname() + "&version=" + current_version + "&platform=" + system, timeout=7)
+            f = urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname()
+                        + "&version=" + current_version + "&platform=" + system, timeout=7)
             #f = urllib2.urlopen("http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version)
         except Exception, e:
             logging.error("Check version error: " + str(e))
             return None
 
         new_version_line = f.read()
-        
-        
+
         logging.info("version " + current_version + "|" + new_version_line + "|" + str(uuid))
         
         f.close()
         if FC().check_new_version and compare_versions(current_version, new_version_line) == 1:
             info_dialog_with_link_and_donate(new_version_line)            
 
-    
-    
-    
     def on_load(self):
-        
         """load controls"""
         for element in self.__dict__:
             if isinstance(self.__dict__[element], LoadSave):
@@ -782,16 +768,14 @@ class BaseFoobnixControls():
             img = get_foobnix_resourse_path_by_name(FC().background_image)
             if not img:
                 return None
-            pixbuf = gtk.gdk.pixbuf_new_from_file(img) #@UndefinedVariable
-            pixmap, mask = pixbuf.render_pixmap_and_mask() #@UnusedVariable
+            pixbuf = gtk.gdk.pixbuf_new_from_file(img)  # @UndefinedVariable
+            pixmap, mask = pixbuf.render_pixmap_and_mask()  # @UnusedVariable
             win.set_app_paintable(True)            
             win.window.set_back_pixmap(pixmap, False)        
         else:
             win.set_app_paintable(False)
             win.window.set_back_pixmap(None, False)
-        
-        
-        
+
     def play_first_file_in_playlist(self):    
         active_playlist_tree = self.notetabs.get_current_tree()
         filter_model = active_playlist_tree.get_model()
@@ -811,8 +795,7 @@ class BaseFoobnixControls():
             else:
                 iter = current_model.iter_next(iter)
                 play_item(iter, active_playlist_tree, filter_model, current_model)
-                        
-        
+
         iter = current_model.get_iter_first()
         play_item(iter, active_playlist_tree, filter_model, current_model)
     
@@ -821,5 +804,3 @@ class BaseFoobnixControls():
             if isinstance(self.__dict__[element], LoadSave):
                 logging.debug("SAVE " + str(self.__dict__[element]))
                 self.__dict__[element].on_save()
-            
-                

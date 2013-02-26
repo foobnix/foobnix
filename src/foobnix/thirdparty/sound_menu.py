@@ -363,6 +363,11 @@ class SoundMenuControls(dbus.service.Object):
                             "sv",variant_level=1)
         self.PropertiesChanged("org.mpris.MediaPlayer2.Player",d,[])
 
+    def signal_stopped(self):
+        self.__playback_status = "Stopped"
+        d = dbus.Dictionary({"PlaybackStatus": self.__playback_status},
+                            "sv", variant_level=1)
+        self.PropertiesChanged("org.mpris.MediaPlayer2.Player", d, [])
 
     def _sound_menu_is_playing(self):
         """_sound_menu_is_playing

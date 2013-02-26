@@ -78,6 +78,10 @@ class DBusManager(dbus.service.Object, FControl):
         if self.sound_menu:
             self.sound_menu.signal_paused()
 
+    def _set_state_stop(self):
+        if self.sound_menu:
+            self.sound_menu.signal_stopped()
+
     def _update_info(self, bean):
         if not self.sound_menu:     # if dbus initialization can't be finished
             return
