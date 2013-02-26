@@ -71,12 +71,16 @@ class DBusManager(dbus.service.Object, FControl):
         gobject.idle_add(self.controls.main_window.show)
 
     def _set_state_play(self):
-        self.sound_menu.signal_playing()
+        if self.sound_menu:
+            self.sound_menu.signal_playing()
 
     def _set_state_pause(self):
-        self.sound_menu.signal_paused()
+        if self.sound_menu:
+            self.sound_menu.signal_paused()
 
     def _update_info(self, bean):
+        if not self.sound_menu:     # if dbus initialization can't be finished
+            return
         image = "file:///" + get_foobnix_resourse_path_by_name(ICON_FOOBNIX)
         if bean.image:
             if bean.image.startswith("/"):
