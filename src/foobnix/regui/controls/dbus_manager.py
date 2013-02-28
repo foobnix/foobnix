@@ -50,6 +50,7 @@ class DBusManager(dbus.service.Object, FControl):
             self.sound_menu._sound_menu_pause = self._sound_menu_pause
             self.sound_menu._sound_menu_raise = self._sound_menu_raise
         except Exception, e:
+            self.sound_menu = None
             logging.error("DBUS Initialization Error" + str(e))
 
     def _sound_menu_next(self):
