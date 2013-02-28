@@ -95,7 +95,7 @@ class FC():
         self.menu_style = "new"
 
         """main window action"""
-        self.on_close_window = const.ON_CLOSE_CLOSE
+        self.on_close_window = const.ON_CLOSE_MINIMIZE
         
         """support file formats"""
         audio_container = [".cue", ".iso.wv"]
