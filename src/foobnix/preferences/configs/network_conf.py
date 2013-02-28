@@ -14,7 +14,6 @@ from foobnix.fc.fc import FC
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.proxy_connect import set_proxy_settings
 from foobnix.regui.service.lastfm_service import LastFmService
-from foobnix.regui.service.vk_service import VKAuthorizationWindow
 import gobject
 
 
@@ -222,6 +221,5 @@ class NetworkConfig(ConfigPlugin):
         set_proxy_settings()
 
         def set_new_vk_window():
-            self.controls.vk_service.vk_window = VKAuthorizationWindow(self.controls.vk_service)
-        gobject.idle_add(set_new_vk_window)
+            pass
 
