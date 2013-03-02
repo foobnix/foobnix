@@ -84,6 +84,8 @@ class DBusManager(dbus.service.Object, FControl):
             self.sound_menu.signal_stopped()
 
     def _update_info(self, bean):
+        if not bean:
+            return
         if not self.sound_menu:     # if dbus initialization can't be finished
             return
         image = "file:///" + get_foobnix_resourse_path_by_name(ICON_FOOBNIX)
