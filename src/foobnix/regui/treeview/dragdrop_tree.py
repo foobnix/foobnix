@@ -28,7 +28,6 @@ from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.regui.model import FModel, FTreeModel
 
 
-
 VIEW_PLAIN = 0
 VIEW_TREE = 1
 
@@ -160,9 +159,21 @@ class DragDropTree(gtk.TreeView):
                 if not to_model.get_iter_root():
                     self.controls.notetabs.rename_tab(to_tree.scroll, "Foobnix")
                 all_rows = []
+                logging.debug("Receive dnd items from %s" % str(from_tree))
                 for ff_path in ff_paths:
                     ff_iter = ff_model.get_iter(ff_path)
-                    beans = self.get_all_beans_by_parent(ff_model, ff_iter)
+                    if "VKIntegrationControls" in str(from_tree):
+                        bean = self.get_bean_from_model_iter(ff_model, ff_iter)
+                        beans = [bean]
+                        logging.debug("selected bean")
+                        logging.debug(bean)
+                        if bean and isinstance(bean, FModel) and bean.user_id and not bean.path:
+                            beans += from_tree.get_user_tracks_as_beans(bean.user_id)
+                        else:
+                            logging.debug("Bean is None, or not is FDModel or has no contains user_id")
+                            beans = self.get_all_beans_by_parent(ff_model, ff_iter)
+                    else:
+                        beans = self.get_all_beans_by_parent(ff_model, ff_iter)
                     all_rows += self.fill_beans_and_get_rows(beans, self.simple_content_filter)
                     
                 for i, row in enumerate(all_rows):

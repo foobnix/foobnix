@@ -44,9 +44,9 @@ class VKIntegrationControls(CommonTreeControl):
     
     def _lazy_load(self):
         def get_users_by_uuid(uuidd):
-            for user in self.controls.vk_service.get_result('getProfiles','uids='+uuidd):
+            for user in self.controls.vk_service.get_result('getProfiles', 'uids=' + uuidd):
                 logging.debug(user)
-                name =  user['first_name']+ " "+ user['last_name']
+                name = user['first_name'] + " " + user['last_name']
             
                 parent = FModel(name)
                 parent.user_id = user['uid']
@@ -57,9 +57,9 @@ class VKIntegrationControls(CommonTreeControl):
         
         get_users_by_uuid(FC().user_id)
         
-        uids = self.controls.vk_service.get_result('friends.get','uid='+FC().user_id)
+        uids = self.controls.vk_service.get_result('friends.get', 'uid=' + FC().user_id)
         if uids:
-            get_users_by_uuid(",".join(["%s" % (i) for i in uids ]))
+            get_users_by_uuid(",".join(["%s" % i for i in uids]))
                     
         self.lazy = True
         
@@ -74,7 +74,8 @@ class VKIntegrationControls(CommonTreeControl):
             active = self.get_selected_bean()
             if active:
                 menu = Popup()
-                menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
+                if isinstance(active, FModel) and active.path:
+                    menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
                 menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            
                 menu.show(e)
          
@@ -82,14 +83,36 @@ class VKIntegrationControls(CommonTreeControl):
             selected = self.get_selected_bean()
             if not selected:
                 return
-            beans = self.get_all_child_beans_by_selected()  
-            self.controls.notetabs._append_tab(selected.text, [selected] + beans, optimization=True)
-            "run radio channel"
-            self.controls.play_first_file_in_playlist()
+
+            def task():
+                if selected.user_id not in self.cache:
+                    beans = self.get_user_tracks_as_beans(selected.user_id)
+                else:
+                    beans = self.get_all_child_beans_by_selected()
+                self.controls.notetabs._append_tab(selected.text, [selected] + beans, optimization=True)
+                "run radio channel"
+                self.controls.play_first_file_in_playlist()
+
+            self.controls.in_thread.run_with_progressbar(task)
             
     def on_row_expanded(self, widget, iter, path):
         self.on_bean_expanded(iter)
-             
+
+    def get_user_tracks_as_beans(self, user_id):
+        beans = []
+        result = self.controls.vk_service.get_result('audio.get', "uid=" + user_id)
+        if not result:
+            beans = [FDModel(_("No results found")).add_is_file(True)]
+        else:
+            for line in result:
+                bean = FModel(line['artist'] + ' - ' + line['title'])
+                bean.aritst = line['artist']
+                bean.title = line['title']
+                bean.time = convert_seconds_to_text(line['duration'])
+                bean.path = line['url']
+                bean.is_file = True
+                beans.append(bean)
+        return beans
 
     def on_bean_expanded(self, parent_iter):
         logging.debug("expanded %s" % parent_iter)
@@ -102,28 +125,14 @@ class VKIntegrationControls(CommonTreeControl):
         
         self.cache.append(parent.user_id)
         
-        old_iters = self.get_child_iters_by_parent(self.model, p_iter);
-        
-        
+        old_iters = self.get_child_iters_by_parent(self.model, p_iter)
+
         def task():
-            result = self.controls.vk_service.get_result('audio.get',"uid="+parent.user_id)
-            if not result:
-                bean = FDModel(_("No results found")).parent(parent).add_is_file(True)
-                row = self.get_row_from_bean(bean);
+            beans = self.get_user_tracks_as_beans(parent.user_id)
+            for bean in beans:
+                bean.parent(parent)
+                row = self.get_row_from_bean(bean)
                 self.model.append(p_iter, row)
-            else:
-                for line in result:
-                    logging.debug(line);
-                    bean = FModel(line['artist']+' - '+line['title'])
-                
-                    bean.aritst = line['artist']
-                    bean.title = line['title']
-                    bean.time = convert_seconds_to_text(line['duration'])
-                    bean.path = line['url']
-                    bean.is_file = True
-                
-                    row = self.get_row_from_bean(bean);
-                    self.model.append(p_iter, row)
             
             for rem in old_iters:
                 self.model.remove(rem)     
@@ -132,4 +141,3 @@ class VKIntegrationControls(CommonTreeControl):
             gobject.idle_add(task)
 
         self.controls.in_thread.run_with_progressbar(g_task)
-        
