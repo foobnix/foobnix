@@ -9,6 +9,7 @@ from __future__ import with_statement
 
 import os
 import shutil
+import threading
 from foobnix.util.singleton import Singleton
 from foobnix.fc.fc_helper import CONFIG_DIR, FCStates
 
@@ -20,6 +21,8 @@ LYRICS_DIR = os.path.join(CONFIG_DIR, 'lirics','')
 CACHE_COVERS_FILE = os.path.join(COVERS_DIR, 'covers_cache')
 CACHE_ALBUM_FILE = os.path.join(CONFIG_DIR, 'albums_cache')
 CACHE_RADIO_FILE = os.path.join(CONFIG_DIR, 'radio_cache')
+
+fcache_save_lock = threading.Lock()
 
 """Foobnix cache"""
 class FCache:
@@ -42,8 +45,11 @@ class FCache:
         self.load()
         
     def save(self):
+        fcache_save_lock.acquire()
         FCStates().save(self, CACHE_FILE)
         shutil.copy2(CACHE_FILE, CACHE_FILE + "_backup")
+        if fcache_save_lock.locked():
+            fcache_save_lock.release()
     
     def load(self):
         FCStates().load(self, CACHE_FILE)

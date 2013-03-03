@@ -247,8 +247,10 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
             finally:
                 if self.save_lock.locked():
                     self.save_lock.release()
-        gobject.idle_add(task)
-        #thread.start_new_thread(task, ())
+        try:
+            threading.Thread(target=task, args=()).start()
+        except Exception, e:
+            print "Exception: %s" % str(e)
     
 TARGET_TYPE_URI_LIST = 80
 dnd_list = [('text/uri-list', 0, TARGET_TYPE_URI_LIST)]

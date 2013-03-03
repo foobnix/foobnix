@@ -13,6 +13,15 @@ from foobnix.util import LOG, analytics
 from foobnix.fc.fc_helper import CONFIG_DIR
 
 
+def except_hook(exc_t, exc_v, traceback):
+    print "*** Uncaught exception ***"
+    print exc_t
+    print exc_v
+    print traceback
+
+sys.excepthook = except_hook
+
+
 def foobnix():
 
     if "--debug" in sys.argv:
