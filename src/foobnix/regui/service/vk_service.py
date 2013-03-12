@@ -296,7 +296,10 @@ class VKService:
             if attempt_count:
                 return
             logging.info("Try to get new access token and search again")
-            if not self.auth(True):
+            # fix for incorrect behaviour when token has been expired
+            # if user has been connected and token is expired - show auth window
+            # else - check only
+            if not self.auth(not self.connected):
                 return
             time.sleep(3)
             attempt_count += 1
