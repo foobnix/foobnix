@@ -135,6 +135,8 @@ class DBusManager(dbus.service.Object, FControl):
             self.controls.hide()
         elif "--play-pause" == command:
             self.controls.play_pause()
+        elif "--download" == command:
+            self.controls.dm.append_task(bean=self.controls.notetabs.get_current_tree().get_current_bean_by_UUID())
         elif "--version" == command:
             return FOOBNIX_VERSION
         elif "--state" == command:
