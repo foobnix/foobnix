@@ -208,7 +208,8 @@ class HotKeysConfig(ConfigPlugin):
         menu.add_item(_("Volume down"), gtk.STOCK_GO_DOWN, self.set_action_text, "--volume-down")
         menu.add_item(_("Show-Hide"), gtk.STOCK_FULLSCREEN, self.set_action_text, "--show-hide")
         menu.add_item(_("Play-Pause"), gtk.STOCK_MEDIA_RECORD, self.set_action_text, "--play-pause")
-        menu.show(event)     
+        menu.add_item(_('Download'), gtk.STOCK_ADD, self.set_action_text, "--download")
+        menu.show(event)
    
     def on_load(self):
         if FC().media_keys_enabled == False:
