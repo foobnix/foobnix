@@ -23,9 +23,9 @@ class LyricsFinder(HTMLParser):
         self.tagname = 'div'
         self.attr = 'id'
         self.attr_value = 'songlyrics_h'
-        title = title.encode('utf-8').strip().replace(" ", "_")
+        title = title.encode('utf-8').strip().replace(" ", "_").replace("/", "-")
         title = urllib.quote(title)
-        artist = artist.encode('utf-8').strip().replace(" ", "_")
+        artist = artist.encode('utf-8').strip().replace(" ", "_").replace("/", "-")
         artist = urllib.quote(artist)
         result = urllib.urlopen(base + title + "_lyrics_" + artist + ".html").read()
         result = result.replace('&#039;', '!apostrophe!')
@@ -37,9 +37,9 @@ class LyricsFinder(HTMLParser):
         self.tagname = 'pre'
         self.attr = 'class'
         self.attr_value = 'lyric'
-        title = title.replace(" ", "-")
+        title = title.replace(" ", "-").replace("/", "-")
         title = urllib.quote(title)
-        artist = artist.replace(" ", "-")
+        artist = artist.replace(" ", "-").replace("/", "-")
         artist = urllib.quote(artist)
         result = urllib.urlopen(base + artist + "/" + title + ".html").read()
         result = result.replace('&#039;', '!apostrophe!').replace('<br/><br/>', '<br/>\n<br/>')
@@ -89,4 +89,3 @@ def get_lyrics_by_parsing(artist, title):
 
 if __name__ == '__main__':  
     print get_lyrics_by_parsing("aBBA", " honey, Honey ")
-

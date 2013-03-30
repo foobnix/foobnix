@@ -34,7 +34,7 @@ class VKIntegrationControls(CommonTreeControl):
         self.set_type_tree()
         
         self.lazy = False
-        self.cache =[]
+        self.cache = []
     
     def lazy_load(self):
         if not self.controls.vk_service.is_authorized():

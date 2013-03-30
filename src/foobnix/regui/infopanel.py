@@ -93,8 +93,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         dm_line = HBoxDecoratorTrue(self.exua_label, self.rutracker_label)
         dm_frame.add(dm_line)
-        
-        
+
         self.wiki = TextArea()
         self.wiki.set_text("", wiki_title)
         
@@ -108,11 +107,9 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         """image and similar artists"""
         ibox = gtk.HBox(False, 0)
         self.image = ImageBase(ICON_BLANK_DISK, FC().info_panel_image_size)
-        
-        
+
         lbox = gtk.VBox(False, 0)
-        
-        
+
         self.left_widget = [wBox, self.artists, self.tracks, self.tags, self.lyrics, self.best_songs]
         
         for l_widget in self.left_widget:        
@@ -144,7 +141,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
     
     def show_current(self, widget):
         if not self.controls.net_wrapper.is_internet():
-            return;
+            return
         
         def safe_task():
             self.empty.hide()
@@ -174,7 +171,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
     def update_info_panel(self):
         if not self.controls.net_wrapper.is_internet():
-            return;
+            return
         if not self.bean:
             return None
         bean = copy.copy(self.bean)
@@ -194,7 +191,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
     def update(self, bean):
         if not self.controls.net_wrapper.is_internet():
-            return;
+            return
                 
         if bean.type == FTYPE_NOT_UPDATE_INFO_PANEL:
             return False
@@ -218,8 +215,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.bean = bean
         
         self.update_info_panel()
-        
-    
+
     def show_album_title(self, bean=None):
         if not bean:
             bean = self.bean
@@ -292,8 +288,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             self.image.update_info_from(bean)
             self.controls.trayicon.update_info_from(bean)
             self.controls.coverlyrics.set_cover()
-        
-        
+
     def show_similar_lyrics(self, bean=None):
         if not bean:
             bean = self.bean
@@ -308,11 +303,17 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if not os.path.isdir(LYRICS_DIR):
             os.mkdir(LYRICS_DIR)
         lyrics_list = os.listdir(LYRICS_DIR)
-        lyrics_title = "%s - %s" % (bean.artist, bean.title)
+        cache_name = lyrics_title = "%s - %s" % (bean.artist, bean.title)
+
+        illegal_chars = ["/", "#", ";", ":", "%", "*", "&", "\\"]
+        for char in illegal_chars:
+            cache_name = cache_name.replace(char, "_")
+        cache_name = cache_name.lower().strip()
+
         text = None
 
-        if lyrics_title.lower().strip() in lyrics_list:
-            text = "".join(open(os.path.join(LYRICS_DIR, lyrics_title.lower().strip()), 'r').readlines())
+        if cache_name in lyrics_list:
+            text = "".join(open(os.path.join(LYRICS_DIR, cache_name), 'r').readlines())
         else:
             try:
                 logging.debug("Try to get lyrics from lyrics.wikia.com")
@@ -322,7 +323,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
             if not text:
                 text = get_lyrics_by_parsing(bean.artist, bean.title)
             if text:
-                open(os.path.join(LYRICS_DIR, lyrics_title.lower().strip()), 'w').write(text)
+                open(os.path.join(LYRICS_DIR, cache_name), 'w').write(text)
             else:
                 logging.info("The text not found")
                 text = "The text not found"
@@ -336,9 +337,8 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         if self.info_cache.wiki_artist == self.bean.artist:
             return None
         self.info_cache.wiki_artist = self.bean.artist    
-        
-        
-        self.wiki_label.set_uri("http://%s.wikipedia.org/w/index.php?&search=%s" %(SITE_LOCALE, self.bean.artist))
+
+        self.wiki_label.set_uri("http://%s.wikipedia.org/w/index.php?&search=%s" % (SITE_LOCALE, self.bean.artist))
         self.last_fm_label.set_uri("http://www.last.fm/search?q=%s" % self.bean.artist)
         
         self.exua_label.set_uri("http://www.ex.ua/search?s=%s" % self.bean.artist)
