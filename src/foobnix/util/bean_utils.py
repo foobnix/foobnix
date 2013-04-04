@@ -49,7 +49,10 @@ def get_bean_download_path(bean, path=FC().online_save_to_folder, nosubfolder = 
 
     ext = ".mp3"
     if nosubfolder:
-        path = os.path.join(path, bean.get_display_name() + ext)
+        name = bean.get_display_name()
+        name = name.replace("/", "-")
+        name = name.replace("\\", "-")
+        path = os.path.join(path, name + ext)
         return path
     elif bean.artist:
         bean.artist = bean.artist.replace("/", "-")
