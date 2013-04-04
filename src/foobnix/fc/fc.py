@@ -132,6 +132,7 @@ class FC():
         self.amount_dm_threads = 3
         self.online_save_to_folder = "/tmp"
         self.automatic_online_save = False
+        self.nosubfolder = False
         self.is_save_online = True
         
         """info panel"""

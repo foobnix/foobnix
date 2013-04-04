@@ -38,7 +38,10 @@ class OtherConfig(ConfigPlugin):
         
         """automatic save"""                
         self.automatic_save_checkbutton = gtk.CheckButton(label=_("Automatic online music save"), use_underline=True)
-        
+
+        """automatic save"""
+        self.nosubfolder_checkbutton = gtk.CheckButton(label=_("Save to one folder (no subfolders)"), use_underline=True)
+
         """download threads"""
         thbox = gtk.HBox(False, 5)
                 
@@ -69,7 +72,7 @@ class OtherConfig(ConfigPlugin):
         """notification"""
         self.check_new_version = gtk.CheckButton(label=_("Check for new foobnix release on start"), use_underline=True)
         self.check_new_version.show()
-        
+
         demo = gtk.Button(_("Show new foobnix release avaliable demo dialog"))
         demo.connect("clicked", lambda * a:info_dialog_with_link_and_donate("foobnix [version]"))
         demo.show()
@@ -137,6 +140,7 @@ class OtherConfig(ConfigPlugin):
         """packaging"""        
         box.pack_start(hbox, False, True, 0)
         box.pack_start(self.automatic_save_checkbutton, False, True, 0)
+        box.pack_start(self.nosubfolder_checkbutton, False, True, 0)
         box.pack_start(thbox, False, True, 0)
         box.pack_start(cbox, False, True, 0)
         box.pack_start(self.check_new_version, False, True, 0)
@@ -185,7 +189,10 @@ class OtherConfig(ConfigPlugin):
         
         if FC().automatic_online_save:
             self.automatic_save_checkbutton.set_active(True)
-            
+
+        if FC().nosubfolder:
+            self.nosubfolder_checkbutton.set_active(True)
+
         """menu style"""
         if  FC().menu_style == "new":
             self.new_style.set_active(True)        
@@ -221,6 +228,7 @@ class OtherConfig(ConfigPlugin):
         FC().check_new_version = self.check_new_version.get_active()
         
         FC().automatic_online_save = self.automatic_save_checkbutton.get_active()
+        FC().nosubfolder = self.nosubfolder_checkbutton.get_active()
         
         if self.is_background_image != FC().background_image:
             self.controls.change_backgound()
