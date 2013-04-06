@@ -106,11 +106,10 @@ class TabsConfig(ConfigPlugin):
         
     
     def removing_of_extra_tabs(self, number_of_tabs):
-            overage = (self.controls.notetabs.get_n_pages() - 1) - number_of_tabs
-            counter = 0
-            while counter < overage:
-                self.controls.notetabs.remove_page(self.controls.notetabs.get_n_pages() - 1)
-                counter += 1
+        overage = self.controls.notetabs.get_n_pages() - number_of_tabs
+        while overage > 0:
+            self.controls.notetabs.remove_page(self.controls.notetabs.get_n_pages() - 1)
+            overage -= 1
    
     def on_load(self):
         self.tabs_count.set_value(FC().count_of_tabs)
@@ -136,7 +135,7 @@ class TabsConfig(ConfigPlugin):
     def on_save(self):
         FC().count_of_tabs = self.tabs_count.get_value_as_int()
         
-        if self.controls.notetabs.get_n_pages() - 1 > FC().count_of_tabs:
+        if self.controls.notetabs.get_n_pages() > FC().count_of_tabs:
             self.removing_of_extra_tabs(FC().count_of_tabs) 
         FC().len_of_tab = self.tab_len.get_value_as_int()
         
