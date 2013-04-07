@@ -146,7 +146,8 @@ class MovieDrawingArea(FControl, Gtk.Frame):
             for state in (Gtk.StateType.NORMAL, Gtk.STATE_PRELIGHT, Gtk.STATE_ACTIVE, Gtk.STATE_SELECTED, Gtk.STATE_INSENSITIVE):
                 self.smallscree_area.modify_bg(state, self.smallscree_area.get_colormap().alloc_color("black"))
                 self.fullscrean_area.draw.modify_bg(state, self.fullscrean_area.get_colormap().alloc_color("black"))
-        GObject.idle_add(modyfy_background)
+        # TODO Fix it
+        #GObject.idle_add(modyfy_background)
         
         self.output = None
         self.set_output(self.smallscree_area)

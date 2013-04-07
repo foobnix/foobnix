@@ -46,7 +46,7 @@ class OtherConfig(ConfigPlugin):
         tab_label.show()
         
         adjustment = Gtk.Adjustment(value=1, lower=1, upper=10, step_incr=1, page_incr=1, page_size=0)
-        self.threads_count = Gtk.SpinButton(adjustment)
+        self.threads_count = Gtk.SpinButton(adjustment=adjustment)
         self.threads_count.show()
         
         thbox.pack_start(tab_label, False, False, 0)
@@ -60,7 +60,7 @@ class OtherConfig(ConfigPlugin):
         tab_label.show()
         
         adjustment = Gtk.Adjustment(value=1, lower=100, upper=350, step_incr=20, page_incr=50, page_size=0)
-        self.image_size_spin = Gtk.SpinButton(adjustment)
+        self.image_size_spin = Gtk.SpinButton(adjustment=adjustment)
         self.image_size_spin.show()
         
         cbox.pack_start(tab_label, False, False, 0)
@@ -71,7 +71,7 @@ class OtherConfig(ConfigPlugin):
         self.check_new_version.show()
         
         demo = Gtk.Button(_("Show new foobnix release avaliable demo dialog"))
-        demo.connect("clicked", lambda * a:info_dialog_with_link_and_donate("foobnix [version]"))
+        demo.connect("clicked", lambda * a: info_dialog_with_link_and_donate("foobnix [version]"))
         demo.show()
         
         """background image"""
@@ -120,7 +120,7 @@ class OtherConfig(ConfigPlugin):
         tab_label.show()
           
         adjustment = Gtk.Adjustment(value=1, lower=20, upper=100, step_incr=1, page_incr=1, page_size=0)
-        self.opacity_size = Gtk.SpinButton(adjustment)
+        self.opacity_size = Gtk.SpinButton(adjustment=adjustment)
         self.opacity_size.connect("value-changed", self.on_chage_opacity)
         self.opacity_size.show()
         

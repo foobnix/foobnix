@@ -6,9 +6,10 @@ Created on 27 сент. 2010
 '''
 
 from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GObject
 import time
 import thread
-from gi.repository import GObject
 import logging
 import threading
 
@@ -29,11 +30,12 @@ class SearchProgressBarOld(Gtk.ProgressBar):
         if self.started:
             return None
             
-        self.show_all()        
+        self.show_all()
         
         self.flag = True
+
         def pulse_thread(): 
-            self.started = True          
+            self.started = True
             while self.flag:
                 self.pulse()
                 time.sleep(0.1)
@@ -59,7 +61,7 @@ if True:    # Gtk.pygtk_version >= (2, 22, 0):
             self.main_window = self.controls.main_window
             self.set_size_request(30, 30)
             self.show()
-            self.label=Gtk.Label()
+            self.label = Gtk.Label()
             self.label.show()
             self.spinner_popup = self.create_spinner_popup()
             self.spinner_popup.hide()
@@ -80,7 +82,7 @@ if True:    # Gtk.pygtk_version >= (2, 22, 0):
                 self.spinner_popup.show()
                 super(SearchProgressBarNew, self).start()
                 self.move_to_coord()
-            GObject.idle_add(safe_task, priority = GObject.PRIORITY_DEFAULT_IDLE - 10)
+            GObject.idle_add(safe_task, priority=GObject.PRIORITY_DEFAULT_IDLE - 10)
 
         def stop(self):
             def safe_task():
@@ -100,10 +102,10 @@ if True:    # Gtk.pygtk_version >= (2, 22, 0):
                 if in_graphic_thread:
                     GObject.idle_add(safe_task, *args)
                 else:
-                    Gtk.threads_init()
-                    Gtk.threads_enter()
+                    Gdk.threads_init()
+                    Gdk.threads_enter()
                     safe_task(*args)
-                    Gtk.threads_leave()
+                    Gdk.threads_leave()
           
             t = threading.Thread(target=thread_task, args=(args))
             t.start()

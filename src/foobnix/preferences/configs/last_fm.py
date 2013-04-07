@@ -58,7 +58,7 @@ class LastFmConfig(ConfigPlugin):
         limit_text.show()
         
         self.adjustment = Gtk.Adjustment(value=50, lower=10, upper=200, step_incr=10)
-        limit = Gtk.SpinButton(self.adjustment, climb_rate=0.0, digits=0)
+        limit = Gtk.SpinButton(adjustment=self.adjustment, climb_rate=0.0, digits=0)
         limit.show()
         
         limitbox = Gtk.HBox(False, 0)

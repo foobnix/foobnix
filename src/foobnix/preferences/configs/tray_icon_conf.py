@@ -39,12 +39,12 @@ class TrayIconConfig(ConfigPlugin):
         self.hide_in_tray_on_start = Gtk.CheckButton(label=_("Hide player in tray on start"), use_underline=True)
         #self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
         
-        self.close_button = Gtk.RadioButton(None, label=_("On close window - close player"))
+        self.close_button = Gtk.RadioButton(group=None, label=_("On close window - close player"))
 
-        self.hide_button = Gtk.RadioButton(self.close_button, label=_("On close window - hide player"))
+        self.hide_button = Gtk.RadioButton(group=self.close_button, label=_("On close window - hide player"))
         self.hide_button.connect("toggled", self.on_show_tray_icon)
         
-        self.minimize_button = Gtk.RadioButton(self.close_button, label=_("On close window - minimize player"))
+        self.minimize_button = Gtk.RadioButton(group=self.close_button, label=_("On close window - minimize player"))
         
         """system icon"""
         self.static_tray_icon = ChooseDecorator(None, FrameDecorator(_("System Icon Static"), self.static_icon))
@@ -110,12 +110,12 @@ class TrayIconConfig(ConfigPlugin):
                 
         self.adjustment = Gtk.Adjustment(value=0, lower=1, upper=10, step_incr=0.5)
         
-        not_len = Gtk.SpinButton(self.adjustment, climb_rate=0.0, digits=1)
+        not_len = Gtk.SpinButton(adjustment=self.adjustment, climb_rate=0.0, digits=1)
         not_len.show()
         
         hbox = Gtk.HBox(False, 5)
-        hbox.pack_start(label, False, False)
-        hbox.pack_start(not_len, False, False)
+        hbox.pack_start(label, False, False, 0)
+        hbox.pack_start(not_len, False, False, 0)
         hbox.show_all()
         hbox.set_sensitive(False)
         

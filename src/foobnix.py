@@ -2,8 +2,9 @@
 
 import os
 import sys
-from gi.repository import Gtk
 import time
+import logging
+from gi.repository import Gtk
 from gi.repository import GObject
 import traceback
 
@@ -19,12 +20,12 @@ pygtkcompat.enable_gtk(version='3.0')
 
 
 def except_hook(exc_t, exc_v, traceback):
-    print("*** Uncaught exception ***")
-    print(exc_t)
-    print(exc_v)
-    print(traceback)
+    logging.error("*** Uncaught exception ***")
+    logging.error(exc_t)
+    logging.error(exc_v)
+    logging.error(traceback)
 
-sys.excepthook = except_hook
+#sys.excepthook = except_hook
 
 
 def foobnix():

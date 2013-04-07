@@ -668,6 +668,14 @@ class DragDropTree(Gtk.TreeView):
         return beans
         
     def plain_append_all(self, beans, parent=None):
+        print self
+        print beans
+        print "plain_append_all"
+        def t():
+            print "ololo"
+            return False
+        GObject.idle_add(t)
+        return
         def task():
             try:
                 self._plain_append_all(beans, parent)
@@ -729,6 +737,7 @@ class DragDropTree(Gtk.TreeView):
             row = self.get_row_from_bean(one)            
             
             logging.debug(row)
+            logging.debug(self.model)
             self.model.append(parent_iter, row)            
             
     def fill_beans_and_get_rows(self, beans, filter=None):

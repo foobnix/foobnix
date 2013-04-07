@@ -26,7 +26,7 @@ class TabsConfig(ConfigPlugin):
         tab_label.show()
         
         adjustment = Gtk.Adjustment(value=1, lower=1, upper=20, step_incr=1, page_incr=10, page_size=0)
-        self.tabs_count = Gtk.SpinButton(adjustment)
+        self.tabs_count = Gtk.SpinButton(adjustment=adjustment)
         self.tabs_count.show()
         
         cbox.pack_start(tab_label, False, False, 0)
@@ -41,7 +41,7 @@ class TabsConfig(ConfigPlugin):
         tab_label.show()
         
         adjustment = Gtk.Adjustment(value=0, lower= -1, upper=300, step_incr=1, page_incr=10, page_size=0)
-        self.tab_len = Gtk.SpinButton(adjustment)
+        self.tab_len = Gtk.SpinButton(adjustment=adjustment)
         self.tab_len.show()
         
         lbox.pack_start(tab_label, False, False, 0)

@@ -24,7 +24,6 @@ from foobnix.preferences.configs.music_library import MusicLibraryConfig
 from foobnix.util import analytics
 
 
-
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
     configs = []
@@ -79,8 +78,8 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         for plugin in self.configs:
             cbox.pack_start(plugin.widget, False, True, 0)
 
-        self.container = self.create_container(cbox)
-        paned.add2(self.container)
+        self._container = self.create_container(cbox)
+        paned.add2(self._container)
 
         mainVBox.pack_start(paned, True, True, 0)
         mainVBox.pack_start(self.create_save_cancel_buttons(), False, False, 0)
@@ -92,7 +91,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.show_all()
         self.populate_config_category(current)
         self.on_load()
-        analytics.action("PreferencesWindow");
+        analytics.action("PreferencesWindow")
     
     def on_load(self):
         logging.debug("LOAD PreferencesWindow")
@@ -131,12 +130,12 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         box.show()
 
         button_restore = Gtk.Button(_("Restore Defaults Settings"))
-        button_restore.connect("clicked", lambda * a:self.restore_defaults())
+        button_restore.connect("clicked", lambda * a: self.restore_defaults())
         button_restore.show()
 
         button_apply = Gtk.Button(_("Apply"))
         button_apply.set_size_request(100, -1)
-        button_apply.connect("clicked", lambda * a:self.on_save())
+        button_apply.connect("clicked", lambda * a: self.on_save())
         button_apply.show()
         
         button_close = Gtk.Button(_("Close"))

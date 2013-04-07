@@ -67,9 +67,12 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
             return notetab_label(func=self.on_delete_tab, arg=tab_child, angle=90)
     
     def create_notebook_content(self, beans=None, optimization=False):
+        logging.debug("Creating notetabl content, beans: %s, optimization: %s" % (beans, optimization))
         if not self.navig:
+            logging.debug("PlaylistTreeControl")
             treeview = PlaylistTreeControl(self.controls)
         else:
+            logging.debug("NavigationTreeControl")
             treeview = NavigationTreeControl(self.controls)
          
         if beans: 

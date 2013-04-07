@@ -315,9 +315,9 @@ class PlaylistTreeControl(CommonTreeControl):
         column.button.connect("button-press-event", self.on_click_header)
         if column.key == '№':
             self.trkn_col.button.menu = Popup()
-            self.num_order = Gtk.RadioMenuItem(None, _("Numbering by order"))
+            self.num_order = Gtk.RadioMenuItem(group=None, label=_("Numbering by order"))
             self.num_order.connect("button-press-event", self.on_toggled_num)
-            self.num_tags = Gtk.RadioMenuItem(self.num_order, _("Numbering by tags"))
+            self.num_tags = Gtk.RadioMenuItem(group=self.num_order, label=_("Numbering by tags"))
             self.num_tags.connect("button-press-event", self.on_toggled_num)
         
             self.trkn_col.button.menu.append(self.num_order)

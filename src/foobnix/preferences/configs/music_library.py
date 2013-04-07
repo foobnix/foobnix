@@ -210,7 +210,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
                 
         self.adjustment = Gtk.Adjustment(value=0, lower=0, upper=5, step_incr=0.5)
         
-        gap_len = Gtk.SpinButton(self.adjustment, climb_rate=0.0, digits=1)
+        gap_len = Gtk.SpinButton(adjustment=self.adjustment, climb_rate=0.0, digits=1)
         gap_len.show()
         
         hbox = Gtk.HBox(False, 0)

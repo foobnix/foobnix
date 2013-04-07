@@ -104,24 +104,24 @@ class IconBlock(Gtk.HBox):
         
 class FrameDecorator(Gtk.Frame):
     def __init__(self, text, widget):
-        Gtk.Frame.__init__(self, text)
+        Gtk.Frame.__init__(self, label=text)
         self.add(widget)
         
 class ChooseDecorator(Gtk.HBox):
     def __init__(self, parent, widget):
         Gtk.HBox.__init__(self, False, 0)
-        self.widget = widget
+        self._widget = widget
         self.button = Gtk.RadioButton(parent)
         self.on_toggle()
         self.button.connect("toggled", self.on_toggle)
-        box = HBoxDecorator(self.button, self.widget)
+        box = HBoxDecorator(self.button, self._widget)
         self.pack_start(box, False, True)
     
     def on_toggle(self, *a):
         if self.button.get_active():
-            self.widget.set_sensitive(True)
+            self._widget.set_sensitive(True)
         else:
-            self.widget.set_sensitive(False)
+            self._widget.set_sensitive(False)
     
     def get_radio_button(self): 
         return self.button       
