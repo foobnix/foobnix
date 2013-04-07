@@ -3,16 +3,16 @@ Created on Sep 28, 2010
 
 @author: ivan
 '''
-import gtk
+from gi.repository import Gtk
 from foobnix.util.pix_buffer import create_pixbuf_from_resource, \
     create_pixbuf_from_url, create_pixbuf_from_path, resize_pixbuf
 import logging
 import os
-import gobject
+from gi.repository import GObject
 
-class ImageBase(gtk.Image):
+class ImageBase(Gtk.Image):
     def __init__(self, resource, size=None):
-        gtk.Image.__init__(self)
+        Gtk.Image.__init__(self)
         self.pixbuf = None
         self.resource = resource
         self.size = size
@@ -29,7 +29,7 @@ class ImageBase(gtk.Image):
     
     def set_from_pixbuf(self, pix):
         self.pixbuf = resize_pixbuf(pix, self.size)
-        gobject.idle_add(super(ImageBase, self).set_from_pixbuf, self.pixbuf)
+        GObject.idle_add(super(ImageBase, self).set_from_pixbuf, self.pixbuf)
         
     def set_image_from_url(self, url):
         self.pixbuf = create_pixbuf_from_url(url, self.size)

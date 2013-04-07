@@ -4,7 +4,7 @@ Created on 24 авг. 2010
 
 @author: ivan
 '''
-import gtk
+from gi.repository import Gtk
 from foobnix.preferences.config_plugin import ConfigPlugin
 import logging
 from foobnix.fc.fc import FC
@@ -15,17 +15,17 @@ class DMConfig(ConfigPlugin):
     name = CONFIG_DOWNLOAD_MANAGER
     
     def __init__(self, controls):
-        box = gtk.VBox(False, 0)
+        box = Gtk.VBox(False, 0)
         box.hide()        
 
-        hbox = gtk.HBox(False, 0)
+        hbox = Gtk.HBox(False, 0)
         
-        self.is_save = gtk.CheckButton(label=_("Save online music"), use_underline=True)
+        self.is_save = Gtk.CheckButton(label=_("Save online music"), use_underline=True)
         self.is_save.connect("clicked", self.on_save_online)
         self.is_save.show()
         
-        self.online_dir = gtk.FileChooserButton("set place")
-        self.online_dir.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
+        self.online_dir = Gtk.FileChooserButton("set place")
+        self.online_dir.set_action(Gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
         self.online_dir.connect("current-folder-changed", self.on_change_folder)        
         self.online_dir.show()
         

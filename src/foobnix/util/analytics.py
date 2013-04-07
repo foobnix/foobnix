@@ -4,7 +4,7 @@ Created on Nov 27, 2012
 @author: iivanenko
 '''
 
-import thread
+import threading
 import urllib
 import urllib2
 import logging
@@ -39,7 +39,8 @@ def send(d={"t":"appview"}):
     params.update(d)
     #print params
     enq = urllib.urlencode(params)
-    thread.start_new_thread(urllib2.urlopen, (api_url, enq))
+    #thread.start_new_thread(urllib2.urlopen, (api_url, enq))
+    threading.Thread(target=urllib2.urlopen, args=(api_url, enq))
     
 
 """ User Open or user Some Feature"""

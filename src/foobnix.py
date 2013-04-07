@@ -2,9 +2,9 @@
 
 import os
 import sys
-import gtk
+from gi.repository import Gtk
 import time
-import gobject
+from gi.repository import GObject
 import traceback
 
 from threading import Timer
@@ -12,12 +12,17 @@ from foobnix.fc.fc import FC
 from foobnix.util import LOG, analytics
 from foobnix.fc.fc_helper import CONFIG_DIR
 
+from gi import pygtkcompat
+
+pygtkcompat.enable()
+pygtkcompat.enable_gtk(version='3.0')
+
 
 def except_hook(exc_t, exc_v, traceback):
-    print "*** Uncaught exception ***"
-    print exc_t
-    print exc_v
-    print traceback
+    print("*** Uncaught exception ***")
+    print(exc_t)
+    print(exc_v)
+    print(traceback)
 
 sys.excepthook = except_hook
 
@@ -39,54 +44,54 @@ def foobnix():
         LOG.print_platform_info()
     else:
         LOG.setup("error")
-  
+
     from foobnix.regui.foobnix_core import FoobnixCore
 
     if "--test" in sys.argv:
         from test.all import run_all_tests
-        print ("""TEST MODE""")
+        print("""TEST MODE""")
         result = run_all_tests(ignore="test_core")
-        if not result:        
+        if not result:
             raise SystemExit("Test failures are listed above.")
         exit()
 
     init_time = time.time()
 
-    if "--nt" in sys.argv or os.name == 'nt':    
-        gobject.threads_init() #@UndefinedVariable
+    if "--nt" in sys.argv or os.name == 'nt':
+        GObject.threads_init() #@UndefinedVariable
         core = FoobnixCore(False)
         core.run()
         analytics.begin_session()
-        print ("******Foobnix run in", time.time() - init_time, " seconds******")
-        gtk.main()
+        print("******Foobnix run in", time.time() - init_time, " seconds******")
+        Gtk.main()
     else:
-        init_time = time.time() 
+        init_time = time.time()
         from foobnix.regui.controls.dbus_manager import foobnix_dbus_interface
         iface = foobnix_dbus_interface()
         if "--debug" in sys.argv or not iface:
-            print ("start program")
-            gobject.threads_init()    #@UndefinedVariable
+            print("start program")
+            GObject.threads_init()    #@UndefinedVariable
             core = FoobnixCore(True)
             core.run()
             analytics.begin_session()
             #core.dbus.parse_arguments(sys.argv)
             analytics.begin_session()
-            print ("******Foobnix run in", time.time() - init_time, " seconds******")
+            print("******Foobnix run in", time.time() - init_time, " seconds******")
             if sys.argv:
-                Timer(1, gobject.idle_add, [core.check_for_media, sys.argv]).start()
-            
-            gtk.main()
+                Timer(1, GObject.idle_add, [core.check_for_media, sys.argv]).start()
+
+            Gtk.main()
         else:
-            print (iface.parse_arguments(sys.argv))
+            print(iface.parse_arguments(sys.argv))
 
 if "--profile" in sys.argv:
     import cProfile
     cProfile.run('foobnix()')
-else:    
+else:
     try:
         foobnix()
         analytics.end_session()
-    except Exception, e:
+    except Exception as e:
         analytics.end_session()
         analytics.error("Main Exception"+str(e))
         exc_type, exc_value, exc_traceback = sys.exc_info()

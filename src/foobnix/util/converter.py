@@ -9,10 +9,10 @@ from __future__ import with_statement
 
 import os
 import re
-import gtk
+from gi.repository import Gtk
 import time
 import thread
-import gobject
+from gi.repository import GObject
 import logging
 
 from subprocess import Popen, PIPE
@@ -38,18 +38,18 @@ class Converter(ChildTopWindow):
         ChildTopWindow.__init__(self, title="Audio Converter", width=500, height=300)
         
         self.area = ScrolledText()
-        vbox = gtk.VBox(False, 10)
+        vbox = Gtk.VBox(False, 10)
         vbox.pack_start(self.area.scroll)
         vbox.show()
-        format_label = gtk.Label(_('Format'))
-        bitrate_label = gtk.Label(_('Bitrate'))
-        channels_label = gtk.Label(_('Channels'))
-        hertz_label = gtk.Label(_('Frequency'))
+        format_label = Gtk.Label(_('Format'))
+        bitrate_label = Gtk.Label(_('Bitrate'))
+        channels_label = Gtk.Label(_('Channels'))
+        hertz_label = Gtk.Label(_('Frequency'))
         
-        format_box = gtk.VBox()
-        bitrate_box = gtk.VBox()
-        channels_box = gtk.VBox()
-        hertz_box = gtk.VBox()
+        format_box = Gtk.VBox()
+        bitrate_box = Gtk.VBox()
+        channels_box = Gtk.VBox()
+        hertz_box = Gtk.VBox()
                 
         self.format_list = ["Choose", "  mp3", "  ogg", "  mp2", "  ac3", "  m4a", "  wav"]
         self.bitrate_list = ["  64 kbps", "  96 kbps", "  128 kbps", "  160 kbps", "  192 kbps", "  224 kbps", "  256 kbps", "  320 kbps", "  384 kbps", "  448 kbps", "  640 kbps"]
@@ -72,7 +72,7 @@ class Converter(ChildTopWindow):
         hertz_box.pack_start(hertz_label)
         hertz_box.pack_start(self.hertz_combo)
         
-        hbox = gtk.HBox(False, 30)
+        hbox = Gtk.HBox(False, 30)
         hbox.pack_start(format_box)
         hbox.pack_start(bitrate_box)
         hbox.pack_start(channels_box, False)
@@ -82,30 +82,30 @@ class Converter(ChildTopWindow):
         
         vbox.pack_start(hbox, False)
         
-        self.button_box = gtk.HBox(False, 10)
-        close_button = gtk.Button(_("Close"))
+        self.button_box = Gtk.HBox(False, 10)
+        close_button = Gtk.Button(_("Close"))
         close_button.set_size_request(150, 30)
         close_button.connect("clicked", lambda *a: self.hide())
-        self.convert_button = gtk.Button(_("Convert"))
+        self.convert_button = Gtk.Button(_("Convert"))
         self.convert_button.set_size_request(150, 30)
         self.convert_button.connect("clicked", self.save)
         
-        self.progressbar = gtk.ProgressBar()
+        self.progressbar = Gtk.ProgressBar()
                 
-        self.stop_button = gtk.Button(_("Stop"))
+        self.stop_button = Gtk.Button(_("Stop"))
         self.stop_button.set_size_request(100, 30)
         self.stop_button.connect("clicked", self.on_stop)
         
-        self.open_folder_button = gtk.Button(_("Show files"))
+        self.open_folder_button = Gtk.Button(_("Show files"))
         self.open_folder_button.connect('released', self.open_in_fm)
         
-        self.progress_box = gtk.HBox()
+        self.progress_box = Gtk.HBox()
         self.progress_box.pack_end(self.open_folder_button, False)
         self.progress_box.pack_end(self.stop_button, False)
         self.progress_box.pack_end(self.progressbar, True)
         
         self.output = ScrolledText()
-        self.output.scroll.set_placement(gtk.CORNER_BOTTOM_LEFT)
+        self.output.scroll.set_placement(Gtk.CORNER_BOTTOM_LEFT)
         vbox.pack_start(self.progress_box, False)
         
         self.button_box.pack_end(self.convert_button, False)
@@ -118,14 +118,14 @@ class Converter(ChildTopWindow):
         self.add(vbox)
 
     def save(self, *a):
-        chooser = gtk.FileChooserDialog(title=_("Choose directory to save converted files"),
-                                        action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
-                                        buttons=(gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+        chooser = Gtk.FileChooserDialog(title=_("Choose directory to save converted files"),
+                                        action=Gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
+                                        buttons=(Gtk.STOCK_SAVE, Gtk.RESPONSE_OK))
         chooser.set_current_folder(os.path.dirname(self.paths[0]))
         chooser.set_icon_from_file(LOGO)
         response = chooser.run()
         
-        if response == gtk.RESPONSE_OK:
+        if response == Gtk.RESPONSE_OK:
             format = self.format_combo.get_active_text().strip()
             self.current_folder = chooser.get_current_folder()
             
@@ -199,10 +199,10 @@ class Converter(ChildTopWindow):
         self.ffmpeg = Popen(list, universal_newlines=True, stderr=PIPE)
         
         for line in iter(self.ffmpeg.stderr.readline, ""):
-            gobject.idle_add(self.output.buffer.insert_at_cursor,line)
+            GObject.idle_add(self.output.buffer.insert_at_cursor,line)
             logging.debug(line)
             adj = self.output.scroll.get_vadjustment()
-            gobject.idle_add(adj.set_value,adj.upper - adj.page_size + 1)
+            GObject.idle_add(adj.set_value,adj.upper - adj.page_size + 1)
         
         self.ffmpeg.wait()
         
@@ -221,20 +221,20 @@ class Converter(ChildTopWindow):
                 self.area.buffer.insert_at_cursor(os.path.basename(path) + "\n")
      
     def warning(self):
-        dialog = gtk.Dialog(_("Warning!!!"))
-        ok_button = dialog.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK) #@UnusedVariable
-        cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+        dialog = Gtk.Dialog(_("Warning!!!"))
+        ok_button = dialog.add_button(Gtk.STOCK_OK, Gtk.RESPONSE_OK) #@UnusedVariable
+        cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.RESPONSE_CANCEL)
         cancel_button.grab_default()      
-        label = gtk.Label(_("So file(s)  already exist(s) and will be overwritten.\nDo you wish to continue?"))
-        image = gtk.image_new_from_stock(gtk.STOCK_DIALOG_WARNING, gtk.ICON_SIZE_LARGE_TOOLBAR)
-        hbox = gtk.HBox(False, 10)
+        label = Gtk.Label(_("So file(s)  already exist(s) and will be overwritten.\nDo you wish to continue?"))
+        image = Gtk.Image.new_from_stock(Gtk.STOCK_DIALOG_WARNING, Gtk.ICON_SIZE_LARGE_TOOLBAR)
+        hbox = Gtk.HBox(False, 10)
         hbox.pack_start(image)
         hbox.pack_start(label)
         dialog.vbox.pack_start(hbox)
         dialog.set_icon_from_file(LOGO)
         dialog.set_default_size(210, 100)
         dialog.show_all()
-        if dialog.run() == gtk.RESPONSE_OK:
+        if dialog.run() == Gtk.RESPONSE_OK:
             dialog.destroy()
             return True
         else:
@@ -312,7 +312,7 @@ class Converter(ChildTopWindow):
         open_in_filemanager(self.current_folder)
 
 def combobox_constr(list=None):
-    combobox = gtk.combo_box_new_text()
+    combobox = Gtk.combo_box_new_text()
     if not list:
         return combobox
     
@@ -333,23 +333,23 @@ def convert_files(paths):
         converter.format_combo.set_active(0)
     else:
         url = "http://foobnix.googlecode.com/files/" + FFMPEG_NAME
-        dialog = gtk.Dialog(_("Attention"))
+        dialog = Gtk.Dialog(_("Attention"))
         area = ScrolledText()
         area.buffer.set_text(_("Converter require specially compiled ffmpeg module for work.\n" + 
                                "You should download it automatically (click Download)\n"+
                                "Also check if you have packages libmp3lame0 and libfaac0"))
-        ok_button = dialog.add_button(_("Download"), gtk.RESPONSE_OK)
+        ok_button = dialog.add_button(_("Download"), Gtk.RESPONSE_OK)
         
-        cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+        cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.RESPONSE_CANCEL)
         ok_button.grab_default()      
-        prog_bar = gtk.ProgressBar()
+        prog_bar = Gtk.ProgressBar()
         dialog.vbox.pack_start(area.scroll)
         dialog.vbox.pack_start(prog_bar, False)
         dialog.set_icon_from_file(LOGO)
         dialog.set_default_size(400, 150)
         dialog.show_all()
         prog_bar.hide()
-        if dialog.run() == gtk.RESPONSE_OK:
+        if dialog.run() == Gtk.RESPONSE_OK:
             prog_bar.show()
             import urllib2
             remote_file = urllib2.urlopen(url)
@@ -376,7 +376,7 @@ def convert_files(paths):
                     
                 os.chmod(ffmpeg_path, 0777)
                 time.sleep(1) #for stability
-                gobject.idle_add(convert_files, paths)
+                GObject.idle_add(convert_files, paths)
                 dialog.destroy()
 
             thread.start_new_thread(task, ())

@@ -6,7 +6,7 @@ Created on 25 сент. 2010
 '''
 
 import re
-import gtk
+from gi.repository import Gtk
 import logging
 
 from foobnix.fc.fc import FC
@@ -35,81 +35,81 @@ class PlaylistTreeControl(CommonTreeControl):
         
         self.menu = Popup()
         self.full_name = ""
-        self.label = gtk.Label()
+        self.label = Gtk.Label()
         
         self.set_headers_visible(True)
         self.set_headers_clickable(True)
         self.set_reorderable(True)
 
         """Column icon"""
-        self.icon_col = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
+        self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         self.icon_col.key = "*"
         self.icon_col.set_fixed_width(5)
         self.icon_col.set_min_width(5)
-        self.icon_col.label = gtk.Label("*")
+        self.icon_col.label = Gtk.Label("*")
         self._append_column(self.icon_col)
         
         """track number"""
-        self.trkn_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.tracknumber[0])
+        self.trkn_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.tracknumber[0])
         self.trkn_col.key = "№"
         self.trkn_col.set_clickable(True)
-        self.trkn_col.label = gtk.Label("№")
+        self.trkn_col.label = Gtk.Label("№")
         self.trkn_col.label.show()
-        self.trkn_col.item = gtk.CheckMenuItem(_("Number"))
+        self.trkn_col.item = Gtk.CheckMenuItem(_("Number"))
         self.trkn_col.set_widget(self.trkn_col.label)
         self._append_column(self.trkn_col)
         
         """column composer"""
-        self.comp_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.composer[0])
+        self.comp_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.composer[0])
         self.comp_col.key = "Composer"
         self.comp_col.set_resizable(True)
-        self.comp_col.label = gtk.Label(_("Composer"))
-        self.comp_col.item = gtk.CheckMenuItem(_("Composer"))
+        self.comp_col.label = Gtk.Label(_("Composer"))
+        self.comp_col.item = Gtk.CheckMenuItem(_("Composer"))
         self._append_column(self.comp_col)
         
         """column artist title"""
-        self.description_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.description_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         self.description_col.key = "Track"
         self.description_col.set_resizable(True)
-        self.description_col.label = gtk.Label(_("Track"))
-        self.description_col.item = gtk.CheckMenuItem(_("Track"))
+        self.description_col.label = Gtk.Label(_("Track"))
+        self.description_col.item = Gtk.CheckMenuItem(_("Track"))
         self._append_column(self.description_col)
                         
         """column artist"""
-        self.artist_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.artist[0])
+        self.artist_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.artist[0])
         self.artist_col.key = "Artist"
-        self.artist_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        self.artist_col.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.artist_col.set_resizable(True)
-        self.artist_col.label = gtk.Label(_("Artist"))
-        self.artist_col.item = gtk.CheckMenuItem(_("Artist"))
+        self.artist_col.label = Gtk.Label(_("Artist"))
+        self.artist_col.item = Gtk.CheckMenuItem(_("Artist"))
         self._append_column(self.artist_col)
                
         """column title"""
-        self.title_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.title[0])
+        self.title_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.title[0])
         self.title_col.key = "Title"
-        self.title_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        self.title_col.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.title_col.set_resizable(True)
-        self.title_col.label = gtk.Label(_("Title"))
-        self.title_col.item = gtk.CheckMenuItem(_("Title"))
+        self.title_col.label = Gtk.Label(_("Title"))
+        self.title_col.item = Gtk.CheckMenuItem(_("Title"))
         self._append_column(self.title_col)
         
         """column album"""
-        self.album_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.album[0])
+        self.album_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.album[0])
         self.album_col.key = "Album"
 
         if self.album_col.key not in FC().columns:
             FC().columns[self.album_col.key] = [False, 7, 90]
-        self.album_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        self.album_col.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.album_col.set_resizable(True)
-        self.album_col.label = gtk.Label(_("Album"))
-        self.album_col.item = gtk.CheckMenuItem(_("Album"))
+        self.album_col.label = Gtk.Label(_("Album"))
+        self.album_col.item = Gtk.CheckMenuItem(_("Album"))
         self._append_column(self.album_col)
         
         """column time"""
-        self.time_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.time[0])
+        self.time_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.time[0])
         self.time_col.key = "Time"
-        self.time_col.label = gtk.Label(_("Time"))
-        self.time_col.item = gtk.CheckMenuItem(_("Time"))
+        self.time_col.label = Gtk.Label(_("Time"))
+        self.time_col.item = Gtk.CheckMenuItem(_("Time"))
         self._append_column(self.time_col)
 
         self.configure_send_drag()
@@ -213,8 +213,8 @@ class PlaylistTreeControl(CommonTreeControl):
             beans = self.get_selected_beans()
             if beans:
                 menu = Popup()
-                menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
-                menu.add_item(_('Delete from playlist'), gtk.STOCK_DELETE, self.delete_selected, None)
+                menu.add_item(_('Play'), Gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
+                menu.add_item(_('Delete from playlist'), Gtk.STOCK_DELETE, self.delete_selected, None)
             
                 paths = []
                 inet_paths = []
@@ -229,22 +229,22 @@ class PlaylistTreeControl(CommonTreeControl):
                         local_paths.append(bean.path)
                                                     
                 if local_paths:
-                    menu.add_item(_('Copy To...'), gtk.STOCK_ADD, copy_to, local_paths)
+                    menu.add_item(_('Copy To...'), Gtk.STOCK_ADD, copy_to, local_paths)
                     menu.add_item(_("Open in file manager"), None, open_in_filemanager, local_paths[0])
                 if inet_paths:
-                    menu.add_item(_('Download'), gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
-                    menu.add_item(_('Download To...'), gtk.STOCK_ADD, self.controls.dm.append_tasks_with_dialog, self.get_all_selected_beans())
+                    menu.add_item(_('Download'), Gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
+                    menu.add_item(_('Download To...'), Gtk.STOCK_ADD, self.controls.dm.append_tasks_with_dialog, self.get_all_selected_beans())
                                 
                 menu.add_separator()
                 
                 if paths[0]:
-                    menu.add_item(_('Edit Tags'), gtk.STOCK_EDIT, edit_tags, (self.controls, paths))
-                    menu.add_item(_('Format Converter'), gtk.STOCK_CONVERT, convert_files, paths)
+                    menu.add_item(_('Edit Tags'), Gtk.STOCK_EDIT, edit_tags, (self.controls, paths))
+                    menu.add_item(_('Format Converter'), Gtk.STOCK_CONVERT, convert_files, paths)
                 text = self.get_selected_bean().text
-                menu.add_item(_('Copy To Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
+                menu.add_item(_('Copy To Search Line'), Gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
                 menu.add_separator()
-                menu.add_item(_('Copy №-Title-Time'), gtk.STOCK_COPY, self.copy_info_to_clipboard)
-                menu.add_item(_('Copy Artist-Title-Album'), gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
+                menu.add_item(_('Copy №-Title-Time'), Gtk.STOCK_COPY, self.copy_info_to_clipboard)
+                menu.add_item(_('Copy Artist-Title-Album'), Gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
                 menu.add_separator()
                 menu.add_item(_('Love This Track(s) by Last.fm'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
                 menu.add_separator()
@@ -302,11 +302,11 @@ class PlaylistTreeControl(CommonTreeControl):
     
     def _append_column(self, column):
         column.set_widget(column.label)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
         if column.key in ['*', '№', 'Time']:
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+            column.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         else:
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+            column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
         if FC().columns[column.key][2] > 0:
             column.set_fixed_width(FC().columns[column.key][2])
         
@@ -315,9 +315,9 @@ class PlaylistTreeControl(CommonTreeControl):
         column.button.connect("button-press-event", self.on_click_header)
         if column.key == '№':
             self.trkn_col.button.menu = Popup()
-            self.num_order = gtk.RadioMenuItem(None, _("Numbering by order"))
+            self.num_order = Gtk.RadioMenuItem(None, _("Numbering by order"))
             self.num_order.connect("button-press-event", self.on_toggled_num)
-            self.num_tags = gtk.RadioMenuItem(self.num_order, _("Numbering by tags"))
+            self.num_tags = Gtk.RadioMenuItem(self.num_order, _("Numbering by tags"))
             self.num_tags.connect("button-press-event", self.on_toggled_num)
         
             self.trkn_col.button.menu.append(self.num_order)

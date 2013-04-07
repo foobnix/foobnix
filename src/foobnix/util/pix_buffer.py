@@ -5,7 +5,7 @@ Created on Nov 4, 2010
 '''
 import urllib
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
-import gtk
+from gi.repository import Gtk
 import logging
 
 def create_pixbuf_from_url(url, size):
@@ -19,7 +19,7 @@ def resize_pixbuf(pixbuf, size):
     if not pixbuf:
         return None
     if size:
-        return pixbuf.scale_simple(size, size, gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
+        return pixbuf.scale_simple(size, size, Gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
     else:
         return pixbuf
 
@@ -27,7 +27,7 @@ def create_pixbuf_from_path(path, size):
     if not path:
         return None
     try:
-        pixbuf = gtk.gdk.pixbuf_new_from_file(path) #@UndefinedVariable
+        pixbuf = Gtk.gdk.pixbuf_new_from_file(path) #@UndefinedVariable
     except Exception, e:
         logging.error(e)
         return None
@@ -44,7 +44,7 @@ def create_pixbuf_from_resource(name, size=None):
 def create_origin_pixbuf_from_url(url):
     f = urllib.urlopen(url)
     data = f.read()
-    pbl = gtk.gdk.PixbufLoader() #@UndefinedVariable
+    pbl = Gtk.gdk.PixbufLoader() #@UndefinedVariable
     pbl.write(data)
     pbuf = pbl.get_pixbuf()
     pbl.close()

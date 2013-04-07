@@ -5,7 +5,7 @@ Created on Jan 25, 2011
 @author: zavlab1
 '''
 
-import gtk
+from gi.repository import Gtk
 import logging
 import os.path
 
@@ -29,17 +29,17 @@ class TagEditor(ChildTopWindow):
         self.set_default_size(430, 150)
         
         """make tooltip more quick (useful for checkbuttons)"""
-        gtk.Settings().set_property('gtk-tooltip-timeout', 0)
+        Gtk.Settings().set_property('gtk-tooltip-timeout', 0)
         
         
-        artist_label = gtk.Label(_("Artist")) #@UnusedVariable
-        title_label = gtk.Label(_("Title")) #@UnusedVariable
-        album_label = gtk.Label(_("Album")) #@UnusedVariable
-        date_label = gtk.Label(_("Year")) #@UnusedVariable
-        tracknumber_label = gtk.Label(_("Track number")) #@UnusedVariable
-        genre_label = gtk.Label(_("Genre")) #@UnusedVariable
-        author_label = gtk.Label(_("Author text")) #@UnusedVariable
-        composer_label = gtk.Label(_("Composer")) #@UnusedVariable
+        artist_label = Gtk.Label(_("Artist")) #@UnusedVariable
+        title_label = Gtk.Label(_("Title")) #@UnusedVariable
+        album_label = Gtk.Label(_("Album")) #@UnusedVariable
+        date_label = Gtk.Label(_("Year")) #@UnusedVariable
+        tracknumber_label = Gtk.Label(_("Track number")) #@UnusedVariable
+        genre_label = Gtk.Label(_("Genre")) #@UnusedVariable
+        author_label = Gtk.Label(_("Author text")) #@UnusedVariable
+        composer_label = Gtk.Label(_("Composer")) #@UnusedVariable
         
         self.paths = []
         self.tag_names = ["artist", "title", "album", "date", "tracknumber", "genre", "author", "composer"]
@@ -51,12 +51,12 @@ class TagEditor(ChildTopWindow):
            
         for tag_name in self.tag_names:
     
-            vars()[tag_name + "_entry"] = gtk.Entry()
+            vars()[tag_name + "_entry"] = Gtk.Entry()
             self.tag_entries.append(vars()[tag_name + "_entry"])
     
             self.labels.append(vars()[tag_name + "_label"])
             
-            vars()[tag_name + "_chbutton"] = gtk.CheckButton()
+            vars()[tag_name + "_chbutton"] = Gtk.CheckButton()
             self.check_buttons.append(vars()[tag_name + "_chbutton"])
 #                      
             check_button = self.check_buttons[-1]
@@ -64,16 +64,16 @@ class TagEditor(ChildTopWindow):
             check_button.set_focus_on_click(False) 
             check_button.set_tooltip_text(_("Apply for all selected tracks\n(active on multi selection)"))
             
-            vars()[tag_name + "_hbox"] = gtk.HBox(False, 5)
+            vars()[tag_name + "_hbox"] = Gtk.HBox(False, 5)
             self.hboxes.append(vars()[tag_name + "_hbox"])
             
             self.hboxes[-1].pack_end(check_button, False, False)
             self.hboxes[-1].pack_end(self.tag_entries[-1], True, True)
             
     
-        lvbox = gtk.VBox(True, 7)
-        rvbox = gtk.VBox(True, 7)
-        hpan = gtk.HPaned()
+        lvbox = Gtk.VBox(True, 7)
+        rvbox = Gtk.VBox(True, 7)
+        hpan = Gtk.HPaned()
         
         for label, hbox in zip(self.labels, self.hboxes):
             lvbox.pack_start(label)
@@ -82,14 +82,14 @@ class TagEditor(ChildTopWindow):
         hpan.pack1(lvbox)
         hpan.pack2(rvbox)
 
-        apply_button = gtk.Button(_("Apply"))
-        close_button = gtk.Button(_("Close"))
+        apply_button = Gtk.Button(_("Apply"))
+        close_button = Gtk.Button(_("Close"))
 
-        buttons_hbox = gtk.HBox(True, 10)
+        buttons_hbox = Gtk.HBox(True, 10)
         buttons_hbox.pack_start(apply_button)
         buttons_hbox.pack_start(close_button)
         
-        vbox = gtk.VBox(False, 15)
+        vbox = Gtk.VBox(False, 15)
         vbox.pack_start(hpan)
         vbox.pack_start(buttons_hbox, True, True, 10)
         

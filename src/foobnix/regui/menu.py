@@ -4,7 +4,7 @@ Created on Sep 22, 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 import logging
 
 from foobnix.fc.fc import FC
@@ -28,12 +28,12 @@ class MenuBarWidget(FControl):
         
         """File"""
         file = top.add_submenu(_("_File"))
-        file.add_image_item(_("Add File(s)"), gtk.STOCK_OPEN, self.controls.on_add_files)
-        file.add_image_item(_("Add Folder(s)"), gtk.STOCK_OPEN, self.controls.on_add_folders)
-        file.add_image_item(_("Save Playlist As"), gtk.STOCK_SAVE_AS, 
+        file.add_image_item(_("Add File(s)"), Gtk.STOCK_OPEN, self.controls.on_add_files)
+        file.add_image_item(_("Add Folder(s)"), Gtk.STOCK_OPEN, self.controls.on_add_folders)
+        file.add_image_item(_("Save Playlist As"), Gtk.STOCK_SAVE_AS,
                             lambda: self.controls.notetabs.on_save_playlist(self.controls.notetabs.get_current_tree().scroll))
         file.separator()
-        file.add_image_item(_("Quit"), gtk.STOCK_QUIT, self.controls.quit)
+        file.add_image_item(_("Quit"), Gtk.STOCK_QUIT, self.controls.quit)
 
         """View"""
         view = top.add_submenu(_("_View"))
@@ -51,7 +51,7 @@ class MenuBarWidget(FControl):
         view.add_image_item(_("Equalizer"), None, self.controls.eq.show)
         view.add_image_item(_("Download Manager"), None, self.controls.dm.show)
         separator2 = view.separator()
-        preferences_item = view.add_image_item(_("Preferences"), gtk.STOCK_PREFERENCES, self.controls.show_preferences)
+        preferences_item = view.add_image_item(_("Preferences"), Gtk.STOCK_PREFERENCES, self.controls.show_preferences)
         
         """if new style menu - remove preferences from View"""
         if not isinstance(parent, TopMenuBar):
@@ -110,14 +110,14 @@ class MenuBarWidget(FControl):
 
         """Help"""
         help = top.add_submenu(_("_Help"))
-        help.add_image_item(_("About"), gtk.STOCK_ABOUT, self.show_about)
+        help.add_image_item(_("About"), Gtk.STOCK_ABOUT, self.show_about)
         help.separator()
         help.add_text_item(_("Project page"), lambda * a:open_link_in_browser(_("http://www.foobnix.com/news/eng")), None, False)
-        help.add_image_item(_("Issue report"), gtk.STOCK_DIALOG_WARNING, lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
+        help.add_image_item(_("Issue report"), Gtk.STOCK_DIALOG_WARNING, lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
         help.separator()
-        help.add_image_item(_("Donate Participate"), gtk.STOCK_DIALOG_QUESTION, lambda * a:open_link_in_browser(_("http://www.foobnix.com/donate/eng")))
+        help.add_image_item(_("Donate Participate"), Gtk.STOCK_DIALOG_QUESTION, lambda * a:open_link_in_browser(_("http://www.foobnix.com/donate/eng")))
         
-        #help.add_image_item("Help", gtk.STOCK_HELP)
+        #help.add_image_item("Help", Gtk.STOCK_HELP)
 
         #top.decorate()
         
@@ -148,19 +148,17 @@ class MenuBarWidget(FControl):
         FC().is_view_coverlyrics_panel = self.view_cover_lyrics.get_active()
              
 
-class MyMenu(gtk.Menu):
+class MyMenu(Gtk.Menu):
     """My custom menu class for helping buildings"""
     def __init__(self):
-        gtk.Menu.__init__(self)
+        Gtk.Menu.__init__(self)
 
     def add_image_item(self, title, gtk_stock, func=None, param=None):
-        item = gtk.ImageMenuItem(title)
-        
-        
-        
+        item = Gtk.ImageMenuItem(title)
+
         item.show()
         if gtk_stock:
-            img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
+            img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
             item.set_image(img)
 
         logging.debug("Menu-Image-Activate" + title + str(gtk_stock) + str(func) + str(param))
@@ -172,13 +170,13 @@ class MyMenu(gtk.Menu):
         return item
 
     def separator(self):
-        separator = gtk.SeparatorMenuItem()
+        separator = Gtk.SeparatorMenuItem()
         separator.show()
         self.append(separator)
         return separator
 
     def add_check_item(self, title, active=False, func=None, param=None):
-        check = gtk.CheckMenuItem(title)
+        check = Gtk.CheckMenuItem(title)
 
         if param and func:
             check.connect("activate", lambda * a: func(param))
@@ -191,14 +189,14 @@ class MyMenu(gtk.Menu):
         return check
 
     def add_radio_item(self, title, group, active):
-        check = gtk.RadioMenuItem(group, title)
+        check = Gtk.RadioMenuItem(group=group, label=title)
         check.show()
         check.set_active(active)
         self.append(check)
         return check
 
     def add_text_item(self, title, func=None, param=None, sub_menu=True):
-        sub = gtk.MenuItem(title)
+        sub = Gtk.MenuItem(title)
         sub.show()
         self.append(sub)
         
@@ -215,7 +213,7 @@ class MyMenu(gtk.Menu):
         
 
 """My top menu bar helper"""
-class TopMenuBar(gtk.MenuBar):
+class TopMenuBar(Gtk.MenuBar):
     def __init__(self):
         rc_st = '''
             style "menubar-style" {
@@ -224,14 +222,14 @@ class TopMenuBar(gtk.MenuBar):
                 }
             class "GtkMenuBar" style "menubar-style"
         '''
-        gtk.rc_parse_string(rc_st)
-        gtk.MenuBar.__init__(self)
+        Gtk.rc_parse_string(rc_st)
+        Gtk.MenuBar.__init__(self)
 
     def add_submenu(self, title):
         menu = MyMenu()
         menu.show()
 
-        file_item = gtk.MenuItem(title)
+        file_item = Gtk.MenuItem(title)
         file_item.show()
 
         file_item.set_submenu(menu)

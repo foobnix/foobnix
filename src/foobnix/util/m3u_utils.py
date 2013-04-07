@@ -1,5 +1,5 @@
 #-*- coding: utf-8 -*-
-import gtk
+from gi.repository import Gtk
 import logging
 import os.path
 
@@ -81,11 +81,11 @@ def is_m3u(path):
     return False
 
 def message_on_save(absolute=True):
-    dialog = gtk.Dialog(buttons=("Yes", gtk.RESPONSE_OK, "No", gtk.RESPONSE_REJECT))
+    dialog = Gtk.Dialog(buttons=("Yes", Gtk.RESPONSE_OK, "No", Gtk.RESPONSE_REJECT))
     dialog.set_title(_("Choose window"))
     dialog.set_border_width(5)
     dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
-    label = gtk.Label()
+    label = Gtk.Label()
     label.set_markup(_("""<big><b>\t\t\t\t\t\t\t\tAttention!\n</b></big>\t\
 The relative location of the \
 playlist and music files allows you to save a relative
@@ -102,7 +102,7 @@ rate from the music files (the library will be working).\n
     dialog.vbox.show()
     dialog.show_all()
     response = dialog.run()
-    if response == gtk.RESPONSE_OK: 
+    if response == Gtk.RESPONSE_OK:
         dialog.destroy()
         return False
     else:
@@ -110,4 +110,4 @@ rate from the music files (the library will be working).\n
         return True
     
 """message_on_save(absolute=True)    
-gtk.main()"""
+Gtk.main()"""

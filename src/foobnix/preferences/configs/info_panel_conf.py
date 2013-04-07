@@ -5,46 +5,46 @@ Created on 29 авг. 2010
 @author: ivan
 '''
 from foobnix.preferences.config_plugin import ConfigPlugin
-import gtk
+from gi.repository import Gtk
 from foobnix.fc.fc import FC
 class InfoPagenConfig(ConfigPlugin):
     
     name = _("Info panel")
     
     def __init__(self, controls):
-        box = gtk.VBox(False, 0)        
+        box = Gtk.VBox(False, 0)
         box.hide()
         
         """count"""
-        cbox = gtk.HBox(False, 0)
+        cbox = Gtk.HBox(False, 0)
         cbox.show()
         
-        tab_label = gtk.Label(_("Disc cover size"))
+        tab_label = Gtk.Label(_("Disc cover size"))
         tab_label.show()
         
-        adjustment = gtk.Adjustment(value=1, lower=100, upper=350, step_incr=20, page_incr=50, page_size=0)
-        self.image_size_spin = gtk.SpinButton(adjustment)
+        adjustment = Gtk.Adjustment(value=1, lower=100, upper=350, step_incr=20, page_incr=50, page_size=0)
+        self.image_size_spin = Gtk.SpinButton(adjustment)
         self.image_size_spin.show()
         
         cbox.pack_start(tab_label, False, False, 0)
         cbox.pack_start(self.image_size_spin, False, True, 0)
         
         """lyric panel size"""
-        lbox = gtk.HBox(False, 0)
+        lbox = Gtk.HBox(False, 0)
         lbox.show()
         
-        lyric_label = gtk.Label(_("Lyric panel size"))
+        lyric_label = Gtk.Label(_("Lyric panel size"))
         lyric_label.show()
         
-        adjustment = gtk.Adjustment(value=1, lower=100, upper=500, step_incr=20, page_incr=50, page_size=0)
-        self.lyric_size_spin = gtk.SpinButton(adjustment)
+        adjustment = Gtk.Adjustment(value=1, lower=100, upper=500, step_incr=20, page_incr=50, page_size=0)
+        self.lyric_size_spin = Gtk.SpinButton(adjustment)
         self.lyric_size_spin.show()
 
         lbox.pack_start(lyric_label, False, False, 0)
         lbox.pack_start(self.lyric_size_spin, False, True, 0)
         
         
-        self.show_tags = gtk.CheckButton(label=_("Show Tags list"), use_underline=True)
+        self.show_tags = Gtk.CheckButton(label=_("Show Tags list"), use_underline=True)
         self.show_tags.show()
         
         

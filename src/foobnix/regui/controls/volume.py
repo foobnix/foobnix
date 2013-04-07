@@ -5,37 +5,37 @@ Created on 28 сент. 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 
 from foobnix.fc.fc import FC
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
 
-class VolumeControls(LoadSave, gtk.HBox, FControl):
+class VolumeControls(LoadSave, Gtk.HBox, FControl):
     MAX_VALUE = 100
     def __init__(self, controls):
-        gtk.HBox.__init__(self, False, 0)
+        Gtk.HBox.__init__(self, False, 0)
         FControl.__init__(self, controls)
         
         label_m = EventLabel(text="‒", func=self.volume_down)
         
-        adjustment = gtk.Adjustment(value=1, lower=0, upper=self.MAX_VALUE, step_incr=0, page_incr=0, page_size=0)
-        self.volume_scale = gtk.HScale(adjustment)
+        adjustment = Gtk.Adjustment(value=1, lower=0, upper=self.MAX_VALUE, step_incr=0, page_incr=0, page_size=0)
+        self.volume_scale = Gtk.HScale(adjustment=adjustment)
         self.volume_scale.connect("value-changed", self.on_value_changed)
         self.volume_scale.connect("scroll-event", self.on_scroll_event)
         self.volume_scale.connect("button-press-event", self.on_volume_change)
         #self.volume_scale.connect("motion-notify-event", self.on_volume_change1)
         self.volume_scale.set_size_request(200, -1)
-        self.volume_scale.set_update_policy(gtk.UPDATE_CONTINUOUS)
+        #self.volume_scale.set_update_policy(Gtk.UPDATE_CONTINUOUS)
         self.volume_scale.set_digits(1)        
         self.volume_scale.set_draw_value(False)
 
         label_p = EventLabel(text="+", func=self.volume_up)
         
-        self.pack_start(label_m, False, False)
-        self.pack_start(self.volume_scale, False, False)
-        self.pack_start(label_p, False, False)
+        self.pack_start(label_m, False, False, 0)
+        self.pack_start(self.volume_scale, False, False, 0)
+        self.pack_start(label_p, False, False, 0)
         
         self.show_all()
     
@@ -75,7 +75,7 @@ class VolumeControls(LoadSave, gtk.HBox, FControl):
         
     def on_scroll_event(self, button, event):
         value = self.volume_scale.get_value()
-        if event.direction == gtk.gdk.SCROLL_UP: #@UndefinedVariable
+        if event.direction == Gtk.gdk.SCROLL_UP: #@UndefinedVariable
             self.volume_scale.set_value(value + 3)
         else:
             self.volume_scale.set_value(value - 3)

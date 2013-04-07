@@ -5,17 +5,17 @@ Created on 27 сент. 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 import time
 import thread
-import gobject
+from gi.repository import GObject
 import logging
 import threading
 
 
-class SearchProgressBarOld(gtk.ProgressBar):
+class SearchProgressBarOld(Gtk.ProgressBar):
     def __init__(self):
-        gtk.ProgressBar.__init__(self)
+        Gtk.ProgressBar.__init__(self)
         self.set_size_request(20, -1)
         self.set_pulse_step(0.2)
         self.set_fraction(0)
@@ -45,8 +45,8 @@ class SearchProgressBarOld(gtk.ProgressBar):
         self.set_fraction(0)
      
 
-if gtk.pygtk_version >= (2, 22, 0):
-    class SearchProgressBarNew(gtk.Spinner):
+if True:    # Gtk.pygtk_version >= (2, 22, 0):
+    class SearchProgressBarNew(Gtk.Spinner):
         def __init__(self):
             super(SearchProgressBarNew, self).__init__()
             self.set_no_show_all(True)
@@ -59,7 +59,7 @@ if gtk.pygtk_version >= (2, 22, 0):
             self.main_window = self.controls.main_window
             self.set_size_request(30, 30)
             self.show()
-            self.label=gtk.Label()
+            self.label=Gtk.Label()
             self.label.show()
             self.spinner_popup = self.create_spinner_popup()
             self.spinner_popup.hide()
@@ -80,13 +80,13 @@ if gtk.pygtk_version >= (2, 22, 0):
                 self.spinner_popup.show()
                 super(SearchProgressBarNew, self).start()
                 self.move_to_coord()
-            gobject.idle_add(safe_task, priority = gobject.PRIORITY_DEFAULT_IDLE - 10)
+            GObject.idle_add(safe_task, priority = GObject.PRIORITY_DEFAULT_IDLE - 10)
 
         def stop(self):
             def safe_task():
                 super(SearchProgressBarNew, self).stop()
                 self.spinner_popup.hide()
-            gobject.idle_add(safe_task)
+            GObject.idle_add(safe_task)
             
         def background_spinner_wrapper(self, task, in_graphic_thread, *args):
             self.start()
@@ -98,23 +98,23 @@ if gtk.pygtk_version >= (2, 22, 0):
                     finally:
                         self.stop()
                 if in_graphic_thread:
-                    gobject.idle_add(safe_task, *args)
+                    GObject.idle_add(safe_task, *args)
                 else:
-                    gtk.threads_init()
-                    gtk.threads_enter()
+                    Gtk.threads_init()
+                    Gtk.threads_enter()
                     safe_task(*args)
-                    gtk.threads_leave()
+                    Gtk.threads_leave()
           
             t = threading.Thread(target=thread_task, args=(args))
             t.start()
 
         def create_spinner_popup(self):
             self.main_window.connect("configure-event", self.move_to_coord)
-            hbox = gtk.HBox()
-            hbox.pack_start(self)
-            hbox.pack_start(self.label)
+            hbox = Gtk.HBox()
+            hbox.pack_start(self, False, False, 0)
+            hbox.pack_start(self.label, False, False, 0)
             hbox.show()
-            popup = gtk.Window()
+            popup = Gtk.Window()
             popup.set_transient_for(self.main_window)
             popup.set_destroy_with_parent(True)
             popup.set_decorated(False)

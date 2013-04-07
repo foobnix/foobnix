@@ -1,4 +1,4 @@
-import gtk
+from gi.repository import Gtk
 import thread
 import logging
 
@@ -9,13 +9,13 @@ from foobnix.helpers.toggled import OneActiveToggledButton
 
 
 
-class SearchControls(FControl, gtk.VBox):
+class SearchControls(FControl, Gtk.VBox):
     def __init__(self, controls):        
-        gtk.VBox.__init__(self, False, 0)
+        Gtk.VBox.__init__(self, False, 0)
         FControl.__init__(self, controls)
         self.controls = controls
         
-        label = gtk.Label()
+        label = Gtk.Label()
         label.set_markup("<b>%s:</b>" % _("Search music online"))
         
         """default search function"""
@@ -60,7 +60,7 @@ class SearchControls(FControl, gtk.VBox):
         return capitalize_query(query)
         
     def search_line(self):
-        self.entry = gtk.Entry()
+        self.entry = Gtk.Entry()
         online_text = _("Online Music Search, Play, Download")        
         
         def on_activate():
@@ -75,19 +75,19 @@ class SearchControls(FControl, gtk.VBox):
                
         combobox = self.combobox_creator()
         
-        search_button = gtk.Button(_("Search"))
+        search_button = Gtk.Button(_("Search"))
         search_button.connect("clicked", self.on_search)
         
-        hbox = gtk.HBox(False, 0)
-        searchLable = gtk.Label()
+        hbox = Gtk.HBox(False, 0)
+        searchLable = Gtk.Label()
         searchLable.set_markup("<b>%s</b>" % _("Online Search"))
         
-        if gtk.pygtk_version < (2, 22, 0): 
-            hbox.pack_start(self.controls.search_progress, False, False)
+        ##if Gtk.pygtk_version < (2, 22, 0):
+        ##    hbox.pack_start(self.controls.search_progress, False, False)
         
-        hbox.pack_start(combobox, False, False)        
-        hbox.pack_start(self.entry, True, True)
-        hbox.pack_start(search_button, False, False)
+        hbox.pack_start(combobox, False, False, 0)
+        hbox.pack_start(self.entry, True, True, 0)
+        hbox.pack_start(search_button, False, False, 0)
         hbox.show_all()
         
         return hbox 
@@ -103,7 +103,7 @@ class SearchControls(FControl, gtk.VBox):
     
     def combobox_creator(self):
         list_func = []
-        liststore = gtk.ListStore(str)
+        liststore = Gtk.ListStore(str)
         
         
         liststore.append([_("Tracks")])
@@ -126,8 +126,8 @@ class SearchControls(FControl, gtk.VBox):
         #liststore.append([_("Video")])
         #list_func.append(self.controls.search_all_videos)
                
-        combobox = gtk.ComboBox(liststore)
-        cell = gtk.CellRendererText()
+        combobox = Gtk.ComboBox(model=liststore)
+        cell = Gtk.CellRendererText()
         combobox.pack_start(cell, True)
         combobox.add_attribute(cell, 'text', 0)
         combobox.set_active(0)

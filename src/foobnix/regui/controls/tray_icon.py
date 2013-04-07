@@ -5,9 +5,9 @@ Created on 29 сент. 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 import logging
-import gobject
+from gi.repository import GObject
 
 from foobnix.fc.fc import FC
 from foobnix.regui.controls.playback import PlaybackControls
@@ -22,12 +22,12 @@ from foobnix.util.mouse_utils import is_middle_click
 from foobnix.util.text_utils import split_string
 
 
-class PopupTrayWindow (gtk.Window, FControl):
+class PopupTrayWindow (Gtk.Window, FControl):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        gtk.Window. __init__(self, gtk.WINDOW_POPUP)
+        Gtk.Window. __init__(self, Gtk.WindowType.POPUP)
 
-        self.set_position(gtk.WIN_POS_MOUSE)
+        self.set_position(Gtk.WindowPosition.MOUSE)
         self.connect("leave-notify-event", self.on_leave_window)
         
     def on_leave_window(self, w, event):
@@ -40,19 +40,19 @@ class PopupTrayWindow (gtk.Window, FControl):
 class PopupMenuWindow(PopupTrayWindow):
     def __init__ (self, controls):
         PopupTrayWindow.__init__(self, controls)
-        self.modify_bg(gtk.STATE_NORMAL, self.get_colormap().alloc_color("gray23"))
-        vbox = gtk.VBox(False, 0)
+        #self.modify_bg(Gtk.StateType.NORMAL, self.get_colormap().alloc_color("gray23"))
+        vbox = Gtk.VBox(False, 0)
        
         playcontrols = PlaybackControls(controls)
-        playcontrols.pack_start(ImageButton(gtk.STOCK_QUIT, controls.quit, _("Exit")))
-        playcontrols.pack_start(ImageButton(gtk.STOCK_OK, self.hide, _("Close Popup")))
+        playcontrols.pack_start(ImageButton(Gtk.STOCK_QUIT, controls.quit, _("Exit")), False, False, 0)
+        playcontrols.pack_start(ImageButton(Gtk.STOCK_OK, self.hide, _("Close Popup")), False, False, 0)
 
-        self.poopup_text = gtk.Label()
+        self.poopup_text = Gtk.Label()
         self.set_text("Foobnix")
         self.poopup_text.set_line_wrap(True)
 
-        vbox.pack_start(playcontrols, False, False)
-        vbox.pack_start(self.poopup_text, False, False)
+        vbox.pack_start(playcontrols, False, False, 0)
+        vbox.pack_start(self.poopup_text, False, False, 0)
         self.add(vbox)
         self.show_all()
         self.hide()
@@ -63,9 +63,9 @@ class PopupMenuWindow(PopupTrayWindow):
             self.poopup_text.set_text(text[:40])
         
             '''set colour of text'''
-            self.poopup_text.modify_fg(gtk.STATE_NORMAL,
-                                       gtk.gdk.color_parse('#FFFFFF')) #@UndefinedVariable
-        gobject.idle_add(safe_task)
+            self.poopup_text.modify_fg(Gtk.StateType.NORMAL,
+                                       Gtk.gdk.color_parse('#FFFFFF')) #@UndefinedVariable
+        GObject.idle_add(safe_task)
         
 class PopupVolumeWindow(PopupTrayWindow):
     def __init__(self, controls, popup_menu_window):
@@ -75,18 +75,18 @@ class PopupVolumeWindow(PopupTrayWindow):
         width = height*3
         self.set_size_request(width, height)
         self.avc = AlternateVolumeControl(levels=35, s_width=2, interval=1, v_step=1)
-        self.avc.modify_bg(gtk.STATE_NORMAL, self.get_colormap().alloc_color("gray23"))
-        ebox = gtk.EventBox()
+        #self.avc.modify_bg(Gtk.StateType.NORMAL, self.get_colormap().alloc_color("gray23"))
+        ebox = Gtk.EventBox()
         ebox.add(self.avc)
         ebox.connect("scroll-event", self.controls.volume.on_scroll_event) 
         self.add (ebox)
         self.show_all()
         self.hide()
         
-class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
+class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        gtk.StatusIcon.__init__(self)
+        Gtk.StatusIcon.__init__(self)
         self.hide()
         
         ImageBase.__init__(self, ICON_FOOBNIX, 150)
@@ -99,7 +99,7 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
 
         try:
             self.set_has_tooltip(True)        
-            self.tooltip = gtk.Tooltip()
+            self.tooltip = Gtk.Tooltip()
             self.set_tooltip("Foobnix music player")
             self.connect("query-tooltip", self.on_query_tooltip)
             self.connect("button-press-event", self.on_button_press)
@@ -175,17 +175,17 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
         if len(title) > max_str_len:
             title = split_string(title, max_str_len)
         
-        alabel = gtk.Label()
+        alabel = Gtk.Label()
         alabel.set_markup("<b>%s</b>" % artist)
-        hbox1 = gtk.HBox()
+        hbox1 = Gtk.HBox()
         hbox1.pack_start(alabel, False, False)
-        hbox2 = gtk.HBox()
-        hbox2.pack_start(gtk.Label(title), False, False)        
-        vbox = VBoxDecorator(gtk.Label(), hbox1, gtk.Label(), hbox2)        
+        hbox2 = Gtk.HBox()
+        hbox2.pack_start(Gtk.Label(title), False, False)
+        vbox = VBoxDecorator(Gtk.Label(), hbox1, Gtk.Label(), hbox2)
         if self.tooltip_image.size == 150:
-            alignment = gtk.Alignment(0, 0.4)
+            alignment = Gtk.Alignment(0, 0.4)
         else:
-            alignment = gtk.Alignment()
+            alignment = Gtk.Alignment()
         alignment.set_padding(padding_top=0, padding_bottom=0, padding_left=10, padding_right=10)
         alignment.add(vbox)
         tooltip.set_icon(self.tooltip_image.get_pixbuf())
@@ -217,5 +217,5 @@ class TrayIconControls(gtk.StatusIcon, ImageBase, FControl, LoadSave):
 
     def set_text(self, text):
         self.popup_menu.set_text(text)
-        gobject.idle_add(self.set_tooltip, text)
+        GObject.idle_add(self.set_tooltip, text)
        

@@ -5,38 +5,38 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 from foobnix.regui.model.signal import FControl
-import gtk
+from gi.repository import Gtk
 from foobnix.regui.state import LoadSave
 from foobnix.helpers.my_widgets import tab_close_button, ToggleImageButton
 from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.util.key_utils import is_key
-class FilterControl(gtk.HBox, FControl, LoadSave):
+class FilterControl(Gtk.HBox, FControl, LoadSave):
     def __init__(self, controls):
-        gtk.HBox.__init__(self, False, 0)
+        Gtk.HBox.__init__(self, False, 0)
         FControl.__init__(self, controls)
         
-        self.entry = gtk.Entry()        
+        self.entry = Gtk.Entry()
         self.entry.connect("key-release-event", self.on_key_press)
         
         self.search_func = self.controls.filter_by_file
         
-        file_search = ToggleImageButton(gtk.STOCK_FILE, func=self.set_search_by, param=self.controls.filter_by_file)
+        file_search = ToggleImageButton(Gtk.STOCK_FILE, func=self.set_search_by, param=self.controls.filter_by_file)
         file_search.set_tooltip_text(_("File search"))
         file_search.set_active(True)
         
-        folder_search = ToggleImageButton(gtk.STOCK_DIRECTORY, func=self.set_search_by, param=self.controls.filter_by_folder)
+        folder_search = ToggleImageButton(Gtk.STOCK_DIRECTORY, func=self.set_search_by, param=self.controls.filter_by_folder)
         folder_search.set_tooltip_text(_("Folder search"))
         
         self.list = [file_search, folder_search]
         OneActiveToggledButton(self.list)
         
         """search button"""
-        search = tab_close_button(func=self.on_filter, stock=gtk.STOCK_FIND)
+        search = tab_close_button(func=self.on_filter, stock=Gtk.STOCK_FIND)
         
-        self.pack_start(file_search, False, False)
-        self.pack_start(folder_search, False, False)
-        self.pack_start(self.entry, True, True)
-        self.pack_start(search, False, False)
+        self.pack_start(file_search, False, False, 0)
+        self.pack_start(folder_search, False, False, 0)
+        self.pack_start(self.entry, True, True, 0)
+        self.pack_start(search, False, False, 0)
         
     
     def set_search_by(self, search_func):

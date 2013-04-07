@@ -3,12 +3,12 @@ Created on Sep 27, 2010
 
 @author: ivan
 '''
-import gtk
+from gi.repository import Gtk
 import logging
 
 
 
-class MyToolbar(gtk.Toolbar):
+class MyToolbar(Gtk.Toolbar):
     def __init__(self):
         rc_st = '''
         style "toolbar-style" {
@@ -16,19 +16,19 @@ class MyToolbar(gtk.Toolbar):
             }
         class "GtkToolbar" style "toolbar-style"
         '''
-        gtk.rc_parse_string(rc_st)
+        Gtk.rc_parse_string(rc_st)
         
-        gtk.Toolbar.__init__(self) 
+        Gtk.Toolbar.__init__(self)
            
         self.show()
-        self.set_style(gtk.TOOLBAR_ICONS)
+        self.set_style(Gtk.ToolbarStyle.ICONS)
         self.set_show_arrow(False)
-        self.set_icon_size(gtk.ICON_SIZE_SMALL_TOOLBAR)
+        self.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
          
         self.i = 0
     
     def add_button(self, tooltip, gtk_stock, func, param):
-        button = gtk.ToolButton(gtk_stock)
+        button = Gtk.ToolButton(gtk_stock)
         button.show()  
         button.set_tooltip_text(tooltip)
         
@@ -42,7 +42,7 @@ class MyToolbar(gtk.Toolbar):
         self.i += 1        
     
     def add_separator(self):
-        sep = gtk.SeparatorToolItem()
+        sep = Gtk.SeparatorToolItem()
         sep.show()        
         self.insert(sep, self.i)
         self.i += 1

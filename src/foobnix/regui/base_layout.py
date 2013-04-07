@@ -5,8 +5,8 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import GObject
 import logging
 
 from foobnix.fc.fc import FC
@@ -19,29 +19,29 @@ class BaseFoobnixLayout(FControl, LoadSave):
         FControl.__init__(self, controls)
         
         self.controls = controls  
-        bbox = gtk.VBox(False, 0)
-        bbox.pack_start(controls.notetabs, True, True)        
-        bbox.pack_start(controls.movie_window, False, False)
+        bbox = Gtk.VBox(False, 0)
+        bbox.pack_start(controls.notetabs, True, True, 0)
+        bbox.pack_start(controls.movie_window, False, False, 0)
         
-        center_box = gtk.VBox(False, 0)     
-        center_box.pack_start(controls.searchPanel, False, False)
-        center_box.pack_start(bbox, True, True)
+        center_box = Gtk.VBox(False, 0)
+        center_box.pack_start(controls.searchPanel, False, False, 0)
+        center_box.pack_start(bbox, True, True, 0)
         
-        self.hpaned_left = gtk.HPaned()
+        self.hpaned_left = Gtk.HPaned()
         self.hpaned_left.connect("motion-notify-event", self.on_motion)
         
         self.hpaned_left.pack1(child=controls.perspective, resize=True, shrink=True)
         self.hpaned_left.pack2(child=center_box, resize=True, shrink=True)
         
-        self.hpaned_right = gtk.HPaned()
+        self.hpaned_right = Gtk.HPaned()
         self.hpaned_right.connect("motion-notify-event", self.on_motion)
         self.hpaned_right.pack1(child=self.hpaned_left, resize=True, shrink=True)
         self.hpaned_right.pack2(child=controls.coverlyrics, shrink=False)
         
-        vbox = gtk.VBox(False, 0)
-        vbox.pack_start(controls.top_panel, False, False)
-        vbox.pack_start(self.hpaned_right, True, True)        
-        vbox.pack_start(controls.statusbar, False, True)
+        vbox = Gtk.VBox(False, 0)
+        vbox.pack_start(controls.top_panel, False, False, 0)
+        vbox.pack_start(self.hpaned_right, True, True, 0)
+        vbox.pack_start(controls.statusbar, False, True, 0)
         vbox.show_all()
         
         self.hpaned_left.connect("button-press-event", self.on_border_press)
@@ -79,7 +79,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         if flag:
             self.hpaned_right.set_position(self.hpaned_right.allocation.width - FC().hpaned_right_right_side_width)
             self.controls.coverlyrics.show()
-            gobject.idle_add(self.controls.coverlyrics.adapt_image)
+            GObject.idle_add(self.controls.coverlyrics.adapt_image)
         else:
             self.controls.coverlyrics.hide()
         
@@ -104,7 +104,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
             self.save_left_panel()
         elif w is self.hpaned_right:
             self.on_configure_hl_event()
-            gobject.idle_add(self.save_left_panel)
+            GObject.idle_add(self.save_left_panel)
         
     def save_right_panel(self):
         if self.controls.coverlyrics.get_property("visible"):
@@ -133,7 +133,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         def task():
             if FC().is_view_music_tree_panel and self.hpaned_left.get_position() != FC().hpaned_left:
                 self.hpaned_left.set_position(FC().hpaned_left)
-        gobject.idle_add(task)
+        GObject.idle_add(task)
 
     def on_configure_hr_event(self, *a):
         def task():
@@ -141,11 +141,11 @@ class BaseFoobnixLayout(FControl, LoadSave):
                 hrw = self.hpaned_right.allocation.width
                 if (hrw - self.hpaned_right.get_position()) != FC().hpaned_right_right_side_width:
                     self.hpaned_right.set_position(hrw - FC().hpaned_right_right_side_width)
-        gobject.idle_add(task)
+        GObject.idle_add(task)
 
     def on_load(self):
         self.set_visible_search_panel(FC().is_view_search_panel)
-        gobject.idle_add(self.set_visible_musictree_panel, FC().is_view_music_tree_panel, 
-                         priority = gobject.PRIORITY_DEFAULT_IDLE - 10)
+        GObject.idle_add(self.set_visible_musictree_panel, FC().is_view_music_tree_panel,
+                         priority = GObject.PRIORITY_DEFAULT_IDLE - 10)
         self.set_visible_coverlyrics_panel(FC().is_view_coverlyrics_panel)
                                 

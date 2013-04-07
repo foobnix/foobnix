@@ -5,7 +5,7 @@ Created on 22 сент. 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
@@ -15,35 +15,35 @@ from foobnix.helpers.menu import Popup
 from foobnix.fc.fc import FC
 from foobnix.util.widget_utils import MenuStyleDecorator
 
-class TopWidgets(FControl, LoadSave, gtk.HBox):
+class TopWidgets(FControl, LoadSave, Gtk.HBox):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        gtk.HBox.__init__(self, False, 0)
+        Gtk.HBox.__init__(self, False, 0)
         
         self.old_menu = MenuBarWidget(controls)
         
         
-        self.pack_start(self.old_menu.widget, False, False)
+        self.pack_start(self.old_menu.widget, False, False, 0)
         
-        self.new_menu_button = ImageButton(gtk.STOCK_PREFERENCES)
+        self.new_menu_button = ImageButton(Gtk.STOCK_PREFERENCES)
         self.new_menu_button.connect("button-press-event", self.on_button_press)
         
-        self.pack_start(self.new_menu_button, False, False)
-        self.pack_start(controls.playback, False, False)
-        self.pack_start(controls.os, False, False)
-        self.pack_start(controls.volume, False, False)
-        self.pack_start(gtk.SeparatorToolItem(), False, False)
-        self.pack_start(controls.record, False, False)
-        self.pack_start(controls.seek_bar, True, True)
+        self.pack_start(self.new_menu_button, False, False, 0)
+        self.pack_start(controls.playback, False, False, 0)
+        self.pack_start(controls.os, False, False, 0)
+        self.pack_start(controls.volume, False, False, 0)
+        self.pack_start(Gtk.SeparatorToolItem(), False, False, 0)
+        self.pack_start(controls.record, False, False, 0)
+        self.pack_start(controls.seek_bar, True, True, 0)
         
         """menu init"""
         menu = Popup()
         decorator = MenuStyleDecorator()
         MenuBarWidget(self.controls, menu)
         menu.add_separator()        
-        menu.add_item(_("Preferences"), gtk.STOCK_PREFERENCES, self.controls.show_preferences)
+        menu.add_item(_("Preferences"), Gtk.STOCK_PREFERENCES, self.controls.show_preferences)
         menu.add_separator()
-        menu.add_item(_("Quit"), gtk.STOCK_QUIT, self.controls.quit)
+        menu.add_item(_("Quit"), Gtk.STOCK_QUIT, self.controls.quit)
         
         decorator.apply(menu)
         self.menu = menu

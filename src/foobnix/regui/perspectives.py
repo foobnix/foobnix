@@ -5,9 +5,9 @@ Created on 22 сент. 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 import thread
-import gobject
+from gi.repository import GObject
 
 from foobnix.fc.fc import FC
 from foobnix.util import analytics
@@ -21,10 +21,10 @@ from foobnix.util.const import LEFT_PERSPECTIVE_INFO, LEFT_PERSPECTIVE_VIRTUAL, 
     LEFT_PERSPECTIVE_LASTFM, LEFT_PERSPECTIVE_VK
 
 
-class PerspectiveControls(FControl, gtk.VBox, LoadSave):
+class PerspectiveControls(FControl, Gtk.VBox, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        gtk.VBox.__init__(self, False, 0)
+        Gtk.VBox.__init__(self, False, 0)
         
         self.perspectives = {LEFT_PERSPECTIVE_NAVIGATION:   controls.tabhelper,
                              LEFT_PERSPECTIVE_RADIO:        controls.radio.scroll,
@@ -33,30 +33,30 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
                              LEFT_PERSPECTIVE_INFO:         controls.info_panel,
                              LEFT_PERSPECTIVE_LASTFM:       controls.lastfm_integration.scroll,
                              LEFT_PERSPECTIVE_VK:           controls.vk_integration.scroll}
-        self.switch_radio_button = gtk.Button()
+        self.switch_radio_button = Gtk.Button()
         self.switch_radio_button.connect("clicked", lambda *a: self.on_radio_buttons_click()) 
         self.buttons = PerspectiveButtonControlls(self.activate_perspective, controls)
         self.buttons.show_all()
         
-        self.add_button = ButtonStockText(_(" Add Folder(s) in tree"), gtk.STOCK_ADD)
+        self.add_button = ButtonStockText(_(" Add Folder(s) in tree"), Gtk.STOCK_ADD)
         self.add_button.connect("clicked", lambda * a: controls.tabhelper.get_current_tree().add_folder())
         
-        self.switch_radio_button = gtk.Button()
+        self.switch_radio_button = Gtk.Button()
         self.switch_radio_button.connect("clicked", lambda *a: self.on_radio_buttons_click())        
          
-        self.pack_start(self.add_button, False, False)
+        self.pack_start(self.add_button, False, False, 0)
         
         for widget in self.perspectives.values():
-            self.pack_start(widget, True, True)
-        self.pack_start(self.switch_radio_button, False, False)
-        self.pack_start(controls.filter, False, False)
-        self.pack_start(self.buttons, False, False)
+            self.pack_start(widget, True, True, 0)
+        self.pack_start(self.switch_radio_button, False, False, 0)
+        self.pack_start(controls.filter, False, False, 0)
+        self.pack_start(self.buttons, False, False, 0)
     
     def show_add_button(self):
-        gobject.idle_add(self.add_button.show)
+        GObject.idle_add(self.add_button.show)
     
     def hide_add_button(self):
-        gobject.idle_add(self.add_button.hide)
+        GObject.idle_add(self.add_button.hide)
     
     def activate_perspective(self, name):
         for widget in self.perspectives.values():
@@ -110,10 +110,10 @@ class PerspectiveControls(FControl, gtk.VBox, LoadSave):
         pass
 
 
-class PerspectiveButtonControlls(gtk.HBox):
+class PerspectiveButtonControlls(Gtk.HBox):
     def __init__(self, activate_perspective, controls):
         
-        gtk.HBox.__init__(self, False, 0)
+        Gtk.HBox.__init__(self, False, 0)
         self.controls = controls
         self.active = None
 
@@ -121,28 +121,28 @@ class PerspectiveButtonControlls(gtk.HBox):
             if btn.get_active():
                 handler()
                
-        musics = PespectiveToogledButton(_("Music"), gtk.STOCK_HARDDISK, _("Music Navigation (Alt+1)"))
+        musics = PespectiveToogledButton(_("Music"), Gtk.STOCK_HARDDISK, _("Music Navigation (Alt+1)"))
         musics.connect("toggled", toggle_handler, lambda * a: activate_perspective(LEFT_PERSPECTIVE_NAVIGATION))
         musics.set_active(True)
 
-        radios = PespectiveToogledButton(_("Radio"), gtk.STOCK_NETWORK, _("Radio Stantions (Alt+2)"))
+        radios = PespectiveToogledButton(_("Radio"), Gtk.STOCK_NETWORK, _("Radio Stantions (Alt+2)"))
         radios.connect("toggled", toggle_handler, lambda * a:
                        controls.perspective.activate_radio_perspective())
               
-        virtuals = PespectiveToogledButton(_("Storage"), gtk.STOCK_INDEX, _("Storage (Alt+3)"))
+        virtuals = PespectiveToogledButton(_("Storage"), Gtk.STOCK_INDEX, _("Storage (Alt+3)"))
         virtuals.connect("toggled", toggle_handler, lambda * a: activate_perspective(LEFT_PERSPECTIVE_VIRTUAL))
         
-        info = PespectiveToogledButton(_("Info"), gtk.STOCK_INFO, _("Info Panel (Alt+4)"))
+        info = PespectiveToogledButton(_("Info"), Gtk.STOCK_INFO, _("Info Panel (Alt+4)"))
         info.connect("toggled", toggle_handler, lambda * a: activate_perspective(LEFT_PERSPECTIVE_INFO))
         
-        lastfm = PespectiveToogledButton(_("Last.Fm"), gtk.STOCK_CONNECT, _("Last.fm Panel (Alt+5)"))
+        lastfm = PespectiveToogledButton(_("Last.Fm"), Gtk.STOCK_CONNECT, _("Last.fm Panel (Alt+5)"))
         lastfm.connect("toggled", toggle_handler, lambda * a: activate_perspective(LEFT_PERSPECTIVE_LASTFM))
 
         def vk_toggled_handler():
             self.on_vk_click()
             activate_perspective(LEFT_PERSPECTIVE_VK)
 
-        vk = PespectiveToogledButton(_("VK"), gtk.STOCK_UNINDENT, _("VK Panel (Alt+6)"))
+        vk = PespectiveToogledButton(_("VK"), Gtk.STOCK_UNINDENT, _("VK Panel (Alt+6)"))
         vk.connect("toggled", toggle_handler, vk_toggled_handler)
 
         self.button_list = {LEFT_PERSPECTIVE_NAVIGATION: musics,

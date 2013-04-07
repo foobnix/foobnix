@@ -5,7 +5,7 @@ Created on Sep 8, 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 import copy
 import logging
 
@@ -20,17 +20,17 @@ from foobnix.util.const import EQUALIZER_LABLES, STATE_PLAY
 
 
 def label(): 
-    label = gtk.Label("–")
+    label = Gtk.Label("–")
     label.show()
     return label
 
 def empty(): 
-    label = gtk.Label(" ")
+    label = Gtk.Label(" ")
     label.show()
     return label
 
 def text(text): 
-    label = gtk.Label(text)
+    label = Gtk.Label(text)
     label.show()
     return label
 
@@ -40,16 +40,16 @@ class EqWindow(ChildTopWindow, FControl):
         self.callback = callback
         FControl.__init__(self, controls)        
         ChildTopWindow.__init__(self, _("Equalizer"))
-                
+
+        self.combo = Gtk.ComboBoxText.new_with_entry()
+        self.combo.connect("changed", self.on_combo_change)
+
         self.eq_lines = []
         for label in EQUALIZER_LABLES:
             self.eq_lines.append(EqLine(label, self.on_callback))
         
-        lbox = gtk.VBox(False, 0)
+        lbox = Gtk.VBox(False, 0)
         lbox.show()
-        
-        self.combo = gtk.combo_box_entry_new_text()
-        self.combo.connect("changed", self.on_combo_change)
         
         lbox.pack_start(self.top_row(), False, False, 0)
         lbox.pack_start(self.middle_lines_box(), False, False, 0)
@@ -70,7 +70,7 @@ class EqWindow(ChildTopWindow, FControl):
     def on_button_press(self, w, e):
         if is_rigth_click(e):
             menu = Popup()
-            menu.add_item('Restore Defaults', gtk.STOCK_REFRESH, None)
+            menu.add_item('Restore Defaults', Gtk.STOCK_REFRESH, None)
             menu.show(e)
     
     def on_callback(self):
@@ -161,16 +161,16 @@ class EqWindow(ChildTopWindow, FControl):
     
     def top_row(self):
         
-        box = gtk.HBox(False, 0)
+        box = Gtk.HBox(False, 0)
         box.show()
         
-        self.on = gtk.ToggleButton(_("Enable EQ"))
+        self.on = Gtk.ToggleButton(_("Enable EQ"))
         self.on.set_tooltip_text(_("To enable EQ set ON"))
         self.on.connect("toggled", self.on_enable_eq)
         #on.set_size_request(30,-1)        
         self.on.show()
         
-        auto = gtk.ToggleButton(_("Auto"))
+        auto = Gtk.ToggleButton(_("Auto"))
         #auto.set_size_request(50,-1)
         auto.show()
         
@@ -178,16 +178,16 @@ class EqWindow(ChildTopWindow, FControl):
         empt.set_size_request(65, -1)
         #auto.set_size_request(50,-1)
         auto.show()
-        #combo = gtk.ComboBoxEntry()
+        #combo = Gtk.ComboBoxEntry()
         #self.combo.set_size_request(240, -1)
         self.combo.show()
         
-        save = gtk.Button(_("Save"))
+        save = Gtk.Button(_("Save"))
         save.connect("clicked", self.on_save)
         
         save.show()
                 
-        resButton = ImageButton(gtk.STOCK_REFRESH)
+        resButton = ImageButton(Gtk.STOCK_REFRESH)
         resButton.connect("clicked", self.on_restore_defaults)
         resButton.set_tooltip_text(_("Restore defaults presets"))
         
@@ -196,13 +196,13 @@ class EqWindow(ChildTopWindow, FControl):
         box.pack_start(empt, False, True, 0)        
         box.pack_start(self.combo, False, True, 0)        
         box.pack_start(save, False, True, 0)
-        box.pack_start(gtk.Label(), True, True, 0)
+        box.pack_start(Gtk.Label(), True, True, 0)
         box.pack_start(resButton, False, True, 0)
         
         return box
     
     def dash_line(self):
-        lables = gtk.VBox(False, 0)
+        lables = Gtk.VBox(False, 0)
         lables.show()
         lables.pack_start(label(), False, False, 0)
         lables.pack_start(label(), True, False, 0)
@@ -211,7 +211,7 @@ class EqWindow(ChildTopWindow, FControl):
         return lables
     
     def db_line(self):
-        lables = gtk.VBox(False, 0)
+        lables = Gtk.VBox(False, 0)
         lables.show()
         lables.pack_start(text("+12db"), False, False, 0)
         
@@ -223,7 +223,7 @@ class EqWindow(ChildTopWindow, FControl):
         return lables
     
     def empty_line(self):
-        lables = gtk.VBox(False, 0)
+        lables = Gtk.VBox(False, 0)
         lables.show()
         lables.pack_start(empty(), False, False, 0)
         lables.pack_start(empty(), True, False, 0)
@@ -232,7 +232,7 @@ class EqWindow(ChildTopWindow, FControl):
         return lables
                 
     def middle_lines_box(self):         
-        lines_box = gtk.HBox(False, 0)
+        lines_box = Gtk.HBox(False, 0)
         lines_box.show()
         
         eq_iter = iter(self.eq_lines)
@@ -279,15 +279,15 @@ class EqWindow(ChildTopWindow, FControl):
         if FC().is_eq_enable:
             self.on.set_label(_("Disable EQ"))
             
-class EqLine(gtk.VBox):
+class EqLine(Gtk.VBox):
         def __init__(self, text, callback, def_value=0):
             self.callback = callback
             self.text = text
-            gtk.VBox.__init__(self, False, 0)
+            Gtk.VBox.__init__(self, False, 0)
             self.show()
             
-            adjustment = gtk.Adjustment(value=def_value, lower= -12, upper=12, step_incr=1, page_incr=2, page_size=0)
-            self.scale = gtk.VScale(adjustment)
+            adjustment = Gtk.Adjustment(value=def_value, lower= -12, upper=12, step_incr=1, page_incr=2, page_size=0)
+            self.scale = Gtk.VScale(adjustment=adjustment)
             self.scale.connect("change-value", self.on_change_value)
             self.scale.set_size_request(-1, 140)  
             self.scale.set_draw_value(False)      
@@ -295,7 +295,7 @@ class EqLine(gtk.VBox):
             self.scale.show()
             
             """text under"""
-            text = gtk.Label(text)
+            text = Gtk.Label(text)
             text.show()
             
             self.pack_start(self.scale, False, False, 0)

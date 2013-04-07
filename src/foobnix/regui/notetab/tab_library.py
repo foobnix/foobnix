@@ -5,7 +5,7 @@ Created on Dec 7, 2010
 @author: zavlab1
 '''
 
-import gtk
+from gi.repository import Gtk
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
@@ -18,7 +18,7 @@ class TabHelperControl(TabGeneral):
     def __init__(self, controls):
         TabGeneral.__init__(self, controls)
                 
-        self.set_tab_pos(gtk.POS_LEFT)
+        self.set_tab_pos(Gtk.PositionType.LEFT)
                
         """the only signal lets get the previous number of moved page"""
         self.connect("button-release-event", self.get_page_number)
@@ -45,11 +45,11 @@ class TabHelperControl(TabGeneral):
     def tab_menu_creator(self, widget, tab_child):
         widget.menu = Popup()
         widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, 90, FCache().tab_names), None)
-        widget.menu.add_item(_("Update Music Tree"), gtk.STOCK_REFRESH, lambda: self.on_update_music_tree(tab_child), None)
-        widget.menu.add_item(_("Add folder"), gtk.STOCK_OPEN, lambda: self.on_add_folder(tab_child), None)
-        widget.menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.on_add_folder(tab_child, True), None)
-        widget.menu.add_item(_("Clear Music Tree"), gtk.STOCK_CLEAR, lambda : self.clear_tree(tab_child), None)
-        widget.menu.add_item(_("Close tab"), gtk.STOCK_CLOSE, lambda: self.on_delete_tab(tab_child), None)
+        widget.menu.add_item(_("Update Music Tree"), Gtk.STOCK_REFRESH, lambda: self.on_update_music_tree(tab_child), None)
+        widget.menu.add_item(_("Add folder"), Gtk.STOCK_OPEN, lambda: self.on_add_folder(tab_child), None)
+        widget.menu.add_item(_("Add folder in new tab"), Gtk.STOCK_OPEN, lambda : self.on_add_folder(tab_child, True), None)
+        widget.menu.add_item(_("Clear Music Tree"), Gtk.STOCK_CLEAR, lambda : self.clear_tree(tab_child), None)
+        widget.menu.add_item(_("Close tab"), Gtk.STOCK_CLOSE, lambda: self.on_delete_tab(tab_child), None)
         return widget
                    
     def reorder_callback(self, notebook, child, new_page_num):

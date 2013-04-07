@@ -5,7 +5,7 @@ Created on 1 сент. 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 import time
 import logging
 import urllib2
@@ -14,7 +14,7 @@ from foobnix.fc.fc import FC
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.proxy_connect import set_proxy_settings
 from foobnix.regui.service.lastfm_service import LastFmService
-import gobject
+from gi.repository import GObject
 
 
 class NetworkConfig(ConfigPlugin):
@@ -25,33 +25,33 @@ class NetworkConfig(ConfigPlugin):
         
         self.controls = controls
                 
-        box = gtk.VBox(False, 0)        
+        box = Gtk.VBox(False, 0)
         box.hide()
         
-        self.enable_proxy = gtk.CheckButton(label=_("Enable HTTP proxy"), use_underline=True)
+        self.enable_proxy = Gtk.CheckButton(label=_("Enable HTTP proxy"), use_underline=True)
         self.enable_proxy.connect("clicked", self.on_enable_http_proxy)
         self.enable_proxy.show()
         
-        self.frame = gtk.Frame(label=_("Settings"))
+        self.frame = Gtk.Frame(label=_("Settings"))
         self.frame.set_border_width(0)
         self.frame.show()
         
-        all = gtk.VBox(False, 0)
+        all = Gtk.VBox(False, 0)
         all.show()
         
         
         """URL"""
-        proxy_box = gtk.HBox(False, 0)
+        proxy_box = Gtk.HBox(False, 0)
         proxy_box.show()
         
-        proxy_lable = gtk.Label(_("Server"))
+        proxy_lable = Gtk.Label(_("Server"))
         proxy_lable.set_size_request(150, -1)
         proxy_lable.show()
         
-        self.proxy_server = gtk.Entry()
+        self.proxy_server = Gtk.Entry()
         self.proxy_server.show()
         
-        require = gtk.Label(_("example: 66.42.182.178:3128"))
+        require = Gtk.Label(_("example: 66.42.182.178:3128"))
         require.show()
         
         proxy_box.pack_start(proxy_lable, False, False, 0)
@@ -60,28 +60,28 @@ class NetworkConfig(ConfigPlugin):
         
         
         """LOGIN"""
-        lbox = gtk.HBox(False, 0)
+        lbox = Gtk.HBox(False, 0)
         lbox.show()
         
-        login = gtk.Label(_("Login"))
+        login = Gtk.Label(_("Login"))
         login.set_size_request(150, -1)
         login.show()
         
-        self.login_text = gtk.Entry()
+        self.login_text = Gtk.Entry()
         self.login_text.show()
         
         lbox.pack_start(login, False, False, 0)
         lbox.pack_start(self.login_text, False, True, 0)
         
         """PASSWORD"""
-        pbox = gtk.HBox(False, 0)
+        pbox = Gtk.HBox(False, 0)
         pbox.show()
         
-        password = gtk.Label(_("Password"))
+        password = Gtk.Label(_("Password"))
         password.set_size_request(150, -1)
         password.show()
         
-        self.password_text = gtk.Entry()
+        self.password_text = Gtk.Entry()
         self.password_text.set_visibility(False)
         self.password_text.set_invisible_char("*")
         self.password_text.show()
@@ -91,19 +91,19 @@ class NetworkConfig(ConfigPlugin):
         
         """check"""
         
-        check = gtk.HBox(False, 0)
+        check = Gtk.HBox(False, 0)
         check.show()
 
-        self.vk_test = gtk.Entry()
+        self.vk_test = Gtk.Entry()
         self.vk_test.set_text("http://vkontakte.ru")        
         self.vk_test.show()
         
-        self.test_button = gtk.Button(_("Check Connection"))
+        self.test_button = Gtk.Button(_("Check Connection"))
         self.test_button.set_size_request(150, -1)
         self.test_button.connect("clicked", self.text_connection)        
         self.test_button.show()
         
-        self.result = gtk.Label(_("Result:"))
+        self.result = Gtk.Label(_("Result:"))
         self.result.show()
         
         check.pack_start(self.test_button, False, True, 0)
@@ -118,11 +118,11 @@ class NetworkConfig(ConfigPlugin):
         
         self.frame.add(all)
 
-        frame_box = gtk.HBox(False, 0)
+        frame_box = Gtk.HBox(False, 0)
         frame_box.set_border_width(5)
         frame_box.show()
         
-        self.net_ping = gtk.CheckButton(label=_("Show message on network disconnection"), use_underline=True)
+        self.net_ping = Gtk.CheckButton(label=_("Show message on network disconnection"), use_underline=True)
         
         box.pack_start(self.net_ping, False, True, 0)
         box.pack_start(self.enable_proxy, False, True, 0)

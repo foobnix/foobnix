@@ -22,7 +22,7 @@ from foobnix.util.file_utils import file_extension, get_file_extension
 from foobnix.util.audio import get_mutagen_audio
 from subprocess import Popen, PIPE
 from zlib import crc32
-from gtk.gdk import pixbuf_new_from_file
+from gi.repository.GdkPixbuf import Pixbuf
 from tempfile import NamedTemporaryFile
 
 RUS_ALPHABITE = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
@@ -248,7 +248,7 @@ def set_cover_from_tags(bean):
             filename = os.path.join(COVERS_DIR, str(crc32(bean.path)) + '.jpg')
             fd = NamedTemporaryFile()
             fd.write(data.data)
-            pixbuf = pixbuf_new_from_file(fd.name)
+            pixbuf = Pixbuf.new_from_file(fd.name)
             pixbuf.save(filename, "jpeg", {"quality":"90"})
             fd.close()
             bean.image = filename

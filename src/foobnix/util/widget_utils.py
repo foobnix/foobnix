@@ -4,21 +4,23 @@ Created on 29 нояб. 2010
 
 @author: ivan
 '''
-import gtk
+from gi.repository import Gtk
 
 class MenuStyleDecorator():
     def __init__(self):
-        correct_style_element = gtk.Window()
+        correct_style_element = Gtk.Window()
         correct_style_element.realize()
         self.style = correct_style_element.get_style()
         
     def apply(self, widget):
         style = self.style
-        widget.modify_bg(gtk.STATE_NORMAL, style.bg[gtk.STATE_NORMAL])
-        widget.modify_fg(gtk.STATE_NORMAL, style.fg[gtk.STATE_NORMAL])
+        ## TODO: fix it
+        return
+        ##widget.modify_bg(Gtk.StateType.NORMAL, style.bg[Gtk.StateType.NORMAL])
+        ##widget.modify_fg(Gtk.StateType.NORMAL, style.fg[Gtk.StateType.NORMAL])
         
         for childs in widget.get_children():
             for child in childs:
-                widget.modify_bg(gtk.STATE_NORMAL, style.bg[gtk.STATE_NORMAL])
-                child.modify_fg(gtk.STATE_NORMAL, style.fg[gtk.STATE_NORMAL])
+                widget.modify_bg(Gtk.StateType.NORMAL, style.bg[Gtk.StateType.NORMAL])
+                child.modify_fg(Gtk.StateType.NORMAL, style.fg[Gtk.StateType.NORMAL])
         

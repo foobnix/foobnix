@@ -5,8 +5,8 @@ Created on Sep 29, 2010
 '''
 from __future__ import with_statement
 
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import GObject
 import logging
 import os.path
 import thread
@@ -30,7 +30,7 @@ class RadioTreeControl(CommonTreeControl):
         self.set_reorderable(False)
         self.switcher_label = _("My channels")
         """column config"""
-        column = gtk.TreeViewColumn(_("Radio Stations"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = Gtk.TreeViewColumn(_("Radio Stations"), Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)
@@ -58,13 +58,13 @@ class RadioTreeControl(CommonTreeControl):
             bean = self.get_selected_bean()
             if bean:
                 if self.get_selected_bean().is_file:
-                    menu.add_item(_("Edit Station"), gtk.STOCK_EDIT, self.on_edit_radio, None)
-                    menu.add_item(_("Delete Station"), gtk.STOCK_DELETE, self.delete_selected, None)
+                    menu.add_item(_("Edit Station"), Gtk.STOCK_EDIT, self.on_edit_radio, None)
+                    menu.add_item(_("Delete Station"), Gtk.STOCK_DELETE, self.delete_selected, None)
                 else:
-                    menu.add_item(_("Rename Group"), gtk.STOCK_EDIT, self.on_rename_group, None)
-                    menu.add_item(_("Delete Group"), gtk.STOCK_DELETE, self.delete_selected, None)
+                    menu.add_item(_("Rename Group"), Gtk.STOCK_EDIT, self.on_rename_group, None)
+                    menu.add_item(_("Delete Group"), Gtk.STOCK_DELETE, self.delete_selected, None)
                 menu.add_separator()
-            menu.add_item(_("Reload radio folder"), gtk.STOCK_REFRESH, self.update_radio_tree, None)            
+            menu.add_item(_("Reload radio folder"), Gtk.STOCK_REFRESH, self.update_radio_tree, None)
             menu.show(e)
           
     def on_edit_radio(self):
@@ -134,7 +134,7 @@ class RadioTreeControl(CommonTreeControl):
                     child = FModel(radio, fpl.urls_dict[radio][0]).parent(parent).add_type(FTYPE_RADIO).add_is_file(True)
                     self.append(child)
 
-        gobject.idle_add(task)            
+        GObject.idle_add(task)
 
     def auto_add_user_station(self):
         if os.path.isfile(CACHE_RADIO_FILE) and os.path.getsize(CACHE_RADIO_FILE) > 0:
@@ -212,16 +212,16 @@ class MyRadioTreeControl(RadioTreeControl):
             right_click_optimization_for_trees(w, e)
             
             menu = Popup()
-            menu.add_item(_("Add Station"), gtk.STOCK_ADD, self.on_add_station, None)
-            menu.add_item(_("Create Group"), gtk.STOCK_ADD, self.create_new_group, None)
+            menu.add_item(_("Add Station"), Gtk.STOCK_ADD, self.on_add_station, None)
+            menu.add_item(_("Create Group"), Gtk.STOCK_ADD, self.create_new_group, None)
             bean = self.get_selected_bean()
             if bean:
                 if self.get_selected_bean().is_file:
-                    menu.add_item(_("Edit Station"), gtk.STOCK_EDIT, self.on_edit_radio, None)
-                    menu.add_item(_("Delete Station"), gtk.STOCK_DELETE, self.delete_selected, None)
+                    menu.add_item(_("Edit Station"), Gtk.STOCK_EDIT, self.on_edit_radio, None)
+                    menu.add_item(_("Delete Station"), Gtk.STOCK_DELETE, self.delete_selected, None)
                 else:
-                    menu.add_item(_("Rename Group"), gtk.STOCK_EDIT, self.on_rename_group, None)
-                    menu.add_item(_("Delete Group"), gtk.STOCK_DELETE, self.delete_selected, None)
+                    menu.add_item(_("Rename Group"), Gtk.STOCK_EDIT, self.on_rename_group, None)
+                    menu.add_item(_("Delete Group"), Gtk.STOCK_DELETE, self.delete_selected, None)
             menu.show(e)
         
     def on_key_release(self, w, e):
