@@ -66,10 +66,9 @@ if gtk.pygtk_version >= (2, 22, 0):
             self.spinner_popup.connect_after('map', self.configure_popup, self.controls.main_window) 
     
         def start(self, text=None):
-            
-                
             if not text:
                 text = _("Process...")
+
             def safe_task():
                 try:
                     """to avoid bugs in Unity and GnomeFallback"""
@@ -91,8 +90,8 @@ if gtk.pygtk_version >= (2, 22, 0):
             
         def background_spinner_wrapper(self, task, in_graphic_thread, *args):
             self.start()
+
             def thread_task(*args):
-                
                 def safe_task(*args):
                     try:
                         task(*args)
@@ -101,12 +100,14 @@ if gtk.pygtk_version >= (2, 22, 0):
                 if in_graphic_thread:
                     gobject.idle_add(safe_task, *args)
                 else:
+                    gtk.threads_init()
+                    gtk.threads_enter()
                     safe_task(*args)
+                    gtk.threads_leave()
           
             t = threading.Thread(target=thread_task, args=(args))
             t.start()
-            
-            
+
         def create_spinner_popup(self):
             self.main_window.connect("configure-event", self.move_to_coord)
             hbox = gtk.HBox()
