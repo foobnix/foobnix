@@ -223,8 +223,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             self.controls.notetabs.on_save_tabs()   # because save process already wrapped with thread
             # thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
 
-        gobject.idle_add(task, to_tree, to_model)
-        #self.controls.search_progress.background_spinner_wrapper(task, False, to_tree, to_model)
+        #gobject.idle_add(task, to_tree, to_model)
+        self.controls.search_progress.background_spinner_wrapper(task, False, to_tree, to_model)
 
     def add_folder(self, in_new_tab=False):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"),
