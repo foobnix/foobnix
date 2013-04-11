@@ -5,10 +5,10 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 import os
-import gtk
+from gi.repository import Gtk
 import time
 import thread
-import gobject
+from gi.repository import GObject
 import logging
 
 from foobnix.fc.fc import FC
@@ -27,7 +27,7 @@ def get_all_music_by_paths(paths, controls):
     def task():
         while not end_scanning:
             time.sleep(0.5)
-            gobject.idle_add(pr_window.update_window)
+            GObject.idle_add(pr_window.update_window)
             
     thread.start_new_thread(task, ())'''
     result = []
@@ -39,7 +39,7 @@ def get_all_music_by_paths(paths, controls):
         result = result + current_result
     time.sleep(1)
     #end_scanning = True
-    #gobject.idle_add(pr_window.hide)
+    #GObject.idle_add(pr_window.hide)
     return result
 
 def get_all_music_with_id3_by_path(path, with_cue_filter=None):
@@ -154,40 +154,40 @@ class ProgWindow(ChildTopWindow):
         
         self.set_transient_for(controls.main_window)
         
-        self.label = gtk.Label("Total analyzed folders: ")
-        self.label1 = gtk.Label("Total analyzed files: ")
-        self.label2 = gtk.Label("Folders with media files found: ")
-        self.label3 = gtk.Label("Media files found: ")
+        self.label = Gtk.Label("Total analyzed folders: ")
+        self.label1 = Gtk.Label("Total analyzed files: ")
+        self.label2 = Gtk.Label("Folders with media files found: ")
+        self.label3 = Gtk.Label("Media files found: ")
         
-        self.analyzed_files_label = gtk.Label("0")
-        self.analyzed_folders_label = gtk.Label("0")
-        self.media_files_label = gtk.Label("0")
-        self.media_folders_label = gtk.Label("0")
+        self.analyzed_files_label = Gtk.Label("0")
+        self.analyzed_folders_label = Gtk.Label("0")
+        self.media_files_label = Gtk.Label("0")
+        self.media_folders_label = Gtk.Label("0")
         
         self.analyzed_files = 0
         self.analyzed_folders = 0
         self.media_files = 0
         self.media_folders = 0
         
-        left_box = gtk.VBox()
+        left_box = Gtk.VBox()
         left_box.pack_start(self.label)
         left_box.pack_start(self.label1)
         left_box.pack_start(self.label2)
         left_box.pack_start(self.label3)
         
-        right_box = gtk.VBox()
+        right_box = Gtk.VBox()
         right_box.pack_start(self.analyzed_folders_label)
         right_box.pack_start(self.analyzed_files_label)
         right_box.pack_start(self.media_folders_label)
         right_box.pack_start(self.media_files_label)
         
-        box = gtk.HBox()
+        box = Gtk.HBox()
         box.pack_start(left_box)
         box.pack_start(right_box)
         
         self.add(box)
         
-        gobject.idle_add(self.show_all)
+        GObject.idle_add(self.show_all)
                 
     def update_window(self):
         self.analyzed_folders_label.set_text(str(self.analyzed_folders))

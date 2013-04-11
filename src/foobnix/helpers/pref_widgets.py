@@ -3,8 +3,8 @@ Created on Nov 5, 2010
 
 @author: ivan
 '''
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import GObject
 import logging
 
 from foobnix.fc.fc import FC
@@ -13,17 +13,17 @@ from foobnix.util.pix_buffer import create_pixbuf_from_resource
 from foobnix.helpers.window import ChildTopWindow
 
 
-class IconBlock(gtk.HBox):
+class IconBlock(Gtk.HBox):
     
     temp_list = FC().all_icons[:]
      
     def __init__(self, text, controls, filename, all_icons=temp_list):
-        gtk.HBox.__init__(self, False, 0)
+        Gtk.HBox.__init__(self, False, 0)
         
         self.controls = controls
         
-        self.combobox = gtk.ComboBox()
-        self.entry = gtk.Entry()
+        self.combobox = Gtk.ComboBox()
+        self.entry = Gtk.Entry()
         self.entry.set_size_request(300, -1)
         if filename:
             self.entry.set_text(filename)
@@ -44,24 +44,24 @@ class IconBlock(gtk.HBox):
             self.on_change_icon()
             logging.warning("Icon " + filename + " is absent in list of icons")
         
-        pix_render = gtk.CellRendererPixbuf()
+        pix_render = Gtk.CellRendererPixbuf()
         self.combobox.pack_start(pix_render)        
         self.combobox.add_attribute(pix_render, 'pixbuf', 0)
         
-        button = gtk.Button("Choose", gtk.STOCK_OPEN)
+        button = Gtk.Button("Choose", Gtk.STOCK_OPEN)
         button.connect("clicked", self.on_file_choose)
         
-        button_2 = gtk.Button("Delete", gtk.STOCK_DELETE)
+        button_2 = Gtk.Button("Delete", Gtk.STOCK_DELETE)
         button_2.connect("clicked", self.on_delete)
         
-        label = gtk.Label(text)
+        label = Gtk.Label(text)
         label.set_size_request(80, -1)
         
-        self.pack_start(label, False, False)
-        self.pack_start(self.combobox, False, False)
-        self.pack_start(self.entry, True, True)
-        self.pack_start(button, False, False)
-        self.pack_start(button_2, False, False)
+        self.pack_start(label, False, False, 0)
+        self.pack_start(self.combobox, False, False, 0)
+        self.pack_start(self.entry, True, True, 0)
+        self.pack_start(button, False, False, 0)
+        self.pack_start(button_2, False, False, 0)
         
         self.combobox.connect("changed", self.on_change_icon)
         
@@ -96,63 +96,63 @@ class IconBlock(gtk.HBox):
                 self.combobox.set_active(0)
             else:
                 error_window = ChildTopWindow("Error")
-                label = gtk.Label("You can not remove a standard icon")
+                label = Gtk.Label("You can not remove a standard icon")
                 error_window.add(label)
                 error_window.show()
         except ValueError, e:
             logging.error("There is not such icon in the list" + str(e))        
         
-class FrameDecorator(gtk.Frame):
+class FrameDecorator(Gtk.Frame):
     def __init__(self, text, widget):
-        gtk.Frame.__init__(self, text)
+        Gtk.Frame.__init__(self, label=text)
         self.add(widget)
         
-class ChooseDecorator(gtk.HBox):
+class ChooseDecorator(Gtk.HBox):
     def __init__(self, parent, widget):
-        gtk.HBox.__init__(self, False, 0)
-        self.widget = widget
-        self.button = gtk.RadioButton(parent)
+        Gtk.HBox.__init__(self, False, 0)
+        self._widget = widget
+        self.button = Gtk.RadioButton(parent)
         self.on_toggle()
         self.button.connect("toggled", self.on_toggle)
-        box = HBoxDecorator(self.button, self.widget)
+        box = HBoxDecorator(self.button, self._widget)
         self.pack_start(box, False, True)
     
     def on_toggle(self, *a):
         if self.button.get_active():
-            self.widget.set_sensitive(True)
+            self._widget.set_sensitive(True)
         else:
-            self.widget.set_sensitive(False)
+            self._widget.set_sensitive(False)
     
     def get_radio_button(self): 
         return self.button       
 
-class VBoxDecorator(gtk.VBox):
+class VBoxDecorator(Gtk.VBox):
     def __init__(self, *args):
-        gtk.VBox.__init__(self, False, 0)
+        Gtk.VBox.__init__(self, False, 0)
         for widget in args:
             self.pack_start(widget, False, False) 
         self.show_all()
 
-class HBoxDecorator(gtk.HBox):
+class HBoxDecorator(Gtk.HBox):
     def __init__(self, *args):
-        gtk.HBox.__init__(self, False, 0)
+        Gtk.HBox.__init__(self, False, 0)
         for widget in args:
             self.pack_start(widget, False, False)   
         self.show_all()
 
-class HBoxDecoratorTrue(gtk.HBox):
+class HBoxDecoratorTrue(Gtk.HBox):
     def __init__(self, *args):
-        gtk.HBox.__init__(self, False, 0)
+        Gtk.HBox.__init__(self, False, 0)
         for widget in args:
-            self.pack_start(widget, True, True)   
+            self.pack_start(widget, True, True, 0)
         self.show_all()
 
 
-class HBoxLableEntry(gtk.HBox):
+class HBoxLableEntry(Gtk.HBox):
     def __init__(self, text, entry):
-        gtk.HBox.__init__(self, False, 0)                    
-        self.pack_start(text, False, False)
-        self.pack_start(entry, True, True)   
+        Gtk.HBox.__init__(self, False, 0)
+        self.pack_start(text, False, False, 0)
+        self.pack_start(entry, True, True, 0)
         self.show_all()
         
 class ModelConstructor():
@@ -161,7 +161,7 @@ class ModelConstructor():
     
     def __init__(self, all_icons):
         
-        self.model = gtk.ListStore(gobject.TYPE_OBJECT, str)
+        self.model = Gtk.ListStore(GObject.TYPE_OBJECT, str)
         
         for icon_name in all_icons:
             self.apeend_icon(None, icon_name)          

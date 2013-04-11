@@ -2,8 +2,9 @@
 
 from foobnix.regui.model.signal import FControl
 
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GObject
 import logging
 
 from foobnix.helpers.window import ChildTopWindow
@@ -15,12 +16,14 @@ import threading
 from foobnix.util import analytics
 
 
-class AdvancedDrawingArea(gtk.DrawingArea):
+class AdvancedDrawingArea(Gtk.DrawingArea):
     def __init__(self, controls):  
-        gtk.DrawingArea.__init__(self)
+        Gtk.DrawingArea.__init__(self)
         self.controls = controls
-        self.set_events(gtk.gdk.ALL_EVENTS_MASK) #@UndefinedVariable
-        self.set_flags(gtk.CAN_FOCUS)
+        self.set_events(Gdk.EventMask.ALL_EVENTS_MASK) #@UndefinedVariable
+
+        # TODO: check it
+        ## self.set_flags(Gtk.CAN_FOCUS)
         
         self.connect("key-release-event", self.on_key_press)
         self.connect("button-press-event", self.on_button_press)
@@ -59,8 +62,9 @@ class FullScreanArea(ChildTopWindow):
             ChildTopWindow.__init__(self, "movie")
             self.set_hide_on_escape(False)
             self.on_hide_callback = on_hide_callback
-            self.set_flags(gtk.CAN_FOCUS)
-            self.layout = gtk.VBox(False)
+            ## TODO: check it
+            ##self.set_flags(Gtk.CAN_FOCUS)
+            self.layout = Gtk.VBox(False)
             self.set_property("skip-taskbar-hint", True)
             self.set_keep_above(True)
             self.draw = AdvancedDrawingArea(controls)
@@ -68,37 +72,37 @@ class FullScreanArea(ChildTopWindow):
             self.set_resizable(True)
             self.set_border_width(0)
             
-            self.layout.pack_start(self.draw, True)
+            self.layout.pack_start(self.draw, True, False, 0)
                         
-            self.text_label = gtk.Label("foobnix")
-            self.volume_button= gtk.VolumeButton()
+            self.text_label = Gtk.Label("foobnix")
+            self.volume_button = Gtk.VolumeButton()
             self.volume_button.connect("value-changed", self.volume_changed)
             
-            line = gtk.HBox(False)            
-            line.pack_start(ImageButton(gtk.STOCK_FULLSCREEN, on_hide_callback, _("Exit Fullscrean")), False)
-            line.pack_start(PlaybackControls(controls), False)
-            line.pack_start(controls.seek_bar_movie, True)
-            line.pack_start(gtk.SeparatorToolItem(),False)
-            line.pack_start(self.text_label, False)
-            line.pack_start(gtk.SeparatorToolItem(),False)
-            line.pack_start(self.volume_button, False)
+            line = Gtk.HBox(False)
+            line.pack_start(ImageButton(Gtk.STOCK_FULLSCREEN, on_hide_callback, _("Exit Fullscrean")), False, False, 0)
+            line.pack_start(PlaybackControls(controls), False, False, 0)
+            line.pack_start(controls.seek_bar_movie, True, False, 0)
+            line.pack_start(Gtk.SeparatorToolItem(), False, False, 0)
+            line.pack_start(self.text_label, False, False, 0)
+            line.pack_start(Gtk.SeparatorToolItem(), False, False, 0)
+            line.pack_start(self.volume_button, False, False, 0)
             line.show_all()
             
-            control_panel = gtk.Window(gtk.WINDOW_POPUP)
+            control_panel = Gtk.Window(Gtk.WindowType.POPUP)
             control_panel.set_size_request(800, -1)
             control_panel.add(line)
             
             self.add(self.layout)
                        
-            self.draw.connect("enter-notify-event", lambda *a: gobject.idle_add(control_panel.hide))
+            self.draw.connect("enter-notify-event", lambda *a: GObject.idle_add(control_panel.hide))
             
             def my_event(w, e):
-                if e.y > gtk.gdk.screen_height() - 5: #@UndefinedVariable
+                if e.y > Gdk.screen_height() - 5: #@UndefinedVariable
                     def safe_task():
                         control_panel.show()
-                        control_panel.set_size_request(gtk.gdk.screen_width(), -1)#@UndefinedVariable
-                        control_panel.move(0, gtk.gdk.screen_height() - control_panel.get_allocation().height)#@UndefinedVariable
-                    gobject.idle_add(safe_task)
+                        control_panel.set_size_request(Gdk.screen_width(), -1)#@UndefinedVariable
+                        control_panel.move(0, Gdk.screen_height() - control_panel.get_allocation().height)#@UndefinedVariable
+                    GObject.idle_add(safe_task)
                     
             self.connect("motion-notify-event", my_event)
                       
@@ -106,26 +110,26 @@ class FullScreanArea(ChildTopWindow):
             self.controls.volume.set_value(float(value * 100))
         
         def set_text(self, text):
-            gobject.idle_add(self.text_label.set_text, text)
+            GObject.idle_add(self.text_label.set_text, text)
         
         def get_draw(self):
             return self.draw
             
         def hide_window(self, *a):
-            gobject.idle_add(self.hide)         
+            GObject.idle_add(self.hide)
                     
         def show_window(self):
             def safe_task():
                 self.fullscreen()
                 self.volume_button.set_value(float(self.controls.volume.volume_scale.get_value()/ 100))
                 self.show_all()
-            gobject.idle_add(safe_task)
+            GObject.idle_add(safe_task)
             
 
-class MovieDrawingArea(FControl, gtk.Frame):
+class MovieDrawingArea(FControl, Gtk.Frame):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        gtk.Frame.__init__(self)
+        Gtk.Frame.__init__(self)
               
         self.set_label_widget(notetab_label(self.hide))
         self.set_label_align(1.0, 0.0)
@@ -139,10 +143,11 @@ class MovieDrawingArea(FControl, gtk.Frame):
         self.fullscrean_area = FullScreanArea(controls, self.on_small_screen)
         
         def modyfy_background():
-            for state in (gtk.STATE_NORMAL, gtk.STATE_PRELIGHT, gtk.STATE_ACTIVE, gtk.STATE_SELECTED, gtk.STATE_INSENSITIVE):
+            for state in (Gtk.StateType.NORMAL, Gtk.STATE_PRELIGHT, Gtk.STATE_ACTIVE, Gtk.STATE_SELECTED, Gtk.STATE_INSENSITIVE):
                 self.smallscree_area.modify_bg(state, self.smallscree_area.get_colormap().alloc_color("black"))
                 self.fullscrean_area.draw.modify_bg(state, self.fullscrean_area.get_colormap().alloc_color("black"))
-        gobject.idle_add(modyfy_background)
+        # TODO Fix it
+        #GObject.idle_add(modyfy_background)
         
         self.output = None
         self.set_output(self.smallscree_area)
@@ -165,7 +170,7 @@ class MovieDrawingArea(FControl, gtk.Frame):
         analytics.action("FullScreanArea");
                 
     def set_text(self, text):
-        gobject.idle_add(self.fullscrean_area.set_text, text)
+        GObject.idle_add(self.fullscrean_area.set_text, text)
         
     def on_small_screen(self):
         self.controls.state_stop(True)
@@ -187,7 +192,7 @@ class MovieDrawingArea(FControl, gtk.Frame):
                 '''trick to amoid possible black screen in movie_area'''
                 threading.Timer(0.5, lambda: self.get_output().set_size_request(-1, 400)).start()
                 
-            gobject.idle_add(safe_task)
+            GObject.idle_add(safe_task)
             
 
                   

@@ -4,12 +4,13 @@ Created on Oct 14, 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
+from gi.repository import Gdk
 import sys
 import copy
 import uuid
 import thread
-import gobject
+from gi.repository import GObject
 import logging
 import os.path
 import threading
@@ -32,10 +33,10 @@ VIEW_PLAIN = 0
 VIEW_TREE = 1
 
 
-class DragDropTree(gtk.TreeView):
+class DragDropTree(Gtk.TreeView):
     def __init__(self, controls):
         self.controls = controls
-        gtk.TreeView.__init__(self)
+        Gtk.TreeView.__init__(self)
         
         self.connect("drag-begin", self.on_drag_begin)
         self.connect("drag-drop", self.on_drag_drop)
@@ -53,11 +54,11 @@ class DragDropTree(gtk.TreeView):
             self.drag_source_set_icon_stock('gtk-dnd')
                 
     def configure_recive_drag(self):
-        self.enable_model_drag_dest([("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE)   # @UndefinedVariable
+        self.enable_model_drag_dest([("text/uri-list", 0, 0)], Gdk.DragAction.COPY | Gdk.DragAction.MOVE) # @UndefinedVariable
     
     def configure_send_drag(self):
-        #self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
-        self.drag_source_set(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)],gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE) #@UndefinedVariable
+        #self.enable_model_drag_source(Gdk.ModifierType.BUTTON1_MASK, [("text/uri-list", 0, 0)], Gdk.ModifierType.ACTION_COPY | Gdk.ModifierType.ACTION_MOVE) #@UndefinedVariable
+        self.drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [Gtk.TargetEntry.new("text/uri-list", 0, 0)], Gdk.DragAction.COPY | Gdk.DragAction.MOVE) #@UndefinedVariable
     
     def append_all(self, beans):
         logging.debug("begin append all")
@@ -193,7 +194,7 @@ class DragDropTree(gtk.TreeView):
         new_iter = None
         self.row_to_remove = []
         
-        ff_row_refs = [gtk.TreeRowReference(ff_model, ff_path) for ff_path in ff_paths]
+        ff_row_refs = [Gtk.TreeRowReference(ff_model, ff_path) for ff_path in ff_paths]
         
         """to tree is NavigationTreeControl"""
         if "NavigationTreeControl" in str(to_tree):
@@ -214,7 +215,7 @@ class DragDropTree(gtk.TreeView):
                                   " Please retry!"))
                     return
             if files and copy_move_files_dialog(files, dest_folder, self.copy):
-                text = _("Copying:") if self.copy == gtk.gdk.ACTION_COPY else _("Replacing:")   # @UndefinedVariable
+                text = _("Copying:") if self.copy == Gdk.DragAction.COPY else _("Replacing:")   # @UndefinedVariable
                 self.pr_window = CopyProgressWindow(_("Progress"), files, 300, 100)
                 self.pr_window.label_from.set_text(text)
                 self.pr_window.label_to.set_text(_("To: ") + dest_folder + "\n")
@@ -245,11 +246,11 @@ class DragDropTree(gtk.TreeView):
                             child_row[self.path[0]] = os.path.join(row[self.path[0]], os.path.basename(child_row[self.path[0]]))
                             self.tree_insert_row(child_row)
                             task(child_row)
-                            if self.copy == gtk.gdk.ACTION_MOVE:    # @UndefinedVariable
+                            if self.copy == Gdk.DragAction.MOVE:    # @UndefinedVariable
                                 self.row_to_remove.append(self.get_row_reference_from_iter(ff_model,
                                                                ff_model.convert_child_iter_to_iter(child_row.iter)))
                     task(row)
-                    if self.copy == gtk.gdk.ACTION_MOVE:    # @UndefinedVariable
+                    if self.copy == Gdk.DragAction.MOVE:    # @UndefinedVariable
                         self.row_to_remove.append(ff_row_ref)
                     
                 self.remove_replaced(ff_model)
@@ -383,7 +384,7 @@ class DragDropTree(gtk.TreeView):
             from_iter = self.get_iter_from_row_reference(ref)
             from_model = ref.get_model()
             row = self.get_row_from_model_iter(from_model, from_iter)
-            if not child and self.copy == gtk.gdk.ACTION_MOVE:  # @UndefinedVariable
+            if not child and self.copy == Gdk.DragAction.MOVE:  # @UndefinedVariable
                 self.row_to_remove.append(ref)
         
         if (to_tree and hasattr(to_tree, "current_view") 
@@ -498,16 +499,16 @@ class DragDropTree(gtk.TreeView):
             logging.debug('new file: ' + new_path)
 
             def task():
-                if self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
+                if self.copy == Gdk.DragAction.MOVE: #@UndefinedVariable
                     copy_move_with_progressbar(self.pr_window, old_path, dest_folder, move=True)
                 else:
                     copy_move_with_progressbar(self.pr_window, old_path, dest_folder)
-                self.pr_window.response(gtk.RESPONSE_OK)
+                self.pr_window.response(Gtk.RESPONSE_OK)
                             
             t = threading.Thread(target=task)
             t.start()
                         
-            if self.pr_window.run() == gtk.RESPONSE_REJECT:
+            if self.pr_window.run() == Gtk.RESPONSE_REJECT:
                 self.pr_window.exit = True
                 t.join()
            
@@ -600,7 +601,7 @@ class DragDropTree(gtk.TreeView):
     def tree_append_all(self, beans):
         def task():
             self._tree_append_all(beans)
-        gobject.idle_add(task)
+        GObject.idle_add(task)
         
     def _tree_append_all(self, beans):
         if not beans:
@@ -673,7 +674,7 @@ class DragDropTree(gtk.TreeView):
             finally:
                 if "PlaylistTreeControl" in str(self):
                     thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
-        gobject.idle_add(task)
+        GObject.idle_add(task)
     
     def _plain_append_all(self, beans, parent=None):
         logging.debug("begin plain append all")
@@ -728,6 +729,7 @@ class DragDropTree(gtk.TreeView):
             row = self.get_row_from_bean(one)            
             
             logging.debug(row)
+            logging.debug(self.model)
             self.model.append(parent_iter, row)            
             
     def fill_beans_and_get_rows(self, beans, filter=None):

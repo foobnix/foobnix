@@ -6,7 +6,7 @@ Created on 28 сент. 2010
 '''
 from curses.ascii import SO
 import logging
-import gobject
+from gi.repository import GObject
 import dbus.service
 from foobnix.fc.fc import FC
 from foobnix.version import FOOBNIX_VERSION
@@ -69,7 +69,7 @@ class DBusManager(dbus.service.Object, FControl):
         self.controls.state_pause()
 
     def _sound_menu_raise(self):
-        gobject.idle_add(self.controls.main_window.show)
+        GObject.idle_add(self.controls.main_window.show)
 
     def _set_state_play(self):
         if self.sound_menu:

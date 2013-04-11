@@ -1,4 +1,3 @@
-#Tue Nov 27 22:14:44 EET 2012
 eclipse.preferences.version=1
 encoding//foobnix/eq/eq_controller.py=utf-8
 encoding//foobnix/eq/eq_gui.py=utf-8
@@ -9,11 +8,14 @@ encoding//foobnix/fc/fc_helper.py=utf-8
 encoding//foobnix/helpers/dialog_entry.py=utf-8
 encoding//foobnix/helpers/my_widgets.py=utf-8
 encoding//foobnix/helpers/window.py=utf-8
+encoding//foobnix/preferences/config_plugin.py=utf-8
 encoding//foobnix/preferences/configs/last_fm.py=utf-8
 encoding//foobnix/preferences/configs/music_library.py=utf-8
+encoding//foobnix/preferences/configs/notification_conf.py=utf-8
 encoding//foobnix/preferences/configs/other_conf.py=utf-8
 encoding//foobnix/preferences/configs/tabs.py=utf-8
 encoding//foobnix/preferences/configs/tray_icon_conf.py=utf-8
+encoding//foobnix/regui/about/about.py=utf-8
 encoding//foobnix/regui/base_controls.py=utf-8
 encoding//foobnix/regui/base_layout.py=utf-8
 encoding//foobnix/regui/controls/dbus_manager.py=utf-8
@@ -22,6 +24,7 @@ encoding//foobnix/regui/controls/movie_area.py=utf-8
 encoding//foobnix/regui/controls/seach_progress.py=utf-8
 encoding//foobnix/regui/controls/seekbar.py=utf-8
 encoding//foobnix/regui/controls/tray_icon.py=utf-8
+encoding//foobnix/regui/controls/volume.py=utf-8
 encoding//foobnix/regui/engine/gstreamer.py=utf-8
 encoding//foobnix/regui/foobnix_core.py=utf-8
 encoding//foobnix/regui/model/signal.py=utf-8

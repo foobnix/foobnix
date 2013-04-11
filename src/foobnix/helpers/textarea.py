@@ -4,30 +4,30 @@ Created on Oct 29, 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 import pango
-import gobject
+from gi.repository import GObject
 
 from foobnix.helpers.image import ImageBase
 
 
-class TextArea(gtk.ScrolledWindow):
+class TextArea(Gtk.ScrolledWindow):
     def __init__(self):
-        gtk.ScrolledWindow.__init__(self)
+        Gtk.ScrolledWindow.__init__(self)
         
-        texttagtable = gtk.TextTagTable()
-        self.buffer = gtk.TextBuffer(texttagtable)
+        texttagtable = Gtk.TextTagTable()
+        self.buffer = Gtk.TextBuffer.new(texttagtable)
         
-        self.tag_bold = gtk.TextTag("bold")
+        self.tag_bold = Gtk.TextTag(name="bold")
         self.tag_bold.set_property("weight", pango.WEIGHT_BOLD)
         
         texttagtable.add(self.tag_bold)
         
-        text = gtk.TextView(self.buffer)
-        text.set_wrap_mode(gtk.WRAP_WORD)
+        text = Gtk.TextView(buffer=self.buffer)
+        text.set_wrap_mode(Gtk.WrapMode.WORD)
         text.set_editable(False)
                 
-        self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         self.add(text)
         
         self.scroll = self
@@ -41,7 +41,7 @@ class TextArea(gtk.ScrolledWindow):
             image = ImageBase(None)
             image.set_image_from_url(url)
             self.buffer.insert_pixbuf(enditer, image.get_pixbuf())
-        gobject.idle_add(safe_task)
+        GObject.idle_add(safe_task)
         
     def set_text(self, text="", bold_text=""):
         if not text:
@@ -57,7 +57,7 @@ class TextArea(gtk.ScrolledWindow):
             start = self.buffer.get_iter_at_offset(0)
             end = self.buffer.get_iter_at_offset(len(unicode(bold_text)))
             self.buffer.apply_tag(self.tag_bold, start, end)
-        gobject.idle_add(safe_task)
+        GObject.idle_add(safe_task)
 
         
     def clear_tags(self, text):
@@ -79,10 +79,10 @@ class TextArea(gtk.ScrolledWindow):
                                         
 class ScrolledText():
     def __init__(self):
-        self.buffer = gtk.TextBuffer()
-        self.text = gtk.TextView(self.buffer)
+        self.buffer = Gtk.TextBuffer()
+        self.text = Gtk.TextView(self.buffer)
         self.text.set_editable(False)
         self.text.set_cursor_visible(False)
-        self.scroll = gtk.ScrolledWindow()
-        self.scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.scroll = Gtk.ScrolledWindow()
+        self.scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         self.scroll.add(self.text)     

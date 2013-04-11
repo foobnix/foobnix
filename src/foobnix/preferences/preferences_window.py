@@ -3,10 +3,10 @@
 # example packbox.py
 
 import os
-import gtk
+from gi.repository import Gtk
 import thread
 import logging
-import gobject
+from gi.repository import GObject
 
 from foobnix.fc.fc import FC
 from foobnix.regui.model import FDModel
@@ -22,7 +22,6 @@ from foobnix.preferences.configs.network_conf import NetworkConfig
 from foobnix.preferences.configs.tray_icon_conf import TrayIconConfig
 from foobnix.preferences.configs.music_library import MusicLibraryConfig
 from foobnix.util import analytics
-
 
 
 class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
@@ -44,7 +43,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
                
         try:
             """check keybinder installed, debian"""
-            import keybinder #@UnresolvedImport @UnusedImport
+            from gi.repository import Keybinder #@UnresolvedImport @UnusedImport
             from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
             self.configs.append(HotKeysConfig(controls))
         except Exception, e:
@@ -54,11 +53,11 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         
         self.label = None
 
-        mainVBox = gtk.VBox(False, 0)
+        mainVBox = Gtk.VBox(False, 0)
         
         ChildTopWindow.__init__(self, _("Preferences"), 900, 550)
 
-        paned = gtk.HPaned()
+        paned = Gtk.HPaned()
         paned.set_position(250)
         
         def func():
@@ -75,24 +74,24 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
         paned.add1(self.navigation.scroll)
 
-        cbox = gtk.VBox(False, 0)
+        cbox = Gtk.VBox(False, 0)
         for plugin in self.configs:
-            cbox.pack_start(plugin.widget, False, True)
+            cbox.pack_start(plugin.widget, False, True, 0)
 
-        self.container = self.create_container(cbox)
-        paned.add2(self.container)
+        self._container = self.create_container(cbox)
+        paned.add2(self._container)
 
         mainVBox.pack_start(paned, True, True, 0)
         mainVBox.pack_start(self.create_save_cancel_buttons(), False, False, 0)
         
         #self.add(mainVBox)
-        gobject.idle_add(self.add, mainVBox)
+        GObject.idle_add(self.add, mainVBox)
             
     def show(self, current=CONFIG_MUSIC_LIBRARY):
         self.show_all()
         self.populate_config_category(current)
         self.on_load()
-        analytics.action("PreferencesWindow");
+        analytics.action("PreferencesWindow")
     
     def on_load(self):
         logging.debug("LOAD PreferencesWindow")
@@ -127,24 +126,24 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
                 plugin.widget.hide()
 
     def create_save_cancel_buttons(self):
-        box = gtk.HBox(False, 0)
+        box = Gtk.HBox(False, 0)
         box.show()
 
-        button_restore = gtk.Button(_("Restore Defaults Settings"))
-        button_restore.connect("clicked", lambda * a:self.restore_defaults())
+        button_restore = Gtk.Button(_("Restore Defaults Settings"))
+        button_restore.connect("clicked", lambda * a: self.restore_defaults())
         button_restore.show()
 
-        button_apply = gtk.Button(_("Apply"))
+        button_apply = Gtk.Button(_("Apply"))
         button_apply.set_size_request(100, -1)
-        button_apply.connect("clicked", lambda * a:self.on_save())
+        button_apply.connect("clicked", lambda * a: self.on_save())
         button_apply.show()
         
-        button_close = gtk.Button(_("Close"))
+        button_close = Gtk.Button(_("Close"))
         button_close.set_size_request(100, -1)
         button_close.connect("clicked", self.hide_window)
         button_close.show()
         
-        empty = gtk.Label("")
+        empty = Gtk.Label("")
         empty.show()
 
         box.pack_start(button_restore, False, True, 0)
@@ -156,7 +155,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
     def restore_defaults(self):
         logging.debug("restore defaults settings")
-        gtk.main_quit()
+        Gtk.main_quit()
         FC().delete()
         thread.start_new_thread(os.system, ("foobnix",))
 
@@ -165,13 +164,13 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.label.set_markup('<b><i><span  size="x-large" >' + title + '</span></i></b>');
 
     def create_container(self, widget):
-        box = gtk.VBox(False, 0)
+        box = Gtk.VBox(False, 0)
         box.show()
 
-        self.label = gtk.Label()
+        self.label = Gtk.Label()
         self.label.show()
 
-        separator = gtk.HSeparator()
+        separator = Gtk.HSeparator()
         separator.show()
 
         box.pack_start(self.label, False, True, 0)
@@ -183,4 +182,4 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 if __name__ == "__main__":
     w = PreferencesWindow(None)    
     w.show()
-    gtk.main()
+    Gtk.main()

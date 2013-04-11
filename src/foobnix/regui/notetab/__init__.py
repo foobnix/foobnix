@@ -5,9 +5,10 @@ Created on Dec 20, 2010
 @author: zavlab1
 '''
 
-import gtk
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GObject
 import thread
-import gobject
 import logging
 import threading
 
@@ -31,23 +32,23 @@ from foobnix.util.mouse_utils import is_double_left_click, is_double_middle_clic
 from foobnix.regui.treeview.navigation_tree import NavigationTreeControl
 
 
-class TabGeneral(gtk.Notebook, FControl, LoadSave):
+class TabGeneral(Gtk.Notebook, FControl, LoadSave):
     def __init__(self, controls):
-        gtk.Notebook.__init__(self)
+        Gtk.Notebook.__init__(self)
         FControl.__init__(self, controls)
         self.controls = controls
         self.set_properties("tab-expand", True)
         self.set_scrollable(True)
         self.save_lock = threading.Lock()
         self.connect("page-reordered", self.reorder_callback)
-        add_button = ImageButton(gtk.STOCK_ADD, func=self.on_add_button_click, size=gtk.ICON_SIZE_BUTTON)
+        add_button = ImageButton(Gtk.STOCK_ADD, func=self.on_add_button_click, size=Gtk.IconSize.BUTTON)
         add_button.show()
-        self.set_action_widget(add_button, gtk.PACK_START)
+        self.set_action_widget(add_button, Gtk.PackType.START)
         self.default_angle = 0
         self.navig = False if isinstance(self, NoteTabControl) else True
         
     def to_eventbox(self, widget, tab_child):
-        event = gtk.EventBox()
+        event = Gtk.EventBox()
         event.add(widget)
         event.set_visible_window(False)
         event.connect("button-press-event", self.on_button_press, tab_child)
@@ -66,9 +67,12 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
             return notetab_label(func=self.on_delete_tab, arg=tab_child, angle=90)
     
     def create_notebook_content(self, beans=None, optimization=False):
+        logging.debug("Creating notetabl content, beans: %s, optimization: %s" % (beans, optimization))
         if not self.navig:
+            logging.debug("PlaylistTreeControl")
             treeview = PlaylistTreeControl(self.controls)
         else:
+            logging.debug("NavigationTreeControl")
             treeview = NavigationTreeControl(self.controls)
          
         if beans: 
@@ -95,7 +99,7 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
         box = eventbox.get_child()
         box_lenth = len(box.get_children())
         
-        if type(box.get_children()[0]) == gtk.Label:
+        if type(box.get_children()[0]) == Gtk.Label:
             label_object = box.get_children()[0]
         else: 
             label_object = box.get_children()[1]
@@ -125,11 +129,11 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
                
         old_name = self.get_full_tab_name(tab)
         
-        window = gtk.Window()
+        window = Gtk.Window()
         window.set_decorated(False)
-        window.set_position(gtk.WIN_POS_MOUSE)
+        window.set_position(Gtk.WIN_POS_MOUSE)
         window.set_border_width(5)
-        entry = gtk.Entry()
+        entry = Gtk.Entry()
         entry.set_text(old_name)
         entry.show()
         
@@ -163,7 +167,7 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
     def append_tab(self, name=_("Empty tab"), beans=None, optimization=False):
         def task():
             self._append_tab(name, beans, optimization)
-        gobject.idle_add(task)
+        GObject.idle_add(task)
         
         
     def _append_tab(self, full_name=_("Empty tab"), beans=None, optimization=False):
@@ -195,14 +199,14 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
         
         if FC().tab_position == "left" or self.navig:
             """container Vertical Tab"""
-            box = gtk.VBox(False, 0)
+            box = Gtk.VBox(False, 0)
             box.show()
             if FC().tab_close_element:
                 box.pack_start(self.button(tab), False, False, 0)
             box.pack_end(tab_content.label, False, False, 0)
         else: 
             """container Horizontal Tab"""
-            box = gtk.HBox(False, 0)
+            box = Gtk.HBox(False, 0)
             box.show()
             if FC().tab_close_element:
                 box.pack_end(self.button(tab), False, False, 0)
@@ -253,7 +257,7 @@ class TabGeneral(gtk.Notebook, FControl, LoadSave):
             print "Exception: %s" % str(e)
     
 TARGET_TYPE_URI_LIST = 80
-dnd_list = [('text/uri-list', 0, TARGET_TYPE_URI_LIST)]
+dnd_list = [Gtk.TargetEntry.new('text/uri-list', 0, TARGET_TYPE_URI_LIST)]
 
 
 class NoteTabControl(TabGeneral):
@@ -270,7 +274,7 @@ class NoteTabControl(TabGeneral):
         self.connect('drag-data-received', self.on_system_drag_data_received)
         self.connect('switch-page', self.equalize_columns_size)
         
-        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP, dnd_list, gtk.gdk.ACTION_MOVE | gtk.gdk.ACTION_COPY) #@UndefinedVariable
+        self.drag_dest_set(Gtk.DestDefaults.MOTION | Gtk.DestDefaults.DROP, dnd_list, Gdk.DragAction.MOVE | Gdk.DragAction.COPY) #@UndefinedVariable
         
         if not FCache().cache_pl_tab_contents:
             self.append_tab()
@@ -294,7 +298,7 @@ class NoteTabControl(TabGeneral):
         1. when you click on eventbox, appears extra the signal from the notebook
         2. when double-clicking, the first click is handled"""
         
-        if type(w) == gtk.EventBox: 
+        if type(w) == Gtk.EventBox:
             self.stop_handling = True
             #add delay in the background
 
@@ -303,11 +307,11 @@ class NoteTabControl(TabGeneral):
             threading.Timer(0.3, start_handling).start()
         
         #Get rid of the parasitic signal    
-        if self.stop_handling and type(w) != gtk.EventBox: 
+        if self.stop_handling and type(w) != Gtk.EventBox:
             return
         
         #handling of double middle click
-        if is_double_middle_click(e) and type(w) == gtk.EventBox:
+        if is_double_middle_click(e) and type(w) == Gtk.EventBox:
             #this variable helps to ignore first click, when double-clicking
             self.val = False
             self.on_rename_tab(tab_content)
@@ -318,7 +322,7 @@ class NoteTabControl(TabGeneral):
             
             def midclick():
                 if self.val:
-                    if type(w) == gtk.EventBox:
+                    if type(w) == Gtk.EventBox:
                         n = self.page_num(tab_content)
                         self.remove_page(n)
                     else:
@@ -329,15 +333,15 @@ class NoteTabControl(TabGeneral):
                         
         #to show context menu       
         elif is_rigth_click(e):
-            if type(w) == gtk.EventBox:
+            if type(w) == Gtk.EventBox:
                 w.menu.show_all()
-                w.menu.popup(None, None, None, e.button, e.time)    
+                w.menu.popup(None, None, None, None, e.button, e.time)    
 
     def tab_menu_creator(self, widget, tab_child):   
         widget.menu = Popup()
         widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, self.default_angle), None)
-        widget.menu.add_item(_("Save playlist as"), gtk.STOCK_SAVE_AS, lambda: self.on_save_playlist(tab_child))
-        widget.menu.add_item(_("Close tab"), gtk.STOCK_CLOSE, lambda: self.on_delete_tab(tab_child), None)
+        widget.menu.add_item(_("Save playlist as"), Gtk.STOCK_SAVE_AS, lambda: self.on_save_playlist(tab_child))
+        widget.menu.add_item(_("Close tab"), Gtk.STOCK_CLOSE, lambda: self.on_delete_tab(tab_child), None)
         widget.show()
         return widget   
         
@@ -353,12 +357,12 @@ class NoteTabControl(TabGeneral):
         
     def set_tab_left(self):
         logging.info("Set tabs Left")
-        self.set_tab_pos(gtk.POS_LEFT)
+        self.set_tab_pos(Gtk.POS_LEFT)
         self.default_angle = 90
         self.set_show_tabs(True)
         for page in xrange(self.get_n_pages() - 1, 0, -1):
             tab = self.get_nth_page(page)
-            vbox = gtk.VBox()
+            vbox = Gtk.VBox()
             label = tab.get_child().label
             label.set_angle(self.default_angle)
             
@@ -375,12 +379,12 @@ class NoteTabControl(TabGeneral):
             
     def set_tab_top(self):
         logging.info("Set tabs top")
-        self.set_tab_pos(gtk.POS_TOP)
+        self.set_tab_pos(Gtk.POS_TOP)
         self.default_angle = 0
         self.set_show_tabs(True)
         for page in xrange(self.get_n_pages() - 1, 0, -1):
             tab = self.get_nth_page(page)
-            hbox = gtk.HBox()
+            hbox = Gtk.HBox()
             label = tab.get_child().label
             label.set_angle(self.default_angle)
             
@@ -481,7 +485,7 @@ class NoteTabControl(TabGeneral):
             old_pl_tree_columns = self.get_current_tree().get_columns()
             new_pl_tree_columns = self.get_nth_page(page_num).get_child().get_columns()
             for old_pl_tree_column, new_pl_tree_column in zip(old_pl_tree_columns, new_pl_tree_columns):
-                gobject.idle_add(new_pl_tree_column.set_fixed_width,old_pl_tree_column.get_width())
+                GObject.idle_add(new_pl_tree_column.set_fixed_width,old_pl_tree_column.get_width())
         except AttributeError:
             pass
     

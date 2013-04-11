@@ -6,8 +6,8 @@ Created on 25 сент. 2010
 '''
 
 import copy
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import GObject
 import os
 import time
 import thread
@@ -60,10 +60,10 @@ class BaseFoobnixControls():
                 files.append(arg)
         if dirs:
             self.on_add_folders(dirs)
-            gobject.idle_add(self.play_first_file_in_playlist)
+            GObject.idle_add(self.play_first_file_in_playlist)
         elif files:            
             self.on_add_files(files)
-            gobject.idle_add(self.play_first_file_in_playlist)
+            GObject.idle_add(self.play_first_file_in_playlist)
     
     def love_this_tracks(self, beans=None):        
         if not beans:
@@ -259,7 +259,7 @@ class BaseFoobnixControls():
                     tab_child = self.tabhelper.get_nth_page(n)
                     tree = tab_child.get_child()
                     self.update_music_tree(tree, n)
-            gobject.idle_add(cycle)
+            GObject.idle_add(cycle)
     
     def update_music_tree(self, tree, number_of_page=0):
         
@@ -285,14 +285,14 @@ class BaseFoobnixControls():
                 logging.warn("Object perspective not exists yet")
         tree.append_all(all)     # safe method
         tree.ext_width = tree.ext_column.get_width()
-        gobject.idle_add(self.tabhelper.on_save_tabs)   # for true order
+        GObject.idle_add(self.tabhelper.on_save_tabs)   # for true order
           
     def set_visible_video_panel(self, flag):
         FC().is_view_video_panel = flag
         if flag:
-            gobject.idle_add(self.movie_window.show)
+            GObject.idle_add(self.movie_window.show)
         else:
-            gobject.idle_add(self.movie_window.hide)
+            GObject.idle_add(self.movie_window.hide)
 
     def volume_up(self):
         self.volume.volume_up()
@@ -304,13 +304,13 @@ class BaseFoobnixControls():
         self.volume.mute()
     
     def hide(self):
-        gobject.idle_add(self.main_window.hide)
+        GObject.idle_add(self.main_window.hide)
     
     def show_hide(self):
-        gobject.idle_add(self.main_window.show_hide)
+        GObject.idle_add(self.main_window.show_hide)
         
     def show(self):
-        gobject.idle_add(self.main_window.show)
+        GObject.idle_add(self.main_window.show)
     
     def play_pause(self):
         if self.media_engine.get_state() == STATE_PLAY:
@@ -327,9 +327,9 @@ class BaseFoobnixControls():
     def windows_visibility(self):
         visible = self.main_window.get_property('visible')
         if visible:
-            gobject.idle_add(self.main_window.hide)
+            GObject.idle_add(self.main_window.hide)
         else:
-            gobject.idle_add(self.main_window.show)
+            GObject.idle_add(self.main_window.show)
 
     def state_play(self, under_pointer_icon=False):
         if self.media_engine.get_state() == STATE_PAUSE:
@@ -396,7 +396,7 @@ class BaseFoobnixControls():
                 self.record.hide()
                     
             self.main_window.set_title(bean.text)
-        gobject.idle_add(task)
+        GObject.idle_add(task)
         thread.start_new_thread(self._one_thread_play, (bean,))
 
     def _one_thread_play(self, bean):
@@ -705,7 +705,7 @@ class BaseFoobnixControls():
         
         FC().save()
         
-        gtk.main_quit()
+        Gtk.main_quit()
                
     def check_version(self):
         uuid = FCBase().uuid
@@ -768,13 +768,14 @@ class BaseFoobnixControls():
             img = get_foobnix_resourse_path_by_name(FC().background_image)
             if not img:
                 return None
-            pixbuf = gtk.gdk.pixbuf_new_from_file(img)  # @UndefinedVariable
+            pixbuf = Gtk.gdk.pixbuf_new_from_file(img)  # @UndefinedVariable
             pixmap, mask = pixbuf.render_pixmap_and_mask()  # @UnusedVariable
-            win.set_app_paintable(True)            
-            win.window.set_back_pixmap(pixmap, False)        
+            win.set_app_paintable(True)
+            # TODO fix it
+            #win.window.set_back_pixmap(pixmap, False)
         else:
             win.set_app_paintable(False)
-            win.window.set_back_pixmap(None, False)
+            #win.window.set_back_pixmap(None, False)
 
     def play_first_file_in_playlist(self):    
         active_playlist_tree = self.notetabs.get_current_tree()
@@ -790,7 +791,7 @@ class BaseFoobnixControls():
                 self.play(bean)
                 tree_selection = active_playlist_tree.get_selection()
                 filter_iter = filter_model.convert_child_iter_to_iter(iter)
-                gobject.idle_add(tree_selection.select_iter, filter_iter)
+                GObject.idle_add(tree_selection.select_iter, filter_iter)
                 active_playlist_tree.set_play_icon_to_bean_to_selected()
             else:
                 iter = current_model.iter_next(iter)

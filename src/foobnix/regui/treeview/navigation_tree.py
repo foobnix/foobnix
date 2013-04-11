@@ -6,10 +6,10 @@ Created on 25 сент. 2010
 '''
 
 import os
-import gtk
+from gi.repository import Gtk
 import thread
 import logging
-import gobject
+from gi.repository import GObject
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
@@ -32,13 +32,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         self.controls = controls
         self.full_name = ""
-        self.label = gtk.Label()
+        self.label = Gtk.Label()
         
         self.set_headers_visible(True)
         self.set_headers_clickable(True)
                 
         """column config"""
-        self.column = gtk.TreeViewColumn("File", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.column = Gtk.TreeViewColumn("File", Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         self._append_column(self.column, _("File"))
         
         def func(column, cell, model, iter, ext=False):
@@ -58,15 +58,16 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 if ext:
                     cell.set_property('text', '')
                 
-        self.name_column = gtk.TreeViewColumn("Name", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
-        self.name_column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
-        for rend in self.name_column.get_cell_renderers():
-            self.name_column.set_cell_data_func(rend, func, False)
+        self.name_column = Gtk.TreeViewColumn("Name", Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.name_column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
+        # TODO FIX IT
+        #for rend in self.name_column.get_cell_renderers():
+        #    self.name_column.set_cell_data_func(rend, func, False)
         self._append_column(self.name_column, _("Name"))
                
-        self.ext_column = gtk.TreeViewColumn("Ext", gtk.CellRendererText(), text=self.text[0], font=self.font[0])
-        for rend in self.ext_column.get_cell_renderers():
-            self.ext_column.set_cell_data_func(rend, func, True)
+        self.ext_column = Gtk.TreeViewColumn("Ext", Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        #for rend in self.ext_column.get_cell_renderers():
+        #    self.ext_column.set_cell_data_func(rend, func, True)
         self._append_column(self.ext_column, _("Ext"))
           
         self.configure_send_drag()
@@ -81,7 +82,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
         def task(*a):
             self.on_click_header(None, None, on_start=True)
-        gobject.idle_add(task)
+        GObject.idle_add(task)
         
         self.scroll.get_vscrollbar().connect('show', task)
         self.scroll.get_vscrollbar().connect('hide', task)
@@ -121,16 +122,16 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             right_click_optimization_for_trees(w, e)
             # on right click, show pop-up menu
             menu = Popup()
-            menu.add_item(_("Append to playlist"), gtk.STOCK_ADD, lambda: self.add_to_tab(True), None)
-            menu.add_item(_("Open in new playlist"), gtk.STOCK_MEDIA_PLAY, self.add_to_tab, None)
+            menu.add_item(_("Append to playlist"), Gtk.STOCK_ADD, lambda: self.add_to_tab(True), None)
+            menu.add_item(_("Open in new playlist"), Gtk.STOCK_MEDIA_PLAY, self.add_to_tab, None)
             menu.add_separator()
-            menu.add_item(_("Add folder here"), gtk.STOCK_OPEN, self.add_folder, None)
+            menu.add_item(_("Add folder here"), Gtk.STOCK_OPEN, self.add_folder, None)
             menu.add_separator()
 
             if FC().tabs_mode == "Multi":
-                menu.add_item(_("Add folder in new tab"), gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
-                menu.add_item(_("Clear"), gtk.STOCK_CLEAR, lambda : self.controls.tabhelper.clear_tree(self.scroll), None)
-            menu.add_item(_("Update"), gtk.STOCK_REFRESH, lambda: self.controls.tabhelper.on_update_music_tree(self.scroll), None)
+                menu.add_item(_("Add folder in new tab"), Gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
+                menu.add_item(_("Clear"), Gtk.STOCK_CLEAR, lambda : self.controls.tabhelper.clear_tree(self.scroll), None)
+            menu.add_item(_("Update"), Gtk.STOCK_REFRESH, lambda: self.controls.tabhelper.on_update_music_tree(self.scroll), None)
             
             f_model, f_t_paths = self.get_selection().get_selected_rows()
             if f_t_paths:
@@ -138,7 +139,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 t_paths = [f_model.convert_child_path_to_path(f_t_path) for f_t_path in f_t_paths]
                 row = model[t_paths[0]]
                 paths = [model[t_path][self.path[0]] for t_path in t_paths]
-                row_refs = [gtk.TreeRowReference(model, t_path) for t_path in t_paths]
+                row_refs = [Gtk.TreeRowReference(model, t_path) for t_path in t_paths]
                 menu.add_separator()
                 menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
                 menu.add_item(_("Create folder"), None, self.create_folder, (model, f_t_paths[0], row))
@@ -148,7 +149,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             menu.show(e)
     
     def _append_column(self, column, title):
-        column.label = gtk.Label(title)
+        column.label = Gtk.Label(title)
         column.label.show()
         column.set_widget(column.label)
         column.set_clickable(True)
@@ -218,25 +219,25 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
             if not current:
                 '''gobject because rebuild_as_plain use it too'''
-                gobject.idle_add(self.controls.play_first_file_in_playlist)
+                GObject.idle_add(self.controls.play_first_file_in_playlist)
 
             self.controls.notetabs.on_save_tabs()   # because save process already wrapped with thread
             # thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
 
-        #gobject.idle_add(task, to_tree, to_model)
+        #GObject.idle_add(task, to_tree, to_model)
         self.controls.search_progress.background_spinner_wrapper(task, False, to_tree, to_model)
 
     def add_folder(self, in_new_tab=False):
-        chooser = gtk.FileChooserDialog(title=_("Choose directory with music"),
-                                        action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
-                                        buttons=(gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-        chooser.set_default_response(gtk.RESPONSE_OK)
+        chooser = Gtk.FileChooserDialog(title=_("Choose directory with music"),
+                                        action=Gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
+                                        buttons=(Gtk.STOCK_OPEN, Gtk.RESPONSE_OK))
+        chooser.set_default_response(Gtk.RESPONSE_OK)
         chooser.set_select_multiple(True)
         if FCache().last_music_path:
             chooser.set_current_folder(FCache().last_music_path)
         response = chooser.run()
         
-        if response == gtk.RESPONSE_OK:
+        if response == Gtk.RESPONSE_OK:
             paths = chooser.get_filenames()
             chooser.destroy()
             self.controls.main_window.present()
@@ -258,8 +259,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 
                 elif tree.is_empty():
                     tab_name = unicode(path[path.rfind("/") + 1:])
-                    vbox = gtk.VBox()
-                    label = gtk.Label(tab_name + " ")
+                    vbox = Gtk.VBox()
+                    label = Gtk.Label(tab_name + " ")
                     label.set_angle(90)
                     if FC().tab_close_element:
                         vbox.pack_start(self.controls.tabhelper.button(tree.scroll), False, False)
@@ -282,7 +283,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 
             #self.controls.in_thread.run_with_progressbar(task, with_lock=False)
             self.controls.search_progress.background_spinner_wrapper(task, in_graphic_thread=False) 
-        elif response == gtk.RESPONSE_CANCEL:
+        elif response == Gtk.RESPONSE_CANCEL:
             logging.info('Closed, no files selected')
             chooser.destroy()       
     

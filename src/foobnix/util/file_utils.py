@@ -5,7 +5,7 @@ Created on Feb 26, 2010
 '''
 
 import os
-import gtk
+from gi.repository import Gtk
 import sys
 import urllib
 import shutil
@@ -66,9 +66,9 @@ def get_files_from_folder(folder):
 def rename_file_on_disk(row, index_path, index_text):
     path = row[index_path]
     name = os.path.basename(path)
-    entry = gtk.Entry()
+    entry = Gtk.Entry()
     entry.set_width_chars(64)
-    hbox = gtk.HBox()
+    hbox = Gtk.HBox()
     if os.path.isdir(path):
         entry.set_text(name)
         hbox.pack_start(entry)
@@ -76,17 +76,17 @@ def rename_file_on_disk(row, index_path, index_text):
     else:
         name_tuple = os.path.splitext(name)
         entry.set_text(name_tuple[0])
-        entry_ext = gtk.Entry()
+        entry_ext = Gtk.Entry()
         entry_ext.set_width_chars(7)
         entry_ext.set_text(name_tuple[1][1:])
         hbox.pack_start(entry)
         hbox.pack_start(entry_ext)
         title = _('Rename file')
-    dialog = gtk.Dialog(title, buttons=("Rename", gtk.RESPONSE_ACCEPT, "Cancel", gtk.RESPONSE_REJECT))
+    dialog = Gtk.Dialog(title, buttons=("Rename", Gtk.ResponseType.ACCEPT, "Cancel", Gtk.ResponseType.REJECT))
     dialog.vbox.pack_start(hbox)
     dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
     dialog.show_all()    
-    if dialog.run() == gtk.RESPONSE_ACCEPT:
+    if dialog.run() == Gtk.ResponseType.ACCEPT:
         if os.path.isdir(path) or not entry_ext.get_text():
             new_path = os.path.join(os.path.dirname(path), entry.get_text())
         else:
@@ -103,18 +103,18 @@ def rename_file_on_disk(row, index_path, index_text):
 
 def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):            
     title = _('Delete file(s) / folder(s)')
-    label = gtk.Label(_('Do you really want to delete item(s) from disk?'))
-    dialog = gtk.Dialog(title, buttons=("Delete", gtk.RESPONSE_ACCEPT, "Cancel", gtk.RESPONSE_REJECT))
+    label = Gtk.Label(_('Do you really want to delete item(s) from disk?'))
+    dialog = Gtk.Dialog(title, buttons=("Delete", Gtk.ResponseType.ACCEPT, "Cancel", Gtk.ResponseType.REJECT))
     dialog.set_default_size(500, 200)
     dialog.set_border_width(5)
     dialog.vbox.pack_start(label)
     dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
-    buffer = gtk.TextBuffer()
-    text = gtk.TextView(buffer)
+    buffer = Gtk.TextBuffer()
+    text = Gtk.TextView(buffer)
     text.set_editable(False)
     text.set_cursor_visible(False)
-    scrolled_window = gtk.ScrolledWindow()
-    scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+    scrolled_window = Gtk.ScrolledWindow()
+    scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
     scrolled_window.add(text)
     dialog.vbox.pack_start(scrolled_window)
     for path in paths:
@@ -122,7 +122,7 @@ def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
         buffer.insert_at_cursor('\t' + name + '\n')
     
     dialog.show_all()    
-    if dialog.run() == gtk.RESPONSE_ACCEPT:
+    if dialog.run() == Gtk.ResponseType.ACCEPT:
         model = row_refs[0].get_model()
         try:
             for row_ref, path in zip(row_refs, paths):
@@ -149,16 +149,16 @@ def del_dir(path):
         os.rmdir(path)
 
 def copy_move_files_dialog(files, dest_folder, copy=None):
-    if copy == gtk.gdk.ACTION_COPY: action = _("Copy") #@UndefinedVariable
+    if copy == Gdk.DragAction.COPY: action = _("Copy") #@UndefinedVariable
     else: action = _("Replace") 
     
-    dialog = gtk.Dialog(_('%s file(s) / folder(s)') % action)
+    dialog = Gtk.Dialog(_('%s file(s) / folder(s)') % action)
     
-    ok_button = dialog.add_button(action, gtk.RESPONSE_OK)
-    cancel_button = dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL) #@UnusedVariable
+    ok_button = dialog.add_button(action, Gtk.ResponseType.OK)
+    cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL) #@UnusedVariable
     
     ok_button.grab_default()
-    label = gtk.Label('\n' + _("Are you really want to %s this item(s) to %s ?") % (action, dest_folder))      
+    label = Gtk.Label('\n' + _("Are you really want to %s this item(s) to %s ?") % (action, dest_folder))
     area = ScrolledText()
     area.text.set_editable(False)
     area.text.set_cursor_visible(False)
@@ -169,7 +169,7 @@ def copy_move_files_dialog(files, dest_folder, copy=None):
     dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
     dialog.set_default_size(400, 150)
     dialog.show_all()
-    if dialog.run() == gtk.RESPONSE_OK:
+    if dialog.run() == Gtk.ResponseType.OK:
         dialog.destroy()
         return True
     dialog.destroy()
@@ -177,11 +177,11 @@ def copy_move_files_dialog(files, dest_folder, copy=None):
 
 def create_folder_dialog(path):
     dirname = path if os.path.isdir(path) else os.path.dirname(path)
-    dialog = gtk.Dialog(_("Make folder dialog"))
-    ok_button = dialog.add_button(_("Create folder"), gtk.RESPONSE_OK)
-    label1 = gtk.Label(_("You want to create subfolder in folder") + " " + os.path.basename(dirname))
-    label2 = gtk.Label(_("Enter new folder's name:"))
-    entry = gtk.Entry()
+    dialog = Gtk.Dialog(_("Make folder dialog"))
+    ok_button = dialog.add_button(_("Create folder"), Gtk.ResponseType.OK)
+    label1 = Gtk.Label(_("You want to create subfolder in folder") + " " + os.path.basename(dirname))
+    label2 = Gtk.Label(_("Enter new folder's name:"))
+    entry = Gtk.Entry()
     dialog.set_border_width(5)
     dialog.vbox.pack_start(label1)
     dialog.vbox.pack_start(label2)
@@ -189,7 +189,7 @@ def create_folder_dialog(path):
     dialog.show_all()
     ok_button.grab_default()
     def task():
-        if dialog.run() == gtk.RESPONSE_OK:
+        if dialog.run() == Gtk.ResponseType.OK:
             folder_name = entry.get_text()
             if folder_name:
                 full_path = os.path.join(dirname, folder_name)
@@ -201,8 +201,8 @@ def create_folder_dialog(path):
                         er_message = _("So folder already exists")
                     else:
                         er_message = str(e)
-                    warning = gtk.MessageDialog(parent=dialog, flags=gtk.DIALOG_DESTROY_WITH_PARENT, type=gtk.MESSAGE_ERROR, message_format=er_message)
-                    if warning.run() == gtk.RESPONSE_DELETE_EVENT:
+                    warning = Gtk.MessageDialog(parent=dialog, flags=Gtk.DialogFlags.DESTROY_WITH_PARENT, type=Gtk.MessageType.ERROR, message_format=er_message)
+                    if warning.run() == Gtk.ResponseType.DELETE_EVENT:
                         warning.destroy()
                     full_path = task()
                 return full_path
@@ -387,10 +387,10 @@ def copy_to(old_paths):
                 pr_window.label_from.set_text(_("Copying: ") + os.path.dirname(old_path))
                 def task():
                     copy_move_with_progressbar(pr_window, old_path, destinations[0])
-                    pr_window.response(gtk.RESPONSE_OK)
+                    pr_window.response(Gtk.ResponseType.OK)
                 t = threading.Thread(target=task)
                 t.start()
-                if pr_window.run() == gtk.RESPONSE_REJECT:
+                if pr_window.run() == Gtk.ResponseType.REJECT:
                     pr_window.exit = True
                     t.join()
         pr_window.destroy()

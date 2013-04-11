@@ -4,23 +4,23 @@ Created on Mar 23, 2011
 @author: zavlab1
 '''
 import os
-import gtk
-import gst
+from gi.repository import Gtk
+from gi.repository import Gst
 import shutil
 import logging
 
 from foobnix.helpers.dialog_entry import FileSavingDialog
 
 
-class RadioRecord(gtk.ToggleButton):
+class RadioRecord(Gtk.ToggleButton):
     def __init__(self, controls):
-        gtk.ToggleButton.__init__(self)
+        Gtk.ToggleButton.__init__(self)
         self.controls = controls
         
-        rec_image = gtk.image_new_from_stock(gtk.STOCK_MEDIA_RECORD, gtk.ICON_SIZE_BUTTON)
+        rec_image = Gtk.Image.new_from_stock(Gtk.STOCK_MEDIA_RECORD, Gtk.IconSize.BUTTON)
         rec_image.show()
         self.add(rec_image)
-        self.set_relief(gtk.RELIEF_NONE)
+        self.set_relief(Gtk.ReliefStyle.NONE)
         self.set_focus_on_click(False)
         self.connect("toggled", self.on_toggle)
         self.set_tooltip_text(_("Record radio"))
@@ -31,8 +31,8 @@ class RadioRecord(gtk.ToggleButton):
         engine = self.controls.media_engine
             
         if hasattr(engine, 'pipeline'):
-            if gst.STATE_PLAYING in engine.pipeline.get_state()[1:]:
-                engine.pipeline.set_state(gst.STATE_NULL)
+            if Gst.STATE_PLAYING in engine.pipeline.get_state()[1:]:
+                engine.pipeline.set_state(Gst.STATE_NULL)
                 if os.path.isfile(engine.radio_path):
                     name = os.path.splitext(os.path.basename(engine.radio_path))[0] + ".ogg"
                 else:

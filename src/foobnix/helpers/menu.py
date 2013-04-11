@@ -3,23 +3,23 @@ Created on Aug 26, 2010
 
 @author: ivan
 '''
-import gtk
+from gi.repository import Gtk
 import time
 from foobnix.regui.menu import MyMenu
-class Popup(gtk.Menu):
+class Popup(Gtk.Menu):
     
     def __init__(self):        
-        gtk.Menu.__init__(self)
+        Gtk.Menu.__init__(self)
     
     def add_separator(self):
-        separator = gtk.SeparatorMenuItem()
+        separator = Gtk.SeparatorMenuItem()
         separator.show()
         self.append(separator)
     
     def add_item(self, text, gtk_stock="", func=None, arg=None):            
-        item = gtk.ImageMenuItem(text)
+        item = Gtk.ImageMenuItem(text)
         if gtk_stock:
-            img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
+            img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
             item.set_image(img) 
         if func and arg:    
             item.connect("activate", lambda * a: func(arg))
@@ -30,11 +30,11 @@ class Popup(gtk.Menu):
         return item
         
     def add_image_item(self, title, gtk_stock, func=None, param=None):
-        item = gtk.ImageMenuItem(title)
+        item = Gtk.ImageMenuItem(title)
         
         item.show()
         if gtk_stock:
-            img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
+            img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
             item.set_image(img)
 
         if func and param:
@@ -47,7 +47,7 @@ class Popup(gtk.Menu):
     
     def show(self, event):
         self.show_all()
-        self.popup(None, None, None, event.button, event.time) 
+        self.popup(None, None, None, None, event.button, event.time) 
     
     def show_widget(self, w):
         self.show_all()
@@ -57,7 +57,7 @@ class Popup(gtk.Menu):
         menu = MyMenu()
         menu.show()
 
-        file_item = gtk.MenuItem(title)
+        file_item = Gtk.MenuItem(title)
         file_item.show()
 
         file_item.set_submenu(menu)

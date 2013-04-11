@@ -3,7 +3,7 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
-import gtk
+from gi.repository import Gtk
 
 from foobnix.regui.state import LoadSave
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click,\
@@ -22,7 +22,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         CommonTreeControl.__init__(self, controls)
         
         """column config"""
-        column = gtk.TreeViewColumn(_("Storage"), gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = Gtk.TreeViewColumn(_("Storage"), Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)
@@ -57,17 +57,17 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         if is_rigth_click(e): 
                 right_click_optimization_for_trees(w, e)
                 menu = Popup()
-                menu.add_item(_("Add playlist"), gtk.STOCK_ADD, self.create_playlist, None)
+                menu.add_item(_("Add playlist"), Gtk.STOCK_ADD, self.create_playlist, None)
                 bean = self.get_selected_bean()
                 if bean:
                     if bean.is_file:
-                        menu.add_item(_("Rename"), gtk.STOCK_EDIT, self.rename_selected, None)
-                        menu.add_item(_("Delete"), gtk.STOCK_DELETE, self.delete_selected, None)
+                        menu.add_item(_("Rename"), Gtk.STOCK_EDIT, self.rename_selected, None)
+                        menu.add_item(_("Delete"), Gtk.STOCK_DELETE, self.delete_selected, None)
                     else:
-                        menu.add_item(_("Rename playlist"), gtk.STOCK_EDIT, self.rename_selected, None)
-                        menu.add_item(_("Delete playlist"), gtk.STOCK_DELETE, self.delete_selected, None)
-                #menu.add_item(_("Save as"), gtk.STOCK_SAVE_AS, None, None)
-                #menu.add_item(_("Open as"), gtk.STOCK_OPEN, None, None)
+                        menu.add_item(_("Rename playlist"), Gtk.STOCK_EDIT, self.rename_selected, None)
+                        menu.add_item(_("Delete playlist"), Gtk.STOCK_DELETE, self.delete_selected, None)
+                #menu.add_item(_("Save as"), Gtk.STOCK_SAVE_AS, None, None)
+                #menu.add_item(_("Open as"), Gtk.STOCK_OPEN, None, None)
                 menu.show(e)
     
     def create_playlist(self):

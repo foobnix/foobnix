@@ -1,5 +1,5 @@
 import uuid
-import gobject
+from gi.repository import GObject
 
 class FTreeModel():   
    
@@ -12,7 +12,7 @@ class FTreeModel():
         self.time = 4 , str
         self.path = 5 , str
         self.level = 6 , str
-        self.tracknumber = 7 , str        
+        self.tracknumber = 7 , int        
         self.is_file = 8 , bool
         
         self.artist = 9 , str

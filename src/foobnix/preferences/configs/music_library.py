@@ -5,7 +5,7 @@ Created on 24 авг. 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 import os.path
 import logging
 
@@ -27,49 +27,49 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         
-        box = gtk.VBox(False, 0)
+        box = Gtk.VBox(False, 0)
         box.hide()
         box.pack_start(self.tabs_mode(), False, True, 0)
         box.pack_start(self.dirs(), False, True, 0)
         box.pack_start(self.formats(), False, True, 0)
         
         self.widget = box
-        uhbox = gtk.HBox()
-        ulabel = gtk.Label(_("Update library on start (more slow) "))
-        self.update_on_start = gtk.CheckButton()
+        uhbox = Gtk.HBox()
+        ulabel = Gtk.Label(_("Update library on start (more slow) "))
+        self.update_on_start = Gtk.CheckButton()
                      
         uhbox.pack_start(ulabel, False, True, 0)
-        uhbox.pack_start(self.update_on_start)
+        uhbox.pack_start(self.update_on_start, False, False, 0)
         box.pack_start(uhbox, False, True, 0)
         box.pack_start(self.gap(), False, True, 0)
         
         
     def dirs(self):
-        self.frame = gtk.Frame(label=_("Music dirs"))
+        self.frame = Gtk.Frame(label=_("Music dirs"))
         self.frame.set_border_width(0)
         self.frame.show()
         self.frame.set_no_show_all(True)
-        frame_box = gtk.HBox(False, 0)
+        frame_box = Gtk.HBox(False, 0)
         frame_box.set_border_width(5)
         frame_box.show()
                 
         self.tree_controller = SimpleListTreeControl(_("Paths"), None)
                        
         """buttons"""
-        button_box = gtk.VBox(False, 0)
+        button_box = Gtk.VBox(False, 0)
         button_box.show()
         
-        bt_add = gtk.Button(_("Add"))
+        bt_add = Gtk.Button(_("Add"))
         bt_add.connect("clicked", self.add_dir)
         bt_add.set_size_request(80, -1)
         bt_add.show()
         
-        bt_remove = gtk.Button(_("Remove"))
+        bt_remove = Gtk.Button(_("Remove"))
         bt_remove.connect("clicked", self.remove_dir)
         bt_remove.set_size_request(80, -1)
         bt_remove.show()
         
-        empty = gtk.Label("")        
+        empty = Gtk.Label("")
         empty.show()
         
         button_box.pack_start(bt_add, False, False, 0)
@@ -159,35 +159,35 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             self.temp_music_paths = []
             
     def formats(self):
-        frame = gtk.Frame(label=_("File Types"))
+        frame = Gtk.Frame(label=_("File Types"))
         frame.set_border_width(0)
         frame.show()
         
-        frame_box = gtk.HBox(False, 0)
+        frame_box = Gtk.HBox(False, 0)
         frame_box.set_border_width(5)
         frame_box.show()
         
         self.files_controller = SimpleListTreeControl(_("Extensions"), None)
                 
         """buttons"""
-        button_box = gtk.VBox(False, 0)
+        button_box = Gtk.VBox(False, 0)
         button_box.show()
         
-        bt_add = gtk.Button(_("Add"))
+        bt_add = Gtk.Button(_("Add"))
         bt_add.connect("clicked", self.on_add_file)
         bt_add.set_size_request(80, -1)
         bt_add.show()
         
-        bt_remove = gtk.Button(_("Remove"))
+        bt_remove = Gtk.Button(_("Remove"))
         bt_remove.connect("clicked", lambda *a: self.files_controller.delete_selected())
         bt_remove.set_size_request(80, -1)
         bt_remove.show()
         button_box.pack_start(bt_add, False, False, 0)
         button_box.pack_start(bt_remove, False, False, 0)
                 
-        scrool_tree = gtk.ScrolledWindow()
+        scrool_tree = Gtk.ScrolledWindow()
         scrool_tree.set_size_request(-1, 160)
-        scrool_tree.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        scrool_tree.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         scrool_tree.add_with_viewport(self.files_controller.scroll)
         scrool_tree.show()
           
@@ -206,29 +206,29 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             logging.info("Can't add your value" + val)
             
     def gap(self):
-        label = gtk.Label(_("Gap between tracks: "))
+        label = Gtk.Label(_("Gap between tracks: "))
                 
-        self.adjustment = gtk.Adjustment(value=0, lower=0, upper=5, step_incr=0.5)
+        self.adjustment = Gtk.Adjustment(value=0, lower=0, upper=5, step_incr=0.5)
         
-        gap_len = gtk.SpinButton(self.adjustment, climb_rate=0.0, digits=1)
+        gap_len = Gtk.SpinButton(adjustment=self.adjustment, climb_rate=0.0, digits=1)
         gap_len.show()
         
-        hbox = gtk.HBox(False, 0)
-        hbox.pack_start(label, False, False)
-        hbox.pack_start(gap_len, False, False)
+        hbox = Gtk.HBox(False, 0)
+        hbox.pack_start(label, False, False, 0)
+        hbox.pack_start(gap_len, False, False, 0)
         hbox.show_all()
         
         return hbox
         
     def tabs_mode(self):
-        hbox = gtk.HBox()
-        self.multitabs_button = gtk.RadioButton(None, _("Multi tab mode"))
+        hbox = Gtk.HBox()
+        self.multitabs_button = Gtk.RadioButton(None, _("Multi tab mode"))
         def on_toggle_multitab(widget, data=None):
             self.frame.hide()
         self.multitabs_button.connect("toggled", on_toggle_multitab)
-        hbox.pack_start(self.multitabs_button, True, False)
+        hbox.pack_start(self.multitabs_button, True, False, 0)
         
-        self.singletab_button = gtk.RadioButton(self.multitabs_button, _("Single tab mode"))
+        self.singletab_button = Gtk.RadioButton(self.multitabs_button, _("Single tab mode"))
         def on_toggle_singletab(widget, data=None):
             self.tree_controller.clear_tree()
             for path in FCache().music_paths[0]:
@@ -236,5 +236,5 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             self.temp_music_paths = FCache().music_paths[0][:]
             self.frame.show()
         self.singletab_button.connect("toggled", on_toggle_singletab)
-        hbox.pack_end(self.singletab_button, True, False)
+        hbox.pack_end(self.singletab_button, True, False, 0)
         return hbox

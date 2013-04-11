@@ -7,12 +7,12 @@ Created on Sep 29, 2010
 '''
 
 import os
-import gtk
+from gi.repository import Gtk
 import threading
 import time
 import thread
 import urllib
-import gobject
+from gi.repository import GObject
 import logging
 import urllib2
 import simplejson
@@ -86,46 +86,46 @@ class FormParser(HTMLParser):
             self.auth_error = data
 
 
-class VKAuth(gtk.Dialog):
+class VKAuth(Gtk.Dialog):
 
     SCOPE = ["audio", "friends", "wall"]
     CLIENT_ID = "2234333"
 
     def __init__(self):
-        super(VKAuth, self).__init__(_("vk.com authorization"), None, gtk.DIALOG_MODAL,
-                                     (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT, gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+        super(VKAuth, self).__init__(_("vk.com authorization"), None, Gtk.DIALOG_MODAL,
+                                     (Gtk.STOCK_CANCEL, Gtk.RESPONSE_REJECT, Gtk.STOCK_OK, Gtk.RESPONSE_ACCEPT))
 
         """INIT GUI"""
-        self.hwparrer = gtk.HBox(False, 0)
-        self.vwrapper = gtk.VBox(False, 0)
-        self.lhbox = gtk.HBox(False, 5)
-        self.phbox = gtk.HBox(False, 5)
-        self.rhbox = gtk.HBox(False, 5)
-        self.chbox = gtk.HBox()
+        self.hwparrer = Gtk.HBox(False, 0)
+        self.vwrapper = Gtk.VBox(False, 0)
+        self.lhbox = Gtk.HBox(False, 5)
+        self.phbox = Gtk.HBox(False, 5)
+        self.rhbox = Gtk.HBox(False, 5)
+        self.chbox = Gtk.HBox()
 
-        self.error_label = gtk.Label()
+        self.error_label = Gtk.Label()
 
-        self.login = gtk.Entry()
-        self.password = gtk.Entry()
-        self.captcha_image = gtk.Image()
-        self.vkimage = gtk.Image()
-        self.captcha = gtk.Entry()
-        self.remember = gtk.CheckButton()
+        self.login = Gtk.Entry()
+        self.password = Gtk.Entry()
+        self.captcha_image = Gtk.Image()
+        self.vkimage = Gtk.Image()
+        self.captcha = Gtk.Entry()
+        self.remember = Gtk.CheckButton()
 
         self.vkimage.set_from_file(get_foobnix_resourse_path_by_name("vk-small.png"))
 
         self.password.set_visibility(False)
         self.password.set_invisible_char("*")
 
-        login_label = gtk.Label(_("Email"))
+        login_label = Gtk.Label(_("Email"))
         self.lhbox.pack_start(login_label, False, False, 0)
         self.lhbox.pack_start(self.login, True, True, 0)
 
-        password_label = gtk.Label(_("Password"))
+        password_label = Gtk.Label(_("Password"))
         self.phbox.pack_start(password_label, False, False, 0)
         self.phbox.pack_start(self.password, True, True, 0)
 
-        self.rhbox.pack_start(gtk.Label(_("Remember password")), False, False, 0)
+        self.rhbox.pack_start(Gtk.Label(_("Remember password")), False, False, 0)
         self.rhbox.pack_start(self.remember, False, False, 0)
 
         self.chbox.pack_start(self.captcha_image, False, False, 0)
@@ -238,7 +238,7 @@ class VKAuth(gtk.Dialog):
             self.captcha_image.clear()
             self.do_save()
             self.hide()
-            if dialog_result is gtk.RESPONSE_ACCEPT.real:
+            if dialog_result is Gtk.RESPONSE_ACCEPT.real:
                 login = self.login.get_text()
                 passw = self.password.get_text()
             else:
@@ -357,7 +357,7 @@ class VKService:
             else:
                 self.result = False
 
-        gobject.idle_add(task_is_authorized)
+        GObject.idle_add(task_is_authorized)
         while self.result is None:
             time.sleep(0.1)
         if self.authorized_lock.locked():

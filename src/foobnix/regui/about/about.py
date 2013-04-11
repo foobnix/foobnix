@@ -5,14 +5,15 @@ Created on Oct 2, 2010
 @author: dimitry (zavlab1)
 '''
 
-import gtk
+from gi.repository import Gtk
+from gi.repository import Gdk
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.version import FOOBNIX_VERSION
 
-class AboutWindow(gtk.AboutDialog):
+class AboutWindow(Gtk.AboutDialog):
     def __init__(self):
-        gtk.AboutDialog.__init__(self)
+        Gtk.AboutDialog.__init__(self)
         
         self.set_program_name("Foobnix")
         self.set_version(FOOBNIX_VERSION)
@@ -39,7 +40,7 @@ Florian Heissenberger
 Aldo Mann""")
         
         
-        self.set_logo(gtk.gdk.pixbuf_new_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))) #@UndefinedVariable
+        self.set_logo(Gdk.pixbuf_new_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))) #@UndefinedVariable
     
     def show(self):
         self.run()

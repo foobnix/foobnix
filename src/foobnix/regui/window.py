@@ -5,7 +5,7 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 import logging
 
 from foobnix.fc.fc import FC
@@ -18,13 +18,13 @@ from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION, \
     LEFT_PERSPECTIVE_RADIO, LEFT_PERSPECTIVE_VIRTUAL, LEFT_PERSPECTIVE_INFO
 
 
-class MainWindow(gtk.Window, FControl, LoadSave):
+class MainWindow(Gtk.Window, FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
+        Gtk.Window.__init__(self, Gtk.WindowType.TOPLEVEL)
         
         self.set_title("Foobnix " + FOOBNIX_VERSION)
-        self.set_position(gtk.WIN_POS_CENTER)
+        self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(True)
         self.connect("window-state-event", self.on_change_state)      
         self.connect("delete-event", self.hide_window)
@@ -37,7 +37,7 @@ class MainWindow(gtk.Window, FControl, LoadSave):
     def on_key_press(self, w, e):
         if is_key(e, 'Escape'):
             self.hide_window()
-        elif is_key(e, 'space') and not isinstance(self.get_focus(), gtk.Entry): 
+        elif is_key(e, 'space') and not isinstance(self.get_focus(), Gtk.Entry):
             self.controls.play_pause()
         elif is_key_alt(e) and is_key(e, "1"):
             self.controls.perspective.activate_perspective_key(LEFT_PERSPECTIVE_NAVIGATION)
@@ -92,12 +92,12 @@ class MainWindow(gtk.Window, FControl, LoadSave):
             self.iconified = False
             FC().window_maximized = False
                         
-        elif e.new_window_state & gtk.gdk.WINDOW_STATE_ICONIFIED:#@UndefinedVariable
+        elif e.new_window_state & Gtk.gdk.WINDOW_STATE_ICONIFIED:#@UndefinedVariable
             """minimized"""
             self.iconified = True
             FC().window_maximized = False
                 
-        elif e.new_window_state & gtk.gdk.WINDOW_STATE_MAXIMIZED:#@UndefinedVariable
+        elif e.new_window_state & Gtk.gdk.WINDOW_STATE_MAXIMIZED:#@UndefinedVariable
             """maximized"""
             self.iconified = False
             FC().window_maximized = True

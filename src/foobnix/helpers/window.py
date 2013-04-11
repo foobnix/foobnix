@@ -6,7 +6,7 @@ Created on 27 окт. 2010
 '''
 
 import os
-import gtk
+from gi.repository import Gtk
 import time
 import logging
 import threading
@@ -19,13 +19,13 @@ from foobnix.util.file_utils import get_full_size
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 
-class ChildTopWindow(gtk.Window):
+class ChildTopWindow(Gtk.Window):
     def __init__(self, title=None, width=None, height=None):         
-        gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
+        Gtk.Window.__init__(self, Gtk.WindowType.TOPLEVEL)
         if title:
             self.set_title(title)
         
-        self.set_position(gtk.WIN_POS_CENTER)
+        self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(False)
         self.set_border_width(5)
         try:
@@ -57,9 +57,9 @@ class ChildTopWindow(gtk.Window):
     def show(self):
         self.show_all()
 
-class CopyProgressWindow(gtk.Dialog):
+class CopyProgressWindow(Gtk.Dialog):
     def __init__(self, title, file_list, width=None, hight=None):
-        gtk.Dialog.__init__(self, title)
+        Gtk.Dialog.__init__(self, title)
         if width and hight:
             self.set_default_size(width, hight)
         
@@ -68,14 +68,14 @@ class CopyProgressWindow(gtk.Dialog):
         self.set_border_width(5)
         self.total_size = get_full_size(file_list)
         
-        self.label_from = gtk.Label()
-        self.label_to = gtk.Label()
-        self.pr_label = gtk.Label(_("Total progress"))
+        self.label_from = Gtk.Label()
+        self.label_to = Gtk.Label()
+        self.pr_label = Gtk.Label(_("Total progress"))
         
-        self.pr_bar = gtk.ProgressBar()
-        self.total_pr_bar = gtk.ProgressBar()
+        self.pr_bar = Gtk.ProgressBar()
+        self.total_pr_bar = Gtk.ProgressBar()
         
-        self.add_button(_("Stop"), gtk.RESPONSE_REJECT)
+        self.add_button(_("Stop"), Gtk.RESPONSE_REJECT)
         
         self.vbox.pack_start(self.label_from, False)
         self.vbox.pack_start(self.label_to, False)
@@ -116,25 +116,25 @@ class CopyProgressWindow(gtk.Dialog):
             if got == size:
                 break
 
-class MessageWindow(gtk.MessageDialog):
-    def __init__(self, title, type=gtk.MESSAGE_INFO, text=None, parent=None,
+class MessageWindow(Gtk.MessageDialog):
+    def __init__(self, title, type=Gtk.MessageType.INFO, text=None, parent=None,
                  buttons=None, flags=0, func=None, args=(), func1=None, args1=()):
         text = split_string(text, 40)
-        gtk.MessageDialog.__init__(self, parent, flags, type, buttons, text)
+        Gtk.MessageDialog.__init__(self, parent, flags, type, buttons, text)
         
         self.set_title(title)
         self.show_all()
         id = self.run()
-        if id != gtk.RESPONSE_NONE:
-            if func and id in [gtk.RESPONSE_OK, gtk.RESPONSE_APPLY, gtk.RESPONSE_ACCEPT, gtk.RESPONSE_YES]:
+        if id != Gtk.RESPONSE_NONE:
+            if func and id in [Gtk.RESPONSE_OK, Gtk.RESPONSE_APPLY, Gtk.RESPONSE_ACCEPT, Gtk.RESPONSE_YES]:
                 func(args) if args else func()
-            if func1 and id in [gtk.RESPONSE_NO, gtk.RESPONSE_CLOSE, gtk.RESPONSE_CANCEL, gtk.RESPONSE_REJECT]:
+            if func1 and id in [Gtk.RESPONSE_NO, Gtk.RESPONSE_CLOSE, Gtk.RESPONSE_CANCEL, Gtk.RESPONSE_REJECT]:
                 func1(args1) if args else func1()
         time.sleep(0.2) #otherwise can be freezes
         self.destroy()
-        #gobject.timeout_add(100, self.destroy)
+        #GObject.timeout_add(100, self.destroy)
         
         
     def delete_event(self, widget, event, data=None):
-        self.response(gtk.RESPONSE_NONE)
+        self.response(Gtk.RESPONSE_NONE)
         return True

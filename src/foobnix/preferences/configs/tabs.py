@@ -5,7 +5,7 @@ Created on 24 авг. 2010
 @author: ivan
 '''
 from foobnix.preferences.config_plugin import ConfigPlugin
-import gtk
+from gi.repository import Gtk
 from foobnix.helpers.my_widgets import tab_close_button
 from foobnix.fc.fc import FC
 class TabsConfig(ConfigPlugin):
@@ -14,54 +14,54 @@ class TabsConfig(ConfigPlugin):
     
     def __init__(self, controls):
         self.controls = controls
-        box = gtk.VBox(False, 0)        
+        box = Gtk.VBox(False, 0)
         box.hide()
         
         """count"""
-        cbox = gtk.HBox(False, 0)
+        cbox = Gtk.HBox(False, 0)
         cbox.show()
         
-        tab_label = gtk.Label(_("Count of tabs:"))
+        tab_label = Gtk.Label(_("Count of tabs:"))
         tab_label.set_size_request(150, -1)
         tab_label.show()
         
-        adjustment = gtk.Adjustment(value=1, lower=1, upper=20, step_incr=1, page_incr=10, page_size=0)
-        self.tabs_count = gtk.SpinButton(adjustment)
+        adjustment = Gtk.Adjustment(value=1, lower=1, upper=20, step_incr=1, page_incr=10, page_size=0)
+        self.tabs_count = Gtk.SpinButton(adjustment=adjustment)
         self.tabs_count.show()
         
         cbox.pack_start(tab_label, False, False, 0)
         cbox.pack_start(self.tabs_count, False, True, 0)
                 
         """len"""
-        lbox = gtk.HBox(False, 0)
+        lbox = Gtk.HBox(False, 0)
         lbox.show()
         
-        tab_label = gtk.Label(_("Max length of tab:"))
+        tab_label = Gtk.Label(_("Max length of tab:"))
         tab_label.set_size_request(150, -1)
         tab_label.show()
         
-        adjustment = gtk.Adjustment(value=0, lower= -1, upper=300, step_incr=1, page_incr=10, page_size=0)
-        self.tab_len = gtk.SpinButton(adjustment)
+        adjustment = Gtk.Adjustment(value=0, lower= -1, upper=300, step_incr=1, page_incr=10, page_size=0)
+        self.tab_len = Gtk.SpinButton(adjustment=adjustment)
         self.tab_len.show()
         
         lbox.pack_start(tab_label, False, False, 0)
         lbox.pack_start(self.tab_len, False, True, 0)
         
         """position"""
-        pbox = gtk.HBox(False, 10)
+        pbox = Gtk.HBox(False, 10)
         pbox.show()
         
-        label = gtk.Label(_("Tab position:"))
+        label = Gtk.Label(_("Tab position:"))
         label.set_size_request(150, -1)
         label.show()
         
-        self.radio_tab_left = gtk.RadioButton(None, _("Left"))
+        self.radio_tab_left = Gtk.RadioButton(None, _("Left"))
         self.radio_tab_left.show()
         
-        self.radio_tab_top = gtk.RadioButton(self.radio_tab_left, _("Top"))
+        self.radio_tab_top = Gtk.RadioButton(self.radio_tab_left, _("Top"))
         self.radio_tab_top.show()
         
-        self.radio_tab_no = gtk.RadioButton(self.radio_tab_left, _("No Tabs"))
+        self.radio_tab_no = Gtk.RadioButton(self.radio_tab_left, _("No Tabs"))
         self.radio_tab_no.show()
         
         pbox.pack_start(label, False, False, 0)
@@ -70,25 +70,25 @@ class TabsConfig(ConfigPlugin):
         pbox.pack_start(self.radio_tab_no, False, False, 0)
         
         """closed type """
-        close_label_box = gtk.HBox(False, 10)
+        close_label_box = Gtk.HBox(False, 10)
         close_label_box.show()
         
-        close_label = gtk.Label(_("Close tab sign:"))
+        close_label = Gtk.Label(_("Close tab sign:"))
         close_label.set_size_request(150, -1)
         close_label.show()
         
-        self.radio_tab_label = gtk.RadioButton(None, "x")
+        self.radio_tab_label = Gtk.RadioButton(None, "x")
         self.radio_tab_label.show()
         
-        self.radio_tab_button = gtk.RadioButton(self.radio_tab_label, None)
+        self.radio_tab_button = Gtk.RadioButton(self.radio_tab_label, None)
         self.radio_tab_button.show()
         
-        self.tab_close_box = gtk.HBox()
+        self.tab_close_box = Gtk.HBox()
         self.tab_close_box.pack_start(self.radio_tab_button, False, True, 0)
         self.tab_close_box.pack_start(tab_close_button(), False, False, 0)
         self.tab_close_box.show()
         
-        self.radio_tab_none = gtk.RadioButton(self.radio_tab_label, _("None"))
+        self.radio_tab_none = Gtk.RadioButton(self.radio_tab_label, _("None"))
         self.radio_tab_none.show()
         
         close_label_box.pack_start(close_label, False, False, 0)

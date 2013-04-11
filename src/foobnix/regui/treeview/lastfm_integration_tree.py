@@ -3,8 +3,8 @@ Created on Jan 27, 2011
 
 @author: ivan
 '''
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import GObject
 import logging
 
 from foobnix.fc.fc import FC
@@ -23,7 +23,7 @@ class LastFmIntegrationControls(CommonTreeControl):
         CommonTreeControl.__init__(self, controls)
         
         """column config"""
-        column = gtk.TreeViewColumn(_("Lasm.fm Integration ") + FCBase().lfm_login, gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = Gtk.TreeViewColumn(_("Lasm.fm Integration ") + FCBase().lfm_login, Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)
@@ -62,8 +62,8 @@ class LastFmIntegrationControls(CommonTreeControl):
             right_click_optimization_for_trees(w, e)
             active = self.get_selected_bean()
             menu = Popup()
-            menu.add_item(_('Play'), gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
-            menu.add_item(_('Copy to Search Line'), gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            
+            menu.add_item(_('Play'), Gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
+            menu.add_item(_('Copy to Search Line'), Gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)
             menu.show(e)
     
     def on_bean_expanded(self, parent):
@@ -75,6 +75,6 @@ class LastFmIntegrationControls(CommonTreeControl):
             
             
             self.append_all(childs)            
-            gobject.idle_add(self.remove_iters,old_iters)        
+            GObject.idle_add(self.remove_iters,old_iters)
             
         self.controls.in_thread.run_with_progressbar(task)        

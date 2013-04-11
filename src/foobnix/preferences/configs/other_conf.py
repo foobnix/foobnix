@@ -5,7 +5,7 @@ Created on 23 дек. 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 import logging
 
 from foobnix.preferences.config_plugin import ConfigPlugin
@@ -22,108 +22,107 @@ class OtherConfig(ConfigPlugin):
     def __init__(self, controls):
         self.controls = controls
                 
-        box = gtk.VBox(False, 0)
+        box = Gtk.VBox(False, 0)
         box.hide()        
 
         """save to"""
-        hbox = gtk.HBox(False, 5)
+        hbox = Gtk.HBox(False, 5)
         
-        self.online_dir = gtk.FileChooserButton("set place")
-        self.online_dir.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
+        self.online_dir = Gtk.FileChooserButton("set place")
+        self.online_dir.set_action(Gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
         self.online_dir.connect("current-folder-changed", self.on_change_folder)        
         self.online_dir.show()
         
-        hbox.pack_start(gtk.Label(_("Save online music to folder:")), False, True, 0)
+        hbox.pack_start(Gtk.Label(_("Save online music to folder:")), False, True, 0)
         hbox.pack_start(self.online_dir, True, True, 0)
         
         """automatic save"""                
-        self.automatic_save_checkbutton = gtk.CheckButton(label=_("Automatic online music save"), use_underline=True)
+        self.automatic_save_checkbutton = Gtk.CheckButton(label=_("Automatic online music save"), use_underline=True)
 
-        """automatic save"""
-        self.nosubfolder_checkbutton = gtk.CheckButton(label=_("Save to one folder (no subfolders)"), use_underline=True)
+        self.nosubfolder_checkbutton = Gtk.CheckButton(label=_("Save to one folder (no subfolders)"), use_underline=True)
 
         """download threads"""
-        thbox = gtk.HBox(False, 5)
+        thbox = Gtk.HBox(False, 5)
                 
-        tab_label = gtk.Label(_("Download in threads"))
+        tab_label = Gtk.Label(_("Download in threads"))
         tab_label.show()
         
-        adjustment = gtk.Adjustment(value=1, lower=1, upper=10, step_incr=1, page_incr=1, page_size=0)
-        self.threads_count = gtk.SpinButton(adjustment)
+        adjustment = Gtk.Adjustment(value=1, lower=1, upper=10, step_incr=1, page_incr=1, page_size=0)
+        self.threads_count = Gtk.SpinButton(adjustment=adjustment)
         self.threads_count.show()
         
-        thbox.pack_start(tab_label, False, False)
-        thbox.pack_start(self.threads_count, False, True)
+        thbox.pack_start(tab_label, False, False, 0)
+        thbox.pack_start(self.threads_count, False, True, 0)
               
         """disc cover size"""
-        cbox = gtk.HBox(False, 5)
+        cbox = Gtk.HBox(False, 5)
         cbox.show()
         
-        tab_label = gtk.Label(_("Disc cover size:"))
+        tab_label = Gtk.Label(_("Disc cover size:"))
         tab_label.show()
         
-        adjustment = gtk.Adjustment(value=1, lower=100, upper=350, step_incr=20, page_incr=50, page_size=0)
-        self.image_size_spin = gtk.SpinButton(adjustment)
+        adjustment = Gtk.Adjustment(value=1, lower=100, upper=350, step_incr=20, page_incr=50, page_size=0)
+        self.image_size_spin = Gtk.SpinButton(adjustment=adjustment)
         self.image_size_spin.show()
         
-        cbox.pack_start(tab_label, False, False)
-        cbox.pack_start(self.image_size_spin, False, True)
+        cbox.pack_start(tab_label, False, False, 0)
+        cbox.pack_start(self.image_size_spin, False, True, 0)
                 
         """notification"""
-        self.check_new_version = gtk.CheckButton(label=_("Check for new foobnix release on start"), use_underline=True)
+        self.check_new_version = Gtk.CheckButton(label=_("Check for new foobnix release on start"), use_underline=True)
         self.check_new_version.show()
 
-        demo = gtk.Button(_("Show new foobnix release avaliable demo dialog"))
-        demo.connect("clicked", lambda * a:info_dialog_with_link_and_donate("foobnix [version]"))
+        demo = Gtk.Button(_("Show new foobnix release avaliable demo dialog"))
+        demo.connect("clicked", lambda * a: info_dialog_with_link_and_donate("foobnix [version]"))
         demo.show()
         
         """background image"""
         
-        catbox = gtk.HBox(False, 5)
+        catbox = Gtk.HBox(False, 5)
         
         self.bg_image = IconBlock("", controls, FC().background_image, FC().background_image_themes)
         
-        self.is_show = gtk.CheckButton(label=_("Enable theme image"), use_underline=True)
+        self.is_show = Gtk.CheckButton(label=_("Enable theme image"), use_underline=True)
         
         catbox.pack_start(self.is_show, False, True, 0)
         catbox.pack_start(self.bg_image, True, True, 0)
         
         """menu position"""
-        pbox = gtk.HBox(False, 5)
+        pbox = Gtk.HBox(False, 5)
         pbox.show()
         
-        label = gtk.Label(_("Menu type: "))
+        label = Gtk.Label(_("Menu type: "))
         
-        self.old_style = gtk.RadioButton(None, _("Old Style (Menu Bar)"))
+        self.old_style = Gtk.RadioButton(None, _("Old Style (Menu Bar)"))
                 
-        self.new_style = gtk.RadioButton(self.old_style, _("New Style (Button)"))
+        self.new_style = Gtk.RadioButton(self.old_style, _("New Style (Button)"))
         
         pbox.pack_start(label, False, False, 0)
         pbox.pack_start(self.new_style, False, True, 0)
         pbox.pack_start(self.old_style, False, False, 0)
         
-        o_r_box = gtk.HBox(False, 5)
+        o_r_box = Gtk.HBox(False, 5)
         o_r_box.show()
         
-        o_r_label = gtk.Label(_("Order-Repeat Switcher Style:"))
+        o_r_label = Gtk.Label(_("Order-Repeat Switcher Style:"))
         
-        self.buttons = gtk.RadioButton(None, _("Toggle Buttons"))
+        self.buttons = Gtk.RadioButton(None, _("Toggle Buttons"))
         
-        self.labels = gtk.RadioButton(self.buttons, _("Text Labels"))
+        self.labels = Gtk.RadioButton(self.buttons, _("Text Labels"))
         
         o_r_box.pack_start(o_r_label, False, False, 0)
         o_r_box.pack_start(self.buttons, False, True, 0)
         o_r_box.pack_start(self.labels, False, False, 0)
         
         """opacity"""
-        obox = gtk.HBox(False, 5)
+        obox = Gtk.HBox(False, 5)
         obox.show()
         
-        tab_label = gtk.Label(_("Opacity:"))
+        tab_label = Gtk.Label(_("Opacity:"))
         tab_label.show()
           
-        adjustment = gtk.Adjustment(value=1, lower=20, upper=100, step_incr=1, page_incr=1, page_size=0)
-        self.opacity_size = gtk.SpinButton(adjustment)
+        adjustment = Gtk.Adjustment(value=1, lower=20, upper=100, step_incr=1, page_incr=1, page_size=0)
+        self.opacity_size = Gtk.SpinButton(adjustment=adjustment)
         self.opacity_size.connect("value-changed", self.on_chage_opacity)
         self.opacity_size.show()
         
@@ -131,11 +130,11 @@ class OtherConfig(ConfigPlugin):
         obox.pack_start(self.opacity_size, False, True, 0)
         
         self.fmgrs_combo = self.fmgr_combobox()
-        hcombobox = gtk.HBox(False, 5)
-        hcombobox.pack_start(gtk.Label(_('Choose your preferred file manager:')), False, False)
-        hcombobox.pack_start(self.fmgrs_combo, False, False)
+        hcombobox = Gtk.HBox(False, 5)
+        hcombobox.pack_start(Gtk.Label(_('Choose your preferred file manager:')), False, False, 0)
+        hcombobox.pack_start(self.fmgrs_combo, False, False, 0)
         
-        self.disable_screensaver = gtk.CheckButton(label=_("Disable Xscreensaver"), use_underline=True)        
+        self.disable_screensaver = Gtk.CheckButton(label=_("Disable Xscreensaver"), use_underline=True)
                 
         """packaging"""        
         box.pack_start(hbox, False, True, 0)
@@ -150,7 +149,7 @@ class OtherConfig(ConfigPlugin):
         box.pack_start(o_r_box, False, False, 0)
         box.pack_start(obox, False, False, 0)
         box.pack_start(hcombobox, False, False, 0)
-        box.pack_start(self.disable_screensaver)
+        box.pack_start(self.disable_screensaver, False, False, 0)
         
         self.widget = box
     
@@ -245,7 +244,7 @@ class OtherConfig(ConfigPlugin):
         self.on_change_menu_type()
         
     def fmgr_combobox(self):
-        combobox = gtk.combo_box_new_text()
+        combobox = Gtk.combo_box_new_text()
         combobox.append_text('--- Auto ---')
         combobox.append_text('Nautilus')
         combobox.append_text('Dolphin')

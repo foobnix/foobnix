@@ -38,7 +38,7 @@ from foobnix.util.net_wrapper import NetWrapper
 foobnix_localization()
 
 class FoobnixCore(BaseFoobnixControls):
-    def __init__(self, with_dbus=False):
+    def __init__(self, with_dbus=True):
         BaseFoobnixControls.__init__(self)
         self.layout = None
         
@@ -100,6 +100,7 @@ class FoobnixCore(BaseFoobnixControls):
         """layout"""
         self.layout = BaseFoobnixLayout(self)
         
+        self.dbus = None
         if with_dbus:
             from foobnix.regui.controls.dbus_manager import DBusManager
             self.dbus = DBusManager(self)

@@ -1,32 +1,32 @@
 import pygtk
-pygtk.require('2.0')
-import gtk
+pyGtk.require('2.0')
+from gi.repository import Gtk
 
-class Winder( gtk.Window):
+class Winder( Gtk.Window):
     def __init__(self):
-        gtk.Window.__init__(self)
+        Gtk.Window.__init__(self)
 
-        box = gtk.HBox()
+        box = Gtk.HBox()
         self.add(box)
 
-        model = gtk.TreeStore(str)
-        tree = gtk.TreeView(model)
+        model = Gtk.TreeStore(str)
+        tree = Gtk.TreeView(model)
         box.pack_start(tree)
 
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn('woot', cell, text=0)
+        cell = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn('woot', cell, text=0)
         tree.append_column(col)
 
-        #tree.enable_model_drag_dest([("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
+        #tree.enable_model_drag_dest([("text/uri-list", 0, 0)], Gtk.gdk.ACTION_COPY | Gtk.gdk.ACTION_MOVE) #@UndefinedVariable
         
     
 
         targets = [('text/uri-list', 0, 0)]
         
-        tree.drag_source_set(gtk.gdk.BUTTON1_MASK, targets,gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE)
-        #tree.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
-        #tree.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [('text/uri-list', 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
-        tree.enable_model_drag_dest(targets, gtk.gdk.ACTION_COPY|gtk.gdk.ACTION_MOVE)
+        tree.drag_source_set(Gtk.gdk.BUTTON1_MASK, targets,Gtk.gdk.ACTION_COPY|Gtk.gdk.ACTION_MOVE)
+        #tree.enable_model_drag_source(Gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)], Gtk.gdk.ACTION_COPY | Gtk.gdk.ACTION_MOVE) #@UndefinedVariable
+        #tree.enable_model_drag_source(Gtk.gdk.BUTTON1_MASK, [('text/uri-list', 0, 0)], Gtk.gdk.ACTION_COPY | Gtk.gdk.ACTION_MOVE) #@UndefinedVariable
+        tree.enable_model_drag_dest(targets, Gtk.gdk.ACTION_COPY|Gtk.gdk.ACTION_MOVE)
         
         tree.drag_source_set_icon_stock('gtk-dnd-multiple')
 
@@ -37,4 +37,4 @@ class Winder( gtk.Window):
         self.show_all()
 
 Winder()
-gtk.main()
+Gtk.main()

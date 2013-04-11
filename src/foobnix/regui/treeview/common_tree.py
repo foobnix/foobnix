@@ -5,8 +5,9 @@ Created on 20 окт. 2010
 @author: ivan
 '''
 
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GObject
 import logging
 
 from random import randint
@@ -24,11 +25,11 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         FTreeModel.__init__(self)
         FControl.__init__(self, controls)
 
-        self.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        self.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
         self.set_enable_tree_lines(True)
 
         """model config"""
-        self.model = gtk.TreeStore(*FTreeModel().types())
+        self.model = Gtk.TreeStore(*FTreeModel().types())
 
         """filter config"""
         self.filter_model = self.model.filter_new()
@@ -50,12 +51,11 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         self.set_type_plain()
         
         self.active_UUID = -1
-        
-        
+
         self.defer_select = False
         
-        self.scroll = gtk.ScrolledWindow()
-        self.scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.scroll = Gtk.ScrolledWindow()
+        self.scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         self.scroll.add(self)
     
     def on_row_expanded(self, widget, iter, path):
@@ -71,14 +71,14 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     
     def on_multi_button_press(self, widget, event):
         target = self.get_path_at_pos(int(event.x), int(event.y))
-        if (target and event.type == gtk.gdk.BUTTON_PRESS and not (event.state & (gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)) #@UndefinedVariable
+        if (target and event.type == Gdk.BUTTON_PRESS and not (event.state & (Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK )) #@UndefinedVariable
             and self.get_selection().path_is_selected(target[0])):
             # disable selection
-            self.get_selection().set_select_function(lambda * ignore: False)
+            self.get_selection().set_select_function(lambda * ignore: False, False)
             self.defer_select = target[0]
         
     def on_multi_button_release(self, widget, event):
-        self.get_selection().set_select_function(lambda * ignore: True)
+        self.get_selection().set_select_function(lambda * ignore: True, False)
         
         target = self.get_path_at_pos(int(event.x), int(event.y))
         if (self.defer_select and target and self.defer_select == target[0] and not (event.x == 0 and event.y == 0)): # certain drag and drop
@@ -100,7 +100,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     
     def populate_all(self, beans):
         self.clear_tree()
-        gobject.idle_add(self.append_all, beans)
+        GObject.idle_add(self.append_all, beans)
     
     def get_bean_from_iter(self, iter):
         return self.get_bean_from_model_iter(self.model, iter)
@@ -150,7 +150,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     
     def get_row_reference_from_iter(self, model, iter):
         path = model.get_path(iter)
-        return gtk.TreeRowReference(model, path)
+        return Gtk.TreeRowReference(model, path)
     
     def save_beans_from_tree(self):
         number_of_page = self.controls.tabhelper.page_num(self.scroll)
@@ -187,7 +187,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                     
         
     def clear_tree(self):
-        gobject.idle_add(self.model.clear)
+        GObject.idle_add(self.model.clear)
 
     def on_button_press(self, w, e):
         pass
@@ -259,9 +259,9 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             path = paths[0]  
                  
             iter = self.model.get_iter(path)
-            self.model.set_value(iter, FTreeModel().play_icon[0], gtk.STOCK_GO_FORWARD)
+            self.model.set_value(iter, FTreeModel().play_icon[0], Gtk.STOCK_GO_FORWARD)
             self.active_UUID = self.model.get_value(iter, FTreeModel().UUID[0])
-        gobject.idle_add(safe_task)
+        GObject.idle_add(safe_task)
         
     def set_bean_column_value(self, bean, colum_num, value):
         def safe_task():
@@ -269,7 +269,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 if row[self.UUID[0]] == bean.UUID:
                     row[colum_num] = value
                     break
-        gobject.idle_add(safe_task)
+        GObject.idle_add(safe_task)
               
     def update_bean(self, bean):
         for row in self.model:
@@ -312,11 +312,11 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         def safe_task():
             for row in self.model:
                 if row[self.UUID[0]] == bean.UUID:
-                    row[self.play_icon[0]] = gtk.STOCK_GO_FORWARD
+                    row[self.play_icon[0]] = Gtk.STOCK_GO_FORWARD
                     self.active_UUID = bean.UUID                
                 else:
                     row[self.play_icon[0]] = None
-        gobject.idle_add(safe_task)
+        GObject.idle_add(safe_task)
 
     def get_next_bean_by_UUID(self, repeat_all=False):
         '''not correct method after rebuild beans'''
@@ -466,7 +466,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         beans = self.get_selected_beans()
         if not beans:
             return
-        clb = gtk.Clipboard()
+        clb = Gtk.Clipboard()
         if not mode:
             tracks = [b.tracknumber + ". " + b.title + " (" + b.time + ")" 
                       if (b.tracknumber and b.title and b.time) else b.text for b in beans]

@@ -4,9 +4,9 @@ Created on Sep 23, 2010
 @author: ivan
 '''
 import os
-import gtk
+from gi.repository import Gtk
 import copy
-import gobject
+from gi.repository import GObject
 import logging
 
 from foobnix.fc.fc import FC
@@ -38,12 +38,12 @@ class InfoCache():
         
         self.active_method = None
 
-class InfoPanelWidget(gtk.Frame, LoadSave, FControl):   
+class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
     def __init__(self, controls): 
-        gtk.Frame.__init__(self)
+        Gtk.Frame.__init__(self)
         FControl.__init__(self, controls)
         
-        self.album_label = gtk.Label()
+        self.album_label = Gtk.Label()
         self.album_label.set_line_wrap(True)
         self.album_label.set_markup("<b></b>")
         self.set_label_widget(self.album_label)                                
@@ -70,26 +70,26 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
         
         """wiki"""
-        wBox = gtk.VBox()
+        wBox = Gtk.VBox()
         wiki_title = _("About Artist")
         self.wiki = TextArea()
         
         wBox.line_title = EventLabel(wiki_title, func=self.show_current, arg=wBox, func1=self.show_wiki_info)
         
         """info"""
-        info_frame = gtk.Frame(_("Info"))
+        info_frame = Gtk.Frame(label=_("Info"))
         
-        self.last_fm_label = gtk.LinkButton("http://www.last.fm", "Last.Fm")
-        self.wiki_label = gtk.LinkButton("http://www.wikipedia.org", "Wikipedia")
+        self.last_fm_label = Gtk.LinkButton("http://www.last.fm", "Last.Fm")
+        self.wiki_label = Gtk.LinkButton("http://www.wikipedia.org", "Wikipedia")
         
         info_line = HBoxDecoratorTrue(self.last_fm_label, self.wiki_label)
         info_frame.add(info_line)
         
         """downloads"""
-        dm_frame = gtk.Frame(_("Downloads"))
+        dm_frame = Gtk.Frame(label=_("Downloads"))
                 
-        self.exua_label = gtk.LinkButton("http://www.ex.ua", "EX.ua")
-        self.rutracker_label = gtk.LinkButton("http://rutracker.org", "Rutracker")
+        self.exua_label = Gtk.LinkButton("http://www.ex.ua", "EX.ua")
+        self.rutracker_label = Gtk.LinkButton("http://rutracker.org", "Rutracker")
         
         dm_line = HBoxDecoratorTrue(self.exua_label, self.rutracker_label)
         dm_frame.add(dm_line)
@@ -97,41 +97,42 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         self.wiki = TextArea()
         self.wiki.set_text("", wiki_title)
         
-        wBox.pack_start(HBoxDecoratorTrue(info_frame, dm_frame), False, False)
-        wBox.pack_start(self.wiki, True, True)
+        wBox.pack_start(HBoxDecoratorTrue(info_frame, dm_frame), False, False, 0)
+        wBox.pack_start(self.wiki, True, True, 0)
         
         wBox.scroll = wBox
         
-        self.vpaned_small = gtk.VBox(False, 0)
+        self.vpaned_small = Gtk.VBox(False, 0)
         
         """image and similar artists"""
-        ibox = gtk.HBox(False, 0)
+        ibox = Gtk.HBox(False, 0)
         self.image = ImageBase(ICON_BLANK_DISK, FC().info_panel_image_size)
 
-        lbox = gtk.VBox(False, 0)
+        lbox = Gtk.VBox(False, 0)
 
         self.left_widget = [wBox, self.artists, self.tracks, self.tags, self.lyrics, self.best_songs]
         
         for l_widget in self.left_widget:        
-            lbox.pack_start(l_widget.line_title)
+            lbox.pack_start(l_widget.line_title, False, False, 0)
                 
-        ibox.pack_start(self.image, False, False)
-        ibox.pack_start(lbox, True, True)
+        ibox.pack_start(self.image, False, False, 0)
+        ibox.pack_start(lbox, True, True, 0)
                 
         """image and similar artists"""
-        sbox = gtk.VBox(False, 0)
+        sbox = Gtk.VBox(False, 0)
         
         for l_widget in self.left_widget:        
-            sbox.pack_start(l_widget.scroll, True, True)
+            sbox.pack_start(l_widget.scroll, True, True, 0)
         
-        sbox.pack_end(self.empty.scroll, True, True)
+        sbox.pack_end(self.empty.scroll, True, True, 0)
         
-        self.vpaned_small.pack_start(ibox, False, False)
-        self.vpaned_small.pack_start(sbox, True, True)
+        self.vpaned_small.pack_start(ibox, False, False, 0)
+        self.vpaned_small.pack_start(sbox, True, True, 0)
                 
         self.add(self.vpaned_small)
-        
-        self.hide_all()
+
+        ### TODO: ???
+        self.hide()
         
         self.bean = None
         self.info_cache = InfoCache()
@@ -161,7 +162,7 @@ class InfoPanelWidget(gtk.Frame, LoadSave, FControl):
         
             self.info_cache.active_method = widget.line_title.func1
             self.controls.in_thread.run_with_progressbar(widget.line_title.func1)
-        gobject.idle_add(safe_task)
+        GObject.idle_add(safe_task)
             
     def clear(self):
         self.image.set_no_image()

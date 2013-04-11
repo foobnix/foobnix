@@ -4,7 +4,7 @@ Created on Sep 28, 2010
 @author: ivan
 '''
 
-import gtk
+from gi.repository import Gtk
 
 from foobnix.helpers.menu import Popup
 from foobnix.regui.state import LoadSave
@@ -24,7 +24,7 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
         self.set_reorderable(False)
         
         """column config"""
-        column = gtk.TreeViewColumn(title_name, gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = Gtk.TreeViewColumn(title_name, Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.append_column(column)
         self.set_headers_visible(head_visible)
@@ -61,8 +61,8 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
         if is_rigth_click(e):
             right_click_optimization_for_trees(w, e)
             menu = Popup()
-            menu.add_item('Play', gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
-            menu.add_item('Copy to Search Line', gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)            
+            menu.add_item('Play', Gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
+            menu.add_item('Copy to Search Line', Gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)
             menu.show(e)
         
     def on_load(self):

@@ -5,13 +5,13 @@ Created on 31 may 2011
 @author: zavlab1
 '''
 
-import gtk
+from gi.repository import Gtk
 import time
 import base64
 import socket
 import thread
 import logging
-import gobject
+from gi.repository import GObject
 
 from foobnix.fc.fc import FC
 from foobnix.helpers.window import MessageWindow
@@ -145,10 +145,10 @@ class NetWrapper():
             self.dd_count += 1
             MessageWindow(title=_("Internet Connection"), 
                           text=_("Foobnix not connected or Internet not available. Please try again a little bit later."),
-                          parent=self.controls.main_window, buttons=gtk.BUTTONS_OK)
+                          parent=self.controls.main_window, buttons=Gtk.BUTTONS_OK)
             self.dd_count -= 1
             
-        gobject.idle_add(task)
+        GObject.idle_add(task)
         
     def is_internet(self):
         return True if self.is_connected else False

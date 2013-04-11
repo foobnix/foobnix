@@ -3,7 +3,7 @@ Created on Sep 27, 2010
 
 @author: ivan
 '''
-import gtk
+from gi.repository import Gtk
 
 from foobnix.util import const
 from foobnix.fc.fc import FC
@@ -18,31 +18,31 @@ class PlaybackControlsNotUsedOld(FControl, MyToolbar, LoadSave):
         FControl.__init__(self, controls)    
         MyToolbar.__init__(self)   
         self.add_separator()
-        self.add_button("Stop", gtk.STOCK_MEDIA_STOP, controls.state_stop, None)   
-        self.add_button("Play", gtk.STOCK_MEDIA_PLAY, controls.state_play, None)
-        self.add_button("Pause", gtk.STOCK_MEDIA_PAUSE, controls.state_pause, None)
-        self.add_button("Previous", gtk.STOCK_MEDIA_PREVIOUS, controls.prev, None)
-        self.add_button("Next", gtk.STOCK_MEDIA_NEXT, controls.next, None)
+        self.add_button("Stop", Gtk.STOCK_MEDIA_STOP, controls.state_stop, None)
+        self.add_button("Play", Gtk.STOCK_MEDIA_PLAY, controls.state_play, None)
+        self.add_button("Pause", Gtk.STOCK_MEDIA_PAUSE, controls.state_pause, None)
+        self.add_button("Previous", Gtk.STOCK_MEDIA_PREVIOUS, controls.prev, None)
+        self.add_button("Next", Gtk.STOCK_MEDIA_NEXT, controls.next, None)
         self.add_separator()
         
     def on_load(self): pass
     def on_save(self): pass
 
-class OrderShuffleControls(FControl, gtk.HBox, LoadSave):
+class OrderShuffleControls(FControl, Gtk.HBox, LoadSave):
     def __init__(self, controls):
-        gtk.HBox.__init__(self, False)
+        Gtk.HBox.__init__(self, False)
         
         self.toggle_buttons = OrderShuffleControls_ZAVLAB(controls)
         
         self.rlabel = EventLabel(text="S", func=lambda * a: self.on_random())
         self.olabel = EventLabel(text="R", func=lambda * a: self.on_order())
         
-        self.pack_start(self.rlabel)
-        self.pack_start(gtk.Label(" "))
-        self.pack_start(self.olabel)
-        self.pack_start(self.toggle_buttons)
+        self.pack_start(self.rlabel, False, False, 0)
+        self.pack_start(Gtk.Label(" "), False, False, 0)
+        self.pack_start(self.olabel, False, False, 0)
+        self.pack_start(self.toggle_buttons, False, False, 0)
         
-        self.pack_start(gtk.SeparatorToolItem())
+        self.pack_start(Gtk.SeparatorToolItem(), False, False, 0)
     
     def update(self):
         if FC().is_order_random:
@@ -91,25 +91,24 @@ class OrderShuffleControls(FControl, gtk.HBox, LoadSave):
         
     def on_save(self): pass        
     
-class OrderShuffleControls_ZAVLAB(FControl, gtk.HBox, gtk.Tooltips, LoadSave):
+class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
     def __init__(self, controls): 
-        gtk.HBox.__init__(self, False)
+        Gtk.HBox.__init__(self, False)
                 
-        self.order = gtk.ToggleButton()
-        order_image = gtk.image_new_from_stock(gtk.STOCK_REDO, gtk.ICON_SIZE_BUTTON)
+        self.order = Gtk.ToggleButton()
+        order_image = Gtk.Image.new_from_stock(Gtk.STOCK_REDO, Gtk.IconSize.BUTTON)
         self.order.add(order_image)
-        self.order.set_relief(gtk.RELIEF_NONE)
+        self.order.set_relief(Gtk.ReliefStyle.NONE)
         self.order.set_focus_on_click(False)
-        
-        
+
         self.order.connect("button-press-event", self.on_order)
         
-        self.pack_start(self.order)
+        self.pack_start(self.order, False, False, 0)
         
-        self.repeat = gtk.ToggleButton()
-        repeat_image = gtk.image_new_from_stock(gtk.STOCK_REFRESH, gtk.ICON_SIZE_BUTTON)
+        self.repeat = Gtk.ToggleButton()
+        repeat_image = Gtk.Image.new_from_stock(Gtk.STOCK_REFRESH, Gtk.IconSize.BUTTON)
         self.repeat.add(repeat_image)
-        self.repeat.set_relief(gtk.RELIEF_NONE)
+        self.repeat.set_relief(Gtk.ReliefStyle.NONE)
         self.repeat.set_focus_on_click(False)    
         
         try:
@@ -119,20 +118,20 @@ class OrderShuffleControls_ZAVLAB(FControl, gtk.HBox, gtk.Tooltips, LoadSave):
             pass
         
         self.repeat.connect("button-press-event", self.choise)
-        self.pack_start(self.repeat)
+        self.pack_start(self.repeat, False, False, 0)
                 
-        #self.pack_start(gtk.SeparatorToolItem())
+        #self.pack_start(Gtk.SeparatorToolItem())
         
-        self.menu = gtk.Menu()
-        self.item_all = gtk.CheckMenuItem(_("Repeat all"))
+        self.menu = Gtk.Menu()
+        self.item_all = Gtk.CheckMenuItem(_("Repeat all"))
         self.item_all.connect("button-press-event", self.on_repeat)
         self.menu.append(self.item_all)
-        self.item_single = gtk.CheckMenuItem(_("Repeat single"))
+        '''self.item_single = Gtk.CheckMenuItem(_("Repeat single"))
         self.item_single.connect("button-press-event", lambda item, *a: self.on_repeat(item, False))
-        self.menu.append(self.item_single)
+        self.menu.append(self.item_single)'''
         
     def choise(self, widget, event):
-            self.menu.popup(None, None, None, event.button, event.time)
+            self.menu.popup(None, None, None, None, event.button, event.time)
             self.menu.show_all()
             
     def on_load(self):
@@ -188,16 +187,16 @@ class OrderShuffleControls_ZAVLAB(FControl, gtk.HBox, gtk.Tooltips, LoadSave):
     
     def on_save(self): pass    
     
-class PlaybackControls(FControl, gtk.HBox, LoadSave):
+class PlaybackControls(FControl, Gtk.HBox, LoadSave):
     def __init__(self, controls): 
-        gtk.HBox.__init__(self, False)
-        self.pack_start(gtk.SeparatorToolItem())
-        self.pack_start(ImageButton(gtk.STOCK_MEDIA_STOP, controls.state_stop, _("Stop")))
-        self.pack_start(ImageButton(gtk.STOCK_MEDIA_PLAY, controls.state_play, _("Play")))
-        self.pack_start(ImageButton(gtk.STOCK_MEDIA_PAUSE, controls.state_play_pause, _("Pause")))
-        self.pack_start(ImageButton(gtk.STOCK_MEDIA_PREVIOUS, controls.prev, _("Previous")))
-        self.pack_start(ImageButton(gtk.STOCK_MEDIA_NEXT, controls.next, _("Next")))
-        self.pack_start(gtk.SeparatorToolItem())
+        Gtk.HBox.__init__(self, False)
+        self.pack_start(Gtk.SeparatorToolItem(), False, False, 0)
+        self.pack_start(ImageButton(Gtk.STOCK_MEDIA_STOP, controls.state_stop, _("Stop")), False, False, 0)
+        self.pack_start(ImageButton(Gtk.STOCK_MEDIA_PLAY, controls.state_play, _("Play")), False, False, 0)
+        self.pack_start(ImageButton(Gtk.STOCK_MEDIA_PAUSE, controls.state_play_pause, _("Pause")), False, False, 0)
+        self.pack_start(ImageButton(Gtk.STOCK_MEDIA_PREVIOUS, controls.prev, _("Previous")), False, False, 0)
+        self.pack_start(ImageButton(Gtk.STOCK_MEDIA_NEXT, controls.next, _("Next")), False, False, 0)
+        self.pack_start(Gtk.SeparatorToolItem(), False, False, 0)
         
         
     def on_load(self): pass

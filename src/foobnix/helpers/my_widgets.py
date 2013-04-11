@@ -4,38 +4,39 @@ Created on 30 авг. 2010
 
 @author: ivan
 '''
-import gtk
+from gi.repository import Gtk
+from gi.repository import Gdk
 from foobnix.helpers.pref_widgets import HBoxDecorator
 from foobnix.fc.fc import FC
 #from desktopcouch.replication_services.example import is_active
 
 def open_link_in_browser(uri):
-    link = gtk.LinkButton(uri)
+    link = Gtk.LinkButton(uri)
     link.clicked()
     
-class PespectiveToogledButton(gtk.ToggleButton):
+class PespectiveToogledButton(Gtk.ToggleButton):
     def __init__(self, title, gtk_stock, tooltip=None):
-        gtk.ToggleButton.__init__(self, title)
+        Gtk.ToggleButton.__init__(self, title)
         if not tooltip:
             tooltip = title
         
         self.set_tooltip_text(tooltip)
                 
-        self.set_relief(gtk.RELIEF_NONE)
+        self.set_relief(Gtk.ReliefStyle.NONE)
         label = self.get_child()
         self.remove(label)
         
-        vbox = gtk.VBox(False, 0)
-        img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
+        vbox = Gtk.VBox(False, 0)
+        img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
         vbox.add(img)
-        vbox.add(gtk.Label(title))
+        vbox.add(Gtk.Label(title))
         vbox.show_all()
         
         self.add(vbox)
 
-class ButtonStockText(gtk.Button):
+class ButtonStockText(Gtk.Button):
     def __init__(self, title, gtk_stock, tooltip=None):
-        gtk.Button.__init__(self, "")
+        Gtk.Button.__init__(self, "")
         if not tooltip:
             tooltip = title
         
@@ -44,30 +45,30 @@ class ButtonStockText(gtk.Button):
         label = self.get_child()
         self.remove(label)
         
-        box = gtk.HBox(False, 0)
-        img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
+        box = Gtk.HBox(False, 0)
+        img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
         box.add(img)
-        box.add(gtk.Label(title))
+        box.add(Gtk.Label(title))
         box.show_all()
         
-        alignment = gtk.Alignment(xalign=0.5)
+        alignment = Gtk.Alignment(xalign=0.5)
         #alignment.set_padding(padding_top=0, padding_bottom=0, padding_left=10, padding_right=10)
         alignment.add(box)
         
         self.add(alignment)    
         
-class InsensetiveImageButton(gtk.EventBox):
-    def __init__(self, stock_image, size=gtk.ICON_SIZE_LARGE_TOOLBAR):
-        gtk.EventBox.__init__(self)
-        self.button = gtk.Button()
+class InsensetiveImageButton(Gtk.EventBox):
+    def __init__(self, stock_image, size=Gtk.IconSize.LARGE_TOOLBAR):
+        Gtk.EventBox.__init__(self)
+        self.button = Gtk.Button()
         #self.button.set_sensitive(False)
         self.button.set_focus_on_click(False)
-        self.button.set_relief(gtk.RELIEF_NONE)
-        img = gtk.image_new_from_stock(stock_image, size)
+        self.button.set_relief(Gtk.ReliefStyle.NONE)
+        img = Gtk.Image.new_from_stock(stock_image, size)
         self.button.set_image(img)
-        self.add(HBoxDecorator(self.button, gtk.Label("R")))
+        self.add(HBoxDecorator(self.button, Gtk.Label("R")))
         
-        #self.button.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("red"))
+        #self.button.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("red"))
         
         self.connect("button-press-event", self.on_click)
         self.button.connect("button-press-event", self.on_click1)
@@ -80,54 +81,51 @@ class InsensetiveImageButton(gtk.EventBox):
     def on_click(self, *a):
         self.insensetive = not self.insensetive
         #self.button.set_sensitive(self.insensetive)
-    
-     
-        
-                
 
-class ImageButton(gtk.Button):
-    def __init__(self, stock_image, func=None, tooltip_text=None, size=gtk.ICON_SIZE_LARGE_TOOLBAR):
-        gtk.Button.__init__(self)
-        self.set_relief(gtk.RELIEF_NONE)
+class ImageButton(Gtk.Button):
+    def __init__(self, stock_image, func=None, tooltip_text=None, size=Gtk.IconSize.LARGE_TOOLBAR):
+        Gtk.Button.__init__(self)
+        self.set_relief(Gtk.ReliefStyle.NONE)
         self.set_focus_on_click(False)
         if tooltip_text:
             self.set_tooltip_text(tooltip_text)
-        img = gtk.image_new_from_stock(stock_image, size)
+        img = Gtk.Image.new_from_stock(stock_image, size)
         self.set_image(img)
         if func:
             self.connect("clicked", lambda * a: func())
         
 
-class ToggleImageButton(gtk.ToggleButton):
+class ToggleImageButton(Gtk.ToggleButton):
     def __init__(self, gtk_stock, func=None, param=None):
-        gtk.ToggleButton.__init__(self)
-        self.set_relief(gtk.RELIEF_NONE)
+        Gtk.ToggleButton.__init__(self)
+        self.set_relief(Gtk.ReliefStyle.NONE)
         self.set_focus_on_click(False)
         if param and func:             
             self.connect("toggled", lambda * a: func(param))
         elif func:
             self.connect("toggled", lambda * a: func())         
                 
-        img = gtk.image_new_from_stock(gtk_stock, gtk.ICON_SIZE_MENU)
+        img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
         self.add(img)
         
-class ToggleWidgetButton(gtk.ToggleButton):
+class ToggleWidgetButton(Gtk.ToggleButton):
     def __init__(self, widget, func=None, param=None):
-        gtk.ToggleButton.__init__(self)
+        Gtk.ToggleButton.__init__(self)
 
         if param and func:             
             self.connect("toggled", lambda * a: func(param))
         elif func:
             self.connect("toggled", lambda * a: func())         
                 
-        self.set_relief(gtk.RELIEF_NONE)        
+        self.set_relief(Gtk.ReliefStyle.NONE)
         self.add(widget)        
 
-def tab_close_button(func=None, arg=None, stock=gtk.STOCK_CLOSE):
+
+def tab_close_button(func=None, arg=None, stock=Gtk.STOCK_CLOSE):
     """button"""
-    button = gtk.Button()
-    button.set_relief(gtk.RELIEF_NONE)
-    img = gtk.image_new_from_stock(stock, gtk.ICON_SIZE_MENU)
+    button = Gtk.Button()
+    button.set_relief(Gtk.ReliefStyle.NONE)
+    img = Gtk.Image.new_from_stock(stock, Gtk.IconSize.MENU)
     button.set_image(img)
     if func and arg:           
         button.connect("button-press-event", lambda * a: func(arg))
@@ -138,14 +136,14 @@ def tab_close_button(func=None, arg=None, stock=gtk.STOCK_CLOSE):
 
 
 
-class EventLabel(gtk.EventBox):
+class EventLabel(Gtk.EventBox):
     def __init__(self, text="×", angle=0, func=None, arg=None, func1=None):        
-        gtk.EventBox.__init__(self)
+        Gtk.EventBox.__init__(self)
         self.text = text
         self.set_visible_window(False)
         self.selected = False
         
-        self.label = gtk.Label()
+        self.label = Gtk.Label()
         self.set_not_underline()
         
         self.label.set_angle(angle)
@@ -188,11 +186,11 @@ class EventLabel(gtk.EventBox):
     
 def notetab_label(func=None, arg=None, angle=0, symbol="×"):
     """label"""
-    label = gtk.Label(symbol)
+    label = Gtk.Label(symbol)
     label.show()
     label.set_angle(angle)
     
-    event = gtk.EventBox()
+    event = Gtk.EventBox()
     event.show()
     event.add(label)    
     event.set_visible_window(False)
@@ -206,12 +204,12 @@ def notetab_label(func=None, arg=None, angle=0, symbol="×"):
     event.show()
     return event
 
-class AlternateVolumeControl (gtk.DrawingArea):
+class AlternateVolumeControl (Gtk.DrawingArea):
     def __init__(self, levels, s_width, interval, v_step):
-        gtk.DrawingArea.__init__(self)
+        Gtk.DrawingArea.__init__(self)
         self.show ()
         self.volume = FC().volume
-        self.connect("expose-event", self.expose_handler, levels, s_width, interval, v_step)
+        self.connect("draw", self.expose_handler, levels, s_width, interval, v_step)
        
     def set_volume (self, vol):
         self.volume = vol
@@ -226,7 +224,7 @@ class AlternateVolumeControl (gtk.DrawingArea):
         '''
         context = area.window.cairo_create()
         context.rectangle(0,0,10,10)
-        context.set_source_color(self.get_style ().dark[gtk.STATE_ACTIVE])
+        context.set_source_color(self.get_style ().dark[Gtk.STATE_ACTIVE])
         context.fill_preserve()
         '''
         
@@ -256,18 +254,11 @@ class AlternateVolumeControl (gtk.DrawingArea):
         i = 1
         while i < levels:
             if x < label:
-                gc.set_rgb_fg_color(gtk.gdk.color_parse("orange red"))#@UndefinedVariable
+                gc.set_rgb_fg_color(Gdk.color_parse("orange red"))#@UndefinedVariable
             else:
-                gc.set_rgb_fg_color(gtk.gdk.color_parse("white"))#@UndefinedVariable
+                gc.set_rgb_fg_color(Gdk.color_parse("white"))#@UndefinedVariable
             if x != start_x:
                 area.window.draw_line (gc, x, start_y, x, y)
             i += 1
             x += h_step
             y -= v_step
-                    
-        
-        
-        
-        
-        
-        
