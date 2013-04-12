@@ -111,7 +111,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         for plugin in self.configs:
             if hasattr(plugin, "on_close"):
                 plugin.on_close()
-        self.navigation.set_cursor_on_cell(0)
+        self.navigation.set_cursor_on_cell(Gtk.TreePath(0), None, None, False)
         return True
         
     def populate_config_category(self, name):

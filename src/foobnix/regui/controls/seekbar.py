@@ -67,7 +67,7 @@ class SeekProgressBarControls(FControl, Gtk.Alignment):
         if bean and bean.type == FTYPE_RADIO:
             return None
         
-        width = widget.allocation.width
+        width = widget.get_allocation().width
         x = event.x
         seek_percent = (x + 0.0) / width * 100        
         self.controls.player_seek(seek_percent);

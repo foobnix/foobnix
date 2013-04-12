@@ -8,6 +8,7 @@ Created on Dec 20, 2010
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
+
 import thread
 import logging
 import threading
@@ -360,7 +361,7 @@ class NoteTabControl(TabGeneral):
         self.set_tab_pos(Gtk.POS_LEFT)
         self.default_angle = 90
         self.set_show_tabs(True)
-        for page in xrange(self.get_n_pages() - 1, 0, -1):
+        for page in xrange(self.get_n_pages() - 1, -1, -1):
             tab = self.get_nth_page(page)
             vbox = Gtk.VBox()
             label = tab.get_child().label
@@ -382,7 +383,7 @@ class NoteTabControl(TabGeneral):
         self.set_tab_pos(Gtk.POS_TOP)
         self.default_angle = 0
         self.set_show_tabs(True)
-        for page in xrange(self.get_n_pages() - 1, 0, -1):
+        for page in xrange(self.get_n_pages() - 1, -1, -1):
             tab = self.get_nth_page(page)
             hbox = Gtk.HBox()
             label = tab.get_child().label
@@ -479,13 +480,14 @@ class NoteTabControl(TabGeneral):
         self.on_save_tabs()
 
     def equalize_columns_size(self, notebook, page_pointer, page_num):
-        if self.loaded: #because the "switch-page" event is fired after every tab's addtion
+        if self.loaded: #because the "switch-page" event is fired after every tab's addition
             FC().pl_selected_tab = page_num
         try:
             old_pl_tree_columns = self.get_current_tree().get_columns()
             new_pl_tree_columns = self.get_nth_page(page_num).get_child().get_columns()
             for old_pl_tree_column, new_pl_tree_column in zip(old_pl_tree_columns, new_pl_tree_columns):
-                GObject.idle_add(new_pl_tree_column.set_fixed_width,old_pl_tree_column.get_width())
+                if old_pl_tree_column.get_width() > 0:
+                    GObject.idle_add(new_pl_tree_column.set_fixed_width, old_pl_tree_column.get_width())
         except AttributeError:
             pass
     

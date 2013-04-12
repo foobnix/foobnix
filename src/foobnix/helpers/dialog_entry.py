@@ -199,7 +199,7 @@ def info_dialog_with_link_and_donate(version):
         
         FC().check_new_version = version_check.get_active()
         FC().save()
-        dialog.destroy()           
+        dialog.destroy()
     
 
 def show_entry_dialog(title, description):

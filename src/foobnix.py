@@ -92,7 +92,7 @@ else:
     try:
         foobnix()
         analytics.end_session()
-    except Exception as e:
+    except Exception, e:
         analytics.end_session()
         analytics.error("Main Exception"+str(e))
         exc_type, exc_value, exc_traceback = sys.exc_info()

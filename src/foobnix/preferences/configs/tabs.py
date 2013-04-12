@@ -4,10 +4,13 @@ Created on 24 авг. 2010
 
 @author: ivan
 '''
+
 from foobnix.preferences.config_plugin import ConfigPlugin
 from gi.repository import Gtk
 from foobnix.helpers.my_widgets import tab_close_button
 from foobnix.fc.fc import FC
+
+
 class TabsConfig(ConfigPlugin):
     
     name = _("Tabs")
@@ -58,10 +61,10 @@ class TabsConfig(ConfigPlugin):
         self.radio_tab_left = Gtk.RadioButton(None, _("Left"))
         self.radio_tab_left.show()
         
-        self.radio_tab_top = Gtk.RadioButton(self.radio_tab_left, _("Top"))
+        self.radio_tab_top = Gtk.RadioButton.new_with_label_from_widget(self.radio_tab_left, _("Top"))
         self.radio_tab_top.show()
         
-        self.radio_tab_no = Gtk.RadioButton(self.radio_tab_left, _("No Tabs"))
+        self.radio_tab_no = Gtk.RadioButton.new_with_label_from_widget(self.radio_tab_left, _("No Tabs"))
         self.radio_tab_no.show()
         
         pbox.pack_start(label, False, False, 0)
@@ -80,7 +83,7 @@ class TabsConfig(ConfigPlugin):
         self.radio_tab_label = Gtk.RadioButton(None, "x")
         self.radio_tab_label.show()
         
-        self.radio_tab_button = Gtk.RadioButton(self.radio_tab_label, None)
+        self.radio_tab_button = Gtk.RadioButton.new_from_widget(self.radio_tab_label)
         self.radio_tab_button.show()
         
         self.tab_close_box = Gtk.HBox()
@@ -88,7 +91,7 @@ class TabsConfig(ConfigPlugin):
         self.tab_close_box.pack_start(tab_close_button(), False, False, 0)
         self.tab_close_box.show()
         
-        self.radio_tab_none = Gtk.RadioButton(self.radio_tab_label, _("None"))
+        self.radio_tab_none = Gtk.RadioButton.new_with_label_from_widget(self.radio_tab_label, _("None"))
         self.radio_tab_none.show()
         
         close_label_box.pack_start(close_label, False, False, 0)

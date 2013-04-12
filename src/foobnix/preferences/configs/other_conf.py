@@ -95,7 +95,7 @@ class OtherConfig(ConfigPlugin):
         
         self.old_style = Gtk.RadioButton(None, _("Old Style (Menu Bar)"))
                 
-        self.new_style = Gtk.RadioButton(self.old_style, _("New Style (Button)"))
+        self.new_style = Gtk.RadioButton.new_with_label_from_widget(self.old_style, _("New Style (Button)"))
         
         pbox.pack_start(label, False, False, 0)
         pbox.pack_start(self.new_style, False, True, 0)
@@ -108,7 +108,7 @@ class OtherConfig(ConfigPlugin):
         
         self.buttons = Gtk.RadioButton(None, _("Toggle Buttons"))
         
-        self.labels = Gtk.RadioButton(self.buttons, _("Text Labels"))
+        self.labels = Gtk.RadioButton.new_with_label_from_widget(self.buttons, _("Text Labels"))
         
         o_r_box.pack_start(o_r_label, False, False, 0)
         o_r_box.pack_start(self.buttons, False, True, 0)
@@ -244,7 +244,7 @@ class OtherConfig(ConfigPlugin):
         self.on_change_menu_type()
         
     def fmgr_combobox(self):
-        combobox = Gtk.combo_box_new_text()
+        combobox = Gtk.ComboBoxText()
         combobox.append_text('--- Auto ---')
         combobox.append_text('Nautilus')
         combobox.append_text('Dolphin')
