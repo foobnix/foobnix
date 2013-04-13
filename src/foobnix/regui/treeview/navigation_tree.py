@@ -57,19 +57,18 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             else:
                 if ext:
                     cell.set_property('text', '')
-                
+              
         self.name_column = Gtk.TreeViewColumn("Name", Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         self.name_column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
-        # TODO FIX IT
-        #for rend in self.name_column.get_cell_renderers():
-        #    self.name_column.set_cell_data_func(rend, func, False)
+        for rend in self.name_column.get_cells():
+            self.name_column.set_cell_data_func(rend, func, False)
         self._append_column(self.name_column, _("Name"))
-               
+
         self.ext_column = Gtk.TreeViewColumn("Ext", Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
-        #for rend in self.ext_column.get_cell_renderers():
-        #    self.ext_column.set_cell_data_func(rend, func, True)
+        for rend in self.ext_column.get_cells():
+            self.ext_column.set_cell_data_func(rend, func, True)
         self._append_column(self.ext_column, _("Ext"))
-          
+        
         self.configure_send_drag()
         self.configure_recive_drag()
         
@@ -139,7 +138,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 t_paths = [f_model.convert_child_path_to_path(f_t_path) for f_t_path in f_t_paths]
                 row = model[t_paths[0]]
                 paths = [model[t_path][self.path[0]] for t_path in t_paths]
-                row_refs = [Gtk.TreeRowReference(model, t_path) for t_path in t_paths]
+                row_refs = [Gtk.TreeRowReference.new(model, t_path) for t_path in t_paths]
                 menu.add_separator()
                 menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
                 menu.add_item(_("Create folder"), None, self.create_folder, (model, f_t_paths[0], row))

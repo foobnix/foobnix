@@ -228,7 +228,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         self.multitabs_button.connect("toggled", on_toggle_multitab)
         hbox.pack_start(self.multitabs_button, True, False, 0)
         
-        self.singletab_button = Gtk.RadioButton(self.multitabs_button, _("Single tab mode"))
+        self.singletab_button = Gtk.RadioButton.new_with_label_from_widget(self.multitabs_button, _("Single tab mode"))
         def on_toggle_singletab(widget, data=None):
             self.tree_controller.clear_tree()
             for path in FCache().music_paths[0]:
