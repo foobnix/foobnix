@@ -48,7 +48,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.current_state = state
     
     def gstreamer_player(self):
-        
+
         if FC().proxy_enable and FC().proxy_url and self.bean and (self.bean.path.startswith("http://") or self.bean.type == FTYPE_RADIO):
             playbin = Gst.Pipeline()
             source = Gst.ElementFactory.make("souphttpsrc", "source")
@@ -104,7 +104,7 @@ class GStreamerEngine(MediaPlayerEngine):
         bus.enable_sync_message_emission()
         bus.connect("message", self.on_message)
         bus.connect("sync-message::element", self.on_sync_message)
-        
+
         return playbin
     
     def notify_init(self, duration_int):

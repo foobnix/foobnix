@@ -33,7 +33,7 @@ class FTreeModel():
         self.progress = 22 , str
         self.save_to = 23 , str
         self.persent = 24 , int
-        self.size = 25 , str        
+        self.size = 25 , int
         self.composer = 26 , str
         self.user_id = 27 , str
         self.iso_path = 28 , str
@@ -52,7 +52,7 @@ class FTreeModel():
                 type = self.__dict__[j][1]
                 if i == id:
                     types.append(type) 
-                    break;
+                    break
         return types
 
 class FModel(FTreeModel):             

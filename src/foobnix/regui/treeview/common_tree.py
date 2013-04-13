@@ -498,7 +498,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         self.connect("row-collapsed", on_expand_collapse)
     
     def is_empty(self):
-        if not self.get_model().get_iter_root():
+        if not self.get_model().get_model().get_iter_first():
             return True
         else:
             return False
