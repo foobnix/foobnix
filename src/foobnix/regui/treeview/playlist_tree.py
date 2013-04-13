@@ -286,7 +286,8 @@ class PlaylistTreeControl(CommonTreeControl):
             if self.__dict__[key] is column:
                 atr_name = key
                 break
-        for page in xrange(number_music_tabs, 0, -1):
+
+        for page in xrange(number_music_tabs, -1, -1):
             tab_content = self.controls.notetabs.get_nth_page(page)
             pl_tree = tab_content.get_child()
             pl_tree_column = pl_tree.__dict__[atr_name]
