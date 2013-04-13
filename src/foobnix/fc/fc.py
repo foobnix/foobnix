@@ -162,7 +162,7 @@ class FC():
         
         self.gap_secs = 0
         
-        self.tabs_mode = "Multi"#Multi, Single
+        self.tabs_mode = "Multi" # Multi, Single
         
         self.order_repeat_style = "ToggleButtons"
         

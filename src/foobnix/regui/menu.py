@@ -5,6 +5,7 @@ Created on Sep 22, 2010
 '''
 
 from gi.repository import Gtk
+
 import logging
 
 from foobnix.fc.fc import FC
@@ -27,7 +28,7 @@ class MenuBarWidget(FControl):
         top = parent
         
         """File"""
-        file = top.add_submenu(_("_File"))
+        file = top.add_submenu(_("File"))
         file.add_image_item(_("Add File(s)"), Gtk.STOCK_OPEN, self.controls.on_add_files)
         file.add_image_item(_("Add Folder(s)"), Gtk.STOCK_OPEN, self.controls.on_add_folders)
         file.add_image_item(_("Save Playlist As"), Gtk.STOCK_SAVE_AS,
@@ -36,7 +37,7 @@ class MenuBarWidget(FControl):
         file.add_image_item(_("Quit"), Gtk.STOCK_QUIT, self.controls.quit)
 
         """View"""
-        view = top.add_submenu(_("_View"))
+        view = top.add_submenu(_("View"))
         view.set_no_show_all(True)
         self.view_music_tree = view.add_check_item(_("Left Panel"), FC().is_view_music_tree_panel)
         self.view_music_tree.connect("activate", lambda w: controls.layout.set_visible_musictree_panel(w.get_active()))
@@ -59,7 +60,7 @@ class MenuBarWidget(FControl):
             preferences_item.hide()
         
         """Playback"""
-        playback = top.add_submenu(_("_Playback"))
+        playback = top.add_submenu(_("Playback"))
 
         def set_random(flag=True):            
             FC().is_order_random = flag
@@ -109,7 +110,7 @@ class MenuBarWidget(FControl):
         #self.playlist_tree.connect("activate", lambda w: w.get_active() and controls.set_playlist_tree())
 
         """Help"""
-        help = top.add_submenu(_("_Help"))
+        help = top.add_submenu(_("Help"))
         help.add_image_item(_("About"), Gtk.STOCK_ABOUT, self.show_about)
         help.separator()
         help.add_text_item(_("Project page"), lambda * a:open_link_in_browser(_("http://www.foobnix.com/news/eng")), None, False)
