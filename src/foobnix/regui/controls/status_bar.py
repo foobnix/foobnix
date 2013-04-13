@@ -13,7 +13,6 @@ class StatusbarControls(Gtk.Statusbar, FControl):
         Gtk.Statusbar.__init__(self)
         FControl.__init__(self, controls)
         self.show()
-        self.set_text("123")
         self.get_children()[0].set_shadow_type(Gtk.ShadowType.NONE)
 
     def set_text(self, text):
