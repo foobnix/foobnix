@@ -12,7 +12,7 @@ class FTreeModel():
         self.time = 4 , str
         self.path = 5 , str
         self.level = 6 , str
-        self.tracknumber = 7 , int        
+        self.tracknumber = 7 , str        
         self.is_file = 8 , bool
         
         self.artist = 9 , str
@@ -32,8 +32,8 @@ class FTreeModel():
         self.status = 21 , str
         self.progress = 22 , str
         self.save_to = 23 , str
-        self.persent = 24 , int
-        self.size = 25 , int
+        self.persent = 24 , str
+        self.size = 25 , str
         self.composer = 26 , str
         self.user_id = 27 , str
         self.iso_path = 28 , str

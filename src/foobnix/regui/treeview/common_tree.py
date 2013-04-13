@@ -124,6 +124,8 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 setattr(bean, key, None)
                 
             value = getattr(bean, key)
+            if type(value) in [int, float]:
+                value = str(value)
             attributes.append(value)
 
         #logging.debug("get_row_from_bean attributes %s" % attributes)

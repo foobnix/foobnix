@@ -596,7 +596,7 @@ class DragDropTree(Gtk.TreeView):
                 else:
                     counter = 0
                 if counter:
-                    row[tn] = counter
+                    row[tn] = str(counter)
     
     def tree_append_all(self, beans):
         def task():

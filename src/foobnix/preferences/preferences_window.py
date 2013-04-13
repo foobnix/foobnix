@@ -69,7 +69,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         
         for plugin in self.configs:
             self.navigation.append(FDModel(plugin.name))
-                
+
         self.navigation.set_left_click_func(func)
 
         paned.add1(self.navigation.scroll)
