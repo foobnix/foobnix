@@ -4,11 +4,13 @@ Created on 30 авг. 2010
 
 @author: ivan
 '''
+
 from gi.repository import Gtk
 from gi.repository import Gdk
-from foobnix.helpers.pref_widgets import HBoxDecorator
+
 from foobnix.fc.fc import FC
-#from desktopcouch.replication_services.example import is_active
+from foobnix.helpers.pref_widgets import HBoxDecorator
+
 
 def open_link_in_browser(uri):
     link = Gtk.LinkButton(uri)
@@ -207,58 +209,58 @@ def notetab_label(func=None, arg=None, angle=0, symbol="×"):
 class AlternateVolumeControl (Gtk.DrawingArea):
     def __init__(self, levels, s_width, interval, v_step):
         Gtk.DrawingArea.__init__(self)
-        self.show ()
+        self.show()
         self.volume = FC().volume
-        self.connect("draw", self.expose_handler, levels, s_width, interval, v_step)
+        self.connect("draw", self.draw_callback, levels, s_width, interval, v_step)
        
     def set_volume (self, vol):
         self.volume = vol
         self.queue_draw()
-        
-    def expose_handler(self, area, event, levels, s_width, interval, v_step) :
+    
+    def draw_callback(self, w, cr, levels, s_width, interval, v_step):
         #levels = a number of volume levels (a number of sticks equals level-1)
         #s_width - width of stick
         #interval - interval between sticks
         #v_step - increase the height of the stick
         #all parameters must be integer type
-        '''
-        context = area.window.cairo_create()
-        context.rectangle(0,0,10,10)
-        context.set_source_color(self.get_style ().dark[Gtk.STATE_ACTIVE])
-        context.fill_preserve()
-        '''
         
-        gc = self.window.new_gc()
-        area_width = area.get_allocation().width
-        area_height = area.get_allocation().height
+        area_width = w.get_allocation().width
+        area_height = w.get_allocation().height
         
         h_step = s_width + interval
-        width = (levels - 1) * (s_width + interval)
+        width = levels * (s_width + interval) - interval
         height = v_step * (levels - 1)
         
         if width < area_width:
             start_x = (area_width-width)/2
         else:
             start_x = 1
-            
+
         if height < area_height:
             start_y = area_height - (area_height - height)/2
         else:
-            start_y = area_height - 1
+            start_y = 0
         
         x = start_x
-        y = start_y
-        
-        label = width * self.volume/100.0 + x
-                
-        i = 1
+        y = start_y - 1
+
+        label = FC().volume * width/100.0 + start_x
+
+        i = 0
         while i < levels:
-            if x < label:
-                gc.set_rgb_fg_color(Gdk.color_parse("orange red"))#@UndefinedVariable
-            else:
-                gc.set_rgb_fg_color(Gdk.color_parse("white"))#@UndefinedVariable
-            if x != start_x:
-                area.window.draw_line (gc, x, start_y, x, y)
+            color = Gdk.color_parse("orange red") if x  < label else Gdk.color_parse("white")
+            Gdk.cairo_set_source_color(cr, color)
+
+            cr.move_to(x, start_y)
+            cr.line_to(x+s_width, start_y)
+            cr.line_to(x+s_width, y)
+            cr.line_to(x, y)
+            #cr.close_path()
+            cr.fill()
+            
             i += 1
             x += h_step
             y -= v_step
+            
+        
+        

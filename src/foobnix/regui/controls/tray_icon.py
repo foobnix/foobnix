@@ -73,7 +73,7 @@ class PopupVolumeWindow(PopupTrayWindow):
         PopupTrayWindow.__init__(self, controls)
         
         height = popup_menu_window.get_size()[1]
-        width = height*3
+        width = height * 3
         self.set_size_request(width, height)
         self.avc = AlternateVolumeControl(levels=35, s_width=2, interval=1, v_step=1)
         #self.avc.modify_bg(Gtk.StateType.NORMAL, self.get_colormap().alloc_color("gray23"))
