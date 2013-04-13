@@ -47,7 +47,7 @@ class Popup(Gtk.Menu):
     
     def show(self, event):
         self.show_all()
-        self.popup(None, None, None, None, event.button, event.time) 
+        self.popup(None, None, lambda menu, data: (event.get_root_coords()[0], event.get_root_coords()[1], True), None, event.button, event.time) 
     
     def show_widget(self, w):
         self.show_all()
