@@ -5,10 +5,12 @@ Created on 29 сент. 2010
 @author: ivan
 '''
 
-from gi.repository import Gtk
-from gi.repository import Gdk
 import logging
+
+from gi.repository import Gdk
 from gi.repository import GObject
+from gi.repository import Gtk
+from gi.repository import Notify
 
 from foobnix.fc.fc import FC
 from foobnix.regui.controls.playback import PlaybackControls
@@ -30,6 +32,7 @@ class PopupTrayWindow (Gtk.Window, FControl):
 
         self.set_position(Gtk.WindowPosition.MOUSE)
         self.connect("leave-notify-event", self.on_leave_window)
+        Notify.init('Foobnix')
         
     def on_leave_window(self, w, event):
         max_x, max_y = w.size_request()
@@ -145,15 +148,10 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
             super(TrayIconControls, self).update_info_from(bean)
 
         if FC().notifier:
-            try:
-                import pynotify
-            except:
-                logging.warn("Pynotify not found in your system")
-            if not pynotify.init('org.mpris.foobnix'):
-                logging.warning("Can't initialize pynotify")
-                return
-            notification = pynotify.Notification("Foobnix", "<b><i>" + artist + "\n\n " + title + "</i></b>")
-            notification.set_urgency(pynotify.URGENCY_LOW)
+            
+            notification = Notify.Notification.new("Foobnix", "<i><b>" + artist + "</b><br><br>" + title + "</i>","")
+            notification.show()
+            notification.set_urgency(Notify.Urgency.LOW)
             notification.set_timeout(FC().notify_time)
             notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
             notification.show()
@@ -219,4 +217,3 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
     def set_text(self, text):
         self.popup_menu.set_text(text)
         GObject.idle_add(self.set_tooltip, text)
-       

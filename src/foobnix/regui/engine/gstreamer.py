@@ -100,7 +100,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 self.equalizer.link(audiosink)
                             
         bus = playbin.get_bus()
-        bus.add_signal_watch()
+        #bus.add_signal_watch()
         bus.enable_sync_message_emission()
         bus.connect("message", self.on_message)
         bus.connect("sync-message::element", self.on_sync_message)
@@ -234,14 +234,14 @@ class GStreamerEngine(MediaPlayerEngine):
     
     def get_position_seek_ns(self):
         try:
-            return self.player.query_position(Gst.Format(Gst.Format.TIME), None)[0]
+            return self.player.query_position(Gst.Format(Gst.Format.TIME))[0]
         except Exception, e:
             logging.warn("GET query_position: " + str(e))
             return - 1
     
     def get_duration_seek_ns(self):
         try:
-            return self.player.query_duration(Gst.Format(Gst.Format.TIME), None)[0]
+            return self.player.query_duration(Gst.Format(Gst.Format.TIME))[0]
         except Exception, e:
             logging.warn("GET query_duration: " + str(e))
             return - 1

@@ -317,7 +317,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                     row[self.play_icon[0]] = Gtk.STOCK_GO_FORWARD
                     self.active_UUID = bean.UUID                
                 else:
-                    row[self.play_icon[0]] = None
+                    row[self.play_icon[0]] = ""
         GObject.idle_add(safe_task)
 
     def get_next_bean_by_UUID(self, repeat_all=False):
