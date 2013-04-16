@@ -7,6 +7,7 @@ Created on 25 сент. 2010
 
 import re
 from gi.repository import Gtk
+
 import logging
 
 from foobnix.fc.fc import FC
@@ -23,6 +24,7 @@ from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE,\
 from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
 
+
 foobnix_localization()
 
 FLAG = False
@@ -32,7 +34,7 @@ class PlaylistTreeControl(CommonTreeControl):
     
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
-        
+
         self.menu = Popup()
         self.full_name = ""
         self.label = Gtk.Label()

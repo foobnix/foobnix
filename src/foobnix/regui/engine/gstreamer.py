@@ -13,9 +13,9 @@ import logging
 import threading
 
 import gi
-gi.require_version("Gst", "0.10")
-
+gi.require_version('Gst', '1.0')
 from gi.repository import Gst
+
 from foobnix.fc.fc import FC
 from foobnix.util.id3_util import decode_cp866
 from foobnix.regui.engine import MediaPlayerEngine
@@ -40,6 +40,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.current_state = STATE_STOP
         self.remembered_seek_position = 0
         self.error_counter = 0
+        self.player = self.gstreamer_player()
         
     def get_state(self):
         return self.current_state
@@ -84,7 +85,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 volume.link(audiosink)
             
         else:
-            playbin = Gst.ElementFactory.make("playbin2", "player")
+            playbin = Gst.ElementFactory.make('playbin', None)
             logging.debug("LOCAL gstreamer")
             
         
@@ -98,15 +99,15 @@ class GStreamerEngine(MediaPlayerEngine):
                 self.audiobin.add(self.equalizer)            
                 self.audiobin.get_pad('sink').set_target(self.equalizer.get_pad('sink'))
                 self.equalizer.link(audiosink)
-                            
+
         bus = playbin.get_bus()
-        #bus.add_signal_watch()
+        bus.add_signal_watch()
         bus.enable_sync_message_emission()
         bus.connect("message", self.on_message)
         bus.connect("sync-message::element", self.on_sync_message)
 
         return playbin
-    
+
     def notify_init(self, duration_int):
         logging.debug("Pre init thread: " + str(duration_int))
 
@@ -160,7 +161,7 @@ class GStreamerEngine(MediaPlayerEngine):
         if hasattr(self, "pipeline"):
             self.pipeline.set_state(Gst.State.NULL)
         
-        self.player = self.gstreamer_player()
+        
                 
         """equlizer settings"""
         if FC().is_eq_enable:
@@ -423,9 +424,9 @@ class GStreamerEngine(MediaPlayerEngine):
         
         elif type in [Gst.MessageType.STATE_CHANGED, Gst.MessageType.STREAM_STATUS]:
             if (self.bean and self.bean.type == FTYPE_RADIO and
-                message.structure.has_field("new-state") and
-                message.structure['old-state'] == Gst.State.READY and
-                message.structure['new-state'] == Gst.State.NULL):
+                message.get_structure().has_field("new-state") and
+                message.get_structure()['old-state'] == Gst.State.READY and
+                message.get_structure()['new-state'] == Gst.State.NULL):
                 logging.info("Reconnect")
                 self.play(self.bean)
                 return
@@ -435,17 +436,17 @@ class GStreamerEngine(MediaPlayerEngine):
             self.error_counter = 0
             artist = ""; title = ""
             
-            if message.structure.has_field("title"):
-                title = message.structure['title']
+            if message.get_structure().has_field("title"):
+                title = message.get_structure()['title']
                 title = decode_cp866(title)
                 text = title
-                if message.structure.has_field("artist"):
-                    artist = message.structure['artist']
+                if message.get_structure().has_field("artist"):
+                    artist = message.get_structure()['artist']
                     artist = decode_cp866(artist)
                     text = artist + " - " + text
                 if (self.bean.type == FTYPE_RADIO and
-                    message.structure.has_field("bitrate")):
-                    text = text + " (bitrate: " + str(message.structure['bitrate']) + ")"
+                    message.get_structure().has_field("bitrate")):
+                    text = text + " (bitrate: " + str(message.get_structure()['bitrate']) + ")"
                 self.notify_title(text)
         
         elif type == Gst.MessageType.EOS:
