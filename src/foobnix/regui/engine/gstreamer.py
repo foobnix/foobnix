@@ -29,7 +29,7 @@ class GStreamerEngine(MediaPlayerEngine):
     def __init__(self, controls):
         MediaPlayerEngine.__init__(self, controls)
         self.bean = None
-        self.player = self.gstreamer_player()
+        #self.player = self.gstreamer_player()
         self.position_sec = 0
         self.duration_sec = 0
 
@@ -63,16 +63,16 @@ class GStreamerEngine(MediaPlayerEngine):
             source.set_property("proxy", FC().proxy_url)
             source.set_property("proxy-id", FC().proxy_user)
             source.set_property("proxy-pw", FC().proxy_password)
-            
+
             def on_new_decoded_pad(dbin, pad, islast):
                 pad.link(audioconvert.get_pad("sink"))
 
             decodebin.connect("new-decoded-pad", on_new_decoded_pad)
-            
+
             playbin.add(source, decodebin, volume, audioconvert, audiosink)
             #Gst.element_link_many(source, decodebin)
             source.link(decodebin)
-            
+
             if FC().is_eq_enable:
                 playbin.add(self.equalizer)
                 #Gst.element_link_many(audioconvert, volume, self.equalizer, audiosink)
@@ -83,7 +83,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 #Gst.element_link_many(audioconvert, volume, audiosink)
                 audioconvert.link(volume)
                 volume.link(audiosink)
-            
+
         else:
             playbin = Gst.ElementFactory.make('playbin', None)
             logging.debug("LOCAL gstreamer")
@@ -157,12 +157,11 @@ class GStreamerEngine(MediaPlayerEngine):
             return None
         
         self.state_stop(show_in_tray=False)
+        self.player.set_state(Gst.State.NULL)
         
         if hasattr(self, "pipeline"):
             self.pipeline.set_state(Gst.State.NULL)
-        
-        
-                
+
         """equlizer settings"""
         if FC().is_eq_enable:
             pre = self.controls.eq.get_preamp()
@@ -235,14 +234,15 @@ class GStreamerEngine(MediaPlayerEngine):
     
     def get_position_seek_ns(self):
         try:
-            return self.player.query_position(Gst.Format(Gst.Format.TIME))[0]
+            position = self.player.query_position(Gst.Format(Gst.Format.TIME))
+            return position[1]
         except Exception, e:
             logging.warn("GET query_position: " + str(e))
             return - 1
     
     def get_duration_seek_ns(self):
         try:
-            return self.player.query_duration(Gst.Format(Gst.Format.TIME))[0]
+            return self.player.query_duration(Gst.Format(Gst.Format.TIME))[1]
         except Exception, e:
             logging.warn("GET query_duration: " + str(e))
             return - 1
@@ -286,7 +286,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 if position_int > 0 and self.bean.start_sec > 0:
                     position_int = position_int - float(self.bean.start_sec) * self.NANO_SECONDS
                     #logging.debug(str(position_int) + str(self.bean.start_sec) + str(duration_int))
-                    if position_int + self.NANO_SECONDS > duration_int:
+                    if (position_int + self.NANO_SECONDS) > duration_int:
                         self.notify_eos()
                 
                 if self.get_state() == STATE_PLAY:
@@ -383,24 +383,20 @@ class GStreamerEngine(MediaPlayerEngine):
                 print "pause after", self.pipeline.get_state()[1:]
             elif Gst.State.PAUSED in self.pipeline.get_state()[1:]:
                 self.pipeline.set_state(Gst.State.PLAYING)'''
-                
-                
+
     def state_play_pause(self):
         if self.get_state() == STATE_PLAY:
             self.state_pause()
         else:
             self.state_play()
-            
-    
+
     def on_chage_state(self):
         self.controls.on_chage_player_state(self.get_state(), self.bean)
-    
-    
+
     def on_sync_message(self, bus, message):
-        if message.structure is None:
+        if message.get_structure() is None:
             return
         self.controls.movie_window.draw_video(message)
-        
 
     def on_message(self, bus, message):
         type = message.type

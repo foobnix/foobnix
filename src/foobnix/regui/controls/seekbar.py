@@ -28,6 +28,7 @@ class SeekProgressBarControls(FControl, Gtk.Alignment):
         self.tooltip.add(self.tooltip_label)
         
         self.progressbar = Gtk.ProgressBar()
+        self.progressbar.set_property("show-text", True)
         self.progressbar.set_text("00:00 / 00:00")
         try:
             self.progressbar.set_has_tooltip(True)
