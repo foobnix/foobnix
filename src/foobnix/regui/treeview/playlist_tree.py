@@ -42,7 +42,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.set_headers_visible(True)
         self.set_headers_clickable(True)
         self.set_reorderable(True)
-
+        
         """Column icon"""
         self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         self.icon_col.key = "*"
@@ -306,7 +306,7 @@ class PlaylistTreeControl(CommonTreeControl):
     def _append_column(self, column):
         column.set_widget(column.label)
         column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
-        if column.key in ['*', '№', 'Time']:
+        if column.key in ['*', 'N', 'Time']:
             column.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         else:
             column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
@@ -316,14 +316,15 @@ class PlaylistTreeControl(CommonTreeControl):
         self.append_column(column)
         column.button = column.label.get_parent().get_parent().get_parent()
         column.button.connect("button-press-event", self.on_click_header)
-        if column.key == '№':
+        if column.key == 'N':
             self.trkn_col.button.menu = Popup()
-            self.num_order = Gtk.RadioMenuItem(label=_("Numbering by order"))
+            group = []
+            self.num_order = Gtk.RadioMenuItem.new_with_label(group, _("Numbering by order"))
             self.num_order.connect("button-press-event", self.on_toggled_num)
-            self.num_tags = Gtk.RadioMenuItem(label=_("Numbering by tags"))
-            self.num_tags.set_group((self.num_order, ))
+            group.append(self.num_order)
+            self.num_tags = Gtk.RadioMenuItem.new_with_label(group, _("Numbering by tags"))
             self.num_tags.connect("button-press-event", self.on_toggled_num)
-        
+            group.append(self.num_tags)
             self.trkn_col.button.menu.append(self.num_order)
             self.trkn_col.button.menu.append(self.num_tags)
             if FC().numbering_by_order:

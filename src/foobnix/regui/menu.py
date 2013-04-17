@@ -69,17 +69,19 @@ class MenuBarWidget(FControl):
 
         """Playback - Order"""
         order = playback.add_text_item(_("Order"))
-        self.playback_order_linear = order.add_radio_item(_("Linear"), None, not FC().is_order_random)
+        playback_radio_group = []
+        self.playback_order_linear = order.add_radio_item(_("Linear"), playback_radio_group, not FC().is_order_random)
         self.playback_order_linear.connect("activate", lambda w: set_random(False))
         
-        self.playback_order_random = order.add_radio_item(_("Random"), self.playback_order_linear, FC().is_order_random)
+        self.playback_order_random = order.add_radio_item(_("Random"), playback_radio_group, FC().is_order_random)
         self.playback_order_random.connect("activate", lambda w: set_random(True))
         
         """Playback - Repeat"""
         repeat = playback.add_text_item(_("Repeat"))
-        self.lopping_all = repeat.add_radio_item(_("All"), None, FC().repeat_state == const.REPEAT_ALL)
-        self.lopping_single = repeat.add_radio_item(_("Single"), self.lopping_all, FC().repeat_state == const.REPEAT_SINGLE)
-        self.lopping_disable = repeat.add_radio_item(_("Disable"), self.lopping_all, FC().repeat_state == const.REPEAT_NO)
+        repeat_radio_group = []
+        self.lopping_all = repeat.add_radio_item(_("All"), repeat_radio_group, FC().repeat_state == const.REPEAT_ALL)
+        self.lopping_single = repeat.add_radio_item(_("Single"), repeat_radio_group, FC().repeat_state == const.REPEAT_SINGLE)
+        self.lopping_disable = repeat.add_radio_item(_("Disable"), repeat_radio_group, FC().repeat_state == const.REPEAT_NO)
         
         def repeat_all():
             FC().repeat_state = const.REPEAT_ALL            
@@ -190,9 +192,12 @@ class MyMenu(Gtk.Menu):
         return check
 
     def add_radio_item(self, title, group, active):
-        check = Gtk.RadioMenuItem(label=title)
-        if group:
-            check.set_group((group,))
+        print group
+        check = Gtk.RadioMenuItem.new_with_label(group, title)
+        print 1
+        group.append(check)
+        print group
+        print "---------------"
         check.show()
         check.set_active(active)
         self.append(check)
