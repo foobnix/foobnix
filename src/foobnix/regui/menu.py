@@ -192,12 +192,8 @@ class MyMenu(Gtk.Menu):
         return check
 
     def add_radio_item(self, title, group, active):
-        print group
         check = Gtk.RadioMenuItem.new_with_label(group, title)
-        print 1
         group.append(check)
-        print group
-        print "---------------"
         check.show()
         check.set_active(active)
         self.append(check)
