@@ -404,11 +404,11 @@ class GStreamerEngine(MediaPlayerEngine):
     def on_sync_message(self, bus, message):
         if message.get_structure() is None:
             return
-        return
         self.controls.movie_window.draw_video(message)
 
     def on_message(self, bus, message):
         type = message.type
+        struct = message.get_structure()
 
         if type == Gst.MessageType.BUFFERING:
             return
@@ -427,7 +427,6 @@ class GStreamerEngine(MediaPlayerEngine):
                 self.play(self.bean)
 
         elif type in [Gst.MessageType.STATE_CHANGED, Gst.MessageType.STREAM_STATUS]:
-            struct = message.get_structure()
             if (self.bean and self.bean.type == FTYPE_RADIO and
                     struct.has_field("new-state") and
                     struct.get_enum('old-state', Gst.State) == Gst.State.READY and
@@ -438,20 +437,22 @@ class GStreamerEngine(MediaPlayerEngine):
 
         if type == Gst.MessageType.TAG and message.parse_tag():
             self.error_counter = 0
-            artist = ""
-            title = ""
 
-            if message.get_structure().has_field("title"):
-                title = message.get_structure()['title']
+            if struct.has_field("taglist"):
+                taglist = struct.get_value("taglist")
+                title = taglist.get_string("title")[1]
+                if not title:
+                    title = ""
                 title = decode_cp866(title)
                 text = title
-                if message.get_structure().has_field("artist"):
-                    artist = message.get_structure()['artist']
+
+                if taglist.get_string('artist')[0]:
+                    artist = taglist.get_string('artist')[1]
                     artist = decode_cp866(artist)
                     text = artist + " - " + text
-                if (self.bean.type == FTYPE_RADIO and
-                        message.get_structure().has_field("bitrate")):
-                    text = text + " (bitrate: " + str(message.get_structure()['bitrate']) + ")"
+                if self.bean.type == FTYPE_RADIO and taglist.get_uint('bitrate')[0]:
+                    text = text + " (bitrate: " + str(taglist.get_uint('bitrate')[1]) + ")"
+
                 self.notify_title(text)
 
         elif type == Gst.MessageType.EOS:
