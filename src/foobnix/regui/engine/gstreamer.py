@@ -104,12 +104,12 @@ class GStreamerEngine(MediaPlayerEngine):
 
             self.decodebin.connect("pad-added", on_new_decoded_pad)
 
-            playbin.add(self.fsource)
+            #playbin.add(self.fsource)
             playbin.add(self.decodebin)
             playbin.add(volume)
             playbin.add(audioconvert)
             playbin.add(audiosink)
-            self.fsource.link(self.decodebin)
+            #self.fsource.link(self.decodebin)
 
             playbin.add(self.equalizer)
             audioconvert.link(volume)
