@@ -3,6 +3,7 @@ Created on Sep 27, 2010
 
 @author: ivan
 '''
+
 from gi.repository import Gtk
 
 from foobnix.util import const
@@ -126,9 +127,9 @@ class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
         self.item_all = Gtk.CheckMenuItem(_("Repeat all"))
         self.item_all.connect("button-press-event", self.on_repeat)
         self.menu.append(self.item_all)
-        '''self.item_single = Gtk.CheckMenuItem(_("Repeat single"))
+        self.item_single = Gtk.CheckMenuItem(_("Repeat single"))
         self.item_single.connect("button-press-event", lambda item, *a: self.on_repeat(item, False))
-        self.menu.append(self.item_single)'''
+        self.menu.append(self.item_single)
         
     def choise(self, widget, event):
             self.menu.popup(None, None, None, None, event.button, event.time)

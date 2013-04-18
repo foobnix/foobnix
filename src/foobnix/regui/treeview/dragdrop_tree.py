@@ -4,13 +4,13 @@ Created on Oct 14, 2010
 @author: ivan
 '''
 
-from gi.repository import Gtk
 from gi.repository import Gdk
-import sys
+from gi.repository import GObject
+from gi.repository import Gtk
+
 import copy
 import uuid
 import thread
-from gi.repository import GObject
 import logging
 import os.path
 import threading
@@ -31,7 +31,7 @@ from foobnix.regui.model import FModel, FTreeModel
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
-
+LAST_DND_SOURCE_TREE = None
 
 class DragDropTree(Gtk.TreeView):
     def __init__(self, controls):
@@ -40,18 +40,25 @@ class DragDropTree(Gtk.TreeView):
         
         self.connect("drag-begin", self.on_drag_begin)
         self.connect("drag-drop", self.on_drag_drop)
+        self.connect("drag-motion", self.on_drag_motion)
         self.copy = False
         
         """init values"""
         self.hash = {None: None}
         self.current_view = None
     
-    def on_drag_begin(self, widget, drag_context):
-        ff_model, ff_paths = widget.get_selection().get_selected_rows()  # @UnusedVariable
+    def on_drag_begin(self, source_widget, drag_context):
+        ff_model, ff_paths = source_widget.get_selection().get_selected_rows()  # @UnusedVariable
+        global LAST_DND_SOURCE_TREE
+        LAST_DND_SOURCE_TREE = source_widget
         if len(ff_paths) > 1:
             self.drag_source_set_icon_stock('gtk-dnd-multiple')
         else:
             self.drag_source_set_icon_stock('gtk-dnd')
+    
+    def on_drag_motion(self, widget, drag_context, data, info, time):
+        Gdk.drag_status(drag_context, Gdk.DragAction.COPY, time)
+        return True
                 
     def configure_recive_drag(self):
         self.enable_model_drag_dest([("text/uri-list", 0, 0)], Gdk.DragAction.COPY | Gdk.DragAction.MOVE) # @UndefinedVariable
@@ -134,7 +141,7 @@ class DragDropTree(Gtk.TreeView):
     
     def on_drag_drop(self, to_tree, drag_context, x, y, selection):
         # ff - from_filter
-        self.copy = drag_context.action
+        self.copy = drag_context.get_selected_action()
         to_filter_model = to_tree.get_model()
         to_model = to_filter_model.get_model()
         if to_tree.get_dest_row_at_pos(x, y):
@@ -147,7 +154,7 @@ class DragDropTree(Gtk.TreeView):
             to_filter_iter = None
             to_iter = None
             
-        from_tree = drag_context.get_source_widget()        
+        from_tree = LAST_DND_SOURCE_TREE        
         
         if not from_tree:
             return None
@@ -159,7 +166,7 @@ class DragDropTree(Gtk.TreeView):
         
         if "PlaylistTreeControl" in str(to_tree) and to_tree != from_tree:
             def task(to_iter):
-                if not to_model.get_iter_root():
+                if not to_model.get_iter_first():
                     self.controls.notetabs.rename_tab(to_tree.scroll, "Foobnix")
                 all_rows = []
                 logging.debug("Receive dnd items from %s" % str(from_tree))
