@@ -94,10 +94,14 @@ class SeekProgressBarControls(FControl, Gtk.Alignment):
         
     
     def update_seek_status(self, position_sec, duration_sec):
-        duration_str = convert_seconds_to_text(duration_sec)
-        position_str = convert_seconds_to_text(position_sec)
-        seek_persent = (position_sec + 0.0) / (duration_sec)
-        seek_text = position_str + " / " + duration_str
+        if duration_sec == 0:
+            seek_text = "00:00 / 00:00"
+            seek_persent = 0.999
+        else:
+            duration_str = convert_seconds_to_text(duration_sec)
+            position_str = convert_seconds_to_text(position_sec)
+            seek_persent = (position_sec + 0.0) / (duration_sec)
+            seek_text = position_str + " / " + duration_str
         
         if 0 <= seek_persent <= 1: 
             self.progressbar.set_text(seek_text)

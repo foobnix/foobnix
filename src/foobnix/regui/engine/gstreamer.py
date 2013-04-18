@@ -52,69 +52,31 @@ class GStreamerEngine(MediaPlayerEngine):
         self.current_state = state
 
     def gstreamer_player(self):
+        playbin = Gst.Pipeline()
+        self.fsource = Gst.ElementFactory.make("filesrc", "fsource")
+        self.init_hsource()
+        volume = Gst.ElementFactory.make("volume", "volume")
+        audioconvert = Gst.ElementFactory.make("audioconvert", "audioconvert")
+        audiosink = Gst.ElementFactory.make("autoaudiosink", "autoaudiosink")
+        self.decodebin = Gst.ElementFactory.make("decodebin", "decode")
+        self.equalizer = Gst.ElementFactory.make('equalizer-10bands', 'equalizer')
 
-        if False: # and FC().proxy_enable and FC().proxy_url and self.bean and (
-                #self.bean.path.startswith("http://") or self.bean.type == FTYPE_RADIO):
-            playbin = Gst.Pipeline()
-            source = Gst.ElementFactory.make("souphttpsrc", "source")
-            volume = Gst.ElementFactory.make("volume", "volume")
-            audioconvert = Gst.ElementFactory.make("audioconvert", "audioconvert")
-            audiosink = Gst.ElementFactory.make("autoaudiosink", "autoaudiosink")
-            decodebin = Gst.ElementFactory.make("decodebin2", "decode")
-            self.equalizer = Gst.ElementFactory.make('equalizer-10bands', 'equalizer')
-            source.set_property("user-agent", "Fooobnix music player")
-            source.set_property("automatic-redirect", "false")
-            source.set_property("proxy", FC().proxy_url)
-            source.set_property("proxy-id", FC().proxy_user)
-            source.set_property("proxy-pw", FC().proxy_password)
+        def on_new_decoded_pad(dbin, pad):
+            pad.link(audioconvert.get_static_pad("sink"))
 
-            def on_new_decoded_pad(dbin, pad, islast):
-                pad.link(audioconvert.get_pad("sink"))
+        self.decodebin.connect("pad-added", on_new_decoded_pad)
 
-            decodebin.connect("new-decoded-pad", on_new_decoded_pad)
+        #playbin.add(self.fsource)
+        playbin.add(self.decodebin)
+        playbin.add(volume)
+        playbin.add(audioconvert)
+        playbin.add(audiosink)
+        #self.fsource.link(self.decodebin)
 
-            playbin.add(source, decodebin, volume, audioconvert, audiosink)
-            #Gst.element_link_many(source, decodebin)
-            source.link(decodebin)
-
-            if FC().is_eq_enable:
-                playbin.add(self.equalizer)
-                #Gst.element_link_many(audioconvert, volume, self.equalizer, audiosink)
-                audioconvert.link(volume)
-                volume.link(self.equalizer)
-                self.equalizer.link(audiosink)
-            else:
-                #Gst.element_link_many(audioconvert, volume, audiosink)
-                audioconvert.link(volume)
-                volume.link(audiosink)
-        else:
-            logging.debug("LOCAL gstreamer")
-
-            playbin = Gst.Pipeline()
-            self.fsource = Gst.ElementFactory.make("filesrc", "fsource")
-            self.hsource = Gst.ElementFactory.make("souphttpsrc", "hsource")
-            volume = Gst.ElementFactory.make("volume", "volume")
-            audioconvert = Gst.ElementFactory.make("audioconvert", "audioconvert")
-            audiosink = Gst.ElementFactory.make("autoaudiosink", "autoaudiosink")
-            self.decodebin = Gst.ElementFactory.make("decodebin", "decode")
-            self.equalizer = Gst.ElementFactory.make('equalizer-10bands', 'equalizer')
-
-            def on_new_decoded_pad(dbin, pad):
-                pad.link(audioconvert.get_static_pad("sink"))
-
-            self.decodebin.connect("pad-added", on_new_decoded_pad)
-
-            #playbin.add(self.fsource)
-            playbin.add(self.decodebin)
-            playbin.add(volume)
-            playbin.add(audioconvert)
-            playbin.add(audiosink)
-            #self.fsource.link(self.decodebin)
-
-            playbin.add(self.equalizer)
-            audioconvert.link(volume)
-            volume.link(self.equalizer)
-            self.equalizer.link(audiosink)
+        playbin.add(self.equalizer)
+        audioconvert.link(volume)
+        volume.link(self.equalizer)
+        self.equalizer.link(audiosink)
 
         bus = playbin.get_bus()
         bus.add_signal_watch()
@@ -131,6 +93,11 @@ class GStreamerEngine(MediaPlayerEngine):
             self.set_all_bands(pre, bands, force=True)
         else:
             self.set_all_bands(0, [0] * 10, force=True)
+
+    def init_hsource(self):
+        self.hsource = Gst.ElementFactory.make("souphttpsrc", "hsource")
+        self.hsource.set_property("user-agent", "Fooobnix music player")
+        self.hsource.set_property("automatic-redirect", "false")
 
     def notify_init(self, duration_int):
         logging.debug("Pre init thread: " + str(duration_int))
@@ -170,16 +137,13 @@ class GStreamerEngine(MediaPlayerEngine):
         self.pipeline.set_state(Gst.State.PLAYING)
 
     def play(self, bean):
+        if not bean or not bean.path:
+            logging.error("Bean or path is None")
+            return None
+
         self.bean = bean
 
-        if not bean:
-            return None
-
         path = bean.path
-
-        if not path:
-            logging.error("Can't play empty path!!!")
-            return None
 
         self.state_stop(show_in_tray=False)
         self.player.set_state(Gst.State.NULL)
@@ -196,9 +160,6 @@ class GStreamerEngine(MediaPlayerEngine):
                 self.notify_title(uri)
         else:
             uri = path
-            #uri = 'file://' + urllib.pathname2url(path)
-            #if os.name == 'nt':
-            #    uri = 'file:' + urllib.pathname2url(path)
 
         logging.info("Gstreamer try to play " + uri)
 
@@ -206,12 +167,19 @@ class GStreamerEngine(MediaPlayerEngine):
         self.hsource.set_state(Gst.State.NULL)
         self.fsource.unlink(self.decodebin)
         self.hsource.unlink(self.decodebin)
-        self.player.remove(self.fsource)
-        self.player.remove(self.hsource)
+        if self.player.get_by_name("fsource"):
+            self.player.remove(self.fsource)
+        if self.player.get_by_name("hsource"):
+            self.player.remove(self.hsource)
         if uri.startswith("http://"):
             logging.debug("Set up hsource")
+            self.init_hsource()
             if FC().proxy_enable and FC().proxy_url:
-                logging.debug("need proxy set up")
+                logging.debug("gst proxy set up")
+                self.hsource.set_property("proxy", FC().proxy_url)
+                self.hsource.set_property("proxy-id", FC().proxy_user)
+                self.hsource.set_property("proxy-pw", FC().proxy_password)
+
             self.player.add(self.hsource)
             self.hsource.link(self.decodebin)
             self.player.get_by_name("hsource").set_property("location", uri)
@@ -321,20 +289,20 @@ class GStreamerEngine(MediaPlayerEngine):
             if self.pause_thread_id:
                 time.sleep(0.1)
                 continue
-            try:
-                position_int = self.get_position_seek_ns()
-                if position_int > 0 and self.bean.start_sec > 0:
-                    position_int -= float(self.bean.start_sec) * self.NANO_SECONDS
-                    #logging.debug(str(position_int) + str(self.bean.start_sec) + str(duration_int))
-                    if (position_int + self.NANO_SECONDS) > duration_int:
-                        self.notify_eos()
+            #try:
+            position_int = self.get_position_seek_ns()
+            if position_int > 0 and self.bean.start_sec > 0:
+                position_int -= float(self.bean.start_sec) * self.NANO_SECONDS
+                #logging.debug(str(position_int) + str(self.bean.start_sec) + str(duration_int))
+                if (position_int + self.NANO_SECONDS) > duration_int:
+                    self.notify_eos()
 
-                if self.get_state() == STATE_PLAY:
-                    sec += 1
+            if self.get_state() == STATE_PLAY:
+                sec += 1
 
-                self.notify_playing(position_int, duration_int, sec)
-            except Exception, e:
-                logging.info("Playing thread error... " + str(e))
+            self.notify_playing(position_int, duration_int, sec)
+            #except Exception, e:
+            #    logging.info("Playing thread error... " + str(e))
 
             time.sleep(1)
 
@@ -396,7 +364,7 @@ class GStreamerEngine(MediaPlayerEngine):
         if remember_position:
             self.player.set_state(Gst.State.PAUSED)
             time.sleep(0.1)
-            self.remembered_seek_position = self.get_position_seek_ns();
+            self.remembered_seek_position = self.get_position_seek_ns()
             self.pause_thread_id = True
         else:
             self.play_thread_id = None
