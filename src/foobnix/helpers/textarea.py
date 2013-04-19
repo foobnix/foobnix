@@ -65,7 +65,8 @@ class TextArea(Gtk.ScrolledWindow):
         text_length = len(unicode(text))
         while start_index != -1:
             buf_text = self.buffer.get_text(self.buffer.get_iter_at_offset(0),
-                                        self.buffer.get_iter_at_offset(text_length))
+                                            self.buffer.get_iter_at_offset(text_length),
+                                            False)
             start_index = buf_text.find("<")
             if start_index != -1:
                 end_index = buf_text.find(">", start_index)

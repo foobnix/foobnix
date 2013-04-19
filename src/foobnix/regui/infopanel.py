@@ -275,7 +275,8 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         
         if not bean.image:
             logging.warning("""""Can't get cover image. Check the correctness of the artist's name and track title""""")
-            
+
+        ## TODO: fix caching remote images
         '''make .jpg image and store it in cache'''        
         if bean.image and bean.image.startswith("http://"):
             url_basename = os.path.splitext(os.path.basename(bean.image))[0]
