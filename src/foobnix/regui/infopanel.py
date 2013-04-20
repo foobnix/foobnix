@@ -113,7 +113,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         self.left_widget = [wBox, self.artists, self.tracks, self.tags, self.lyrics, self.best_songs]
         
         for l_widget in self.left_widget:        
-            lbox.pack_start(l_widget.line_title, False, False, 0)
+            lbox.pack_start(l_widget.line_title, False, False, 4)
                 
         ibox.pack_start(self.image, False, False, 0)
         ibox.pack_start(lbox, True, True, 0)
