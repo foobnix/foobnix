@@ -16,6 +16,8 @@ from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
 from foobnix.util.key_utils import KEY_DELETE, is_key
 from foobnix.util.const import LEFT_PERSPECTIVE_VIRTUAL
+import collections
+import json
 
 class VirtualTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
@@ -31,7 +33,11 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         self.configure_recive_drag()
         
         self.set_type_tree()
+    
+    
    
+    
+    
     def activate_perspective(self):
    
         FC().left_perspective = LEFT_PERSPECTIVE_VIRTUAL
@@ -110,4 +116,22 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
     
     def on_quit(self):
         FCache().cache_virtual_tree_beans = self.get_all_beans()
+    
+    
+
+    
+    def on_drag_data_received(self, treeview, context, x, y, selection, info, timestamp):
+        print "Storage tree on_drag_data_received"
+        model = self.get_model()
+        drop_info = self.get_dest_row_at_pos(x, y)
         
+    def get_dict_from_selected(self, model, paths):
+        dict = collections.OrderedDict()
+        for i, path in enumerate(paths):
+            #print i
+            iter = model.get_iter(path)
+            #print "iter", iter
+            for i in self.get_list_of_iters_with_children(model, iter):
+                #print "in for", model.get_string_from_iter(i)
+                dict[model.get_string_from_iter(i)] = self.get_row_from_iter(model, i)
+        return dict

@@ -23,6 +23,7 @@ from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE,\
     is_modificator
 from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
+import json
 
 
 foobnix_localization()
@@ -42,7 +43,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.set_headers_visible(True)
         self.set_headers_clickable(True)
         self.set_reorderable(True)
-        
+        '''
         """Column icon"""
         self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         self.icon_col.key = "*"
@@ -50,7 +51,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.icon_col.set_min_width(5)
         self.icon_col.label = Gtk.Label("*")
         self._append_column(self.icon_col)
-        
+        '''
         """track number"""
         self.trkn_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.tracknumber[0])
         self.trkn_col.key = "N"
@@ -354,8 +355,8 @@ class PlaylistTreeControl(CommonTreeControl):
         FLAG = False
         
     def to_order_columns(self, x, y):
-        return cmp(FC().columns[x.key][1], FC().columns[y.key][1])  
-                          
+        return cmp(FC().columns[x.key][1], FC().columns[y.key][1])
+
     def on_load(self):
         col_list = self.get_columns()
         col_list.sort(self.to_order_columns, reverse=True)
@@ -381,3 +382,65 @@ class PlaylistTreeControl(CommonTreeControl):
                 column.set_visible(False)
         '''if FC().columns["Track"][2] < 0:
              self.description_col.set_fixed_width(self.get_allocation().width - (FC().columns["Time"][2]+70))'''
+    '''
+    def on_drag_data_get(self, source_tree, drag_context, selection, info, time):
+        print "Playlist tree on_drag_data_get", drag_context
+        print drag_context.list_targets()
+        print selection.get_target()
+        treeselection = source_tree.get_selection()
+        ff_model, ff_paths = treeselection.get_selected_rows()
+        dict = self.get_dict_from_selected(ff_model, ff_paths)
+        string_variable = json.dumps(dict)
+        selection.set(selection.get_target(), 0, string_variable)'''
+
+    
+    def on_drag_data_received(self, treeview, context, x, y, selection, info, timestamp):
+        print 'Playlist on_drag_data_received'
+        model = self.get_model().get_model()
+        drop_info = self.get_dest_row_at_pos(x, y)
+        ff_tree = Gtk.drag_get_source_widget(context)
+        ff_model, ff_paths = ff_tree.get_selection().get_selected_rows()
+        treerows = [ff_model[ff_path] for ff_path in ff_paths]
+        treerows = self.simple_content_filter(treerows)
+        if drop_info:
+            path, position = drop_info
+            iter = model.get_iter(path)
+        if self is ff_tree:
+            ff_row_refs = [Gtk.TreeRowReference.new(ff_model, ff_path) for ff_path in ff_paths]
+            for ff_row_ref in ff_row_refs:
+                ff_iter = self.get_iter_from_row_reference(ff_row_ref)
+                f_iter = ff_model.convert_iter_to_child_iter(ff_iter)
+                if drop_info:
+                    if (position == Gtk.TREE_VIEW_DROP_BEFORE
+                        or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
+                        model.move_before(f_iter, iter)
+                    else:
+                        print "after"
+                        model.move_after(f_iter, iter)
+                        iter = model.iter_next(iter)
+                else:
+                    model.move_before(f_iter, None)
+            return
+
+
+        for  i, treerow in enumerate(treerows):
+            for k, ch_row in enumerate(treerow.iterchildren()):
+                treerows.insert(i+k+1, ch_row)
+
+            row = [col for col in treerow]
+            if drop_info:
+                if (position == Gtk.TREE_VIEW_DROP_BEFORE
+                    or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
+                    print "before"
+                    model.insert_before(None, iter, row)
+                else:
+                    print "after"
+                    model.insert_after(None, iter, row)
+                    iter = model.iter_next(iter)
+            else:
+                model.append(None, row)
+
+        self.stop_emission('drag-data-received')
+
+    
+   

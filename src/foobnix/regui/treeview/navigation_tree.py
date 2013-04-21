@@ -75,7 +75,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.set_type_tree()
         #self.is_empty = False
         self.connect("button-release-event", self.on_button_release)
-        
+        self.connect("drag-data-get", self.on_drag_data_get)
         '''to force the ext_column to take the minimum size'''
         self.name_column.set_fixed_width(2000)
 
@@ -85,6 +85,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         self.scroll.get_vscrollbar().connect('show', task)
         self.scroll.get_vscrollbar().connect('hide', task)
+    
+    
                 
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
@@ -334,3 +336,19 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
     def on_save(self):
         pass
+    
+    def on_drag_data_get(self, source_tree, drag_context, selection, info, time):
+        print "on_drag_data_get", drag_context
+        print drag_context.list_targets()
+        print selection.get_target()
+        treeselection = source_tree.get_selection()
+        ff_model, ff_paths = treeselection.get_selected_rows()
+        iters = [ff_model.get_iter(ff_path) for ff_path in ff_paths]
+        all_file_paths = ''
+        for iter in iters:
+            all_iters = self.get_list_of_iters_with_children(ff_model, iter)
+            file_paths = ','.join([ff_model.get_value(iter, self.path[0]) for iter in all_iters])
+            all_file_paths += file_paths
+        
+        selection.set(selection.get_target(), 0, all_file_paths)
+        self.stop_emission('drag-data-get')

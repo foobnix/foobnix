@@ -39,14 +39,15 @@ class DragDropTree(Gtk.TreeView):
     def __init__(self, controls):
         self.controls = controls
         Gtk.TreeView.__init__(self)
-        
+
         self.connect("drag-begin", self.on_drag_begin)
         self.connect("drag-data-get", self.on_drag_data_get)
         self.connect("drag-data-received", self.on_drag_data_received)
         self.connect("drag-drop", self.on_drag_drop)
         self.connect("drag-motion", self.on_drag_motion)
+        self.connect('drag-leave', self.on_drag_leave)
         self.copy = False
-        
+
         """init values"""
         self.hash = {None: None}
         self.current_view = None
@@ -57,13 +58,14 @@ class DragDropTree(Gtk.TreeView):
         print selection.get_data()
         #print selection.get_text()
         self.stop_emission('drag-data-received')'''
-        
+    def on_drag_data_get(self, source_tree, drag_context, selection, info, time):
+        pass    
 
     def on_drag_data_received(self, treeview, context, x, y, selection, info,\
                           timestamp):
-        
+        print 'dr', context
         ordered_dict = json.loads(selection.get_data())
-        print "received", ordered_dict
+        #print "received", ordered_dict
         model = treeview.get_model()
         drop_info = treeview.get_dest_row_at_pos(x, y)
         if drop_info:
@@ -118,7 +120,7 @@ class DragDropTree(Gtk.TreeView):
 
         dragged_iters = []
         for iter in iters:
-            print "Info", info
+            #print "Info", info
             if info == 0:
                 try:
                     print 99, model.get_iter_from_string(iter)
@@ -157,26 +159,10 @@ class DragDropTree(Gtk.TreeView):
                 # Handle external Drag'n'Drop
                 #f(source, destination_tid)
         
-    def on_drag_data_get(self, source_tree, drag_context, selection, info, time):
-        print "on_drag_data_get", info
-        treeselection = source_tree.get_selection()
-        ff_model, ff_paths = treeselection.get_selected_rows()
-        #iters = [ff_model.get_iter(ff_path) for ff_path in ff_paths]
-        #iter_str = ','.join([ff_model.get_string_from_iter(iter) for iter in iters])
-        #selection.set(selection.get_target(), 0, iter_str)
-        #print "Sending", iter_str
-        dict = self.get_dict_from_selected(ff_model, ff_paths)
-        print dict
-        string_variable = json.dumps(dict)
-        print string_variable
-        selection.set(selection.get_target(), 0, string_variable)
-            #data = bytes(ff_model.get_value(ff_iter, 3))
-            #selection.set(selection.get_target(), 8, data)
-            #selection.set_text(data, -1)
-            #return
-            #Gtk.tree_set_row_drag_data(selection, ff_model, ff_path)'''
+
 
     def on_drag_begin(self, source_widget, drag_context):
+        print "db", drag_context
         ff_model, ff_paths = source_widget.get_selection().get_selected_rows()  # @UnusedVariable
         global LAST_DND_SOURCE_TREE
         LAST_DND_SOURCE_TREE = source_widget
@@ -187,16 +173,20 @@ class DragDropTree(Gtk.TreeView):
     
     def on_drag_motion(self, widget, drag_context, data, info, time):
         Gdk.drag_status(drag_context, Gdk.DragAction.COPY, time)
+        widget.drag_highlight()
         return True
+    
+    def on_drag_leave(self, widget, context, time):
+        widget.drag_unhighlight()
                 
     def configure_recive_drag(self):
-        self.enable_model_drag_dest([('MY_TREE_MODEL_ROW', Gtk.TargetFlags.SAME_WIDGET, 0)], Gdk.DragAction.COPY | Gdk.DragAction.MOVE) # @UndefinedVariable
+        self.enable_model_drag_dest([("text/uri-list", 0, 0)], Gdk.DragAction.COPY | Gdk.DragAction.MOVE) # @UndefinedVariable
         self.drag_dest_add_text_targets()
         #self.drag_dest_set(Gtk.DestDefaults.MOTION | Gtk.DestDefaults.DROP, [Gtk.TargetEntry.new("text/uri-list", 1, 80)], Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
     
     def configure_send_drag(self):
         #self.enable_model_drag_source(Gdk.ModifierType.BUTTON1_MASK, [("text/uri-list", 0, 0)], Gdk.DragAction.COPY | Gdk.DragAction.MOVE) #@UndefinedVariable
-        self.drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [Gtk.TargetEntry.new('MY_TREE_MODEL_ROW', Gtk.TargetFlags.SAME_WIDGET, 0)], Gdk.DragAction.COPY | Gdk.DragAction.MOVE) #@UndefinedVariable
+        self.drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [Gtk.TargetEntry.new("text/uri-list", 0, 0)], Gdk.DragAction.COPY | Gdk.DragAction.MOVE) #@UndefinedVariable
         self.drag_source_add_text_targets()
     
     def append_all(self, beans):
@@ -272,7 +262,12 @@ class DragDropTree(Gtk.TreeView):
         return result
     
     def on_drag_drop(self, to_tree, context, x, y, time):
+        print "dd",context
         # ff - from_filter
+        targets = {}
+        for atom in context.list_targets():
+            targets[atom] = atom
+        print targets
         to_tree.drag_get_data(context, context.list_targets()[-1], time)
         return True
         
@@ -414,9 +409,9 @@ class DragDropTree(Gtk.TreeView):
         
     def one_row_replacing(self, ff_row_ref, ff_path, ff_model, from_tree, to_tree, to_model,
                           to_iter, to_filter_pos, to_filter_path, new_iter, new_path=None, is_copy_move=False):
-        
+
         ff_iter = self.get_iter_from_row_reference(ff_row_ref)
-                    
+
         """do not copy to himself"""
         if to_tree == from_tree and ff_path == to_filter_path:
             return None
@@ -602,7 +597,7 @@ class DragDropTree(Gtk.TreeView):
         
         return cue_refs + folder_refs if cue_refs else not_cue_refs
     
-    def simple_content_filter(self, beans):
+    def simple_content_filter1(self, beans):
         checked_cue_beans = []
         checked_m3u_beans = []
         m3u_beans_for_delete = []
@@ -633,6 +628,39 @@ class DragDropTree(Gtk.TreeView):
         all_filtered_beans = task(beans)
         return [bean for bean in all_filtered_beans 
                 if bean not in m3u_beans_for_delete] if m3u_beans_for_delete else all_filtered_beans
+    
+    def simple_content_filter(self, rows):
+        checked_cue_rows = []
+        checked_m3u_rows = []
+        m3u_rows_for_delete = []
+
+        def task(rows):
+            for row in rows:
+                index = self.path[0]
+                path = row[index]
+                if path and (get_file_extension(path) in [".m3u", ".m3u8"]
+                             and rows not in checked_m3u_rows):
+                    checked_m3u_rows.append(row)
+                    for r in rows:
+                        if (os.path.dirname(r[index]) == os.path.dirname(path) and os.path.isfile(r[index])
+                            and get_file_extension(r[index]) not in [".m3u", ".m3u8"]):
+                                m3u_rows_for_delete.append(row)
+                                break
+                    return task(rows)
+                    
+                if path and (get_file_extension(path) == ".cue"
+                             and row not in checked_cue_rows):
+                    
+                    checked_cue_rows.append(rows)
+                    filtered_rows = [r for r in rows if (os.path.dirname(row[index]) != os.path.dirname(path)
+                                                           or os.path.isdir(r[index]) 
+                                                           or get_file_extension(r[index]) == ".cue")]
+                    return task(filtered_rows)
+            return rows
+        
+        all_filtered_rows = task(rows)
+        return [row for row in all_filtered_rows 
+                if row not in m3u_rows_for_delete] if m3u_rows_for_delete else all_filtered_rows
     
     def replace_inside_navig_tree(self, old_path, dest_folder):
         logging.debug('drag inside navigation tree')
@@ -950,16 +978,7 @@ class DragDropTree(Gtk.TreeView):
         parent_iter = self.model.append(parent_iter_exists, row)
         self.hash[row[self.level[0]]] = parent_iter
     
-    def get_dict_from_selected(self, model, paths):
-        dict = collections.OrderedDict()
-        for i, path in enumerate(paths):
-            print i
-            iter = model.get_iter(path)
-            print "iter", iter
-            for i in self.get_list_of_iters_with_children(model, iter):
-                print "in for", model.get_string_from_iter(i)
-                dict[model.get_string_from_iter(i)] = self.get_row_from_iter(model, i)
-        return dict
+    
     
     def get_row_from_iter(self, model, iter):
         row = []
