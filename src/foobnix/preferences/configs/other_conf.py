@@ -23,69 +23,86 @@ class OtherConfig(ConfigPlugin):
         self.controls = controls
                 
         box = Gtk.VBox(False, 0)
-        box.hide()        
+        box.hide()
+
+        download_frame = Gtk.Frame(label=_("File downloads"))
+        df_vbox = Gtk.VBox(False, 5)
+        df_vbox.set_border_width(4)
 
         """save to"""
+
         hbox = Gtk.HBox(False, 5)
-        
         self.online_dir = Gtk.FileChooserButton("set place")
         self.online_dir.set_action(Gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
-        self.online_dir.connect("current-folder-changed", self.on_change_folder)        
-        self.online_dir.show()
+        self.online_dir.connect("current-folder-changed", self.on_change_folder)
         
         hbox.pack_start(Gtk.Label(_("Save online music to folder:")), False, True, 0)
         hbox.pack_start(self.online_dir, True, True, 0)
         
         """automatic save"""                
         self.automatic_save_checkbutton = Gtk.CheckButton(label=_("Automatic online music save"), use_underline=True)
-
         self.nosubfolder_checkbutton = Gtk.CheckButton(label=_("Save to one folder (no subfolders)"), use_underline=True)
 
         """download threads"""
         thbox = Gtk.HBox(False, 5)
-                
         tab_label = Gtk.Label(_("Download in threads"))
-        tab_label.show()
         
         adjustment = Gtk.Adjustment(value=1, lower=1, upper=10, step_incr=1, page_incr=1, page_size=0)
         self.threads_count = Gtk.SpinButton(adjustment=adjustment)
-        self.threads_count.show()
         
         thbox.pack_start(tab_label, False, False, 0)
         thbox.pack_start(self.threads_count, False, True, 0)
+
+        df_vbox.pack_start(hbox, False, False, 2)
+        df_vbox.pack_start(self.automatic_save_checkbutton, False, False, 2)
+        df_vbox.pack_start(self.nosubfolder_checkbutton, False, False, 2)
+        df_vbox.pack_start(thbox, False, False, 2)
+        download_frame.add(df_vbox)
+        download_frame.show_all()
               
         """disc cover size"""
+        dc_frame = Gtk.Frame(label=_("Disc cover settings"))
+
         cbox = Gtk.HBox(False, 5)
-        cbox.show()
+        cbox.set_border_width(4)
         
         tab_label = Gtk.Label(_("Disc cover size:"))
-        tab_label.show()
         
         adjustment = Gtk.Adjustment(value=1, lower=100, upper=350, step_incr=20, page_incr=50, page_size=0)
         self.image_size_spin = Gtk.SpinButton(adjustment=adjustment)
-        self.image_size_spin.show()
         
         cbox.pack_start(tab_label, False, False, 0)
         cbox.pack_start(self.image_size_spin, False, True, 0)
-                
-        """notification"""
-        self.check_new_version = Gtk.CheckButton(label=_("Check for new foobnix release on start"), use_underline=True)
-        self.check_new_version.show()
 
-        demo = Gtk.Button(_("Show new foobnix release avaliable demo dialog"))
+        dc_frame.add(cbox)
+        dc_frame.show_all()
+
+        """notification"""
+        updates_frame = Gtk.Frame(label=_("Updates"))
+        uhbox = Gtk.HBox(False, 5)
+        uhbox.set_border_width(4)
+        self.check_new_version = Gtk.CheckButton(label=_("Check for new foobnix release on start"), use_underline=True)
+
+        demo = Gtk.Button(label=_("Check for update"))
         demo.connect("clicked", lambda * a: info_dialog_with_link_and_donate("foobnix [version]"))
-        demo.show()
+        uhbox.pack_start(self.check_new_version, True, True, 0)
+        uhbox.pack_start(demo, False, False, 0)
+        updates_frame.add(uhbox)
+        updates_frame.show_all()
         
         """background image"""
-        
-        catbox = Gtk.HBox(False, 5)
+        theme_frame = Gtk.Frame(label=_("Theming"))
+        thvbox = Gtk.VBox(False, 1)
+        thvbox.set_border_width(4)
+
+        #catbox = Gtk.HBox(False, 5)
         
         self.bg_image = IconBlock("", controls, FC().background_image, FC().background_image_themes)
         
         self.is_show = Gtk.CheckButton(label=_("Enable theme image"), use_underline=True)
         
-        catbox.pack_start(self.is_show, False, True, 0)
-        catbox.pack_start(self.bg_image, True, True, 0)
+        #catbox.pack_start(self.is_show, False, True, 0)
+        #catbox.pack_start(self.bg_image, True, True, 0)
         
         """menu position"""
         pbox = Gtk.HBox(False, 5)
@@ -135,21 +152,22 @@ class OtherConfig(ConfigPlugin):
         hcombobox.pack_start(self.fmgrs_combo, False, False, 0)
         
         self.disable_screensaver = Gtk.CheckButton(label=_("Disable Xscreensaver"), use_underline=True)
+
+        thvbox.pack_start(self.is_show, False, False, 1)
+        thvbox.pack_start(self.bg_image, False, False, 1)
+        thvbox.pack_start(pbox, False, False, 1)
+        thvbox.pack_start(o_r_box, False, False, 1)
+        thvbox.pack_start(obox, False, False, 1)
+        thvbox.pack_start(hcombobox, False, False, 1)
+        thvbox.pack_start(self.disable_screensaver, False, False, 0)
+        theme_frame.add(thvbox)
+        theme_frame.show_all()
                 
         """packaging"""        
-        box.pack_start(hbox, False, True, 0)
-        box.pack_start(self.automatic_save_checkbutton, False, True, 0)
-        box.pack_start(self.nosubfolder_checkbutton, False, True, 0)
-        box.pack_start(thbox, False, True, 0)
-        box.pack_start(cbox, False, True, 0)
-        box.pack_start(self.check_new_version, False, True, 0)
-        box.pack_start(demo, False, False, 0)
-        box.pack_start(catbox, False, False, 0)
-        box.pack_start(pbox, False, False, 0)
-        box.pack_start(o_r_box, False, False, 0)
-        box.pack_start(obox, False, False, 0)
-        box.pack_start(hcombobox, False, False, 0)
-        box.pack_start(self.disable_screensaver, False, False, 0)
+        box.pack_start(download_frame, False, True, 2)
+        box.pack_start(dc_frame, False, True, 2)
+        box.pack_start(theme_frame, False, False, 2)
+        box.pack_start(updates_frame, False, True, 2)
         
         self.widget = box
     

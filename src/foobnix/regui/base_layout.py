@@ -6,6 +6,7 @@ Created on 25 сент. 2010
 '''
 
 from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import GObject
 import logging
 
@@ -13,10 +14,28 @@ from foobnix.fc.fc import FC
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.state import LoadSave
 
+## TODO: move into resources
+foobnix_style = """
+GtkComboBox .button {
+    /* fix for very large size of combobox */
+    padding: 2px 5px;
+}
+"""
+
 
 class BaseFoobnixLayout(FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
+
+        """ set application stylesheet"""
+        self.style_provider = Gtk.CssProvider()
+        ## TODO: after moving style to resource - replace to load_from_file
+        self.style_provider.load_from_data(foobnix_style)
+        Gtk.StyleContext.add_provider_for_screen(
+            Gdk.Screen.get_default(),
+            self.style_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
         
         self.controls = controls  
         bbox = Gtk.VBox(False, 0)

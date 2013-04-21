@@ -178,7 +178,7 @@ def info_dialog_with_link_and_donate(version):
         #terminal = Gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
         link = Gtk.LinkButton("http://www.foobnix.com/support?lang=%s"%SITE_LOCALE, _("Download"))
         
-        frame = Gtk.Frame("Please donate and download")
+        frame = Gtk.Frame(label="Please donate and download")
         vbox = Gtk.VBox(True, 0)
         vbox.pack_start(card, True, True)
         #vbox.pack_start(terminal, True, True)
