@@ -28,6 +28,8 @@ Gst.init("")
 
 class GStreamerEngine(MediaPlayerEngine):
     NANO_SECONDS = 1000000000
+    SPECT_BANDS = 10
+    AUDIOFREQ = 44100
 
     def __init__(self, controls):
         MediaPlayerEngine.__init__(self, controls)
@@ -61,20 +63,25 @@ class GStreamerEngine(MediaPlayerEngine):
         self.decodebin = Gst.ElementFactory.make("decodebin", "decode")
         self.equalizer = Gst.ElementFactory.make('equalizer-10bands', 'equalizer')
 
+        #self.spectrum = Gst.ElementFactory.make('spectrum', 'spectrum')
+        #self.spectrum.set_property("bands", self.SPECT_BANDS)
+        #self.spectrum.set_property("threshold", -80)
+        #self.spectrum.set_property("message-phase", True)
+
         def on_new_decoded_pad(dbin, pad):
             pad.link(audioconvert.get_static_pad("sink"))
 
         self.decodebin.connect("pad-added", on_new_decoded_pad)
 
-        #playbin.add(self.fsource)
         playbin.add(self.decodebin)
         playbin.add(volume)
         playbin.add(audioconvert)
         playbin.add(audiosink)
-        #self.fsource.link(self.decodebin)
-
+        #playbin.add(self.spectrum)
         playbin.add(self.equalizer)
         audioconvert.link(volume)
+        #audioconvert.link(self.spectrum)
+        #self.spectrum.link(volume)
         volume.link(self.equalizer)
         self.equalizer.link(audiosink)
 
@@ -191,9 +198,6 @@ class GStreamerEngine(MediaPlayerEngine):
             self.player.get_by_name("fsource").set_property("location", uri)
             self.fsource.set_state(Gst.State.READY)
 
-        #self.state_pause(show_in_tray=False)
-        #time.sleep(0.3)
-
         self.realign_eq()
 
         self.state_play()
@@ -289,20 +293,20 @@ class GStreamerEngine(MediaPlayerEngine):
             if self.pause_thread_id:
                 time.sleep(0.1)
                 continue
-            #try:
-            position_int = self.get_position_seek_ns()
-            if position_int > 0 and self.bean.start_sec > 0:
-                position_int -= float(self.bean.start_sec) * self.NANO_SECONDS
-                #logging.debug(str(position_int) + str(self.bean.start_sec) + str(duration_int))
-                if (position_int + self.NANO_SECONDS) > duration_int:
-                    self.notify_eos()
+            try:
+                position_int = self.get_position_seek_ns()
+                if position_int > 0 and self.bean.start_sec > 0:
+                    position_int -= float(self.bean.start_sec) * self.NANO_SECONDS
+                    #logging.debug(str(position_int) + str(self.bean.start_sec) + str(duration_int))
+                    if (position_int + self.NANO_SECONDS) > duration_int:
+                        self.notify_eos()
 
-            if self.get_state() == STATE_PLAY:
-                sec += 1
+                if self.get_state() == STATE_PLAY:
+                    sec += 1
 
-            self.notify_playing(position_int, duration_int, sec)
-            #except Exception, e:
-            #    logging.info("Playing thread error... " + str(e))
+                self.notify_playing(position_int, duration_int, sec)
+            except Exception, e:
+                logging.info("Playing thread error... " + str(e))
 
             time.sleep(1)
 
@@ -402,9 +406,16 @@ class GStreamerEngine(MediaPlayerEngine):
         self.controls.on_chage_player_state(self.get_state(), self.bean)
 
     def on_sync_message(self, bus, message):
-        if message.get_structure() is None:
+        struct = message.get_structure()
+        if struct is None:
             return
-        self.controls.movie_window.draw_video(message)
+        if struct.get_name() == "spectrum":
+            print ("spectrum data")
+            magnitude = struct.get_value("magnitude")
+            phase = struct.get_value("phase")
+            print (magnitude, phase)
+        else:
+            self.controls.movie_window.draw_video(message)
 
     def on_message(self, bus, message):
         type = message.type

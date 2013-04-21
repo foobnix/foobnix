@@ -179,7 +179,7 @@ class MovieDrawingArea(FControl, Gtk.Frame):
         self.controls.state_play(under_pointer_icon=True)
             
     def draw_video(self, message):
-        message_name = message.structure.get_name()
+        message_name = message.get_structure().get_name()
         
         if message_name == "prepare-xwindow-id":
             imagesink = message.src
