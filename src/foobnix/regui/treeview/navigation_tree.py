@@ -192,7 +192,31 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             current = False
             to_model = None
         from_model = self.get_model()
-
+        
+        
+        def task(to_tree, to_model):
+            treerows = [from_model[path] for path in paths]
+            for  i, treerow in enumerate(treerows):
+                for k, ch_row in enumerate(treerow.iterchildren()):
+                    treerows.insert(i+k+1, ch_row)
+        
+                    treerows = self.simple_content_filter(treerows)
+            if not current:
+                name = treerows[0][0]
+                self.controls.notetabs._append_tab(name)
+                to_tree = self.controls.notetabs.get_current_tree()     # because to_tree has changed
+                to_model = to_tree.get_model().get_model()
+            for treerow in treerows:
+                to_model.append(None, [col for col in treerow])
+            to_tree.fill_treerows()
+            to_tree.update_tracknumber()
+            if not current:
+                '''gobject because rebuild_as_plain use it too'''
+                GObject.idle_add(self.controls.play_first_file_in_playlist)
+            self.controls.notetabs.on_save_tabs()    
+        self.controls.search_progress.background_spinner_wrapper(task, False, to_tree, to_model)    
+        
+        """    
         def task(to_tree, to_model):
             all_rows = []
             for i, path in enumerate(paths):
@@ -226,7 +250,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             # thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
 
         #GObject.idle_add(task, to_tree, to_model)
-        self.controls.search_progress.background_spinner_wrapper(task, False, to_tree, to_model)
+        self.controls.search_progress.background_spinner_wrapper(task, False, to_tree, to_model)"""
 
     def add_folder(self, in_new_tab=False):
         chooser = Gtk.FileChooserDialog(title=_("Choose directory with music"),

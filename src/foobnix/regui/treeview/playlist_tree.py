@@ -25,9 +25,8 @@ from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE,\
     is_modificator
 from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
-
-
-
+from foobnix.regui.model import FTreeModel
+from foobnix.util.id3_file import update_id3_wind_filtering
 
 foobnix_localization()
 
@@ -434,39 +433,12 @@ class PlaylistTreeControl(CommonTreeControl):
             else:
                 for treerow in treerows:
                     model.append(None, [col for col in treerow])
-
-        self.stop_emission('drag-data-received')
-
-    def simple_content_filter(self, rows):
-        checked_cue_rows = []
-        checked_m3u_rows = []
-        m3u_rows_for_delete = []
-
-        def task(rows):
-            for row in rows:
-                index = self.path[0]
-                path = row[index]
-                if path and (get_file_extension(path) in [".m3u", ".m3u8"]
-                             and row not in checked_m3u_rows):
-                    checked_m3u_rows.append(row)
-                    for r in rows:
-                        if (os.path.dirname(r[index]) == os.path.dirname(path) and os.path.isfile(r[index])
-                            and get_file_extension(r[index]) not in [".m3u", ".m3u8"]):
-                                m3u_rows_for_delete.append(row)
-                                break
-                    return task(rows)
-                    
-                if path and (get_file_extension(path) == ".cue"
-                             and row not in checked_cue_rows):
-                    
-                    checked_cue_rows.append(row)
-                    filtered_rows = [r for r in rows if (os.path.dirname(row[index]) != os.path.dirname(path)
-                                                           or os.path.isdir(r[index]) 
-                                                           or get_file_extension(r[index]) == ".cue")]
-                    return task(filtered_rows)
-            return rows
         
-        all_filtered_rows = task(rows)
-        return [row for row in all_filtered_rows 
-                if row not in m3u_rows_for_delete] if m3u_rows_for_delete else all_filtered_rows   
-   
+        self.fill_treerows()
+        
+        self.update_tracknumber()
+
+        context.finish(True, False, timestamp)
+        self.stop_emission('drag-data-received')
+        return True
+    

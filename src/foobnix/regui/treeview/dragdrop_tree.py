@@ -28,7 +28,6 @@ from foobnix.util.m3u_utils import m3u_reader, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.regui.model import FModel, FTreeModel
-import json
 
 
 VIEW_PLAIN = 0
@@ -45,6 +44,7 @@ class DragDropTree(Gtk.TreeView):
         self.connect("drag-drop", self.on_drag_drop)
         self.connect("drag-motion", self.on_drag_motion)
         self.connect('drag-leave', self.on_drag_leave)
+        self.connect('drag-end', self.on_drag_end)
         self.copy = False
 
         """init values"""
@@ -65,6 +65,10 @@ class DragDropTree(Gtk.TreeView):
             self.drag_source_set_icon_stock('gtk-dnd-multiple')
         else:
             self.drag_source_set_icon_stock('gtk-dnd')
+    
+    def on_drag_end(self, *a):
+        print "dd de"
+        pass
     
     def on_drag_motion(self, widget, drag_context, data, info, time):
         Gdk.drag_status(drag_context, Gdk.DragAction.COPY, time)
@@ -827,3 +831,55 @@ class DragDropTree(Gtk.TreeView):
                     task(child_iter)
         task(iter)
         return all_iters
+
+    def fill_treerows(self):
+        for treerow in self.model:
+            print 1, treerow[self.time[0]]
+            if not treerow[self.time[0]]:
+                print 2
+                bean = self.get_bean_from_row(treerow)
+                full_bean = update_id3_wind_filtering([bean])[0]
+                full_bean.visible = True
+                full_bean.update_uuid() 
+                m_dict = FTreeModel().cut().__dict__
+                new_dict = dict(zip(m_dict.values(), m_dict.keys()))
+                for i, key in enumerate(new_dict.values()):
+                    value = getattr(full_bean, key)
+                    if value is None:
+                        value = ''
+                    elif type(value) in [int, float]:
+                        value = str(value)
+                    treerow[i] = value
+    
+    def simple_content_filter(self, rows):
+        checked_cue_rows = []
+        checked_m3u_rows = []
+        m3u_rows_for_delete = []
+
+        def task(rows):
+            for row in rows:
+                index = self.path[0]
+                path = row[index]
+                if path and (get_file_extension(path) in [".m3u", ".m3u8"]
+                             and row not in checked_m3u_rows):
+                    checked_m3u_rows.append(row)
+                    for r in rows:
+                        if (os.path.dirname(r[index]) == os.path.dirname(path) and os.path.isfile(r[index])
+                            and get_file_extension(r[index]) not in [".m3u", ".m3u8"]):
+                                m3u_rows_for_delete.append(row)
+                                break
+                    return task(rows)
+                    
+                if path and (get_file_extension(path) == ".cue"
+                             and row not in checked_cue_rows):
+                    
+                    checked_cue_rows.append(row)
+                    filtered_rows = [r for r in rows if (os.path.dirname(row[index]) != os.path.dirname(path)
+                                                           or os.path.isdir(r[index]) 
+                                                           or get_file_extension(r[index]) == ".cue")]
+                    return task(filtered_rows)
+            return rows
+        
+        all_filtered_rows = task(rows)
+        return [row for row in all_filtered_rows 
+                if row not in m3u_rows_for_delete] if m3u_rows_for_delete else all_filtered_rows

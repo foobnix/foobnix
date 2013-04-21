@@ -252,13 +252,13 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def set_play_icon_to_bean_to_selected(self):
         def safe_task():
             for row in self.model:
-                row[self.play_icon[0]] = None
+                row[self.play_icon[0]] = ''
         
             paths = self.get_selected_bean_paths()
             if not paths:
                 return None
             logging.debug("Set play icon to selected bean")
-            path = paths[0]  
+            path = paths[0]
                  
             iter = self.model.get_iter(path)
             self.model.set_value(iter, FTreeModel().play_icon[0], Gtk.STOCK_GO_FORWARD)
