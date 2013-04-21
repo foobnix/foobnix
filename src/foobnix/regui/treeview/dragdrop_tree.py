@@ -33,7 +33,6 @@ import json
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
-LAST_DND_SOURCE_TREE = None
 
 class DragDropTree(Gtk.TreeView):
     def __init__(self, controls):
@@ -51,120 +50,16 @@ class DragDropTree(Gtk.TreeView):
         """init values"""
         self.hash = {None: None}
         self.current_view = None
-    '''    
-    def on_drag_data_received(self, widget, drag_context, x, y, selection, info, time):
-        print "on_drag_data_received"
-        print info
-        print selection.get_data()
-        #print selection.get_text()
-        self.stop_emission('drag-data-received')'''
+
     def on_drag_data_get(self, source_tree, drag_context, selection, info, time):
-        pass    
+        pass 
 
-    def on_drag_data_received(self, treeview, context, x, y, selection, info,\
-                          timestamp):
-        print 'dr', context
-        ordered_dict = json.loads(selection.get_data())
-        #print "received", ordered_dict
-        model = treeview.get_model()
-        drop_info = treeview.get_dest_row_at_pos(x, y)
-        if drop_info:
-            path, position = drop_info
-            iter = model.get_iter(path)
-            if (position == Gtk.TREE_VIEW_DROP_BEFORE
-                or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
-                model.insert_before(iter, [data])
-            else:
-                model.insert_after(iter, [data])
-        else:
-            model.append([data])
-        if context.action == Gtk.DragAction.MOVE:
-            context.finish(True, True, time)
-        return
+    def on_drag_data_received(self, treeview, context, x, y, selection, info, timestamp):
+        self.stop_emission('drag-data-received')
         
-        """ Handle a drop situation.
-
-        First of all, we need to get id of node which should accept
-        all draged nodes as their new children. If there is no node,
-        drop to root node.
-
-        Deserialize iterators of dragged nodes (see self.on_drag_data_get())
-        Info parameter determines which target was used:
-            * info == 0 => internal DND within this TreeView
-            * info > 0 => external DND
-
-        In case of internal DND we just use Tree.move_node().
-        In case of external DND we call function associated with that DND
-        set by self.set_dnd_external()
-        """
-        print "on_drag_data_received", treeview, context, x, y, selection, info, timestamp
-
-        model = treeview.get_model()
-        destination_iter = None
-        destination_tid = None
-        drop_info = treeview.get_dest_row_at_pos(x, y)
-        if drop_info:
-            path, position = drop_info
-            destination_iter = model.get_iter(path)
-            if destination_iter:
-                destination_tid = model.get_value(destination_iter, 0)
-
-        # Get dragged iter as a TaskTreeModel iter
-        # If there is no selected task (empty selection.data), 
-        # explictly skip handling it (set to empty list)
-        data = selection.get_data()
-        if data == '':
-            iters = []
-        else:
-            iters = data.split(',')
-
-        dragged_iters = []
-        for iter in iters:
-            #print "Info", info
-            if info == 0:
-                try:
-                    print 99, model.get_iter_from_string(iter)
-                    dragged_iters.append(model.get_iter_from_string(iter))
-                except ValueError:
-                    #I hate to silently fail but we have no choice.
-                    #It means that the iter is not good.
-                    #Thanks shitty Gtk API for not allowing us to test the string
-                    print "Shitty iter", iter
-                    dragged_iter = None
-
-            #elif info in dnd_external_targets and destination_tid:
-                #f = dnd_external_targets[info][1]
-
-                #src_model = context.get_source_widget().get_model()
-                #dragged_iters.append(src_model.get_iter_from_string(iter))
-
-
-        for dragged_iter in dragged_iters:
-            if info == 0:
-                if dragged_iter and model.iter_is_valid(dragged_iter):
-                    dragged_tid = model.get_value(dragged_iter, 0)
-                    try:
-                        row = []
-                        for i in range(model.get_n_columns()):
-                            row.append(model.get_value(dragged_iter, i))
-                        #tree.move_node(dragged_tid, new_parent_id=destination_tid)
-                        print "move_after(%s, %s) ~ (%s, %s)" % (dragged_iter, destination_iter, dragged_tid, destination_tid)
-                        #model.move_after(dragged_iter, destination_iter)
-                        model.insert(destination_iter, -1, row)
-                        model.remove(dragged_iter)
-                    except Exception, e:
-                        print 'Problem with dragging: %s' % e
-            #elif info in dnd_external_targets and destination_tid:    
-                #source = src_model.get_value(dragged_iter,0)
-                # Handle external Drag'n'Drop
-                #f(source, destination_tid)
-        
-
-
     def on_drag_begin(self, source_widget, drag_context):
         print "db", drag_context
         ff_model, ff_paths = source_widget.get_selection().get_selected_rows()  # @UnusedVariable
-        global LAST_DND_SOURCE_TREE
         LAST_DND_SOURCE_TREE = source_widget
         if len(ff_paths) > 1:
             self.drag_source_set_icon_stock('gtk-dnd-multiple')
@@ -262,17 +157,16 @@ class DragDropTree(Gtk.TreeView):
         return result
     
     def on_drag_drop(self, to_tree, context, x, y, time):
-        print "dd",context
         # ff - from_filter
         targets = {}
         for atom in context.list_targets():
             targets[atom] = atom
-        print targets
+        #print targets
         to_tree.drag_get_data(context, context.list_targets()[-1], time)
         return True
         
         self.stop_emission('drag-drop')
-        self.copy = drag_context.get_selected_action()
+        self.copy = context.get_selected_action()
         to_filter_model = to_tree.get_model()
         to_model = to_filter_model.get_model()
         if to_tree.get_dest_row_at_pos(x, y):
@@ -285,7 +179,7 @@ class DragDropTree(Gtk.TreeView):
             to_filter_iter = None
             to_iter = None
             
-        from_tree = LAST_DND_SOURCE_TREE        
+      
         
         if not from_tree:
             return None
@@ -597,70 +491,7 @@ class DragDropTree(Gtk.TreeView):
         
         return cue_refs + folder_refs if cue_refs else not_cue_refs
     
-    def simple_content_filter1(self, beans):
-        checked_cue_beans = []
-        checked_m3u_beans = []
-        m3u_beans_for_delete = []
 
-        def task(beans):
-            for bean in beans:
-                path = bean.path
-                if path and (get_file_extension(path) in [".m3u", ".m3u8"]
-                             and bean not in checked_m3u_beans):
-                    checked_m3u_beans.append(bean)
-                    for b in beans:
-                        if (os.path.dirname(b.path) == os.path.dirname(path) and os.path.isfile(b.path)
-                            and get_file_extension(b.path) not in [".m3u", ".m3u8"]):
-                                m3u_beans_for_delete.append(bean)
-                                break
-                    return task(beans)
-                    
-                if path and (get_file_extension(path) == ".cue"
-                             and bean not in checked_cue_beans):
-                    
-                    checked_cue_beans.append(bean)
-                    filtered_beans = [b for b in beans if (os.path.dirname(b.path) != os.path.dirname(path)
-                                                           or os.path.isdir(b.path) 
-                                                           or get_file_extension(b.path) == ".cue")]
-                    return task(filtered_beans)
-            return beans
-        
-        all_filtered_beans = task(beans)
-        return [bean for bean in all_filtered_beans 
-                if bean not in m3u_beans_for_delete] if m3u_beans_for_delete else all_filtered_beans
-    
-    def simple_content_filter(self, rows):
-        checked_cue_rows = []
-        checked_m3u_rows = []
-        m3u_rows_for_delete = []
-
-        def task(rows):
-            for row in rows:
-                index = self.path[0]
-                path = row[index]
-                if path and (get_file_extension(path) in [".m3u", ".m3u8"]
-                             and rows not in checked_m3u_rows):
-                    checked_m3u_rows.append(row)
-                    for r in rows:
-                        if (os.path.dirname(r[index]) == os.path.dirname(path) and os.path.isfile(r[index])
-                            and get_file_extension(r[index]) not in [".m3u", ".m3u8"]):
-                                m3u_rows_for_delete.append(row)
-                                break
-                    return task(rows)
-                    
-                if path and (get_file_extension(path) == ".cue"
-                             and row not in checked_cue_rows):
-                    
-                    checked_cue_rows.append(rows)
-                    filtered_rows = [r for r in rows if (os.path.dirname(row[index]) != os.path.dirname(path)
-                                                           or os.path.isdir(r[index]) 
-                                                           or get_file_extension(r[index]) == ".cue")]
-                    return task(filtered_rows)
-            return rows
-        
-        all_filtered_rows = task(rows)
-        return [row for row in all_filtered_rows 
-                if row not in m3u_rows_for_delete] if m3u_rows_for_delete else all_filtered_rows
     
     def replace_inside_navig_tree(self, old_path, dest_folder):
         logging.debug('drag inside navigation tree')
