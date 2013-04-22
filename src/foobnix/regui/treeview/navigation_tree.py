@@ -362,9 +362,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         pass
     
     def on_drag_data_get(self, source_tree, drag_context, selection, info, time):
-        print "on_drag_data_get", drag_context
-        print drag_context.list_targets()
-        print selection.get_target()
         treeselection = source_tree.get_selection()
         ff_model, ff_paths = treeselection.get_selected_rows()
         iters = [ff_model.get_iter(ff_path) for ff_path in ff_paths]
