@@ -259,8 +259,7 @@ def set_cover_from_tags(bean):
             else:
                 cache_dict[basename] = [bean.text]
             return filename
-        else:
-            print "data not found"
+
     except Exception, e:
         print e
         pass

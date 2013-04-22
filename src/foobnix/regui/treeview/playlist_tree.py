@@ -6,7 +6,6 @@ Created on 25 сент. 2010
 '''
 
 import re
-import os.path
 import logging
 
 from gi.repository import Gtk
@@ -18,16 +17,14 @@ from foobnix.helpers.menu import Popup
 from foobnix.util.tag_util import edit_tags
 from foobnix.util.converter import convert_files
 from foobnix.util.audio import get_mutagen_audio
-from foobnix.util.file_utils import open_in_filemanager, copy_to,\
-    get_file_extension
+from foobnix.util.file_utils import open_in_filemanager, copy_to
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE,\
     is_modificator
 from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
-from foobnix.regui.model import FTreeModel
-from foobnix.util.id3_file import update_id3_wind_filtering
+
 
 foobnix_localization()
 

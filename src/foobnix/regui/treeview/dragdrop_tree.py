@@ -833,24 +833,41 @@ class DragDropTree(Gtk.TreeView):
         return all_iters
 
     def fill_treerows(self):
-        for treerow in self.model:
-            print 1, treerow[self.time[0]]
+        all_extra_rows = {}
+
+        for k, treerow in enumerate(self.model):
             if not treerow[self.time[0]]:
-                print 2
                 bean = self.get_bean_from_row(treerow)
-                full_bean = update_id3_wind_filtering([bean])[0]
-                full_bean.visible = True
-                full_bean.update_uuid() 
-                m_dict = FTreeModel().cut().__dict__
-                new_dict = dict(zip(m_dict.values(), m_dict.keys()))
-                for i, key in enumerate(new_dict.values()):
-                    value = getattr(full_bean, key)
-                    if value is None:
-                        value = ''
-                    elif type(value) in [int, float]:
-                        value = str(value)
-                    treerow[i] = value
-    
+                full_beans = update_id3_wind_filtering([bean])
+                rows_for_add = []
+                PLAYLIST = True if len(full_beans) > 1 else False
+                for n, full_bean in enumerate(full_beans):
+                    full_bean.visible = True
+                    full_bean.update_uuid()
+                    if PLAYLIST:
+                        row = self.get_row_from_bean(full_bean)
+                        rows_for_add.insert(0, row)
+                        if n == 0:
+                            treerow[self.font[0]] = 'bold'
+                        continue
+                    m_dict = FTreeModel().cut().__dict__
+                    new_dict = dict(zip(m_dict.values(), m_dict.keys()))
+                    for i, key in enumerate(new_dict.values()):
+                        value = getattr(full_bean, key)
+                        if value is None:
+                            value = ''
+                        elif type(value) in [int, float]:
+                            value = str(value)
+                        treerow[i] = value
+                if rows_for_add:
+                    all_extra_rows[k] = rows_for_add
+                        #for row in rows_for_add:
+                            #self.model.insert_after(None, iter, row)
+        if all_extra_rows:
+            for i in sorted(all_extra_rows.keys(), reverse = True):
+                for row in all_extra_rows[i]:
+                    self.model.insert_after(None, self.model.get_iter(i), row)
+                    
     def simple_content_filter(self, rows):
         checked_cue_rows = []
         checked_m3u_rows = []
