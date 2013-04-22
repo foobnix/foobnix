@@ -494,7 +494,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def expand_updated(self, callback):
         def on_expand_collapse(w, iter, path):
             values = []
-            self.map_expanded_rows(lambda w, p : values.append(p))
+            self.map_expanded_rows(lambda w, p, c: values.append(p), None)
             callback(values)
         self.connect("row-expanded", on_expand_collapse)
         self.connect("row-collapsed", on_expand_collapse)

@@ -17,7 +17,7 @@ from foobnix.fc.fc_cache import FCache
 from foobnix.util.key_utils import KEY_DELETE, is_key
 from foobnix.util.const import LEFT_PERSPECTIVE_VIRTUAL
 import collections
-import json
+import logging
 
 class VirtualTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
@@ -121,9 +121,44 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
 
     
     def on_drag_data_received(self, treeview, context, x, y, selection, info, timestamp):
-        print "Storage tree on_drag_data_received"
-        model = self.get_model()
+        logging.debug('Storage on_drag_data_received')
+        model = self.get_model().get_model()
         drop_info = self.get_dest_row_at_pos(x, y)
+        
+        # ff - from_filter
+        ff_tree = Gtk.drag_get_source_widget(context)
+        ff_model, ff_paths = ff_tree.get_selection().get_selected_rows()
+        treerows = [ff_model[ff_path] for ff_path in ff_paths]
+        
+        if drop_info:
+            path, position = drop_info
+            iter = model.get_iter(path)
+            if (position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE or
+                position == Gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+                self.model[path][self.font[0]] = 'bold'
+          
+        for  treerow in treerows:
+            row = [col for col in treerow]
+            if drop_info:
+                if (position == Gtk.TREE_VIEW_DROP_BEFORE):
+                    new_iter = model.insert_before(None, iter, row)
+                elif (position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE or
+                    position == Gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+                    new_iter = model.append(iter, row)
+                else:
+                    new_iter = model.insert_after(None, iter, row)
+                    iter = model.iter_next(iter)
+            else:
+                new_iter = model.append(None, row)
+            if len(treerows) == 1 and treerow[self.font[0]] == 'bold':
+                while treerow.next[self.font[0]] != 'bold':
+                    treerow = treerow.next
+                    treerows.append(treerow)
+                drop_info = True
+                iter = new_iter
+                position = Gtk.TREE_VIEW_DROP_INTO_OR_AFTER
+        #if self is ff_tree:
+        self.stop_emission('drag-data-received')
         
     def get_dict_from_selected(self, model, paths):
         dict = collections.OrderedDict()

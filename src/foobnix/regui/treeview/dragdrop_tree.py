@@ -355,7 +355,7 @@ class DragDropTree(Gtk.TreeView):
                     next_iter = ff_model.iter_next(next_iter)
                     if not next_iter: break
         
-        return new_iter  
+        return new_iter
 
     def rebuild_tree(self, tree):     
         if tree.current_view == VIEW_TREE:
@@ -770,8 +770,7 @@ class DragDropTree(Gtk.TreeView):
                 for i in xrange(self.model.iter_n_children(parent_iter_exists)):
                     iter = self.model.iter_nth_child(parent_iter_exists, i)
                     if not self.model.get_value(iter, self.is_file[0]):
-                        last_folder_iter = iter
-                                                
+                        last_folder_iter = iter 
                 if last_folder_iter:
                     new_iter = self.model.insert_after(None, last_folder_iter, row)
                     self.hash[bean.level] = new_iter
