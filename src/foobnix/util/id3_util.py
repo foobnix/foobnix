@@ -249,7 +249,7 @@ def set_cover_from_tags(bean):
             fd = NamedTemporaryFile()
             fd.write(data.data)
             pixbuf = Pixbuf.new_from_file(fd.name)
-            pixbuf.save(filename, "jpeg", {"quality":"90"})
+            pixbuf.savev(filename, "jpeg", [], [])
             fd.close()
             bean.image = filename
             basename = os.path.splitext(os.path.basename(filename))[0]
