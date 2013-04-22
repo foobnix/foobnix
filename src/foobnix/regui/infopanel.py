@@ -113,7 +113,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         self.left_widget = [wBox, self.artists, self.tracks, self.tags, self.lyrics, self.best_songs]
         
         for l_widget in self.left_widget:        
-            lbox.pack_start(l_widget.line_title, False, False, 0)
+            lbox.pack_start(l_widget.line_title, False, False, 4)
                 
         ibox.pack_start(self.image, False, False, 0)
         ibox.pack_start(lbox, True, True, 0)
@@ -275,7 +275,8 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         
         if not bean.image:
             logging.warning("""""Can't get cover image. Check the correctness of the artist's name and track title""""")
-            
+
+        ## TODO: fix caching remote images
         '''make .jpg image and store it in cache'''        
         if bean.image and bean.image.startswith("http://"):
             url_basename = os.path.splitext(os.path.basename(bean.image))[0]

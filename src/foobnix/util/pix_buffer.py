@@ -6,6 +6,7 @@ Created on Nov 4, 2010
 import urllib
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from gi.repository import Gtk
+from gi.repository import GdkPixbuf
 import logging
 
 def create_pixbuf_from_url(url, size):
@@ -44,7 +45,7 @@ def create_pixbuf_from_resource(name, size=None):
 def create_origin_pixbuf_from_url(url):
     f = urllib.urlopen(url)
     data = f.read()
-    pbl = Gtk.gdk.PixbufLoader() #@UndefinedVariable
+    pbl = GdkPixbuf.PixbufLoader() #@UndefinedVariable
     pbl.write(data)
     pbuf = pbl.get_pixbuf()
     pbl.close()

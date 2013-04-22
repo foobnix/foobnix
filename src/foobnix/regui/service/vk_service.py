@@ -7,172 +7,72 @@ Created on Sep 29, 2010
 '''
 
 import os
-from gi.repository import Gtk
+import gi
+gi.require_version("WebKit", "3.0")
+
 import threading
 import time
-import thread
 import urllib
-from gi.repository import GObject
 import logging
 import urllib2
 import simplejson
-import cookielib
-import tempfile
+
+from gi.repository import Gtk
+from gi.repository import GObject
+from gi.repository import WebKit
+from gi.repository import Soup
 
 from HTMLParser import HTMLParser
 from urlparse import urlparse
 from foobnix.fc.fc import FC, FCBase
 from foobnix.regui.model import FModel
 from foobnix.fc.fc_helper import CONFIG_DIR
-from foobnix.util.const import ICON_FOOBNIX
-from foobnix.helpers.image import ImageBase
-from foobnix.helpers.pref_widgets import HBoxLableEntry
 from foobnix.util.time_utils import convert_seconds_to_text
-from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 
 cookiefile = os.path.join(CONFIG_DIR, "vk_cooky")
 
 
-class FormParser(HTMLParser):
-    def __init__(self):
-        HTMLParser.__init__(self)
-        self.url = None
-        self.params = {}
-        self.in_form = False
-        self.in_warn = False
-        self.form_parsed = False
-        self.method = "GET"
-        self.captcha_image = None
-        self.auth_error = None
-
-    """Magic below"""
-    def handle_starttag(self, tag, attrs):
-        tag = tag.lower()
-        attrs = dict((name.lower(), value) for name, value in attrs)
-        if tag == "div" and "class" in attrs and "warn" in attrs["class"]:
-            self.in_warn = True
-            return
-
-        if tag == "form":
-            if self.form_parsed:
-                raise RuntimeError("Second form on page")
-            if self.in_form:
-                raise RuntimeError("Already in form")
-            self.in_form = True
-        if not self.in_form:
-            return
-        if tag == "form":
-            self.url = attrs["action"]
-            if "method" in attrs:
-                self.method = attrs["method"]
-        elif tag == "input" and "type" in attrs and "name" in attrs:
-            if attrs["type"] in ["hidden", "text", "password"]:
-                self.params[attrs["name"]] = attrs["value"] if "value" in attrs else ""
-        elif tag == "img" and "src" in attrs and "captcha.php" in attrs["src"]:
-            self.captcha_image = attrs["src"]
-
-    def handle_endtag(self, tag):
-        tag = tag.lower()
-        if tag == "div" and self.in_warn:
-            self.in_warn = False
-        elif tag == "form":
-            if not self.in_form:
-                raise RuntimeError("Unexpected end of <form>")
-            self.in_form = False
-            self.form_parsed = True
-
-    def handle_data(self, data):
-        if self.in_warn:
-            self.auth_error = data
-
-
-class VKAuth(Gtk.Dialog):
+class VKWebkitAuth(Gtk.Dialog):
 
     SCOPE = ["audio", "friends", "wall"]
     CLIENT_ID = "2234333"
 
     def __init__(self):
-        super(VKAuth, self).__init__(_("vk.com authorization"), None, Gtk.DIALOG_MODAL,
-                                     (Gtk.STOCK_CANCEL, Gtk.RESPONSE_REJECT, Gtk.STOCK_OK, Gtk.RESPONSE_ACCEPT))
-
-        """INIT GUI"""
-        self.hwparrer = Gtk.HBox(False, 0)
-        self.vwrapper = Gtk.VBox(False, 0)
-        self.lhbox = Gtk.HBox(False, 5)
-        self.phbox = Gtk.HBox(False, 5)
-        self.rhbox = Gtk.HBox(False, 5)
-        self.chbox = Gtk.HBox()
-
-        self.error_label = Gtk.Label()
-
-        self.login = Gtk.Entry()
-        self.password = Gtk.Entry()
-        self.captcha_image = Gtk.Image()
-        self.vkimage = Gtk.Image()
-        self.captcha = Gtk.Entry()
-        self.remember = Gtk.CheckButton()
-
-        self.vkimage.set_from_file(get_foobnix_resourse_path_by_name("vk-small.png"))
-
-        self.password.set_visibility(False)
-        self.password.set_invisible_char("*")
-
-        login_label = Gtk.Label(_("Email"))
-        self.lhbox.pack_start(login_label, False, False, 0)
-        self.lhbox.pack_start(self.login, True, True, 0)
-
-        password_label = Gtk.Label(_("Password"))
-        self.phbox.pack_start(password_label, False, False, 0)
-        self.phbox.pack_start(self.password, True, True, 0)
-
-        self.rhbox.pack_start(Gtk.Label(_("Remember password")), False, False, 0)
-        self.rhbox.pack_start(self.remember, False, False, 0)
-
-        self.chbox.pack_start(self.captcha_image, False, False, 0)
-        self.chbox.pack_start(self.captcha, True, True, 0)
-
-        self.vwrapper.pack_start(self.lhbox, False, False, 4)
-        self.vwrapper.pack_start(self.phbox, False, False, 4)
-        self.vwrapper.pack_start(self.chbox, False, False, 4)
-
-        self.hwparrer.pack_start(self.vkimage, True, True, 0)
-        self.hwparrer.pack_start(self.vwrapper, False, True, 0)
-
-        self.vbox.pack_start(self.error_label, False, False, 4)
-        self.vbox.pack_start(self.hwparrer, False, False, 0)
-        self.vbox.pack_start(self.rhbox, False, False, 4)
-        self.vbox.show_all()
-
-        """SET DEFAULT SIZES AND VISIBILITY"""
-        [node.set_size_request(80, -1) for node in [login_label, password_label]]
-        [node.hide() for node in [self.error_label, self.chbox]]
-
-        self.login.set_text(FCBase().vk_login or "")
-        self.password.set_text(FCBase().vk_password or "")
-        self.remember.set_active(FCBase().vk_remember_password)
-
-        """Build opener"""
-        self.opener = self.build_opener()
+        super(VKWebkitAuth, self).__init__(_("vk.com authorization"), None, Gtk.DIALOG_MODAL, ())
+        self.set_size_request(550, -1)
         self.auth_url = "http://oauth.vk.com/oauth/authorize?" + \
                         "redirect_uri=http://oauth.vk.com/blank.html&response_type=token&" + \
-                        "client_id=%s&scope=%s&display=wap" % (self.CLIENT_ID, ",".join(self.SCOPE))
+                        "client_id=%s&scope=%s" % (self.CLIENT_ID, ",".join(self.SCOPE))
+        self.web_view = WebKit.WebView()
+        self.web_view.show()
+        self.vbox.pack_start(self.web_view, False, False, 0)
 
-    def do_save(self):
-        if self.remember.get_active():
-            FCBase().vk_login = self.login.get_text()
-            FCBase().vk_password = self.password.get_text()
+        self.web_view.connect('onload-event', self.on_load)
+        session = WebKit.get_default_session()
+        if FC().proxy_enable and FC().proxy_url:
+            if FC().proxy_user and FC().proxy_password:
+                proxy_url = "http://%s:%s@%s" % (FC().proxy_user, FC().proxy_password, FC().proxy_url)
+            else:
+                proxy_url = "http://%s" % FC().proxy_url
+            soup_url = Soup.URI.new(proxy_url)
+            session.set_property("proxy-uri", soup_url)
         else:
-            FCBase().vk_login = None
-            FCBase().vk_password = None
-        FCBase().vk_remember_password = self.remember.get_active()
+            session.set_property("proxy-uri", None)
 
-    def build_opener(self):
-        cookiejar = cookielib.FileCookieJar(cookiefile)
-        cookie_handler = urllib2.HTTPCookieProcessor(cookiejar)
-        redirect_handler = urllib2.HTTPRedirectHandler()
-        #proxy_handler = urllib2.ProxyHandler()
-        #proxy_auth_handker = urllib2.ProxyBasicAuthHandler()
-        return urllib2.build_opener(cookie_handler, redirect_handler)
+        cookiejar = Soup.CookieJarText.new(cookiefile, False)
+        session.add_feature(cookiejar)
+
+        self.access_token = None
+        self.user_id = None
+
+    def auth_user(self, check_only=False):
+        if check_only:
+            return self.access_token, self.user_id if self.access_token and self.user_id else None
+        self.web_view.open(self.auth_url)
+        result = self.run()
+        if result == Gtk.RESPONSE_ACCEPT and self.access_token and self.user_id:
+            return self.access_token, self.user_id
+        return None
 
     def extract_answer(self, url):
         def split_key_value(kv_pair):
@@ -181,86 +81,16 @@ class VKAuth(Gtk.Dialog):
                 return kv[0], kv[1]  # ["key", "val"], e.g. key=val
             else:
                 return kv[0], None  # ["key"], e.g. key= or key
-        return dict(split_key_value(kv_pair) for kv_pair in urlparse(url).fragment.split("&"))
+        return dict(split_key_value(kv_pair) for kv_pair in url.fragment.split("&"))
 
-    def get_page_by_url(self, url, params=None):
-        if params:
-            params = urllib.urlencode(params)
-        response = self.opener.open(url, params)
-        page = response.read()
-        parser = FormParser()
-        parser.feed(page)
-        parser.close()
-        return response, parser
-
-    def auth_user(self, check_only=False):
-        res, parser = self.get_page_by_url(self.auth_url)
-        parsedurl = urlparse(res.geturl())
-        if parsedurl.path == "/blank.html":
-            """user already authorized or error"""
-            answer = self.extract_answer(res.geturl())
+    def on_load(self, webview, frm):
+        print ("on load", webview.get_property("uri"))
+        url = urlparse(webview.get_property("uri"))
+        if url.path == "/blank.html":
+            answer = self.extract_answer(url)
             if "access_token" in answer and "user_id" in answer:
-                return answer["access_token"], answer["user_id"]
-        elif parsedurl.path == "/oauth/authorize" and "grant_access" in parser.url:
-            logging.debug("Grant access page without authorization")
-            return
-        elif parsedurl.path != "/oauth/authorize":
-            logging.debug("Someting wrong")
-            logging.debug(parsedurl.path)
-            return
-        if check_only:
-            return
-        """Full auth"""
-        return self.do_full_auth(res, parser)
-
-    def do_full_auth(self, res, parser):
-        logging.debug("do full auth")
-        if parser.captcha_image:
-            logging.debug("captcha enabled, %s" % parser.captcha_image)
-            cres = self.opener.open(parser.captcha_image)
-            blob = cres.read()
-            unknwn, image = tempfile.mkstemp()
-            fd = os.open(image, os.O_RDWR)
-            os.write(fd, blob)
-            self.captcha_image.set_from_file(image)
-            self.chbox.show()
-        else:
-            self.chbox.hide()
-        if parser.auth_error:
-            logging.debug(parser.auth_error)
-            self.error_label.set_text(parser.auth_error)
-            self.error_label.show()
-        else:
-            self.error_label.hide()
-        login, passw = FCBase().vk_login, FCBase().vk_password
-        if not login or not passw or parser.captcha_image or parser.auth_error:
-            dialog_result = self.run()
-            self.captcha_image.clear()
-            self.do_save()
-            self.hide()
-            if dialog_result is Gtk.RESPONSE_ACCEPT.real:
-                login = self.login.get_text()
-                passw = self.password.get_text()
-            else:
-                return
-        parser.params["email"] = login
-        parser.params["pass"] = passw
-        """send auth params"""
-        new_res, new_parser = self.get_page_by_url(parser.url, parser.params)
-        if new_parser.captcha_image or new_parser.auth_error:
-            return self.do_full_auth(new_res, new_parser)
-        else:
-            """if access without confirmation"""
-            answer = self.extract_answer(new_res.geturl())
-            if "access_token" in answer and "user_id" in answer:
-                return answer["access_token"], answer["user_id"]
-            """do grant access"""
-            new_res, new_parser = self.get_page_by_url(new_parser.url, new_parser.params)
-            answer = self.extract_answer(new_res.geturl())
-            if "access_token" in answer and "user_id" in answer:
-                return answer["access_token"], answer["user_id"]
-        logging.debug("something wrong...")
-        return
+                self.access_token, self.user_id = answer["access_token"], answer["user_id"]
+            self.response(Gtk.RESPONSE_ACCEPT)
 
 
 class VKService:
@@ -271,13 +101,12 @@ class VKService:
 
     def auth(self, check_only=False):
         self.connected = None
-        auth_provider = VKAuth()
+        auth_provider = VKWebkitAuth()
         res = auth_provider.auth_user(check_only)
         auth_provider.destroy()
         if res:
             FC().access_token = res[0]
             FC().user_id = res[1]
-            #thread.start_new_thread(FC().save, ())
             self.set_token_user(res[0], res[1])
             self.connected = True
             return True

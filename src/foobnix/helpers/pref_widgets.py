@@ -25,6 +25,7 @@ class IconBlock(Gtk.HBox):
         self.combobox = Gtk.ComboBox()
         self.entry = Gtk.Entry()
         self.entry.set_size_request(300, -1)
+        self.entry.set_property("margin", 0)
         if filename:
             self.entry.set_text(filename)
         else:
@@ -55,7 +56,8 @@ class IconBlock(Gtk.HBox):
         button_2.connect("clicked", self.on_delete)
         
         label = Gtk.Label(text)
-        label.set_size_request(80, -1)
+        if text: # if iconblock without label
+            label.set_size_request(80, -1)
         
         self.pack_start(label, False, False, 0)
         self.pack_start(self.combobox, False, False, 0)

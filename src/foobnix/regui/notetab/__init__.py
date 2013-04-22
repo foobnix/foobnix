@@ -44,6 +44,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
         self.connect("page-reordered", self.reorder_callback)
         add_button = ImageButton(Gtk.STOCK_ADD, func=self.on_add_button_click, size=Gtk.IconSize.BUTTON)
         add_button.show()
+        add_button.get_image().set_size_request(24, 22)
         self.set_action_widget(add_button, Gtk.PackType.START)
         self.default_angle = 0
         self.navig = False if isinstance(self, NoteTabControl) else True

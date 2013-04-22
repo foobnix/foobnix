@@ -791,7 +791,8 @@ class BaseFoobnixControls():
                 self.play(bean)
                 tree_selection = active_playlist_tree.get_selection()
                 filter_iter = filter_model.convert_child_iter_to_iter(iter)
-                GObject.idle_add(tree_selection.select_iter, filter_iter)
+                if filter_iter[0]:
+                    GObject.idle_add(tree_selection.select_iter, filter_iter[1])
                 active_playlist_tree.set_play_icon_to_bean_to_selected()
             else:
                 iter = current_model.iter_next(iter)

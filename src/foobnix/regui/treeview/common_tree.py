@@ -247,7 +247,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         if bean:
             return bean
         else:              
-            return self.get_current_bean_by_UUID();
+            return self.get_current_bean_by_UUID()
     
     def set_play_icon_to_bean_to_selected(self):
         def safe_task():
@@ -259,7 +259,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 return None
             logging.debug("Set play icon to selected bean")
             path = paths[0]
-                 
+
             iter = self.model.get_iter(path)
             self.model.set_value(iter, FTreeModel().play_icon[0], Gtk.STOCK_GO_FORWARD)
             self.active_UUID = self.model.get_value(iter, FTreeModel().UUID[0])
