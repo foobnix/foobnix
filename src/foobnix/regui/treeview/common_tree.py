@@ -100,7 +100,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     
     def populate_all(self, beans):
         self.clear_tree()
-        GObject.idle_add(self.append_all, beans)
+        self.append_all(beans)
     
     def get_bean_from_iter(self, iter):
         return self.get_bean_from_model_iter(self.model, iter)
@@ -460,9 +460,13 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def restore_selection(self, paths):        
         self.select_paths(paths)
 
-    def restore_expand(self, paths):
-        for path in paths:
-            self.expand_to_path(path)
+    def restore_expand(self, str_paths):
+        def safe_restore_expand():
+            for str_path in str_paths:
+                iter = self.model.get_iter_from_string(str_path)
+                path = self.model.get_path(iter)
+                self.expand_to_path(path)
+        GObject.idle_add(safe_restore_expand)
     
     def copy_info_to_clipboard(self, mode=False):
         beans = self.get_selected_beans()
