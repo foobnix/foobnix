@@ -58,22 +58,21 @@ class DragDropTree(Gtk.TreeView):
         self.stop_emission('drag-data-received')
         
     def on_drag_begin(self, source_widget, drag_context):
-        print "db", drag_context
         ff_model, ff_paths = source_widget.get_selection().get_selected_rows()  # @UnusedVariable
-        LAST_DND_SOURCE_TREE = source_widget
         if len(ff_paths) > 1:
             self.drag_source_set_icon_stock('gtk-dnd-multiple')
         else:
             self.drag_source_set_icon_stock('gtk-dnd')
     
     def on_drag_end(self, *a):
-        print "dd de"
         pass
     
-    def on_drag_motion(self, widget, drag_context, data, info, time):
+    def on_drag_motion(self, widget, drag_context, x, y, time):
         Gdk.drag_status(drag_context, Gdk.DragAction.COPY, time)
         widget.drag_highlight()
-        return True
+        drop_info = widget.get_dest_row_at_pos(x, y)
+        if drop_info:
+            self.set_drag_dest_row (*drop_info)
     
     def on_drag_leave(self, widget, context, time):
         widget.drag_unhighlight()
@@ -165,7 +164,6 @@ class DragDropTree(Gtk.TreeView):
         targets = {}
         for atom in context.list_targets():
             targets[atom] = atom
-        #print targets
         to_tree.drag_get_data(context, context.list_targets()[-1], time)
         return True
         
@@ -357,7 +355,7 @@ class DragDropTree(Gtk.TreeView):
                     next_iter = ff_model.iter_next(next_iter)
                     if not next_iter: break
         
-        return new_iter  
+        return new_iter
 
     def rebuild_tree(self, tree):     
         if tree.current_view == VIEW_TREE:
@@ -772,8 +770,7 @@ class DragDropTree(Gtk.TreeView):
                 for i in xrange(self.model.iter_n_children(parent_iter_exists)):
                     iter = self.model.iter_nth_child(parent_iter_exists, i)
                     if not self.model.get_value(iter, self.is_file[0]):
-                        last_folder_iter = iter
-                                                
+                        last_folder_iter = iter 
                 if last_folder_iter:
                     new_iter = self.model.insert_after(None, last_folder_iter, row)
                     self.hash[bean.level] = new_iter

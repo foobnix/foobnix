@@ -182,7 +182,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             logging.error("So path doesn't exist")
         self.tree_append(bean)
         self.save_beans_from_tree()
-                
+    
     def add_to_tab(self, current=False):
         paths = self.get_selected_bean_paths()
         to_tree = self.controls.notetabs.get_current_tree()
@@ -216,42 +216,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             self.controls.notetabs.on_save_tabs()    
         self.controls.search_progress.background_spinner_wrapper(task, False, to_tree, to_model)    
         
-        """    
-        def task(to_tree, to_model):
-            all_rows = []
-            for i, path in enumerate(paths):
-                from_iter = from_model.get_iter(path)
-                row = self.get_row_from_model_iter(from_model, from_iter)
-            
-                if not i and not current:
-                    name = row[0]
-                    self.controls.notetabs._append_tab(name)
-                    to_tree = self.controls.notetabs.get_current_tree()     # because to_tree has changed
-                    to_model = to_tree.get_model().get_model()
-                
-                if is_m3u(from_model.get_value(from_iter, self.path[0])):
-                    self.add_m3u(from_model, from_iter, to_tree, to_model) 
-                    continue
-                beans = self.get_all_beans_by_parent(from_model, from_iter)
-                all_rows += self.fill_beans_and_get_rows(beans, self.simple_content_filter)
-                            
-            for row in all_rows:
-                if is_m3u(row[self.path[0]]):
-                    self.add_m3u(to_model=to_model, row=row)
-                    continue
-                self.to_add_drag_item(to_tree, to_model, None, None, None, None, row)
-            to_tree.update_tracknumber()
-        
-            if not current:
-                '''gobject because rebuild_as_plain use it too'''
-                GObject.idle_add(self.controls.play_first_file_in_playlist)
-
-            self.controls.notetabs.on_save_tabs()   # because save process already wrapped with thread
-            # thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
-
-        #GObject.idle_add(task, to_tree, to_model)
-        self.controls.search_progress.background_spinner_wrapper(task, False, to_tree, to_model)"""
-
     def add_folder(self, in_new_tab=False):
         chooser = Gtk.FileChooserDialog(title=_("Choose directory with music"),
                                         action=Gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
@@ -362,9 +326,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         pass
     
     def on_drag_data_get(self, source_tree, drag_context, selection, info, time):
-        print "on_drag_data_get", drag_context
-        print drag_context.list_targets()
-        print selection.get_target()
         treeselection = source_tree.get_selection()
         ff_model, ff_paths = treeselection.get_selected_rows()
         iters = [ff_model.get_iter(ff_path) for ff_path in ff_paths]
