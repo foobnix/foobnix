@@ -130,10 +130,10 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
 
         if self == ff_tree:
             ff_row_refs = [Gtk.TreeRowReference.new(ff_model, ff_path) for ff_path in ff_paths]
-            def task(treerow, new_iter):
+            def add_childs(treerow, new_iter):
                     for ch_row in treerow.iterchildren():
                         niter = model.append(new_iter, [col for col in ch_row])
-                        task(ch_row, niter)
+                        add_childs(ch_row, niter)
             for treerow, ref in zip(treerows, ff_row_refs):
                 row = [col for col in treerow]
                 if drop_info:
@@ -148,8 +148,8 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
                 else:
                     new_iter = model.append(None, row)
                 treerow = model[ref.get_path()] # reinitialize
-                
-                task(treerow, new_iter)       
+                add_childs(treerow, new_iter) 
+            self.remove_replaced(ff_model, ff_row_refs)      
         else:
             for  treerow in treerows:
                 row = [col for col in treerow]

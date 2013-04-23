@@ -368,11 +368,11 @@ class DragDropTree(Gtk.TreeView):
         row = model[model.get_path(iter)]
         row[self.path[0]] = filepath
                 
-    def remove_replaced(self, ff_model):
-        for ref in self.row_to_remove:
-            filter_iter = self.get_iter_from_row_reference(ref)
-            iter = ff_model.convert_iter_to_child_iter(filter_iter)
-            ff_model.get_model().remove(iter)
+    def remove_replaced(self, model, rowrefs):
+        for ref in rowrefs:
+            iter = self.get_iter_from_row_reference(ref)
+            iter = model.convert_iter_to_child_iter(iter)
+            model.get_model().remove(iter)
 
     def add_m3u(self, from_model=None, from_iter=None, to_tree=None, to_model=None,
                 to_iter=None, pos=None, row=None):

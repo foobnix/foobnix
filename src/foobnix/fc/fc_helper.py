@@ -59,7 +59,7 @@ class FCHelper():
             try:
                 cPickle.dump(object, save_file)
             except Exception as e:
-                logging.error("Erorr dumping pickle conf" + str(e))
+                logging.error("Erorr dumping pickle conf " + str(e))
             save_file.close()
             logging.debug("Config save")
             self.print_info(object)
