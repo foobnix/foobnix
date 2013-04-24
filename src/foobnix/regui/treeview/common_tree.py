@@ -292,7 +292,6 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             bean = FModel()
             dt = FTreeModel().__dict__
             for key in dt.keys():
-                print key, model.get_value(iter, dt[key][0])
                 setattr(bean, key, model.get_value(iter, dt[key][0]))
             return bean
         return None

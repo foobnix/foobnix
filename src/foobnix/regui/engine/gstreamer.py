@@ -339,7 +339,6 @@ class GStreamerEngine(MediaPlayerEngine):
             self.player.set_property('volume', value)
         except:
             self.player.get_by_name("volume").set_property('volume', value)
-            #self.player.get_by_name("volume").set_property('volume', value + 0.0)
 
     def state_play(self):
         self.pause_thread_id = False

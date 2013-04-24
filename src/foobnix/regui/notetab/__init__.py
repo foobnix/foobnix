@@ -265,7 +265,7 @@ dnd_list = [Gtk.TargetEntry.new('text/uri-list', 0, TARGET_TYPE_URI_LIST)]
 class NoteTabControl(TabGeneral):
     def __init__(self, controls):
         TabGeneral.__init__(self, controls)
-                
+
         self.last_notebook_page = ""
         self.active_tree = None
         self.set_show_border(True)
