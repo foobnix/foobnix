@@ -846,6 +846,7 @@ class DragDropTree(Gtk.TreeView):
                         rows_for_add.insert(0, row)
                         if n == 0:
                             treerow[self.font[0]] = 'bold'
+                            treerow[self.is_file[0]] = False
                         continue
                     m_dict = FTreeModel().cut().__dict__
                     new_dict = dict(zip(m_dict.values(), m_dict.keys()))
