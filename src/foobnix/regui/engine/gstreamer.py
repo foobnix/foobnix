@@ -294,7 +294,7 @@ class GStreamerEngine(MediaPlayerEngine):
                 continue
             try:
                 position_int = self.get_position_seek_ns()
-                if position_int > 0 and self.bean.start_sec > 0:
+                if position_int > 0 and self.bean.start_sec and self.bean.start_sec > 0:
                     position_int -= float(self.bean.start_sec) * self.NANO_SECONDS
                     #logging.debug(str(position_int) + str(self.bean.start_sec) + str(duration_int))
                     if (position_int + self.NANO_SECONDS) > duration_int:

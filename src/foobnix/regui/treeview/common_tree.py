@@ -292,6 +292,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             bean = FModel()
             dt = FTreeModel().__dict__
             for key in dt.keys():
+                print key, model.get_value(iter, dt[key][0])
                 setattr(bean, key, model.get_value(iter, dt[key][0]))
             return bean
         return None
@@ -451,14 +452,15 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             beans.append(bean)
         return beans                         
 
-    def select_paths(self, paths):
-        selection = self.get_selection()
-        for path in paths:
-            self.expand_to_path(path)
-            selection.select_path(path)
+    def restore_selection(self, str_paths):        
+        def safe_restore_selection():
+            selection = self.get_selection()
+            for str_path in str_paths:
+                iter = self.model.get_iter_from_string(str_path)
+                path = self.model.get_path(iter)
+                selection.select_path(path)
+        GObject.idle_add(safe_restore_selection)
 
-    def restore_selection(self, paths):        
-        self.select_paths(paths)
 
     def restore_expand(self, str_paths):
         def safe_restore_expand():
@@ -491,7 +493,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         def on_selection_changed(w):
             paths = self.get_selected_bean_paths()
             if paths != None:
-                callback(paths)
+                callback([str(path) for path in paths])
         selection = self.get_selection()
         selection.connect("changed", on_selection_changed)
     

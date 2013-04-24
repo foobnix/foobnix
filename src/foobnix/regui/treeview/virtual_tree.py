@@ -4,7 +4,7 @@ Created on Sep 29, 2010
 @author: ivan
 '''
 from gi.repository import Gtk
-
+import logging
 from foobnix.regui.state import LoadSave
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click,\
     right_click_optimization_for_trees, is_empty_click
@@ -16,8 +16,7 @@ from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
 from foobnix.util.key_utils import KEY_DELETE, is_key
 from foobnix.util.const import LEFT_PERSPECTIVE_VIRTUAL
-import collections
-import logging
+
 
 class VirtualTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
