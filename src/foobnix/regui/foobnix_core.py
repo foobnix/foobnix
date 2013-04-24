@@ -8,7 +8,7 @@ from foobnix.regui.controls.filter import FilterControl
 from foobnix.regui.controls.playback import PlaybackControls, \
     OrderShuffleControls
 from foobnix.regui.search import SearchControls
-from foobnix.regui.controls.seach_progress import SearchProgressBar
+from foobnix.regui.controls.seach_progress import SearchProgress
 from foobnix.regui.infopanel import InfoPanelWidget
 from foobnix.regui.engine.gstreamer import GStreamerEngine
 from foobnix.regui.controls.seekbar import SeekProgressBarControls
@@ -62,7 +62,7 @@ class FoobnixCore(BaseFoobnixControls):
         
         self.trayicon = TrayIconControls(self)
         self.main_window = MainWindow(self)
-        self.search_progress = SearchProgressBar(self)
+        self.search_progress = SearchProgress(self)
         self.in_thread = SingleThread(self.search_progress)
         
         self.info_panel = InfoPanelWidget(self)

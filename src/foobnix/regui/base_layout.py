@@ -39,7 +39,11 @@ class BaseFoobnixLayout(FControl, LoadSave):
         
         self.controls = controls  
         bbox = Gtk.VBox(False, 0)
-        bbox.pack_start(controls.notetabs, True, True, 0)
+        notebox = Gtk.Overlay.new()
+        notebox.add(controls.notetabs)
+        notebox.add_overlay(controls.search_progress)
+
+        bbox.pack_start(notebox, True, True, 0)
         bbox.pack_start(controls.movie_window, False, False, 0)
         
         center_box = Gtk.VBox(False, 0)

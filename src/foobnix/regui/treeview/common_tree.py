@@ -495,7 +495,8 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             if paths != None:
                 callback([str(path) for path in paths])
         selection = self.get_selection()
-        selection.connect("changed", on_selection_changed)
+        if selection:
+            selection.connect("changed", on_selection_changed)
     
     def expand_updated(self, callback):
         def on_expand_collapse(w, iter, path):
