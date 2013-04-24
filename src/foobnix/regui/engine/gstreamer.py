@@ -227,9 +227,9 @@ class GStreamerEngine(MediaPlayerEngine):
         while True:
             try:
                 init_time = time.time()
-                self.player.query_position(Gst.Format.TIME)
-                logging.debug("Wait for seek: " + str(time.time() - init_time))
-                return
+                if self.player.query_position(Gst.Format.TIME)[0]:
+                    logging.debug("Wait for seek: " + str(time.time() - init_time))
+                    return
             except Exception as e:
                 continue
 
