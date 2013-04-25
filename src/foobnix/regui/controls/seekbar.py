@@ -35,13 +35,12 @@ class SeekProgressBarControls(FControl, Gtk.Alignment):
         except:
             #fix debian compability
             pass
-        
-        self.progressbar.connect("leave-notify-event", lambda *a: self.safe_hide_tooltip())
-        self.progressbar.connect("motion-notify-event", self.on_pointer_motion)        
+
         event = Gtk.EventBox()
         event.add(self.progressbar)
         event.connect("button-press-event", self.on_seek)
-        
+        event.connect("leave-notify-event", lambda *a: self.safe_hide_tooltip())
+        event.connect("motion-notify-event", self.on_pointer_motion) 
         self.add(event)
         self.show_all()
         self.tooltip.hide()
@@ -50,7 +49,7 @@ class SeekProgressBarControls(FControl, Gtk.Alignment):
         GObject.idle_add(self.tooltip.hide)
         
     def on_pointer_motion(self, widget, event):
-        width = widget.allocation.width
+        width = self.progressbar.get_allocation().width
         x = event.x
         duration = self.controls.media_engine.duration_sec
         seek_percent = (x + 0.0) / width
@@ -59,7 +58,7 @@ class SeekProgressBarControls(FControl, Gtk.Alignment):
         def safe_task():
             self.tooltip_label.set_text(sec)
             self.tooltip.show_all()
-            x, y, mask = Gdk.get_default_root_window().get_pointer() #@UndefinedVariable @UnusedVariable
+            unknown_var, x, y, mask = Gdk.get_default_root_window().get_pointer() #@UndefinedVariable @UnusedVariable
             self.tooltip.move(x+5, y-15)
         GObject.idle_add(safe_task)
     
