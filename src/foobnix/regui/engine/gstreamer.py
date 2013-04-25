@@ -314,7 +314,7 @@ class GStreamerEngine(MediaPlayerEngine):
             return None
         seek_ns = self.duration_sec * (percent + offset) / 100 * self.NANO_SECONDS
 
-        if self.bean.start_sec > 0:
+        if self.bean.start_sec and self.bean.start_sec > 0:
             seek_ns += float(self.bean.start_sec) * self.NANO_SECONDS
 
         self.player.seek_simple(Gst.Format(Gst.Format.TIME), Gst.SeekFlags.FLUSH, seek_ns)
