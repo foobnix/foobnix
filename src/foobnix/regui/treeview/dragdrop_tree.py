@@ -221,7 +221,7 @@ class DragDropTree(Gtk.TreeView):
                         to_iter = self.to_add_drag_item(to_tree, to_model, to_iter, pos, None, row=row)
                 self.update_tracknumber()
            
-            self.controls.search_progress.background_spinner_wrapper(task, False, to_iter)                              
+            self.controls.search_progress.background_spinner_wrapper(task, to_iter)                              
             
             return 
         
@@ -590,11 +590,11 @@ class DragDropTree(Gtk.TreeView):
     def update_tracknumber(self):
         self.current_view = VIEW_PLAIN
         tn = self.tracknumber[0]
-        path = self.path[0]
+        #path = self.path[0]
         isfile = self.is_file[0]
         counter = 0
         for row in self.model:
-            if not row[path] or not get_file_extension(row[path]) == ".cue":
+                #if not row[path] or not get_file_extension(row[path]) == ".cue":
                 if row[isfile] and FC().numbering_by_order:
                     counter += 1
                 else:
@@ -833,7 +833,7 @@ class DragDropTree(Gtk.TreeView):
         all_extra_rows = {}
 
         for k, treerow in enumerate(self.model):
-            if not treerow[self.time[0]]:
+            if not treerow[self.time[0]] and treerow[self.is_file[0]]:
                 bean = self.get_bean_from_row(treerow)
                 full_beans = update_id3_wind_filtering([bean])
                 rows_for_add = []

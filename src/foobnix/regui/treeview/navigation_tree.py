@@ -193,7 +193,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             to_model = None
         from_model = self.get_model()
         
-        
         def task(to_tree, to_model):
             treerows = [from_model[path] for path in paths]
             for  i, treerow in enumerate(treerows):
@@ -214,7 +213,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 '''gobject because rebuild_as_plain use it too'''
                 GObject.idle_add(self.controls.play_first_file_in_playlist)
             self.controls.notetabs.on_save_tabs()    
-        self.controls.search_progress.background_spinner_wrapper(task, False, to_tree, to_model)    
+        self.controls.search_progress.background_spinner_wrapper(task, to_tree, to_model)  
         
     def add_folder(self, in_new_tab=False):
         chooser = Gtk.FileChooserDialog(title=_("Choose directory with music"),
@@ -271,7 +270,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 self.controls.update_music_tree(tree, number_of_tab)
                 
             #self.controls.in_thread.run_with_progressbar(task, with_lock=False)
-            self.controls.search_progress.background_spinner_wrapper(task, in_graphic_thread=True) 
+            self.controls.search_progress.background_spinner_wrapper(task)
         elif response == Gtk.RESPONSE_CANCEL:
             logging.info('Closed, no files selected')
             chooser.destroy()       
