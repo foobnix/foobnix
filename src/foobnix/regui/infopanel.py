@@ -284,8 +284,8 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
                 dict[url_basename].append(bean.text)
             else:
                 dict[url_basename] = [bean.text]
-                self.image.get_pixbuf().save(os.path.join(COVERS_DIR, url_basename + '.jpg'), "jpeg", {"quality":"90"})
-        
+                self.image.get_pixbuf().savev(os.path.join(COVERS_DIR, url_basename + '.jpg'), "jpeg", ["quality"], ["90"])
+
         if bean.UUID == self.bean.UUID:
             self.image.update_info_from(bean)
             self.controls.trayicon.update_info_from(bean)

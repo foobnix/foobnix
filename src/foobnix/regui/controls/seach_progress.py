@@ -19,7 +19,7 @@ class SearchProgress(Gtk.Spinner):
         self.controls = controls
         self.set_no_show_all(True)
         self.main_window = self.controls.main_window
-        self.set_size_request(50, 50)
+        self.set_size_request(30, 30)
         self.label = Gtk.Label()
         self.label.show()
         self.set_halign(Gtk.Align.END)
@@ -82,6 +82,5 @@ class SearchProgress(Gtk.Spinner):
         self.set_margin_right(scrolled_pl_tree_width - pl_tree_width + 5)
 
     def show(self):
-        time.sleep(1)
         super(SearchProgress, self).show()
-        self.move_to_coord()   
+        self.move_to_coord() 
