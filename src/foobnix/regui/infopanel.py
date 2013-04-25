@@ -4,10 +4,11 @@ Created on Sep 23, 2010
 @author: ivan
 '''
 import os
-from gi.repository import Gtk
 import copy
-from gi.repository import GObject
 import logging
+
+from gi.repository import Gtk
+from gi.repository import GObject
 
 from foobnix.fc.fc import FC
 from foobnix.regui.model import FModel

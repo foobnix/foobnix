@@ -889,7 +889,7 @@ class DragDropTree(Gtk.TreeView):
                              and row not in checked_cue_rows):
                     
                     checked_cue_rows.append(row)
-                    filtered_rows = [r for r in rows if (os.path.dirname(row[index]) != os.path.dirname(path)
+                    filtered_rows = [r for r in rows if (os.path.dirname(r[index]) != os.path.dirname(path)
                                                            or os.path.isdir(r[index]) 
                                                            or get_file_extension(r[index]) == ".cue")]
                     return task(filtered_rows)

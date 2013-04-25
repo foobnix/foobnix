@@ -6,9 +6,10 @@ Created on 25 сент. 2010
 '''
 
 import os
-from gi.repository import Gtk
 import thread
 import logging
+
+from gi.repository import Gtk
 from gi.repository import GObject
 
 from foobnix.fc.fc import FC
@@ -23,7 +24,6 @@ from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
     is_middle_click_release, is_middle_click, right_click_optimization_for_trees,\
     is_empty_click
-from foobnix.util.m3u_utils import is_m3u
 
 
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -170,7 +170,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             self.save_beans_from_tree()
     
     def create_folder(self, a):
-        model, tree_path, row = a
+        model, tree_path, row = a # @UnusedVariable
         file_path = row[self.path[0]]
         new_folder_path = create_folder_dialog(file_path)
         bean = FModel(os.path.basename(new_folder_path), new_folder_path).add_is_file(False)
@@ -200,7 +200,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 for k, ch_row in enumerate(treerow.iterchildren()):
                     treerows.insert(i+k+1, ch_row)
         
-                    treerows = self.simple_content_filter(treerows)
+            treerows = self.simple_content_filter(treerows)
             if not current:
                 name = treerows[0][0]
                 self.controls.notetabs._append_tab(name)
@@ -271,7 +271,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 self.controls.update_music_tree(tree, number_of_tab)
                 
             #self.controls.in_thread.run_with_progressbar(task, with_lock=False)
-            self.controls.search_progress.background_spinner_wrapper(task, in_graphic_thread=False) 
+            self.controls.search_progress.background_spinner_wrapper(task, in_graphic_thread=True) 
         elif response == Gtk.RESPONSE_CANCEL:
             logging.info('Closed, no files selected')
             chooser.destroy()       
