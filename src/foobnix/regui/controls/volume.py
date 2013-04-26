@@ -10,32 +10,25 @@ from gi.repository import Gdk
 from foobnix.fc.fc import FC
 from foobnix.regui.state import LoadSave
 from foobnix.regui.model.signal import FControl
-from foobnix.helpers.my_widgets import EventLabel
+
 
 class VolumeControls(LoadSave, Gtk.HBox, FControl):
     MAX_VALUE = 100
+
     def __init__(self, controls):
         Gtk.HBox.__init__(self, False, 0)
         FControl.__init__(self, controls)
-        
-        label_m = EventLabel(text="‒", func=self.volume_down)
-        
+
         adjustment = Gtk.Adjustment(value=1, lower=0, upper=self.MAX_VALUE, step_incr=0, page_incr=0, page_size=0)
         self.volume_scale = Gtk.HScale(adjustment=adjustment)
         self.volume_scale.connect("value-changed", self.on_value_changed)
         self.volume_scale.connect("scroll-event", self.on_scroll_event)
         self.volume_scale.connect("button-press-event", self.on_volume_change)
-        #self.volume_scale.connect("motion-notify-event", self.on_volume_change1)
         self.volume_scale.set_size_request(200, -1)
-        #self.volume_scale.set_update_policy(Gtk.UPDATE_CONTINUOUS)
         self.volume_scale.set_digits(1)        
         self.volume_scale.set_draw_value(False)
 
-        label_p = EventLabel(text="+", func=self.volume_up)
-        
-        self.pack_start(label_m, False, False, 0)
         self.pack_start(self.volume_scale, False, False, 0)
-        self.pack_start(label_p, False, False, 0)
         
         self.show_all()
     
@@ -48,7 +41,7 @@ class VolumeControls(LoadSave, Gtk.HBox, FControl):
         elif value < self.MAX_VALUE * 0.25:
             value -= self.MAX_VALUE / 20
             
-        self.set_value(value);
+        self.set_value(value)
         self.on_save()
     
     def get_value(self):
