@@ -62,6 +62,7 @@ class FoobnixCore(BaseFoobnixControls):
         
         self.trayicon = TrayIconControls(self)
         self.main_window = MainWindow(self)
+        self.notetabs = NoteTabControl(self)
         self.search_progress = SearchProgress(self)
         self.in_thread = SingleThread(self.search_progress)
         
@@ -76,7 +77,7 @@ class FoobnixCore(BaseFoobnixControls):
         
         
         self.coverlyrics = CoverLyricsPanel(self)
-        self.notetabs = NoteTabControl(self)
+        
         
         self.filter = FilterControl(self)
 

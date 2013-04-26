@@ -80,4 +80,4 @@ class SearchProgress(Gtk.Spinner):
 
     def show(self):
         super(SearchProgress, self).show()
-        self.move_to_coord() 
+        self.move_to_coord()
