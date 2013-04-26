@@ -8,7 +8,6 @@ from foobnix.util.text_utils import capitalize_query
 from foobnix.helpers.toggled import OneActiveToggledButton
 
 
-
 class SearchControls(FControl, Gtk.VBox):
     def __init__(self, controls):        
         Gtk.VBox.__init__(self, False, 0)
@@ -33,8 +32,7 @@ class SearchControls(FControl, Gtk.VBox):
         
         """only one button active"""    
         OneActiveToggledButton(self.buttons)
-        
-    
+
     def set_search_function(self, search_function):
         logging.info("Set search function" + str(search_function))
         self.search_function = search_function
@@ -45,8 +43,6 @@ class SearchControls(FControl, Gtk.VBox):
         #it can be called only from not main loop
 
     def _on_search(self):
-        if not self.controls.vk_service.is_authorized():
-            return
         def task():
             if self.get_query():
                 if self.get_query().startswith("http://vk"):
@@ -62,16 +58,10 @@ class SearchControls(FControl, Gtk.VBox):
     def search_line(self):
         self.entry = Gtk.Entry()
         online_text = _("Online Music Search, Play, Download")        
-        
-        def on_activate():
-            logging.debug("on_activate " + self.entry.get_text())
-            if online_text == self.entry.get_text():
-                self.entry.set_text("")
-            
-        self.entry.connect("button-press-event", lambda * a:on_activate())
+
         self.entry.connect("key-press-event", self.on_search_key_press)
         
-        self.entry.set_text(online_text)
+        self.entry.set_placeholder_text(online_text)
                
         combobox = self.combobox_creator()
         
@@ -99,16 +89,13 @@ class SearchControls(FControl, Gtk.VBox):
         if is_key_enter(e):
             self.on_search()
             self.entry.grab_focus()
-            
-    
+
     def combobox_creator(self):
         list_func = []
         liststore = Gtk.ListStore(str)
-        
-        
+
         liststore.append([_("Tracks")])
         list_func.append(self.controls.search_top_tracks)
-        
 
         liststore.append([_("Albums")])
         list_func.append(self.controls.search_top_albums)
@@ -118,8 +105,7 @@ class SearchControls(FControl, Gtk.VBox):
         
         liststore.append([_("Genre")])
         list_func.append(self.controls.search_top_tags)
-        
-        
+
         liststore.append([_("VKontakte")])
         list_func.append(self.controls.search_all_tracks)
         
@@ -144,5 +130,3 @@ class SearchControls(FControl, Gtk.VBox):
     def show_menu(self, w, event, menu):
         menu.show_all()
         menu.popup(None, None, None, None, event.button, event.time)  
-        
-        

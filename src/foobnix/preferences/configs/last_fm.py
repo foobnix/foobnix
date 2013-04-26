@@ -113,7 +113,7 @@ class LastFmConfig(ConfigPlugin):
     
     def get_and_set_profile(self):
         def task_get_and_set_profile():
-            profile = self.controls.net_wrapper.execute(self.controls.vk_service.get_profile)
+            profile = self.controls.net_wrapper.execute(self.controls.vk_service.get_profile, True)
             if profile:
                 fname = profile[0]["first_name"] 
                 sname = profile[0]["last_name"]

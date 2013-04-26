@@ -70,7 +70,9 @@ class VKWebkitAuth(Gtk.Dialog):
             return self.access_token, self.user_id if self.access_token and self.user_id else None
         self.web_view.open(self.auth_url)
         result = self.run()
-        if result == Gtk.RESPONSE_ACCEPT and self.access_token and self.user_id:
+        logging.debug("auth_user: result is - %s, token - %s, user_id - %s" % (result, self.access_token, self.user_id))
+        logging.debug("result == Gtk.ResponseType.ACCEPT: %s", result == Gtk.ResponseType.ACCEPT)
+        if (result == Gtk.ResponseType.ACCEPT) and self.access_token and self.user_id:
             return self.access_token, self.user_id
         return None
 
@@ -90,49 +92,47 @@ class VKWebkitAuth(Gtk.Dialog):
             answer = self.extract_answer(url)
             if "access_token" in answer and "user_id" in answer:
                 self.access_token, self.user_id = answer["access_token"], answer["user_id"]
-            self.response(Gtk.RESPONSE_ACCEPT)
+            self.response(Gtk.ResponseType.ACCEPT)
 
 
 class VKService:
     def __init__(self, token, user_id):
         self.set_token_user(token, user_id)
-        self.connected = None
         self.authorized_lock = threading.Lock()
 
     def auth(self, check_only=False):
-        self.connected = None
-        auth_provider = VKWebkitAuth()
-        res = auth_provider.auth_user(check_only)
-        auth_provider.destroy()
-        if res:
-            FC().access_token = res[0]
-            FC().user_id = res[1]
-            self.set_token_user(res[0], res[1])
-            self.connected = True
-            return True
-        return False
+        self.auth_res = None
+        self.task_finished = False
+
+        def safetask():
+            self.auth_res = False
+            logging.debug("trying to auth")
+            auth_provider = VKWebkitAuth()
+            res = auth_provider.auth_user(check_only)
+            auth_provider.destroy()
+            if res:
+                FC().access_token = res[0]
+                FC().user_id = res[1]
+                self.set_token_user(res[0], res[1])
+                self.auth_res = True
+            self.task_finished = True
+            logging.debug("task finished, result is %s" % str(res))
+        GObject.idle_add(safetask)
+        while not self.task_finished:
+            time.sleep(0.1)
+        logging.debug("auth result is %s" % self.auth_res)
+        return self.auth_res
     
     def set_token_user(self, token, user_id):
         self.token = token
         self.user_id = user_id
         
     def get_result(self, method, data, attempt_count=0):
+        logging.debug("get_result(%s, %s, %s)" % (method, data, attempt_count))
         result = self.get(method, data)
         if not result:
             return
         logging.debug("result " + result)
-        if "error" in result:
-            if attempt_count:
-                return
-            logging.info("Try to get new access token and search again")
-            # fix for incorrect behaviour when token has been expired
-            # if user has been connected and token is expired - show auth window
-            # else - check only
-            if not self.auth(not self.connected):
-                return
-            time.sleep(3)
-            attempt_count += 1
-            return self.get_result(method, data, attempt_count)
         try:
             object = self.to_json(result)
         except simplejson.JSONDecodeError, e:
@@ -140,6 +140,14 @@ class VKService:
             return
         if "response" in object:
             return object["response"]
+        elif "error" in object:
+            if attempt_count:
+                return
+            if not self.auth():
+                return
+            time.sleep(1)
+            attempt_count += 1
+            return self.get_result(method, data, attempt_count)
     
     def reset_vk(self):
         if os.path.isfile(cookiefile):
@@ -155,7 +163,6 @@ class VKService:
 
     def get(self, method, data):
         url = "https://api.vk.com/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
-        #logging.debug("GET " + url)
         logging.debug("Try to get response from vkontakte")
         try:
             response = urllib2.urlopen(url, timeout=7)
@@ -169,69 +176,27 @@ class VKService:
         return result
     
     def to_json(self, json):
-        logging.debug("json " + json)
         p = HTMLParser()
         json = p.unescape(json)
         return simplejson.loads(json)
     
     def is_authorized(self):
         self.authorized_lock.acquire()
-        self.result = None
+        if not self.user_id and not self.token:
+            return False
+        if not self.get_result("getProfiles", "uid=" + str(self.user_id), 1):
+            return False
 
-        def task_is_authorized():
-            if self.is_connected():
-                self.result = True
-            elif self.auth():
-                self.result = True
-            else:
-                self.result = False
-
-        GObject.idle_add(task_is_authorized)
-        while self.result is None:
-            time.sleep(0.1)
         if self.authorized_lock.locked():
             self.authorized_lock.release()
-        return self.result
-
-    def show_vk(self):
-        self.auth()
+        return True
     
-    def is_connected(self):
-        if self.connected:
-            return True
-        
-        if not self.token or not self.user_id:
-            return False
-        
-        res = self.get("getProfiles", "uid=" + self.user_id)
-        if not res:
-            self.connected = False
-            return False
-        elif "error" in res:
-            self.connected = False
-            return False
-        else:
-            self.connected = True
-            return True
-    
-    def get_profile(self):
-        return self.get_result("getProfiles", "uid=" + str(self.user_id))
-
-    def is_authentified(self, token, user_id):
-        self.token = token
-        self.user_id = user_id
-        res = self.get("getProfiles", "uid=" + self.user_id)
-        if "error" in res:
-            return False
-        else:
-            return True
+    def get_profile(self, without_auth=False):
+        return self.get_result("getProfiles", "uid=" + str(self.user_id), 1 if without_auth else 0)
 
     def find_tracks_by_query(self, query):
         def post():
             self.find_tracks_by_query(self, query)
-        
-        if not self.is_authorized():
-            return
         
         logging.info("start search songs " + query)
         query = urllib.quote(query.encode("utf-8"))

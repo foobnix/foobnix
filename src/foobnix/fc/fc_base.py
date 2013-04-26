@@ -29,16 +29,10 @@ class FCBase():
         """last fm"""
         self.lfm_login = self.LASTFM_USER
         self.lfm_password = self.LASTFM_PASSWORD
-
-        self.vk_login = None
-        self.vk_password = None
-        self.vk_remember_password = True
-        
         
         self.uuid = uuid.uuid4().hex
-
          
-        self.load();
+        self.load()
     
     def save(self):
         FCStates().save(self, CONFIG_BASE_FILE)
