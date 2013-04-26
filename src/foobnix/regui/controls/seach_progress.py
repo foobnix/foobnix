@@ -34,6 +34,8 @@ class SearchProgress(Gtk.Spinner):
     
     def background_spinner_wrapper(self, task, *args):
         self.start()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
         try:
             task(*args)
         finally:
