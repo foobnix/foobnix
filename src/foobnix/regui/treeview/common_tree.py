@@ -155,16 +155,15 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         path = model.get_path(iter)
         return Gtk.TreeRowReference(model, path)
     
-    def save_beans_from_tree(self):
+    def save_rows_from_tree(self):
         number_of_page = self.controls.tabhelper.page_num(self.scroll)
         dict = {}
         iter = self.model.get_iter_first()
-        print iter
         def task(iter):
             str_path = self.model.get_string_from_iter(iter)
             row = self.get_row_from_iter(self.model, iter)
             print row
-            dict[tuple(str_path.split(':'))] = row
+            dict[tuple([int(i) for i in str_path.split(':')])] = row
             for n in xrange(self.model.iter_n_children(iter)):
                 child_iter = self.model.iter_nth_child(iter, n)
                 if child_iter:
@@ -173,32 +172,17 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             task(iter)
             iter = self.model.iter_next(iter)
         FCache().cache_music_tree_beans[number_of_page] = dict
-        print 1, dict
     
     def restore_rows(self, rows):    
-        print 12
-        for key in sorted(rows.keys(), key=lambda k: (len(k), [int(i) for i in k])):
+        for key in sorted(rows.keys()):
             if len(key) == 1:
-                print 123
                 self.model.append(None, rows[key])
             else:
-                
-                str_path = ":".join(key)
-                print 234, str_path
-                parent_iter = self.model.get_iter_from_string(str_path[0:str_path.rfind(':')])
+                str_path = str(key).replace(', ',':')
+                parent_path = str_path[1:str_path.rfind(':')]
+                parent_iter = self.model.get_iter_from_string(parent_path)
                 self.model.append(parent_iter, rows[key])
 
-                
-        '''for row in self.model:
-            def task(row):
-                for child_row in row.iterchildren():
-                    FCache().cache_music_tree_beans[number_of_page].append([col for col in child_row])
-                    if child_row.iterchildren():
-                        task(child_row)
-            bean = self.get_bean_from_row(row)
-            FCache().cache_music_tree_beans[number_of_page].append(bean)
-            if row.iterchildren():
-                task(row)'''
     
     def find_rows_by_element(self, element, value):
         '''element - member of FTreeModel class

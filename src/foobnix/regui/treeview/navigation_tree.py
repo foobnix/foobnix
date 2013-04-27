@@ -160,13 +160,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     def rename_files(self, a):
         row, index_path, index_text = a
         if rename_file_on_disk(row, index_path, index_text):
-            self.save_beans_from_tree()
+            self.save_rows_from_tree()
                 
     def delete_files(self, a):
         row_refs, paths, get_iter_from_row_reference = a
         if delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
             self.delete_selected()
-            self.save_beans_from_tree()
+            self.save_rows_from_tree()
     
     def create_folder(self, a):
         model, tree_path, row = a # @UnusedVariable
@@ -180,7 +180,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         else:
             logging.error("So path doesn't exist")
         self.tree_append(bean)
-        self.save_beans_from_tree()
+        self.save_rows_from_tree()
     
     def add_to_tab(self, current=False):
         paths = self.get_selected_bean_paths()

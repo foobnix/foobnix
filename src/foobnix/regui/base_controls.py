@@ -288,8 +288,8 @@ class BaseFoobnixControls():
                 logging.warn("Object perspective not exists yet")
         tree.append_all(all)     # safe method
         tree.ext_width = tree.ext_column.get_width()
-        GObject.idle_add(tree.save_beans_from_tree)
-        GObject.idle_add(self.tabhelper.on_save_tabs)   # for true order
+        GObject.idle_add(tree.save_rows_from_tree)
+        #GObject.idle_add(self.tabhelper.on_save_tabs)   # for true order
           
     def set_visible_video_panel(self, flag):
         FC().is_view_video_panel = flag

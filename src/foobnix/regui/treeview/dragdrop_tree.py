@@ -295,7 +295,7 @@ class DragDropTree(Gtk.TreeView):
                     
                 self.remove_replaced(ff_model)
                 self.pr_window.destroy()
-                self.save_beans_from_tree()
+                self.save_rows_from_tree()
             return
                       
         for ff_row_ref in ff_row_refs: 

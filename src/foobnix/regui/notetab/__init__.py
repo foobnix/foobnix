@@ -74,12 +74,9 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
             logging.debug("PlaylistTreeControl")
             treeview = PlaylistTreeControl(self.controls)
         else:
-            print 'q'
             logging.debug("NavigationTreeControl")
             treeview = NavigationTreeControl(self.controls)
-        print 'qw'
         if rows:
-            print 'qwe'
             treeview.restore_rows(rows)
 
         if beans: 
