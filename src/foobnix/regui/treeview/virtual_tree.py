@@ -166,7 +166,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
                 else:
                     new_iter = model.append(None, row)
                 if len(treerows) == 1 and treerow[self.font[0]] == 'bold':
-                    while treerow.next[self.font[0]] != 'bold':
+                    while treerow.next and treerow.next[self.font[0]] != 'bold':
                         treerow = treerow.next
                         treerows.append(treerow)
                         drop_info = True
