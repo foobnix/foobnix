@@ -28,8 +28,11 @@ from foobnix.util.m3u_utils import m3u_reader, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.regui.model import FModel, FTreeModel
-from gi._glib import GError
-
+## TODO: Check it
+try:
+    from gi._glib import GError
+except ImportError as e:
+    from gi._glib._glib import GError
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
