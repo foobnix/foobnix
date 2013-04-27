@@ -188,6 +188,8 @@ class RadioTreeControl(CommonTreeControl):
     def on_quit(self):
         FCache().cache_radio_tree_beans = self.controls.radio.get_all_beans()
         
+
+    
                         
 class MyRadioTreeControl(RadioTreeControl):
     def __init__(self, controls):
@@ -241,6 +243,21 @@ class MyRadioTreeControl(RadioTreeControl):
             else:
                 folder_bean.add_parent(bean.level)
         self.append(folder_bean)
+        '''
+        #another method without sorting
+        selected = self.get_dest_row_at_pos(x, y)
+        if selected:
+            m, paths = selected
+            iter = self.get_iter(paths[0])
+            treerow = self[paths[0]]
+            row = [col for col in treerow]
+            if self.get_value(iter, self.is_file[0]):
+                self.insert_after(None, iter, row)
+            else:
+                self.append(iter, row)
+        else:
+            self.append(None, row)
+        '''
 
     def on_quit(self):
         
@@ -259,3 +276,46 @@ class MyRadioTreeControl(RadioTreeControl):
         
             for row in self.model:
                 task(row)
+                
+    def on_drag_data_received(self, treeview, context, x, y, selection, info, timestamp):
+        logging.debug('Storage on_drag_data_received')
+        model = self.get_model().get_model()
+        drop_info = self.get_dest_row_at_pos(x, y)
+
+        # ff - from_filter
+        ff_tree = Gtk.drag_get_source_widget(context)
+        ff_model, ff_paths = ff_tree.get_selection().get_selected_rows()
+        treerows = [ff_model[ff_path] for ff_path in ff_paths]
+        if drop_info:
+            path, position = drop_info
+            iter = model.get_iter(path)
+
+        if self == ff_tree:
+            ff_row_refs = [Gtk.TreeRowReference.new(ff_model, ff_path) for ff_path in ff_paths]
+
+            def add_childs(treerow, new_iter):
+                    for ch_row in treerow.iterchildren():
+                        niter = model.append(new_iter, [col for col in ch_row])
+                        add_childs(ch_row, niter)
+            for treerow, ref in zip(treerows, ff_row_refs):
+                row = [col for col in treerow]
+                if drop_info:
+                    if position == Gtk.TREE_VIEW_DROP_BEFORE:
+                        new_iter = model.insert_before(None, iter, row)
+                    elif (position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE or
+                          position == Gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+                        if model.get_value(iter, self.is_file[0]):
+                            new_iter = model.insert_after(None, iter, row)
+                            iter = model.iter_next(iter)
+                        else:
+                            new_iter = model.append(iter, row)
+                    else:
+                        new_iter = model.insert_after(None, iter, row)
+                        iter = model.iter_next(iter)
+                else:
+                    new_iter = model.append(None, row)
+                treerow = model[ref.get_path()]     # reinitialize
+                add_childs(treerow, new_iter) 
+            self.remove_replaced(ff_model, ff_row_refs)
+        
+        self.stop_emission('drag-data-received')
