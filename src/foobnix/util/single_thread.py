@@ -5,9 +5,11 @@ Created on 27 сент. 2010
 @author: ivan
 '''
 
+import sys
 import time
 import thread
 import logging
+import traceback
 
 from threading import Lock
 
@@ -46,9 +48,10 @@ class SingleThread():
                 method(args)
             elif method:
                 method()
-            time.sleep(0.1)
         except Exception, e:
             logging.error(str(e))
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stdout)
         finally:
             if self.lock.locked():
                 if self.progressbar:

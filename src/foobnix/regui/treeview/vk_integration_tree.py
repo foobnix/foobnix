@@ -54,7 +54,9 @@ class VKIntegrationControls(CommonTreeControl):
                 
                 self.append(parent)        
                 self.append(bean)
-        
+
+        if not FC().user_id and not self.controls.vk_service.auth():
+            return
         get_users_by_uuid(FC().user_id)
         
         uids = self.controls.vk_service.get_result('friends.get', 'uid=' + FC().user_id)
