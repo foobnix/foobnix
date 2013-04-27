@@ -24,7 +24,7 @@ class SearchProgress(Gtk.Spinner):
         def safe_task():
             self.show()
             super(SearchProgress, self).start()
-        GObject.idle_add(safe_task, priority=GObject.PRIORITY_DEFAULT_IDLE - 10)
+        GObject.idle_add(safe_task)
 
     def stop(self):
         def safe_task():
