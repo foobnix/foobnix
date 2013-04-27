@@ -81,12 +81,12 @@ class FC():
         """main window controls"""
         self.main_window_size = [119, 154, 1024, 479]
         self.window_maximized = False
-        self.hpaned_left = 340;
-        self.hpaned_right = 850;
+        self.hpaned_left = 365
+        self.hpaned_right = 850
         self.hpaned_right_right_side_width = 174 #self.main_window_size[3] - self.hpaned_right
         self.vpaned_small = 100;
         self.background_image_themes = ["theme/cat.jpg", "theme/flower.jpg", "theme/winter.jpg"]
-        self.background_image = None #"theme/winter.jpg"
+        self.background_image = None # "theme/winter.jpg"
         self.window_opacity = 1
         
         """Check network available"""

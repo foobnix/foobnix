@@ -28,6 +28,7 @@ from foobnix.util.m3u_utils import m3u_reader, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.regui.model import FModel, FTreeModel
+from gi._glib import GError
 
 
 VIEW_PLAIN = 0
@@ -142,7 +143,10 @@ class DragDropTree(Gtk.TreeView):
         id_dict = FTreeModel().cut().__dict__
         for key in id_dict.keys():
             num = id_dict[key]
-            val = model.get_value(iter, num)
+            try:
+                val = model.get_value(iter, num)
+            except GError:
+                val = None
             setattr(bean, key, val)
         return bean
     
@@ -837,7 +841,8 @@ class DragDropTree(Gtk.TreeView):
                 bean = self.get_bean_from_row(treerow)
                 full_beans = update_id3_wind_filtering([bean])
                 rows_for_add = []
-                PLAYLIST = True if len(full_beans) > 1 else False
+                PLAYLIST = True if get_file_extension(
+                                    treerow[self.path[0]]) in ["cue", ".m3u", ".m3u8"] else False
                 for n, full_bean in enumerate(full_beans):
                     full_bean.visible = True
                     full_bean.update_uuid()

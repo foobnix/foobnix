@@ -270,5 +270,5 @@ def update_id3_for_cue(beans):
                     result.append(cue)
         else:
             result.append(bean)
-    return result  
+    return result
 
