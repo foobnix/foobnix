@@ -29,6 +29,7 @@ class RadioTreeControl(CommonTreeControl):
         CommonTreeControl.__init__(self, controls)
         self.set_reorderable(False)
         self.switcher_label = _("My channels")
+        self.tree_menu = Popup()
         """column config"""
         column = Gtk.TreeViewColumn(_("Radio Stations"), Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
@@ -54,18 +55,18 @@ class RadioTreeControl(CommonTreeControl):
         if is_rigth_click(e): 
             right_click_optimization_for_trees(w, e)
             
-            menu = Popup()
+            self.tree_menu.clear()
             bean = self.get_selected_bean()
             if bean:
                 if self.get_selected_bean().is_file:
-                    menu.add_item(_("Edit Station"), Gtk.STOCK_EDIT, self.on_edit_radio, None)
-                    menu.add_item(_("Delete Station"), Gtk.STOCK_DELETE, self.delete_selected, None)
+                    self.tree_menu.add_item(_("Edit Station"), Gtk.STOCK_EDIT, self.on_edit_radio, None)
+                    self.tree_menu.add_item(_("Delete Station"), Gtk.STOCK_DELETE, self.delete_selected, None)
                 else:
-                    menu.add_item(_("Rename Group"), Gtk.STOCK_EDIT, self.on_rename_group, None)
-                    menu.add_item(_("Delete Group"), Gtk.STOCK_DELETE, self.delete_selected, None)
-                menu.add_separator()
-            menu.add_item(_("Reload radio folder"), Gtk.STOCK_REFRESH, self.update_radio_tree, None)
-            menu.show(e)
+                    self.tree_menu.add_item(_("Rename Group"), Gtk.STOCK_EDIT, self.on_rename_group, None)
+                    self.tree_menu.add_item(_("Delete Group"), Gtk.STOCK_DELETE, self.delete_selected, None)
+                self.tree_menu.add_separator()
+            self.tree_menu.add_item(_("Reload radio folder"), Gtk.STOCK_REFRESH, self.update_radio_tree, None)
+            self.tree_menu.show(e)
           
     def on_edit_radio(self):
         bean = self.get_selected_bean()

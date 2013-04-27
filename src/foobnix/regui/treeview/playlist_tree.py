@@ -37,6 +37,7 @@ class PlaylistTreeControl(CommonTreeControl):
         CommonTreeControl.__init__(self, controls)
 
         self.menu = Popup()
+        self.tree_menu = Popup()
         self.full_name = ""
         self.label = Gtk.Label()
         
@@ -220,9 +221,9 @@ class PlaylistTreeControl(CommonTreeControl):
             right_click_optimization_for_trees(w, e)
             beans = self.get_selected_beans()
             if beans:
-                menu = Popup()
-                menu.add_item(_('Play'), Gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
-                menu.add_item(_('Delete from playlist'), Gtk.STOCK_DELETE, self.delete_selected, None)
+                self.tree_menu.clear()
+                self.tree_menu.add_item(_('Play'), Gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
+                self.tree_menu.add_item(_('Delete from playlist'), Gtk.STOCK_DELETE, self.delete_selected, None)
             
                 paths = []
                 inet_paths = []
@@ -237,28 +238,28 @@ class PlaylistTreeControl(CommonTreeControl):
                         local_paths.append(bean.path)
                                                     
                 if local_paths:
-                    menu.add_item(_('Copy To...'), Gtk.STOCK_ADD, copy_to, local_paths)
-                    menu.add_item(_("Open in file manager"), None, open_in_filemanager, local_paths[0])
+                    self.tree_menu.add_item(_('Copy To...'), Gtk.STOCK_ADD, copy_to, local_paths)
+                    self.tree_menu.add_item(_("Open in file manager"), None, open_in_filemanager, local_paths[0])
                 if inet_paths:
-                    menu.add_item(_('Download'), Gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
-                    menu.add_item(_('Download To...'), Gtk.STOCK_ADD, self.controls.dm.append_tasks_with_dialog, self.get_all_selected_beans())
+                    self.tree_menu.add_item(_('Download'), Gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
+                    self.tree_menu.add_item(_('Download To...'), Gtk.STOCK_ADD, self.controls.dm.append_tasks_with_dialog, self.get_all_selected_beans())
                                 
-                menu.add_separator()
+                self.tree_menu.add_separator()
                 
                 if paths[0]:
-                    menu.add_item(_('Edit Tags'), Gtk.STOCK_EDIT, edit_tags, (self.controls, paths))
-                    menu.add_item(_('Format Converter'), Gtk.STOCK_CONVERT, convert_files, paths)
+                    self.tree_menu.add_item(_('Edit Tags'), Gtk.STOCK_EDIT, edit_tags, (self.controls, paths))
+                    self.tree_menu.add_item(_('Format Converter'), Gtk.STOCK_CONVERT, convert_files, paths)
                 text = self.get_selected_bean().text
-                menu.add_item(_('Copy To Search Line'), Gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
-                menu.add_separator()
-                menu.add_item(_('Copy №-Title-Time'), Gtk.STOCK_COPY, self.copy_info_to_clipboard)
-                menu.add_item(_('Copy Artist-Title-Album'), Gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
-                menu.add_separator()
-                menu.add_item(_('Love This Track(s) by Last.fm'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
-                menu.add_separator()
+                self.tree_menu.add_item(_('Copy To Search Line'), Gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
+                self.tree_menu.add_separator()
+                self.tree_menu.add_item(_('Copy №-Title-Time'), Gtk.STOCK_COPY, self.copy_info_to_clipboard)
+                self.tree_menu.add_item(_('Copy Artist-Title-Album'), Gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
+                self.tree_menu.add_separator()
+                self.tree_menu.add_item(_('Love This Track(s) by Last.fm'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
+                self.tree_menu.add_separator()
                 if paths[0]:
-                    menu.add_item(_("Open In File Manager"), None, open_in_filemanager, paths[0])
-                menu.show(e)
+                    self.tree_menu.add_item(_("Open In File Manager"), None, open_in_filemanager, paths[0])
+                self.tree_menu.show(e)
                   
     def on_click_header(self, w, e):
         if is_rigth_click(e):

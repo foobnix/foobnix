@@ -27,6 +27,8 @@ class VKIntegrationControls(CommonTreeControl):
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)
+
+        self.tree_menu = Popup()
         
         self.configure_send_drag()
         self.configure_recive_drag()
@@ -71,11 +73,11 @@ class VKIntegrationControls(CommonTreeControl):
             right_click_optimization_for_trees(w, e)
             active = self.get_selected_bean()
             if active:
-                menu = Popup()
+                self.tree_menu.clear()
                 if isinstance(active, FModel) and active.path:
-                    menu.add_item(_('Play'), Gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
-                menu.add_item(_('Copy to Search Line'), Gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)
-                menu.show(e)
+                    self.tree_menu.add_item(_('Play'), Gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
+                self.tree_menu.add_item(_('Copy to Search Line'), Gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)
+                self.tree_menu.show(e)
          
         if is_double_left_click(e):
             selected = self.get_selected_bean()

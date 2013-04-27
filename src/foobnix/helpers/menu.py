@@ -63,3 +63,8 @@ class Popup(Gtk.Menu):
         file_item.set_submenu(menu)
         self.append(file_item)
         return menu
+
+    def clear(self):
+        for w in self.get_children():
+            self.remove(w)
+            w.destroy()

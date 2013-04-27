@@ -14,7 +14,6 @@ import thread
 import logging
 import os.path
 import threading
-import collections
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache

@@ -6,7 +6,6 @@ Created on 25 сент. 2010
 '''
 
 import os
-import thread
 import logging
 
 from gi.repository import Gtk
@@ -33,6 +32,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.controls = controls
         self.full_name = ""
         self.label = Gtk.Label()
+
+        self.tree_menu = Popup()
         
         self.set_headers_visible(True)
         self.set_headers_clickable(True)
@@ -85,9 +86,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         self.scroll.get_vscrollbar().connect('show', task)
         self.scroll.get_vscrollbar().connect('hide', task)
-    
-    
-                
+
     def activate_perspective(self):
         FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
     
@@ -122,17 +121,17 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         if is_rigth_click(e):
             right_click_optimization_for_trees(w, e)
             # on right click, show pop-up menu
-            menu = Popup()
-            menu.add_item(_("Append to playlist"), Gtk.STOCK_ADD, lambda: self.add_to_tab(True), None)
-            menu.add_item(_("Open in new playlist"), Gtk.STOCK_MEDIA_PLAY, self.add_to_tab, None)
-            menu.add_separator()
-            menu.add_item(_("Add folder here"), Gtk.STOCK_OPEN, self.add_folder, None)
-            menu.add_separator()
+            self.tree_menu.clear()
+            self.tree_menu.add_item(_("Append to playlist"), Gtk.STOCK_ADD, lambda: self.add_to_tab(True), None)
+            self.tree_menu.add_item(_("Open in new playlist"), Gtk.STOCK_MEDIA_PLAY, self.add_to_tab, None)
+            self.tree_menu.add_separator()
+            self.tree_menu.add_item(_("Add folder here"), Gtk.STOCK_OPEN, self.add_folder, None)
+            self.tree_menu.add_separator()
 
             if FC().tabs_mode == "Multi":
-                menu.add_item(_("Add folder in new tab"), Gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
-                menu.add_item(_("Clear"), Gtk.STOCK_CLEAR, lambda : self.controls.tabhelper.clear_tree(self.scroll), None)
-            menu.add_item(_("Update"), Gtk.STOCK_REFRESH, lambda: self.controls.tabhelper.on_update_music_tree(self.scroll), None)
+                self.tree_menu.add_item(_("Add folder in new tab"), Gtk.STOCK_OPEN, lambda : self.add_folder(True), None)
+                self.tree_menu.add_item(_("Clear"), Gtk.STOCK_CLEAR, lambda : self.controls.tabhelper.clear_tree(self.scroll), None)
+            self.tree_menu.add_item(_("Update"), Gtk.STOCK_REFRESH, lambda: self.controls.tabhelper.on_update_music_tree(self.scroll), None)
             
             f_model, f_t_paths = self.get_selection().get_selected_rows()
             if f_t_paths:
@@ -141,13 +140,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 row = model[t_paths[0]]
                 paths = [model[t_path][self.path[0]] for t_path in t_paths]
                 row_refs = [Gtk.TreeRowReference.new(model, t_path) for t_path in t_paths]
-                menu.add_separator()
-                menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
-                menu.add_item(_("Create folder"), None, self.create_folder, (model, f_t_paths[0], row))
-                menu.add_item(_("Rename file (folder)"), None, self.rename_files, (row, self.path[0], self.text[0]))    
-                menu.add_item(_("Delete file(s) / folder(s)"), None, self.delete_files, (row_refs, paths, self.get_iter_from_row_reference))
+                self.tree_menu.add_separator()
+                self.tree_menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
+                self.tree_menu.add_item(_("Create folder"), None, self.create_folder, (model, f_t_paths[0], row))
+                self.tree_menu.add_item(_("Rename file (folder)"), None, self.rename_files, (row, self.path[0], self.text[0]))
+                self.tree_menu.add_item(_("Delete file(s) / folder(s)"), None, self.delete_files, (row_refs, paths, self.get_iter_from_row_reference))
             
-            menu.show(e)
+            self.tree_menu.show(e)
     
     def _append_column(self, column, title):
         column.label = Gtk.Label(title)
