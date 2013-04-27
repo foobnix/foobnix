@@ -242,9 +242,12 @@ class BaseFoobnixControls():
     def load_music_tree(self):
         tabs = len(FCache().cache_music_tree_beans)
         for tab in xrange(tabs - 1, -1, -1):
-            self.tabhelper._append_tab(FCache().tab_names[tab],
+            '''self.tabhelper._append_tab(FCache().tab_names[tab],
                                        beans=FCache().cache_music_tree_beans[tab],
-                                       optimization=True)
+                                       optimization=True)'''
+            #print FCache().cache_music_tree_beans[tab]
+            self.tabhelper._append_tab(FCache().tab_names[tab], rows=FCache().cache_music_tree_beans[tab])
+
             tree = self.tabhelper.get_current_tree()
             if not FCache().cache_music_tree_beans[tab]: 
                 self.perspective.show_add_button()
@@ -270,9 +273,9 @@ class BaseFoobnixControls():
         all = []
         
         all = get_all_music_by_paths(FCache().music_paths[number_of_page], self)
-            
-        for bean in all:
-            FCache().cache_music_tree_beans[number_of_page].append(bean)
+    
+        #for bean in all:
+            #FCache().cache_music_tree_beans[number_of_page].append(bean)
         try:
             self.perspective.hide_add_button()
         except AttributeError:
@@ -285,6 +288,7 @@ class BaseFoobnixControls():
                 logging.warn("Object perspective not exists yet")
         tree.append_all(all)     # safe method
         tree.ext_width = tree.ext_column.get_width()
+        GObject.idle_add(tree.save_beans_from_tree)
         GObject.idle_add(self.tabhelper.on_save_tabs)   # for true order
           
     def set_visible_video_panel(self, flag):

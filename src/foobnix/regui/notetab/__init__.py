@@ -68,20 +68,26 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
         elif FC().tab_close_element == "label":
             return notetab_label(func=self.on_delete_tab, arg=tab_child, angle=90)
     
-    def create_notebook_content(self, beans=None, optimization=False):
+    def create_notebook_content(self, beans=None, rows=None, optimization=False):
         logging.debug("Creating notetabl content, beans: %s, optimization: %s" % (beans, optimization))
         if not self.navig:
             logging.debug("PlaylistTreeControl")
             treeview = PlaylistTreeControl(self.controls)
         else:
+            print 'q'
             logging.debug("NavigationTreeControl")
             treeview = NavigationTreeControl(self.controls)
-         
+        print 'qw'
+        if rows:
+            print 'qwe'
+            treeview.restore_rows(rows)
+
         if beans: 
             if optimization:
                 treeview.simple_append_all(beans)
             else:
                 treeview.append_all(beans)
+        
         return treeview
     
     def create_notebook_tab(self, treeview):
@@ -172,7 +178,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
         GObject.idle_add(task)
         
         
-    def _append_tab(self, full_name=_("Empty tab"), beans=None, optimization=False):
+    def _append_tab(self, full_name=_("Empty tab"), beans=None, rows=None, optimization=False):
         logging.info("append new tab")
         self.last_notebook_page = full_name
         try:
@@ -184,7 +190,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
         
         visible_name = crop_string(full_name, FC().len_of_tab)
         
-        tab_content = self.create_notebook_content(beans, optimization)
+        tab_content = self.create_notebook_content(beans, rows, optimization)
         tab_content.label.set_angle(self.default_angle)
         tab = self.create_notebook_tab(tab_content)
         if self.navig:

@@ -835,6 +835,18 @@ class DragDropTree(Gtk.TreeView):
         task(iter)
         return all_iters
 
+    def get_list_of_paths_with_children(self, model, iter):
+        all_paths = []
+        def task(iter):
+            path = model.get_path(iter)
+            all_paths.append(path)
+            for n in xrange(model.iter_n_children(iter)):
+                child_iter = model.iter_nth_child(iter, n)
+                if child_iter:
+                    task(child_iter)
+        task(iter)
+        return all_paths
+
     def fill_treerows(self):
         all_extra_rows = {}
 
