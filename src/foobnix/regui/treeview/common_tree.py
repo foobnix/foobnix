@@ -5,10 +5,11 @@ Created on 20 окт. 2010
 @author: ivan
 '''
 
+import logging
+
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
-import logging
 
 from random import randint
 from foobnix.fc.fc_cache import FCache
@@ -124,7 +125,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 setattr(bean, key, None)
                 
             value = getattr(bean, key)
-            if type(value) in [int, float]:
+            if type(value) in [int, float, long]:
                 value = str(value)
             attributes.append(value)
 
