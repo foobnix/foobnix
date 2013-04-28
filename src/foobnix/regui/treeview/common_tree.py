@@ -16,6 +16,7 @@ from foobnix.fc.fc_cache import FCache
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.model import FTreeModel, FModel
 from foobnix.regui.treeview.filter_tree import FilterTreeControls
+import collections
 
 
 class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
@@ -171,10 +172,10 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         while iter:
             task(iter)
             iter = self.model.iter_next(iter)
-        FCache().cache_music_tree_beans[number_of_page] = dict
+        FCache().cache_music_tree_beans[number_of_page] = collections.OrderedDict(sorted(dict.items(), key=lambda t: t[0]))
     
     def restore_rows(self, rows):    
-        for key in sorted(rows.keys()):
+        for key in rows:
             if len(key) == 1:
                 self.model.append(None, rows[key])
             else:
