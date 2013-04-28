@@ -5,6 +5,7 @@ Created on 20 окт. 2010
 @author: ivan
 '''
 
+import sys
 import logging
 
 from gi.repository import Gtk
@@ -12,12 +13,10 @@ from gi.repository import Gdk
 from gi.repository import GObject
 
 from random import randint
-from foobnix.fc.fc_cache import FCache
+from foobnix.fc.fc_cache import FCache, fcache_save_lock
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.model import FTreeModel, FModel
 from foobnix.regui.treeview.filter_tree import FilterTreeControls
-import collections
-import sys
 
 
 class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
@@ -157,33 +156,35 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         path = model.get_path(iter)
         return Gtk.TreeRowReference(model, path)
     
-    def save_rows_from_tree(self):
-        number_of_page = self.controls.tabhelper.page_num(self.scroll)
-        dict = {}
-        iter = self.model.get_iter_first()
-        def task(iter):
-            str_path = self.model.get_string_from_iter(iter)
-            row = self.get_row_from_iter(self.model, iter)
-            print row
-            dict[tuple([int(i) for i in str_path.split(':')])] = row
-            for n in xrange(self.model.iter_n_children(iter)):
-                child_iter = self.model.iter_nth_child(iter, n)
-                if child_iter:
-                    task(child_iter)
-        while iter:
-            task(iter)
-            iter = self.model.iter_next(iter)
-        FCache().cache_music_tree_beans[number_of_page] = collections.OrderedDict(sorted(dict.items(), key=lambda t: t[0]))
+    def save_rows_from_tree(self, dict):
+        try:
+            fcache_save_lock.acquire()
+            dict.clear()
+            iter = self.model.get_iter_first()
+            def task(iter):
+                str_path = self.model.get_string_from_iter(iter)
+                row = self.get_row_from_iter(self.model, iter)
+                dict[tuple([int(i) for i in str_path.split(':')])] = row
+                for n in xrange(self.model.iter_n_children(iter)):
+                    child_iter = self.model.iter_nth_child(iter, n)
+                    if child_iter:
+                        task(child_iter)
+            while iter:
+                task(iter)
+                iter = self.model.iter_next(iter)
+        finally:
+            if fcache_save_lock.locked():
+                fcache_save_lock.release()
     
-    def restore_rows(self, rows):    
-        for key, row in zip(rows.keys(), rows.values()):
+    def restore_rows(self, rows):
+        for key in sorted(rows.keys()):
             if len(key) == 1:
-                self.model.append(None, row)
+                self.model.append(None, rows[key])
             else:
                 str_path = str(key).replace(', ',':')
                 parent_path = str_path[1:str_path.rfind(':')]
                 parent_iter = self.model.get_iter_from_string(parent_path)
-                self.model.append(parent_iter, row)
+                self.model.append(parent_iter, rows[key])
 
     
     def find_rows_by_element(self, element, value):

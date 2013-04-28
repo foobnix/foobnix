@@ -160,13 +160,13 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     def rename_files(self, a):
         row, index_path, index_text = a
         if rename_file_on_disk(row, index_path, index_text):
-            self.save_rows_from_tree()
+            self.save_tree()
                 
     def delete_files(self, a):
         row_refs, paths, get_iter_from_row_reference = a
         if delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
             self.delete_selected()
-            self.save_rows_from_tree()
+            self.save_tree()
     
     def create_folder(self, a):
         model, tree_path, row = a # @UnusedVariable
@@ -180,7 +180,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         else:
             logging.error("So path doesn't exist")
         self.tree_append(bean)
-        self.save_rows_from_tree()
+        self.save_tree()
     
     def add_to_tab(self, current=False):
         paths = self.get_selected_bean_paths()
@@ -242,7 +242,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                     number_of_tab = self.controls.tabhelper.get_current_page()
                     FCache().music_paths.insert(0, [])
                     FCache().tab_names.insert(0, tab_name)
-                    FCache().cache_music_tree_beans.insert(0, [])
+                    FCache().cache_music_tree_beans.insert(0, {})
                 
                 elif tree.is_empty():
                     tab_name = unicode(path[path.rfind("/") + 1:])
@@ -335,3 +335,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         selection.set(selection.get_target(), 0, all_file_paths)
         self.stop_emission('drag-data-get')
+
+    def save_tree(self):
+        page_num = self.controls.tabhelper.page_num(self.scroll)
+        self.save_rows_from_tree(FCache().cache_music_tree_beans[page_num])

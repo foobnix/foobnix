@@ -77,7 +77,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
             logging.debug("NavigationTreeControl")
             treeview = NavigationTreeControl(self.controls)
         if rows:
-            treeview.restore_rows(rows)
+            GObject.idle_add(treeview.restore_rows, rows)
 
         if beans: 
             if optimization:

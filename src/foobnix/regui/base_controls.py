@@ -232,7 +232,7 @@ class BaseFoobnixControls():
                 self.append_to_current_notebook([FModel(_("Nothing found to play in the file(s)") + paths[0])])
             else:
                 self.append_to_current_notebook(beans)
-       
+
     def set_playlist_tree(self):
         self.notetabs.set_playlist_tree()
 
@@ -242,10 +242,6 @@ class BaseFoobnixControls():
     def load_music_tree(self):
         tabs = len(FCache().cache_music_tree_beans)
         for tab in xrange(tabs - 1, -1, -1):
-            '''self.tabhelper._append_tab(FCache().tab_names[tab],
-                                       beans=FCache().cache_music_tree_beans[tab],
-                                       optimization=True)'''
-            #print FCache().cache_music_tree_beans[tab]
             self.tabhelper._append_tab(FCache().tab_names[tab], rows=FCache().cache_music_tree_beans[tab])
 
             tree = self.tabhelper.get_current_tree()
@@ -265,17 +261,14 @@ class BaseFoobnixControls():
             GObject.idle_add(cycle)
     
     def update_music_tree(self, tree, number_of_page=0):
-        
         logging.info("Update music tree" + str(FCache().music_paths[number_of_page]))
         tree.clear_tree()   # safe method
-        FCache().cache_music_tree_beans[number_of_page] = []
+        FCache().cache_music_tree_beans[number_of_page] = {}
                
         all = []
         
         all = get_all_music_by_paths(FCache().music_paths[number_of_page], self)
-    
-        #for bean in all:
-            #FCache().cache_music_tree_beans[number_of_page].append(bean)
+
         try:
             self.perspective.hide_add_button()
         except AttributeError:
@@ -288,7 +281,9 @@ class BaseFoobnixControls():
                 logging.warn("Object perspective not exists yet")
         tree.append_all(all)     # safe method
         tree.ext_width = tree.ext_column.get_width()
-        GObject.idle_add(tree.save_rows_from_tree)
+
+        GObject.idle_add(tree.save_rows_from_tree,
+                         FCache().cache_music_tree_beans[number_of_page])
         #GObject.idle_add(self.tabhelper.on_save_tabs)   # for true order
           
     def set_visible_video_panel(self, flag):
@@ -698,11 +693,11 @@ class BaseFoobnixControls():
 
         logging.info("Controls - Quit")
         
-        self.notetabs.on_quit()
         self.virtual.on_quit()
         self.info_panel.on_quit()
         self.radio.on_quit()
         self.my_radio.on_quit()
+        self.notetabs.on_quit()
         
         FC().save()
         

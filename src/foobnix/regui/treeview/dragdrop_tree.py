@@ -736,9 +736,8 @@ class DragDropTree(Gtk.TreeView):
         beans = update_id3_wind_filtering([bean])
         for one in beans:
             one.update_uuid() 
-            row = self.get_row_from_bean(one)            
+            row = self.get_row_from_bean(one)
             
-            logging.debug(row)
             logging.debug(self.model)
             self.model.append(parent_iter, row)            
             
@@ -821,7 +820,11 @@ class DragDropTree(Gtk.TreeView):
     def get_row_from_iter(self, model, iter):
         row = []
         for num in xrange(model.get_n_columns()):
-            row.append(model.get_value(iter, num))
+            try:
+                val = model.get_value(iter, num)
+            except GError:
+                val = None
+            row.append(val)
         return row
             
     def get_list_of_iters_with_children(self, model, iter):

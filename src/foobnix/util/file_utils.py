@@ -110,7 +110,8 @@ def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
     dialog.vbox.pack_start(label)
     dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
     buffer = Gtk.TextBuffer()
-    text = Gtk.TextView(buffer)
+    text = Gtk.TextView()
+    text.set_buffer(buffer)
     text.set_editable(False)
     text.set_cursor_visible(False)
     scrolled_window = Gtk.ScrolledWindow()
@@ -124,20 +125,22 @@ def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
     dialog.show_all()    
     if dialog.run() == Gtk.ResponseType.ACCEPT:
         model = row_refs[0].get_model()
-        try:
-            for row_ref, path in zip(row_refs, paths):
+        
+        for row_ref, path in zip(row_refs, paths):
+            try:
                 if os.path.isfile(path):
                     os.remove(path)
                 else:
                     del_dir(path)
                 model.remove(get_iter_from_row_reference(row_ref))
-        except IOError, e:
-            logging.error(e)
+            except Exception, e:
+                logging.error(str(e))
+                continue
         dialog.destroy()
         return True
     dialog.destroy()             
 
-def del_dir(path): 
+def del_dir(path):
         list = os.listdir(path)
         if not list: return
         for item in list:
