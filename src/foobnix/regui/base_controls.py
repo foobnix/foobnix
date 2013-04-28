@@ -8,6 +8,7 @@ Created on 25 сент. 2010
 import copy
 from gi.repository import Gtk
 from gi.repository import GObject
+from gi.repository import GdkPixbuf
 import os
 import time
 import thread
@@ -765,7 +766,7 @@ class BaseFoobnixControls():
             img = get_foobnix_resourse_path_by_name(FC().background_image)
             if not img:
                 return None
-            pixbuf = Gtk.gdk.pixbuf_new_from_file(img)  # @UndefinedVariable
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(img)  # @UndefinedVariable
             pixmap, mask = pixbuf.render_pixmap_and_mask()  # @UnusedVariable
             win.set_app_paintable(True)
             # TODO fix it

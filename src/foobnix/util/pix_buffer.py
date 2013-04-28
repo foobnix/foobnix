@@ -20,7 +20,7 @@ def resize_pixbuf(pixbuf, size):
     if not pixbuf:
         return None
     if size:
-        return pixbuf.scale_simple(size, size, Gtk.gdk.INTERP_BILINEAR) #@UndefinedVariable
+        return pixbuf.scale_simple(size, size, GdkPixbuf.InterpType.BILINEAR) #@UndefinedVariable
     else:
         return pixbuf
 
@@ -28,7 +28,7 @@ def create_pixbuf_from_path(path, size):
     if not path:
         return None
     try:
-        pixbuf = Gtk.gdk.pixbuf_new_from_file(path) #@UndefinedVariable
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file(path) #@UndefinedVariable
     except Exception, e:
         logging.error(e)
         return None

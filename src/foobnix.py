@@ -4,19 +4,19 @@ import os
 import sys
 import time
 import logging
+import traceback
+
+from gi import pygtkcompat
+pygtkcompat.enable_gtk(version="3.0")
+
 from gi.repository import Gtk
 from gi.repository import GObject
-import traceback
+
 
 from threading import Timer
 from foobnix.fc.fc import FC
 from foobnix.util import LOG, analytics
 from foobnix.fc.fc_helper import CONFIG_DIR
-
-from gi import pygtkcompat
-
-pygtkcompat.enable()
-pygtkcompat.enable_gtk(version='3.0')
 
 
 def except_hook(exc_t, exc_v, traceback):

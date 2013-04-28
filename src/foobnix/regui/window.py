@@ -5,8 +5,10 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 
-from gi.repository import Gtk
 import logging
+
+from gi.repository import Gtk
+from gi.repository import Gdk
 
 from foobnix.fc.fc import FC
 from foobnix.util import const
@@ -92,12 +94,12 @@ class MainWindow(Gtk.Window, FControl, LoadSave):
             self.iconified = False
             FC().window_maximized = False
                         
-        elif e.new_window_state & Gtk.gdk.WINDOW_STATE_ICONIFIED:#@UndefinedVariable
+        elif e.new_window_state & Gdk.WindowState.ICONIFIED:#@UndefinedVariable
             """minimized"""
             self.iconified = True
             FC().window_maximized = False
                 
-        elif e.new_window_state & Gtk.gdk.WINDOW_STATE_MAXIMIZED:#@UndefinedVariable
+        elif e.new_window_state & Gdk.WindowState.MAXIMIZED:#@UndefinedVariable
             """maximized"""
             self.iconified = False
             FC().window_maximized = True

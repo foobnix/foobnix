@@ -46,7 +46,7 @@ class IconBlock(Gtk.HBox):
             logging.warning("Icon " + filename + " is absent in list of icons")
         
         pix_render = Gtk.CellRendererPixbuf()
-        self.combobox.pack_start(pix_render)        
+        self.combobox.pack_start(pix_render, 0)
         self.combobox.add_attribute(pix_render, 'pixbuf', 0)
         
         button = Gtk.Button("Choose", Gtk.STOCK_OPEN)
@@ -118,7 +118,7 @@ class ChooseDecorator(Gtk.HBox):
         self.on_toggle()
         self.button.connect("toggled", self.on_toggle)
         box = HBoxDecorator(self.button, self._widget)
-        self.pack_start(box, False, True)
+        self.pack_start(box, False, True, 0)
     
     def on_toggle(self, *a):
         if self.button.get_active():
@@ -133,14 +133,14 @@ class VBoxDecorator(Gtk.VBox):
     def __init__(self, *args):
         Gtk.VBox.__init__(self, False, 0)
         for widget in args:
-            self.pack_start(widget, False, False) 
+            self.pack_start(widget, False, False, 0)
         self.show_all()
 
 class HBoxDecorator(Gtk.HBox):
     def __init__(self, *args):
         Gtk.HBox.__init__(self, False, 0)
         for widget in args:
-            self.pack_start(widget, False, False)   
+            self.pack_start(widget, False, False, 0)
         self.show_all()
 
 class HBoxDecoratorTrue(Gtk.HBox):

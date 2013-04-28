@@ -1,55 +1,57 @@
+
 from gi.repository import Gtk
+from gi.repository import Gdk
 
 def is_left_click(event):
-    if event.button == 1 and event.type == Gtk.gdk.BUTTON_PRESS: #@UndefinedVariable
+    if event.button == 1 and event.type == Gdk.EventType.BUTTON_PRESS: #@UndefinedVariable
         return True
     else:
         return False
 
 def is_double_left_click(event):
-    if event.button == 1 and event.type == Gtk.gdk._2BUTTON_PRESS: #@UndefinedVariable
+    if event.button == 1 and event.type == Gdk.EventType._2BUTTON_PRESS: #@UndefinedVariable
         return True
     else:
         return False
 
 def is_middle_click(event):
-    if event.button == 2 and event.type == Gtk.gdk.BUTTON_PRESS: #@UndefinedVariable
+    if event.button == 2 and event.type == Gdk.EventType.BUTTON_PRESS: #@UndefinedVariable
         return True
     else:
         return False
 
 def is_double_middle_click(event):
-    if event.button == 2 and event.type == Gtk.gdk._2BUTTON_PRESS: #@UndefinedVariable
+    if event.button == 2 and event.type == Gdk.EventType._2BUTTON_PRESS: #@UndefinedVariable
         return True
     else:
         return False
 
 def is_rigth_click(event):
-    if event.button == 3 and event.type == Gtk.gdk.BUTTON_PRESS: #@UndefinedVariable
+    if event.button == 3 and event.type == Gdk.EventType.BUTTON_PRESS: #@UndefinedVariable
         return True
     else:
         return False
 
 def is_double_rigth_click(event):
-    if event.button == 3 and event.type == Gtk.gdk._2BUTTON_PRESS: #@UndefinedVariable
+    if event.button == 3 and event.type == Gdk.EventType._2BUTTON_PRESS: #@UndefinedVariable
         return True
     else:
         return False
 
 def is_middle_click_release(event):
-    if event.button == 2 and event.type == Gtk.gdk.BUTTON_RELEASE: #@UndefinedVariable
+    if event.button == 2 and event.type == Gdk.EventType.BUTTON_RELEASE: #@UndefinedVariable
         return True
     else:
         return False
 
 def is_rigth_click_release(event):
-    if event.button == 3 and event.type == Gtk.gdk.BUTTON_RELEASE: #@UndefinedVariable
+    if event.button == 3 and event.type == Gdk.EventType.BUTTON_RELEASE: #@UndefinedVariable
         return True
     else:
         return False
     
 def is_left_click_release(event):
-    if event.button == 1 and event.type == Gtk.gdk.BUTTON_RELEASE: #@UndefinedVariable
+    if event.button == 1 and event.type == Gdk.EventType.BUTTON_RELEASE: #@UndefinedVariable
         return True
     else:
         return False

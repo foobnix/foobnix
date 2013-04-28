@@ -33,7 +33,7 @@ class OtherConfig(ConfigPlugin):
 
         hbox = Gtk.HBox(False, 5)
         self.online_dir = Gtk.FileChooserButton("set place")
-        self.online_dir.set_action(Gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
+        self.online_dir.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
         self.online_dir.connect("current-folder-changed", self.on_change_folder)
         
         hbox.pack_start(Gtk.Label(_("Save online music to folder:")), False, True, 0)
