@@ -4,6 +4,19 @@ rm -rf ../../build/*.*
 mkdir ../../build
 cd ../
 
+## Global vars
+PPA_NAME="ppa:foobnix-team/foobnix-player"
+#PPA_NAME="ppa:popsul1993/test"
+
+#export DEBFULLNAME="Ivan Ivanenko"
+#export DEBEMAIL="ivan.ivanenko@gmail.com"
+
+export DEBFULLNAME="Dmitry Kogura"
+export DEBEMAIL="zavlab1@gmail.com"
+
+#export DEBFULLNAME="Viktor Suprun"
+#export DEBMAIL="popsul1993@gmail.com"
+
 python setup.py build
 #python setup.py test
 
@@ -17,17 +30,11 @@ echo $FOOBNIX_VERSION
 echo "Create folder" ../build/foobnix_$FOOBNIX_VERSION
 cp -r . ../build/foobnix_$FOOBNIX_VERSION
 
-#export DEBFULLNAME="Ivan Ivanenko"
-#export DEBEMAIL="ivan.ivanenko@gmail.com"
-
-export DEBFULLNAME="Dmitry Kogura"
-export DEBEMAIL="zavlab1@gmail.com"
-
 cp -r scripts/debian ../build/foobnix_$FOOBNIX_VERSION/debian
 
 cd ../build
 
-LIST=("oneiric" "natty" "maverick" "precise" "quantal")
+LIST=("oneiric" "natty" "maverick" "precise" "quantal", "raring")
 
 for UBUNTU in ${LIST[@]}
 do
@@ -46,14 +53,15 @@ do
 	
 	#debuild -S -sd -kB8C27E00 # Ivan Ivanenko - old
 	#debuild -S -sd -k316EC1F3 # Ivan Ivanenko
-	 debuild -S -sd -k707844CC # Dmitry Kogura
+	debuild -S -sd -k707844CC # Dmitry Kogura
+	#debuild -S -sd -kD4AD044A # Viktor Suprun
 	
 	
 	#debuild -us -uc
 	
 	cd ../	
 	#dput ppa:foobnix-player/foobnix foobnix_${FOOBNIX_VERSION}${UBUNTU:0:1}_source.changes
-	 dput ppa:foobnix-team/foobnix-player foobnix_${FOOBNIX_VERSION}${UBUNTU:0:1}_source.changes
+	dput $PPA_NAME foobnix_${FOOBNIX_VERSION}${UBUNTU:0:1}_source.changes
 	#read text
 done
 
