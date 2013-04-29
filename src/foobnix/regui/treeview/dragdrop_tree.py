@@ -513,12 +513,12 @@ class DragDropTree(Gtk.TreeView):
                     copy_move_with_progressbar(self.pr_window, old_path, dest_folder, move=True)
                 else:
                     copy_move_with_progressbar(self.pr_window, old_path, dest_folder)
-                self.pr_window.response(Gtk.RESPONSE_OK)
+                self.pr_window.response(Gtk.ResponseType.OK)
                             
             t = threading.Thread(target=task)
             t.start()
                         
-            if self.pr_window.run() == Gtk.RESPONSE_REJECT:
+            if self.pr_window.run() == Gtk.ResponseType.REJECT:
                 self.pr_window.exit = True
                 t.join()
            

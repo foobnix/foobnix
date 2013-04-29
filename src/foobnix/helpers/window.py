@@ -75,7 +75,7 @@ class CopyProgressWindow(Gtk.Dialog):
         self.pr_bar = Gtk.ProgressBar()
         self.total_pr_bar = Gtk.ProgressBar()
         
-        self.add_button(_("Stop"), Gtk.RESPONSE_REJECT)
+        self.add_button(_("Stop"), Gtk.ResponseType.REJECT)
         
         self.vbox.pack_start(self.label_from, False)
         self.vbox.pack_start(self.label_to, False)
@@ -125,10 +125,10 @@ class MessageWindow(Gtk.MessageDialog):
         self.set_title(title)
         self.show_all()
         id = self.run()
-        if id != Gtk.RESPONSE_NONE:
-            if func and id in [Gtk.RESPONSE_OK, Gtk.RESPONSE_APPLY, Gtk.RESPONSE_ACCEPT, Gtk.RESPONSE_YES]:
+        if id != Gtk.ResponseType.NONE:
+            if func and id in [Gtk.ResponseType.OK, Gtk.ResponseType.APPLY, Gtk.ResponseType.ACCEPT, Gtk.ResponseType.YES]:
                 func(args) if args else func()
-            if func1 and id in [Gtk.RESPONSE_NO, Gtk.RESPONSE_CLOSE, Gtk.RESPONSE_CANCEL, Gtk.RESPONSE_REJECT]:
+            if func1 and id in [Gtk.ResponseType.NO, Gtk.ResponseType.CLOSE, Gtk.ResponseType.CANCEL, Gtk.ResponseType.REJECT]:
                 func1(args1) if args else func1()
         time.sleep(0.2) #otherwise can be freezes
         self.destroy()
@@ -136,5 +136,5 @@ class MessageWindow(Gtk.MessageDialog):
         
         
     def delete_event(self, widget, event, data=None):
-        self.response(Gtk.RESPONSE_NONE)
+        self.response(Gtk.ResponseType.NONE)
         return True

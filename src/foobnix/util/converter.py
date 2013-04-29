@@ -128,7 +128,7 @@ class Converter(ChildTopWindow):
         chooser.set_icon_from_file(LOGO)
         response = chooser.run()
         
-        if response == Gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             format = self.format_combo.get_active_text().strip()
             self.current_folder = chooser.get_current_folder()
             
@@ -236,7 +236,7 @@ class Converter(ChildTopWindow):
         dialog.set_icon_from_file(LOGO)
         dialog.set_default_size(210, 100)
         dialog.show_all()
-        if dialog.run() == Gtk.RESPONSE_OK:
+        if dialog.run() == Gtk.ResponseType.OK:
             dialog.destroy()
             return True
         else:

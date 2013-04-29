@@ -38,7 +38,7 @@ class VKWebkitAuth(Gtk.Dialog):
     CLIENT_ID = "2234333"
 
     def __init__(self):
-        super(VKWebkitAuth, self).__init__(_("vk.com authorization"), None, Gtk.DIALOG_MODAL, ())
+        super(VKWebkitAuth, self).__init__(_("vk.com authorization"), None, Gtk.DialogFlags.MODAL, ())
         self.set_size_request(550, -1)
         self.auth_url = "http://oauth.vk.com/oauth/authorize?" + \
                         "redirect_uri=http://oauth.vk.com/blank.html&response_type=token&" + \

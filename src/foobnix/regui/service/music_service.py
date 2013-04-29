@@ -34,10 +34,9 @@ def get_all_music_by_paths(paths, controls):
     for path in paths:
         if path == "/":
             logging.info("Skip root folder")
-            continue;
+            continue
         current_result = _scanner(path, None)
         result = result + current_result
-    time.sleep(1)
     #end_scanning = True
     #GObject.idle_add(pr_window.hide)
     return result

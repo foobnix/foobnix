@@ -110,12 +110,7 @@ def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
     dialog.vbox.pack_start(label)
     dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
     buffer = Gtk.TextBuffer()
-<<<<<<< HEAD
     text = Gtk.TextView(buffer=buffer)
-=======
-    text = Gtk.TextView()
-    text.set_buffer(buffer)
->>>>>>> remotes/upstream/gtk3
     text.set_editable(False)
     text.set_cursor_visible(False)
     scrolled_window = Gtk.ScrolledWindow()

@@ -290,7 +290,7 @@ class GStreamerEngine(MediaPlayerEngine):
 
         while thread_id == self.play_thread_id:
             if self.pause_thread_id:
-                time.sleep(0.1)
+                time.sleep(0.05)
                 continue
             try:
                 position_int = self.get_position_seek_ns()
@@ -307,7 +307,7 @@ class GStreamerEngine(MediaPlayerEngine):
             except Exception, e:
                 logging.info("Playing thread error... " + str(e))
 
-            time.sleep(1)
+            time.sleep(0.05)
 
     def seek(self, percent, offset=0):
         if not self.bean:
@@ -365,7 +365,6 @@ class GStreamerEngine(MediaPlayerEngine):
     def state_stop(self, remember_position=False, show_in_tray=True):
         if remember_position:
             self.player.set_state(Gst.State.PAUSED)
-            time.sleep(0.1)
             self.remembered_seek_position = self.get_position_seek_ns()
             self.pause_thread_id = True
         else:

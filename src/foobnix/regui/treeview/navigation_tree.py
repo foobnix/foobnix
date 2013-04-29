@@ -216,15 +216,15 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
     def add_folder(self, in_new_tab=False):
         chooser = Gtk.FileChooserDialog(title=_("Choose directory with music"),
-                                        action=Gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
-                                        buttons=(Gtk.STOCK_OPEN, Gtk.RESPONSE_OK))
-        chooser.set_default_response(Gtk.RESPONSE_OK)
+                                        action=Gtk.FileChooserAction.SELECT_FOLDER,
+                                        buttons=(Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+        chooser.set_default_response(Gtk.ResponseType.OK)
         chooser.set_select_multiple(True)
         if FCache().last_music_path:
             chooser.set_current_folder(FCache().last_music_path)
         response = chooser.run()
         
-        if response == Gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             paths = chooser.get_filenames()
             chooser.destroy()
             self.controls.main_window.present()
@@ -270,7 +270,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 
             #self.controls.in_thread.run_with_progressbar(task, with_lock=False)
             self.controls.search_progress.background_spinner_wrapper(task)
-        elif response == Gtk.RESPONSE_CANCEL:
+        elif response == Gtk.ResponseType.CANCEL:
             logging.info('Closed, no files selected')
             chooser.destroy()       
     

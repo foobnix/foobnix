@@ -81,7 +81,7 @@ def is_m3u(path):
     return False
 
 def message_on_save(absolute=True):
-    dialog = Gtk.Dialog(buttons=("Yes", Gtk.RESPONSE_OK, "No", Gtk.RESPONSE_REJECT))
+    dialog = Gtk.Dialog(buttons=("Yes", Gtk.ResponseType.OK, "No", Gtk.ResponseType.REJECT))
     dialog.set_title(_("Choose window"))
     dialog.set_border_width(5)
     dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
@@ -102,7 +102,7 @@ rate from the music files (the library will be working).\n
     dialog.vbox.show()
     dialog.show_all()
     response = dialog.run()
-    if response == Gtk.RESPONSE_OK:
+    if response == Gtk.ResponseType.OK:
         dialog.destroy()
         return False
     else:

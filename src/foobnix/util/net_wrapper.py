@@ -145,7 +145,7 @@ class NetWrapper():
             self.dd_count += 1
             MessageWindow(title=_("Internet Connection"), 
                           text=_("Foobnix not connected or Internet not available. Please try again a little bit later."),
-                          parent=self.controls.main_window, buttons=Gtk.BUTTONS_OK)
+                          parent=self.controls.main_window, buttons=Gtk.ButtonsType.OK)
             self.dd_count -= 1
             
         GObject.idle_add(task)

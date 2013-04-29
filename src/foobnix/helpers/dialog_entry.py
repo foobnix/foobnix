@@ -19,32 +19,32 @@ def responseToDialog(entry, dialog, response):
         dialog.response(response)
         
 def file_chooser_dialog(title, current_folder=None):
-    chooser = Gtk.FileChooserDialog(title, action=Gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(Gtk.STOCK_OPEN, Gtk.RESPONSE_OK))
+    chooser = Gtk.FileChooserDialog(title, action=Gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
     chooser.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
-    chooser.set_default_response(Gtk.RESPONSE_OK)
+    chooser.set_default_response(Gtk.ResponseType.OK)
     chooser.set_select_multiple(True)
     paths = None
     if current_folder:
         chooser.set_current_folder(current_folder)
     response = chooser.run()
-    if response == Gtk.RESPONSE_OK:
+    if response == Gtk.ResponseType.OK:
         paths = chooser.get_filenames()
-    elif response == Gtk.RESPONSE_CANCEL:
+    elif response == Gtk.ResponseType.CANCEL:
         logging.info('Closed, no files selected')
     chooser.destroy()
     return paths
 
 def directory_chooser_dialog(title, current_folder=None):
-    chooser = Gtk.FileChooserDialog(title, action=Gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, buttons=(Gtk.STOCK_OPEN, Gtk.RESPONSE_OK))
-    chooser.set_default_response(Gtk.RESPONSE_OK)
+    chooser = Gtk.FileChooserDialog(title, action=Gtk.FileChooserAction.SELECT_FOLDER, buttons=(Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+    chooser.set_default_response(Gtk.ResponseType.OK)
     chooser.set_select_multiple(True)
     paths = None
     if current_folder:
         chooser.set_current_folder(current_folder)
     response = chooser.run()
-    if response == Gtk.RESPONSE_OK:
+    if response == Gtk.ResponseType.OK:
         paths = chooser.get_filenames()
-    elif response == Gtk.RESPONSE_CANCEL:
+    elif response == Gtk.ResponseType.CANCEL:
         logging.info('Closed, no directory selected')
     chooser.destroy()
     return paths
@@ -52,9 +52,9 @@ def directory_chooser_dialog(title, current_folder=None):
 def one_line_dialog(dialog_title, parent=None, entry_text=None, message_text1=None, message_text2=None):
         dialog = Gtk.MessageDialog(
             parent,
-            Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
-            Gtk.MESSAGE_INFO,
-            Gtk.BUTTONS_OK,
+            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            Gtk.MessageType.INFO,
+            Gtk.ButtonsType.OK,
             None)
         dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_title(dialog_title)
@@ -67,7 +67,7 @@ def one_line_dialog(dialog_title, parent=None, entry_text=None, message_text1=No
         entry = Gtk.Entry()
         
         '''set last widget in action area as default widget (button OK)'''
-        dialog.set_default_response(Gtk.RESPONSE_OK)
+        dialog.set_default_response(Gtk.ResponseType.OK)
         
         '''activate default widget after Enter pressed in entry'''
         entry.set_activates_default(True)
@@ -87,9 +87,9 @@ def two_line_dialog(dialog_title, parent=None, message_text1=None,
                     message_text2=None, entry_text1="", entry_text2=""):
         dialog = Gtk.MessageDialog(
             parent,
-            Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
-            Gtk.MESSAGE_QUESTION,
-            Gtk.BUTTONS_OK,
+            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            Gtk.MessageType.QUESTION,
+            Gtk.ButtonsType.OK,
             None)
         dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_title(dialog_title)
@@ -115,7 +115,7 @@ def two_line_dialog(dialog_title, parent=None, message_text1=None,
         dialog.show_all()
         
         '''set last widget in action area as default widget (button OK)'''
-        dialog.set_default_response(Gtk.RESPONSE_OK)
+        dialog.set_default_response(Gtk.ResponseType.OK)
         
         '''activate default widget after Enter pressed in entry'''
         login_entry.set_activates_default(True)
@@ -130,9 +130,9 @@ def two_line_dialog(dialog_title, parent=None, message_text1=None,
 def info_dialog(title, message, parent=None):
         dialog = Gtk.MessageDialog(
             parent,
-            Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
-            Gtk.MESSAGE_INFO,
-            Gtk.BUTTONS_OK,
+            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            Gtk.MessageType.INFO,
+            Gtk.ButtonsType.OK,
             None)
         dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_title(title)
@@ -145,9 +145,9 @@ def info_dialog(title, message, parent=None):
 def info_dialog_with_link(title, version, link):
         dialog = Gtk.MessageDialog(
             None,
-            Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
-            Gtk.MESSAGE_INFO,
-            Gtk.BUTTONS_OK,
+            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            Gtk.MessageType.INFO,
+            Gtk.ButtonsType.OK,
             None)
         dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_title(title)
@@ -163,9 +163,9 @@ def info_dialog_with_link(title, version, link):
 def info_dialog_with_link_and_donate(version):
         dialog = Gtk.MessageDialog(
             None,
-            Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
-            Gtk.MESSAGE_INFO,
-            Gtk.BUTTONS_OK,
+            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            Gtk.MessageType.INFO,
+            Gtk.ButtonsType.OK,
             None)
         dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_title(_("New foobnix release avaliable"))
@@ -205,14 +205,14 @@ def info_dialog_with_link_and_donate(version):
 def show_entry_dialog(title, description):
         dialog = Gtk.MessageDialog(
             None,
-            Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
-            Gtk.MESSAGE_QUESTION,
-            Gtk.BUTTONS_OK,
+            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            Gtk.MessageType.QUESTION,
+            Gtk.ButtonsType.OK,
             None)
         dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_markup(title)
         entry = Gtk.Entry()
-        entry.connect("activate", responseToDialog, dialog, Gtk.RESPONSE_OK)
+        entry.connect("activate", responseToDialog, dialog, Gtk.ResponseType.OK)
         hbox = Gtk.HBox()
         hbox.pack_start(Gtk.Label("Value:"), False, 5, 5)
         hbox.pack_end(entry)
@@ -227,9 +227,9 @@ def show_entry_dialog(title, description):
 def show_login_password_error_dialog(title, description, login, password):
         dialog = Gtk.MessageDialog(
             None,
-            Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
-            Gtk.MESSAGE_ERROR,
-            Gtk.BUTTONS_OK,
+            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            Gtk.MessageType.ERROR,
+            Gtk.ButtonsType.OK,
             title)
         dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
         dialog.set_markup(str(title))
@@ -257,23 +257,23 @@ def show_login_password_error_dialog(title, description, login, password):
         return [login_text, password_text]    
 
 def file_saving_dialog(title, current_folder=None):
-    chooser = Gtk.FileChooserDialog(title, action=Gtk.FILE_CHOOSER_ACTION_SAVE, buttons=(Gtk.STOCK_SAVE, Gtk.RESPONSE_OK))
+    chooser = Gtk.FileChooserDialog(title, action=Gtk.FileChooserAction.SAVE, buttons=(Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
     chooser.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
-    chooser.set_default_response(Gtk.RESPONSE_OK)
+    chooser.set_default_response(Gtk.ResponseType.OK)
     chooser.set_select_multiple(False)
     if current_folder:
         chooser.set_current_folder(current_folder)
     response = chooser.run()
-    if response == Gtk.RESPONSE_OK:
+    if response == Gtk.ResponseType.OK:
         paths = chooser.get_filenames()
-    elif response == Gtk.RESPONSE_CANCEL:
+    elif response == Gtk.ResponseType.CANCEL:
         logging.info('Closed, no files selected')
     chooser.destroy()
 
 class FileSavingDialog(Gtk.FileChooserDialog):
     def __init__(self, title, func, args = None, current_folder=None, current_name=None):
-        Gtk.FileChooserDialog.__init__(self, title, action=Gtk.FILE_CHOOSER_ACTION_SAVE, buttons=(Gtk.STOCK_SAVE, Gtk.RESPONSE_OK))
-        self.set_default_response(Gtk.RESPONSE_OK)
+        Gtk.FileChooserDialog.__init__(self, title, action=Gtk.FileChooserAction.SAVE, buttons=(Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
+        self.set_default_response(Gtk.ResponseType.OK)
         self.set_select_multiple(False)
         self.set_do_overwrite_confirmation(True)
         self.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
@@ -283,7 +283,7 @@ class FileSavingDialog(Gtk.FileChooserDialog):
             self.set_current_name(current_name)
         
         response = self.run()
-        if response == Gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             filename = self.get_filename()
             folder = self.get_current_folder()
             if func:
@@ -292,7 +292,7 @@ class FileSavingDialog(Gtk.FileChooserDialog):
                     else: func(filename, folder)
                 except IOError, e:
                         logging.error(e)
-        elif response == Gtk.RESPONSE_CANCEL:
+        elif response == Gtk.ResponseType.CANCEL:
             logging.info('Closed, no files selected')
         self.destroy()
    
