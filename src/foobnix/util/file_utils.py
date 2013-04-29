@@ -19,46 +19,17 @@ from foobnix.util.const import ICON_FOOBNIX
 from foobnix.helpers.textarea import ScrolledText
 from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.helpers.dialog_entry import directory_chooser_dialog
+import subprocess
 
 
 def open_in_filemanager(path, managers=None):
     dirname = path if os.path.isdir(path) else os.path.dirname(path)
-    if FC().active_manager[0] and not managers:
-        managers = [FC().active_manager[1]]
-    else:
-        managers = FC().file_managers
-    
-    def search_mgr(managers, dirname):
-        files = []
-        for path in os.environ['PATH'].split(":"):
-            if os.path.exists(path):
-                files += get_files_from_folder(path)
-            
-        for fm in managers:
-            if fm not in files:
-                continue
-            else:
-                path = dirname
-                arguments = [fm, dirname]
-                if fm == 'krusader':
-                    arguments.insert(-1, '--left')
-                    
-                logging.info("Folder " + dirname + " has been opened in " + fm)
-                
-                try:
-                    Popen(Popen(arguments))
-                except TypeError:
-                    pass
-                return True
-            
-    if not search_mgr(managers, dirname):
-        if FC().active_manager[0]:
-            logging.warning(FC().active_manager[1] + "not installed in system")
-            logging.info("Try open other file manager")
-            if not search_mgr(FC().file_managers, dirname):
-                logging.warning("None file manager found")
-        else:
-            logging.warning("None file manager found")          
+    if sys.platform.startswith('darwin'):
+        subprocess.call(('open', dirname))
+    elif os.name == 'nt':
+        os.startfile(dirname)
+    elif os.name == 'posix':
+        subprocess.call(('xdg-open', dirname))       
 
 def get_files_from_folder(folder):
     return [file for file in os.listdir(folder) if not os.path.isdir(file)]
