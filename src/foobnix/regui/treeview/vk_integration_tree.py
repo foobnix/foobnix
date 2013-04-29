@@ -45,15 +45,16 @@ class VKIntegrationControls(CommonTreeControl):
     def _lazy_load(self):
         def get_users_by_uuid(uuidd):
             for user in self.controls.vk_service.get_result('getProfiles', 'uids=' + uuidd):
-                logging.debug(user)
-                name = user['first_name'] + " " + user['last_name']
-            
-                parent = FModel(name)
-                parent.user_id = user['uid']
-                bean = FDModel(_("loading...")).parent(parent).add_is_file(True)
-                
-                self.append(parent)        
-                self.append(bean)
+                def task(user):
+                    logging.debug(user)
+                    name = user['first_name'] + " " + user['last_name']
+
+                    parent = FModel(name)
+                    parent.user_id = user['uid']
+                    bean = FDModel(_("loading...")).parent(parent).add_is_file(True)
+                    self.append(parent)
+                    self.append(bean)
+                GObject.idle_add(task, user)
 
         if not FC().user_id and not self.controls.vk_service.auth():
             return
