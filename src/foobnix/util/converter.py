@@ -10,6 +10,7 @@ from __future__ import with_statement
 import os
 import re
 from gi.repository import Gtk
+import threading
 import time
 import thread
 from gi.repository import GObject
@@ -340,9 +341,9 @@ def convert_files(paths):
         area.buffer.set_text(_("Converter require specially compiled ffmpeg module for work.\n" + 
                                "You should download it automatically (click Download)\n"+
                                "Also check if you have packages libmp3lame0 and libfaac0"))
-        ok_button = dialog.add_button(_("Download"), Gtk.RESPONSE_OK)
+        ok_button = dialog.add_button(_("Download"), Gtk.ResponseType.OK)
         
-        cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.RESPONSE_CANCEL)
+        cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         ok_button.grab_default()      
         prog_bar = Gtk.ProgressBar()
         dialog.vbox.pack_start(area.scroll)
@@ -351,39 +352,45 @@ def convert_files(paths):
         dialog.set_default_size(400, 150)
         dialog.show_all()
         prog_bar.hide()
-        if dialog.run() == Gtk.RESPONSE_OK:
+        canceled = False
+        if dialog.run() == Gtk.ResponseType.OK:
             prog_bar.show()
             import urllib2
             remote_file = urllib2.urlopen(url)
             size = float(remote_file.info()['Content-Length'])
             ffmpeg_path = os.path.join(CONFIG_DIR, FFMPEG_NAME)
+
             def on_close(*a):
                 if os.path.isfile(ffmpeg_path) and os.path.getsize(ffmpeg_path) < size:
                     os.remove(ffmpeg_path)
                 dialog.destroy()
                 return
             cancel_button.connect("released", on_close)
+
             def task():
-                with open(ffmpeg_path,'wb') as local_file:
+                with open(ffmpeg_path, 'wb') as local_file:
                     got = 0
                     cycle = True
-                    while cycle:
-                        local_file.write(remote_file.read(20000))
-                        if got + 20000 >= size: 
-                            cycle = False 
-                        got = os.path.getsize(ffmpeg_path)
-                        prog_bar.set_fraction(got/size)
-                        prog_bar.set_text("Downloaded  %.2f of %.2fMb" % (float(got)/1024/1024, size/1024/1024))
-                        time.sleep(0.05) #for stability
+                    while cycle and not canceled:
+                        try:
+                            local_file.write(remote_file.read(20000))
+                            if got + 20000 >= size:
+                                cycle = False
+                            got = os.path.getsize(ffmpeg_path)
+
+                            def subtask():
+                                prog_bar.set_fraction(got/size)
+                                prog_bar.set_text("Downloaded  %.2f of %.2fMb" % (float(got)/1024/1024, size/1024/1024))
+
+                            GObject.idle_add(subtask)
+                        except OSError as e:
+                            if os.path.isfile(ffmpeg_path) and os.path.getsize(ffmpeg_path) < size:
+                                os.remove(ffmpeg_path)
                     
                 os.chmod(ffmpeg_path, 0777)
-                time.sleep(1) #for stability
                 GObject.idle_add(convert_files, paths)
                 dialog.destroy()
 
             thread.start_new_thread(task, ())
         else:
             dialog.destroy()    
-        
-        
-            
