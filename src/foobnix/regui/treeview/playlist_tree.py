@@ -271,7 +271,7 @@ class PlaylistTreeControl(CommonTreeControl):
     def on_toggled_num(self, *a):
         FC().numbering_by_order = not FC().numbering_by_order
         number_music_tabs = self.controls.notetabs.get_n_pages() - 1
-        for page in xrange(number_music_tabs, 0, -1):
+        for page in xrange(number_music_tabs, -1, -1):
             tab_content = self.controls.notetabs.get_nth_page(page)
             pl_tree = tab_content.get_child()
             if FC().numbering_by_order:
