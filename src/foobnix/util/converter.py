@@ -35,7 +35,7 @@ if os.name == 'posix':
     
 class Converter(ChildTopWindow):
     def __init__(self):
-        ChildTopWindow.__init__(self, title="Audio Converter", width=500, height=300)
+        ChildTopWindow.__init__(self, title="Audio Converter", width=500, height=400)
         
         self.area = ScrolledText()
         vbox = Gtk.VBox(False, 10)
@@ -63,20 +63,20 @@ class Converter(ChildTopWindow):
         self.channels_combo = combobox_constr()
         self.hertz_combo = combobox_constr()
                
-        format_box.pack_start(format_label)
-        format_box.pack_start(self.format_combo)
-        bitrate_box.pack_start(bitrate_label)
-        bitrate_box.pack_start(self.bitrate_combo)
-        channels_box.pack_start(channels_label)
-        channels_box.pack_start(self.channels_combo)
-        hertz_box.pack_start(hertz_label)
-        hertz_box.pack_start(self.hertz_combo)
+        format_box.pack_start(format_label, False, False, 0)
+        format_box.pack_start(self.format_combo, False, False, 0)
+        bitrate_box.pack_start(bitrate_label, False, False, 0)
+        bitrate_box.pack_start(self.bitrate_combo, False, False, 0)
+        channels_box.pack_start(channels_label, False, False, 0)
+        channels_box.pack_start(self.channels_combo, False, False, 0)
+        hertz_box.pack_start(hertz_label, False, False, 0)
+        hertz_box.pack_start(self.hertz_combo, False, False, 0)
         
         hbox = Gtk.HBox(False, 30)
-        hbox.pack_start(format_box)
-        hbox.pack_start(bitrate_box)
-        hbox.pack_start(channels_box, False)
-        hbox.pack_start(hertz_box)
+        hbox.pack_start(format_box, False, False, 0)
+        hbox.pack_start(bitrate_box, False, False, 0)
+        hbox.pack_start(channels_box, False, False, 0)
+        hbox.pack_start(hertz_box, False, False, 0)
         hbox.set_border_width(10)
         hbox.show_all()
         
@@ -105,7 +105,9 @@ class Converter(ChildTopWindow):
         self.progress_box.pack_end(self.progressbar, True)
         
         self.output = ScrolledText()
-        self.output.scroll.set_placement(Gtk.CORNER_BOTTOM_LEFT)
+        self.output.text.set_size_request(-1, 50)
+        self.output.scroll.set_size_request(-1, 50)
+        self.output.scroll.set_placement(Gtk.CornerType.BOTTOM_LEFT)
         vbox.pack_start(self.progress_box, False)
         
         self.button_box.pack_end(self.convert_button, False)
@@ -119,8 +121,8 @@ class Converter(ChildTopWindow):
 
     def save(self, *a):
         chooser = Gtk.FileChooserDialog(title=_("Choose directory to save converted files"),
-                                        action=Gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
-                                        buttons=(Gtk.STOCK_SAVE, Gtk.RESPONSE_OK))
+                                        action=Gtk.FileChooserAction.SELECT_FOLDER,
+                                        buttons=(Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
         chooser.set_current_folder(os.path.dirname(self.paths[0]))
         chooser.set_icon_from_file(LOGO)
         response = chooser.run()
@@ -199,14 +201,13 @@ class Converter(ChildTopWindow):
         self.ffmpeg = Popen(list, universal_newlines=True, stderr=PIPE)
         
         for line in iter(self.ffmpeg.stderr.readline, ""):
-            GObject.idle_add(self.output.buffer.insert_at_cursor,line)
+            GObject.idle_add(self.output.buffer.insert_at_cursor, line)
             logging.debug(line)
             adj = self.output.scroll.get_vadjustment()
-            GObject.idle_add(adj.set_value,adj.upper - adj.page_size + 1)
+            GObject.idle_add(adj.set_value, adj.get_upper() - adj.get_page_size() + 1)
         
         self.ffmpeg.wait()
-        
-       
+
     def on_stop(self, *a):
         self.ffmpeg.terminate()
         self.stop = True
@@ -222,11 +223,11 @@ class Converter(ChildTopWindow):
      
     def warning(self):
         dialog = Gtk.Dialog(_("Warning!!!"))
-        ok_button = dialog.add_button(Gtk.STOCK_OK, Gtk.RESPONSE_OK) #@UnusedVariable
-        cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.RESPONSE_CANCEL)
+        ok_button = dialog.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK) #@UnusedVariable
+        cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         cancel_button.grab_default()      
         label = Gtk.Label(_("So file(s)  already exist(s) and will be overwritten.\nDo you wish to continue?"))
-        image = Gtk.Image.new_from_stock(Gtk.STOCK_DIALOG_WARNING, Gtk.ICON_SIZE_LARGE_TOOLBAR)
+        image = Gtk.Image.new_from_stock(Gtk.STOCK_DIALOG_WARNING, Gtk.IconSize.LARGE_TOOLBAR)
         hbox = Gtk.HBox(False, 10)
         hbox.pack_start(image)
         hbox.pack_start(label)
@@ -254,8 +255,9 @@ class Converter(ChildTopWindow):
         if not combo_list:
             return
         for combo in combo_list:
-            for i in self.bitrate_list: #the longest list
-                combo.remove_text(0)
+            combo.remove_all()
+            #for i in self.bitrate_list: #the longest list
+            #    combo.remove()
    
     def on_change_format(self, a):
         bitrate_list = self.bitrate_list[:]
@@ -312,7 +314,7 @@ class Converter(ChildTopWindow):
         open_in_filemanager(self.current_folder)
 
 def combobox_constr(list=None):
-    combobox = Gtk.combo_box_new_text()
+    combobox = Gtk.ComboBoxText()
     if not list:
         return combobox
     

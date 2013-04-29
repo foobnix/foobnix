@@ -81,7 +81,7 @@ class TextArea(Gtk.ScrolledWindow):
 class ScrolledText():
     def __init__(self):
         self.buffer = Gtk.TextBuffer()
-        self.text = Gtk.TextView(self.buffer)
+        self.text = Gtk.TextView(buffer=self.buffer)
         self.text.set_editable(False)
         self.text.set_cursor_visible(False)
         self.scroll = Gtk.ScrolledWindow()
