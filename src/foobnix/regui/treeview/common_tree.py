@@ -5,6 +5,7 @@ Created on 20 окт. 2010
 @author: ivan
 '''
 
+import sys
 import logging
 
 from gi.repository import Gtk
@@ -12,7 +13,7 @@ from gi.repository import Gdk
 from gi.repository import GObject
 
 from random import randint
-from foobnix.fc.fc_cache import FCache
+from foobnix.fc.fc_cache import FCache, fcache_save_lock
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.model import FTreeModel, FModel
 from foobnix.regui.treeview.filter_tree import FilterTreeControls
@@ -20,7 +21,7 @@ from foobnix.regui.treeview.filter_tree import FilterTreeControls
 
 class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
-    def __init__(self, controls):        
+    def __init__(self, controls):
         FilterTreeControls.__init__(self, controls)
         
         FTreeModel.__init__(self)
@@ -30,7 +31,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         self.set_enable_tree_lines(True)
 
         """model config"""
-        self.model = Gtk.TreeStore(*FTreeModel().types())
+        self.model = MyTreeStore(*FTreeModel().types())
 
         """filter config"""
         self.filter_model = self.model.filter_new()
@@ -155,20 +156,36 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         path = model.get_path(iter)
         return Gtk.TreeRowReference(model, path)
     
-    def save_beans_from_tree(self):
-        number_of_page = self.controls.tabhelper.page_num(self.scroll)
-        FCache().cache_music_tree_beans[number_of_page] = []
-        for row in self.model:
-            def task(row):
-                for child_row in row.iterchildren():
-                    bean = self.get_bean_from_row(child_row)
-                    FCache().cache_music_tree_beans[number_of_page].append(bean)
-                    if child_row.iterchildren():
-                        task(child_row)
-            bean = self.get_bean_from_row(row)
-            FCache().cache_music_tree_beans[number_of_page].append(bean)
-            if row.iterchildren():
-                task(row)
+    def save_rows_from_tree(self, dict):
+        try:
+            fcache_save_lock.acquire()
+            dict.clear()
+            iter = self.model.get_iter_first()
+            def task(iter):
+                str_path = self.model.get_string_from_iter(iter)
+                row = self.get_row_from_iter(self.model, iter)
+                dict[tuple([int(i) for i in str_path.split(':')])] = row
+                for n in xrange(self.model.iter_n_children(iter)):
+                    child_iter = self.model.iter_nth_child(iter, n)
+                    if child_iter:
+                        task(child_iter)
+            while iter:
+                task(iter)
+                iter = self.model.iter_next(iter)
+        finally:
+            if fcache_save_lock.locked():
+                fcache_save_lock.release()
+    
+    def restore_rows(self, rows):
+        for key in sorted(rows.keys()):
+            if len(key) == 1:
+                self.model.append(None, rows[key])
+            else:
+                str_path = str(key).replace(', ',':')
+                parent_path = str_path[1:str_path.rfind(':')]
+                parent_iter = self.model.get_iter_from_string(parent_path)
+                self.model.append(parent_iter, rows[key])
+
     
     def find_rows_by_element(self, element, value):
         '''element - member of FTreeModel class
@@ -511,3 +528,87 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             return True
         else:
             return False
+        
+class MyTreeStore(Gtk.TreeStore):
+    def __init__(self, *types):
+        Gtk.TreeStore.__init__(self, *types)
+        
+    def _convert_value(self, column, value):
+        if value is None:
+            return None
+
+        # we may need to convert to a basic type
+        type_ = self.get_column_type(column)
+        if type_ == GObject.TYPE_STRING:
+            if isinstance(value, str):
+                value = str(value)
+            elif sys.version_info < (3, 0):
+                if isinstance(value, unicode):
+                    value = value.encode('UTF-8')
+                else:
+                    raise ValueError('Expected string or unicode for column %i but got %s%s' % (column, value, type(value)))
+            else:
+                raise ValueError('Expected a string for column %i but got %s' % (column, type(value)))
+        elif type_ == GObject.TYPE_FLOAT or type_ == GObject.TYPE_DOUBLE:
+            if isinstance(value, float):
+                value = float(value)
+            else:
+                raise ValueError('Expected a float for column %i but got %s' % (column, type(value)))
+        elif type_ == GObject.TYPE_LONG or type_ == GObject.TYPE_INT:
+            if isinstance(value, int):
+                value = int(value)
+            elif sys.version_info < (3, 0):
+                if isinstance(value, long):
+                    value = long(value)
+                else:
+                    raise ValueError('Expected an long for column %i but got %s' % (column, type(value)))
+            else:
+                raise ValueError('Expected an integer for column %i but got %s' % (column, type(value)))
+        elif type_ == GObject.TYPE_BOOLEAN:
+            cmp_classes = [int]
+            if sys.version_info < (3, 0):
+                cmp_classes.append(long)
+
+            if isinstance(value, tuple(cmp_classes)):
+                value = bool(value)
+            else:
+                raise ValueError('Expected a bool for column %i but got %s' % (column, type(value)))
+        else:
+            # use GValues directly to marshal to the correct type
+            # standard object checks should take care of validation
+            # so we don't have to do it here
+            value_container = GObject.Value()
+            value_container.init(type_)
+            if type_ == GObject.TYPE_CHAR:
+                value_container.set_char(value)
+                value = value_container
+            elif type_ == GObject.TYPE_UCHAR:
+                value_container.set_uchar(value)
+                value = value_container
+            elif type_ == GObject.TYPE_UNICHAR:
+                cmp_classes = [str]
+                if sys.version_info < (3, 0):
+                    cmp_classes.append(unicode)
+
+                if isinstance(value, tuple(cmp_classes)):
+                    value = ord(value[0])
+
+                value_container.set_uint(value)
+                value = value_container
+            elif type_ == GObject.TYPE_UINT:
+                value_container.set_uint(value)
+                value = value_container
+            elif type_ == GObject.TYPE_ULONG:
+                value_container.set_ulong(value)
+                value = value_container
+            elif type_ == GObject.TYPE_INT64:
+                value_container.set_int64(value)
+                value = value_container
+            elif type_ == GObject.TYPE_UINT64:
+                value_container.set_uint64(value)
+                value = value_container
+            elif type_ == GObject.TYPE_PYOBJECT:
+                value_container.set_boxed(value)
+                value = value_container
+
+        return value

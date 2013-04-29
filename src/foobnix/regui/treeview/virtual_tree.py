@@ -3,8 +3,11 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
-from gi.repository import Gtk
 import logging
+
+from gi.repository import Gtk
+from gi.repository import GObject
+
 from foobnix.regui.state import LoadSave
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click,\
     right_click_optimization_for_trees, is_empty_click
@@ -97,7 +100,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
 
     def on_load(self):
         self.scroll.hide()
-        self.populate_all(FCache().cache_virtual_tree_beans)
+        GObject.idle_add(self.restore_rows, FCache().cache_virtual_tree_beans)
         self.restore_expand(FC().virtual_expand_paths)
         self.restore_selection(FC().virtual_selected_paths)
         
@@ -111,7 +114,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         self.selection_changed(set_selected_path)
 
     def on_quit(self):
-        FCache().cache_virtual_tree_beans = self.get_all_beans()
+        self.save_rows_from_tree(FCache().cache_virtual_tree_beans)
 
     def on_drag_data_received(self, treeview, context, x, y, selection, info, timestamp):
         logging.debug('Storage on_drag_data_received')

@@ -35,10 +35,10 @@ class FCache:
         self.tab_names = [_("Empty tab"), ]
         self.last_music_path = None
         self.music_paths = [[], ]
-        self.cache_music_tree_beans = [[], ]
+        self.cache_music_tree_beans = [{}, ]
         
-        self.cache_virtual_tree_beans = []
-        self.cache_radio_tree_beans = []
+        self.cache_virtual_tree_beans = {}
+        self.cache_radio_tree_beans = {}
         self.cache_pl_tab_contents = []
         self.tab_pl_names = [_("Empty tab"), ]
         

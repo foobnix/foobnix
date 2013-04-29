@@ -35,7 +35,7 @@ class TabHelperControl(TabGeneral):
         self.controls.perspective.show_add_button()
         FCache().music_paths.insert(0, [])
         FCache().tab_names.insert(0, self.get_full_tab_name(self.get_current_tree().scroll))
-        FCache().cache_music_tree_beans.insert(0, [])
+        FCache().cache_music_tree_beans.insert(0, {})
     
     def on_button_press(self, w, e, *a):
         if e.button == 3:
@@ -68,7 +68,7 @@ class TabHelperControl(TabGeneral):
         n = self.page_num(tab_child)
         tree = tab_child.get_child()
         tree.clear_tree()
-        FCache().cache_music_tree_beans[n] = []
+        FCache().cache_music_tree_beans[n] = {}
             
     def on_update_music_tree(self, tab_child):
         n = self.page_num(tab_child)

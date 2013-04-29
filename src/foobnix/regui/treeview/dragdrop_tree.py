@@ -295,7 +295,7 @@ class DragDropTree(Gtk.TreeView):
                     
                 self.remove_replaced(ff_model)
                 self.pr_window.destroy()
-                self.save_beans_from_tree()
+                self.save_rows_from_tree()
             return
                       
         for ff_row_ref in ff_row_refs: 
@@ -736,9 +736,8 @@ class DragDropTree(Gtk.TreeView):
         beans = update_id3_wind_filtering([bean])
         for one in beans:
             one.update_uuid() 
-            row = self.get_row_from_bean(one)            
+            row = self.get_row_from_bean(one)
             
-            logging.debug(row)
             logging.debug(self.model)
             self.model.append(parent_iter, row)            
             
@@ -821,7 +820,11 @@ class DragDropTree(Gtk.TreeView):
     def get_row_from_iter(self, model, iter):
         row = []
         for num in xrange(model.get_n_columns()):
-            row.append(model.get_value(iter, num))
+            try:
+                val = model.get_value(iter, num)
+            except GError:
+                val = None
+            row.append(val)
         return row
             
     def get_list_of_iters_with_children(self, model, iter):
@@ -834,6 +837,18 @@ class DragDropTree(Gtk.TreeView):
                     task(child_iter)
         task(iter)
         return all_iters
+
+    def get_list_of_paths_with_children(self, model, iter):
+        all_paths = []
+        def task(iter):
+            path = model.get_path(iter)
+            all_paths.append(path)
+            for n in xrange(model.iter_n_children(iter)):
+                child_iter = model.iter_nth_child(iter, n)
+                if child_iter:
+                    task(child_iter)
+        task(iter)
+        return all_paths
 
     def fill_treerows(self):
         all_extra_rows = {}
