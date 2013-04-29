@@ -756,7 +756,7 @@ class BaseFoobnixControls():
         if os.name == 'nt':
             self.check_version()
         else:
-            thread.start_new_thread(self.check_version, ())
+            GObject.idle_add(self.check_version)
         
     def change_backgound(self):
         win = self.main_window
