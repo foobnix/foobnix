@@ -59,7 +59,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         self.hpaned_right = Gtk.HPaned()
         self.hpaned_right.connect("motion-notify-event", self.on_motion)
         self.hpaned_right.pack1(child=self.hpaned_left, resize=True, shrink=True)
-        self.hpaned_right.pack2(child=controls.coverlyrics, shrink=False)
+        self.hpaned_right.pack2(child=controls.coverlyrics, resize=True, shrink=False)
         
         vbox = Gtk.VBox(False, 0)
         vbox.pack_start(controls.top_panel, False, False, 0)
@@ -100,7 +100,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
     def set_visible_coverlyrics_panel(self, flag):
         logging.info("set_visible_coverlyrics_panel " + str(flag))
         if flag:
-            self.hpaned_right.set_position(self.hpaned_right.allocation.width - FC().hpaned_right_right_side_width)
+            self.hpaned_right.set_position(self.hpaned_right.get_allocated_width() - FC().hpaned_right_right_side_width)
             self.controls.coverlyrics.show()
             GObject.idle_add(self.controls.coverlyrics.adapt_image)
         else:
@@ -134,7 +134,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
             right_position = self.hpaned_right.get_position()
             if right_position != FC().hpaned_right and right_position > 0:   
                 FC().hpaned_right = right_position
-            FC().hpaned_right_right_side_width = self.hpaned_right.allocation.width - right_position
+            FC().hpaned_right_right_side_width = self.hpaned_right.get_allocated_width() - right_position
             self.controls.coverlyrics.adapt_image()
             
     def save_left_panel(self):
@@ -161,7 +161,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
     def on_configure_hr_event(self, *a):
         def task():
             if self.controls.coverlyrics.get_property("visible"):
-                hrw = self.hpaned_right.allocation.width
+                hrw = self.hpaned_right.get_allocated_width()
                 if (hrw - self.hpaned_right.get_position()) != FC().hpaned_right_right_side_width:
                     self.hpaned_right.set_position(hrw - FC().hpaned_right_right_side_width)
         GObject.idle_add(task)
@@ -171,4 +171,3 @@ class BaseFoobnixLayout(FControl, LoadSave):
         GObject.idle_add(self.set_visible_musictree_panel, FC().is_view_music_tree_panel,
                          priority = GObject.PRIORITY_DEFAULT_IDLE - 10)
         self.set_visible_coverlyrics_panel(FC().is_view_coverlyrics_panel)
-                                
