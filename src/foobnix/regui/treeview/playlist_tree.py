@@ -256,9 +256,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 self.tree_menu.add_item(_('Copy Artist-Title-Album'), Gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
                 self.tree_menu.add_separator()
                 self.tree_menu.add_item(_('Love This Track(s) by Last.fm'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
-                self.tree_menu.add_separator()
-                if paths[0]:
-                    self.tree_menu.add_item(_("Open In File Manager"), None, open_in_filemanager, paths[0])
+
                 self.tree_menu.show(e)
                   
     def on_click_header(self, w, e):
@@ -419,7 +417,7 @@ class PlaylistTreeControl(CommonTreeControl):
                     model.move_before(f_iter, None)
             return
         else:
-            for  i, treerow in enumerate(treerows):
+            for i, treerow in enumerate(treerows):
                 for k, ch_row in enumerate(treerow.iterchildren()):
                     treerows.insert(i+k+1, ch_row)
         
@@ -445,4 +443,3 @@ class PlaylistTreeControl(CommonTreeControl):
         context.finish(True, False, timestamp)
         self.stop_emission('drag-data-received')
         return True
-    
