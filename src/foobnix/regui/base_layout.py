@@ -102,7 +102,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         if flag:
             self.hpaned_right.set_position(self.hpaned_right.get_allocated_width() - FC().hpaned_right_right_side_width)
             self.controls.coverlyrics.show()
-            GObject.idle_add(self.controls.coverlyrics.adapt_image)
+            #GObject.idle_add(self.controls.coverlyrics.adapt_image)
         else:
             self.controls.coverlyrics.hide()
         
@@ -135,7 +135,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
             if right_position != FC().hpaned_right and right_position > 0:   
                 FC().hpaned_right = right_position
             FC().hpaned_right_right_side_width = self.hpaned_right.get_allocated_width() - right_position
-            self.controls.coverlyrics.adapt_image()
+            #self.controls.coverlyrics.adapt_image()
             
     def save_left_panel(self):
         left_position = self.hpaned_left.get_position()
