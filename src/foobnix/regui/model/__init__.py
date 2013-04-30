@@ -32,7 +32,7 @@ class FTreeModel():
         self.status = 21 , str
         self.progress = 22 , str
         self.save_to = 23 , str
-        self.persent = 24 , str
+        self.persent = 24 , int     #int, because this field using with progressbar
         self.size = 25 , str
         self.composer = 26 , str
         self.user_id = 27 , str

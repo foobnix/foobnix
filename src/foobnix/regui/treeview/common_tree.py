@@ -561,9 +561,15 @@ class MyTreeStore(Gtk.TreeStore):
                 if isinstance(value, long):
                     value = long(value)
                 else:
-                    raise ValueError('Expected an long for column %i but got %s' % (column, type(value)))
+                    try:
+                        value = long(value)
+                    except ValueError:
+                        raise ValueError('Expected an long for column %i but got %s' % (column, type(value)))
             else:
-                raise ValueError('Expected an integer for column %i but got %s' % (column, type(value)))
+                try:
+                    value = long(value)
+                except ValueError:
+                    raise ValueError('Expected an integer for column %i but got %s' % (column, type(value)))
         elif type_ == GObject.TYPE_BOOLEAN:
             cmp_classes = [int]
             if sys.version_info < (3, 0):

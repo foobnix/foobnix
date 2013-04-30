@@ -73,7 +73,7 @@ class Dowloader(threading.Thread):
             bean.status = DOWNLOAD_STATUS_INACTIVE
             bean.to_file = to_file
             update(bean)
-            return  None
+            return None
         
         if os.path.exists(to_file):
             bean.status = DOWNLOAD_STATUS_COMPLETED
@@ -89,8 +89,7 @@ class Dowloader(threading.Thread):
             self.bean.status = DOWNLOAD_STATUS_DOWNLOADING
             self.bean.path = to_file
             self.update(self.bean)
-            
-            
+
             while data:
                 data = remote.read(block_size)
                 if data:

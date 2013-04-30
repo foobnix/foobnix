@@ -44,6 +44,7 @@ class DMControls(MyToolbar):
     def on_load(self): pass
     def on_save(self): pass
 
+
 class DM(ChildTopWindow):
     def __init__(self, controls):
         self.controls = controls        
@@ -75,8 +76,7 @@ class DM(ChildTopWindow):
                        
         self.add(vbox)
         thread.start_new_thread(self.dowloader, (self.dm_list,))
-        
-           
+
     def demo_tasks(self):
         self.append_task(FModel("Madonna - Sorry"))
         self.append_task(FModel("Madonna - Frozen"))
@@ -93,11 +93,10 @@ class DM(ChildTopWindow):
         self.append_task(FModel("Madonna - Frozen"))
         self.append_task(FModel("Madonna - Sorry"))
         self.append_task(FModel("Madonna - Frozen"))
-        
-        
+
     def show(self):
         self.show_all()
-        analytics.action("DM");
+        analytics.action("DM")
     
     def append_task(self, bean, save_to=None):
         """download only remote files"""
@@ -124,7 +123,6 @@ class DM(ChildTopWindow):
     def dowloader(self, dm_list):
         semaphore = threading.Semaphore(FC().amount_dm_threads)
         while True:
-            time.sleep(3)
             #self.navigation.use_filter()
             semaphore.acquire()
             bean = dm_list.get_next_bean_to_dowload()            
