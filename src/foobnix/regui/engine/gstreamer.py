@@ -109,11 +109,11 @@ class GStreamerEngine(MediaPlayerEngine):
     def notify_init(self, duration_int):
         logging.debug("Pre init thread: " + str(duration_int))
 
-    def notify_playing(self, position_int, duration_int, sec):
+    def notify_playing(self, position_int, duration_int):
         #LOG.debug("Notify playing", position_int)
         self.position_sec = position_int / self.NANO_SECONDS
         self.duration_sec = duration_int / self.NANO_SECONDS
-        self.controls.notify_playing(self.position_sec, self.duration_sec, self.bean, sec)
+        self.controls.notify_playing(self.position_sec, self.duration_sec, self.bean)
 
     def notify_eos(self):
         logging.debug("Notify eos, STOP State")
@@ -264,7 +264,7 @@ class GStreamerEngine(MediaPlayerEngine):
         if not self.play_thread_id:
             self.play_thread_id = 1
         thread_id = self.play_thread_id
-        sec = 0
+        previous_position = -1
 
         logging.debug("current state in thread: " + str(self.get_state()))
 
@@ -300,10 +300,11 @@ class GStreamerEngine(MediaPlayerEngine):
                     if (position_int + self.NANO_SECONDS) > duration_int:
                         self.notify_eos()
 
-                if self.get_state() == STATE_PLAY:
-                    sec += 1
+                if int(position_int / self.NANO_SECONDS) != previous_position:
+                    previous_position = int(position_int / self.NANO_SECONDS)
+                    self.notify_playing(position_int, duration_int)
 
-                self.notify_playing(position_int, duration_int, sec)
+                time.sleep(0.1)
             except Exception, e:
                 logging.info("Playing thread error... " + str(e))
 

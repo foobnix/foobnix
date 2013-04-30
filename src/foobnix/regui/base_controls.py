@@ -445,18 +445,17 @@ class BaseFoobnixControls():
                 self.update_info_panel(bean)
             self.set_visible_video_panel(False)
             
-    def notify_playing(self, pos_sec, dur_sec, bean, sec):
+    def notify_playing(self, pos_sec, dur_sec, bean):
         self.seek_bar.update_seek_status(pos_sec, dur_sec)
-        sec = int(sec) 
-        
-        if sec > 10 and sec % 11 == 0:
+
+        if pos_sec > 10 and pos_sec % 11 == 0:
             self.net_wrapper.execute(self.lastfm_service.report_now_playing, bean)
                     
         if not self.start_time:
             self.start_time = str(int(time.time()))
         
         if not self.is_scrobbled:
-            if sec > dur_sec / 2 or sec > 60:
+            if pos_sec > dur_sec / 2 or pos_sec > 60:
                 self.is_scrobbled = True
                 self.net_wrapper.execute(self.lastfm_service.report_scrobbled, bean, self.start_time, dur_sec)
                 """download music"""

@@ -99,10 +99,8 @@ class DragDropTree(Gtk.TreeView):
     
     def simple_append_all(self, beans):
         logging.debug("simple_append_all")
-        logging.debug(self.current_view)
         
         if self.current_view == VIEW_PLAIN:
-            logging.debug("simple_append_all")
             for bean in beans:
                 row = self.get_row_from_bean(bean)            
                 self.model.append(None, row)
@@ -737,8 +735,7 @@ class DragDropTree(Gtk.TreeView):
         for one in beans:
             one.update_uuid() 
             row = self.get_row_from_bean(one)
-            
-            logging.debug(self.model)
+
             self.model.append(parent_iter, row)            
             
     def fill_beans_and_get_rows(self, beans, filter=None):

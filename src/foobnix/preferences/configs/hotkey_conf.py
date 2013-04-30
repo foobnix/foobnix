@@ -6,13 +6,12 @@ Created on Sep 7, 2010
 
 
 import os
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import Keybinder
-
 import thread
 import logging
 
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import Keybinder
 
 from copy import copy
 from foobnix.fc.fc import FC
@@ -27,12 +26,15 @@ from foobnix.util.key_utils import is_key_control, is_key_shift, is_key_super, \
 def activate_hot_key(command, hotkey):
     logging.debug("Run command: " + str(command)) 
     thread.start_new_thread(os.system, (command,))    
-    
+
+
 def add_key_binder(command, hotkey):
     try:
-        Keybinder.bind(hotkey, activate_hot_key, command, hotkey)
+        logging.debug("binding a key %s with command %s" % (hotkey, command))
+        Keybinder.bind(hotkey, activate_hot_key, (command, hotkey))
     except Exception, e:
-        logging.warn("add_key_binder exception" + str(hotkey) + str(e))
+        logging.warn("add_key_binder exception: %s %s" % (str(hotkey), str(e)))
+
 
 def bind_all():
     binder(FC().action_hotkey)
@@ -42,16 +44,19 @@ def bind_all():
             binder(items)
 
     HotKeysConfig.binded = True
-    
+
+
 def binder(items):
     for key in items:
         command = key
         hotkey = items[key]
         add_key_binder(command, hotkey)               
 
+
 def load_foobnix_hotkeys():
     bind_all()
     logging.debug("LOAD HOT KEYS")    
+
 
 def to_form_dict_of_mmkeys():
     if FC().media_keys_enabled:
@@ -61,7 +66,8 @@ def to_form_dict_of_mmkeys():
                 if key in items:
                     del items[key]
         return items
-    
+
+
 class HotKeysConfig(ConfigPlugin):
     
     name = _("Global Hotkeys")

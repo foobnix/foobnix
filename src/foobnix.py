@@ -6,8 +6,9 @@ import time
 import logging
 import traceback
 
-from gi import pygtkcompat
+from gi import pygtkcompat, require_version
 pygtkcompat.enable_gtk(version="3.0")
+require_version("Keybinder", "3.0")
 
 from gi.repository import Gtk
 from gi.repository import GObject
