@@ -12,7 +12,7 @@ from gi.repository import Gtk
 from gi.repository import GObject
 
 from foobnix.fc.fc import FC
-from foobnix.util import const
+from foobnix.util import const, idle_task
 from foobnix.helpers.menu import Popup
 from foobnix.util.tag_util import edit_tags
 from foobnix.util.converter import convert_files
@@ -195,19 +195,16 @@ class PlaylistTreeControl(CommonTreeControl):
         self.scroll_follow_play_icon() 
         
         return bean
-    
+
+    @idle_task
     def scroll_follow_play_icon(self):
-        #idle task because set_play_icon_to_bean works into idle task...
-        # TODO: this issue needs to be solved
-        def idle_task():
-            paths = [(i,) for i, row in enumerate(self.model)]
-            for row, path in zip(self.model, paths):
-                if row[self.play_icon[0]]:
-                    start_path, end_path = self.get_visible_range()
-                    path = row.path
-                    if path >= end_path or path <= start_path:
-                        self.scroll_to_cell(path)
-        GObject.idle_add(idle_task)
+        paths = [(i,) for i, row in enumerate(self.model)]
+        for row, path in zip(self.model, paths):
+            if row[self.play_icon[0]]:
+                start_path, end_path = self.get_visible_range()
+                path = row.path
+                if path >= end_path or path <= start_path:
+                    self.scroll_to_cell(path)
     
     def append(self, bean):
         return super(PlaylistTreeControl, self).append(bean)
