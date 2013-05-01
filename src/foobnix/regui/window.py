@@ -11,6 +11,7 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 
 from foobnix.fc.fc import FC
+from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util import const
 from foobnix.regui.state import LoadSave
 from foobnix.version import FOOBNIX_VERSION
@@ -28,7 +29,7 @@ class MainWindow(Gtk.Window, FControl, LoadSave):
         self.set_title("Foobnix " + FOOBNIX_VERSION)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(True)
-        self.connect("window-state-event", self.on_change_state)      
+        self.connect("window-state-event", self.on_change_state)
         self.connect("delete-event", self.hide_window)
         self.connect("key-press-event", self.on_key_press)
         self.set_icon(self.controls.trayicon.get_pixbuf())
@@ -54,15 +55,13 @@ class MainWindow(Gtk.Window, FControl, LoadSave):
         elif is_key_control(e) and (is_key(e, "s") or is_key(e, "Cyrillic_yeru")):    
             self.controls.notetabs.on_save_playlist(self.controls.notetabs.get_current_tree().scroll)
 
-
-        
-    def on_save(self, *a):        
+    def on_save(self, *a):
         pass
     
     def on_load(self):
         cfg = FC().main_window_size
         if cfg:
-            self.resize(cfg[2], cfg[3])            
+            self.resize(cfg[2], cfg[3])
             self.move(cfg[0], cfg[1]) 
         if FC().window_maximized:
             self.maximize()

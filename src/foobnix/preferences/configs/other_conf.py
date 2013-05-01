@@ -5,15 +5,15 @@ Created on 23 дек. 2010
 @author: ivan
 '''
 
-from gi.repository import Gtk
 import logging
+from gi.repository import Gtk
 
-from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.fc.fc import FC
-from foobnix.helpers.dialog_entry import info_dialog_with_link_and_donate
-from foobnix.helpers.pref_widgets import IconBlock
 from foobnix.preferences.configs import CONFIG_OTHER
 from foobnix.util.antiscreensaver import antiscreensaver
+from foobnix.preferences.config_plugin import ConfigPlugin
+from foobnix.helpers.dialog_entry import info_dialog_with_link_and_donate
+
 
 class OtherConfig(ConfigPlugin):
     
@@ -94,15 +94,6 @@ class OtherConfig(ConfigPlugin):
         theme_frame = Gtk.Frame(label=_("Theming"))
         thvbox = Gtk.VBox(False, 1)
         thvbox.set_border_width(4)
-
-        #catbox = Gtk.HBox(False, 5)
-        
-        self.bg_image = IconBlock("", controls, FC().background_image, FC().background_image_themes)
-        
-        self.is_show = Gtk.CheckButton(label=_("Enable theme image"), use_underline=True)
-        
-        #catbox.pack_start(self.is_show, False, True, 0)
-        #catbox.pack_start(self.bg_image, True, True, 0)
         
         """menu position"""
         pbox = Gtk.HBox(False, 5)
@@ -153,8 +144,6 @@ class OtherConfig(ConfigPlugin):
         
         self.disable_screensaver = Gtk.CheckButton(label=_("Disable Xscreensaver"), use_underline=True)
 
-        thvbox.pack_start(self.is_show, False, False, 1)
-        thvbox.pack_start(self.bg_image, False, False, 1)
         thvbox.pack_start(pbox, False, False, 1)
         thvbox.pack_start(o_r_box, False, False, 1)
         thvbox.pack_start(obox, False, False, 1)
@@ -196,13 +185,10 @@ class OtherConfig(ConfigPlugin):
         """disc"""
         self.image_size_spin.set_value(FC().info_panel_image_size)
         self.threads_count.set_value(FC().amount_dm_threads)
-        
-        
+
         self.opacity_size.set_value(int(FC().window_opacity * 100))
         
         self.check_new_version.set_active(FC().check_new_version)
-        if FC().background_image:
-            self.is_show.set_active(True)   
         
         if FC().automatic_online_save:
             self.automatic_save_checkbutton.set_active(True)
@@ -211,7 +197,7 @@ class OtherConfig(ConfigPlugin):
             self.nosubfolder_checkbutton.set_active(True)
 
         """menu style"""
-        if  FC().menu_style == "new":
+        if FC().menu_style == "new":
             self.new_style.set_active(True)        
         else: 
             self.old_style.set_active(True)
@@ -221,17 +207,11 @@ class OtherConfig(ConfigPlugin):
         
         self.fmgrs_combo.set_active(FC().active_manager[0])
         
-        if FC().antiscreensaver == True:
+        if FC().antiscreensaver:
             self.disable_screensaver.set_active(True)
             antiscreensaver()
             
     def on_save(self):
-        self.is_background_image = FC().background_image
-        if self.is_show.get_active():    
-            FC().background_image = self.bg_image.get_active_path()
-        else:
-            FC().background_image = None
-                
         if self.buttons.get_active():
             FC().order_repeat_style = "ToggleButtons"
         else:
@@ -246,11 +226,7 @@ class OtherConfig(ConfigPlugin):
         
         FC().automatic_online_save = self.automatic_save_checkbutton.get_active()
         FC().nosubfolder = self.nosubfolder_checkbutton.get_active()
-        
-        if self.is_background_image != FC().background_image:
-            self.controls.change_backgound()
-            self.controls.preferences.hide()            
-            self.controls.preferences.show()        
+
         FC().active_manager = [self.fmgrs_combo.get_active(), self.fmgrs_combo.get_active_text().lower()]
         
         if self.disable_screensaver.get_active():
@@ -275,4 +251,3 @@ class OtherConfig(ConfigPlugin):
         combobox.set_active(0)
         
         return combobox
-        

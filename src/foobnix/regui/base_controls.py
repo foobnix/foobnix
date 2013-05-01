@@ -742,36 +742,19 @@ class BaseFoobnixControls():
         self.movie_window.hide_all()
         
         self.info_panel.hide()
-                
-        self.change_backgound()
+
+        self.main_window.show()
         self.search_progress.stop()
         
         """base layout"""
         self.layout.on_load()
-        
-        
+
         """check for new version"""
         
         if os.name == 'nt':
             self.check_version()
         else:
             GObject.idle_add(self.check_version)
-        
-    def change_backgound(self):
-        win = self.main_window
-        win.show()
-        if FC().background_image:
-            img = get_foobnix_resourse_path_by_name(FC().background_image)
-            if not img:
-                return None
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file(img)  # @UndefinedVariable
-            pixmap, mask = pixbuf.render_pixmap_and_mask()  # @UnusedVariable
-            win.set_app_paintable(True)
-            # TODO fix it
-            #win.window.set_back_pixmap(pixmap, False)
-        else:
-            win.set_app_paintable(False)
-            #win.window.set_back_pixmap(None, False)
 
     def play_first_file_in_playlist(self):    
         active_playlist_tree = self.notetabs.get_current_tree()

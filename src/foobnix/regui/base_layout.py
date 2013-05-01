@@ -20,6 +20,16 @@ GtkComboBox .button {
     /* fix for very large size of combobox */
     padding: 2px 5px;
 }
+/*
+foobnix\+regui\+window\+MainWindow {
+    background-image: url("/usr/share/pixmaps/foobnix-big.png");
+    background-size:100% 100%;
+    background-repeat:no-repeat;
+}
+GtkHPaned {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+*/
 """
 
 
