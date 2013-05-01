@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import sys
 import logging
+import traceback
 from gi.repository import GObject
 
 
@@ -12,5 +14,7 @@ def idle_task(task):
                 task(*args)
             except Exception as e:
                 logging.error("Idle task raise an error: %s" % str(e))
+                exc_type, exc_value, exc_traceback = sys.exc_info()
+                traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stdout)
         return GObject.idle_add(safe_task, *args)
     return idle
