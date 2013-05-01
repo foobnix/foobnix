@@ -22,6 +22,8 @@ class M3UReader:
     
     def get_common_beans(self):
         paths_and_texts = self.parse()
+        if not paths_and_texts:
+            return []
         beans = [FModel(path=path_and_text[0],
                         text=path_and_text[1])
                         .add_is_file(True)

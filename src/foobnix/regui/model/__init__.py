@@ -30,7 +30,7 @@ class FTreeModel():
         self.parent_level = 19 , str
         self.type = 20 , str
         self.status = 21 , str
-        self.progress = 22 , str
+        self.cue = 22 , str
         self.save_to = 23 , str
         self.persent = 24 , int     #int, because this field using with progressbar
         self.size = 25 , str
@@ -89,7 +89,7 @@ class FModel(FTreeModel):
             list = self.text.split(" - ")
             return list[0].strip() 
         else:
-            return None;
+            return None
     
     def get_title_from_text(self):
         if " - " in self.text:

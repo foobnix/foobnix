@@ -77,8 +77,9 @@ class CueFile():
 
 class CueReader():
 
-    def __init__(self, cue_path):
+    def __init__(self, cue_path, embedded_cue=None):
         self.cue_path = cue_path
+        self.embedded_cue = embedded_cue
         self.is_valid = True
         self.cue_file = CueFile()
         
@@ -153,7 +154,7 @@ class CueReader():
                 bean = udpate_id3(bean)
             
             beans.append(bean)
-        
+
         return beans
 
     def is_cue_valid(self):
@@ -161,18 +162,23 @@ class CueReader():
         return self.is_valid
 
     """detect file encoding"""
-    def code_detecter(self, filename):
-        with open(filename) as codefile:
-            data = codefile.read()
+    def code_detecter(self, data):
         try:
             return chardet.detect(data)['encoding']
         except:
             return "utf-8" 
          
     def parse(self):
-        file = open(self.cue_path, "r")
-        code = self.code_detecter(self.cue_path);
-        logging.debug("File encoding is" + str(code))
+        if self.embedded_cue:
+            data = self.embedded_cue
+            file = data.replace('\r\n', '\n').split('\n')
+        else:
+            file = open(self.cue_path, "r")
+            data = file.read()
+            file.seek(0, 0)
+            
+            logging.debug("File encoding is" + str(data))
+        #code = self.code_detecter(data)
 
         title = ""
         performer = ""
@@ -187,12 +193,11 @@ class CueReader():
             if not self.is_valid and not line.startswith(FILE):
                 continue
             else: self.is_valid = True
-            
             try:
+                #line = unicode(line, code)
                 pass
-                line = unicode(line, code)
             except:
-                logging.error("File encoding is too strange" + str(code))
+                #logging.error("File encoding is too strange" + str(code))
                 pass
 
             line = str(line).strip()
@@ -263,11 +268,11 @@ class CueReader():
 def update_id3_for_cue(beans):
     result = []
     for bean in beans:
-        if bean.path and bean.path.lower().endswith(".cue"):
-                reader = CueReader(bean.path)
-                cue_beans = reader.get_common_beans()
-                for cue in cue_beans:
-                    result.append(cue)
+        if (bean.path and bean.path.lower().endswith(".cue")) or bean.cue:
+            reader = CueReader(bean.path, bean.cue)
+            cue_beans = reader.get_common_beans()
+            for cue in cue_beans:
+                result.append(cue)
         else:
             result.append(bean)
     return result
