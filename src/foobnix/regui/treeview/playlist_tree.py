@@ -48,8 +48,9 @@ class PlaylistTreeControl(CommonTreeControl):
         """Column icon"""
         self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         self.icon_col.key = "*"
-        self.icon_col.set_fixed_width(5)
-        self.icon_col.set_min_width(5)
+        self.icon_col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
+        self.icon_col.set_fixed_width(32)
+        self.icon_col.set_min_width(32)
         self.icon_col.label = Gtk.Label("*")
         self._append_column(self.icon_col)
         
