@@ -414,7 +414,7 @@ class BaseFoobnixControls():
             if bean.iso_path and os.path.exists(bean.iso_path):
                 logging.info("Try to remount " + bean.iso_path)
                 mount_tmp_iso(bean.iso_path)
-            elif not bean.path or ((bean.path and ("userapi" or "vk.me")) in bean.path):
+            elif not bean.path or (("userapi" or "vk.me") in bean.path):
                 self.fill_bean_from_vk(bean)
             else:
                 resource = bean.path if bean.path else bean.text
