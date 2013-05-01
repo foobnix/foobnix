@@ -13,10 +13,11 @@ from gi.repository import Gdk
 from gi.repository import GObject
 
 from random import randint
-from foobnix.fc.fc_cache import FCache, fcache_save_lock
+from foobnix.fc.fc_cache import fcache_save_lock
 from foobnix.regui.model.signal import FControl
 from foobnix.regui.model import FTreeModel, FModel
 from foobnix.regui.treeview.filter_tree import FilterTreeControls
+from foobnix.util import idle_task
 
 
 class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
@@ -205,9 +206,9 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         
         return result    
                     
-        
+    @idle_task    
     def clear_tree(self):
-        GObject.idle_add(self.model.clear)
+        self.model.clear()
 
     def on_button_press(self, w, e):
         pass
@@ -267,29 +268,26 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         else:              
             return self.get_current_bean_by_UUID()
     
+    @idle_task
     def set_play_icon_to_bean_to_selected(self):
-        def safe_task():
-            for row in self.model:
-                row[self.play_icon[0]] = ''
+        for row in self.model:
+            row[self.play_icon[0]] = ''
         
-            paths = self.get_selected_bean_paths()
-            if not paths:
-                return None
-            logging.debug("Set play icon to selected bean")
-            path = paths[0]
-
-            iter = self.model.get_iter(path)
-            self.model.set_value(iter, FTreeModel().play_icon[0], Gtk.STOCK_GO_FORWARD)
-            self.active_UUID = self.model.get_value(iter, FTreeModel().UUID[0])
-        GObject.idle_add(safe_task)
-        
+        paths = self.get_selected_bean_paths()
+        if not paths:
+            return None
+        logging.debug("Set play icon to selected bean")
+        path = paths[0]
+        iter = self.model.get_iter(path)
+        self.model.set_value(iter, FTreeModel().play_icon[0], Gtk.STOCK_GO_FORWARD)
+        self.active_UUID = self.model.get_value(iter, FTreeModel().UUID[0])
+    
+    @idle_task    
     def set_bean_column_value(self, bean, colum_num, value):
-        def safe_task():
-            for row in self.model:
-                if row[self.UUID[0]] == bean.UUID:
-                    row[colum_num] = value
-                    break
-        GObject.idle_add(safe_task)
+        for row in self.model:
+            if row[self.UUID[0]] == bean.UUID:
+                row[colum_num] = value
+                break
               
     def update_bean(self, bean):
         for row in self.model:
@@ -327,16 +325,15 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                         
         return None
     
+    @idle_task
     def set_play_icon_to_bean(self, bean):
         logging.debug("Set play icon to bean")
-        def safe_task():
-            for row in self.model:
-                if row[self.UUID[0]] == bean.UUID:
-                    row[self.play_icon[0]] = Gtk.STOCK_GO_FORWARD
-                    self.active_UUID = bean.UUID                
-                else:
-                    row[self.play_icon[0]] = ""
-        GObject.idle_add(safe_task)
+        for row in self.model:
+            if row[self.UUID[0]] == bean.UUID:
+                row[self.play_icon[0]] = Gtk.STOCK_GO_FORWARD
+                self.active_UUID = bean.UUID                
+            else:
+                row[self.play_icon[0]] = ""
 
     def get_next_bean_by_UUID(self, repeat_all=False):
         '''not correct method after rebuild beans'''
@@ -468,24 +465,21 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             bean = self._get_bean_by_path(path)
             beans.append(bean)
         return beans                         
-
+    
+    @idle_task
     def restore_selection(self, str_paths):        
-        def safe_restore_selection():
-            selection = self.get_selection()
-            for str_path in str_paths:
-                iter = self.model.get_iter_from_string(str_path)
-                path = self.model.get_path(iter)
-                selection.select_path(path)
-        GObject.idle_add(safe_restore_selection)
+        selection = self.get_selection()
+        for str_path in str_paths:
+            iter = self.model.get_iter_from_string(str_path)
+            path = self.model.get_path(iter)
+            selection.select_path(path)
 
-
+    @idle_task
     def restore_expand(self, str_paths):
-        def safe_restore_expand():
-            for str_path in str_paths:
-                iter = self.model.get_iter_from_string(str_path)
-                path = self.model.get_path(iter)
-                self.expand_to_path(path)
-        GObject.idle_add(safe_restore_expand)
+        for str_path in str_paths:
+            iter = self.model.get_iter_from_string(str_path)
+            path = self.model.get_path(iter)
+            self.expand_to_path(path)
     
     def copy_info_to_clipboard(self, mode=False):
         beans = self.get_selected_beans()
