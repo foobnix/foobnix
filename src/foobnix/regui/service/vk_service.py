@@ -39,6 +39,7 @@ class VKWebkitAuth(Gtk.Dialog):
 
     def __init__(self):
         super(VKWebkitAuth, self).__init__(_("vk.com authorization"), None, Gtk.DialogFlags.MODAL, ())
+
         self.set_size_request(550, -1)
         self.auth_url = "http://oauth.vk.com/oauth/authorize?" + \
                         "redirect_uri=http://oauth.vk.com/blank.html&response_type=token&" + \
@@ -64,14 +65,21 @@ class VKWebkitAuth(Gtk.Dialog):
 
         self.access_token = None
         self.user_id = None
+        self.first_page_loaded = False
 
     def auth_user(self, check_only=False):
         if check_only:
             return self.access_token, self.user_id if self.access_token and self.user_id else None
         self.web_view.open(self.auth_url)
+        logging.debug("waiting for answer...")
+        while not self.first_page_loaded:
+            Gtk.main_iteration()
+        logging.debug("answer found!")
+        logging.debug(self.access_token)
+        logging.debug(self.user_id)
+        if self.access_token and self.user_id:
+            return self.access_token, self.user_id
         result = self.run()
-        logging.debug("auth_user: result is - %s, token - %s, user_id - %s" % (result, self.access_token, self.user_id))
-        logging.debug("result == Gtk.ResponseType.ACCEPT: %s", result == Gtk.ResponseType.ACCEPT)
         if (result == Gtk.ResponseType.ACCEPT) and self.access_token and self.user_id:
             return self.access_token, self.user_id
         return None
@@ -93,6 +101,7 @@ class VKWebkitAuth(Gtk.Dialog):
             if "access_token" in answer and "user_id" in answer:
                 self.access_token, self.user_id = answer["access_token"], answer["user_id"]
             self.response(Gtk.ResponseType.ACCEPT)
+        self.first_page_loaded = True
 
 
 class VKService:
@@ -101,6 +110,7 @@ class VKService:
         self.authorized_lock = threading.Lock()
 
     def auth(self, check_only=False):
+        logging.debug("do auth")
         self.auth_res = None
         self.task_finished = False
 
@@ -118,6 +128,7 @@ class VKService:
             self.task_finished = True
             logging.debug("task finished, result is %s" % str(res))
         GObject.idle_add(safetask)
+        logging.debug("idle task added, waiting...")
         while not self.task_finished:
             time.sleep(0.1)
         logging.debug("auth result is %s" % self.auth_res)
@@ -141,7 +152,8 @@ class VKService:
         if "response" in object:
             return object["response"]
         elif "error" in object:
-            if attempt_count:
+            logging.debug("error found!")
+            if attempt_count > 0:
                 return
             if not self.auth():
                 return
@@ -179,17 +191,6 @@ class VKService:
         p = HTMLParser()
         json = p.unescape(json)
         return simplejson.loads(json)
-    
-    def is_authorized(self):
-        self.authorized_lock.acquire()
-        if not self.user_id and not self.token:
-            return False
-        if not self.get_result("getProfiles", "uid=" + str(self.user_id), 1):
-            return False
-
-        if self.authorized_lock.locked():
-            self.authorized_lock.release()
-        return True
     
     def get_profile(self, without_auth=False):
         return self.get_result("getProfiles", "uid=" + str(self.user_id), 1 if without_auth else 0)

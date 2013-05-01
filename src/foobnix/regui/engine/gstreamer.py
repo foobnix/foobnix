@@ -8,12 +8,9 @@ Created on 28 сент. 2010
 import os
 import time
 import thread
-import urllib
 import logging
-import threading
 
 import gi
-
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst
 
@@ -45,6 +42,7 @@ class GStreamerEngine(MediaPlayerEngine):
         self.current_state = STATE_STOP
         self.remembered_seek_position = 0
         self.error_counter = 0
+        self.radio_recording = False
         self.player = self.gstreamer_player()
 
     def get_state(self):
@@ -54,6 +52,13 @@ class GStreamerEngine(MediaPlayerEngine):
         self.current_state = state
 
     def gstreamer_player(self):
+        '''
+        Filesrc -----+                                         + -> volume -> equalizer -> audiosink
+                     |-> (decodebin -> audioconvert) -> tee -> |
+        souphttpsrc -+                                         + -> vorbisenc -> oggmux -> filesink
+                                                               |___________________________________|
+                                                                            Dynamic part
+        '''
         playbin = Gst.Pipeline()
         self.fsource = Gst.ElementFactory.make("filesrc", "fsource")
         self.init_hsource()
@@ -62,6 +67,8 @@ class GStreamerEngine(MediaPlayerEngine):
         audiosink = Gst.ElementFactory.make("autoaudiosink", "autoaudiosink")
         self.decodebin = Gst.ElementFactory.make("decodebin", "decode")
         self.equalizer = Gst.ElementFactory.make('equalizer-10bands', 'equalizer')
+
+        self.tee = Gst.ElementFactory.make("tee", "tee")
 
         #self.spectrum = Gst.ElementFactory.make('spectrum', 'spectrum')
         #self.spectrum.set_property("bands", self.SPECT_BANDS)
@@ -77,11 +84,11 @@ class GStreamerEngine(MediaPlayerEngine):
         playbin.add(volume)
         playbin.add(audioconvert)
         playbin.add(audiosink)
-        #playbin.add(self.spectrum)
+        playbin.add(self.tee)
         playbin.add(self.equalizer)
-        audioconvert.link(volume)
-        #audioconvert.link(self.spectrum)
-        #self.spectrum.link(volume)
+
+        audioconvert.link_pads("src", self.tee, "sink")
+        self.tee.link_pads("src_0", volume, "sink")
         volume.link(self.equalizer)
         self.equalizer.link(audiosink)
 
@@ -105,6 +112,11 @@ class GStreamerEngine(MediaPlayerEngine):
         self.hsource = Gst.ElementFactory.make("souphttpsrc", "hsource")
         self.hsource.set_property("user-agent", "Fooobnix music player")
         self.hsource.set_property("automatic-redirect", "false")
+
+    def init_radio_elements(self):
+        self.vorbisenc = Gst.ElementFactory.make("vorbisenc", "vorbisenc")
+        self.oggmux = Gst.ElementFactory.make("oggmux", "oggmux")
+        self.filesink = Gst.ElementFactory.make("filesink", "filesink")
 
     def notify_init(self, duration_int):
         logging.debug("Pre init thread: " + str(duration_int))
@@ -137,11 +149,24 @@ class GStreamerEngine(MediaPlayerEngine):
             file_name = os.path.join("/tmp", os.path.splitext(os.path.basename(self.radio_path))[0] + ".ogg")
         else:
             file_name = os.path.join("/tmp", "radio_record.ogg")
+        self.init_radio_elements()
+        self.player.add(self.vorbisenc)
+        self.player.add(self.oggmux)
+        self.player.add(self.filesink)
+        self.vorbisenc.link(self.oggmux)
+        self.oggmux.link(self.filesink)
+        self.tee.link_pads("src_1", self.vorbisenc, "sink")
+        self.filesink.set_property("location", file_name)
+        [k.sync_state_with_parent() for k in [self.vorbisenc, self.oggmux, self.filesink]]
+        self.radio_recording = True
 
-        #self.pipeline = Gst.parse_launch("""souphttpsrc location=%s ! tee name=t ! queue ! decodebin2 ! audioconvert ! audioresample ! autoaudiosink  t. ! queue ! filesink location=%s""" % (self.radio_rec_path, file_name))
-        self.pipeline = Gst.parse_launch(
-            """alsasrc ! audioconvert ! vorbisenc bitrate=128000 ! oggmux ! filesink location=%s""" % file_name)
-        self.pipeline.set_state(Gst.State.PLAYING)
+    def stop_radio_record(self):
+        if not self.radio_recording:
+            return
+        [k.set_state(Gst.State.NULL) for k in [self.vorbisenc, self.oggmux, self.filesink]]
+        self.tee.unlink_pads("src_1", self.vorbisenc, "sink")
+        [self.player.remove(k) for k in [self.vorbisenc, self.oggmux, self.filesink]]
+        self.radio_recording = False
 
     def play(self, bean):
         if not bean or not bean.path:
@@ -150,23 +175,21 @@ class GStreamerEngine(MediaPlayerEngine):
 
         self.bean = bean
 
-        path = bean.path
-
         self.state_stop(show_in_tray=False)
         self.player.set_state(Gst.State.NULL)
 
-        if hasattr(self, "pipeline"):
-            self.pipeline.set_state(Gst.State.NULL)
+        if self.radio_recording:
+            self.stop_radio_record()
 
-        if path.startswith("http://"):
-            self.radio_path = get_radio_source(path)
+        if bean.path.startswith("http://"):
+            self.radio_path = get_radio_source(bean.path)
             logging.debug("Try To play path " + self.radio_path)
             uri = self.radio_path
 
             if not self.bean.type == FTYPE_RADIO:
                 self.notify_title(uri)
         else:
-            uri = path
+            uri = bean.path
 
         logging.info("Gstreamer try to play " + uri)
 
@@ -199,7 +222,6 @@ class GStreamerEngine(MediaPlayerEngine):
             self.fsource.set_state(Gst.State.READY)
 
         self.realign_eq()
-
         self.state_play()
 
         if self.remembered_seek_position:
@@ -211,12 +233,6 @@ class GStreamerEngine(MediaPlayerEngine):
                 self.seek_seconds(bean.start_sec)
 
         self.remembered_seek_position = 0
-        '''trick to mask bug with ape playing
-        if get_file_extension(bean.path) == '.ape' and bean.start_sec and bean.start_sec != '0':
-            self.volume(0)
-            threading.Timer(1.8, lambda: self.volume(FC().volume)).start()
-        else:
-            self.volume(FC().volume)'''
 
         logging.debug(
             "current state before thread " + str(self.get_state()) + " thread_id: " + str(self.play_thread_id))
@@ -254,7 +270,6 @@ class GStreamerEngine(MediaPlayerEngine):
     def get_duration_seek_ns(self):
         try:
             position = self.player.query_duration(Gst.Format(Gst.Format.TIME))
-            #print ("get_duration_seek_ns", position)
             return position[1]
         except Exception, e:
             logging.warn("GET query_duration: " + str(e))
@@ -296,7 +311,6 @@ class GStreamerEngine(MediaPlayerEngine):
                 position_int = self.get_position_seek_ns()
                 if position_int > 0 and self.bean.start_sec and self.bean.start_sec > 0:
                     position_int -= float(self.bean.start_sec) * self.NANO_SECONDS
-                    #logging.debug(str(position_int) + str(self.bean.start_sec) + str(duration_int))
                     if (position_int + self.NANO_SECONDS) > duration_int:
                         self.notify_eos()
 
@@ -346,9 +360,6 @@ class GStreamerEngine(MediaPlayerEngine):
         self.player.set_state(Gst.State.PLAYING)
         self.current_state = STATE_PLAY
         self.on_chage_state()
-        if hasattr(self, 'pipeline'):
-            if Gst.STATE_PAUSED in self.pipeline.get_state()[1:]:
-                self.pipeline.set_state(Gst.State.PLAYING)
 
     def get_current_percent(self):
         duration = self.get_duration_seek_ns()
@@ -377,22 +388,18 @@ class GStreamerEngine(MediaPlayerEngine):
         if show_in_tray:
             self.on_chage_state()
         logging.debug("state STOP")
-        if hasattr(self, 'pipeline'):
-            if Gst.State.PLAYING in self.pipeline.get_state()[1:]:
-                self.controls.record.set_active(False)  # it will call "on toggle" method from self.record
+        if self.radio_recording:
+            self.controls.record.set_active(False)  # it will call "on toggle" method from self.record
+            self.stop_radio_record()
 
     def state_pause(self, show_in_tray=True):
         self.player.set_state(Gst.State.PAUSED)
         self.set_state(STATE_PAUSE)
         if show_in_tray:
             self.on_chage_state()
-        '''if hasattr(self, 'pipeline'):
-            print "in pause", self.pipeline.get_state()[1:]
-            if Gst.State.PLAYING in self.pipeline.get_state()[1:]:
-                self.pipeline.set_state(Gst.State.PAUSED)
-                print "pause after", self.pipeline.get_state()[1:]
-            elif Gst.State.PAUSED in self.pipeline.get_state()[1:]:
-                self.pipeline.set_state(Gst.State.PLAYING)'''
+        if self.radio_recording:
+            self.controls.record.set_active(False)  # it will call "on toggle" method from self.record
+            self.stop_radio_record()
 
     def state_play_pause(self):
         if self.get_state() == STATE_PLAY:
@@ -438,8 +445,8 @@ class GStreamerEngine(MediaPlayerEngine):
         elif type in [Gst.MessageType.STATE_CHANGED, Gst.MessageType.STREAM_STATUS]:
             if (self.bean and self.bean.type == FTYPE_RADIO and
                     struct.has_field("new-state") and
-                    struct.get_enum('old-state', Gst.State) == Gst.State.READY and
-                    struct.get_enum('new-state', Gst.State) == Gst.State.NULL):
+                        struct.get_enum('old-state', Gst.State) == Gst.State.READY and
+                        struct.get_enum('new-state', Gst.State) == Gst.State.NULL):
                 logging.info("Reconnect")
                 self.play(self.bean)
                 return

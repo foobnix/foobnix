@@ -4,11 +4,10 @@ Created on Mar 23, 2011
 @author: zavlab1
 '''
 import os
-from gi.repository import Gtk
-from gi.repository import Gst
 import shutil
 import logging
-
+from gi.repository import Gtk
+from gi.repository import Gst
 from foobnix.helpers.dialog_entry import FileSavingDialog
 
 
@@ -30,27 +29,26 @@ class RadioRecord(Gtk.ToggleButton):
     def on_toggle(self, a):
         engine = self.controls.media_engine
             
-        if hasattr(engine, 'pipeline'):
-            if Gst.STATE_PLAYING in engine.pipeline.get_state()[1:]:
-                engine.pipeline.set_state(Gst.STATE_NULL)
-                if os.path.isfile(engine.radio_path):
-                    name = os.path.splitext(os.path.basename(engine.radio_path))[0] + ".ogg"
-                else:
-                    name = "radio_record.ogg"
-                
-                temp_file = os.path.join("/tmp", name)
-                if not os.path.exists(temp_file):
-                    logging.warning(_("So file doesn't exist. Pehaps it wasn't create yet."))
-                    return
-                                   
-                def func(filename, folder):
-                    try:
-                        shutil.move(temp_file, os.path.join(folder, filename))
-                    except IOError, e:
-                        logging.error(e)
+        if engine.radio_recording:
+            engine.stop_radio_record()
+            if os.path.isfile(engine.radio_path):
+                name = os.path.splitext(os.path.basename(engine.radio_path))[0] + ".ogg"
+            else:
+                name = "radio_record.ogg"
 
-                FileSavingDialog(_("Save file as ..."), func, args = None, current_folder=os.path.expanduser("~"), current_name=name)
+            temp_file = os.path.join("/tmp", name)
+            if not os.path.exists(temp_file):
+                logging.warning(_("So file doesn't exist. Pehaps it wasn't create yet."))
                 return
-            
-        bean = self.controls.notetabs.get_current_tree().get_current_bean_by_UUID()
-        engine.record_radio(bean)
+
+            def func(filename, folder):
+                try:
+                    shutil.move(temp_file, os.path.join(folder, filename))
+                except IOError, e:
+                    logging.error(e)
+
+            FileSavingDialog(_("Save file as ..."), func, args=None,
+                             current_folder=os.path.expanduser("~"), current_name=name)
+        else:
+            bean = self.controls.notetabs.get_current_tree().get_current_bean_by_UUID()
+            engine.record_radio(bean)

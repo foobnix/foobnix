@@ -132,15 +132,15 @@ class VKIntegrationControls(CommonTreeControl):
 
         def task():
             beans = self.get_user_tracks_as_beans(parent.user_id)
-            for bean in beans:
-                bean.parent(parent)
-                row = self.get_row_from_bean(bean)
-                self.model.append(p_iter, row)
-            
-            for rem in old_iters:
-                self.model.remove(rem)     
-                    
-        def g_task():
-            GObject.idle_add(task)
 
-        self.controls.in_thread.run_with_progressbar(g_task)
+            def safe():
+                for bean in beans:
+                    bean.parent(parent)
+                    row = self.get_row_from_bean(bean)
+                    self.model.append(p_iter, row)
+
+                for rem in old_iters:
+                    self.model.remove(rem)
+            GObject.idle_add(safe)
+
+        self.controls.in_thread.run_with_progressbar(task)
