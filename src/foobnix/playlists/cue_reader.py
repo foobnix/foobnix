@@ -19,7 +19,7 @@ from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.file_utils import get_any_supported_audio_file
-from foobnix.util.id3_util import udpate_id3
+from foobnix.util.id3_util import udpate_id3, correct_encoding
 
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
@@ -176,10 +176,7 @@ class CueReader():
             file = open(self.cue_path, "r")
             data = file.read()
             file.seek(0, 0)
-            
-            logging.debug("File encoding is" + str(data))
-        #code = self.code_detecter(data)
-
+           
         title = ""
         performer = ""
         index = "00:00:00"
@@ -190,6 +187,7 @@ class CueReader():
         self.files_count = 0
 
         for line in file:
+            line = correct_encoding(line)
             if not self.is_valid and not line.startswith(FILE):
                 continue
             else: self.is_valid = True

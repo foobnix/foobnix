@@ -863,7 +863,7 @@ class DragDropTree(Gtk.TreeView):
                         value = getattr(full_bean, key)
                         if value is None:
                             value = ''
-                        elif type(value) in [int, float]:
+                        elif type(value) in [int, float, long]:
                             value = str(value)
                         treerow[i] = value
                 else:

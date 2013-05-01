@@ -133,7 +133,7 @@ def udpate_id3(bean):
                 if audio.has_key('title'): bean.title = correct_encoding(audio["title"][0])
                 if audio.has_key('album'): bean.album = correct_encoding(audio["album"][0])
                 if audio.has_key('composer'): bean.composer = correct_encoding(audio['composer'][0])
-                if audio.has_key('cuesheet'): bean.cue = correct_encoding(audio['cuesheet'][0])
+                if audio.has_key('cuesheet'): bean.cue = audio['cuesheet'][0] # correct_encoding is in cue parser
                 if audio.has_key('tracknumber'):
                     if not FC().numbering_by_order:
                         bean.tracknumber = audio["tracknumber"][0]
