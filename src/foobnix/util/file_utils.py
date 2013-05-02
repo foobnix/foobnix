@@ -29,11 +29,11 @@ def open_in_filemanager(path, managers=None):
     elif os.name == 'nt':
         os.startfile(dirname)
     elif os.name == 'posix':
-        subprocess.call(('xdg-open', dirname))       
+        subprocess.call(('xdg-open', dirname))
 
 def get_files_from_folder(folder):
     return [file for file in os.listdir(folder) if not os.path.isdir(file)]
-        
+
 def rename_file_on_disk(row, index_path, index_text):
     path = row[index_path]
     name = os.path.basename(path)
@@ -56,12 +56,12 @@ def rename_file_on_disk(row, index_path, index_text):
     dialog = Gtk.Dialog(title, buttons=("Rename", Gtk.ResponseType.ACCEPT, "Cancel", Gtk.ResponseType.REJECT))
     dialog.vbox.pack_start(hbox)
     dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
-    dialog.show_all()    
+    dialog.show_all()
     if dialog.run() == Gtk.ResponseType.ACCEPT:
         if os.path.isdir(path) or not entry_ext.get_text():
             new_path = os.path.join(os.path.dirname(path), entry.get_text())
         else:
-            new_path = os.path.join(os.path.dirname(path), entry.get_text() + '.' + entry_ext.get_text()) 
+            new_path = os.path.join(os.path.dirname(path), entry.get_text() + '.' + entry_ext.get_text())
         try:
             os.rename(path, new_path)
             row[index_path] = new_path
@@ -72,7 +72,7 @@ def rename_file_on_disk(row, index_path, index_text):
         return True
     dialog.destroy()
 
-def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):            
+def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
     title = _('Delete file(s) / folder(s)')
     label = Gtk.Label(_('Do you really want to delete item(s) from disk?'))
     dialog = Gtk.Dialog(title, buttons=("Delete", Gtk.ResponseType.ACCEPT, "Cancel", Gtk.ResponseType.REJECT))
@@ -91,11 +91,11 @@ def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
     for path in paths:
         name = os.path.basename(path)
         buffer.insert_at_cursor('\t' + name + '\n')
-    
-    dialog.show_all()    
+
+    dialog.show_all()
     if dialog.run() == Gtk.ResponseType.ACCEPT:
         model = row_refs[0].get_model()
-        
+
         for row_ref, path in zip(row_refs, paths):
             try:
                 if os.path.isfile(path):
@@ -108,7 +108,7 @@ def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
                 continue
         dialog.destroy()
         return True
-    dialog.destroy()             
+    dialog.destroy()
 
 def del_dir(path):
         list = os.listdir(path)
@@ -123,13 +123,13 @@ def del_dir(path):
 
 def copy_move_files_dialog(files, dest_folder, copy=None):
     if copy == Gdk.DragAction.COPY: action = _("Copy") #@UndefinedVariable
-    else: action = _("Replace") 
-    
+    else: action = _("Replace")
+
     dialog = Gtk.Dialog(_('%s file(s) / folder(s)') % action)
-    
+
     ok_button = dialog.add_button(action, Gtk.ResponseType.OK)
     cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL) #@UnusedVariable
-    
+
     ok_button.grab_default()
     label = Gtk.Label('\n' + _("Are you really want to %s this item(s) to %s ?") % (action, dest_folder))
     area = ScrolledText()
@@ -182,7 +182,7 @@ def create_folder_dialog(path):
     full_path = task()
     dialog.destroy()
     return full_path
-     
+
 def isDirectory(path):
     return os.path.isdir(path)
 
@@ -190,47 +190,56 @@ def isDirectory(path):
 def get_file_extension(fileName):
     if not fileName:
         return None
-    
+
     if fileName.startswith("http"):
         return None
-        
+
     return os.path.splitext(fileName)[1].lower().strip()
 
 def file_extension(file_name):
     return get_file_extension(file_name)
 
 
-def get_any_supported_audio_file(full_file):    
+def get_any_supported_audio_file(full_file):
     exists = os.path.exists(full_file)
     if exists:
         return  full_file
-    
+
     """try to find other source"""
     ext = get_file_extension(full_file)
     nor = full_file[:-len(ext)]
     logging.info("Normalized path" + nor)
-    
+
     for support_ext in FC().audio_formats:
         try_name = nor + support_ext
         if os.path.exists(try_name):
             return try_name
-                
+
     return None
 
 
 def get_file_path_from_dnd_dropped_uri(uri):
     path = ""
-    if uri.startswith('file:\\\\\\'): # windows
-        path = uri[8:] # 8 is len('file:///')
-    elif uri.startswith('file://'): # nautilus, rox
-        path = uri[7:] # 7 is len('file://')
-    elif uri.startswith('file:'): # xffm
-        path = uri[5:] # 5 is len('file:')
+    if uri.startswith('file:\\\\\\'):   # windows
+        path = uri[8:]  # 8 is len('file:///')
+    elif uri.startswith('file://'):     # nautilus, rox
+        path = uri[7:]  # 7 is len('file://')
+    elif uri.startswith('file:'):   # xffm
+        path = uri[5:]  # 5 is len('file:')
 
-    path = urllib.url2pathname(path) # escape special chars
-    path = path.strip('\r\n\x00') # remove \r\n and NULL
+    path = urllib.url2pathname(path)    # escape special chars
+    path = path.strip('\r\n\x00')   # remove \r\n and NULL
 
     return path
+
+
+def get_files_from_gtk_selection_data(selection):
+    if not selection or selection.get_format() != 8 or selection.get_length() <= 0:
+        return None
+    files = selection.get_text().split("\n")
+    files = [k.strip("\r") for k in files if k.strip() != ""]
+    return [get_file_path_from_dnd_dropped_uri(k) for k in files]
+
 
 def get_dir_size(dirpath):
     folder_size = 0
@@ -258,7 +267,7 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
     else:
         from multiprocessing import Process
     def copy_move_one_file(src, dst_folder):
-        
+
         m = Process(target=func, args=(src, dst_folder))
         m.start()
         def task():
@@ -273,7 +282,7 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
         if m.is_alive():
             m.join()
         return
-    
+
     func = shutil.move if move else shutil.copy2
     if os.path.isfile(src):
         copy_move_one_file(src, dst_folder)
@@ -311,7 +320,7 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
         ignored_names = ignore(src, names)
     else:
         ignored_names = set()
-    
+
     if not os.path.exists(dst_folder):
         os.makedirs(dst_folder)
     subfolder = os.path.join(dst_folder, os.path.basename(src))
@@ -331,7 +340,7 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
                 copy_move_with_progressbar(pr_window, srcname, subfolder, move, symlinks, ignore)
             else:
                 copy_move_one_file(srcname, subfolder)
-              
+
                 # XXX What about devices, sockets etc.?
         except (IOError, os.error), why:
             errors.append((srcname, dstname, str(why)))
@@ -344,7 +353,7 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
             shutil.copystat(src, dst_folder)
         except OSError, why:
             errors.extend((src, dst_folder, str(why)))
-    
+
 def copy_to(old_paths):
         destinations = directory_chooser_dialog(_("Choose Folder"), FC().last_dir)
         if not destinations:

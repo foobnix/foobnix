@@ -14,10 +14,11 @@ from gi.repository import GObject
 from foobnix.fc.fc import FC
 from foobnix.util import const, idle_task
 from foobnix.helpers.menu import Popup
+from foobnix.util.bean_utils import get_bean_from_file
 from foobnix.util.tag_util import edit_tags
 from foobnix.util.converter import convert_files
 from foobnix.util.audio import get_mutagen_audio
-from foobnix.util.file_utils import open_in_filemanager, copy_to
+from foobnix.util.file_utils import open_in_filemanager, copy_to, get_files_from_gtk_selection_data
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE, \
@@ -390,54 +391,81 @@ class PlaylistTreeControl(CommonTreeControl):
         '''if FC().columns["Track"][2] < 0:
              self.description_col.set_fixed_width(self.get_allocation().width - (FC().columns["Time"][2]+70))'''
 
+    def _paths_to_rows(self, paths):
+        result = []
+        for path in paths:
+            bean = get_bean_from_file(path)
+            if bean:
+                result += [self.get_row_from_bean(bean)]
+        return result
+
     def on_drag_data_received(self, treeview, context, x, y, selection, info, timestamp):
         logging.debug('Playlist on_drag_data_received')
+
         model = self.get_model().get_model()
         drop_info = self.get_dest_row_at_pos(x, y)
-
-        # ff - from_filter
-        ff_tree = Gtk.drag_get_source_widget(context)
-        ff_model, ff_paths = ff_tree.get_selection().get_selected_rows()
-        treerows = [ff_model[ff_path] for ff_path in ff_paths]
 
         if drop_info:
             path, position = drop_info
             iter = model.get_iter(path)
 
-        if self is ff_tree:
-            ff_row_refs = [Gtk.TreeRowReference.new(ff_model, ff_path) for ff_path in ff_paths]
-            for ff_row_ref in ff_row_refs:
-                ff_iter = self.get_iter_from_row_reference(ff_row_ref)
-                f_iter = ff_model.convert_iter_to_child_iter(ff_iter)
+        files = get_files_from_gtk_selection_data(selection)
+
+        if files:
+            treerows = self._paths_to_rows(files)
+            if not treerows:
+                return
+            self.simple_content_filter(treerows)
+            for row in treerows:
                 if drop_info:
                     if (position == Gtk.TREE_VIEW_DROP_BEFORE
                         or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
-                        model.move_before(f_iter, iter)
+                        model.insert_before(None, iter, row)
                     else:
-                        model.move_after(f_iter, iter)
+                        model.insert_after(None, iter, row)
                         iter = model.iter_next(iter)
                 else:
-                    model.move_before(f_iter, None)
-            return
+                    model.append(None, row)
         else:
-            for i, treerow in enumerate(treerows):
-                for k, ch_row in enumerate(treerow.iterchildren()):
-                    treerows.insert(i + k + 1, ch_row)
+            # ff - from_filter
+            ff_tree = Gtk.drag_get_source_widget(context)
+            ff_model, ff_paths = ff_tree.get_selection().get_selected_rows()
+            treerows = [ff_model[ff_path] for ff_path in ff_paths]
 
-            treerows = self.simple_content_filter(treerows)
+            if self is ff_tree:
+                ff_row_refs = [Gtk.TreeRowReference.new(ff_model, ff_path) for ff_path in ff_paths]
+                for ff_row_ref in ff_row_refs:
+                    ff_iter = self.get_iter_from_row_reference(ff_row_ref)
+                    f_iter = ff_model.convert_iter_to_child_iter(ff_iter)
+                    if drop_info:
+                        if (position == Gtk.TREE_VIEW_DROP_BEFORE
+                            or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
+                            model.move_before(f_iter, iter)
+                        else:
+                            model.move_after(f_iter, iter)
+                            iter = model.iter_next(iter)
+                    else:
+                        model.move_before(f_iter, None)
+                return
+            else:
+                for i, treerow in enumerate(treerows):
+                    for k, ch_row in enumerate(treerow.iterchildren()):
+                        treerows.insert(i + k + 1, ch_row)
 
-            if drop_info:
-                if (position == Gtk.TREE_VIEW_DROP_BEFORE
-                    or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
-                    for treerow in treerows:
-                        model.insert_before(None, iter, [col for col in treerow])
+                treerows = self.simple_content_filter(treerows)
+
+                if drop_info:
+                    if (position == Gtk.TREE_VIEW_DROP_BEFORE
+                        or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
+                        for treerow in treerows:
+                            model.insert_before(None, iter, [col for col in treerow])
+                    else:
+                        for treerow in treerows:
+                            model.insert_after(None, iter, [col for col in treerow])
+                            iter = model.iter_next(iter)
                 else:
                     for treerow in treerows:
-                        model.insert_after(None, iter, [col for col in treerow])
-                        iter = model.iter_next(iter)
-            else:
-                for treerow in treerows:
-                    model.append(None, [col for col in treerow])
+                        model.append(None, [col for col in treerow])
 
         self.fill_treerows()
         self.update_tracknumber()
