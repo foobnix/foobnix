@@ -35,7 +35,7 @@ from foobnix.util.m3u_utils import m3u_reader
 from foobnix.util.text_utils import normalize_text
 from foobnix.util.version import compare_versions
 from foobnix.version import FOOBNIX_VERSION
-from foobnix.util import analytics
+from foobnix.util import analytics, idle_task
 
 
 class BaseFoobnixControls():
@@ -138,6 +138,7 @@ class BaseFoobnixControls():
             if bean.type == FTYPE_RADIO:
                 return self.trayicon.set_image_from_path(FC().radio_icon_entry)
 
+    @idle_task
     def set_dbus_state(self, state, bean):
         if self.dbus:
             self.dbus._update_info(bean)
@@ -284,43 +285,54 @@ class BaseFoobnixControls():
                          FCache().cache_music_tree_beans[number_of_page])
         #GObject.idle_add(self.tabhelper.on_save_tabs)   # for true order
 
+    @idle_task
     def set_visible_video_panel(self, flag):
         FC().is_view_video_panel = flag
         if flag:
-            GObject.idle_add(self.movie_window.show)
+            self.movie_window.show()
         else:
-            GObject.idle_add(self.movie_window.hide)
+            self.movie_window.hide()
 
+    @idle_task
     def volume_up(self):
         self.volume.volume_up()
 
+    @idle_task
     def volume_down(self):
         self.volume.volume_down()
 
+    @idle_task
     def mute(self):
         self.volume.mute()
 
+    @idle_task
     def hide(self):
-        GObject.idle_add(self.main_window.hide)
+        self.main_window.hide()
 
+    @idle_task
     def show_hide(self):
-        GObject.idle_add(self.main_window.show_hide)
+        self.main_window.show_hide()
 
+    @idle_task
     def show(self):
-        GObject.idle_add(self.main_window.show)
+        self.main_window.show()
 
+    @idle_task
     def play_pause(self):
         if self.media_engine.get_state() == STATE_PLAY:
             self.media_engine.state_pause()
         else:
             self.media_engine.state_play()
 
+    @idle_task
     def seek_up(self):
         self.media_engine.seek_up()
 
+    @idle_task
     def seek_down(self):
         self.media_engine.seek_down()
 
+    @idle_task
     def windows_visibility(self):
         visible = self.main_window.get_property('visible')
         if visible:
@@ -328,6 +340,7 @@ class BaseFoobnixControls():
         else:
             GObject.idle_add(self.main_window.show)
 
+    @idle_task
     def state_play(self, under_pointer_icon=False):
         if self.media_engine.get_state() == STATE_PAUSE:
             self.media_engine.state_play()
@@ -339,12 +352,15 @@ class BaseFoobnixControls():
         else:
             self.play_selected_song()
 
+    @idle_task
     def show_preferences(self):
         self.preferences.show()
 
+    @idle_task
     def state_pause(self):
         self.media_engine.state_pause()
 
+    @idle_task
     def state_stop(self, remember_position=False):
         self.record.hide()
         self.media_engine.state_stop(remember_position)
@@ -352,6 +368,7 @@ class BaseFoobnixControls():
             self.statusbar.set_text(_("Stopped"))
             self.seek_bar.clear()
 
+    @idle_task
     def state_play_pause(self):
         self.media_engine.state_play_pause()
         bean = self.media_engine.bean
@@ -374,26 +391,27 @@ class BaseFoobnixControls():
         else:
             return False
 
+    @idle_task
     def play(self, bean):
         if not bean or not bean.is_file:
             return
 
         self.play_lock.acquire()
         self.seek_bar.clear()
+        ## TODO: Check for GTK+3.4 (Status icon doesn't have a set_tooltip method)
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
         self.movie_window.set_text(bean.text)
 
-        def task():
-            if bean.type == FTYPE_RADIO:
-                self.record.show()
-                self.seek_bar.progressbar.set_fraction(0)
-                self.seek_bar.set_text(_("Radio ") + bean.text.capitalize())
-            else:
-                self.record.hide()
+        if bean.type == FTYPE_RADIO:
+            self.record.show()
+            self.seek_bar.progressbar.set_fraction(0)
+            self.seek_bar.set_text(_("Radio ") + bean.text.capitalize())
+        else:
+            self.record.hide()
 
-            self.main_window.set_title(bean.text)
-        GObject.idle_add(task)
+        self.main_window.set_title(bean.text)
+
         thread.start_new_thread(self._one_thread_play, (bean,))
 
     def _one_thread_play(self, bean):
@@ -442,6 +460,7 @@ class BaseFoobnixControls():
                 self.update_info_panel(bean)
             self.set_visible_video_panel(False)
 
+    @idle_task
     def notify_playing(self, pos_sec, dur_sec, bean):
         if not bean.type or bean.type != FTYPE_RADIO:
             self.seek_bar.update_seek_status(pos_sec, dur_sec)
@@ -462,6 +481,7 @@ class BaseFoobnixControls():
                 if FC().automatic_online_save and bean.path and bean.path.startswith("http://"):
                     self.dm.append_task(bean)
 
+    @idle_task
     def notify_title(self, bean, text):
         logging.debug("Notify title" + text)
 
@@ -478,17 +498,21 @@ class BaseFoobnixControls():
             if " - " in text and self.chache_text != text:
                 self.net_wrapper.execute(self.lastfm_service.report_scrobbled, t_bean, start_time, 200)
 
+    @idle_task
     def notify_error(self, msg):
         logging.error("notify error " + msg)
         self.seek_bar.set_text(msg)
         self.info_panel.clear()
 
+    @idle_task
     def notify_eos(self):
         self.next()
 
+    @idle_task
     def player_seek(self, percent):
         self.media_engine.seek(percent)
 
+    @idle_task
     def player_volume(self, percent):
         self.media_engine.volume(percent)
 
@@ -646,15 +670,19 @@ class BaseFoobnixControls():
         #inline(query)
         self.in_thread.run_with_progressbar(search_top_tags_task, query)
 
+    @idle_task
     def update_info_panel(self, bean):
         self.info_panel.update(bean)
 
+    @idle_task
     def append_to_new_notebook(self, text, beans, optimization=False):
         self.notetabs._append_tab(text, beans, optimization)
 
+    @idle_task
     def append_to_current_notebook(self, beans):
         self.notetabs.append_all(beans)
 
+    @idle_task
     def next(self):
         bean = self.notetabs.next()
         if not bean:
@@ -665,6 +693,7 @@ class BaseFoobnixControls():
 
         self.play(bean)
 
+    @idle_task
     def prev(self):
         bean = self.notetabs.prev()
         if not bean:
@@ -672,12 +701,14 @@ class BaseFoobnixControls():
 
         self.play(bean)
 
+    @idle_task
     def filter_by_folder(self, value):
         tree = self.tabhelper.get_current_tree()
         tree.filter_by_folder(value)
         self.radio.filter_by_folder(value)
         self.virtual.filter_by_folder(value)
 
+    @idle_task
     def filter_by_file(self, value):
         tree = self.tabhelper.get_current_tree()
         tree.filter_by_file(value)
