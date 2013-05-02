@@ -20,7 +20,7 @@ from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.file_utils import open_in_filemanager, copy_to
 from foobnix.util.localization import foobnix_localization
 from foobnix.regui.treeview.common_tree import CommonTreeControl
-from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE,\
+from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE, \
     is_modificator
 from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
@@ -32,7 +32,6 @@ FLAG = False
 
 
 class PlaylistTreeControl(CommonTreeControl):
-    
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
 
@@ -40,11 +39,11 @@ class PlaylistTreeControl(CommonTreeControl):
         self.tree_menu = Popup()
         self.full_name = ""
         self.label = Gtk.Label()
-        
+
         self.set_headers_visible(True)
         self.set_headers_clickable(True)
         self.set_reorderable(True)
-        
+
         """Column icon"""
         self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         self.icon_col.key = "*"
@@ -53,7 +52,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.icon_col.set_min_width(32)
         self.icon_col.label = Gtk.Label("*")
         self._append_column(self.icon_col)
-        
+
         """track number"""
         self.trkn_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.tracknumber[0])
         self.trkn_col.key = "N"
@@ -88,7 +87,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.artist_col.label = Gtk.Label(_("Artist"))
         self.artist_col.item = Gtk.CheckMenuItem(_("Artist"))
         self._append_column(self.artist_col)
-               
+
         """column title"""
         self.title_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.title[0])
         self.title_col.key = "Title"
@@ -97,7 +96,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.title_col.label = Gtk.Label(_("Title"))
         self.title_col.item = Gtk.CheckMenuItem(_("Title"))
         self._append_column(self.title_col)
-        
+
         """column album"""
         self.album_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.album[0])
         self.album_col.key = "Album"
@@ -109,7 +108,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.album_col.label = Gtk.Label(_("Album"))
         self.album_col.item = Gtk.CheckMenuItem(_("Album"))
         self._append_column(self.album_col)
-        
+
         """column time"""
         self.time_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.time[0])
         self.time_col.key = "Time"
@@ -119,33 +118,33 @@ class PlaylistTreeControl(CommonTreeControl):
 
         self.configure_send_drag()
         self.configure_recive_drag()
-        
+
         self.set_playlist_plain()
-        
+
         self.connect("button-release-event", self.on_button_press)
-        
+
         self.on_load()
-        
+
         self.connect("columns-changed", self.on_columns_changed)
-        
+
     def set_playlist_tree(self):
         self.rebuild_as_tree()
-                
+
     def set_playlist_plain(self):
         self.rebuild_as_plain()
-        
+
     def on_key_release(self, w, e):
         if is_modificator(e):
             return
         elif is_key(e, KEY_RETURN):
             self.controls.play_selected_song()
         elif is_key(e, KEY_DELETE):
-            self.delete_selected()     
+            self.delete_selected()
         elif is_key(e, 'Left'):
             self.controls.seek_down()
         elif is_key(e, 'Right'):
             self.controls.seek_up()
-    
+
     def get_bean_under_pointer_icon(self):
         for row in self.model:
             if row[self.play_icon[0]]:
@@ -156,44 +155,44 @@ class PlaylistTreeControl(CommonTreeControl):
         logging.debug("Repeat state " + str(FC().repeat_state))
         if FC().repeat_state == const.REPEAT_SINGLE:
             return self.get_current_bean_by_UUID()
-        
-        if FC().is_order_random:               
+
+        if FC().is_order_random:
             bean = self.get_random_bean()
             self.set_play_icon_to_bean(bean)
             return bean
-    
+
     def next(self):
-        bean = self.common_single_random()       
+        bean = self.common_single_random()
         if bean:
-            self.scroll_follow_play_icon()  
+            self.scroll_follow_play_icon()
             return bean
-        
+
         bean = self.get_next_bean(FC().repeat_state == const.REPEAT_ALL)
-        
+
         if not bean:
             self.controls.state_stop()
             return
-        
+
         self.set_play_icon_to_bean(bean)
-        self.scroll_follow_play_icon()            
-        
+        self.scroll_follow_play_icon()
+
         logging.debug("Next bean " + str(bean) + bean.text)
-        
+
         return bean
 
     def prev(self):
         if FC().repeat_state == const.REPEAT_SINGLE:
             return self.get_current_bean_by_UUID()
-        
+
         bean = self.get_prev_bean(FC().repeat_state == const.REPEAT_ALL)
-        
+
         if not bean:
             self.controls.state_stop()
             return
 
         self.set_play_icon_to_bean(bean)
-        self.scroll_follow_play_icon() 
-        
+        self.scroll_follow_play_icon()
+
         return bean
 
     @idle_task
@@ -205,7 +204,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 path = row.path
                 if path >= end_path or path <= start_path:
                     self.scroll_to_cell(path)
-    
+
     def append(self, bean):
         return super(PlaylistTreeControl, self).append(bean)
 
@@ -214,7 +213,7 @@ class PlaylistTreeControl(CommonTreeControl):
             w.get_selection().unselect_all()
         if is_double_left_click(e):
             self.controls.play_selected_song()
-            
+
         if is_rigth_click(e):
             right_click_optimization_for_trees(w, e)
             beans = self.get_selected_beans()
@@ -222,7 +221,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 self.tree_menu.clear()
                 self.tree_menu.add_item(_('Play'), Gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
                 self.tree_menu.add_item(_('Delete from playlist'), Gtk.STOCK_DELETE, self.delete_selected, None)
-            
+
                 paths = []
                 inet_paths = []
                 local_paths = []
@@ -234,36 +233,41 @@ class PlaylistTreeControl(CommonTreeControl):
                         inet_paths.append(bean.path)
                     else:
                         local_paths.append(bean.path)
-                                                    
+
                 if local_paths:
                     self.tree_menu.add_item(_('Copy To...'), Gtk.STOCK_ADD, copy_to, local_paths)
                     self.tree_menu.add_item(_("Open in file manager"), None, open_in_filemanager, local_paths[0])
                 if inet_paths:
-                    self.tree_menu.add_item(_('Download'), Gtk.STOCK_ADD, self.controls.dm.append_tasks, self.get_all_selected_beans())
-                    self.tree_menu.add_item(_('Download To...'), Gtk.STOCK_ADD, self.controls.dm.append_tasks_with_dialog, self.get_all_selected_beans())
-                                
+                    self.tree_menu.add_item(_('Download'), Gtk.STOCK_ADD,
+                                            self.controls.dm.append_tasks, self.get_all_selected_beans())
+                    self.tree_menu.add_item(_('Download To...'), Gtk.STOCK_ADD,
+                                            self.controls.dm.append_tasks_with_dialog, self.get_all_selected_beans())
+
                 self.tree_menu.add_separator()
-                
-                if paths[0]:
-                    self.tree_menu.add_item(_('Edit Tags'), Gtk.STOCK_EDIT, edit_tags, (self.controls, paths))
-                    self.tree_menu.add_item(_('Format Converter'), Gtk.STOCK_CONVERT, convert_files, paths)
+
+                if local_paths:
+                    self.tree_menu.add_item(_('Edit Tags'), Gtk.STOCK_EDIT, edit_tags, (self.controls, local_paths))
+                    self.tree_menu.add_item(_('Format Converter'), Gtk.STOCK_CONVERT, convert_files, local_paths)
                 text = self.get_selected_bean().text
-                self.tree_menu.add_item(_('Copy To Search Line'), Gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, text)
+                self.tree_menu.add_item(_('Copy To Search Line'), Gtk.STOCK_COPY,
+                                        self.controls.searchPanel.set_search_text, text)
                 self.tree_menu.add_separator()
                 self.tree_menu.add_item(_('Copy №-Title-Time'), Gtk.STOCK_COPY, self.copy_info_to_clipboard)
-                self.tree_menu.add_item(_('Copy Artist-Title-Album'), Gtk.STOCK_COPY, self.copy_info_to_clipboard, True)
+                self.tree_menu.add_item(_('Copy Artist-Title-Album'), Gtk.STOCK_COPY,
+                                        self.copy_info_to_clipboard, True)
                 self.tree_menu.add_separator()
-                self.tree_menu.add_item(_('Love This Track(s) by Last.fm'), None, self.controls.love_this_tracks, self.get_all_selected_beans())
+                self.tree_menu.add_item(_('Love This Track(s) by Last.fm'), None,
+                                        self.controls.love_this_tracks, self.get_all_selected_beans())
 
                 self.tree_menu.show(e)
-                  
+
     def on_click_header(self, w, e):
         if is_rigth_click(e):
             if "menu" in w.__dict__:
                 w.menu.show(e)
             else:
                 self.menu.show(e)
-            
+
     def on_toggled_num(self, *a):
         FC().numbering_by_order = not FC().numbering_by_order
         number_music_tabs = self.controls.notetabs.get_n_pages() - 1
@@ -282,10 +286,10 @@ class PlaylistTreeControl(CommonTreeControl):
                         row[pl_tree.tracknumber[0]] = re.search('\d*', audio['tracknumber'][0]).group()
                     if audio and audio.has_key('trkn'):
                         row[pl_tree.tracknumber[0]] = re.search('\d*', audio["trkn"][0]).group()
-        
+
     def on_toggle(self, w, e, column):
         FC().columns[column.key][0] = not FC().columns[column.key][0]
-        
+
         number_music_tabs = self.controls.notetabs.get_n_pages() - 1
         for key in self.__dict__.keys():
             if self.__dict__[key] is column:
@@ -295,6 +299,7 @@ class PlaylistTreeControl(CommonTreeControl):
         for page in xrange(number_music_tabs, -1, -1):
             tab_content = self.controls.notetabs.get_nth_page(page)
             pl_tree = tab_content.get_child()
+            ## TODO: check "local variable 'atr_name' might be referenced before assignment"
             pl_tree_column = pl_tree.__dict__[atr_name]
             if FC().columns[column.key][0]:
                 pl_tree.move_column_after(pl_tree_column, pl_tree.icon_col)
@@ -305,7 +310,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 pl_tree_column.set_visible(False)
                 if self is not pl_tree:
                     pl_tree_column.item.set_active(False)
-    
+
     def _append_column(self, column):
         column.set_widget(column.label)
         column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
@@ -315,7 +320,7 @@ class PlaylistTreeControl(CommonTreeControl):
             column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
         if FC().columns[column.key][2] > 0:
             column.set_fixed_width(FC().columns[column.key][2])
-        
+
         self.append_column(column)
         column.button = column.label.get_parent().get_parent().get_parent()
         column.button.connect("button-press-event", self.on_click_header)
@@ -334,19 +339,19 @@ class PlaylistTreeControl(CommonTreeControl):
                 self.num_order.set_active(True)
             else:
                 self.num_tags.set_active(True)
-    
+
     def on_columns_changed(self, *a):
         global FLAG
         if FLAG:
             return
-        FLAG = True 
-        
+        FLAG = True
+
         number_music_tabs = self.controls.notetabs.get_n_pages() - 1
         for i, column in enumerate(self.get_columns()):
             FC().columns[column.key][1] = i
             if column.get_width() > 1:  # to avoid recording of zero width in config
                 FC().columns[column.key][2] = column.get_width()
-        
+
         for page in xrange(number_music_tabs, 0, -1):
             tab_content = self.controls.notetabs.get_nth_page(page)
             pl_tree = tab_content.get_child()
@@ -355,7 +360,7 @@ class PlaylistTreeControl(CommonTreeControl):
             for column in col_list:
                 pl_tree.move_column_after(column, None)
         FLAG = False
-        
+
     def to_order_columns(self, x, y):
         return cmp(FC().columns[x.key][1], FC().columns[y.key][1])
 
@@ -368,7 +373,7 @@ class PlaylistTreeControl(CommonTreeControl):
             column.set_widget(column.label)
             column.set_clickable(True)
             if column.key != "*":
-                column.set_reorderable(True)            
+                column.set_reorderable(True)
             if FC().columns[column.key][0]:
                 self.move_column_after(column, None)
                 if "item" in column.__dict__:
@@ -389,16 +394,16 @@ class PlaylistTreeControl(CommonTreeControl):
         logging.debug('Playlist on_drag_data_received')
         model = self.get_model().get_model()
         drop_info = self.get_dest_row_at_pos(x, y)
-        
+
         # ff - from_filter
         ff_tree = Gtk.drag_get_source_widget(context)
         ff_model, ff_paths = ff_tree.get_selection().get_selected_rows()
         treerows = [ff_model[ff_path] for ff_path in ff_paths]
-        
+
         if drop_info:
             path, position = drop_info
             iter = model.get_iter(path)
-        
+
         if self is ff_tree:
             ff_row_refs = [Gtk.TreeRowReference.new(ff_model, ff_path) for ff_path in ff_paths]
             for ff_row_ref in ff_row_refs:
@@ -417,10 +422,10 @@ class PlaylistTreeControl(CommonTreeControl):
         else:
             for i, treerow in enumerate(treerows):
                 for k, ch_row in enumerate(treerow.iterchildren()):
-                    treerows.insert(i+k+1, ch_row)
-        
+                    treerows.insert(i + k + 1, ch_row)
+
             treerows = self.simple_content_filter(treerows)
-  
+
             if drop_info:
                 if (position == Gtk.TREE_VIEW_DROP_BEFORE
                     or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
@@ -433,9 +438,8 @@ class PlaylistTreeControl(CommonTreeControl):
             else:
                 for treerow in treerows:
                     model.append(None, [col for col in treerow])
-        
+
         self.fill_treerows()
-        
         self.update_tracknumber()
 
         context.finish(True, False, timestamp)
