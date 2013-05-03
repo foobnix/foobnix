@@ -13,6 +13,7 @@ import logging
 import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst
+from gi.repository import GObject
 
 from foobnix.fc.fc import FC
 from foobnix.util.id3_util import decode_cp866
@@ -23,13 +24,14 @@ from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
 Gst.init("")
 
 
-class GStreamerEngine(MediaPlayerEngine):
+class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
     NANO_SECONDS = 1000000000
     SPECT_BANDS = 10
     AUDIOFREQ = 44100
 
     def __init__(self, controls):
         MediaPlayerEngine.__init__(self, controls)
+        GObject.GObject.__init__(self)
         self.bean = None
         #self.player = self.gstreamer_player()
         self.position_sec = 0
@@ -129,6 +131,8 @@ class GStreamerEngine(MediaPlayerEngine):
 
     def notify_eos(self):
         logging.debug("Notify eos, STOP State")
+
+        self.emit('eos-signal')
         self.controls.notify_eos()
         self.set_state(STATE_STOP)
 
@@ -137,6 +141,8 @@ class GStreamerEngine(MediaPlayerEngine):
             return
         if self.bean.type == FTYPE_RADIO:
             "notify radio playing"
+
+            self.emit("title-changed", self.bean, text)
             self.controls.notify_title(self.bean, text)
 
     def notify_error(self, msg):
@@ -467,7 +473,7 @@ class GStreamerEngine(MediaPlayerEngine):
                     artist = decode_cp866(artist)
                     text = artist + " - " + text
                 if self.bean.type == FTYPE_RADIO and taglist.get_uint('bitrate')[0]:
-                    text = text + " (bitrate: " + str(taglist.get_uint('bitrate')[1]) + ")"
+                    self.emit('bitrate-changed', taglist.get_uint('bitrate')[1])
 
                 self.notify_title(text)
 
@@ -475,3 +481,7 @@ class GStreamerEngine(MediaPlayerEngine):
             self.error_counter = 0
             logging.info("MESSAGE_EOS")
             self.notify_eos()
+
+GObject.signal_new("title-changed", GStreamerEngine, GObject.SIGNAL_RUN_LAST, None, (object, str,))
+GObject.signal_new("bitrate-changed", GStreamerEngine, GObject.SIGNAL_RUN_LAST, None, (int,))
+GObject.signal_new("eos-signal", GStreamerEngine, GObject.SIGNAL_RUN_LAST, None, ())

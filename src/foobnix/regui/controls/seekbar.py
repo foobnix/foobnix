@@ -8,6 +8,7 @@ Created on 28 сент. 2010
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
+from gi.repository import Pango
 
 from foobnix.util import idle_task
 from foobnix.util.const import FTYPE_RADIO
@@ -29,6 +30,7 @@ class SeekProgressBarControls(FControl, Gtk.Alignment):
         self.tooltip.add(self.tooltip_label)
 
         self.progressbar = Gtk.ProgressBar()
+        self.progressbar.set_ellipsize(Pango.EllipsizeMode.END)
         self.progressbar.set_property("show-text", True)
         self.progressbar.set_text("00:00 / 00:00")
         try:

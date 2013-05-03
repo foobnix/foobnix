@@ -35,7 +35,7 @@ from foobnix.util.m3u_utils import m3u_reader
 from foobnix.util.text_utils import normalize_text
 from foobnix.util.version import compare_versions
 from foobnix.version import FOOBNIX_VERSION
-from foobnix.util import analytics, idle_task
+from foobnix.util import analytics, idle_task, idle_task_priority
 
 
 class BaseFoobnixControls():
@@ -360,7 +360,7 @@ class BaseFoobnixControls():
     def state_pause(self):
         self.media_engine.state_pause()
 
-    @idle_task
+    @idle_task_priority(priority=GObject.PRIORITY_HIGH_IDLE)
     def state_stop(self, remember_position=False):
         self.record.hide()
         self.media_engine.state_stop(remember_position)
@@ -486,7 +486,6 @@ class BaseFoobnixControls():
         logging.debug("Notify title" + text)
 
         self.statusbar.set_text(text)
-        text = normalize_text(text)
         self.seek_bar.set_text(text)
         t_bean = bean.create_from_text(text)
         self.update_info_panel(t_bean)
@@ -718,6 +717,7 @@ class BaseFoobnixControls():
 
     def quit(self, *a):
         self.state_stop()
+        Gtk.main_iteration()   # wait for complete stop task
         self.main_window.hide()
         self.trayicon.hide()
 
