@@ -9,7 +9,7 @@ from gi.repository import Gtk
 import logging
 import os.path
 
-from foobnix.util.id3_util import decode_cp866
+from foobnix.util.id3_util import correct_encoding
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.thirdparty.mutagen.easyid3 import EasyID3
@@ -22,16 +22,16 @@ class TagEditor(ChildTopWindow):
     def __init__(self, controls):
         ChildTopWindow.__init__(self, _("Tag Editor"))
         self.controls = controls
-        
+
         self.store = {}
-        
+
         self.set_resizable(True)
         self.set_default_size(430, 150)
-        
+
         """make tooltip more quick (useful for checkbuttons)"""
         Gtk.Settings().set_property('gtk-tooltip-timeout', 0)
-        
-        
+
+
         artist_label = Gtk.Label(_("Artist")) #@UnusedVariable
         title_label = Gtk.Label(_("Title")) #@UnusedVariable
         album_label = Gtk.Label(_("Album")) #@UnusedVariable
@@ -40,7 +40,7 @@ class TagEditor(ChildTopWindow):
         genre_label = Gtk.Label(_("Genre")) #@UnusedVariable
         author_label = Gtk.Label(_("Author text")) #@UnusedVariable
         composer_label = Gtk.Label(_("Composer")) #@UnusedVariable
-        
+
         self.paths = []
         self.tag_names = ["artist", "title", "album", "date", "tracknumber", "genre", "author", "composer"]
         self.tag_mp4_names = ['\xa9ART', '\xa9nam', '\xa9alb', '\xa9day', 'trkn', '\xa9gen', '', '\xa9wrt']
@@ -48,37 +48,37 @@ class TagEditor(ChildTopWindow):
         self.labels = []
         self.check_buttons = []
         self.hboxes = []
-           
+
         for tag_name in self.tag_names:
-    
+
             vars()[tag_name + "_entry"] = Gtk.Entry()
             self.tag_entries.append(vars()[tag_name + "_entry"])
-    
+
             self.labels.append(vars()[tag_name + "_label"])
-            
+
             vars()[tag_name + "_chbutton"] = Gtk.CheckButton()
             self.check_buttons.append(vars()[tag_name + "_chbutton"])
-#                      
+#
             check_button = self.check_buttons[-1]
-                        
-            check_button.set_focus_on_click(False) 
+
+            check_button.set_focus_on_click(False)
             check_button.set_tooltip_text(_("Apply for all selected tracks\n(active on multi selection)"))
-            
+
             vars()[tag_name + "_hbox"] = Gtk.HBox(False, 5)
             self.hboxes.append(vars()[tag_name + "_hbox"])
-            
+
             self.hboxes[-1].pack_end(check_button, False, False)
             self.hboxes[-1].pack_end(self.tag_entries[-1], True, True)
-            
-    
+
+
         lvbox = Gtk.VBox(True, 7)
         rvbox = Gtk.VBox(True, 7)
         hpan = Gtk.HPaned()
-        
+
         for label, hbox in zip(self.labels, self.hboxes):
             lvbox.pack_start(label)
             rvbox.pack_start(hbox)
-    
+
         hpan.pack1(lvbox)
         hpan.pack2(rvbox)
 
@@ -88,55 +88,55 @@ class TagEditor(ChildTopWindow):
         buttons_hbox = Gtk.HBox(True, 10)
         buttons_hbox.pack_start(apply_button)
         buttons_hbox.pack_start(close_button)
-        
+
         vbox = Gtk.VBox(False, 15)
         vbox.pack_start(hpan)
         vbox.pack_start(buttons_hbox, True, True, 10)
-        
+
         apply_button.connect("clicked", self.save_audio_tags, self.paths)
         close_button.connect("clicked", lambda * a: self.hide())
-        
+
         self.add(vbox)
         self.show_all()
 
     def apply_changes_for_rows_in_tree(self):
-        ''' apply stored changes for rows in playlist_tree ''' 
+        ''' apply stored changes for rows in playlist_tree '''
         texts = {}
         artists = {}
         titles = {}
         composers = {}
         albums = {}
-        
+
         playlist_tree = self.controls.notetabs.get_current_tree()
-        
+
         for path in self.store.keys():
             if self.store[path][0] and self.store[path][1]:
                 artists[path] = self.store[path][0]
                 titles[path] = self.store[path][1]
             elif self.store[path][0] and not self.store[path][1]:
-                artists[path] = self.store[path][0] 
+                artists[path] = self.store[path][0]
                 titles[path] = _('Unknown title')
             elif self.store[path][1] and not self.store[path][0]:
                 artists[path] = _('Unknown artist')
                 titles[path] = self.store[path][1]
-            
-            if artists.has_key(path):   
+
+            if artists.has_key(path):
                 texts[path] = artists[path] + ' - ' + titles[path]
             else:
                 texts[path] = os.path.basename(path)
                 artists[path] = ""
                 titles[path] = ""
-                
+
             if artists[path] == _('Unknown artist'):
                 artists[path] = ""
             if titles[path] == _('Unknown title'):
                 titles[path] == ""
-            
+
             if self.store[path][2]:
                 composers[path] = self.store[path][2]
             if self.store[path][3]:
                 albums[path] = self.store[path][3]
-                
+
         for path in self.store.keys():
             for row in playlist_tree.model:
                 if row[playlist_tree.path[0]] == path:
@@ -149,33 +149,33 @@ class TagEditor(ChildTopWindow):
                     if path in albums:
                         row[playlist_tree.album[0]] = albums[path]
         self.store = {}
-    
+
     def get_audio_tags(self, paths):
         self.paths = paths
         if len(paths) == 1:
             for chbutton in self.check_buttons:
                 chbutton.set_sensitive(False)
-        else: 
+        else:
             for chbutton in self.check_buttons:
                 chbutton.set_sensitive(True)
-                        
+
         self.audious = []
         for path in paths[:]:
             if not path or os.path.isdir(path):
                 self.paths.remove(path)
                 continue
             audio = get_mutagen_audio(path)
-            
+
             if not audio:
                 try:
                     audio.add_tags(ID3=EasyID3)
                 except Exception, e:
                     logging.error(e)
-            
+
             self.decoding_cp866(audio)
             self.audious.append(audio)
-        
-                    
+
+
         if isinstance(self.audious[0], MP4):
             tag_names = self.tag_mp4_names
             '''make author entry not sensitive because mp4 hasn't so tag'''
@@ -201,11 +201,11 @@ class TagEditor(ChildTopWindow):
         self.show_all()
 
     def save_audio_tags(self, button, paths):
-        
+
         def set_tags(audio, path, tag_name):
             if not self.store.has_key(path):
                 self.store[path] = ["", "", "", ""]
-            
+
             if isinstance(audio, MP4):
                 tag_name = tag_mp4_name
             try:
@@ -219,15 +219,15 @@ class TagEditor(ChildTopWindow):
                     if tag_value:
                         audio[tag_name] = [tag_value]
                 audio.save()
-                
+
             except AttributeError:
-                logging.warn('Can\'t save tags. Perhaps' + os.path.split(path)[1] + ' is not audio file') 
+                logging.warn('Can\'t save tags. Perhaps' + os.path.split(path)[1] + ' is not audio file')
             except MP4MetadataValueError:
                 '''for mp4 trkn is tuple'''
                 new_tag_value = [tuple(map(int, tag_value.split(', ')))]
                 audio[tag_name] = new_tag_value
                 audio.save()
-            
+
             ''' store changes '''
             if (tag_name == "artist" or tag_name == '\xa9ART') and tag_value:
                 self.store[path][0] = tag_value
@@ -260,7 +260,7 @@ class TagEditor(ChildTopWindow):
             else:
                 set_tags(self.audious[0], self.paths[0], tag_name)
             check_button.set_active(False)
-        
+
         self.apply_changes_for_rows_in_tree()
 
 
@@ -269,13 +269,13 @@ class TagEditor(ChildTopWindow):
             return
         if not isinstance(audio, MP4):
             for value, key in zip(audio.values(), audio.keys()):
-                audio[key] = decode_cp866(value[0])
+                audio[key] = correct_encoding(value[0])
 
 def edit_tags(a):
-    controls, paths = a 
+    controls, paths = a
     if not globals().has_key("tag_editor"):
         global tag_editor
         tag_editor = TagEditor(controls)
     tag_editor.get_audio_tags(paths)
-    
-    
+
+

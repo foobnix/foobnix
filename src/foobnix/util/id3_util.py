@@ -5,83 +5,27 @@ Created on 24 нояб. 2010
 @author: ivan
 '''
 from _bsddb import api
-import chardet
 import os
-import re
 import logging
+import urllib
 
+from gi.repository.GdkPixbuf import Pixbuf
+
+from zlib import crc32
+from subprocess import Popen, PIPE
+from tempfile import NamedTemporaryFile
+from foobnix.fc.fc import FC, FCache
+from foobnix.fc.fc_cache import COVERS_DIR
 from foobnix.thirdparty.mutagen.mp4 import MP4
 from foobnix.thirdparty.mutagen.id3 import ID3
 from foobnix.thirdparty.mutagen.flac import FLAC
-from foobnix.fc.fc import FC, FCache
-from foobnix.fc.fc_cache import COVERS_DIR
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.bean_utils import update_bean_from_normalized_text
 from foobnix.util.file_utils import file_extension, get_file_extension
 from foobnix.util.audio import get_mutagen_audio
-from subprocess import Popen, PIPE
-from zlib import crc32
-from gi.repository.GdkPixbuf import Pixbuf
-from tempfile import NamedTemporaryFile
 
 RUS_ALPHABITE = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
-
-
-def decode_cp866(text):
-    """
-    Deprecated
-    """
-    try:
-        for i in text:
-            if i.lower() in RUS_ALPHABITE:
-                return text
-
-        if not is_cp866(text):
-            return text
-
-        decode_text = text.decode('cp866')
-
-        if u"├" in decode_text:
-            decode_text = decode_text.replace(
-                        u"\u252c", u'ё').replace(
-                        u"├", "").replace(
-                        u"░", u"р").replace(
-                        u"▒", u"с").replace(
-                        u"▓", u"т").replace(
-                        u"│", u"у").replace(
-                        u"┤", u"ф").replace(
-                        u"╡", u"х").replace(
-                        u"╢", u"ц").replace(
-                        u"╖", u"ч").replace(
-                        u"╕", u"ш").replace(
-                        u"╣", u"щ").replace(
-                        u"║", u"ъ").replace(
-                        u"╗", u"ы").replace(
-                        u"╝", u"ь").replace(
-                        u"╜", u"э").replace(
-                        u"╛", u"ю").replace(
-                        u"┐", u"я")
-            decode_text = decode_text.replace(u'\u0451\u0448', u'\u0451')
-        return decode_text
-    except:
-        pass
-    return text
-
-
-def is_cp866(text):
-    """
-    Deprecated
-    """
-    """del figures, punctuation marks and unrecognized text (so as cp866)"""
-    only_alphabite = re.sub('[\d\W]', '', text)
-
-    '''del only figures and punctuation marks'''
-    without_punctuation = re.sub('[\d.,/_\-\^#$%&*()+=<>;:\'\"|]', '', text)
-
-    """if unrecognized characters are more half of all 
-    alphabetic characters, very likely code text is cp866"""
-    return len(only_alphabite) <= len(without_punctuation)/2
 
 
 def correct_encoding(text):
@@ -267,3 +211,31 @@ def set_cover_from_tags(bean):
     return None
 
 
+def get_image_for_bean(bean, controls):
+    """
+    Lookup image for the bean
+    :param bean: FModel
+    :param controls:
+    :return: str
+    """
+    if bean.image and os.path.exists(bean.image):
+        return bean.image
+    if bean.path and not bean.path.startswith("http"):
+        cover = get_image_by_path(bean.path)
+        if cover:
+            return cover
+        cover = set_cover_from_tags(bean)
+        if cover:
+            return cover
+    image = controls.lastfm_service.get_album_image_url(bean.artist, bean.title)
+    if image:
+        try:
+            ext = image.rpartition(".")[2]
+            cache_name = "%s%s.%s" % (COVERS_DIR, crc32(image), ext)
+            if os.path.exists(cache_name):
+                return cache_name
+            urllib.urlretrieve(image, cache_name)
+            return cache_name
+        except:
+            pass
+    return None

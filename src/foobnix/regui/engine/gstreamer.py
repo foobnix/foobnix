@@ -16,7 +16,7 @@ from gi.repository import Gst
 from gi.repository import GObject
 
 from foobnix.fc.fc import FC
-from foobnix.util.id3_util import decode_cp866
+from foobnix.util.id3_util import correct_encoding
 from foobnix.regui.engine import MediaPlayerEngine
 from foobnix.util.plsparser import get_radio_source
 from foobnix.util.const import STATE_STOP, STATE_PLAY, STATE_PAUSE, FTYPE_RADIO
@@ -465,12 +465,12 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
                 title = taglist.get_string("title")[1]
                 if not title:
                     title = ""
-                title = decode_cp866(title)
+                title = correct_encoding(title)
                 text = title
 
                 if taglist.get_string('artist')[0]:
                     artist = taglist.get_string('artist')[1]
-                    artist = decode_cp866(artist)
+                    artist = correct_encoding(artist)
                     text = artist + " - " + text
                 if self.bean.type == FTYPE_RADIO and taglist.get_uint('bitrate')[0]:
                     self.emit('bitrate-changed', taglist.get_uint('bitrate')[1])

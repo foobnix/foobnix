@@ -12,13 +12,14 @@ import cPickle
 import threading
 
 CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "foobnix-3", "")
+CACHE_DIR = os.path.join(os.path.expanduser("~"), ".cache", "foobnix-3", "")
 if not os.path.exists(CONFIG_DIR):
     os.makedirs(CONFIG_DIR)
+if not os.path.exists(CACHE_DIR):
+    os.makedirs(CACHE_DIR)
 
-COVERS_DIR = os.path.join(CONFIG_DIR, 'covers', '')
 
-
-class FCStates:    
+class FCStates:
     def save(self, fc, file):
         #if in_thread:
         #    thread.start_new_thread(FCHelper().save, (fc,))
@@ -99,4 +100,4 @@ class FCHelper():
         dict = object.__dict__
         for i in object.__dict__:
             if i not in ["user_id", "access_token", "vk_user", "vk_pass", "lfm_login", "lfm_password", "uuid"]:
-                logging.debug(i + " " + str(dict[i])[:500])        
+                logging.debug(i + " " + str(dict[i])[:500])

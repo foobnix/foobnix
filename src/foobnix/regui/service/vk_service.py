@@ -133,11 +133,11 @@ class VKService:
             time.sleep(0.1)
         logging.debug("auth result is %s" % self.auth_res)
         return self.auth_res
-    
+
     def set_token_user(self, token, user_id):
         self.token = token
         self.user_id = user_id
-        
+
     def get_result(self, method, data, attempt_count=0):
         logging.debug("get_result(%s, %s, %s)" % (method, data, attempt_count))
         result = self.get(method, data)
@@ -160,11 +160,11 @@ class VKService:
             time.sleep(1)
             attempt_count += 1
             return self.get_result(method, data, attempt_count)
-    
+
     def reset_vk(self):
         if os.path.isfile(cookiefile):
             os.remove(cookiefile)
-        
+
         FC().access_token = None
         FC().user_id = None
         FCBase().vk_login = None
@@ -186,55 +186,55 @@ class VKService:
             return
         result = response.read()
         return result
-    
+
     def to_json(self, json):
         p = HTMLParser()
         json = p.unescape(json)
         return simplejson.loads(json)
-    
+
     def get_profile(self, without_auth=False):
         return self.get_result("getProfiles", "uid=" + str(self.user_id), 1 if without_auth else 0)
 
     def find_tracks_by_query(self, query):
         def post():
-            self.find_tracks_by_query(self, query)
-        
+            self.find_tracks_by_query(query)
+
         logging.info("start search songs " + query)
         query = urllib.quote(query.encode("utf-8"))
-        
+
         list = self.get_result("audio.search", "q=" + query)
         childs = []
-        
+
         if not list:
             return childs
 
-        for line in list[1:]:                      
+        for line in list[1:]:
             bean = FModel(line['artist'] + ' - ' + line['title'])
             bean.aritst = line['artist']
             bean.title = line['title']
             bean.time = convert_seconds_to_text(line['duration'])
             bean.path = line['url']
             childs.append(bean)
-             
+
         return childs
 
     def find_tracks_by_url(self, url):
         logging.debug("Search By URL")
-        
+
         index = url.rfind("#")
         if index > 0:
             url = url[:index]
         index = url.find("id=")
         if index < 0:
             return None
-        
+
         id = url[index + 3:]
         id = int(id)
         if id > 0:
             results = self.get_result('audio.get', "uid=" + str(id))
         else:
             results = self.get_result('audio.get', "gid=" + str(abs(id)))
-            
+
         childs = []
         for line in results:
             bean = FModel(line['artist'] + ' - ' + line['title'])
@@ -243,10 +243,10 @@ class VKService:
             bean.time = convert_seconds_to_text(line['duration'])
             bean.path = line['url']
             childs.append(bean)
-       
-        return childs 
-        
-    def find_one_track(self, query):        
+
+        return childs
+
+    def find_one_track(self, query):
         vkSongs = self.find_tracks_by_query(query)
         if not vkSongs:
             return None
@@ -257,15 +257,15 @@ class VKService:
             if time in times_count:
                 times_count[time] += 1
             else:
-                times_count[time] = 1 
+                times_count[time] = 1
         #get most relatives times time
         r_count = max(times_count.values())
         r_time = self.find_time_value(times_count, r_count)
         logging.info("Song time " + str(r_time))
         logging.info("Count of songs with this time " + str(r_count))
-        
+
         for song in vkSongs:
-            if song.time == r_time:        
+            if song.time == r_time:
                 return song
 
         return vkSongs[0]
@@ -274,4 +274,4 @@ class VKService:
         for i in times_count:
             if times_count[i] == r_count:
                 return i
-        return None 
+        return None
