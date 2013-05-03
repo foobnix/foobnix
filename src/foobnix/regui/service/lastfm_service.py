@@ -29,7 +29,7 @@ class Cache():
         self.cache_tracks = {}
         self.cache_albums = {}
         self.cache_images = {}
-        
+
     def get_key(self, artist, title):
         return artist + "-" + title
 
@@ -71,7 +71,7 @@ class Cache():
             if album:
                 image = album.get_cover_image(size)
                 self.cache_images[self.get_key(artist, title)] = image
-                return image            
+                return image
 
 
 class LastFmService():
@@ -82,7 +82,7 @@ class LastFmService():
         self.preferences_window = None
         self.controls = controls
         thread.start_new_thread(self.init_thread, ())
-    
+
     def connect(self):
         if self.network and self.scrobbler:
             return True
@@ -92,7 +92,7 @@ class LastFmService():
         time.sleep(5)
         if not self.controls.net_wrapper.is_internet():
             return None
-            
+
         logging.debug("RUN INIT LAST.FM")
         username = FCBase().lfm_login
         password_hash = pylast.md5(FCBase().lfm_password)
@@ -103,7 +103,7 @@ class LastFmService():
                                                      username=username,
                                                      password_hash=password_hash)
             self.cache = Cache(self.network)
-            
+
             """scrobbler"""
             scrobbler_network = pylast.get_lastfm_network(username=username, password_hash=password_hash)
             self.scrobbler = scrobbler_network.get_scrobbler("fbx", "1.0")
@@ -120,36 +120,36 @@ class LastFmService():
             return False
             """
         return True
-    
+
     def get_network(self):
         return self.network
-    
+
     def get_user(self, username):
         return self.network.get_user(username)
 
     def get_authenticated_user(self):
         return self.network.get_authenticated_user()
-    
+
     def get_loved_tracks(self, username, limit=50):
         lfm_tracks = self.get_user(username).get_loved_tracks(limit=limit)
-        return self.sub_tracks_to_models(lfm_tracks, 'track')    
-    
+        return self.sub_tracks_to_models(lfm_tracks, 'track')
+
     def get_recent_tracks(self, username, unused_limit=10):
         lfm_tracks = self.get_user(username).get_recent_tracks(limit=20)
         return self.sub_tracks_to_models(lfm_tracks, 'track')
-    
+
     def get_top_tracks(self, username, unused):
-        lfm_tracks = self.get_user(username).get_top_tracks()      
+        lfm_tracks = self.get_user(username).get_top_tracks()
         return self.sub_tracks_to_models(lfm_tracks, 'item')
-    
+
     def get_top_artists(self, username, unused):
-        lfm_tracks = self.get_user(username).get_top_artists()      
+        lfm_tracks = self.get_user(username).get_top_artists()
         return self.sub_artist_to_models(lfm_tracks, 'item')
 
     def get_recommended_artists(self, username, limit=50):
         lfm_artists = self.get_authenticated_user().get_recommended_artists(limit=limit)
         return self.artists_to_models(lfm_artists)
-    
+
     def get_friends(self, username):
         lfm_tracks = self.get_user(username).get_friends()
         list = self.get_sub_childs(lfm_tracks, 'name')
@@ -157,7 +157,7 @@ class LastFmService():
         for item in list:
             result.append(FModel(item))
         return result
-    
+
     def get_neighbours(self, username):
         lfm_tracks = self.get_user(username).get_neighbours()
         list = self.get_sub_childs(lfm_tracks, 'name')
@@ -166,14 +166,14 @@ class LastFmService():
             parent = FModel(item)
             result.append(parent)
         return result
-    
+
     def get_scrobbler(self):
         return self.scrobbler
-    
+
     def report_now_playing(self, bean):
         if not FC().enable_music_scrobbler:
             logging.debug("Last.fm scrobbler not enabled")
-            return None 
+            return None
         if not self.get_scrobbler():
             logging.warn("no last.fm scrobbler")
             return None
@@ -188,36 +188,36 @@ class LastFmService():
                     logging.error(str(e) + "Error reporting now playing last.fm" + str(bean.artist) + str(bean.title))
             else:
                 logging.debug("Bean title or artist not defined")
-                
+
         thread.start_new_thread(task, (bean,))
-    
+
     def report_scrobbled(self, bean, start_time, duration_sec):
         if not FC().enable_music_scrobbler:
             logging.debug("Last.fm scrobbler not enabled")
             return None
-       
+
         if not self.get_scrobbler():
             return None
-        
+
         def task(bean):
             if bean.artist and bean.title:
                 if bean.path and file_extension(bean.path) in FC().video_formats:
                     #skip video scrobbler
                     return
-                
+
                 if bean.type == FTYPE_VIDEO:
                     #skip video results
                     return
-                
+
                 try:
                     bean.artist, bean.title = bean.artist.encode("utf-8"), bean.title.encode("utf-8")
                     self.get_scrobbler().scrobble(bean.artist, bean.title, start_time, "P", "", int(duration_sec))
                     logging.debug("Song Scrobbled " + str(bean.artist) + " " + str(bean.title) + " " + str(start_time) + " P: " + str(int(duration_sec)))
-                except Exception, e:       
+                except Exception, e:
                     logging.error(str(e) + "Error reporting now playing last.fm " + str(bean.artist) + " " + str(bean.title) + " A: " + str(bean.album))
             else:
                 logging.debug("Bean title or artist not defined")
-        
+
         thread.start_new_thread(task, (bean,))
 
     def connected(self):
@@ -252,7 +252,7 @@ class LastFmService():
 
             beans.append(bean)
         return beans
-    
+
     """some parent linke LoveTrack"""
     def sub_tracks_to_models(self, love_tracks, key='track'):
         tracks = []
@@ -262,7 +262,7 @@ class LastFmService():
             except AttributeError:
                 track = love_track[key]
             tracks.append(track)
-            
+
         return self.tracks_to_models(tracks)
 
     def get_sub_childs(self, list, key='name'):
@@ -272,7 +272,7 @@ class LastFmService():
                 artist = getattr(item, key)
             except AttributeError:
                 artist = item[key]
-            result.append(artist)            
+            result.append(artist)
         return result
 
     def sub_artist_to_models(self, topartists, key='item'):
@@ -283,7 +283,7 @@ class LastFmService():
             except AttributeError:
                 artist = love_track[key]
             artists.append(artist)
-            
+
         return self.artists_to_models(artists)
 
     def tracks_to_models(self, tracks):
@@ -294,7 +294,7 @@ class LastFmService():
             bean = FModel(artist + " - " + title).add_artist(artist).add_title(title)
             results.append(bean)
         return results
-    
+
     def artists_to_models(self, artists):
         results = []
         for track in artists:
@@ -302,7 +302,7 @@ class LastFmService():
             bean = FModel(artist).add_artist(artist)
             results.append(bean)
         return results
-    
+
     def search_album_tracks(self, artist_name, album_name):
         if not artist_name or not album_name:
             logging.warn("search_album_tracks artist and album is empty")
@@ -314,7 +314,7 @@ class LastFmService():
         return self.tracks_to_models(tracks)
 
     def search_top_tags(self, tag):
-        
+
         logging.debug("Search tag " + tag)
         if not self.connect():
             return None
@@ -358,7 +358,7 @@ class LastFmService():
             text = artist + " - " + title
             bean = FModel(text).add_artist(artist).add_title(title)
             beans.append(bean)
-        
+
         return beans
 
     def search_top_tracks(self, artist_name):
@@ -500,7 +500,7 @@ class LastFmService():
         if not self.connect():
             return None
         return self.cache.get_album_image_url(artist, title)
-    
+
     def love(self, bean):
         track = self.cache.get_track(bean.artist, bean.title)
         track.love()

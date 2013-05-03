@@ -47,7 +47,7 @@ class BaseFoobnixControls():
         self.is_scrobbled = False
         self.start_time = None
 
-        self.chache_text = None
+        self.cache_text = None
         self.play_lock = Lock()
 
     def check_for_media(self, args):
@@ -467,14 +467,15 @@ class BaseFoobnixControls():
         else:
             self.seek_bar.fill_seekbar()
 
-        if pos_sec > 10 and pos_sec % 11 == 0:
+        if pos_sec == 2 or (pos_sec > 2 and (pos_sec % 20) == 0):
             self.net_wrapper.execute(self.lastfm_service.report_now_playing, bean)
 
         if not self.start_time:
             self.start_time = str(int(time.time()))
 
-        if not self.is_scrobbled:
-            if pos_sec > dur_sec / 2 or pos_sec > 60:
+        if not self.is_scrobbled and bean.type != FTYPE_RADIO:
+            ## song should be scrobbled if 90% has been played or played greater than 5 minutes
+            if pos_sec > (dur_sec * 0.9) or pos_sec > (60 * 5):
                 self.is_scrobbled = True
                 self.net_wrapper.execute(self.lastfm_service.report_scrobbled, bean, self.start_time, dur_sec)
                 """download music"""
@@ -484,6 +485,8 @@ class BaseFoobnixControls():
     @idle_task
     def notify_title(self, bean, text):
         logging.debug("Notify title" + text)
+        if not self.cache_text:
+            self.cache_text = text
 
         self.statusbar.set_text(text)
         self.seek_bar.set_text(text)
@@ -494,8 +497,11 @@ class BaseFoobnixControls():
             start_time = str(int(time.time()))
             self.net_wrapper.execute(self.lastfm_service.report_now_playing, t_bean)
 
-            if " - " in text and self.chache_text != text:
-                self.net_wrapper.execute(self.lastfm_service.report_scrobbled, t_bean, start_time, 200)
+            if " - " in text and self.cache_text != text:
+                c_bean = copy.copy(bean)
+                prev_bean = c_bean.create_from_text(self.cache_text)
+                self.net_wrapper.execute(self.lastfm_service.report_scrobbled, prev_bean, start_time, 200)
+                self.cache_text = text
 
     @idle_task
     def notify_error(self, msg):
