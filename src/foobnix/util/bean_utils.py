@@ -47,6 +47,7 @@ def get_bean_posible_paths(bean):
 
 
 def get_bean_download_path(bean, path=FC().online_save_to_folder, nosubfolder = FC().nosubfolder):
+
     ext = ".mp3"
     if nosubfolder:
         name = bean.get_display_name()
@@ -66,10 +67,15 @@ def get_bean_download_path(bean, path=FC().online_save_to_folder, nosubfolder = 
         logging.debug("bean path %s" % path)
         return path
 
+
 def get_bean_from_file(f):
     if not os.path.exists(f):
         return None
-    bean = FDModel(text=os.path.basename(f), path=f)
-    bean = bean.add_is_file(True) if os.path.isfile(f) else bean.add_is_file(False)
-    return bean
-
+    model = None
+    if os.path.isdir(f):
+        model = FDModel(text=os.path.basename(f), path=f)
+    elif os.path.isfile(f):
+        model = FModel(text=os.path.basename(f), path=f)
+    if model:
+        model.is_file = True
+    return model
