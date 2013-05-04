@@ -32,14 +32,14 @@ def create_pixbuf_from_path(path, size):
     except Exception, e:
         logging.error(e)
         return None
-    
+
     if size:
         return resize_pixbuf(pixbuf, size)
     else:
         return pixbuf
 
 def create_pixbuf_from_resource(name, size=None):
-    path = get_foobnix_resourse_path_by_name(name);
+    path = get_foobnix_resourse_path_by_name(name)
     return create_pixbuf_from_path(path, size)
 
 def create_origin_pixbuf_from_url(url):
@@ -49,4 +49,4 @@ def create_origin_pixbuf_from_url(url):
     pbl.write(data)
     pbuf = pbl.get_pixbuf()
     pbl.close()
-    return pbuf   
+    return pbuf

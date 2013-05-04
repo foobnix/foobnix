@@ -13,18 +13,15 @@ if os.name == 'nt':
 VERSION = "3.0"
 
 data_files = [
-    ('share/applications', ['foobnix.desktop']),
-    ('share/pixmaps/theme', glob.glob('foobnix/pixmaps/theme/*')),
-    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.png')),
-    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.jpg')),
-    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.ico')),
-    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.gif')),
-    ('share/pixmaps', glob.glob('foobnix/pixmaps/*.svg')),
-    ('share/foobnix/radio', glob.glob('radio/*')),
-    ('share/man/man1', ['foobnix.1']),
+    ('share/applications', glob.glob('share/applications/*.desktop')),
+    ('share/pixmaps', glob.glob('share/pixmaps/*.*')),
+    ('share/foobnix/images', glob.glob('share/foobnix/images/*.*')),
+    ('share/foobnix/images/theme', glob.glob('share/foobnix/images/theme/*.*')),
+    ('share/foobnix/radio', glob.glob('share/foobnix/radio/*.*')),
+    ('share/man/man1', glob.glob('docs/*')),
 ]
 
-MO_DIR = "../dist/"
+MO_DIR = "dist/"
 if os.path.exists(MO_DIR):
     shutil.rmtree(MO_DIR)
 
@@ -72,6 +69,7 @@ class test_cmd(Command):
 
 setup(name='foobnix',
       version=VERSION,
+      license="GNU GPLv3",
       description='Foobnix GTK+ music player',
       author='Ivan Ivanenko',
       author_email='ivan.ivanenko@gmail.com',
@@ -92,6 +90,7 @@ setup(name='foobnix',
           "foobnix.eq",
           "foobnix.fc",
           "foobnix.helpers",
+          "foobnix.playlists",
           "foobnix.preferences",
           "foobnix.preferences.configs",
           "foobnix.regui",
