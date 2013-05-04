@@ -56,7 +56,6 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         MediaPlayerEngine.__init__(self, controls)
         GObject.GObject.__init__(self)
         self.bean = None
-        #self.player = self.gstreamer_player()
         self.position_sec = 0
         self.duration_sec = 0
 
@@ -138,13 +137,6 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         self.hsource.set_property("user-agent", "Fooobnix music player")
         self.hsource.set_property("automatic-redirect", "false")
 
-    def init_radio_elements(self):
-        self.recorder = RecorderBin(name="recorder")
-        return
-        self.vorbisenc = Gst.ElementFactory.make("vorbisenc", "vorbisenc")
-        self.oggmux = Gst.ElementFactory.make("oggmux", "oggmux")
-        self.filesink = Gst.ElementFactory.make("filesink", "filesink")
-
     def notify_init(self, duration_int):
         logging.debug("Pre init thread: " + str(duration_int))
 
@@ -180,22 +172,11 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
             file_name = os.path.join("/tmp", os.path.splitext(os.path.basename(self.radio_path))[0] + ".ogg")
         else:
             file_name = os.path.join("/tmp", "radio_record.ogg")
-        self.init_radio_elements()
+        self.recorder = RecorderBin(name="recorder")
         self.player.add(self.recorder)
-        print ("recorder pad", self.recorder.get_static_pad('sink'))
         self.tee.link_pads("src_1", self.recorder, "sink")
         self.recorder.set_location(file_name)
         self.recorder.sync_state_with_parent()
-        self.radio_recording = True
-        return
-        self.player.add(self.vorbisenc)
-        self.player.add(self.oggmux)
-        self.player.add(self.filesink)
-        self.vorbisenc.link(self.oggmux)
-        self.oggmux.link(self.filesink)
-        self.tee.link_pads("src_1", self.vorbisenc, "sink")
-        self.filesink.set_property("location", file_name)
-        [k.sync_state_with_parent() for k in [self.vorbisenc, self.oggmux, self.filesink]]
         self.radio_recording = True
 
     def stop_radio_record(self):
@@ -204,11 +185,6 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         self.recorder.set_state(Gst.State.NULL)
         self.tee.unlink_pads("src_1", self.recorder, 'sink')
         self.player.remove(self.recorder)
-        self.radio_recording = False
-        return
-        [k.set_state(Gst.State.NULL) for k in [self.vorbisenc, self.oggmux, self.filesink]]
-        self.tee.unlink_pads("src_1", self.vorbisenc, "sink")
-        [self.player.remove(k) for k in [self.vorbisenc, self.oggmux, self.filesink]]
         self.radio_recording = False
 
     def play(self, bean):
