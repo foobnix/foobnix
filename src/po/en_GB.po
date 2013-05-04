@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-30 14:25+0400\n"
+"POT-Creation-Date: 2013-03-23 19:36+0400\n"
 "PO-Revision-Date: 2011-02-27 20:27+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-31 04:46+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-03-24 04:51+0000\n"
+"X-Generator: Launchpad (build 16540)\n"
 "Language: \n"
 
 #: .././foobnix/dm/dm.py:32 .././foobnix/preferences/preferences_window.py:59
@@ -45,40 +45,40 @@ msgstr ""
 msgid "Equalizer"
 msgstr ""
 
-#: .././foobnix/eq/eq_gui.py:83
+#: .././foobnix/eq/eq_gui.py:85
 msgid "Disabled"
 msgstr ""
 
-#: .././foobnix/eq/eq_gui.py:84 .././foobnix/eq/eq_gui.py:166
+#: .././foobnix/eq/eq_gui.py:86 .././foobnix/eq/eq_gui.py:167
 msgid "Enable EQ"
 msgstr ""
 
-#: .././foobnix/eq/eq_gui.py:86
+#: .././foobnix/eq/eq_gui.py:88
 msgid "Enabled"
 msgstr ""
 
-#: .././foobnix/eq/eq_gui.py:87 .././foobnix/eq/eq_gui.py:279
+#: .././foobnix/eq/eq_gui.py:89 .././foobnix/eq/eq_gui.py:280
 msgid "Disable EQ"
 msgstr ""
 
-#: .././foobnix/eq/eq_gui.py:88
+#: .././foobnix/eq/eq_gui.py:90
 #, python-format
 msgid "Equalizer %s"
 msgstr ""
 
-#: .././foobnix/eq/eq_gui.py:167
+#: .././foobnix/eq/eq_gui.py:168
 msgid "To enable EQ set ON"
 msgstr ""
 
-#: .././foobnix/eq/eq_gui.py:172
+#: .././foobnix/eq/eq_gui.py:173
 msgid "Auto"
 msgstr ""
 
-#: .././foobnix/eq/eq_gui.py:184
+#: .././foobnix/eq/eq_gui.py:185
 msgid "Save"
 msgstr ""
 
-#: .././foobnix/eq/eq_gui.py:191
+#: .././foobnix/eq/eq_gui.py:192
 msgid "Restore defaults presets"
 msgstr ""
 
@@ -391,11 +391,11 @@ msgid "Show new foobnix release avaliable demo dialog"
 msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:36
-msgid "Save music to folder:"
+msgid "Save online music to folder:"
 msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:40
-msgid "Automatic music save"
+msgid "Automatic online music save"
 msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:45
@@ -600,7 +600,7 @@ msgstr ""
 msgid "About Artist"
 msgstr ""
 
-#: .././foobnix/regui/infopanel.py:80 .././foobnix/regui/perspectives.py:134
+#: .././foobnix/regui/infopanel.py:80 .././foobnix/regui/perspectives.py:133
 msgid "Info"
 msgstr ""
 
@@ -704,52 +704,52 @@ msgstr ""
 msgid "http://www.foobnix.com/donate/eng"
 msgstr ""
 
-#: .././foobnix/regui/perspectives.py:44
+#: .././foobnix/regui/perspectives.py:43
 msgid " Add Folder(s) in tree"
 msgstr ""
 
-#: .././foobnix/regui/perspectives.py:121
+#: .././foobnix/regui/perspectives.py:120
 msgid "Music"
 msgstr ""
 
-#: .././foobnix/regui/perspectives.py:121
+#: .././foobnix/regui/perspectives.py:120
 msgid "Music Navigation (Alt+1)"
 msgstr ""
 
-#: .././foobnix/regui/perspectives.py:126
+#: .././foobnix/regui/perspectives.py:125
 msgid "Radio"
 msgstr ""
 
-#: .././foobnix/regui/perspectives.py:126
+#: .././foobnix/regui/perspectives.py:125
 msgid "Radio Stantions (Alt+2)"
 msgstr ""
 
-#: .././foobnix/regui/perspectives.py:130
+#: .././foobnix/regui/perspectives.py:129
 #: .././foobnix/regui/treeview/virtual_tree.py:25
 msgid "Storage"
 msgstr ""
 
-#: .././foobnix/regui/perspectives.py:130
+#: .././foobnix/regui/perspectives.py:129
 msgid "Storage (Alt+3)"
 msgstr ""
 
-#: .././foobnix/regui/perspectives.py:134
+#: .././foobnix/regui/perspectives.py:133
 msgid "Info Panel (Alt+4)"
 msgstr ""
 
-#: .././foobnix/regui/perspectives.py:137
+#: .././foobnix/regui/perspectives.py:136
 msgid "Last.Fm"
 msgstr ""
 
-#: .././foobnix/regui/perspectives.py:137
+#: .././foobnix/regui/perspectives.py:136
 msgid "Last.fm Panel (Alt+5)"
 msgstr ""
 
-#: .././foobnix/regui/perspectives.py:140
+#: .././foobnix/regui/perspectives.py:139
 msgid "VK"
 msgstr ""
 
-#: .././foobnix/regui/perspectives.py:140
+#: .././foobnix/regui/perspectives.py:139
 msgid "VK Panel (Alt+6)"
 msgstr ""
 
@@ -904,35 +904,35 @@ msgstr ""
 msgid "Clear Music Tree"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:41
+#: .././foobnix/regui/service/vk_service.py:42
 msgid "VKontakte Authorization (is required for music search)"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:100
+#: .././foobnix/regui/service/vk_service.py:101
 msgid "Open"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:106
+#: .././foobnix/regui/service/vk_service.py:107
 msgid "2: Apply Token"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:109
+#: .././foobnix/regui/service/vk_service.py:110
 msgid "Please generate token..."
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:114
+#: .././foobnix/regui/service/vk_service.py:115
 msgid "Token:"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:115
+#: .././foobnix/regui/service/vk_service.py:116
 msgid "User ID:"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:150
+#: .././foobnix/regui/service/vk_service.py:151
 msgid "Token incorrect or expired"
 msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:152
+#: .././foobnix/regui/service/vk_service.py:153
 msgid "Token or user is empty"
 msgstr ""
 
@@ -1384,11 +1384,11 @@ msgstr ""
 msgid "Unknown artist"
 msgstr ""
 
-#: .././foobnix/util/m3u_utils.py:84
+#: .././foobnix/util/m3u_utils.py:85
 msgid "Choose window"
 msgstr ""
 
-#: .././foobnix/util/m3u_utils.py:88
+#: .././foobnix/util/m3u_utils.py:89
 msgid ""
 "<big><b>\t\t\t\t\t\t\t\tAttention!\n"
 "</b></big>\tThe relative location of the playlist and music files allows you "
