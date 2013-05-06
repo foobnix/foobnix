@@ -474,7 +474,7 @@ class PlaylistTreeControl(CommonTreeControl):
                     for treerow in treerows:
                         model.append(None, [col for col in treerow])
 
-        #self.fill_treerows()
+        self.fill_treerows()
         self.update_tracknumber()
 
         context.finish(True, False, timestamp)
