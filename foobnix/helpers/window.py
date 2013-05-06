@@ -16,7 +16,7 @@ from foobnix.util.key_utils import is_key
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util.text_utils import split_string
 from foobnix.util.file_utils import get_full_size
-from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
 
 
 class ChildTopWindow(Gtk.Window):

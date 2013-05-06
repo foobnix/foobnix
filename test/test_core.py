@@ -5,7 +5,7 @@ Created on 20 нояб. 2010
 @author: ivan
 '''
 import unittest
-from foobnix.regui.foobnix_core import FoobnixCore
+from foobnix.gui.foobnix_core import FoobnixCore
 class TestFoobnixCore(unittest.TestCase):    
     def __test_main_window(self):
         self.w = FoobnixCore()

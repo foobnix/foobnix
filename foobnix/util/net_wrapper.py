@@ -15,8 +15,8 @@ from gi.repository import GObject
 
 from foobnix.fc.fc import FC
 from foobnix.helpers.window import MessageWindow
-from foobnix.regui.service.vk_service import VKService
-from foobnix.regui.service.lastfm_service import LastFmService
+from foobnix.gui.service.vk_service import VKService
+from foobnix.gui.service.lastfm_service import LastFmService
 
 
 class NetWrapper():

@@ -17,7 +17,7 @@ from subprocess import Popen
 from foobnix.fc.fc import FC
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.helpers.textarea import ScrolledText
-from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.helpers.dialog_entry import directory_chooser_dialog
 import subprocess
 
@@ -226,7 +226,6 @@ def get_file_path_from_dnd_dropped_uri(uri):
         path = uri[7:]  # 7 is len('file://')
     elif uri.startswith('file:'):   # xffm
         path = uri[5:]  # 5 is len('file:')
-
     path = urllib.url2pathname(path)    # escape special chars
     path = path.strip('\r\n\x00')   # remove \r\n and NULL
 

@@ -13,12 +13,12 @@ import threading
 from foobnix.fc.fc import FC
 from foobnix.dm.dm_dowloader import Dowloader
 from foobnix.helpers.toolbar import MyToolbar
-from foobnix.regui.model import FDModel, FModel
+from foobnix.gui.model import FDModel, FModel
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.preferences.configs import CONFIG_OTHER
 from foobnix.helpers.dialog_entry import directory_chooser_dialog
-from foobnix.regui.treeview.dm_tree import DownloadManagerTreeControl
-from foobnix.regui.treeview.dm_nav_tree import DMNavigationTreeControl
+from foobnix.gui.treeview.dm_tree import DownloadManagerTreeControl
+from foobnix.gui.treeview.dm_nav_tree import DMNavigationTreeControl
 from foobnix.util.const import DOWNLOAD_STATUS_INACTIVE, DOWNLOAD_STATUS_ACTIVE, \
     DOWNLOAD_STATUS_COMPLETED, DOWNLOAD_STATUS_DOWNLOADING, DOWNLOAD_STATUS_ALL, \
     DOWNLOAD_STATUS_STOP, DOWNLOAD_STATUS_ERROR

@@ -9,10 +9,10 @@ import logging
 from gi.repository import GObject
 
 from foobnix.fc.fc import FC
-from foobnix.regui.model import FDModel
-from foobnix.regui.state import LoadSave
-from foobnix.regui.model.signal import FControl
-from foobnix.regui.treeview.simple_tree import SimpleListTreeControl
+from foobnix.gui.model import FDModel
+from foobnix.gui.state import LoadSave
+from foobnix.gui.model.signal import FControl
+from foobnix.gui.treeview.simple_tree import SimpleListTreeControl
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.preferences.configs.tabs import TabsConfig
 from foobnix.preferences.configs.last_fm import LastFmConfig

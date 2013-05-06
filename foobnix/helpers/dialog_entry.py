@@ -11,7 +11,7 @@ from foobnix.fc.fc import FC
 from foobnix.helpers.image import ImageBase
 from foobnix.util.const import SITE_LOCALE, ICON_FOOBNIX
 from foobnix.util.localization import foobnix_localization
-from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
 
 foobnix_localization()
 

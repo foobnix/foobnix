@@ -10,9 +10,9 @@ import logging
 from foobnix.fc.fc import FC
 from foobnix.util import analytics
 from foobnix.eq.eq_gui import EqWindow
-from foobnix.regui.state import LoadSave
-from foobnix.regui.model.signal import FControl
-from foobnix.regui.model.eq_model import EqModel
+from foobnix.gui.state import LoadSave
+from foobnix.gui.model.signal import FControl
+from foobnix.gui.model.eq_model import EqModel
 
 
 class EqController(FControl, LoadSave):

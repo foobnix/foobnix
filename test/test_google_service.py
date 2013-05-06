@@ -5,7 +5,7 @@ Created on 22 нояб. 2010
 @author: ivan
 '''
 import unittest
-from foobnix.regui.service.google_service import google_search_results
+from foobnix.gui.service.google_service import google_search_results
 from xgoogle import translate
 class TestGoogleService(unittest.TestCase):
         

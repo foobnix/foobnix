@@ -13,7 +13,7 @@ import urllib2
 from foobnix.fc.fc import FC
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.proxy_connect import set_proxy_settings
-from foobnix.regui.service.lastfm_service import LastFmService
+from foobnix.gui.service.lastfm_service import LastFmService
 from gi.repository import GObject
 
 

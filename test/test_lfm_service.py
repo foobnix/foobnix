@@ -5,7 +5,7 @@ Created on 21 нояб. 2010
 @author: ivan
 '''
 import unittest
-from foobnix.regui.service.lastfm_service import LastFmService
+from foobnix.gui.service.lastfm_service import LastFmService
 class TestLastFmService(unittest.TestCase):
     lfm = LastFmService()
         

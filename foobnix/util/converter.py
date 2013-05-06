@@ -23,7 +23,7 @@ from foobnix.util.file_utils import open_in_filemanager
 from foobnix.util.localization import foobnix_localization
 from foobnix.helpers.textarea import ScrolledText
 from foobnix.helpers.window import ChildTopWindow
-from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
 
 foobnix_localization()
 

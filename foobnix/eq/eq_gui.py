@@ -11,8 +11,8 @@ import logging
 
 from foobnix.fc.fc import FC
 from foobnix.helpers.menu import Popup
-from foobnix.regui.model.signal import FControl
-from foobnix.regui.model.eq_model import EqModel
+from foobnix.gui.model.signal import FControl
+from foobnix.gui.model.eq_model import EqModel
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.helpers.my_widgets import ImageButton
 from foobnix.util.mouse_utils import is_rigth_click

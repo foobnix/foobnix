@@ -11,11 +11,11 @@ import logging
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
-from foobnix.regui.model import FDModel
-from foobnix.regui.model.signal import FControl
+from foobnix.gui.model import FDModel
+from foobnix.gui.model.signal import FControl
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
-from foobnix.regui.treeview.simple_tree import  SimpleListTreeControl
+from foobnix.gui.treeview.simple_tree import  SimpleListTreeControl
 from foobnix.helpers.dialog_entry import show_entry_dialog,\
     directory_chooser_dialog
 

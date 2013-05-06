@@ -3,7 +3,7 @@ from gi.repository import Gtk
 import logging
 import os.path
 
-from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util.file_utils import get_file_extension
 

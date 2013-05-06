@@ -12,7 +12,7 @@ from foobnix.util import const
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.helpers.image import ImageBase
 from foobnix.util.const import ICON_BLANK_DISK
-from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.helpers.pref_widgets import FrameDecorator, VBoxDecorator, ChooseDecorator, \
     IconBlock
 

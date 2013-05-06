@@ -47,7 +47,7 @@ def foobnix():
     else:
         LOG.setup("error")
 
-    from foobnix.regui.foobnix_core import FoobnixCore
+    from foobnix.gui.foobnix_core import FoobnixCore
 
     if "--test" in sys.argv:
         from test.all import run_all_tests
@@ -68,7 +68,7 @@ def foobnix():
         Gtk.main()
     else:
         init_time = time.time()
-        from foobnix.regui.controls.dbus_manager import foobnix_dbus_interface
+        from foobnix.gui.controls.dbus_manager import foobnix_dbus_interface
         iface = foobnix_dbus_interface()
         if "--debug" in sys.argv or not iface:
             print("start program")

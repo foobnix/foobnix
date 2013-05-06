@@ -13,7 +13,7 @@ import chardet
 import foobnix.util.id3_util
 
 from foobnix.fc.fc import FC
-from foobnix.regui.model import FModel
+from foobnix.gui.model import FModel
 from foobnix.util import file_utils
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.image_util import get_image_by_path

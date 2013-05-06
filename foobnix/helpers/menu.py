@@ -5,7 +5,7 @@ Created on Aug 26, 2010
 '''
 from gi.repository import Gtk
 import time
-from foobnix.regui.menu import MyMenu
+from foobnix.gui.menu import MyMenu
 class Popup(Gtk.Menu):
     
     def __init__(self):        

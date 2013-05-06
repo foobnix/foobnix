@@ -7,7 +7,7 @@ Created on Apr 26, 2013
 import logging
 import os.path
 
-from foobnix.regui.model import FModel
+from foobnix.gui.model import FModel
 from foobnix.util.file_utils import get_file_extension
 
 

@@ -4,7 +4,7 @@ Created on Nov 4, 2010
 @author: ivan
 '''
 import urllib
-from foobnix.regui.service.path_service import get_foobnix_resourse_path_by_name
+from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
 from gi.repository import Gtk
 from gi.repository import GdkPixbuf
 import logging

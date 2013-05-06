@@ -9,7 +9,7 @@ import os
 import logging
 import subprocess
 
-from foobnix.regui.service.music_service import get_all_music_with_id3_by_path
+from foobnix.gui.service.music_service import get_all_music_with_id3_by_path
 
 def get_beans_from_iso_wv(path):
     if path and path.lower().endswith("iso.wv"):

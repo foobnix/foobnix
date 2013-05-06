@@ -6,7 +6,7 @@ Created on 20 окт. 2010
 '''
 import os
 import logging
-from foobnix.regui.model import FDModel, FModel
+from foobnix.gui.model import FDModel, FModel
 
 from foobnix.util.text_utils import normalize_text
 from foobnix.fc.fc import FC
@@ -70,12 +70,11 @@ def get_bean_download_path(bean, path=FC().online_save_to_folder, nosubfolder = 
 
 def get_bean_from_file(f):
     if not os.path.exists(f):
+        print "not exists", f
         return None
-    model = None
-    if os.path.isdir(f):
-        model = FDModel(text=os.path.basename(f), path=f)
-    elif os.path.isfile(f):
-        model = FModel(text=os.path.basename(f), path=f)
-    if model:
-        model.is_file = True
-    return model
+    bean = FDModel(text=os.path.basename(f), path=f)
+    is_file = True if os.path.isfile(f) else False
+    bean = bean.add_is_file(is_file)
+    if not is_file:
+        bean.add_font("bold")
+    return bean

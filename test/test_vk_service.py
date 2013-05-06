@@ -5,7 +5,7 @@ Created on 21 нояб. 2010
 @author: ivan
 '''
 import unittest
-from foobnix.regui.service.vk_service import VKService
+from foobnix.gui.service.vk_service import VKService
 from foobnix.util.url_utils import get_url_type
 
 class TestVKService(unittest.TestCase):
