@@ -10,7 +10,8 @@ from test.all import run_all_tests
 if os.name == 'nt':
     import py2exe   #@UnresolvedImport @UnusedImport
 
-VERSION = "3.0"
+from foobnix.version import FOOBNIX_VERSION
+VERSION = FOOBNIX_VERSION
 
 data_files = [
     ('share/applications', glob.glob('share/applications/*.desktop')),
