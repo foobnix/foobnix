@@ -27,6 +27,7 @@ from foobnix.util.m3u_utils import m3u_reader, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.gui.model import FModel, FTreeModel
+from foobnix.util import idle_task
 ## TODO: Check it
 try:
     from gi._glib import GError
@@ -884,6 +885,50 @@ class DragDropTree(Gtk.TreeView):
             for i in sorted(all_extra_rows.keys(), reverse = True):
                 for row in all_extra_rows[i]:
                     self.model.insert_after(None, self.model.get_iter(i), row)
+
+    def safe_fill_treerows(self):
+        all_extra_rows = {}
+
+        for k, treerow in enumerate(self.model):
+            
+            if not treerow[self.time[0]] and treerow[self.is_file[0]]:
+                bean = self.get_bean_from_row(treerow)
+                full_beans = update_id3_wind_filtering([bean])
+                self.fill_row(k, treerow, full_beans, all_extra_rows)
+                        #for row in rows_for_add:
+                            #self.model.insert_after(None, iter, row)
+        if all_extra_rows:
+            for i in sorted(all_extra_rows.keys(), reverse = True):
+                for row in all_extra_rows[i]:
+                    self.model.insert_after(None, self.model.get_iter(i), row)
+        
+    @idle_task
+    def fill_row(self, k, treerow, full_beans, all_extra_rows):
+                rows_for_add = []
+                if len(full_beans) == 1:
+                    full_bean = full_beans[0]
+                    m_dict = FTreeModel().cut().__dict__
+                    new_dict = dict(zip(m_dict.values(), m_dict.keys()))
+                    for i, key in enumerate(new_dict.values()):
+                        value = getattr(full_bean, key)
+                        if value is None:
+                            value = ''
+                        elif type(value) in [int, float, long]:
+                            value = str(value)
+                        treerow[i] = value
+                else:
+                    for n, full_bean in enumerate(full_beans):
+                        full_bean.visible = True
+                        full_bean.update_uuid()
+                        row = self.get_row_from_bean(full_bean)
+                        rows_for_add.insert(0, row)
+                        if n == 0:
+                            treerow[self.font[0]] = 'bold'
+                            treerow[self.is_file[0]] = False
+
+                    if rows_for_add:
+                        all_extra_rows[k] = rows_for_add
+                Gtk.main_iteration()
 
     def playlist_filter(self, rows):
         checked_cue_rows = []

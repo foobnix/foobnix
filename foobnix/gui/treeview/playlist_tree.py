@@ -27,6 +27,7 @@ from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE, \
 from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
 import os
+import thread
 
 
 foobnix_localization()
@@ -415,7 +416,7 @@ class PlaylistTreeControl(CommonTreeControl):
         if files:
             for i, file in enumerate(files):
                 if os.path.isdir(file):
-                    listdir = filter(lambda x: get_file_extension(x) or os.path.isdir(x),
+                    listdir = filter(lambda x: get_file_extension(x) in FC().all_support_formats or os.path.isdir(x),
                                      [os.path.join(file, f) for f in os.listdir(file)])
                     for k, path in enumerate(listdir):
                         files.insert(i + k + 1, path)
@@ -433,6 +434,7 @@ class PlaylistTreeControl(CommonTreeControl):
                         iter = model.iter_next(iter)
                 else:
                     model.append(None, row)
+            thread.start_new_thread(self.safe_fill_treerows, ())
         else:
             # ff - from_filter
             ff_tree = Gtk.drag_get_source_widget(context)
@@ -474,8 +476,8 @@ class PlaylistTreeControl(CommonTreeControl):
                     for treerow in treerows:
                         model.append(None, [col for col in treerow])
 
-        self.fill_treerows()
-        self.update_tracknumber()
+            self.fill_treerows()
+            self.update_tracknumber()
 
         context.finish(True, False, timestamp)
         self.stop_emission('drag-data-received')
