@@ -27,7 +27,7 @@ from foobnix.util.m3u_utils import m3u_reader, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.gui.model import FModel, FTreeModel
-from foobnix.util import idle_task
+from foobnix.util import idle_task, idle_task_priority
 ## TODO: Check it
 try:
     from gi._glib import GError
@@ -894,7 +894,8 @@ class DragDropTree(Gtk.TreeView):
             if not treerow[self.time[0]] and treerow[self.is_file[0]]:
                 bean = self.get_bean_from_row(treerow)
                 full_beans = update_id3_wind_filtering([bean])
-                self.fill_row(k, treerow, full_beans, all_extra_rows)
+                row_ref = Gtk.TreeRowReference.new(self.model, treerow.path)
+                self.fill_row(k, row_ref, full_beans, all_extra_rows)
                         #for row in rows_for_add:
                             #self.model.insert_after(None, iter, row)
         if all_extra_rows:
@@ -902,8 +903,11 @@ class DragDropTree(Gtk.TreeView):
                 for row in all_extra_rows[i]:
                     self.model.insert_after(None, self.model.get_iter(i), row)
         
-    @idle_task
-    def fill_row(self, k, treerow, full_beans, all_extra_rows):
+    @idle_task_priority(GObject.PRIORITY_LOW)
+    def fill_row(self, k, row_ref, full_beans, all_extra_rows):
+                if not row_ref.valid():
+                    return
+                treerow = self.model[row_ref.get_path()]
                 rows_for_add = []
                 if len(full_beans) == 1:
                     full_bean = full_beans[0]
@@ -928,7 +932,6 @@ class DragDropTree(Gtk.TreeView):
 
                     if rows_for_add:
                         all_extra_rows[k] = rows_for_add
-                Gtk.main_iteration()
 
     def playlist_filter(self, rows):
         checked_cue_rows = []
