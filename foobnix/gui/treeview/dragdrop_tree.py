@@ -888,26 +888,27 @@ class DragDropTree(Gtk.TreeView):
 
     def safe_fill_treerows(self):
         all_extra_rows = {}
-
         for k, treerow in enumerate(self.model):
-            
             if not treerow[self.time[0]] and treerow[self.is_file[0]]:
                 bean = self.get_bean_from_row(treerow)
                 full_beans = update_id3_wind_filtering([bean])
-                row_ref = Gtk.TreeRowReference.new(self.model, treerow.path)
-                self.fill_row(k, row_ref, full_beans, all_extra_rows)
-                        #for row in rows_for_add:
-                            #self.model.insert_after(None, iter, row)
-        if all_extra_rows:
-            for i in sorted(all_extra_rows.keys(), reverse = True):
-                for row in all_extra_rows[i]:
-                    self.model.insert_after(None, self.model.get_iter(i), row)
-        
+                self.fill_row(k, full_beans, all_extra_rows)
+
+        self.extend_playlists(all_extra_rows)
+
     @idle_task_priority(GObject.PRIORITY_LOW)
-    def fill_row(self, k, row_ref, full_beans, all_extra_rows):
-                if not row_ref.valid():
-                    return
-                treerow = self.model[row_ref.get_path()]
+    def extend_playlists(self, all_extra_rows):
+        try:
+            if all_extra_rows:
+                for i in sorted(all_extra_rows.keys(), reverse = True):
+                    for row in all_extra_rows[i]:
+                        self.model.insert_after(None, self.model.get_iter(i), row)
+        finally:
+            GObject.idle_add(self.update_tracknumber)
+
+    @idle_task_priority(GObject.PRIORITY_LOW)
+    def fill_row(self, k, full_beans, all_extra_rows):
+                treerow = self.model[k]
                 rows_for_add = []
                 if len(full_beans) == 1:
                     full_bean = full_beans[0]
