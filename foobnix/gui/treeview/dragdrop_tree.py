@@ -888,9 +888,10 @@ class DragDropTree(Gtk.TreeView):
 
     def safe_fill_treerows(self):
         all_extra_rows = {}
-        for k, treerow in enumerate(self.model):
-            if not treerow[self.time[0]] and treerow[self.is_file[0]]:
-                bean = self.get_bean_from_row(treerow)
+        
+        for k, row in enumerate([[col for col in treerow] for treerow in self.model]):
+            if not treerow[self.time[0]] and row[self.is_file[0]]:
+                bean = self.get_bean_from_row(row)
                 full_beans = update_id3_wind_filtering([bean])
                 self.fill_row(k, full_beans, all_extra_rows)
 
