@@ -888,12 +888,13 @@ class DragDropTree(Gtk.TreeView):
 
     def safe_fill_treerows(self):
         all_extra_rows = {}
-        
-        for k, row in enumerate([[col for col in treerow] for treerow in self.model]):
+        rows = [[col for col in treerow] for treerow in self.model]
+        n_rows = len(rows)
+        for k, row in enumerate(rows):
             if not treerow[self.time[0]] and row[self.is_file[0]]:
                 bean = self.get_bean_from_row(row)
                 full_beans = update_id3_wind_filtering([bean])
-                self.fill_row(k, full_beans, all_extra_rows)
+                self.fill_row(k, full_beans, all_extra_rows, n_rows)
 
         self.extend_playlists(all_extra_rows)
 
@@ -908,7 +909,9 @@ class DragDropTree(Gtk.TreeView):
             GObject.idle_add(self.update_tracknumber)
 
     @idle_task_priority(GObject.PRIORITY_LOW)
-    def fill_row(self, k, full_beans, all_extra_rows):
+    def fill_row(self, k, full_beans, all_extra_rows, n_rows):
+                if len(self.model) != n_rows:
+                    k += n_rows - len(self.model)
                 treerow = self.model[k]
                 rows_for_add = []
                 if len(full_beans) == 1:
