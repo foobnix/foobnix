@@ -27,8 +27,10 @@ from foobnix.util.m3u_utils import m3u_reader, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.gui.model import FModel, FTreeModel
-from foobnix.util import idle_task, idle_task_priority
+from foobnix.util import idle_task_priority
 import collections
+from foobnix.playlists.m3u_reader import update_id3_for_m3u
+from foobnix.playlists.cue_reader import update_id3_for_cue
 ## TODO: Check it
 try:
     from gi._glib import GError
@@ -167,201 +169,11 @@ class DragDropTree(Gtk.TreeView):
     
     def on_drag_drop(self, to_tree, context, x, y, time):
         # ff - from_filter
-        targets = {}
+        '''targets = {}
         for atom in context.list_targets():
             targets[atom] = atom
-        to_tree.drag_get_data(context, context.list_targets()[-1], time)
+        to_tree.drag_get_data(context, context.list_targets()[-1], time)'''
         return True
-        
-        self.stop_emission('drag-drop')
-        self.copy = context.get_selected_action()
-        to_filter_model = to_tree.get_model()
-        to_model = to_filter_model.get_model()
-        if to_tree.get_dest_row_at_pos(x, y):
-            to_filter_path, to_filter_pos = to_tree.get_dest_row_at_pos(x, y)
-            to_filter_iter = to_filter_model.get_iter(to_filter_path)
-            to_iter = to_filter_model.convert_iter_to_child_iter(to_filter_iter)
-        else:
-            to_filter_path = None
-            to_filter_pos = None     
-            to_filter_iter = None
-            to_iter = None
-            
-      
-        
-        if not from_tree:
-            return None
-        
-        ff_model, ff_paths = from_tree.get_selection().get_selected_rows()
-        
-        if "RadioTreeControl" in str(to_tree) and to_tree != from_tree:
-            return
-        
-        if "PlaylistTreeControl" in str(to_tree) and to_tree != from_tree:
-            def task(to_iter):
-                if not to_model.get_iter_first():
-                    self.controls.notetabs.rename_tab(to_tree.scroll, "Foobnix")
-                all_rows = []
-                logging.debug("Receive dnd items from %s" % str(from_tree))
-                for ff_path in ff_paths:
-                    ff_iter = ff_model.get_iter(ff_path)
-                    if "VKIntegrationControls" in str(from_tree):
-                        bean = self.get_bean_from_model_iter(ff_model, ff_iter)
-                        beans = [bean]
-                        logging.debug("selected bean")
-                        logging.debug(bean)
-                        if bean and isinstance(bean, FModel) and bean.user_id and not bean.path:
-                            beans += from_tree.get_user_tracks_as_beans(bean.user_id)
-                        else:
-                            logging.debug("Bean is None, or not is FDModel or has no contains user_id")
-                            beans = self.get_all_beans_by_parent(ff_model, ff_iter)
-                    else:
-                        beans = self.get_all_beans_by_parent(ff_model, ff_iter)
-                    all_rows += self.fill_beans_and_get_rows(beans, self.playlist_filter)
-                    
-                for i, row in enumerate(all_rows):
-                        pos = AFTER if i else to_filter_pos
-                        if is_m3u(row[self.path[0]]):
-                            self.add_m3u(ff_model, ff_iter, to_tree, to_model, to_iter, pos)
-                            continue
-                        to_iter = self.to_add_drag_item(to_tree, to_model, to_iter, pos, None, row=row)
-                self.update_tracknumber()
-           
-            self.controls.search_progress.background_spinner_wrapper(task, to_iter)                              
-            
-            return 
-        
-        new_iter = None
-        self.row_to_remove = []
-        
-        ff_row_refs = [Gtk.TreeRowReference(ff_model, ff_path) for ff_path in ff_paths]
-        
-        """to tree is NavigationTreeControl"""
-        if "NavigationTreeControl" in str(to_tree):
-            if from_tree is not to_tree:
-                return
-            dest_folder = self.get_dest_folder(to_filter_model, to_filter_iter, to_filter_path)
-            rows = [to_model[ff_path] for ff_path in ff_paths]
-            files = [row[self.path[0]] for row in rows if os.path.dirname(row[self.path[0]]) != dest_folder]
-            if to_filter_pos:
-                if os.path.isfile(to_filter_model[to_filter_path][self.path[0]]):
-                    if to_filter_pos != BEFORE:
-                        to_filter_pos = AFTER
-                elif to_filter_pos in (BEFORE, 
-                                       AFTER):
-                    info_dialog(_("Attention!!!"), 
-                                _("When you release the mouse button the mouse" +
-                                  " pointer must be over the folder exactly." +
-                                  " Please retry!"))
-                    return
-            if files and copy_move_files_dialog(files, dest_folder, self.copy):
-                text = _("Copying:") if self.copy == Gdk.DragAction.COPY else _("Replacing:")   # @UndefinedVariable
-                self.pr_window = CopyProgressWindow(_("Progress"), files, 300, 100)
-                self.pr_window.label_from.set_text(text)
-                self.pr_window.label_to.set_text(_("To: ") + dest_folder + "\n")
-                for ff_path, ff_row_ref, file in zip(ff_paths, ff_row_refs, files):
-                    new_path = self.replace_inside_navig_tree(file, dest_folder)
-                    if not new_path: continue
-                    row = to_model[ff_path]
-                    new_row = list(row)
-                    if to_iter:
-                        if to_model.get_value(to_iter, self.is_file[0]):
-                            new_row[self.parent_level[0]] = to_model.get_value(to_iter, self.parent_level[0])
-                            new_dir = os.path.dirname(to_model.get_value(to_iter, self.path[0]))
-                        else:
-                            new_row[self.parent_level[0]] = to_model.get_value(to_iter, self.level[0])
-                            new_dir = to_model.get_value(to_iter, self.path[0])
-                    else:
-                        new_row[self.parent_level[0]] = None
-                        if self.model[0][self.is_file[0]]:
-                            new_dir = os.path.dirname(self.model[0][self.path[0]])
-                        else:
-                            new_dir = self.model[0][self.path[0]]
-                    new_row[self.path[0]] = os.path.join(new_dir, os.path.basename(row[self.path[0]]))
-                               
-                    self.tree_insert_row(new_row)
-                    
-                    def task(row):
-                        for child_row in row.iterchildren():
-                            child_row[self.path[0]] = os.path.join(row[self.path[0]], os.path.basename(child_row[self.path[0]]))
-                            self.tree_insert_row(child_row)
-                            task(child_row)
-                            if self.copy == Gdk.DragAction.MOVE:    # @UndefinedVariable
-                                self.row_to_remove.append(self.get_row_reference_from_iter(ff_model,
-                                                               ff_model.convert_child_iter_to_iter(child_row.iter)))
-                    task(row)
-                    if self.copy == Gdk.DragAction.MOVE:    # @UndefinedVariable
-                        self.row_to_remove.append(ff_row_ref)
-                    
-                self.remove_replaced(ff_model)
-                self.pr_window.destroy()
-                self.save_rows_from_tree()
-            return
-                      
-        for ff_row_ref in ff_row_refs: 
-            new_iter = self.one_row_replacing(ff_row_ref, ff_path, ff_model, from_tree, to_tree,
-                                              to_model, to_iter, to_filter_pos, to_filter_path, new_iter)
-        
-        if from_tree == to_tree:
-            self.remove_replaced(ff_model)
-            
-        self.row_to_remove = []
-   
-        self.rebuild_tree(to_tree)        
-        
-    def one_row_replacing(self, ff_row_ref, ff_path, ff_model, from_tree, to_tree, to_model,
-                          to_iter, to_filter_pos, to_filter_path, new_iter, new_path=None, is_copy_move=False):
-
-        ff_iter = self.get_iter_from_row_reference(ff_row_ref)
-
-        """do not copy to himself"""
-        if to_tree == from_tree and ff_path == to_filter_path:
-            return None
-           
-        """if m3u is dropped"""
-        if is_m3u(ff_model.get_value(ff_iter, self.path[0])):
-            self.add_m3u(ff_model, ff_iter, to_tree, to_model, to_iter, to_filter_pos)
-            return
-            
-        if ff_model.iter_has_child(ff_iter):
-            new_iter = self.to_add_drag_item(to_tree, to_model, to_iter, to_filter_pos, ff_row_ref)
-            self.iter_is_parent(ff_row_ref, ff_model, to_tree, to_model, new_iter)
-            if is_copy_move:
-                self.change_filepaths_in_row(to_model, new_iter, new_path)
-        else:
-            if new_iter and to_iter:
-                to_iter = new_iter
-            new_iter = self.to_add_drag_item(to_tree, to_model, to_iter, to_filter_pos, ff_row_ref)
-            if is_copy_move:
-                self.change_filepaths_in_row(to_model, new_iter, new_path)
-            if to_filter_pos == BEFORE:
-                new_iter = to_model.iter_next(new_iter)
-            elif to_filter_pos == INTO_OR_BEFORE:
-                new_iter = to_iter
-                
-        '''drag row with children from plain tree'''    
-        if from_tree.current_view == VIEW_PLAIN:
-            ff_iter = self.get_iter_from_row_reference(ff_row_ref)
-            if not self.get_bean_from_model_iter(ff_model, ff_iter).is_file:
-                next_iter = ff_model.iter_next(ff_iter)
-                _iter = new_iter
-                while self.get_bean_from_model_iter(ff_model, next_iter).is_file:
-                    ref = self.get_row_reference_from_iter(ff_model, next_iter)
-                    if to_tree.current_view == VIEW_TREE:
-                        if _iter == new_iter:
-                            pos = INTO_OR_AFTER
-                            if to_filter_pos == BEFORE:
-                                _iter = self.get_previous_iter(to_model, _iter)
-                        else:
-                            pos = AFTER
-                    else:
-                        pos = to_filter_pos
-                    _iter = self.to_add_drag_item(to_tree, to_model, _iter, pos, ref)
-                    next_iter = self.get_iter_from_row_reference(ref)
-                    next_iter = ff_model.iter_next(next_iter)
-                    if not next_iter: break
-        
-        return new_iter
 
     def rebuild_tree(self, tree):     
         if tree.current_view == VIEW_TREE:
@@ -888,58 +700,51 @@ class DragDropTree(Gtk.TreeView):
                     self.model.insert_after(None, self.model.get_iter(i), row)
 
     def safe_fill_treerows(self):
-        all_extra_rows = {}
         rows = collections.OrderedDict()
         for treerow in self.model:
             rows[Gtk.TreeRowReference.new(self.model, treerow.path)] = [col for col in treerow] 
-
         for row_ref in rows.keys():
             row = rows[row_ref]
             if not row[self.time[0]] and row[self.is_file[0]] and row_ref.valid():
                 bean = self.get_bean_from_row(row)
-                full_beans = update_id3_wind_filtering([bean])
-                self.fill_row(row_ref, full_beans[:], all_extra_rows)
-
-        self.extend_playlists(all_extra_rows)
+                beans = update_id3_for_m3u([bean])
+                beans = update_id3_for_cue(beans)
+                if len(beans) == 1:
+                    bean = update_id3_wind_filtering(beans)[:][0]
+                    self.fill_row(row_ref, bean)
+                else:
+                    bean.add_font("bold").add_is_file(False)
+                    self.fill_row(row_ref, bean)
+                    beans.reverse()
+                    for b in beans:
+                        if get_file_extension(bean.path) != ".cue":
+                            b = update_id3_wind_filtering([b])[:][0]
+                        self.insert_bean(row_ref, b)
+              
+        GObject.idle_add(self.update_tracknumber, priority=GObject.PRIORITY_LOW + 1)
+    
+    @idle_task_priority(GObject.PRIORITY_LOW)
+    def insert_bean(self, row_ref, bean):
+        if row_ref.valid():
+            row = self.get_row_from_bean(bean)
+            iter = self.model.insert_after(None, self.get_iter_from_row_reference(row_ref), row)
+            self.fill_row(self.get_row_reference_from_iter(self.model, iter), bean)
 
     @idle_task_priority(GObject.PRIORITY_LOW)
-    def extend_playlists(self, all_extra_rows):
-        try:
-            if all_extra_rows:
-                for i in sorted(all_extra_rows.keys(), reverse = True):
-                    for row in all_extra_rows[i]:
-                        self.model.insert_after(None, self.model.get_iter(i), row)
-        finally:
-            GObject.idle_add(self.update_tracknumber)
-
-    @idle_task_priority(GObject.PRIORITY_LOW)
-    def fill_row(self, row_ref, full_beans, all_extra_rows):
+    def fill_row(self, row_ref, bean):
             if row_ref.valid():
                 treerow = self.model[row_ref.get_path()]
-                rows_for_add = []
-                if len(full_beans) == 1:
-                    full_bean = full_beans[0]
-                    m_dict = FTreeModel().cut().__dict__
-                    new_dict = dict(zip(m_dict.values(), m_dict.keys()))
-                    for i, key in enumerate(new_dict.values()):
-                        value = getattr(full_bean, key)
-                        if value is None:
-                            value = ''
-                        elif type(value) in [int, float, long]:
-                            value = str(value)
+                m_dict = FTreeModel().cut().__dict__
+                new_dict = dict(zip(m_dict.values(), m_dict.keys()))
+                for i, key in enumerate(new_dict.values()):
+                    value = getattr(bean, key)
+                    if value is None:
+                        value = ''
+                    elif type(value) in [int, float, long]:
+                        value = str(value)
+                    if i != self.play_icon[0]:
                         treerow[i] = value
-                else:
-                    for n, full_bean in enumerate(full_beans):
-                        full_bean.visible = True
-                        full_bean.update_uuid()
-                        row = self.get_row_from_bean(full_bean)
-                        rows_for_add.insert(0, row)
-                        if n == 0:
-                            treerow[self.font[0]] = 'bold'
-                            treerow[self.is_file[0]] = False
 
-                    if rows_for_add:
-                        all_extra_rows[int(str(treerow.path))] = rows_for_add
 
     def playlist_filter(self, rows):
         checked_cue_rows = []

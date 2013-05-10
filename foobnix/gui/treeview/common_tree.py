@@ -155,7 +155,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     
     def get_row_reference_from_iter(self, model, iter):
         path = model.get_path(iter)
-        return Gtk.TreeRowReference(model, path)
+        return Gtk.TreeRowReference.new(model, path)
     
     def save_rows_from_tree(self, dict):
         try:

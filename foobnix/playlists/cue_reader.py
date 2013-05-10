@@ -242,7 +242,7 @@ class CueReader():
                             full_file = try_name
                             logging.debug("Found source for cue file name" + try_name)
                             find_source = True
-                            break;
+                            break
                     
                     if not find_source:    
                         self.is_valid = False
