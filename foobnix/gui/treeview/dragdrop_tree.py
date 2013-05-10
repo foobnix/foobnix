@@ -28,6 +28,7 @@ from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.gui.model import FModel, FTreeModel
 from foobnix.util import idle_task, idle_task_priority
+import collections
 ## TODO: Check it
 try:
     from gi._glib import GError
@@ -888,12 +889,16 @@ class DragDropTree(Gtk.TreeView):
 
     def safe_fill_treerows(self):
         all_extra_rows = {}
-        rows = [[col for col in treerow] for treerow in self.model]
-        for row in enumerate(rows[:]):
-            if not treerow[self.time[0]] and row[self.is_file[0]]:
+        rows = collections.OrderedDict()
+        for treerow in self.model:
+            rows[Gtk.TreeRowReference.new(self.model, treerow.path)] = [col for col in treerow] 
+
+        for row_ref in rows.keys():
+            row = rows[row_ref]
+            if not row[self.time[0]] and row[self.is_file[0]] and row_ref.valid():
                 bean = self.get_bean_from_row(row)
                 full_beans = update_id3_wind_filtering([bean])
-                self.fill_row(row, full_beans[:], all_extra_rows, rows)
+                self.fill_row(row_ref, full_beans[:], all_extra_rows)
 
         self.extend_playlists(all_extra_rows)
 
@@ -908,19 +913,9 @@ class DragDropTree(Gtk.TreeView):
             GObject.idle_add(self.update_tracknumber)
 
     @idle_task_priority(GObject.PRIORITY_LOW)
-    def fill_row(self, row, full_beans, all_extra_rows, rows):
-                k = rows.index(row)
-                treerow = self.model[k]
-                if len(self.model) != len(rows):
-                    if [col for col in treerow] != row:
-                        temp = k
-                        k -= len(rows) - len(self.model)
-                        treerow = self.model[k]
-                        del rows[k]
-                        if [col for col in treerow] != row:
-                            del rows[temp]
-                            return
-
+    def fill_row(self, row_ref, full_beans, all_extra_rows):
+            if row_ref.valid():
+                treerow = self.model[row_ref.get_path()]
                 rows_for_add = []
                 if len(full_beans) == 1:
                     full_bean = full_beans[0]
@@ -944,7 +939,7 @@ class DragDropTree(Gtk.TreeView):
                             treerow[self.is_file[0]] = False
 
                     if rows_for_add:
-                        all_extra_rows[k] = rows_for_add
+                        all_extra_rows[int(str(treerow.path))] = rows_for_add
 
     def playlist_filter(self, rows):
         checked_cue_rows = []
