@@ -247,10 +247,10 @@ class BaseFoobnixControls():
             tabhelper._append_tab(FCache().tab_names[tab], rows=FCache().cache_music_tree_beans[tab])
 
             tree = tabhelper.get_current_tree()
-            #if not FCache().cache_music_tree_beans[tab]:
-            #    self.perspective.show_add_button()
-            #else:
-            #    self.perspective.hide_add_button()
+            if not FCache().cache_music_tree_beans[tab]:
+                self.perspectives.get_perspective('fs').show_add_button()
+            else:
+                self.perspectives.get_perspective('fs').hide_add_button()
 
             logging.info("Tree loaded from cache")
 

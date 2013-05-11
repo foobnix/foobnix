@@ -1,16 +1,17 @@
+from foobnix.gui.controls.filter import FilterControl
 
 __author__ = 'popsul'
 
 from gi.repository import Gtk
 from gi.repository import GObject
-from foobnix.gui.state import LoadSave, Quitable
+from foobnix.gui.state import LoadSave, Quitable, Filterable
 from foobnix.gui.perspectives import StackableWidget, BasePerspective, OneButtonToggled
 from foobnix.helpers.my_widgets import PerspectiveButton
 
 
-class Controller(Gtk.VBox, LoadSave, Quitable):
+class Controller(Gtk.VBox, LoadSave, Quitable, Filterable):
 
-    def __init__(self):
+    def __init__(self, controls):
         super(Controller, self).__init__(False, 0)
 
         self.perspectives_container = StackableWidget()
@@ -20,7 +21,10 @@ class Controller(Gtk.VBox, LoadSave, Quitable):
         ## internal property
         self._perspectives = []
 
+        self.filter = FilterControl(self)
+
         self.pack_start(self.perspectives_container, True, True, 0)
+        self.pack_start(self.filter, False, False, 0)
         self.pack_start(self.button_container, False, False, 0)
 
         ## insert dummy page
@@ -56,6 +60,10 @@ class Controller(Gtk.VBox, LoadSave, Quitable):
                 self.get_perspective(_id).emit("deactivated")
         self.perspectives_container.set_active_by_index(perspective.widget_id)
         perspective.button.set_active(True)
+        if isinstance(perspective, Filterable):
+            self.filter.show()
+        else:
+            self.filter.hide()
         perspective.emit("activated")
 
     def is_activated(self, perspective_id):
@@ -68,6 +76,20 @@ class Controller(Gtk.VBox, LoadSave, Quitable):
         if perspective_id in self.perspectives:
             return self.perspectives[perspective_id]
         return None
+
+    def filter_by_file(self, value):
+        print("filter by file")
+        for perspective in self._perspectives:
+            if isinstance(perspective, Filterable):
+                print("run filter in", perspective.get_id())
+                perspective.filter_by_file(value)
+
+    def filter_by_folder(self, value):
+        print("filter by folder")
+        for perspective in self._perspectives:
+            if isinstance(perspective, Filterable):
+                print("run filter in", perspective.get_id())
+                perspective.filter_by_folder(value)
 
     def on_load(self):
         print("on load")

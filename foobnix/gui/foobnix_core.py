@@ -83,16 +83,13 @@ class FoobnixCore(BaseFoobnixControls):
 
         self.coverlyrics = CoverLyricsPanel(self)
 
-
-        self.filter = FilterControl(self)
-
         #self.radio = RadioTreeControl(self)
         #self.my_radio = MyRadioTreeControl(self)
         #self.virtual = VirtualTreeControl(self)
         #self.lastfm_integration = LastFmIntegrationControls(self)
         #self.vk_integration = VKIntegrationControls(self)
 
-        self.perspectives = Controller()
+        self.perspectives = Controller(self)
 
         self.perspectives.attach_perspective(FSPerspective(self))
         self.perspectives.attach_perspective(VKPerspective(self))

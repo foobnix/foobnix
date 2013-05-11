@@ -19,3 +19,12 @@ class Quitable(object):
 
     def on_quit(self):
         pass
+
+
+class Filterable(object):
+
+    def filter_by_file(self, value):
+        pass
+
+    def filter_by_folder(self, value):
+        pass
