@@ -3,6 +3,7 @@ __author__ = 'popsul'
 
 from gi.repository import Gtk
 from gi.repository import GObject
+from foobnix.fc.fc import FCBase
 from foobnix.gui.perspectives import BasePerspective
 from foobnix.gui.treeview.lastfm_integration_tree import LastFmIntegrationControls
 
@@ -28,6 +29,10 @@ class LastFMPerspective(BasePerspective):
     def get_widget(self):
         return self.widget.scroll
 
+    def is_available(self):
+        return (FCBase().lfm_login != "l_user_") and FCBase().lfm_password
+
+    ## LoadSave implementation
     def on_load(self):
         pass
 

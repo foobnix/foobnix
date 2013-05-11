@@ -65,6 +65,18 @@ class Controller(Gtk.VBox, LoadSave, Quitable, Filterable):
             self.filter.hide()
         perspective.emit("activated")
         analytics.action("PERSPECTIVE_" + perspective.get_id())
+        self.check_availability()
+
+    def check_availability(self):
+        for perspective in self._perspectives:
+            if not perspective.is_available():
+                perspective.button.set_sensitive(False)
+                perspective.button.set_tooltip_text("Not available")
+                if self.is_activated(perspective.get_id()):
+                    self.activate_perspective(self._perspectives[0].get_id())
+            else:
+                perspective.button.set_sensitive(True)
+                perspective.button.set_tooltip_text(perspective.get_tooltip())
 
     def is_activated(self, perspective_id):
         perspective = self.get_perspective(perspective_id)

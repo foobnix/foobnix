@@ -125,7 +125,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
 
         else:
             FC().tabs_mode = "Multi"
-            self.controls.perspectives.get_perspective('fs').get_tabhelper().tabhelper.set_show_tabs(True)
+            self.controls.perspectives.get_perspective('fs').get_tabhelper().set_show_tabs(True)
         if self.update_on_start.get_active():
             FC().update_tree_on_start = True
         else:

@@ -35,6 +35,9 @@ class BasePerspective(GObject.GObject, LoadSave):
     def on_save(self):
         raise NotImplementedError()
 
+    def is_available(self):
+        return True
+
 GObject.signal_new("activated", BasePerspective, GObject.SIGNAL_RUN_LAST, None, ())
 GObject.signal_new("deactivated", BasePerspective, GObject.SIGNAL_RUN_LAST, None, ())
 
