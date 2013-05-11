@@ -441,7 +441,7 @@ class PlaylistTreeControl(CommonTreeControl):
                         iter = model.iter_next(iter)
                 else:
                     model.append(None, row)
-            thread.start_new_thread(self.safe_fill_treerows, ())
+            
         else:
             # ff - from_filter
             ff_tree = Gtk.drag_get_source_widget(context)
@@ -483,8 +483,7 @@ class PlaylistTreeControl(CommonTreeControl):
                     for treerow in treerows:
                         model.append(None, [col for col in treerow])
 
-            self.fill_treerows()
-            self.update_tracknumber()
+        thread.start_new_thread(self.safe_fill_treerows, ())
 
         context.finish(True, False, timestamp)
         self.stop_emission('drag-data-received')

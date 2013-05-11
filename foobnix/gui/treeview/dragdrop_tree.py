@@ -57,6 +57,7 @@ class DragDropTree(Gtk.TreeView):
         """init values"""
         self.hash = {None: None}
         self.current_view = None
+        self.filling_lock = threading.Lock()
 
     def on_drag_data_get(self, source_tree, drag_context, selection, info, time):
         pass 
@@ -406,19 +407,20 @@ class DragDropTree(Gtk.TreeView):
         self.plain_append_all(copy_beans)
     
     def update_tracknumber(self):
-        self.current_view = VIEW_PLAIN
-        tn = self.tracknumber[0]
-        #path = self.path[0]
-        isfile = self.is_file[0]
-        counter = 0
-        for row in self.model:
-                #if not row[path] or not get_file_extension(row[path]) == ".cue":
+        try:
+            self.current_view = VIEW_PLAIN
+            tn = self.tracknumber[0]
+            isfile = self.is_file[0]
+            counter = 0
+            for row in self.model:
                 if row[isfile] and FC().numbering_by_order:
                     counter += 1
                 else:
                     counter = 0
-                if counter:
-                    row[tn] = str(counter)
+                row[tn] = str(counter) if counter else ''
+        finally:
+            if self.filling_lock.locked():
+                self.filling_lock.release()
     
     def tree_append_all(self, beans):
         def task():
@@ -700,26 +702,28 @@ class DragDropTree(Gtk.TreeView):
                     self.model.insert_after(None, self.model.get_iter(i), row)
 
     def safe_fill_treerows(self):
-        rows = collections.OrderedDict()
-        for treerow in self.model:
-            rows[Gtk.TreeRowReference.new(self.model, treerow.path)] = [col for col in treerow] 
-        for row_ref in rows.keys():
-            row = rows[row_ref]
-            if not row[self.time[0]] and row[self.is_file[0]] and row_ref.valid():
-                bean = self.get_bean_from_row(row)
-                beans = update_id3_for_cue([bean])
-                if len(beans) == 1:
-                    bean = update_id3_wind_filtering(beans)[:][0]
-                    self.fill_row(row_ref, bean)
-                else:
-                    bean.add_font("bold").add_is_file(False)
-                    bean.path = ''
-                    self.fill_row(row_ref, bean)
-                    beans.reverse()
-                    for b in beans:
-                        self.insert_bean(row_ref, b)
-              
-        GObject.idle_add(self.update_tracknumber, priority=GObject.PRIORITY_LOW + 1)
+        try:
+            self.filling_lock.acquire()
+            rows = collections.OrderedDict()
+            for treerow in self.model:
+                rows[Gtk.TreeRowReference.new(self.model, treerow.path)] = [col for col in treerow] 
+            for row_ref in rows.keys():
+                row = rows[row_ref]
+                if not row[self.time[0]] and row[self.is_file[0]] and row_ref.valid():
+                    bean = self.get_bean_from_row(row)
+                    beans = update_id3_for_cue([bean])
+                    if len(beans) == 1:
+                        bean = update_id3_wind_filtering(beans)[:][0]
+                        self.fill_row(row_ref, bean)
+                    else:
+                        bean.add_font("bold").add_is_file(False)
+                        bean.path = ''
+                        self.fill_row(row_ref, bean)
+                        beans.reverse()
+                        for b in beans:
+                            self.insert_bean(row_ref, b)
+        finally:              
+            GObject.idle_add(self.update_tracknumber, priority=GObject.PRIORITY_LOW + 1)
     
     @idle_task_priority(GObject.PRIORITY_LOW)
     def insert_bean(self, row_ref, bean):
