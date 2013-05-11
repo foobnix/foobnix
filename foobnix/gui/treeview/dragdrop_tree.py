@@ -171,8 +171,8 @@ class DragDropTree(Gtk.TreeView):
         # ff - from_filter
         '''targets = {}
         for atom in context.list_targets():
-            targets[atom] = atom
-        to_tree.drag_get_data(context, context.list_targets()[-1], time)'''
+            targets[atom] = atom'''
+        to_tree.drag_get_data(context, context.list_targets()[-1], time)
         return True
 
     def rebuild_tree(self, tree):     
@@ -707,18 +707,16 @@ class DragDropTree(Gtk.TreeView):
             row = rows[row_ref]
             if not row[self.time[0]] and row[self.is_file[0]] and row_ref.valid():
                 bean = self.get_bean_from_row(row)
-                beans = update_id3_for_m3u([bean])
-                beans = update_id3_for_cue(beans)
+                beans = update_id3_for_cue([bean])
                 if len(beans) == 1:
                     bean = update_id3_wind_filtering(beans)[:][0]
                     self.fill_row(row_ref, bean)
                 else:
                     bean.add_font("bold").add_is_file(False)
+                    bean.path = ''
                     self.fill_row(row_ref, bean)
                     beans.reverse()
                     for b in beans:
-                        if get_file_extension(bean.path) != ".cue":
-                            b = update_id3_wind_filtering([b])[:][0]
                         self.insert_bean(row_ref, b)
               
         GObject.idle_add(self.update_tracknumber, priority=GObject.PRIORITY_LOW + 1)

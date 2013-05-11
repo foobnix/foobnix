@@ -28,6 +28,7 @@ from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
 import os
 import thread
+from foobnix.playlists.m3u_reader import update_id3_for_m3u
 
 
 foobnix_localization()
@@ -398,7 +399,12 @@ class PlaylistTreeControl(CommonTreeControl):
         result = []
         for path in paths:
             bean = get_bean_from_file(path)
-            if bean:
+            beans = update_id3_for_m3u([bean])
+            if beans and len(beans) > 1:
+                    bean = bean.add_font("bold").add_is_file(False)
+                    bean.path = ''
+                    beans.insert(0, bean)
+            for bean in beans:
                 result.append(self.get_row_from_bean(bean))
         return result
 
@@ -420,6 +426,7 @@ class PlaylistTreeControl(CommonTreeControl):
                                      [os.path.join(file, f) for f in os.listdir(file)])
                     for k, path in enumerate(listdir):
                         files.insert(i + k + 1, path)
+                                   
             rows = self.file_paths_to_rows(files)
             if not rows:
                 return
