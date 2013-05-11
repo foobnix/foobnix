@@ -375,3 +375,9 @@ def copy_to(old_paths):
                     pr_window.exit = True
                     t.join()
         pr_window.destroy()
+        
+def is_m3u(path=''):
+    return True if get_file_extension(path) in ['.m3u', '.m3u8'] else False
+
+def is_cue(path=''):
+    return True if get_file_extension(path) == '.cue' else False

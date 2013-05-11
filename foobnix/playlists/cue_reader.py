@@ -185,18 +185,18 @@ class CueReader():
         self.cue_file.image = get_image_by_path(self.cue_path)
 
         self.files_count = 0
-
+        
         for line in file:
             line = correct_encoding(line)
             if not self.is_valid and not line.startswith(FILE):
                 continue
             else: self.is_valid = True
+            
             try:
-                #line = unicode(line, code)
-                pass
+                code = chardet.detect(data)['encoding']
+                line = unicode(line, code)
             except:
-                #logging.error("File encoding is too strange" + str(code))
-                pass
+                logging.warn("There is some problems while converting in unicode")
 
             line = str(line).strip()
             if not line:

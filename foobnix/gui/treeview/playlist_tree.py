@@ -19,7 +19,7 @@ from foobnix.util.tag_util import edit_tags
 from foobnix.util.converter import convert_files
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.file_utils import open_in_filemanager, copy_to, get_files_from_gtk_selection_data,\
-    get_file_extension
+    get_file_extension, is_m3u
 from foobnix.util.localization import foobnix_localization
 from foobnix.gui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE, \
@@ -401,7 +401,7 @@ class PlaylistTreeControl(CommonTreeControl):
             bean = get_bean_from_file(path)
             beans = update_id3_for_m3u([bean])
             if beans and len(beans) > 1:
-                    bean = bean.add_font("bold").add_is_file(False)
+                    bean = bean.add_text(_('Playlist: ') + bean.text).add_font("bold").add_is_file(False)
                     bean.path = ''
                     beans.insert(0, bean)
             for bean in beans:
@@ -465,23 +465,31 @@ class PlaylistTreeControl(CommonTreeControl):
                 return
             else:
                 for i, treerow in enumerate(treerows):
+
                     for k, ch_row in enumerate(treerow.iterchildren()):
                         treerows.insert(i + k + 1, ch_row)
 
                 treerows = self.playlist_filter(treerows)
 
-                if drop_info:
-                    if (position == Gtk.TREE_VIEW_DROP_BEFORE
-                        or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
-                        for treerow in treerows:
-                            model.insert_before(None, iter, [col for col in treerow])
-                    else:
-                        for treerow in treerows:
-                            model.insert_after(None, iter, [col for col in treerow])
+                
+                for i, treerow in enumerate(treerows):
+                    if is_m3u(treerow[self.path[0]]):
+                        rows = self.file_paths_to_rows([treerow[self.path[0]]])
+                        if rows:
+                            rows.reverse()
+                            map(lambda row: treerows.insert(i + 1, row), rows)
+                            continue
+                    row = [col for col in treerow]
+                    if drop_info:
+                        if (position == Gtk.TREE_VIEW_DROP_BEFORE
+                            or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
+                            model.insert_before(None, iter, row)
+                        else:
+                            model.insert_after(None, iter, row)
                             iter = model.iter_next(iter)
-                else:
-                    for treerow in treerows:
-                        model.append(None, [col for col in treerow])
+                    else:
+                        model.append(None, row)
+             
 
         thread.start_new_thread(self.safe_fill_treerows, ())
 

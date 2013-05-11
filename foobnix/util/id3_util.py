@@ -206,7 +206,6 @@ def set_cover_from_tags(bean):
             return filename
 
     except Exception, e:
-        print e
         pass
     return None
 

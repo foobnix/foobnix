@@ -26,7 +26,7 @@ from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progr
 from foobnix.util.m3u_utils import m3u_reader, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
-from foobnix.gui.model import FModel, FTreeModel
+from foobnix.gui.model import FModel, FTreeModel, FDModel
 from foobnix.util import idle_task_priority
 import collections
 from foobnix.playlists.m3u_reader import update_id3_for_m3u
@@ -694,8 +694,7 @@ class DragDropTree(Gtk.TreeView):
 
                     if rows_for_add:
                         all_extra_rows[k] = rows_for_add
-                        #for row in rows_for_add:
-                            #self.model.insert_after(None, iter, row)
+
         if all_extra_rows:
             for i in sorted(all_extra_rows.keys(), reverse = True):
                 for row in all_extra_rows[i]:
@@ -711,18 +710,16 @@ class DragDropTree(Gtk.TreeView):
                 row = rows[row_ref]
                 if not row[self.time[0]] and row[self.is_file[0]] and row_ref.valid():
                     bean = self.get_bean_from_row(row)
-                    beans = update_id3_for_cue([bean])
+                    beans = update_id3_wind_filtering([bean])
                     if len(beans) == 1:
-                        bean = update_id3_wind_filtering(beans)[:][0]
-                        self.fill_row(row_ref, bean)
+                        self.fill_row(row_ref, beans[:][0])
                     else:
-                        bean.add_font("bold").add_is_file(False)
-                        bean.path = ''
+                        bean = FDModel(text=_('Playlist: ') + os.path.basename(bean.path)).add_font("bold").add_is_file(False)
                         self.fill_row(row_ref, bean)
                         beans.reverse()
-                        for b in beans:
+                        for b in beans[:]:
                             self.insert_bean(row_ref, b)
-        finally:              
+        finally:
             GObject.idle_add(self.update_tracknumber, priority=GObject.PRIORITY_LOW + 1)
     
     @idle_task_priority(GObject.PRIORITY_LOW)
