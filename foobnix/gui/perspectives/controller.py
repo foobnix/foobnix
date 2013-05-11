@@ -4,6 +4,7 @@ __author__ = 'popsul'
 
 from gi.repository import Gtk
 from gi.repository import GObject
+from foobnix.util import analytics
 from foobnix.gui.state import LoadSave, Quitable, Filterable
 from foobnix.gui.perspectives import StackableWidget, BasePerspective, OneButtonToggled
 from foobnix.helpers.my_widgets import PerspectiveButton
@@ -63,6 +64,7 @@ class Controller(Gtk.VBox, LoadSave, Quitable, Filterable):
         else:
             self.filter.hide()
         perspective.emit("activated")
+        analytics.action("PERSPECTIVE_" + perspective.get_id())
 
     def is_activated(self, perspective_id):
         perspective = self.get_perspective(perspective_id)

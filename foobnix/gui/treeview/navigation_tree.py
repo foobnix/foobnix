@@ -16,7 +16,6 @@ from foobnix.fc.fc_cache import FCache
 from foobnix.gui.model import FModel
 from foobnix.helpers.menu import Popup
 from foobnix.gui.state import LoadSave
-from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
 from foobnix.gui.treeview.common_tree import CommonTreeControl
 from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
     delete_files_from_disk, create_folder_dialog
@@ -86,9 +85,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
         self.scroll.get_vscrollbar().connect('show', task)
         self.scroll.get_vscrollbar().connect('hide', task)
-
-    def activate_perspective(self):
-        FC().left_perspective = LEFT_PERSPECTIVE_NAVIGATION
 
     def on_button_release(self, w, e):
         if is_middle_click_release(e):

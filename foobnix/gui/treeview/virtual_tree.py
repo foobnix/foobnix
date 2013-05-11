@@ -18,13 +18,12 @@ from foobnix.gui.treeview.common_tree import CommonTreeControl
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
 from foobnix.util.key_utils import KEY_DELETE, is_key
-from foobnix.util.const import LEFT_PERSPECTIVE_VIRTUAL
 
 
 class VirtualTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
-        
+
         """column config"""
         column = Gtk.TreeViewColumn(_("Storage"), Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
@@ -32,34 +31,31 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         self.append_column(column)
 
         self.tree_menu = Popup()
-        
+
         self.configure_send_drag()
         self.configure_recive_drag()
-        
+
         self.set_type_tree()
 
-    def activate_perspective(self):
-        FC().left_perspective = LEFT_PERSPECTIVE_VIRTUAL
-    
     def on_key_release(self, w, e):
         if is_key(e, KEY_DELETE):
             self.delete_selected()
-    
+
     def on_drag_drop_finish(self):
         FCache().cache_virtual_tree_beans = self.get_all_beans()
-        FC().save()        
+        FC().save()
 
     def on_button_press(self, w, e):
         if is_empty_click(w, e):
             w.get_selection().unselect_all()
         if is_double_left_click(e):
-            
+
             selected = self.get_selected_bean()
-            beans = self.get_all_child_beans_by_selected()         
+            beans = self.get_all_child_beans_by_selected()
             self.controls.notetabs._append_tab(selected.text, [selected] + beans, optimization=True)
             self.controls.play_first_file_in_playlist()
-            
-        if is_rigth_click(e): 
+
+        if is_rigth_click(e):
                 right_click_optimization_for_trees(w, e)
                 self.tree_menu.clear()
                 self.tree_menu.add_item(_("Add playlist"), Gtk.STOCK_ADD, self.create_playlist, None)
@@ -86,7 +82,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
                 folder_bean.add_parent(bean.parent_level)
             else:
                 folder_bean.add_parent(bean.level)
-        self.append(folder_bean)      
+        self.append(folder_bean)
 
     def rename_selected(self):
         bean = self.get_selected_bean()
@@ -103,13 +99,13 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         GObject.idle_add(self.restore_rows, FCache().cache_virtual_tree_beans)
         self.restore_expand(FC().virtual_expand_paths)
         self.restore_selection(FC().virtual_selected_paths)
-        
-        def set_expand_path(new_value): 
+
+        def set_expand_path(new_value):
             FC().virtual_expand_paths = new_value
-            
-        def set_selected_path(new_value):             
+
+        def set_selected_path(new_value):
             FC().virtual_selected_paths = new_value
-            
+
         self.expand_updated(set_expand_path)
         self.selection_changed(set_selected_path)
 
@@ -152,8 +148,8 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
                 else:
                     new_iter = model.append(None, row)
                 treerow = model[ref.get_path()]     # reinitialize
-                add_childs(treerow, new_iter) 
-            self.remove_replaced(ff_model, ff_row_refs)      
+                add_childs(treerow, new_iter)
+            self.remove_replaced(ff_model, ff_row_refs)
         else:
             for treerow in treerows:
                 row = [col for col in treerow]

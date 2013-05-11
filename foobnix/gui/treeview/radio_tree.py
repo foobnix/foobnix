@@ -20,7 +20,7 @@ from foobnix.helpers.menu import Popup
 from foobnix.gui.model import FModel, FTreeModel
 from foobnix.gui.service.radio_service import RadioFolder
 from foobnix.gui.treeview.common_tree import CommonTreeControl
-from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
+from foobnix.util.const import FTYPE_RADIO
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click,\
     right_click_optimization_for_trees, is_empty_click
 from foobnix.util.key_utils import is_key, KEY_DELETE
@@ -47,9 +47,6 @@ class RadioTreeControl(CommonTreeControl):
             GObject.idle_add(self.restore_rows, FCache().cache_radio_tree_beans)
         else:
             self.update_radio_tree()
-
-    def activate_perspective(self):
-        FC().left_perspective = LEFT_PERSPECTIVE_RADIO
 
     def on_button_press(self, w, e):
         if is_double_left_click(e):

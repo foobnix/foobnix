@@ -21,7 +21,7 @@ from foobnix.helpers.pref_widgets import HBoxDecoratorTrue
 from foobnix.fc.fc_cache import FCache, COVERS_DIR, LYRICS_DIR
 from foobnix.gui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
-    LEFT_PERSPECTIVE_INFO, ICON_BLANK_DISK, SITE_LOCALE
+    ICON_BLANK_DISK, SITE_LOCALE
 from foobnix.util.bean_utils import update_parent_for_beans, \
     update_bean_from_normalized_text
 from foobnix.thirdparty.lyr import get_lyrics
@@ -142,9 +142,6 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
 
         self.bean = None
         self.info_cache = InfoCache()
-
-    def activate_perspective(self):
-        FC().left_perspective = LEFT_PERSPECTIVE_INFO
 
     def show_current(self, widget):
         if not self.controls.net_wrapper.is_internet():
