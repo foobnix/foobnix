@@ -136,7 +136,6 @@ class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
             self.menu.show_all()
 
     def on_load(self):
-        print("onload shuffle button")
         if FC().is_order_random:
             self.order.set_active(True)
             self.order.set_tooltip_text(_("Shuffle on"))
@@ -155,7 +154,6 @@ class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
         else:
             self.repeat.set_active(False)
             self.repeat.set_tooltip_text(_("Repeat off"))
-        print("onload shuffle button done")
 
     def on_order(self, *a):
         FC().is_order_random = not FC().is_order_random

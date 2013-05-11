@@ -10,7 +10,6 @@ from foobnix.gui.perspectives.radio import RadioPerspective
 from foobnix.gui.perspectives.storage import StoragePerspective
 from foobnix.gui.perspectives.vk import VKPerspective
 from foobnix.gui.window import MainWindow
-from foobnix.gui.controls.filter import FilterControl
 from foobnix.gui.controls.playback import PlaybackControls, \
     OrderShuffleControls
 from foobnix.gui.search import SearchControls
@@ -23,19 +22,13 @@ from foobnix.gui.controls.status_bar import StatusbarControls
 from foobnix.gui.controls.tray_icon import TrayIconControls
 from foobnix.preferences.preferences_window import PreferencesWindow
 from foobnix.gui.top import TopWidgets
-from foobnix.gui.treeview.radio_tree import RadioTreeControl,\
-    MyRadioTreeControl
-from foobnix.gui.treeview.virtual_tree import VirtualTreeControl
 from foobnix.eq.eq_controller import EqController
 from foobnix.dm.dm import DM
 from foobnix.gui.controls.movie_area import MovieDrawingArea
 from foobnix.util.single_thread import SingleThread
 from foobnix.gui.perspectives.controller import Controller
 from foobnix.util.localization import foobnix_localization
-from foobnix.gui.notetab.tab_library import TabHelperControl
 from foobnix.gui.service.lastfm_service import LastFmService
-from foobnix.gui.treeview.lastfm_integration_tree import LastFmIntegrationControls
-from foobnix.gui.treeview.vk_integration_tree import VKIntegrationControls
 from foobnix.gui.controls.record import RadioRecord
 from foobnix.gui.coverlyrics import CoverLyricsPanel
 from foobnix.util.net_wrapper import NetWrapper
@@ -58,8 +51,6 @@ class FoobnixCore(BaseFoobnixControls):
 
         """elements"""
 
-        #self.tabhelper = TabHelperControl(self)
-
         self.volume = VolumeControls(self)
 
         self.record = RadioRecord(self)
@@ -73,21 +64,13 @@ class FoobnixCore(BaseFoobnixControls):
         self.search_progress = SearchProgress(self)
         self.in_thread = SingleThread(self.search_progress)
 
-        self.info_panel = InfoPanelWidget(self)
-
-        self.movie_window = MovieDrawingArea(self)
+        #self.movie_window = MovieDrawingArea(self)
 
         self.searchPanel = SearchControls(self)
         self.os = OrderShuffleControls(self)
         self.playback = PlaybackControls(self)
 
         self.coverlyrics = CoverLyricsPanel(self)
-
-        #self.radio = RadioTreeControl(self)
-        #self.my_radio = MyRadioTreeControl(self)
-        #self.virtual = VirtualTreeControl(self)
-        #self.lastfm_integration = LastFmIntegrationControls(self)
-        #self.vk_integration = VKIntegrationControls(self)
 
         self.perspectives = Controller(self)
 

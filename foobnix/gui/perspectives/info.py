@@ -14,6 +14,12 @@ class InfoPerspective(BasePerspective, Quitable):
         super(InfoPerspective, self).__init__()
         self.widget = InfoPanelWidget(controls)
 
+    def update(self, bean):
+        self.widget.update(bean)
+
+    def clear(self):
+        self.widget.clear()
+
     def get_id(self):
         return "info"
 

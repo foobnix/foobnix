@@ -38,7 +38,6 @@ class Controller(Gtk.VBox, LoadSave, Quitable, Filterable):
         self._perspectives.append(perspective)
         widget = perspective.get_widget()
         perspective.widget_id = self.perspectives_container.add(widget)
-        print ("perspective added", perspective, perspective.widget_id, widget)
         button = PerspectiveButton(perspective.get_name(), perspective.get_icon(), perspective.get_tooltip())
 
         def toggle_handler(btn, handler, *args):
@@ -51,7 +50,6 @@ class Controller(Gtk.VBox, LoadSave, Quitable, Filterable):
 
     def activate_perspective(self, perspective_id):
         if self.is_activated(perspective_id):
-            print(perspective_id, "is activated")
             return
         perspective = self.get_perspective(perspective_id)
         assert perspective
@@ -69,7 +67,6 @@ class Controller(Gtk.VBox, LoadSave, Quitable, Filterable):
     def is_activated(self, perspective_id):
         perspective = self.get_perspective(perspective_id)
         assert perspective
-        print("widget id", perspective.widget_id, "active id", self.perspectives_container.get_active_index())
         return perspective.widget_id == self.perspectives_container.get_active_index()
 
     def get_perspective(self, perspective_id):
@@ -78,21 +75,16 @@ class Controller(Gtk.VBox, LoadSave, Quitable, Filterable):
         return None
 
     def filter_by_file(self, value):
-        print("filter by file")
         for perspective in self._perspectives:
             if isinstance(perspective, Filterable):
-                print("run filter in", perspective.get_id())
                 perspective.filter_by_file(value)
 
     def filter_by_folder(self, value):
-        print("filter by folder")
         for perspective in self._perspectives:
             if isinstance(perspective, Filterable):
-                print("run filter in", perspective.get_id())
                 perspective.filter_by_folder(value)
 
     def on_load(self):
-        print("on load")
         for perspective in self._perspectives:
             if isinstance(perspective, LoadSave):
                 perspective.on_load()

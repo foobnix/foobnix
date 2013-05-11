@@ -54,7 +54,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         notebox.add_overlay(controls.search_progress)
 
         bbox.pack_start(notebox, True, True, 0)
-        bbox.pack_start(controls.movie_window, False, False, 0)
+        #bbox.pack_start(controls.movie_window, False, False, 0)
 
         center_box = Gtk.VBox(False, 0)
         center_box.pack_start(controls.searchPanel, False, False, 0)
@@ -154,8 +154,9 @@ class BaseFoobnixLayout(FControl, LoadSave):
             self.normalize_columns()
 
     def normalize_columns(self):
-        for page in xrange(self.controls.tabhelper.get_n_pages()):
-            tab_content = self.controls.tabhelper.get_nth_page(page)
+        tabhelper = self.controls.perspectives.get_perspective('fs').get_tabhelper()
+        for page in xrange(tabhelper.get_n_pages()):
+            tab_content = tabhelper.get_nth_page(page)
             tree = tab_content.get_child()
             tree.normalize_columns_width()
 

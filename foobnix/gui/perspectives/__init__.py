@@ -45,29 +45,14 @@ class StackableWidget(Gtk.Notebook):
         super(StackableWidget, self).__init__()
         self.set_property("show-tabs", False)
 
-        self.connect("page-added", self.on_add_widget)
-        self.connect("page-removed", self.on_remove_widget)
-
-    def on_add_widget(self, c, widget, num):
-        pass
-        #for child in self.get_children():
-        #    if child.is_visible():
-        #        return
-        #widget.show()
-
-    def on_remove_widget(self, c, widget, num):
-        pass
-
     def get_active_index(self):
         return self.get_current_page()
 
     def set_active_by_index(self, index):
-        print("active by index", index)
         page = self.get_nth_page(index)
         if page and not page.get_visible():
             page.set_visible(True)
         self.set_current_page(index)
-        print("now active", self.get_active_index())
 
     def add(self, widget):
         widget.show()

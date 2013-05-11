@@ -32,7 +32,6 @@ from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.util.file_utils import get_file_extension
 from foobnix.util.iso_util import mount_tmp_iso
 from foobnix.util.m3u_utils import m3u_reader
-from foobnix.util.text_utils import normalize_text
 from foobnix.util.version import compare_versions
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util import analytics, idle_task, idle_task_priority
@@ -288,11 +287,12 @@ class BaseFoobnixControls():
 
     @idle_task
     def set_visible_video_panel(self, flag):
-        FC().is_view_video_panel = flag
-        if flag:
-            self.movie_window.show()
-        else:
-            self.movie_window.hide()
+        return
+        #FC().is_view_video_panel = flag
+        #if flag:
+        #    self.movie_window.show()
+        #else:
+        #    self.movie_window.hide()
 
     @idle_task
     def volume_up(self):
@@ -402,7 +402,7 @@ class BaseFoobnixControls():
         ## TODO: Check for GTK+3.4 (Status icon doesn't have a set_tooltip method)
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
-        self.movie_window.set_text(bean.text)
+        #self.movie_window.set_text(bean.text)
 
         if bean.type == FTYPE_RADIO:
             self.record.show()
@@ -508,7 +508,7 @@ class BaseFoobnixControls():
     def notify_error(self, msg):
         logging.error("notify error " + msg)
         self.seek_bar.set_text(msg)
-        self.info_panel.clear()
+        self.perspectives.get_perspective('info').clear()
 
     @idle_task
     def notify_eos(self):
@@ -678,7 +678,7 @@ class BaseFoobnixControls():
 
     @idle_task
     def update_info_panel(self, bean):
-        self.info_panel.update(bean)
+        self.perspectives.get_perspective('info').update(bean)
 
     @idle_task
     def append_to_new_notebook(self, text, beans, optimization=False):
@@ -707,25 +707,6 @@ class BaseFoobnixControls():
 
         self.play(bean)
 
-    @idle_task
-    def filter_by_folder(self, value):
-        ## TODO: Refactor it!
-        return
-        tree = self.tabhelper.get_current_tree()
-        tree.filter_by_folder(value)
-        self.radio.filter_by_folder(value)
-        self.virtual.filter_by_folder(value)
-
-    @idle_task
-    def filter_by_file(self, value):
-        ## TODO: Refactor it!
-        return
-        tree = self.tabhelper.get_current_tree()
-        tree.filter_by_file(value)
-        self.radio.filter_by_file(value)
-        self.virtual.filter_by_file(value)
-        self.vk_integration.filter_by_folder(query=value, expand=False)
-
     def quit(self, *a):
         self.state_stop()
         Gtk.main_iteration()   # wait for complete stop task
@@ -737,12 +718,6 @@ class BaseFoobnixControls():
         for element in self.__dict__:
             if isinstance(self.__dict__[element], Quitable):
                 self.__dict__[element].on_quit()
-
-        #self.virtual.on_quit()
-        #self.info_panel.on_quit()
-        #self.radio.on_quit()
-        #self.my_radio.on_quit()
-        #self.notetabs.on_quit()
 
         FC().save()
 
@@ -784,9 +759,7 @@ class BaseFoobnixControls():
                 logging.debug("%f LOAD ON START %s" % (time.time() - init, str(self.__dict__[element])))
 
         """load others"""
-        self.movie_window.hide_all()
-
-        self.info_panel.hide()
+        #self.movie_window.hide_all()
 
         self.main_window.show()
         self.search_progress.stop()
