@@ -22,7 +22,7 @@ from foobnix.helpers.window import CopyProgressWindow
 from foobnix.util.const import BEFORE, AFTER, INTO_OR_BEFORE, INTO_OR_AFTER,\
     FTYPE_RADIO
 from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progressbar,\
-    get_file_extension
+    get_file_extension, is_cue
 from foobnix.util.m3u_utils import m3u_reader, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
@@ -119,7 +119,7 @@ class DragDropTree(Gtk.TreeView):
             self.plain_append_all([bean])
         else:
             self.tree_append(bean)
-                
+
     def set_type_plain(self):
         self.current_view = VIEW_PLAIN
     
@@ -405,22 +405,6 @@ class DragDropTree(Gtk.TreeView):
             
         self.clear_tree()
         self.plain_append_all(copy_beans)
-    
-    def update_tracknumber(self):
-        try:
-            self.current_view = VIEW_PLAIN
-            tn = self.tracknumber[0]
-            isfile = self.is_file[0]
-            counter = 0
-            for row in self.model:
-                if row[isfile] and FC().numbering_by_order:
-                    counter += 1
-                else:
-                    counter = 0
-                row[tn] = str(counter) if counter else ''
-        finally:
-            if self.filling_lock.locked():
-                self.filling_lock.release()
     
     def tree_append_all(self, beans):
         def task():
@@ -720,15 +704,8 @@ class DragDropTree(Gtk.TreeView):
                         for b in beans[:]:
                             self.insert_bean(row_ref, b)
         finally:
-            GObject.idle_add(self.update_tracknumber, priority=GObject.PRIORITY_LOW + 1)
+            self.update_tracknumber()
     
-    @idle_task_priority(GObject.PRIORITY_LOW)
-    def insert_bean(self, row_ref, bean):
-        if row_ref.valid():
-            row = self.get_row_from_bean(bean)
-            iter = self.model.insert_after(None, self.get_iter_from_row_reference(row_ref), row)
-            self.fill_row(self.get_row_reference_from_iter(self.model, iter), bean)
-
     @idle_task_priority(GObject.PRIORITY_LOW)
     def fill_row(self, row_ref, bean):
             if row_ref.valid():
@@ -744,7 +721,30 @@ class DragDropTree(Gtk.TreeView):
                     if i != self.play_icon[0]:
                         treerow[i] = value
 
+    @idle_task_priority(GObject.PRIORITY_LOW)
+    def insert_bean(self, row_ref, bean):
+        if row_ref.valid():
+            row = self.get_row_from_bean(bean)
+            iter = self.model.insert_after(None, self.get_iter_from_row_reference(row_ref), row)
+            self.fill_row(self.get_row_reference_from_iter(self.model, iter), bean)
 
+    @idle_task_priority(GObject.PRIORITY_LOW + 1)
+    def update_tracknumber(self):
+        try:
+            self.current_view = VIEW_PLAIN
+            tn = self.tracknumber[0]
+            isfile = self.is_file[0]
+            counter = 0
+            for row in self.model:
+                if row[isfile] and FC().numbering_by_order:
+                    counter += 1
+                else:
+                    counter = 0
+                row[tn] = str(counter) if counter else ''
+        finally:
+            if self.filling_lock.locked():
+                self.filling_lock.release()
+    
     def playlist_filter(self, rows):
         checked_cue_rows = []
         checked_m3u_rows = []
@@ -754,26 +754,26 @@ class DragDropTree(Gtk.TreeView):
             for row in rows:
                 index = self.path[0]
                 path = row[index]
-                if path and (get_file_extension(path) in [".m3u", ".m3u8"]
+                if path and (is_m3u(path)
                              and row not in checked_m3u_rows):
                     checked_m3u_rows.append(row)
                     for r in rows:
                         if (os.path.dirname(r[index]) == os.path.dirname(path) and os.path.isfile(r[index])
-                            and get_file_extension(r[index]) not in [".m3u", ".m3u8"]):
+                            and is_m3u(r[index])):
                                 m3u_rows_for_delete.append(row)
                                 break
                     return task(rows)
                     
-                if path and (get_file_extension(path) == ".cue"
+                if path and (is_cue(path)
                              and row not in checked_cue_rows):
                     
                     checked_cue_rows.append(row)
                     filtered_rows = [r for r in rows if (os.path.dirname(r[index]) != os.path.dirname(path)
                                                            or os.path.isdir(r[index]) 
-                                                           or get_file_extension(r[index]) == ".cue")]
+                                                           or is_cue(r[index]))]
                     return task(filtered_rows)
             return rows
-        
+
         all_filtered_rows = task(rows)
         return [row for row in all_filtered_rows 
                 if row not in m3u_rows_for_delete] if m3u_rows_for_delete else all_filtered_rows

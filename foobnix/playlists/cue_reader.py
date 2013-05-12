@@ -166,17 +166,17 @@ class CueReader():
         try:
             return chardet.detect(data)['encoding']
         except:
-            return "utf-8" 
+            return "windows-1251" 
          
     def parse(self):
         if self.embedded_cue:
             data = self.embedded_cue
-            file = data.replace('\r\n', '\n').split('\n')
         else:
             file = open(self.cue_path, "r")
             data = file.read()
-            file.seek(0, 0)
-           
+        code = self.code_detecter(correct_encoding(data))
+        data = data.replace('\r\n', '\n').split('\n')
+
         title = ""
         performer = ""
         index = "00:00:00"
@@ -186,18 +186,16 @@ class CueReader():
 
         self.files_count = 0
         
-        for line in file:
-            line = correct_encoding(line)
+        for line in data:
             if not self.is_valid and not line.startswith(FILE):
                 continue
             else: self.is_valid = True
             
             try:
-                code = chardet.detect(data)['encoding']
                 line = unicode(line, code)
             except:
-                logging.warn("There is some problems while converting in unicode")
-
+                print "There is some problems while converting in unicode"
+            
             line = str(line).strip()
             if not line:
                 continue
