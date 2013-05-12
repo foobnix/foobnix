@@ -18,6 +18,22 @@ foobnix_localization()
 def responseToDialog(entry, dialog, response):
         dialog.response(response)
 
+def file_selection_dialog(title, current_folder=None):
+    chooser = Gtk.FileSelection(title)
+    chooser.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
+    chooser.set_default_response(Gtk.ResponseType.OK)
+    chooser.set_select_multiple(True)
+    paths = None
+    if current_folder:
+        chooser.set_current_folder(current_folder)
+    response = chooser.run()
+    if response == Gtk.ResponseType.OK:
+        paths = chooser.get_selections()
+    elif response == Gtk.ResponseType.CANCEL:
+        logging.info('Closed, no files selected')
+    chooser.destroy()
+    return paths
+
 def file_chooser_dialog(title, current_folder=None):
     chooser = Gtk.FileChooserDialog(title, action=Gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
     chooser.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))

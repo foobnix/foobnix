@@ -152,6 +152,25 @@ class BaseFoobnixControls():
     def on_add_folders(self, paths=None):
         if not paths:
             paths = directory_chooser_dialog(_("Choose folders to open"), FC().last_dir)
+            if not paths:
+                return
+        active_playlist_tree = self.notetabs.get_current_tree()
+        filter_model = active_playlist_tree.get_model()
+        current_model = filter_model.get_model()
+        for i, path in enumerate(paths):
+            if os.path.isdir(path):
+                listdir = filter(lambda x: get_file_extension(x) in FC().all_support_formats or os.path.isdir(x),
+                                 [os.path.join(path, f) for f in os.listdir(path)])
+                for k, p in enumerate(listdir):
+                    paths.insert(i + k + 1, p)
+        rows = active_playlist_tree.file_paths_to_rows(paths)
+        if not rows:
+            return
+        rows = active_playlist_tree.playlist_filter(rows)
+        for row in rows:
+            current_model.append(None, row)
+        thread.start_new_thread(active_playlist_tree.safe_fill_treerows, ())
+        '''
         if paths:
             def on_add_folders_task():
                 path = paths[0]
@@ -173,9 +192,27 @@ class BaseFoobnixControls():
                     self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
 
             self.in_thread.run_with_progressbar(on_add_folders_task)
+            '''
 
     def on_add_files(self, paths=None, tab_name=None):
-
+        if not paths:
+            paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
+            if not paths:
+                return
+            
+        active_playlist_tree = self.notetabs.get_current_tree()
+        filter_model = active_playlist_tree.get_model()
+        current_model = filter_model.get_model()
+            
+        rows = active_playlist_tree.file_paths_to_rows(paths)
+        if not rows:
+            return
+        rows = active_playlist_tree.playlist_filter(rows)
+        for row in rows:
+            current_model.append(None, row)
+        thread.start_new_thread(active_playlist_tree.safe_fill_treerows, ())
+        
+        '''
         if not paths:
             paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
             if not paths: return
@@ -233,6 +270,7 @@ class BaseFoobnixControls():
                 self.append_to_current_notebook([FModel(_("Nothing found to play in the file(s)") + paths[0])])
             else:
                 self.append_to_current_notebook(beans)
+        '''
 
     def set_playlist_tree(self):
         self.notetabs.set_playlist_tree()
@@ -791,7 +829,8 @@ class BaseFoobnixControls():
             self.check_version()
         else:
             GObject.idle_add(self.check_version)
-
+    
+    @idle_task_priority(GObject.PRIORITY_LOW)
     def play_first_file_in_playlist(self):
         active_playlist_tree = self.notetabs.get_current_tree()
         filter_model = active_playlist_tree.get_model()
@@ -802,7 +841,7 @@ class BaseFoobnixControls():
             if not bean:
                 return
 
-            if bean.is_file:
+            if bean.font != 'bold':
                 self.play(bean)
                 tree_selection = active_playlist_tree.get_selection()
                 filter_iter = filter_model.convert_child_iter_to_iter(iter)

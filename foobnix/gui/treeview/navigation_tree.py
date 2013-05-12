@@ -19,10 +19,11 @@ from foobnix.gui.state import LoadSave
 from foobnix.util.const import LEFT_PERSPECTIVE_NAVIGATION
 from foobnix.gui.treeview.common_tree import CommonTreeControl
 from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
-    delete_files_from_disk, create_folder_dialog
+    delete_files_from_disk, create_folder_dialog, is_m3u
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
     is_middle_click_release, is_middle_click, right_click_optimization_for_trees,\
     is_empty_click
+import threading
 
 
 class NavigationTreeControl(CommonTreeControl, LoadSave):
@@ -204,15 +205,23 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 self.controls.notetabs._append_tab(name)
                 to_tree = self.controls.notetabs.get_current_tree()     # because to_tree has changed
                 to_model = to_tree.get_model().get_model()
-            for treerow in treerows:
+            for i, treerow in enumerate(treerows):
+                if is_m3u(treerow[self.path[0]]):
+                    rows = self.file_paths_to_rows([treerow[self.path[0]]])
+                    if rows:
+                        rows.reverse()
+                        map(lambda row: treerows.insert(i + 1, row), rows)
+                        continue
                 to_model.append(None, [col for col in treerow])
-            to_tree.fill_treerows()
-            to_tree.update_tracknumber()
+            t = threading.Thread(target=to_tree.safe_fill_treerows)
+            t.start()
+            t.join()
             if not current:
                 '''gobject because rebuild_as_plain use it too'''
-                GObject.idle_add(self.controls.play_first_file_in_playlist)
-            self.controls.notetabs.on_save_tabs()    
-        self.controls.search_progress.background_spinner_wrapper(task, to_tree, to_model)  
+                self.controls.play_first_file_in_playlist()
+            self.controls.notetabs.on_save_tabs() 
+        task(to_tree, to_model)   
+        #self.controls.search_progress.background_spinner_wrapper(task, to_tree, to_model)  
         
     def add_folder(self, in_new_tab=False):
         chooser = Gtk.FileChooserDialog(title=_("Choose directory with music"),
@@ -322,7 +331,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
     def on_save(self):
         pass
-    
+
     def on_drag_data_get(self, source_tree, drag_context, selection, info, time):
         treeselection = source_tree.get_selection()
         ff_model, ff_paths = treeselection.get_selected_rows()
