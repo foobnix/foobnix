@@ -128,7 +128,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
         if name_list:
             n = self.page_num(tab)
             name_list[n] = new_label_text
-        self.on_save_tabs()
+        
                 
     def on_rename_tab(self, tab, angle=0, name_list=None):
                
@@ -151,6 +151,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
                 new_full_name = entry.get_text()
                 if new_full_name:
                     self.rename_tab(tab, new_full_name, name_list)
+                    self.on_save_tabs()
         
         def on_focus_out(window, e):
             window.hide()

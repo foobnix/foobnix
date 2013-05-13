@@ -31,8 +31,6 @@ from foobnix.util.bean_utils import get_bean_posible_paths
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.util.file_utils import get_file_extension
 from foobnix.util.iso_util import mount_tmp_iso
-from foobnix.util.m3u_utils import m3u_reader
-from foobnix.util.text_utils import normalize_text
 from foobnix.util.version import compare_versions
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util import analytics, idle_task, idle_task_priority
@@ -154,123 +152,27 @@ class BaseFoobnixControls():
             paths = directory_chooser_dialog(_("Choose folders to open"), FC().last_dir)
             if not paths:
                 return
-        active_playlist_tree = self.notetabs.get_current_tree()
-        filter_model = active_playlist_tree.get_model()
-        current_model = filter_model.get_model()
-        for i, path in enumerate(paths):
-            if os.path.isdir(path):
-                listdir = filter(lambda x: get_file_extension(x) in FC().all_support_formats or os.path.isdir(x),
-                                 [os.path.join(path, f) for f in os.listdir(path)])
-                for k, p in enumerate(listdir):
-                    paths.insert(i + k + 1, p)
-        rows = active_playlist_tree.file_paths_to_rows(paths)
-        if not rows:
-            return
-        rows = active_playlist_tree.playlist_filter(rows)
-        for row in rows:
-            current_model.append(None, row)
-        thread.start_new_thread(active_playlist_tree.safe_fill_treerows, ())
-        '''
-        if paths:
-            def on_add_folders_task():
-                path = paths[0]
-                list = path.split("/")
-                FC().last_dir = path[:path.rfind("/")]
-                name = list[len(list) - 1]
-                parent = FModel(name)
-                self.append_to_new_notebook(name, [])
-
-                all_beans = [parent]
-                for bean in get_all_music_by_paths(paths, self):
-                    if not bean.is_file:
-                        bean.parent(parent).add_is_file(False)
-                    all_beans.append(bean)
-
-                if all_beans:
-                    self.append_to_current_notebook(all_beans)
-                else:
-                    self.append([self.SearchCriteriaBeen(_("Nothing found to play in the folder(s)") + paths[0])])
-
-            self.in_thread.run_with_progressbar(on_add_folders_task)
-            '''
+        tree = self.notetabs.get_current_tree()
+        FC().last_dir = os.path.dirname(paths[0])
+        if tree.is_empty():
+            if len(paths) > 1:
+                tabname = os.path.basename(FC().last_dir)
+            else:
+                tabname = os.path.basename(paths[0])
+            self.notetabs.rename_tab(tree.scroll, tabname)
+        tree.append(paths)
 
     def on_add_files(self, paths=None, tab_name=None):
         if not paths:
             paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
             if not paths:
                 return
-            
-        active_playlist_tree = self.notetabs.get_current_tree()
-        filter_model = active_playlist_tree.get_model()
-        current_model = filter_model.get_model()
-            
-        rows = active_playlist_tree.file_paths_to_rows(paths)
-        if not rows:
-            return
-        rows = active_playlist_tree.playlist_filter(rows)
-        for row in rows:
-            current_model.append(None, row)
-        thread.start_new_thread(active_playlist_tree.safe_fill_treerows, ())
-        
-        '''
-        if not paths:
-            paths = file_chooser_dialog(_("Choose file to open"), FC().last_dir)
-            if not paths: return
-        copy_paths = copy.deepcopy(paths)
-
-        for i, path in enumerate(copy_paths):
-            if path.lower().endswith(".m3u") or path.lower().endswith(".m3u8"):
-                paths[i:i + 1] = m3u_reader(path)
-                if len(copy_paths) == 1:
-                    ext = os.path.splitext(path)[1]
-                    tab_name = os.path.basename(path)[:-len(ext)]
-                break
-
-        if paths:
-            if paths[0]:
-                if isinstance(paths[0], list):
-                    path = paths[0][0]
-                else:
-                    path = paths[0]
-            else:
-                if isinstance(path, list):
-                    path = paths[1][0]
-                else:
-                    path = paths[1]
-
-            if path:
-                list_path = path.split("/")
-                name = list_path[len(list_path) - 2]
-                if not tab_name:
-                    tab_name = os.path.split(os.path.dirname(path))[1]
-                FC().last_dir = path[:path.rfind("/")]
-                self.append_to_new_notebook(tab_name, [])
-                parent = FModel(name)
-                self.append_to_current_notebook([parent])
-            else:
-                self.append_to_new_notebook(tab_name, [])
-                parent = FModel(tab_name)
-                self.append_to_current_notebook([parent])
-
-            beans = []
-            for path in paths:
-                text = None
-                if isinstance(path, list):
-                    text = path[1]
-                    path = path[0]
-                    bean = FModel(path, path).add_is_file(True)
-                else:
-                    bean = FModel(path, path).parent(parent).add_is_file(True)
-                if text:
-                    bean.text = text
-                if "://" in bean.path:
-                    bean.type = FTYPE_RADIO
-                beans.append(bean)
-            if not beans:
-                self.append_to_current_notebook([FModel(_("Nothing found to play in the file(s)") + paths[0])])
-            else:
-                self.append_to_current_notebook(beans)
-        '''
+        tree = self.notetabs.get_current_tree()
+        FC().last_dir = os.path.dirname(paths[0])
+        if tree.is_empty():
+            tabname = os.path.split(os.path.dirname(paths[0]))[1]
+            self.notetabs.rename_tab(tree.scroll, tabname)
+        tree.append(paths)
 
     def set_playlist_tree(self):
         self.notetabs.set_playlist_tree()

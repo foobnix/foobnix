@@ -210,8 +210,23 @@ class PlaylistTreeControl(CommonTreeControl):
                 if path >= end_path or path <= start_path:
                     self.scroll_to_cell(path)
 
-    def append(self, bean):
-        return super(PlaylistTreeControl, self).append(bean)
+    def append(self, paths):
+        for i, path in enumerate(paths):
+            if os.path.isdir(path):
+                listdir = filter(lambda x: get_file_extension(x) in FC().all_support_formats or os.path.isdir(x),
+                                 [os.path.join(path, f) for f in os.listdir(path)])
+                for k, p in enumerate(listdir):
+                    paths.insert(i + k + 1, p)
+        rows = self.file_paths_to_rows(paths)
+        if not rows:
+            return
+        rows = self.playlist_filter(rows)
+        for row in rows:
+            self.model.append(None, row)
+        thread.start_new_thread(self.safe_fill_treerows, ())
+        
+    def is_empty(self):
+        return True if not self.model.get_iter_first() else False
 
     def on_button_press(self, w, e):
         if is_empty_click(w, e):
@@ -496,3 +511,4 @@ class PlaylistTreeControl(CommonTreeControl):
         context.finish(True, False, timestamp)
         self.stop_emission('drag-data-received')
         return True
+    

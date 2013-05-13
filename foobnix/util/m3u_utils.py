@@ -8,50 +8,7 @@ from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util.file_utils import get_file_extension
 
 
-def m3u_reader(m3u_file_path):
-    try:
-        lines = open(unicode(m3u_file_path)).readlines()
-        paths = [os.path.normpath(line).strip('\r\n') for line in lines if line.startswith("##") or not line.startswith("#")]
-        dirname = os.path.dirname(m3u_file_path)
-        full_paths = []
-        paths = iter(paths)       
-        for path in paths:
-            text = None
-            if path.startswith("##"):
-                def task(path):
-                    text = path[2 : ]
-                    try:
-                        next_path = paths.next()
-                        path = next_path if not next_path.startswith("##") else None
-                    except StopIteration:
-                        path = None
-                        next_path = None
-                    if not path:
-                        full_paths.append( [path, text.strip('\r\n')] )
-                        if next_path:
-                            path, text = task(next_path)
-                    
-                    return path, text
-                
-                path, text = task(path)    
-                if not path:
-                    break           
-            
-            if text:
-                text = text.strip('\r\n')
-            
-            if (path in "\\/"):
-                full_paths.append( [path.replace("\\", "/"), text] )
-            elif path.startswith('http'):
-                if not text: 
-                    text = path.rsplit('/', 1)[-1]
-                full_paths.append( [path.replace('/', '//', 1), text] )
-            else:
-                full_paths.append([os.path.join(dirname, path).replace("\\", "/"), text] )
-        return full_paths
-    except IndexError: 
-        logging.warn("You try to load empty playlist")
-        
+
 def m3u_writer(name, current_folder, paths):
     try:
         for path in paths:

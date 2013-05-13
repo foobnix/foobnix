@@ -7,6 +7,7 @@ Created on 25 сент. 2010
 
 import os
 import logging
+import threading
 
 from gi.repository import Gtk
 from gi.repository import GObject
@@ -23,7 +24,6 @@ from foobnix.util.file_utils import open_in_filemanager, rename_file_on_disk,\
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_left_click, \
     is_middle_click_release, is_middle_click, right_click_optimization_for_trees,\
     is_empty_click
-import threading
 
 
 class NavigationTreeControl(CommonTreeControl, LoadSave):

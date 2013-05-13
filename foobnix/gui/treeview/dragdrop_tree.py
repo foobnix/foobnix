@@ -687,9 +687,10 @@ class DragDropTree(Gtk.TreeView):
     def safe_fill_treerows(self):
         try:
             self.filling_lock.acquire()
+            
             rows = collections.OrderedDict()
             for treerow in self.model:
-                rows[Gtk.TreeRowReference.new(self.model, treerow.path)] = [col for col in treerow] 
+                rows[Gtk.TreeRowReference.new(self.model, treerow.path)] = [col for col in treerow]
             for row_ref in rows.keys():
                 row = rows[row_ref]
                 if not row[self.time[0]] and row[self.is_file[0]] and row_ref.valid():
@@ -742,6 +743,7 @@ class DragDropTree(Gtk.TreeView):
                     counter = 0
                 row[tn] = str(counter) if counter else ''
         finally:
+            self.controls.notetabs.on_save_tabs()
             if self.filling_lock.locked():
                 self.filling_lock.release()
     
