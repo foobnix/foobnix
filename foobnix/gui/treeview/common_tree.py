@@ -485,7 +485,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         beans = self.get_selected_beans()
         if not beans:
             return
-        clb = Gtk.Clipboard()
+        clb = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
         if not mode:
             tracks = [b.tracknumber + ". " + b.title + " (" + b.time + ")" 
                       if (b.tracknumber and b.title and b.time) else b.text for b in beans]
@@ -497,7 +497,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 album = bean.album if bean.album else "Unknown album"
                 tracks.append(artist + " - " + title + " (" + album + ")")
                 
-        clb.set_text("\n".join(tracks))
+        clb.set_text("\n".join(tracks), -1)
                 
         
     def selection_changed(self, callback):
