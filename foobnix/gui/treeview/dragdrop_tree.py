@@ -14,23 +14,20 @@ import thread
 import logging
 import os.path
 import threading
+import collections
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
-from foobnix.helpers.dialog_entry import info_dialog
-from foobnix.helpers.window import CopyProgressWindow
 from foobnix.util.const import BEFORE, AFTER, INTO_OR_BEFORE, INTO_OR_AFTER,\
     FTYPE_RADIO
-from foobnix.util.file_utils import copy_move_files_dialog, copy_move_with_progressbar,\
-    get_file_extension, is_cue
-from foobnix.util.m3u_utils import m3u_reader, is_m3u
+from foobnix.util.file_utils import copy_move_with_progressbar,\
+    get_file_extension, is_cue, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.gui.model import FModel, FTreeModel, FDModel
 from foobnix.util import idle_task_priority
-import collections
-from foobnix.playlists.m3u_reader import update_id3_for_m3u
-from foobnix.playlists.cue_reader import update_id3_for_cue
+
+
 ## TODO: Check it
 try:
     from gi._glib import GError
@@ -169,7 +166,7 @@ class DragDropTree(Gtk.TreeView):
         return result
     
     def on_drag_drop(self, to_tree, context, x, y, time):
-        # ff - from_filter
+        # ff - from_filt
         '''targets = {}
         for atom in context.list_targets():
             targets[atom] = atom'''
@@ -588,6 +585,11 @@ class DragDropTree(Gtk.TreeView):
         self.hash[bean.level] = parent_iter
         
     def tree_insert_row(self, row):
+        """
+
+        :param row:
+        :return:
+        """
         last_folder_iter = None
         
         if self.hash.has_key(row[self.parent_level[0]]):
