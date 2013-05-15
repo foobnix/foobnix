@@ -430,16 +430,17 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         self.controls.on_chage_player_state(self.get_state(), self.bean)
 
     def on_sync_message(self, bus, message):
-        struct = message.get_structure()
-        if struct is None:
-            return
-        if struct.get_name() == "spectrum":
-            print ("spectrum data")
-            magnitude = struct.get_value("magnitude")
-            phase = struct.get_value("phase")
-            print (magnitude, phase)
-        else:
-            self.controls.movie_window.draw_video(message)
+        return
+        # struct = message.get_structure()
+        # if struct is None:
+        #     return
+        # if struct.get_name() == "spectrum":
+        #     print ("spectrum data")
+        #     magnitude = struct.get_value("magnitude")
+        #     phase = struct.get_value("phase")
+        #     print (magnitude, phase)
+        # else:
+        #     self.controls.movie_window.draw_video(message)
 
     def on_message(self, bus, message):
         type = message.type

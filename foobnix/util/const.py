@@ -10,9 +10,9 @@ from gi.repository import Gtk
 
 foobnix_localization()
 
-SITE_LOCALE="en"
-if locale.getdefaultlocale()[0] != None and "ru" in locale.getdefaultlocale()[0]:
-    SITE_LOCALE="ru"
+SITE_LOCALE = "en"
+if locale.getdefaultlocale()[0] and ("ru" in locale.getdefaultlocale()[0]):
+    SITE_LOCALE = "ru"
 
 ORDER_LINEAR = "ORDER_LINEAR"
 ORDER_SHUFFLE = "ORDER_SHUFFLE"
@@ -51,14 +51,6 @@ DOWNLOAD_STATUS_INACTIVE = _("Inactive")
 
 DOWNLOAD_STATUS_LOCK = _("Lock")
 DOWNLOAD_STATUS_ERROR = _("Error")
-
-LEFT_PERSPECTIVE_VK = "VK"
-LEFT_PERSPECTIVE_INFO = "info"
-LEFT_PERSPECTIVE_NAVIGATION = "navigation"
-LEFT_PERSPECTIVE_RADIO = "radio"
-LEFT_PERSPECTIVE_MY_RADIO = "my radio"
-LEFT_PERSPECTIVE_VIRTUAL = "virtual"
-LEFT_PERSPECTIVE_LASTFM = "last.fm"
 
 ICON_FOOBNIX = "images/foobnix.png"
 

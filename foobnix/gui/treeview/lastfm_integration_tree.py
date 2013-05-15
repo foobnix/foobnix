@@ -13,7 +13,6 @@ from foobnix.helpers.menu import Popup
 from foobnix.gui.model import FModel, FDModel
 from foobnix.util.mouse_utils import is_rigth_click,\
     right_click_optimization_for_trees, is_empty_click
-from foobnix.util.const import LEFT_PERSPECTIVE_LASTFM
 from foobnix.util.bean_utils import update_parent_for_beans
 from foobnix.gui.treeview.common_tree import CommonTreeControl
 
@@ -21,7 +20,7 @@ from foobnix.gui.treeview.common_tree import CommonTreeControl
 class LastFmIntegrationControls(CommonTreeControl):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
-        
+
         """column config"""
         column = Gtk.TreeViewColumn(_("Lasm.fm Integration ") + FCBase().lfm_login,
                                     Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
@@ -30,10 +29,10 @@ class LastFmIntegrationControls(CommonTreeControl):
         self.append_column(column)
 
         self.tree_menu = Popup()
-        
+
         self.configure_send_drag()
         self.configure_recive_drag()
-        
+
         self.set_type_tree()
 
         self.services = {_("My recommendations"):   self.controls.lastfm_service.get_recommended_artists,
@@ -51,9 +50,6 @@ class LastFmIntegrationControls(CommonTreeControl):
             self.append(parent)
             self.append(bean)
 
-    def activate_perspective(self):   
-        FC().left_perspective = LEFT_PERSPECTIVE_LASTFM
-
     def on_button_press(self, w, e):
         if is_empty_click(w, e):
             w.get_selection().unselect_all()
@@ -65,7 +61,7 @@ class LastFmIntegrationControls(CommonTreeControl):
             self.tree_menu.add_item(_('Copy to Search Line'), Gtk.STOCK_COPY,
                                     self.controls.searchPanel.set_search_text, active.text)
             self.tree_menu.show(e)
-    
+
     def on_bean_expanded(self, parent):
         logging.debug("expanded %s" % parent)
 
