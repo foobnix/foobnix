@@ -31,7 +31,6 @@ from foobnix.util.bean_utils import get_bean_posible_paths
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.util.file_utils import get_file_extension
 from foobnix.util.iso_util import mount_tmp_iso
-from foobnix.util.m3u_utils import m3u_reader
 from foobnix.util.version import compare_versions
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util import analytics, idle_task, idle_task_priority

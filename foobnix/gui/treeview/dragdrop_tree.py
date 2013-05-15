@@ -18,6 +18,7 @@ import collections
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache
+from foobnix.playlists import m3u_reader
 from foobnix.util.const import BEFORE, AFTER, INTO_OR_BEFORE, INTO_OR_AFTER,\
     FTYPE_RADIO
 from foobnix.util.file_utils import copy_move_with_progressbar,\
