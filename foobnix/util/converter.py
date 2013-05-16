@@ -10,8 +10,7 @@ from __future__ import with_statement
 import os
 import re
 from gi.repository import Gtk
-import threading
-import time
+
 import thread
 from gi.repository import GObject
 import logging
@@ -33,11 +32,11 @@ FFMPEG_NAME = "ffmpeg_foobnix"
 if os.name == 'posix':
     if os.uname()[4] == 'x86_64':
         FFMPEG_NAME += "_x64"
-    
+
 class Converter(ChildTopWindow):
     def __init__(self):
         ChildTopWindow.__init__(self, title="Audio Converter", width=500, height=400)
-        
+
         self.area = ScrolledText()
         vbox = Gtk.VBox(False, 10)
         vbox.pack_start(self.area.scroll)
@@ -46,24 +45,24 @@ class Converter(ChildTopWindow):
         bitrate_label = Gtk.Label(_('Bitrate'))
         channels_label = Gtk.Label(_('Channels'))
         hertz_label = Gtk.Label(_('Frequency'))
-        
+
         format_box = Gtk.VBox()
         bitrate_box = Gtk.VBox()
         channels_box = Gtk.VBox()
         hertz_box = Gtk.VBox()
-                
+
         self.format_list = ["Choose", "  mp3", "  ogg", "  mp2", "  ac3", "  m4a", "  wav"]
         self.bitrate_list = ["  64 kbps", "  96 kbps", "  128 kbps", "  160 kbps", "  192 kbps", "  224 kbps", "  256 kbps", "  320 kbps", "  384 kbps", "  448 kbps", "  640 kbps"]
         self.channels_list = ["  1", "  2", "  6"]
         self.hertz_list = ["  22050 Hz", "  44100 Hz", "  48000 Hz", "  96000 Hz"]
-        
+
         self.format_combo = combobox_constr(self.format_list)
         self.format_combo.connect("changed", self.on_change_format)
 
         self.bitrate_combo = combobox_constr()
         self.channels_combo = combobox_constr()
         self.hertz_combo = combobox_constr()
-               
+
         format_box.pack_start(format_label, False, False, 0)
         format_box.pack_start(self.format_combo, False, False, 0)
         bitrate_box.pack_start(bitrate_label, False, False, 0)
@@ -72,7 +71,7 @@ class Converter(ChildTopWindow):
         channels_box.pack_start(self.channels_combo, False, False, 0)
         hertz_box.pack_start(hertz_label, False, False, 0)
         hertz_box.pack_start(self.hertz_combo, False, False, 0)
-        
+
         hbox = Gtk.HBox(False, 30)
         hbox.pack_start(format_box, False, False, 0)
         hbox.pack_start(bitrate_box, False, False, 0)
@@ -80,9 +79,9 @@ class Converter(ChildTopWindow):
         hbox.pack_start(hertz_box, False, False, 0)
         hbox.set_border_width(10)
         hbox.show_all()
-        
+
         vbox.pack_start(hbox, False)
-        
+
         self.button_box = Gtk.HBox(False, 10)
         close_button = Gtk.Button(_("Close"))
         close_button.set_size_request(150, 30)
@@ -90,32 +89,32 @@ class Converter(ChildTopWindow):
         self.convert_button = Gtk.Button(_("Convert"))
         self.convert_button.set_size_request(150, 30)
         self.convert_button.connect("clicked", self.save)
-        
+
         self.progressbar = Gtk.ProgressBar()
-                
+
         self.stop_button = Gtk.Button(_("Stop"))
         self.stop_button.set_size_request(100, 30)
         self.stop_button.connect("clicked", self.on_stop)
-        
+
         self.open_folder_button = Gtk.Button(_("Show files"))
         self.open_folder_button.connect('released', self.open_in_fm)
-        
+
         self.progress_box = Gtk.HBox()
         self.progress_box.pack_end(self.open_folder_button, False)
         self.progress_box.pack_end(self.stop_button, False)
         self.progress_box.pack_end(self.progressbar, True)
-        
+
         self.output = ScrolledText()
         self.output.text.set_size_request(-1, 50)
         self.output.scroll.set_size_request(-1, 50)
         self.output.scroll.set_placement(Gtk.CornerType.BOTTOM_LEFT)
         vbox.pack_start(self.progress_box, False)
-        
+
         self.button_box.pack_end(self.convert_button, False)
         self.button_box.pack_end(close_button, False)
 
         self.button_box.show_all()
-        
+
         vbox.pack_start(self.button_box, False)
         vbox.pack_start(self.output.scroll, False)
         self.add(vbox)
@@ -127,11 +126,11 @@ class Converter(ChildTopWindow):
         chooser.set_current_folder(os.path.dirname(self.paths[0]))
         chooser.set_icon_from_file(LOGO)
         response = chooser.run()
-        
+
         if response == Gtk.ResponseType.OK:
             format = self.format_combo.get_active_text().strip()
             self.current_folder = chooser.get_current_folder()
-            
+
             for path in self.paths:
                 if (os.path.splitext(os.path.basename(path))[0] + '.' + format) in os.listdir(self.current_folder):
                     if not self.warning():
@@ -144,29 +143,29 @@ class Converter(ChildTopWindow):
             self.progressbar.set_fraction(0)
             self.progress_box.show_all()
             self.output.scroll.show()
-            
+
             fraction_length = 1.0 / len(self.paths)
             self.progressbar.set_text("")
             self.output.buffer.delete(self.output.buffer.get_start_iter(), self.output.buffer.get_end_iter())
             def task():
                 self.stop_button.show()
-                self.open_folder_button.hide()             
+                self.open_folder_button.hide()
                 for i, path in enumerate(self.paths):
                     self.progressbar.set_text("Convert  %d of %d file(s)" % (i+1, len(self.paths)))
                     self.convert(path, os.path.join(self.current_folder, os.path.splitext(os.path.basename(path))[0] + "." + format), format)
                     self.progressbar.set_fraction(self.progressbar.get_fraction() + fraction_length)
                     if self.stop:
                         self.open_folder_button.show()
-                        self.progressbar.set_text("Stopped . Converted %d of %d file(s)" % (i, len(self.paths)))                        
+                        self.progressbar.set_text("Stopped . Converted %d of %d file(s)" % (i, len(self.paths)))
                         break
-                if not self.stop:
-                    self.progressbar.set_text("Finished (%d of %d)" % (i+1, len(self.paths)))
+                    else:
+                        self.progressbar.set_text("Finished (%d of %d)" % (i+1, len(self.paths)))
                 self.stop_button.hide()
                 self.open_folder_button.show()
                 self.button_box.show_all()
             thread.start_new_thread(task, ())
         chooser.destroy()
-        
+
     def convert(self, path, new_path, format):
         bitrate_text = self.bitrate_combo.get_active_text()
         if bitrate_text:
@@ -174,10 +173,10 @@ class Converter(ChildTopWindow):
         else:
             bitrate = ""
         channels_text = self.channels_combo.get_active_text()
-        channels = re.search('^([0-9]{1,5})', channels_text.strip()).group()                 
+        channels = re.search('^([0-9]{1,5})', channels_text.strip()).group()
         hertz_text = self.hertz_combo.get_active_text()
         samp_rate = re.search('^([0-9]{1,5})', hertz_text.strip()).group()
-        
+
         if format == "mp3":
             acodec = "libmp3lame"
         elif format == "ogg":
@@ -190,30 +189,33 @@ class Converter(ChildTopWindow):
             acodec = "libfaac"
         elif format == "wav":
             acodec = "pcm_s16le"
-        
+        else:
+            logging.error('Unsupported format')
+            return
+
         list = [os.path.join(CONFIG_DIR, FFMPEG_NAME), "-i", path, "-acodec", acodec, "-ac", channels, "-ab", bitrate, "-ar", samp_rate, '-y', new_path]
-        
+
         if format == "wav":
-            list.remove("-ab")  
+            list.remove("-ab")
             list.remove(bitrate)
-        
+
         logging.debug(" ".join(list))
-        
+
         self.ffmpeg = Popen(list, universal_newlines=True, stderr=PIPE)
-        
+
         for line in iter(self.ffmpeg.stderr.readline, ""):
             GObject.idle_add(self.output.buffer.insert_at_cursor, line)
             logging.debug(line)
             adj = self.output.scroll.get_vadjustment()
             GObject.idle_add(adj.set_value, adj.get_upper() - adj.get_page_size() + 1)
-        
+
         self.ffmpeg.wait()
 
     def on_stop(self, *a):
         self.ffmpeg.terminate()
         self.stop = True
         #self.open_folder_button.show()
-                
+
     def fill_form(self, paths):
         self.paths = []
         self.area.buffer.delete(self.area.buffer.get_start_iter(), self.area.buffer.get_end_iter())
@@ -221,12 +223,12 @@ class Converter(ChildTopWindow):
             if os.path.isfile(path):
                 self.paths.append(path)
                 self.area.buffer.insert_at_cursor(os.path.basename(path) + "\n")
-     
+
     def warning(self):
         dialog = Gtk.Dialog(_("Warning!!!"))
         ok_button = dialog.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK) #@UnusedVariable
         cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
-        cancel_button.grab_default()      
+        cancel_button.grab_default()
         label = Gtk.Label(_("So file(s)  already exist(s) and will be overwritten.\nDo you wish to continue?"))
         image = Gtk.Image.new_from_stock(Gtk.STOCK_DIALOG_WARNING, Gtk.IconSize.LARGE_TOOLBAR)
         hbox = Gtk.HBox(False, 10)
@@ -242,8 +244,8 @@ class Converter(ChildTopWindow):
         else:
             dialog.destroy()
             return False
-    
-    def remake_combos(self, bitrate_list, channels_list, hertz_list):    
+
+    def remake_combos(self, bitrate_list, channels_list, hertz_list):
         self.clear_combos(self.bitrate_combo, self.channels_combo, self.hertz_combo)
         for b in bitrate_list:
             self.bitrate_combo.append_text(b)
@@ -251,7 +253,7 @@ class Converter(ChildTopWindow):
             self.channels_combo.append_text(c)
         for h in hertz_list:
             self.hertz_combo.append_text(h)
-    
+
     def clear_combos(self, *combo_list):
         if not combo_list:
             return
@@ -259,13 +261,13 @@ class Converter(ChildTopWindow):
             combo.remove_all()
             #for i in self.bitrate_list: #the longest list
             #    combo.remove()
-   
+
     def on_change_format(self, a):
         bitrate_list = self.bitrate_list[:]
         channels_list = self.channels_list[:]
         hertz_list = self.hertz_list[:]
-        
-        bitrate_index = 6    
+
+        bitrate_index = 6
         channels_index = 1
         hertz_index = 2
 
@@ -278,18 +280,18 @@ class Converter(ChildTopWindow):
             hertz_index = 1
         elif self.format_combo.get_active_text() == "  mp2":
             bitrate_list.remove("  640 kbps")
-            bitrate_list.remove("  448 kbps")    
+            bitrate_list.remove("  448 kbps")
             hertz_list.remove("  96000 Hz")
             hertz_list.remove("  44100 Hz")
             hertz_list.remove("  22050 Hz")
             hertz_index = 0
-        elif self.format_combo.get_active_text() == "  ac3":    
+        elif self.format_combo.get_active_text() == "  ac3":
             hertz_list.remove("  96000 Hz")
-        elif self.format_combo.get_active_text() == "  m4a":    
+        elif self.format_combo.get_active_text() == "  m4a":
             bitrate_list.remove("  640 kbps")
-               
+
         self.remake_combos(bitrate_list, channels_list, hertz_list)
-        
+
         self.bitrate_combo.set_active(bitrate_index)
         self.channels_combo.set_active(channels_index)
         self.hertz_combo.set_active(hertz_index)
@@ -301,16 +303,16 @@ class Converter(ChildTopWindow):
             self.channels_combo.set_sensitive(False)
             self.hertz_combo.set_sensitive(False)
         else:
-            self.convert_button.set_sensitive(True)            
-   
-        if self.format_combo.get_active_text() == "  wav":    
-            self.clear_combos(self.bitrate_combo)           	
+            self.convert_button.set_sensitive(True)
+
+        if self.format_combo.get_active_text() == "  wav":
+            self.clear_combos(self.bitrate_combo)
             self.bitrate_combo.set_sensitive(False)
         else:
             self.bitrate_combo.set_sensitive(True)
             self.channels_combo.set_sensitive(True)
             self.hertz_combo.set_sensitive(True)
-        
+
     def open_in_fm(self, *a):
         open_in_filemanager(self.current_folder)
 
@@ -318,10 +320,10 @@ def combobox_constr(list=None):
     combobox = Gtk.ComboBoxText()
     if not list:
         return combobox
-    
+
     for item in list:
         combobox.append_text(item)
-    
+
     return combobox
 
 def convert_files(paths):
@@ -338,13 +340,13 @@ def convert_files(paths):
         url = "http://foobnix.googlecode.com/files/" + FFMPEG_NAME
         dialog = Gtk.Dialog(_("Attention"))
         area = ScrolledText()
-        area.buffer.set_text(_("Converter require specially compiled ffmpeg module for work.\n" + 
+        area.buffer.set_text(_("Converter require specially compiled ffmpeg module for work.\n" +
                                "You should download it automatically (click Download)\n"+
                                "Also check if you have packages libmp3lame0 and libfaac0"))
         ok_button = dialog.add_button(_("Download"), Gtk.ResponseType.OK)
-        
+
         cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
-        ok_button.grab_default()      
+        ok_button.grab_default()
         prog_bar = Gtk.ProgressBar()
         dialog.vbox.pack_start(area.scroll)
         dialog.vbox.pack_start(prog_bar, False)
@@ -386,11 +388,11 @@ def convert_files(paths):
                         except OSError as e:
                             if os.path.isfile(ffmpeg_path) and os.path.getsize(ffmpeg_path) < size:
                                 os.remove(ffmpeg_path)
-                    
+
                 os.chmod(ffmpeg_path, 0777)
                 GObject.idle_add(convert_files, paths)
                 dialog.destroy()
 
             thread.start_new_thread(task, ())
         else:
-            dialog.destroy()    
+            dialog.destroy()

@@ -23,12 +23,12 @@ def get_all_music_by_paths(paths, controls):
     '''end_scanning = False
     pr_window = ProgWindow(controls)
     #pr_window.analyzed_folders += 1
-    
+
     def task():
         while not end_scanning:
             time.sleep(0.5)
             GObject.idle_add(pr_window.update_window)
-            
+
     thread.start_new_thread(task, ())'''
     result = []
     for path in paths:
@@ -56,22 +56,22 @@ def _scanner(path, level):
         path = path.encode("utf-8")
     except:
         pass
-     
+
     results = []
     if not os.path.exists(path):
         return
     dir = os.path.abspath(path)
-    
+
     list = sort_by_name(path, os.listdir(dir))
-    
+
     for file in list:
         full_path = os.path.join(path, file)
-        
+
         if os.path.isfile(full_path):
             #pr_window.analyzed_files += 1
             if file_extension(file) not in FC().all_support_formats:
-                continue;
-        
+                continue
+
         if os.path.isdir(full_path):
             #pr_window.analyzed_folders += 1
             if is_dir_with_music(full_path):
@@ -82,7 +82,7 @@ def _scanner(path, level):
         elif os.path.isfile(full_path):
             results.append(FModel(file, full_path).add_parent(level).add_is_file(True))
             #pr_window.media_files +=1
-        
+
     return results
 
 def simple_scanner(path, level):
@@ -90,21 +90,21 @@ def simple_scanner(path, level):
         path = path.encode("utf-8")
     except:
         pass
-     
+
     results = []
     if not os.path.exists(path):
         return
     dir = os.path.abspath(path)
-    
+
     list = sort_by_name(path, os.listdir(dir))
-    
+
     for file in list:
         full_path = os.path.join(path, file)
-        
+
         if os.path.isfile(full_path):
             if file_extension(file) not in FC().all_support_formats:
                 continue;
-        
+
         if os.path.isdir(full_path):
             if is_dir_with_music(full_path):
                 b_bean = FModel(file, full_path).add_parent(level).add_is_file(False)
@@ -112,7 +112,7 @@ def simple_scanner(path, level):
                 results.extend(simple_scanner(full_path, b_bean.get_level()))
         elif os.path.isfile(full_path):
             results.append(FModel(file, full_path).add_parent(level).add_is_file(True))
-                    
+
     return results
 
 def scanner(path, level):
@@ -120,21 +120,21 @@ def scanner(path, level):
         path = path.encode("utf-8")
     except:
         pass
-     
+
     results = []
     if not os.path.exists(path):
         return
     dir = os.path.abspath(path)
-    
+
     list = sort_by_name(path, os.listdir(dir))
-    
+
     for file in list:
         full_path = os.path.join(path, file)
-        
+
         if os.path.isfile(full_path):
             if file_extension(file) not in FC().all_support_formats:
-                continue;
-        
+                continue
+
         if os.path.isdir(full_path):
             if is_dir_with_music(full_path):
                 b_bean = FModel(file, full_path).add_parent(level).add_is_file(False)
@@ -142,7 +142,7 @@ def scanner(path, level):
                 results.extend(simple_scanner(full_path, b_bean.get_level()))
         elif os.path.isfile(full_path):
             results.append(FModel(file, full_path).add_parent(level).add_is_file(True))
-                    
+
     return results
 
 
@@ -181,47 +181,47 @@ def is_dir_with_music(path):
 class ProgWindow(ChildTopWindow):
     def __init__(self, controls):
         ChildTopWindow.__init__(self, "Progress", 500, 100)
-        
+
         self.set_transient_for(controls.main_window)
-        
+
         self.label = Gtk.Label("Total analyzed folders: ")
         self.label1 = Gtk.Label("Total analyzed files: ")
         self.label2 = Gtk.Label("Folders with media files found: ")
         self.label3 = Gtk.Label("Media files found: ")
-        
+
         self.analyzed_files_label = Gtk.Label("0")
         self.analyzed_folders_label = Gtk.Label("0")
         self.media_files_label = Gtk.Label("0")
         self.media_folders_label = Gtk.Label("0")
-        
+
         self.analyzed_files = 0
         self.analyzed_folders = 0
         self.media_files = 0
         self.media_folders = 0
-        
+
         left_box = Gtk.VBox()
         left_box.pack_start(self.label)
         left_box.pack_start(self.label1)
         left_box.pack_start(self.label2)
         left_box.pack_start(self.label3)
-        
+
         right_box = Gtk.VBox()
         right_box.pack_start(self.analyzed_folders_label)
         right_box.pack_start(self.analyzed_files_label)
         right_box.pack_start(self.media_folders_label)
         right_box.pack_start(self.media_files_label)
-        
+
         box = Gtk.HBox()
         box.pack_start(left_box)
         box.pack_start(right_box)
-        
+
         self.add(box)
-        
+
         GObject.idle_add(self.show_all)
-                
+
     def update_window(self):
         self.analyzed_folders_label.set_text(str(self.analyzed_folders))
         self.analyzed_files_label.set_text(str(self.analyzed_files))
         self.media_files_label.set_text(str(self.media_files))
         self.media_folders_label.set_text(str(self.media_folders))
-        
+

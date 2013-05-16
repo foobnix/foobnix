@@ -196,9 +196,6 @@ class VKService:
         return self.get_result("getProfiles", "uid=" + str(self.user_id), 1 if without_auth else 0)
 
     def find_tracks_by_query(self, query):
-        def post():
-            self.find_tracks_by_query(query)
-
         logging.info("start search songs " + query)
         query = urllib.quote(query.encode("utf-8"))
 

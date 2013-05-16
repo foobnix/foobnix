@@ -183,7 +183,7 @@ class FC():
 
         self.is_my_radio_active = False
 
-        self.load();
+        self.load()
 
     def delete(self):
         FCStates().delete(CONFIG_FILE)
