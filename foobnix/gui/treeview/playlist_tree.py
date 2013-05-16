@@ -425,7 +425,6 @@ class PlaylistTreeControl(CommonTreeControl):
 
     def on_drag_data_received(self, treeview, context, x, y, selection, info, timestamp):
         logging.debug('Playlist on_drag_data_received')
-
         model = self.get_model().get_model()
         drop_info = self.get_dest_row_at_pos(x, y)
 
@@ -433,8 +432,16 @@ class PlaylistTreeControl(CommonTreeControl):
             path, position = drop_info
             iter = model.get_iter(path)
 
-        files = get_files_from_gtk_selection_data(selection)
+        files = [file for file in get_files_from_gtk_selection_data(selection)
+                 if os.path.isdir(file) or get_file_extension(file) in FC().all_support_formats]
         if files:
+            '''dnd from the outside of the player'''
+            if self.is_empty():
+                if len(files) == 1 and os.path.isdir(files[0]):
+                    tabname = os.path.basename(files[0])
+                else:
+                    tabname = os.path.split(os.path.dirname(files[0]))[1]
+                self.controls.notetabs.rename_tab(self.scroll, tabname)
             for i, file in enumerate(files):
                 if os.path.isdir(file):
                     listdir = filter(lambda x: get_file_extension(x) in FC().all_support_formats or os.path.isdir(x),
@@ -456,14 +463,16 @@ class PlaylistTreeControl(CommonTreeControl):
                         iter = model.iter_next(iter)
                 else:
                     model.append(None, row)
-            
+
         else:
+            '''dnd inside the player'''
             # ff - from_filter
             ff_tree = Gtk.drag_get_source_widget(context)
             ff_model, ff_paths = ff_tree.get_selection().get_selected_rows()
             treerows = [ff_model[ff_path] for ff_path in ff_paths]
 
             if self is ff_tree:
+                '''internal dnd'''
                 ff_row_refs = [Gtk.TreeRowReference.new(ff_model, ff_path) for ff_path in ff_paths]
                 for ff_row_ref in ff_row_refs:
                     ff_iter = self.get_iter_from_row_reference(ff_row_ref)
@@ -478,7 +487,16 @@ class PlaylistTreeControl(CommonTreeControl):
                     else:
                         model.move_before(f_iter, None)
                 return
+
             else:
+                '''dnd from other tree'''
+                if self.is_empty():
+                    path = treerows[0][self.path[0]]
+                    if len(treerows) == 1 and os.path.isdir(path):
+                        tabname = os.path.basename(path)
+                    else:
+                        tabname = os.path.split(os.path.dirname(path))[1]
+                    self.controls.notetabs.rename_tab(self.scroll, tabname)
                 for i, treerow in enumerate(treerows):
 
                     for k, ch_row in enumerate(treerow.iterchildren()):
@@ -486,7 +504,6 @@ class PlaylistTreeControl(CommonTreeControl):
 
                 treerows = self.playlist_filter(treerows)
 
-                
                 for i, treerow in enumerate(treerows):
                     if is_m3u(treerow[self.path[0]]):
                         rows = self.file_paths_to_rows([treerow[self.path[0]]])

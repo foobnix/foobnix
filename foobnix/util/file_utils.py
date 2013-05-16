@@ -234,11 +234,10 @@ def get_file_path_from_dnd_dropped_uri(uri):
 
 def get_files_from_gtk_selection_data(selection):
     if not selection or selection.get_format() != 8 or selection.get_length() <= 0:
-        return None
+        return []
     files = selection.get_text().split("\n")
     files = [k.strip("\r") for k in files if k.strip() != ""]
-    return [get_file_path_from_dnd_dropped_uri(k) for k in files if get_file_extension(k)
-                                                                    in FC().all_support_formats]
+    return [get_file_path_from_dnd_dropped_uri(k) for k in files]
 
 
 def get_dir_size(dirpath):
