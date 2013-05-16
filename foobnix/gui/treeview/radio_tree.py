@@ -20,7 +20,7 @@ from foobnix.helpers.menu import Popup
 from foobnix.gui.model import FModel, FTreeModel
 from foobnix.gui.service.radio_service import RadioFolder
 from foobnix.gui.treeview.common_tree import CommonTreeControl
-from foobnix.util.const import FTYPE_RADIO, LEFT_PERSPECTIVE_RADIO
+from foobnix.util.const import FTYPE_RADIO
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click,\
     right_click_optimization_for_trees, is_empty_click
 from foobnix.util.key_utils import is_key, KEY_DELETE
@@ -37,32 +37,28 @@ class RadioTreeControl(CommonTreeControl):
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)
-        
+
         self.configure_send_drag()
         self.configure_recive_drag()
         self.set_type_tree()
-        self.on_load()
-        
+
     def on_load(self):
         if FCache().cache_radio_tree_beans:
             GObject.idle_add(self.restore_rows, FCache().cache_radio_tree_beans)
         else:
-            self.update_radio_tree()        
-        
-    def activate_perspective(self):
-        FC().left_perspective = LEFT_PERSPECTIVE_RADIO
-    
+            self.update_radio_tree()
+
     def on_button_press(self, w, e):
         if is_double_left_click(e):
             selected = self.get_selected_bean()
-            beans = self.get_all_child_beans_by_selected()  
+            beans = self.get_all_child_beans_by_selected()
             self.controls.notetabs._append_tab(selected.text, [selected] + beans, optimization=True)
             "run radio channel"
             self.controls.play_first_file_in_playlist()
-            
-        if is_rigth_click(e): 
+
+        if is_rigth_click(e):
             right_click_optimization_for_trees(w, e)
-            
+
             self.tree_menu.clear()
             bean = self.get_selected_bean()
             if bean:
@@ -75,25 +71,25 @@ class RadioTreeControl(CommonTreeControl):
                 self.tree_menu.add_separator()
             self.tree_menu.add_item(_("Reload radio folder"), Gtk.STOCK_REFRESH, self.update_radio_tree, None)
             self.tree_menu.show(e)
-          
+
     def on_edit_radio(self):
         bean = self.get_selected_bean()
         name, url = two_line_dialog(_("Edit Radio"),
                                     parent = self.controls.main_window,
                                     message_text1 = _("Enter new name and URL"),
                                     message_text2 = None,
-                                    entry_text1=bean.text, 
+                                    entry_text1=bean.text,
                                     entry_text2 = bean.path)
         if not name or not url:
             return
         bean.add_text(name)
         bean.add_path(url)
-        
+
         rows = self.find_rows_by_element(self.UUID, bean.UUID)
         if rows:
             rows[0][self.text[0]] = name
             rows[0][self.path[0]] = url
-    
+
     def on_rename_group(self):
         bean = self.get_selected_bean()
         name = one_line_dialog(_("Rename Group"), self.controls.main_window,
@@ -103,13 +99,13 @@ class RadioTreeControl(CommonTreeControl):
         rows = self.find_rows_by_element(self.UUID, bean.UUID)
         if rows:
             rows[0][self.text[0]] = name
-                
+
     def on_add_station(self):
         name, url = two_line_dialog(_("Add New Radio Station"),
                                     parent = self.controls.main_window,
                                     message_text1 = _("Enter station name and URL"),
                                     message_text2 = None,
-                                    entry_text1 = None, 
+                                    entry_text1 = None,
                                     entry_text2 = "http://")
         if not name or not url:
             return
@@ -124,16 +120,16 @@ class RadioTreeControl(CommonTreeControl):
 
     def on_save(self):
         pass
-    
+
     def update_radio_tree(self):
         self.controls.in_thread.run_with_progressbar(self._update_radio_tree)
-        
+
     def _update_radio_tree(self):
         logging.info("in update radio")
         self.clear_tree()
         self.radio_folder = RadioFolder()
-        files = self.radio_folder.get_radio_FPLs()    
-        def task():    
+        files = self.radio_folder.get_radio_FPLs()
+        def task():
             for fpl in files:
                 parent = FModel(fpl.name).add_is_file(False)
                 self.append(parent)
@@ -150,7 +146,7 @@ class RadioTreeControl(CommonTreeControl):
             with open(CACHE_RADIO_FILE, 'r') as f:
                 list = f.readlines()
                 parent_level_for_depth = {}
-                previous = {"bean": None, "depth": 0, "name": '', "url": ''} 
+                previous = {"bean": None, "depth": 0, "name": '', "url": ''}
                 for line in list:
                     depth = self.simbol_counter(line, '-')
                     try:
@@ -165,15 +161,15 @@ class RadioTreeControl(CommonTreeControl):
                     if previous["depth"] < depth:
                         bean.add_parent(previous["bean"].level)
                     elif previous["depth"] > depth:
-                        bean.add_parent(parent_level_for_depth[depth]) 
+                        bean.add_parent(parent_level_for_depth[depth])
                     else:
                         if previous["bean"]:
                             bean.add_parent(previous["bean"].parent_level)
-                        
+
                     self.append(bean)
                     parent_level_for_depth[depth] = bean.parent_level
                     previous = {"bean": bean, "depth": depth, "name": name, "url": url}
-                        
+
     def simbol_counter(self, line, simbol):
         counter = 0
         for letter in line:
@@ -182,7 +178,7 @@ class RadioTreeControl(CommonTreeControl):
             else:
                 break
         return counter
-    
+
     def lazy_load(self):
         def task():
             logging.debug("radio Lazy loading")
@@ -191,53 +187,51 @@ class RadioTreeControl(CommonTreeControl):
             else:
                 self.update_radio_tree()
             self.is_radio_populated = True
-        thread.start_new_thread(task, ())                      
-            
+        thread.start_new_thread(task, ())
+
     def on_quit(self):
         self.save_rows_from_tree(FCache().cache_radio_tree_beans)
-        
 
-    
-                        
+
 class MyRadioTreeControl(RadioTreeControl):
     def __init__(self, controls):
         RadioTreeControl.__init__(self, controls)
         self.switcher_label = _("Autogenerated channels")
-        
+
     def on_load(self):
         self.auto_add_user_station()
-    
+
     def on_button_press(self, w, e):
         if is_empty_click(w, e):
             w.get_selection().unselect_all()
-        
+
         if is_double_left_click(e):
             selected = self.get_selected_bean()
-            beans = self.get_all_child_beans_by_selected()  
+            beans = self.get_all_child_beans_by_selected()
             self.controls.notetabs._append_tab(selected.text, [selected] + beans, optimization=True)
             "run radio channel"
             self.controls.play_first_file_in_playlist()
-            
-        if is_rigth_click(e): 
+
+        if is_rigth_click(e):
             right_click_optimization_for_trees(w, e)
-            
-            menu = Popup()
-            menu.add_item(_("Add Station"), Gtk.STOCK_ADD, self.on_add_station, None)
-            menu.add_item(_("Create Group"), Gtk.STOCK_ADD, self.create_new_group, None)
+
+            self.tree_menu.clear()
+            self.tree_menu.add_item(_("Add Station"), Gtk.STOCK_ADD, self.on_add_station, None)
+            self.tree_menu.add_item(_("Create Group"), Gtk.STOCK_ADD, self.create_new_group, None)
             bean = self.get_selected_bean()
             if bean:
                 if self.get_selected_bean().is_file:
-                    menu.add_item(_("Edit Station"), Gtk.STOCK_EDIT, self.on_edit_radio, None)
-                    menu.add_item(_("Delete Station"), Gtk.STOCK_DELETE, self.delete_selected, None)
+                    self.tree_menu.add_item(_("Edit Station"), Gtk.STOCK_EDIT, self.on_edit_radio, None)
+                    self.tree_menu.add_item(_("Delete Station"), Gtk.STOCK_DELETE, self.delete_selected, None)
                 else:
-                    menu.add_item(_("Rename Group"), Gtk.STOCK_EDIT, self.on_rename_group, None)
-                    menu.add_item(_("Delete Group"), Gtk.STOCK_DELETE, self.delete_selected, None)
-            menu.show(e)
-        
+                    self.tree_menu.add_item(_("Rename Group"), Gtk.STOCK_EDIT, self.on_rename_group, None)
+                    self.tree_menu.add_item(_("Delete Group"), Gtk.STOCK_DELETE, self.delete_selected, None)
+            self.tree_menu.show(e)
+
     def on_key_release(self, w, e):
         if is_key(e, KEY_DELETE):
             self.delete_selected()
-    
+
     def create_new_group(self):
         name = one_line_dialog(_("Create Group"), self.controls.main_window, message_text1=_("Enter group name"))
         if not name:
@@ -267,7 +261,7 @@ class MyRadioTreeControl(RadioTreeControl):
         '''
 
     def on_quit(self):
-        
+
         with open(CACHE_RADIO_FILE, 'w') as f:
             def task(row):
                 iter = row.iter
@@ -276,14 +270,14 @@ class MyRadioTreeControl(RadioTreeControl):
                 path = self.model.get_value(iter, FTreeModel().path[0])
                 if not path:
                     path = ""
-                f.write(level * '-' + text + '#' + path + '\n') 
+                f.write(level * '-' + text + '#' + path + '\n')
                 if row.iterchildren():
                     for child_row in row.iterchildren():
                         task(child_row)
-        
+
             for row in self.model:
                 task(row)
-                
+
     def on_drag_data_received(self, treeview, context, x, y, selection, info, timestamp):
         logging.debug('Storage on_drag_data_received')
         model = self.get_model().get_model()
@@ -322,7 +316,7 @@ class MyRadioTreeControl(RadioTreeControl):
                 else:
                     new_iter = model.append(None, row)
                 treerow = model[ref.get_path()]     # reinitialize
-                add_childs(treerow, new_iter) 
+                add_childs(treerow, new_iter)
             self.remove_replaced(ff_model, ff_row_refs)
-        
+
         self.stop_emission('drag-data-received')

@@ -26,7 +26,7 @@ from foobnix.gui.model import FModel
 from foobnix.gui.service.music_service import get_all_music_by_paths
 from foobnix.gui.service.google_service import google_search_results
 from foobnix.gui.service.vk_service import VKService
-from foobnix.gui.state import LoadSave
+from foobnix.gui.state import LoadSave, Quitable
 from foobnix.util.bean_utils import get_bean_posible_paths
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.util.file_utils import get_file_extension
@@ -182,21 +182,22 @@ class BaseFoobnixControls():
 
     def load_music_tree(self):
         tabs = len(FCache().cache_music_tree_beans)
+        tabhelper = self.perspectives.get_perspective('fs').get_tabhelper()
         for tab in xrange(tabs - 1, -1, -1):
-            self.tabhelper._append_tab(FCache().tab_names[tab], rows=FCache().cache_music_tree_beans[tab])
+            tabhelper._append_tab(FCache().tab_names[tab], rows=FCache().cache_music_tree_beans[tab])
 
-            tree = self.tabhelper.get_current_tree()
+            tree = tabhelper.get_current_tree()
             if not FCache().cache_music_tree_beans[tab]:
-                self.perspective.show_add_button()
+                self.perspectives.get_perspective('fs').show_add_button()
             else:
-                self.perspective.hide_add_button()
+                self.perspectives.get_perspective('fs').hide_add_button()
 
             logging.info("Tree loaded from cache")
 
         if FC().update_tree_on_start:
             def cycle():
                 for n in xrange(len(FCache().music_paths)):
-                    tab_child = self.tabhelper.get_nth_page(n)
+                    tab_child = tabhelper.get_nth_page(n)
                     tree = tab_child.get_child()
                     self.update_music_tree(tree, n)
             GObject.idle_add(cycle)
@@ -209,13 +210,13 @@ class BaseFoobnixControls():
         all = get_all_music_by_paths(FCache().music_paths[number_of_page], self)
 
         try:
-            self.perspective.hide_add_button()
+            self.perspectives.get_perspective('fs').hide_add_button()
         except AttributeError:
             logging.warn("Object perspective not exists yet")
 
         if not all:
             try:
-                self.perspective.show_add_button()
+                self.perspectives.get_perspective('fs').show_add_button()
             except AttributeError:
                 logging.warn("Object perspective not exists yet")
         tree.append_all(all)     # safe method
@@ -227,11 +228,12 @@ class BaseFoobnixControls():
 
     @idle_task
     def set_visible_video_panel(self, flag):
-        FC().is_view_video_panel = flag
-        if flag:
-            self.movie_window.show()
-        else:
-            self.movie_window.hide()
+        return
+        #FC().is_view_video_panel = flag
+        #if flag:
+        #    self.movie_window.show()
+        #else:
+        #    self.movie_window.hide()
 
     @idle_task
     def volume_up(self):
@@ -341,7 +343,7 @@ class BaseFoobnixControls():
         ## TODO: Check for GTK+3.4 (Status icon doesn't have a set_tooltip method)
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
-        self.movie_window.set_text(bean.text)
+        #self.movie_window.set_text(bean.text)
 
         if bean.type == FTYPE_RADIO:
             self.record.show()
@@ -447,7 +449,7 @@ class BaseFoobnixControls():
     def notify_error(self, msg):
         logging.error("notify error " + msg)
         self.seek_bar.set_text(msg)
-        self.info_panel.clear()
+        self.perspectives.get_perspective('info').clear()
 
     @idle_task
     def notify_eos(self):
@@ -617,7 +619,7 @@ class BaseFoobnixControls():
 
     @idle_task
     def update_info_panel(self, bean):
-        self.info_panel.update(bean)
+        self.perspectives.get_perspective('info').update(bean)
 
     @idle_task
     def append_to_new_notebook(self, text, beans, optimization=False):
@@ -646,21 +648,6 @@ class BaseFoobnixControls():
 
         self.play(bean)
 
-    @idle_task
-    def filter_by_folder(self, value):
-        tree = self.tabhelper.get_current_tree()
-        tree.filter_by_folder(value)
-        self.radio.filter_by_folder(value)
-        self.virtual.filter_by_folder(value)
-
-    @idle_task
-    def filter_by_file(self, value):
-        tree = self.tabhelper.get_current_tree()
-        tree.filter_by_file(value)
-        self.radio.filter_by_file(value)
-        self.virtual.filter_by_file(value)
-        self.vk_integration.filter_by_folder(query=value, expand=False)
-
     def quit(self, *a):
         self.state_stop()
         Gtk.main_iteration()   # wait for complete stop task
@@ -669,11 +656,9 @@ class BaseFoobnixControls():
 
         logging.info("Controls - Quit")
 
-        self.virtual.on_quit()
-        self.info_panel.on_quit()
-        self.radio.on_quit()
-        self.my_radio.on_quit()
-        self.notetabs.on_quit()
+        for element in self.__dict__:
+            if isinstance(self.__dict__[element], Quitable):
+                self.__dict__[element].on_quit()
 
         FC().save()
 
@@ -715,9 +700,7 @@ class BaseFoobnixControls():
                 logging.debug("%f LOAD ON START %s" % (time.time() - init, str(self.__dict__[element])))
 
         """load others"""
-        self.movie_window.hide_all()
-
-        self.info_panel.hide()
+        #self.movie_window.hide_all()
 
         self.main_window.show()
         self.search_progress.stop()
@@ -731,7 +714,7 @@ class BaseFoobnixControls():
             self.check_version()
         else:
             GObject.idle_add(self.check_version)
-    
+
     @idle_task_priority(GObject.PRIORITY_LOW)
     def play_first_file_in_playlist(self):
         active_playlist_tree = self.notetabs.get_current_tree()
