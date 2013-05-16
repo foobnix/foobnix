@@ -19,45 +19,45 @@ class EqController(FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
         LoadSave.__init__(self)
-                
+
         self.eq_view = EqWindow(controls, self.on_eq_chaged)
         self.eq_view.hide()
-    
+
     def show(self):
         self.eq_view.show_all()
-        analytics.action("EqController");
-        
+        analytics.action("EqController")
+
     def hide(self):
         self.eq_view.hide()
-        
+
     def get_preamp(self):
         return self.eq_view.get_active_values()[0]
-    
+
     def get_bands(self):
         return self.eq_view.get_active_values()[1:]
-    
+
     def on_eq_chaged(self):
         pre = self.eq_view.get_active_values()[0]
         self.controls.media_engine.set_all_bands(pre, self.eq_view.get_active_values()[1:])
-    
+
     def on_load(self):
         logging.debug("FC().eq_presets %s" % FC().eq_presets)
         if FC().eq_presets:
             self.eq_view.append_all_models(FC().eq_presets)
         else:
             self.eq_view.append_all_models(self.default_models())
-        
+
         self.eq_view.default_models = self.default_models()
         self.eq_view.set_active(FC().eq_presets_default)
-        
+
         logging.debug("default_models %s" % self.default_models())
         logging.debug("FC().eq_presets_default %s" % FC().eq_presets_default)
-        
-        self.eq_view.on_load()     
-    
+
+        self.eq_view.on_load()
+
     def on_save(self):
         pass
-    
+
     def default_models(self):
         models = []
         models.append(EqModel("CUSTOM", "Custom", 0, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]))

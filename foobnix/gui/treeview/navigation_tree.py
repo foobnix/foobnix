@@ -46,15 +46,17 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             try:
                 data = model.get_value(iter, self.text[0])
             except TypeError:
+                data = None
                 pass
             if not model.get_value(iter, self.path[0]):
                 cell.set_property('text', '')
                 return
             if os.path.isfile(model.get_value(iter, self.path[0])):
-                if ext:
-                    cell.set_property('text', os.path.splitext(data)[1][1:])
-                else:
-                    cell.set_property('text', os.path.splitext(data)[0])
+                if data:
+                    if ext:
+                        cell.set_property('text', os.path.splitext(data)[1][1:])
+                    else:
+                        cell.set_property('text', os.path.splitext(data)[0])
             else:
                 if ext:
                     cell.set_property('text', '')

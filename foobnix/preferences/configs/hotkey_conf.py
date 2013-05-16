@@ -226,9 +226,9 @@ class HotKeysConfig(ConfigPlugin):
         menu.show(event)
 
     def on_load(self):
-        if FC().media_keys_enabled == False:
+        if not FC().media_keys_enabled:
             self.disable_mediakeys.set_active(True)
-        if FC().media_volume_keys_enabled == False:
+        if not FC().media_volume_keys_enabled:
             self.disable_volume_keys.set_active(True)
         self.fill_hotkey_list()
 
