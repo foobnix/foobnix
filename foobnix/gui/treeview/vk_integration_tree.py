@@ -88,7 +88,7 @@ class VKIntegrationControls(CommonTreeControl):
                     beans = self.get_user_tracks_as_beans(selected.user_id)
                 else:
                     beans = self.get_all_child_beans_by_selected()
-                self.controls.notetabs._append_tab(selected.text, [selected] + beans, optimization=True)
+                self.controls.notetabs.append_tab(selected.text, [selected] + beans, optimization=True)
                 "run radio channel"
                 self.controls.play_first_file_in_playlist()
 
