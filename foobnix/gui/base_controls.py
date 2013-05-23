@@ -38,7 +38,6 @@ from foobnix.util import analytics, idle_task, idle_task_priority
 
 class BaseFoobnixControls():
     def __init__(self):
-
         self.vk_service = VKService(FC().access_token, FC().user_id)
 
         self.count_errors = 0
@@ -58,10 +57,8 @@ class BaseFoobnixControls():
                 files.append(arg)
         if dirs:
             self.on_add_folders(dirs)
-            GObject.idle_add(self.play_first_file_in_playlist)
         elif files:
             self.on_add_files(files)
-            GObject.idle_add(self.play_first_file_in_playlist)
 
     def love_this_tracks(self, beans=None):
         if not beans:
