@@ -224,7 +224,7 @@ class PlaylistTreeControl(CommonTreeControl):
         for row in rows:
             self.model.append(None, row)
         thread.start_new_thread(self.safe_fill_treerows, ())
-        
+
     def is_empty(self):
         return True if not self.model.get_iter_first() else False
 
@@ -432,8 +432,9 @@ class PlaylistTreeControl(CommonTreeControl):
             path, position = drop_info
             iter = model.get_iter(path)
 
-        files = [file for file in get_files_from_gtk_selection_data(selection)
-                 if os.path.isdir(file) or get_file_extension(file) in FC().all_support_formats]
+        files = sorted([file for file in get_files_from_gtk_selection_data(selection)
+                if os.path.isdir(file) or get_file_extension(file) in FC().all_support_formats],
+                key=lambda x: x[self.text[0]])
         if files:
             '''dnd from the outside of the player'''
             if self.is_empty():
@@ -448,7 +449,7 @@ class PlaylistTreeControl(CommonTreeControl):
                                      [os.path.join(file, f) for f in os.listdir(file)])
                     for k, path in enumerate(listdir):
                         files.insert(i + k + 1, path)
-                                   
+
             rows = self.file_paths_to_rows(files)
             if not rows:
                 return
@@ -521,11 +522,11 @@ class PlaylistTreeControl(CommonTreeControl):
                             iter = model.iter_next(iter)
                     else:
                         model.append(None, row)
-             
+
 
         thread.start_new_thread(self.safe_fill_treerows, ())
 
         context.finish(True, False, timestamp)
         self.stop_emission('drag-data-received')
         return True
-    
+
