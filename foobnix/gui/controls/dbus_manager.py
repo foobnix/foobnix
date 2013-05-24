@@ -25,55 +25,27 @@ MPRIS_TRACKLIST_PATH = "/TrackList"
 DBUS_MEDIAPLAYER_INTERFACE = 'org.freedesktop.MediaPlayer'
 
 
-class DBusManager(dbus.service.Object, FControl):
-    def __init__(self, controls, object_path=MPRIS_ROOT_PATH):
-        FControl.__init__(self, controls)
+class DBusManager():
+    def __init__(self, controls):
         try:
-            bus = dbus.SessionBus()
-            bus_name = dbus.service.BusName(DBUS_NAME, bus=bus)
-            dbus.service.Object.__init__(self, bus_name, object_path)
-    
-            #self._player = MprisPlayer(controls)
-            #dbus_interface = 
-            dbus_interface = 'org.gnome.SettingsDaemon.MediaKeys'
-            mm_object = bus.get_object('org.gnome.SettingsDaemon', '/org/gnome/SettingsDaemon/MediaKeys')
-            
-            mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
-            mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
-            #mm_object.ReleaseMediaPlayerKeys("MyMultimediaThingy", dbus_interface=dbus_interface)
-
-            self.sound_menu = SoundMenuControls("foobnix")
-            self.sound_menu._sound_menu_next = self._sound_menu_next
-            self.sound_menu._sound_menu_previous = self._sound_menu_previous
-            self.sound_menu._sound_menu_is_playing = self._sound_menu_is_playing
-            self.sound_menu._sound_menu_play = self._sound_menu_play
-            self.sound_menu._sound_menu_pause = self._sound_menu_pause
-            self.sound_menu._sound_menu_raise = self._sound_menu_raise
+            self.sound_menu = MprisSoundMenu(controls)
+            self.player = MprisPlayer(controls)
         except Exception, e:
             self.sound_menu = None
             logging.error("DBUS Initialization Error " + str(e))
 
-    def _sound_menu_next(self):
-        self.controls.next()
+        '''
+        try:
+            dbus_interface = 'org.gnome.SettingsDaemon.MediaKeys'
+            mm_object = bus.get_object('org.gnome.SettingsDaemon', '/org/gnome/SettingsDaemon/MediaKeys')
 
-    def _sound_menu_previous(self):
-        self.controls.prev()
-
-    def _sound_menu_is_playing(self):
-        return self.controls.media_engine.current_state is STATE_PLAY
-
-    def _sound_menu_play(self):
-        self.controls.state_play()
-
-    def _sound_menu_pause(self):
-        self.controls.state_pause()
-
-    def _sound_menu_raise(self):
-        GObject.idle_add(self.controls.main_window.show)
-
-    def _set_state_play(self):
-        if self.sound_menu:
-            self.sound_menu.signal_playing()
+            mm_object.GrabMediaPlayerKeys("MyMultimediaThingy", 0, dbus_interface=dbus_interface)
+            mm_object.connect_to_signal('MediaPlayerKeyPressed', self.on_mediakey)
+            #mm_object.ReleaseMediaPlayerKeys("MyMultimediaThingy", dbus_interface=dbus_interface)
+        except Exception, e:
+            self.sound_menu = None
+            logging.error("DBUS Initialization Error " + str(e))
+        '''
 
     def _set_state_pause(self):
         if self.sound_menu:
@@ -101,16 +73,16 @@ class DBusManager(dbus.service.Object, FControl):
                                      title=bean.title or bean.text,
                                      album=bean.album,
                                      cover=image)
-    
+
     def check_for_commands(self, args):
         if len(args) == 1:
             command = args[0]
-            
+
         elif len(args) == 2:
             command = args[1]
         else:
             return False
-          
+
         if "--next" == command:
             self.controls.next()
         elif "--prev" == command:
@@ -148,15 +120,15 @@ class DBusManager(dbus.service.Object, FControl):
         else:
             return False
         return True
-    
+
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='s')
     def parse_arguments(self, args):
-        if args and len(args) > 0:            
+        if args and len(args) > 0:
             self.controls.check_for_media(args)
             result = self.check_for_commands(args)
-            if not result:                
+            if not result:
                 self.controls.show()
-            if type(result).__name__ == 'str':        
+            if type(result).__name__ == 'str':
                 return result
         return "Other copy of player is run"
 
@@ -179,6 +151,48 @@ class DBusManager(dbus.service.Object, FControl):
         else:
             logging.debug('Got a multimedia key:' + str(what))
 
+
+class MprisPlayer(dbus.service.Object):
+    """implementation org.mpris.MediaPlayer2.foobnix /Player"""
+
+
+    def __init__(self, controls):
+        self.controls = controls
+
+        bus = dbus.SessionBus()
+        bus_name = dbus.service.BusName(DBUS_NAME, bus=bus)
+        dbus.service.Object.__init__(self, bus_name, MPRIS_PLAYER_PATH)
+
+    #Next ( )
+    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
+    def Next(self):
+        self.controls.next()
+
+    #Prev ( )
+    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
+    def Previous(self):
+        self.controls.prev()
+
+    #Pause ( )
+    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
+    def Pause(self):
+        self.controls.state_pause()
+
+    #Stop ( )
+    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
+    def Stop(self):
+        self.controls.state_stop()
+
+    #Play ( )
+    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
+    def Play(self):
+        self.controls.state_play()
+
+    #PlayPause for test
+    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
+    def PlayPause(self):
+        self.controls.state_play_pause()
+
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='s')
     def Identity(self):
         return "foobnix %s" % FOOBNIX_VERSION
@@ -190,6 +204,47 @@ class DBusManager(dbus.service.Object, FControl):
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
     def Quit(self):
         self.controls.quit()
+
+
+class MprisSoundMenu(SoundMenuControls):
+    def __init__(self, controls):
+        self.controls = controls
+        SoundMenuControls.__init__(self, "foobnix")
+
+
+    def _sound_menu_next(self):
+        self.controls.next()
+
+    def _sound_menu_previous(self):
+        self.controls.prev()
+
+    def _sound_menu_is_playing(self):
+        return self.controls.media_engine.current_state is STATE_PLAY
+
+    def _sound_menu_play(self):
+        self.controls.state_play()
+
+    def _sound_menu_pause(self):
+        self.controls.state_pause()
+
+    def _sound_menu_raise(self):
+        GObject.idle_add(self.controls.main_window.show)
+
+
+    @dbus.service.method('org.mpris.MediaPlayer2.Player')
+    def Stop(self):
+        self.controls.state_stop()
+
+    @dbus.service.method('org.mpris.MediaPlayer2.Player')
+    def Play(self):
+        self.controls.state_play()
+
+
+    def _set_state_play(self):
+        if self.sound_menu:
+            self.sound_menu.signal_playing()
+
+
 
 
 def foobnix_dbus_interface():
