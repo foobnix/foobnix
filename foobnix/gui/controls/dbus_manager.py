@@ -74,64 +74,6 @@ class DBusManager():
                                      album=bean.album,
                                      cover=image)
 
-    def check_for_commands(self, args):
-        if len(args) == 1:
-            command = args[0]
-
-        elif len(args) == 2:
-            command = args[1]
-        else:
-            return False
-
-        if "--next" == command:
-            self.controls.next()
-        elif "--prev" == command:
-            self.controls.prev()
-        elif "--stop" == command:
-            self.controls.state_stop()
-        elif "--pause" == command:
-            self.controls.state_pause()
-        elif "--play" == command:
-            self.controls.state_play()
-        elif "--volume-up" == command:
-            self.controls.volume_up()
-        elif "--volume-down" == command:
-            self.controls.volume_down()
-        elif "--mute" == command:
-            self.controls.mute()
-        elif "--show-hide" == command:
-            self.controls.show_hide()
-        elif "--show" == command:
-            self.controls.show()
-        elif "--hide" == command:
-            self.controls.hide()
-        elif "--play-pause" == command:
-            self.controls.play_pause()
-        elif "--download" == command:
-            self.controls.dm.append_task(bean=self.controls.notetabs.get_current_tree().get_current_bean_by_UUID())
-        elif "--version" == command:
-            return FOOBNIX_VERSION
-        elif "--state" == command:
-            return self.controls.media_engine.current_state
-        elif "--now-playing" == command:
-            bean = self.controls.notetabs.get_current_tree().get_current_bean_by_UUID()
-            if bean:
-                return bean.get_display_name()
-        else:
-            return False
-        return True
-
-    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='s')
-    def parse_arguments(self, args):
-        if args and len(args) > 0:
-            self.controls.check_for_media(args)
-            result = self.check_for_commands(args)
-            if not result:
-                self.controls.show()
-            if type(result).__name__ == 'str':
-                return result
-        return "Other copy of player is run"
-
     def on_mediakey(self, comes_from, what):
         if not FC().media_keys_enabled:
             return
@@ -205,6 +147,64 @@ class MprisPlayer(dbus.service.Object):
     def Quit(self):
         self.controls.quit()
 
+    @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='s')
+    def parse_arguments(self, args):
+        if args and len(args) > 0:
+            self.controls.check_for_media(args)
+            result = self.check_for_commands(args)
+            if not result:
+                self.controls.show()
+            if type(result).__name__ == 'str':
+                return result
+        return "Other copy of player is run"
+
+    def check_for_commands(self, args):
+        if len(args) == 1:
+            command = args[0]
+
+        elif len(args) == 2:
+            command = args[1]
+        else:
+            return False
+
+        if "--next" == command:
+            self.controls.next()
+        elif "--prev" == command:
+            self.controls.prev()
+        elif "--stop" == command:
+            self.controls.state_stop()
+        elif "--pause" == command:
+            self.controls.state_pause()
+        elif "--play" == command:
+            self.controls.state_play()
+        elif "--volume-up" == command:
+            self.controls.volume_up()
+        elif "--volume-down" == command:
+            self.controls.volume_down()
+        elif "--mute" == command:
+            self.controls.mute()
+        elif "--show-hide" == command:
+            self.controls.show_hide()
+        elif "--show" == command:
+            self.controls.show()
+        elif "--hide" == command:
+            self.controls.hide()
+        elif "--play-pause" == command:
+            self.controls.play_pause()
+        elif "--download" == command:
+            self.controls.dm.append_task(bean=self.controls.notetabs.get_current_tree().get_current_bean_by_UUID())
+        elif "--version" == command:
+            return FOOBNIX_VERSION
+        elif "--state" == command:
+            return self.controls.media_engine.current_state
+        elif "--now-playing" == command:
+            bean = self.controls.notetabs.get_current_tree().get_current_bean_by_UUID()
+            if bean:
+                return bean.get_display_name()
+        else:
+            return False
+        return True
+
 
 class MprisSoundMenu(SoundMenuControls):
     def __init__(self, controls):
@@ -256,7 +256,7 @@ def foobnix_dbus_interface():
         if not DBUS_NAME in dbus_objects:
             return None
         else:
-            return dbus.Interface(bus.get_object(DBUS_NAME, MPRIS_ROOT_PATH), DBUS_MEDIAPLAYER_INTERFACE)
+            return dbus.Interface(bus.get_object(DBUS_NAME, MPRIS_PLAYER_PATH), DBUS_MEDIAPLAYER_INTERFACE)
     except Exception, e:
         logging.error("Dbus error", e)
         return None
