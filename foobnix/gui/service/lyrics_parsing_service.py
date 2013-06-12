@@ -17,7 +17,7 @@ class LyricsFinder(HTMLParser):
         self.tagname = tagname
         self.attr = attr
         self.attr_value = attr_value
-    
+
     def get_lyrics_from_lyricsmania(self, artist, title):
         base = "http://www.lyricsmania.com/"
         self.tagname = 'div'
@@ -31,7 +31,7 @@ class LyricsFinder(HTMLParser):
         result = result.replace('&#039;', '!apostrophe!')
         self.feed(result)
         return "\n".join(self.data).replace('!apostrophe!', '&#039;')
-    
+
     def get_lyrics_from_megalyrics(self, artist, title):
         base = "http://megalyrics.ru/lyric/"
         self.tagname = 'pre'
@@ -46,13 +46,13 @@ class LyricsFinder(HTMLParser):
         self.feed(result)
         del self.data[0]
         return "\n".join(self.data).replace('!apostrophe!', "\'")
-    
+
     def handle_starttag(self, tag, attrs):
         if tag == self.tagname:
             for name, value in attrs:
                 if name == self.attr and value == self.attr_value:
                     self.needed_tag = 1
-                   
+
     def handle_endtag(self, tag):
         if tag == self.tagname and self.needed_tag:
             self.needed_tag = 0
@@ -63,7 +63,10 @@ class LyricsFinder(HTMLParser):
 
 
 def get_lyrics_by_parsing(artist, title):
-    if not globals().has_key("lyrics_finder"):
+    if not artist or not title:
+        return ""
+
+    if "lyrics_finder" not in globals():
         global lyrics_finder
         lyrics_finder = LyricsFinder()
     artist = artist.encode('utf-8').strip()
@@ -75,17 +78,17 @@ def get_lyrics_by_parsing(artist, title):
         text = lyrics_finder.get_lyrics_from_lyricsmania(artist, title)
     except:
         logging.info("Error occurred when getting lyrics from lyricsmania.com")
-    
+
     if not text:
         try:
             logging.debug("Try to get lyrics from megalyrics.ru")
             text = lyrics_finder.get_lyrics_from_megalyrics(artist, title)
         except:
             logging.info("Error occurred when getting lyrics from megalyrics.ru")
-    
+
     lyrics_finder.reset()
     return text
 
 
-if __name__ == '__main__':  
+if __name__ == '__main__':
     print get_lyrics_by_parsing("aBBA", " honey, Honey ")

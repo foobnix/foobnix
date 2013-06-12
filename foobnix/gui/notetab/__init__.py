@@ -9,12 +9,11 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
 
-import thread
 import logging
 import threading
 
 from foobnix.fc.fc import FC
-from foobnix.util import const
+from foobnix.util import idle_task
 from foobnix.fc.fc_cache import FCache
 from foobnix.helpers.menu import Popup
 from foobnix.gui.state import LoadSave
@@ -22,13 +21,13 @@ from foobnix.util.key_utils import is_key
 from foobnix.util.m3u_utils import m3u_writer
 from foobnix.gui.model.signal import FControl
 from foobnix.util.string_utils import crop_string
-from foobnix.gui.model import FModel, FTreeModel
+from foobnix.gui.model import FTreeModel
 from foobnix.helpers.dialog_entry import FileSavingDialog
 from foobnix.gui.treeview.playlist_tree import PlaylistTreeControl
 from foobnix.util.file_utils import get_file_path_from_dnd_dropped_uri
 from foobnix.helpers.my_widgets import tab_close_button, notetab_label,\
     ImageButton
-from foobnix.util.mouse_utils import is_double_left_click, is_double_middle_click, \
+from foobnix.util.mouse_utils import is_double_middle_click, \
     is_middle_click, is_rigth_click
 from foobnix.gui.treeview.navigation_tree import NavigationTreeControl
 
@@ -172,9 +171,8 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
 
     def append_tab(self, name=_("Empty tab"), beans=None, optimization=False):
         def task():
-            self._append_tab(name, beans, optimization)
+            self._append_tab(full_name=name, beans=beans, optimization=optimization)
         GObject.idle_add(task)
-
 
     def _append_tab(self, full_name=_("Empty tab"), beans=None, rows=None, optimization=False):
         logging.info("append new tab")
