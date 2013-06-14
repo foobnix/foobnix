@@ -295,6 +295,8 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 dict = FTreeModel().__dict__
                 for key in dict:
                     value = getattr(bean, key)
+                    if value is None:
+                        value = ''
                     row_num = dict[key][0]
                     row[row_num] = value
                 break
