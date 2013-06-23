@@ -47,6 +47,10 @@ class DBusManager():
             logging.error("DBUS Initialization Error " + str(e))
         '''
 
+    def _set_state_play(self):
+        if self.sound_menu:
+            self.sound_menu.signal_playing()
+
     def _set_state_pause(self):
         if self.sound_menu:
             self.sound_menu.signal_paused()
@@ -238,13 +242,6 @@ class MprisSoundMenu(SoundMenuControls):
     @dbus.service.method('org.mpris.MediaPlayer2.Player')
     def Play(self):
         self.controls.state_play()
-
-
-    def _set_state_play(self):
-        if self.sound_menu:
-            self.sound_menu.signal_playing()
-
-
 
 
 def foobnix_dbus_interface():
