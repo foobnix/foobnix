@@ -211,6 +211,7 @@ class VKService:
             bean.title = line['title']
             bean.time = convert_seconds_to_text(line['duration'])
             bean.path = line['url']
+            bean.vk_audio_id = "%s_%s" % (line['owner_id'], line['aid'])
             childs.append(bean)
 
         return childs
@@ -239,6 +240,7 @@ class VKService:
             bean.title = line['title']
             bean.time = convert_seconds_to_text(line['duration'])
             bean.path = line['url']
+            bean.vk_audio_id = "%s_%s" % (line['owner_id'], line['aid'])
             childs.append(bean)
 
         return childs
@@ -266,6 +268,20 @@ class VKService:
                 return song
 
         return vkSongs[0]
+
+    def find_track_by_id(self, id):
+        result = self.get_result("audio.get", "audios=" + str(id))
+        if not result:
+            return None
+        line = result[0]
+        bean = FModel(line['artist'] + ' - ' + line['title'])
+        bean.aritst = line['artist']
+        bean.title = line['title']
+        bean.time = convert_seconds_to_text(line['duration'])
+        bean.path = line['url']
+        bean.vk_audio_id = "%s_%s" % (line['owner_id'], line['aid'])
+        return bean
+
 
     def find_time_value(self, times_count, r_count):
         for i in times_count:

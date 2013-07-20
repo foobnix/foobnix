@@ -330,6 +330,18 @@ class BaseFoobnixControls():
         else:
             return False
 
+    def fill_bean_by_vk_aid(self, bean):
+        if not bean.vk_audio_id:
+            return False
+        if bean.type and bean.type == FTYPE_RADIO:
+            return False
+        track = self.vk_service.find_track_by_id(bean.vk_audio_id)
+        if track:
+            bean.path = track.path
+            bean.time = track.time
+            return True
+        return False
+
     @idle_task
     def play(self, bean):
         if not bean or not bean.is_file:
@@ -368,6 +380,8 @@ class BaseFoobnixControls():
             if bean.iso_path and os.path.exists(bean.iso_path):
                 logging.info("Try to remount " + bean.iso_path)
                 mount_tmp_iso(bean.iso_path)
+            elif bean.vk_audio_id:
+                self.fill_bean_by_vk_aid(bean)
             elif not bean.path or ("userapi" in bean.path) or ("vk.me" in bean.path):
                 self.fill_bean_from_vk(bean)
             else:
