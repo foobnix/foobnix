@@ -81,7 +81,7 @@ class HotKeysConfig(ConfigPlugin):
 
     def __init__(self, controls):
         HotKeysConfig.controls = controls
-        box = gtk.VBox(False, 0)
+        box = Gtk.VBox(False, 0)
         box.hide()
 
         self.tree_widget = Gtk.TreeView()
