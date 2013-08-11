@@ -5,8 +5,6 @@ Created on Sep 7, 2010
 '''
 
 
-import os
-import thread
 import logging
 
 from gi.repository import Gtk
@@ -26,8 +24,10 @@ Keybinder.init()
 
 
 def activate_hot_key(hotkey, command):
-    logging.debug("Run command: " + str(command))
-    thread.start_new_thread(os.system, (command,))
+    logging.debug("Run command: " + command + " Hotkey: " + hotkey)
+    controls = HotKeysConfig.controls
+    if controls:
+        eval(command + '()')
 
 
 def add_key_binder(command, hotkey):
@@ -77,9 +77,11 @@ class HotKeysConfig(ConfigPlugin):
 
     name = _("Global Hotkeys")
     binded = True
+    controls = None
 
     def __init__(self, controls):
-        box = Gtk.VBox(False, 0)
+        HotKeysConfig.controls = controls
+        box = gtk.VBox(False, 0)
         box.hide()
 
         self.tree_widget = Gtk.TreeView()
