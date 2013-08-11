@@ -109,6 +109,7 @@ class VKIntegrationControls(CommonTreeControl):
                 bean.time = convert_seconds_to_text(line['duration'])
                 bean.path = line['url']
                 bean.is_file = True
+                bean.vk_audio_id = "%s_%s" % (line['owner_id'], line['aid'])
                 beans.append(bean)
         return beans
 

@@ -38,6 +38,8 @@ class FTreeModel():
         self.user_id = 27 , str
         self.iso_path = 28 , str
 
+        self.vk_audio_id = 29, str
+
     def cut(self):
 
         for i in self.__dict__:
