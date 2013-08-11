@@ -156,7 +156,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
     def notify_title(self, text):
         if not text:
             return
-        if self.bean.type == FTYPE_RADIO:
+        if self._is_remote():
             "notify radio playing"
 
             self.emit("title-changed", self.bean, text)
@@ -426,6 +426,9 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         else:
             self.state_play()
 
+    def _is_remote(self):
+        return self.bean.type == FTYPE_RADIO or (self.bean.path and self.bean.path.startswith("http"))
+
     def on_chage_state(self):
         self.controls.on_chage_player_state(self.get_state(), self.bean)
 
@@ -486,7 +489,10 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
                     artist = taglist.get_string('artist')[1]
                     artist = correct_encoding(artist)
                     text = artist + " - " + text
-                if self.bean.type == FTYPE_RADIO and taglist.get_uint('bitrate')[0]:
+                if not text:
+                    text = self.bean.path
+                if self._is_remote() and taglist.get_uint('bitrate')[0]:
+                    text = text + " || " + str(taglist.get_uint('bitrate')[1] / 1000) + _("kbps")
                     self.emit('bitrate-changed', taglist.get_uint('bitrate')[1])
 
                 self.notify_title(text)

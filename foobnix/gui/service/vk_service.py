@@ -94,7 +94,6 @@ class VKWebkitAuth(Gtk.Dialog):
         return dict(split_key_value(kv_pair) for kv_pair in url.fragment.split("&"))
 
     def on_load(self, webview, frm):
-        print ("on load", webview.get_property("uri"))
         url = urlparse(webview.get_property("uri"))
         if url.path == "/blank.html":
             answer = self.extract_answer(url)

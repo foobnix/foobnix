@@ -441,8 +441,8 @@ class BaseFoobnixControls():
         if not self.cache_text:
             self.cache_text = text
 
-        self.statusbar.set_text(text)
-        self.seek_bar.set_text(text)
+        self.statusbar.set_text(text.replace("||", "|"))
+        self.seek_bar.set_text(text.partition("||")[0])
         t_bean = bean.create_from_text(text)
         self.update_info_panel(t_bean)
         self.set_dbus_state(STATE_PLAY, t_bean)
