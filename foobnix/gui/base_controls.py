@@ -443,7 +443,7 @@ class BaseFoobnixControls():
 
         self.statusbar.set_text(text.replace("||", "|"))
         self.seek_bar.set_text(text.partition("||")[0])
-        t_bean = bean.create_from_text(text)
+        t_bean = bean.create_from_text(text.partition("||")[0])
         self.update_info_panel(t_bean)
         self.set_dbus_state(STATE_PLAY, t_bean)
         if FC().enable_radio_scrobbler:
