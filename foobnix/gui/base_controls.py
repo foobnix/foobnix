@@ -436,14 +436,15 @@ class BaseFoobnixControls():
                     self.dm.append_task(bean)
 
     @idle_task
-    def notify_title(self, bean, text):
-        logging.debug("Notify title" + text)
+    def notify_title(self, bean, raw_text):
+        logging.debug("Notify title" + raw_text)
+        text = raw_text.partition("||")[0]
         if not self.cache_text:
             self.cache_text = text
 
-        self.statusbar.set_text(text.replace("||", "|"))
-        self.seek_bar.set_text(text.partition("||")[0])
-        t_bean = bean.create_from_text(text.partition("||")[0])
+        self.statusbar.set_text(raw_text.replace("||", "|"))
+        self.seek_bar.set_text(text)
+        t_bean = bean.create_from_text(text)
         self.update_info_panel(t_bean)
         self.set_dbus_state(STATE_PLAY, t_bean)
         if FC().enable_radio_scrobbler:
