@@ -14,7 +14,6 @@ from foobnix.gui.controls.playback import PlaybackControls, \
     OrderShuffleControls
 from foobnix.gui.search import SearchControls
 from foobnix.gui.controls.seach_progress import SearchProgress
-from foobnix.gui.infopanel import InfoPanelWidget
 from foobnix.gui.engine.gstreamer import GStreamerEngine
 from foobnix.gui.controls.seekbar import SeekProgressBarControls
 from foobnix.gui.controls.volume import VolumeControls
@@ -24,7 +23,6 @@ from foobnix.preferences.preferences_window import PreferencesWindow
 from foobnix.gui.top import TopWidgets
 from foobnix.eq.eq_controller import EqController
 from foobnix.dm.dm import DM
-from foobnix.gui.controls.movie_area import MovieDrawingArea
 from foobnix.util.single_thread import SingleThread
 from foobnix.gui.perspectives.controller import Controller
 from foobnix.util.localization import foobnix_localization

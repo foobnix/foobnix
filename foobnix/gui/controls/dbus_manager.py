@@ -4,14 +4,12 @@ Created on 28 сент. 2010
 
 @author: anton.komolov
 '''
-from curses.ascii import SO
 import logging
 from gi.repository import GObject
 import dbus.service
 from foobnix.fc.fc import FC
 from foobnix.version import FOOBNIX_VERSION
 from dbus.mainloop.glib import DBusGMainLoop
-from foobnix.gui.model.signal import FControl
 from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.thirdparty.sound_menu import SoundMenuControls
 from foobnix.util.const import STATE_PLAY, ICON_FOOBNIX
