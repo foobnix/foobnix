@@ -725,7 +725,8 @@ class BaseFoobnixControls():
         if os.name == 'nt':
             self.check_version()
         else:
-            GObject.idle_add(self.check_version)
+            pass
+            #GObject.idle_add(self.check_version)
 
     @idle_task_priority(GObject.PRIORITY_LOW)
     def play_first_file_in_playlist(self):

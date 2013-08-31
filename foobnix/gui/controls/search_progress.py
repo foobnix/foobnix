@@ -19,7 +19,9 @@ class SearchProgress(Gtk.Spinner):
         self.set_size_request(30, 30)
         self.set_halign(Gtk.Align.END)
         self.set_valign(Gtk.Align.END)
-    
+
+        self.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(255, 255, 255))
+
     def start(self, text=None):
         def safe_task():
             self.show()
@@ -31,7 +33,7 @@ class SearchProgress(Gtk.Spinner):
             super(SearchProgress, self).stop()
             self.hide()
         GObject.idle_add(safe_task)
-    
+
     def background_spinner_wrapper(self, task, *args):
         self.start()
         while Gtk.events_pending():

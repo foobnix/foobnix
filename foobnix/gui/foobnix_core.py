@@ -13,7 +13,7 @@ from foobnix.gui.window import MainWindow
 from foobnix.gui.controls.playback import PlaybackControls, \
     OrderShuffleControls
 from foobnix.gui.search import SearchControls
-from foobnix.gui.controls.seach_progress import SearchProgress
+from foobnix.gui.controls.search_progress import SearchProgress
 from foobnix.gui.engine.gstreamer import GStreamerEngine
 from foobnix.gui.controls.seekbar import SeekProgressBarControls
 from foobnix.gui.controls.volume import VolumeControls
