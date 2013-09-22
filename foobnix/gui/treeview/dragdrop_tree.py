@@ -20,7 +20,7 @@ from foobnix.fc.fc import FC
 from foobnix.util.file_utils import get_file_extension, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv
-from foobnix.util import idle_task_priority
+from foobnix.util import idle_task_priority, idle_task
 
 try:
     from gi._glib import GError
@@ -180,10 +180,9 @@ class DragDropTree(Gtk.TreeView):
         self.clear_tree()
         self.plain_append_all(copy_beans)
 
+    @idle_task
     def tree_append_all(self, beans):
-        def task():
-            self._tree_append_all(beans)
-        GObject.idle_add(task)
+        self._tree_append_all(beans)
 
     def _tree_append_all(self, beans):
         if not beans:
@@ -242,14 +241,13 @@ class DragDropTree(Gtk.TreeView):
 
         return list
 
+    @idle_task
     def plain_append_all(self, beans, parent=None):
-        def task():
-            try:
-                self._plain_append_all(beans, parent)
-            finally:
-                if "PlaylistTreeControl" in str(self):
-                    thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
-        GObject.idle_add(task)
+        try:
+            self._plain_append_all(beans, parent)
+        finally:
+            if "PlaylistTreeControl" in str(self):
+                thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
 
     def _plain_append_all(self, beans, parent=None):
         logging.debug("begin plain append all")

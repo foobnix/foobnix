@@ -3,9 +3,10 @@
 # example packbox.py
 
 import os
-from gi.repository import Gtk
 import thread
 import logging
+from gi.repository import Gtk
+from gi.repository import GLib
 from gi.repository import GObject
 
 from foobnix.fc.fc import FC
@@ -28,11 +29,11 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
     configs = []
     POS_NAME = 0
-        
+
     def __init__(self, controls):
         FControl.__init__(self, controls)
         thread.start_new_thread(self.lazy_init, (True,) )
-    
+
     def lazy_init(self, sleep=False):
         controls = self.controls
         self.configs.append(MusicLibraryConfig(controls))
@@ -40,33 +41,33 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.configs.append(LastFmConfig(controls))
         self.configs.append(TrayIconConfig(controls))
         self.configs.append(NetworkConfig(controls))
-               
+
         try:
             """check keybinder installed, debian"""
             from gi.repository import Keybinder #@UnresolvedImport @UnusedImport
             from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
             self.configs.append(HotKeysConfig(controls))
         except Exception, e:
-            logging.warn("Keybinder not installed" + str(e))         
-        
+            logging.warn("Keybinder not installed" + str(e))
+
         self.configs.append(OtherConfig(controls))
-        
+
         self.label = None
 
         mainVBox = Gtk.VBox(False, 0)
-        
+
         ChildTopWindow.__init__(self, _("Preferences"), 900, 550)
 
         paned = Gtk.HPaned()
         paned.set_position(250)
-        
+
         def func():
             bean = self.navigation.get_selected_bean()
             if bean:
                 self.populate_config_category(bean.text)
-        
-        self.navigation = SimpleListTreeControl(_("Categories"), controls, True)        
-        
+
+        self.navigation = SimpleListTreeControl(_("Categories"), controls, True)
+
         for plugin in self.configs:
             self.navigation.append(FDModel(plugin.name))
 
@@ -83,29 +84,29 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
         mainVBox.pack_start(paned, True, True, 0)
         mainVBox.pack_start(self.create_save_cancel_buttons(), False, False, 0)
-        
+
         #self.add(mainVBox)
-        GObject.idle_add(self.add, mainVBox)
-            
+        GLib.idle_add(self.add, mainVBox)
+
     def show(self, current=CONFIG_MUSIC_LIBRARY):
         self.show_all()
         self.populate_config_category(current)
         self.on_load()
         analytics.action("PreferencesWindow")
-    
+
     def on_load(self):
         logging.debug("LOAD PreferencesWindow")
-        for plugin in self.configs:            
+        for plugin in self.configs:
             plugin.on_load()
 
     def on_save(self):
         for plugin in self.configs:
             plugin.on_save()
         FC().save()
-        bean = self.navigation.get_selected_bean() 
+        bean = self.navigation.get_selected_bean()
         if bean:
-            self.populate_config_category(bean.text) 
-               
+            self.populate_config_category(bean.text)
+
     def hide_window(self, *a):
         self.hide()
         for plugin in self.configs:
@@ -113,7 +114,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
                 plugin.on_close()
         self.navigation.set_cursor_on_cell(Gtk.TreePath(0), None, None, False)
         return True
-        
+
     def populate_config_category(self, name):
         for plugin in self.configs:
             if plugin.name == name:
@@ -121,7 +122,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
                 try:
                     self.update_label(name)
                 except:
-                    pass                
+                    pass
             else:
                 plugin.widget.hide()
 
@@ -137,12 +138,12 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         button_apply.set_size_request(100, -1)
         button_apply.connect("clicked", lambda * a: self.on_save())
         button_apply.show()
-        
+
         button_close = Gtk.Button(_("Close"))
         button_close.set_size_request(100, -1)
         button_close.connect("clicked", self.hide_window)
         button_close.show()
-        
+
         empty = Gtk.Label("")
         empty.show()
 
@@ -180,6 +181,6 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         return box
 
 if __name__ == "__main__":
-    w = PreferencesWindow(None)    
+    w = PreferencesWindow(None)
     w.show()
     Gtk.main()

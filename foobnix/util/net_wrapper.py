@@ -17,6 +17,7 @@ from foobnix.fc.fc import FC
 from foobnix.helpers.window import MessageWindow
 from foobnix.gui.service.vk_service import VKService
 from foobnix.gui.service.lastfm_service import LastFmService
+from foobnix.util import idle_task
 
 
 class NetWrapper():
@@ -29,11 +30,11 @@ class NetWrapper():
         self.set_ping(is_ping)
         self.timeout = 7
         self.pause = 10
-        self.is_connected = False        
+        self.is_connected = False
         "only for self.execute() method"
-        self.previous_connect = True #show the message only if a connection existed and then there was a disconnect                       
+        self.previous_connect = True #show the message only if a connection existed and then there was a disconnect
         self.start_ping()
-            
+
     def set_ping(self, is_ping=True):
         FC().net_ping = is_ping
         if not self.is_ping and is_ping:
@@ -48,10 +49,10 @@ class NetWrapper():
             return
         self.flag = True
         thread.start_new_thread(self.ping, ())
-        
+
     def stop_ping(self):
         self.flag = False
-            
+
     def ping(self):
         while self.flag:
             if FC().proxy_enable and FC().proxy_url:
@@ -73,7 +74,7 @@ class NetWrapper():
                     logging.info("Success Internet connection")
                 self.counter = 0
             except Exception, e:
-                
+
                 self.is_connected = False
                 if self.is_ping:
                     logging.warning("Can\'t connect to Internet. Reason - " + str(e))
@@ -86,9 +87,9 @@ class NetWrapper():
                     self.counter = 0
             finally:
                 s.close()
-                
+
             time.sleep(self.pause)
-    
+
     def ping_with_proxy(self):
         while self.flag:
             if not FC().proxy_enable:
@@ -131,33 +132,32 @@ class NetWrapper():
                     self.counter = 0
             finally:
                 s.close()
-                
+
             time.sleep(self.pause)
-               
+
+    @idle_task
     def disconnect_dialog(self):
         # only one dialog must be shown
-        if self.dd_count: 
+        if self.dd_count:
                 logging.debug("one disconnect dialog is showing yet")
                 return
-        
+
         logging.info("Disconnect dialog is shown")
-        def task():
-            self.dd_count += 1
-            MessageWindow(title=_("Internet Connection"), 
-                          text=_("Foobnix not connected or Internet not available. Please try again a little bit later."),
-                          parent=self.controls.main_window, buttons=Gtk.ButtonsType.OK)
-            self.dd_count -= 1
-            
-        GObject.idle_add(task)
-        
+        self.dd_count += 1
+        MessageWindow(title=_("Internet Connection"),
+                      text=_("Foobnix not connected or Internet not available. Please try again a little bit later."),
+                      parent=self.controls.main_window, buttons=Gtk.ButtonsType.OK)
+        self.dd_count -= 1
+
+
     def is_internet(self):
         return True if self.is_connected else False
-    
+
     def break_connection(self):
         self.stop_ping()
         self.is_connect = False
-            
-    def restore_connection(self):   
+
+    def restore_connection(self):
         self.start_ping()
         logging.info("Try to restore connection")
         def task_restore_connection():
@@ -166,9 +166,9 @@ class NetWrapper():
             logging.info("Try to restore lastfm_service")
             self.controls.lastfm_service = LastFmService(self.controls)
         thread.start_new_thread(task_restore_connection, ())
-        
-        
-    "wrapper for Internet function"        
+
+
+    "wrapper for Internet function"
     def execute(self,func, *args):
         if not self.is_ping:
             return func(*args) if args else func()

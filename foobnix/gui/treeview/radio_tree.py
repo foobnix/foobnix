@@ -20,6 +20,7 @@ from foobnix.helpers.menu import Popup
 from foobnix.gui.model import FModel, FTreeModel
 from foobnix.gui.service.radio_service import RadioFolder
 from foobnix.gui.treeview.common_tree import CommonTreeControl
+from foobnix.util import idle_task
 from foobnix.util.const import FTYPE_RADIO
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click,\
     right_click_optimization_for_trees, is_empty_click
@@ -42,9 +43,10 @@ class RadioTreeControl(CommonTreeControl):
         self.configure_recive_drag()
         self.set_type_tree()
 
+    @idle_task
     def on_load(self):
         if FCache().cache_radio_tree_beans:
-            GObject.idle_add(self.restore_rows, FCache().cache_radio_tree_beans)
+            self.restore_rows(FCache().cache_radio_tree_beans)
         else:
             self.update_radio_tree()
 
@@ -124,22 +126,21 @@ class RadioTreeControl(CommonTreeControl):
     def update_radio_tree(self):
         self.controls.in_thread.run_with_progressbar(self._update_radio_tree)
 
+    @idle_task
     def _update_radio_tree(self):
         logging.info("in update radio")
         self.clear_tree()
         self.radio_folder = RadioFolder()
         files = self.radio_folder.get_radio_FPLs()
-        def task():
-            for fpl in files:
-                parent = FModel(fpl.name).add_is_file(False)
-                self.append(parent)
-                keys = fpl.urls_dict.keys()
-                keys.sort()
-                for radio in keys:
-                    child = FModel(radio, fpl.urls_dict[radio][0]).parent(parent).add_type(FTYPE_RADIO).add_is_file(True)
-                    self.append(child)
+        for fpl in files:
+            parent = FModel(fpl.name).add_is_file(False)
+            self.append(parent)
+            keys = fpl.urls_dict.keys()
+            keys.sort()
+            for radio in keys:
+                child = FModel(radio, fpl.urls_dict[radio][0]).parent(parent).add_type(FTYPE_RADIO).add_is_file(True)
+                self.append(child)
 
-        GObject.idle_add(task)
 
     def auto_add_user_station(self):
         if os.path.isfile(CACHE_RADIO_FILE) and os.path.getsize(CACHE_RADIO_FILE) > 0:

@@ -12,6 +12,7 @@ require_version("Keybinder", "3.0")
 
 from gi.repository import Gtk
 from gi.repository import GObject
+from gi.repository import GLib
 
 
 from threading import Timer
@@ -80,7 +81,7 @@ def foobnix():
             analytics.begin_session()
             print("******Foobnix run in", time.time() - init_time, " seconds******")
             if sys.argv:
-                Timer(1, GObject.idle_add, [core.check_for_media, sys.argv]).start()
+                Timer(1, GLib.idle_add, [core.check_for_media, sys.argv]).start()
 
             Gtk.main()
         else:

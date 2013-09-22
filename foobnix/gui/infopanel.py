@@ -20,6 +20,7 @@ from foobnix.helpers.my_widgets import EventLabel
 from foobnix.helpers.pref_widgets import HBoxDecoratorTrue
 from foobnix.fc.fc_cache import FCache, COVERS_DIR, LYRICS_DIR
 from foobnix.gui.treeview.simple_tree import SimpleTreeControl
+from foobnix.util import idle_task
 from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
     ICON_BLANK_DISK, SITE_LOCALE
 from foobnix.util.bean_utils import update_parent_for_beans, \
@@ -143,28 +144,27 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         self.bean = None
         self.info_cache = InfoCache()
 
+    @idle_task
     def show_current(self, widget):
         if not self.controls.net_wrapper.is_internet():
             return
 
-        def safe_task():
-            self.empty.hide()
-            if widget.line_title.selected:
-                widget.scroll.hide()
-                self.empty.show()
-                widget.line_title.set_not_active()
-                return
+        self.empty.hide()
+        if widget.line_title.selected:
+            widget.scroll.hide()
+            self.empty.show()
+            widget.line_title.set_not_active()
+            return
 
-            for w in self.left_widget:
-                w.scroll.hide()
-                w.line_title.set_not_active()
+        for w in self.left_widget:
+            w.scroll.hide()
+            w.line_title.set_not_active()
 
-            widget.scroll.show_all()
-            widget.line_title.set_active()
+        widget.scroll.show_all()
+        widget.line_title.set_active()
 
-            self.info_cache.active_method = widget.line_title.func1
-            self.controls.in_thread.run_with_progressbar(widget.line_title.func1)
-        GObject.idle_add(safe_task)
+        self.info_cache.active_method = widget.line_title.func1
+        self.controls.in_thread.run_with_progressbar(widget.line_title.func1)
 
     def clear(self):
         self.image.set_no_image()
@@ -178,6 +178,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
             return
 
         bean = copy.copy(self.bean)
+
         def update_info_panel_task():
             self.show_album_title(bean)
             self.show_disc_cover(bean)

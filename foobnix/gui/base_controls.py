@@ -13,6 +13,7 @@ import logging
 
 from gi.repository import Gtk
 from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import GdkPixbuf
 
 from threading import Lock
@@ -197,7 +198,7 @@ class BaseFoobnixControls():
                     tab_child = tabhelper.get_nth_page(n)
                     tree = tab_child.get_child()
                     self.update_music_tree(tree, n)
-            GObject.idle_add(cycle)
+            GLib.idle_add(cycle)
 
     def update_music_tree(self, tree, number_of_page=0):
         logging.info("Update music tree" + str(FCache().music_paths[number_of_page]))
@@ -219,9 +220,9 @@ class BaseFoobnixControls():
         tree.append_all(all)     # safe method
         tree.ext_width = tree.ext_column.get_width()
 
-        GObject.idle_add(tree.save_rows_from_tree,
+        GLib.idle_add(tree.save_rows_from_tree,
                          FCache().cache_music_tree_beans[number_of_page])
-        #GObject.idle_add(self.tabhelper.on_save_tabs)   # for true order
+        #GLib.idle_add(self.tabhelper.on_save_tabs)   # for true order
 
     @idle_task
     def set_visible_video_panel(self, flag):
@@ -275,9 +276,9 @@ class BaseFoobnixControls():
     def windows_visibility(self):
         visible = self.main_window.get_property('visible')
         if visible:
-            GObject.idle_add(self.main_window.hide)
+            GLib.idle_add(self.main_window.hide)
         else:
-            GObject.idle_add(self.main_window.show)
+            GLib.idle_add(self.main_window.show)
 
     @idle_task
     def state_play(self, under_pointer_icon=False):
@@ -726,7 +727,7 @@ class BaseFoobnixControls():
             self.check_version()
         else:
             pass
-            #GObject.idle_add(self.check_version)
+            #GLib.idle_add(self.check_version)
 
     @idle_task_priority(GObject.PRIORITY_LOW)
     def play_first_file_in_playlist(self):
@@ -744,7 +745,7 @@ class BaseFoobnixControls():
                 tree_selection = active_playlist_tree.get_selection()
                 filter_iter = filter_model.convert_child_iter_to_iter(iter)
                 if filter_iter[0]:
-                    GObject.idle_add(tree_selection.select_iter, filter_iter[1])
+                    GLib.idle_add(tree_selection.select_iter, filter_iter[1])
                 active_playlist_tree.set_play_icon_to_bean_to_selected()
             else:
                 iter = current_model.iter_next(iter)

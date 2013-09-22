@@ -5,6 +5,7 @@ Created on Jan 27, 2011
 '''
 
 from gi.repository import Gtk
+from gi.repository import GLib
 from gi.repository import GObject
 import logging
 
@@ -53,7 +54,7 @@ class VKIntegrationControls(CommonTreeControl):
                     bean = FDModel(_("loading...")).parent(parent).add_is_file(True)
                     self.append(parent)
                     self.append(bean)
-                GObject.idle_add(task, user)
+                GLib.idle_add(task, user)
 
         if not FC().user_id and not self.controls.vk_service.auth():
             return
@@ -137,6 +138,6 @@ class VKIntegrationControls(CommonTreeControl):
 
                 for rem in old_iters:
                     self.model.remove(rem)
-            GObject.idle_add(safe)
+            GLib.idle_add(safe)
 
         self.controls.in_thread.run_with_progressbar(task)

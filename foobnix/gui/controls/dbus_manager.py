@@ -8,6 +8,7 @@ import logging
 from gi.repository import GObject
 import dbus.service
 from foobnix.fc.fc import FC
+from foobnix.util import idle_task
 from foobnix.version import FOOBNIX_VERSION
 from dbus.mainloop.glib import DBusGMainLoop
 from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
@@ -229,9 +230,9 @@ class MprisSoundMenu(SoundMenuControls):
     def _sound_menu_pause(self):
         self.controls.state_pause()
 
+    @idle_task
     def _sound_menu_raise(self):
-        GObject.idle_add(self.controls.main_window.show)
-
+        self.controls.main_window.show()
 
     @dbus.service.method('org.mpris.MediaPlayer2.Player')
     def Stop(self):

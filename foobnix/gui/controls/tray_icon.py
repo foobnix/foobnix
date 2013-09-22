@@ -20,6 +20,7 @@ from foobnix.gui.state import LoadSave
 from foobnix.helpers.image import ImageBase
 from foobnix.helpers.my_widgets import ImageButton, AlternateVolumeControl
 from foobnix.helpers.pref_widgets import VBoxDecorator
+from foobnix.util import idle_task
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util.mouse_utils import is_middle_click
 from foobnix.util.text_utils import split_string
@@ -62,15 +63,15 @@ class PopupMenuWindow(PopupTrayWindow):
         self.show_all()
         self.hide()
 
+    @idle_task
     def set_text(self, text):
         text = unicode(text)
-        def safe_task():
-            self.poopup_text.set_text(text[:40])
+        self.poopup_text.set_text(text[:40])
 
-            '''set colour of text'''
-            self.poopup_text.modify_fg(Gtk.StateType.NORMAL,
-                                       Gdk.color_parse('#FFFFFF')) #@UndefinedVariable
-        GObject.idle_add(safe_task)
+        '''set colour of text'''
+        self.poopup_text.modify_fg(Gtk.StateType.NORMAL,
+                                   Gdk.color_parse('#FFFFFF'))
+
 
 class PopupVolumeWindow(PopupTrayWindow):
     def __init__(self, controls, popup_menu_window):
@@ -219,6 +220,7 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
     def on_popup_menu(self, *a):
         self.show_window()
 
+    @idle_task
     def set_text(self, text):
         self.popup_menu.set_text(text)
-        GObject.idle_add(self.set_tooltip, text)
+        self.set_tooltip(text)

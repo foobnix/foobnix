@@ -8,6 +8,7 @@ Created on 27 сент. 2010
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
+from foobnix.util import idle_task
 
 
 class SearchProgress(Gtk.Spinner):
@@ -22,17 +23,15 @@ class SearchProgress(Gtk.Spinner):
 
         self.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(255, 255, 255))
 
+    @idle_task
     def start(self, text=None):
-        def safe_task():
-            self.show()
-            super(SearchProgress, self).start()
-        GObject.idle_add(safe_task)
+        self.show()
+        super(SearchProgress, self).start()
 
+    @idle_task
     def stop(self):
-        def safe_task():
-            super(SearchProgress, self).stop()
-            self.hide()
-        GObject.idle_add(safe_task)
+        super(SearchProgress, self).stop()
+        self.hide()
 
     def background_spinner_wrapper(self, task, *args):
         self.start()

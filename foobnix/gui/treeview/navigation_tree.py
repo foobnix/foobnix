@@ -10,6 +10,7 @@ import logging
 import threading
 
 from gi.repository import Gtk
+from gi.repository import GLib
 from gi.repository import GObject
 
 from foobnix.fc.fc import FC
@@ -84,7 +85,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
         def task(*a):
             self.on_click_header(None, None, on_start=True)
-        GObject.idle_add(task)
+        GLib.idle_add(task)
 
         self.scroll.get_vscrollbar().connect('show', task)
         self.scroll.get_vscrollbar().connect('hide', task)

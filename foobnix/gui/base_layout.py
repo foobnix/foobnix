@@ -7,6 +7,7 @@ Created on 25 сент. 2010
 
 from gi.repository import Gtk
 from gi.repository import Gdk
+from gi.repository import GLib
 from gi.repository import GObject
 import logging
 
@@ -112,7 +113,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         if flag:
             self.hpaned_right.set_position(self.hpaned_right.get_allocated_width() - FC().hpaned_right_right_side_width)
             self.controls.coverlyrics.show()
-            #GObject.idle_add(self.controls.coverlyrics.adapt_image)
+            #GLib.idle_add(self.controls.coverlyrics.adapt_image)
         else:
             self.controls.coverlyrics.hide()
 
@@ -137,7 +138,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
             self.save_left_panel()
         elif w is self.hpaned_right:
             self.on_configure_hl_event()
-            GObject.idle_add(self.save_left_panel)
+            GLib.idle_add(self.save_left_panel)
 
     def save_right_panel(self):
         if self.controls.coverlyrics.get_property("visible"):
@@ -167,7 +168,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         def task():
             if FC().is_view_music_tree_panel and self.hpaned_left.get_position() != FC().hpaned_left:
                 self.hpaned_left.set_position(FC().hpaned_left)
-        GObject.idle_add(task)
+        GLib.idle_add(task)
 
     def on_configure_hr_event(self, *a):
         def task():
@@ -175,10 +176,10 @@ class BaseFoobnixLayout(FControl, LoadSave):
                 hrw = self.hpaned_right.get_allocated_width()
                 if (hrw - self.hpaned_right.get_position()) != FC().hpaned_right_right_side_width:
                     self.hpaned_right.set_position(hrw - FC().hpaned_right_right_side_width)
-        GObject.idle_add(task)
+        GLib.idle_add(task)
 
     def on_load(self):
         self.set_visible_search_panel(FC().is_view_search_panel)
-        GObject.idle_add(self.set_visible_musictree_panel, FC().is_view_music_tree_panel,
+        GLib.idle_add(self.set_visible_musictree_panel, FC().is_view_music_tree_panel,
                          priority = GObject.PRIORITY_DEFAULT_IDLE - 10)
         self.set_visible_coverlyrics_panel(FC().is_view_coverlyrics_panel)

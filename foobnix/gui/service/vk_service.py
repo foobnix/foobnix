@@ -18,6 +18,7 @@ import urllib2
 import simplejson
 
 from gi.repository import Gtk
+from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import WebKit
 from gi.repository import Soup
@@ -126,7 +127,7 @@ class VKService:
                 self.auth_res = True
             self.task_finished = True
             logging.debug("task finished, result is %s" % str(res))
-        GObject.idle_add(safetask)
+        GLib.idle_add(safetask)
         logging.debug("idle task added, waiting...")
         while not self.task_finished:
             time.sleep(0.1)

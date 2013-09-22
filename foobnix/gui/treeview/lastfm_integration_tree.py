@@ -4,6 +4,7 @@ Created on Jan 27, 2011
 @author: ivan
 '''
 from gi.repository import Gtk
+from gi.repository import GLib
 from gi.repository import GObject
 import logging
 
@@ -70,5 +71,5 @@ class LastFmIntegrationControls(CommonTreeControl):
             childs = self.services[u""+parent.text](FCBase().lfm_login, str(int(FC().search_limit)))
             update_parent_for_beans(childs, parent)
             self.append_all(childs)
-            GObject.idle_add(self.remove_iters, old_iters)
+            GLib.idle_add(self.remove_iters, old_iters)
         self.controls.in_thread.run_with_progressbar(task)

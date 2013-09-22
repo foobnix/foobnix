@@ -52,6 +52,7 @@ class SeekProgressBarControls(FControl, Gtk.Alignment):
     def safe_hide_tooltip(self):
         self.tooltip.hide()
 
+    @idle_task
     def on_pointer_motion(self, widget, event):
         width = self.progressbar.get_allocation().width
         x = event.x
@@ -60,12 +61,10 @@ class SeekProgressBarControls(FControl, Gtk.Alignment):
         sec = int(duration * seek_percent)
         sec = convert_seconds_to_text(sec)
 
-        def safe_task():
-            self.tooltip_label.set_text(sec)
-            self.tooltip.show_all()
-            unknown_var, x, y, mask = Gdk.get_default_root_window().get_pointer() #@UndefinedVariable @UnusedVariable
-            self.tooltip.move(x+5, y-15)
-        GObject.idle_add(safe_task)
+        self.tooltip_label.set_text(sec)
+        self.tooltip.show_all()
+        unknown_var, x, y, mask = Gdk.get_default_root_window().get_pointer()
+        self.tooltip.move(x+5, y-15)
 
     def on_seek(self, widget, event):
         bean = self.controls.media_engine.bean

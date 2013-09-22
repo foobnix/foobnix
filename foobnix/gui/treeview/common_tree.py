@@ -177,6 +177,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
             if fcache_save_lock.locked():
                 fcache_save_lock.release()
 
+    @idle_task
     def restore_rows(self, rows):
         for key in sorted(rows.keys()):
             if len(key) == 1:

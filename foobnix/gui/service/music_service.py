@@ -217,7 +217,7 @@ class ProgWindow(ChildTopWindow):
 
         self.add(box)
 
-        GObject.idle_add(self.show_all)
+        self.show_all()
 
     def update_window(self):
         self.analyzed_folders_label.set_text(str(self.analyzed_folders))

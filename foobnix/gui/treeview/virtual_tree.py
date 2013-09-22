@@ -96,7 +96,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
 
     def on_load(self):
         self.scroll.hide()
-        GObject.idle_add(self.restore_rows, FCache().cache_virtual_tree_beans)
+        self.restore_rows(FCache().cache_virtual_tree_beans)
         self.restore_expand(FC().virtual_expand_paths)
         self.restore_selection(FC().virtual_selected_paths)
 

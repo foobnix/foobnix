@@ -4,6 +4,7 @@ from foobnix.gui.model.signal import FControl
 
 from gi.repository import Gtk
 from gi.repository import Gdk
+from gi.repository import GLib
 from gi.repository import GObject
 import logging
 
@@ -13,7 +14,7 @@ from foobnix.gui.controls.playback import PlaybackControls
 from foobnix.util.key_utils import is_key, is_key_alt, get_key
 from foobnix.helpers.my_widgets import notetab_label, ImageButton
 import threading
-from foobnix.util import analytics
+from foobnix.util import analytics, idle_task
 
 
 class AdvancedDrawingArea(Gtk.DrawingArea):
@@ -94,7 +95,7 @@ class FullScreanArea(ChildTopWindow):
 
             self.add(self.layout)
 
-            self.draw.connect("enter-notify-event", lambda *a: GObject.idle_add(control_panel.hide))
+            self.draw.connect("enter-notify-event", lambda *a: GLib.idle_add(control_panel.hide))
 
             def my_event(w, e):
                 if e.y > Gdk.screen_height() - 5: #@UndefinedVariable
@@ -102,28 +103,29 @@ class FullScreanArea(ChildTopWindow):
                         control_panel.show()
                         control_panel.set_size_request(Gdk.screen_width(), -1)#@UndefinedVariable
                         control_panel.move(0, Gdk.screen_height() - control_panel.get_allocation().height)#@UndefinedVariable
-                    GObject.idle_add(safe_task)
+                    GLib.idle_add(safe_task)
 
             self.connect("motion-notify-event", my_event)
 
         def volume_changed(self, volumebutton, value):
             self.controls.volume.set_value(float(value * 100))
 
+        @idle_task
         def set_text(self, text):
-            GObject.idle_add(self.text_label.set_text, text)
+            self.text_label.set_text(text)
 
         def get_draw(self):
             return self.draw
 
+        @idle_task
         def hide_window(self, *a):
-            GObject.idle_add(self.hide)
+            self.hide()
 
+        @idle_task
         def show_window(self):
-            def safe_task():
-                self.fullscreen()
-                self.volume_button.set_value(float(self.controls.volume.volume_scale.get_value()/ 100))
-                self.show_all()
-            GObject.idle_add(safe_task)
+            self.fullscreen()
+            self.volume_button.set_value(float(self.controls.volume.volume_scale.get_value()/ 100))
+            self.show_all()
 
 
 class MovieDrawingArea(FControl, Gtk.Frame):
@@ -169,8 +171,9 @@ class MovieDrawingArea(FControl, Gtk.Frame):
         self.controls.state_play(under_pointer_icon=True)
         analytics.action("FullScreanArea")
 
+    @idle_task
     def set_text(self, text):
-        GObject.idle_add(self.fullscrean_area.set_text, text)
+        self.fullscrean_area.set_text(text)
 
     def on_small_screen(self):
         self.controls.state_stop(True)
@@ -178,24 +181,16 @@ class MovieDrawingArea(FControl, Gtk.Frame):
         self.fullscrean_area.hide_window()
         self.controls.state_play(under_pointer_icon=True)
 
+    @idle_task
     def draw_video(self, message):
         message_name = message.get_structure().get_name()
 
         if message_name == "prepare-xwindow-id":
             imagesink = message.src
 
-            def safe_task():
-                imagesink.set_property("force-aspect-ratio", True)
-                self.show_all()
-                imagesink.set_xwindow_id(self.get_output().window.xid)
+            imagesink.set_property("force-aspect-ratio", True)
+            self.show_all()
+            imagesink.set_xwindow_id(self.get_output().window.xid)
 
-                '''trick to amoid possible black screen in movie_area'''
-                threading.Timer(0.5, lambda: self.get_output().set_size_request(-1, 400)).start()
-
-            GObject.idle_add(safe_task)
-
-
-
-
-
-
+            '''trick to amoid possible black screen in movie_area'''
+            threading.Timer(0.5, lambda: self.get_output().set_size_request(-1, 400)).start()

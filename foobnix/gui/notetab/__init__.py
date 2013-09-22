@@ -8,6 +8,7 @@ Created on Dec 20, 2010
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
+from gi.repository import GLib
 
 import logging
 import threading
@@ -76,7 +77,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
             logging.debug("NavigationTreeControl")
             treeview = NavigationTreeControl(self.controls)
         if rows:
-            GObject.idle_add(treeview.restore_rows, rows)
+            GLib.idle_add(treeview.restore_rows, rows)
 
         if beans:
             if optimization:
@@ -172,7 +173,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
     def append_tab(self, name=_("Empty tab"), beans=None, optimization=False):
         def task():
             self._append_tab(full_name=name, beans=beans, optimization=optimization)
-        GObject.idle_add(task)
+        GLib.idle_add(task)
 
     def _append_tab(self, full_name=_("Empty tab"), beans=None, rows=None, optimization=False):
         logging.info("append new tab")
@@ -483,7 +484,7 @@ class NoteTabControl(TabGeneral):
             new_pl_tree_columns = self.get_nth_page(page_num).get_child().get_columns()
             for old_pl_tree_column, new_pl_tree_column in zip(old_pl_tree_columns, new_pl_tree_columns):
                 if old_pl_tree_column.get_width() > 0:
-                    GObject.idle_add(new_pl_tree_column.set_fixed_width, old_pl_tree_column.get_width())
+                    GLib.idle_add(new_pl_tree_column.set_fixed_width, old_pl_tree_column.get_width())
         except AttributeError:
             pass
 

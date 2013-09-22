@@ -9,11 +9,11 @@ from __future__ import with_statement
 
 import os
 import re
-from gi.repository import Gtk
-
 import thread
-from gi.repository import GObject
 import logging
+from gi.repository import Gtk
+from gi.repository import GLib
+from gi.repository import GObject
 
 from subprocess import Popen, PIPE
 from foobnix.fc.fc_helper import CONFIG_DIR
@@ -204,10 +204,10 @@ class Converter(ChildTopWindow):
         self.ffmpeg = Popen(list, universal_newlines=True, stderr=PIPE)
 
         for line in iter(self.ffmpeg.stderr.readline, ""):
-            GObject.idle_add(self.output.buffer.insert_at_cursor, line)
+            GLib.idle_add(self.output.buffer.insert_at_cursor, line)
             logging.debug(line)
             adj = self.output.scroll.get_vadjustment()
-            GObject.idle_add(adj.set_value, adj.get_upper() - adj.get_page_size() + 1)
+            GLib.idle_add(adj.set_value, adj.get_upper() - adj.get_page_size() + 1)
 
         self.ffmpeg.wait()
 
@@ -384,13 +384,13 @@ def convert_files(paths):
                                 prog_bar.set_fraction(got/size)
                                 prog_bar.set_text("Downloaded  %.2f of %.2fMb" % (float(got)/1024/1024, size/1024/1024))
 
-                            GObject.idle_add(subtask)
+                            GLib.idle_add(subtask)
                         except OSError as e:
                             if os.path.isfile(ffmpeg_path) and os.path.getsize(ffmpeg_path) < size:
                                 os.remove(ffmpeg_path)
 
                 os.chmod(ffmpeg_path, 0777)
-                GObject.idle_add(convert_files, paths)
+                GLib.idle_add(convert_files, paths)
                 dialog.destroy()
 
             thread.start_new_thread(task, ())
