@@ -327,6 +327,11 @@ class VKService:
             count = FC().search_limit
             url = url + "&count=%(COUNT)s" % {'COUNT': count }
 
+        if (FC().enable_vk_autocomlete == True):
+            url = url + "&auto_complete=1"
+        else:
+            url = url + "&auto_complete=0"
+
         #logging.debug("GET " + url)
         logging.debug("Try to get response from vkontakte")
         try:
