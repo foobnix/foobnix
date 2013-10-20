@@ -100,7 +100,7 @@ class LastFmConfig(ConfigPlugin):
 
         vk_layout.pack_start(self.vk_account_label, False, False)
         vk_layout.pack_start(self.reset_vk_auth_button, False, False)
-        vk_layout.pack_start(self.vk_autocomplete, False, True, 0)
+        vk_layout.pack_start(self.vk_autocomplete, False, False)
         vk_frame.add(vk_layout)
 
         """all"""        
