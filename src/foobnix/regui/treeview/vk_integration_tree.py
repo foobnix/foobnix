@@ -110,6 +110,8 @@ class VKIntegrationControls(CommonTreeControl):
                 bean.title = line['title']
                 bean.time = convert_seconds_to_text(line['duration'])
                 bean.path = line['url']
+                bean.aid = line['aid']
+                bean.oid = line['owner_id']
                 bean.is_file = True
                 beans.append(bean)
         return beans

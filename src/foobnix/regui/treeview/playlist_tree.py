@@ -255,6 +255,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 menu.add_separator()
                 if paths[0]:
                     menu.add_item(_("Open In File Manager"), None, open_in_filemanager, paths[0])
+                    menu.add_item(_('Add to My Audio (VK)'), None, self.controls.add_to_my_playlist, self.get_all_selected_beans())
                 menu.show(e)
                   
     def on_click_header(self, w, e):

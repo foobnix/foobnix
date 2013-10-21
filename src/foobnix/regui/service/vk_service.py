@@ -425,6 +425,8 @@ class VKService:
             bean.title = line['title']
             bean.time = convert_seconds_to_text(line['duration'])
             bean.path = line['url']
+            bean.aid = line['aid']
+            bean.oid = line['owner_id']
             childs.append(bean)
              
         return childs
@@ -453,6 +455,8 @@ class VKService:
             bean.title = line['title']
             bean.time = convert_seconds_to_text(line['duration'])
             bean.path = line['url']
+            bean.aid = line['aid']
+            bean.oid = line['owner_id']
             childs.append(bean)
        
         return childs 
@@ -486,3 +490,20 @@ class VKService:
             if times_count[i] == r_count:
                 return i
         return None 
+
+    def add(self, bean):
+        if (bean.aid != None) & (bean.oid != None):
+            url = "https://api.vk.com/method/audio.add?access_token=%(ACCESS_TOKEN)s&aid=%(AID)s&oid=%(OID)s" % {'ACCESS_TOKEN':self.token, 'AID':bean.aid, 'OID':bean.oid }
+            #logging.debug("GET " + url)
+            logging.debug("Try add audio to vkontakte")
+            try:
+                response = urllib2.urlopen(url, timeout=7)
+                if "response" not in vars():
+                    logging.error("Can't get response from vkontakte")
+                    return
+            except IOError:
+                logging.error("Can't get response from vkontakte")
+                return
+            result = response.read()
+        return result
+

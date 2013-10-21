@@ -37,6 +37,8 @@ class FTreeModel():
         self.composer = 26 , str
         self.user_id = 27 , str
         self.iso_path = 28 , str
+        self.aid = 29 , str
+        self.oid = 30 , str
     
     def cut(self):
     
