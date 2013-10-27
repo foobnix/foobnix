@@ -493,11 +493,14 @@ class PlaylistTreeControl(CommonTreeControl):
                 '''dnd from other tree'''
                 if self.is_empty():
                     path = treerows[0][self.path[0]]
-                    if len(treerows) == 1 and os.path.isdir(path):
-                        tabname = os.path.basename(path)
+                    if path:
+                        if len(treerows) == 1 and os.path.isdir(path):
+                            tabname = os.path.basename(path)
+                        else:
+                            tabname = os.path.split(os.path.dirname(path))[1]
+                        self.controls.notetabs.rename_tab(self.scroll, tabname)
                     else:
-                        tabname = os.path.split(os.path.dirname(path))[1]
-                    self.controls.notetabs.rename_tab(self.scroll, tabname)
+                        pass
                 for i, treerow in enumerate(treerows):
 
                     for k, ch_row in enumerate(treerow.iterchildren()):
