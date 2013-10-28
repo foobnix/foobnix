@@ -27,6 +27,7 @@ foobnix_localization()
 
 FLAG = False
 
+
 class PlaylistTreeControl(CommonTreeControl):
     
     def __init__(self, controls):
@@ -39,8 +40,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.set_headers_visible(True)
         self.set_headers_clickable(True)
         self.set_reorderable(True)
-           
-        
+
         """Column icon"""
         self.icon_col = gtk.TreeViewColumn(None, gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
         self.icon_col.key = "*"
@@ -96,9 +96,8 @@ class PlaylistTreeControl(CommonTreeControl):
         """column album"""
         self.album_col = gtk.TreeViewColumn(None, gtk.CellRendererText(), text=self.album[0])
         self.album_col.key = "Album"
-        
-        
-        if not FC().columns.has_key(self.album_col.key):
+
+        if self.album_col.key not in FC().columns:
             FC().columns[self.album_col.key] = [False, 7, 90]
         self.album_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.album_col.set_resizable(True)
@@ -147,12 +146,11 @@ class PlaylistTreeControl(CommonTreeControl):
             if row[self.play_icon[0]]:
                 bean = self.get_bean_from_row(row)
                 return bean
-            
-            
+
     def common_single_random(self):
         logging.debug("Repeat state " + str(FC().repeat_state))
         if FC().repeat_state == const.REPEAT_SINGLE:
-            return self.get_current_bean_by_UUID();
+            return self.get_current_bean_by_UUID()
         
         if FC().is_order_random:               
             bean = self.get_random_bean()
@@ -172,7 +170,6 @@ class PlaylistTreeControl(CommonTreeControl):
             return
         
         self.set_play_icon_to_bean(bean)
-           
         self.scroll_follow_play_icon()            
         
         logging.debug("Next bean " + str(bean) + bean.text)
@@ -188,10 +185,8 @@ class PlaylistTreeControl(CommonTreeControl):
         if not bean:
             self.controls.state_stop()
             return
-        
-                
+
         self.set_play_icon_to_bean(bean)
-        
         self.scroll_follow_play_icon() 
         
         return bean
@@ -260,7 +255,7 @@ class PlaylistTreeControl(CommonTreeControl):
                   
     def on_click_header(self, w, e):
         if is_rigth_click(e):
-            if w.__dict__.has_key("menu"):
+            if "menu" in w.__dict__:
                 w.menu.show(e)
             else:
                 self.menu.show(e)
@@ -342,7 +337,7 @@ class PlaylistTreeControl(CommonTreeControl):
         number_music_tabs = self.controls.notetabs.get_n_pages() - 1
         for i, column in enumerate(self.get_columns()):
             FC().columns[column.key][1] = i
-            if column.get_width() > 1: #to avoid recording of zero width in config 
+            if column.get_width() > 1:  # to avoid recording of zero width in config
                 FC().columns[column.key][2] = column.get_width()
         
         for page in xrange(number_music_tabs, 0, -1):
@@ -369,13 +364,13 @@ class PlaylistTreeControl(CommonTreeControl):
                 column.set_reorderable(True)            
             if FC().columns[column.key][0]:
                 self.move_column_after(column, None)
-                if column.__dict__.has_key("item"):
+                if "item" in column.__dict__:
                     column.item.connect("button-press-event", self.on_toggle, column)
                     self.menu.append(column.item)
                     column.item.set_active(True)
                 visible_columns.append(column)
             else:
-                if column.__dict__.has_key("item"):
+                if "item" in column.__dict__:
                     column.item.connect("button-press-event", self.on_toggle, column)
                     self.menu.append(column.item)
                     column.item.set_active(False)

@@ -26,7 +26,6 @@ from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click, is_le
 from foobnix.util.m3u_utils import is_m3u
 
 
-    
 class NavigationTreeControl(CommonTreeControl, LoadSave):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
@@ -79,6 +78,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         
         '''to force the ext_column to take the minimum size'''
         self.name_column.set_fixed_width(2000)
+
         def task(*a):
             self.on_click_header(None, None, on_start=True)
         gobject.idle_add(task)
@@ -94,7 +94,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             # on left click add selected items to current tab
             """to select item under cursor"""
             try:
-                path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y)) #@UnusedVariable
+                path, col, cellx, celly = self.get_path_at_pos(int(e.x), int(e.y))  # @UnusedVariable
                 self.get_selection().select_path(path)
             except TypeError:
                 pass
@@ -200,7 +200,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 if not i and not current:
                     name = row[0]
                     self.controls.notetabs._append_tab(name)
-                    to_tree = self.controls.notetabs.get_current_tree() # because to_tree has changed
+                    to_tree = self.controls.notetabs.get_current_tree()     # because to_tree has changed
                     to_model = to_tree.get_model().get_model()
                 
                 if is_m3u(from_model.get_value(from_iter, self.path[0])):
@@ -219,13 +219,12 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             if not current:
                 '''gobject because rebuild_as_plain use it too'''
                 gobject.idle_add(self.controls.play_first_file_in_playlist)
-            
-            thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
-            
-        self.controls.search_progress.background_spinner_wrapper(task, False, to_tree, to_model)
-        
-        
-        
+
+            self.controls.notetabs.on_save_tabs()   # because save process already wrapped with thread
+            # thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
+
+        gobject.idle_add(task, to_tree, to_model)
+        #self.controls.search_progress.background_spinner_wrapper(task, False, to_tree, to_model)
 
     def add_folder(self, in_new_tab=False):
         chooser = gtk.FileChooserDialog(title=_("Choose directory with music"),
@@ -241,6 +240,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             paths = chooser.get_filenames()
             chooser.destroy()
             self.controls.main_window.present()
+
             def task():
                 path = paths[0]
                 FCache().last_music_path = path[:path.rfind("/")]

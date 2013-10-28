@@ -49,11 +49,11 @@ class EqWindow(ChildTopWindow, FControl):
         lbox.show()
         
         self.combo = gtk.combo_box_entry_new_text()
-        self.combo.connect("changed", self.on_combo_chage)
+        self.combo.connect("changed", self.on_combo_change)
         
         lbox.pack_start(self.top_row(), False, False, 0)
         lbox.pack_start(self.middle_lines_box(), False, False, 0)
-                
+            
         self.add(lbox)
         
         self.models = []
@@ -61,9 +61,11 @@ class EqWindow(ChildTopWindow, FControl):
                 
     def on_restore_defaults(self, *a):
         self.models = []
-        self.combo.get_model().clear()        
+        num = self.combo.get_active() 
+        self.combo.get_model().clear()  
         self.append_all_models(copy.deepcopy(self.default_models))
-        self.on_combo_chage()
+        self.combo.set_active(num)
+        self.on_combo_change()
         
     def on_button_press(self, w, e):
         if is_rigth_click(e):
@@ -143,7 +145,7 @@ class EqWindow(ChildTopWindow, FControl):
                 self.combo.set_active(i)
                 return
         
-    def on_combo_chage(self, *a):        
+    def on_combo_change(self, *a):        
         num = self.combo.get_active()
         if num >= 0:
             model = self.models[num]
@@ -153,7 +155,6 @@ class EqWindow(ChildTopWindow, FControl):
     def populate(self, models):
         for model in models:
             self.combo.append_text(model.name)
-    
     
     def set_active_preset(self, name):        
         self.presets_cache[name]
@@ -302,7 +303,6 @@ class EqLine(gtk.VBox):
         
         def on_change_value(self, *args):
             self.callback()
-            
         
         def set_value(self, value):
             self.scale.set_value(value)

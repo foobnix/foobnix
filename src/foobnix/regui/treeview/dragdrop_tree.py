@@ -31,6 +31,7 @@ from foobnix.regui.model import FModel, FTreeModel
 VIEW_PLAIN = 0
 VIEW_TREE = 1
 
+
 class DragDropTree(gtk.TreeView):
     def __init__(self, controls):
         self.controls = controls
@@ -41,18 +42,18 @@ class DragDropTree(gtk.TreeView):
         self.copy = False
         
         """init values"""
-        self.hash = {None:None}
+        self.hash = {None: None}
         self.current_view = None
     
     def on_drag_begin(self, widget, drag_context):
-        ff_model, ff_paths = widget.get_selection().get_selected_rows() #@UnusedVariable
+        ff_model, ff_paths = widget.get_selection().get_selected_rows()  # @UnusedVariable
         if len(ff_paths) > 1:
             self.drag_source_set_icon_stock('gtk-dnd-multiple')
         else:
             self.drag_source_set_icon_stock('gtk-dnd')
                 
     def configure_recive_drag(self):
-        self.enable_model_drag_dest([("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
+        self.enable_model_drag_dest([("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE)   # @UndefinedVariable
     
     def configure_send_drag(self):
         #self.enable_model_drag_source(gtk.gdk.BUTTON1_MASK, [("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE) #@UndefinedVariable
@@ -147,7 +148,8 @@ class DragDropTree(gtk.TreeView):
             
         from_tree = drag_context.get_source_widget()        
         
-        if not from_tree: return None
+        if not from_tree:
+            return None
         
         ff_model, ff_paths = from_tree.get_selection().get_selected_rows()
         
@@ -208,11 +210,11 @@ class DragDropTree(gtk.TreeView):
                                        AFTER):
                     info_dialog(_("Attention!!!"), 
                                 _("When you release the mouse button the mouse" +
-                                 " pointer must be over the folder exactly." +
-                                 " Please retry!"))
+                                  " pointer must be over the folder exactly." +
+                                  " Please retry!"))
                     return
             if files and copy_move_files_dialog(files, dest_folder, self.copy):
-                text = _("Copying:") if self.copy == gtk.gdk.ACTION_COPY else _("Replacing:") #@UndefinedVariable
+                text = _("Copying:") if self.copy == gtk.gdk.ACTION_COPY else _("Replacing:")   # @UndefinedVariable
                 self.pr_window = CopyProgressWindow(_("Progress"), files, 300, 100)
                 self.pr_window.label_from.set_text(text)
                 self.pr_window.label_to.set_text(_("To: ") + dest_folder + "\n")
@@ -243,11 +245,11 @@ class DragDropTree(gtk.TreeView):
                             child_row[self.path[0]] = os.path.join(row[self.path[0]], os.path.basename(child_row[self.path[0]]))
                             self.tree_insert_row(child_row)
                             task(child_row)
-                            if self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
-                                self.row_to_remove.append(self.get_row_reference_from_iter(ff_model, 
-                                                            ff_model.convert_child_iter_to_iter(child_row.iter)))
+                            if self.copy == gtk.gdk.ACTION_MOVE:    # @UndefinedVariable
+                                self.row_to_remove.append(self.get_row_reference_from_iter(ff_model,
+                                                               ff_model.convert_child_iter_to_iter(child_row.iter)))
                     task(row)
-                    if self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
+                    if self.copy == gtk.gdk.ACTION_MOVE:    # @UndefinedVariable
                         self.row_to_remove.append(ff_row_ref)
                     
                 self.remove_replaced(ff_model)
@@ -256,9 +258,8 @@ class DragDropTree(gtk.TreeView):
             return
                       
         for ff_row_ref in ff_row_refs: 
-            new_iter = self.one_row_replacing(ff_row_ref, ff_path, ff_model, from_tree,
-                                  to_tree, to_model, to_iter, to_filter_pos, to_filter_path,
-                                  new_iter)
+            new_iter = self.one_row_replacing(ff_row_ref, ff_path, ff_model, from_tree, to_tree,
+                                              to_model, to_iter, to_filter_pos, to_filter_path, new_iter)
         
         if from_tree == to_tree:
             self.remove_replaced(ff_model)
@@ -267,9 +268,8 @@ class DragDropTree(gtk.TreeView):
    
         self.rebuild_tree(to_tree)        
         
-    def one_row_replacing(self, ff_row_ref, ff_path, ff_model, from_tree,
-                           to_tree, to_model, to_iter, to_filter_pos, to_filter_path, 
-                           new_iter, new_path=None, is_copy_move=False):
+    def one_row_replacing(self, ff_row_ref, ff_path, ff_model, from_tree, to_tree, to_model,
+                          to_iter, to_filter_pos, to_filter_path, new_iter, new_path=None, is_copy_move=False):
         
         ff_iter = self.get_iter_from_row_reference(ff_row_ref)
                     
@@ -321,8 +321,7 @@ class DragDropTree(gtk.TreeView):
                     if not next_iter: break
         
         return new_iter  
-            
-        
+
     def rebuild_tree(self, tree):     
         if tree.current_view == VIEW_TREE:
             self.updates_tree_structure()
@@ -339,9 +338,7 @@ class DragDropTree(gtk.TreeView):
             filter_iter = self.get_iter_from_row_reference(ref)
             iter = ff_model.convert_iter_to_child_iter(filter_iter)
             ff_model.get_model().remove(iter)
-    
-    
-    
+
     def add_m3u(self, from_model=None, from_iter=None, to_tree=None, to_model=None,
                 to_iter=None, pos=None, row=None):
         if row:
@@ -386,7 +383,7 @@ class DragDropTree(gtk.TreeView):
             from_iter = self.get_iter_from_row_reference(ref)
             from_model = ref.get_model()
             row = self.get_row_from_model_iter(from_model, from_iter)
-            if not child and self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
+            if not child and self.copy == gtk.gdk.ACTION_MOVE:  # @UndefinedVariable
                 self.row_to_remove.append(ref)
         
         if (to_tree and hasattr(to_tree, "current_view") 
@@ -398,9 +395,9 @@ class DragDropTree(gtk.TreeView):
                 
         if to_iter:
             if (to_model.get_value(to_iter, self.is_file[0]) and
-                pos in (INTO_OR_BEFORE,INTO_OR_AFTER)):
+                        pos in (INTO_OR_BEFORE, INTO_OR_AFTER)):
                 pos = AFTER
-            if pos in (INTO_OR_BEFORE,INTO_OR_AFTER):
+            if pos in (INTO_OR_BEFORE, INTO_OR_AFTER):
                 if child:
                     new_iter = to_model.append(to_iter, row)
                 else:
@@ -433,7 +430,7 @@ class DragDropTree(gtk.TreeView):
             """Iters have already changed. Redefine"""
             iter = self.get_iter_from_row_reference(ref)
             
-            if  ff_model.iter_n_children(iter):
+            if ff_model.iter_n_children(iter):
                 to_child_iter = self.iter_is_parent(ref, ff_model, to_tree, to_model, to_child_iter)
             if to_tree.current_view == VIEW_PLAIN:
                 to_parent_iter = to_child_iter
@@ -465,11 +462,12 @@ class DragDropTree(gtk.TreeView):
         checked_cue_beans = []
         checked_m3u_beans = []
         m3u_beans_for_delete = []
+
         def task(beans):
             for bean in beans:
                 path = bean.path
                 if path and (get_file_extension(path) in [".m3u", ".m3u8"]
-                    and bean not in checked_m3u_beans):
+                             and bean not in checked_m3u_beans):
                     checked_m3u_beans.append(bean)
                     for b in beans:
                         if (os.path.dirname(b.path) == os.path.dirname(path) and os.path.isfile(b.path)
@@ -478,8 +476,8 @@ class DragDropTree(gtk.TreeView):
                                 break
                     return task(beans)
                     
-                if path and (get_file_extension(path) == ".cue" 
-                    and bean not in checked_cue_beans):
+                if path and (get_file_extension(path) == ".cue"
+                             and bean not in checked_cue_beans):
                     
                     checked_cue_beans.append(bean)
                     filtered_beans = [b for b in beans if (os.path.dirname(b.path) != os.path.dirname(path)
@@ -498,6 +496,7 @@ class DragDropTree(gtk.TreeView):
         if old_path != new_path:
             logging.debug('old file: ' + old_path)
             logging.debug('new file: ' + new_path)
+
             def task():
                 if self.copy == gtk.gdk.ACTION_MOVE: #@UndefinedVariable
                     copy_move_with_progressbar(self.pr_window, old_path, dest_folder, move=True)
@@ -528,8 +527,8 @@ class DragDropTree(gtk.TreeView):
         if not parent_iter:
             logging.debug("no parent iter found")
             if to_filter_path[-1] > 0:
-                previous_iter = to_f_model.get_iter( (to_filter_path[-1] -1,) )
-                previous_path = to_f_model.get_value(previous_iter , self.path[0])
+                previous_iter = to_f_model.get_iter((to_filter_path[-1] - 1,))
+                previous_path = to_f_model.get_value(previous_iter, self.path[0])
                 dest_folder = os.path.dirname(previous_path) 
             else:
                 logging.debug("item is top in tree")
@@ -621,8 +620,7 @@ class DragDropTree(gtk.TreeView):
     def remove_iters(self, allIters):
         for iter in allIters:
             self.model.remove(iter)
-                
-    
+
     def get_child_iters_by_parent(self, model, iter):
         list = []
         if model.iter_has_child(iter):
@@ -640,6 +638,7 @@ class DragDropTree(gtk.TreeView):
     
     def get_child_beans_by_parent(self, model, iter):
         list = []
+
         def add_to_list(beans):
             for i, bean in enumerate(beans):
                 if i: bean.parent(parent)
@@ -716,7 +715,8 @@ class DragDropTree(gtk.TreeView):
         logging.debug("Plain append task: " + str(bean.text) + " " + str(bean.path))
         if not bean:
             return
-        if bean.is_file == True:
+
+        if bean.is_file:
             bean.font = "normal"
         else:
             bean.font = "bold"
@@ -745,7 +745,7 @@ class DragDropTree(gtk.TreeView):
     def tree_append(self, bean):
         if not bean:
             return
-        if bean.is_file == True:
+        if bean.is_file:
             bean.font = "normal"
         else:
             bean.font = "bold"
