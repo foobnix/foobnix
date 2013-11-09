@@ -123,11 +123,11 @@ class RadioTreeControl(CommonTreeControl):
     def on_save(self):
         pass
 
-    def update_radio_tree(self):
-        self.controls.in_thread.run_with_progressbar(self._update_radio_tree)
+    #def update_radio_tree(self):
+    #    self.controls.in_thread.run_with_progressbar(self._update_radio_tree)
 
     @idle_task
-    def _update_radio_tree(self):
+    def update_radio_tree(self):
         logging.info("in update radio")
         self.clear_tree()
         self.radio_folder = RadioFolder()
@@ -140,7 +140,6 @@ class RadioTreeControl(CommonTreeControl):
             for radio in keys:
                 child = FModel(radio, fpl.urls_dict[radio][0]).parent(parent).add_type(FTYPE_RADIO).add_is_file(True)
                 self.append(child)
-
 
     def auto_add_user_station(self):
         if os.path.isfile(CACHE_RADIO_FILE) and os.path.getsize(CACHE_RADIO_FILE) > 0:

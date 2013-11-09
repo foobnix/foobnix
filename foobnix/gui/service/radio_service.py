@@ -5,12 +5,15 @@ Created on 15  2010
 '''
 from __future__ import with_statement
 import os
+import sys
 import logging
 
 
-FOOBNIX_RADIO_PATHS = ("/usr/local/share/foobnix/radio",
-                       "/usr/share/foobnix/radio",
-                       "share/foobnix/radio")
+FOOBNIX_RADIO_PATHS = [
+    os.path.join(sys.path[0], "share/foobnix/radio"),
+    "/usr/local/share/foobnix/radio",
+    "/usr/share/foobnix/radio",
+    "share/foobnix/radio"]
 EXTENSION = ".fpl"
 
 
@@ -24,11 +27,11 @@ class FPL():
 
 
 class RadioFolder():
-
     def __init__(self):
         pass
 
     """get list of foobnix playlist files in the directory"""
+
     def get_radio_list(self):
         result = []
         for cur_path in FOOBNIX_RADIO_PATHS:
@@ -37,18 +40,19 @@ class RadioFolder():
                 for item in os.listdir(cur_path):
                     path = os.path.join(cur_path, item)
                     if item.endswith(EXTENSION) and os.path.isfile(path) and os.path.getsize(path) > 0:
-                        logging.info("Find radio station playlist"+ str(item))
+                        logging.info("Find radio station playlist " + str(item))
                         if item not in result:
                             result.append(item)
         return result
 
     """parser playlist by name"""
+
     def parse_play_list(self, list_name):
         for path in FOOBNIX_RADIO_PATHS:
             full_path = os.path.join(path, list_name)
 
             if not os.path.isfile(full_path):
-                logging.debug("Not a file "+ full_path)
+                logging.debug("Not a file " + full_path)
                 continue
 
             dict = {}
@@ -56,7 +60,7 @@ class RadioFolder():
             """get name and stations"""
             with open(full_path) as file:
                 for line in file:
-                    if  line and not line.startswith("#") and "=" in line:
+                    if line and not line.startswith("#") and "=" in line:
                         name_end = line.find("=")
                         name = line[:name_end].strip()
                         stations = line[name_end + 1:].split(",")
@@ -72,8 +76,6 @@ class RadioFolder():
                                                 dict[name] = good_stations
             return dict
 
-
-
     def get_radio_FPLs(self):
         names = self.get_radio_list()
         if not names:
@@ -82,12 +84,7 @@ class RadioFolder():
         results = []
         for play_name in names:
             content = self.parse_play_list(play_name)
-            logging.info("Create FPL"+ play_name)
+            logging.info("Create FPL" + play_name)
             play_name = play_name[:-len(EXTENSION)]
             results.append(FPL(play_name, content))
         return results
-
-
-
-
-

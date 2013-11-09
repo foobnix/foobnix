@@ -207,7 +207,6 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
         return result
 
-    @idle_task
     def clear_tree(self):
         self.model.clear()
 
