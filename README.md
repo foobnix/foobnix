@@ -44,8 +44,10 @@ To restore default settings:
     rm -f ~$USER/.config/foobnix/foobnix_conf.pkl
 
 Depends
-python-chardet, python-gi, python-simplejson, python-mutagen, gstreamer1.0-plugins-good, gir1.2-gstreamer-1.0, gir1.2-gtk-3.0, gir1.2-webkit-3.0, gir1.2-soup-2.4, gir1.2-keybinder-3.0, gir1.2-notify-0.7, gettext
 
-Recommends: 
-gstreamer1.0-plugins-bad, gstreamer1.0-plugins-ugly, gstreamer1.0-libav, gstreamer1.0-alsa, python-setuptools, fuseiso, python-notify, libmp3lame0, libfaac0, python-keybinder, ffmpeg
+	python-chardet, python-gi, python-simplejson, python-mutagen, gstreamer1.0-plugins-good, gir1.2-gstreamer-1.0, gir1.2-gtk-3.0, gir1.2-webkit-3.0, gir1.2-soup-2.4, gir1.2-keybinder-3.0, gir1.2-notify-0.7, gettext
+
+Recommends:
+ 
+	gstreamer1.0-plugins-bad, gstreamer1.0-plugins-ugly, gstreamer1.0-libav, gstreamer1.0-alsa, python-setuptools, fuseiso, python-notify, libmp3lame0, libfaac0, python-keybinder, ffmpeg
 
