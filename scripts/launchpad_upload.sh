@@ -59,7 +59,7 @@ do
 	#dch -e
 
 	#debuild -S -sd -kB8C27E00 # Ivan Ivanenko - old
-	#debuild -S -sd -k316EC1F3 # Ivan Ivanenko
+	#debuild -S -sd -k46DCB42F # Ivan Ivanenko
 	debuild -S -sd -k707844CC # Dmitry Kogura
 	#debuild -S -sd -kD4AD044A # Viktor Suprun
 

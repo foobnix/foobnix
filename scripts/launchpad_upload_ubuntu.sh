@@ -32,8 +32,8 @@ cp -r scripts/debian ../build/foobnix_$FOOBNIX_VERSION/debian
 
 cd ../build
 
-#LIST=("oneiric" "natty" "maverick" "precise" "quantal")
-LIST=("quantal")
+LIST=("precise" "quantal" "raring" "saucy" )
+
 
 for UBUNTU in ${LIST[@]}
 do
@@ -51,7 +51,7 @@ do
 	#dch -e
 	
 	#debuild -S -sd -kB8C27E00 # Ivan Ivanenko - old
-	 debuild -S -sd -k316EC1F3 # Ivan Ivanenko
+	 debuild -S -sd -k46DCB42F # Ivan Ivanenko
 	 #debuild -S -sd -k707844CC # Dmitry Kogura
 	
 	
