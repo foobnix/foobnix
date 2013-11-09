@@ -442,8 +442,8 @@ class Network(object):
         doc = _Request(self, "tag.getTopTags").execute(True)
         seq = []
         for node in doc.getElementsByTagName("tag"):
-            tag = Tag(_extract(node, "name"), self)
-            weight = _number(_extract(node, "count"))
+            tag = Tag(_extract_data(node, "name"), self)
+            weight = _number(_extract_data(node, "count"))
 
             if len(seq) < limit:
                 seq.append(TopItem(tag, weight))
@@ -545,7 +545,7 @@ class Network(object):
 
         doc = _Request(self, "track.getInfo", params).execute(True)
 
-        return Track(_extract(doc, "name", 1), _extract(doc, "name"), self)
+        return Track(_extract_data(doc, "name", 1), _extract_data(doc, "name"), self)
 
     def get_artist_by_mbid(self, mbid):
         """Loooks up an artist by its MusicBrainz ID"""
@@ -554,7 +554,7 @@ class Network(object):
 
         doc = _Request(self, "artist.getInfo", params).execute(True)
 
-        return Artist(_extract(doc, "name"), self)
+        return Artist(_extract_data(doc, "name"), self)
 
     def get_album_by_mbid(self, mbid):
         """Looks up an album by its MusicBrainz ID"""
@@ -563,7 +563,7 @@ class Network(object):
 
         doc = _Request(self, "album.getInfo", params).execute(True)
 
-        return Album(_extract(doc, "artist"), _extract(doc, "name"), self)
+        return Album(_extract_data(doc, "artist"), _extract_data(doc, "name"), self)
 
 def get_lastfm_network(api_key="", api_secret="", session_key="", username="", password_hash=""):
     """
@@ -935,7 +935,7 @@ class SessionKeyGenerator(object):
 
         doc = request.execute()
 
-        return _extract(doc, "key")
+        return _extract_data(doc, "key")
 
 def _namedtuple(name, children):
     """
@@ -1111,8 +1111,8 @@ class _Taggable(object):
         for element in elements:
             if limit and len(seq) >= limit:
                 break
-            tag_name = _extract(element, 'name')
-            tagcount = _extract(element, 'count')
+            tag_name = _extract_data(element, 'name')
+            tagcount = _extract_data(element, 'count')
 
             seq.append(TopItem(Tag(tag_name, self.network), tagcount))
 
@@ -1204,7 +1204,7 @@ class Album(_BaseObject, _Taggable):
     def get_release_date(self):
         """Retruns the release date of the album."""
 
-        return _extract(self._request("album.getInfo", cacheable=True), "releasedate")
+        return _extract_data(self._request("album.getInfo", cacheable=True), "releasedate")
 
     def get_release_year(self):
         st_date = str(self.get_release_date())
@@ -1234,17 +1234,17 @@ class Album(_BaseObject, _Taggable):
     def get_id(self):
         """Returns the ID"""
 
-        return _extract(self._request("album.getInfo", cacheable=True), "id")
+        return _extract_data(self._request("album.getInfo", cacheable=True), "id")
 
     def get_playcount(self):
         """Returns the number of plays on the network"""
 
-        return _number(_extract(self._request("album.getInfo", cacheable=True), "playcount"))
+        return _number(_extract_data(self._request("album.getInfo", cacheable=True), "playcount"))
 
     def get_listener_count(self):
         """Returns the number of liteners on the network"""
 
-        return _number(_extract(self._request("album.getInfo", cacheable=True), "listeners"))
+        return _number(_extract_data(self._request("album.getInfo", cacheable=True), "listeners"))
 
     def get_top_tags(self, limit=None):
         """Returns a list of the most-applied tags to this album."""
@@ -1269,7 +1269,7 @@ class Album(_BaseObject, _Taggable):
     def get_mbid(self):
         """Returns the MusicBrainz id of the album."""
 
-        return _extract(self._request("album.getInfo", cacheable=True), "mbid")
+        return _extract_data(self._request("album.getInfo", cacheable=True), "mbid")
 
     def get_url(self, domain_name=DOMAIN_ENGLISH):
         """Returns the url of the album page on the network.
@@ -1304,7 +1304,7 @@ class Album(_BaseObject, _Taggable):
 
         node = doc.getElementsByTagName("wiki")[0]
 
-        return _extract(node, "published")
+        return _extract_data(node, "published")
 
     def get_wiki_summary(self):
         """Returns the summary of the wiki."""
@@ -1316,7 +1316,7 @@ class Album(_BaseObject, _Taggable):
 
         node = doc.getElementsByTagName("wiki")[0]
 
-        return _extract(node, "summary")
+        return _extract_data(node, "summary")
 
     def get_wiki_content(self):
         """Returns the content of the wiki."""
@@ -1328,7 +1328,7 @@ class Album(_BaseObject, _Taggable):
 
         node = doc.getElementsByTagName("wiki")[0]
 
-        return _extract(node, "content")
+        return _extract_data(node, "content")
 
 class Artist(_BaseObject, _Taggable):
     """An artist."""
@@ -1380,39 +1380,39 @@ class Artist(_BaseObject, _Taggable):
     def get_playcount(self):
         """Returns the number of plays on the network."""
 
-        return _number(_extract(self._request("artist.getInfo", True), "playcount"))
+        return _number(_extract_data(self._request("artist.getInfo", True), "playcount"))
 
     def get_mbid(self):
         """Returns the MusicBrainz ID of this artist."""
 
         doc = self._request("artist.getInfo", True)
 
-        return _extract(doc, "mbid")
+        return _extract_data(doc, "mbid")
 
     def get_listener_count(self):
         """Returns the number of liteners on the network."""
 
-        return _number(_extract(self._request("artist.getInfo", True), "listeners"))
+        return _number(_extract_data(self._request("artist.getInfo", True), "listeners"))
 
     def is_streamable(self):
         """Returns True if the artist is streamable."""
 
-        return bool(_number(_extract(self._request("artist.getInfo", True), "streamable")))
+        return bool(_number(_extract_data(self._request("artist.getInfo", True), "streamable")))
 
     def get_bio_published_date(self):
         """Returns the date on which the artist's biography was published."""
 
-        return _extract(self._request("artist.getInfo", True), "published")
+        return _extract_data(self._request("artist.getInfo", True), "published")
 
     def get_bio_summary(self):
         """Returns the summary of the artist's biography."""
 
-        return _extract(self._request("artist.getInfo", True), "summary")
+        return _extract_whole_text(self._request("artist.getInfo", True), "summary")
 
     def get_bio_content(self):
         """Returns the content of the artist's biography."""
 
-        return _extract(self._request("artist.getInfo", True), "content")
+        return _extract_data(self._request("artist.getInfo", True), "content")
 
     def get_upcoming_events(self):
         """Returns a list of the upcoming Events for this artist."""
@@ -1453,9 +1453,9 @@ class Artist(_BaseObject, _Taggable):
         seq = []
 
         for node in doc.getElementsByTagName("album"):
-            name = _extract(node, "name")
-            artist = _extract(node, "name", 1)
-            playcount = _extract(node, "playcount")
+            name = _extract_data(node, "name")
+            artist = _extract_data(node, "name", 1)
+            playcount = _extract_data(node, "playcount")
 
             seq.append(TopItem(Album(artist, name, self.network), playcount))
 
@@ -1469,9 +1469,9 @@ class Artist(_BaseObject, _Taggable):
         seq = []
         for track in doc.getElementsByTagName('track'):
 
-            title = _extract(track, "name")
-            artist = _extract(track, "name", 1)
-            playcount = _number(_extract(track, "playcount"))
+            title = _extract_data(track, "name")
+            artist = _extract_data(track, "name", 1)
+            playcount = _number(_extract_data(track, "playcount"))
 
             seq.append(TopItem(Track(artist, title, self.network), playcount))
 
@@ -1493,8 +1493,8 @@ class Artist(_BaseObject, _Taggable):
             if limit and len(seq) >= limit:
                 break
 
-            name = _extract(element, 'name')
-            weight = _number(_extract(element, 'weight'))
+            name = _extract_data(element, 'name')
+            weight = _number(_extract_data(element, 'weight'))
 
             seq.append(TopItem(User(name, self.network), weight))
 
@@ -1563,19 +1563,19 @@ class Artist(_BaseObject, _Taggable):
         params["order"] = order
         nodes = _collect_nodes(limit, self, "artist.getImages", True, params)
         for e in nodes:
-            if _extract(e, "name"):
-                user = User(_extract(e, "name"), self.network)
+            if _extract_data(e, "name"):
+                user = User(_extract_data(e, "name"), self.network)
             else:
                 user = None
 
             images.append(Image(
-                            _extract(e, "title"),
-                            _extract(e, "url"),
-                            _extract(e, "dateadded"),
-                            _extract(e, "format"),
+                            _extract_data(e, "title"),
+                            _extract_data(e, "url"),
+                            _extract_data(e, "dateadded"),
+                            _extract_data(e, "format"),
                             user,
                             ImageSizes(*_extract_all(e, "size")),
-                            (_extract(e, "thumbsup"), _extract(e, "thumbsdown"))
+                            (_extract_data(e, "thumbsup"), _extract_data(e, "thumbsdown"))
                             )
                         )
         return images
@@ -1588,9 +1588,9 @@ class Artist(_BaseObject, _Taggable):
         shouts = []
         for node in _collect_nodes(limit, self, "artist.getShouts", False):
             shouts.append(Shout(
-                                _extract(node, "body"),
-                                User(_extract(node, "author"), self.network),
-                                _extract(node, "date")
+                                _extract_data(node, "body"),
+                                User(_extract_data(node, "author"), self.network),
+                                _extract_data(node, "date")
                                 )
                             )
         return shouts
@@ -1665,14 +1665,14 @@ class Event(_BaseObject):
 
         doc = self._request("event.getInfo", True)
 
-        return _extract(doc, "title")
+        return _extract_data(doc, "title")
 
     def get_headliner(self):
         """Returns the headliner of the event. """
 
         doc = self._request("event.getInfo", True)
 
-        return Artist(_extract(doc, "headliner"), self.network)
+        return Artist(_extract_data(doc, "headliner"), self.network)
 
     def get_artists(self):
         """Returns a list of the participating Artists. """
@@ -1692,7 +1692,7 @@ class Event(_BaseObject):
         doc = self._request("event.getInfo", True)
 
         v = doc.getElementsByTagName("venue")[0]
-        venue_id = _number(_extract(v, "id"))
+        venue_id = _number(_extract_data(v, "id"))
 
         return Venue(venue_id, self.network)
 
@@ -1701,14 +1701,14 @@ class Event(_BaseObject):
 
         doc = self._request("event.getInfo", True)
 
-        return _extract(doc, "startDate")
+        return _extract_data(doc, "startDate")
 
     def get_description(self):
         """Returns the description of the event. """
 
         doc = self._request("event.getInfo", True)
 
-        return _extract(doc, "description")
+        return _extract_data(doc, "description")
 
     def get_cover_image(self, size=COVER_LARGE):
         """
@@ -1730,14 +1730,14 @@ class Event(_BaseObject):
 
         doc = self._request("event.getInfo", True)
 
-        return _number(_extract(doc, "attendance"))
+        return _number(_extract_data(doc, "attendance"))
 
     def get_review_count(self):
         """Returns the number of available reviews for this event. """
 
         doc = self._request("event.getInfo", True)
 
-        return _number(_extract(doc, "reviews"))
+        return _number(_extract_data(doc, "reviews"))
 
     def get_url(self, domain_name=DOMAIN_ENGLISH):
         """Returns the url of the event page on the network.
@@ -1792,9 +1792,9 @@ class Event(_BaseObject):
         shouts = []
         for node in _collect_nodes(limit, self, "event.getShouts", False):
             shouts.append(Shout(
-                                _extract(node, "body"),
-                                User(_extract(node, "author"), self.network),
-                                _extract(node, "date")
+                                _extract_data(node, "body"),
+                                User(_extract_data(node, "author"), self.network),
+                                _extract_data(node, "date")
                                 )
                             )
         return shouts
@@ -1849,8 +1849,8 @@ class Country(_BaseObject):
 
         seq = []
         for node in doc.getElementsByTagName("artist"):
-            name = _extract(node, 'name')
-            playcount = _extract(node, "playcount")
+            name = _extract_data(node, 'name')
+            playcount = _extract_data(node, "playcount")
 
             seq.append(TopItem(Artist(name, self.network), playcount))
 
@@ -1865,9 +1865,9 @@ class Country(_BaseObject):
 
         for n in doc.getElementsByTagName('track'):
 
-            title = _extract(n, 'name')
-            artist = _extract(n, 'name', 1)
-            playcount = _number(_extract(n, "playcount"))
+            title = _extract_data(n, 'name')
+            artist = _extract_data(n, 'name', 1)
+            playcount = _number(_extract_data(n, "playcount"))
 
             seq.append(TopItem(Track(artist, title, self.network), playcount))
 
@@ -1957,10 +1957,10 @@ class Library(_BaseObject):
 
         seq = []
         for node in _collect_nodes(limit, self, "library.getAlbums", True):
-            name = _extract(node, "name")
-            artist = _extract(node, "name", 1)
-            playcount = _number(_extract(node, "playcount"))
-            tagcount = _number(_extract(node, "tagcount"))
+            name = _extract_data(node, "name")
+            artist = _extract_data(node, "name", 1)
+            playcount = _number(_extract_data(node, "playcount"))
+            tagcount = _number(_extract_data(node, "tagcount"))
 
             seq.append(LibraryItem(Album(artist, name, self.network), playcount, tagcount))
 
@@ -1974,10 +1974,10 @@ class Library(_BaseObject):
 
         seq = []
         for node in _collect_nodes(limit, self, "library.getArtists", True):
-            name = _extract(node, "name")
+            name = _extract_data(node, "name")
 
-            playcount = _number(_extract(node, "playcount"))
-            tagcount = _number(_extract(node, "tagcount"))
+            playcount = _number(_extract_data(node, "playcount"))
+            tagcount = _number(_extract_data(node, "tagcount"))
 
             seq.append(LibraryItem(Artist(name, self.network), playcount, tagcount))
 
@@ -1991,10 +1991,10 @@ class Library(_BaseObject):
 
         seq = []
         for node in _collect_nodes(limit, self, "library.getTracks", True):
-            name = _extract(node, "name")
-            artist = _extract(node, "name", 1)
-            playcount = _number(_extract(node, "playcount"))
-            tagcount = _number(_extract(node, "tagcount"))
+            name = _extract_data(node, "name")
+            artist = _extract_data(node, "name", 1)
+            playcount = _number(_extract_data(node, "playcount"))
+            tagcount = _number(_extract_data(node, "tagcount"))
 
             seq.append(LibraryItem(Track(artist, name, self.network), playcount, tagcount))
 
@@ -2027,7 +2027,7 @@ class Playlist(_BaseObject):
         doc = self._request("user.getPlaylists", True)
 
         for node in doc.getElementsByTagName("playlist"):
-            if _extract(node, "id") == str(self.get_id()):
+            if _extract_data(node, "id") == str(self.get_id()):
                 return node
 
     def _get_params(self):
@@ -2062,33 +2062,33 @@ class Playlist(_BaseObject):
     def get_title(self):
         """Returns the title of this playlist."""
 
-        return _extract(self._get_info_node(), "title")
+        return _extract_data(self._get_info_node(), "title")
 
     def get_creation_date(self):
         """Returns the creation date of this playlist."""
 
-        return _extract(self._get_info_node(), "date")
+        return _extract_data(self._get_info_node(), "date")
 
     def get_size(self):
         """Returns the number of tracks in this playlist."""
 
-        return _number(_extract(self._get_info_node(), "size"))
+        return _number(_extract_data(self._get_info_node(), "size"))
 
     def get_description(self):
         """Returns the description of this playlist."""
 
-        return _extract(self._get_info_node(), "description")
+        return _extract_data(self._get_info_node(), "description")
 
     def get_duration(self):
         """Returns the duration of this playlist in milliseconds."""
 
-        return _number(_extract(self._get_info_node(), "duration"))
+        return _number(_extract_data(self._get_info_node(), "duration"))
 
     def is_streamable(self):
         """Returns True if the playlist is streamable.
         For a playlist to be streamable, it needs at least 45 tracks by 15 different artists."""
 
-        if _extract(self._get_info_node(), "streamable") == '1':
+        if _extract_data(self._get_info_node(), "streamable") == '1':
             return True
         else:
             return False
@@ -2111,7 +2111,7 @@ class Playlist(_BaseObject):
             COVER_SMALL
         """
 
-        return _extract(self._get_info_node(), "image")[size]
+        return _extract_data(self._get_info_node(), "image")[size]
 
     def get_url(self, domain_name=DOMAIN_ENGLISH):
         """Returns the url of the playlist on the network.
@@ -2130,7 +2130,7 @@ class Playlist(_BaseObject):
           o DOMAIN_CHINESE
         """
 
-        english_url = _extract(self._get_info_node(), "url")
+        english_url = _extract_data(self._get_info_node(), "url")
         appendix = english_url[english_url.rfind("/") + 1:]
 
         return self.network._get_url(domain_name, "playlist") % {'appendix': appendix, "user": self.get_user().get_name()}
@@ -2186,9 +2186,9 @@ class Tag(_BaseObject):
         seq = []
 
         for node in doc.getElementsByTagName("album"):
-            name = _extract(node, "name")
-            artist = _extract(node, "name", 1)
-            playcount = _extract(node, "playcount")
+            name = _extract_data(node, "name")
+            artist = _extract_data(node, "name", 1)
+            playcount = _extract_data(node, "playcount")
 
             seq.append(TopItem(Album(artist, name, self.network), playcount))
 
@@ -2202,9 +2202,9 @@ class Tag(_BaseObject):
         seq = []
         for track in doc.getElementsByTagName('track'):
 
-            title = _extract(track, "name")
-            artist = _extract(track, "name", 1)
-            playcount = _number(_extract(track, "playcount"))
+            title = _extract_data(track, "name")
+            artist = _extract_data(track, "name", 1)
+            playcount = _number(_extract_data(track, "playcount"))
 
             seq.append(TopItem(Track(artist, title, self.network), playcount))
 
@@ -2217,8 +2217,8 @@ class Tag(_BaseObject):
 
         seq = []
         for node in doc.getElementsByTagName("artist"):
-            name = _extract(node, 'name')
-            playcount = _extract(node, "playcount")
+            name = _extract_data(node, 'name')
+            playcount = _extract_data(node, "playcount")
 
             seq.append(TopItem(Artist(name, self.network), playcount))
 
@@ -2247,8 +2247,8 @@ class Tag(_BaseObject):
 
         seq = []
         for node in doc.getElementsByTagName("artist"):
-            item = Artist(_extract(node, "name"), self.network)
-            weight = _number(_extract(node, "weight"))
+            item = Artist(_extract_data(node, "name"), self.network)
+            weight = _number(_extract_data(node, "weight"))
             seq.append(TopItem(item, weight))
 
         return seq
@@ -2324,40 +2324,40 @@ class Track(_BaseObject, _Taggable):
 
         doc = self._request("track.getInfo", True)
 
-        return _extract(doc, "id")
+        return _extract_data(doc, "id")
 
     def get_duration(self):
         """Returns the track duration."""
 
         doc = self._request("track.getInfo", True)
 
-        return _number(_extract(doc, "duration"))
+        return _number(_extract_data(doc, "duration"))
 
     def get_mbid(self):
         """Returns the MusicBrainz ID of this track."""
 
         doc = self._request("track.getInfo", True)
 
-        return _extract(doc, "mbid")
+        return _extract_data(doc, "mbid")
 
     def get_listener_count(self):
         """Returns the listener count."""
 
         doc = self._request("track.getInfo", True)
 
-        return _number(_extract(doc, "listeners"))
+        return _number(_extract_data(doc, "listeners"))
 
     def get_playcount(self):
         """Returns the play count."""
 
         doc = self._request("track.getInfo", True)
-        return _number(_extract(doc, "playcount"))
+        return _number(_extract_data(doc, "playcount"))
 
     def is_streamable(self):
         """Returns True if the track is available at Last.fm."""
 
         doc = self._request("track.getInfo", True)
-        return _extract(doc, "streamable") == "1"
+        return _extract_data(doc, "streamable") == "1"
 
     def is_fulltrack_available(self):
         """Returns True if the fulltrack is available for streaming."""
@@ -2376,7 +2376,7 @@ class Track(_BaseObject, _Taggable):
             return
 
         node = doc.getElementsByTagName("album")[0]
-        return Album(_extract(node, "artist"), _extract(node, "title"), self.network)
+        return Album(_extract_data(node, "artist"), _extract_data(node, "title"), self.network)
 
     def get_wiki_published_date(self):
         """Returns the date of publishing this version of the wiki."""
@@ -2388,7 +2388,7 @@ class Track(_BaseObject, _Taggable):
 
         node = doc.getElementsByTagName("wiki")[0]
 
-        return _extract(node, "published")
+        return _extract_data(node, "published")
 
     def get_wiki_summary(self):
         """Returns the summary of the wiki."""
@@ -2400,7 +2400,7 @@ class Track(_BaseObject, _Taggable):
 
         node = doc.getElementsByTagName("wiki")[0]
 
-        return _extract(node, "summary")
+        return _extract_data(node, "summary")
 
     def get_wiki_content(self):
         """Returns the content of the wiki."""
@@ -2412,7 +2412,7 @@ class Track(_BaseObject, _Taggable):
 
         node = doc.getElementsByTagName("wiki")[0]
 
-        return _extract(node, "content")
+        return _extract_data(node, "content")
 
     def love(self):
         """Adds the track to the user's loved tracks. """
@@ -2431,9 +2431,9 @@ class Track(_BaseObject, _Taggable):
 
         seq = []
         for node in doc.getElementsByTagName("track"):
-            title = _extract(node, 'name')
-            artist = _extract(node, 'name', 1)
-            match = _number(_extract(node, "match"))
+            title = _extract_data(node, 'name')
+            artist = _extract_data(node, 'name', 1)
+            match = _number(_extract_data(node, "match"))
 
             seq.append(SimilarItem(Track(artist, title, self.network), match))
 
@@ -2452,8 +2452,8 @@ class Track(_BaseObject, _Taggable):
             if limit and len(seq) >= limit:
                 break
 
-            name = _extract(element, 'name')
-            weight = _number(_extract(element, 'weight'))
+            name = _extract_data(element, 'name')
+            weight = _number(_extract_data(element, 'weight'))
 
             seq.append(TopItem(User(name, self.network), weight))
 
@@ -2515,9 +2515,9 @@ class Track(_BaseObject, _Taggable):
         shouts = []
         for node in _collect_nodes(limit, self, "track.getShouts", False):
             shouts.append(Shout(
-                                _extract(node, "body"),
-                                User(_extract(node, "author"), self.network),
-                                _extract(node, "date")
+                                _extract_data(node, "body"),
+                                User(_extract_data(node, "author"), self.network),
+                                _extract_data(node, "date")
                                 )
                             )
         return shouts
@@ -2582,8 +2582,8 @@ class Group(_BaseObject):
 
         seq = []
         for node in doc.getElementsByTagName("artist"):
-            item = Artist(_extract(node, "name"), self.network)
-            weight = _number(_extract(node, "playcount"))
+            item = Artist(_extract_data(node, "name"), self.network)
+            weight = _number(_extract_data(node, "playcount"))
             seq.append(TopItem(item, weight))
 
         return seq
@@ -2600,8 +2600,8 @@ class Group(_BaseObject):
 
         seq = []
         for node in doc.getElementsByTagName("album"):
-            item = Album(_extract(node, "artist"), _extract(node, "name"), self.network)
-            weight = _number(_extract(node, "playcount"))
+            item = Album(_extract_data(node, "artist"), _extract_data(node, "name"), self.network)
+            weight = _number(_extract_data(node, "playcount"))
             seq.append(TopItem(item, weight))
 
         return seq
@@ -2618,8 +2618,8 @@ class Group(_BaseObject):
 
         seq = []
         for node in doc.getElementsByTagName("track"):
-            item = Track(_extract(node, "artist"), _extract(node, "name"), self.network)
-            weight = _number(_extract(node, "playcount"))
+            item = Track(_extract_data(node, "artist"), _extract_data(node, "name"), self.network)
+            weight = _number(_extract_data(node, "playcount"))
             seq.append(TopItem(item, weight))
 
         return seq
@@ -2656,7 +2656,7 @@ class Group(_BaseObject):
         users = []
 
         for node in nodes:
-            users.append(User(_extract(node, "name"), self.network))
+            users.append(User(_extract_data(node, "name"), self.network))
 
         return users
 
@@ -2695,8 +2695,8 @@ class XSPF(_BaseObject):
 
         seq = []
         for n in doc.getElementsByTagName('track'):
-            title = _extract(n, 'title')
-            artist = _extract(n, 'creator')
+            title = _extract_data(n, 'title')
+            artist = _extract_data(n, 'creator')
 
             seq.append(Track(artist, title, self.network))
 
@@ -2752,7 +2752,7 @@ class User(_BaseObject):
 
         seq = []
         for node in _collect_nodes(limit, self, "user.getFriends", False):
-            seq.append(User(_extract(node, "name"), self.network))
+            seq.append(User(_extract_data(node, "name"), self.network))
 
         return seq
 
@@ -2775,9 +2775,9 @@ class User(_BaseObject):
         seq = []
         for track in _collect_nodes(limit, self, "user.getLovedTracks", True, params):
 
-            title = _extract(track, "name")
-            artist = _extract(track, "name", 1)
-            date = _extract(track, "date")
+            title = _extract_data(track, "name")
+            artist = _extract_data(track, "name", 1)
+            date = _extract_data(track, "date")
             timestamp = track.getElementsByTagName("date")[0].getAttribute("uts")
 
             seq.append(LovedTrack(Track(artist, title, self.network), date, timestamp))
@@ -2809,7 +2809,7 @@ class User(_BaseObject):
 
         seq = []
         for n in _collect_nodes(limit, self, "user.getPastEvents", False):
-            seq.append(Event(_extract(n, "id"), self.network))
+            seq.append(Event(_extract_data(n, "id"), self.network))
 
         return seq
 
@@ -2837,8 +2837,8 @@ class User(_BaseObject):
         if not e.hasAttribute('nowplaying'):
             return None
 
-        artist = _extract(e, 'artist')
-        title = _extract(e, 'name')
+        artist = _extract_data(e, 'artist')
+        title = _extract_data(e, 'name')
 
         return Track(artist, title, self.network)
 
@@ -2865,9 +2865,9 @@ class User(_BaseObject):
             if track.hasAttribute('nowplaying'):
                 continue    #to prevent the now playing track from sneaking in here
 
-            title = _extract(track, "name")
-            artist = _extract(track, "artist")
-            date = _extract(track, "date")
+            title = _extract_data(track, "name")
+            artist = _extract_data(track, "artist")
+            date = _extract_data(track, "date")
             timestamp = track.getElementsByTagName("date")[0].getAttribute("uts")
 
             seq.append(PlayedTrack(Track(artist, title, self.network), date, timestamp))
@@ -2890,9 +2890,9 @@ class User(_BaseObject):
 
         seq = []
         for album in doc.getElementsByTagName('album'):
-            name = _extract(album, 'name')
-            artist = _extract(album, 'name', 1)
-            playcount = _extract(album, "playcount")
+            name = _extract_data(album, 'name')
+            artist = _extract_data(album, 'name', 1)
+            playcount = _extract_data(album, "playcount")
 
             seq.append(TopItem(Album(artist, name, self.network), playcount))
 
@@ -2914,8 +2914,8 @@ class User(_BaseObject):
 
         seq = []
         for node in doc.getElementsByTagName('artist'):
-            name = _extract(node, 'name')
-            playcount = _extract(node, "playcount")
+            name = _extract_data(node, 'name')
+            playcount = _extract_data(node, "playcount")
 
             seq.append(TopItem(Artist(name, self.network), playcount))
 
@@ -2931,7 +2931,7 @@ class User(_BaseObject):
         seq = []
         for node in doc.getElementsByTagName("tag"):
             if len(seq) < limit:
-                seq.append(TopItem(Tag(_extract(node, "name"), self.network), _extract(node, "count")))
+                seq.append(TopItem(Tag(_extract_data(node, "name"), self.network), _extract_data(node, "count")))
 
         return seq
 
@@ -2951,9 +2951,9 @@ class User(_BaseObject):
 
         seq = []
         for track in doc.getElementsByTagName('track'):
-            name = _extract(track, 'name')
-            artist = _extract(track, 'name', 1)
-            playcount = _extract(track, "playcount")
+            name = _extract_data(track, 'name')
+            artist = _extract_data(track, 'name', 1)
+            playcount = _extract_data(track, "playcount")
 
             seq.append(TopItem(Track(artist, name, self.network), playcount))
 
@@ -2982,8 +2982,8 @@ class User(_BaseObject):
 
         seq = []
         for node in doc.getElementsByTagName("artist"):
-            item = Artist(_extract(node, "name"), self.network)
-            weight = _number(_extract(node, "playcount"))
+            item = Artist(_extract_data(node, "name"), self.network)
+            weight = _number(_extract_data(node, "playcount"))
             seq.append(TopItem(item, weight))
 
         return seq
@@ -3000,8 +3000,8 @@ class User(_BaseObject):
 
         seq = []
         for node in doc.getElementsByTagName("album"):
-            item = Album(_extract(node, "artist"), _extract(node, "name"), self.network)
-            weight = _number(_extract(node, "playcount"))
+            item = Album(_extract_data(node, "artist"), _extract_data(node, "name"), self.network)
+            weight = _number(_extract_data(node, "playcount"))
             seq.append(TopItem(item, weight))
 
         return seq
@@ -3018,8 +3018,8 @@ class User(_BaseObject):
 
         seq = []
         for node in doc.getElementsByTagName("track"):
-            item = Track(_extract(node, "artist"), _extract(node, "name"), self.network)
-            weight = _number(_extract(node, "playcount"))
+            item = Track(_extract_data(node, "artist"), _extract_data(node, "name"), self.network)
+            weight = _number(_extract_data(node, "playcount"))
             seq.append(TopItem(item, weight))
 
         return seq
@@ -3043,7 +3043,7 @@ class User(_BaseObject):
 
         doc = self._request('tasteometer.compare', False, params)
 
-        score = _extract(doc, 'score')
+        score = _extract_data(doc, 'score')
 
         artists = doc.getElementsByTagName('artists')[0]
         shared_artists_names = _extract_all(artists, 'name')
@@ -3089,9 +3089,9 @@ class User(_BaseObject):
         shouts = []
         for node in _collect_nodes(limit, self, "user.getShouts", False):
             shouts.append(Shout(
-                                _extract(node, "body"),
-                                User(_extract(node, "author"), self.network),
-                                _extract(node, "date")
+                                _extract_data(node, "body"),
+                                User(_extract_data(node, "author"), self.network),
+                                _extract_data(node, "date")
                                 )
                             )
         return shouts
@@ -3118,7 +3118,7 @@ class AuthenticatedUser(User):
 
         doc = self._request("user.getInfo", True, {"user": ""})    # hack
 
-        self.name = _extract(doc, "name")
+        self.name = _extract_data(doc, "name")
         return self.name
 
     def get_id(self):
@@ -3126,42 +3126,42 @@ class AuthenticatedUser(User):
 
         doc = self._request("user.getInfo", True)
 
-        return _extract(doc, "id")
+        return _extract_data(doc, "id")
 
     def get_cover_image(self):
         """Returns the user's avatar."""
 
         doc = self._request("user.getInfo", True)
 
-        return _extract(doc, "image")
+        return _extract_data(doc, "image")
 
     def get_language(self):
         """Returns the language code of the language used by the user."""
 
         doc = self._request("user.getInfo", True)
 
-        return _extract(doc, "lang")
+        return _extract_data(doc, "lang")
 
     def get_country(self):
         """Returns the name of the country of the user."""
 
         doc = self._request("user.getInfo", True)
 
-        return Country(_extract(doc, "country"), self.network)
+        return Country(_extract_data(doc, "country"), self.network)
 
     def get_age(self):
         """Returns the user's age."""
 
         doc = self._request("user.getInfo", True)
 
-        return _number(_extract(doc, "age"))
+        return _number(_extract_data(doc, "age"))
 
     def get_gender(self):
         """Returns the user's gender. Either USER_MALE or USER_FEMALE."""
 
         doc = self._request("user.getInfo", True)
 
-        value = _extract(doc, "gender")
+        value = _extract_data(doc, "gender")
 
         if value == 'm':
             return USER_MALE
@@ -3175,14 +3175,14 @@ class AuthenticatedUser(User):
 
         doc = self._request("user.getInfo", True)
 
-        return _extract(doc, "subscriber") == "1"
+        return _extract_data(doc, "subscriber") == "1"
 
     def get_playcount(self):
         """Returns the user's playcount so far."""
 
         doc = self._request("user.getInfo", True)
 
-        return _number(_extract(doc, "playcount"))
+        return _number(_extract_data(doc, "playcount"))
 
     def get_recommended_events(self, limit=50):
         """
@@ -3192,7 +3192,7 @@ class AuthenticatedUser(User):
 
         seq = []
         for node in _collect_nodes(limit, self, "user.getRecommendedEvents", False):
-            seq.append(Event(_extract(node, "id"), self.network))
+            seq.append(Event(_extract_data(node, "id"), self.network))
 
         return seq
 
@@ -3204,7 +3204,7 @@ class AuthenticatedUser(User):
 
         seq = []
         for node in _collect_nodes(int(limit), self, "user.getRecommendedArtists", False):
-            seq.append(Artist(_extract(node, "name"), self.network))
+            seq.append(Artist(_extract_data(node, "name"), self.network))
 
         return seq
 
@@ -3232,7 +3232,7 @@ class _Search(_BaseObject):
 
         doc = self._request(self._ws_prefix + ".search", True)
 
-        return _extract(doc, "opensearch:totalResults")
+        return _extract_data(doc, "opensearch:totalResults")
 
     def _retreive_page(self, page_index):
         """Returns the node of matches to be processed"""
@@ -3261,7 +3261,7 @@ class AlbumSearch(_Search):
 
         seq = []
         for node in master_node.getElementsByTagName("album"):
-            seq.append(Album(_extract(node, "artist"), _extract(node, "name"), self.network))
+            seq.append(Album(_extract_data(node, "artist"), _extract_data(node, "name"), self.network))
 
         return seq
 
@@ -3278,7 +3278,7 @@ class ArtistSearch(_Search):
 
         seq = []
         for node in master_node.getElementsByTagName("artist"):
-            seq.append(Artist(_extract(node, "name"), self.network))
+            seq.append(Artist(_extract_data(node, "name"), self.network))
 
         return seq
 
@@ -3296,7 +3296,7 @@ class TagSearch(_Search):
 
         seq = []
         for node in master_node.getElementsByTagName("tag"):
-            seq.append(Tag(_extract(node, "name"), self.network))
+            seq.append(Tag(_extract_data(node, "name"), self.network))
 
         return seq
 
@@ -3315,7 +3315,7 @@ class TrackSearch(_Search):
 
         seq = []
         for node in master_node.getElementsByTagName("track"):
-            seq.append(Track(_extract(node, "artist"), _extract(node, "name"), self.network))
+            seq.append(Track(_extract_data(node, "artist"), _extract_data(node, "name"), self.network))
 
         return seq
 
@@ -3334,7 +3334,7 @@ class VenueSearch(_Search):
 
         seq = []
         for node in master_node.getElementsByTagName("venue"):
-            seq.append(Venue(_extract(node, "id"), self.network))
+            seq.append(Venue(_extract_data(node, "id"), self.network))
 
         return seq
 
@@ -3372,7 +3372,7 @@ class Venue(_BaseObject):
 
         seq = []
         for node in doc.getElementsByTagName("event"):
-            seq.append(Event(_extract(node, "id"), self.network))
+            seq.append(Event(_extract_data(node, "id"), self.network))
 
         return seq
 
@@ -3383,7 +3383,7 @@ class Venue(_BaseObject):
 
         seq = []
         for node in doc.getElementsByTagName("event"):
-            seq.append(Event(_extract(node, "id"), self.network))
+            seq.append(Event(_extract_data(node, "id"), self.network))
 
         return seq
 
@@ -3462,7 +3462,7 @@ def _collect_nodes(limit, sender, method_name, cacheable, params=None):
 
     return nodes
 
-def _extract(node, name, index=0):
+def _extract_data(node, name, index=0):
     """Extracts a value from the xml string"""
 
     nodes = node.getElementsByTagName(name)
@@ -3470,6 +3470,17 @@ def _extract(node, name, index=0):
     if len(nodes):
         if nodes[index].firstChild:
             return _unescape_htmlentity(nodes[index].firstChild.data.strip())
+    else:
+        return None
+
+def _extract_whole_text(node, name, index=0):
+    """Extracts a value from the xml string"""
+
+    nodes = node.getElementsByTagName(name)
+
+    if len(nodes):
+        if nodes[index].firstChild:
+            return _unescape_htmlentity(nodes[index].firstChild.wholeText.strip())
     else:
         return None
 
@@ -3482,7 +3493,7 @@ def _extract_all(node, name, limit_count=None):
         if len(seq) == limit_count:
             break
 
-        seq.append(_extract(node, name, i))
+        seq.append(_extract_data(node, name, i))
 
     return seq
 

@@ -318,7 +318,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         self.rutracker_label.set_uri("http://rutracker.org/forum/tracker.php?nm=%s" % self.bean.artist)
 
         artist = self.controls.lastfm_service.get_network().get_artist(self.bean.artist)
-        self.wiki.set_text(artist.get_bio_content(), self.bean.artist)
+        self.wiki.set_text(artist.get_bio_summary(), self.bean.artist)
 
 #         Deprecated
 #         images = artist.get_images(limit=6)
