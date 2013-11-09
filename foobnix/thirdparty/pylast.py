@@ -1549,6 +1549,7 @@ class Artist(_BaseObject, _Taggable):
 
         return self.network._get_url(domain_name, "artist") % {'artist': artist}
 
+    """Deprecated by Last.FM"""
     def get_images(self, order=IMAGES_ORDER_POPULARITY, limit=None):
         """
             Returns a sequence of Image objects

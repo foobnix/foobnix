@@ -25,7 +25,6 @@ from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
 from foobnix.gui.model import FModel
 from foobnix.gui.service.music_service import get_all_music_by_paths
-from foobnix.gui.service.google_service import google_search_results
 from foobnix.gui.service.vk_service import VKService
 from foobnix.gui.state import LoadSave, Quitable
 from foobnix.util.bean_utils import get_bean_posible_paths
@@ -67,14 +66,7 @@ class BaseFoobnixControls():
         map(self.lastfm_service.love, beans)
 
     def show_google_results(self, query):
-        beans = [FModel('"%s" not found trying Google search' % query)]
-        g_results = google_search_results(query)
-        for line in g_results:
-            beans.append(FModel(line).add_is_file(True))
-        if not g_results:
-            beans.append(FModel('Google not found %s' % query))
-
-        return beans
+        return [FModel('"%s" not found' % query)]
 
     def get_active_bean(self):
         tree = self.notetabs.get_current_tree()

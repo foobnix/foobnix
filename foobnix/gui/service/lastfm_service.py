@@ -15,7 +15,6 @@ from foobnix.fc.fc_base import FCBase
 from foobnix.gui.model import FModel
 from foobnix.util.const import FTYPE_VIDEO
 from foobnix.util.file_utils import file_extension
-from foobnix.thirdparty.google.translate import translate
 from foobnix.thirdparty.pylast import WSError, Tag
 from foobnix.thirdparty import pylast
 
@@ -321,7 +320,6 @@ class LastFmService():
         if not tag:
             logging.warn("search_top_tags TAG is empty")
             return []
-        tag = translate(tag, src="ru", to="en")
         beans = []
         tags = self.network.search_for_tag(tag)
         for tag in tags.get_next_page():
