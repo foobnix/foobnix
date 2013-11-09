@@ -67,6 +67,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         self.remembered_seek_position = 0
         self.error_counter = 0
         self.radio_recording = False
+        self.buffering = False
         self.player = self.gstreamer_player()
 
     def get_state(self):
@@ -77,11 +78,11 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
 
     def gstreamer_player(self):
         '''
-        Filesrc -----+                                         + -> volume -> equalizer -> audiosink
-                     |-> (decodebin -> audioconvert) -> tee -> |
-        souphttpsrc -+                                         + -> vorbisenc -> oggmux -> filesink
-                                                               |___________________________________|
-                                                                            Dynamic part
+        Filesrc -----+                                                      + -> volume -> equalizer -> audiosink
+                     |-> (queue2) -> (decodebin -> audioconvert) -> tee ->  |
+        souphttpsrc -+                                                      + -> vorbisenc -> oggmux -> filesink
+                                                                            |___________________________________|
+                                                                                        Dynamic part
         '''
         playbin = Gst.Pipeline()
         self.fsource = Gst.ElementFactory.make("filesrc", "fsource")
@@ -111,6 +112,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         playbin.add(self.tee)
         playbin.add(self.equalizer)
 
+        #self.queue.link_pads("src", self.decodebin, "sink")
         audioconvert.link_pads("src", self.tee, "sink")
         self.tee.link_pads("src_0", volume, "sink")
         volume.link(self.equalizer)
@@ -136,6 +138,13 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         self.hsource = Gst.ElementFactory.make("souphttpsrc", "hsource")
         self.hsource.set_property("user-agent", "Fooobnix music player")
         self.hsource.set_property("automatic-redirect", "false")
+
+        self.queue = Gst.ElementFactory.make("queue2", "queue")
+        self.queue.set_property("use-buffering", True)
+        self.queue.set_property("low-percent", 10)
+        self.queue.set_property("max-size-buffers", 0)
+        self.queue.set_property("max-size-time", 0)
+        self.queue.set_property("max-size-bytes", 128 * 1024)   # 128Kb
 
     def notify_init(self, duration_int):
         logging.debug("Pre init thread: " + str(duration_int))
@@ -215,11 +224,13 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         self.fsource.set_state(Gst.State.NULL)
         self.hsource.set_state(Gst.State.NULL)
         self.fsource.unlink(self.decodebin)
-        self.hsource.unlink(self.decodebin)
+        self.hsource.unlink(self.queue)
+        self.queue.unlink(self.decodebin)
         if self.player.get_by_name("fsource"):
             self.player.remove(self.fsource)
         if self.player.get_by_name("hsource"):
             self.player.remove(self.hsource)
+            self.player.remove(self.queue)
         if uri.startswith("http://"):
             logging.debug("Set up hsource")
             self.init_hsource()
@@ -230,7 +241,9 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
                 self.hsource.set_property("proxy-pw", FC().proxy_password)
 
             self.player.add(self.hsource)
-            self.hsource.link(self.decodebin)
+            self.player.add(self.queue)
+            self.hsource.link(self.queue)
+            self.queue.link(self.decodebin)
             self.player.get_by_name("hsource").set_property("location", uri)
             self.hsource.set_state(Gst.State.READY)
         else:
@@ -308,7 +321,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
                 time.sleep(0.2)
                 duration_int = self.get_duration_seek_ns()
                 if duration_int <= 0:
-                    time.sleep(0.2)
+                    time.sleep(0.3)
                     continue
                 self.notify_init(duration_int)
                 break
@@ -450,6 +463,19 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         struct = message.get_structure()
 
         if type == Gst.MessageType.BUFFERING:
+            percent = message.parse_buffering()
+            if percent < 100:
+                if not self.buffering:
+                    logging.debug("Pausing...")
+                    self.buffering = True
+                    self.player.set_state(Gst.State.PAUSED)
+                logging.debug("Buffering... %d" % percent)
+            else:
+                if self.buffering:
+                    logging.debug("Playing...")
+                    self.buffering = False
+                    self.player.set_state(Gst.State.PLAYING)
+
             return
 
         if type == Gst.MessageType.ERROR:
