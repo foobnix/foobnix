@@ -42,6 +42,7 @@ To uninstall:
 To restore default settings:
 
     rm -f ~$USER/.config/foobnix/foobnix_conf.pkl
+    rm -f ~$USER/.config/foobnix-3/foobnix_conf.pkl
 
 Depends
 
