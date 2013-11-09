@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//foobnix/fc/fc.py=utf-8
 encoding//foobnix/fc/fc_base.py=utf-8
+encoding//foobnix/fc/fc_cache.py=utf-8
 encoding//foobnix/gui/base_controls.py=utf-8
 encoding//foobnix/gui/foobnix_core.py=utf-8
 encoding//foobnix/gui/notetab/__init__.py=utf-8
