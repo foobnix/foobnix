@@ -43,13 +43,6 @@ def udpate_id3_for_beans(beans):
                 udpate_id3(bean)
             except Exception, e:
                 logging.warn("update id3 error - % s" % e)
-        elif get_file_extension(bean.text) in FC().video_formats:
-            list = ["ffmpeg", "-i", bean.path, "|", "grep", "1"]#, "|", "cut", "-d", "\' \'", "-f", "4", "|", "sed", "s/,//"
-            ffmpeg = Popen(list, universal_newlines=True, stderr=PIPE)
-            for line in ffmpeg.stderr:
-                if line.strip().startswith('Duration:'):
-                    bean.time = os.path.splitext(line.strip().split(" ")[1])[0]
-                    break
         if bean.text:
             if (bean.text[0] == "/") or (len(bean.text)>1 and bean.text[1] == ":"):
                 bean.text = os.path.basename(bean.text)
@@ -61,7 +54,7 @@ def udpate_id3(bean):
         try:
             audio = get_mutagen_audio(bean.path)
         except Exception, e:
-            logging.warn("ID3 NOT MP3" + str(e) + bean.path)
+            logging.warn("ID3 NOT FOUND IN " + str(e) + " " + bean.path)
             return bean
         if audio:
             if isinstance(audio, MP4):

@@ -401,10 +401,9 @@ class BaseFoobnixControls():
         self.is_scrobbled = False
         self.start_time = False
 
-        if not get_file_extension(bean.path) in FC().video_formats:
-            if bean.type != FTYPE_RADIO:
-                self.update_info_panel(bean)
-            self.set_visible_video_panel(False)
+        if bean.type != FTYPE_RADIO:
+            self.update_info_panel(bean)
+        self.set_visible_video_panel(False)
 
     @idle_task
     def notify_playing(self, pos_sec, dur_sec, bean):
