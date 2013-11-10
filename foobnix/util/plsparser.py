@@ -25,7 +25,7 @@ def is_valid_station(url):
         return None
 
     try:       
-        connect = urllib2.urlopen(url, timeout=7)
+        connect = urllib2.urlopen(url, timeout=10)
         if connect.getcode() == 200:
             return True
         else:

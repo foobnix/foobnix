@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 16  2010
 
@@ -5,7 +6,8 @@ Created on 16  2010
 '''
 import urllib2
 import logging
-site = "http://myradio.ua/"
+import re
+site = "http://myradio.ua/player/50"
 
 
 def load_urls_name_page():
@@ -14,40 +16,24 @@ def load_urls_name_page():
     result = {}  
     file = open("MYRADIO_UA.fpl", "w")
     for line in data.split("\n"):
-        line = line.decode("cp1251")
-        pre = "<a href=\"chanel/";
-        start = line.find(pre)
-        end = line.find("</a>", start + 10)
-        if start > 0 and end > 0:                        
-            url = line[line.find("<a href=\"") + len(" < a href"):line.find(">", start)].replace('"', '')
-            name = line[line.find(">", start) + 1:line.find("</a>")]
-            result[url.strip()] = name
-            
-                        
-            urls = get_radio_ulr(url.strip()).split(",")
-            line = name.strip() + " = " + urls[1] + ", " + urls[0]
-            file.write(line + "\n");
-            logging.info(line)
-            
-            if url.strip() == "chanel/eurovision":
-                file.close()
-                return result
+        line = line.decode("cp1251").decode('utf8')
+        reg_all = "([-\w0-9,. ]*)"
+        findall = re.findall('name="'+reg_all+'" value="([0-9]*)" external="0" mount="'+reg_all+'"', line, re.IGNORECASE | re.UNICODE)
+        if findall:
+            name = findall[0][0]
+            url = findall[0][2]
+            out = name + " = " + "http://relay.myradio.ua/" + url + "128.mp3 \n"
+            print out
+            file.write(out)
         
 
-def get_radio_ulr(chanel):
-    connect = urllib2.urlopen(site + chanel)
-    data = connect.read()
-    result = "" 
-    for line in data.rsplit("\n"):
-        """<img class="roll" src="http://img.myradio.com.ua/img/center/big_listen_icons/winamp_low_out.jpg">"""
-        if line.find('<img class="roll" src="') > 0 and line.find('.m3u') and  line.find("window") < 0 :
-            pre = '<div class="but"><a href="'
-            index_pre = line.find(pre)
-            url = line[index_pre + len(pre): line.find('.m3u', index_pre)]
-            url = site + url + ".m3u"
-            result = result + url + ", "
-    return result[:-2]
-            
+def test():
+    reg_all = "([-\w/0-9,. ]*)"
+    url = """<a onclick="MRPlayer.changeFormat(this);" id="format_62" name="фіasdf-123" value="62" external="0" mount="eurovision2010" server="1" class="radio__dropdown-link" slogan="Музыка ежегодного телевизионного конкурса" url="eurovision" comments="40" fm="0">Евровидение</a>"""
+    findall = re.findall('name="'+reg_all+'" value="([0-9]*)" external="0" mount="'+reg_all+'"', url.decode('utf8'),re.UNICODE)
+    if findall:
+        print findall
              
 
-
+#test();
+load_urls_name_page()
