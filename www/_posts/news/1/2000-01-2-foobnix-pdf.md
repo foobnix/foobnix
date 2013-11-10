@@ -1,0 +1,13 @@
+--- 
+layout: post 
+title: rusMusic Player 22 (Linux)
+categories: ru
+where: news
+image: /images/home/img1.png
+--- 
+Support for CUE (also wv, iso.wv) is the
+best under Linux (zavlab) Formats MP3, MP4, AAC, CD Audio, WMA,
+Vorbis, FLAC, WavPack, WAV, AIFF, Musepack, Speex, AU, SND ...
+Converter any format to any (mp3, ogg, mp2, ac3, m4a, wav)
+Scrobbler tags with music and radio Find and play music and videos
+Equalizer
