@@ -34,6 +34,7 @@ from foobnix.util.iso_util import mount_tmp_iso
 from foobnix.util.version import compare_versions
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util import analytics, idle_task, idle_task_priority
+from foobnix.util.text_utils import normalize_text
 
 
 class BaseFoobnixControls():
@@ -436,6 +437,9 @@ class BaseFoobnixControls():
             self.cache_text = text
 
         self.statusbar.set_text(raw_text.replace("||", "|"))
+        
+        text = normalize_text(text)
+        
         self.seek_bar.set_text(text)
         t_bean = bean.create_from_text(text)
         self.update_info_panel(t_bean)

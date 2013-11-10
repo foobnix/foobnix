@@ -90,7 +90,7 @@ def normalize_text(line):
         return ""
     line = urllib.unquote(line)
     """find in extension"""
-    for element in ("[", "(", "*"):
+    for element in ("[", "(", "*","#"):
         index = line.find(element)
         if index >= 0:            
             line = line[:index]
