@@ -503,7 +503,6 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         if type == Gst.MessageType.TAG and message.parse_tag():
             self.error_counter = 0
 
-            print struct.to_string()
             if struct.has_field("taglist"):
                 taglist = struct.get_value("taglist")
                 title = taglist.get_string("title")[1]
