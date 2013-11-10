@@ -503,6 +503,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         if type == Gst.MessageType.TAG and message.parse_tag():
             self.error_counter = 0
 
+            print struct.to_string()
             if struct.has_field("taglist"):
                 taglist = struct.get_value("taglist")
                 title = taglist.get_string("title")[1]
@@ -517,6 +518,8 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
                     text = artist + " - " + text
                 if not text:
                     text = self.bean.path
+                if self._is_remote() and taglist.get_string("audio-codec")[0]:
+                    text = text + " || " + taglist.get_string("audio-codec")[1]
                 if self._is_remote() and taglist.get_uint('bitrate')[0]:
                     text = text + " || " + str(taglist.get_uint('bitrate')[1] / 1000) + _("kbps")
                     self.emit('bitrate-changed', taglist.get_uint('bitrate')[1])
