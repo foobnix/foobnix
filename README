@@ -43,6 +43,7 @@ To restore default settings:
 
     rm -f ~$USER/.config/foobnix/foobnix_conf.pkl
     rm -f ~$USER/.config/foobnix-3/foobnix_conf.pkl
+    
 
 Depends
 
@@ -51,4 +52,3 @@ Depends
 Recommends:
  
 	gstreamer1.0-plugins-bad, gstreamer1.0-plugins-ugly, gstreamer1.0-libav, gstreamer1.0-alsa, python-setuptools, fuseiso, python-notify, libmp3lame0, libfaac0, python-keybinder, ffmpeg
-
