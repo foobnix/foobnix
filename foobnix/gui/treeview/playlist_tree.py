@@ -278,6 +278,8 @@ class PlaylistTreeControl(CommonTreeControl):
                 self.tree_menu.add_separator()
                 self.tree_menu.add_item(_('Love This Track(s) by Last.fm'), None,
                                         self.controls.love_this_tracks, self.get_all_selected_beans())
+                self.tree_menu.add_item(_('Add to My Audio (VK)'), None,
+                                        self.controls.add_to_my_playlist, self.get_all_selected_beans())
 
                 self.tree_menu.show(e)
 

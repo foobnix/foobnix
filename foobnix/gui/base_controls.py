@@ -65,6 +65,11 @@ class BaseFoobnixControls():
             return
         map(self.lastfm_service.love, beans)
 
+    def add_to_my_playlist(self, beans=None):
+         if not beans:
+             return
+         map(self.vk_service.add, beans)
+
     def show_google_results(self, query):
         return [FModel('"%s" not found' % query)]
 

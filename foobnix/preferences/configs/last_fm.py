@@ -98,8 +98,11 @@ class LastFmConfig(ConfigPlugin):
         self.vk_account_label = Gtk.Label(self.frase_begin + " %s" % self.default_label_value)
         self.reset_vk_auth_button = Gtk.Button(_("Reset vk authorization"))
         self.reset_vk_auth_button.connect("button-release-event", self.on_reset_vk_click)
+        self.vk_autocomplete = Gtk.CheckButton(label=_("Enable VK autocomplete"), use_underline=True)
+        self.vk_autocomplete.show()
         vk_layout.pack_start(self.vk_account_label, False, False, 0)
         vk_layout.pack_start(self.reset_vk_auth_button, False, False, 0)
+        vk_layout.pack_start(self.vk_autocomplete, False, False)
         vk_frame.add(vk_layout)
 
         """all"""
@@ -128,6 +131,7 @@ class LastFmConfig(ConfigPlugin):
         self.adjustment.set_value(FC().search_limit)
         self.music_scrobbler.set_active(FC().enable_music_scrobbler)
         self.radio_scrobbler.set_active(FC().enable_radio_scrobbler)
+        self.vk_autocomplete.set_active(FC().enable_vk_autocomlete)
 
     def on_save(self):
         if FCBase().lfm_login != self.login_text.get_text() or FCBase().lfm_password != self.password_text.get_text():
@@ -138,6 +142,7 @@ class LastFmConfig(ConfigPlugin):
         FC().search_limit = self.adjustment.get_value()
         FC().enable_music_scrobbler = self.music_scrobbler.get_active()
         FC().enable_radio_scrobbler = self.radio_scrobbler.get_active()
+        FC().enable_vk_autocomlete  = self.vk_autocomplete.get_active()
 
 class VBox(Gtk.VBox):
     def __init__(self, config, *args):

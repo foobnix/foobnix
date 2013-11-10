@@ -47,6 +47,7 @@ class FC():
         """VK"""
         self.access_token =  None
         self.user_id =  None
+        self.enable_vk_autocomlete = False
 
         """LastFM"""
         self.search_limit = 50
