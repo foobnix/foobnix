@@ -49,8 +49,8 @@ def get_mutagen_audio (path):
                         audio = OggSpeex(path)
                     except:
                         logging.error("This file in not ogg format")
-                                    
+
     if ext == ".m4a" or ext == ".mp4" or ext == ".mkv":
         audio = MP4(path)
-        
-    return audio 
+
+    return audio

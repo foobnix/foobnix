@@ -32,7 +32,7 @@ class FC():
         self.is_view_music_tree_panel = True
         self.is_view_coverlyrics_panel = False
         self.is_view_lyric_panel = True
-        self.is_view_video_panel = True
+        self.is_view_video_panel = False
         self.is_order_random = False
         self.repeat_state = const.REPEAT_ALL
         self.playlist_type = const.PLAYLIST_TREE
@@ -99,10 +99,9 @@ class FC():
         self.on_close_window = const.ON_CLOSE_CLOSE
 
         """support file formats"""
-        audio_container = [".cue", ".iso.wv"]
-        self.video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mpg", ".rm", ".swf", ".vob", ".wmv",".mkv",".m4v", ".mp4"]
-        self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".ac3", ".m4a", ".ra", ".m4p", ".wv", ".shn", ".wav"]
-        self.all_support_formats = self.audio_formats + self.video_formats + audio_container
+        audio_containers = [".cue", ".iso.wv", ".m3u", ".m3u8"]
+        self.audio_formats = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".ac3", ".m4a", ".ra", ".m4p", ".wv", ".shn", ".wav"]
+        self.all_support_formats = self.audio_formats + audio_containers
         self.all_support_formats.sort()
 
         self.enable_music_scrobbler = True
