@@ -151,7 +151,7 @@ class FC():
         self.proxy_password = None
 
         '''Multimedia and hot keys'''
-        self.action_hotkey = {'controls.volume_up': '<SUPER>Up', 'controls.volume_down': '<SUPER>Down', 'controls.show_hide': '<SUPER>a', 'controls.prev': '<SUPER>Left', 'controls.state_play': '<SUPER>x', 'controls.play_pause': '<SUPER>z', 'controls.next': '<SUPER>Right'}
+        self.action_hotkey = {'controls.volume_up': '<SUPER>Up', 'controls.volume_down': '<SUPER>Down', 'controls.show_hide': '<SUPER>a', 'controls.prev': '<SUPER>Left', 'controls.state_play': '<SUPER>x', 'controls.play_pause': '<SUPER>z', 'controls.next': '<SUPER>Right', 'controls.download' : '<Control><SUPER>z'}
         self.multimedia_keys = {'controls.prev': 'XF86AudioPrev', 'controls.next': 'XF86AudioNext', 'controls.play_pause': 'XF86AudioPlay', 'controls.state_stop': 'XF86AudioStop', 'controls.volume_up': 'XF86AudioRaiseVolume', 'controls.volume_down': 'XF86AudioLowerVolume', 'controls.mute': 'XF86AudioMute'}
         self.media_volume_keys = {'controls.volume_up': 'XF86AudioRaiseVolume', 'controls.volume_down': 'XF86AudioLowerVolume', 'controls.mute': 'XF86AudioMute'}
         self.media_keys_enabled = True

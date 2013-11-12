@@ -759,3 +759,6 @@ class BaseFoobnixControls():
             if isinstance(self.__dict__[element], LoadSave):
                 logging.debug("SAVE " + str(self.__dict__[element]))
                 self.__dict__[element].on_save()
+
+    def download(self):
+        self.dm.append_task(bean=self.notetabs.get_current_tree().get_current_bean_by_UUID())
