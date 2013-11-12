@@ -11,9 +11,10 @@ import logging
 
 FOOBNIX_RADIO_PATHS = [
     os.path.join(sys.path[0], "share/foobnix/radio"),
+    "share/foobnix/radio",
     "/usr/local/share/foobnix/radio",
-    "/usr/share/foobnix/radio",
-    "share/foobnix/radio"]
+    "/usr/share/foobnix/radio"
+    ]
 EXTENSION = ".fpl"
 
 

@@ -20,6 +20,20 @@ def get_content(url):
         logging.error("INCORRECT URL ERROR .... " + url)
         return None
     
+def is_valid_station(url):
+    if not url:
+        return None
+
+    try:       
+        connect = urllib2.urlopen(url, timeout=10)
+        if connect.getcode() == 200:
+            return True
+        else:
+            return False
+    except:
+        logging.error("INCORRECT URL ERROR .... " + url)
+        return False    
+    
             
 def getStationPath(url):
     
@@ -47,6 +61,7 @@ def getStations(data, urls):
                 return urls    
 
 def get_radio_source(url):
+    print url
     if url:          
         if url.lower().endswith(".pls"):                
             source_url = getStationPath(url)
@@ -56,11 +71,10 @@ def get_radio_source(url):
                 
         elif url.lower().endswith(".m3u"):
             content = get_content(url)
-            logging.info("Radio content" + content)
             if not content:
                 return None
             for line in content.rsplit():
-                if line.startswith("http://"):
+                if line.startswith("http://") and is_valid_station(line):
                     logging.info("Radio url " + line)
                     return line
     
