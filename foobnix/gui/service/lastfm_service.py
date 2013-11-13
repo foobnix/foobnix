@@ -200,14 +200,9 @@ class LastFmService():
 
         def task(bean):
             if bean.artist and bean.title:
-                if bean.path and file_extension(bean.path) in FC().video_formats:
-                    #skip video scrobbler
-                    return
-
                 if bean.type == FTYPE_VIDEO:
                     #skip video results
                     return
-
                 try:
                     bean.artist, bean.title = bean.artist.encode("utf-8"), bean.title.encode("utf-8")
                     self.get_scrobbler().scrobble(bean.artist, bean.title, start_time, "P", "", int(duration_sec))
