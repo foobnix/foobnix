@@ -279,7 +279,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         logging.debug("Set play icon to selected bean")
         path = paths[0]
         iter = self.model.get_iter(path)
-        self.model.set_value(iter, FTreeModel().play_icon[0], Gtk.STOCK_GO_FORWARD)
+        self.model.set_value(iter, FTreeModel().play_icon[0], "go-next")
         self.active_UUID = self.model.get_value(iter, FTreeModel().UUID[0])
 
     @idle_task
@@ -332,7 +332,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         logging.debug("Set play icon to bean")
         for row in self.model:
             if row[self.UUID[0]] == bean.UUID:
-                row[self.play_icon[0]] = Gtk.STOCK_GO_FORWARD
+                row[self.play_icon[0]] = "go-next"
                 self.active_UUID = bean.UUID
             else:
                 row[self.play_icon[0]] = ""

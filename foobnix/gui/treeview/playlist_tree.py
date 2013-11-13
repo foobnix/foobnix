@@ -50,7 +50,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.set_reorderable(True)
 
         """Column icon"""
-        self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
+        self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), icon_name=self.play_icon[0])
         self.icon_col.key = "*"
         self.icon_col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         self.icon_col.set_fixed_width(32)
