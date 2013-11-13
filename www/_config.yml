@@ -1,0 +1,49 @@
+markdown: rdiscount
+permalink: /:categories/:title.html
+auto: true
+
+author: Ivan Ivanenko 
+email: ivan.ivanenko@gmail.com
+site: www.foobnix.com
+
+langs:
+  - prefix: en
+    text: "English"
+  - prefix: ru
+    text: "Русский"
+
+navigation:
+  - en:
+      text: "Foobnix"
+      url: /en/index.html
+  - ru:
+      text: "Foobnix"
+      url: /ru/index.html
+      
+  - en:
+      text: "Our Work"
+      url: our_work.html
+  - ru:
+      text: "Наши работы"
+      url: our_work.html
+      
+  - en:
+      text: "News"
+      url: /en/news.html
+  - ru:
+      text: "Новости"
+      url: /ru/news.html
+
+  - en:
+      text: "Blog"
+      url: /en/blog.html
+  - ru:
+      text: "Блог"
+      url: /ru/blog.html
+
+  - en:
+      text: "Contacts"
+      url: /en/contacts.html
+  - ru:
+      text: "Контакты"
+      url: /ru/contacts.html

@@ -1,0 +1,38 @@
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<button type="button" class="btn btn-navbar" data-toggle="collapse"
+				data-target=".nav-collapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<div class="nav-collapse collapse">
+				<ul class="nav">
+                    {% for line in site.navigation %}
+                      {% assign menu=line %}{% include li_menu.html %}
+                    {% endfor %}
+
+					<div class="btn-group">
+						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        {% for item in site.langs %}
+                         {% if lang == item.prefix %}
+                           {{item.text}}
+                         {% endif %}
+                        {% endfor %}   
+						<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+                             {% for item in site.langs %}
+                               {% assign lang_slash=lang | append:'/' %}                               
+                               <li><a href="/{{item.prefix}}{{ page.url | replace:lang_slash,'' }}">{{item.text}}</a></li>
+                             {% endfor %}
+       
+						</ul>
+					</div>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,25 @@
+---
+layout: default
+---
+  <header>
+    <h2>
+      <a href="/blog{{ page.url }}" rel="bookmark" title="Permanent link to ">{{ page.title }}</a>
+    </h2>
+    <h5>
+        <time>{{ page.date | date: '%B' }} {{ page.date | date: '%e' }}, {{ page.date | date: '%Y' }}</time> - 
+        <author>{{ site.author }}</author>
+    </h5>
+  </header>
+
+ {{ content }}
+
+<div class="hero-unit">
+  <nav id="related">
+    <h3>Related Posts</h3>
+    <ul class="posts">
+      {% for post in site.related_posts limit:5 %}
+        <p><li><span>{{ post.date | date_to_string }}</span> - <a href="/blog{{ post.url }}">{{ post.title }}</a></li></p>
+      {% endfor %}
+    </ul>
+  </nav>
+</div>

@@ -1,7 +1,9 @@
 eclipse.preferences.version=1
 encoding//foobnix/fc/fc.py=utf-8
 encoding//foobnix/fc/fc_base.py=utf-8
+encoding//foobnix/fc/fc_cache.py=utf-8
 encoding//foobnix/gui/base_controls.py=utf-8
+encoding//foobnix/gui/engine/gstreamer.py=utf-8
 encoding//foobnix/gui/foobnix_core.py=utf-8
 encoding//foobnix/gui/notetab/__init__.py=utf-8
 encoding//foobnix/gui/notetab/tab_library.py=utf-8
@@ -58,4 +60,6 @@ encoding//src/foobnix/util/single_thread.py=utf-8
 encoding//src/foobnix/util/url_utils.py=utf-8
 encoding//src/foobnix/util/widget_utils.py=utf-8
 encoding//src/test/test_vk_service.py=utf-8
+encoding//test/grabers/guzei.py=utf-8
+encoding//test/grabers/myradio_ua.py=utf-8
 encoding//test/test_lfm_service.py=utf-8

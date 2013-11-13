@@ -1,0 +1,10 @@
+{% for post in site.posts %}
+{%if page.lang == post.lang %}
+      <div class="hero-unit">
+        <p><h2><a href="http://localhost:4060{{post.url}}">{{ post.title }}</a></h2>{{ post.date | date_to_string }} - {{site.author}}</p>
+        <p>{{ post.content | strip_html | truncatewords: 55 }}</p>
+        <p><a href="http://localhost:4060{{post.url}}">Read more ...</a></p>
+      </div>
+      {% endif %}
+{% endfor %}
+
