@@ -12,6 +12,7 @@ from gi.repository import Gtk
 from gi.repository import GObject
 
 from foobnix.fc.fc import FC
+from foobnix.playlists.pls_reader import update_id3_for_pls
 from foobnix.util import const, idle_task
 from foobnix.helpers.menu import Popup
 from foobnix.util.bean_utils import get_bean_from_file
@@ -50,7 +51,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.set_reorderable(True)
 
         """Column icon"""
-        self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
+        self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), icon_name=self.play_icon[0])
         self.icon_col.key = "*"
         self.icon_col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         self.icon_col.set_fixed_width(32)
@@ -415,6 +416,7 @@ class PlaylistTreeControl(CommonTreeControl):
         for path in paths:
             bean = get_bean_from_file(path)
             beans = update_id3_for_m3u([bean])
+            beans = update_id3_for_pls(beans)
             if beans and len(beans) > 1:
                     bean = bean.add_text(_('Playlist: ') + bean.text).add_font("bold").add_is_file(False)
                     bean.path = ''

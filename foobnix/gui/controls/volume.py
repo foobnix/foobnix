@@ -25,13 +25,13 @@ class VolumeControls(LoadSave, Gtk.HBox, FControl):
         self.volume_scale.connect("scroll-event", self.on_scroll_event)
         self.volume_scale.connect("button-press-event", self.on_volume_change)
         self.volume_scale.set_size_request(200, -1)
-        self.volume_scale.set_digits(1)        
+        self.volume_scale.set_digits(1)
         self.volume_scale.set_draw_value(False)
 
         self.pack_start(self.volume_scale, False, False, 0)
-        
+
         self.show_all()
-    
+
     def on_volume_change(self, w, event):
         max_x, max_y = w.size_request()
         x, y = event.x, event.y
@@ -40,24 +40,24 @@ class VolumeControls(LoadSave, Gtk.HBox, FControl):
             value += self.MAX_VALUE / 20
         elif value < self.MAX_VALUE * 0.25:
             value -= self.MAX_VALUE / 20
-            
+
         self.set_value(value)
         self.on_save()
-    
+
     def get_value(self):
-        self.volume_scale.get_value() 
-    
+        self.volume_scale.get_value()
+
     def set_value(self, value):
         self.volume_scale.set_value(value)
-    
+
     def volume_up(self):
         value = self.volume_scale.get_value()
         self.volume_scale.set_value(value + 3)
-    
+
     def volume_down(self):
         value = self.volume_scale.get_value()
         self.volume_scale.set_value(value - 3)
-    
+
     def mute(self):
         value = self.volume_scale.get_value()
         if value == 0:
@@ -65,7 +65,7 @@ class VolumeControls(LoadSave, Gtk.HBox, FControl):
         else:
             FC().temp_volume = value
             self.volume_scale.set_value(0)
-        
+
     def on_scroll_event(self, button, event):
         value = self.volume_scale.get_value()
         if event.direction == Gdk.ScrollDirection.UP or \
@@ -75,15 +75,15 @@ class VolumeControls(LoadSave, Gtk.HBox, FControl):
             self.volume_scale.set_value(value - 15)
         self.controls.player_volume(value)
         return True
-    
-    def on_value_changed(self, widget): 
+
+    def on_value_changed(self, widget):
         percent = widget.get_value()
         self.controls.player_volume(percent)
         FC().volume = percent
         self.controls.trayicon.popup_volume_contol.avc.set_volume(percent)
-    
+
     def on_save(self):
         pass
-    
-    def on_load(self):        
+
+    def on_load(self):
         self.volume_scale.set_value(FC().volume)
