@@ -32,7 +32,6 @@ class RadioFolder():
         pass
 
     """get list of foobnix playlist files in the directory"""
-
     def get_radio_list(self):
         result = []
         for cur_path in FOOBNIX_RADIO_PATHS:
@@ -47,7 +46,6 @@ class RadioFolder():
         return result
 
     """parser playlist by name"""
-
     def parse_play_list(self, list_name):
         for path in FOOBNIX_RADIO_PATHS:
             full_path = os.path.join(path, list_name)
