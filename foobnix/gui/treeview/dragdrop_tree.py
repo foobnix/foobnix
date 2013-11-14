@@ -514,8 +514,8 @@ class DragDropTree(Gtk.TreeView):
                     checked_m3u_rows.append(row)
                     for r in rows:
                         if (os.path.dirname(r[index]) == os.path.dirname(path) and os.path.isfile(r[index])
-                            and is_m3u(r[index])):
-                                m3u_rows_for_delete.append(row)
+                            and not is_m3u(r[index])):
+                                m3u_rows_for_delete.append(r)
                                 break
                     return task(rows)
 
@@ -530,5 +530,6 @@ class DragDropTree(Gtk.TreeView):
             return rows
 
         all_filtered_rows = task(rows)
+
         return [row for row in all_filtered_rows
                 if row not in m3u_rows_for_delete] if m3u_rows_for_delete else all_filtered_rows

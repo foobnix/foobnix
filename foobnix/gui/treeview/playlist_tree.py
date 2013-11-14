@@ -508,7 +508,7 @@ class PlaylistTreeControl(CommonTreeControl):
                     for k, ch_row in enumerate(treerow.iterchildren()):
                         treerows.insert(i + k + 1, ch_row)
 
-                treerows = self.playlist_filter(treerows)
+                #treerows = self.playlist_filter(treerows)
 
                 for i, treerow in enumerate(treerows):
                     if is_playlist(treerow[self.path[0]]):
