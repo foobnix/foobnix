@@ -5,11 +5,10 @@ Created on Nov 15, 2013
 '''
 
 import logging
-import os.path
-from quodlibet.player import playlist
 
 from foobnix.gui.model import FModel
 from foobnix.util.file_utils import get_file_extension
+
 
 class PLSReader:
 
@@ -31,11 +30,11 @@ class PLSReader:
             playlist = {}
             for l in lines:
                 playlist[l[0]] = l[1]
-            for i in range(1, int(playlist["NumberOfEntries"])):
+            for i in range(1, int(playlist["NumberOfEntries"])+1):
                 si = str(i)
                 if "File" + si in playlist:
                     bean = FModel(path=playlist["File" + si],
-                                  text=playlist["Title" + si] if "Title" + si in playlist else None).add_is_file(True)
+                                  text=playlist["Title" + si] if "Title" + si in playlist else playlist["File" + si]).add_is_file(True)
                     beans.append(bean)
             return beans
 

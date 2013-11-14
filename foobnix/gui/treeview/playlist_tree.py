@@ -20,7 +20,7 @@ from foobnix.util.tag_util import edit_tags
 from foobnix.util.converter import convert_files
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.file_utils import open_in_filemanager, copy_to, get_files_from_gtk_selection_data,\
-    get_file_extension, is_m3u
+    get_file_extension, is_playlist
 from foobnix.util.localization import foobnix_localization
 from foobnix.gui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE, \
@@ -511,7 +511,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 treerows = self.playlist_filter(treerows)
 
                 for i, treerow in enumerate(treerows):
-                    if is_m3u(treerow[self.path[0]]):
+                    if is_playlist(treerow[self.path[0]]):
                         rows = self.file_paths_to_rows([treerow[self.path[0]]])
                         if rows:
                             rows.reverse()
