@@ -14,21 +14,6 @@ from foobnix.gui.model.signal import FControl
 from foobnix.helpers.my_widgets import ImageButton, EventLabel
 
 
-class PlaybackControlsNotUsedOld(FControl, MyToolbar, LoadSave):
-    def __init__(self, controls):
-        FControl.__init__(self, controls)
-        MyToolbar.__init__(self)
-        self.add_separator()
-        self.add_button("Stop", Gtk.STOCK_MEDIA_STOP, controls.state_stop, None)
-        self.add_button("Play", Gtk.STOCK_MEDIA_PLAY, controls.state_play, None)
-        self.add_button("Pause", Gtk.STOCK_MEDIA_PAUSE, controls.state_pause, None)
-        self.add_button("Previous", Gtk.STOCK_MEDIA_PREVIOUS, controls.prev, None)
-        self.add_button("Next", Gtk.STOCK_MEDIA_NEXT, controls.next, None)
-        self.add_separator()
-
-    def on_load(self): pass
-    def on_save(self): pass
-
 class OrderShuffleControls(FControl, Gtk.HBox, LoadSave):
     def __init__(self, controls):
         Gtk.HBox.__init__(self, False)
@@ -89,8 +74,8 @@ class OrderShuffleControls(FControl, Gtk.HBox, LoadSave):
             self.olabel.show()
             self.rlabel.show()
 
-
     def on_save(self): pass
+
 
 class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
     def __init__(self, controls):
@@ -185,8 +170,8 @@ class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
                 item.set_active(True) #because signal "toggled" will change the value to the opposite
                 self.repeat.set_active(False)
 
-
     def on_save(self): pass
+
 
 class PlaybackControls(FControl, Gtk.HBox, LoadSave):
     def __init__(self, controls):

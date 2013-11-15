@@ -101,10 +101,15 @@ class NetWrapper():
             index = FC().proxy_url.find(":")
             host = FC().proxy_url[:index]
             port = FC().proxy_url[index + 1:]
-            auth = base64.b64encode(FC().proxy_user + ":" + FC().proxy_password).strip()
+            auth = None
+            if FC().proxy_user and FC().proxy_password:
+                auth = base64.b64encode(FC().proxy_user + ":" + FC().proxy_password).strip()
             try:
                 s.connect((host, int(port)))
-                s.send('GET %s HTTP/1.1' % url + '\r\n' + 'Proxy-Authorization: Basic %s' % auth + '\r\n\r\n')
+                if auth:
+                    s.send('GET %s HTTP/1.1' % url + '\r\n' + 'Proxy-Authorization: Basic %s' % auth + '\r\n\r\n')
+                else:
+                    s.send('GET %s HTTP/1.1' % url + '\r\n\r\n')
                 data = s.recv(1024)
                 s.close()
                 if not data:

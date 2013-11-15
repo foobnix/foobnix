@@ -13,8 +13,6 @@ import datetime
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
 from foobnix.gui.model import FModel
-from foobnix.util.const import FTYPE_VIDEO
-from foobnix.util.file_utils import file_extension
 from foobnix.thirdparty.pylast import WSError, Tag
 from foobnix.thirdparty import pylast
 
@@ -200,14 +198,6 @@ class LastFmService():
 
         def task(bean):
             if bean.artist and bean.title:
-                if bean.path and file_extension(bean.path) in FC().video_formats:
-                    #skip video scrobbler
-                    return
-
-                if bean.type == FTYPE_VIDEO:
-                    #skip video results
-                    return
-
                 try:
                     bean.artist, bean.title = bean.artist.encode("utf-8"), bean.title.encode("utf-8")
                     self.get_scrobbler().scrobble(bean.artist, bean.title, start_time, "P", "", int(duration_sec))
