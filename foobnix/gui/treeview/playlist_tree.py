@@ -345,6 +345,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.append_column(column)
         column.button = column.label.get_parent().get_parent().get_parent()
         column.button.connect("button-press-event", self.on_click_header)
+        '''
         if column.key == 'N':
             self.trkn_col.button.menu = Popup()
             group = []
@@ -360,6 +361,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 self.num_order.set_active(True)
             else:
                 self.num_tags.set_active(True)
+        '''
 
     def on_columns_changed(self, *a):
         global FLAG

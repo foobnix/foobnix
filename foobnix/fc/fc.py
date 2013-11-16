@@ -167,7 +167,7 @@ class FC():
         self.file_managers = ['nautilus', 'dolphin', 'konqueror', 'thunar', 'pcmanfm', 'krusader', 'explorer']
         self.active_manager = [0, ""]
 
-        self.numbering_by_order = True
+        #self.numbering_by_order = True
 
         '''columns configuration'''
         '''for playlists'''

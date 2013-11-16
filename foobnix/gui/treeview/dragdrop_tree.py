@@ -275,14 +275,15 @@ class DragDropTree(Gtk.TreeView):
 
         beans = normalized
 
-        counter = 0
+        #counter = 0
         for bean in beans:
-            if not bean.path or not get_file_extension(bean.path) == ".cue":
+            """if not bean.path or not get_file_extension(bean.path) == ".cue":
                 if bean.is_file and FC().numbering_by_order:
                     counter += 1
                     bean.tracknumber = counter
                 else:
                     counter = 0
+            """
             self._plain_append(bean, parent_iter)
 
     def _plain_append(self, bean, parent_iter):
@@ -458,7 +459,10 @@ class DragDropTree(Gtk.TreeView):
                         for b in beans[:]:
                             self.insert_bean(row_ref, b)
         finally:
-            self.update_tracknumber()
+            #self.update_tracknumber()
+            self.controls.notetabs.on_save_tabs()
+            if self.filling_lock.locked():
+                self.filling_lock.release()
 
     @idle_task_priority(GObject.PRIORITY_LOW)
     def fill_row(self, row_ref, bean):
@@ -481,7 +485,7 @@ class DragDropTree(Gtk.TreeView):
             row = self.get_row_from_bean(bean)
             iter = self.model.insert_after(None, self.get_iter_from_row_reference(row_ref), row)
             self.fill_row(self.get_row_reference_from_iter(self.model, iter), bean)
-
+    '''
     @idle_task_priority(GObject.PRIORITY_LOW + 1)
     def update_tracknumber(self):
         try:
@@ -499,6 +503,7 @@ class DragDropTree(Gtk.TreeView):
             self.controls.notetabs.on_save_tabs()
             if self.filling_lock.locked():
                 self.filling_lock.release()
+    '''
 
     def playlist_filter(self, rows):
         checked_cue_rows = []
