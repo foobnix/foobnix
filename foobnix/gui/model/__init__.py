@@ -1,5 +1,5 @@
 import uuid
-from gi.repository import GObject
+
 
 class FTreeModel():
 

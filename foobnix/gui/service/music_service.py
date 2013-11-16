@@ -6,9 +6,6 @@ Created on 25 сент. 2010
 '''
 import os
 from gi.repository import Gtk
-import time
-import thread
-from gi.repository import GObject
 import logging
 
 from foobnix.fc.fc import FC

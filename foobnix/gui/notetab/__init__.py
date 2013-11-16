@@ -7,7 +7,6 @@ Created on Dec 20, 2010
 
 from gi.repository import Gtk
 from gi.repository import Gdk
-from gi.repository import GObject
 from gi.repository import GLib
 
 import logging

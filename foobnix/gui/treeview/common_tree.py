@@ -10,9 +10,10 @@ import logging
 
 from gi.repository import Gtk
 from gi.repository import Gdk
+from gi.repository import GLib
 from gi.repository import GObject
-
 from random import randint
+
 from foobnix.fc.fc_cache import fcache_save_lock
 from foobnix.gui.model.signal import FControl
 from foobnix.gui.model import FTreeModel, FModel

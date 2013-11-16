@@ -12,7 +12,6 @@ import thread
 import logging
 
 from gi.repository import Gtk
-from gi.repository import GObject
 from gi.repository import GLib
 from gi.repository import GdkPixbuf
 
@@ -293,7 +292,7 @@ class BaseFoobnixControls():
     def state_pause(self):
         self.media_engine.state_pause()
 
-    @idle_task_priority(priority=GObject.PRIORITY_HIGH_IDLE)
+    @idle_task_priority(priority=GLib.PRIORITY_HIGH_IDLE)
     def state_stop(self, remember_position=False):
         self.record.hide()
         self.media_engine.state_stop(remember_position)
@@ -436,9 +435,9 @@ class BaseFoobnixControls():
             self.cache_text = text
 
         self.statusbar.set_text(raw_text.replace("||", "|"))
-        
+
         text = normalize_text(text)
-        
+
         self.seek_bar.set_text(text)
         t_bean = bean.create_from_text(text)
         self.update_info_panel(t_bean)
@@ -724,7 +723,7 @@ class BaseFoobnixControls():
             pass
             #GLib.idle_add(self.check_version)
 
-    @idle_task_priority(GObject.PRIORITY_LOW)
+    @idle_task_priority(GLib.PRIORITY_LOW)
     def play_first_file_in_playlist(self):
         active_playlist_tree = self.notetabs.get_current_tree()
         filter_model = active_playlist_tree.get_model()

@@ -5,17 +5,16 @@ Created on 31 may 2011
 @author: zavlab1
 '''
 
-from gi.repository import Gtk
 import time
 import base64
 import socket
 import thread
 import logging
-from gi.repository import GObject
+
+from gi.repository import Gtk
 
 from foobnix.fc.fc import FC
 from foobnix.helpers.window import MessageWindow
-from foobnix.gui.service.vk_service import VKService
 from foobnix.gui.service.lastfm_service import LastFmService
 from foobnix.util import idle_task
 

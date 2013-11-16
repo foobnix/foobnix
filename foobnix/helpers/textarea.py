@@ -4,9 +4,9 @@ Created on Oct 29, 2010
 @author: ivan
 '''
 
-from gi.repository import Gtk
 import pango
-from gi.repository import GObject
+
+from gi.repository import Gtk
 
 from foobnix.helpers.image import ImageBase
 from foobnix.util import idle_task

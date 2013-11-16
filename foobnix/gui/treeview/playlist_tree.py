@@ -9,7 +9,6 @@ import re
 import logging
 
 from gi.repository import Gtk
-from gi.repository import GObject
 
 from foobnix.fc.fc import FC
 from foobnix.playlists.pls_reader import update_id3_for_pls

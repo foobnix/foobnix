@@ -2,8 +2,9 @@
 __author__ = 'popsul'
 
 from gi.repository import Gtk
+from gi.repository import GLib
 from gi.repository import GObject
-from foobnix.gui.state import LoadSave, Quitable
+from foobnix.gui.state import LoadSave
 
 
 class BasePerspective(GObject.GObject, LoadSave):

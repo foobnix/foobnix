@@ -3,7 +3,6 @@ __author__ = 'popsul'
 
 import thread
 from gi.repository import Gtk
-from gi.repository import GObject
 from foobnix.gui.state import Filterable
 from foobnix.gui.perspectives import BasePerspective
 from foobnix.gui.treeview.vk_integration_tree import VKIntegrationControls

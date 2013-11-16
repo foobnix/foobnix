@@ -5,7 +5,7 @@ Created on Oct 14, 2010
 '''
 
 from gi.repository import Gdk
-from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import Gtk
 
 import copy
@@ -464,7 +464,7 @@ class DragDropTree(Gtk.TreeView):
             if self.filling_lock.locked():
                 self.filling_lock.release()
 
-    @idle_task_priority(GObject.PRIORITY_LOW)
+    @idle_task_priority(GLib.PRIORITY_LOW)
     def fill_row(self, row_ref, bean):
             if row_ref.valid():
                 treerow = self.model[row_ref.get_path()]
@@ -479,14 +479,14 @@ class DragDropTree(Gtk.TreeView):
                     if i != self.play_icon[0]:
                         treerow[i] = value
 
-    @idle_task_priority(GObject.PRIORITY_LOW)
+    @idle_task_priority(GLib.PRIORITY_LOW)
     def insert_bean(self, row_ref, bean):
         if row_ref.valid():
             row = self.get_row_from_bean(bean)
             iter = self.model.insert_after(None, self.get_iter_from_row_reference(row_ref), row)
             self.fill_row(self.get_row_reference_from_iter(self.model, iter), bean)
     '''
-    @idle_task_priority(GObject.PRIORITY_LOW + 1)
+    @idle_task_priority(GLib.PRIORITY_LOW + 1)
     def update_tracknumber(self):
         try:
             self.current_view = VIEW_PLAIN

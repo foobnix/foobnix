@@ -3,10 +3,11 @@ Created on Jan 27, 2011
 
 @author: ivan
 '''
+
+import logging
+
 from gi.repository import Gtk
 from gi.repository import GLib
-from gi.repository import GObject
-import logging
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase

@@ -7,7 +7,7 @@ Created on 27 сент. 2010
 
 from gi.repository import Gtk
 from gi.repository import Gdk
-from gi.repository import GObject
+
 from foobnix.util import idle_task
 
 
@@ -52,7 +52,7 @@ class SearchProgress(Gtk.Spinner):
                 finally:
                     self.stop()
             if in_graphic_thread:
-                GObject.idle_add(safe_task, *args)
+                GLib.idle_add(safe_task, *args)
             else:
                 safe_task(*args)
 

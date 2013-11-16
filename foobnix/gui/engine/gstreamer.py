@@ -13,6 +13,7 @@ import logging
 import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst
+from gi.repository import GLib
 from gi.repository import GObject
 
 from foobnix.fc.fc import FC

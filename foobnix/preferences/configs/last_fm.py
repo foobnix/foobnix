@@ -4,10 +4,11 @@ Created on 24 авг. 2010
 
 @author: ivan
 '''
+
+import thread
+
 from gi.repository import Gtk
 from gi.repository import GLib
-from gi.repository import GObject
-import thread
 
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.fc.fc import FC

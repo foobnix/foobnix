@@ -2,7 +2,6 @@
 __author__ = 'popsul'
 
 from gi.repository import Gtk
-from gi.repository import GObject
 from foobnix.gui.state import Quitable, Filterable
 from foobnix.gui.perspectives import BasePerspective
 from foobnix.gui.treeview.virtual_tree import VirtualTreeControl

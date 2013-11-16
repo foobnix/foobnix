@@ -2,7 +2,6 @@
 __author__ = 'popsul'
 
 from gi.repository import Gtk
-from gi.repository import GObject
 from foobnix.util import idle_task
 from foobnix.gui.state import Filterable
 from foobnix.gui.perspectives import BasePerspective

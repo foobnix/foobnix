@@ -6,7 +6,7 @@ Created on Jan 27, 2011
 
 from gi.repository import Gtk
 from gi.repository import GLib
-from gi.repository import GObject
+
 import logging
 
 from foobnix.fc.fc import FC

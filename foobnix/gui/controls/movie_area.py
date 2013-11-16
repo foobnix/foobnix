@@ -1,20 +1,19 @@
 #-*- coding: utf-8 -*-
 
-from foobnix.gui.model.signal import FControl
+import logging
+import threading
 
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
-from gi.repository import GObject
-import logging
 
-from foobnix.helpers.window import ChildTopWindow
-from foobnix.util.mouse_utils import is_double_left_click
 from foobnix.gui.controls.playback import PlaybackControls
-from foobnix.util.key_utils import is_key, is_key_alt, get_key
+from foobnix.gui.model.signal import FControl
 from foobnix.helpers.my_widgets import notetab_label, ImageButton
-import threading
+from foobnix.helpers.window import ChildTopWindow
 from foobnix.util import analytics, idle_task
+from foobnix.util.key_utils import is_key, is_key_alt, get_key
+from foobnix.util.mouse_utils import is_double_left_click
 
 
 class AdvancedDrawingArea(Gtk.DrawingArea):
@@ -149,7 +148,7 @@ class MovieDrawingArea(FControl, Gtk.Frame):
                 self.smallscree_area.modify_bg(state, self.smallscree_area.get_colormap().alloc_color("black"))
                 self.fullscrean_area.draw.modify_bg(state, self.fullscrean_area.get_colormap().alloc_color("black"))
         # TODO Fix it
-        #GObject.idle_add(modyfy_background)
+        #GLib.idle_add(modyfy_background)
 
         self.output = None
         self.set_output(self.smallscree_area)

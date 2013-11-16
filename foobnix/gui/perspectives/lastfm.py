@@ -2,7 +2,6 @@
 __author__ = 'popsul'
 
 from gi.repository import Gtk
-from gi.repository import GObject
 from foobnix.fc.fc import FCBase
 from foobnix.gui.perspectives import BasePerspective
 from foobnix.gui.treeview.lastfm_integration_tree import LastFmIntegrationControls

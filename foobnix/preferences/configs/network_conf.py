@@ -5,16 +5,17 @@ Created on 1 сент. 2010
 @author: ivan
 '''
 
-from gi.repository import Gtk
+
 import time
 import logging
 import urllib2
+
+from gi.repository import Gtk
 
 from foobnix.fc.fc import FC
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.proxy_connect import set_proxy_settings
 from foobnix.gui.service.lastfm_service import LastFmService
-from gi.repository import GObject
 
 
 class NetworkConfig(ConfigPlugin):

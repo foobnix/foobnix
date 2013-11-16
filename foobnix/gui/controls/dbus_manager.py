@@ -4,9 +4,10 @@ Created on 28 сент. 2010
 
 @author: anton.komolov
 '''
+
 import logging
-from gi.repository import GObject
 import dbus.service
+
 from foobnix.fc.fc import FC
 from foobnix.util import idle_task
 from foobnix.version import FOOBNIX_VERSION
