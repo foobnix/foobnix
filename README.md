@@ -2,7 +2,7 @@ Foobnix music player
 =====================
 http://www.foobnix.com
 
-![Screenshot](http://storage5.static.itmages.ru/i/13/1116/h_1384624762_9085944_5138eeff0c.png)
+![Screenshot](http://storage6.static.itmages.ru/i/13/1116/h_1384625270_6649413_d97d430741.png)
 ![Screenshot](http://storage8.static.itmages.ru/i/13/1116/h_1384624929_1915401_5a5ba35198.png)
 
 What is Foobnix?
