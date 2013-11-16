@@ -66,6 +66,11 @@ class BaseFoobnixControls():
             return
         map(self.lastfm_service.love, beans)
 
+    def add_to_my_playlist(self, beans=None):
+         if not beans:
+             return
+         map(self.vk_service.add, beans)
+
     def show_google_results(self, query):
         return [FModel('"%s" not found' % query)]
 
@@ -402,10 +407,9 @@ class BaseFoobnixControls():
         self.is_scrobbled = False
         self.start_time = False
 
-        if not get_file_extension(bean.path) in FC().video_formats:
-            if bean.type != FTYPE_RADIO:
-                self.update_info_panel(bean)
-            self.set_visible_video_panel(False)
+        if bean.type != FTYPE_RADIO:
+            self.update_info_panel(bean)
+        self.set_visible_video_panel(False)
 
     @idle_task
     def notify_playing(self, pos_sec, dur_sec, bean):
@@ -755,3 +759,6 @@ class BaseFoobnixControls():
             if isinstance(self.__dict__[element], LoadSave):
                 logging.debug("SAVE " + str(self.__dict__[element]))
                 self.__dict__[element].on_save()
+
+    def download(self):
+        self.dm.append_task(bean=self.notetabs.get_current_tree().get_current_bean_by_UUID())

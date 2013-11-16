@@ -19,7 +19,7 @@ class M3UReader:
         except Exception as e:
             logging.error(str(e))
             self.m3u = None
-    
+
     def get_common_beans(self):
         paths_and_texts = self.parse()
         if not paths_and_texts:
@@ -29,7 +29,7 @@ class M3UReader:
                         .add_is_file(True)
                         for path_and_text in paths_and_texts]
         return beans
-    
+
     def parse(self):
         try:
             if not self.m3u:
@@ -38,7 +38,7 @@ class M3UReader:
             paths = [os.path.normpath(line).strip('\r\n') for line in lines
                      if line.startswith("##") or not line.startswith("#")]
             dirname = os.path.dirname(self.path)
-            
+
             full_paths = []
             paths = iter(paths)
             for path in paths:
@@ -56,13 +56,13 @@ class M3UReader:
                             full_paths.append( [path, text.strip('\r\n')] )
                             if next_path:
                                 path, text = task(next_path)
-                        
+
                         return path, text
 
-                    path, text = task(path)    
+                    path, text = task(path)
                     if not path:
-                        break           
-                
+                        break
+
                 if text:
                     text = text.strip('\r\n')
                 else:
@@ -71,19 +71,19 @@ class M3UReader:
                         text = path.rsplit('\\', 1)[-1]
                     else:
                         text = new_text
-                
+
                 if (path in "\\/"):
                     full_paths.append( [path.replace("\\", "/"), text] )
                 elif path.startswith('http'):
-                    if not text: 
+                    if not text:
                         text = path.rsplit('/', 1)[-1]
                     full_paths.append( [path.replace('/', '//', 1), text] )
                 else:
                     full_paths.append([os.path.join(dirname, path).replace("\\", "/"), text] )
             return full_paths
-        except IndexError: 
+        except IndexError:
             logging.warn("You try to load empty playlist")
-        
+
 
 
 def update_id3_for_m3u(beans):

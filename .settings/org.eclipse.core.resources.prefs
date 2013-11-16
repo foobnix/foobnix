@@ -61,5 +61,6 @@ encoding//src/foobnix/util/url_utils.py=utf-8
 encoding//src/foobnix/util/widget_utils.py=utf-8
 encoding//src/test/test_vk_service.py=utf-8
 encoding//test/grabers/guzei.py=utf-8
+encoding//test/grabers/guzei_best.py=utf-8
 encoding//test/grabers/myradio_ua.py=utf-8
 encoding//test/test_lfm_service.py=utf-8

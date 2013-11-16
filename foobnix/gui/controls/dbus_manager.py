@@ -195,7 +195,7 @@ class MprisPlayer(dbus.service.Object):
         elif "--play-pause" == command:
             self.controls.play_pause()
         elif "--download" == command:
-            self.controls.dm.append_task(bean=self.controls.notetabs.get_current_tree().get_current_bean_by_UUID())
+            self.controls.download()
         elif "--version" == command:
             return FOOBNIX_VERSION
         elif "--state" == command:

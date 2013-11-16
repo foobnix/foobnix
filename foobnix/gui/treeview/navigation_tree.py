@@ -199,7 +199,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 for k, ch_row in enumerate(treerow.iterchildren()):
                     treerows.insert(i+k+1, ch_row)
 
-            treerows = self.playlist_filter(treerows)
+            #treerows = self.playlist_filter(treerows)
             if not current:
                 name = treerows[0][0]
                 self.controls.notetabs._append_tab(name)

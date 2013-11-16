@@ -73,8 +73,6 @@ class VKWebkitAuth(Gtk.Dialog):
             return self.access_token, self.user_id if self.access_token and self.user_id else None
         self.web_view.open(self.auth_url)
         logging.debug("waiting for answer...")
-        while not self.first_page_loaded:
-            Gtk.main_iteration()
         logging.debug("answer found!")
         logging.debug(self.access_token)
         logging.debug(self.user_id)
@@ -175,6 +173,15 @@ class VKService:
 
     def get(self, method, data):
         url = "https://api.vk.com/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
+        if (method == 'audio.search'):
+             count = FC().search_limit
+             url = url + "&count=%(COUNT)s" % {'COUNT': count }
+
+        if (FC().enable_vk_autocomlete == True):
+             url = url + "&auto_complete=1"
+        else:
+             url = url + "&auto_complete=0"
+
         logging.debug("Try to get response from vkontakte")
         try:
             response = urllib2.urlopen(url, timeout=7)
@@ -288,3 +295,20 @@ class VKService:
             if times_count[i] == r_count:
                 return i
         return None
+
+    def add(self, bean):
+         if (bean.vk_audio_id != None):
+             ids=bean.vk_audio_id.split('_')
+             url = "https://api.vk.com/method/audio.add?access_token=%(ACCESS_TOKEN)s&aid=%(AID)s&oid=%(OID)s" % {'ACCESS_TOKEN':self.token, 'AID':ids[1], 'OID':ids[0] }
+             #logging.debug("GET " + url)
+             logging.debug("Try add audio to vkontakte")
+             try:
+                 response = urllib2.urlopen(url, timeout=7)
+                 if "response" not in vars():
+                     logging.error("Can't get response from vkontakte")
+                     return
+             except IOError:
+                 logging.error("Can't get response from vkontakte")
+                 return
+             result = response.read()
+         return result

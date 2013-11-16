@@ -32,7 +32,7 @@ class FC():
         self.is_view_music_tree_panel = True
         self.is_view_coverlyrics_panel = False
         self.is_view_lyric_panel = True
-        self.is_view_video_panel = True
+        self.is_view_video_panel = False
         self.is_order_random = False
         self.repeat_state = const.REPEAT_ALL
         self.playlist_type = const.PLAYLIST_TREE
@@ -47,6 +47,7 @@ class FC():
         """VK"""
         self.access_token =  None
         self.user_id =  None
+        self.enable_vk_autocomlete = False
 
         """LastFM"""
         self.search_limit = 50
@@ -98,10 +99,9 @@ class FC():
         self.on_close_window = const.ON_CLOSE_CLOSE
 
         """support file formats"""
-        audio_container = [".cue", ".iso.wv"]
-        self.video_formats = [".3g2", ".3gp", ".asf", ".asx", ".avi", ".flv", ".mov", ".mpg", ".rm", ".swf", ".vob", ".wmv",".mkv",".m4v", ".mp4"]
-        self.audio_formats = [".mp3", ".m3u", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".ac3", ".m4a", ".ra", ".m4p", ".wv", ".shn", ".wav"]
-        self.all_support_formats = self.audio_formats + self.video_formats + audio_container
+        audio_containers = [".cue", ".iso.wv", ".m3u", ".m3u8"]
+        self.audio_formats = [".mp3", ".ogg", ".ape", ".flac", ".wma", ".mpc", ".aiff", ".raw", ".au", ".aac", ".ac3", ".m4a", ".ra", ".m4p", ".wv", ".shn", ".wav"]
+        self.all_support_formats = self.audio_formats + audio_containers
         self.all_support_formats.sort()
 
         self.enable_music_scrobbler = True
@@ -151,7 +151,7 @@ class FC():
         self.proxy_password = None
 
         '''Multimedia and hot keys'''
-        self.action_hotkey = {'controls.volume_up': '<SUPER>Up', 'controls.volume_down': '<SUPER>Down', 'controls.show_hide': '<SUPER>a', 'controls.prev': '<SUPER>Left', 'controls.state_play': '<SUPER>x', 'controls.play_pause': '<SUPER>z', 'controls.next': '<SUPER>Right'}
+        self.action_hotkey = {'controls.volume_up': '<SUPER>Up', 'controls.volume_down': '<SUPER>Down', 'controls.show_hide': '<SUPER>a', 'controls.prev': '<SUPER>Left', 'controls.state_play': '<SUPER>x', 'controls.play_pause': '<SUPER>z', 'controls.next': '<SUPER>Right', 'controls.download' : '<Control><SUPER>z'}
         self.multimedia_keys = {'controls.prev': 'XF86AudioPrev', 'controls.next': 'XF86AudioNext', 'controls.play_pause': 'XF86AudioPlay', 'controls.state_stop': 'XF86AudioStop', 'controls.volume_up': 'XF86AudioRaiseVolume', 'controls.volume_down': 'XF86AudioLowerVolume', 'controls.mute': 'XF86AudioMute'}
         self.media_volume_keys = {'controls.volume_up': 'XF86AudioRaiseVolume', 'controls.volume_down': 'XF86AudioLowerVolume', 'controls.mute': 'XF86AudioMute'}
         self.media_keys_enabled = True

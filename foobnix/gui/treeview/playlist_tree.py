@@ -12,6 +12,7 @@ from gi.repository import Gtk
 from gi.repository import GObject
 
 from foobnix.fc.fc import FC
+from foobnix.playlists.pls_reader import update_id3_for_pls
 from foobnix.util import const, idle_task
 from foobnix.helpers.menu import Popup
 from foobnix.util.bean_utils import get_bean_from_file
@@ -19,7 +20,7 @@ from foobnix.util.tag_util import edit_tags
 from foobnix.util.converter import convert_files
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.file_utils import open_in_filemanager, copy_to, get_files_from_gtk_selection_data,\
-    get_file_extension, is_m3u
+    get_file_extension, is_playlist
 from foobnix.util.localization import foobnix_localization
 from foobnix.gui.treeview.common_tree import CommonTreeControl
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE, \
@@ -50,7 +51,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.set_reorderable(True)
 
         """Column icon"""
-        self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), stock_id=self.play_icon[0])
+        self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), icon_name=self.play_icon[0])
         self.icon_col.key = "*"
         self.icon_col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         self.icon_col.set_fixed_width(32)
@@ -278,6 +279,8 @@ class PlaylistTreeControl(CommonTreeControl):
                 self.tree_menu.add_separator()
                 self.tree_menu.add_item(_('Love This Track(s) by Last.fm'), None,
                                         self.controls.love_this_tracks, self.get_all_selected_beans())
+                self.tree_menu.add_item(_('Add to My Audio (VK)'), None,
+                                        self.controls.add_to_my_playlist, self.get_all_selected_beans())
 
                 self.tree_menu.show(e)
 
@@ -415,6 +418,7 @@ class PlaylistTreeControl(CommonTreeControl):
         for path in paths:
             bean = get_bean_from_file(path)
             beans = update_id3_for_m3u([bean])
+            beans = update_id3_for_pls(beans)
             if beans and len(beans) > 1:
                     bean = bean.add_text(_('Playlist: ') + bean.text).add_font("bold").add_is_file(False)
                     bean.path = ''
@@ -506,10 +510,10 @@ class PlaylistTreeControl(CommonTreeControl):
                     for k, ch_row in enumerate(treerow.iterchildren()):
                         treerows.insert(i + k + 1, ch_row)
 
-                treerows = self.playlist_filter(treerows)
+                #treerows = self.playlist_filter(treerows)
 
                 for i, treerow in enumerate(treerows):
-                    if is_m3u(treerow[self.path[0]]):
+                    if is_playlist(treerow[self.path[0]]):
                         rows = self.file_paths_to_rows([treerow[self.path[0]]])
                         if rows:
                             rows.reverse()
