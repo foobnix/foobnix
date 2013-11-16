@@ -3,21 +3,23 @@ Created on Sep 28, 2010
 
 @author: ivan
 '''
+
+import logging
+import os
+
 from gi.repository import Gtk
+
 from foobnix.util import idle_task
 from foobnix.util.pix_buffer import create_pixbuf_from_resource, \
     create_pixbuf_from_url, create_pixbuf_from_path, resize_pixbuf
-import logging
-import os
-from gi.repository import GObject
+
 
 class ImageBase(Gtk.Image):
     def __init__(self, resource, size=None):
         Gtk.Image.__init__(self)
-        self.pixbuf = None
         self.resource = resource
         self.size = size
-        self.set_no_image()
+        self.pixbuf = create_pixbuf_from_resource(self.resource, self.size)
 
     @idle_task
     def set_no_image(self):

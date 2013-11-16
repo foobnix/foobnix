@@ -16,6 +16,7 @@ from foobnix.fc.fc import FC
 from foobnix.gui.controls.playback import PlaybackControls
 from foobnix.gui.model import FModel
 from foobnix.gui.model.signal import FControl
+from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.gui.state import LoadSave
 from foobnix.helpers.image import ImageBase
 from foobnix.helpers.my_widgets import ImageButton, AlternateVolumeControl
@@ -94,11 +95,10 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
         FControl.__init__(self, controls)
         Gtk.StatusIcon.__init__(self)
         self.hide()
-
         ImageBase.__init__(self, ICON_FOOBNIX, 150)
 
         self.popup_menu = PopupMenuWindow(self.controls)
-        self.popup_volume_contol = PopupVolumeWindow (self.controls, self.popup_menu)
+        self.popup_volume_contol = PopupVolumeWindow(self.controls, self.popup_menu)
 
         self.connect("activate", self.on_activate)
         self.connect("popup-menu", self.on_popup_menu)
@@ -127,11 +127,8 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
 
     def on_load(self):
         if FC().show_tray_icon:
-            if FC().static_tray_icon:
-                self.set_from_resource(FC().static_icon_entry)
+            self.set_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
             self.show()
-        else:
-            self.hide()
 
     def update_info_from(self, bean):
         self.current_bean = bean
@@ -152,6 +149,10 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
             super(TrayIconControls, self).update_info_from(bean)
 
         if FC().notifier:
+            self.to_notify(artist, title)
+
+    @idle_task
+    def to_notify(self, artist, title):
             message = "%s%s" % (artist, title)
             if self._previous_notify == message:
                 return
@@ -161,7 +162,6 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
             notification.set_timeout(FC().notify_time)
             notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
             notification.show()
-
 
     def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip):
         artist = "Artist"
