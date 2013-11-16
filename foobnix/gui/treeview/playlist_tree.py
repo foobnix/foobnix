@@ -447,8 +447,8 @@ class PlaylistTreeControl(CommonTreeControl):
                 self.controls.notetabs.rename_tab(self.scroll, tabname)
             for i, file in enumerate(files):
                 if os.path.isdir(file):
-                    listdir = filter(lambda x: get_file_extension(x) in FC().all_support_formats or os.path.isdir(x),
-                                     [os.path.join(file, f) for f in os.listdir(file)])
+                    listdir = sorted(filter(lambda x: get_file_extension(x) in FC().all_support_formats or os.path.isdir(x),
+                                     [os.path.join(file, f) for f in os.listdir(file)]), key=lambda x: x[self.text[0]])
                     for k, path in enumerate(listdir):
                         files.insert(i + k + 1, path)
 
