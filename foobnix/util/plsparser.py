@@ -5,6 +5,7 @@ Created on Mar 3, 2010
 '''
 import urllib2
 import logging
+from foobnix.util import LOG
 
 
 "Get content of the url"
@@ -61,7 +62,7 @@ def getStations(data, urls):
                 return urls    
 
 def get_radio_source(url):
-    print url
+    LOG.fprint(url)
     if url:          
         if url.lower().endswith(".pls"):                
             source_url = getStationPath(url)

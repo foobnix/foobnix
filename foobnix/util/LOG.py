@@ -5,6 +5,7 @@ Created on Feb 26, 2010
 '''
 
 import logging
+with_print = False
 
 levels = {
     "info": logging.INFO,
@@ -14,7 +15,14 @@ levels = {
     "debug": logging.DEBUG
 }
 
+def fprint(msg):
+    if with_print:
+        print msg
+    else:
+        logging.info(msg)
+
 def setup(level="error", filename=None):
+    log_level = level
     """
     Sets up the basic logger and if `:param:filename` is set, then it will log
     to that file instead of stdout.

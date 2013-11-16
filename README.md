@@ -1,13 +1,18 @@
 Foobnix music player
 =====================
+Foobnix is a free music player written on Python.
+
 http://www.foobnix.com
 
+CUE, wv and iso.wv support, probably the best among Linux music players
+Supports MP3, MP4, AAC, CD Audio, WMA, OGG, FLAC, WavPack, WAV, Musepack and many more formats
 ![Screenshot](http://storage6.static.itmages.ru/i/13/1116/h_1384625270_6649413_d97d430741.png)
+
+Online Music Search and Listen for Free
 ![Screenshot](http://storage8.static.itmages.ru/i/13/1116/h_1384624929_1915401_5a5ba35198.png)
 
-What is Foobnix?
-----------------
-Foobnix is a free music player written on Python.
+5000+ Internet Radio Stations
+![Screenshot](http://storage7.static.itmages.ru/i/13/1116/h_1384625485_4450624_2ba374ef8d.png)
 
 Main features
 -------------

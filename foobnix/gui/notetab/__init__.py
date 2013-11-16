@@ -258,7 +258,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave):
         try:
             threading.Thread(target=task, args=()).start()
         except Exception, e:
-            print "Exception: %s" % str(e)
+            logging.error("Exception: "  + str(e))
 
 TARGET_TYPE_URI_LIST = 80
 dnd_list = [Gtk.TargetEntry.new('text/uri-list', 0, TARGET_TYPE_URI_LIST)]

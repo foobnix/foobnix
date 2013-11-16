@@ -32,6 +32,7 @@ def except_hook(exc_t, exc_v, traceback):
 def foobnix():
 
     if "--debug" in sys.argv:
+        LOG.with_print = True
         for param in sys.argv:
             if param.startswith("--log"):
                 if "=" in param:

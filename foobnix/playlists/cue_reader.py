@@ -194,7 +194,7 @@ class CueReader():
             try:
                 line = unicode(line, code)
             except:
-                print "There is some problems while converting in unicode"
+                logging.error("There is some problems while converting in unicode")
             
             line = str(line).strip()
             if not line:

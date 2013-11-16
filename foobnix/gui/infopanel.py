@@ -358,10 +358,11 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         self.info_cache.similar_artists_bean = self.bean
 
         """similar  artists"""
-        similar_artists = self.controls.lastfm_service.search_top_similar_artist(self.bean.artist)
-        parent = FModel(_("Similar Artists:") + " " + self.bean.artist)
-        update_parent_for_beans(similar_artists, parent)
-        self.artists.populate_all([parent] + similar_artists)
+        if self.bean.artist:
+            similar_artists = self.controls.lastfm_service.search_top_similar_artist(self.bean.artist)
+            parent = FModel(_("Similar Artists:") + " " + self.bean.artist)
+            update_parent_for_beans(similar_artists, parent)
+            self.artists.populate_all([parent] + similar_artists)
 
     def show_best_songs(self):
         if self.info_cache.best_songs_bean == self.bean:

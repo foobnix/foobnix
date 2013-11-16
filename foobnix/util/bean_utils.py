@@ -70,7 +70,7 @@ def get_bean_download_path(bean, path=FC().online_save_to_folder, nosubfolder = 
 
 def get_bean_from_file(f):
     if not os.path.exists(f):
-        print "not exists", f
+        logging.debug("not exists" + str(f))
         return None
     bean = FDModel(text=os.path.basename(f), path=f)
     is_file = True if os.path.isfile(f) else False
