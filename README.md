@@ -1,5 +1,9 @@
 Foobnix music player
 =====================
+http://www.foobnix.com
+
+[[http://storage5.static.itmages.ru/i/13/1116/h_1384624762_9085944_5138eeff0c.png|width=400px]]
+[[http://storage8.static.itmages.ru/i/13/1116/h_1384624929_1915401_5a5ba35198.png|width=400px]]
 
 What is Foobnix?
 ----------------
