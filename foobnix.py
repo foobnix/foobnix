@@ -11,7 +11,6 @@ pygtkcompat.enable_gtk(version="3.0")
 require_version("Keybinder", "3.0")
 
 from gi.repository import Gtk
-from gi.repository import GObject
 from gi.repository import GLib
 
 
@@ -61,7 +60,7 @@ def foobnix():
     init_time = time.time()
 
     if "--nt" in sys.argv or os.name == 'nt':
-        GObject.threads_init() #@UndefinedVariable
+        GLib.threads_init() #@UndefinedVariable
         core = FoobnixCore(False)
         core.run()
         analytics.begin_session()
@@ -73,7 +72,7 @@ def foobnix():
         iface = foobnix_dbus_interface()
         if "--debug" in sys.argv or not iface:
             print("start program")
-            GObject.threads_init()    #@UndefinedVariable
+            GLib.threads_init()    #@UndefinedVariable
             core = FoobnixCore(True)
             core.run()
             analytics.begin_session()

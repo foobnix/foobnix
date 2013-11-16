@@ -30,7 +30,10 @@ class MainWindow(Gtk.Window, FControl, LoadSave):
         self.connect("window-state-event", self.on_change_state)
         self.connect("delete-event", self.hide_window)
         self.connect("key-press-event", self.on_key_press)
-        self.set_icon(self.controls.trayicon.get_pixbuf())
+        try:
+            self.set_icon_from_file(get_foobnix_resourse_path_by_name(const.ICON_FOOBNIX))
+        except TypeError as e:
+            logging.error(str(e))
 
         self.set_opacity(FC().window_opacity)
         self.iconified = False

@@ -5,11 +5,11 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 
+import logging
+
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
-from gi.repository import GObject
-import logging
 
 from foobnix.fc.fc import FC
 from foobnix.gui.model.signal import FControl
@@ -181,5 +181,5 @@ class BaseFoobnixLayout(FControl, LoadSave):
     def on_load(self):
         self.set_visible_search_panel(FC().is_view_search_panel)
         GLib.idle_add(self.set_visible_musictree_panel, FC().is_view_music_tree_panel,
-                         priority = GObject.PRIORITY_DEFAULT_IDLE - 10)
+                         priority = GLib.PRIORITY_DEFAULT_IDLE - 10)
         self.set_visible_coverlyrics_panel(FC().is_view_coverlyrics_panel)

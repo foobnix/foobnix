@@ -2,7 +2,6 @@
 __author__ = 'popsul'
 
 from gi.repository import Gtk
-from gi.repository import GObject
 from foobnix.gui.state import Filterable, Quitable
 from foobnix.gui.perspectives import BasePerspective, StackableWidget
 from foobnix.gui.treeview.radio_tree import RadioTreeControl, MyRadioTreeControl

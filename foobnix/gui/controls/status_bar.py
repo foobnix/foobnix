@@ -5,7 +5,6 @@ Created on 28 сент. 2010
 @author: ivan
 '''
 from gi.repository import Gtk
-from gi.repository import GObject
 from foobnix.util import idle_task
 from foobnix.gui.model.signal import FControl
 

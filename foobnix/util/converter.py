@@ -11,11 +11,11 @@ import os
 import re
 import thread
 import logging
+
 from gi.repository import Gtk
 from gi.repository import GLib
-from gi.repository import GObject
-
 from subprocess import Popen, PIPE
+
 from foobnix.fc.fc_helper import CONFIG_DIR
 from foobnix.util.const import ICON_FOOBNIX
 from foobnix.util.file_utils import open_in_filemanager

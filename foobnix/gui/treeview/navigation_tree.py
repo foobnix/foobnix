@@ -11,7 +11,6 @@ import threading
 
 from gi.repository import Gtk
 from gi.repository import GLib
-from gi.repository import GObject
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache

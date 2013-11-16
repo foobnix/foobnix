@@ -6,7 +6,6 @@ Created on Sep 29, 2010
 import logging
 
 from gi.repository import Gtk
-from gi.repository import GObject
 
 from foobnix.gui.state import LoadSave
 from foobnix.util.mouse_utils import is_double_left_click, is_rigth_click,\

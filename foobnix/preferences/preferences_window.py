@@ -7,7 +7,6 @@ import thread
 import logging
 from gi.repository import Gtk
 from gi.repository import GLib
-from gi.repository import GObject
 
 from foobnix.fc.fc import FC
 from foobnix.gui.model import FDModel
