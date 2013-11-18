@@ -6,6 +6,7 @@ Created on Sep 23, 2010
 import os
 import copy
 import logging
+import threading
 
 from gi.repository import Gtk
 from gi.repository import GObject
@@ -138,11 +139,9 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
 
         self.add(self.vpaned_small)
 
-        ### TODO: WTF???
-        self.hide()
-
         self.bean = None
         self.info_cache = InfoCache()
+        self.update_lock = threading.Lock()
 
     @idle_task
     def show_current(self, widget):
@@ -180,17 +179,21 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         bean = copy.copy(self.bean)
 
         def update_info_panel_task():
-            self.show_album_title(bean)
-            self.show_disc_cover(bean)
-            if self.controls.coverlyrics.get_property("visible"):
-                try:
-                    self.show_similar_lyrics(bean)
-                except Exception, e:
-                    logging.error("Can't get lyrics. " + type(e).__name__ + ": " + e.message)
-            if self.info_cache.active_method:
-                self.info_cache.active_method()
+            self.update_lock.acquire()
+            try:
+                self.show_album_title(bean)
+                self.show_disc_cover(bean)
+                if self.controls.coverlyrics.get_property("visible"):
+                    try:
+                        self.show_similar_lyrics(bean)
+                    except Exception, e:
+                        logging.error("Can't get lyrics. " + type(e).__name__ + ": " + e.message)
+                if self.info_cache.active_method:
+                    self.info_cache.active_method()
+            except: pass
+            self.update_lock.release()
 
-        self.controls.in_thread.run_with_progressbar(update_info_panel_task)
+        self.controls.in_thread.run_with_progressbar(update_info_panel_task, with_lock=False)
 
     def update(self, bean):
         if bean.type == FTYPE_NOT_UPDATE_INFO_PANEL:
@@ -275,7 +278,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         """lyrics"""
         if not os.path.isdir(LYRICS_DIR):
             os.mkdir(LYRICS_DIR)
-        lyrics_list = os.listdir(LYRICS_DIR)
+
         cache_name = lyrics_title = "%s - %s" % (bean.artist, bean.title)
 
         illegal_chars = ["/", "#", ";", ":", "%", "*", "&", "\\"]
@@ -285,7 +288,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
 
         text = None
 
-        if cache_name in lyrics_list:
+        if os.path.exists(os.path.join(LYRICS_DIR, cache_name)):
             text = "".join(open(os.path.join(LYRICS_DIR, cache_name), 'r').readlines())
         else:
             self.lyrics.set_text(_("Loading..."), lyrics_title)
@@ -322,7 +325,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
 
 #         Deprecated
 #         images = artist.get_images(limit=6)
-#  
+#
 #         for image in images:
 #             try:
 #                 url = image.sizes.large
