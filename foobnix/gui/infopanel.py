@@ -142,6 +142,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         self.bean = None
         self.info_cache = InfoCache()
         self.update_lock = threading.Lock()
+        self.clear()
 
     @idle_task
     def show_current(self, widget):
