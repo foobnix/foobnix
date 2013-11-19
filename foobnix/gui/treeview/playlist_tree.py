@@ -450,8 +450,20 @@ class PlaylistTreeControl(CommonTreeControl):
                 self.controls.notetabs.rename_tab(self.scroll, tabname)
             for i, file in enumerate(files):
                 if os.path.isdir(file):
+                    sorted_dirs = []
+                    sorted_files = []
+                    for f in sorted(os.listdir(file), key=lambda x: x):
+                        f = os.path.join(file, f)
+                        if os.path.isdir(f):
+                            sorted_dirs.append(f)
+                        elif get_file_extension(f) in FC().all_support_formats:
+                            sorted_files.append(f)
+
+                    listdir = sorted_dirs + sorted_files
+                    '''
                     listdir = sorted(filter(lambda x: get_file_extension(x) in FC().all_support_formats or os.path.isdir(x),
-                                     [os.path.join(file, f) for f in os.listdir(file)]), key=lambda x: x[self.text[0]])
+                                     [os.path.join(file, f) for f in os.listdir(file)]), key=lambda x: x)
+                    '''
                     for k, path in enumerate(listdir):
                         files.insert(i + k + 1, path)
 
