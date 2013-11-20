@@ -16,7 +16,6 @@ import threading
 import collections
 
 from foobnix.gui.model import FModel, FTreeModel, FDModel
-from foobnix.fc.fc import FC
 from foobnix.util.file_utils import get_file_extension, is_m3u
 from foobnix.util.id3_file import update_id3_wind_filtering
 from foobnix.util.iso_util import get_beans_from_iso_wv

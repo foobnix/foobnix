@@ -206,7 +206,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 to_model = to_tree.get_model().get_model()
             for i, treerow in enumerate(treerows):
                 if is_m3u(treerow[self.path[0]]):
-                    rows = self.file_paths_to_rows([treerow[self.path[0]]])
+                    rows = to_tree.file_paths_to_rows([treerow[self.path[0]]])
                     if rows:
                         rows.reverse()
                         map(lambda row: treerows.insert(i + 1, row), rows)

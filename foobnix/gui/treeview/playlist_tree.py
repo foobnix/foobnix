@@ -12,6 +12,7 @@ import re
 import thread
 
 from gi.repository import Gtk
+from gi.repository import GLib
 
 from foobnix.fc.fc import FC
 from foobnix.playlists.pls_reader import update_id3_for_pls
@@ -203,6 +204,7 @@ class PlaylistTreeControl(CommonTreeControl):
 
         return bean
 
+
     @idle_task
     def scroll_follow_play_icon(self):
         paths = [(i,) for i, row in enumerate(self.model)]
@@ -223,7 +225,7 @@ class PlaylistTreeControl(CommonTreeControl):
         rows = self.file_paths_to_rows(paths)
         if not rows:
             return
-        rows = self.playlist_filter(rows)
+        #rows = self.playlist_filter(rows)
         for row in rows:
             self.model.append(None, row)
         thread.start_new_thread(self.safe_fill_treerows, ())
@@ -417,7 +419,6 @@ class PlaylistTreeControl(CommonTreeControl):
         '''if FC().columns["Track"][2] < 0:
              self.description_col.set_fixed_width(self.get_allocation().width - (FC().columns["Time"][2]+70))'''
 
-    @idle_task
     def change_rows_by_path(self, file_paths):
         for treerow in self.model:
             if treerow[self.is_file[0]] and treerow[self.path[0]] in file_paths:
@@ -425,6 +426,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 bean = update_id3(bean)
                 row_ref = Gtk.TreeRowReference.new(self.model, treerow.path)
                 self.fill_row(row_ref, bean)
+        GLib.idle_add(self.controls.notetabs.save_current_tab, priority=GLib.PRIORITY_LOW)
 
     def file_paths_to_rows(self, paths):
         result = []

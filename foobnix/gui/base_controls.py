@@ -645,7 +645,7 @@ class BaseFoobnixControls():
 
     def quit(self, *a):
         self.state_stop()
-        Gtk.main_iteration()   # wait for complete stop task
+
         self.main_window.hide()
         self.trayicon.hide()
 
@@ -657,7 +657,7 @@ class BaseFoobnixControls():
 
         FC().save()
 
-        Gtk.main_quit()
+        GLib.idle_add(Gtk.main_quit) # wait for complete stop task
 
     def check_version(self):
         uuid = FCBase().uuid
