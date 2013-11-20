@@ -5,8 +5,11 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 
-import re
+
 import logging
+import os
+import re
+import thread
 
 from gi.repository import Gtk
 
@@ -15,6 +18,7 @@ from foobnix.playlists.pls_reader import update_id3_for_pls
 from foobnix.util import const, idle_task
 from foobnix.helpers.menu import Popup
 from foobnix.util.bean_utils import get_bean_from_file
+from foobnix.util.id3_util import update_id3
 from foobnix.util.tag_util import edit_tags
 from foobnix.util.converter import convert_files
 from foobnix.util.audio import get_mutagen_audio
@@ -26,8 +30,7 @@ from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE, \
     is_modificator
 from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
-import os
-import thread
+
 from foobnix.playlists.m3u_reader import update_id3_for_m3u
 
 
@@ -413,6 +416,15 @@ class PlaylistTreeControl(CommonTreeControl):
                 column.set_visible(False)
         '''if FC().columns["Track"][2] < 0:
              self.description_col.set_fixed_width(self.get_allocation().width - (FC().columns["Time"][2]+70))'''
+
+    @idle_task
+    def change_rows_by_path(self, file_paths):
+        for treerow in self.model:
+            if treerow[self.is_file[0]] and treerow[self.path[0]] in file_paths:
+                bean = self.get_bean_from_row(treerow)
+                bean = update_id3(bean)
+                row_ref = Gtk.TreeRowReference.new(self.model, treerow.path)
+                self.fill_row(row_ref, bean)
 
     def file_paths_to_rows(self, paths):
         result = []

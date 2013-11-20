@@ -19,7 +19,7 @@ from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.file_utils import get_any_supported_audio_file
-from foobnix.util.id3_util import udpate_id3, correct_encoding
+from foobnix.util.id3_util import update_id3, correct_encoding
 
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
@@ -35,7 +35,7 @@ class CueTrack():
         self.duration = 0
         self.path = path
 
-    def __str__(self):        
+    def __str__(self):
         return "Track: " + self.title + " " + self.performer + " " + self.index
 
     def get_start_time_str(self):
@@ -48,12 +48,12 @@ class CueTrack():
 
         if not times or len(times) < 2:
             return 0
-    
+
         min = times[0]
         sec = times[1]
         starts = int(min) * 60 + int(sec)
         return starts
-    
+
 class CueFile():
     def __init__(self):
         self.title = None
@@ -61,7 +61,7 @@ class CueFile():
         self.file = ""
         self.image = None
         self.tracks = []
-        
+
     def append_track(self, track):
         self.tracks.append(track)
 
@@ -82,14 +82,14 @@ class CueReader():
         self.embedded_cue = embedded_cue
         self.is_valid = True
         self.cue_file = CueFile()
-        
-        
+
+
     def get_line_value(self, str):
         first = str.find('"') or str.find("'")
         end = str.find('"', first + 1) or str.find("'", first + 1)
         return str[first + 1:end]
-    
-    def get_full_duration (self, file):        
+
+    def get_full_duration (self, file):
         try:
             audio = get_mutagen_audio(file)
         except Exception, e:
@@ -97,7 +97,7 @@ class CueReader():
             return
 
         return audio.info.length
-    
+
     def normalize(self):
         duration_tracks = []
         tracks = self.cue_file.tracks
@@ -114,15 +114,15 @@ class CueReader():
                         duration = next_track.get_start_time_sec() - track.get_start_time_sec()
                     else: #for cue  "several files - each file involve several tracks"
                         duration = self.get_full_duration(track.path) - track.get_start_time_sec()
-                        
+
                 track.duration = duration
             else:
                 track.duration = None
             if not track.path:
                 track.path = self.cue_file.file
-            
+
             track.path = get_any_supported_audio_file(track.path)
-                  
+
             duration_tracks.append(track)
 
         self.cue_file.tracks = duration_tracks
@@ -149,10 +149,10 @@ class CueReader():
             except Exception, e:
                 logging.warn(str(e) + " " + bean.path)
                 bean.info = ""
-                                       
+
             if not bean.title or not bean.artist:
                 bean = udpate_id3(bean)
-            
+
             beans.append(bean)
 
         return beans
@@ -166,8 +166,8 @@ class CueReader():
         try:
             return chardet.detect(data)['encoding']
         except:
-            return "windows-1251" 
-         
+            return "windows-1251"
+
     def parse(self):
         if self.embedded_cue:
             data = self.embedded_cue
@@ -181,21 +181,21 @@ class CueReader():
         performer = ""
         index = "00:00:00"
         full_file = None
-        
+
         self.cue_file.image = get_image_by_path(self.cue_path)
 
         self.files_count = 0
-        
+
         for line in data:
             if not self.is_valid and not line.startswith(FILE):
                 continue
             else: self.is_valid = True
-            
+
             try:
                 line = unicode(line, code)
             except:
                 logging.error("There is some problems while converting in unicode")
-            
+
             line = str(line).strip()
             if not line:
                 continue
@@ -215,12 +215,12 @@ class CueReader():
                 self.files_count += 1
                 file = self.get_line_value(line)
                 file = os.path.basename(file)
-                
+
                 if "/" in file:
                     file = file[file.rfind("/")+1:]
                 if "\\" in file:
                     file = file[file.rfind("\\")+1:]
-                 
+
                 dir = os.path.dirname(self.cue_path)
                 full_file = os.path.join(dir, file)
                 logging.debug("CUE source" + full_file)
@@ -232,7 +232,7 @@ class CueReader():
                     ext = file_utils.get_file_extension(full_file)
                     nor = full_file[:-len(ext)]
                     logging.info("Normalized path" + nor)
-                    
+
                     find_source = False
                     for support_ext in FC().audio_formats:
                         try_name = nor + support_ext
@@ -241,13 +241,13 @@ class CueReader():
                             logging.debug("Found source for cue file name" + try_name)
                             find_source = True
                             break
-                    
-                    if not find_source:    
+
+                    if not find_source:
                         self.is_valid = False
                         self.files_count -= 1
                         logging.warn("Can't find source for " + line + "  Check source file name")
                         continue
-                
+
                 if self.files_count == 0:
                     self.cue_file.file = full_file
 
@@ -257,10 +257,10 @@ class CueReader():
             if line.startswith("INDEX 01"):
                 cue_track = CueTrack(title, performer, index, full_file)
                 self.cue_file.append_track(cue_track)
-        
+
         logging.debug("CUE file parsed " + str(self.cue_file.file))
         return self.normalize()
-    
+
 def update_id3_for_cue(beans):
     result = []
     for bean in beans:

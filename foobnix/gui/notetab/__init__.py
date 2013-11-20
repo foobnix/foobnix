@@ -455,6 +455,7 @@ class NoteTabControl(TabGeneral):
         pass
 
     def save_tabs(self):
+        print "save_tabs notebook"
         number_music_tabs = self.get_n_pages()
         FCache().cache_pl_tab_contents = []
         FCache().tab_pl_names = []
@@ -463,6 +464,7 @@ class NoteTabControl(TabGeneral):
                 self.save_nth_tab(tab_number)
 
     def save_nth_tab(self, tab_number):
+        print "save_tabs notebook " + tab_number
         tab = self.get_nth_page(tab_number)
         pl_tree = tab.get_child()
         FCache().cache_pl_tab_contents.append([list(row) for row in pl_tree.model])
@@ -473,6 +475,7 @@ class NoteTabControl(TabGeneral):
                 FC().columns[column.key][2] = column.get_width()
 
     def on_quit(self):
+        print "on_quit"
         self.on_save_tabs()
 
     def equalize_columns_size(self, notebook, page_pointer, page_num):

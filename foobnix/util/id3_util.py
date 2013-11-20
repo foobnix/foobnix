@@ -36,11 +36,11 @@ def correct_encoding(text):
     return text
 
 
-def udpate_id3_for_beans(beans):
+def update_id3_for_beans(beans):
     for bean in beans:
         if get_file_extension(bean.text) in FC().audio_formats:
             try:
-                udpate_id3(bean)
+                update_id3(bean)
             except Exception, e:
                 logging.warn("update id3 error - % s" % e)
         if bean.text:
@@ -49,7 +49,7 @@ def udpate_id3_for_beans(beans):
     return beans
 
 
-def udpate_id3(bean):
+def update_id3(bean):
     if bean and bean.path and os.path.isfile(bean.path):
         try:
             audio = get_mutagen_audio(bean.path)
