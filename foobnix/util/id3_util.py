@@ -91,13 +91,13 @@ def udpate_id3(bean):
             elif bean.title:
                 bean.artist = _("Unknown artist")
             bean.text = bean.artist + " - " + bean.title
-
+        '''
         if bean.tracknumber:
             try:
                 bean.tracknumber = int(bean.tracknumber)
             except:
                 bean.tracknumber = ""
-
+        '''
         bean = update_bean_from_normalized_text(bean)
         bean.time = convert_seconds_to_text(duration_sec)
 
