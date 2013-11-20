@@ -434,7 +434,7 @@ class PlaylistTreeControl(CommonTreeControl):
             bean = get_bean_from_file(path)
             beans = update_id3_for_m3u([bean])
             beans = update_id3_for_pls(beans)
-            if beans and len(beans) > 1:
+            if beans and (len(beans) > 1 or is_playlist(bean.path)):
                     bean = bean.add_text(_('Playlist: ') + bean.text).add_font("bold").add_is_file(False)
                     bean.path = ''
                     beans.insert(0, bean)
