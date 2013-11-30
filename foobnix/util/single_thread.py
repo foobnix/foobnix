@@ -43,6 +43,7 @@ class SingleThread():
                 thread.start_new_thread(self._thread_task, (method, args))  
     
     def _thread_task(self, method, args, with_lock=True):
+        self.lock.acquire()
         try:
             if method and args:
                 method(args)
@@ -57,4 +58,3 @@ class SingleThread():
                 if self.progressbar:
                     self.progressbar.stop()        
                 self.lock.release()
-            
