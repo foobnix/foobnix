@@ -4,11 +4,11 @@ Created on Nov 27, 2012
 @author: iivanenko
 '''
 
-import threading
 import urllib
 import urllib2
 import logging
 import platform
+import thread
 
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.fc.fc_base import FCBase
@@ -37,10 +37,11 @@ def send(d={"t":"appview"}):
                 "cd2":platform.platform()
               }
     params.update(d)
-    #print params
+
+    #logging.debug("analytics params: "+str(params));
     enq = urllib.urlencode(params)
-    #thread.start_new_thread(urllib2.urlopen, (api_url, enq))
-    threading.Thread(target=urllib2.urlopen, args=(api_url, enq))
+    thread.start_new_thread(urllib2.urlopen, (api_url, enq))
+    #threading.Thread(target=urllib2.urlopen, args=(api_url, enq))
     
 
 """ User Open or user Some Feature"""
