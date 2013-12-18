@@ -8,6 +8,7 @@ Created on Jan 25, 2011
 from gi.repository import Gtk
 import logging
 import os.path
+import thread
 
 from foobnix.util.id3_util import correct_encoding
 from foobnix.util.audio import get_mutagen_audio
@@ -98,7 +99,7 @@ class TagEditor(ChildTopWindow):
 
         self.add(vbox)
         self.show_all()
-
+    """
     def apply_changes_for_rows_in_tree(self):
         ''' apply stored changes for rows in playlist_tree '''
         texts = {}
@@ -149,6 +150,7 @@ class TagEditor(ChildTopWindow):
                     if path in albums:
                         row[playlist_tree.album[0]] = albums[path]
         self.store = {}
+    """
 
     def get_audio_tags(self, paths):
         self.paths = paths
@@ -205,7 +207,6 @@ class TagEditor(ChildTopWindow):
         def set_tags(audio, path, tag_name):
             if not self.store.has_key(path):
                 self.store[path] = ["", "", "", ""]
-
             if isinstance(audio, MP4):
                 tag_name = tag_mp4_name
             try:
@@ -228,6 +229,7 @@ class TagEditor(ChildTopWindow):
                 audio[tag_name] = new_tag_value
                 audio.save()
 
+            """
             ''' store changes '''
             if (tag_name == "artist" or tag_name == '\xa9ART') and tag_value:
                 self.store[path][0] = tag_value
@@ -251,6 +253,8 @@ class TagEditor(ChildTopWindow):
                 self.store[path][2] = tag_value
             if (tag_name == "album" or tag_name == '\xa9alb') and tag_value:
                 self.store[path][3] = tag_value
+            """
+
 
         for tag_name, tag_mp4_name, tag_entry, check_button in zip(self.tag_names, self.tag_mp4_names, self.tag_entries, self.check_buttons):
             tag_value = tag_entry.get_text()
@@ -259,9 +263,14 @@ class TagEditor(ChildTopWindow):
                     set_tags(audio, path, tag_name)
             else:
                 set_tags(self.audious[0], self.paths[0], tag_name)
+
             check_button.set_active(False)
 
-        self.apply_changes_for_rows_in_tree()
+        #self.apply_changes_for_rows_in_tree()
+
+        self.hide()
+
+        self.controls.notetabs.get_current_tree().change_rows_by_path(self.paths)
 
 
     def decoding_cp866(self, audio):

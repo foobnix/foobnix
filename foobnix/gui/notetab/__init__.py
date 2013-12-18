@@ -16,7 +16,7 @@ from foobnix.fc.fc import FC
 from foobnix.util import idle_task
 from foobnix.fc.fc_cache import FCache
 from foobnix.helpers.menu import Popup
-from foobnix.gui.state import LoadSave
+from foobnix.gui.state import LoadSave, Quitable
 from foobnix.util.key_utils import is_key
 from foobnix.util.m3u_utils import m3u_writer
 from foobnix.gui.model.signal import FControl
@@ -32,7 +32,7 @@ from foobnix.util.mouse_utils import is_double_middle_click, \
 from foobnix.gui.treeview.navigation_tree import NavigationTreeControl
 
 
-class TabGeneral(Gtk.Notebook, FControl, LoadSave):
+class TabGeneral(Gtk.Notebook, FControl, LoadSave, Quitable):
     def __init__(self, controls):
         Gtk.Notebook.__init__(self)
         FControl.__init__(self, controls)
@@ -430,7 +430,7 @@ class NoteTabControl(TabGeneral):
         else:
             self.set_tab_top()
 
-        for page in xrange(0, len(FCache().cache_pl_tab_contents)):
+        for page in xrange(len(FCache().cache_pl_tab_contents)-1, -1, -1):
             if not FCache().cache_pl_tab_contents[page]:
                 self._append_tab(FCache().tab_pl_names[page])
                 continue
@@ -459,7 +459,7 @@ class NoteTabControl(TabGeneral):
         FCache().cache_pl_tab_contents = []
         FCache().tab_pl_names = []
         if number_music_tabs > 0:
-            for tab_number in xrange(self.get_n_pages() - 1, -1, -1):
+            for tab_number in xrange(self.get_n_pages()):
                 self.save_nth_tab(tab_number)
 
     def save_nth_tab(self, tab_number):
@@ -471,6 +471,29 @@ class NoteTabControl(TabGeneral):
             FC().columns[column.key][1] = i
             if column.get_width() > 1: #to avoid recording of zero width in config
                 FC().columns[column.key][2] = column.get_width()
+
+    def save_current_tab(self):
+
+        def task():
+            self.save_lock.acquire()
+            try:
+                tab_number = self.get_current_page()
+                tab = self.get_nth_page(tab_number)
+                pl_tree = tab.get_child()
+                FCache().cache_pl_tab_contents[tab_number] = [list(row) for row in pl_tree.model]
+                FCache().tab_pl_names[tab_number] = self.get_full_tab_name(tab)
+                for i, column in enumerate(pl_tree.get_columns()):
+                    FC().columns[column.key][1] = i
+                    if column.get_width() > 1: #to avoid recording of zero width in config
+                        FC().columns[column.key][2] = column.get_width()
+                        FCache().save()
+            finally:
+                if self.save_lock.locked():
+                    self.save_lock.release()
+        try:
+            threading.Thread(target=task, args=()).start()
+        except Exception, e:
+            logging.error("Exception: "  + str(e))
 
     def on_quit(self):
         self.on_save_tabs()

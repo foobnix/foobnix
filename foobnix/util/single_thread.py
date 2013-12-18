@@ -57,4 +57,3 @@ class SingleThread():
                 if self.progressbar:
                     self.progressbar.stop()        
                 self.lock.release()
-            

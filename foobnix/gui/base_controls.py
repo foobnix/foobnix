@@ -181,7 +181,6 @@ class BaseFoobnixControls():
         for tab in xrange(tabs - 1, -1, -1):
             tabhelper._append_tab(FCache().tab_names[tab], rows=FCache().cache_music_tree_beans[tab])
 
-            tree = tabhelper.get_current_tree()
             if not FCache().cache_music_tree_beans[tab]:
                 self.perspectives.get_perspective('fs').show_add_button()
             else:
@@ -488,22 +487,6 @@ class BaseFoobnixControls():
 
         self.notetabs.append_tab(vk_ulr, all)
 
-    def search_all_videos(self, query):
-        def inline():
-            results = self.vk_service.find_videos_by_query(query)
-            all = []
-            p_bean = FModel(query).add_font("bold")
-            all.append(p_bean)
-            for i, bean in enumerate(results):
-                bean.tracknumber = i + 1
-                bean.parent(p_bean).add_is_file(True)
-                all.append(bean)
-
-            if not results:
-                all = self.show_google_results(query)
-            self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(inline)
-
     def search_all_tracks(self, query):
         def search_all_tracks_task():
             analytics.action("SEARCH_search_all_tracks")
@@ -662,7 +645,7 @@ class BaseFoobnixControls():
 
     def quit(self, *a):
         self.state_stop()
-        Gtk.main_iteration()   # wait for complete stop task
+
         self.main_window.hide()
         self.trayicon.hide()
 
@@ -674,7 +657,7 @@ class BaseFoobnixControls():
 
         FC().save()
 
-        Gtk.main_quit()
+        GLib.idle_add(Gtk.main_quit) # wait for complete stop task
 
     def check_version(self):
         uuid = FCBase().uuid

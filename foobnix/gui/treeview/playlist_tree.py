@@ -5,16 +5,21 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 
-import re
+
 import logging
+import os
+import re
+import thread
 
 from gi.repository import Gtk
+from gi.repository import GLib
 
 from foobnix.fc.fc import FC
 from foobnix.playlists.pls_reader import update_id3_for_pls
 from foobnix.util import const, idle_task
 from foobnix.helpers.menu import Popup
 from foobnix.util.bean_utils import get_bean_from_file
+from foobnix.util.id3_util import update_id3
 from foobnix.util.tag_util import edit_tags
 from foobnix.util.converter import convert_files
 from foobnix.util.audio import get_mutagen_audio
@@ -26,8 +31,7 @@ from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE, \
     is_modificator
 from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
-import os
-import thread
+
 from foobnix.playlists.m3u_reader import update_id3_for_m3u
 
 
@@ -200,6 +204,7 @@ class PlaylistTreeControl(CommonTreeControl):
 
         return bean
 
+
     @idle_task
     def scroll_follow_play_icon(self):
         paths = [(i,) for i, row in enumerate(self.model)]
@@ -220,7 +225,7 @@ class PlaylistTreeControl(CommonTreeControl):
         rows = self.file_paths_to_rows(paths)
         if not rows:
             return
-        rows = self.playlist_filter(rows)
+        #rows = self.playlist_filter(rows)
         for row in rows:
             self.model.append(None, row)
         thread.start_new_thread(self.safe_fill_treerows, ())
@@ -414,13 +419,22 @@ class PlaylistTreeControl(CommonTreeControl):
         '''if FC().columns["Track"][2] < 0:
              self.description_col.set_fixed_width(self.get_allocation().width - (FC().columns["Time"][2]+70))'''
 
+    def change_rows_by_path(self, file_paths):
+        for treerow in self.model:
+            if treerow[self.is_file[0]] and treerow[self.path[0]] in file_paths:
+                bean = self.get_bean_from_row(treerow)
+                bean = update_id3(bean)
+                row_ref = Gtk.TreeRowReference.new(self.model, treerow.path)
+                self.fill_row(row_ref, bean)
+        GLib.idle_add(self.controls.notetabs.save_current_tab, priority=GLib.PRIORITY_LOW)
+
     def file_paths_to_rows(self, paths):
         result = []
         for path in paths:
             bean = get_bean_from_file(path)
             beans = update_id3_for_m3u([bean])
             beans = update_id3_for_pls(beans)
-            if beans and len(beans) > 1:
+            if beans and (len(beans) > 1 or is_playlist(bean.path)):
                     bean = bean.add_text(_('Playlist: ') + bean.text).add_font("bold").add_is_file(False)
                     bean.path = ''
                     beans.insert(0, bean)
@@ -450,8 +464,20 @@ class PlaylistTreeControl(CommonTreeControl):
                 self.controls.notetabs.rename_tab(self.scroll, tabname)
             for i, file in enumerate(files):
                 if os.path.isdir(file):
+                    sorted_dirs = []
+                    sorted_files = []
+                    for f in sorted(os.listdir(file), key=lambda x: x):
+                        f = os.path.join(file, f)
+                        if os.path.isdir(f):
+                            sorted_dirs.append(f)
+                        elif get_file_extension(f) in FC().all_support_formats:
+                            sorted_files.append(f)
+
+                    listdir = sorted_dirs + sorted_files
+                    '''
                     listdir = sorted(filter(lambda x: get_file_extension(x) in FC().all_support_formats or os.path.isdir(x),
-                                     [os.path.join(file, f) for f in os.listdir(file)]), key=lambda x: x[self.text[0]])
+                                     [os.path.join(file, f) for f in os.listdir(file)]), key=lambda x: x)
+                    '''
                     for k, path in enumerate(listdir):
                         files.insert(i + k + 1, path)
 
