@@ -39,7 +39,7 @@ class FC():
         self.playlist_type = const.PLAYLIST_TREE
 
         """player controls"""
-        self.volume = 10
+        self.volume = 90
         self.temp_volume = self.volume
         self.is_eq_enable = False
         self.eq_presets = None
