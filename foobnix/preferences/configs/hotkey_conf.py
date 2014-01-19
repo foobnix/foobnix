@@ -152,6 +152,21 @@ class HotKeysConfig(ConfigPlugin):
         box.pack_start(hbox, False, True, 0)
         box.pack_start(self.mm_frame_decorator, False, False, 0)
         self.widget = box
+        self.menu = self.create_menu()
+
+    def create_menu(self):
+        menu = Popup()
+        menu.add_item(_("Play"), Gtk.STOCK_MEDIA_PLAY, self.set_action_text, "--play")
+        menu.add_item(_("Pause"), Gtk.STOCK_MEDIA_PAUSE, self.set_action_text, "--pause")
+        menu.add_item(_("Stop"), Gtk.STOCK_MEDIA_STOP, self.set_action_text, "--stop")
+        menu.add_item(_("Next song"), Gtk.STOCK_MEDIA_NEXT, self.set_action_text, "--next")
+        menu.add_item(_("Previous song"), Gtk.STOCK_MEDIA_PREVIOUS, self.set_action_text, "--prev")
+        menu.add_item(_("Volume up"), Gtk.STOCK_GO_UP, self.set_action_text, "--volume-up")
+        menu.add_item(_("Volume down"), Gtk.STOCK_GO_DOWN, self.set_action_text, "--volume-down")
+        menu.add_item(_("Show-Hide"), Gtk.STOCK_FULLSCREEN, self.set_action_text, "--show-hide")
+        menu.add_item(_("Play-Pause"), Gtk.STOCK_MEDIA_RECORD, self.set_action_text, "--play-pause")
+        menu.add_item(_('Download'), Gtk.STOCK_ADD, self.set_action_text, "--download")
+        return menu
 
     def set_action_text(self, text):
         self.action_text.set_text("foobnix " + text)
@@ -214,18 +229,7 @@ class HotKeysConfig(ConfigPlugin):
             self.hotkey_text.set_text(keystring)
 
     def on_mouse_click(self, w, event):
-        menu = Popup()
-        menu.add_item(_("Play"), Gtk.STOCK_MEDIA_PLAY, self.set_action_text, "--play")
-        menu.add_item(_("Pause"), Gtk.STOCK_MEDIA_PAUSE, self.set_action_text, "--pause")
-        menu.add_item(_("Stop"), Gtk.STOCK_MEDIA_STOP, self.set_action_text, "--stop")
-        menu.add_item(_("Next song"), Gtk.STOCK_MEDIA_NEXT, self.set_action_text, "--next")
-        menu.add_item(_("Previous song"), Gtk.STOCK_MEDIA_PREVIOUS, self.set_action_text, "--prev")
-        menu.add_item(_("Volume up"), Gtk.STOCK_GO_UP, self.set_action_text, "--volume-up")
-        menu.add_item(_("Volume down"), Gtk.STOCK_GO_DOWN, self.set_action_text, "--volume-down")
-        menu.add_item(_("Show-Hide"), Gtk.STOCK_FULLSCREEN, self.set_action_text, "--show-hide")
-        menu.add_item(_("Play-Pause"), Gtk.STOCK_MEDIA_RECORD, self.set_action_text, "--play-pause")
-        menu.add_item(_('Download'), Gtk.STOCK_ADD, self.set_action_text, "--download")
-        menu.show(event)
+        self.menu.show(event)
 
     def on_load(self):
         if not FC().media_keys_enabled:
