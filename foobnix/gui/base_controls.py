@@ -271,6 +271,8 @@ class BaseFoobnixControls():
     def play_pause(self):
         if self.media_engine.get_state() == STATE_PLAY:
             self.media_engine.state_pause()
+        elif self.media_engine.get_state() == STATE_STOP:
+            self.state_play(True)
         else:
             self.media_engine.state_play()
 

@@ -4,7 +4,7 @@ Created on Sep 7, 2010
 @author: ivan
 '''
 
-
+import collections
 import logging
 
 from gi.repository import Gtk
@@ -25,9 +25,8 @@ Keybinder.init()
 
 def activate_hot_key(hotkey, command):
     logging.debug("Run command: " + command + " Hotkey: " + hotkey)
-    controls = HotKeysConfig.controls
-    if controls:
-        eval(command + '()')
+    if HotKeysConfig.controls:
+        eval('HotKeysConfig.controls.' + command + '()')
 
 
 def add_key_binder(command, hotkey):
@@ -156,24 +155,22 @@ class HotKeysConfig(ConfigPlugin):
 
     def create_menu(self):
         menu = Popup()
-        menu.add_item(_("Play"), Gtk.STOCK_MEDIA_PLAY, self.set_action_text, "--play")
-        menu.add_item(_("Pause"), Gtk.STOCK_MEDIA_PAUSE, self.set_action_text, "--pause")
-        menu.add_item(_("Stop"), Gtk.STOCK_MEDIA_STOP, self.set_action_text, "--stop")
-        menu.add_item(_("Next song"), Gtk.STOCK_MEDIA_NEXT, self.set_action_text, "--next")
-        menu.add_item(_("Previous song"), Gtk.STOCK_MEDIA_PREVIOUS, self.set_action_text, "--prev")
-        menu.add_item(_("Volume up"), Gtk.STOCK_GO_UP, self.set_action_text, "--volume-up")
-        menu.add_item(_("Volume down"), Gtk.STOCK_GO_DOWN, self.set_action_text, "--volume-down")
-        menu.add_item(_("Show-Hide"), Gtk.STOCK_FULLSCREEN, self.set_action_text, "--show-hide")
-        menu.add_item(_("Play-Pause"), Gtk.STOCK_MEDIA_RECORD, self.set_action_text, "--play-pause")
-        menu.add_item(_('Download'), Gtk.STOCK_ADD, self.set_action_text, "--download")
+        menu.add_item(_("Play-Pause"), Gtk.STOCK_MEDIA_PAUSE, self.set_action_text, "play_pause")
+        menu.add_item(_("Stop"), Gtk.STOCK_MEDIA_STOP, self.set_action_text, "state_stop")
+        menu.add_item(_("Next song"), Gtk.STOCK_MEDIA_NEXT, self.set_action_text, "next")
+        menu.add_item(_("Previous song"), Gtk.STOCK_MEDIA_PREVIOUS, self.set_action_text, "prev")
+        menu.add_item(_("Volume up"), Gtk.STOCK_GO_UP, self.set_action_text, "volume_up")
+        menu.add_item(_("Volume down"), Gtk.STOCK_GO_DOWN, self.set_action_text, "volume_down")
+        menu.add_item(_("Show-Hide"), Gtk.STOCK_FULLSCREEN, self.set_action_text, "show_hide")
+        menu.add_item(_('Download'), Gtk.STOCK_ADD, self.set_action_text, "download")
         return menu
 
     def set_action_text(self, text):
-        self.action_text.set_text("foobnix " + text)
+        self.action_text.set_text(text)
 
     def set_hotkey_text(self, text):
         text = text.replace("Super_L", "<SUPER>").replace("Super_R", "<SUPER>").replace("Control_L", "<Control>").replace("Control_R", "<Control>").replace("Shift_L", "<Shift>").replace("Shift_R", "<Shift>").replace("Alt_L", "<Alt>").replace("Alt_R", "<Alt>")
-        text = text.replace("<Shift>", "") #because of bug in python-Keybinder https://bugs.launchpad.net/kupfer/+bug/826075
+        text = text.replace("<Shift>", "") #because of bug in python-keybinder https://bugs.launchpad.net/kupfer/+bug/826075
         if text.count("<") > 2 or text.endswith("ISO_Next_Group"): return
         self.hotkey_text.set_text(text)
 
@@ -260,7 +257,7 @@ class HotKeysConfig(ConfigPlugin):
         bind_all()
 
     def get_all_items(self):
-        items = {}
+        items = collections.OrderedDict()
         for item in self.model:
             action = item[0]
             hotkey = item[1]
