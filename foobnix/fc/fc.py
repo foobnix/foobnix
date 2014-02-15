@@ -4,7 +4,6 @@ Created on 23 сент. 2010
 
 @author: ivan
 '''
-import collections
 
 import os
 
@@ -152,7 +151,7 @@ class FC():
         self.proxy_password = None
 
         '''Multimedia and hot keys'''
-        self.action_hotkey = collections.OrderedDict({'play_pause': '<SUPER>z', 'state_stop': '<SUPER>x', 'volume_up': '<SUPER>Up', 'volume_down': '<SUPER>Down', 'show_hide': '<SUPER>a', 'prev': '<SUPER>Left', 'next': '<SUPER>Right', 'download' : '<Control><SUPER>z'})
+        self.action_hotkey = {'play_pause': '<SUPER>z', 'state_stop': '<SUPER>x', 'volume_up': '<SUPER>Up', 'volume_down': '<SUPER>Down', 'show_hide': '<SUPER>a', 'prev': '<SUPER>Left', 'next': '<SUPER>Right', 'download' : '<Control><SUPER>z'}
         self.multimedia_keys = {'prev': 'XF86AudioPrev', 'next': 'XF86AudioNext', 'play_pause': 'XF86AudioPlay', 'state_stop': 'XF86AudioStop', 'volume_up': 'XF86AudioRaiseVolume', 'volume_down': 'XF86AudioLowerVolume', 'mute': 'XF86AudioMute'}
         self.media_volume_keys = {'volume_up': 'XF86AudioRaiseVolume', 'volume_down': 'XF86AudioLowerVolume', 'mute': 'XF86AudioMute'}
         self.media_keys_enabled = True

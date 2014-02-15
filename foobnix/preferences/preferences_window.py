@@ -170,7 +170,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.label = Gtk.Label()
         self.label.show()
 
-        separator = Gtk.HSeparator()
+        separator = Gtk.HSeparator().new()
         separator.show()
 
         box.pack_start(self.label, False, True, 0)
