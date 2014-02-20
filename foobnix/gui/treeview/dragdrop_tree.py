@@ -22,9 +22,12 @@ from foobnix.util.iso_util import get_beans_from_iso_wv
 from foobnix.util import idle_task_priority, idle_task
 
 try:
-    from gi._glib import GError
+    from gi.repository.GLib import GError
 except ImportError as e:
-    from gi._glib._glib import GError
+    try:
+        from gi._glib import GError
+    except  ImportError as e:
+        from gi._glib._glib import GError
 
 VIEW_PLAIN = 0
 VIEW_TREE = 1
