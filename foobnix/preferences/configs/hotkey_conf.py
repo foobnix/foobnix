@@ -5,11 +5,13 @@ Created on Sep 7, 2010
 '''
 
 import collections
+import gi
 import logging
+
+gi.require_version("Keybinder", "3.0")
 
 from gi.repository import Gtk
 from gi.repository import Gdk
-require_version("Keybinder", "3.0")
 from gi.repository import Keybinder
 
 from copy import copy

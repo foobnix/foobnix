@@ -26,7 +26,7 @@ try:
 except ImportError as e:
     try:
         from gi._glib import GError
-    except  ImportError as e:
+    except ImportError as e:
         from gi._glib._glib import GError
 
 VIEW_PLAIN = 0
