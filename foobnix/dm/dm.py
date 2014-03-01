@@ -5,6 +5,7 @@ Created on Oct 26, 2010
 '''
 
 from gi.repository import Gtk
+from gi.repository import Notify
 import time
 import thread
 import logging
@@ -108,8 +109,19 @@ class DM(ChildTopWindow):
             bean.save_to = save_to
             
         self.dm_list.append(bean)
+
+        if FC().notifier:
+            self.to_notify(bean.get_display_name())
+
         logging.debug("Begin download %s" % bean)
-    
+
+    def to_notify(self, notify_text):
+        notification = Notify.Notification.new("Downloading:", notify_text, "")
+        notification.set_urgency(Notify.Urgency.LOW)
+        notification.set_timeout(FC().notify_time)
+        
+        notification.show()
+
     def append_tasks_with_dialog(self, beans):
         paths = directory_chooser_dialog(_("Choose Folder"), FC().last_dir)
         if paths:

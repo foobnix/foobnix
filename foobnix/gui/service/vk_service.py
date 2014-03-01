@@ -72,6 +72,8 @@ class VKWebkitAuth(Gtk.Dialog):
             return self.access_token, self.user_id if self.access_token and self.user_id else None
         self.web_view.open(self.auth_url)
         logging.debug("waiting for answer...")
+        while not self.first_page_loaded:
+            Gtk.main_iteration()
         logging.debug("answer found!")
         logging.debug(self.access_token)
         logging.debug(self.user_id)

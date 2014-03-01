@@ -8,6 +8,7 @@ encoding//foobnix/gui/foobnix_core.py=utf-8
 encoding//foobnix/gui/notetab/__init__.py=utf-8
 encoding//foobnix/gui/notetab/tab_library.py=utf-8
 encoding//foobnix/gui/service/lastfm_service.py=utf-8
+encoding//foobnix/gui/service/vk_service.py=utf-8
 encoding//foobnix/gui/treeview/common_tree.py=utf-8
 encoding//foobnix/gui/treeview/filter_tree.py=utf-8
 encoding//foobnix/gui/treeview/navigation_tree.py=utf-8
