@@ -28,7 +28,7 @@ class OrderShuffleControls(FControl, Gtk.HBox, LoadSave):
         self.pack_start(self.olabel, False, False, 0)
         self.pack_start(self.toggle_buttons, False, False, 0)
 
-        self.pack_start(Gtk.SeparatorToolItem(), False, False, 0)
+        self.pack_start(Gtk.SeparatorToolItem.new(), False, False, 0)
 
     def update(self):
         if FC().is_order_random:
@@ -106,7 +106,7 @@ class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
         self.repeat.connect("button-press-event", self.choise)
         self.pack_start(self.repeat, False, False, 0)
 
-        #self.pack_start(Gtk.SeparatorToolItem())
+        #self.pack_start(Gtk.SeparatorToolItem.new())
 
         self.menu = Gtk.Menu()
         self.item_all = Gtk.CheckMenuItem(_("Repeat all"))
@@ -176,13 +176,13 @@ class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
 class PlaybackControls(FControl, Gtk.HBox, LoadSave):
     def __init__(self, controls):
         Gtk.HBox.__init__(self, False)
-        self.pack_start(Gtk.SeparatorToolItem(), False, False, 0)
+        self.pack_start(Gtk.SeparatorToolItem.new(), False, False, 0)
         self.pack_start(ImageButton(Gtk.STOCK_MEDIA_STOP, controls.state_stop, _("Stop")), False, False, 0)
         self.pack_start(ImageButton(Gtk.STOCK_MEDIA_PLAY, controls.state_play, _("Play")), False, False, 0)
         self.pack_start(ImageButton(Gtk.STOCK_MEDIA_PAUSE, controls.state_play_pause, _("Pause")), False, False, 0)
         self.pack_start(ImageButton(Gtk.STOCK_MEDIA_PREVIOUS, controls.prev, _("Previous")), False, False, 0)
         self.pack_start(ImageButton(Gtk.STOCK_MEDIA_NEXT, controls.next, _("Next")), False, False, 0)
-        self.pack_start(Gtk.SeparatorToolItem(), False, False, 0)
+        self.pack_start(Gtk.SeparatorToolItem.new(), False, False, 0)
 
 
     def on_load(self): pass

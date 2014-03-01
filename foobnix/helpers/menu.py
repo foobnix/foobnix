@@ -12,7 +12,7 @@ class Popup(Gtk.Menu):
         Gtk.Menu.__init__(self, *args, **kwargs)
 
     def add_separator(self):
-        separator = Gtk.SeparatorMenuItem()
+        separator = Gtk.SeparatorMenuItem.new()
         separator.show()
         self.append(separator)
 

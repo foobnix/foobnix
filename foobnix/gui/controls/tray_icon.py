@@ -222,4 +222,4 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
     @idle_task
     def set_text(self, text):
         self.popup_menu.set_text(text)
-        self.set_tooltip(text)
+        self.set_tooltip_text(text)

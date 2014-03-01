@@ -38,7 +38,7 @@ class FC():
         self.playlist_type = const.PLAYLIST_TREE
 
         """player controls"""
-        self.volume = 10
+        self.volume = 90
         self.temp_volume = self.volume
         self.is_eq_enable = False
         self.eq_presets = None
@@ -151,9 +151,9 @@ class FC():
         self.proxy_password = None
 
         '''Multimedia and hot keys'''
-        self.action_hotkey = {'controls.volume_up': '<SUPER>Up', 'controls.volume_down': '<SUPER>Down', 'controls.show_hide': '<SUPER>a', 'controls.prev': '<SUPER>Left', 'controls.state_play': '<SUPER>x', 'controls.play_pause': '<SUPER>z', 'controls.next': '<SUPER>Right', 'controls.download' : '<Control><SUPER>z'}
-        self.multimedia_keys = {'controls.prev': 'XF86AudioPrev', 'controls.next': 'XF86AudioNext', 'controls.play_pause': 'XF86AudioPlay', 'controls.state_stop': 'XF86AudioStop', 'controls.volume_up': 'XF86AudioRaiseVolume', 'controls.volume_down': 'XF86AudioLowerVolume', 'controls.mute': 'XF86AudioMute'}
-        self.media_volume_keys = {'controls.volume_up': 'XF86AudioRaiseVolume', 'controls.volume_down': 'XF86AudioLowerVolume', 'controls.mute': 'XF86AudioMute'}
+        self.action_hotkey = {'play_pause': '<SUPER>z', 'state_stop': '<SUPER>x', 'volume_up': '<SUPER>Up', 'volume_down': '<SUPER>Down', 'show_hide': '<SUPER>a', 'prev': '<SUPER>Left', 'next': '<SUPER>Right', 'download' : '<Control><SUPER>z'}
+        self.multimedia_keys = {'prev': 'XF86AudioPrev', 'next': 'XF86AudioNext', 'play_pause': 'XF86AudioPlay', 'state_stop': 'XF86AudioStop', 'volume_up': 'XF86AudioRaiseVolume', 'volume_down': 'XF86AudioLowerVolume', 'mute': 'XF86AudioMute'}
+        self.media_volume_keys = {'volume_up': 'XF86AudioRaiseVolume', 'volume_down': 'XF86AudioLowerVolume', 'mute': 'XF86AudioMute'}
         self.media_keys_enabled = True
         self.media_volume_keys_enabled = False
 
