@@ -8,7 +8,6 @@ import traceback
 
 from gi import pygtkcompat, require_version
 pygtkcompat.enable_gtk(version="3.0")
-require_version("Keybinder", "3.0")
 
 from gi.repository import Gtk
 from gi.repository import GLib
@@ -76,6 +75,10 @@ def foobnix():
             GLib.threads_init()    #@UndefinedVariable
             core = FoobnixCore(True)
             core.run()
+            settings = Gtk.settings_get_default()
+            settings.props.gtk_button_images = True
+            settings.props.gtk_menu_images = True
+            analytics.begin_session()
             analytics.begin_session()
             #core.dbus.parse_arguments(sys.argv)
             analytics.begin_session()

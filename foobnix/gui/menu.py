@@ -20,13 +20,13 @@ class MenuBarWidget(FControl):
     def __init__(self, controls, parent=None):
         FControl.__init__(self, controls)
         """TOP menu constructor"""
-        
+
         decorator = MenuStyleDecorator()
         if not parent:
-            parent = TopMenuBar() 
-        
+            parent = TopMenuBar()
+
         top = parent
-        
+
         """File"""
         file = top.add_submenu(_("File"))
         file.add_image_item(_("Add File(s)"), Gtk.STOCK_OPEN, self.controls.on_add_files)
@@ -42,27 +42,27 @@ class MenuBarWidget(FControl):
         self.view_music_tree = view.add_check_item(_("Left Panel"), FC().is_view_music_tree_panel)
         self.view_music_tree.connect("activate", lambda w: controls.layout.set_visible_musictree_panel(w.get_active()))
 
-        self.view_search_panel = view.add_check_item(_("Search Panel"), FC().is_view_search_panel)            
+        self.view_search_panel = view.add_check_item(_("Search Panel"), FC().is_view_search_panel)
         self.view_search_panel.connect("activate", lambda w: controls.layout.set_visible_search_panel(w.get_active()))
 
         self.view_cover_lyrics = view.add_check_item(_("Cover & Lyrics Panel"), FC().is_view_coverlyrics_panel)
         self.view_cover_lyrics.connect("activate", lambda w: controls.layout.set_visible_coverlyrics_panel(w.get_active()))
-        
+
         separator1 = view.separator() #@UnusedVariable
         view.add_image_item(_("Equalizer"), None, self.controls.eq.show)
         view.add_image_item(_("Download Manager"), None, self.controls.dm.show)
         separator2 = view.separator()
         preferences_item = view.add_image_item(_("Preferences"), Gtk.STOCK_PREFERENCES, self.controls.show_preferences)
-        
+
         """if new style menu - remove preferences from View"""
         if not isinstance(parent, TopMenuBar):
             separator2.hide()
             preferences_item.hide()
-        
+
         """Playback"""
         playback = top.add_submenu(_("Playback"))
 
-        def set_random(flag=True):            
+        def set_random(flag=True):
             FC().is_order_random = flag
             logging.debug("set random" + str(flag))
             controls.os.on_load()
@@ -72,33 +72,33 @@ class MenuBarWidget(FControl):
         playback_radio_group = []
         self.playback_order_linear = order.add_radio_item(_("Linear"), playback_radio_group, not FC().is_order_random)
         self.playback_order_linear.connect("activate", lambda w: set_random(False))
-        
+
         self.playback_order_random = order.add_radio_item(_("Random"), playback_radio_group, FC().is_order_random)
         self.playback_order_random.connect("activate", lambda w: set_random(True))
-        
+
         """Playback - Repeat"""
         repeat = playback.add_text_item(_("Repeat"))
         repeat_radio_group = []
         self.lopping_all = repeat.add_radio_item(_("All"), repeat_radio_group, FC().repeat_state == const.REPEAT_ALL)
         self.lopping_single = repeat.add_radio_item(_("Single"), repeat_radio_group, FC().repeat_state == const.REPEAT_SINGLE)
         self.lopping_disable = repeat.add_radio_item(_("Disable"), repeat_radio_group, FC().repeat_state == const.REPEAT_NO)
-        
+
         def repeat_all():
-            FC().repeat_state = const.REPEAT_ALL            
+            FC().repeat_state = const.REPEAT_ALL
             logging.debug("set repeat_all")
             controls.os.on_load()
-            
-        
+
+
         def repeat_sigle():
             FC().repeat_state = const.REPEAT_SINGLE
             logging.debug("set repeat_sigle")
             controls.os.on_load()
-        
+
         def repeat_no():
             FC().repeat_state = const.REPEAT_NO
             logging.debug("set repeat_no")
             controls.os.on_load()
-            
+
         self.lopping_all.connect("activate", lambda * a:repeat_all())
         self.lopping_single.connect("activate", lambda * a:repeat_sigle())
         self.lopping_disable.connect("activate", lambda * a:repeat_no())
@@ -119,11 +119,11 @@ class MenuBarWidget(FControl):
         help.add_image_item(_("Issue report"), Gtk.STOCK_DIALOG_WARNING, lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
         help.separator()
         help.add_image_item(_("Donate Participate"), Gtk.STOCK_DIALOG_QUESTION, lambda * a:open_link_in_browser(_("http://www.foobnix.com/donate/eng")))
-        
+
         #help.add_image_item("Help", Gtk.STOCK_HELP)
 
         #top.decorate()
-        
+
         decorator.apply(top)
         decorator.apply(file)
         decorator.apply(view)
@@ -131,25 +131,25 @@ class MenuBarWidget(FControl):
         decorator.apply(repeat)
         decorator.apply(order)
         decorator.apply(help)
-        
+
         self.widget = top
 
         self.on_load()
-    
+
     def show_about(self):
         about = AboutWindow()
         about.show()
-    
+
     def on_load(self):
         self.view_music_tree.set_active(FC().is_view_music_tree_panel)
         self.view_search_panel.set_active(FC().is_view_search_panel)
         self.view_cover_lyrics.set_active(FC().is_view_coverlyrics_panel)
-                
+
     def on_save(self):
         FC().is_view_music_tree_panel = self.view_music_tree.get_active()
         FC().is_view_search_panel = self.view_search_panel.get_active()
         FC().is_view_coverlyrics_panel = self.view_cover_lyrics.get_active()
-             
+
 
 class MyMenu(Gtk.Menu):
     """My custom menu class for helping buildings"""
@@ -173,14 +173,14 @@ class MyMenu(Gtk.Menu):
         return item
 
     def separator(self):
-        separator = Gtk.SeparatorMenuItem()
+        separator = Gtk.SeparatorMenuItem.new()
         separator.show()
         self.append(separator)
         return separator
 
     def add_check_item(self, title, active=False, func=None, param=None):
         check = Gtk.CheckMenuItem(title)
-         
+
         if param and func:
             check.connect("activate", lambda * a: func(param))
         elif func:
@@ -203,7 +203,7 @@ class MyMenu(Gtk.Menu):
         sub = Gtk.MenuItem(title)
         sub.show()
         self.append(sub)
-        
+
         if param and func:
             sub.connect("activate", lambda * a: func(param))
         elif func:
@@ -214,7 +214,7 @@ class MyMenu(Gtk.Menu):
             menu.show()
             sub.set_submenu(menu)
             return menu
-        
+
 
 """My top menu bar helper"""
 class TopMenuBar(Gtk.MenuBar):
