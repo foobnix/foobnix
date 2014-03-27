@@ -159,7 +159,8 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
             notification = Notify.Notification.new(artist, title, "")
             notification.set_urgency(Notify.Urgency.LOW)
             notification.set_timeout(FC().notify_time)
-            notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
+            if self.tooltip_image.get_pixbuf() != None:
+                notification.set_icon_from_pixbuf(self.tooltip_image.get_pixbuf())
             notification.show()
 
     def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip):
