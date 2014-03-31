@@ -82,9 +82,9 @@ class FullScreanArea(ChildTopWindow):
             line.pack_start(ImageButton(Gtk.STOCK_FULLSCREEN, on_hide_callback, _("Exit Fullscrean")), False, False, 0)
             line.pack_start(PlaybackControls(controls), False, False, 0)
             line.pack_start(controls.seek_bar_movie, True, False, 0)
-            line.pack_start(Gtk.SeparatorToolItem(), False, False, 0)
+            line.pack_start(Gtk.SeparatorToolItem.new(), False, False, 0)
             line.pack_start(self.text_label, False, False, 0)
-            line.pack_start(Gtk.SeparatorToolItem(), False, False, 0)
+            line.pack_start(Gtk.SeparatorToolItem.new(), False, False, 0)
             line.pack_start(self.volume_button, False, False, 0)
             line.show_all()
 

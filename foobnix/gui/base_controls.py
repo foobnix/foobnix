@@ -59,6 +59,20 @@ class BaseFoobnixControls():
             self.on_add_folders(dirs)
         elif files:
             self.on_add_files(files)
+            try:
+                self.play_first_added(files)
+            except:
+                logging.error("Can't to play first added file")
+
+    def play_first_added(self, added_files):
+        tree = self.notetabs.get_current_tree()
+        model = tree.get_model()
+        number = len(model) - len(added_files)
+        if (number) > -1:
+            iter = model.get_iter_from_string(str(number))
+            bean = tree.get_bean_from_model_iter(model, iter)
+            tree.set_play_icon_to_bean(bean)
+            self.play(bean)
 
     def love_this_tracks(self, beans=None):
         if not beans:
@@ -257,6 +271,8 @@ class BaseFoobnixControls():
     def play_pause(self):
         if self.media_engine.get_state() == STATE_PLAY:
             self.media_engine.state_pause()
+        elif self.media_engine.get_state() == STATE_STOP:
+            self.state_play(True)
         else:
             self.media_engine.state_play()
 
