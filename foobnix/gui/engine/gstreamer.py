@@ -145,7 +145,10 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         self.queue.set_property("low-percent", 10)
         self.queue.set_property("max-size-buffers", 0)
         self.queue.set_property("max-size-time", 0)
-        self.queue.set_property("max-size-bytes", 128 * 1024)   # 128Kb
+        buff = int(FC().network_buffer_size)
+        if not buff:
+            buff = 128
+        self.queue.set_property("max-size-bytes", buff * 1024)   # 128Kb
 
     def notify_init(self, duration_int):
         logging.debug("Pre init thread: " + str(duration_int))
