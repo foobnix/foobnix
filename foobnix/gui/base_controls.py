@@ -14,6 +14,7 @@ import logging
 from gi.repository import Gtk
 from gi.repository import GLib
 from gi.repository import GdkPixbuf
+from gi.repository import Notify
 
 from threading import Lock
 from urllib2 import urlopen
@@ -34,7 +35,7 @@ from foobnix.util.version import compare_versions
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.util import analytics, idle_task, idle_task_priority
 from foobnix.util.text_utils import normalize_text
-
+from foobnix.thirdparty import pyperclip
 
 class BaseFoobnixControls():
     def __init__(self):
@@ -83,6 +84,17 @@ class BaseFoobnixControls():
          if not beans:
              return
          map(self.vk_service.add, beans)
+
+    def copy_link(self, beans=None):
+         if not beans:
+             return
+         if hasattr(beans[0], 'path'):
+            pyperclip.copy(beans[0].path)
+            if FC().notifier:
+                notification = Notify.Notification.new("In clipboard", beans[0].path, "")
+                notification.set_urgency(Notify.Urgency.LOW)
+                notification.set_timeout(FC().notify_time)
+                notification.show()
 
     def show_google_results(self, query):
         return [FModel('"%s" not found' % query)]
