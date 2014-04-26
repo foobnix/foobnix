@@ -160,6 +160,7 @@ class FC():
         self.left_perspective = "info"
 
         self.gap_secs = 0
+        self.network_buffer_size = 128  # kbytes
 
         self.tabs_mode = "Multi" # Multi, Single
 
