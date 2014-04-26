@@ -1,7 +1,7 @@
 import uuid
 
 
-class FTreeModel():
+class FTreeModel(object):
 
     def __init__(self):
 

@@ -7,6 +7,6 @@ Created on 25 сент. 2010
 """base class to comunicate beatween all controls"""
 
 
-class FControl():
+class FControl(object):
     def __init__(self, controls):
         self.controls = controls
