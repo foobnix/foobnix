@@ -211,7 +211,7 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
         self.set_visible(True)
 
     def show_window(self, *a):
-        self.popup_menu.reshow_with_initial_size()
+        #self.popup_menu.reshow_with_initial_size()
         self.popup_menu.show()
 
     def hide_window(self, *a):

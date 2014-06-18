@@ -285,6 +285,8 @@ class PlaylistTreeControl(CommonTreeControl):
                                         self.controls.love_this_tracks, self.get_all_selected_beans())
                 self.tree_menu.add_item(_('Add to My Audio (VK)'), None,
                                         self.controls.add_to_my_playlist, self.get_all_selected_beans())
+                self.tree_menu.add_item(_('Copy link'), None,
+                                        self.controls.copy_link, self.get_all_selected_beans())
 
                 self.tree_menu.show(e)
 
