@@ -48,7 +48,7 @@ class VKWebkitAuth(Gtk.Dialog):
         self.web_view.show()
         self.vbox.pack_start(self.web_view, False, False, 0)
 
-        self.web_view.connect('onload-event', self.on_load)
+        self.web_view.connect('resource-load-finished', self.on_load)
         session = WebKit.get_default_session()
         if FC().proxy_enable and FC().proxy_url:
             if FC().proxy_user and FC().proxy_password:
@@ -70,7 +70,7 @@ class VKWebkitAuth(Gtk.Dialog):
     def auth_user(self, check_only=False):
         if check_only:
             return self.access_token, self.user_id if self.access_token and self.user_id else None
-        self.web_view.open(self.auth_url)
+        self.web_view.load_uri(self.auth_url)
         logging.debug("waiting for answer...")
         while not self.first_page_loaded:
             Gtk.main_iteration()
@@ -93,7 +93,7 @@ class VKWebkitAuth(Gtk.Dialog):
                 return kv[0], None  # ["key"], e.g. key= or key
         return dict(split_key_value(kv_pair) for kv_pair in url.fragment.split("&"))
 
-    def on_load(self, webview, frm):
+    def on_load(self, webview, frm, res):
         url = urlparse(webview.get_property("uri"))
         if url.path == "/blank.html":
             answer = self.extract_answer(url)
