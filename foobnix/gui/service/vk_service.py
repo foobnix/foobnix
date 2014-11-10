@@ -5,6 +5,7 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
+from foobnix.helpers.window import ChildTopWindow
 
 import os
 import gi
@@ -32,14 +33,14 @@ from foobnix.util.time_utils import convert_seconds_to_text
 cookiefile = os.path.join(CONFIG_DIR, "vk_cooky")
 
 
-class VKWebkitAuth(Gtk.Dialog):
+class VKWebkitAuth(Gtk.Dialog, ChildTopWindow):
 
     SCOPE = ["audio", "friends", "wall"]
     CLIENT_ID = "2234333"
 
     def __init__(self):
-        super(VKWebkitAuth, self).__init__(_("vk.com authorization"), None, Gtk.DialogFlags.MODAL, ())
-
+        Gtk.Dialog.__init__(self, _("vk.com authorization"), None, Gtk.DialogFlags.MODAL, ())
+        ChildTopWindow.__init__(self)
         self.set_size_request(550, -1)
         self.auth_url = "http://oauth.vk.com/oauth/authorize?" + \
                         "redirect_uri=http://oauth.vk.com/blank.html&response_type=token&" + \
