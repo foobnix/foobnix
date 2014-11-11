@@ -69,7 +69,7 @@ class LastFmIntegrationControls(CommonTreeControl):
 
         def task():
             old_iters = self.get_child_iters_by_parent(self.model, self.get_iter_from_bean(parent))
-            childs = self.services[u""+parent.text](FCBase().lfm_login, str(int(FC().search_limit)))
+            childs = self.services[parent.text](FCBase().lfm_login, str(int(FC().search_limit)))
             update_parent_for_beans(childs, parent)
             self.append_all(childs)
             GLib.idle_add(self.remove_iters, old_iters)
