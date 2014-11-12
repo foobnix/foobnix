@@ -46,7 +46,7 @@ class VKWebkitAuth(Gtk.Dialog, ChildTopWindow):
                         "redirect_uri=http://oauth.vk.com/blank.html&response_type=token&" + \
                         "client_id=%s&scope=%s" % (self.CLIENT_ID, ",".join(self.SCOPE))
         self.web_view = WebKit.WebView()
-        self.web_view.show()
+
         self.vbox.pack_start(self.web_view, False, False, 0)
 
         self.web_view.connect('resource-load-finished', self.on_load)
@@ -66,20 +66,21 @@ class VKWebkitAuth(Gtk.Dialog, ChildTopWindow):
 
         self.access_token = None
         self.user_id = None
-        self.first_page_loaded = False
+        self.on_load_method_finished = False
 
     def auth_user(self, check_only=False):
         if check_only:
             return self.access_token, self.user_id if self.access_token and self.user_id else None
         self.web_view.load_uri(self.auth_url)
         logging.debug("waiting for answer...")
-        while not self.first_page_loaded:
+        while not (self.web_view.get_load_status().value_name == 'WEBKIT_LOAD_FINISHED' and self.on_load_method_finished):
             Gtk.main_iteration()
         logging.debug("answer found!")
         logging.debug(self.access_token)
         logging.debug(self.user_id)
         if self.access_token and self.user_id:
             return self.access_token, self.user_id
+        self.web_view.show()
         result = self.run()
         if (result == Gtk.ResponseType.ACCEPT) and self.access_token and self.user_id:
             return self.access_token, self.user_id
@@ -101,7 +102,7 @@ class VKWebkitAuth(Gtk.Dialog, ChildTopWindow):
             if "access_token" in answer and "user_id" in answer:
                 self.access_token, self.user_id = answer["access_token"], answer["user_id"]
             self.response(Gtk.ResponseType.ACCEPT)
-        self.first_page_loaded = True
+        self.on_load_method_finished = True
 
 
 class VKService:
