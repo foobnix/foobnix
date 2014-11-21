@@ -27,13 +27,13 @@ class TrayIconConfig(ConfigPlugin):
         box.hide()
 
         '''static_icon'''
-        self.static_icon = IconBlock("Icon", controls, FC().static_icon_entry)
+        self.static_icon = IconBlock(_("Icon"), controls, FC().static_icon_entry)
 
         """dynamic icons"""
-        self.play_icon = IconBlock("Play", controls, FC().play_icon_entry)
-        self.pause_icon = IconBlock("Pause", controls, FC().pause_icon_entry)
-        self.stop_icon = IconBlock("Stop", controls, FC().stop_icon_entry)
-        self.radio_icon = IconBlock("Radio", controls, FC().radio_icon_entry)
+        self.play_icon = IconBlock(_("Play"), controls, FC().play_icon_entry)
+        self.pause_icon = IconBlock(_("Pause"), controls, FC().pause_icon_entry)
+        self.stop_icon = IconBlock(_("Stop"), controls, FC().stop_icon_entry)
+        self.radio_icon = IconBlock(_("Radio"), controls, FC().radio_icon_entry)
 
         self.tray_icon_button = Gtk.CheckButton(label=_("Show tray icon"), use_underline=True)
         self.hide_in_tray_on_start = Gtk.CheckButton(label=_("Hide player in tray on start"), use_underline=True)

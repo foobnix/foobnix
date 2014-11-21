@@ -19,7 +19,6 @@ import urllib2
 import simplejson
 
 from gi.repository import Gtk
-from gi.repository import GLib
 from gi.repository import WebKit
 from gi.repository import Soup
 
