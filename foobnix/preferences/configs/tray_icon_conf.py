@@ -19,7 +19,7 @@ from foobnix.helpers.pref_widgets import FrameDecorator, VBoxDecorator, ChooseDe
 
 class TrayIconConfig(ConfigPlugin):
 
-    name = ("Tray Icon")
+    name = _("Tray Icon")
 
     def __init__(self, controls):
         self.controls = controls
