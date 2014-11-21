@@ -34,17 +34,16 @@ class LyricsFinder(HTMLParser):
 
     def get_lyrics_from_megalyrics(self, artist, title):
         base = "http://megalyrics.ru/lyric/"
-        self.tagname = 'pre'
+        self.tagname = 'div'
         self.attr = 'class'
-        self.attr_value = 'lyric'
+        self.attr_value = 'text_inner'
         title = title.replace(" ", "-").replace("/", "-")
         title = urllib.quote(title)
         artist = artist.replace(" ", "-").replace("/", "-")
         artist = urllib.quote(artist)
         result = urllib.urlopen(base + artist + "/" + title + ".html").read()
-        result = result.replace('&#039;', '!apostrophe!').replace('<br/><br/>', '<br/>\n<br/>')
+        result = result.replace("&#39;", '!apostrophe!').replace('<br /><br />', '<br />\n<br />')
         self.feed(result)
-        del self.data[0]
         return "\n".join(self.data).replace('!apostrophe!', "\'")
 
     def handle_starttag(self, tag, attrs):
@@ -83,7 +82,11 @@ def get_lyrics_by_parsing(artist, title):
         try:
             logging.debug("Try to get lyrics from megalyrics.ru")
             text = lyrics_finder.get_lyrics_from_megalyrics(artist, title)
-        except:
+        except Exception, e:
+            import sys
+            import traceback
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stdout)
             logging.info("Error occurred when getting lyrics from megalyrics.ru")
 
     lyrics_finder.reset()
