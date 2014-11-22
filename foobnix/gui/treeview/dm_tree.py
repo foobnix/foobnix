@@ -31,27 +31,27 @@ class DownloadManagerTreeControl(CommonTreeControl):
         self.tree_menu = Popup()
 
         """column config"""
-        column = Gtk.TreeViewColumn("Name", Gtk.CellRendererText(), text=self.text[0])
+        column = Gtk.TreeViewColumn(_("Name"), Gtk.CellRendererText(), text=self.text[0])
         column.set_resizable(True)
         self.append_column(column)
-        
+
         """column config"""
-        column = Gtk.TreeViewColumn("Progress", Gtk.CellRendererProgress(), text=self.persent[0], value=self.persent[0])
+        column = Gtk.TreeViewColumn(_("Progress"), Gtk.CellRendererProgress(), text=self.persent[0], value=self.persent[0])
         column.set_resizable(True)
         self.append_column(column)
-        
+
         """column config"""
-        column = Gtk.TreeViewColumn("Size", Gtk.CellRendererText(), text=self.size[0])
+        column = Gtk.TreeViewColumn(_("Size"), Gtk.CellRendererText(), text=self.size[0])
         column.set_resizable(True)
         self.append_column(column)
-        
+
         """status"""
-        column = Gtk.TreeViewColumn("Status", Gtk.CellRendererText(), text=self.status[0])
+        column = Gtk.TreeViewColumn(_("Status"), Gtk.CellRendererText(), text=self.status[0])
         column.set_resizable(True)
         self.append_column(column)
-        
+
         """column config"""
-        column = Gtk.TreeViewColumn("Path", Gtk.CellRendererText(), text=self.save_to[0])
+        column = Gtk.TreeViewColumn(_("Path"), Gtk.CellRendererText(), text=self.save_to[0])
         column.set_resizable(True)
         column.set_expand(True)
         self.append_column(column)
@@ -97,7 +97,7 @@ class DownloadManagerTreeControl(CommonTreeControl):
         self.update_bean(bean)
         self.navigation.update_statistics()
         #self.navigation.use_filter()
-    
+
     def on_button_press(self, w, e):
         logging.debug("on dm button press")
         if is_empty_click(w, e):
