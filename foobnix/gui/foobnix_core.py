@@ -1,4 +1,7 @@
 #-*- coding: utf-8 -*-
+
+import logging
+
 from foobnix.fc.fc import FC
 from foobnix.gui.notetab import NoteTabControl
 from foobnix.gui.base_layout import BaseFoobnixLayout
@@ -95,12 +98,11 @@ class FoobnixCore(BaseFoobnixControls):
         if with_dbus:
             from foobnix.gui.controls.dbus_manager import DBusManager
             self.dbus = DBusManager(self)
-            try:
-                import keybinder #@UnresolvedImport @UnusedImport
-                from foobnix.preferences.configs.hotkey_conf import load_foobnix_hotkeys
-                load_foobnix_hotkeys()
-            except:
-                pass
+        try:
+            from foobnix.preferences.configs.hotkey_conf import load_foobnix_hotkeys
+            load_foobnix_hotkeys()
+        except:
+            logging.warning("Can't to load keybinder library")
 
     def run(self):
         self.on_load()
