@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-23 19:36+0400\n"
-"PO-Revision-Date: 2013-03-23 22:18+0000\n"
+"POT-Creation-Date: 2013-05-04 17:20+0400\n"
+"PO-Revision-Date: 2013-05-04 18:22+0000\n"
 "Last-Translator: XsLiDian <xslidian@gmail.com>\n"
 "Language-Team: Chinese Simplified <xslidian+foobnix@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-24 04:51+0000\n"
-"X-Generator: Launchpad (build 16540)\n"
+"X-Launchpad-Export-Date: 2013-05-05 05:25+0000\n"
+"X-Generator: Launchpad (build 16598)\n"
 "Language: \n"
 "X-Poedit-Language: Chinese\n"
 
@@ -98,7 +98,7 @@ msgstr "foobnix 有新版可用"
 msgid "Download and Donate"
 msgstr "下载与捐助"
 
-#. terminal = Gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
+#. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:179
 #: .././foobnix/regui/treeview/playlist_tree.py:240
 #: .././foobnix/util/converter.py:341

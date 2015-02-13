@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-03-23 19:36+0400\n"
-"PO-Revision-Date: 2013-01-26 13:06+0000\n"
-"Last-Translator: Hélion du Mas des Bourboux <helion331990@gmail.com>\n"
+"POT-Creation-Date: 2013-05-04 17:20+0400\n"
+"PO-Revision-Date: 2015-01-18 14:28+0000\n"
+"Last-Translator: Anne <anneonyme017@gmail.com>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-24 04:50+0000\n"
-"X-Generator: Launchpad (build 16540)\n"
+"X-Launchpad-Export-Date: 2015-01-19 05:49+0000\n"
+"X-Generator: Launchpad (build 17304)\n"
 
 #: .././foobnix/dm/dm.py:32 .././foobnix/preferences/preferences_window.py:59
 #: .././foobnix/regui/menu.py:54 .././foobnix/regui/top.py:44
@@ -96,7 +96,7 @@ msgstr "Nouvelle version de Foobnix disponible"
 msgid "Download and Donate"
 msgstr "Télécharger et faire un don"
 
-#. terminal = Gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
+#. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:179
 #: .././foobnix/regui/treeview/playlist_tree.py:240
 #: .././foobnix/util/converter.py:341
@@ -1236,7 +1236,7 @@ msgstr "Créer une nouvelle liste de lecture"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:74
 msgid "Enter playlist name"
-msgstr "Introduire un nom de liste de lecture"
+msgstr "Saisir un nom de liste de lecture"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:88
 msgid "Rename Dialog"

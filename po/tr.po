@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-03-23 19:36+0400\n"
-"PO-Revision-Date: 2013-02-04 11:24+0000\n"
-"Last-Translator: Irmak Bıçakçıgil <Unknown>\n"
+"POT-Creation-Date: 2013-05-04 17:20+0400\n"
+"PO-Revision-Date: 2015-02-04 14:50+0000\n"
+"Last-Translator: Volkan Gezer <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-24 04:51+0000\n"
-"X-Generator: Launchpad (build 16540)\n"
+"X-Launchpad-Export-Date: 2015-02-05 06:03+0000\n"
+"X-Generator: Launchpad (build 17331)\n"
 
 #: .././foobnix/dm/dm.py:32 .././foobnix/preferences/preferences_window.py:59
 #: .././foobnix/regui/menu.py:54 .././foobnix/regui/top.py:44
@@ -96,7 +96,7 @@ msgstr "Yeni foobnix sürümü mevcut"
 msgid "Download and Donate"
 msgstr "İndir ve Bağış Yap"
 
-#. terminal = Gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
+#. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:179
 #: .././foobnix/regui/treeview/playlist_tree.py:240
 #: .././foobnix/util/converter.py:341
@@ -906,7 +906,7 @@ msgstr "Ağaç Görünümünü Temizle"
 
 #: .././foobnix/regui/service/vk_service.py:42
 msgid "VKontakte Authorization (is required for music search)"
-msgstr ""
+msgstr "VKontakte Yetkilendirmesi (müzik aramak için gerekli)"
 
 #: .././foobnix/regui/service/vk_service.py:101
 msgid "Open"
@@ -1235,7 +1235,7 @@ msgstr "Yeni çalma listesi oluştur"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:74
 msgid "Enter playlist name"
-msgstr "Çalma Listesi adı gir"
+msgstr "Çalma listesi adı gir"
 
 #: .././foobnix/regui/treeview/virtual_tree.py:88
 msgid "Rename Dialog"

@@ -8,15 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-23 19:36+0400\n"
-"PO-Revision-Date: 2013-03-25 20:34+0000\n"
+"POT-Creation-Date: 2013-05-04 17:20+0400\n"
+"PO-Revision-Date: 2013-05-16 18:15+0000\n"
 "Last-Translator: fri <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-26 04:48+0000\n"
-"X-Generator: Launchpad (build 16540)\n"
+"X-Launchpad-Export-Date: 2013-05-17 05:37+0000\n"
+"X-Generator: Launchpad (build 16626)\n"
 "Language: de\n"
 "X-Language: cs_CZ\n"
 "X-Source-Language: C\n"
@@ -100,7 +100,7 @@ msgstr "Je dostupná nová verze přehrávače Foobnix"
 msgid "Download and Donate"
 msgstr "Stáhnout a dát dar"
 
-#. terminal = Gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
+#. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:179
 #: .././foobnix/regui/treeview/playlist_tree.py:240
 #: .././foobnix/util/converter.py:341
@@ -279,11 +279,11 @@ msgstr "Omezit výsledky hledání:  "
 
 #: .././foobnix/preferences/configs/last_fm.py:68
 msgid "Enable Music Scrobbler"
-msgstr "Zapnout hudební scrobbler"
+msgstr "Povolit odesílání informací o přehrávané hudbě"
 
 #: .././foobnix/preferences/configs/last_fm.py:71
 msgid "Enable Radio Scrobbler"
-msgstr "Zapnout rádio scrobbler"
+msgstr "Povolit odesílání informací o přehrávaných rádiích"
 
 #: .././foobnix/preferences/configs/last_fm.py:87
 #: .././foobnix/regui/search.py:123

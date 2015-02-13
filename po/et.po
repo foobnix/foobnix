@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-03-23 19:36+0400\n"
-"PO-Revision-Date: 2012-07-23 13:13+0000\n"
-"Last-Translator: spil <spil99@hotmail.com>\n"
+"POT-Creation-Date: 2013-05-04 17:20+0400\n"
+"PO-Revision-Date: 2014-12-24 22:12+0000\n"
+"Last-Translator: lyyser <Unknown>\n"
 "Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-24 04:50+0000\n"
-"X-Generator: Launchpad (build 16540)\n"
+"X-Launchpad-Export-Date: 2014-12-25 05:51+0000\n"
+"X-Generator: Launchpad (build 17286)\n"
 
 #: .././foobnix/dm/dm.py:32 .././foobnix/preferences/preferences_window.py:59
 #: .././foobnix/regui/menu.py:54 .././foobnix/regui/top.py:44
@@ -71,7 +71,7 @@ msgstr ""
 
 #: .././foobnix/eq/eq_gui.py:173
 msgid "Auto"
-msgstr "Auto"
+msgstr "Automaatne"
 
 #: .././foobnix/eq/eq_gui.py:185
 msgid "Save"
@@ -96,7 +96,7 @@ msgstr "Uus foobnixi versioon on saadaval"
 msgid "Download and Donate"
 msgstr "Lae alla ja toeta"
 
-#. terminal = Gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
+#. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:179
 #: .././foobnix/regui/treeview/playlist_tree.py:240
 #: .././foobnix/util/converter.py:341
@@ -105,7 +105,7 @@ msgstr "Lae alla"
 
 #: .././foobnix/helpers/dialog_entry.py:192
 msgid "We hope you like the player. We will make it even better."
-msgstr ""
+msgstr "Me loodame et sulle meeldib mängija. Me teeme seda veelgi paremaks."
 
 #: .././foobnix/helpers/dialog_entry.py:193
 #: .././foobnix/preferences/configs/notification_conf.py:19
@@ -144,11 +144,11 @@ msgstr "Sulge"
 
 #: .././foobnix/preferences/configs/category_info.py:10
 msgid "Category Info"
-msgstr ""
+msgstr "Kategooria Info"
 
 #: .././foobnix/preferences/configs/dm_config.py:23
 msgid "Save online music"
-msgstr ""
+msgstr "Salvesta online-muusika"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:64
 msgid "Global Hotkeys"
@@ -156,7 +156,7 @@ msgstr "Üldised kiirklahvid"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:78
 msgid "Action"
-msgstr ""
+msgstr "Tegevus"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:79
 msgid "Hotkey"
@@ -241,7 +241,7 @@ msgstr "Laulusõnade paneeli suurus"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:47
 msgid "Show Tags list"
-msgstr ""
+msgstr "Näita märksõnade loetelu"
 
 #: .././foobnix/preferences/configs/__init__.py:4
 msgid "Music Library"
@@ -271,7 +271,7 @@ msgstr "Salasõna"
 
 #: .././foobnix/preferences/configs/last_fm.py:57
 msgid "Limit search results:  "
-msgstr ""
+msgstr "Limiteeri otsingutulemusi:  "
 
 #: .././foobnix/preferences/configs/last_fm.py:68
 msgid "Enable Music Scrobbler"
@@ -288,7 +288,7 @@ msgstr "VKontakte"
 
 #: .././foobnix/preferences/configs/last_fm.py:92
 msgid "Not connected"
-msgstr ""
+msgstr "Pole ühendatud"
 
 #: .././foobnix/preferences/configs/last_fm.py:94
 msgid "You vk account is:"
@@ -313,7 +313,7 @@ msgstr "Asukohad"
 #: .././foobnix/preferences/configs/music_library.py:136
 #: .././foobnix/regui/treeview/navigation_tree.py:231
 msgid "Choose directory with music"
-msgstr ""
+msgstr "Vali muusika kaust"
 
 #: .././foobnix/preferences/configs/music_library.py:162
 msgid "File Types"
@@ -374,7 +374,7 @@ msgstr "Tulemus:"
 
 #: .././foobnix/preferences/configs/network_conf.py:126
 msgid "Show message on network disconnection"
-msgstr ""
+msgstr "Kuva teade võrguühenduse katkemisel"
 
 #: .././foobnix/preferences/configs/network_conf.py:152
 msgid " OK in seconds: "
@@ -387,15 +387,15 @@ msgstr "Märguanded"
 #: .././foobnix/preferences/configs/notification_conf.py:22
 #: .././foobnix/preferences/configs/other_conf.py:73
 msgid "Show new foobnix release avaliable demo dialog"
-msgstr ""
+msgstr "Näida uue foobnix release saadavust demo dialoogis"
 
 #: .././foobnix/preferences/configs/other_conf.py:36
 msgid "Save online music to folder:"
-msgstr ""
+msgstr "Salvesta võrgust muusika kausta:"
 
 #: .././foobnix/preferences/configs/other_conf.py:40
 msgid "Automatic online music save"
-msgstr ""
+msgstr "Automaatne online-muusika salvestamine"
 
 #: .././foobnix/preferences/configs/other_conf.py:45
 msgid "Download in threads"
@@ -403,7 +403,7 @@ msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:59
 msgid "Disc cover size:"
-msgstr "Plaadiümbrise suurus"
+msgstr "Plaadi ümbrise suurus:"
 
 #: .././foobnix/preferences/configs/other_conf.py:83
 msgid "Enable theme image"
@@ -427,15 +427,15 @@ msgstr "Järjekord-kordus nuppude stiil:"
 
 #: .././foobnix/preferences/configs/other_conf.py:107
 msgid "Toggle Buttons"
-msgstr "Pildid"
+msgstr "Lülitus nupud"
 
 #: .././foobnix/preferences/configs/other_conf.py:109
 msgid "Text Labels"
-msgstr "Tekstisümbolid"
+msgstr "Tekstipealdised"
 
 #: .././foobnix/preferences/configs/other_conf.py:119
 msgid "Opacity:"
-msgstr "Läbipaistmatus:"
+msgstr "Läbipaistvus:"
 
 #: .././foobnix/preferences/configs/other_conf.py:132
 msgid "Choose your preferred file manager:"
@@ -528,11 +528,11 @@ msgstr "Märguande aeg (sek): "
 
 #: .././foobnix/regui/base_controls.py:143
 msgid "Choose folders to open"
-msgstr ""
+msgstr "Vali kaustad avamiseks"
 
 #: .././foobnix/regui/base_controls.py:163
 msgid "Nothing found to play in the folder(s)"
-msgstr ""
+msgstr "Ei leitud midagi esitamiseks kaustades"
 
 #: .././foobnix/regui/base_controls.py:170
 msgid "Choose file to open"
@@ -540,7 +540,7 @@ msgstr "Vali fail avamiseks"
 
 #: .././foobnix/regui/base_controls.py:221
 msgid "Nothing found to play in the file(s)"
-msgstr ""
+msgstr "Ei leitud midagi esitamiseks failidest"
 
 #: .././foobnix/regui/base_controls.py:344
 msgid "Stopped"
@@ -552,16 +552,16 @@ msgstr "Peatatud | "
 
 #: .././foobnix/regui/base_controls.py:382
 msgid "Radio "
-msgstr ""
+msgstr "Raadio "
 
 #: .././foobnix/regui/base_controls.py:415
 #: .././foobnix/regui/base_controls.py:416
 msgid "Resource not found"
-msgstr ""
+msgstr "Ressurssi ei leitud"
 
 #: .././foobnix/regui/base_controls.py:424
 msgid "Stopped. No resources found"
-msgstr ""
+msgstr "Peatatud. Ei leitud ressursse"
 
 #: .././foobnix/regui/coverlyrics.py:21
 msgid "Album title"
@@ -577,7 +577,7 @@ msgstr "Sõnad"
 
 #: .././foobnix/regui/infopanel.py:53
 msgid "Best Songs"
-msgstr ""
+msgstr "Parimad lood"
 
 #: .././foobnix/regui/infopanel.py:56
 msgid "Similar Artists"
@@ -689,7 +689,7 @@ msgstr "Veebileht"
 
 #: .././foobnix/regui/menu.py:115
 msgid "http://www.foobnix.com/news/eng"
-msgstr ""
+msgstr "http://www.foobnix.com/news/eng"
 
 #: .././foobnix/regui/menu.py:116
 msgid "Issue report"
@@ -701,11 +701,11 @@ msgstr ""
 
 #: .././foobnix/regui/menu.py:118
 msgid "http://www.foobnix.com/donate/eng"
-msgstr ""
+msgstr "http://www.foobnix.com/donate/eng"
 
 #: .././foobnix/regui/perspectives.py:43
 msgid " Add Folder(s) in tree"
-msgstr ""
+msgstr " Lisa kaustasi puuse"
 
 #: .././foobnix/regui/perspectives.py:120
 msgid "Music"
@@ -726,11 +726,11 @@ msgstr "Raadiojaamad (Alt+2)"
 #: .././foobnix/regui/perspectives.py:129
 #: .././foobnix/regui/treeview/virtual_tree.py:25
 msgid "Storage"
-msgstr ""
+msgstr "Salvestursruum"
 
 #: .././foobnix/regui/perspectives.py:129
 msgid "Storage (Alt+3)"
-msgstr ""
+msgstr "Salvestusruum (Alt+3)"
 
 #: .././foobnix/regui/perspectives.py:133
 msgid "Info Panel (Alt+4)"
@@ -754,11 +754,11 @@ msgstr "VK paneel (Alt+6)"
 
 #: .././foobnix/regui/search.py:19
 msgid "Search music online"
-msgstr ""
+msgstr "Otsi muusikat võrgus"
 
 #: .././foobnix/regui/search.py:64
 msgid "Online Music Search, Play, Download"
-msgstr ""
+msgstr "Võrgus muusika otsing, Esita, Laadi alla"
 
 #: .././foobnix/regui/search.py:78
 msgid "Search"
@@ -846,7 +846,7 @@ msgstr ""
 
 #: .././foobnix/regui/controls/record.py:43
 msgid "So file doesn't exist. Pehaps it wasn't create yet."
-msgstr ""
+msgstr "Seega faili ei ole olemas. Võib-olla ei ole seda veel loodud."
 
 #: .././foobnix/regui/controls/record.py:52
 msgid "Save file as ..."
@@ -854,7 +854,7 @@ msgstr "Salvesta fail ..."
 
 #: .././foobnix/regui/controls/seach_progress.py:72
 msgid "Process..."
-msgstr ""
+msgstr "Protsess..."
 
 #: .././foobnix/regui/controls/tray_icon.py:47
 msgid "Exit"
@@ -862,7 +862,7 @@ msgstr "Välju"
 
 #: .././foobnix/regui/controls/tray_icon.py:48
 msgid "Close Popup"
-msgstr ""
+msgstr "Sulge hüpikaken"
 
 #: .././foobnix/regui/notetab/__init__.py:331
 #: .././foobnix/regui/notetab/tab_library.py:40
@@ -888,7 +888,7 @@ msgstr "Vali kaust loendi salvestamiseks"
 
 #: .././foobnix/regui/notetab/tab_library.py:41
 msgid "Update Music Tree"
-msgstr ""
+msgstr "Uuenda Muusika puud"
 
 #: .././foobnix/regui/notetab/tab_library.py:42
 msgid "Add folder"
@@ -1250,11 +1250,11 @@ msgstr ""
 
 #: .././foobnix/regui/treeview/vk_integration_tree.py:111
 msgid "No results found"
-msgstr ""
+msgstr "Tulemusi ei leitud"
 
 #: .././foobnix/util/const.py:46
 msgid "Active"
-msgstr ""
+msgstr "Aktiivne"
 
 #: .././foobnix/util/const.py:48
 msgid "Downloading"
@@ -1270,7 +1270,7 @@ msgstr "Mitteaktiivne"
 
 #: .././foobnix/util/const.py:52
 msgid "Lock"
-msgstr ""
+msgstr "Lukk"
 
 #: .././foobnix/util/const.py:53
 msgid "Error"
@@ -1362,7 +1362,7 @@ msgstr ""
 
 #: .././foobnix/util/file_utils.py:182
 msgid "You want to create subfolder in folder"
-msgstr ""
+msgstr "Sa tahad luua alamkausta kaustas"
 
 #: .././foobnix/util/file_utils.py:183
 msgid "Enter new folder's name:"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-03-23 19:36+0400\n"
-"PO-Revision-Date: 2012-09-20 19:17+0000\n"
-"Last-Translator: Felipe G. Wozniak <Unknown>\n"
+"POT-Creation-Date: 2013-05-04 17:20+0400\n"
+"PO-Revision-Date: 2013-09-04 16:17+0000\n"
+"Last-Translator: Rodrigo Zimmermann <bilufe@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-24 04:51+0000\n"
-"X-Generator: Launchpad (build 16540)\n"
+"X-Launchpad-Export-Date: 2013-09-05 04:44+0000\n"
+"X-Generator: Launchpad (build 16758)\n"
 
 #: .././foobnix/dm/dm.py:32 .././foobnix/preferences/preferences_window.py:59
 #: .././foobnix/regui/menu.py:54 .././foobnix/regui/top.py:44
@@ -96,7 +96,7 @@ msgstr "Novo lançamento do foobnix disponível"
 msgid "Download and Donate"
 msgstr "Baixar e Doar"
 
-#. terminal = Gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
+#. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:179
 #: .././foobnix/regui/treeview/playlist_tree.py:240
 #: .././foobnix/util/converter.py:341
@@ -253,7 +253,7 @@ msgstr "Outras Opções"
 
 #: .././foobnix/preferences/configs/last_fm.py:17
 msgid "Last FM + VK"
-msgstr ""
+msgstr "Last FM + VK"
 
 #: .././foobnix/preferences/configs/last_fm.py:26
 msgid "Last.FM"
@@ -288,7 +288,7 @@ msgstr "VKontakte"
 
 #: .././foobnix/preferences/configs/last_fm.py:92
 msgid "Not connected"
-msgstr ""
+msgstr "Não conectado"
 
 #: .././foobnix/preferences/configs/last_fm.py:94
 msgid "You vk account is:"
@@ -391,7 +391,7 @@ msgstr ""
 
 #: .././foobnix/preferences/configs/other_conf.py:36
 msgid "Save online music to folder:"
-msgstr ""
+msgstr "Salvar música online para a pasta:"
 
 #: .././foobnix/preferences/configs/other_conf.py:40
 msgid "Automatic online music save"
@@ -415,11 +415,11 @@ msgstr "Tipo do menu: "
 
 #: .././foobnix/preferences/configs/other_conf.py:94
 msgid "Old Style (Menu Bar)"
-msgstr ""
+msgstr "Estilo Antigo (Barra de Menu)"
 
 #: .././foobnix/preferences/configs/other_conf.py:96
 msgid "New Style (Button)"
-msgstr ""
+msgstr "Novo Estilo (Botão)"
 
 #: .././foobnix/preferences/configs/other_conf.py:105
 msgid "Order-Repeat Switcher Style:"
@@ -431,11 +431,11 @@ msgstr "Alternar botões"
 
 #: .././foobnix/preferences/configs/other_conf.py:109
 msgid "Text Labels"
-msgstr ""
+msgstr "Etiquetas de Texto"
 
 #: .././foobnix/preferences/configs/other_conf.py:119
 msgid "Opacity:"
-msgstr ""
+msgstr "Opacidade:"
 
 #: .././foobnix/preferences/configs/other_conf.py:132
 msgid "Choose your preferred file manager:"
@@ -492,7 +492,7 @@ msgstr "Esconder ícone na área de notificação ao iniciar"
 #. self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
 #: .././foobnix/preferences/configs/tray_icon_conf.py:42
 msgid "On close window - close player"
-msgstr ""
+msgstr "Ao fechar a janela - fechar reprodutor"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:44
 msgid "On close window - hide player"
