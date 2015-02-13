@@ -75,5 +75,5 @@ bzr push lp:foobnix
 
 rm -rf $BASE/po
 cd $BASE
-echo Get Last transtations
+echo Get Last translations
 bzr branch lp:~foobnix-team/+junk/foobnix po
