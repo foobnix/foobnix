@@ -1,5 +1,6 @@
 #!/bin/bash
 pwd
+cd ../
 rm -rf ./build
 mkdir ./build
 
@@ -41,7 +42,7 @@ cp -r ./scripts/debian ./build/foobnix_$FOOBNIX_VERSION/debian
 
 cd ./build
 
-LIST=("precise" "quantal" "raring" "saucy" "trusty" "utopic" "vivid")
+LIST=("precise" "trusty" "utopic" "vivid")
 
 for UBUNTU in ${LIST[@]}
 do
