@@ -306,7 +306,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
                 logging.info("The text not found")
                 text = _("The text not found")
         if bean.UUID == self.bean.UUID:
-            self.lyrics.set_text(text, lyrics_title)
+            self.set_lyrics(text, lyrics_title)
 
     def show_wiki_info(self):
         if not self.bean:
@@ -378,6 +378,10 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         parent = FModel(_("Best Songs:") + " " + self.bean.artist)
         update_parent_for_beans(best_songs, parent)
         self.best_songs.populate_all([parent] + best_songs)
+
+    def set_lyrics(self, text, title):
+        self.lyrics.set_text(text, title)
+        self.controls.coverlyrics.lyrics.set_text(text, title)
 
     def on_load(self):
         for w in self.left_widget:

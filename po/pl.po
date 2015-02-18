@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-23 19:36+0400\n"
-"PO-Revision-Date: 2013-03-23 22:19+0000\n"
-"Last-Translator: Dmitry-Kogura <Unknown>\n"
+"POT-Creation-Date: 2013-05-04 17:20+0400\n"
+"PO-Revision-Date: 2013-08-12 11:03+0000\n"
+"Last-Translator: Stanisław Dac <s.dac@yandex.ru>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-24 04:51+0000\n"
-"X-Generator: Launchpad (build 16540)\n"
+"X-Launchpad-Export-Date: 2013-08-13 05:12+0000\n"
+"X-Generator: Launchpad (build 16723)\n"
 "Language: pl\n"
 
 #: .././foobnix/dm/dm.py:32 .././foobnix/preferences/preferences_window.py:59
@@ -97,7 +97,7 @@ msgstr "Nowa wersja foobnix jest dostępna"
 msgid "Download and Donate"
 msgstr "Pobierz i wspomóż"
 
-#. terminal = Gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
+#. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
 #: .././foobnix/helpers/dialog_entry.py:179
 #: .././foobnix/regui/treeview/playlist_tree.py:240
 #: .././foobnix/util/converter.py:341
@@ -392,11 +392,11 @@ msgstr "Pokaż okno z nowym wydaniem foobnix"
 
 #: .././foobnix/preferences/configs/other_conf.py:36
 msgid "Save online music to folder:"
-msgstr ""
+msgstr "Zapisz muzykę online do folderu:"
 
 #: .././foobnix/preferences/configs/other_conf.py:40
 msgid "Automatic online music save"
-msgstr ""
+msgstr "Automatycznie zapisz muzykę online"
 
 #: .././foobnix/preferences/configs/other_conf.py:45
 msgid "Download in threads"
@@ -727,11 +727,11 @@ msgstr "Stacja radiowe (Alt+2)"
 #: .././foobnix/regui/perspectives.py:129
 #: .././foobnix/regui/treeview/virtual_tree.py:25
 msgid "Storage"
-msgstr ""
+msgstr "Nośnik"
 
 #: .././foobnix/regui/perspectives.py:129
 msgid "Storage (Alt+3)"
-msgstr ""
+msgstr "Nośnik (ALT+3)"
 
 #: .././foobnix/regui/perspectives.py:133
 msgid "Info Panel (Alt+4)"

@@ -5,6 +5,7 @@ Created on Sep 29, 2010
 
 @author: ivan
 '''
+from foobnix.helpers.window import ChildTopWindow
 
 import os
 import gi
@@ -32,23 +33,23 @@ from foobnix.util.time_utils import convert_seconds_to_text
 cookiefile = os.path.join(CONFIG_DIR, "vk_cooky")
 
 
-class VKWebkitAuth(Gtk.Dialog):
+class VKWebkitAuth(Gtk.Dialog, ChildTopWindow):
 
     SCOPE = ["audio", "friends", "wall"]
     CLIENT_ID = "2234333"
 
     def __init__(self):
-        super(VKWebkitAuth, self).__init__(_("vk.com authorization"), None, Gtk.DialogFlags.MODAL, ())
-
+        Gtk.Dialog.__init__(self, _("vk.com authorization"), None, Gtk.DialogFlags.MODAL, ())
+        ChildTopWindow.__init__(self)
         self.set_size_request(550, -1)
         self.auth_url = "http://oauth.vk.com/oauth/authorize?" + \
                         "redirect_uri=http://oauth.vk.com/blank.html&response_type=token&" + \
                         "client_id=%s&scope=%s" % (self.CLIENT_ID, ",".join(self.SCOPE))
         self.web_view = WebKit.WebView()
-        self.web_view.show()
+
         self.vbox.pack_start(self.web_view, False, False, 0)
 
-        self.web_view.connect('onload-event', self.on_load)
+        self.web_view.connect('resource-load-finished', self.on_load)
         session = WebKit.get_default_session()
         if FC().proxy_enable and FC().proxy_url:
             if FC().proxy_user and FC().proxy_password:
@@ -65,20 +66,21 @@ class VKWebkitAuth(Gtk.Dialog):
 
         self.access_token = None
         self.user_id = None
-        self.first_page_loaded = False
+        self.on_load_method_finished = False
 
     def auth_user(self, check_only=False):
         if check_only:
             return self.access_token, self.user_id if self.access_token and self.user_id else None
-        self.web_view.open(self.auth_url)
+        self.web_view.load_uri(self.auth_url)
         logging.debug("waiting for answer...")
-        while not self.first_page_loaded:
+        while not (self.web_view.get_load_status().value_name == 'WEBKIT_LOAD_FINISHED' and self.on_load_method_finished):
             Gtk.main_iteration()
         logging.debug("answer found!")
         logging.debug(self.access_token)
         logging.debug(self.user_id)
         if self.access_token and self.user_id:
             return self.access_token, self.user_id
+        self.web_view.show()
         result = self.run()
         if (result == Gtk.ResponseType.ACCEPT) and self.access_token and self.user_id:
             return self.access_token, self.user_id
@@ -93,14 +95,14 @@ class VKWebkitAuth(Gtk.Dialog):
                 return kv[0], None  # ["key"], e.g. key= or key
         return dict(split_key_value(kv_pair) for kv_pair in url.fragment.split("&"))
 
-    def on_load(self, webview, frm):
+    def on_load(self, webview, frm, res):
         url = urlparse(webview.get_property("uri"))
         if url.path == "/blank.html":
             answer = self.extract_answer(url)
             if "access_token" in answer and "user_id" in answer:
                 self.access_token, self.user_id = answer["access_token"], answer["user_id"]
             self.response(Gtk.ResponseType.ACCEPT)
-        self.first_page_loaded = True
+        self.on_load_method_finished = True
 
 
 class VKService:

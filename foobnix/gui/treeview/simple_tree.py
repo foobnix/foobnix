@@ -17,28 +17,28 @@ from foobnix.util.const import FTYPE_NOT_UPDATE_INFO_PANEL, \
 
 
 class SimpleTreeControl(CommonTreeControl, LoadSave):
-    def __init__(self, title_name, controls, head_visible=True):        
+    def __init__(self, title_name, controls, head_visible=True):
         CommonTreeControl.__init__(self, controls)
-        self.title_name = title_name 
-        
+        self.title_name = title_name
+
         self.set_reorderable(False)
-        
+
         """column config"""
         column = Gtk.TreeViewColumn(title_name, Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.append_column(column)
         self.set_headers_visible(head_visible)
-        
+
         self.configure_send_drag()
-        
+
         self.set_type_plain()
         #self.populate_all([FModel("Madonna").add_is_file(True)])
-        
+
         self.line_title = None
-    
+
     def get_title(self):
         return self.title_name
-    
+
     def on_button_press(self, w, e):
         if is_empty_click(w, e):
             w.get_selection().unselect_all()
@@ -47,55 +47,55 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
             active.type = FTYPE_NOT_UPDATE_INFO_PANEL
         else:
             return None
-        
+
         if is_left_click(e):
             if active.get_status():
                 if active.get_status() == DOWNLOAD_STATUS_ALL:
                     self.controls.dm.filter(None, FTreeModel().status[0])
                 else:
                     self.controls.dm.filter(active.get_status(), FTreeModel().status[0])
-                
+
         if is_double_left_click(e):
             self.controls.play(active)
-        
+
         if is_rigth_click(e):
             right_click_optimization_for_trees(w, e)
             menu = Popup()
-            menu.add_item('Play', Gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
-            menu.add_item('Copy to Search Line', Gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)
+            menu.add_item(_('Play'), Gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
+            menu.add_item(_('Copy to Search Line'), Gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)
             menu.show(e)
-        
+
     def on_load(self):
         pass
-    
+
     def on_save(self):
         pass
 
 class SimpleListTreeControl(SimpleTreeControl):
     def __init__(self, title_name, controls, head_visible=True):
         SimpleTreeControl.__init__(self, title_name, controls, head_visible)
-        
+
         self.left_click_func = None
         self.left_click_arg = None
-        
+
         self.connect("cursor-changed", lambda * a:self.on_func())
-    
+
     def set_left_click_func(self, func=None, arg=None):
         self.left_click_func = func
         self.left_click_arg = arg
-    
+
     def on_func(self):
         if self.left_click_func and self.left_click_arg:
             self.left_click_func(self.left_click_arg)
         elif self.left_click_func:
-            self.left_click_func()  
-    
+            self.left_click_func()
+
     def on_button_press(self, w, e):
-        if is_left_click(e):            
-            self.on_func()                         
+        if is_left_click(e):
+            self.on_func()
         if is_double_left_click(e):
             pass
-        
+
         if is_rigth_click(e):
             pass
-        
+

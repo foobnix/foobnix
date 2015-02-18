@@ -2,7 +2,7 @@
 
 writelines() {
    cd $2
-   for i in *.py 
+   for i in *.py
      do
        echo $2${i} >> $1
     done
@@ -14,7 +14,7 @@ BASE=`pwd`
 echo $BASE
 
 cd $BASE
-rm -rf $BASE/po
+rm -rf po
 bzr branch lp:foobnix po
 
 POF=`pwd`/po/POTFILES.in
@@ -24,37 +24,35 @@ touch $POF
 
 LIST=(
 "foobnix"
-"foobnix.cue"
 "foobnix.dm"
 "foobnix.eq"
 "foobnix.fc"
 "foobnix.helpers"
 "foobnix.preferences"
 "foobnix.preferences.configs"
-"foobnix.regui"
-"foobnix.regui.about"
-"foobnix.regui.controls"
-"foobnix.regui.engine"
-"foobnix.regui.model"
-"foobnix.regui.notetab"
-"foobnix.regui.service"
-"foobnix.regui.treeview"
+"foobnix.gui"
+"foobnix.gui.about"
+"foobnix.gui.controls"
+"foobnix.gui.engine"
+"foobnix.gui.model"
+"foobnix.gui.notetab"
+"foobnix.gui.perspectives"
+"foobnix.gui.service"
+"foobnix.gui.treeview"
 "foobnix.util"
 )
-
 
 for NAME in ${LIST[@]}
 do
 	writelines $POF ./${NAME//.//}/
 done
 
-
 cd $BASE/po
 
 intltool-update -p
 mv untitled.pot foobnix.pot
 
-for i in *.po 
+for i in *.po
   do
   if [ "$i" = "messages.po" ]
     then
@@ -77,5 +75,5 @@ bzr push lp:foobnix
 
 rm -rf $BASE/po
 cd $BASE
-echo Get Last transtations
+echo Get Last translations
 bzr branch lp:~foobnix-team/+junk/foobnix po
