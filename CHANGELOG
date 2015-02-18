@@ -1,3 +1,19 @@
+3.00.01
+*Gtk3 interface
+*GStreamer1.0 audio backend
+*Thread safety improvements
+*Stability improvements
+*Rewritten Perspectives module
+*Integration in sound indicator of Ubuntu
+*Music library loading acceleration ~2 times
+*More quick start of player
+*Reduction in occupied RAM ~3 times
+*More responsive interface
+*Tag embedded covers and cue-sheets support
+*Tag changing on fly
+*Removed video player functional
+*MPRIS2 supporting
+
 2.6.10
 *Keep the size of the left and right panels when resizing the main window
 *Remembering maximized window state
@@ -23,7 +39,7 @@
 *Stability improvement
 *Add possibility to write debug in file (options --debug --log=path_to_file)
 *Add option of enable/disable multimedia keys
-*Add option "Don't try to bind volume control keys" 
+*Add option "Don't try to bind volume control keys"
 *Changed program icon (as experiment)
 *Add support of radio m3u playlists (for supported stream types only)
 *Reducing the time for the start of the radio
@@ -83,13 +99,13 @@
 * Fix bug with playing of ape+cue
 * Fix tag editor's bug (create tags in tagless files)
 * Fix bug with enabling/disabling equalizer
-* Fix bug (impossible to edit list of extensions) 
+* Fix bug (impossible to edit list of extensions)
 * Optimization of interaction with PCManFM and Thunar file managers
 * Add Krusader in file manager list
 
 2.5.11
 * Fixed show title and artist for radios, added manually
-* Fixed lastfm integration list for non English locale 
+* Fixed lastfm integration list for non English locale
 * Fixed translation error with \r symbol
 * Process search by vk audio url with '#' http://vk.com/audio?id=-xxxxx#/idxxxxxx
 * Add controls to fullscreen mode: Volume Control, Exit Full Screen.
@@ -109,7 +125,7 @@
 * Popup notification
 * Last.fm integration (Love this tracks, My top artists, My top tracks, My loved tracks)
 * New style buttons for Shuffle and Ordering
-* Automatic download online music 
+* Automatic download online music
 * Open content in file manager
 * Info panel - Artist Biography with images.
 * Volume control active "+", "-"
@@ -117,7 +133,7 @@
 * File cache for online info (covers, album titles, lyrics)
 * Copy data in fit format for trackers
 * Display technical file info and player state in status panel
-* More compact search panel  
+* More compact search panel
 * Improve performance player (more quick start, exit and more other)
 * Drag and drop optimization
 * A lot of bug fixes
@@ -128,15 +144,15 @@
 * Translated to it and es Bersil <bmsavone@gmail.com>
 * Make search line without Frame, search help text inside.
 * Implement Shuffle and Repeat buttons.
-* Remove from dependency setuptools 
+* Remove from dependency setuptools
 
 0.2.3
 * Added Multi tab navigation tree
 * Saving navigation and playlist tabs on exit
 * New style menu with one button
-* Image themes support 
+* Image themes support
 * Context menu for tabs
-* Possibility to rename tabs, playlist tab managment (mouse wheel, remove, create) 
+* Possibility to rename tabs, playlist tab managment (mouse wheel, remove, create)
 * Possibility to set gap between tracks possibility
 * Performance optimization
 * Opacity configuration
@@ -164,4 +180,4 @@
 * Add Russian Localization
 * Add man help with all commands descriptions (example: man foobnix)
 * Add command line "foobnix --now-playing" display current track
-* Add Keys on Video: F or Alt+Enter - Full Screen, P - Pause, Up,Down - volue, Left,Right - seek 
+* Add Keys on Video: F or Alt+Enter - Full Screen, P - Pause, Up,Down - volue, Left,Right - seek
