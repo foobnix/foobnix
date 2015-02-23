@@ -40,7 +40,7 @@ class VKIntegrationControls(CommonTreeControl):
 
     def lazy_load(self):
         if not self.lazy:
-            self.controls.in_thread.run_with_progressbar(self._lazy_load)
+            self.controls.in_thread.run_with_spinner(self._lazy_load)
 
     def _lazy_load(self):
         def get_users_by_uuid(uuidd):
@@ -92,7 +92,7 @@ class VKIntegrationControls(CommonTreeControl):
                 self.controls.notetabs.append_tab(selected.text, [selected] + beans, optimization=True)
                 self.controls.play_first_file_in_playlist()
 
-            self.controls.in_thread.run_with_progressbar(task)
+            self.controls.in_thread.run_with_spinner(task)
 
     def on_row_expanded(self, widget, iter, path):
         self.on_bean_expanded(iter)
@@ -142,4 +142,4 @@ class VKIntegrationControls(CommonTreeControl):
                     self.model.remove(rem)
             GLib.idle_add(safe)
 
-        self.controls.in_thread.run_with_progressbar(task)
+        self.controls.in_thread.run_with_spinner(task)

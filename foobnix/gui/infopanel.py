@@ -9,7 +9,7 @@ import logging
 import threading
 
 from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GLib
 
 from foobnix.fc.fc import FC
 from foobnix.gui.model import FModel
@@ -164,7 +164,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         widget.line_title.set_active()
 
         self.info_cache.active_method = widget.line_title.func1
-        self.controls.in_thread.run_with_progressbar(widget.line_title.func1)
+        self.controls.in_thread.run_with_spinner(widget.line_title.func1)
 
     def clear(self):
         self.image.set_no_image()
@@ -191,10 +191,11 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
                         logging.error("Can't get lyrics. " + type(e).__name__ + ": " + e.message)
                 if self.info_cache.active_method:
                     self.info_cache.active_method()
-            except: pass
+            except:
+                pass
             self.update_lock.release()
 
-        self.controls.in_thread.run_with_progressbar(update_info_panel_task, with_lock=False)
+        threading.Thread(target=update_info_panel_task).start()
 
     def update(self, bean):
         if bean.type == FTYPE_NOT_UPDATE_INFO_PANEL:
@@ -245,8 +246,8 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
                 FCache().album_titles[bean.text] = info_line
         if info_line and bean.UUID == self.bean.UUID:
             info_line = info_line.replace('&', '&amp;')
-            self.album_label.set_markup("<b>%s</b>" % info_line)
-            self.controls.coverlyrics.album_title.set_markup("<b>%s</b>" % info_line)
+            GLib.idle_add(self.album_label.set_markup, "<b>%s</b>" % info_line)
+            GLib.idle_add(self.controls.coverlyrics.album_title.set_markup, "<b>%s</b>" % info_line)
 
     def show_disc_cover(self, bean=None):
         if not bean:
@@ -290,7 +291,8 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         text = None
 
         if os.path.exists(os.path.join(LYRICS_DIR, cache_name)):
-            text = "".join(open(os.path.join(LYRICS_DIR, cache_name), 'r').readlines())
+            with open(os.path.join(LYRICS_DIR, cache_name), 'r') as cache_file:
+                text = "".join(cache_file.readlines())
         else:
             self.lyrics.set_text(_("Loading..."), lyrics_title)
             try:
@@ -301,7 +303,8 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
             if not text:
                 text = get_lyrics_by_parsing(bean.artist, bean.title)
             if text:
-                open(os.path.join(LYRICS_DIR, cache_name), 'w').write(text)
+                with open(os.path.join(LYRICS_DIR, cache_name), 'w') as cache_file:
+                    cache_file.write(text)
             else:
                 logging.info("The text not found")
                 text = _("The text not found")
@@ -379,6 +382,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         update_parent_for_beans(best_songs, parent)
         self.best_songs.populate_all([parent] + best_songs)
 
+    @idle_task
     def set_lyrics(self, text, title):
         self.lyrics.set_text(text, title)
         self.controls.coverlyrics.lyrics.set_text(text, title)

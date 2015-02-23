@@ -461,7 +461,7 @@ class BaseFoobnixControls():
 
     @idle_task
     def notify_title(self, bean, raw_text):
-        logging.debug("Notify title" + raw_text)
+        logging.debug("Notify title: " + raw_text)
         text = raw_text.partition("||")[0]
         if not self.cache_text:
             self.cache_text = text
@@ -533,7 +533,7 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
 
             self.notetabs.append_tab(query, all)
-        self.in_thread.run_with_progressbar(search_all_tracks_task, no_thread=True)
+        self.in_thread.run_with_spinner(search_all_tracks_task, no_thread=True)
 
     def search_top_tracks(self, query):
         def search_top_tracks_task(query):
@@ -554,7 +554,7 @@ class BaseFoobnixControls():
 
             self.notetabs.append_tab(query, all)
 
-        self.in_thread.run_with_progressbar(search_top_tracks_task, query)
+        self.in_thread.run_with_spinner(search_top_tracks_task, query)
 
     def search_top_albums(self, query):
         def search_top_albums_task(query):
@@ -584,7 +584,7 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
                 self.notetabs.append_all(all)
 
-        self.in_thread.run_with_progressbar(search_top_albums_task, query)
+        self.in_thread.run_with_spinner(search_top_albums_task, query)
 
     def search_top_similar(self, query):
 
@@ -610,7 +610,7 @@ class BaseFoobnixControls():
                 all = self.show_google_results(query)
 
         #inline(query)
-        self.in_thread.run_with_progressbar(search_top_similar_task, query)
+        self.in_thread.run_with_spinner(search_top_similar_task, query)
 
     def search_top_tags(self, query):
 
@@ -638,7 +638,7 @@ class BaseFoobnixControls():
                 self.notetabs.append_all(all)
 
         #inline(query)
-        self.in_thread.run_with_progressbar(search_top_tags_task, query)
+        self.in_thread.run_with_spinner(search_top_tags_task, query)
 
     @idle_task
     def update_info_panel(self, bean):

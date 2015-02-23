@@ -76,7 +76,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.configure_recive_drag()
 
         self.set_type_tree()
-        #self.is_empty = False
+
         self.connect("button-release-event", self.on_button_release)
         self.connect("drag-data-get", self.on_drag_data_get)
         '''to force the ext_column to take the minimum size'''
@@ -277,7 +277,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                         logging.info("New music paths" + str(FCache().music_paths[number_of_tab]))
                 self.controls.update_music_tree(tree, number_of_tab)
 
-            #self.controls.in_thread.run_with_progressbar(task, with_lock=False)
+            #self.controls.in_thread.run_with_spinner(task, with_lock=False)
             self.controls.search_progress.background_spinner_wrapper(task)
         elif response == Gtk.ResponseType.CANCEL:
             logging.info('Closed, no files selected')
