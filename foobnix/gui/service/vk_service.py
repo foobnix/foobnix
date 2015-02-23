@@ -175,7 +175,7 @@ class VKService:
         self.connected = False
 
     def get(self, method, data):
-        url = "https://api.vk.com/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s&v" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
+        url = "https://api.vk.com/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
         if (method == 'audio.search'):
              count = FC().search_limit
              url = url + "&count=%(COUNT)s" % {'COUNT': count }
