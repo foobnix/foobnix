@@ -175,7 +175,7 @@ class VKService:
         self.connected = False
 
     def get(self, method, data):
-        url = "https://api.vk.com/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
+        url = "https://api.vk.com/method/%(METHOD_NAME)s?%(PARAMETERS)s&access_token=%(ACCESS_TOKEN)s&v" % {'METHOD_NAME':method, 'PARAMETERS':data, 'ACCESS_TOKEN':self.token }
         if (method == 'audio.search'):
              count = FC().search_limit
              url = url + "&count=%(COUNT)s" % {'COUNT': count }
@@ -220,7 +220,7 @@ class VKService:
             bean.aritst = line['artist']
             bean.title = line['title']
             bean.time = convert_seconds_to_text(line['duration'])
-            bean.path = line['url']
+            bean.path = line['url'].replace("https://", "http://")
             bean.vk_audio_id = "%s_%s" % (line['owner_id'], line['aid'])
             childs.append(bean)
 
@@ -249,7 +249,7 @@ class VKService:
             bean.aritst = line['artist']
             bean.title = line['title']
             bean.time = convert_seconds_to_text(line['duration'])
-            bean.path = line['url']
+            bean.path = line['url'].replace("https://", "http://")
             bean.vk_audio_id = "%s_%s" % (line['owner_id'], line['aid'])
             childs.append(bean)
 
@@ -280,15 +280,20 @@ class VKService:
         return vkSongs[0]
 
     def find_track_by_id(self, id):
-        result = self.get_result("audio.get", "audios=" + str(id))
+        if id is not None:
+            parts = id.split("_")
+            result = self.get_result("audio.get", "owner_id=%s&audio_ids=%s" % (str(parts[0]), str(parts[1])))
+            line = result[1]
+        else:
+            result = self.get_result("audio.get", "audios=" + str(id))
+            line = result[0]
         if not result:
             return None
-        line = result[0]
         bean = FModel(line['artist'] + ' - ' + line['title'])
         bean.aritst = line['artist']
         bean.title = line['title']
         bean.time = convert_seconds_to_text(line['duration'])
-        bean.path = line['url']
+        bean.path = line['url'].replace("https://", "http://")
         bean.vk_audio_id = "%s_%s" % (line['owner_id'], line['aid'])
         return bean
 
