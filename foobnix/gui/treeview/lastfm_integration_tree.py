@@ -73,4 +73,4 @@ class LastFmIntegrationControls(CommonTreeControl):
             update_parent_for_beans(childs, parent)
             self.append_all(childs)
             GLib.idle_add(self.remove_iters, old_iters)
-        self.controls.in_thread.run_with_progressbar(task)
+        self.controls.in_thread.run_with_spinner(task)

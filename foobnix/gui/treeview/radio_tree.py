@@ -123,7 +123,7 @@ class RadioTreeControl(CommonTreeControl):
         pass
 
     #def update_radio_tree(self):
-    #    self.controls.in_thread.run_with_progressbar(self._update_radio_tree)
+    #    self.controls.in_thread.run_with_spinner(self._update_radio_tree)
 
     @idle_task
     def update_radio_tree(self):

@@ -15,34 +15,28 @@ from threading import Lock
 
 
 class SingleThread():
-    def __init__(self, progressbar=None):
+    def __init__(self, spinner=None):
         self.lock = Lock()
-        self.progressbar = progressbar
-        
-    def run_with_progressbar(self, method, args=None, text='', no_thread=False, with_lock=True):
-        #with_lock - shows, does it necessarily to do a lock or not
-        
+        self.spinner = spinner
+
+    def run_with_spinner(self, method, args=None, text='', no_thread=False):
         if no_thread:
             if method and args:
                 method(args)
             if method:
                 method()
         else:
-            self._run(method, args, text, with_lock)
-                
-    def _run(self, method, args=None, text='', with_lock=True):
-        if not self.lock.locked():            
-            self.lock.acquire()
-            if self.progressbar:
-                self.progressbar.start(text)
+            self._run(method, args, text)
+
+    def _run(self, method, args=None, text=''):
+        if self.lock.acquire(False):
+            if self.spinner:
+                self.spinner.start(text)
             thread.start_new_thread(self._thread_task, (method, args,))
         else:
             logging.warning("Previous thread not finished " + str(method) + " " + str(args))
-            if not with_lock:
-                logging.info("Try to run method without progress bar")
-                thread.start_new_thread(self._thread_task, (method, args))  
-    
-    def _thread_task(self, method, args, with_lock=True):
+
+    def _thread_task(self, method, args):
         try:
             if method and args:
                 method(args)
@@ -54,6 +48,6 @@ class SingleThread():
             traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stdout)
         finally:
             if self.lock.locked():
-                if self.progressbar:
-                    self.progressbar.stop()        
+                if self.spinner:
+                    self.spinner.stop()
                 self.lock.release()
