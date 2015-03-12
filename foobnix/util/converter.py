@@ -337,7 +337,7 @@ def convert_files(paths):
         converter.fill_form(paths)
         converter.format_combo.set_active(0)
     else:
-        url = "http://foobnix.googlecode.com/files/" + FFMPEG_NAME
+        url = "http://foobnix.com/assets/downloads/" + FFMPEG_NAME
         dialog = Gtk.Dialog(_("Attention"))
         area = ScrolledText()
         area.buffer.set_text(_("Converter require specially compiled ffmpeg module for work.\n" +
