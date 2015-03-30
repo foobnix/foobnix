@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-04 17:20+0400\n"
-"PO-Revision-Date: 2015-03-25 19:50+0100\n"
+"PO-Revision-Date: 2015-03-30 19:08+0100\n"
 "Last-Translator: Juha Remes <jremes@outlook.com>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -494,27 +494,27 @@ msgstr ""
 #. self.tray_icon_button.connect("clicked", self.on_show_tray_icon)
 #: .././foobnix/preferences/configs/tray_icon_conf.py:42
 msgid "On close window - close player"
-msgstr ""
+msgstr "Sulje soitin suljettaessa ikkuna"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:44
 msgid "On close window - hide player"
-msgstr ""
+msgstr "Piilota soitin suljettaessa ikkuna"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:47
 msgid "On close window - minimize player"
-msgstr ""
+msgstr "Minimoi soitin suljettaessa ikkuna"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:50
 msgid "System Icon Static"
-msgstr ""
+msgstr "Staattinen järjestelmäkuvake"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:58
 msgid "System Icons Dynamic"
-msgstr ""
+msgstr "Dynaaminen järjestelmäkuvake"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:62
 msgid "Disc cover image"
-msgstr ""
+msgstr "Levyn kansikuva"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:64
 msgid "Notification pop-up"
@@ -522,15 +522,15 @@ msgstr ""
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:82
 msgid "Notification"
-msgstr ""
+msgstr "Ilmoitus"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:109
 msgid "Time Notification (sec): "
-msgstr ""
+msgstr "Ilmoituksen ajastus (sekuntia):"
 
 #: .././foobnix/regui/base_controls.py:143
 msgid "Choose folders to open"
-msgstr ""
+msgstr "Valitse avattavat kansiot"
 
 #: .././foobnix/regui/base_controls.py:163
 msgid "Nothing found to play in the folder(s)"
@@ -538,7 +538,7 @@ msgstr ""
 
 #: .././foobnix/regui/base_controls.py:170
 msgid "Choose file to open"
-msgstr ""
+msgstr "Valitse avattava tiedosto"
 
 #: .././foobnix/regui/base_controls.py:221
 msgid "Nothing found to play in the file(s)"
@@ -546,68 +546,68 @@ msgstr ""
 
 #: .././foobnix/regui/base_controls.py:344
 msgid "Stopped"
-msgstr ""
+msgstr "Pysäytetty"
 
 #: .././foobnix/regui/base_controls.py:353
 msgid "Paused | "
-msgstr ""
+msgstr "Tauko | "
 
 #: .././foobnix/regui/base_controls.py:382
 msgid "Radio "
-msgstr ""
+msgstr "Radio"
 
 #: .././foobnix/regui/base_controls.py:415
 #: .././foobnix/regui/base_controls.py:416
 msgid "Resource not found"
-msgstr ""
+msgstr "Resurssia ei löydetty"
 
 #: .././foobnix/regui/base_controls.py:424
 msgid "Stopped. No resources found"
-msgstr ""
+msgstr "Pysäytetty. Ei resursseja."
 
 #: .././foobnix/regui/coverlyrics.py:21
 msgid "Album title"
-msgstr ""
+msgstr "Albumin otsikko"
 
 #: .././foobnix/regui/coverlyrics.py:26
 msgid "Cover:"
-msgstr ""
+msgstr "Kansi:"
 
 #: .././foobnix/regui/coverlyrics.py:32
 msgid "Lyric:"
-msgstr ""
+msgstr "Sanat:"
 
 #: .././foobnix/regui/infopanel.py:53
 msgid "Best Songs"
-msgstr ""
+msgstr "Parhaat kappaleet"
 
 #: .././foobnix/regui/infopanel.py:56
 msgid "Similar Artists"
-msgstr ""
+msgstr "Samanlaiset artistit"
 
 #: .././foobnix/regui/infopanel.py:59
 msgid "Similar Songs"
-msgstr ""
+msgstr "Samanlaiset kappaleet"
 
 #: .././foobnix/regui/infopanel.py:62
 msgid "Similar Tags"
-msgstr ""
+msgstr "Samanlaiset tägit"
 
 #: .././foobnix/regui/infopanel.py:67
 msgid "Lyrics"
-msgstr ""
+msgstr "Sanat"
 
 #: .././foobnix/regui/infopanel.py:74
 msgid "About Artist"
-msgstr ""
+msgstr "Tietoa artistista"
 
 #: .././foobnix/regui/infopanel.py:80 .././foobnix/regui/perspectives.py:133
 msgid "Info"
-msgstr ""
+msgstr "Tietoa"
 
 #: .././foobnix/regui/infopanel.py:89
 msgid "Downloads"
-msgstr ""
+msgstr "Lataukset"
 
 #: .././foobnix/regui/menu.py:30
 msgid "_File"
