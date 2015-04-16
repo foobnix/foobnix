@@ -232,10 +232,9 @@ class LastFmService():
                 album_txt = album['item']
 
             name = album_txt.get_name()
-            #year = album_txt.get_release_year()
-            year = None
+            year = album_txt.get_release_year()
             if year:
-                bean = FModel(name + "(" + year + ")").add_album(name).add_artist(aritst_name).add_year(year)
+                bean = FModel(name + " (" + year + ")").add_album(name).add_artist(aritst_name).add_year(year)
             else:
                 bean = FModel(name).add_album(name).add_artist(aritst_name).add_year(year)
 
