@@ -50,7 +50,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
 
         self.album_label = Gtk.Label()
         self.album_label.set_line_wrap(True)
-        self.album_label.set_markup("<s><b></b></s>")
+        self.album_label.set_markup("<b></b>")
         self.set_label_widget(self.album_label)
 
         self.empty = TextArea()
