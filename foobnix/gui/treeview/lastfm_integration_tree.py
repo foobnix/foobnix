@@ -42,8 +42,9 @@ class LastFmIntegrationControls(CommonTreeControl):
                          _("My top tracks"):        self.controls.lastfm_service.get_top_tracks,
                          _("My recent tracks"):     self.controls.lastfm_service.get_recent_tracks,
                          _("My top artists"):       self.controls.lastfm_service.get_top_artists,
-                         #_("My friends"):self.controls.lastfm_service.get_friends,
-                         # #_("My neighbours"):self.controls.lastfm_service.get_neighbours
+                         _("My events"):            self.controls.lastfm_service.get_events,
+                         _("My friends"):           self.controls.lastfm_service.get_friends,
+                         _("My neighbours"):        self.controls.lastfm_service.get_neighbours
                          }
 
         for name in self.services:

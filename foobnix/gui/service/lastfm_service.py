@@ -147,7 +147,11 @@ class LastFmService():
         lfm_artists = self.get_authenticated_user().get_recommended_artists(limit=limit)
         return self.artists_to_models(lfm_artists)
 
-    def get_friends(self, username):
+    def get_events(self, username, limit=50):
+        lfm_events = self.get_authenticated_user().get_upcoming_events()
+        return self.events_to_models(lfm_events)
+
+    def get_friends(self, username, unused):
         lfm_tracks = self.get_user(username).get_friends()
         list = self.get_sub_childs(lfm_tracks, 'name')
         result = []
@@ -155,7 +159,7 @@ class LastFmService():
             result.append(FModel(item))
         return result
 
-    def get_neighbours(self, username):
+    def get_neighbours(self, username, unused):
         lfm_tracks = self.get_user(username).get_neighbours()
         list = self.get_sub_childs(lfm_tracks, 'name')
         result = []
@@ -291,6 +295,21 @@ class LastFmService():
             artist = track.get_name()
             bean = FModel(artist).add_artist(artist)
             results.append(bean)
+        return results
+
+    def events_to_models(self, events):
+        results = []
+        for event in events:
+            try:
+                name = event.get_title()
+                event_model = FModel(name).add_is_file(False).add_font("bold")
+                results.append(event_model)
+                artists = event.get_artists()
+                for artist in artists:
+                    bean = FModel(artist.get_name()).parent(event_model).add_artist(artist.get_name()).add_is_file(True)
+                    results.append(bean)
+            except Exception as e: 
+                pass
         return results
 
     def search_album_tracks(self, artist_name, album_name):
