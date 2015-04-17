@@ -230,7 +230,7 @@ class LastFmService():
             logging.info("No artist with that name")
             return None
 
-        beans = []
+        albums_info = []
         for album in albums:
             try:
                 album_txt = album.item
@@ -239,6 +239,11 @@ class LastFmService():
 
             name = album_txt.get_name()
             year = album_txt.get_release_year()
+            albums_info.append((name, year))
+
+        beans = []
+        for album in sorted(albums_info, key=lambda x: x[1]):
+            (name, year) = album
             if year:
                 bean = FModel(name + " (" + year + ")").add_album(name).add_artist(aritst_name).add_year(year)
             else:
