@@ -174,7 +174,17 @@ class FC():
         '''columns configuration'''
         '''for playlists'''
         """translations of key words must match exactly with the translations of column.key names in PlaylistTreeControl"""
-        self.columns = {'*': [True, 0, 40], 'N': [True, 1, 30], 'Composer': [False, 2, 80], 'Artist': [False, 3, 90], 'Title': [False, 4, 70], 'Track': [True, 5, 450], 'Time': [True, 6, 50], "Album": [False, 7, 90]}
+        self.columns = {
+            '*': [True, 0, 40], 
+            'N': [True, 1, 30], 
+            'Composer': [False, 2, 80], 
+            'Artist': [False, 3, 90], 
+            'Title': [False, 4, 70], 
+            'Track': [True, 5, 450], 
+            'Time': [True, 6, 50], 
+            "Album": [False, 7, 90],
+            'Year': [False, 14, 40]
+        }
 
         '''for navigation tree'''
         self.show_full_filename = False
