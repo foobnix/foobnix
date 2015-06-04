@@ -7,6 +7,9 @@ Created on 25 сент. 2010
 
 import logging
 
+from threading import Timer
+from foobnix.util import idle_task
+
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
@@ -55,20 +58,19 @@ class BaseFoobnixLayout(FControl, LoadSave):
         notebox.add_overlay(controls.search_progress)
 
         bbox.pack_start(notebox, True, True, 0)
-        #bbox.pack_start(controls.movie_window, False, False, 0)
 
         center_box = Gtk.VBox(False, 0)
         center_box.pack_start(controls.searchPanel, False, False, 0)
         center_box.pack_start(bbox, True, True, 0)
 
         self.hpaned_left = Gtk.HPaned()
-        self.hpaned_left.connect("motion-notify-event", self.on_motion)
+        self.hpaned_left.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
 
         self.hpaned_left.pack1(child=controls.perspectives, resize=True, shrink=True)
         self.hpaned_left.pack2(child=center_box, resize=True, shrink=True)
 
         self.hpaned_right = Gtk.HPaned()
-        self.hpaned_right.connect("motion-notify-event", self.on_motion)
+        self.hpaned_right.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self.hpaned_right.pack1(child=self.hpaned_left, resize=True, shrink=True)
         self.hpaned_right.pack2(child=controls.coverlyrics, resize=True, shrink=False)
 
@@ -78,14 +80,11 @@ class BaseFoobnixLayout(FControl, LoadSave):
         vbox.pack_start(controls.statusbar, False, True, 0)
         vbox.show_all()
 
-        self.hpaned_left.connect("button-press-event", self.on_border_press)
-        self.hpaned_right.connect("button-press-event", self.on_border_press)
         self.hpaned_left.connect("button-release-event", self.on_border_release)
         self.hpaned_right.connect("button-release-event", self.on_border_release)
-        self.id_handler_left = self.hpaned_left.connect("size-allocate", self.on_configure_hl_event)
-        self.id_handler_right = self.hpaned_right.connect("size-allocate", self.on_configure_hr_event)
 
-        self.hpaned_press_release_handler_blocked = False
+        self.hpaned_left_allocate_handler_blocked = False
+        self.hpaned_right_allocate_handler_blocked = False
 
         controls.main_window.connect("configure-event", self.on_configure_event)
         controls.main_window.add(vbox)
@@ -96,7 +95,6 @@ class BaseFoobnixLayout(FControl, LoadSave):
             self.controls.searchPanel.show_all()
         else:
             self.controls.searchPanel.hide()
-
         FC().is_view_search_panel = flag
 
     def set_visible_musictree_panel(self, flag):
@@ -105,7 +103,6 @@ class BaseFoobnixLayout(FControl, LoadSave):
             self.hpaned_left.set_position(FC().hpaned_left)
         else:
             self.hpaned_left.set_position(0)
-
         FC().is_view_music_tree_panel = flag
 
     def set_visible_coverlyrics_panel(self, flag):
@@ -113,32 +110,18 @@ class BaseFoobnixLayout(FControl, LoadSave):
         if flag:
             self.hpaned_right.set_position(self.hpaned_right.get_allocated_width() - FC().hpaned_right_right_side_width)
             self.controls.coverlyrics.show()
-            #GLib.idle_add(self.controls.coverlyrics.adapt_image)
         else:
             self.controls.coverlyrics.hide()
 
         FC().is_view_coverlyrics_panel = flag
 
-    def on_motion(self, *a):
-        return
-
-    def on_border_press(self, *a):
-        if not self.hpaned_press_release_handler_blocked:
-            self.hpaned_left.handler_block(self.id_handler_left)
-            self.hpaned_right.handler_block(self.id_handler_right)
-            self.hpaned_press_release_handler_blocked = True
-
     def on_border_release(self, w, *a):
-        if self.hpaned_press_release_handler_blocked:
-            self.hpaned_left.handler_unblock(self.id_handler_left)
-            self.hpaned_right.handler_unblock(self.id_handler_right)
-            self.hpaned_press_release_handler_blocked = False
         self.save_right_panel()
         if w is self.hpaned_left:
             self.save_left_panel()
         elif w is self.hpaned_right:
-            self.on_configure_hl_event()
-            GLib.idle_add(self.save_left_panel)
+            self.configure_hl()
+            self.save_left_panel()
 
     def save_right_panel(self):
         if self.controls.coverlyrics.get_property("visible"):
@@ -146,7 +129,6 @@ class BaseFoobnixLayout(FControl, LoadSave):
             if right_position != FC().hpaned_right and right_position > 0:
                 FC().hpaned_right = right_position
             FC().hpaned_right_right_side_width = self.hpaned_right.get_allocated_width() - right_position
-            #self.controls.coverlyrics.adapt_image()
 
     def save_left_panel(self):
         left_position = self.hpaned_left.get_position()
@@ -164,19 +146,20 @@ class BaseFoobnixLayout(FControl, LoadSave):
     def on_configure_event(self, w, e):
         FC().main_window_size = [e.x, e.y, e.width, e.height]
 
-    def on_configure_hl_event(self, *a):
-        def task():
+    def configure_hl(self):
             if FC().is_view_music_tree_panel and self.hpaned_left.get_position() != FC().hpaned_left:
                 self.hpaned_left.set_position(FC().hpaned_left)
-        GLib.idle_add(task)
 
-    def on_configure_hr_event(self, *a):
-        def task():
-            if self.controls.coverlyrics.get_property("visible"):
-                hrw = self.hpaned_right.get_allocated_width()
-                if (hrw - self.hpaned_right.get_position()) != FC().hpaned_right_right_side_width:
-                    self.hpaned_right.set_position(hrw - FC().hpaned_right_right_side_width)
-        GLib.idle_add(task)
+    def configure_hr(self):
+        if self.controls.coverlyrics.get_property("visible"):
+            hrw = self.hpaned_right.get_allocated_width()
+            if (hrw - self.hpaned_right.get_position()) != FC().hpaned_right_right_side_width:
+                self.hpaned_right.set_position(hrw - FC().hpaned_right_right_side_width)
+
+    @idle_task
+    def back_saved_allocation(self):
+        self.configure_hr()
+        Timer(0.1, GLib.idle_add, [self.configure_hl,]).start()
 
     def on_load(self):
         self.set_visible_search_panel(FC().is_view_search_panel)
