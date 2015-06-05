@@ -74,7 +74,7 @@ class FC():
         self.nav_selected_tab = 0
         self.pl_selected_tab = 0
 
-        #"""selected perpective"""
+        #"""selected perspective"""
         #self.selected_perspective = None
 
         self.agent_line = get_ranmom_agent()
@@ -82,7 +82,7 @@ class FC():
         """main window controls"""
         self.main_window_size = [119, 154, 1024, 479]
         self.window_maximized = False
-        self.hpaned_left = 415
+        self.hpaned_left = -1
         self.hpaned_right = 800
         self.hpaned_right_right_side_width = 174 #self.main_window_size[3] - self.hpaned_right
         self.vpaned_small = 100

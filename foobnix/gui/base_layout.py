@@ -52,11 +52,11 @@ class BaseFoobnixLayout(FControl, LoadSave):
         )
 
         self.controls = controls
-        bbox = Gtk.VBox(False, 0)
+
         notebox = Gtk.Overlay.new()
         notebox.add(controls.notetabs)
         notebox.add_overlay(controls.search_progress)
-
+        bbox = Gtk.VBox(False, 0)
         bbox.pack_start(notebox, True, True, 0)
 
         center_box = Gtk.VBox(False, 0)
@@ -64,13 +64,10 @@ class BaseFoobnixLayout(FControl, LoadSave):
         center_box.pack_start(bbox, True, True, 0)
 
         self.hpaned_left = Gtk.HPaned()
-        self.hpaned_left.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-
         self.hpaned_left.pack1(child=controls.perspectives, resize=True, shrink=True)
         self.hpaned_left.pack2(child=center_box, resize=True, shrink=True)
 
         self.hpaned_right = Gtk.HPaned()
-        self.hpaned_right.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self.hpaned_right.pack1(child=self.hpaned_left, resize=True, shrink=True)
         self.hpaned_right.pack2(child=controls.coverlyrics, resize=True, shrink=False)
 
@@ -82,9 +79,6 @@ class BaseFoobnixLayout(FControl, LoadSave):
 
         self.hpaned_left.connect("button-release-event", self.on_border_release)
         self.hpaned_right.connect("button-release-event", self.on_border_release)
-
-        self.hpaned_left_allocate_handler_blocked = False
-        self.hpaned_right_allocate_handler_blocked = False
 
         controls.main_window.connect("configure-event", self.on_configure_event)
         controls.main_window.add(vbox)
