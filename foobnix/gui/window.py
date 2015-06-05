@@ -89,6 +89,7 @@ class MainWindow(Gtk.Window, FControl, LoadSave):
         return True
 
     def on_change_state(self, w, e):
+
         if int(e.new_window_state) == 0:
             """window restored"""
             self.iconified = False
@@ -103,3 +104,9 @@ class MainWindow(Gtk.Window, FControl, LoadSave):
             """maximized"""
             self.iconified = False
             FC().window_maximized = True
+
+        self.controls.layout.back_saved_allocation()
+
+
+
+
