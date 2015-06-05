@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-13 20:37+0300\n"
-"PO-Revision-Date: 2015-02-13 14:22+0000\n"
-"Last-Translator: Dmitry-Kogura <Unknown>\n"
+"PO-Revision-Date: 2015-06-04 22:44+0000\n"
+"Last-Translator: Alex Serada <alex.serada@gmail.com>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-02-13 21:52+0000\n"
-"X-Generator: Launchpad (build 17341)\n"
+"X-Launchpad-Export-Date: 2015-06-05 05:34+0000\n"
+"X-Generator: Launchpad (build 17540)\n"
 "Language: \n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -1497,88 +1497,3 @@ msgid ""
 msgstr ""
 "Применить для всех выделенных композиций\n"
 "(активно при множественном выделении)"
-
-#~ msgid "_File"
-#~ msgstr "_Файл"
-
-#~ msgid "_View"
-#~ msgstr "_Вид"
-
-#~ msgid "_Help"
-#~ msgstr "Справка"
-
-#~ msgid "Last.fm Panel (Alt+5)"
-#~ msgstr "Last.fm панель (Alt+5)"
-
-#~ msgid "Numbering by order"
-#~ msgstr "Нумерация по порядку"
-
-#~ msgid "Open In File Manager"
-#~ msgstr "Открыть в файловом менеджере"
-
-#~ msgid "2: Apply Token"
-#~ msgstr "Применить код"
-
-#~ msgid "Copying:"
-#~ msgstr "Копирование:"
-
-#~ msgid "Replacing:"
-#~ msgstr "Замена:"
-
-#~ msgid "Open"
-#~ msgstr "Открыть"
-
-#~ msgid "Last.Fm"
-#~ msgstr "Last.Fm"
-
-#~ msgid "Attention!!!"
-#~ msgstr "Внимание!!!"
-
-#~ msgid "When you release the mouse button the mouse"
-#~ msgstr "Когда Вы отпускаете кнопку мышки"
-
-#~ msgid "Process..."
-#~ msgstr "Процесс..."
-
-#~ msgid "Gap between tracks: "
-#~ msgstr "Интервал между дорожками "
-
-#~ msgid "Enable theme image"
-#~ msgstr "Включить тему проигрывателя"
-
-#~ msgid "Token incorrect or expired"
-#~ msgstr "Недопустимый токен или срок действия истёк"
-
-#~ msgid "User ID:"
-#~ msgstr "Идентификатор пользователя:"
-
-#~ msgid "Token:"
-#~ msgstr "Токен:"
-
-#~ msgid "Numbering by tags"
-#~ msgstr "Нумерация по меткам"
-
-#~ msgid "Converter require specially compiled ffmpeg module for work.\n"
-#~ msgstr ""
-#~ "Программе преобразования требуется специальный модуль ffmpeg для работы\n"
-
-#~ msgid "VKontakte Authorization (is required for music search)"
-#~ msgstr "Авторизация Вконтакте"
-
-#~ msgid "m3u playlist: "
-#~ msgstr "m3u плейлист "
-
-#~ msgid "Token or user is empty"
-#~ msgstr "Токен или логин пустой"
-
-#~ msgid "Please generate token..."
-#~ msgstr "Пожалуйста, сгенерируйте токен..."
-
-#~ msgid "_Playback"
-#~ msgstr "_Воспроизведение"
-
-#~ msgid "Nothing found to play in the file(s)"
-#~ msgstr "Музыка не найдена среди файлов"
-
-#~ msgid "Nothing found to play in the folder(s)"
-#~ msgstr "Не найдено музыки в папке(ах)"
