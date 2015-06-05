@@ -673,7 +673,7 @@ msgstr "Сведения о исполнителе"
 
 #: .././foobnix/gui/infopanel.py:88 .././foobnix/gui/perspectives/info.py:29
 msgid "Info"
-msgstr "Сведения"
+msgstr "Инфо"
 
 #: .././foobnix/gui/infopanel.py:97
 msgid "Downloads"
@@ -981,7 +981,7 @@ msgstr "Архив (Alt+3)"
 
 #: .././foobnix/gui/perspectives/vk.py:29
 msgid "VK"
-msgstr "ВКонтакте"
+msgstr "VK"
 
 #: .././foobnix/gui/perspectives/vk.py:32
 msgid "VK Panel (Alt+6)"
