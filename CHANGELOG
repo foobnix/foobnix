@@ -1,4 +1,11 @@
-3.00.01
+3.1.00
+*Adapted to new GTK+ version
+*Fix converter bug
+*Fix VK connect
+*Updated radio list
+*Added Finnish translation
+
+3.0.01
 *Gtk3 interface
 *GStreamer1.0 audio backend
 *Thread safety improvements
