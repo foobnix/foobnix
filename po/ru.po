@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-13 20:37+0300\n"
-"PO-Revision-Date: 2015-06-04 22:44+0000\n"
-"Last-Translator: Alex Serada <alex.serada@gmail.com>\n"
+"POT-Creation-Date: 2015-06-05 20:46+0300\n"
+"PO-Revision-Date: 2015-06-06 00:55+0000\n"
+"Last-Translator: Ivan Ivanenko <Unknown>\n"
 "Language-Team: Ivan Ivanenko <ivan.ivanenko@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-06-05 05:34+0000\n"
+"X-Launchpad-Export-Date: 2015-06-07 05:16+0000\n"
 "X-Generator: Launchpad (build 17540)\n"
 "Language: \n"
 "X-Poedit-Language: Russian\n"
@@ -639,11 +639,11 @@ msgstr "Остановлено. Ресурсы не найдены"
 msgid "Album title"
 msgstr "Название альбома"
 
-#: .././foobnix/gui/coverlyrics.py:26
+#: .././foobnix/gui/coverlyrics.py:28
 msgid "Cover:"
 msgstr "Обложка"
 
-#: .././foobnix/gui/coverlyrics.py:33
+#: .././foobnix/gui/coverlyrics.py:34
 msgid "Lyric:"
 msgstr "Текст песни:"
 
@@ -679,27 +679,27 @@ msgstr "Инфо"
 msgid "Downloads"
 msgstr "Загрузки"
 
-#: .././foobnix/gui/infopanel.py:295
+#: .././foobnix/gui/infopanel.py:297
 msgid "Loading..."
 msgstr "Идёт загрузка..."
 
-#: .././foobnix/gui/infopanel.py:307
+#: .././foobnix/gui/infopanel.py:310
 msgid "The text not found"
 msgstr "Текст не найден"
 
-#: .././foobnix/gui/infopanel.py:344
+#: .././foobnix/gui/infopanel.py:347
 msgid "Similar Tags:"
 msgstr "Похожие теги"
 
-#: .././foobnix/gui/infopanel.py:355
+#: .././foobnix/gui/infopanel.py:358
 msgid "Similar Tracks:"
 msgstr "Похожие треки"
 
-#: .././foobnix/gui/infopanel.py:367
+#: .././foobnix/gui/infopanel.py:370
 msgid "Similar Artists:"
 msgstr "Подобные артисты"
 
-#: .././foobnix/gui/infopanel.py:378
+#: .././foobnix/gui/infopanel.py:381
 msgid "Best Songs:"
 msgstr "Лучшие песни"
 

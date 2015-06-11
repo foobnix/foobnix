@@ -33,7 +33,7 @@ class NetworkConfig(ConfigPlugin):
         self.enable_proxy.connect("clicked", self.on_enable_http_proxy)
         self.enable_proxy.show()
 
-        self.frame = Gtk.Frame(label=_("Settings"))
+        self.frame = Gtk.Frame(label=_("Proxy Settings"))
         self.frame.set_border_width(0)
         self.frame.show()
 
@@ -96,7 +96,7 @@ class NetworkConfig(ConfigPlugin):
         check.show()
 
         self.vk_test = Gtk.Entry()
-        self.vk_test.set_text("http://vkontakte.ru")
+        self.vk_test.set_text("http://vk.com")
         self.vk_test.show()
 
         self.test_button = Gtk.Button(_("Check Connection"))
@@ -112,6 +112,7 @@ class NetworkConfig(ConfigPlugin):
         check.pack_start(self.result, False, True, 0)
 
         """global"""
+        all.pack_start(self.enable_proxy, False, False, 0)
         all.pack_start(proxy_box, False, False, 0)
         all.pack_start(lbox, False, False, 0)
         all.pack_start(pbox, False, False, 0)
@@ -125,8 +126,8 @@ class NetworkConfig(ConfigPlugin):
 
         self.net_ping = Gtk.CheckButton(label=_("Show message on network disconnection"), use_underline=True)
 
+        box.pack_start(self.buffer_size(), False, True, 0)
         box.pack_start(self.net_ping, False, True, 0)
-        box.pack_start(self.enable_proxy, False, True, 0)
         box.pack_start(self.frame, False, True, 0)
 
         self.widget = box
@@ -163,9 +164,26 @@ class NetworkConfig(ConfigPlugin):
         else:
             return False
 
+    def buffer_size(self):
+        label = Gtk.Label(_("Buffer size for network streams (KBytes)"))
+
+        self.buffer_adjustment = Gtk.Adjustment.new(value=128, lower=16, upper=2048, step_increment=16, page_increment=0, page_size=0)
+
+        buff_size = Gtk.SpinButton(adjustment=self.buffer_adjustment, climb_rate=0, digits=0)
+        buff_size.show()
+
+        hbox = Gtk.HBox(False, 10)
+        hbox.pack_start(buff_size, False, False, 0)
+        hbox.pack_start(label, False, False, 0)
+
+        hbox.show_all()
+
+        return hbox
+
     def on_load(self):
         self.enable_proxy.set_active(FC().proxy_enable)
         self.frame.set_sensitive(FC().proxy_enable)
+        self.buffer_adjustment.set_value(FC().network_buffer_size)
 
         if FC().proxy_url:
             self.proxy_server.set_text(FC().proxy_url)
@@ -202,6 +220,8 @@ class NetworkConfig(ConfigPlugin):
                 self.controls.lastfm_service = LastFmService(self.controls)
             else:
                 self.controls.lastfm_service.network.disable_proxy()
+
+        FC().network_buffer_size = self.buffer_adjustment.get_value()
 
 
         if self.login_text.get_text():
