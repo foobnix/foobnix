@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2015-02-13 20:37+0300\n"
+"POT-Creation-Date: 2015-06-05 20:46+0300\n"
 "PO-Revision-Date: 2014-06-15 16:51+0000\n"
 "Last-Translator: Nilushika <niluranawaka@gmail.com>\n"
 "Language-Team: Sinhalese <si@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-02-14 05:41+0000\n"
-"X-Generator: Launchpad (build 17341)\n"
+"X-Launchpad-Export-Date: 2015-06-06 05:15+0000\n"
+"X-Generator: Launchpad (build 17540)\n"
 
 #: .././foobnix/dm/dm.py:33 .././foobnix/preferences/preferences_window.py:58
 #: .././foobnix/gui/menu.py:55 .././foobnix/gui/top.py:44
@@ -635,11 +635,11 @@ msgstr "නවතා ඇත. සම්පත් හමුවූයේ නැත"
 msgid "Album title"
 msgstr "එකතුවේ මාතෘකාව"
 
-#: .././foobnix/gui/coverlyrics.py:26
+#: .././foobnix/gui/coverlyrics.py:28
 msgid "Cover:"
 msgstr "වැස්ම:"
 
-#: .././foobnix/gui/coverlyrics.py:33
+#: .././foobnix/gui/coverlyrics.py:34
 msgid "Lyric:"
 msgstr "පද පෙළ"
 
@@ -675,27 +675,27 @@ msgstr "තොරතුරු"
 msgid "Downloads"
 msgstr "භාගත කිරීම්"
 
-#: .././foobnix/gui/infopanel.py:295
+#: .././foobnix/gui/infopanel.py:297
 msgid "Loading..."
 msgstr ""
 
-#: .././foobnix/gui/infopanel.py:307
+#: .././foobnix/gui/infopanel.py:310
 msgid "The text not found"
 msgstr ""
 
-#: .././foobnix/gui/infopanel.py:344
+#: .././foobnix/gui/infopanel.py:347
 msgid "Similar Tags:"
 msgstr ""
 
-#: .././foobnix/gui/infopanel.py:355
+#: .././foobnix/gui/infopanel.py:358
 msgid "Similar Tracks:"
 msgstr ""
 
-#: .././foobnix/gui/infopanel.py:367
+#: .././foobnix/gui/infopanel.py:370
 msgid "Similar Artists:"
 msgstr ""
 
-#: .././foobnix/gui/infopanel.py:378
+#: .././foobnix/gui/infopanel.py:381
 msgid "Best Songs:"
 msgstr ""
 
