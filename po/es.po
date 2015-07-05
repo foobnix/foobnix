@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-13 20:37+0300\n"
-"PO-Revision-Date: 2015-05-13 08:16+0000\n"
+"POT-Creation-Date: 2015-06-05 20:46+0300\n"
+"PO-Revision-Date: 2015-06-06 00:56+0000\n"
 "Last-Translator: Adolfo Jayme <fitoschido@gmail.com>\n"
 "Language-Team: SPANISH <bmsavone@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-05-14 04:43+0000\n"
-"X-Generator: Launchpad (build 17493)\n"
+"X-Launchpad-Export-Date: 2015-06-07 05:16+0000\n"
+"X-Generator: Launchpad (build 17540)\n"
 "X-Poedit-Country: SPAIN\n"
 "Language: \n"
 "X-Poedit-Language: Spanish\n"
@@ -639,11 +639,11 @@ msgstr "Detenido. No se han encontrado recursos"
 msgid "Album title"
 msgstr "Título del álbum"
 
-#: .././foobnix/gui/coverlyrics.py:26
+#: .././foobnix/gui/coverlyrics.py:28
 msgid "Cover:"
 msgstr "Carátula:"
 
-#: .././foobnix/gui/coverlyrics.py:33
+#: .././foobnix/gui/coverlyrics.py:34
 msgid "Lyric:"
 msgstr "Lírica:"
 
@@ -679,27 +679,27 @@ msgstr "Info"
 msgid "Downloads"
 msgstr "Descargas"
 
-#: .././foobnix/gui/infopanel.py:295
+#: .././foobnix/gui/infopanel.py:297
 msgid "Loading..."
 msgstr "Cargando…"
 
-#: .././foobnix/gui/infopanel.py:307
+#: .././foobnix/gui/infopanel.py:310
 msgid "The text not found"
 msgstr ""
 
-#: .././foobnix/gui/infopanel.py:344
+#: .././foobnix/gui/infopanel.py:347
 msgid "Similar Tags:"
 msgstr "Etiquetas similares:"
 
-#: .././foobnix/gui/infopanel.py:355
+#: .././foobnix/gui/infopanel.py:358
 msgid "Similar Tracks:"
 msgstr "Pistas similares:"
 
-#: .././foobnix/gui/infopanel.py:367
+#: .././foobnix/gui/infopanel.py:370
 msgid "Similar Artists:"
 msgstr "Artistas similares:"
 
-#: .././foobnix/gui/infopanel.py:378
+#: .././foobnix/gui/infopanel.py:381
 msgid "Best Songs:"
 msgstr "Mejores canciones:"
 
