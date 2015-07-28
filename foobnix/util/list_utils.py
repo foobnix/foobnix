@@ -28,7 +28,7 @@ def get_song_number(text):
 def comparator(x, y):
     value_x = get_song_number(x)
     value_y = get_song_number(y)
-    if value_x and value_y:
+    if value_x and value_y and value_x != value_y:
         return value_x - value_y
     else:
         return cmp(x, y)
