@@ -168,6 +168,12 @@ class BaseFoobnixControls():
             else:
                 self.dbus._set_state_stop()
 
+    def send_track_changed_signal_to_dbus(self, bean):
+        if self.dbus:
+            if not bean.info:
+                bean.info ="no technical info available"
+            self.dbus.player.current(bean.text, bean.info)
+
     def on_add_folders(self, paths=None):
         if not paths:
             paths = directory_chooser_dialog(_("Choose folders to open"), FC().last_dir)
@@ -375,8 +381,10 @@ class BaseFoobnixControls():
         self.play_lock.acquire()
         self.seek_bar.clear()
         ## TODO: Check for GTK+3.4 (Status icon doesn't have a set_tooltip method)
+
         self.statusbar.set_text(bean.info)
         self.trayicon.set_text(bean.text)
+        self.send_track_changed_signal_to_dbus(bean)
         #self.movie_window.set_text(bean.text)
 
         if bean.type == FTYPE_RADIO:

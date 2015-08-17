@@ -109,6 +109,10 @@ class MprisPlayer(dbus.service.Object):
         bus_name = dbus.service.BusName(DBUS_NAME, bus=bus)
         dbus.service.Object.__init__(self, bus_name, MPRIS_PLAYER_PATH)
 
+    @dbus.service.signal(DBUS_MEDIAPLAYER_INTERFACE, signature='ss')
+    def current(self, track, info):
+        return "%s is playing [%s]" % (track, info)
+
     #Next ( )
     @dbus.service.method(DBUS_MEDIAPLAYER_INTERFACE, in_signature='', out_signature='')
     def Next(self):
