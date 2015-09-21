@@ -39,7 +39,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.set_headers_clickable(True)
 
         """column config"""
-        self.column = Gtk.TreeViewColumn("File", Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.column = Gtk.TreeViewColumn("File", self.ellipsize_render, text=self.text[0], font=self.font[0])
         self._append_column(self.column, _("File"))
 
         def func(column, cell, model, iter, ext=False):
@@ -61,7 +61,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 if ext:
                     cell.set_property('text', '')
 
-        self.name_column = Gtk.TreeViewColumn("Name", Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.name_column = Gtk.TreeViewColumn("Name", self.ellipsize_render, text=self.text[0], font=self.font[0])
         self.name_column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
         for rend in self.name_column.get_cells():
             self.name_column.set_cell_data_func(rend, func, False)

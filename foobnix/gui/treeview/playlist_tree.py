@@ -75,7 +75,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self._append_column(self.trkn_col)
 
         """column composer"""
-        self.comp_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.composer[0])
+        self.comp_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.composer[0])
         self.comp_col.key = "Composer"
         self.comp_col.set_resizable(True)
         self.comp_col.label = Gtk.Label(_("Composer"))
@@ -83,7 +83,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self._append_column(self.comp_col)
 
         """column artist title"""
-        self.description_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.description_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.text[0], font=self.font[0])
         self.description_col.key = "Track"
         self.description_col.set_resizable(True)
         self.description_col.label = Gtk.Label(_("Track"))
@@ -91,7 +91,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self._append_column(self.description_col)
 
         """column artist"""
-        self.artist_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.artist[0])
+        self.artist_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.artist[0])
         self.artist_col.key = "Artist"
         self.artist_col.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.artist_col.set_resizable(True)
@@ -100,7 +100,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self._append_column(self.artist_col)
 
         """column title"""
-        self.title_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.title[0])
+        self.title_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.title[0])
         self.title_col.key = "Title"
         self.title_col.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.title_col.set_resizable(True)
@@ -109,7 +109,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self._append_column(self.title_col)
 
         """column album"""
-        self.album_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.album[0])
+        self.album_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.album[0])
         self.album_col.key = "Album"
 
         if self.album_col.key not in FC().columns:

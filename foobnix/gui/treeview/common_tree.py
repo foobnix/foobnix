@@ -10,7 +10,7 @@ import logging
 
 from gi.repository import Gtk
 from gi.repository import Gdk
-from gi.repository import GLib
+from gi.repository import Pango
 from gi.repository import GObject
 from random import randint
 
@@ -51,6 +51,9 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
         self.set_reorderable(False)
         self.set_headers_visible(False)
+
+        self.ellipsize_render = Gtk.CellRendererText.new()
+        self.ellipsize_render.set_property('ellipsize', Pango.ELLIPSIZE_END)
 
         self.set_type_plain()
 

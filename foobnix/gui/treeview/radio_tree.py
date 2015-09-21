@@ -12,7 +12,6 @@ import thread
 
 from gi.repository import Gtk
 
-from foobnix.fc.fc import FC
 from foobnix.fc.fc_cache import FCache, CACHE_RADIO_FILE
 from foobnix.helpers.dialog_entry import two_line_dialog, one_line_dialog
 from foobnix.helpers.menu import Popup
@@ -32,8 +31,9 @@ class RadioTreeControl(CommonTreeControl):
         self.set_reorderable(False)
         self.switcher_label = _("My channels")
         self.tree_menu = Popup()
+
         """column config"""
-        column = Gtk.TreeViewColumn(_("Radio Stations"), Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = Gtk.TreeViewColumn(_("Radio Stations"), self.ellipsize_render, text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)

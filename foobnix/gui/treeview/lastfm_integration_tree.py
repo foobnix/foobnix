@@ -25,7 +25,7 @@ class LastFmIntegrationControls(CommonTreeControl):
 
         """column config"""
         column = Gtk.TreeViewColumn(_("Lasm.fm Integration ") + FCBase().lfm_login,
-                                    Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+                                    self.ellipsize_render, text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)
