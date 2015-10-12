@@ -42,8 +42,6 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         uhbox.pack_start(self.update_on_start, False, False, 0)
         box.pack_start(uhbox, False, True, 0)
         box.pack_start(self.gap(), False, True, 0)
-        box.pack_start(self.buffer_size(), False, True, 0)
-
 
     def dirs(self):
         self.frame = Gtk.Frame(label=_("Music dirs"))
@@ -101,7 +99,6 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             self.files_controller.append(FDModel(ext))
 
         self.adjustment.set_value(FC().gap_secs)
-        self.buffer_adjustment.set_value(FC().network_buffer_size)
 
         if FC().tabs_mode == "Single":
             self.singletab_button.set_active(True)
@@ -115,7 +112,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
     def on_save(self):
         FC().all_support_formats = self.files_controller.get_all_beans_text()
         FC().gap_secs = self.adjustment.get_value()
-        FC().network_buffer_size = self.buffer_adjustment.get_value()
+
         if self.singletab_button.get_active():
             '''for i in xrange(len(FCache().music_paths) - 1, 0, -1):
                 del FCache().music_paths[i]
@@ -224,24 +221,9 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
 
         return hbox
 
-    def buffer_size(self):
-        label = Gtk.Label(_("Buffer size for network streams (KBytes)"))
-
-        self.buffer_adjustment = Gtk.Adjustment(value=128, lower=16, upper=2048, step_incr=16)
-
-        buff_size = Gtk.SpinButton(adjustment=self.buffer_adjustment, climb_rate=0, digits=0)
-        buff_size.show()
-
-        hbox = Gtk.HBox(False, 10)
-        hbox.pack_start(buff_size, False, False, 0)
-        hbox.pack_start(label, False, False, 0)
-        hbox.show_all()
-
-        return hbox
-
     def tabs_mode(self):
         hbox = Gtk.HBox()
-        self.multitabs_button = Gtk.RadioButton(None, _("Multi tab mode"))
+        self.multitabs_button = Gtk.RadioButton.new_with_label(None, _("Multi tab mode"))
         def on_toggle_multitab(widget, data=None):
             self.frame.hide()
         self.multitabs_button.connect("toggled", on_toggle_multitab)

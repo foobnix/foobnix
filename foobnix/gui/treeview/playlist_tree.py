@@ -44,6 +44,8 @@ class PlaylistTreeControl(CommonTreeControl):
     def __init__(self, controls):
         CommonTreeControl.__init__(self, controls)
 
+        self.header_pressed = False
+
         self.menu = Popup()
         self.tree_menu = Popup()
         self.full_name = ""
@@ -243,6 +245,9 @@ class PlaylistTreeControl(CommonTreeControl):
         return True if not self.model.get_iter_first() else False
 
     def on_button_press(self, w, e):
+        if self.header_pressed:
+            self.header_pressed = False
+            return
         if is_empty_click(w, e):
             w.get_selection().unselect_all()
         if is_double_left_click(e):
@@ -300,6 +305,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 self.tree_menu.show(e)
 
     def on_click_header(self, w, e):
+        self.header_pressed = True
         if is_rigth_click(e):
             if "menu" in w.__dict__:
                 w.menu.show(e)

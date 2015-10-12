@@ -452,7 +452,7 @@ class BaseFoobnixControls():
 
         if not self.is_scrobbled and bean.type != FTYPE_RADIO:
             ## song should be scrobbled if 90% has been played or played greater than 5 minutes
-            if pos_sec > (dur_sec * 0.9) or pos_sec > (60 * 5):
+            if pos_sec > (dur_sec * 0.5) or pos_sec > (60 * 2):
                 self.is_scrobbled = True
                 self.net_wrapper.execute(self.lastfm_service.report_scrobbled, bean, self.start_time, dur_sec)
                 """download music"""
@@ -474,7 +474,7 @@ class BaseFoobnixControls():
         t_bean = bean.create_from_text(text)
         self.update_info_panel(t_bean)
         self.set_dbus_state(STATE_PLAY, t_bean)
-        if FC().enable_radio_scrobbler:
+        if FC().enable_radio_scrobbler and bean.type == FTYPE_RADIO:
             start_time = str(int(time.time()))
             self.net_wrapper.execute(self.lastfm_service.report_now_playing, t_bean)
 

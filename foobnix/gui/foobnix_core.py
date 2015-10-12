@@ -71,8 +71,6 @@ class FoobnixCore(BaseFoobnixControls):
         self.os = OrderShuffleControls(self)
         self.playback = PlaybackControls(self)
 
-        self.coverlyrics = CoverLyricsPanel(self)
-
         self.perspectives = Controller(self)
 
         self.perspectives.attach_perspective(FSPerspective(self))
@@ -81,6 +79,8 @@ class FoobnixCore(BaseFoobnixControls):
         self.perspectives.attach_perspective(RadioPerspective(self))
         self.perspectives.attach_perspective(StoragePerspective(self))
         self.perspectives.attach_perspective(InfoPerspective(self))
+
+        self.coverlyrics = CoverLyricsPanel(self)
 
         """preferences"""
         self.preferences = PreferencesWindow(self)

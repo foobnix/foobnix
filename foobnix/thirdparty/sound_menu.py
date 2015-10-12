@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2011 Rick Spencer <rick.spencer@canonical.com>

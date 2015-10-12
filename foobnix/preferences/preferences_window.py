@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-
-# example packbox.py
+# -*- coding: utf-8 -*-
 
 import os
 import thread

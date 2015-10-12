@@ -15,7 +15,7 @@ MimeType=application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/x-scpls;audi
 StartupNotify=true
 X-Ubuntu-Gettext-Domain=foobnix
 
-Actions=Play;Pause;Next;Previous
+Actions=Play;Pause;Next;Previous;
 
 [Desktop Action Play]
 Name=Play

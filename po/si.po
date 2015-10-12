@@ -7,40 +7,72 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-05-04 17:20+0400\n"
+"POT-Creation-Date: 2015-06-05 20:46+0300\n"
 "PO-Revision-Date: 2014-06-15 16:51+0000\n"
 "Last-Translator: Nilushika <niluranawaka@gmail.com>\n"
 "Language-Team: Sinhalese <si@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-06-16 05:52+0000\n"
-"X-Generator: Launchpad (build 17045)\n"
+"X-Launchpad-Export-Date: 2015-06-06 05:15+0000\n"
+"X-Generator: Launchpad (build 17540)\n"
 
-#: .././foobnix/dm/dm.py:32 .././foobnix/preferences/preferences_window.py:59
-#: .././foobnix/regui/menu.py:54 .././foobnix/regui/top.py:44
+#: .././foobnix/dm/dm.py:33 .././foobnix/preferences/preferences_window.py:58
+#: .././foobnix/gui/menu.py:55 .././foobnix/gui/top.py:44
 msgid "Preferences"
 msgstr "අභිමත"
 
-#: .././foobnix/dm/dm.py:34
+#: .././foobnix/dm/dm.py:35
 msgid "Start Downloading"
 msgstr "බාගත කිරීම ආරම්භ කරන්න"
 
-#: .././foobnix/dm/dm.py:35
+#: .././foobnix/dm/dm.py:36
 msgid "Stop Downloading"
 msgstr "බාගත කිරීම නවත්වන්න"
 
-#: .././foobnix/dm/dm.py:50 .././foobnix/preferences/configs/__init__.py:3
-#: .././foobnix/regui/menu.py:52
+#. self.add_button("Start All", Gtk.STOCK_MEDIA_FORWARD, dm_tree.update_status_for_all, DOWNLOAD_STATUS_ACTIVE)
+#. self.add_button("Stop All", Gtk.STOCK_STOP, dm_tree.update_status_for_all, DOWNLOAD_STATUS_STOP)
+#. self.add_separator()
+#: .././foobnix/dm/dm.py:41 .././foobnix/gui/treeview/virtual_tree.py:65
+msgid "Delete"
+msgstr "මකන්න"
+
+#: .././foobnix/dm/dm.py:52 .././foobnix/preferences/configs/__init__.py:3
+#: .././foobnix/gui/menu.py:53
 msgid "Download Manager"
 msgstr "බාගැනීම් පරිපාලක"
 
-#: .././foobnix/dm/dm.py:115 .././foobnix/util/file_utils.py:376
+#: .././foobnix/dm/dm.py:62 .././foobnix/gui/menu.py:82
+#: .././foobnix/util/const.py:44
+msgid "All"
+msgstr "සියල්ල"
+
+#: .././foobnix/dm/dm.py:63 .././foobnix/util/const.py:47
+msgid "Downloading"
+msgstr "බාගත වෙමින්"
+
+#: .././foobnix/dm/dm.py:64
+msgid "Completed"
+msgstr ""
+
+#: .././foobnix/dm/dm.py:65 .././foobnix/util/const.py:45
+msgid "Active"
+msgstr "සක්‍රීය"
+
+#: .././foobnix/dm/dm.py:66 .././foobnix/util/const.py:49
+msgid "Inactive"
+msgstr "අක්‍රීය"
+
+#: .././foobnix/dm/dm.py:119
+msgid "Downloading: "
+msgstr ""
+
+#: .././foobnix/dm/dm.py:126 .././foobnix/util/file_utils.py:357
 msgid "Choose Folder"
 msgstr "බහාලුම තෝරන්න"
 
 #. @UnusedVariable
-#: .././foobnix/eq/eq_gui.py:42 .././foobnix/regui/menu.py:51
+#: .././foobnix/eq/eq_gui.py:42 .././foobnix/gui/menu.py:52
 msgid "Equalizer"
 msgstr "සමානකරණය"
 
@@ -48,7 +80,7 @@ msgstr "සමානකරණය"
 msgid "Disabled"
 msgstr "අක්‍රීය"
 
-#: .././foobnix/eq/eq_gui.py:86 .././foobnix/eq/eq_gui.py:167
+#: .././foobnix/eq/eq_gui.py:86 .././foobnix/eq/eq_gui.py:168
 msgid "Enable EQ"
 msgstr "EQ සක්‍රීය කිරීම"
 
@@ -56,7 +88,7 @@ msgstr "EQ සක්‍රීය කිරීම"
 msgid "Enabled"
 msgstr "සක්‍රීයයි"
 
-#: .././foobnix/eq/eq_gui.py:89 .././foobnix/eq/eq_gui.py:280
+#: .././foobnix/eq/eq_gui.py:89 .././foobnix/eq/eq_gui.py:281
 msgid "Disable EQ"
 msgstr "EQ අක්‍රීය කිරීම"
 
@@ -65,52 +97,53 @@ msgstr "EQ අක්‍රීය කිරීම"
 msgid "Equalizer %s"
 msgstr "සමානකරණය  %s"
 
-#: .././foobnix/eq/eq_gui.py:168
+#: .././foobnix/eq/eq_gui.py:169
 msgid "To enable EQ set ON"
 msgstr "EQ සක්‍රීය කිරීමට සහ ON පිහිටුවීමට"
 
-#: .././foobnix/eq/eq_gui.py:173
+#: .././foobnix/eq/eq_gui.py:174
 msgid "Auto"
 msgstr "ස්වයංක්‍රීය"
 
-#: .././foobnix/eq/eq_gui.py:185
+#: .././foobnix/eq/eq_gui.py:186
 msgid "Save"
 msgstr "සුරකින්න"
 
-#: .././foobnix/eq/eq_gui.py:192
+#: .././foobnix/eq/eq_gui.py:193
 msgid "Restore defaults presets"
 msgstr "තිබූ පරිදි නැවත සකසන්න"
 
-#: .././foobnix/fc/fc_cache.py:32 .././foobnix/fc/fc_cache.py:40
-#: .././foobnix/regui/notetab/__init__.py:163
-#: .././foobnix/regui/notetab/__init__.py:169
+#: .././foobnix/fc/fc_cache.py:35 .././foobnix/fc/fc_cache.py:43
+#: .././foobnix/gui/notetab/__init__.py:172
+#: .././foobnix/gui/notetab/__init__.py:177
 msgid "Empty tab"
 msgstr "හිස් ටැබය"
 
-#: .././foobnix/helpers/dialog_entry.py:171
-#: .././foobnix/helpers/dialog_entry.py:172
+#: .././foobnix/helpers/dialog_entry.py:187
+#: .././foobnix/helpers/dialog_entry.py:188
 msgid "New foobnix release avaliable"
 msgstr "අලුත් foobnix නිකුතුව ඇත"
 
-#: .././foobnix/helpers/dialog_entry.py:177
+#: .././foobnix/helpers/dialog_entry.py:193
 msgid "Download and Donate"
 msgstr "බාගත කිරීම සහ පරිත්‍යාග කිරීම"
 
-#. terminal = gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
-#: .././foobnix/helpers/dialog_entry.py:179
-#: .././foobnix/regui/treeview/playlist_tree.py:240
-#: .././foobnix/util/converter.py:341
+#. terminal = Gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
+#: .././foobnix/helpers/dialog_entry.py:195
+#: .././foobnix/preferences/configs/hotkey_conf.py:168
+#: .././foobnix/gui/treeview/playlist_tree.py:266
+#: .././foobnix/util/converter.py:346
 msgid "Download"
 msgstr "බාගත කරන්න"
 
-#: .././foobnix/helpers/dialog_entry.py:192
+#: .././foobnix/helpers/dialog_entry.py:208
 msgid "We hope you like the player. We will make it even better."
 msgstr ""
 "ඔබ මෙම වාදන මෘදුකාංගයට කැමති බව අපි සිතනවා. අප එය තවත් හොදින් සකස් කරන්නම්"
 
-#: .././foobnix/helpers/dialog_entry.py:193
+#: .././foobnix/helpers/dialog_entry.py:209
 #: .././foobnix/preferences/configs/notification_conf.py:19
-#: .././foobnix/preferences/configs/other_conf.py:70
+#: .././foobnix/preferences/configs/other_conf.py:84
 msgid "Check for new foobnix release on start"
 msgstr "නව foobinix නිකුතුව ආරම්භයට"
 
@@ -119,27 +152,28 @@ msgid "Total progress"
 msgstr "මුළු ප්‍රගතිය"
 
 #: .././foobnix/helpers/window.py:78
-#: .././foobnix/preferences/configs/hotkey_conf.py:204
-#: .././foobnix/regui/controls/playback.py:195 .././foobnix/util/const.py:47
+#: .././foobnix/preferences/configs/hotkey_conf.py:162
+#: .././foobnix/preferences/configs/tray_icon_conf.py:35
+#: .././foobnix/gui/controls/playback.py:180 .././foobnix/util/const.py:46
 #: .././foobnix/util/converter.py:95
 msgid "Stop"
 msgstr "නවතන්න"
 
-#: .././foobnix/preferences/preferences_window.py:69
+#: .././foobnix/preferences/preferences_window.py:68
 msgid "Categories"
 msgstr "ප්‍රභේද"
 
-#: .././foobnix/preferences/preferences_window.py:133
+#: .././foobnix/preferences/preferences_window.py:132
 msgid "Restore Defaults Settings"
 msgstr "තිබූ පරිදි නැවත සකසන්න"
 
-#: .././foobnix/preferences/preferences_window.py:137
-#: .././foobnix/util/tag_util.py:85
+#: .././foobnix/preferences/preferences_window.py:136
+#: .././foobnix/util/tag_util.py:86
 msgid "Apply"
 msgstr "යොදන්න"
 
-#: .././foobnix/preferences/preferences_window.py:142
-#: .././foobnix/util/converter.py:86 .././foobnix/util/tag_util.py:86
+#: .././foobnix/preferences/preferences_window.py:141
+#: .././foobnix/util/converter.py:86 .././foobnix/util/tag_util.py:87
 msgid "Close"
 msgstr "වසන්න"
 
@@ -151,82 +185,69 @@ msgstr "ප්‍රබේද තොරතුරු"
 msgid "Save online music"
 msgstr "අන්තර්ජාලයේ සක්‍රීයව සිටියදී ගීත සුරකින්න"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:64
+#: .././foobnix/preferences/configs/hotkey_conf.py:80
 msgid "Global Hotkeys"
 msgstr "ගෝලීය ප්‍රධාන සුචිය"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:78
+#: .././foobnix/preferences/configs/hotkey_conf.py:96
 msgid "Action"
 msgstr "ක්‍රියාව"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:79
+#: .././foobnix/preferences/configs/hotkey_conf.py:97
 msgid "Hotkey"
 msgstr "ප්‍රධාන සුචිය"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:87
-#: .././foobnix/preferences/configs/music_library.py:62
-#: .././foobnix/preferences/configs/music_library.py:176
+#: .././foobnix/preferences/configs/hotkey_conf.py:105
+#: .././foobnix/preferences/configs/music_library.py:63
+#: .././foobnix/preferences/configs/music_library.py:180
 msgid "Add"
 msgstr "එක් කරන්න"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:92
-#: .././foobnix/preferences/configs/music_library.py:67
-#: .././foobnix/preferences/configs/music_library.py:181
+#: .././foobnix/preferences/configs/hotkey_conf.py:110
+#: .././foobnix/preferences/configs/music_library.py:68
+#: .././foobnix/preferences/configs/music_library.py:185
 msgid "Remove"
 msgstr "ඉවත් කරන්න"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:112
+#: .././foobnix/preferences/configs/hotkey_conf.py:130
 msgid "Auto key"
 msgstr "ස්වයන්ක්‍රිය සුචිය"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:119
+#: .././foobnix/preferences/configs/hotkey_conf.py:137
 msgid "Disable Multimedia Keys"
 msgstr "බහු මාධ්‍ය සුචි අක්‍රීය කරන්න"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:120
+#: .././foobnix/preferences/configs/hotkey_conf.py:138
 msgid "Don't try to bind volume control keys"
 msgstr "ශබ්ද පාලන සුචි එක් කිරීමට උත්සහ නොදරන්න"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:132
+#: .././foobnix/preferences/configs/hotkey_conf.py:150
 msgid "Multimedia keys"
 msgstr "බහු මාධ්‍ය සුචි"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:202
-#: .././foobnix/regui/controls/playback.py:196
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:65
-#: .././foobnix/regui/treeview/playlist_tree.py:221
-#: .././foobnix/regui/treeview/vk_integration_tree.py:77
-msgid "Play"
-msgstr "වාදනය කරන්න"
+#: .././foobnix/preferences/configs/hotkey_conf.py:161
+msgid "Play-Pause"
+msgstr "වාදනයට-මදක් නැවතීමට"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:203
-#: .././foobnix/regui/controls/playback.py:197
-msgid "Pause"
-msgstr "මදක් නවතන්න"
-
-#: .././foobnix/preferences/configs/hotkey_conf.py:205
+#: .././foobnix/preferences/configs/hotkey_conf.py:163
 msgid "Next song"
 msgstr "පසු ගීතය"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:206
+#: .././foobnix/preferences/configs/hotkey_conf.py:164
 msgid "Previous song"
 msgstr "පෙර ගීතය"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:207
+#: .././foobnix/preferences/configs/hotkey_conf.py:165
 msgid "Volume up"
 msgstr "හඬ වැඩි කරන්න"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:208
+#: .././foobnix/preferences/configs/hotkey_conf.py:166
 msgid "Volume down"
 msgstr "හඬ අඩු කරන්න"
 
-#: .././foobnix/preferences/configs/hotkey_conf.py:209
+#: .././foobnix/preferences/configs/hotkey_conf.py:167
 msgid "Show-Hide"
 msgstr "පෙන්වන්න-සගවන්න"
-
-#: .././foobnix/preferences/configs/hotkey_conf.py:210
-msgid "Play-Pause"
-msgstr "වාදනයට-මදක් නැවතීමට"
 
 #: .././foobnix/preferences/configs/info_panel_conf.py:12
 msgid "Info panel"
@@ -252,95 +273,104 @@ msgstr "ගීත එකතුව"
 msgid "Other Options"
 msgstr "වෙනත් විකල්ප"
 
-#: .././foobnix/preferences/configs/last_fm.py:17
+#: .././foobnix/preferences/configs/last_fm.py:21
 msgid "Last FM + VK"
 msgstr "අවසාන FM සහ VK"
 
-#: .././foobnix/preferences/configs/last_fm.py:26
+#: .././foobnix/preferences/configs/last_fm.py:30
+#: .././foobnix/gui/perspectives/lastfm.py:23
 msgid "Last.FM"
 msgstr "අවසාන FM"
 
-#: .././foobnix/preferences/configs/last_fm.py:34
+#: .././foobnix/preferences/configs/last_fm.py:38
 #: .././foobnix/preferences/configs/network_conf.py:67
 msgid "Login"
 msgstr "පිවිසුම"
 
-#: .././foobnix/preferences/configs/last_fm.py:48
+#: .././foobnix/preferences/configs/last_fm.py:52
 #: .././foobnix/preferences/configs/network_conf.py:81
 msgid "Password"
 msgstr "මුරපදය"
 
-#: .././foobnix/preferences/configs/last_fm.py:57
+#: .././foobnix/preferences/configs/last_fm.py:61
 msgid "Limit search results:  "
 msgstr "සෙවීමේ ප්‍රතිපල සීමා කරන්න:  "
 
-#: .././foobnix/preferences/configs/last_fm.py:68
+#: .././foobnix/preferences/configs/last_fm.py:72
 msgid "Enable Music Scrobbler"
 msgstr "අවසානයට වාදනය වූ ගීතය  වාදනය කරන්න"
 
-#: .././foobnix/preferences/configs/last_fm.py:71
+#: .././foobnix/preferences/configs/last_fm.py:75
 msgid "Enable Radio Scrobbler"
 msgstr "අවසානයට ගුවන් විදුලියේ වාදනය වූ ගීතය  වාදනය කරන්න"
 
-#: .././foobnix/preferences/configs/last_fm.py:87
-#: .././foobnix/regui/search.py:123
+#: .././foobnix/preferences/configs/last_fm.py:91
+#: .././foobnix/gui/search.py:109
 msgid "VKontakte"
 msgstr "යථා කාලීන තොරතුරු සෙවුම"
 
-#: .././foobnix/preferences/configs/last_fm.py:92
+#: .././foobnix/preferences/configs/last_fm.py:96
 msgid "Not connected"
 msgstr "සම්බන්ධ වී නොමැත"
 
-#: .././foobnix/preferences/configs/last_fm.py:94
+#: .././foobnix/preferences/configs/last_fm.py:98
 msgid "You vk account is:"
 msgstr "ඔබගේ vk ගිණුම වන්නේ"
 
-#: .././foobnix/preferences/configs/last_fm.py:96
+#: .././foobnix/preferences/configs/last_fm.py:100
 msgid "Reset vk authorization"
 msgstr "vk අවසරය නැවත පිහීටුවීම"
+
+#: .././foobnix/preferences/configs/last_fm.py:102
+msgid "Enable VK autocomplete"
+msgstr ""
 
 #: .././foobnix/preferences/configs/music_library.py:38
 msgid "Update library on start (more slow) "
 msgstr "ආරම්භයේදී එකතුව නවීකරණය කරන්න (වඩා සෙමින් ) "
 
-#: .././foobnix/preferences/configs/music_library.py:48
+#: .././foobnix/preferences/configs/music_library.py:49
 msgid "Music dirs"
 msgstr "ගීත නාමාවලිය"
 
-#: .././foobnix/preferences/configs/music_library.py:56
+#: .././foobnix/preferences/configs/music_library.py:57
 msgid "Paths"
 msgstr "මාර්‍ග"
 
-#: .././foobnix/preferences/configs/music_library.py:136
-#: .././foobnix/regui/treeview/navigation_tree.py:231
+#: .././foobnix/preferences/configs/music_library.py:140
+#: .././foobnix/gui/treeview/navigation_tree.py:226
 msgid "Choose directory with music"
 msgstr "ගීත ඇතුලත් බහාලුම තෝරන්න"
 
-#: .././foobnix/preferences/configs/music_library.py:162
+#: .././foobnix/preferences/configs/music_library.py:166
 msgid "File Types"
 msgstr "ගොනු වර්ග"
 
-#: .././foobnix/preferences/configs/music_library.py:170
+#: .././foobnix/preferences/configs/music_library.py:174
 msgid "Extensions"
 msgstr "දීර්ඝ කිරීම"
 
-#: .././foobnix/preferences/configs/music_library.py:202
+#: .././foobnix/preferences/configs/music_library.py:206
 msgid "Please add audio extension"
 msgstr "කරුණාකර ගීත දීර්ඝ කිරීම එකතු කරන්න"
 
-#: .././foobnix/preferences/configs/music_library.py:202
+#: .././foobnix/preferences/configs/music_library.py:206
 msgid "Extension should be like '.mp3'"
 msgstr "දීර්ඝ කිරීම් .mp3 ආකාරයෙන් විය යුතුය"
 
-#: .././foobnix/preferences/configs/music_library.py:209
-msgid "Gap between tracks: "
-msgstr "පථ අතර ඉඩ "
+#: .././foobnix/preferences/configs/music_library.py:213
+msgid "Gap between tracks"
+msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:225
+#: .././foobnix/preferences/configs/music_library.py:228
+msgid "Buffer size for network streams (KBytes)"
+msgstr ""
+
+#: .././foobnix/preferences/configs/music_library.py:244
 msgid "Multi tab mode"
 msgstr "බහු ටැබ ආකාරය"
 
-#: .././foobnix/preferences/configs/music_library.py:231
+#: .././foobnix/preferences/configs/music_library.py:250
 msgid "Single tab mode"
 msgstr "තනි ටැබ ආකාරය"
 
@@ -386,75 +416,94 @@ msgid "Notifications"
 msgstr "දැනුම් දීම්"
 
 #: .././foobnix/preferences/configs/notification_conf.py:22
-#: .././foobnix/preferences/configs/other_conf.py:73
 msgid "Show new foobnix release avaliable demo dialog"
 msgstr "නව foobnix නිකුතුව demo dialog තුල පෙන්වන්න"
 
-#: .././foobnix/preferences/configs/other_conf.py:36
+#: .././foobnix/preferences/configs/other_conf.py:28
+msgid "File downloads"
+msgstr ""
+
+#: .././foobnix/preferences/configs/other_conf.py:39
 msgid "Save online music to folder:"
 msgstr "අන්තර්ජාල ගීත බහාලුමට සුරකින්න"
 
-#: .././foobnix/preferences/configs/other_conf.py:40
+#: .././foobnix/preferences/configs/other_conf.py:43
 msgid "Automatic online music save"
 msgstr "ස්වයංක්‍රිය අන්තර්ජාලගත  ගීත එකතුව"
 
-#: .././foobnix/preferences/configs/other_conf.py:45
+#: .././foobnix/preferences/configs/other_conf.py:44
+msgid "Save to one folder (no subfolders)"
+msgstr ""
+
+#: .././foobnix/preferences/configs/other_conf.py:48
 msgid "Download in threads"
 msgstr "බාගත කිරීම සිරවී ඇත"
 
-#: .././foobnix/preferences/configs/other_conf.py:59
+#: .././foobnix/preferences/configs/other_conf.py:64
+msgid "Disc cover settings"
+msgstr ""
+
+#: .././foobnix/preferences/configs/other_conf.py:69
 msgid "Disc cover size:"
 msgstr "තැටියේ පිටත ප්‍රමාණය"
 
-#: .././foobnix/preferences/configs/other_conf.py:83
-msgid "Enable theme image"
-msgstr "තේමා පින්තූරය සක්‍රීය කරන්න"
+#: .././foobnix/preferences/configs/other_conf.py:81
+msgid "Updates"
+msgstr ""
 
-#: .././foobnix/preferences/configs/other_conf.py:92
+#: .././foobnix/preferences/configs/other_conf.py:86
+msgid "Check for update"
+msgstr ""
+
+#: .././foobnix/preferences/configs/other_conf.py:94
+msgid "Theming"
+msgstr ""
+
+#: .././foobnix/preferences/configs/other_conf.py:102
 msgid "Menu type: "
 msgstr "මෙනු වර්ගීකරණය "
 
-#: .././foobnix/preferences/configs/other_conf.py:94
+#: .././foobnix/preferences/configs/other_conf.py:104
 msgid "Old Style (Menu Bar)"
 msgstr "කල්  ඉකුත් වූ විලාසිතාව (මෙනුව)"
 
-#: .././foobnix/preferences/configs/other_conf.py:96
+#: .././foobnix/preferences/configs/other_conf.py:106
 msgid "New Style (Button)"
 msgstr "නවතම විලාසිතාව (බොත්තම)"
 
-#: .././foobnix/preferences/configs/other_conf.py:105
+#: .././foobnix/preferences/configs/other_conf.py:115
 msgid "Order-Repeat Switcher Style:"
 msgstr "නවත අනුපිලිවෙලට මාරුවීමේ විලාසිතාව"
 
-#: .././foobnix/preferences/configs/other_conf.py:107
+#: .././foobnix/preferences/configs/other_conf.py:117
 msgid "Toggle Buttons"
 msgstr "ඇමුණුම්  බොත්තම"
 
-#: .././foobnix/preferences/configs/other_conf.py:109
+#: .././foobnix/preferences/configs/other_conf.py:119
 msgid "Text Labels"
 msgstr "අක්ෂර ලේබලය"
 
-#: .././foobnix/preferences/configs/other_conf.py:119
+#: .././foobnix/preferences/configs/other_conf.py:129
 msgid "Opacity:"
 msgstr "පාරාන්ධතාව:"
 
-#: .././foobnix/preferences/configs/other_conf.py:132
+#: .././foobnix/preferences/configs/other_conf.py:142
 msgid "Choose your preferred file manager:"
 msgstr "ඔබගේ වඩාත් කැමති ගොනුව තෝරන්න"
 
-#: .././foobnix/preferences/configs/other_conf.py:135
+#: .././foobnix/preferences/configs/other_conf.py:145
 msgid "Disable Xscreensaver"
 msgstr "x තිරය අක්‍රීය කරන්න"
 
-#: .././foobnix/preferences/configs/tabs.py:13
+#: .././foobnix/preferences/configs/tabs.py:16
 msgid "Tabs"
 msgstr "ටැබ"
 
-#: .././foobnix/preferences/configs/tabs.py:24
+#: .././foobnix/preferences/configs/tabs.py:27
 msgid "Count of tabs:"
 msgstr "ටැබ ගණන"
 
-#: .././foobnix/preferences/configs/tabs.py:39
+#: .././foobnix/preferences/configs/tabs.py:41
 msgid "Max length of tab:"
 msgstr "ටැබයක උපරිම දිග"
 
@@ -474,13 +523,40 @@ msgstr "ඉහළ"
 msgid "No Tabs"
 msgstr "ටැබ නොමැත"
 
-#: .././foobnix/preferences/configs/tabs.py:76
+#: .././foobnix/preferences/configs/tabs.py:75
 msgid "Close tab sign:"
 msgstr "ටැබ ලකුණ වසන්න"
 
-#: .././foobnix/preferences/configs/tabs.py:91
+#: .././foobnix/preferences/configs/tabs.py:89
 msgid "None"
 msgstr "කිසිවක් නොමැත"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:22
+msgid "Tray Icon"
+msgstr ""
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:30
+msgid "Icon"
+msgstr ""
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:33
+#: .././foobnix/gui/controls/playback.py:181
+#: .././foobnix/gui/treeview/lastfm_integration_tree.py:62
+#: .././foobnix/gui/treeview/playlist_tree.py:247
+#: .././foobnix/gui/treeview/simple_tree.py:64
+#: .././foobnix/gui/treeview/vk_integration_tree.py:78
+msgid "Play"
+msgstr "වාදනය කරන්න"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:34
+#: .././foobnix/gui/controls/playback.py:182
+msgid "Pause"
+msgstr "මදක් නවතන්න"
+
+#: .././foobnix/preferences/configs/tray_icon_conf.py:36
+#: .././foobnix/gui/perspectives/radio.py:50
+msgid "Radio"
+msgstr "රේඩියෝව"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:38
 msgid "Show tray icon"
@@ -527,753 +603,700 @@ msgstr "නිවේදන"
 msgid "Time Notification (sec): "
 msgstr "කාලය දැනුම් දීම (තත්පර) "
 
-#: .././foobnix/regui/base_controls.py:143
+#: .././foobnix/gui/base_controls.py:173
 msgid "Choose folders to open"
 msgstr "විවෘත කළයුතු බහාලුම තෝරන්න"
 
-#: .././foobnix/regui/base_controls.py:163
-msgid "Nothing found to play in the folder(s)"
-msgstr "බහාලුම(ම්) තුල වාදනයට කිසිවක් හමුවූයේ නැත"
-
-#: .././foobnix/regui/base_controls.py:170
+#: .././foobnix/gui/base_controls.py:188
 msgid "Choose file to open"
 msgstr "විවෘත කිරීමට ගොනුව තෝරන්න"
 
-#: .././foobnix/regui/base_controls.py:221
-msgid "Nothing found to play in the file(s)"
-msgstr "ගොනුව(නු) තුල වාදනයට කිසිවක් හමුවූයේ නැත"
-
-#: .././foobnix/regui/base_controls.py:344
+#: .././foobnix/gui/base_controls.py:332
 msgid "Stopped"
 msgstr "නවත්වන ලදී"
 
-#: .././foobnix/regui/base_controls.py:353
+#: .././foobnix/gui/base_controls.py:342
 msgid "Paused | "
 msgstr "මදකට නවතා ඇත | "
 
-#: .././foobnix/regui/base_controls.py:382
+#: .././foobnix/gui/base_controls.py:385
 msgid "Radio "
 msgstr "ගුවන් විදුලිය "
 
-#: .././foobnix/regui/base_controls.py:415
-#: .././foobnix/regui/base_controls.py:416
+#: .././foobnix/gui/base_controls.py:416 .././foobnix/gui/base_controls.py:417
 msgid "Resource not found"
 msgstr "සම්පත් හමුවූයේ නැත"
 
-#: .././foobnix/regui/base_controls.py:424
+#: .././foobnix/gui/base_controls.py:425
 msgid "Stopped. No resources found"
 msgstr "නවතා ඇත. සම්පත් හමුවූයේ නැත"
 
-#: .././foobnix/regui/coverlyrics.py:21
+#: .././foobnix/gui/coverlyrics.py:21
 msgid "Album title"
 msgstr "එකතුවේ මාතෘකාව"
 
-#: .././foobnix/regui/coverlyrics.py:26
+#: .././foobnix/gui/coverlyrics.py:28
 msgid "Cover:"
 msgstr "වැස්ම:"
 
-#: .././foobnix/regui/coverlyrics.py:32
+#: .././foobnix/gui/coverlyrics.py:34
 msgid "Lyric:"
 msgstr "පද පෙළ"
 
-#: .././foobnix/regui/infopanel.py:53
+#: .././foobnix/gui/infopanel.py:58
 msgid "Best Songs"
 msgstr "හොදම ගීත"
 
-#: .././foobnix/regui/infopanel.py:56
+#: .././foobnix/gui/infopanel.py:62
 msgid "Similar Artists"
 msgstr "සමාන කලාකරුවන්"
 
-#: .././foobnix/regui/infopanel.py:59
+#: .././foobnix/gui/infopanel.py:66
 msgid "Similar Songs"
 msgstr "සමාන ගීත"
 
-#: .././foobnix/regui/infopanel.py:62
+#: .././foobnix/gui/infopanel.py:70
 msgid "Similar Tags"
 msgstr "සමාන සම්බන්ධතා"
 
-#: .././foobnix/regui/infopanel.py:67
+#: .././foobnix/gui/infopanel.py:75 .././foobnix/gui/infopanel.py:174
 msgid "Lyrics"
 msgstr "පදමාලා"
 
-#: .././foobnix/regui/infopanel.py:74
+#: .././foobnix/gui/infopanel.py:82
 msgid "About Artist"
 msgstr "කලාකරුවන් පිළිබඳ"
 
-#: .././foobnix/regui/infopanel.py:80 .././foobnix/regui/perspectives.py:133
+#: .././foobnix/gui/infopanel.py:88 .././foobnix/gui/perspectives/info.py:29
 msgid "Info"
 msgstr "තොරතුරු"
 
-#: .././foobnix/regui/infopanel.py:89
+#: .././foobnix/gui/infopanel.py:97
 msgid "Downloads"
 msgstr "භාගත කිරීම්"
 
-#: .././foobnix/regui/menu.py:30
-msgid "_File"
-msgstr "_ගොනුව"
+#: .././foobnix/gui/infopanel.py:297
+msgid "Loading..."
+msgstr ""
 
-#: .././foobnix/regui/menu.py:31
+#: .././foobnix/gui/infopanel.py:310
+msgid "The text not found"
+msgstr ""
+
+#: .././foobnix/gui/infopanel.py:347
+msgid "Similar Tags:"
+msgstr ""
+
+#: .././foobnix/gui/infopanel.py:358
+msgid "Similar Tracks:"
+msgstr ""
+
+#: .././foobnix/gui/infopanel.py:370
+msgid "Similar Artists:"
+msgstr ""
+
+#: .././foobnix/gui/infopanel.py:381
+msgid "Best Songs:"
+msgstr ""
+
+#: .././foobnix/gui/menu.py:31 .././foobnix/gui/treeview/navigation_tree.py:43
+msgid "File"
+msgstr "ගොනුව"
+
+#: .././foobnix/gui/menu.py:32
 msgid "Add File(s)"
 msgstr "ගොනු එක් කිරීම"
 
-#: .././foobnix/regui/menu.py:32
+#: .././foobnix/gui/menu.py:33
 msgid "Add Folder(s)"
 msgstr "ෆෝල්ඩර් එක් කිරීම"
 
-#: .././foobnix/regui/menu.py:33
+#: .././foobnix/gui/menu.py:34
 msgid "Save Playlist As"
 msgstr "විකාශන ලැයිස්තුවක් ලෙස සුරකින්න"
 
-#: .././foobnix/regui/menu.py:36 .././foobnix/regui/top.py:46
+#: .././foobnix/gui/menu.py:37 .././foobnix/gui/top.py:46
 msgid "Quit"
 msgstr "පිටවීම"
 
-#: .././foobnix/regui/menu.py:39
-msgid "_View"
-msgstr "_දසුන"
+#: .././foobnix/gui/menu.py:40
+msgid "View"
+msgstr ""
 
-#: .././foobnix/regui/menu.py:41
+#: .././foobnix/gui/menu.py:42
 msgid "Left Panel"
 msgstr "වම් ලේඛනය"
 
-#: .././foobnix/regui/menu.py:44
+#: .././foobnix/gui/menu.py:45
 msgid "Search Panel"
 msgstr "ලේඛනය සෙවීම"
 
-#: .././foobnix/regui/menu.py:47
+#: .././foobnix/gui/menu.py:48
 msgid "Cover & Lyrics Panel"
 msgstr "කවරය සහ ගී පද ලේඛනය"
 
-#: .././foobnix/regui/menu.py:62
-msgid "_Playback"
-msgstr "නැවත විකාශය"
+#: .././foobnix/gui/menu.py:63
+msgid "Playback"
+msgstr ""
 
-#: .././foobnix/regui/menu.py:70
+#: .././foobnix/gui/menu.py:71
 msgid "Order"
 msgstr "පෙළගැස්ම"
 
-#: .././foobnix/regui/menu.py:71
+#: .././foobnix/gui/menu.py:73
 msgid "Linear"
 msgstr "රේඛිය"
 
-#: .././foobnix/regui/menu.py:74
+#: .././foobnix/gui/menu.py:76
 msgid "Random"
 msgstr "අහඹු"
 
-#: .././foobnix/regui/menu.py:78
+#: .././foobnix/gui/menu.py:80
 msgid "Repeat"
 msgstr "නැවත වාදනය කිරීම"
 
-#: .././foobnix/regui/menu.py:79 .././foobnix/util/const.py:45
-msgid "All"
-msgstr "සියල්ල"
-
-#: .././foobnix/regui/menu.py:80
+#: .././foobnix/gui/menu.py:83
 msgid "Single"
 msgstr "තනි"
 
-#: .././foobnix/regui/menu.py:81
+#: .././foobnix/gui/menu.py:84
 msgid "Disable"
 msgstr "අක්‍රීය කරන්න"
 
-#: .././foobnix/regui/menu.py:112
-msgid "_Help"
-msgstr "_උදව්"
+#: .././foobnix/gui/menu.py:115
+msgid "Help"
+msgstr ""
 
-#: .././foobnix/regui/menu.py:113
+#: .././foobnix/gui/menu.py:116
 msgid "About"
 msgstr "පිළිබඳ"
 
-#: .././foobnix/regui/menu.py:115
+#: .././foobnix/gui/menu.py:118
 msgid "Project page"
 msgstr "ව්‍යාපෘති පිටුව"
 
-#: .././foobnix/regui/menu.py:115
+#: .././foobnix/gui/menu.py:118
 msgid "http://www.foobnix.com/news/eng"
 msgstr "http://www.foobnix.com/news/eng"
 
-#: .././foobnix/regui/menu.py:116
+#: .././foobnix/gui/menu.py:119
 msgid "Issue report"
 msgstr "ප්‍රකාශන වාර්තාව"
 
-#: .././foobnix/regui/menu.py:118
+#: .././foobnix/gui/menu.py:121
 msgid "Donate Participate"
 msgstr "පරිත්‍යාග සහභාගීත්වය"
 
-#: .././foobnix/regui/menu.py:118
+#: .././foobnix/gui/menu.py:121
 msgid "http://www.foobnix.com/donate/eng"
 msgstr "http://www.foobnix.com/donate/eng"
 
-#: .././foobnix/regui/perspectives.py:43
-msgid " Add Folder(s) in tree"
-msgstr " ෆෝල්ඩර් පොරකය තුළට එක් කරන්න"
-
-#: .././foobnix/regui/perspectives.py:120
-msgid "Music"
-msgstr "සංගීතය"
-
-#: .././foobnix/regui/perspectives.py:120
-msgid "Music Navigation (Alt+1)"
-msgstr "ගීත තරණය(Alt+1)"
-
-#: .././foobnix/regui/perspectives.py:125
-msgid "Radio"
-msgstr "රේඩියෝව"
-
-#: .././foobnix/regui/perspectives.py:125
-msgid "Radio Stantions (Alt+2)"
-msgstr "රේඩියෝ කාර්යාලය (Alt+2)"
-
-#: .././foobnix/regui/perspectives.py:129
-#: .././foobnix/regui/treeview/virtual_tree.py:25
-msgid "Storage"
-msgstr "ගබඩාව"
-
-#: .././foobnix/regui/perspectives.py:129
-msgid "Storage (Alt+3)"
-msgstr "ගබඩාව(Alt+3)"
-
-#: .././foobnix/regui/perspectives.py:133
-msgid "Info Panel (Alt+4)"
-msgstr "තොරතුරු ලේඛනය(Alt+4)"
-
-#: .././foobnix/regui/perspectives.py:136
-msgid "Last.Fm"
-msgstr "Last.Fm"
-
-#: .././foobnix/regui/perspectives.py:136
-msgid "Last.fm Panel (Alt+5)"
-msgstr "Last.Fm ලේඛනය (Alt+5 )"
-
-#: .././foobnix/regui/perspectives.py:139
-msgid "VK"
-msgstr "VK"
-
-#: .././foobnix/regui/perspectives.py:139
-msgid "VK Panel (Alt+6)"
-msgstr "VK ලේඛනය (Alt+6)"
-
-#: .././foobnix/regui/search.py:19
+#: .././foobnix/gui/search.py:18
 msgid "Search music online"
 msgstr "ඍජුවම ගීත සොයන්න"
 
-#: .././foobnix/regui/search.py:64
+#: .././foobnix/gui/search.py:60
 msgid "Online Music Search, Play, Download"
 msgstr "ඍජුවම ගීත සෙවීම , විකාශය කිරීම, බාගත කිරීම"
 
-#: .././foobnix/regui/search.py:78
+#: .././foobnix/gui/search.py:68
 msgid "Search"
 msgstr "සෙවීම"
 
-#: .././foobnix/regui/search.py:83
+#: .././foobnix/gui/search.py:73
 msgid "Online Search"
 msgstr "ඍජු සෙවීම"
 
-#: .././foobnix/regui/search.py:109
+#: .././foobnix/gui/search.py:97
 msgid "Tracks"
 msgstr "පථ"
 
-#: .././foobnix/regui/search.py:113
+#: .././foobnix/gui/search.py:100
 msgid "Albums"
 msgstr "ඇල්බමයන්"
 
-#: .././foobnix/regui/search.py:116
+#: .././foobnix/gui/search.py:103
 msgid "Similar"
 msgstr "සමාන"
 
 #. @UnusedVariable
-#: .././foobnix/regui/search.py:119 .././foobnix/util/tag_util.py:40
+#: .././foobnix/gui/search.py:106 .././foobnix/util/tag_util.py:41
 msgid "Genre"
 msgstr "ප්‍රභේදය"
 
-#: .././foobnix/regui/about/about.py:20
+#: .././foobnix/gui/about/about.py:21
 msgid "Simple and Powerful player"
 msgstr "සාමාන්‍ය සහ ප්‍රබල ප්ලේයරය"
 
-#: .././foobnix/regui/controls/filter.py:24
+#: .././foobnix/gui/controls/filter.py:29
 msgid "File search"
 msgstr "ගොනු සෙවීම"
 
-#: .././foobnix/regui/controls/filter.py:28
+#: .././foobnix/gui/controls/filter.py:33
 msgid "Folder search"
 msgstr "ෆෝල්ඩර් සෙවීම"
 
-#: .././foobnix/regui/controls/movie_area.py:78
+#: .././foobnix/gui/controls/movie_area.py:82
 msgid "Exit Fullscrean"
 msgstr "පුළුල් තිරයෙන් නික්මීම"
 
-#: .././foobnix/regui/controls/playback.py:50
-#: .././foobnix/regui/controls/playback.py:141
-#: .././foobnix/regui/controls/playback.py:161
+#: .././foobnix/gui/controls/playback.py:36
+#: .././foobnix/gui/controls/playback.py:126
+#: .././foobnix/gui/controls/playback.py:146
 msgid "Shuffle on"
 msgstr "තැන් මාරුව"
 
-#: .././foobnix/regui/controls/playback.py:54
-#: .././foobnix/regui/controls/playback.py:144
-#: .././foobnix/regui/controls/playback.py:163
+#: .././foobnix/gui/controls/playback.py:40
+#: .././foobnix/gui/controls/playback.py:129
+#: .././foobnix/gui/controls/playback.py:148
 msgid "Shuffle off"
 msgstr "තැන් මාරුව off"
 
-#: .././foobnix/regui/controls/playback.py:58
-#: .././foobnix/regui/controls/playback.py:127
-#: .././foobnix/regui/controls/playback.py:148
-#: .././foobnix/regui/controls/playback.py:172
+#: .././foobnix/gui/controls/playback.py:44
+#: .././foobnix/gui/controls/playback.py:112
+#: .././foobnix/gui/controls/playback.py:133
+#: .././foobnix/gui/controls/playback.py:157
 msgid "Repeat all"
 msgstr "සියල්ල නැවත විකාශය"
 
-#: .././foobnix/regui/controls/playback.py:61
-#: .././foobnix/regui/controls/playback.py:130
-#: .././foobnix/regui/controls/playback.py:152
-#: .././foobnix/regui/controls/playback.py:181
+#: .././foobnix/gui/controls/playback.py:47
+#: .././foobnix/gui/controls/playback.py:115
+#: .././foobnix/gui/controls/playback.py:137
+#: .././foobnix/gui/controls/playback.py:166
 msgid "Repeat single"
 msgstr "එකක් නැවත විකාශය"
 
-#: .././foobnix/regui/controls/playback.py:64
-#: .././foobnix/regui/controls/playback.py:156
+#: .././foobnix/gui/controls/playback.py:50
+#: .././foobnix/gui/controls/playback.py:141
 msgid "Repeat off"
 msgstr "නැවත විකාශය වැසීම"
 
-#: .././foobnix/regui/controls/playback.py:198
+#: .././foobnix/gui/controls/playback.py:183
 msgid "Previous"
 msgstr "පෙර"
 
-#: .././foobnix/regui/controls/playback.py:199
+#: .././foobnix/gui/controls/playback.py:184
 msgid "Next"
 msgstr "මීළඟ"
 
-#: .././foobnix/regui/controls/record.py:26
+#: .././foobnix/gui/controls/record.py:25
 msgid "Record radio"
 msgstr "රේඩියෝ තැටිගත කිරීම"
 
-#: .././foobnix/regui/controls/record.py:43
+#: .././foobnix/gui/controls/record.py:41
 msgid "So file doesn't exist. Pehaps it wasn't create yet."
 msgstr "ගොනුව නොතිබේ.එය තවමත් නිර්මාණය කොට නොමැත."
 
-#: .././foobnix/regui/controls/record.py:52
+#: .././foobnix/gui/controls/record.py:50
 msgid "Save file as ..."
 msgstr "ගොනුව මේ ලෙස සුරකින්න"
 
-#: .././foobnix/regui/controls/seach_progress.py:72
-msgid "Process..."
-msgstr "ක්‍රියාවලිය"
-
-#: .././foobnix/regui/controls/tray_icon.py:47
+#: .././foobnix/gui/controls/tray_icon.py:53
 msgid "Exit"
 msgstr "නික්මීම"
 
-#: .././foobnix/regui/controls/tray_icon.py:48
+#: .././foobnix/gui/controls/tray_icon.py:54
 msgid "Close Popup"
 msgstr "popup වසන්න"
 
-#: .././foobnix/regui/notetab/__init__.py:331
-#: .././foobnix/regui/notetab/tab_library.py:40
+#: .././foobnix/gui/engine/gstreamer.py:527
+msgid "kbps"
+msgstr ""
+
+#: .././foobnix/gui/notetab/__init__.py:346
+#: .././foobnix/gui/notetab/tab_library.py:47
 msgid "Rename tab"
 msgstr "පටිත්ත නැවත නම් කිරීම"
 
-#: .././foobnix/regui/notetab/__init__.py:332
+#: .././foobnix/gui/notetab/__init__.py:347
 msgid "Save playlist as"
 msgstr "playlist ලෙස සුරකින්න"
 
-#: .././foobnix/regui/notetab/__init__.py:333
-#: .././foobnix/regui/notetab/tab_library.py:45
+#: .././foobnix/gui/notetab/__init__.py:348
+#: .././foobnix/gui/notetab/tab_library.py:52
 msgid "Close tab"
 msgstr "පටිත්ත වසන්න"
 
-#: .././foobnix/regui/notetab/__init__.py:415
+#: .././foobnix/gui/notetab/__init__.py:420
 msgid "It's need not empty playlist"
 msgstr "හිස් විකාශන ලැයිස්තු අවශ්‍ය නොවේ."
 
-#: .././foobnix/regui/notetab/__init__.py:418
+#: .././foobnix/gui/notetab/__init__.py:423
 msgid "Choose folder to save playlist"
 msgstr "විකාශන ලැයිස්තුව සුරැකීමට ෆෝල්ඩරය තෝරන්න"
 
-#: .././foobnix/regui/notetab/tab_library.py:41
+#: .././foobnix/gui/notetab/tab_library.py:48
 msgid "Update Music Tree"
 msgstr "ගීත පොරකය යාවත්කාලින කිරීම"
 
-#: .././foobnix/regui/notetab/tab_library.py:42
+#: .././foobnix/gui/notetab/tab_library.py:49
 msgid "Add folder"
 msgstr "ෆෝල්ඩර් එක් කිරීම"
 
-#: .././foobnix/regui/notetab/tab_library.py:43
-#: .././foobnix/regui/treeview/navigation_tree.py:131
+#: .././foobnix/gui/notetab/tab_library.py:50
+#: .././foobnix/gui/treeview/navigation_tree.py:132
 msgid "Add folder in new tab"
 msgstr "ෆෝල්ඩර් නව පටිත්තට  එක් කිරීම"
 
-#: .././foobnix/regui/notetab/tab_library.py:44
+#: .././foobnix/gui/notetab/tab_library.py:51
 msgid "Clear Music Tree"
 msgstr "ගීත පොරකය හිස් කිරීම"
 
-#: .././foobnix/regui/service/vk_service.py:42
-msgid "VKontakte Authorization (is required for music search)"
-msgstr "VKontakte Authorization (is required for music search)"
+#: .././foobnix/gui/perspectives/fsperspective.py:19
+msgid " Add Folder(s) in tree"
+msgstr " ෆෝල්ඩර් පොරකය තුළට එක් කරන්න"
 
-#: .././foobnix/regui/service/vk_service.py:101
-msgid "Open"
-msgstr "විවෘත කරන්න"
+#: .././foobnix/gui/perspectives/fsperspective.py:45
+msgid "Music"
+msgstr "සංගීතය"
 
-#: .././foobnix/regui/service/vk_service.py:107
-msgid "2: Apply Token"
-msgstr "2 : ටෝකනය යොමු කරන්න"
+#: .././foobnix/gui/perspectives/fsperspective.py:48
+msgid "Music Navigation (Alt+1)"
+msgstr "ගීත තරණය(Alt+1)"
 
-#: .././foobnix/regui/service/vk_service.py:110
-msgid "Please generate token..."
-msgstr "කරුණාකර ටෝකනය උපදවන්න"
+#: .././foobnix/gui/perspectives/info.py:32
+msgid "Info Panel (Alt+4)"
+msgstr "තොරතුරු ලේඛනය(Alt+4)"
 
-#: .././foobnix/regui/service/vk_service.py:115
-msgid "Token:"
-msgstr "ටෝකන්  :"
+#: .././foobnix/gui/perspectives/lastfm.py:26
+msgid "Last.FM Panel (Alt+5)"
+msgstr ""
 
-#: .././foobnix/regui/service/vk_service.py:116
-msgid "User ID:"
-msgstr "පරිශීලක අංකය:"
+#: .././foobnix/gui/perspectives/radio.py:53
+msgid "Radio Stantions (Alt+2)"
+msgstr "රේඩියෝ කාර්යාලය (Alt+2)"
 
-#: .././foobnix/regui/service/vk_service.py:151
-msgid "Token incorrect or expired"
-msgstr "ටෝකනය වැරදි හෝ කල් ඉකුත් වී ඇත."
+#: .././foobnix/gui/perspectives/storage.py:23
+#: .././foobnix/gui/treeview/virtual_tree.py:27
+msgid "Storage"
+msgstr "ගබඩාව"
 
-#: .././foobnix/regui/service/vk_service.py:153
-msgid "Token or user is empty"
-msgstr "ටෝකනය හෝ පරිශීලක හිස්ය."
+#: .././foobnix/gui/perspectives/storage.py:26
+msgid "Storage (Alt+3)"
+msgstr "ගබඩාව(Alt+3)"
 
-#: .././foobnix/regui/treeview/dm_tree.py:97
-#: .././foobnix/regui/treeview/dm_tree.py:99
-#: .././foobnix/regui/treeview/navigation_tree.py:143
-#: .././foobnix/regui/treeview/playlist_tree.py:238
-msgid "Open in file manager"
-msgstr "ගොනු පාලකයෙන්  විවෘත කරන්න"
+#: .././foobnix/gui/perspectives/vk.py:29
+msgid "VK"
+msgstr "VK"
 
-#: .././foobnix/regui/treeview/dragdrop_tree.py:198
-msgid "Attention!!!"
-msgstr "අවධානයි!!!"
+#: .././foobnix/gui/perspectives/vk.py:32
+msgid "VK Panel (Alt+6)"
+msgstr "VK ලේඛනය (Alt+6)"
 
-#: .././foobnix/regui/treeview/dragdrop_tree.py:199
-msgid "When you release the mouse button the mouse"
-msgstr "ඔබ මවුස් බටනය නිදහස් කිරීමේදී මවුසය"
+#: .././foobnix/gui/service/vk_service.py:42
+msgid "vk.com authorization"
+msgstr ""
 
-#: .././foobnix/regui/treeview/dragdrop_tree.py:204
-msgid "Copying:"
-msgstr "පිටපත් කරමින් :"
-
-#: .././foobnix/regui/treeview/dragdrop_tree.py:204
-msgid "Replacing:"
-msgstr "ප්‍රතිස්ථාපනය කරමින්:"
-
-#. @UndefinedVariable
-#: .././foobnix/regui/treeview/dragdrop_tree.py:205
-#: .././foobnix/util/file_utils.py:380
-msgid "Progress"
-msgstr "ප්‍රගතිය"
-
-#: .././foobnix/regui/treeview/dragdrop_tree.py:207
-#: .././foobnix/util/file_utils.py:381
-msgid "To: "
-msgstr "වෙත : "
-
-#: .././foobnix/regui/treeview/dragdrop_tree.py:356
-msgid "m3u playlist: "
-msgstr "m3u playlist: "
-
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:26
-msgid "Lasm.fm Integration "
-msgstr "Lasm.fm Integration "
-
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:38
-msgid "My loved tracks"
-msgstr "මගේ ආසම tracks"
-
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:39
-msgid "My top tracks"
-msgstr "මගේ ඉතා කැමති tracks"
-
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:40
-msgid "My recent tracks"
-msgstr "මගේ නුතන tracks"
-
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:41
-msgid "My top artists"
-msgstr "මගේ ප්‍රියතම ශිල්පින්"
-
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:49
-#: .././foobnix/regui/treeview/vk_integration_tree.py:53
-msgid "loading..."
-msgstr "පූරණය වෙමින් පවති..."
-
-#: .././foobnix/regui/treeview/lastfm_integration_tree.py:66
-#: .././foobnix/regui/treeview/vk_integration_tree.py:78
-msgid "Copy to Search Line"
-msgstr "මඟ සෙවීමට පිටපත් කරන්න"
-
-#: .././foobnix/regui/treeview/navigation_tree.py:43
-msgid "File"
-msgstr "ගොනුව"
-
-#: .././foobnix/regui/treeview/navigation_tree.py:66
+#: .././foobnix/gui/treeview/dm_tree.py:34
+#: .././foobnix/gui/treeview/navigation_tree.py:68
 msgid "Name"
 msgstr "නම"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:71
+#: .././foobnix/gui/treeview/dm_tree.py:39 .././foobnix/util/file_utils.py:361
+msgid "Progress"
+msgstr "ප්‍රගතිය"
+
+#: .././foobnix/gui/treeview/dm_tree.py:44
+msgid "Size"
+msgstr ""
+
+#: .././foobnix/gui/treeview/dm_tree.py:49
+msgid "Status"
+msgstr ""
+
+#: .././foobnix/gui/treeview/dm_tree.py:54
+msgid "Path"
+msgstr ""
+
+#: .././foobnix/gui/treeview/dm_tree.py:110
+#: .././foobnix/gui/treeview/dm_tree.py:112
+#: .././foobnix/gui/treeview/navigation_tree.py:144
+#: .././foobnix/gui/treeview/playlist_tree.py:264
+msgid "Open in file manager"
+msgstr "ගොනු පාලකයෙන්  විවෘත කරන්න"
+
+#: .././foobnix/gui/treeview/dragdrop_tree.py:458
+#: .././foobnix/gui/treeview/playlist_tree.py:440
+msgid "Playlist: "
+msgstr ""
+
+#: .././foobnix/gui/treeview/lastfm_integration_tree.py:27
+msgid "Lasm.fm Integration "
+msgstr "Lasm.fm Integration "
+
+#: .././foobnix/gui/treeview/lastfm_integration_tree.py:40
+msgid "My recommendations"
+msgstr ""
+
+#: .././foobnix/gui/treeview/lastfm_integration_tree.py:41
+msgid "My loved tracks"
+msgstr "මගේ ආසම tracks"
+
+#: .././foobnix/gui/treeview/lastfm_integration_tree.py:42
+msgid "My top tracks"
+msgstr "මගේ ඉතා කැමති tracks"
+
+#: .././foobnix/gui/treeview/lastfm_integration_tree.py:43
+msgid "My recent tracks"
+msgstr "මගේ නුතන tracks"
+
+#: .././foobnix/gui/treeview/lastfm_integration_tree.py:44
+msgid "My top artists"
+msgstr "මගේ ප්‍රියතම ශිල්පින්"
+
+#: .././foobnix/gui/treeview/lastfm_integration_tree.py:51
+#: .././foobnix/gui/treeview/vk_integration_tree.py:54
+msgid "loading..."
+msgstr "පූරණය වෙමින් පවති..."
+
+#: .././foobnix/gui/treeview/lastfm_integration_tree.py:63
+#: .././foobnix/gui/treeview/simple_tree.py:65
+#: .././foobnix/gui/treeview/vk_integration_tree.py:79
+msgid "Copy to Search Line"
+msgstr "මඟ සෙවීමට පිටපත් කරන්න"
+
+#: .././foobnix/gui/treeview/navigation_tree.py:73
 msgid "Ext"
 msgstr "නික්මීම"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:124
+#: .././foobnix/gui/treeview/navigation_tree.py:125
 msgid "Append to playlist"
 msgstr "ගීත ලැයිස්තුවට අමුණන්න"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:125
+#: .././foobnix/gui/treeview/navigation_tree.py:126
 msgid "Open in new playlist"
 msgstr "නව ගීත ලැයිස්තුවක් අරින්න"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:127
+#: .././foobnix/gui/treeview/navigation_tree.py:128
 msgid "Add folder here"
 msgstr "ෆෝල්ඩරය මෙහිදී එක් කරන්න"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:132
+#: .././foobnix/gui/treeview/navigation_tree.py:133
 msgid "Clear"
 msgstr "හිස් කරන්න"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:133
+#: .././foobnix/gui/treeview/navigation_tree.py:134
 msgid "Update"
 msgstr "යාවත්කාලීන කරන්න"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:144
-#: .././foobnix/util/file_utils.py:181
+#: .././foobnix/gui/treeview/navigation_tree.py:145
+#: .././foobnix/util/file_utils.py:154
 msgid "Create folder"
 msgstr "බහලුම නිර්මාණය කරන්න"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:145
+#: .././foobnix/gui/treeview/navigation_tree.py:146
 msgid "Rename file (folder)"
 msgstr "ගොනුව (ෆෝල්ඩරය) නැවත නම් කරීම"
 
-#: .././foobnix/regui/treeview/navigation_tree.py:146
-#: .././foobnix/util/file_utils.py:105
+#: .././foobnix/gui/treeview/navigation_tree.py:147
+#: .././foobnix/util/file_utils.py:76
 msgid "Delete file(s) / folder(s)"
 msgstr "ගොනුව (ගොනු )/ ෆෝල්ඩරය(ෆෝල්ඩර්) මකන්න"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:58
+#: .././foobnix/gui/treeview/playlist_tree.py:71
 msgid "Number"
 msgstr "අංකය"
 
 #. @UnusedVariable
-#: .././foobnix/regui/treeview/playlist_tree.py:66
-#: .././foobnix/regui/treeview/playlist_tree.py:67
-#: .././foobnix/util/tag_util.py:42
+#: .././foobnix/gui/treeview/playlist_tree.py:79
+#: .././foobnix/gui/treeview/playlist_tree.py:80
+#: .././foobnix/util/tag_util.py:43
 msgid "Composer"
 msgstr "රචකයා"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:74
-#: .././foobnix/regui/treeview/playlist_tree.py:75
+#: .././foobnix/gui/treeview/playlist_tree.py:87
+#: .././foobnix/gui/treeview/playlist_tree.py:88
 msgid "Track"
 msgstr "තනුව"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:83
-#: .././foobnix/regui/treeview/playlist_tree.py:84
-#: .././foobnix/util/tag_util.py:35
+#: .././foobnix/gui/treeview/playlist_tree.py:96
+#: .././foobnix/gui/treeview/playlist_tree.py:97
+#: .././foobnix/util/tag_util.py:36
 msgid "Artist"
 msgstr "කලා ශිල්පීන්"
 
 #. @UnusedVariable
-#: .././foobnix/regui/treeview/playlist_tree.py:92
-#: .././foobnix/regui/treeview/playlist_tree.py:93
-#: .././foobnix/util/tag_util.py:36
+#: .././foobnix/gui/treeview/playlist_tree.py:105
+#: .././foobnix/gui/treeview/playlist_tree.py:106
+#: .././foobnix/util/tag_util.py:37
 msgid "Title"
 msgstr "ශීර්ෂය"
 
 #. @UnusedVariable
-#: .././foobnix/regui/treeview/playlist_tree.py:105
-#: .././foobnix/regui/treeview/playlist_tree.py:106
-#: .././foobnix/util/tag_util.py:37
+#: .././foobnix/gui/treeview/playlist_tree.py:117
+#: .././foobnix/gui/treeview/playlist_tree.py:118
+#: .././foobnix/util/tag_util.py:38
 msgid "Album"
 msgstr "ඇල්බමය"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:112
-#: .././foobnix/regui/treeview/playlist_tree.py:113
+#: .././foobnix/gui/treeview/playlist_tree.py:124
+#: .././foobnix/gui/treeview/playlist_tree.py:125
 msgid "Time"
 msgstr "කාලය"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:222
+#: .././foobnix/gui/treeview/playlist_tree.py:248
 msgid "Delete from playlist"
 msgstr "විකාශන ලැයිස්තුවෙන් මකා දමන්න"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:237
+#: .././foobnix/gui/treeview/playlist_tree.py:263
 msgid "Copy To..."
 msgstr "පිටපත් කරන්න"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:241
+#: .././foobnix/gui/treeview/playlist_tree.py:268
 msgid "Download To..."
 msgstr "වෙත බාගත කරන්න."
 
-#: .././foobnix/regui/treeview/playlist_tree.py:246
+#: .././foobnix/gui/treeview/playlist_tree.py:274
 msgid "Edit Tags"
 msgstr "උපදේශ වාක්‍යයන්  සංස්කරණය කරන්න"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:247
+#: .././foobnix/gui/treeview/playlist_tree.py:275
 msgid "Format Converter"
 msgstr "පරිවර්තකය සකසන්න"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:249
+#: .././foobnix/gui/treeview/playlist_tree.py:277
 msgid "Copy To Search Line"
 msgstr "මඟ සෙවීමට පිටපත් කරන්න"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:251
+#: .././foobnix/gui/treeview/playlist_tree.py:280
 msgid "Copy №-Title-Time"
 msgstr "අංකය -නාමය -කාලය පිටපත් කිරීම"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:252
+#: .././foobnix/gui/treeview/playlist_tree.py:281
 msgid "Copy Artist-Title-Album"
 msgstr "ශිල්පියා-නාමය -ඇල්බමය පිටපත් කිරීම"
 
-#: .././foobnix/regui/treeview/playlist_tree.py:254
+#: .././foobnix/gui/treeview/playlist_tree.py:284
 msgid "Love This Track(s) by Last.fm"
 msgstr "ලාස්ට් එෆ් එම් හි ගීතය(න්)ට ආදරය කරන්න."
 
-#: .././foobnix/regui/treeview/playlist_tree.py:257
-msgid "Open In File Manager"
-msgstr "ගොනු කළමණාකරණය සමගින් විවෘත කරන්න"
+#: .././foobnix/gui/treeview/playlist_tree.py:286
+msgid "Add to My Audio (VK)"
+msgstr ""
 
-#: .././foobnix/regui/treeview/playlist_tree.py:323
-msgid "Numbering by order"
-msgstr "පිළිවෙළ අනුව අංකනය"
+#: .././foobnix/gui/treeview/playlist_tree.py:288
+msgid "Copy link"
+msgstr ""
 
-#: .././foobnix/regui/treeview/playlist_tree.py:325
-msgid "Numbering by tags"
-msgstr "ඇමිණුම් කොටස අනුව අංකනය."
-
-#: .././foobnix/regui/treeview/radio_tree.py:31
+#: .././foobnix/gui/treeview/radio_tree.py:33
 msgid "My channels"
 msgstr "මගේ නාලිකාවන්"
 
-#: .././foobnix/regui/treeview/radio_tree.py:33
+#: .././foobnix/gui/treeview/radio_tree.py:36
 msgid "Radio Stations"
 msgstr "රේඩියෝ ස්ථානය"
 
-#: .././foobnix/regui/treeview/radio_tree.py:61
-#: .././foobnix/regui/treeview/radio_tree.py:220
+#: .././foobnix/gui/treeview/radio_tree.py:67
+#: .././foobnix/gui/treeview/radio_tree.py:223
 msgid "Edit Station"
 msgstr "ස්ථානය  වෙනස්  කරන්න"
 
-#: .././foobnix/regui/treeview/radio_tree.py:62
-#: .././foobnix/regui/treeview/radio_tree.py:221
+#: .././foobnix/gui/treeview/radio_tree.py:68
+#: .././foobnix/gui/treeview/radio_tree.py:224
 msgid "Delete Station"
 msgstr "ස්ථානය  ඉවත් කරන්න"
 
-#: .././foobnix/regui/treeview/radio_tree.py:64
-#: .././foobnix/regui/treeview/radio_tree.py:90
-#: .././foobnix/regui/treeview/radio_tree.py:223
+#: .././foobnix/gui/treeview/radio_tree.py:70
+#: .././foobnix/gui/treeview/radio_tree.py:96
+#: .././foobnix/gui/treeview/radio_tree.py:226
 msgid "Rename Group"
 msgstr "සමූහයේ නම වෙනස් කරන්න"
 
-#: .././foobnix/regui/treeview/radio_tree.py:65
-#: .././foobnix/regui/treeview/radio_tree.py:224
+#: .././foobnix/gui/treeview/radio_tree.py:71
+#: .././foobnix/gui/treeview/radio_tree.py:227
 msgid "Delete Group"
 msgstr "සමූහය මකන්න"
 
-#: .././foobnix/regui/treeview/radio_tree.py:67
+#: .././foobnix/gui/treeview/radio_tree.py:73
 msgid "Reload radio folder"
 msgstr "රේඩියෝ ෆෝල්ඩරය නැවත ප්‍රවේශනය කරන්න"
 
-#: .././foobnix/regui/treeview/radio_tree.py:72
+#: .././foobnix/gui/treeview/radio_tree.py:78
 msgid "Edit Radio"
 msgstr "රේඩියෝ සංස්කරණය"
 
-#: .././foobnix/regui/treeview/radio_tree.py:74
+#: .././foobnix/gui/treeview/radio_tree.py:80
 msgid "Enter new name and URL"
 msgstr "අලුත් නමක් සහ URL එකක් ඇතුල් කරන්න"
 
-#: .././foobnix/regui/treeview/radio_tree.py:91
+#: .././foobnix/gui/treeview/radio_tree.py:97
 msgid "Enter new group name"
 msgstr "අලුත් කණ්ඩායම් නමක් ඇතුල් කරන්න"
 
-#: .././foobnix/regui/treeview/radio_tree.py:99
+#: .././foobnix/gui/treeview/radio_tree.py:105
 msgid "Add New Radio Station"
 msgstr "අලුත් රේඩියෝ ස්ටේෂන් එකක් ඇතුල් කරන්න"
 
-#: .././foobnix/regui/treeview/radio_tree.py:101
+#: .././foobnix/gui/treeview/radio_tree.py:107
 msgid "Enter station name and URL"
 msgstr "ස්ටේෂන් නම සහ URL ඇතුල් කරන්න"
 
-#: .././foobnix/regui/treeview/radio_tree.py:194
+#: .././foobnix/gui/treeview/radio_tree.py:198
 msgid "Autogenerated channels"
 msgstr "ස්වයං උත්පාදිත චැනල්ස්"
 
-#: .././foobnix/regui/treeview/radio_tree.py:215
+#: .././foobnix/gui/treeview/radio_tree.py:218
 msgid "Add Station"
 msgstr "ස්ටේෂන් එක් කරන්න"
 
-#: .././foobnix/regui/treeview/radio_tree.py:216
-#: .././foobnix/regui/treeview/radio_tree.py:232
+#: .././foobnix/gui/treeview/radio_tree.py:219
+#: .././foobnix/gui/treeview/radio_tree.py:235
 msgid "Create Group"
 msgstr "කණ්ඩායම නිර්මාණය කරන්න"
 
-#: .././foobnix/regui/treeview/radio_tree.py:232
+#: .././foobnix/gui/treeview/radio_tree.py:235
 msgid "Enter group name"
 msgstr "කණ්ඩායම් නම එක් කරන්න"
 
-#: .././foobnix/regui/treeview/virtual_tree.py:60
+#: .././foobnix/gui/treeview/virtual_tree.py:60
 msgid "Add playlist"
 msgstr "විකාශන ලැයිස්තුව එක් කරන්න"
 
-#: .././foobnix/regui/treeview/virtual_tree.py:64
+#: .././foobnix/gui/treeview/virtual_tree.py:64
 msgid "Rename"
 msgstr "නම වෙනස් කරන්න"
 
-#: .././foobnix/regui/treeview/virtual_tree.py:65
-msgid "Delete"
-msgstr "මකන්න"
-
-#: .././foobnix/regui/treeview/virtual_tree.py:67
+#: .././foobnix/gui/treeview/virtual_tree.py:67
 msgid "Rename playlist"
 msgstr "විකාශන ලැයිස්තුවේ නම වෙනස් කරන්න"
 
-#: .././foobnix/regui/treeview/virtual_tree.py:68
+#: .././foobnix/gui/treeview/virtual_tree.py:68
 msgid "Delete playlist"
 msgstr "විකාශන ලැයිස්තුව මකන්න"
 
-#: .././foobnix/regui/treeview/virtual_tree.py:74
+#: .././foobnix/gui/treeview/virtual_tree.py:74
 msgid "Create new playlist"
 msgstr "අලුත් විකාශන ලැයිස්තුවක් නිර්මාණය කරන්න"
 
-#: .././foobnix/regui/treeview/virtual_tree.py:74
+#: .././foobnix/gui/treeview/virtual_tree.py:74
 msgid "Enter playlist name"
 msgstr "විකාශන ලැයිස්තුවේ නම ඇතුල් කරන්න"
 
-#: .././foobnix/regui/treeview/virtual_tree.py:88
+#: .././foobnix/gui/treeview/virtual_tree.py:88
 msgid "Rename Dialog"
 msgstr "සංවාදයේ නම වෙනස් කරන්න"
 
-#: .././foobnix/regui/treeview/virtual_tree.py:89
+#: .././foobnix/gui/treeview/virtual_tree.py:89
 msgid "Enter new name"
 msgstr "අලුත් නමක් එක් කරන්න"
 
-#: .././foobnix/regui/treeview/vk_integration_tree.py:26
+#: .././foobnix/gui/treeview/vk_integration_tree.py:26
 msgid "VK Integration "
 msgstr "VK Integration "
 
-#: .././foobnix/regui/treeview/vk_integration_tree.py:111
+#: .././foobnix/gui/treeview/vk_integration_tree.py:104
 msgid "No results found"
 msgstr "ප්‍රතිඵල සොයා ගත නොහැක"
 
-#: .././foobnix/util/const.py:46
-msgid "Active"
-msgstr "සක්‍රීය"
-
 #: .././foobnix/util/const.py:48
-msgid "Downloading"
-msgstr "බාගත වෙමින්"
-
-#: .././foobnix/util/const.py:49
 msgid "Complete"
 msgstr "සම්පූර්ණයි"
 
-#: .././foobnix/util/const.py:50
-msgid "Inactive"
-msgstr "අක්‍රීය"
-
-#: .././foobnix/util/const.py:52
+#: .././foobnix/util/const.py:51
 msgid "Lock"
 msgstr "අගුළු දමන්න"
 
-#: .././foobnix/util/const.py:53
+#: .././foobnix/util/const.py:52
 msgid "Error"
 msgstr "දෝෂය"
 
@@ -1301,15 +1324,15 @@ msgstr "පරිවර්ථනය කරන්න"
 msgid "Show files"
 msgstr "ගොනු පෙන්වන්න"
 
-#: .././foobnix/util/converter.py:121
+#: .././foobnix/util/converter.py:123
 msgid "Choose directory to save converted files"
 msgstr "පරිවර්ථනය වූ ගොනු සුරැකීමට ඩිරෙක්ටරිය තෝරන්න"
 
-#: .././foobnix/util/converter.py:224
+#: .././foobnix/util/converter.py:228
 msgid "Warning!!!"
 msgstr "අවධානයයි!!!"
 
-#: .././foobnix/util/converter.py:228
+#: .././foobnix/util/converter.py:232
 msgid ""
 "So file(s)  already exist(s) and will be overwritten.\n"
 "Do you wish to continue?"
@@ -1317,82 +1340,85 @@ msgstr ""
 "ගොනුව (ගොනු) දැනටමත් පවතින අතර එය (ඒවා ) මත නැවත ලියවෙනු ඇත. ඔබ ඉදිරියට යාමට "
 "බලාපොරොත්තු වෙනවාද?"
 
-#: .././foobnix/util/converter.py:336
+#: .././foobnix/util/converter.py:341
 msgid "Attention"
 msgstr "අවධානයයි"
 
-#: .././foobnix/util/converter.py:338
-msgid "Converter require specially compiled ffmpeg module for work.\n"
+#: .././foobnix/util/converter.py:343
+msgid ""
+"Converter require specially compiled ffmpeg module for work.\n"
+"You should download it automatically (click Download)\n"
+"Also check if you have packages libmp3lame0 and libfaac0"
 msgstr ""
-"පරිවර්ථකය ඒ සඳහා විශේෂයෙන් සකස් කරන ලද ffmpeg මොඩියුලයේ ක්‍රියාකාරීත්වය "
-"අපේක්ෂා කරයි\n"
 
-#: .././foobnix/util/file_utils.py:75
+#: .././foobnix/util/file_utils.py:46
 msgid "Rename folder"
 msgstr "ෆෝල්ඩරයේ නම වෙනස් කරන්න"
 
-#: .././foobnix/util/file_utils.py:84
+#: .././foobnix/util/file_utils.py:55
 msgid "Rename file"
 msgstr "ගොනුවේ නම වෙනස් කරන්න"
 
-#: .././foobnix/util/file_utils.py:106
+#: .././foobnix/util/file_utils.py:77
 msgid "Do you really want to delete item(s) from disk?"
 msgstr "ඔබට  ඩිස්කය තුල ඇති අයිතම මකා දැමීමට අවශ්‍යයමද?"
 
-#: .././foobnix/util/file_utils.py:152
+#: .././foobnix/util/file_utils.py:125
 msgid "Copy"
 msgstr "පිටපත් කරන්න"
 
 #. @UndefinedVariable
-#: .././foobnix/util/file_utils.py:153
+#: .././foobnix/util/file_utils.py:126
 msgid "Replace"
 msgstr "ප්‍රතිස්ථාපනය කරන්න"
 
-#: .././foobnix/util/file_utils.py:155
+#: .././foobnix/util/file_utils.py:128
 #, python-format
 msgid "%s file(s) / folder(s)"
 msgstr "%s ගොනුව(ගොනු) / ෆෝල්ඩරය (ෆෝල්ඩර් )"
 
-#: .././foobnix/util/file_utils.py:161
+#: .././foobnix/util/file_utils.py:134
 #, python-format
 msgid "Are you really want to %s this item(s) to %s ?"
 msgstr "ඔබට ඇත්තටම %s අයිතමය(න්) %s ට දැමීමට අවශ්‍යද?"
 
-#: .././foobnix/util/file_utils.py:180
+#: .././foobnix/util/file_utils.py:153
 msgid "Make folder dialog"
 msgstr "සංවාද ෆෝල්ඩරයක් සාදන්න'"
 
-#: .././foobnix/util/file_utils.py:182
+#: .././foobnix/util/file_utils.py:155
 msgid "You want to create subfolder in folder"
 msgstr "ඔබට  ෆෝල්ඩරය තුල උප ෆෝල්ඩරයක් නිර්මාණය කිරීමට අවශ්‍යයද?"
 
-#: .././foobnix/util/file_utils.py:183
+#: .././foobnix/util/file_utils.py:156
 msgid "Enter new folder's name:"
 msgstr "අලුත් ෆෝල්ඩරයේ නම ඇතුලත් කරන්න:"
 
-#: .././foobnix/util/file_utils.py:201
+#: .././foobnix/util/file_utils.py:174
 msgid "So folder already exists"
 msgstr "ෆෝල්ඩරය දැනටමත් පවතී."
 
-#: .././foobnix/util/file_utils.py:387
+#: .././foobnix/util/file_utils.py:362
+msgid "To: "
+msgstr "වෙත : "
+
+#: .././foobnix/util/file_utils.py:368
 msgid "Copying: "
 msgstr "පිටපත් වෙමින් : "
 
-#: .././foobnix/util/id3_util.py:128 .././foobnix/util/tag_util.py:118
-#: .././foobnix/util/tag_util.py:132
+#: .././foobnix/util/id3_util.py:90
 msgid "Unknown title"
 msgstr "මාතෘකාව නොදනී"
 
-#: .././foobnix/util/id3_util.py:130 .././foobnix/util/tag_util.py:120
-#: .././foobnix/util/tag_util.py:130
+#: .././foobnix/util/id3_util.py:92
 msgid "Unknown artist"
 msgstr "නොදන්නා ශිල්පියෙක්"
 
-#: .././foobnix/util/m3u_utils.py:85
+#: .././foobnix/util/m3u_utils.py:41
 msgid "Choose window"
 msgstr "කවුළුව තෝරන්න"
 
-#: .././foobnix/util/m3u_utils.py:89
+#: .././foobnix/util/m3u_utils.py:45
 msgid ""
 "<big><b>\t\t\t\t\t\t\t\tAttention!\n"
 "</b></big>\tThe relative location of the playlist and music files allows you "
@@ -1427,11 +1453,11 @@ msgstr ""
 "වෙන්ව තැන්පත් කරනු ඇත.(බහුමාධ්‍ය පුස්තකාලය ) තව දුරටත් ක්‍රියා කරනු ඇත.\n"
 "\tමෙම විකාශන ලැයිස්තුව සාපේක්ෂ මඟ සමග සුරැකීමට ඔබට අවශ්‍යද]?\n"
 
-#: .././foobnix/util/net_wrapper.py:146
+#: .././foobnix/util/net_wrapper.py:151
 msgid "Internet Connection"
 msgstr "අන්තර්ජාල සම්බන්ධතාවය"
 
-#: .././foobnix/util/net_wrapper.py:147
+#: .././foobnix/util/net_wrapper.py:152
 msgid ""
 "Foobnix not connected or Internet not available. Please try again a little "
 "bit later."
@@ -1439,26 +1465,26 @@ msgstr ""
 "Foobinix ය සම්බන්ධ වී නොමැතිව හෝ අන්තර්ජාලයේ යෙදිය නොහැක. කරුණාකර නැවත සුළු "
 "මොහොතකින් උත්සාහ කරන්න."
 
-#: .././foobnix/util/tag_util.py:23
+#: .././foobnix/util/tag_util.py:24
 msgid "Tag Editor"
 msgstr "සම්බන්ධක සංස්කාරක"
 
 #. @UnusedVariable
-#: .././foobnix/util/tag_util.py:38
+#: .././foobnix/util/tag_util.py:39
 msgid "Year"
 msgstr "වර්ෂය"
 
 #. @UnusedVariable
-#: .././foobnix/util/tag_util.py:39
+#: .././foobnix/util/tag_util.py:40
 msgid "Track number"
 msgstr "පථ අංකය"
 
 #. @UnusedVariable
-#: .././foobnix/util/tag_util.py:41
+#: .././foobnix/util/tag_util.py:42
 msgid "Author text"
 msgstr "කර්තෘ පාඨය"
 
-#: .././foobnix/util/tag_util.py:65
+#: .././foobnix/util/tag_util.py:66
 msgid ""
 "Apply for all selected tracks\n"
 "(active on multi selection)"
