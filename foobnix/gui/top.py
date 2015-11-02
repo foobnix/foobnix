@@ -25,7 +25,7 @@ class TopWidgets(FControl, LoadSave, Gtk.HBox):
 
         self.pack_start(self.old_menu.widget, False, False, 0)
 
-        self.new_menu_button = ImageButton(Gtk.STOCK_PREFERENCES)
+        self.new_menu_button = ImageButton(Gtk.STOCK_PREFERENCES, tooltip_text=_("Settings"))
         self.new_menu_button.connect("button-press-event", self.on_button_press)
 
         self.pack_start(self.new_menu_button, False, False, 0)
