@@ -18,6 +18,7 @@ from foobnix.preferences.configs import CONFIG_MUSIC_LIBRARY
 from foobnix.gui.treeview.simple_tree import  SimpleListTreeControl
 from foobnix.helpers.dialog_entry import show_entry_dialog,\
     directory_chooser_dialog
+from foobnix.helpers.pref_widgets import FrameDecorator
 
 
 class MusicLibraryConfig(ConfigPlugin, FControl):
@@ -44,13 +45,12 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         box.pack_start(self.gap(), False, True, 0)
 
     def dirs(self):
-        self.frame = Gtk.Frame(label=_("Music dirs"))
-        self.frame.set_border_width(0)
-        self.frame.show()
-        self.frame.set_no_show_all(True)
         frame_box = Gtk.HBox(False, 0)
         frame_box.set_border_width(5)
         frame_box.show()
+        self.frame = FrameDecorator(_("Music dirs"), frame_box, 0.5, 0.5, border_width=0)
+        self.frame.show()
+        self.frame.set_no_show_all(True)
 
         self.tree_controller = SimpleListTreeControl(_("Paths"), None)
 
@@ -78,8 +78,6 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         self.tree_controller.scroll.show_all()
         frame_box.pack_start(self.tree_controller.scroll, True, True, 0)
         frame_box.pack_start(button_box, False, False, 0)
-
-        self.frame.add(frame_box)
 
         if FC().tabs_mode == "Multi":
             self.frame.hide()
@@ -160,13 +158,12 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             self.temp_music_paths = []
 
     def formats(self):
-        frame = Gtk.Frame(label=_("File Types"))
-        frame.set_border_width(0)
-        frame.show()
-
         frame_box = Gtk.HBox(False, 0)
         frame_box.set_border_width(5)
         frame_box.show()
+
+        frame = FrameDecorator(_("File Types"), frame_box, 0.5, 0.5, border_width=0)
+        frame.show()
 
         self.files_controller = SimpleListTreeControl(_("Extensions"), None)
 
@@ -194,8 +191,6 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
 
         frame_box.pack_start(scrool_tree, True, True, 0)
         frame_box.pack_start(button_box, False, False, 0)
-
-        frame.add(frame_box)
 
         return frame
 
