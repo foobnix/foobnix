@@ -32,7 +32,9 @@ class PerspectiveButton(Gtk.ToggleButton):
         vbox = Gtk.VBox(False, 0)
         img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
         vbox.add(img)
-        vbox.add(Gtk.Label(title))
+        label = Gtk.Label(title)
+        label.set_padding(0, 0)
+        vbox.add(label)
         vbox.show_all()
 
         self.add(vbox)
