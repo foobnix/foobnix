@@ -135,7 +135,6 @@ elif os.name == 'posix' or platform.system() == 'Linux':
         setcb = xclipSetClipboard
     else:
         xselExists = os.system('which xsel > /dev/null') == 0
-        print xselExists
         if xselExists:
             getcb = xselGetClipboard
             setcb = xselSetClipboard
