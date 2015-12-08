@@ -5,7 +5,6 @@ Created on 1 сент. 2010
 @author: ivan
 '''
 
-
 import time
 import logging
 import urllib2
@@ -16,6 +15,7 @@ from foobnix.fc.fc import FC
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.proxy_connect import set_proxy_settings
 from foobnix.gui.service.lastfm_service import LastFmService
+from foobnix.helpers.pref_widgets import FrameDecorator
 
 
 class NetworkConfig(ConfigPlugin):
@@ -33,13 +33,10 @@ class NetworkConfig(ConfigPlugin):
         self.enable_proxy.connect("clicked", self.on_enable_http_proxy)
         self.enable_proxy.show()
 
-        self.frame = Gtk.Frame(label=_("Proxy Settings"))
-        self.frame.set_border_width(0)
-        self.frame.show()
-
         all = Gtk.VBox(False, 0)
         all.show()
-
+        self.frame = FrameDecorator(_("Proxy Settings"), all, 0.5, 0.5, border_width=0)
+        self.frame.show()
 
         """URL"""
         proxy_box = Gtk.HBox(False, 0)
@@ -117,8 +114,6 @@ class NetworkConfig(ConfigPlugin):
         all.pack_start(lbox, False, False, 0)
         all.pack_start(pbox, False, False, 0)
         all.pack_start(check, False, False, 0)
-
-        self.frame.add(all)
 
         frame_box = Gtk.HBox(False, 0)
         frame_box.set_border_width(5)

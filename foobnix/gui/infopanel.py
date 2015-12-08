@@ -18,7 +18,7 @@ from foobnix.helpers.image import ImageBase
 from foobnix.helpers.textarea import TextArea
 from foobnix.gui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
-from foobnix.helpers.pref_widgets import HBoxDecoratorTrue
+from foobnix.helpers.pref_widgets import HBoxDecoratorTrue, FrameDecorator
 from foobnix.fc.fc_cache import FCache, COVERS_DIR, LYRICS_DIR
 from foobnix.gui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util import idle_task
@@ -85,22 +85,16 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         wBox.line_title = EventLabel(wiki_title, func=self.show_current, arg=wBox, func1=self.show_wiki_info)
 
         """info"""
-        info_frame = Gtk.Frame(label=_("Info"))
-
         self.last_fm_label = Gtk.LinkButton("http://www.last.fm", "Last.Fm")
         self.wiki_label = Gtk.LinkButton("http://www.wikipedia.org", "Wikipedia")
-
         info_line = HBoxDecoratorTrue(self.last_fm_label, self.wiki_label)
-        info_frame.add(info_line)
+        info_frame = FrameDecorator(_("Info"), info_line, 0.5, 0.5)
 
         """downloads"""
-        dm_frame = Gtk.Frame(label=_("Downloads"))
-
         self.exua_label = Gtk.LinkButton("http://www.ex.ua", "EX.ua")
         self.rutracker_label = Gtk.LinkButton("http://rutracker.org", "Rutracker")
-
         dm_line = HBoxDecoratorTrue(self.exua_label, self.rutracker_label)
-        dm_frame.add(dm_line)
+        dm_frame = FrameDecorator(_("Downloads"), dm_line, 0.5, 0.5)
 
         self.wiki = TextArea()
         self.wiki.set_text("", wiki_title)

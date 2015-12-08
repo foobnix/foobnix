@@ -24,7 +24,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         CommonTreeControl.__init__(self, controls)
 
         """column config"""
-        column = Gtk.TreeViewColumn(_("Storage"), Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = Gtk.TreeViewColumn(_("Storage"), self.ellipsize_render, text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)

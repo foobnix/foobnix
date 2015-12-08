@@ -106,9 +106,12 @@ class IconBlock(Gtk.HBox):
             logging.error("There is not such icon in the list" + str(e))
 
 class FrameDecorator(Gtk.Frame):
-    def __init__(self, text, widget):
+    def __init__(self, text, widget, x_align=0.0, y_align=0.5, border_width=None):
         Gtk.Frame.__init__(self, label=text)
         self.add(widget)
+        self.set_label_align(x_align, y_align)
+        if not (border_width is None):
+            self.set_border_width(border_width)
 
 class ChooseDecorator(Gtk.HBox):
     def __init__(self, parent, widget):

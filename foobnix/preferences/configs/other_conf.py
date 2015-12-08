@@ -13,6 +13,7 @@ from foobnix.preferences.configs import CONFIG_OTHER
 from foobnix.util.antiscreensaver import antiscreensaver
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.helpers.dialog_entry import info_dialog_with_link_and_donate
+from foobnix.helpers.pref_widgets import FrameDecorator
 
 
 class OtherConfig(ConfigPlugin):
@@ -25,9 +26,10 @@ class OtherConfig(ConfigPlugin):
         box = Gtk.VBox(False, 0)
         box.hide()
 
-        download_frame = Gtk.Frame(label=_("File downloads"))
         df_vbox = Gtk.VBox(False, 5)
         df_vbox.set_border_width(4)
+        download_frame = FrameDecorator(_("File downloads"), df_vbox, 0.5, 0.5)
+
 
         """save to"""
 
@@ -57,14 +59,13 @@ class OtherConfig(ConfigPlugin):
         df_vbox.pack_start(self.automatic_save_checkbutton, False, False, 2)
         df_vbox.pack_start(self.nosubfolder_checkbutton, False, False, 2)
         df_vbox.pack_start(thbox, False, False, 2)
-        download_frame.add(df_vbox)
+
         download_frame.show_all()
 
         """disc cover size"""
-        dc_frame = Gtk.Frame(label=_("Disc cover settings"))
-
         cbox = Gtk.HBox(False, 5)
         cbox.set_border_width(4)
+        dc_frame = FrameDecorator(_("Disc cover settings"), cbox, 0.5, 0.5)
 
         tab_label = Gtk.Label(_("Disc cover size:"))
 
@@ -74,26 +75,26 @@ class OtherConfig(ConfigPlugin):
         cbox.pack_start(tab_label, False, False, 0)
         cbox.pack_start(self.image_size_spin, False, True, 0)
 
-        dc_frame.add(cbox)
         dc_frame.show_all()
 
         """notification"""
-        updates_frame = Gtk.Frame(label=_("Updates"))
         uhbox = Gtk.HBox(False, 5)
         uhbox.set_border_width(4)
+        updates_frame = FrameDecorator(_("Updates"), uhbox, 0.5, 0.5)
+
         self.check_new_version = Gtk.CheckButton(label=_("Check for new foobnix release on start"), use_underline=True)
 
         demo = Gtk.Button(label=_("Check for update"))
         demo.connect("clicked", lambda * a: info_dialog_with_link_and_donate("foobnix [version]"))
         uhbox.pack_start(self.check_new_version, True, True, 0)
         uhbox.pack_start(demo, False, False, 0)
-        updates_frame.add(uhbox)
+
         updates_frame.show_all()
 
         """background image"""
-        theme_frame = Gtk.Frame(label=_("Theming"))
         thvbox = Gtk.VBox(False, 1)
         thvbox.set_border_width(4)
+        theme_frame = FrameDecorator(_("Theming"), thvbox, 0.5, 0.5)
 
         """menu position"""
         pbox = Gtk.HBox(False, 5)
@@ -149,7 +150,7 @@ class OtherConfig(ConfigPlugin):
         thvbox.pack_start(obox, False, False, 1)
         thvbox.pack_start(hcombobox, False, False, 1)
         thvbox.pack_start(self.disable_screensaver, False, False, 0)
-        theme_frame.add(thvbox)
+
         theme_frame.show_all()
 
         """packaging"""

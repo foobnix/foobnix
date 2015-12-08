@@ -58,64 +58,51 @@ class PlaylistTreeControl(CommonTreeControl):
         """Column icon"""
         self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), icon_name=self.play_icon[0])
         self.icon_col.key = "*"
-        self.icon_col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
-        self.icon_col.set_fixed_width(32)
-        self.icon_col.set_min_width(32)
         self.icon_col.label = Gtk.Label("*")
         self._append_column(self.icon_col)
 
         """track number"""
         self.trkn_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.tracknumber[0])
         self.trkn_col.key = "N"
-        self.trkn_col.set_clickable(True)
+        #self.trkn_col.set_clickable(True)
         self.trkn_col.label = Gtk.Label("№")
-        self.trkn_col.label.show()
         self.trkn_col.item = Gtk.CheckMenuItem(_("Number"))
-        self.trkn_col.set_widget(self.trkn_col.label)
         self._append_column(self.trkn_col)
 
         """column composer"""
-        self.comp_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.composer[0])
+        self.comp_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.composer[0])
         self.comp_col.key = "Composer"
-        self.comp_col.set_resizable(True)
         self.comp_col.label = Gtk.Label(_("Composer"))
         self.comp_col.item = Gtk.CheckMenuItem(_("Composer"))
         self._append_column(self.comp_col)
 
         """column artist title"""
-        self.description_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.description_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.text[0], font=self.font[0])
         self.description_col.key = "Track"
-        self.description_col.set_resizable(True)
         self.description_col.label = Gtk.Label(_("Track"))
         self.description_col.item = Gtk.CheckMenuItem(_("Track"))
         self._append_column(self.description_col)
 
         """column artist"""
-        self.artist_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.artist[0])
+        self.artist_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.artist[0])
         self.artist_col.key = "Artist"
-        self.artist_col.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        self.artist_col.set_resizable(True)
         self.artist_col.label = Gtk.Label(_("Artist"))
         self.artist_col.item = Gtk.CheckMenuItem(_("Artist"))
         self._append_column(self.artist_col)
 
         """column title"""
-        self.title_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.title[0])
+        self.title_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.title[0])
         self.title_col.key = "Title"
-        self.title_col.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        self.title_col.set_resizable(True)
         self.title_col.label = Gtk.Label(_("Title"))
         self.title_col.item = Gtk.CheckMenuItem(_("Title"))
         self._append_column(self.title_col)
 
         """column album"""
-        self.album_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.album[0])
+        self.album_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.album[0])
         self.album_col.key = "Album"
 
         if self.album_col.key not in FC().columns:
             FC().columns[self.album_col.key] = [False, 7, 90]
-        self.album_col.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        self.album_col.set_resizable(True)
         self.album_col.label = Gtk.Label(_("Album"))
         self.album_col.item = Gtk.CheckMenuItem(_("Album"))
         self._append_column(self.album_col)
@@ -349,10 +336,12 @@ class PlaylistTreeControl(CommonTreeControl):
     def _append_column(self, column):
         column.set_widget(column.label)
         column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
-        if column.key in ['*', 'N', 'Time']:
+        column.set_min_width(20)
+        column.set_resizable(True)
+        if column.key is '*':
             column.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        else:
-            column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
+            column.set_fixed_width(32)
+            column.set_min_width(32)
         if FC().columns[column.key][2] > 0:
             column.set_fixed_width(FC().columns[column.key][2])
 

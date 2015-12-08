@@ -7,7 +7,6 @@ Created on Oct 27, 2010
 import logging
 
 from gi.repository import Gtk
-from gi.repository import GObject
 
 from foobnix.util import idle_task
 from foobnix.fc.fc import FC
@@ -31,7 +30,7 @@ class DownloadManagerTreeControl(CommonTreeControl):
         self.tree_menu = Popup()
 
         """column config"""
-        column = Gtk.TreeViewColumn(_("Name"), Gtk.CellRendererText(), text=self.text[0])
+        column = Gtk.TreeViewColumn(_("Name"), self.ellipsize_render, text=self.text[0])
         column.set_resizable(True)
         self.append_column(column)
 
@@ -41,17 +40,17 @@ class DownloadManagerTreeControl(CommonTreeControl):
         self.append_column(column)
 
         """column config"""
-        column = Gtk.TreeViewColumn(_("Size"), Gtk.CellRendererText(), text=self.size[0])
+        column = Gtk.TreeViewColumn(_("Size"), self.ellipsize_render, text=self.size[0])
         column.set_resizable(True)
         self.append_column(column)
 
         """status"""
-        column = Gtk.TreeViewColumn(_("Status"), Gtk.CellRendererText(), text=self.status[0])
+        column = Gtk.TreeViewColumn(_("Status"), self.ellipsize_render, text=self.status[0])
         column.set_resizable(True)
         self.append_column(column)
 
         """column config"""
-        column = Gtk.TreeViewColumn(_("Path"), Gtk.CellRendererText(), text=self.save_to[0])
+        column = Gtk.TreeViewColumn(_("Path"), self.ellipsize_render, text=self.save_to[0])
         column.set_resizable(True)
         column.set_expand(True)
         self.append_column(column)

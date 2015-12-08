@@ -147,7 +147,7 @@ class HotKeysConfig(ConfigPlugin):
         mmbox = Gtk.VBox(False, 0)
         mmbox.pack_start(self.disable_mediakeys, False, False, 0)
         mmbox.pack_start(self.disable_volume_keys, False, False, 0)
-        self.mm_frame_decorator = FrameDecorator(_("Multimedia keys"), mmbox)
+        self.mm_frame_decorator = FrameDecorator(_("Multimedia keys"), mmbox, 0.5, 0.5)
 
         box.pack_start(self.tree_widget, False, True, 0)
         box.pack_start(hotbox, False, True, 0)
