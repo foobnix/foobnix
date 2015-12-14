@@ -849,6 +849,7 @@ class _Request(object):
             e = doc.getElementsByTagName('error')[0]
             status = e.getAttribute('code')
             details = e.firstChild.data.strip()
+            #logging.error("Last.fm response error: code=" + status + ", details: " + details)
             raise WSError(self.network, status, details)
 
 class SessionKeyGenerator(object):
