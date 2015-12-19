@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2015-06-05 20:46+0300\n"
+"POT-Creation-Date: 2015-06-11 11:17+0300\n"
 "PO-Revision-Date: 2015-05-13 08:25+0000\n"
 "Last-Translator: Adolfo Jayme <fitoschido@gmail.com>\n"
 "Language-Team: Catalan <ca@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-06-06 05:15+0000\n"
-"X-Generator: Launchpad (build 17540)\n"
+"X-Launchpad-Export-Date: 2015-06-12 05:14+0000\n"
+"X-Generator: Launchpad (build 17557)\n"
 
 #: .././foobnix/dm/dm.py:33 .././foobnix/preferences/preferences_window.py:58
 #: .././foobnix/gui/menu.py:55 .././foobnix/gui/top.py:44
@@ -197,14 +197,14 @@ msgid "Hotkey"
 msgstr "Adreça del teclat"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:105
-#: .././foobnix/preferences/configs/music_library.py:63
-#: .././foobnix/preferences/configs/music_library.py:180
+#: .././foobnix/preferences/configs/music_library.py:61
+#: .././foobnix/preferences/configs/music_library.py:177
 msgid "Add"
 msgstr "Afegeix"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:110
-#: .././foobnix/preferences/configs/music_library.py:68
-#: .././foobnix/preferences/configs/music_library.py:185
+#: .././foobnix/preferences/configs/music_library.py:66
+#: .././foobnix/preferences/configs/music_library.py:182
 msgid "Remove"
 msgstr "Suprimeix"
 
@@ -328,48 +328,44 @@ msgstr ""
 msgid "Update library on start (more slow) "
 msgstr "Actualitza la llibreria a l'inici (més lent) "
 
-#: .././foobnix/preferences/configs/music_library.py:49
+#: .././foobnix/preferences/configs/music_library.py:47
 msgid "Music dirs"
 msgstr "Directoris de música"
 
-#: .././foobnix/preferences/configs/music_library.py:57
+#: .././foobnix/preferences/configs/music_library.py:55
 msgid "Paths"
 msgstr "Rutes"
 
-#: .././foobnix/preferences/configs/music_library.py:140
+#: .././foobnix/preferences/configs/music_library.py:137
 #: .././foobnix/gui/treeview/navigation_tree.py:226
 msgid "Choose directory with music"
 msgstr "Tria una carpeta de música"
 
-#: .././foobnix/preferences/configs/music_library.py:166
+#: .././foobnix/preferences/configs/music_library.py:163
 msgid "File Types"
 msgstr "Tipus de fitxers"
 
-#: .././foobnix/preferences/configs/music_library.py:174
+#: .././foobnix/preferences/configs/music_library.py:171
 msgid "Extensions"
 msgstr "Extensions"
 
-#: .././foobnix/preferences/configs/music_library.py:206
+#: .././foobnix/preferences/configs/music_library.py:203
 msgid "Please add audio extension"
 msgstr "Si us plau, afegiu l'extencio d'audio"
 
-#: .././foobnix/preferences/configs/music_library.py:206
+#: .././foobnix/preferences/configs/music_library.py:203
 msgid "Extension should be like '.mp3'"
 msgstr "L'extenció ha de ser: *.mp3"
 
-#: .././foobnix/preferences/configs/music_library.py:213
+#: .././foobnix/preferences/configs/music_library.py:210
 msgid "Gap between tracks"
 msgstr ""
 
-#: .././foobnix/preferences/configs/music_library.py:228
-msgid "Buffer size for network streams (KBytes)"
-msgstr ""
-
-#: .././foobnix/preferences/configs/music_library.py:244
+#: .././foobnix/preferences/configs/music_library.py:226
 msgid "Multi tab mode"
 msgstr "Mode multipestanya"
 
-#: .././foobnix/preferences/configs/music_library.py:250
+#: .././foobnix/preferences/configs/music_library.py:232
 msgid "Single tab mode"
 msgstr "Mode d'una pestanya"
 
@@ -382,8 +378,8 @@ msgid "Enable HTTP proxy"
 msgstr "Habilitar proxy HTTP"
 
 #: .././foobnix/preferences/configs/network_conf.py:36
-msgid "Settings"
-msgstr "Configuració"
+msgid "Proxy Settings"
+msgstr ""
 
 #: .././foobnix/preferences/configs/network_conf.py:48
 msgid "Server"
@@ -398,16 +394,20 @@ msgid "Check Connection"
 msgstr "Comprovació de la connexió"
 
 #: .././foobnix/preferences/configs/network_conf.py:107
-#: .././foobnix/preferences/configs/network_conf.py:152
+#: .././foobnix/preferences/configs/network_conf.py:153
 msgid "Result:"
 msgstr "Resultat:"
 
-#: .././foobnix/preferences/configs/network_conf.py:126
+#: .././foobnix/preferences/configs/network_conf.py:127
 msgid "Show message on network disconnection"
 msgstr ""
 
-#: .././foobnix/preferences/configs/network_conf.py:152
+#: .././foobnix/preferences/configs/network_conf.py:153
 msgid " OK in seconds: "
+msgstr ""
+
+#: .././foobnix/preferences/configs/network_conf.py:168
+msgid "Buffer size for network streams (KBytes)"
 msgstr ""
 
 #: .././foobnix/preferences/configs/notification_conf.py:13
