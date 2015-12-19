@@ -122,7 +122,7 @@ class Converter(ChildTopWindow):
     def save(self, *a):
         chooser = Gtk.FileChooserDialog(title=_("Choose directory to save converted files"),
                                         action=Gtk.FileChooserAction.SELECT_FOLDER,
-                                        buttons=(Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
+                                        buttons=("document-save", Gtk.ResponseType.OK))
         chooser.set_current_folder(os.path.dirname(self.paths[0]))
         chooser.set_icon_from_file(LOGO)
         response = chooser.run()
@@ -226,11 +226,11 @@ class Converter(ChildTopWindow):
 
     def warning(self):
         dialog = Gtk.Dialog(_("Warning!!!"))
-        ok_button = dialog.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK) #@UnusedVariable
-        cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+        ok_button = dialog.add_button("dialog-ok", Gtk.ResponseType.OK) #@UnusedVariable
+        cancel_button = dialog.add_button("dialog-cancel", Gtk.ResponseType.CANCEL)
         cancel_button.grab_default()
         label = Gtk.Label(_("So file(s)  already exist(s) and will be overwritten.\nDo you wish to continue?"))
-        image = Gtk.Image.new_from_stock(Gtk.STOCK_DIALOG_WARNING, Gtk.IconSize.LARGE_TOOLBAR)
+        image = Gtk.Image.new_from_icon_name("dialog-warning", Gtk.IconSize.LARGE_TOOLBAR)
         hbox = Gtk.HBox(False, 10)
         hbox.pack_start(image)
         hbox.pack_start(label)
@@ -345,7 +345,7 @@ def convert_files(paths):
                                "Also check if you have packages libmp3lame0 and libfaac0"))
         ok_button = dialog.add_button(_("Download"), Gtk.ResponseType.OK)
 
-        cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+        cancel_button = dialog.add_button("dialog-cancel", Gtk.ResponseType.CANCEL)
         ok_button.grab_default()
         prog_bar = Gtk.ProgressBar()
         dialog.vbox.pack_start(area.scroll)

@@ -41,9 +41,10 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave, Quitable):
         self.set_scrollable(True)
         self.save_lock = threading.Lock()
         self.connect("page-reordered", self.reorder_callback)
-        add_button = ImageButton(Gtk.STOCK_ADD, func=self.on_add_button_click, size=Gtk.IconSize.BUTTON)
+        add_button = ImageButton("list-add", func=self.on_add_button_click, size=Gtk.IconSize.MENU)
         add_button.show()
-        add_button.get_image().set_size_request(24, 22)
+        add_button.set_size_request(30, 30)
+        #add_button.get_image().set_pixel_size(15)
         self.set_action_widget(add_button, Gtk.PackType.START)
         self.default_angle = 0
         self.navig = False if isinstance(self, NoteTabControl) else True
@@ -344,8 +345,8 @@ class NoteTabControl(TabGeneral):
     def tab_menu_creator(self, widget, tab_child):
         widget.menu = Popup()
         widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, self.default_angle), None)
-        widget.menu.add_item(_("Save playlist as"), Gtk.STOCK_SAVE_AS, lambda: self.on_save_playlist(tab_child))
-        widget.menu.add_item(_("Close tab"), Gtk.STOCK_CLOSE, lambda: self.on_delete_tab(tab_child), None)
+        widget.menu.add_item(_("Save playlist as"), "document-save-as", lambda: self.on_save_playlist(tab_child))
+        widget.menu.add_item(_("Close tab"), "window-close", lambda: self.on_delete_tab(tab_child), None)
         widget.show()
         return widget
 
@@ -376,7 +377,7 @@ class NoteTabControl(TabGeneral):
 
     def set_tab_top(self):
         logging.info("Set tabs top")
-        self.set_tab_pos(Gtk.POS_TOP)
+        self.set_tab_pos(Gtk.PositionType.TOP)
         self.default_angle = 0
         self.set_show_tabs(True)
         for page in xrange(self.get_n_pages() - 1, -1, -1):

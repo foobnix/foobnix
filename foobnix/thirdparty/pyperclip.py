@@ -85,10 +85,10 @@ def macGetClipboard():
     return content
 
 def gtkGetClipboard():
-    return gtk.Clipboard().wait_for_text()
+    return Gtk.Clipboard().wait_for_text()
 
 def gtkSetClipboard(text):
-    cb = gtk.Clipboard()
+    cb = Gtk.Clipboard()
     cb.set_text(text)
     cb.store()
 
@@ -139,7 +139,7 @@ elif os.name == 'posix' or platform.system() == 'Linux':
             getcb = xselGetClipboard
             setcb = xselSetClipboard
         try:
-            import gtk
+            from gi.repository import Gtk
             getcb = gtkGetClipboard
             setcb = gtkSetClipboard
         except:

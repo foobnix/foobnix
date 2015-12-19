@@ -236,8 +236,8 @@ class PlaylistTreeControl(CommonTreeControl):
             beans = self.get_selected_beans()
             if beans:
                 self.tree_menu.clear()
-                self.tree_menu.add_item(_('Play'), Gtk.STOCK_MEDIA_PLAY, self.controls.play_selected_song, None)
-                self.tree_menu.add_item(_('Delete from playlist'), Gtk.STOCK_DELETE, self.delete_selected, None)
+                self.tree_menu.add_item(_('Play'), "media-playback-start", self.controls.play_selected_song, None)
+                self.tree_menu.add_item(_('Delete from playlist'), "edit-delete", self.delete_selected, None)
 
                 paths = []
                 inet_paths = []
@@ -252,25 +252,25 @@ class PlaylistTreeControl(CommonTreeControl):
                         local_paths.append(bean.path)
 
                 if local_paths:
-                    self.tree_menu.add_item(_('Copy To...'), Gtk.STOCK_ADD, copy_to, local_paths)
+                    self.tree_menu.add_item(_('Copy To...'), "list-add", copy_to, local_paths)
                     self.tree_menu.add_item(_("Open in file manager"), None, open_in_filemanager, local_paths[0])
                 if inet_paths:
-                    self.tree_menu.add_item(_('Download'), Gtk.STOCK_ADD,
+                    self.tree_menu.add_item(_('Download'), "list-add",
                                             self.controls.dm.append_tasks, self.get_all_selected_beans())
-                    self.tree_menu.add_item(_('Download To...'), Gtk.STOCK_ADD,
+                    self.tree_menu.add_item(_('Download To...'), "list-add",
                                             self.controls.dm.append_tasks_with_dialog, self.get_all_selected_beans())
 
                 self.tree_menu.add_separator()
 
                 if local_paths:
-                    self.tree_menu.add_item(_('Edit Tags'), Gtk.STOCK_EDIT, edit_tags, (self.controls, local_paths))
-                    self.tree_menu.add_item(_('Format Converter'), Gtk.STOCK_CONVERT, convert_files, local_paths)
+                    self.tree_menu.add_item(_('Edit Tags'), "accessories-text-editor", edit_tags, (self.controls, local_paths))
+                    self.tree_menu.add_item(_('Format Converter'), "applications-utilities", convert_files, local_paths)
                 text = self.get_selected_bean().text
-                self.tree_menu.add_item(_('Copy To Search Line'), Gtk.STOCK_COPY,
+                self.tree_menu.add_item(_('Copy To Search Line'), "edit-copy",
                                         self.controls.searchPanel.set_search_text, text)
                 self.tree_menu.add_separator()
-                self.tree_menu.add_item(_('Copy №-Title-Time'), Gtk.STOCK_COPY, self.copy_info_to_clipboard)
-                self.tree_menu.add_item(_('Copy Artist-Title-Album'), Gtk.STOCK_COPY,
+                self.tree_menu.add_item(_('Copy №-Title-Time'), "edit-copy", self.copy_info_to_clipboard)
+                self.tree_menu.add_item(_('Copy Artist-Title-Album'), "edit-copy",
                                         self.copy_info_to_clipboard, True)
                 self.tree_menu.add_separator()
                 self.tree_menu.add_item(_('Love This Track(s) by Last.fm'), None,
@@ -335,11 +335,11 @@ class PlaylistTreeControl(CommonTreeControl):
 
     def _append_column(self, column):
         column.set_widget(column.label)
-        column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
+        column.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         column.set_min_width(20)
         column.set_resizable(True)
         if column.key is '*':
-            column.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+            column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
             column.set_fixed_width(32)
             column.set_min_width(32)
         if FC().columns[column.key][2] > 0:

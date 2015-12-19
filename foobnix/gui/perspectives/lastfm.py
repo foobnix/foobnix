@@ -17,7 +17,7 @@ class LastFMPerspective(BasePerspective):
         return "lastfm"
 
     def get_icon(self):
-        return Gtk.STOCK_CONNECT
+        return "network-idle"
 
     def get_name(self):
         return _("Last.FM")

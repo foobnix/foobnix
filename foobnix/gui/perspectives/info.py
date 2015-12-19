@@ -23,7 +23,7 @@ class InfoPerspective(BasePerspective, Quitable):
         return "info"
 
     def get_icon(self):
-        return Gtk.STOCK_INFO
+        return "dialog-information"
 
     def get_name(self):
         return _("Info")

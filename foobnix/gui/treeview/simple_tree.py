@@ -61,8 +61,8 @@ class SimpleTreeControl(CommonTreeControl, LoadSave):
         if is_rigth_click(e):
             right_click_optimization_for_trees(w, e)
             menu = Popup()
-            menu.add_item(_('Play'), Gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
-            menu.add_item(_('Copy to Search Line'), Gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)
+            menu.add_item(_('Play'), "media-playback-start", self.controls.play, active)
+            menu.add_item(_('Copy to Search Line'), "edit-copy", self.controls.searchPanel.set_search_text, active.text)
             menu.show(e)
 
     def on_load(self):

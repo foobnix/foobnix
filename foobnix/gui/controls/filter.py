@@ -25,18 +25,18 @@ class FilterControl(Gtk.HBox, LoadSave):
 
         self.search_func = filterabe.filter_by_file
 
-        file_search = ToggleImageButton(Gtk.STOCK_FILE, func=self.set_search_by, param=filterabe.filter_by_file)
+        file_search = ToggleImageButton("document-new", func=self.set_search_by, param=filterabe.filter_by_file)
         file_search.set_tooltip_text(_("File search"))
         file_search.set_active(True)
 
-        folder_search = ToggleImageButton(Gtk.STOCK_DIRECTORY, func=self.set_search_by, param=filterabe.filter_by_folder)
+        folder_search = ToggleImageButton("folder", func=self.set_search_by, param=filterabe.filter_by_folder)
         folder_search.set_tooltip_text(_("Folder search"))
 
         self.list = [file_search, folder_search]
         OneActiveToggledButton(self.list)
 
         """search button"""
-        search = tab_close_button(func=self.on_filter, stock=Gtk.STOCK_FIND)
+        search = tab_close_button(func=self.on_filter, stock="edit-find")
 
         self.pack_start(file_search, False, False, 0)
         self.pack_start(folder_search, False, False, 0)

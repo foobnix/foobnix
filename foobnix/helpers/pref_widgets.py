@@ -50,10 +50,12 @@ class IconBlock(Gtk.HBox):
         self.combobox.pack_start(pix_render, 0)
         self.combobox.add_attribute(pix_render, 'pixbuf', 0)
 
-        button = Gtk.Button("Choose", Gtk.STOCK_OPEN)
-        button.connect("clicked", self.on_file_choose)
+        button_1 = Gtk.Button("Choose", "folder-open")
+        button_1.set_property("always-show-image", True)
+        button_1.connect("clicked", self.on_file_choose)
 
-        button_2 = Gtk.Button("Delete", Gtk.STOCK_DELETE)
+        button_2 = Gtk.Button("Delete", "edit-delete")
+        button_2.set_property("always-show-image", True)
         button_2.connect("clicked", self.on_delete)
 
         label = Gtk.Label(text)
@@ -63,7 +65,7 @@ class IconBlock(Gtk.HBox):
         self.pack_start(label, False, False, 0)
         self.pack_start(self.combobox, False, False, 0)
         self.pack_start(self.entry, True, True, 0)
-        self.pack_start(button, False, False, 0)
+        self.pack_start(button_1, False, False, 0)
         self.pack_start(button_2, False, False, 0)
 
         self.combobox.connect("changed", self.on_change_icon)
@@ -164,7 +166,7 @@ class HBoxLableEntry(Gtk.HBox):
 
 class ModelConstructor():
 
-    ICON_SIZE = 24
+    ICON_SIZE = 16
 
     def __init__(self, all_icons):
 

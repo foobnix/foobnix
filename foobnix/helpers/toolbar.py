@@ -27,12 +27,12 @@ class MyToolbar(Gtk.Toolbar):
 
         self.i = 0
 
-    def add_button(self, tooltip, gtk_stock, func, param):
-        button = Gtk.ToolButton(gtk_stock)
+    def add_button(self, tooltip, icon_name, func, param):
+        button = Gtk.ToolButton(icon_name)
         button.show()
         button.set_tooltip_text(tooltip)
 
-        logging.debug("Button-Controls-Clicked" + str(tooltip)+ str(gtk_stock) + str(func) + str(param))
+        logging.debug("Button-Controls-Clicked" + str(tooltip)+ str(icon_name) + str(func) + str(param))
         if func and param:
             button.connect("clicked", lambda * a: func(param))
         elif func:

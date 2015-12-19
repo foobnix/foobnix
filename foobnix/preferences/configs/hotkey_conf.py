@@ -158,14 +158,14 @@ class HotKeysConfig(ConfigPlugin):
 
     def create_menu(self):
         menu = Popup()
-        menu.add_item(_("Play-Pause"), Gtk.STOCK_MEDIA_PAUSE, self.set_action_text, "play_pause")
-        menu.add_item(_("Stop"), Gtk.STOCK_MEDIA_STOP, self.set_action_text, "state_stop")
-        menu.add_item(_("Next song"), Gtk.STOCK_MEDIA_NEXT, self.set_action_text, "next")
-        menu.add_item(_("Previous song"), Gtk.STOCK_MEDIA_PREVIOUS, self.set_action_text, "prev")
-        menu.add_item(_("Volume up"), Gtk.STOCK_GO_UP, self.set_action_text, "volume_up")
-        menu.add_item(_("Volume down"), Gtk.STOCK_GO_DOWN, self.set_action_text, "volume_down")
-        menu.add_item(_("Show-Hide"), Gtk.STOCK_FULLSCREEN, self.set_action_text, "show_hide")
-        menu.add_item(_('Download'), Gtk.STOCK_ADD, self.set_action_text, "download")
+        menu.add_item(_("Play-Pause"), "media-playback-pause", self.set_action_text, "play_pause")
+        menu.add_item(_("Stop"), "media-playback-stop", self.set_action_text, "state_stop")
+        menu.add_item(_("Next song"), "go-next", self.set_action_text, "next")
+        menu.add_item(_("Previous song"), "go-previous", self.set_action_text, "prev")
+        menu.add_item(_("Volume up"), "go-up", self.set_action_text, "volume_up")
+        menu.add_item(_("Volume down"), "go-down", self.set_action_text, "volume_down")
+        menu.add_item(_("Show-Hide"), "view-fullscreen", self.set_action_text, "show_hide")
+        menu.add_item(_('Download'), "list-add", self.set_action_text, "download")
         return menu
 
     def set_action_text(self, text):

@@ -36,9 +36,9 @@ class PopupTrayWindow (Gtk.Window, FControl):
         Notify.init('Foobnix')
 
     def on_leave_window(self, w, event):
-        max_x, max_y = w.size_request()
+        requisition = w.size_request()
         x, y = event.x, event.y
-        if 0 < x < max_x and 0 < y < max_y:
+        if 0 < x < requisition.width and 0 < y < requisition.height:
             return True
         self.hide()
 
@@ -50,8 +50,8 @@ class PopupMenuWindow(PopupTrayWindow):
         vbox = Gtk.VBox(False, 0)
 
         playcontrols = PlaybackControls(controls)
-        playcontrols.pack_start(ImageButton(Gtk.STOCK_QUIT, controls.quit, _("Exit")), False, False, 0)
-        playcontrols.pack_start(ImageButton(Gtk.STOCK_OK, self.hide, _("Close Popup")), False, False, 0)
+        playcontrols.pack_start(ImageButton("application-exit", controls.quit, _("Exit")), False, False, 0)
+        playcontrols.pack_start(ImageButton("", self.hide, _("Close Popup")), False, False, 0)
 
         self.poopup_text = Gtk.Label()
         self.set_text("Foobnix")

@@ -45,11 +45,11 @@ class TabHelperControl(TabGeneral):
     def tab_menu_creator(self, widget, tab_child):
         widget.menu = Popup()
         widget.menu.add_item(_("Rename tab"), "", lambda: self.on_rename_tab(tab_child, 90, FCache().tab_names), None)
-        widget.menu.add_item(_("Update Music Tree"), Gtk.STOCK_REFRESH, lambda: self.on_update_music_tree(tab_child), None)
-        widget.menu.add_item(_("Add folder"), Gtk.STOCK_OPEN, lambda: self.on_add_folder(tab_child), None)
-        widget.menu.add_item(_("Add folder in new tab"), Gtk.STOCK_OPEN, lambda : self.on_add_folder(tab_child, True), None)
-        widget.menu.add_item(_("Clear Music Tree"), Gtk.STOCK_CLEAR, lambda : self.clear_tree(tab_child), None)
-        widget.menu.add_item(_("Close tab"), Gtk.STOCK_CLOSE, lambda: self.on_delete_tab(tab_child), None)
+        widget.menu.add_item(_("Update Music Tree"), "view-refresh", lambda: self.on_update_music_tree(tab_child), None)
+        widget.menu.add_item(_("Add folder"), "folder-open", lambda: self.on_add_folder(tab_child), None)
+        widget.menu.add_item(_("Add folder in new tab"), "folder-open", lambda : self.on_add_folder(tab_child, True), None)
+        widget.menu.add_item(_("Clear Music Tree"), "edit-clear", lambda : self.clear_tree(tab_child), None)
+        widget.menu.add_item(_("Close tab"), "window-close", lambda: self.on_delete_tab(tab_child), None)
         return widget
 
     def reorder_callback(self, notebook, child, new_page_num):

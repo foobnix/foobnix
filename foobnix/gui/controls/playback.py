@@ -11,7 +11,7 @@ from foobnix.fc.fc import FC
 from foobnix.gui.state import LoadSave
 from foobnix.helpers.toolbar import MyToolbar
 from foobnix.gui.model.signal import FControl
-from foobnix.helpers.my_widgets import ImageButton, EventLabel
+from foobnix.helpers.my_widgets import ImageButton, EventLabel, ToggleImageButton
 
 
 class OrderShuffleControls(FControl, Gtk.HBox, LoadSave):
@@ -81,21 +81,13 @@ class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
     def __init__(self, controls):
         Gtk.HBox.__init__(self, False)
 
-        self.order = Gtk.ToggleButton()
-        order_image = Gtk.Image.new_from_stock(Gtk.STOCK_REDO, Gtk.IconSize.BUTTON)
-        self.order.add(order_image)
-        self.order.set_relief(Gtk.ReliefStyle.NONE)
-        self.order.set_focus_on_click(False)
-
+        self.order = ToggleImageButton("edit-redo", size=Gtk.IconSize.BUTTON)
         self.order.connect("button-press-event", self.on_order)
 
         self.pack_start(self.order, False, False, 0)
 
-        self.repeat = Gtk.ToggleButton()
-        repeat_image = Gtk.Image.new_from_stock(Gtk.STOCK_REFRESH, Gtk.IconSize.BUTTON)
-        self.repeat.add(repeat_image)
-        self.repeat.set_relief(Gtk.ReliefStyle.NONE)
-        self.repeat.set_focus_on_click(False)
+        self.repeat = ToggleImageButton("view-refresh", size=Gtk.IconSize.BUTTON)
+        self.repeat.connect("button-press-event", self.choise)
 
         try:
             self.order.set_has_tooltip(True)
@@ -103,10 +95,7 @@ class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
         except:
             pass
 
-        self.repeat.connect("button-press-event", self.choise)
         self.pack_start(self.repeat, False, False, 0)
-
-        #self.pack_start(Gtk.SeparatorToolItem.new())
 
         self.menu = Gtk.Menu()
         self.item_all = Gtk.CheckMenuItem(_("Repeat all"))
@@ -170,18 +159,19 @@ class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
                 item.set_active(True) #because signal "toggled" will change the value to the opposite
                 self.repeat.set_active(False)
 
-    def on_save(self): pass
+    def on_save(self):
+        pass
 
 
 class PlaybackControls(FControl, Gtk.HBox, LoadSave):
     def __init__(self, controls):
         Gtk.HBox.__init__(self, False)
         self.pack_start(Gtk.SeparatorToolItem.new(), False, False, 0)
-        self.pack_start(ImageButton(Gtk.STOCK_MEDIA_STOP, controls.state_stop, _("Stop")), False, False, 0)
-        self.pack_start(ImageButton(Gtk.STOCK_MEDIA_PLAY, controls.state_play, _("Play")), False, False, 0)
-        self.pack_start(ImageButton(Gtk.STOCK_MEDIA_PAUSE, controls.state_play_pause, _("Pause")), False, False, 0)
-        self.pack_start(ImageButton(Gtk.STOCK_MEDIA_PREVIOUS, controls.prev, _("Previous")), False, False, 0)
-        self.pack_start(ImageButton(Gtk.STOCK_MEDIA_NEXT, controls.next, _("Next")), False, False, 0)
+        self.pack_start(ImageButton("media-playback-stop", controls.state_stop, _("Stop")), False, False, 0)
+        self.pack_start(ImageButton("media-playback-start", controls.state_play, _("Play")), False, False, 0)
+        self.pack_start(ImageButton("media-playback-pause", controls.state_play_pause, _("Pause")), False, False, 0)
+        self.pack_start(ImageButton("go-previous", controls.prev, _("Previous")), False, False, 0)
+        self.pack_start(ImageButton("go-next", controls.next, _("Next")), False, False, 0)
         self.pack_start(Gtk.SeparatorToolItem.new(), False, False, 0)
 
 

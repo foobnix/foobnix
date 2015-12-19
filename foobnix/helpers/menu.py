@@ -3,9 +3,13 @@ Created on Aug 26, 2010
 
 @author: ivan
 '''
+
 from gi.repository import Gtk
-import time
 from foobnix.gui.menu import MyMenu
+
+import time
+
+
 class Popup(Gtk.Menu):
 
     def __init__(self, *args, **kwargs):
@@ -16,32 +20,41 @@ class Popup(Gtk.Menu):
         separator.show()
         self.append(separator)
 
-    def add_item(self, text, gtk_stock="", func=None, arg=None):
-        item = Gtk.ImageMenuItem(text)
-        if gtk_stock:
-            img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
-            item.set_image(img)
-        if func and arg:
-            item.connect("activate", lambda * a: func(arg))
-        elif func:
-            item.connect("activate", lambda * a: func())
-        self.add(item)
-        item.show()
-        return item
+    def add_item(self, title, icon_name, func=None, param=None):
+        item = Gtk.MenuItem.new()
+        item_box = Gtk.HBox.new(False, 6)
 
-    def add_image_item(self, title, gtk_stock, func=None, param=None):
-        item = Gtk.ImageMenuItem(title)
+        if icon_name:
+            img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
+            item_box.pack_start(img, False, False, 0)
+        item_box.pack_start(Gtk.Label.new(title), False, False, 0)
 
-        item.show()
-        if gtk_stock:
-            img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
-            item.set_image(img)
+        item.add(item_box)
+        item.show_all()
 
         if func and param:
             item.connect("activate", lambda * a: func(param))
         elif func:
             item.connect("activate", lambda * a: func())
+        self.append(item)
+        return item
 
+    def add_image_item(self, title, icon_name, func=None, param=None):
+        item = Gtk.MenuItem.new()
+        item_box = Gtk.HBox.new(False, 6)
+
+        if icon_name:
+            img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
+            item_box.pack_start(img, False, False, 0)
+        item_box.pack_start(Gtk.Label.new(title), False, False, 0)
+
+        item.add(item_box)
+        item.show_all()
+
+        if func and param:
+            item.connect("activate", lambda * a: func(param))
+        elif func:
+            item.connect("activate", lambda * a: func())
         self.append(item)
         return item
 

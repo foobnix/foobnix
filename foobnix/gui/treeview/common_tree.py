@@ -53,7 +53,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
         self.set_headers_visible(False)
 
         self.ellipsize_render = Gtk.CellRendererText.new()
-        self.ellipsize_render.set_property('ellipsize', Pango.ELLIPSIZE_END)
+        self.ellipsize_render.set_property('ellipsize', Pango.EllipsizeMode.END)
 
         self.set_type_plain()
 
@@ -78,7 +78,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
     def on_multi_button_press(self, widget, event):
         target = self.get_path_at_pos(int(event.x), int(event.y))
-        if (target and event.type == Gdk.BUTTON_PRESS and not (event.state & (Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK )) #@UndefinedVariable
+        if (target and event.type == Gdk.EventType.BUTTON_PRESS and not (event.state & (Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK )) #@UndefinedVariable
             and self.get_selection().path_is_selected(target[0])):
             # disable selection
             self.get_selection().set_select_function(lambda * ignore: False, False)

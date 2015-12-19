@@ -44,7 +44,7 @@ class RadioPerspective(BasePerspective, Filterable, Quitable):
         return "radio"
 
     def get_icon(self):
-        return Gtk.STOCK_NETWORK
+        return "network-idle"
 
     def get_name(self):
         return _("Radio")

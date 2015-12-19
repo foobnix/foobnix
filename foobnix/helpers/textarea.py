@@ -4,8 +4,7 @@ Created on Oct 29, 2010
 @author: ivan
 '''
 
-import pango
-
+from gi.repository import Pango
 from gi.repository import Gtk
 
 from foobnix.helpers.image import ImageBase
@@ -20,7 +19,7 @@ class TextArea(Gtk.ScrolledWindow):
         self.buffer = Gtk.TextBuffer.new(texttagtable)
 
         self.tag_bold = Gtk.TextTag(name="bold")
-        self.tag_bold.set_property("weight", pango.WEIGHT_BOLD)
+        self.tag_bold.set_property("weight", Pango.Weight.BOLD)
 
         texttagtable.add(self.tag_bold)
 

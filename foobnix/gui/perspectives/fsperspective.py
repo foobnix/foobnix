@@ -16,11 +16,11 @@ class FSPerspective(BasePerspective, Filterable):
         self.tabhelper = TabHelperControl(controls)
         self.vbox = Gtk.VBox(False, 0)
 
-        self.add_button = ButtonStockText(_(" Add Folder(s) in tree"), Gtk.STOCK_ADD)
+        self.add_button = ButtonStockText(_(" Add Folder(s) in tree"), "list-add")
         self.add_button.connect("clicked", lambda * a: self.tabhelper.get_current_tree().add_folder())
 
         self.vbox.pack_start(self.add_button, False, False, 0)
-        self.vbox.pack_start(self.tabhelper, True, True)
+        self.vbox.pack_start(self.tabhelper, True, True, 0)
         self.vbox.show_all()
 
     def get_tabhelper(self):
@@ -39,7 +39,7 @@ class FSPerspective(BasePerspective, Filterable):
         return "fs"
 
     def get_icon(self):
-        return Gtk.STOCK_HARDDISK
+        return "drive-harddisk"
 
     def get_name(self):
         return _("Music")
