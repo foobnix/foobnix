@@ -1,3 +1,11 @@
+3.1.2
+*Remove xsel output from terminal
+*Pass album name when scrobbling
+*Add signal for send to dbus on track changed
+*Ellipsize text if it don't fit in the column
+*Set resizable property for the columns Number and Time
+*Bug fixes and small improvements
+
 3.1.00
 *Adapted to new GTK+ version
 *Fix converter bug
