@@ -4,6 +4,9 @@
 *Add signal for send to dbus on track changed
 *Ellipsize text if it don't fit in the column
 *Set resizable property for the columns Number and Time
+*Remove pygtkcompat and setuptools dependencies
+*Improve perspectives block behavior on resize left pane
+*Change deprecated gtk3 code to actual
 *Bug fixes and small improvements
 
 3.1.00
