@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-05 20:46+0300\n"
-"PO-Revision-Date: 2015-06-06 00:54+0000\n"
+"POT-Creation-Date: 2015-06-11 11:17+0300\n"
+"PO-Revision-Date: 2015-06-11 13:48+0000\n"
 "Last-Translator: Ivan Ivanenko <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-06-07 05:16+0000\n"
-"X-Generator: Launchpad (build 17540)\n"
+"X-Launchpad-Export-Date: 2015-06-12 05:15+0000\n"
+"X-Generator: Launchpad (build 17557)\n"
 "Language: uk\n"
 
 #: .././foobnix/dm/dm.py:33 .././foobnix/preferences/preferences_window.py:58
@@ -198,14 +198,14 @@ msgid "Hotkey"
 msgstr "Гарячі клавіші"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:105
-#: .././foobnix/preferences/configs/music_library.py:63
-#: .././foobnix/preferences/configs/music_library.py:180
+#: .././foobnix/preferences/configs/music_library.py:61
+#: .././foobnix/preferences/configs/music_library.py:177
 msgid "Add"
 msgstr "Додати"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:110
-#: .././foobnix/preferences/configs/music_library.py:68
-#: .././foobnix/preferences/configs/music_library.py:185
+#: .././foobnix/preferences/configs/music_library.py:66
+#: .././foobnix/preferences/configs/music_library.py:182
 msgid "Remove"
 msgstr "Вилучити"
 
@@ -329,48 +329,44 @@ msgstr "Увімкнути VK автозавершення"
 msgid "Update library on start (more slow) "
 msgstr "Оновлювати бібліотеку під час старту (сповільнює запуск) "
 
-#: .././foobnix/preferences/configs/music_library.py:49
+#: .././foobnix/preferences/configs/music_library.py:47
 msgid "Music dirs"
 msgstr "Теки з музикою"
 
-#: .././foobnix/preferences/configs/music_library.py:57
+#: .././foobnix/preferences/configs/music_library.py:55
 msgid "Paths"
 msgstr "Шляхи"
 
-#: .././foobnix/preferences/configs/music_library.py:140
+#: .././foobnix/preferences/configs/music_library.py:137
 #: .././foobnix/gui/treeview/navigation_tree.py:226
 msgid "Choose directory with music"
 msgstr "Оберіть директорію з музикою"
 
-#: .././foobnix/preferences/configs/music_library.py:166
+#: .././foobnix/preferences/configs/music_library.py:163
 msgid "File Types"
 msgstr "Формати файлів"
 
-#: .././foobnix/preferences/configs/music_library.py:174
+#: .././foobnix/preferences/configs/music_library.py:171
 msgid "Extensions"
 msgstr "Розширення"
 
-#: .././foobnix/preferences/configs/music_library.py:206
+#: .././foobnix/preferences/configs/music_library.py:203
 msgid "Please add audio extension"
 msgstr "Будь ласка, додайте аудіо розширення"
 
-#: .././foobnix/preferences/configs/music_library.py:206
+#: .././foobnix/preferences/configs/music_library.py:203
 msgid "Extension should be like '.mp3'"
 msgstr "Розширення має бути як \".mp3\""
 
-#: .././foobnix/preferences/configs/music_library.py:213
+#: .././foobnix/preferences/configs/music_library.py:210
 msgid "Gap between tracks"
 msgstr "Затримка між треками"
 
-#: .././foobnix/preferences/configs/music_library.py:228
-msgid "Buffer size for network streams (KBytes)"
-msgstr "Розмір буферу для мережевих потоків (Кб)"
-
-#: .././foobnix/preferences/configs/music_library.py:244
+#: .././foobnix/preferences/configs/music_library.py:226
 msgid "Multi tab mode"
 msgstr "Режим багатьох владок"
 
-#: .././foobnix/preferences/configs/music_library.py:250
+#: .././foobnix/preferences/configs/music_library.py:232
 msgid "Single tab mode"
 msgstr "Режим однієї вкладки"
 
@@ -383,8 +379,8 @@ msgid "Enable HTTP proxy"
 msgstr "Увімк. НТТР проксі"
 
 #: .././foobnix/preferences/configs/network_conf.py:36
-msgid "Settings"
-msgstr "Параметри"
+msgid "Proxy Settings"
+msgstr ""
 
 #: .././foobnix/preferences/configs/network_conf.py:48
 msgid "Server"
@@ -399,17 +395,21 @@ msgid "Check Connection"
 msgstr "Перевірити з’єднання"
 
 #: .././foobnix/preferences/configs/network_conf.py:107
-#: .././foobnix/preferences/configs/network_conf.py:152
+#: .././foobnix/preferences/configs/network_conf.py:153
 msgid "Result:"
 msgstr "Результат:"
 
-#: .././foobnix/preferences/configs/network_conf.py:126
+#: .././foobnix/preferences/configs/network_conf.py:127
 msgid "Show message on network disconnection"
 msgstr "Показувати повідомлення при втраті мережі"
 
-#: .././foobnix/preferences/configs/network_conf.py:152
+#: .././foobnix/preferences/configs/network_conf.py:153
 msgid " OK in seconds: "
 msgstr " OK секунд: "
+
+#: .././foobnix/preferences/configs/network_conf.py:168
+msgid "Buffer size for network streams (KBytes)"
+msgstr "Розмір буферу для мережевих потоків (Кб)"
 
 #: .././foobnix/preferences/configs/notification_conf.py:13
 msgid "Notifications"

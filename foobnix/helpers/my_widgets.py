@@ -17,7 +17,7 @@ def open_link_in_browser(uri):
     link.clicked()
 
 class PerspectiveButton(Gtk.ToggleButton):
-    def __init__(self, title, gtk_stock, tooltip=None):
+    def __init__(self, title, icon_name, tooltip=None):
         Gtk.ToggleButton.__init__(self, title)
         if not tooltip:
             tooltip = title
@@ -29,8 +29,8 @@ class PerspectiveButton(Gtk.ToggleButton):
         if label:
             self.remove(label)
 
-        vbox = Gtk.VBox(False, 0)
-        img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
         vbox.add(img)
         label = Gtk.Label(title)
         label.set_padding(0, 0)
@@ -40,7 +40,7 @@ class PerspectiveButton(Gtk.ToggleButton):
         self.add(vbox)
 
 class ButtonStockText(Gtk.Button):
-    def __init__(self, title, gtk_stock, tooltip=None):
+    def __init__(self, title, icon_name, tooltip=None):
         Gtk.Button.__init__(self, "")
         if not tooltip:
             tooltip = title
@@ -50,8 +50,8 @@ class ButtonStockText(Gtk.Button):
         label = self.get_child()
         self.remove(label)
 
-        box = Gtk.HBox(False, 0)
-        img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
+        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
         box.add(img)
         box.add(Gtk.Label(title))
         box.show_all()
@@ -69,7 +69,7 @@ class InsensetiveImageButton(Gtk.EventBox):
         #self.button.set_sensitive(False)
         self.button.set_focus_on_click(False)
         self.button.set_relief(Gtk.ReliefStyle.NONE)
-        img = Gtk.Image.new_from_stock(stock_image, size)
+        img = Gtk.Image.new_from_icon_name(stock_image, size)
         self.button.set_image(img)
         self.add(HBoxDecorator(self.button, Gtk.Label("R")))
 
@@ -88,21 +88,23 @@ class InsensetiveImageButton(Gtk.EventBox):
         #self.button.set_sensitive(self.insensetive)
 
 class ImageButton(Gtk.Button):
-    def __init__(self, stock_image, func=None, tooltip_text=None, size=Gtk.IconSize.LARGE_TOOLBAR):
+    def __init__(self, icon_name, func=None, tooltip_text=None, size=Gtk.IconSize.BUTTON):
         Gtk.Button.__init__(self)
+        self.set_property("always-show-image", True)
         self.set_relief(Gtk.ReliefStyle.NONE)
         self.set_focus_on_click(False)
         if tooltip_text:
             self.set_tooltip_text(tooltip_text)
-        img = Gtk.Image.new_from_stock(stock_image, size)
+        img = Gtk.Image.new_from_icon_name(icon_name, size)
         self.set_image(img)
         if func:
             self.connect("clicked", lambda * a: func())
 
 
 class ToggleImageButton(Gtk.ToggleButton):
-    def __init__(self, gtk_stock, func=None, param=None):
+    def __init__(self, icon_name, func=None, param=None, size=Gtk.IconSize.MENU):
         Gtk.ToggleButton.__init__(self)
+        self.set_property("always-show-image", True)
         self.set_relief(Gtk.ReliefStyle.NONE)
         self.set_focus_on_click(False)
         if param and func:
@@ -110,12 +112,13 @@ class ToggleImageButton(Gtk.ToggleButton):
         elif func:
             self.connect("toggled", lambda * a: func())
 
-        img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
+        img = Gtk.Image.new_from_icon_name(icon_name, size)
         self.add(img)
 
 class ToggleWidgetButton(Gtk.ToggleButton):
     def __init__(self, widget, func=None, param=None):
         Gtk.ToggleButton.__init__(self)
+        self.set_property("always-show-image", True)
 
         if param and func:
             self.connect("toggled", lambda * a: func(param))
@@ -126,11 +129,12 @@ class ToggleWidgetButton(Gtk.ToggleButton):
         self.add(widget)
 
 
-def tab_close_button(func=None, arg=None, stock=Gtk.STOCK_CLOSE):
+def tab_close_button(func=None, arg=None, stock="window-close"):
     """button"""
     button = Gtk.Button()
+    button.set_property("always-show-image", True)
     button.set_relief(Gtk.ReliefStyle.NONE)
-    img = Gtk.Image.new_from_stock(stock, Gtk.IconSize.MENU)
+    img = Gtk.Image.new_from_icon_name(stock, Gtk.IconSize.MENU)
     button.set_image(img)
     if func and arg:
         button.connect("button-press-event", lambda * a: func(arg))

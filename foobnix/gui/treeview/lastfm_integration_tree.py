@@ -59,8 +59,8 @@ class LastFmIntegrationControls(CommonTreeControl):
             right_click_optimization_for_trees(w, e)
             active = self.get_selected_bean()
             self.tree_menu.clear()
-            self.tree_menu.add_item(_('Play'), Gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
-            self.tree_menu.add_item(_('Copy to Search Line'), Gtk.STOCK_COPY,
+            self.tree_menu.add_item(_('Play'), "media-playback-start", self.controls.play, active)
+            self.tree_menu.add_item(_('Copy to Search Line'), "edit-copy",
                                     self.controls.searchPanel.set_search_text, active.text)
             self.tree_menu.show(e)
 

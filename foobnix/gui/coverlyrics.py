@@ -31,7 +31,7 @@ class CoverLyricsPanel(Gtk.Frame):
 
         lyrics_frame = FrameDecorator(_("Lyric"), self.lyrics, 0.5, 0.5)
 
-        vbox = Gtk.VBox(False, 5)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 5)
         vbox.pack_start(image_frame, False, False, 0)
         vbox.pack_start(lyrics_frame, True, True, 0)
 

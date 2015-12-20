@@ -33,9 +33,9 @@ class VolumeControls(LoadSave, Gtk.HBox, FControl):
         self.show_all()
 
     def on_volume_change(self, w, event):
-        max_x, max_y = w.size_request()
+        requisition = w.size_request()
         x, y = event.x, event.y
-        value = x / max_x * self.MAX_VALUE
+        value = x / requisition.width * self.MAX_VALUE
         if value > self.MAX_VALUE * 0.75:
             value += self.MAX_VALUE / 20
         elif value < self.MAX_VALUE * 0.25:

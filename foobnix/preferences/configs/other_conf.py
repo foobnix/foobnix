@@ -23,17 +23,17 @@ class OtherConfig(ConfigPlugin):
     def __init__(self, controls):
         self.controls = controls
 
-        box = Gtk.VBox(False, 0)
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.hide()
 
-        df_vbox = Gtk.VBox(False, 5)
+        df_vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 5)
         df_vbox.set_border_width(4)
         download_frame = FrameDecorator(_("File downloads"), df_vbox, 0.5, 0.5)
 
 
         """save to"""
 
-        hbox = Gtk.HBox(False, 5)
+        hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         self.online_dir = Gtk.FileChooserButton("set place")
         self.online_dir.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
         self.online_dir.connect("current-folder-changed", self.on_change_folder)
@@ -46,7 +46,7 @@ class OtherConfig(ConfigPlugin):
         self.nosubfolder_checkbutton = Gtk.CheckButton(label=_("Save to one folder (no subfolders)"), use_underline=True)
 
         """download threads"""
-        thbox = Gtk.HBox(False, 5)
+        thbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         tab_label = Gtk.Label(_("Download in threads"))
 
         adjustment = Gtk.Adjustment(value=1, lower=1, upper=10, step_incr=1, page_incr=1, page_size=0)
@@ -63,7 +63,7 @@ class OtherConfig(ConfigPlugin):
         download_frame.show_all()
 
         """disc cover size"""
-        cbox = Gtk.HBox(False, 5)
+        cbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         cbox.set_border_width(4)
         dc_frame = FrameDecorator(_("Disc cover settings"), cbox, 0.5, 0.5)
 
@@ -78,7 +78,7 @@ class OtherConfig(ConfigPlugin):
         dc_frame.show_all()
 
         """notification"""
-        uhbox = Gtk.HBox(False, 5)
+        uhbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         uhbox.set_border_width(4)
         updates_frame = FrameDecorator(_("Updates"), uhbox, 0.5, 0.5)
 
@@ -92,12 +92,12 @@ class OtherConfig(ConfigPlugin):
         updates_frame.show_all()
 
         """background image"""
-        thvbox = Gtk.VBox(False, 1)
+        thvbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 1)
         thvbox.set_border_width(4)
         theme_frame = FrameDecorator(_("Theming"), thvbox, 0.5, 0.5)
 
         """menu position"""
-        pbox = Gtk.HBox(False, 5)
+        pbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         pbox.show()
 
         label = Gtk.Label(_("Menu type: "))
@@ -110,7 +110,7 @@ class OtherConfig(ConfigPlugin):
         pbox.pack_start(self.new_style, False, True, 0)
         pbox.pack_start(self.old_style, False, False, 0)
 
-        o_r_box = Gtk.HBox(False, 5)
+        o_r_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         o_r_box.show()
 
         o_r_label = Gtk.Label(_("Order-Repeat Switcher Style:"))
@@ -124,7 +124,7 @@ class OtherConfig(ConfigPlugin):
         o_r_box.pack_start(self.labels, False, False, 0)
 
         """opacity"""
-        obox = Gtk.HBox(False, 5)
+        obox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         obox.show()
 
         tab_label = Gtk.Label(_("Opacity:"))
@@ -139,7 +139,7 @@ class OtherConfig(ConfigPlugin):
         obox.pack_start(self.opacity_size, False, True, 0)
 
         self.fmgrs_combo = self.fmgr_combobox()
-        hcombobox = Gtk.HBox(False, 5)
+        hcombobox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         hcombobox.pack_start(Gtk.Label(_('Choose your preferred file manager:')), False, False, 0)
         hcombobox.pack_start(self.fmgrs_combo, False, False, 0)
 

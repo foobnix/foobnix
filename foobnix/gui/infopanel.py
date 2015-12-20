@@ -104,13 +104,13 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
 
         wBox.scroll = wBox
 
-        self.vpaned_small = Gtk.VBox(False, 0)
+        self.vpaned_small = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         """image and similar artists"""
-        ibox = Gtk.HBox(False, 0)
+        ibox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.image = ImageBase(ICON_BLANK_DISK, FC().info_panel_image_size)
 
-        lbox = Gtk.VBox(False, 0)
+        lbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         self.left_widget = [wBox, self.artists, self.tracks, self.tags, self.lyrics, self.best_songs]
 
@@ -121,7 +121,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         ibox.pack_start(lbox, True, True, 0)
 
         """image and similar artists"""
-        sbox = Gtk.VBox(False, 0)
+        sbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         for l_widget in self.left_widget:
             sbox.pack_start(l_widget.scroll, True, True, 0)

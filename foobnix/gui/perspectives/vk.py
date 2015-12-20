@@ -23,7 +23,7 @@ class VKPerspective(BasePerspective, Filterable):
         return "vk"
 
     def get_icon(self):
-        return Gtk.STOCK_UNINDENT
+        return "format-indent-less"
 
     def get_name(self):
         return _("VK")

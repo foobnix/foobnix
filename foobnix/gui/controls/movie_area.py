@@ -64,7 +64,7 @@ class FullScreanArea(ChildTopWindow):
             self.on_hide_callback = on_hide_callback
             ## TODO: check it
             ##self.set_flags(Gtk.CAN_FOCUS)
-            self.layout = Gtk.VBox(False)
+            self.layout = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
             self.set_property("skip-taskbar-hint", True)
             self.set_keep_above(True)
             self.draw = AdvancedDrawingArea(controls)
@@ -78,8 +78,8 @@ class FullScreanArea(ChildTopWindow):
             self.volume_button = Gtk.VolumeButton()
             self.volume_button.connect("value-changed", self.volume_changed)
 
-            line = Gtk.HBox(False)
-            line.pack_start(ImageButton(Gtk.STOCK_FULLSCREEN, on_hide_callback, _("Exit Fullscrean")), False, False, 0)
+            line = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+            line.pack_start(ImageButton("view-fullscreen", on_hide_callback, _("Exit Fullscrean")), False, False, 0)
             line.pack_start(PlaybackControls(controls), False, False, 0)
             line.pack_start(controls.seek_bar_movie, True, False, 0)
             line.pack_start(Gtk.SeparatorToolItem.new(), False, False, 0)

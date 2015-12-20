@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the foobnix package.
 #
 # FIRST AUTHOR <flospm@gmail.com>, 2011.
-# Pavel Fric <pavelfric@seznam.cz>, 2012.
+# Pavel Fric <pavelfric@seznam.cz>, 2012, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: foobnix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-05 20:46+0300\n"
-"PO-Revision-Date: 2013-05-16 18:15+0000\n"
+"POT-Creation-Date: 2015-06-11 11:17+0300\n"
+"PO-Revision-Date: 2015-08-14 22:07+0000\n"
 "Last-Translator: fri <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-06-06 05:15+0000\n"
-"X-Generator: Launchpad (build 17540)\n"
+"X-Launchpad-Export-Date: 2015-08-15 05:16+0000\n"
+"X-Generator: Launchpad (build 17686)\n"
 "Language: de\n"
 "X-Language: cs_CZ\n"
 "X-Source-Language: C\n"
@@ -57,7 +57,7 @@ msgstr "Stahování"
 
 #: .././foobnix/dm/dm.py:64
 msgid "Completed"
-msgstr ""
+msgstr "Dokončeno"
 
 #: .././foobnix/dm/dm.py:65 .././foobnix/util/const.py:45
 msgid "Active"
@@ -69,7 +69,7 @@ msgstr "Nečinné"
 
 #: .././foobnix/dm/dm.py:119
 msgid "Downloading: "
-msgstr ""
+msgstr "Stahuje se: "
 
 #: .././foobnix/dm/dm.py:126 .././foobnix/util/file_utils.py:357
 msgid "Choose Folder"
@@ -201,14 +201,14 @@ msgid "Hotkey"
 msgstr "Klávesová zkratka"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:105
-#: .././foobnix/preferences/configs/music_library.py:63
-#: .././foobnix/preferences/configs/music_library.py:180
+#: .././foobnix/preferences/configs/music_library.py:61
+#: .././foobnix/preferences/configs/music_library.py:177
 msgid "Add"
 msgstr "Přidat"
 
 #: .././foobnix/preferences/configs/hotkey_conf.py:110
-#: .././foobnix/preferences/configs/music_library.py:68
-#: .././foobnix/preferences/configs/music_library.py:185
+#: .././foobnix/preferences/configs/music_library.py:66
+#: .././foobnix/preferences/configs/music_library.py:182
 msgid "Remove"
 msgstr "Odstranit"
 
@@ -326,54 +326,50 @@ msgstr "Nastavit autorizaci VK znovu"
 
 #: .././foobnix/preferences/configs/last_fm.py:102
 msgid "Enable VK autocomplete"
-msgstr ""
+msgstr "Povolit automatické dokončování VK"
 
 #: .././foobnix/preferences/configs/music_library.py:38
 msgid "Update library on start (more slow) "
 msgstr "Obnovit knihovnu při spuštění (pomalejší) "
 
-#: .././foobnix/preferences/configs/music_library.py:49
+#: .././foobnix/preferences/configs/music_library.py:47
 msgid "Music dirs"
 msgstr "Adresáře s hudbou"
 
-#: .././foobnix/preferences/configs/music_library.py:57
+#: .././foobnix/preferences/configs/music_library.py:55
 msgid "Paths"
 msgstr "Cesty"
 
-#: .././foobnix/preferences/configs/music_library.py:140
+#: .././foobnix/preferences/configs/music_library.py:137
 #: .././foobnix/gui/treeview/navigation_tree.py:226
 msgid "Choose directory with music"
 msgstr "Vybrat adresář s hudbou"
 
-#: .././foobnix/preferences/configs/music_library.py:166
+#: .././foobnix/preferences/configs/music_library.py:163
 msgid "File Types"
 msgstr "Typy souborů"
 
-#: .././foobnix/preferences/configs/music_library.py:174
+#: .././foobnix/preferences/configs/music_library.py:171
 msgid "Extensions"
 msgstr "Přípony"
 
-#: .././foobnix/preferences/configs/music_library.py:206
+#: .././foobnix/preferences/configs/music_library.py:203
 msgid "Please add audio extension"
 msgstr "Přidejte, prosím, příponu hudebního souboru"
 
-#: .././foobnix/preferences/configs/music_library.py:206
+#: .././foobnix/preferences/configs/music_library.py:203
 msgid "Extension should be like '.mp3'"
 msgstr "Přípona by měla vypadat takto  ».mp3«"
 
-#: .././foobnix/preferences/configs/music_library.py:213
+#: .././foobnix/preferences/configs/music_library.py:210
 msgid "Gap between tracks"
-msgstr ""
+msgstr "Mezera mezi skladbami"
 
-#: .././foobnix/preferences/configs/music_library.py:228
-msgid "Buffer size for network streams (KBytes)"
-msgstr ""
-
-#: .././foobnix/preferences/configs/music_library.py:244
+#: .././foobnix/preferences/configs/music_library.py:226
 msgid "Multi tab mode"
 msgstr "Režim více karet"
 
-#: .././foobnix/preferences/configs/music_library.py:250
+#: .././foobnix/preferences/configs/music_library.py:232
 msgid "Single tab mode"
 msgstr "Režim jedné karty"
 
@@ -386,8 +382,8 @@ msgid "Enable HTTP proxy"
 msgstr "Povolit HTTP Proxy"
 
 #: .././foobnix/preferences/configs/network_conf.py:36
-msgid "Settings"
-msgstr "Nastavení"
+msgid "Proxy Settings"
+msgstr "Nastavení proxy"
 
 #: .././foobnix/preferences/configs/network_conf.py:48
 msgid "Server"
@@ -402,17 +398,21 @@ msgid "Check Connection"
 msgstr "Ověřit spojení"
 
 #: .././foobnix/preferences/configs/network_conf.py:107
-#: .././foobnix/preferences/configs/network_conf.py:152
+#: .././foobnix/preferences/configs/network_conf.py:153
 msgid "Result:"
 msgstr "Výsledek:"
 
-#: .././foobnix/preferences/configs/network_conf.py:126
+#: .././foobnix/preferences/configs/network_conf.py:127
 msgid "Show message on network disconnection"
 msgstr "Ukázat zprávu při odpojení sítě"
 
-#: .././foobnix/preferences/configs/network_conf.py:152
+#: .././foobnix/preferences/configs/network_conf.py:153
 msgid " OK in seconds: "
 msgstr " OK v sekundách: "
+
+#: .././foobnix/preferences/configs/network_conf.py:168
+msgid "Buffer size for network streams (KBytes)"
+msgstr "Velikost vyrovnávací paměti pro síťové proudy (KB)"
 
 #: .././foobnix/preferences/configs/notification_conf.py:13
 msgid "Notifications"
@@ -424,7 +424,7 @@ msgstr "Ukázat ukázkový dialog »Je dostupná nová verze«"
 
 #: .././foobnix/preferences/configs/other_conf.py:28
 msgid "File downloads"
-msgstr ""
+msgstr "Stahování souborů"
 
 #: .././foobnix/preferences/configs/other_conf.py:39
 msgid "Save online music to folder:"
@@ -436,7 +436,7 @@ msgstr "Automatické uložení internetové hudby"
 
 #: .././foobnix/preferences/configs/other_conf.py:44
 msgid "Save to one folder (no subfolders)"
-msgstr ""
+msgstr "Uložit do jedné složky (žádné podsložky)"
 
 #: .././foobnix/preferences/configs/other_conf.py:48
 msgid "Download in threads"
@@ -444,7 +444,7 @@ msgstr "Stahovat ve vláknech"
 
 #: .././foobnix/preferences/configs/other_conf.py:64
 msgid "Disc cover settings"
-msgstr ""
+msgstr "Nastavení obalů disků"
 
 #: .././foobnix/preferences/configs/other_conf.py:69
 msgid "Disc cover size:"
@@ -452,15 +452,15 @@ msgstr "Velikost obrázku obalu:"
 
 #: .././foobnix/preferences/configs/other_conf.py:81
 msgid "Updates"
-msgstr ""
+msgstr "Aktualizace"
 
 #: .././foobnix/preferences/configs/other_conf.py:86
 msgid "Check for update"
-msgstr ""
+msgstr "Zkontrolovat aktualizace"
 
 #: .././foobnix/preferences/configs/other_conf.py:94
 msgid "Theming"
-msgstr ""
+msgstr "Témata"
 
 #: .././foobnix/preferences/configs/other_conf.py:102
 msgid "Menu type: "
@@ -536,11 +536,11 @@ msgstr "Žádný"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:22
 msgid "Tray Icon"
-msgstr ""
+msgstr "Ikona v oznamovací oblasti"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:30
 msgid "Icon"
-msgstr ""
+msgstr "Ikona"
 
 #: .././foobnix/preferences/configs/tray_icon_conf.py:33
 #: .././foobnix/gui/controls/playback.py:181
@@ -680,27 +680,27 @@ msgstr "Stahování"
 
 #: .././foobnix/gui/infopanel.py:297
 msgid "Loading..."
-msgstr ""
+msgstr "Nahrává se..."
 
 #: .././foobnix/gui/infopanel.py:310
 msgid "The text not found"
-msgstr ""
+msgstr "Text nenalezen"
 
 #: .././foobnix/gui/infopanel.py:347
 msgid "Similar Tags:"
-msgstr ""
+msgstr "Podobné značky:"
 
 #: .././foobnix/gui/infopanel.py:358
 msgid "Similar Tracks:"
-msgstr ""
+msgstr "Podobné skladby:"
 
 #: .././foobnix/gui/infopanel.py:370
 msgid "Similar Artists:"
-msgstr ""
+msgstr "Podobní umělci:"
 
 #: .././foobnix/gui/infopanel.py:381
 msgid "Best Songs:"
-msgstr ""
+msgstr "Nejlepší písně:"
 
 #: .././foobnix/gui/menu.py:31 .././foobnix/gui/treeview/navigation_tree.py:43
 msgid "File"
@@ -724,7 +724,7 @@ msgstr "Ukončit"
 
 #: .././foobnix/gui/menu.py:40
 msgid "View"
-msgstr ""
+msgstr "Pohled"
 
 #: .././foobnix/gui/menu.py:42
 msgid "Left Panel"
@@ -740,7 +740,7 @@ msgstr "Panel s obalem a slovy"
 
 #: .././foobnix/gui/menu.py:63
 msgid "Playback"
-msgstr ""
+msgstr "Přehrávání"
 
 #: .././foobnix/gui/menu.py:71
 msgid "Order"
@@ -768,7 +768,7 @@ msgstr "Zakázat"
 
 #: .././foobnix/gui/menu.py:115
 msgid "Help"
-msgstr ""
+msgstr "Nápověda"
 
 #: .././foobnix/gui/menu.py:116
 msgid "About"
@@ -904,7 +904,7 @@ msgstr "Zavřít vyskakovací okno"
 
 #: .././foobnix/gui/engine/gstreamer.py:527
 msgid "kbps"
-msgstr ""
+msgstr "kb/s"
 
 #: .././foobnix/gui/notetab/__init__.py:346
 #: .././foobnix/gui/notetab/tab_library.py:47
@@ -963,7 +963,7 @@ msgstr "Informační panel (Alt+4)"
 
 #: .././foobnix/gui/perspectives/lastfm.py:26
 msgid "Last.FM Panel (Alt+5)"
-msgstr ""
+msgstr "Panel Last.FM (Alt+5)"
 
 #: .././foobnix/gui/perspectives/radio.py:53
 msgid "Radio Stantions (Alt+2)"
@@ -988,7 +988,7 @@ msgstr "Panel VK (Alt+6)"
 
 #: .././foobnix/gui/service/vk_service.py:42
 msgid "vk.com authorization"
-msgstr ""
+msgstr "Autorizace vk.com"
 
 #: .././foobnix/gui/treeview/dm_tree.py:34
 #: .././foobnix/gui/treeview/navigation_tree.py:68
@@ -1001,15 +1001,15 @@ msgstr "Postup"
 
 #: .././foobnix/gui/treeview/dm_tree.py:44
 msgid "Size"
-msgstr ""
+msgstr "Velikost"
 
 #: .././foobnix/gui/treeview/dm_tree.py:49
 msgid "Status"
-msgstr ""
+msgstr "Stav"
 
 #: .././foobnix/gui/treeview/dm_tree.py:54
 msgid "Path"
-msgstr ""
+msgstr "Cesta"
 
 #: .././foobnix/gui/treeview/dm_tree.py:110
 #: .././foobnix/gui/treeview/dm_tree.py:112
@@ -1021,7 +1021,7 @@ msgstr "Otevřít ve správci souborů"
 #: .././foobnix/gui/treeview/dragdrop_tree.py:458
 #: .././foobnix/gui/treeview/playlist_tree.py:440
 msgid "Playlist: "
-msgstr ""
+msgstr "Seznam skladeb: "
 
 #: .././foobnix/gui/treeview/lastfm_integration_tree.py:27
 msgid "Lasm.fm Integration "
@@ -1029,7 +1029,7 @@ msgstr "Začlenění Last.fm "
 
 #: .././foobnix/gui/treeview/lastfm_integration_tree.py:40
 msgid "My recommendations"
-msgstr ""
+msgstr "Moje doporučení"
 
 #: .././foobnix/gui/treeview/lastfm_integration_tree.py:41
 msgid "My loved tracks"
@@ -1175,11 +1175,11 @@ msgstr "Upřednostňovat tuto skladbu na Last.fm"
 
 #: .././foobnix/gui/treeview/playlist_tree.py:286
 msgid "Add to My Audio (VK)"
-msgstr ""
+msgstr "Přidat do My Audio (VK)"
 
 #: .././foobnix/gui/treeview/playlist_tree.py:288
 msgid "Copy link"
-msgstr ""
+msgstr "Kopírovat odkaz"
 
 #: .././foobnix/gui/treeview/radio_tree.py:33
 msgid "My channels"
@@ -1353,6 +1353,9 @@ msgid ""
 "You should download it automatically (click Download)\n"
 "Also check if you have packages libmp3lame0 and libfaac0"
 msgstr ""
+"Převodník vyžaduje k práci zvlášť přeložený modul ffmpeg.\n"
+"Měl byste jej stáhnout automaticky (klepněte na Stáhnout)\n"
+"Také se podívejte, zda máte balíčky libmp3lame0 a libfaac0"
 
 #: .././foobnix/util/file_utils.py:46
 msgid "Rename folder"

@@ -83,7 +83,7 @@ class HotKeysConfig(ConfigPlugin):
 
     def __init__(self, controls):
         HotKeysConfig.controls = controls
-        box = Gtk.VBox(False, 0)
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.hide()
 
         self.tree_widget = Gtk.TreeView()
@@ -99,7 +99,7 @@ class HotKeysConfig(ConfigPlugin):
         self.tree_widget.append_column(self.column2)
         self.tree_widget.set_model(self.model)
 
-        hbox = Gtk.HBox(False, 0)
+        hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         hbox.show()
 
         add_button = Gtk.Button(_("Add"))
@@ -115,7 +115,7 @@ class HotKeysConfig(ConfigPlugin):
         hbox.pack_start(add_button, False, True, 0)
         hbox.pack_start(remove_button, False, True, 0)
 
-        hotbox = Gtk.HBox(False, 0)
+        hotbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         hotbox.show()
 
         self.action_text = Gtk.Entry()
@@ -144,7 +144,7 @@ class HotKeysConfig(ConfigPlugin):
 
         self.disable_mediakeys.connect("toggled", on_toggle)
 
-        mmbox = Gtk.VBox(False, 0)
+        mmbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         mmbox.pack_start(self.disable_mediakeys, False, False, 0)
         mmbox.pack_start(self.disable_volume_keys, False, False, 0)
         self.mm_frame_decorator = FrameDecorator(_("Multimedia keys"), mmbox, 0.5, 0.5)
@@ -158,14 +158,14 @@ class HotKeysConfig(ConfigPlugin):
 
     def create_menu(self):
         menu = Popup()
-        menu.add_item(_("Play-Pause"), Gtk.STOCK_MEDIA_PAUSE, self.set_action_text, "play_pause")
-        menu.add_item(_("Stop"), Gtk.STOCK_MEDIA_STOP, self.set_action_text, "state_stop")
-        menu.add_item(_("Next song"), Gtk.STOCK_MEDIA_NEXT, self.set_action_text, "next")
-        menu.add_item(_("Previous song"), Gtk.STOCK_MEDIA_PREVIOUS, self.set_action_text, "prev")
-        menu.add_item(_("Volume up"), Gtk.STOCK_GO_UP, self.set_action_text, "volume_up")
-        menu.add_item(_("Volume down"), Gtk.STOCK_GO_DOWN, self.set_action_text, "volume_down")
-        menu.add_item(_("Show-Hide"), Gtk.STOCK_FULLSCREEN, self.set_action_text, "show_hide")
-        menu.add_item(_('Download'), Gtk.STOCK_ADD, self.set_action_text, "download")
+        menu.add_item(_("Play-Pause"), "media-playback-pause", self.set_action_text, "play_pause")
+        menu.add_item(_("Stop"), "media-playback-stop", self.set_action_text, "state_stop")
+        menu.add_item(_("Next song"), "go-next", self.set_action_text, "next")
+        menu.add_item(_("Previous song"), "go-previous", self.set_action_text, "prev")
+        menu.add_item(_("Volume up"), "go-up", self.set_action_text, "volume_up")
+        menu.add_item(_("Volume down"), "go-down", self.set_action_text, "volume_down")
+        menu.add_item(_("Show-Hide"), "view-fullscreen", self.set_action_text, "show_hide")
+        menu.add_item(_('Download'), "list-add", self.set_action_text, "download")
         return menu
 
     def set_action_text(self, text):

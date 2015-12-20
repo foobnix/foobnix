@@ -23,7 +23,7 @@ class TrayIconConfig(ConfigPlugin):
 
     def __init__(self, controls):
         self.controls = controls
-        box = Gtk.VBox(False, 0)
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.hide()
 
         '''static_icon'''
@@ -113,7 +113,7 @@ class TrayIconConfig(ConfigPlugin):
         not_len = Gtk.SpinButton(adjustment=self.adjustment, climb_rate=0.0, digits=1)
         not_len.show()
 
-        hbox = Gtk.HBox(False, 5)
+        hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         hbox.pack_start(label, False, False, 0)
         hbox.pack_start(not_len, False, False, 0)
         hbox.show_all()
