@@ -47,7 +47,7 @@ class PopupMenuWindow(PopupTrayWindow):
     def __init__ (self, controls):
         PopupTrayWindow.__init__(self, controls)
         #self.modify_bg(Gtk.StateType.NORMAL, self.get_colormap().alloc_color("gray23"))
-        vbox = Gtk.VBox(False, 0)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         playcontrols = PlaybackControls(controls)
         playcontrols.pack_start(ImageButton("application-exit", controls.quit, _("Exit")), False, False, 0)

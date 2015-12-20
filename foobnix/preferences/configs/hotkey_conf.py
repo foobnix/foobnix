@@ -83,7 +83,7 @@ class HotKeysConfig(ConfigPlugin):
 
     def __init__(self, controls):
         HotKeysConfig.controls = controls
-        box = Gtk.VBox(False, 0)
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.hide()
 
         self.tree_widget = Gtk.TreeView()
@@ -99,7 +99,7 @@ class HotKeysConfig(ConfigPlugin):
         self.tree_widget.append_column(self.column2)
         self.tree_widget.set_model(self.model)
 
-        hbox = Gtk.HBox(False, 0)
+        hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         hbox.show()
 
         add_button = Gtk.Button(_("Add"))
@@ -115,7 +115,7 @@ class HotKeysConfig(ConfigPlugin):
         hbox.pack_start(add_button, False, True, 0)
         hbox.pack_start(remove_button, False, True, 0)
 
-        hotbox = Gtk.HBox(False, 0)
+        hotbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         hotbox.show()
 
         self.action_text = Gtk.Entry()
@@ -144,7 +144,7 @@ class HotKeysConfig(ConfigPlugin):
 
         self.disable_mediakeys.connect("toggled", on_toggle)
 
-        mmbox = Gtk.VBox(False, 0)
+        mmbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         mmbox.pack_start(self.disable_mediakeys, False, False, 0)
         mmbox.pack_start(self.disable_volume_keys, False, False, 0)
         self.mm_frame_decorator = FrameDecorator(_("Multimedia keys"), mmbox, 0.5, 0.5)

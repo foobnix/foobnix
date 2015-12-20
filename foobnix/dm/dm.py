@@ -53,7 +53,7 @@ class DM(ChildTopWindow):
         self.set_resizable(True)
         self.set_default_size(900, 700)
 
-        vbox = Gtk.VBox(False, 0)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         #paned = Gtk.HPaned()
         #paned.set_position(200)
 

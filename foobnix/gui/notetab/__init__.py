@@ -204,14 +204,14 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave, Quitable):
 
         if FC().tab_position == "left" or self.navig:
             """container Vertical Tab"""
-            box = Gtk.VBox(False, 0)
+            box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
             box.show()
             if FC().tab_close_element:
                 box.pack_start(self.button(tab), False, False, 0)
             box.pack_end(tab_content.label, False, False, 0)
         else:
             """container Horizontal Tab"""
-            box = Gtk.HBox(False, 0)
+            box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
             box.show()
             if FC().tab_close_element:
                 box.pack_end(self.button(tab), False, False, 0)

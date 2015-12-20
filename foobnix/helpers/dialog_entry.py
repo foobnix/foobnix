@@ -195,7 +195,8 @@ def info_dialog_with_link_and_donate(version):
         link = Gtk.LinkButton("http://www.foobnix.com/support?lang=%s"%SITE_LOCALE, _("Download"))
 
         frame = Gtk.Frame(label="Please donate and download")
-        vbox = Gtk.VBox(True, 0)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        vbox.set_homogeneous(True)
         vbox.pack_start(card, True, True)
         #vbox.pack_start(terminal, True, True)
         vbox.pack_start(link, True, True)

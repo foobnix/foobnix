@@ -18,7 +18,7 @@ class RadioPerspective(BasePerspective, Filterable, Quitable):
         self.switch_button = Gtk.Button()
         self.switch_button.connect("clicked", self.switch_radio)
 
-        self.vbox = Gtk.VBox(False, 0)
+        self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.radios = StackableWidget()
         self.radios.add(self.auto_radio.scroll)
         self.radios.add(self.my_radio.scroll)

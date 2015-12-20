@@ -56,22 +56,22 @@ class BaseFoobnixLayout(FControl, LoadSave):
         notebox.add(controls.notetabs)
         notebox.add_overlay(controls.search_progress)
 
-        bbox = Gtk.VBox(False, 0)
+        bbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         bbox.pack_start(notebox, True, True, 0)
 
-        center_box = Gtk.VBox(False, 0)
+        center_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         center_box.pack_start(controls.searchPanel, False, False, 0)
         center_box.pack_start(bbox, True, True, 0)
 
-        self.hpaned_left = Gtk.HPaned()
+        self.hpaned_left = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL)
         self.hpaned_left.pack1(child=controls.perspectives.scroll, resize=True, shrink=False)
         self.hpaned_left.pack2(child=center_box, resize=True, shrink=True)
 
-        self.hpaned_right = Gtk.HPaned()
+        self.hpaned_right = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL)
         self.hpaned_right.pack1(child=self.hpaned_left, resize=True, shrink=True)
         self.hpaned_right.pack2(child=controls.coverlyrics, resize=True, shrink=False)
 
-        vbox = Gtk.VBox(False, 0)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         vbox.pack_start(controls.top_panel, False, False, 0)
         vbox.pack_start(self.hpaned_right, True, True, 0)
         vbox.pack_start(controls.statusbar, False, True, 0)

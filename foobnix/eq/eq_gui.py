@@ -48,7 +48,7 @@ class EqWindow(ChildTopWindow, FControl):
         for label in EQUALIZER_LABLES:
             self.eq_lines.append(EqLine(label, self.on_callback))
 
-        lbox = Gtk.VBox(False, 0)
+        lbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         lbox.show()
 
         lbox.pack_start(self.top_row(), False, False, 0)
@@ -162,7 +162,7 @@ class EqWindow(ChildTopWindow, FControl):
 
     def top_row(self):
 
-        box = Gtk.HBox(False, 0)
+        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         box.show()
 
         self.on = Gtk.ToggleButton(_("Enable EQ"))
@@ -203,7 +203,7 @@ class EqWindow(ChildTopWindow, FControl):
         return box
 
     def dash_line(self):
-        lables = Gtk.VBox(False, 0)
+        lables = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         lables.show()
         lables.pack_start(label(), False, False, 0)
         lables.pack_start(label(), True, False, 0)
@@ -212,7 +212,7 @@ class EqWindow(ChildTopWindow, FControl):
         return lables
 
     def db_line(self):
-        lables = Gtk.VBox(False, 0)
+        lables = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         lables.show()
         lables.pack_start(text("+12db"), False, False, 0)
 
@@ -224,7 +224,7 @@ class EqWindow(ChildTopWindow, FControl):
         return lables
 
     def empty_line(self):
-        lables = Gtk.VBox(False, 0)
+        lables = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         lables.show()
         lables.pack_start(empty(), False, False, 0)
         lables.pack_start(empty(), True, False, 0)
@@ -233,7 +233,7 @@ class EqWindow(ChildTopWindow, FControl):
         return lables
 
     def middle_lines_box(self):
-        lines_box = Gtk.HBox(False, 0)
+        lines_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         lines_box.show()
 
         eq_iter = iter(self.eq_lines)

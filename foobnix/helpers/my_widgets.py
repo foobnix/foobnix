@@ -29,7 +29,7 @@ class PerspectiveButton(Gtk.ToggleButton):
         if label:
             self.remove(label)
 
-        vbox = Gtk.VBox(False, 0)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
         vbox.add(img)
         label = Gtk.Label(title)
@@ -50,7 +50,7 @@ class ButtonStockText(Gtk.Button):
         label = self.get_child()
         self.remove(label)
 
-        box = Gtk.HBox(False, 0)
+        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
         box.add(img)
         box.add(Gtk.Label(title))
