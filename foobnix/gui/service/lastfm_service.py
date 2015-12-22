@@ -313,7 +313,7 @@ class LastFmService():
                 for artist in artists:
                     bean = FModel(artist.get_name()).parent(event_model).add_artist(artist.get_name()).add_is_file(True)
                     results.append(bean)
-            except Exception as e: 
+            except Exception as e:
                 pass
         return results
 
