@@ -159,6 +159,9 @@ class FModel(FTreeModel):
         self.is_file = is_file
         return self
 
+    def get_is_file(self):
+        return self.is_file
+
     def add_album(self, album):
         self.album = album
         return self

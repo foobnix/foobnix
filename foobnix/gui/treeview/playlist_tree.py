@@ -97,6 +97,15 @@ class PlaylistTreeControl(CommonTreeControl):
         self.title_col.item = Gtk.CheckMenuItem(_("Title"))
         self._append_column(self.title_col)
 
+        """column year"""
+        self.year_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.year[0])
+        self.year_col.key = "Year"
+        self.year_col.set_sizing(Gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        self.year_col.set_resizable(True)
+        self.year_col.label = Gtk.Label(_("Year"))
+        self.year_col.item = Gtk.CheckMenuItem(_("Year"))
+        self._append_column(self.year_col)
+
         """column album"""
         self.album_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.album[0])
         self.album_col.key = "Album"
