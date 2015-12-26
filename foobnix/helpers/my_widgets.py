@@ -216,13 +216,16 @@ def notetab_label(func=None, arg=None, angle=0, symbol="×"):
 class AlternateVolumeControl (Gtk.DrawingArea):
     def __init__(self, levels, s_width, interval, v_step):
         Gtk.DrawingArea.__init__(self)
-        self.show()
+        self.add_events(Gdk.EventMask.SCROLL_MASK)
         self.volume = FC().volume
         self.connect("draw", self.draw_callback, levels, s_width, interval, v_step)
+        self.show()
 
-    def set_volume (self, vol):
+    def set_volume(self, vol):
         self.volume = vol
+        self.show()
         self.queue_draw()
+        #self.get_parent_window().invalidate_rect(None, True)
 
     def draw_callback(self, w, cr, levels, s_width, interval, v_step):
         #levels = a number of volume levels (a number of sticks equals level-1)
@@ -230,10 +233,8 @@ class AlternateVolumeControl (Gtk.DrawingArea):
         #interval - interval between sticks
         #v_step - increase the height of the stick
         #all parameters must be integer type
-
         area_width = w.get_allocation().width
         area_height = w.get_allocation().height
-
         h_step = s_width + interval
         width = levels * (s_width + interval) - interval
         height = v_step * (levels - 1)
@@ -254,8 +255,9 @@ class AlternateVolumeControl (Gtk.DrawingArea):
         label = FC().volume * width/100.0 + start_x
 
         i = 0
+
         while i < levels:
-            color = Gdk.color_parse("orange red") if x  < label else Gdk.color_parse("white")
+            color = Gdk.color_parse("orange red") if x < label else Gdk.color_parse("white")
             Gdk.cairo_set_source_color(cr, color)
 
             cr.move_to(x, start_y)
@@ -268,6 +270,4 @@ class AlternateVolumeControl (Gtk.DrawingArea):
             i += 1
             x += h_step
             y -= v_step
-
-
-
+        return True

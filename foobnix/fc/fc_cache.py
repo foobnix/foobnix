@@ -5,9 +5,6 @@ Created on 20 February 2010
 @author: Dmitry Kogura (zavlab1)
 '''
 
-from __future__ import with_statement
-
-import logging
 import os
 import shutil
 import threading
