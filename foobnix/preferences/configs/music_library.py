@@ -36,7 +36,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
 
         self.widget = box
         uhbox = Gtk.HBox()
-        ulabel = Gtk.Label(_("Update library on start (more slow) "))
+        ulabel = Gtk.Label.new(_("Update library on start (more slow) "))
         self.update_on_start = Gtk.CheckButton()
 
         uhbox.pack_start(ulabel, False, True, 0)
@@ -68,7 +68,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         bt_remove.set_size_request(80, -1)
         bt_remove.show()
 
-        empty = Gtk.Label("")
+        empty = Gtk.Label.new("")
         empty.show()
 
         button_box.pack_start(bt_add, False, False, 0)
@@ -202,7 +202,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
             logging.info("Can't add your value" + val)
 
     def gap(self):
-        label = Gtk.Label(_("Gap between tracks"))
+        label = Gtk.Label.new(_("Gap between tracks"))
 
         self.adjustment = Gtk.Adjustment(value=0, lower=0, upper=5, step_incr=0.5)
 

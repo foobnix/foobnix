@@ -206,7 +206,7 @@ def info_dialog_with_link_and_donate(version):
 
         dialog.vbox.pack_start(image, True, True)
         dialog.vbox.pack_start(frame, True, True)
-        dialog.vbox.pack_start(Gtk.Label(_("We hope you like the player. We will make it even better.")), True, True)
+        dialog.vbox.pack_start(Gtk.Label.new(_("We hope you like the player. We will make it even better.")), True, True)
         version_check = Gtk.CheckButton(_("Check for new foobnix release on start"))
         version_check.set_active(FC().check_new_version)
         dialog.vbox.pack_start(version_check, True, True)
@@ -231,7 +231,7 @@ def show_entry_dialog(title, description):
         entry = Gtk.Entry()
         entry.connect("activate", responseToDialog, dialog, Gtk.ResponseType.OK)
         hbox = Gtk.HBox()
-        hbox.pack_start(Gtk.Label("Value:"), False, 5, 5)
+        hbox.pack_start(Gtk.Label.new("Value:"), False, 5, 5)
         hbox.pack_end(entry)
         dialog.format_secondary_markup(description)
         dialog.vbox.pack_end(hbox, True, True, 0)

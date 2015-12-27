@@ -24,7 +24,7 @@ class OrderShuffleControls(FControl, Gtk.HBox, LoadSave):
         self.olabel = EventLabel(text="R", func=lambda * a: self.on_order())
 
         self.pack_start(self.rlabel, False, False, 0)
-        self.pack_start(Gtk.Label(" "), False, False, 0)
+        self.pack_start(Gtk.Label.new(" "), False, False, 0)
         self.pack_start(self.olabel, False, False, 0)
         self.pack_start(self.toggle_buttons, False, False, 0)
 

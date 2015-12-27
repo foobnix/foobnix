@@ -14,7 +14,7 @@ class SearchControls(FControl, Gtk.VBox):
         FControl.__init__(self, controls)
         self.controls = controls
 
-        label = Gtk.Label()
+        label = Gtk.Label.new(None)
         label.set_markup("<b>%s:</b>" % _("Search music online"))
 
         """default search function"""
@@ -69,7 +69,7 @@ class SearchControls(FControl, Gtk.VBox):
         search_button.connect("clicked", self.on_search)
 
         hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
-        searchLable = Gtk.Label()
+        searchLable = Gtk.Label.new(None)
         searchLable.set_markup("<b>%s</b>" % _("Online Search"))
 
         ##if Gtk.pygtk_version < (2, 22, 0):

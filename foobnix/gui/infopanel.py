@@ -48,7 +48,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         Gtk.Frame.__init__(self)
         FControl.__init__(self, controls)
 
-        self.album_label = Gtk.Label()
+        self.album_label = Gtk.Label.new(None)
         self.album_label.set_line_wrap(True)
         self.album_label.set_markup("<b></b>")
         self.set_label_widget(self.album_label)

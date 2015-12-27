@@ -33,14 +33,14 @@ class TagEditor(ChildTopWindow):
         Gtk.Settings().set_property('gtk-tooltip-timeout', 0)
 
 
-        artist_label = Gtk.Label(_("Artist")) #@UnusedVariable
-        title_label = Gtk.Label(_("Title")) #@UnusedVariable
-        album_label = Gtk.Label(_("Album")) #@UnusedVariable
-        date_label = Gtk.Label(_("Year")) #@UnusedVariable
-        tracknumber_label = Gtk.Label(_("Track number")) #@UnusedVariable
-        genre_label = Gtk.Label(_("Genre")) #@UnusedVariable
-        author_label = Gtk.Label(_("Author text")) #@UnusedVariable
-        composer_label = Gtk.Label(_("Composer")) #@UnusedVariable
+        artist_label = Gtk.Label.new(_("Artist")) #@UnusedVariable
+        title_label = Gtk.Label.new(_("Title")) #@UnusedVariable
+        album_label = Gtk.Label.new(_("Album")) #@UnusedVariable
+        date_label = Gtk.Label.new(_("Year")) #@UnusedVariable
+        tracknumber_label = Gtk.Label.new(_("Track number")) #@UnusedVariable
+        genre_label = Gtk.Label.new(_("Genre")) #@UnusedVariable
+        author_label = Gtk.Label.new(_("Author text")) #@UnusedVariable
+        composer_label = Gtk.Label.new(_("Composer")) #@UnusedVariable
 
         self.paths = []
         self.tag_names = ["artist", "title", "album", "date", "tracknumber", "genre", "author", "composer"]

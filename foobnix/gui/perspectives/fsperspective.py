@@ -16,7 +16,7 @@ class FSPerspective(BasePerspective, Filterable):
         self.tabhelper = TabHelperControl(controls)
         self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
-        self.add_button = ButtonStockText(_(" Add Folder(s) in tree"), "list-add")
+        self.add_button = ButtonStockText(_("Add Folder(s) in tree"), "list-add")
         self.add_button.connect("clicked", lambda * a: self.tabhelper.get_current_tree().add_folder())
 
         self.vbox.pack_start(self.add_button, False, False, 0)

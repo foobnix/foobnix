@@ -42,14 +42,14 @@ class NetworkConfig(ConfigPlugin):
         proxy_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         proxy_box.show()
 
-        proxy_lable = Gtk.Label(_("Server"))
+        proxy_lable = Gtk.Label.new(_("Server"))
         proxy_lable.set_size_request(150, -1)
         proxy_lable.show()
 
         self.proxy_server = Gtk.Entry()
         self.proxy_server.show()
 
-        require = Gtk.Label(_("example: 66.42.182.178:3128"))
+        require = Gtk.Label.new(_("example: 66.42.182.178:3128"))
         require.show()
 
         proxy_box.pack_start(proxy_lable, False, False, 0)
@@ -61,7 +61,7 @@ class NetworkConfig(ConfigPlugin):
         lbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         lbox.show()
 
-        login = Gtk.Label(_("Login"))
+        login = Gtk.Label.new(_("Login"))
         login.set_size_request(150, -1)
         login.show()
 
@@ -75,7 +75,7 @@ class NetworkConfig(ConfigPlugin):
         pbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         pbox.show()
 
-        password = Gtk.Label(_("Password"))
+        password = Gtk.Label.new(_("Password"))
         password.set_size_request(150, -1)
         password.show()
 
@@ -101,7 +101,7 @@ class NetworkConfig(ConfigPlugin):
         self.test_button.connect("clicked", self.text_connection)
         self.test_button.show()
 
-        self.result = Gtk.Label(_("Result:"))
+        self.result = Gtk.Label.new(_("Result:"))
         self.result.show()
 
         check.pack_start(self.test_button, False, True, 0)
@@ -160,7 +160,7 @@ class NetworkConfig(ConfigPlugin):
             return False
 
     def buffer_size(self):
-        label = Gtk.Label(_("Buffer size for network streams (KBytes)"))
+        label = Gtk.Label.new(_("Buffer size for network streams (KBytes)"))
 
         self.buffer_adjustment = Gtk.Adjustment.new(value=128, lower=16, upper=2048, step_increment=16, page_increment=0, page_size=0)
 

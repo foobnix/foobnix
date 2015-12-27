@@ -31,7 +31,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
         self.controls = controls
         self.full_name = ""
-        self.label = Gtk.Label()
+        self.label = Gtk.Label.new(None)
 
         self.tree_menu = Popup()
 
@@ -149,7 +149,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             self.tree_menu.show(e)
 
     def _append_column(self, column, title):
-        column.label = Gtk.Label(title)
+        column.label = Gtk.Label.new(title)
         column.label.show()
         column.set_widget(column.label)
         column.set_clickable(True)
@@ -256,7 +256,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 elif tree.is_empty():
                     tab_name = unicode(path[path.rfind("/") + 1:])
                     vbox = Gtk.VBox()
-                    label = Gtk.Label(tab_name + " ")
+                    label = Gtk.Label.new(tab_name + " ")
                     label.set_angle(90)
                     if FC().tab_close_element:
                         vbox.pack_start(tabhelper.button(tree.scroll), False, False)

@@ -49,7 +49,7 @@ class PlaylistTreeControl(CommonTreeControl):
         self.menu = Popup()
         self.tree_menu = Popup()
         self.full_name = ""
-        self.label = Gtk.Label()
+        self.label = Gtk.Label.new(None)
 
         self.set_headers_visible(True)
         self.set_headers_clickable(True)
@@ -58,49 +58,49 @@ class PlaylistTreeControl(CommonTreeControl):
         """Column icon"""
         self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), icon_name=self.play_icon[0])
         self.icon_col.key = "*"
-        self.icon_col.label = Gtk.Label("*")
+        self.icon_col.label = Gtk.Label.new("*")
         self._append_column(self.icon_col)
 
         """track number"""
         self.trkn_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.tracknumber[0])
         self.trkn_col.key = "N"
         #self.trkn_col.set_clickable(True)
-        self.trkn_col.label = Gtk.Label("№")
+        self.trkn_col.label = Gtk.Label.new("№")
         self.trkn_col.item = Gtk.CheckMenuItem(_("Number"))
         self._append_column(self.trkn_col)
 
         """column composer"""
         self.comp_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.composer[0])
         self.comp_col.key = "Composer"
-        self.comp_col.label = Gtk.Label(_("Composer"))
+        self.comp_col.label = Gtk.Label.new(_("Composer"))
         self.comp_col.item = Gtk.CheckMenuItem(_("Composer"))
         self._append_column(self.comp_col)
 
         """column artist title"""
         self.description_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.text[0], font=self.font[0])
         self.description_col.key = "Track"
-        self.description_col.label = Gtk.Label(_("Track"))
+        self.description_col.label = Gtk.Label.new(_("Track"))
         self.description_col.item = Gtk.CheckMenuItem(_("Track"))
         self._append_column(self.description_col)
 
         """column artist"""
         self.artist_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.artist[0])
         self.artist_col.key = "Artist"
-        self.artist_col.label = Gtk.Label(_("Artist"))
+        self.artist_col.label = Gtk.Label.new(_("Artist"))
         self.artist_col.item = Gtk.CheckMenuItem(_("Artist"))
         self._append_column(self.artist_col)
 
         """column title"""
         self.title_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.title[0])
         self.title_col.key = "Title"
-        self.title_col.label = Gtk.Label(_("Title"))
+        self.title_col.label = Gtk.Label.new(_("Title"))
         self.title_col.item = Gtk.CheckMenuItem(_("Title"))
         self._append_column(self.title_col)
 
         """column year"""
         self.year_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.year[0])
         self.year_col.key = "Year"
-        self.year_col.label = Gtk.Label(_("Year"))
+        self.year_col.label = Gtk.Label.new(_("Year"))
         self.year_col.item = Gtk.CheckMenuItem(_("Year"))
         self._append_column(self.year_col)
 
@@ -110,14 +110,14 @@ class PlaylistTreeControl(CommonTreeControl):
 
         if self.album_col.key not in FC().columns:
             FC().columns[self.album_col.key] = [False, 7, 90]
-        self.album_col.label = Gtk.Label(_("Album"))
+        self.album_col.label = Gtk.Label.new(_("Album"))
         self.album_col.item = Gtk.CheckMenuItem(_("Album"))
         self._append_column(self.album_col)
 
         """column time"""
         self.time_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.time[0])
         self.time_col.key = "Time"
-        self.time_col.label = Gtk.Label(_("Time"))
+        self.time_col.label = Gtk.Label.new(_("Time"))
         self.time_col.item = Gtk.CheckMenuItem(_("Time"))
         self._append_column(self.time_col)
 

@@ -24,7 +24,7 @@ class TabsConfig(ConfigPlugin):
         cbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         cbox.show()
 
-        tab_label = Gtk.Label(_("Count of tabs:"))
+        tab_label = Gtk.Label.new(_("Count of tabs:"))
         tab_label.set_size_request(150, -1)
         tab_label.set_alignment(0, .5)
 
@@ -38,7 +38,7 @@ class TabsConfig(ConfigPlugin):
         lbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         lbox.show()
 
-        tab_label = Gtk.Label(_("Max length of tab:"))
+        tab_label = Gtk.Label.new(_("Max length of tab:"))
         tab_label.set_size_request(150, -1)
         tab_label.set_alignment(0, .5)
 
@@ -51,7 +51,7 @@ class TabsConfig(ConfigPlugin):
         """position"""
         pbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)
 
-        label = Gtk.Label(_("Tab position:"))
+        label = Gtk.Label.new(_("Tab position:"))
         label.set_size_request(150, -1)
         label.set_alignment(0, .5)
 
@@ -72,7 +72,7 @@ class TabsConfig(ConfigPlugin):
         """closed type """
         close_label_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)
 
-        close_label = Gtk.Label(_("Close tab sign:"))
+        close_label = Gtk.Label.new(_("Close tab sign:"))
         close_label.set_size_request(150, -1)
         close_label.set_alignment(0, .5)
 

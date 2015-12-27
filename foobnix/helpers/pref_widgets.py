@@ -58,7 +58,7 @@ class IconBlock(Gtk.HBox):
         button_2.set_property("always-show-image", True)
         button_2.connect("clicked", self.on_delete)
 
-        label = Gtk.Label(text)
+        label = Gtk.Label.new(text)
         if text: # if iconblock without label
             label.set_size_request(80, -1)
 
@@ -101,7 +101,7 @@ class IconBlock(Gtk.HBox):
                 self.combobox.set_active(0)
             else:
                 error_window = ChildTopWindow("Error")
-                label = Gtk.Label("You can not remove a standard icon")
+                label = Gtk.Label.new("You can not remove a standard icon")
                 error_window.add(label)
                 error_window.show()
         except ValueError, e:

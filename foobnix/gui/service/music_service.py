@@ -181,15 +181,15 @@ class ProgWindow(ChildTopWindow):
 
         self.set_transient_for(controls.main_window)
 
-        self.label = Gtk.Label("Total analyzed folders: ")
-        self.label1 = Gtk.Label("Total analyzed files: ")
-        self.label2 = Gtk.Label("Folders with media files found: ")
-        self.label3 = Gtk.Label("Media files found: ")
+        self.label = Gtk.Label.new("Total analyzed folders: ")
+        self.label1 = Gtk.Label.new("Total analyzed files: ")
+        self.label2 = Gtk.Label.new("Folders with media files found: ")
+        self.label3 = Gtk.Label.new("Media files found: ")
 
-        self.analyzed_files_label = Gtk.Label("0")
-        self.analyzed_folders_label = Gtk.Label("0")
-        self.media_files_label = Gtk.Label("0")
-        self.media_folders_label = Gtk.Label("0")
+        self.analyzed_files_label = Gtk.Label.new("0")
+        self.analyzed_folders_label = Gtk.Label.new("0")
+        self.media_files_label = Gtk.Label.new("0")
+        self.media_folders_label = Gtk.Label.new("0")
 
         self.analyzed_files = 0
         self.analyzed_folders = 0
