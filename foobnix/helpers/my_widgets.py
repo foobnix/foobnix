@@ -32,7 +32,7 @@ class PerspectiveButton(Gtk.ToggleButton):
         vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
         vbox.add(img)
-        label = Gtk.Label(title)
+        label = Gtk.Label.new(title)
         label.set_padding(0, 0)
         vbox.add(label)
         vbox.show_all()
@@ -53,14 +53,15 @@ class ButtonStockText(Gtk.Button):
         box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
         box.add(img)
-        box.add(Gtk.Label(title))
+        box.add(Gtk.Label.new(title))
+        box.set_halign(Gtk.Align.CENTER)
         box.show_all()
 
-        alignment = Gtk.Alignment(xalign=0.5)
+        '''alignment = Gtk.Alignment(xalign=0.5)
         #alignment.set_padding(padding_top=0, padding_bottom=0, padding_left=10, padding_right=10)
-        alignment.add(box)
+        alignment.add(box)'''
 
-        self.add(alignment)
+        self.add(box)
 
 class InsensetiveImageButton(Gtk.EventBox):
     def __init__(self, stock_image, size=Gtk.IconSize.LARGE_TOOLBAR):
@@ -71,7 +72,7 @@ class InsensetiveImageButton(Gtk.EventBox):
         self.button.set_relief(Gtk.ReliefStyle.NONE)
         img = Gtk.Image.new_from_icon_name(stock_image, size)
         self.button.set_image(img)
-        self.add(HBoxDecorator(self.button, Gtk.Label("R")))
+        self.add(HBoxDecorator(self.button, Gtk.Label.new("R")))
 
         #self.button.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("red"))
 
@@ -144,7 +145,6 @@ def tab_close_button(func=None, arg=None, stock="window-close"):
     return button
 
 
-
 class EventLabel(Gtk.EventBox):
     def __init__(self, text="×", angle=0, func=None, arg=None, func1=None):
         Gtk.EventBox.__init__(self)
@@ -152,7 +152,7 @@ class EventLabel(Gtk.EventBox):
         self.set_visible_window(False)
         self.selected = False
 
-        self.label = Gtk.Label()
+        self.label = Gtk.Label.new(None)
         self.set_not_underline()
 
         self.label.set_angle(angle)
@@ -195,7 +195,7 @@ class EventLabel(Gtk.EventBox):
 
 def notetab_label(func=None, arg=None, angle=0, symbol="×"):
     """label"""
-    label = Gtk.Label(symbol)
+    label = Gtk.Label.new(symbol)
     label.show()
     label.set_angle(angle)
 
@@ -216,6 +216,7 @@ def notetab_label(func=None, arg=None, angle=0, symbol="×"):
 class AlternateVolumeControl (Gtk.DrawingArea):
     def __init__(self, levels, s_width, interval, v_step):
         Gtk.DrawingArea.__init__(self)
+
         self.add_events(Gdk.EventMask.SCROLL_MASK)
         self.volume = FC().volume
         self.connect("draw", self.draw_callback, levels, s_width, interval, v_step)
@@ -225,7 +226,6 @@ class AlternateVolumeControl (Gtk.DrawingArea):
         self.volume = vol
         self.show()
         self.queue_draw()
-        #self.get_parent_window().invalidate_rect(None, True)
 
     def draw_callback(self, w, cr, levels, s_width, interval, v_step):
         #levels = a number of volume levels (a number of sticks equals level-1)

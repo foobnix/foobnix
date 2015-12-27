@@ -106,7 +106,7 @@ class TrayIconConfig(ConfigPlugin):
             pass
 
     def notify_time(self):
-        label = Gtk.Label(_("Time Notification (sec): "))
+        label = Gtk.Label.new(_("Time Notification (sec): "))
 
         self.adjustment = Gtk.Adjustment(value=0, lower=1, upper=10, step_incr=0.5)
 

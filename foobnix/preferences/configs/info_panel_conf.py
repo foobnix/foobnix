@@ -19,7 +19,7 @@ class InfoPagenConfig(ConfigPlugin):
         cbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         cbox.show()
 
-        tab_label = Gtk.Label(_("Disc cover size"))
+        tab_label = Gtk.Label.new(_("Disc cover size"))
         tab_label.show()
 
         adjustment = Gtk.Adjustment(value=1, lower=100, upper=350, step_incr=20, page_incr=50, page_size=0)
@@ -33,7 +33,7 @@ class InfoPagenConfig(ConfigPlugin):
         lbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         lbox.show()
 
-        lyric_label = Gtk.Label(_("Lyric panel size"))
+        lyric_label = Gtk.Label.new(_("Lyric panel size"))
         lyric_label.show()
 
         adjustment = Gtk.Adjustment(value=1, lower=100, upper=500, step_incr=20, page_incr=50, page_size=0)

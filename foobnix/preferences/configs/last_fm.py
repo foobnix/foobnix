@@ -35,7 +35,7 @@ class LastFmConfig(ConfigPlugin):
         lbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         lbox.show()
 
-        login = Gtk.Label(_("Login"))
+        login = Gtk.Label.new(_("Login"))
         login.set_size_request(150, -1)
         login.show()
 
@@ -49,7 +49,7 @@ class LastFmConfig(ConfigPlugin):
         pbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         pbox.show()
 
-        password = Gtk.Label(_("Password"))
+        password = Gtk.Label.new(_("Password"))
         password.set_size_request(150, -1)
         password.show()
 
@@ -58,7 +58,7 @@ class LastFmConfig(ConfigPlugin):
         self.password_text.set_invisible_char("*")
         self.password_text.show()
 
-        limit_text = Gtk.Label(_("Limit search results:  "))
+        limit_text = Gtk.Label.new(_("Limit search results:  "))
         limit_text.show()
 
         self.adjustment = Gtk.Adjustment(value=50, lower=10, upper=200, step_incr=10)
@@ -91,7 +91,7 @@ class LastFmConfig(ConfigPlugin):
         self.default_label_value = _("Not connected")
 
         self.frase_begin = _("You vk account is:")
-        self.vk_account_label = Gtk.Label(self.frase_begin + " %s" % self.default_label_value)
+        self.vk_account_label = Gtk.Label.new(self.frase_begin + " %s" % self.default_label_value)
         self.reset_vk_auth_button = Gtk.Button(_("Reset vk authorization"))
         self.reset_vk_auth_button.connect("button-release-event", self.on_reset_vk_click)
         self.vk_autocomplete = Gtk.CheckButton(label=_("Enable VK autocomplete"), use_underline=True)

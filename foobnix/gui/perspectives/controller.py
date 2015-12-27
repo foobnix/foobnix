@@ -32,7 +32,7 @@ class Controller(Gtk.VBox, LoadSave, Quitable, Filterable):
         self.pack_start(self.button_container, False, False, 0)
 
         ## insert dummy page
-        self.perspectives_container.add(Gtk.Label(""))
+        self.perspectives_container.add(Gtk.Label.new(""))
         self.show_all()
 
     def attach_perspective(self, perspective):

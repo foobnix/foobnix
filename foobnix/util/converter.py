@@ -41,10 +41,10 @@ class Converter(ChildTopWindow):
         vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 10)
         vbox.pack_start(self.area.scroll)
         vbox.show()
-        format_label = Gtk.Label(_('Format'))
-        bitrate_label = Gtk.Label(_('Bitrate'))
-        channels_label = Gtk.Label(_('Channels'))
-        hertz_label = Gtk.Label(_('Frequency'))
+        format_label = Gtk.Label.new(_('Format'))
+        bitrate_label = Gtk.Label.new(_('Bitrate'))
+        channels_label = Gtk.Label.new(_('Channels'))
+        hertz_label = Gtk.Label.new(_('Frequency'))
 
         format_box = Gtk.VBox()
         bitrate_box = Gtk.VBox()
@@ -229,7 +229,7 @@ class Converter(ChildTopWindow):
         ok_button = dialog.add_button("dialog-ok", Gtk.ResponseType.OK) #@UnusedVariable
         cancel_button = dialog.add_button("dialog-cancel", Gtk.ResponseType.CANCEL)
         cancel_button.grab_default()
-        label = Gtk.Label(_("So file(s)  already exist(s) and will be overwritten.\nDo you wish to continue?"))
+        label = Gtk.Label.new(_("So file(s)  already exist(s) and will be overwritten.\nDo you wish to continue?"))
         image = Gtk.Image.new_from_icon_name("dialog-warning", Gtk.IconSize.LARGE_TOOLBAR)
         hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)
         hbox.pack_start(image)

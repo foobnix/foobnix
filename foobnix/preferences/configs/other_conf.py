@@ -38,7 +38,7 @@ class OtherConfig(ConfigPlugin):
         self.online_dir.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
         self.online_dir.connect("current-folder-changed", self.on_change_folder)
 
-        hbox.pack_start(Gtk.Label(_("Save online music to folder:")), False, True, 0)
+        hbox.pack_start(Gtk.Label.new(_("Save online music to folder:")), False, True, 0)
         hbox.pack_start(self.online_dir, True, True, 0)
 
         """automatic save"""
@@ -47,7 +47,7 @@ class OtherConfig(ConfigPlugin):
 
         """download threads"""
         thbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
-        tab_label = Gtk.Label(_("Download in threads"))
+        tab_label = Gtk.Label.new(_("Download in threads"))
 
         adjustment = Gtk.Adjustment(value=1, lower=1, upper=10, step_incr=1, page_incr=1, page_size=0)
         self.threads_count = Gtk.SpinButton(adjustment=adjustment)
@@ -67,7 +67,7 @@ class OtherConfig(ConfigPlugin):
         cbox.set_border_width(4)
         dc_frame = FrameDecorator(_("Disc cover settings"), cbox, 0.5, 0.5)
 
-        tab_label = Gtk.Label(_("Disc cover size:"))
+        tab_label = Gtk.Label.new(_("Disc cover size:"))
 
         adjustment = Gtk.Adjustment(value=1, lower=100, upper=350, step_incr=20, page_incr=50, page_size=0)
         self.image_size_spin = Gtk.SpinButton(adjustment=adjustment)
@@ -100,7 +100,7 @@ class OtherConfig(ConfigPlugin):
         pbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         pbox.show()
 
-        label = Gtk.Label(_("Menu type: "))
+        label = Gtk.Label.new(_("Menu type: "))
 
         self.old_style = Gtk.RadioButton(_("Old Style (Menu Bar)"))
 
@@ -113,7 +113,7 @@ class OtherConfig(ConfigPlugin):
         o_r_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         o_r_box.show()
 
-        o_r_label = Gtk.Label(_("Order-Repeat Switcher Style:"))
+        o_r_label = Gtk.Label.new(_("Order-Repeat Switcher Style:"))
 
         self.buttons = Gtk.RadioButton(None, _("Toggle Buttons"))
 
@@ -127,7 +127,7 @@ class OtherConfig(ConfigPlugin):
         obox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         obox.show()
 
-        tab_label = Gtk.Label(_("Opacity:"))
+        tab_label = Gtk.Label.new(_("Opacity:"))
         tab_label.show()
 
         adjustment = Gtk.Adjustment(value=1, lower=20, upper=100, step_incr=1, page_incr=1, page_size=0)
@@ -140,7 +140,7 @@ class OtherConfig(ConfigPlugin):
 
         self.fmgrs_combo = self.fmgr_combobox()
         hcombobox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
-        hcombobox.pack_start(Gtk.Label(_('Choose your preferred file manager:')), False, False, 0)
+        hcombobox.pack_start(Gtk.Label.new(_('Choose your preferred file manager:')), False, False, 0)
         hcombobox.pack_start(self.fmgrs_combo, False, False, 0)
 
         self.disable_screensaver = Gtk.CheckButton(label=_("Disable Xscreensaver"), use_underline=True)

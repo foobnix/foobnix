@@ -141,7 +141,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         button_close.connect("clicked", self.hide_window)
         button_close.show()
 
-        empty = Gtk.Label("")
+        empty = Gtk.Label.new("")
         empty.show()
 
         box.pack_start(button_restore, False, True, 0)
@@ -165,7 +165,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.show()
 
-        self.label = Gtk.Label()
+        self.label = Gtk.Label.new(None)
         self.label.show()
 
         separator = Gtk.HSeparator.new()

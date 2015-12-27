@@ -68,9 +68,9 @@ class CopyProgressWindow(Gtk.Dialog):
         self.set_border_width(5)
         self.total_size = get_full_size(file_list)
 
-        self.label_from = Gtk.Label()
-        self.label_to = Gtk.Label()
-        self.pr_label = Gtk.Label(_("Total progress"))
+        self.label_from = Gtk.Label.new(None)
+        self.label_to = Gtk.Label.new(None)
+        self.pr_label = Gtk.Label.new(_("Total progress"))
 
         self.pr_bar = Gtk.ProgressBar()
         self.total_pr_bar = Gtk.ProgressBar()

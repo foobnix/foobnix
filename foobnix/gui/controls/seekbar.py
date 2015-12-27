@@ -25,7 +25,7 @@ class SeekProgressBarControls(FControl, Gtk.Alignment):
 
         self.tooltip = Gtk.Window(Gtk.WindowType.POPUP)
         self.tooltip.set_position(Gtk.WindowPosition.CENTER)
-        self.tooltip_label = Gtk.Label()
+        self.tooltip_label = Gtk.Label.new(None)
         self.tooltip.add(self.tooltip_label)
 
         self.progressbar = Gtk.ProgressBar()
