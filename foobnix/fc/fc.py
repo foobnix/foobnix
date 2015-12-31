@@ -179,7 +179,7 @@ class FC():
             'Track': [True, 5, 450],
             'Time': [True, 6, 50],
             "Album": [False, 7, 90],
-            'Year': [False, 14, 40]
+            'Year': [False, 8, 40]
         }
 
         '''for navigation tree'''

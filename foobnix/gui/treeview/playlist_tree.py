@@ -349,8 +349,13 @@ class PlaylistTreeControl(CommonTreeControl):
             column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
             column.set_fixed_width(32)
             column.set_min_width(32)
-        if FC().columns[column.key][2] > 0:
-            column.set_fixed_width(FC().columns[column.key][2])
+        try:
+            if FC().columns[column.key][2] > 0:
+                column.set_fixed_width(FC().columns[column.key][2])
+        except KeyError:
+            column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+
+
 
         self.append_column(column)
         column.button = column.label.get_parent().get_parent().get_parent()
@@ -395,7 +400,10 @@ class PlaylistTreeControl(CommonTreeControl):
         FLAG = False
 
     def to_order_columns(self, x, y):
-        return cmp(FC().columns[x.key][1], FC().columns[y.key][1])
+        try:
+            return cmp(FC().columns[x.key][1], FC().columns[y.key][1])
+        except KeyError:
+            return -1
 
     def on_load(self):
         col_list = self.get_columns()
@@ -407,7 +415,11 @@ class PlaylistTreeControl(CommonTreeControl):
             column.set_clickable(True)
             if column.key != "*":
                 column.set_reorderable(True)
-            if FC().columns[column.key][0]:
+            try:
+                visible = FC().columns[column.key][0]
+            except KeyError:
+                visible = False
+            if visible:
                 self.move_column_after(column, None)
                 if "item" in column.__dict__:
                     column.item.connect("button-press-event", self.on_toggle, column)
@@ -420,6 +432,8 @@ class PlaylistTreeControl(CommonTreeControl):
                     self.menu.append(column.item)
                     column.item.set_active(False)
                 column.set_visible(False)
+
+
         '''if FC().columns["Track"][2] < 0:
              self.description_col.set_fixed_width(self.get_allocation().width - (FC().columns["Time"][2]+70))'''
 
