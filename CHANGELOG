@@ -1,0 +1,201 @@
+3.1.2
+*Remove xsel output from terminal
+*Pass album name when scrobbling
+*Add signal for send to dbus on track changed
+*Ellipsize text if it don't fit in the column
+*Set resizable property for the columns Number and Time
+*Remove pygtkcompat and setuptools dependencies
+*Improve perspectives block behavior on resize left pane
+*Change deprecated gtk3 code to actual
+*Bug fixes and small improvements
+
+3.1.00
+*Adapted to new GTK+ version
+*Fix converter bug
+*Fix VK connect
+*Updated radio list
+*Added Finnish translation
+
+3.0.01
+*Gtk3 interface
+*GStreamer1.0 audio backend
+*Thread safety improvements
+*Stability improvements
+*Rewritten Perspectives module
+*Integration in sound indicator of Ubuntu
+*Music library loading acceleration ~2 times
+*More quick start of player
+*Reduction in occupied RAM ~3 times
+*More responsive interface
+*Tag embedded covers and cue-sheets support
+*Tag changing on fly
+*Removed video player functional
+*MPRIS2 supporting
+
+2.6.10
+*Keep the size of the left and right panels when resizing the main window
+*Remembering maximized window state
+*Radio list updated
+*Translations updated
+*Many bug fixes
+
+2.6.04
+*Add proxy support for all services
+*Remember authorization for vkontakte
+*Autoreconnect to vkontakte and lastfm after sleep mode, disconnect and ip changes
+*The ability to set the number of search results
+*Add possibility to set multikeys combinations for hotkey
+*Pause on space key press
+*Save playlists and library  on fly in cache file (not only on exit)
+*Creating cache backup file
+*Add "Plus" buttons for add tab
+*Fixed several small bugs
+
+2.6
+*Add lyrics from lyricsmania.com and megalyrics.ru
+*New progress indicator (spinner) for background tasks
+*Stability improvement
+*Add possibility to write debug in file (options --debug --log=path_to_file)
+*Add option of enable/disable multimedia keys
+*Add option "Don't try to bind volume control keys"
+*Changed program icon (as experiment)
+*Add support of radio m3u playlists (for supported stream types only)
+*Reducing the time for the start of the radio
+*Updated radio channels list
+*Many bugs have been fixed
+
+2.5.31
+* Possibility add files from file manager by clicking
+* Fixed adding m3u in playlist by click in file manager
+* Optimization of start player time
+
+2.5.30
+* Added statistic window during adding in playlist
+* Added net checking (optional).
+* Added possibility to remove rows from playlist by context menu
+* Added "Copy to..." function in playlist context menu
+* Added antiscreensaver (optional)
+* Added possibility to save online playlists in m3u files
+* Added visual volume control from tray (mouse wheel)
+* Added autoremount iso.wv files
+* Optimization of adding tracks into playlist
+* Improved finding of covers in song folders and subfolders
+* Changed color of tray popups in black
+* Playing track under pointer if no selected track
+* Removed blinking "pause" and "stop" icons in tray during song changing
+* Fixed Search by Tag
+* Fixed Search by Vkontakte
+* Fixed crashed with fast switch next track
+* Fixed iso.wv playing
+* Fixed copy/move files inside music library
+* Fixed drag and drop in playlists and music library
+* Fixed some bugs in tag editor
+* Fixed cue reader (shown zero time for last track)
+* Fixed previous track playing in shuffle mode
+* Fixed bugs with disconnect dialog.
+* Fixed problems with music library in singletab mode
+* Fixed bug with equalizer
+* Fixed impossibility to edit radio from deep levels of radio tree
+* Fixed wma files duration reading
+
+2.5.14
+* Record of radio in file
+* Full supporting of Ubuntu Natty
+* Cover & Lyric panel (optional)
+* Popup with virtual timestamp when mouse pointer over playback bar
+* Supporting of .m4v format
+* Show video files's duration
+* Possibility to create folders in music library panel
+* Search song via VK API
+* Configure amount of downloading threads
+* Download to for any files
+* Columns for music library panel
+* Possibility to change columns mode (on click)
+* Composer column was added
+* Moving and copy (with Ctrl) of files by drag and drop in music library panel
+* Fix banned VK users
+* Fix bug with playing of ape+cue
+* Fix tag editor's bug (create tags in tagless files)
+* Fix bug with enabling/disabling equalizer
+* Fix bug (impossible to edit list of extensions)
+* Optimization of interaction with PCManFM and Thunar file managers
+* Add Krusader in file manager list
+
+2.5.11
+* Fixed show title and artist for radios, added manually
+* Fixed lastfm integration list for non English locale
+* Fixed translation error with \r symbol
+* Process search by vk audio url with '#' http://vk.com/audio?id=-xxxxx#/idxxxxxx
+* Add controls to fullscreen mode: Volume Control, Exit Full Screen.
+
+2.5.10
+* Audio Converter
+* Configurable columns in playlist
+* Opportunity to choose the method of numbering (right click on №-header)
+* Controls for full screen video.
+* VK integration: Show Friends list and friends music
+* VK integration: Search by user id and by group id
+
+0.2.5
+* Simple Tag Editor, support of batch processing file tags
+* Rename and delete files and directories from music library
+* Open folders in file manager from music library
+* Popup notification
+* Last.fm integration (Love this tracks, My top artists, My top tracks, My loved tracks)
+* New style buttons for Shuffle and Ordering
+* Automatic download online music
+* Open content in file manager
+* Info panel - Artist Biography with images.
+* Volume control active "+", "-"
+* Online music search module optimization
+* File cache for online info (covers, album titles, lyrics)
+* Copy data in fit format for trackers
+* Display technical file info and player state in status panel
+* More compact search panel
+* Improve performance player (more quick start, exit and more other)
+* Drag and drop optimization
+* A lot of bug fixes
+
+
+0.2.3-2
+* Belorussian translation Алексей Середа <alex.serada@gmail.com>
+* Translated to it and es Bersil <bmsavone@gmail.com>
+* Make search line without Frame, search help text inside.
+* Implement Shuffle and Repeat buttons.
+* Remove from dependency setuptools
+
+0.2.3
+* Added Multi tab navigation tree
+* Saving navigation and playlist tabs on exit
+* New style menu with one button
+* Image themes support
+* Context menu for tabs
+* Possibility to rename tabs, playlist tab managment (mouse wheel, remove, create)
+* Possibility to set gap between tracks possibility
+* Performance optimization
+* Opacity configuration
+* Other fixes
+
+0.2.2-10
+* Fixes playback controls style for all themes
+* Fixed crashes on Debian and maybe on other system when online search
+* Append by right click button
+* Add support of ISO.wv
+* Configure logging system
+* Starting time optimization 1 sec on my machine.
+* EQ more user friendly, restart not required
+* Widget button to add music to the lybrary at first start
+* HD quality video search and playing
+* Sumbenu in same style as menu
+* Add Edit radio Url and path
+* Add new release appeared popup
+* Fixed trash displaying in navigation tree
+* Fixed menu style in the same color as panels
+* Chinese translation Dean Lee <xslidian@gmail.com>
+0.2.2-9
+* Add new "karmic" "lucid" PPA
+* Fix to works with debian
+* Add Russian Localization
+* Add man help with all commands descriptions (example: man foobnix)
+* Add command line "foobnix --now-playing" display current track
+* Add Keys on Video: F or Alt+Enter - Full Screen, P - Pause, Up,Down - volue, Left,Right - seek
