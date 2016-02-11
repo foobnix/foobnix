@@ -141,10 +141,10 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 paths = [model[t_path][self.path[0]] for t_path in t_paths]
                 row_refs = [Gtk.TreeRowReference.new(model, t_path) for t_path in t_paths]
                 self.tree_menu.add_separator()
-                self.tree_menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
-                self.tree_menu.add_item(_("Create folder"), None, self.create_folder, (model, f_t_paths[0], row))
-                self.tree_menu.add_item(_("Rename file (folder)"), None, self.rename_files, (row, self.path[0], self.text[0]))
-                self.tree_menu.add_item(_("Delete file(s) / folder(s)"), None, self.delete_files, (row_refs, paths, self.get_iter_from_row_reference))
+                self.tree_menu.add_item(_("Open in file manager"), "system-file-manager", open_in_filemanager, self.get_selected_bean().path)
+                self.tree_menu.add_item(_("Create folder"), "folder-new", self.create_folder, (model, f_t_paths[0], row))
+                self.tree_menu.add_item(_("Rename file (folder)"), "edit-find-replace", self.rename_files, (row, self.path[0], self.text[0]))
+                self.tree_menu.add_item(_("Delete file(s) / folder(s)"), "edit-delete", self.delete_files, (row_refs, paths, self.get_iter_from_row_reference))
 
             self.tree_menu.show(e)
 

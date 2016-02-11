@@ -28,7 +28,7 @@ class MyToolbar(Gtk.Toolbar):
         self.i = 0
 
     def add_button(self, tooltip, icon_name, func, param):
-        button = Gtk.ToolButton(icon_name)
+        button = Gtk.ToolButton.new(None, icon_name)
         button.show()
         button.set_tooltip_text(tooltip)
 

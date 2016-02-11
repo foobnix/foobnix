@@ -115,7 +115,7 @@ class MenuBarWidget(FControl):
         help = top.add_submenu(_("Help"))
         help.add_image_item(_("About"), "help-about", self.show_about)
         help.separator()
-        help.add_text_item(_("Project page"), lambda * a:open_link_in_browser(_("http://www.foobnix.com/news/eng")), None, False)
+        help.add_image_item(_("Project page"), "applications-internet", lambda * a:open_link_in_browser(_("http://www.foobnix.com/news/eng")))
         help.add_image_item(_("Issue report"), "dialog-warning", lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
         help.separator()
         help.add_image_item(_("Donate Participate"), "dialog-question", lambda * a:open_link_in_browser(_("http://www.foobnix.com/donate/eng")))

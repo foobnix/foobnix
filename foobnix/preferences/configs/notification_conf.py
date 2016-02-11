@@ -19,7 +19,7 @@ class NotificationConfig(ConfigPlugin):
         self.check_new_version = Gtk.CheckButton(label=_("Check for new foobnix release on start"), use_underline=True)
         self.check_new_version.show()
 
-        demo = Gtk.Button(_("Show new foobnix release avaliable demo dialog"))
+        demo = Gtk.Button.new_with_label(_("Show new foobnix release avaliable demo dialog"))
         demo.connect("clicked", lambda * a:info_dialog_with_link_and_donate("foobnix [version]"))
         demo.show()
 

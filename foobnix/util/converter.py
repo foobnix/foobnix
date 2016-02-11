@@ -83,20 +83,20 @@ class Converter(ChildTopWindow):
         vbox.pack_start(hbox, False)
 
         self.button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)
-        close_button = Gtk.Button(_("Close"))
+        close_button = Gtk.Button.new_with_label(_("Close"))
         close_button.set_size_request(150, 30)
         close_button.connect("clicked", lambda *a: self.hide())
-        self.convert_button = Gtk.Button(_("Convert"))
+        self.convert_button = Gtk.Button.new_with_label(_("Convert"))
         self.convert_button.set_size_request(150, 30)
         self.convert_button.connect("clicked", self.save)
 
         self.progressbar = Gtk.ProgressBar()
 
-        self.stop_button = Gtk.Button(_("Stop"))
+        self.stop_button = Gtk.Button.new_with_label(_("Stop"))
         self.stop_button.set_size_request(100, 30)
         self.stop_button.connect("clicked", self.on_stop)
 
-        self.open_folder_button = Gtk.Button(_("Show files"))
+        self.open_folder_button = Gtk.Button.new_with_label(_("Show files"))
         self.open_folder_button.connect('released', self.open_in_fm)
 
         self.progress_box = Gtk.HBox()

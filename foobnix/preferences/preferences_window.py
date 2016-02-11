@@ -127,16 +127,16 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         box.show()
 
-        button_restore = Gtk.Button(_("Restore Defaults Settings"))
+        button_restore = Gtk.Button.new_with_label(_("Restore Defaults Settings"))
         button_restore.connect("clicked", lambda * a: self.restore_defaults())
         button_restore.show()
 
-        button_apply = Gtk.Button(_("Apply"))
+        button_apply = Gtk.Button.new_with_label(_("Apply"))
         button_apply.set_size_request(100, -1)
         button_apply.connect("clicked", lambda * a: self.on_save())
         button_apply.show()
 
-        button_close = Gtk.Button(_("Close"))
+        button_close = Gtk.Button.new_with_label(_("Close"))
         button_close.set_size_request(100, -1)
         button_close.connect("clicked", self.hide_window)
         button_close.show()

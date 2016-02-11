@@ -178,7 +178,7 @@ class EqWindow(ChildTopWindow, FControl):
         auto.show()
         self.combo.show()
 
-        save = Gtk.Button(_("Save"))
+        save = Gtk.Button.new_with_label(_("Save"))
         save.connect("clicked", self.on_save)
 
         save.show()

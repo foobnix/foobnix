@@ -58,12 +58,12 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         button_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         button_box.show()
 
-        bt_add = Gtk.Button(_("Add"))
+        bt_add = Gtk.Button.new_with_label(_("Add"))
         bt_add.connect("clicked", self.add_dir)
         bt_add.set_size_request(80, -1)
         bt_add.show()
 
-        bt_remove = Gtk.Button(_("Remove"))
+        bt_remove = Gtk.Button.new_with_label(_("Remove"))
         bt_remove.connect("clicked", self.remove_dir)
         bt_remove.set_size_request(80, -1)
         bt_remove.show()
@@ -171,12 +171,12 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         button_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         button_box.show()
 
-        bt_add = Gtk.Button(_("Add"))
+        bt_add = Gtk.Button.new_with_label(_("Add"))
         bt_add.connect("clicked", self.on_add_file)
         bt_add.set_size_request(80, -1)
         bt_add.show()
 
-        bt_remove = Gtk.Button(_("Remove"))
+        bt_remove = Gtk.Button.new_with_label(_("Remove"))
         bt_remove.connect("clicked", lambda *a: self.files_controller.delete_selected())
         bt_remove.set_size_request(80, -1)
         bt_remove.show()

@@ -169,7 +169,7 @@ def info_dialog_with_link(title, version, link):
         dialog.set_title(title)
         dialog.set_markup(title)
         dialog.format_secondary_markup("<b>" + version + "</b>")
-        link = Gtk.LinkButton(link, link)
+        link = Gtk.LinkButton.new_with_label(link, link)
         link.show()
         dialog.vbox.pack_end(link, True, True, 0)
         dialog.show_all()
@@ -190,7 +190,7 @@ def info_dialog_with_link_and_donate(version):
 
 
 
-        card = Gtk.LinkButton("http://foobnix.com/%s/download.html"%SITE_LOCALE, _("Download and Donate"))
+        card = Gtk.LinkButton.new_with_label("http://foobnix.com/%s/download.html"%SITE_LOCALE, _("Download and Donate"))
         #terminal = Gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
         # link = Gtk.LinkButton("http://www.foobnix.com/support?lang=%s"%SITE_LOCALE, _("Download"))
 

@@ -86,8 +86,8 @@ class TagEditor(ChildTopWindow):
         hpan.pack1(lvbox)
         hpan.pack2(rvbox)
 
-        apply_button = Gtk.Button(_("Apply"))
-        close_button = Gtk.Button(_("Close"))
+        apply_button = Gtk.Button.new_with_label(_("Apply"))
+        close_button = Gtk.Button.new_with_label(_("Close"))
 
         buttons_hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)
         buttons_hbox.set_homogeneous(True)

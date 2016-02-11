@@ -65,7 +65,7 @@ class SearchControls(FControl, Gtk.VBox):
 
         combobox = self.combobox_creator()
 
-        search_button = Gtk.Button(_("Search"))
+        search_button = Gtk.Button.new_with_label(_("Search"))
         search_button.connect("clicked", self.on_search)
 
         hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)

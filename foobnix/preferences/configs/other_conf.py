@@ -84,7 +84,7 @@ class OtherConfig(ConfigPlugin):
 
         self.check_new_version = Gtk.CheckButton(label=_("Check for new foobnix release on start"), use_underline=True)
 
-        demo = Gtk.Button(label=_("Check for update"))
+        demo = Gtk.Button.new_with_label(_("Check for update"))
         demo.connect("clicked", lambda * a: info_dialog_with_link_and_donate("foobnix [version]"))
         uhbox.pack_start(self.check_new_version, True, True, 0)
         uhbox.pack_start(demo, False, False, 0)

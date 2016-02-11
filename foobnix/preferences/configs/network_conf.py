@@ -96,7 +96,7 @@ class NetworkConfig(ConfigPlugin):
         self.vk_test.set_text("http://vk.com")
         self.vk_test.show()
 
-        self.test_button = Gtk.Button(_("Check Connection"))
+        self.test_button = Gtk.Button.new_with_label(_("Check Connection"))
         self.test_button.set_size_request(150, -1)
         self.test_button.connect("clicked", self.text_connection)
         self.test_button.show()

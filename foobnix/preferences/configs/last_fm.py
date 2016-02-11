@@ -92,7 +92,7 @@ class LastFmConfig(ConfigPlugin):
 
         self.frase_begin = _("You vk account is:")
         self.vk_account_label = Gtk.Label.new(self.frase_begin + " %s" % self.default_label_value)
-        self.reset_vk_auth_button = Gtk.Button(_("Reset vk authorization"))
+        self.reset_vk_auth_button = Gtk.Button.new_with_label(_("Reset vk authorization"))
         self.reset_vk_auth_button.connect("button-release-event", self.on_reset_vk_click)
         self.vk_autocomplete = Gtk.CheckButton(label=_("Enable VK autocomplete"), use_underline=True)
         self.vk_autocomplete.show()

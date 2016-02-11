@@ -13,13 +13,13 @@ import chardet
 import foobnix.util.id3_util
 
 from foobnix.fc.fc import FC
-from foobnix.regui.model import FModel
+from foobnix.gui.model import FModel
 from foobnix.util import file_utils
 from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.file_utils import get_any_supported_audio_file
-from foobnix.util.id3_util import udpate_id3
+from foobnix.util.id3_util import update_id3
 
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
