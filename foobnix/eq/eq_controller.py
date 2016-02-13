@@ -7,12 +7,12 @@ Created on 24 окт. 2010
 
 import logging
 
-from foobnix.fc.fc import FC
-from foobnix.util import analytics
 from foobnix.eq.eq_gui import EqWindow
-from foobnix.gui.state import LoadSave
-from foobnix.gui.model.signal import FControl
+from foobnix.fc.fc import FC
 from foobnix.gui.model.eq_model import EqModel
+from foobnix.gui.model.signal import FControl
+from foobnix.gui.state import LoadSave
+from foobnix.util import analytics
 
 
 class EqController(FControl, LoadSave):

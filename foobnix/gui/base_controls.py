@@ -5,37 +5,36 @@ Created on 25 сент. 2010
 @author: ivan
 '''
 
-import os
-import time
 import copy
-import thread
+import os
 import logging
+import thread
+import time
 
-from gi.repository import Gtk
 from gi.repository import GLib
-from gi.repository import GdkPixbuf
+from gi.repository import Gtk
 from gi.repository import Notify
-
 from threading import Lock
 from urllib2 import urlopen
+
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
 from foobnix.fc.fc_cache import FCache
-from foobnix.helpers.dialog_entry import file_chooser_dialog, \
-    directory_chooser_dialog, info_dialog_with_link_and_donate
 from foobnix.gui.model import FModel
 from foobnix.gui.service.music_service import get_all_music_by_paths
 from foobnix.gui.service.vk_service import VKService
 from foobnix.gui.state import LoadSave, Quitable
+from foobnix.helpers.dialog_entry import file_chooser_dialog, \
+    directory_chooser_dialog, info_dialog_with_link_and_donate
+from foobnix.thirdparty import pyperclip
 from foobnix.util.bean_utils import get_bean_posible_paths
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.util.file_utils import get_file_extension
 from foobnix.util.iso_util import mount_tmp_iso
 from foobnix.util.version import compare_versions
-from foobnix.version import FOOBNIX_VERSION
 from foobnix.util import analytics, idle_task, idle_task_priority
 from foobnix.util.text_utils import normalize_text
-from foobnix.thirdparty import pyperclip
+from foobnix.version import FOOBNIX_VERSION
 
 class BaseFoobnixControls():
     def __init__(self):

@@ -5,16 +5,16 @@ Created on 30 авг. 2010
 @author: ivan
 '''
 
-from gi.repository import Gtk
 from gi.repository import Gdk
+from gi.repository import Gtk
 
 from foobnix.fc.fc import FC
-from foobnix.helpers.pref_widgets import HBoxDecorator
 
 
 def open_link_in_browser(uri):
-    link = Gtk.LinkButton(uri)
+    link = Gtk.LinkButton.new(uri)
     link.clicked()
+
 
 class PerspectiveButton(Gtk.ToggleButton):
     def __init__(self, title, icon_name, tooltip=None):
@@ -39,54 +39,24 @@ class PerspectiveButton(Gtk.ToggleButton):
 
         self.add(vbox)
 
-class ButtonStockText(Gtk.Button):
-    def __init__(self, title, icon_name, tooltip=None):
-        Gtk.Button.__init__(self, "")
+
+class ButtonIconText(Gtk.Button):
+    def __init__(self, title, icon_name, orientation=Gtk.Orientation.HORIZONTAL, spacing=0, icon_size=Gtk.IconSize.MENU, tooltip=None):
+        Gtk.Button.__init__(self)
         if not tooltip:
             tooltip = title
 
         self.set_tooltip_text(tooltip)
 
-        label = self.get_child()
-        self.remove(label)
-
-        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
-        img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
+        box = Gtk.Box.new(orientation, spacing)
+        img = Gtk.Image.new_from_icon_name(icon_name, icon_size)
         box.add(img)
         box.add(Gtk.Label.new(title))
         box.set_halign(Gtk.Align.CENTER)
         box.show_all()
 
-        '''alignment = Gtk.Alignment(xalign=0.5)
-        #alignment.set_padding(padding_top=0, padding_bottom=0, padding_left=10, padding_right=10)
-        alignment.add(box)'''
-
         self.add(box)
 
-class InsensetiveImageButton(Gtk.EventBox):
-    def __init__(self, stock_image, size=Gtk.IconSize.LARGE_TOOLBAR):
-        Gtk.EventBox.__init__(self)
-        self.button = Gtk.Button()
-        #self.button.set_sensitive(False)
-        self.button.set_focus_on_click(False)
-        self.button.set_relief(Gtk.ReliefStyle.NONE)
-        img = Gtk.Image.new_from_icon_name(stock_image, size)
-        self.button.set_image(img)
-        self.add(HBoxDecorator(self.button, Gtk.Label.new("R")))
-
-        #self.button.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("red"))
-
-        self.connect("button-press-event", self.on_click)
-        self.button.connect("button-press-event", self.on_click1)
-
-        self.insensetive = False
-
-    def on_click1(self, *a):
-        pass
-
-    def on_click(self, *a):
-        self.insensetive = not self.insensetive
-        #self.button.set_sensitive(self.insensetive)
 
 class ImageButton(Gtk.Button):
     def __init__(self, icon_name, func=None, tooltip_text=None, size=Gtk.IconSize.BUTTON):
@@ -116,6 +86,7 @@ class ToggleImageButton(Gtk.ToggleButton):
         img = Gtk.Image.new_from_icon_name(icon_name, size)
         self.add(img)
 
+
 class ToggleWidgetButton(Gtk.ToggleButton):
     def __init__(self, widget, func=None, param=None):
         Gtk.ToggleButton.__init__(self)
@@ -132,7 +103,7 @@ class ToggleWidgetButton(Gtk.ToggleButton):
 
 def tab_close_button(func=None, arg=None, stock="window-close"):
     """button"""
-    button = Gtk.Button()
+    button = Gtk.Button.new()
     button.set_property("always-show-image", True)
     button.set_relief(Gtk.ReliefStyle.NONE)
     img = Gtk.Image.new_from_icon_name(stock, Gtk.IconSize.MENU)
@@ -212,6 +183,7 @@ def notetab_label(func=None, arg=None, angle=0, symbol="×"):
         event.connect("button-press-event", lambda * a: func())
     event.show()
     return event
+
 
 class AlternateVolumeControl (Gtk.DrawingArea):
     def __init__(self, levels, s_width, interval, v_step):

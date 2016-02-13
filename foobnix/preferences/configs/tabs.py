@@ -29,7 +29,7 @@ class TabsConfig(ConfigPlugin):
         tab_label.set_alignment(0, .5)
 
         adjustment = Gtk.Adjustment(value=1, lower=1, upper=20, step_incr=1, page_incr=10, page_size=0)
-        self.tabs_count = Gtk.SpinButton(adjustment=adjustment)
+        self.tabs_count = Gtk.SpinButton.new(adjustment, 0.0, 0)
 
         cbox.pack_start(tab_label, False, False, 0)
         cbox.pack_start(self.tabs_count, False, True, 0)
@@ -55,7 +55,7 @@ class TabsConfig(ConfigPlugin):
         label.set_size_request(150, -1)
         label.set_alignment(0, .5)
 
-        self.radio_tab_left = Gtk.RadioButton(None, _("Left"))
+        self.radio_tab_left = Gtk.RadioButton.new_with_label(None, _("Left"))
         self.radio_tab_left.set_size_request(55, -1)
 
         self.radio_tab_top = Gtk.RadioButton.new_with_label_from_widget(self.radio_tab_left, _("Top"))
@@ -76,7 +76,7 @@ class TabsConfig(ConfigPlugin):
         close_label.set_size_request(150, -1)
         close_label.set_alignment(0, .5)
 
-        self.radio_tab_label = Gtk.RadioButton(None, "x")
+        self.radio_tab_label = Gtk.RadioButton.new_with_label(None, "x")
         self.radio_tab_label.set_size_request(55, -1)
 
         self.radio_tab_button = Gtk.RadioButton.new_from_widget(self.radio_tab_label)

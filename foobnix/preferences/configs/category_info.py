@@ -12,13 +12,13 @@ class CategoryInfoConfig(ConfigPlugin):
         box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.hide()
 
-        similar_arists = Gtk.CheckButton(label="Show Similar Artists", use_underline=True)
+        similar_arists = Gtk.CheckButton.new_with_label(_"Show Similar Artists")
         similar_arists.show()
 
-        similar_song = Gtk.CheckButton(label="Show Similar Songs", use_underline=True)
+        similar_song = Gtk.CheckButton.new_with_label(_"Show Similar Songs")
         similar_song.show()
 
-        similar_tags = Gtk.CheckButton(label="Show Similar Tags", use_underline=True)
+        similar_tags = Gtk.CheckButton.new_with_label(_"Show Similar Tags")
         similar_tags.show()
 
         box.pack_start(similar_arists, False, True, 0)

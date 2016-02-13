@@ -11,28 +11,27 @@ import os
 import re
 import thread
 
-from gi.repository import Gtk
 from gi.repository import GLib
+from gi.repository import Gtk
 
 from foobnix.fc.fc import FC
+from foobnix.gui.treeview.common_tree import CommonTreeControl
+from foobnix.helpers.menu import Popup
+from foobnix.playlists.m3u_reader import update_id3_for_m3u
 from foobnix.playlists.pls_reader import update_id3_for_pls
 from foobnix.util import const, idle_task
-from foobnix.helpers.menu import Popup
-from foobnix.util.bean_utils import get_bean_from_file
-from foobnix.util.id3_util import update_id3
-from foobnix.util.tag_util import edit_tags
-from foobnix.util.converter import convert_files
 from foobnix.util.audio import get_mutagen_audio
+from foobnix.util.bean_utils import get_bean_from_file
+from foobnix.util.converter import convert_files
 from foobnix.util.file_utils import open_in_filemanager, copy_to, get_files_from_gtk_selection_data,\
     get_file_extension, is_playlist
-from foobnix.util.localization import foobnix_localization
-from foobnix.gui.treeview.common_tree import CommonTreeControl
+from foobnix.util.id3_util import update_id3
 from foobnix.util.key_utils import KEY_RETURN, is_key, KEY_DELETE, \
     is_modificator
+from foobnix.util.localization import foobnix_localization
 from foobnix.util.mouse_utils import is_double_left_click, \
     is_rigth_click, right_click_optimization_for_trees, is_empty_click
-
-from foobnix.playlists.m3u_reader import update_id3_for_m3u
+from foobnix.util.tag_util import edit_tags
 
 
 foobnix_localization()
@@ -56,52 +55,52 @@ class PlaylistTreeControl(CommonTreeControl):
         self.set_reorderable(True)
 
         """Column icon"""
-        self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf(), icon_name=self.play_icon[0])
+        self.icon_col = Gtk.TreeViewColumn(None, Gtk.CellRendererPixbuf.new(), icon_name=self.play_icon[0])
         self.icon_col.key = "*"
         self.icon_col.label = Gtk.Label.new("*")
         self._append_column(self.icon_col)
 
         """track number"""
-        self.trkn_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.tracknumber[0])
+        self.trkn_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText.new(), text=self.tracknumber[0])
         self.trkn_col.key = "N"
         #self.trkn_col.set_clickable(True)
         self.trkn_col.label = Gtk.Label.new("№")
-        self.trkn_col.item = Gtk.CheckMenuItem(_("Number"))
+        self.trkn_col.item = Gtk.CheckMenuItem.new_with_label(_("Number"))
         self._append_column(self.trkn_col)
 
         """column composer"""
         self.comp_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.composer[0])
         self.comp_col.key = "Composer"
         self.comp_col.label = Gtk.Label.new(_("Composer"))
-        self.comp_col.item = Gtk.CheckMenuItem(_("Composer"))
+        self.comp_col.item = Gtk.CheckMenuItem.new_with_label(_("Composer"))
         self._append_column(self.comp_col)
 
         """column artist title"""
         self.description_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.text[0], font=self.font[0])
         self.description_col.key = "Track"
         self.description_col.label = Gtk.Label.new(_("Track"))
-        self.description_col.item = Gtk.CheckMenuItem(_("Track"))
+        self.description_col.item = Gtk.CheckMenuItem.new_with_label(_("Track"))
         self._append_column(self.description_col)
 
         """column artist"""
         self.artist_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.artist[0])
         self.artist_col.key = "Artist"
         self.artist_col.label = Gtk.Label.new(_("Artist"))
-        self.artist_col.item = Gtk.CheckMenuItem(_("Artist"))
+        self.artist_col.item = Gtk.CheckMenuItem.new_with_label(_("Artist"))
         self._append_column(self.artist_col)
 
         """column title"""
         self.title_col = Gtk.TreeViewColumn(None, self.ellipsize_render, text=self.title[0])
         self.title_col.key = "Title"
         self.title_col.label = Gtk.Label.new(_("Title"))
-        self.title_col.item = Gtk.CheckMenuItem(_("Title"))
+        self.title_col.item = Gtk.CheckMenuItem.new_with_label(_("Title"))
         self._append_column(self.title_col)
 
         """column year"""
-        self.year_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.year[0])
+        self.year_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText.new(), text=self.year[0])
         self.year_col.key = "Year"
         self.year_col.label = Gtk.Label.new(_("Year"))
-        self.year_col.item = Gtk.CheckMenuItem(_("Year"))
+        self.year_col.item = Gtk.CheckMenuItem.new_with_label(_("Year"))
         self._append_column(self.year_col)
 
         """column album"""
@@ -111,14 +110,14 @@ class PlaylistTreeControl(CommonTreeControl):
         if self.album_col.key not in FC().columns:
             FC().columns[self.album_col.key] = [False, 7, 90]
         self.album_col.label = Gtk.Label.new(_("Album"))
-        self.album_col.item = Gtk.CheckMenuItem(_("Album"))
+        self.album_col.item = Gtk.CheckMenuItem.new_with_label(_("Album"))
         self._append_column(self.album_col)
 
         """column time"""
-        self.time_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText(), text=self.time[0])
+        self.time_col = Gtk.TreeViewColumn(None, Gtk.CellRendererText.new(), text=self.time[0])
         self.time_col.key = "Time"
         self.time_col.label = Gtk.Label.new(_("Time"))
-        self.time_col.item = Gtk.CheckMenuItem(_("Time"))
+        self.time_col.item = Gtk.CheckMenuItem.new_with_label(_("Time"))
         self._append_column(self.time_col)
 
         self.configure_send_drag()
@@ -127,10 +126,8 @@ class PlaylistTreeControl(CommonTreeControl):
         self.set_playlist_plain()
 
         self.connect("button-release-event", self.on_button_press)
-
-        self.on_load()
-
         self.connect("columns-changed", self.on_columns_changed)
+        self.on_load()
 
     def set_playlist_tree(self):
         self.rebuild_as_tree()
@@ -260,32 +257,33 @@ class PlaylistTreeControl(CommonTreeControl):
 
                 if local_paths:
                     self.tree_menu.add_item(_('Copy To...'), "list-add", copy_to, local_paths)
-                    self.tree_menu.add_item(_("Open in file manager"), None, open_in_filemanager, local_paths[0])
+                    self.tree_menu.add_item(_("Open in file manager"), "system-file-manager", open_in_filemanager, local_paths[0])
                 if inet_paths:
-                    self.tree_menu.add_item(_('Download'), "list-add",
+                    self.tree_menu.add_item(_('Download'), "download",
                                             self.controls.dm.append_tasks, self.get_all_selected_beans())
-                    self.tree_menu.add_item(_('Download To...'), "list-add",
+                    self.tree_menu.add_item(_('Download To...'), "folder-downloads",
                                             self.controls.dm.append_tasks_with_dialog, self.get_all_selected_beans())
 
                 self.tree_menu.add_separator()
 
                 if local_paths:
                     self.tree_menu.add_item(_('Edit Tags'), "accessories-text-editor", edit_tags, (self.controls, local_paths))
-                    self.tree_menu.add_item(_('Format Converter'), "applications-utilities", convert_files, local_paths)
+                    self.tree_menu.add_item(_('Format Converter'), "convertimages", convert_files, local_paths)
                 text = self.get_selected_bean().text
-                self.tree_menu.add_item(_('Copy To Search Line'), "edit-copy",
+                self.tree_menu.add_item(_('Copy To Search Line'), "system-search",
                                         self.controls.searchPanel.set_search_text, text)
                 self.tree_menu.add_separator()
+                self.tree_menu.add_item(_('Copy link'), "insert-link",
+                                        self.controls.copy_link, self.get_all_selected_beans())
                 self.tree_menu.add_item(_('Copy №-Title-Time'), "edit-copy", self.copy_info_to_clipboard)
                 self.tree_menu.add_item(_('Copy Artist-Title-Album'), "edit-copy",
                                         self.copy_info_to_clipboard, True)
                 self.tree_menu.add_separator()
-                self.tree_menu.add_item(_('Love This Track(s) by Last.fm'), None,
-                                        self.controls.love_this_tracks, self.get_all_selected_beans())
-                self.tree_menu.add_item(_('Add to My Audio (VK)'), None,
+                self.tree_menu.add_item(_('Add to My Audio (VK)'), "list-add",
                                         self.controls.add_to_my_playlist, self.get_all_selected_beans())
-                self.tree_menu.add_item(_('Copy link'), None,
-                                        self.controls.copy_link, self.get_all_selected_beans())
+                self.tree_menu.add_item(_('Love This Track(s) by Last.fm'), "heart",
+                                        self.controls.love_this_tracks, self.get_all_selected_beans())
+
 
                 self.tree_menu.show(e)
 

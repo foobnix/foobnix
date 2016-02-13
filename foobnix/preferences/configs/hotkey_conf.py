@@ -102,12 +102,12 @@ class HotKeysConfig(ConfigPlugin):
         hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         hbox.show()
 
-        add_button = Gtk.Button(_("Add"))
+        add_button = Gtk.Button.new_with_label(_("Add"))
         add_button.set_size_request(80, -1)
         add_button.connect("clicked", self.on_add_row)
         add_button.show()
 
-        remove_button = Gtk.Button(_("Remove"))
+        remove_button = Gtk.Button.new_with_label(_("Remove"))
         remove_button.connect("clicked", self.on_remove_row)
         remove_button.set_size_request(80, -1)
         remove_button.show()
@@ -127,15 +127,15 @@ class HotKeysConfig(ConfigPlugin):
         self.hotkey_text.connect("key-press-event", self.on_key_press)
         self.hotkey_text.set_size_request(150, -1)
 
-        self.hotkey_auto = Gtk.CheckButton(_("Auto key"))
+        self.hotkey_auto = Gtk.CheckButton.new_with_label(_("Auto key"))
         self.hotkey_auto.set_active(True)
 
         hotbox.pack_start(self.action_text, False, True, 0)
         hotbox.pack_start(self.hotkey_text, False, True, 0)
         hotbox.pack_start(self.hotkey_auto, False, True, 0)
 
-        self.disable_mediakeys = Gtk.CheckButton(label=_("Disable Multimedia Keys"), use_underline=True)
-        self.disable_volume_keys = Gtk.CheckButton(label=_("Don't try to bind volume control keys"), use_underline=True)
+        self.disable_mediakeys = Gtk.CheckButton.new_with_label(_("Disable Multimedia Keys"))
+        self.disable_volume_keys = Gtk.CheckButton.new_with_label(_("Don't try to bind volume control keys"))
         def on_toggle(*a):
             if self.disable_mediakeys.get_active():
                 self.disable_volume_keys.set_sensitive(False)

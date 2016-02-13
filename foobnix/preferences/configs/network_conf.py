@@ -29,7 +29,7 @@ class NetworkConfig(ConfigPlugin):
         box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.hide()
 
-        self.enable_proxy = Gtk.CheckButton(label=_("Enable HTTP proxy"), use_underline=True)
+        self.enable_proxy = Gtk.CheckButton.new_with_label(_("Enable HTTP proxy"))
         self.enable_proxy.connect("clicked", self.on_enable_http_proxy)
         self.enable_proxy.show()
 
@@ -119,7 +119,7 @@ class NetworkConfig(ConfigPlugin):
         frame_box.set_border_width(5)
         frame_box.show()
 
-        self.net_ping = Gtk.CheckButton(label=_("Show message on network disconnection"), use_underline=True)
+        self.net_ping = Gtk.CheckButton.new_with_label(_("Show message on network disconnection"))
 
         box.pack_start(self.buffer_size(), False, True, 0)
         box.pack_start(self.net_ping, False, True, 0)
@@ -164,7 +164,7 @@ class NetworkConfig(ConfigPlugin):
 
         self.buffer_adjustment = Gtk.Adjustment.new(value=128, lower=16, upper=2048, step_increment=16, page_increment=0, page_size=0)
 
-        buff_size = Gtk.SpinButton(adjustment=self.buffer_adjustment, climb_rate=0, digits=0)
+        buff_size = Gtk.SpinButton.new(self.buffer_adjustment, 0.0, 0)
         buff_size.show()
 
         hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)

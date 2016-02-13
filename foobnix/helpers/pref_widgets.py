@@ -6,13 +6,14 @@ Created on Nov 5, 2010
 
 import logging
 
-from gi.repository import Gtk
 from gi.repository import GObject
+from gi.repository import Gtk
 
 from foobnix.fc.fc import FC
 from foobnix.helpers.dialog_entry import file_chooser_dialog
-from foobnix.util.pix_buffer import create_pixbuf_from_resource
+from foobnix.helpers.my_widgets import ButtonIconText
 from foobnix.helpers.window import ChildTopWindow
+from foobnix.util.pix_buffer import create_pixbuf_from_resource
 
 
 class IconBlock(Gtk.HBox):
@@ -50,11 +51,11 @@ class IconBlock(Gtk.HBox):
         self.combobox.pack_start(pix_render, 0)
         self.combobox.add_attribute(pix_render, 'pixbuf', 0)
 
-        button_1 = Gtk.Button("Choose", "folder-open")
+        button_1 = ButtonIconText("Choose", "folder-open")
         button_1.set_property("always-show-image", True)
         button_1.connect("clicked", self.on_file_choose)
 
-        button_2 = Gtk.Button("Delete", "edit-delete")
+        button_2 = ButtonIconText("Delete", "edit-delete")
         button_2.set_property("always-show-image", True)
         button_2.connect("clicked", self.on_delete)
 

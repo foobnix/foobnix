@@ -37,7 +37,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         self.widget = box
         uhbox = Gtk.HBox()
         ulabel = Gtk.Label.new(_("Update library on start (more slow) "))
-        self.update_on_start = Gtk.CheckButton()
+        self.update_on_start = Gtk.CheckButton.new()
 
         uhbox.pack_start(ulabel, False, True, 0)
         uhbox.pack_start(self.update_on_start, False, False, 0)
@@ -206,7 +206,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
 
         self.adjustment = Gtk.Adjustment(value=0, lower=0, upper=5, step_incr=0.5)
 
-        gap_len = Gtk.SpinButton(adjustment=self.adjustment, climb_rate=0.0, digits=1)
+        gap_len = Gtk.SpinButton.new(self.adjustment, 0.0, 1)
         gap_len.show()
 
         hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)

@@ -5,8 +5,8 @@ Created on 20 окт. 2010
 @author: ivan
 '''
 
-import sys
 import logging
+import sys
 
 from gi.repository import Gtk
 from gi.repository import Gdk

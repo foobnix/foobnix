@@ -3,12 +3,15 @@ Created on Mar 23, 2011
 
 @author: zavlab1
 '''
-from foobnix.helpers.my_widgets import ImageButton
+
+import logging
 import os
 import shutil
-import logging
+
 from gi.repository import Gtk
-from gi.repository import Gst
+from foobnix.helpers.my_widgets import ImageButton
+
+
 from foobnix.helpers.dialog_entry import FileSavingDialog
 
 

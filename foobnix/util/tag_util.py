@@ -57,7 +57,7 @@ class TagEditor(ChildTopWindow):
 
             self.labels.append(vars()[tag_name + "_label"])
 
-            vars()[tag_name + "_chbutton"] = Gtk.CheckButton()
+            vars()[tag_name + "_chbutton"] = Gtk.CheckButton.new()
             self.check_buttons.append(vars()[tag_name + "_chbutton"])
 #
             check_button = self.check_buttons[-1]
