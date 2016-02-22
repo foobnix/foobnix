@@ -6,6 +6,7 @@ Created on 23 дек. 2010
 '''
 
 import logging
+
 from gi.repository import Gtk
 
 from foobnix.fc.fc import FC
