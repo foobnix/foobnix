@@ -77,7 +77,6 @@ class FCHelper():
             return None
 
         with open(file_path, 'r') as load_file:
-            try:
                 load_file = open(file_path, 'r')
                 pickled = load_file.read()
 
@@ -85,11 +84,7 @@ class FCHelper():
                 logging.debug("Config loaded")
                 self.print_info(object)
                 return object
-            except Exception as e:
-                logging.error("Error load config" + str(e))
-                if not file_path.endswith("_backup"):
-                    logging.info("Try to load config backup")
-                    return self.load(file_path + "_backup")
+
         return None
 
     def delete(self, file_path):
@@ -100,4 +95,5 @@ class FCHelper():
         dict = object.__dict__
         for i in object.__dict__:
             if i not in ["user_id", "access_token", "vk_user", "vk_pass", "lfm_login", "lfm_password", "uuid"]:
-                logging.debug(i + " " + str(dict[i])[:500])
+                value = dict[i] if isinstance(dict[i], unicode) else str(dict[i])
+                logging.debug(i + " " + value[:500])
