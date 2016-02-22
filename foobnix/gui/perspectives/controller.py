@@ -9,10 +9,10 @@ from foobnix.gui.perspectives import StackableWidget, BasePerspective, OneButton
 from foobnix.helpers.my_widgets import PerspectiveButton
 
 
-class Controller(Gtk.VBox, LoadSave, Quitable, Filterable):
+class Controller(Gtk.Box, LoadSave, Quitable, Filterable):
 
     def __init__(self, controls):
-        super(Controller, self).__init__(False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.scroll = Gtk.ScrolledWindow()
         self.scroll.add(self)
         self.scroll.set_border_width(0)
@@ -22,6 +22,7 @@ class Controller(Gtk.VBox, LoadSave, Quitable, Filterable):
         self.button_container = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.button_controller = OneButtonToggled()
         self.perspectives = {}
+
         ## internal property
         self._perspectives = []
 

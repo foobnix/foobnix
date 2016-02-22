@@ -255,11 +255,11 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
                 elif tree.is_empty():
                     tab_name = unicode(path[path.rfind("/") + 1:])
-                    vbox = Gtk.VBox()
+                    vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
                     label = Gtk.Label.new(tab_name + " ")
                     label.set_angle(90)
                     if FC().tab_close_element:
-                        vbox.pack_start(tabhelper.button(tree.scroll), False, False)
+                        vbox.pack_start(tabhelper.button(tree.scroll), False, False, 0)
                     vbox.pack_end(label, False, False)
                     event = self.controls.notetabs.to_eventbox(vbox, tree)
                     event = tabhelper.tab_menu_creator(event, tree.scroll)

@@ -5,6 +5,7 @@ Created on Nov 5, 2010
 '''
 
 import logging
+from gi._signalhelper import Signal
 
 from gi.repository import GObject
 from gi.repository import Gtk
@@ -16,12 +17,12 @@ from foobnix.helpers.window import ChildTopWindow
 from foobnix.util.pix_buffer import create_pixbuf_from_resource
 
 
-class IconBlock(Gtk.HBox):
+class IconBlock(Gtk.Box):
 
     temp_list = FC().all_icons[:]
 
     def __init__(self, text, controls, filename, all_icons=temp_list):
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
 
         self.controls = controls
 
@@ -116,9 +117,9 @@ class FrameDecorator(Gtk.Frame):
         if not (border_width is None):
             self.set_border_width(border_width)
 
-class ChooseDecorator(Gtk.HBox):
+class ChooseDecorator(Gtk.Box):
     def __init__(self, parent, widget):
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         self._widget = widget
         self.button = Gtk.RadioButton.new_from_widget(parent)
 
@@ -136,31 +137,31 @@ class ChooseDecorator(Gtk.HBox):
     def get_radio_button(self):
         return self.button
 
-class VBoxDecorator(Gtk.VBox):
+class VBoxDecorator(Gtk.Box):
     def __init__(self, *args):
-        Gtk.VBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=0)
         for widget in args:
             self.pack_start(widget, False, False, 0)
         self.show_all()
 
-class HBoxDecorator(Gtk.HBox):
+class HBoxDecorator(Gtk.Box):
     def __init__(self, *args):
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         for widget in args:
             self.pack_start(widget, False, False, 0)
         self.show_all()
 
-class HBoxDecoratorTrue(Gtk.HBox):
+class HBoxDecoratorTrue(Gtk.Box):
     def __init__(self, *args):
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         for widget in args:
             self.pack_start(widget, True, True, 0)
         self.show_all()
 
-
-class HBoxLableEntry(Gtk.HBox):
+Signal
+class HBoxLableEntry(Gtk.Box):
     def __init__(self, text, entry):
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         self.pack_start(text, False, False, 0)
         self.pack_start(entry, True, True, 0)
         self.show_all()

@@ -196,21 +196,21 @@ class ProgWindow(ChildTopWindow):
         self.media_files = 0
         self.media_folders = 0
 
-        left_box = Gtk.VBox()
-        left_box.pack_start(self.label)
-        left_box.pack_start(self.label1)
-        left_box.pack_start(self.label2)
-        left_box.pack_start(self.label3)
+        left_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        left_box.pack_start(self.label, False, False, 0)
+        left_box.pack_start(self.label1, False, False, 0)
+        left_box.pack_start(self.label2, False, False, 0)
+        left_box.pack_start(self.label3, False, False, 0)
 
-        right_box = Gtk.VBox()
-        right_box.pack_start(self.analyzed_folders_label)
-        right_box.pack_start(self.analyzed_files_label)
-        right_box.pack_start(self.media_folders_label)
-        right_box.pack_start(self.media_files_label)
+        right_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        right_box.pack_start(self.analyzed_folders_label, False, False, 0)
+        right_box.pack_start(self.analyzed_files_label, False, False, 0)
+        right_box.pack_start(self.media_folders_label, False, False, 0)
+        right_box.pack_start(self.media_files_label, False, False, 0)
 
-        box = Gtk.HBox()
-        box.pack_start(left_box)
-        box.pack_start(right_box)
+        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        box.pack_start(left_box, False, False, 0)
+        box.pack_start(right_box, False, False, 0)
 
         self.add(box)
 

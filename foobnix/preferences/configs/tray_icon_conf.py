@@ -76,7 +76,7 @@ class TrayIconConfig(ConfigPlugin):
         box.pack_start(self.icon_controls, True, True, 0)
         box.pack_start(self.change_tray_icon, False, False, 0)
 
-        notifier_box = Gtk.VBox()
+        notifier_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         notifier_box.pack_start(self.notifier, False, False, 0)
         notifier_box.pack_start(self.n_time, False, False, 0)
         box.pack_start(FrameDecorator(_("Notification"), notifier_box, 0.5, 0.5), False, False, 0)

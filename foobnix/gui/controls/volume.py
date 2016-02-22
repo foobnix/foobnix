@@ -12,11 +12,11 @@ from foobnix.gui.state import LoadSave
 from foobnix.gui.model.signal import FControl
 
 
-class VolumeControls(LoadSave, Gtk.HBox, FControl):
+class VolumeControls(LoadSave, Gtk.Box, FControl):
     MAX_VALUE = 100
 
     def __init__(self, controls):
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         FControl.__init__(self, controls)
 
         adjustment = Gtk.Adjustment(value=1, lower=0, upper=self.MAX_VALUE, step_incr=0, page_incr=0, page_size=0)

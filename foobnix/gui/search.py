@@ -8,9 +8,9 @@ from foobnix.util.text_utils import capitalize_query
 from foobnix.helpers.toggled import OneActiveToggledButton
 
 
-class SearchControls(FControl, Gtk.VBox):
+class SearchControls(FControl, Gtk.Box):
     def __init__(self, controls):
-        Gtk.VBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=0)
         FControl.__init__(self, controls)
         self.controls = controls
 

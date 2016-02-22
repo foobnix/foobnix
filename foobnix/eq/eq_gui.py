@@ -274,11 +274,11 @@ class EqWindow(ChildTopWindow, FControl):
         if FC().is_eq_enable:
             self.on.set_label(_("Disable EQ"))
 
-class EqLine(Gtk.VBox):
+class EqLine(Gtk.Box):
         def __init__(self, text, callback, def_value=0):
             self.callback = callback
             self.text = text
-            Gtk.VBox.__init__(self, False, 0)
+            Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=0)
             self.show()
 
             adjustment = Gtk.Adjustment(value=def_value, lower= -12, upper=12, step_incr=1, page_incr=2, page_size=0)

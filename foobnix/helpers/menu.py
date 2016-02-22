@@ -22,7 +22,7 @@ class Popup(Gtk.Menu):
 
     def add_item(self, title, icon_name, func=None, param=None):
         item = Gtk.MenuItem.new()
-        item_box = Gtk.HBox.new(False, 6)
+        item_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
 
         if icon_name:
             img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
@@ -41,7 +41,7 @@ class Popup(Gtk.Menu):
 
     def add_image_item(self, title, icon_name, func=None, param=None):
         item = Gtk.MenuItem.new()
-        item_box = Gtk.HBox.new(False, 6)
+        item_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
 
         if icon_name:
             img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)

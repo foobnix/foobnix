@@ -78,7 +78,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
                                             arg=self.lyrics, func1=self.show_similar_lyrics)
 
         """wiki"""
-        wBox = Gtk.VBox()
+        wBox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         wiki_title = _("About Artist")
         self.wiki = TextArea()
 

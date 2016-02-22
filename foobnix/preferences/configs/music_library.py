@@ -35,7 +35,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         box.pack_start(self.formats(), False, True, 0)
 
         self.widget = box
-        uhbox = Gtk.HBox()
+        uhbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         ulabel = Gtk.Label.new(_("Update library on start (more slow) "))
         self.update_on_start = Gtk.CheckButton.new()
 
@@ -217,7 +217,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         return hbox
 
     def tabs_mode(self):
-        hbox = Gtk.HBox()
+        hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.multitabs_button = Gtk.RadioButton.new_with_label(None, _("Multi tab mode"))
         def on_toggle_multitab(widget, data=None):
             self.frame.hide()

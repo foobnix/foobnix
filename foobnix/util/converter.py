@@ -46,10 +46,10 @@ class Converter(ChildTopWindow):
         channels_label = Gtk.Label.new(_('Channels'))
         hertz_label = Gtk.Label.new(_('Frequency'))
 
-        format_box = Gtk.VBox()
-        bitrate_box = Gtk.VBox()
-        channels_box = Gtk.VBox()
-        hertz_box = Gtk.VBox()
+        format_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        bitrate_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        channels_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        hertz_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         self.format_list = ["Choose", "  mp3", "  ogg", "  mp2", "  ac3", "  m4a", "  wav"]
         self.bitrate_list = ["  64 kbps", "  96 kbps", "  128 kbps", "  160 kbps", "  192 kbps", "  224 kbps", "  256 kbps", "  320 kbps", "  384 kbps", "  448 kbps", "  640 kbps"]
@@ -99,7 +99,7 @@ class Converter(ChildTopWindow):
         self.open_folder_button = Gtk.Button.new_with_label(_("Show files"))
         self.open_folder_button.connect('released', self.open_in_fm)
 
-        self.progress_box = Gtk.HBox()
+        self.progress_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.progress_box.pack_end(self.open_folder_button, False)
         self.progress_box.pack_end(self.stop_button, False)
         self.progress_box.pack_end(self.progressbar, True)

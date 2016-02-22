@@ -24,7 +24,7 @@ class LastFmConfig(ConfigPlugin):
     def __init__(self, controls):
         self.controls = controls
 
-        box = VBox(self, False, 0)
+        box = VBox(self, Gtk.Orientation.VERTICAL, 0)
         box.hide()
 
         """LAST.FM"""
@@ -139,9 +139,9 @@ class LastFmConfig(ConfigPlugin):
         FC().enable_radio_scrobbler = self.radio_scrobbler.get_active()
         FC().enable_vk_autocomlete  = self.vk_autocomplete.get_active()
 
-class VBox(Gtk.VBox):
-    def __init__(self, config, *args):
-            Gtk.VBox.__init__(self, args)
+class VBox(Gtk.Box):
+    def __init__(self, config, orientation, spacing):
+            Gtk.Box.__init__(self, orientation=orientation, spacing=spacing)
             self.config = config
 
     def show(self):

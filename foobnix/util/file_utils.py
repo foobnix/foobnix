@@ -39,7 +39,7 @@ def rename_file_on_disk(row, index_path, index_text):
     name = os.path.basename(path)
     entry = Gtk.Entry()
     entry.set_width_chars(64)
-    hbox = Gtk.HBox()
+    hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
     if os.path.isdir(path):
         entry.set_text(name)
         hbox.pack_start(entry)

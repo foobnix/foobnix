@@ -12,10 +12,10 @@ from foobnix.helpers.toggled import OneActiveToggledButton
 from foobnix.util.key_utils import is_key
 
 
-class FilterControl(Gtk.HBox, LoadSave):
+class FilterControl(Gtk.Box, LoadSave):
 
     def __init__(self, filterabe):
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         LoadSave.__init__(self)
 
         assert isinstance(filterabe, Filterable)

@@ -77,11 +77,11 @@ class CopyProgressWindow(Gtk.Dialog):
 
         self.add_button(_("Stop"), Gtk.ResponseType.REJECT)
 
-        self.vbox.pack_start(self.label_from, False)
-        self.vbox.pack_start(self.label_to, False)
-        self.vbox.pack_start(self.pr_bar, False)
-        self.vbox.pack_start(self.pr_label, False)
-        self.vbox.pack_start(self.total_pr_bar, False)
+        self.vbox.pack_start(self.label_from, False, False, 0)
+        self.vbox.pack_start(self.label_to, False, False, 0)
+        self.vbox.pack_start(self.pr_bar, False, False, 0)
+        self.vbox.pack_start(self.pr_label, False, False, 0)
+        self.vbox.pack_start(self.total_pr_bar, False, False, 0)
         self.exit = False
         self.show_all()
 
