@@ -35,7 +35,7 @@ def file_selection_dialog(title, current_folder=None):
     return paths
 
 def file_chooser_dialog(title, current_folder=None):
-    chooser = Gtk.FileChooserDialog(title, action=Gtk.FILE_CHOOSER_ACTION_OPEN, buttons=("folder-open", Gtk.ResponseType.OK))
+    chooser = Gtk.FileChooserDialog(title, action=Gtk.FileChooserAction.OPEN, buttons=("folder-open", Gtk.ResponseType.OK))
     chooser.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
     chooser.set_default_response(Gtk.ResponseType.OK)
     chooser.set_select_multiple(True)
