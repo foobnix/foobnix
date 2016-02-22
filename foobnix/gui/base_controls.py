@@ -6,10 +6,13 @@ Created on 25 сент. 2010
 '''
 
 import copy
+import gi
 import os
 import logging
 import thread
 import time
+
+gi.require_version('Notify', '0.7')
 
 from gi.repository import GLib
 from gi.repository import Gtk
