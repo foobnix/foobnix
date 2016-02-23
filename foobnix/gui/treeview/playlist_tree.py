@@ -354,8 +354,6 @@ class PlaylistTreeControl(CommonTreeControl):
         except KeyError:
             column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
 
-
-
         self.append_column(column)
         column.button = column.label.get_parent().get_parent().get_parent()
         column.button.connect("button-press-event", self.on_click_header)
@@ -385,7 +383,10 @@ class PlaylistTreeControl(CommonTreeControl):
 
         number_music_tabs = self.controls.notetabs.get_n_pages() - 1
         for i, column in enumerate(self.get_columns()):
-            FC().columns[column.key][1] = i
+            try:
+                FC().columns[column.key][1] = i
+            except KeyError:
+                FC().columns[column.key] = [column.get_visible(), i, 80]
             if column.get_width() > 1:  # to avoid recording of zero width in config
                 FC().columns[column.key][2] = column.get_width()
 

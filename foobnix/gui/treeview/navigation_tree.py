@@ -260,7 +260,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                     label.set_angle(90)
                     if FC().tab_close_element:
                         vbox.pack_start(tabhelper.button(tree.scroll), False, False, 0)
-                    vbox.pack_end(label, False, False)
+                    vbox.pack_end(label, False, False, 0)
                     event = self.controls.notetabs.to_eventbox(vbox, tree)
                     event = tabhelper.tab_menu_creator(event, tree.scroll)
                     event.connect("button-press-event", tabhelper.on_button_press)
