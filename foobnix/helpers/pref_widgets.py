@@ -52,11 +52,11 @@ class IconBlock(Gtk.Box):
         self.combobox.pack_start(pix_render, 0)
         self.combobox.add_attribute(pix_render, 'pixbuf', 0)
 
-        button_1 = ButtonIconText("Choose", "folder-open")
+        button_1 = ButtonIconText(_("Choose"), "folder-open")
         button_1.set_property("always-show-image", True)
         button_1.connect("clicked", self.on_file_choose)
 
-        button_2 = ButtonIconText("Delete", "edit-delete")
+        button_2 = ButtonIconText(_("Delete"), "edit-delete")
         button_2.set_property("always-show-image", True)
         button_2.connect("clicked", self.on_delete)
 

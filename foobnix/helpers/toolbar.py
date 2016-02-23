@@ -23,12 +23,11 @@ class MyToolbar(Gtk.Toolbar):
         self.show()
         self.set_style(Gtk.ToolbarStyle.ICONS)
         self.set_show_arrow(False)
-        self.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
 
         self.i = 0
 
     def add_button(self, tooltip, icon_name, func, param):
-        button = Gtk.ToolButton.new(None, icon_name)
+        button = Gtk.ToolButton.new(Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.LARGE_TOOLBAR), None)
         button.show()
         button.set_tooltip_text(tooltip)
 

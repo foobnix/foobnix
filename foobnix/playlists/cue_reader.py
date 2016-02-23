@@ -19,7 +19,7 @@ from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.file_utils import get_any_supported_audio_file
-from foobnix.util.id3_util import update_id3
+from foobnix.util.id3_util import correct_encoding, update_id3
 
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
@@ -77,12 +77,11 @@ class CueFile():
 
 class CueReader():
 
-    def __init__(self, cue_path):
+    def __init__(self, cue_path, embedded_cue=None):
         self.cue_path = cue_path
         self.embedded_cue = embedded_cue
         self.is_valid = True
         self.cue_file = CueFile()
-
 
     def get_line_value(self, str):
         first = str.find('"') or str.find("'")
@@ -114,7 +113,6 @@ class CueReader():
                         duration = next_track.get_start_time_sec() - track.get_start_time_sec()
                     else: #for cue  "several files - each file involve several tracks"
                         duration = self.get_full_duration(track.path) - track.get_start_time_sec()
-
                 track.duration = duration
             else:
                 track.duration = None
@@ -122,7 +120,6 @@ class CueReader():
                 track.path = self.cue_file.file
 
             track.path = get_any_supported_audio_file(track.path)
-
             duration_tracks.append(track)
 
         self.cue_file.tracks = duration_tracks
@@ -151,7 +148,7 @@ class CueReader():
                 bean.info = ""
 
             if not bean.title or not bean.artist:
-                bean = udpate_id3(bean)
+                bean = update_id3(bean)
 
             beans.append(bean)
 

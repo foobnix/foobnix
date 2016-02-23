@@ -225,7 +225,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     def add_folder(self, in_new_tab=False):
         chooser = Gtk.FileChooserDialog(title=_("Choose directory with music"),
                                         action=Gtk.FileChooserAction.SELECT_FOLDER,
-                                        buttons=("folder-open", Gtk.ResponseType.OK))
+                                        buttons=(_("Open"), Gtk.ResponseType.OK))
         chooser.set_default_response(Gtk.ResponseType.OK)
         chooser.set_select_multiple(True)
         if FCache().last_music_path:
@@ -244,17 +244,18 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 tree = self
                 number_of_tab = tabhelper.page_num(tree.scroll)
 
+                tab_name = path[path.rfind("/") + 1:]
+                if isinstance(tab_name, str):
+                    tab_name = unicode(tab_name, "utf-8")
+
                 if in_new_tab:
-                    tab_name = unicode(path[path.rfind("/") + 1:])
                     tabhelper._append_tab(tab_name)
                     tree = tabhelper.get_current_tree()
                     number_of_tab = tabhelper.get_current_page()
                     FCache().music_paths.insert(0, [])
                     FCache().tab_names.insert(0, tab_name)
                     FCache().cache_music_tree_beans.insert(0, {})
-
                 elif tree.is_empty():
-                    tab_name = unicode(path[path.rfind("/") + 1:])
                     vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
                     label = Gtk.Label.new(tab_name + " ")
                     label.set_angle(90)
@@ -279,7 +280,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
             #self.controls.in_thread.run_with_spinner(task, with_lock=False)
             self.controls.search_progress.background_spinner_wrapper(task)
-        elif response == Gtk.ResponseType.CANCEL:
+        else:
             logging.info('Closed, no files selected')
             chooser.destroy()
 

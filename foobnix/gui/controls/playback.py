@@ -9,7 +9,6 @@ from gi.repository import Gtk
 from foobnix.util import const
 from foobnix.fc.fc import FC
 from foobnix.gui.state import LoadSave
-from foobnix.helpers.toolbar import MyToolbar
 from foobnix.gui.model.signal import FControl
 from foobnix.helpers.my_widgets import ImageButton, EventLabel, ToggleImageButton
 
