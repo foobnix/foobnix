@@ -1,10 +1,11 @@
+# coding: utf-8
+
 '''
 Created on 7  2010
 
 @author: ivan
 '''
 
-from __future__ import with_statement
 
 import os
 import re
@@ -21,10 +22,10 @@ from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.file_utils import get_any_supported_audio_file
 from foobnix.util.id3_util import correct_encoding, update_id3
 
-TITLE = "TITLE"
-PERFORMER = "PERFORMER"
-FILE = "FILE"
-INDEX = "INDEX"
+TITLE = u"TITLE"
+PERFORMER = u"PERFORMER"
+FILE = u"FILE"
+INDEX = u"INDEX"
 
 class CueTrack():
 
@@ -75,6 +76,7 @@ class CueFile():
 
         return "CUEFILE: " + self.title + " " + self.performer + " " + self.file
 
+
 class CueReader():
 
     def __init__(self, cue_path, embedded_cue=None):
@@ -100,6 +102,7 @@ class CueReader():
     def normalize(self):
         duration_tracks = []
         tracks = self.cue_file.tracks
+
         for i in xrange(len(tracks)):
             track = tracks[i]
             full_duration = self.get_full_duration(track.path)
@@ -128,9 +131,10 @@ class CueReader():
     def get_common_beans(self):
         beans = []
         cue = self.parse()
+
         if not self.is_cue_valid():
             return []
-        for i, track  in enumerate(cue.tracks):
+        for i, track in enumerate(cue.tracks):
             bean = FModel(text=track.performer + " - " + track.title, path=track.path)
             bean.artist = track.performer
             bean.tracknumber = i + 1
@@ -171,9 +175,9 @@ class CueReader():
         else:
             file = open(self.cue_path, "r")
             data = file.read()
+
         code = self.code_detecter(correct_encoding(data))
         data = data.replace('\r\n', '\n').split('\n')
-
         title = ""
         performer = ""
         index = "00:00:00"
@@ -184,25 +188,27 @@ class CueReader():
         self.files_count = 0
 
         for line in data:
-            if not self.is_valid and not line.startswith(FILE):
-                continue
-            else: self.is_valid = True
 
-            try:
-                pass
-                line = unicode(line, code)
-            except:
-                logging.error("There is some problems while converting in unicode")
-
-            line = str(line).strip()
             if not line:
                 continue
+
+            if isinstance(line, str):
+                try:
+                    line = unicode(line, code)
+                except:
+                    logging.error("There is some problems while converting in unicode")
+
+            line = line.strip()
+
+            if not self.is_valid and not line.startswith(FILE):
+                continue
+            else:
+                self.is_valid = True
 
             if line.startswith(TITLE):
                 title = self.get_line_value(line)
                 if self.files_count == 0:
                     self.cue_file.title = title
-
 
             if line.startswith(PERFORMER):
                 performer = self.get_line_value(line)
@@ -219,7 +225,7 @@ class CueReader():
                 if "\\" in file:
                     file = file[file.rfind("\\")+1:]
 
-                dir = os.path.dirname(self.cue_path)
+                dir = unicode(os.path.dirname(self.cue_path), 'utf-8')
                 full_file = os.path.join(dir, file)
                 logging.debug("CUE source" + full_file)
                 exists = os.path.exists(full_file)
@@ -269,5 +275,6 @@ def update_id3_for_cue(beans):
                     result.append(cue)
         else:
             result.append(bean)
+
     return result
 
