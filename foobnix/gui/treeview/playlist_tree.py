@@ -198,7 +198,6 @@ class PlaylistTreeControl(CommonTreeControl):
 
         return bean
 
-
     @idle_task
     def scroll_follow_play_icon(self):
         paths = [(i,) for i, row in enumerate(self.model)]
@@ -284,7 +283,6 @@ class PlaylistTreeControl(CommonTreeControl):
                                         self.controls.add_to_my_playlist, self.get_all_selected_beans())
                 self.tree_menu.add_item(_('Love This Track(s) by Last.fm'), "heart",
                                         self.controls.love_this_tracks, self.get_all_selected_beans())
-
 
                 self.tree_menu.show(e)
 
@@ -503,8 +501,8 @@ class PlaylistTreeControl(CommonTreeControl):
             rows = self.playlist_filter(rows)
             for row in rows:
                 if drop_info:
-                    if (position == Gtk.TREE_VIEW_DROP_BEFORE
-                        or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
+                    if (position == Gtk.TreeViewDropPosition.BEFORE
+                        or position == Gtk.TreeViewDropPosition.INTO_OR_BEFORE):
                         model.insert_before(None, iter, row)
                     else:
                         model.insert_after(None, iter, row)
@@ -526,8 +524,8 @@ class PlaylistTreeControl(CommonTreeControl):
                     ff_iter = self.get_iter_from_row_reference(ff_row_ref)
                     f_iter = ff_model.convert_iter_to_child_iter(ff_iter)
                     if drop_info:
-                        if (position == Gtk.TREE_VIEW_DROP_BEFORE
-                            or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
+                        if (position == Gtk.TreeViewDropPosition.BEFORE
+                            or position == Gtk.TreeViewDropPosition.INTO_OR_BEFORE):
                             model.move_before(f_iter, iter)
                         else:
                             model.move_after(f_iter, iter)
@@ -564,8 +562,8 @@ class PlaylistTreeControl(CommonTreeControl):
                             continue
                     row = [col for col in treerow]
                     if drop_info:
-                        if (position == Gtk.TREE_VIEW_DROP_BEFORE
-                            or position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE):
+                        if (position == Gtk.TreeViewDropPosition.BEFORE
+                            or position == Gtk.TreeViewDropPosition.INTO_OR_BEFORE):
                             model.insert_before(None, iter, row)
                         else:
                             model.insert_after(None, iter, row)

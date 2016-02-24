@@ -182,7 +182,7 @@ class LastFmService():
         def task(bean):
             if bean.artist and bean.title:
                 try:
-                    bean.artist, bean.title = bean.artist.encode("utf-8"), bean.title.encode("utf-8")
+                    bean.artist, bean.title = bean.artist, bean.title
                     self.get_scrobbler().report_now_playing(bean.artist, bean.title)
                     logging.debug("notify %s %s" % (bean.artist, bean.title))
                 except Exception, e:

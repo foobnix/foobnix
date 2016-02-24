@@ -101,7 +101,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             self.add_to_tab(True)
             return
 
-
     def on_button_press(self, w, e):
         if is_empty_click(w, e):
             w.get_selection().unselect_all()
@@ -123,7 +122,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             # on right click, show pop-up menu
             self.tree_menu.clear()
             self.tree_menu.add_item(_("Append to playlist"), "list-add", lambda: self.add_to_tab(True), None)
-            self.tree_menu.add_item(_("Open in new playlist"), "media-playback-start", self.add_to_tab, None)
+            self.tree_menu.add_item(_("Open in new playlist"), "list-add", self.add_to_tab, None)
             self.tree_menu.add_separator()
             self.tree_menu.add_item(_("Add folder here"), "folder-open", self.add_folder, None)
             self.tree_menu.add_separator()
@@ -194,13 +193,15 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
         def task(to_tree, to_model):
             treerows = [from_model[path] for path in paths]
-            for  i, treerow in enumerate(treerows):
+            for i, treerow in enumerate(treerows):
                 for k, ch_row in enumerate(treerow.iterchildren()):
                     treerows.insert(i+k+1, ch_row)
 
             #treerows = self.playlist_filter(treerows)
             if not current:
                 name = treerows[0][0]
+                if isinstance(name, str):
+                    name = unicode(name, "utf-8")
                 self.controls.notetabs._append_tab(name)
                 to_tree = self.controls.notetabs.get_current_tree()     # because to_tree has changed
                 to_model = to_tree.get_model().get_model()
