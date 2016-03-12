@@ -30,16 +30,16 @@ class DMControls(MyToolbar):
     def __init__(self, controls, dm_tree):
         MyToolbar.__init__(self)
 
-        self.add_button(_("Preferences"), Gtk.STOCK_PREFERENCES, controls.preferences.show, CONFIG_OTHER)
+        self.add_button(_("Preferences"), "preferences-system", controls.preferences.show, CONFIG_OTHER)
         self.add_separator()
-        self.add_button(_("Start Downloading"), Gtk.STOCK_MEDIA_PLAY, dm_tree.update_status_for_selected, DOWNLOAD_STATUS_ACTIVE)
-        self.add_button(_("Stop Downloading"), Gtk.STOCK_MEDIA_PAUSE, dm_tree.update_status_for_selected, DOWNLOAD_STATUS_STOP)
+        self.add_button(_("Start Downloading"), "media-playback-start", dm_tree.update_status_for_selected, DOWNLOAD_STATUS_ACTIVE)
+        self.add_button(_("Stop Downloading"), "media-playback-pause", dm_tree.update_status_for_selected, DOWNLOAD_STATUS_STOP)
         self.add_separator()
-        #self.add_button("Start All", Gtk.STOCK_MEDIA_FORWARD, dm_tree.update_status_for_all, DOWNLOAD_STATUS_ACTIVE)
-        #self.add_button("Stop All", Gtk.STOCK_STOP, dm_tree.update_status_for_all, DOWNLOAD_STATUS_STOP)
+        #self.add_button("Start All", "go-next", dm_tree.update_status_for_all, DOWNLOAD_STATUS_ACTIVE)
+        #self.add_button("Stop All", "media-playback-stop", dm_tree.update_status_for_all, DOWNLOAD_STATUS_STOP)
         #self.add_separator()
-        self.add_button(_("Delete"), Gtk.STOCK_DELETE, dm_tree.delete_all_selected, None)
-        #self.add_button("Delete All", Gtk.STOCK_CLEAR, dm_tree.delete_all, None)
+        self.add_button(_("Delete"), "edit-delete", dm_tree.delete_all_selected, None)
+        #self.add_button("Delete All", "edit-clear", dm_tree.delete_all, None)
         #self.add_separator()
 
     def on_load(self): pass
@@ -53,7 +53,7 @@ class DM(ChildTopWindow):
         self.set_resizable(True)
         self.set_default_size(900, 700)
 
-        vbox = Gtk.VBox(False, 0)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         #paned = Gtk.HPaned()
         #paned.set_position(200)
 

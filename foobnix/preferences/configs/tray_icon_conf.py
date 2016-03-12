@@ -23,7 +23,7 @@ class TrayIconConfig(ConfigPlugin):
 
     def __init__(self, controls):
         self.controls = controls
-        box = Gtk.VBox(False, 0)
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.hide()
 
         '''static_icon'''
@@ -47,7 +47,7 @@ class TrayIconConfig(ConfigPlugin):
         self.minimize_button = Gtk.RadioButton(group=self.close_button, label=_("On close window - minimize player"))
 
         """system icon"""
-        self.static_tray_icon = ChooseDecorator(None, FrameDecorator(_("System Icon Static"), self.static_icon))
+        self.static_tray_icon = ChooseDecorator(None, FrameDecorator(_("System Icon Static"), self.static_icon, 0.5, 0.5))
 
         """dynamic icons"""
         line = VBoxDecorator(self.play_icon,
@@ -55,11 +55,11 @@ class TrayIconConfig(ConfigPlugin):
                              self.stop_icon,
                              self.radio_icon)
 
-        self.icon_controls = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator(_("System Icons Dynamic"), line))
+        self.icon_controls = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator(_("System Icons Dynamic"), line, 0.5, 0.5))
 
         """disc image icon"""
         image = ImageBase(ICON_BLANK_DISK, 30)
-        self.change_tray_icon = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator(_("Disc cover image"), image))
+        self.change_tray_icon = ChooseDecorator(self.static_tray_icon.get_radio_button(), FrameDecorator(_("Disc cover image"), image, 0.5, 0.5))
 
         self.notifier = Gtk.CheckButton(_("Notification pop-up"))
         self.notifier.connect("toggled", self.on_toggle)
@@ -79,7 +79,7 @@ class TrayIconConfig(ConfigPlugin):
         notifier_box = Gtk.VBox()
         notifier_box.pack_start(self.notifier, False, False, 0)
         notifier_box.pack_start(self.n_time, False, False, 0)
-        box.pack_start(FrameDecorator(_("Notification"), notifier_box), False, False, 0)
+        box.pack_start(FrameDecorator(_("Notification"), notifier_box, 0.5, 0.5), False, False, 0)
         self.widget = box
 
     def on_show_tray_icon(self, *args):
@@ -113,7 +113,7 @@ class TrayIconConfig(ConfigPlugin):
         not_len = Gtk.SpinButton(adjustment=self.adjustment, climb_rate=0.0, digits=1)
         not_len.show()
 
-        hbox = Gtk.HBox(False, 5)
+        hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         hbox.pack_start(label, False, False, 0)
         hbox.pack_start(not_len, False, False, 0)
         hbox.show_all()

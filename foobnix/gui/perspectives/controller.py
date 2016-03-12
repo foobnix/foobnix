@@ -13,9 +13,13 @@ class Controller(Gtk.VBox, LoadSave, Quitable, Filterable):
 
     def __init__(self, controls):
         super(Controller, self).__init__(False, 0)
-
+        self.scroll = Gtk.ScrolledWindow()
+        self.scroll.add(self)
+        self.scroll.set_border_width(0)
+        viewport = self.scroll.get_child()
+        viewport.set_shadow_type(Gtk.ShadowType.NONE)
         self.perspectives_container = StackableWidget()
-        self.button_container = Gtk.HBox(False, 0)
+        self.button_container = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.button_controller = OneButtonToggled()
         self.perspectives = {}
         ## internal property

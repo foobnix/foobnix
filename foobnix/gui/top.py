@@ -25,7 +25,7 @@ class TopWidgets(FControl, LoadSave, Gtk.HBox):
 
         self.pack_start(self.old_menu.widget, False, False, 0)
 
-        self.new_menu_button = ImageButton(Gtk.STOCK_PREFERENCES)
+        self.new_menu_button = ImageButton("preferences-system", tooltip_text=_("Settings"))
         self.new_menu_button.connect("button-press-event", self.on_button_press)
 
         self.pack_start(self.new_menu_button, False, False, 0)
@@ -41,9 +41,9 @@ class TopWidgets(FControl, LoadSave, Gtk.HBox):
         decorator = MenuStyleDecorator()
         MenuBarWidget(self.controls, menu)
         menu.add_separator()
-        menu.add_item(_("Preferences"), Gtk.STOCK_PREFERENCES, self.controls.show_preferences)
+        menu.add_item(_("Preferences"), "preferences-system", self.controls.show_preferences)
         menu.add_separator()
-        menu.add_item(_("Quit"), Gtk.STOCK_QUIT, self.controls.quit)
+        menu.add_item(_("Quit"), "application-exit", self.controls.quit)
 
         decorator.apply(menu)
         self.menu = menu

@@ -19,7 +19,7 @@ def load_urls_name_page():
         line = line.decode('utf8')
 
         if "<a href" in line and "mount" in line:
-            reg_all = "([-\w0-9,. ]*)"
+            reg_all = "([-\w0-9,. &]*)"
             findall = re.findall('name="'+reg_all+'"', line, re.IGNORECASE | re.UNICODE)
             print findall
             if findall:

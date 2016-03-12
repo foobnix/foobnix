@@ -23,7 +23,7 @@ class VKIntegrationControls(CommonTreeControl):
         CommonTreeControl.__init__(self, controls)
 
         """column config"""
-        column = Gtk.TreeViewColumn(_("VK Integration "), Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = Gtk.TreeViewColumn(_("VK Integration "), self.ellipsize_render, text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)
@@ -75,8 +75,8 @@ class VKIntegrationControls(CommonTreeControl):
             if active:
                 self.tree_menu.clear()
                 if isinstance(active, FModel) and active.path:
-                    self.tree_menu.add_item(_('Play'), Gtk.STOCK_MEDIA_PLAY, self.controls.play, active)
-                self.tree_menu.add_item(_('Copy to Search Line'), Gtk.STOCK_COPY, self.controls.searchPanel.set_search_text, active.text)
+                    self.tree_menu.add_item(_('Play'), "media-playback-start", self.controls.play, active)
+                self.tree_menu.add_item(_('Copy to Search Line'), "edit-copy", self.controls.searchPanel.set_search_text, active.text)
                 self.tree_menu.show(e)
 
         if is_double_left_click(e):

@@ -39,7 +39,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         self.set_headers_clickable(True)
 
         """column config"""
-        self.column = Gtk.TreeViewColumn("File", Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        self.column = Gtk.TreeViewColumn("File", self.ellipsize_render, text=self.text[0], font=self.font[0])
         self._append_column(self.column, _("File"))
 
         def func(column, cell, model, iter, ext=False):
@@ -61,8 +61,8 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 if ext:
                     cell.set_property('text', '')
 
-        self.name_column = Gtk.TreeViewColumn("Name", Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
-        self.name_column.set_sizing(Gtk.TREE_VIEW_COLUMN_FIXED)
+        self.name_column = Gtk.TreeViewColumn("Name", self.ellipsize_render, text=self.text[0], font=self.font[0])
+        self.name_column.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         for rend in self.name_column.get_cells():
             self.name_column.set_cell_data_func(rend, func, False)
         self._append_column(self.name_column, _("Name"))
@@ -122,16 +122,16 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             tabhelper = self.controls.perspectives.get_perspective('fs').get_tabhelper()
             # on right click, show pop-up menu
             self.tree_menu.clear()
-            self.tree_menu.add_item(_("Append to playlist"), Gtk.STOCK_ADD, lambda: self.add_to_tab(True), None)
-            self.tree_menu.add_item(_("Open in new playlist"), Gtk.STOCK_MEDIA_PLAY, self.add_to_tab, None)
+            self.tree_menu.add_item(_("Append to playlist"), "list-add", lambda: self.add_to_tab(True), None)
+            self.tree_menu.add_item(_("Open in new playlist"), "media-playback-start", self.add_to_tab, None)
             self.tree_menu.add_separator()
-            self.tree_menu.add_item(_("Add folder here"), Gtk.STOCK_OPEN, self.add_folder, None)
+            self.tree_menu.add_item(_("Add folder here"), "folder-open", self.add_folder, None)
             self.tree_menu.add_separator()
 
             if FC().tabs_mode == "Multi":
-                self.tree_menu.add_item(_("Add folder in new tab"), Gtk.STOCK_OPEN, lambda: self.add_folder(True), None)
-                self.tree_menu.add_item(_("Clear"), Gtk.STOCK_CLEAR, lambda: tabhelper.clear_tree(self.scroll), None)
-            self.tree_menu.add_item(_("Update"), Gtk.STOCK_REFRESH, lambda: tabhelper.on_update_music_tree(self.scroll), None)
+                self.tree_menu.add_item(_("Add folder in new tab"), "folder-open", lambda: self.add_folder(True), None)
+                self.tree_menu.add_item(_("Clear"), "edit-clear", lambda: tabhelper.clear_tree(self.scroll), None)
+            self.tree_menu.add_item(_("Update"), "view-refresh", lambda: tabhelper.on_update_music_tree(self.scroll), None)
 
             f_model, f_t_paths = self.get_selection().get_selected_rows()
             if f_t_paths:
@@ -225,7 +225,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     def add_folder(self, in_new_tab=False):
         chooser = Gtk.FileChooserDialog(title=_("Choose directory with music"),
                                         action=Gtk.FileChooserAction.SELECT_FOLDER,
-                                        buttons=(Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+                                        buttons=("folder-open", Gtk.ResponseType.OK))
         chooser.set_default_response(Gtk.ResponseType.OK)
         chooser.set_select_multiple(True)
         if FCache().last_music_path:

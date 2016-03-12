@@ -18,7 +18,7 @@ from foobnix.helpers.image import ImageBase
 from foobnix.helpers.textarea import TextArea
 from foobnix.gui.model.signal import FControl
 from foobnix.helpers.my_widgets import EventLabel
-from foobnix.helpers.pref_widgets import HBoxDecoratorTrue
+from foobnix.helpers.pref_widgets import HBoxDecoratorTrue, FrameDecorator
 from foobnix.fc.fc_cache import FCache, COVERS_DIR, LYRICS_DIR
 from foobnix.gui.treeview.simple_tree import SimpleTreeControl
 from foobnix.util import idle_task
@@ -85,22 +85,16 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         wBox.line_title = EventLabel(wiki_title, func=self.show_current, arg=wBox, func1=self.show_wiki_info)
 
         """info"""
-        info_frame = Gtk.Frame(label=_("Info"))
-
         self.last_fm_label = Gtk.LinkButton("http://www.last.fm", "Last.Fm")
         self.wiki_label = Gtk.LinkButton("http://www.wikipedia.org", "Wikipedia")
-
         info_line = HBoxDecoratorTrue(self.last_fm_label, self.wiki_label)
-        info_frame.add(info_line)
+        info_frame = FrameDecorator(_("Info"), info_line, 0.5, 0.5)
 
         """downloads"""
-        dm_frame = Gtk.Frame(label=_("Downloads"))
-
         self.exua_label = Gtk.LinkButton("http://www.ex.ua", "EX.ua")
         self.rutracker_label = Gtk.LinkButton("http://rutracker.org", "Rutracker")
-
         dm_line = HBoxDecoratorTrue(self.exua_label, self.rutracker_label)
-        dm_frame.add(dm_line)
+        dm_frame = FrameDecorator(_("Downloads"), dm_line, 0.5, 0.5)
 
         self.wiki = TextArea()
         self.wiki.set_text("", wiki_title)
@@ -110,13 +104,13 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
 
         wBox.scroll = wBox
 
-        self.vpaned_small = Gtk.VBox(False, 0)
+        self.vpaned_small = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         """image and similar artists"""
-        ibox = Gtk.HBox(False, 0)
+        ibox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.image = ImageBase(ICON_BLANK_DISK, FC().info_panel_image_size)
 
-        lbox = Gtk.VBox(False, 0)
+        lbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         self.left_widget = [wBox, self.artists, self.tracks, self.tags, self.lyrics, self.best_songs]
 
@@ -127,7 +121,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         ibox.pack_start(lbox, True, True, 0)
 
         """image and similar artists"""
-        sbox = Gtk.VBox(False, 0)
+        sbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         for l_widget in self.left_widget:
             sbox.pack_start(l_widget.scroll, True, True, 0)

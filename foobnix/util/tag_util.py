@@ -65,16 +65,19 @@ class TagEditor(ChildTopWindow):
             check_button.set_focus_on_click(False)
             check_button.set_tooltip_text(_("Apply for all selected tracks\n(active on multi selection)"))
 
-            vars()[tag_name + "_hbox"] = Gtk.HBox(False, 5)
+            vars()[tag_name + "_hbox"] = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
             self.hboxes.append(vars()[tag_name + "_hbox"])
 
             self.hboxes[-1].pack_end(check_button, False, False)
             self.hboxes[-1].pack_end(self.tag_entries[-1], True, True)
 
 
-        lvbox = Gtk.VBox(True, 7)
-        rvbox = Gtk.VBox(True, 7)
-        hpan = Gtk.HPaned()
+        lvbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 7)
+        lvbox.set_homogeneous(True)
+        rvbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 7)
+        rvbox.set_homogeneous(True)
+
+        hpan = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL)
 
         for label, hbox in zip(self.labels, self.hboxes):
             lvbox.pack_start(label)
@@ -86,11 +89,12 @@ class TagEditor(ChildTopWindow):
         apply_button = Gtk.Button(_("Apply"))
         close_button = Gtk.Button(_("Close"))
 
-        buttons_hbox = Gtk.HBox(True, 10)
+        buttons_hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)
+        buttons_hbox.set_homogeneous(True)
         buttons_hbox.pack_start(apply_button)
         buttons_hbox.pack_start(close_button)
 
-        vbox = Gtk.VBox(False, 15)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 15)
         vbox.pack_start(hpan)
         vbox.pack_start(buttons_hbox, True, True, 10)
 

@@ -51,11 +51,11 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
         self.label = None
 
-        mainVBox = Gtk.VBox(False, 0)
+        mainVBox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         ChildTopWindow.__init__(self, _("Preferences"), 900, 550)
 
-        paned = Gtk.HPaned()
+        paned = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL)
         paned.set_position(250)
 
         def func():
@@ -72,7 +72,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
         paned.add1(self.navigation.scroll)
 
-        cbox = Gtk.VBox(False, 0)
+        cbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         for plugin in self.configs:
             cbox.pack_start(plugin.widget, False, True, 0)
 
@@ -124,7 +124,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
                 plugin.widget.hide()
 
     def create_save_cancel_buttons(self):
-        box = Gtk.HBox(False, 0)
+        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         box.show()
 
         button_restore = Gtk.Button(_("Restore Defaults Settings"))
@@ -162,7 +162,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         self.label.set_markup('<b><i><span  size="x-large" >' + title + '</span></i></b>');
 
     def create_container(self, widget):
-        box = Gtk.VBox(False, 0)
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.show()
 
         self.label = Gtk.Label()

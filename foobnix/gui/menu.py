@@ -29,12 +29,12 @@ class MenuBarWidget(FControl):
 
         """File"""
         file = top.add_submenu(_("File"))
-        file.add_image_item(_("Add File(s)"), Gtk.STOCK_OPEN, self.controls.on_add_files)
-        file.add_image_item(_("Add Folder(s)"), Gtk.STOCK_OPEN, self.controls.on_add_folders)
-        file.add_image_item(_("Save Playlist As"), Gtk.STOCK_SAVE_AS,
+        file.add_image_item(_("Add File(s)"), "folder-open", self.controls.on_add_files)
+        file.add_image_item(_("Add Folder(s)"), "folder-open", self.controls.on_add_folders)
+        file.add_image_item(_("Save Playlist As"), "document-save-as",
                             lambda: self.controls.notetabs.on_save_playlist(self.controls.notetabs.get_current_tree().scroll))
         file.separator()
-        file.add_image_item(_("Quit"), Gtk.STOCK_QUIT, self.controls.quit)
+        file.add_image_item(_("Quit"), "application-exit", self.controls.quit)
 
         """View"""
         view = top.add_submenu(_("View"))
@@ -52,7 +52,7 @@ class MenuBarWidget(FControl):
         view.add_image_item(_("Equalizer"), None, self.controls.eq.show)
         view.add_image_item(_("Download Manager"), None, self.controls.dm.show)
         separator2 = view.separator()
-        preferences_item = view.add_image_item(_("Preferences"), Gtk.STOCK_PREFERENCES, self.controls.show_preferences)
+        preferences_item = view.add_image_item(_("Preferences"), "preferences-system", self.controls.show_preferences)
 
         """if new style menu - remove preferences from View"""
         if not isinstance(parent, TopMenuBar):
@@ -113,14 +113,14 @@ class MenuBarWidget(FControl):
 
         """Help"""
         help = top.add_submenu(_("Help"))
-        help.add_image_item(_("About"), Gtk.STOCK_ABOUT, self.show_about)
+        help.add_image_item(_("About"), "help-about", self.show_about)
         help.separator()
         help.add_text_item(_("Project page"), lambda * a:open_link_in_browser(_("http://www.foobnix.com/news/eng")), None, False)
-        help.add_image_item(_("Issue report"), Gtk.STOCK_DIALOG_WARNING, lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
+        help.add_image_item(_("Issue report"), "dialog-warning", lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
         help.separator()
-        help.add_image_item(_("Donate Participate"), Gtk.STOCK_DIALOG_QUESTION, lambda * a:open_link_in_browser(_("http://www.foobnix.com/donate/eng")))
+        help.add_image_item(_("Donate Participate"), "dialog-question", lambda * a:open_link_in_browser(_("http://www.foobnix.com/donate/eng")))
 
-        #help.add_image_item("Help", Gtk.STOCK_HELP)
+        #help.add_image_item("Help", "help-contents")
 
         #top.decorate()
 
@@ -156,15 +156,19 @@ class MyMenu(Gtk.Menu):
     def __init__(self):
         Gtk.Menu.__init__(self)
 
-    def add_image_item(self, title, gtk_stock, func=None, param=None):
-        item = Gtk.ImageMenuItem(title)
+    def add_image_item(self, title, icon_name, func=None, param=None):
+        item = Gtk.MenuItem.new()
+        item_box = Gtk.HBox.new(False, 6)
 
-        item.show()
-        if gtk_stock:
-            img = Gtk.Image.new_from_stock(gtk_stock, Gtk.IconSize.MENU)
-            item.set_image(img)
+        if icon_name:
+            img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
+            item_box.pack_start(img, False, False, 0)
+        item_box.pack_start(Gtk.Label.new(title), False, False, 0)
 
-        logging.debug("Menu-Image-Activate" + title + str(gtk_stock) + str(func) + str(param))
+        item.add(item_box)
+        item.show_all()
+
+        logging.debug("Menu-Image-Activate" + title + str(icon_name) + str(func) + str(param))
         if func and param:
             item.connect("activate", lambda * a: func(param))
         elif func:

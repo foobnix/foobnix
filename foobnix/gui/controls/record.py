@@ -3,6 +3,7 @@ Created on Mar 23, 2011
 
 @author: zavlab1
 '''
+from foobnix.helpers.my_widgets import ImageButton
 import os
 import shutil
 import logging
@@ -15,8 +16,8 @@ class RadioRecord(Gtk.ToggleButton):
     def __init__(self, controls):
         Gtk.ToggleButton.__init__(self)
         self.controls = controls
-        
-        rec_image = Gtk.Image.new_from_stock(Gtk.STOCK_MEDIA_RECORD, Gtk.IconSize.BUTTON)
+
+        rec_image = ImageButton("media-record", size=Gtk.IconSize.BUTTON)
         rec_image.show()
         self.add(rec_image)
         self.set_relief(Gtk.ReliefStyle.NONE)
@@ -25,10 +26,10 @@ class RadioRecord(Gtk.ToggleButton):
         self.set_tooltip_text(_("Record radio"))
         self.set_no_show_all(True)
         self.hide()
-        
+
     def on_toggle(self, a):
         engine = self.controls.media_engine
-            
+
         if engine.radio_recording:
             engine.stop_radio_record()
             if os.path.isfile(engine.radio_path):

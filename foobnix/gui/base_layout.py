@@ -7,16 +7,16 @@ Created on 25 сент. 2010
 
 import logging
 
-from threading import Timer
-from foobnix.util import idle_task
-
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
 
+from threading import Timer
+
 from foobnix.fc.fc import FC
 from foobnix.gui.model.signal import FControl
 from foobnix.gui.state import LoadSave
+from foobnix.util import idle_task
 
 ## TODO: move into resources
 foobnix_style = """
@@ -36,11 +36,10 @@ GtkHPaned {
 */
 """
 
-
 class BaseFoobnixLayout(FControl, LoadSave):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-
+        self.controls = controls
         """ set application stylesheet"""
         self.style_provider = Gtk.CssProvider()
         ## TODO: after moving style to resource - replace to load_from_file
@@ -56,22 +55,23 @@ class BaseFoobnixLayout(FControl, LoadSave):
         notebox = Gtk.Overlay.new()
         notebox.add(controls.notetabs)
         notebox.add_overlay(controls.search_progress)
-        bbox = Gtk.VBox(False, 0)
+
+        bbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         bbox.pack_start(notebox, True, True, 0)
 
-        center_box = Gtk.VBox(False, 0)
+        center_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         center_box.pack_start(controls.searchPanel, False, False, 0)
         center_box.pack_start(bbox, True, True, 0)
 
-        self.hpaned_left = Gtk.HPaned()
-        self.hpaned_left.pack1(child=controls.perspectives, resize=True, shrink=True)
+        self.hpaned_left = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL)
+        self.hpaned_left.pack1(child=controls.perspectives.scroll, resize=True, shrink=False)
         self.hpaned_left.pack2(child=center_box, resize=True, shrink=True)
 
-        self.hpaned_right = Gtk.HPaned()
+        self.hpaned_right = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL)
         self.hpaned_right.pack1(child=self.hpaned_left, resize=True, shrink=True)
         self.hpaned_right.pack2(child=controls.coverlyrics, resize=True, shrink=False)
 
-        vbox = Gtk.VBox(False, 0)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         vbox.pack_start(controls.top_panel, False, False, 0)
         vbox.pack_start(self.hpaned_right, True, True, 0)
         vbox.pack_start(controls.statusbar, False, True, 0)
@@ -94,9 +94,10 @@ class BaseFoobnixLayout(FControl, LoadSave):
     def set_visible_musictree_panel(self, flag):
         logging.info("set_visible_musictree_panel " + str(flag))
         if flag:
+            self.controls.perspectives.scroll.show()
             self.hpaned_left.set_position(FC().hpaned_left)
         else:
-            self.hpaned_left.set_position(0)
+            self.controls.perspectives.scroll.hide()
         FC().is_view_music_tree_panel = flag
 
     def set_visible_coverlyrics_panel(self, flag):
@@ -141,8 +142,8 @@ class BaseFoobnixLayout(FControl, LoadSave):
         FC().main_window_size = [e.x, e.y, e.width, e.height]
 
     def configure_hl(self):
-            if FC().is_view_music_tree_panel and self.hpaned_left.get_position() != FC().hpaned_left:
-                self.hpaned_left.set_position(FC().hpaned_left)
+        if FC().is_view_music_tree_panel and self.hpaned_left.get_position() != FC().hpaned_left:
+            self.hpaned_left.set_position(FC().hpaned_left)
 
     def configure_hr(self):
         if self.controls.coverlyrics.get_property("visible"):

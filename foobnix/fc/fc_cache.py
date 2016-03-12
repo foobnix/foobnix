@@ -7,6 +7,7 @@ Created on 20 February 2010
 
 from __future__ import with_statement
 
+import logging
 import os
 import shutil
 import threading
@@ -70,13 +71,19 @@ class FCache:
                         FCache().album_titles[line[1:-1]] = albums_cache.next()[:-1]
 
     def on_quit(self):
+
+        def write_string(file, string):
+            if isinstance(string, str):
+                string = unicode(string, "utf-8")
+            file.write((u'#' + u'#' + u'\n' + string + u'\n').encode('utf-8'))
+
         if not os.path.isdir(COVERS_DIR):
             os.mkdir(COVERS_DIR)
 
         with file(CACHE_COVERS_FILE, 'w') as f:
             for key, value in zip(FCache().covers.keys(), FCache().covers.values()):
-                f.write('#' + key + '\n' + ','.join(value) + '\n')
+                write_string(f, ','.join(value))
 
         with file(CACHE_ALBUM_FILE, 'w') as f:
             for key, value in zip(FCache().album_titles.keys(), FCache().album_titles.values()):
-                f.write('#' + key + '\n' + value + '\n')
+                write_string(f, value)

@@ -128,7 +128,7 @@ def copy_move_files_dialog(files, dest_folder, copy=None):
     dialog = Gtk.Dialog(_('%s file(s) / folder(s)') % action)
 
     ok_button = dialog.add_button(action, Gtk.ResponseType.OK)
-    cancel_button = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL) #@UnusedVariable
+    cancel_button = dialog.add_button("dialog-cancel", Gtk.ResponseType.CANCEL) #@UnusedVariable
 
     ok_button.grab_default()
     label = Gtk.Label('\n' + _("Are you really want to %s this item(s) to %s ?") % (action, dest_folder))

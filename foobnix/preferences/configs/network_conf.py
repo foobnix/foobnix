@@ -5,7 +5,6 @@ Created on 1 сент. 2010
 @author: ivan
 '''
 
-
 import time
 import logging
 import urllib2
@@ -16,6 +15,7 @@ from foobnix.fc.fc import FC
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.util.proxy_connect import set_proxy_settings
 from foobnix.gui.service.lastfm_service import LastFmService
+from foobnix.helpers.pref_widgets import FrameDecorator
 
 
 class NetworkConfig(ConfigPlugin):
@@ -26,23 +26,20 @@ class NetworkConfig(ConfigPlugin):
 
         self.controls = controls
 
-        box = Gtk.VBox(False, 0)
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.hide()
 
         self.enable_proxy = Gtk.CheckButton(label=_("Enable HTTP proxy"), use_underline=True)
         self.enable_proxy.connect("clicked", self.on_enable_http_proxy)
         self.enable_proxy.show()
 
-        self.frame = Gtk.Frame(label=_("Proxy Settings"))
-        self.frame.set_border_width(0)
+        all = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        all.show()
+        self.frame = FrameDecorator(_("Proxy Settings"), all, 0.5, 0.5, border_width=0)
         self.frame.show()
 
-        all = Gtk.VBox(False, 0)
-        all.show()
-
-
         """URL"""
-        proxy_box = Gtk.HBox(False, 0)
+        proxy_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         proxy_box.show()
 
         proxy_lable = Gtk.Label(_("Server"))
@@ -61,7 +58,7 @@ class NetworkConfig(ConfigPlugin):
 
 
         """LOGIN"""
-        lbox = Gtk.HBox(False, 0)
+        lbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         lbox.show()
 
         login = Gtk.Label(_("Login"))
@@ -75,7 +72,7 @@ class NetworkConfig(ConfigPlugin):
         lbox.pack_start(self.login_text, False, True, 0)
 
         """PASSWORD"""
-        pbox = Gtk.HBox(False, 0)
+        pbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         pbox.show()
 
         password = Gtk.Label(_("Password"))
@@ -92,7 +89,7 @@ class NetworkConfig(ConfigPlugin):
 
         """check"""
 
-        check = Gtk.HBox(False, 0)
+        check = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         check.show()
 
         self.vk_test = Gtk.Entry()
@@ -118,9 +115,7 @@ class NetworkConfig(ConfigPlugin):
         all.pack_start(pbox, False, False, 0)
         all.pack_start(check, False, False, 0)
 
-        self.frame.add(all)
-
-        frame_box = Gtk.HBox(False, 0)
+        frame_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         frame_box.set_border_width(5)
         frame_box.show()
 
@@ -172,7 +167,7 @@ class NetworkConfig(ConfigPlugin):
         buff_size = Gtk.SpinButton(adjustment=self.buffer_adjustment, climb_rate=0, digits=0)
         buff_size.show()
 
-        hbox = Gtk.HBox(False, 10)
+        hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)
         hbox.pack_start(buff_size, False, False, 0)
         hbox.pack_start(label, False, False, 0)
 

@@ -13,6 +13,7 @@ from gi.repository import GLib
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
+from foobnix.helpers.pref_widgets import FrameDecorator
 from foobnix.util import idle_task
 
 
@@ -27,12 +28,11 @@ class LastFmConfig(ConfigPlugin):
         box.hide()
 
         """LAST.FM"""
-        l_frame = Gtk.Frame(label=_("Last.FM"))
-        l_frame.set_border_width(0)
-        l_layout = Gtk.VBox(False, 0)
+        l_layout = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        l_frame = FrameDecorator(_("Last.FM"), l_layout, border_width=0)
 
         """LOGIN"""
-        lbox = Gtk.HBox(False, 0)
+        lbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         lbox.show()
 
         login = Gtk.Label(_("Login"))
@@ -46,7 +46,7 @@ class LastFmConfig(ConfigPlugin):
         lbox.pack_start(self.login_text, False, True, 0)
 
         """PASSWORD"""
-        pbox = Gtk.HBox(False, 0)
+        pbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         pbox.show()
 
         password = Gtk.Label(_("Password"))
@@ -65,7 +65,7 @@ class LastFmConfig(ConfigPlugin):
         limit = Gtk.SpinButton(adjustment=self.adjustment, climb_rate=0.0, digits=0)
         limit.show()
 
-        limitbox = Gtk.HBox(False, 0)
+        limitbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         limitbox.pack_start(limit_text, False, False, 0)
         limitbox.pack_start(limit, False, False, 0)
 
@@ -84,14 +84,9 @@ class LastFmConfig(ConfigPlugin):
         l_layout.pack_start(self.music_scrobbler, False, True, 0)
         l_layout.pack_start(self.radio_scrobbler, False, True, 0)
 
-        l_frame.add(l_layout)
-
         """VK"""
-
-        vk_frame = Gtk.Frame(label=_("VKontakte"))
-        vk_frame.set_border_width(0)
-
-        vk_layout = Gtk.VBox(False, 0)
+        vk_layout = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        vk_frame = FrameDecorator(_("VKontakte"), vk_layout, border_width=0)
 
         self.default_label_value = _("Not connected")
 
@@ -103,8 +98,7 @@ class LastFmConfig(ConfigPlugin):
         self.vk_autocomplete.show()
         vk_layout.pack_start(self.vk_account_label, False, False, 0)
         vk_layout.pack_start(self.reset_vk_auth_button, False, False, 0)
-        vk_layout.pack_start(self.vk_autocomplete, False, False)
-        vk_frame.add(vk_layout)
+        vk_layout.pack_start(self.vk_autocomplete, False, False, 0)
 
         """all"""
         box.pack_start(l_frame, False, True, 0)

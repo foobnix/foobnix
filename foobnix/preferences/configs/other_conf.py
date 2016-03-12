@@ -13,6 +13,7 @@ from foobnix.preferences.configs import CONFIG_OTHER
 from foobnix.util.antiscreensaver import antiscreensaver
 from foobnix.preferences.config_plugin import ConfigPlugin
 from foobnix.helpers.dialog_entry import info_dialog_with_link_and_donate
+from foobnix.helpers.pref_widgets import FrameDecorator
 
 
 class OtherConfig(ConfigPlugin):
@@ -22,16 +23,17 @@ class OtherConfig(ConfigPlugin):
     def __init__(self, controls):
         self.controls = controls
 
-        box = Gtk.VBox(False, 0)
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.hide()
 
-        download_frame = Gtk.Frame(label=_("File downloads"))
-        df_vbox = Gtk.VBox(False, 5)
+        df_vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 5)
         df_vbox.set_border_width(4)
+        download_frame = FrameDecorator(_("File downloads"), df_vbox, 0.5, 0.5)
+
 
         """save to"""
 
-        hbox = Gtk.HBox(False, 5)
+        hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         self.online_dir = Gtk.FileChooserButton("set place")
         self.online_dir.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
         self.online_dir.connect("current-folder-changed", self.on_change_folder)
@@ -44,7 +46,7 @@ class OtherConfig(ConfigPlugin):
         self.nosubfolder_checkbutton = Gtk.CheckButton(label=_("Save to one folder (no subfolders)"), use_underline=True)
 
         """download threads"""
-        thbox = Gtk.HBox(False, 5)
+        thbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         tab_label = Gtk.Label(_("Download in threads"))
 
         adjustment = Gtk.Adjustment(value=1, lower=1, upper=10, step_incr=1, page_incr=1, page_size=0)
@@ -57,14 +59,13 @@ class OtherConfig(ConfigPlugin):
         df_vbox.pack_start(self.automatic_save_checkbutton, False, False, 2)
         df_vbox.pack_start(self.nosubfolder_checkbutton, False, False, 2)
         df_vbox.pack_start(thbox, False, False, 2)
-        download_frame.add(df_vbox)
+
         download_frame.show_all()
 
         """disc cover size"""
-        dc_frame = Gtk.Frame(label=_("Disc cover settings"))
-
-        cbox = Gtk.HBox(False, 5)
+        cbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         cbox.set_border_width(4)
+        dc_frame = FrameDecorator(_("Disc cover settings"), cbox, 0.5, 0.5)
 
         tab_label = Gtk.Label(_("Disc cover size:"))
 
@@ -74,29 +75,29 @@ class OtherConfig(ConfigPlugin):
         cbox.pack_start(tab_label, False, False, 0)
         cbox.pack_start(self.image_size_spin, False, True, 0)
 
-        dc_frame.add(cbox)
         dc_frame.show_all()
 
         """notification"""
-        updates_frame = Gtk.Frame(label=_("Updates"))
-        uhbox = Gtk.HBox(False, 5)
+        uhbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         uhbox.set_border_width(4)
+        updates_frame = FrameDecorator(_("Updates"), uhbox, 0.5, 0.5)
+
         self.check_new_version = Gtk.CheckButton(label=_("Check for new foobnix release on start"), use_underline=True)
 
         demo = Gtk.Button(label=_("Check for update"))
         demo.connect("clicked", lambda * a: info_dialog_with_link_and_donate("foobnix [version]"))
         uhbox.pack_start(self.check_new_version, True, True, 0)
         uhbox.pack_start(demo, False, False, 0)
-        updates_frame.add(uhbox)
+
         updates_frame.show_all()
 
         """background image"""
-        theme_frame = Gtk.Frame(label=_("Theming"))
-        thvbox = Gtk.VBox(False, 1)
+        thvbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 1)
         thvbox.set_border_width(4)
+        theme_frame = FrameDecorator(_("Theming"), thvbox, 0.5, 0.5)
 
         """menu position"""
-        pbox = Gtk.HBox(False, 5)
+        pbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         pbox.show()
 
         label = Gtk.Label(_("Menu type: "))
@@ -109,7 +110,7 @@ class OtherConfig(ConfigPlugin):
         pbox.pack_start(self.new_style, False, True, 0)
         pbox.pack_start(self.old_style, False, False, 0)
 
-        o_r_box = Gtk.HBox(False, 5)
+        o_r_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         o_r_box.show()
 
         o_r_label = Gtk.Label(_("Order-Repeat Switcher Style:"))
@@ -123,7 +124,7 @@ class OtherConfig(ConfigPlugin):
         o_r_box.pack_start(self.labels, False, False, 0)
 
         """opacity"""
-        obox = Gtk.HBox(False, 5)
+        obox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         obox.show()
 
         tab_label = Gtk.Label(_("Opacity:"))
@@ -138,7 +139,7 @@ class OtherConfig(ConfigPlugin):
         obox.pack_start(self.opacity_size, False, True, 0)
 
         self.fmgrs_combo = self.fmgr_combobox()
-        hcombobox = Gtk.HBox(False, 5)
+        hcombobox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         hcombobox.pack_start(Gtk.Label(_('Choose your preferred file manager:')), False, False, 0)
         hcombobox.pack_start(self.fmgrs_combo, False, False, 0)
 
@@ -149,7 +150,7 @@ class OtherConfig(ConfigPlugin):
         thvbox.pack_start(obox, False, False, 1)
         thvbox.pack_start(hcombobox, False, False, 1)
         thvbox.pack_start(self.disable_screensaver, False, False, 0)
-        theme_frame.add(thvbox)
+
         theme_frame.show_all()
 
         """packaging"""

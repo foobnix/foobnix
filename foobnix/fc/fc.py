@@ -85,7 +85,6 @@ class FC():
         self.hpaned_left = -1
         self.hpaned_right = 800
         self.hpaned_right_right_side_width = 174 #self.main_window_size[3] - self.hpaned_right
-        self.vpaned_small = 100
         self.background_image_themes = ["theme/cat.jpg", "theme/flower.jpg", "theme/winter.jpg"]
         self.background_image = None # "theme/winter.jpg"
         self.window_opacity = 1

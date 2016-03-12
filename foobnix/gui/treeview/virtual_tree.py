@@ -24,7 +24,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         CommonTreeControl.__init__(self, controls)
 
         """column config"""
-        column = Gtk.TreeViewColumn(_("Storage"), Gtk.CellRendererText(), text=self.text[0], font=self.font[0])
+        column = Gtk.TreeViewColumn(_("Storage"), self.ellipsize_render, text=self.text[0], font=self.font[0])
         column.set_resizable(True)
         self.set_headers_visible(True)
         self.append_column(column)
@@ -57,17 +57,17 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         if is_rigth_click(e):
                 right_click_optimization_for_trees(w, e)
                 self.tree_menu.clear()
-                self.tree_menu.add_item(_("Add playlist"), Gtk.STOCK_ADD, self.create_playlist, None)
+                self.tree_menu.add_item(_("Add playlist"), "list-add", self.create_playlist, None)
                 bean = self.get_selected_bean()
                 if bean:
                     if bean.is_file:
-                        self.tree_menu.add_item(_("Rename"), Gtk.STOCK_EDIT, self.rename_selected, None)
-                        self.tree_menu.add_item(_("Delete"), Gtk.STOCK_DELETE, self.delete_selected, None)
+                        self.tree_menu.add_item(_("Rename"), "accessories-text-editor", self.rename_selected, None)
+                        self.tree_menu.add_item(_("Delete"), "edit-delete", self.delete_selected, None)
                     else:
-                        self.tree_menu.add_item(_("Rename playlist"), Gtk.STOCK_EDIT, self.rename_selected, None)
-                        self.tree_menu.add_item(_("Delete playlist"), Gtk.STOCK_DELETE, self.delete_selected, None)
-                #menu.add_item(_("Save as"), Gtk.STOCK_SAVE_AS, None, None)
-                #menu.add_item(_("Open as"), Gtk.STOCK_OPEN, None, None)
+                        self.tree_menu.add_item(_("Rename playlist"), "accessories-text-editor", self.rename_selected, None)
+                        self.tree_menu.add_item(_("Delete playlist"), "edit-delete", self.delete_selected, None)
+                #menu.add_item(_("Save as"), "document-save"_AS, None, None)
+                #menu.add_item(_("Open as"), "folder-open", None, None)
                 self.tree_menu.show(e)
 
     def create_playlist(self):
