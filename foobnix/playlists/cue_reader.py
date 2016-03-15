@@ -11,6 +11,7 @@ import os
 import re
 import logging
 import chardet
+
 import foobnix.util.id3_util
 
 from foobnix.fc.fc import FC
@@ -22,10 +23,10 @@ from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.file_utils import get_any_supported_audio_file
 from foobnix.util.id3_util import correct_encoding, update_id3
 
-TITLE = u"TITLE"
-PERFORMER = u"PERFORMER"
-FILE = u"FILE"
-INDEX = u"INDEX"
+TITLE = "TITLE"
+PERFORMER = "PERFORMER"
+FILE = "FILE"
+INDEX = "INDEX"
 
 class CueTrack():
 
@@ -198,7 +199,7 @@ class CueReader():
                 except:
                     logging.error("There is some problems while converting in unicode")
 
-            line = line.strip()
+            line = line.strip().encode('utf-8')
 
             if not self.is_valid and not line.startswith(FILE):
                 continue
@@ -225,7 +226,7 @@ class CueReader():
                 if "\\" in file:
                     file = file[file.rfind("\\")+1:]
 
-                dir = unicode(os.path.dirname(self.cue_path), 'utf-8')
+                dir = os.path.dirname(self.cue_path)
                 full_file = os.path.join(dir, file)
                 logging.debug("CUE source" + full_file)
                 exists = os.path.exists(full_file)
