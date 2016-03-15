@@ -31,7 +31,7 @@ class MyToolbar(Gtk.Toolbar):
         button.show()
         button.set_tooltip_text(tooltip)
 
-        logging.debug("Button-Controls-Clicked" + str(tooltip)+ str(icon_name) + str(func) + str(param))
+        logging.debug("Button-Controls-Clicked" + " | Tooltip: " + str(tooltip) + " | Icon: " +  str(icon_name) + " | Function: " +  func.__name__ + " | Parameters: " +  str(param))
         if func and param:
             button.connect("clicked", lambda * a: func(param))
         elif func:
