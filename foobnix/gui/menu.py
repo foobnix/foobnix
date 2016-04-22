@@ -71,9 +71,9 @@ class MenuBarWidget(FControl):
         order = playback.add_text_item(_("Order"), sub_menu=True)
         playback_radio_group = []
         self.playback_order_linear = order.add_radio_item(_("Linear"), playback_radio_group, not FC().is_order_random)
-        self.playback_order_linear.connect("activate", lambda w: set_random(False))
-
         self.playback_order_random = order.add_radio_item(_("Random"), playback_radio_group, FC().is_order_random)
+
+        self.playback_order_linear.connect("activate", lambda w: set_random(False))
         self.playback_order_random.connect("activate", lambda w: set_random(True))
 
         """Playback - Repeat"""
@@ -88,10 +88,9 @@ class MenuBarWidget(FControl):
             logging.debug("set repeat_all")
             controls.os.on_load()
 
-
-        def repeat_sigle():
+        def repeat_single():
             FC().repeat_state = const.REPEAT_SINGLE
-            logging.debug("set repeat_sigle")
+            logging.debug("set repeat_single")
             controls.os.on_load()
 
         def repeat_no():
@@ -100,7 +99,7 @@ class MenuBarWidget(FControl):
             controls.os.on_load()
 
         self.lopping_all.connect("activate", lambda * a:repeat_all())
-        self.lopping_single.connect("activate", lambda * a:repeat_sigle())
+        self.lopping_single.connect("activate", lambda * a:repeat_single())
         self.lopping_disable.connect("activate", lambda * a:repeat_no())
 
         """Playlist View"""

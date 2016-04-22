@@ -6,11 +6,10 @@ Created on 7  2010
 @author: ivan
 '''
 
-
+import chardet
+import logging
 import os
 import re
-import logging
-import chardet
 
 import foobnix.util.id3_util
 

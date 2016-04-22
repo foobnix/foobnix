@@ -36,12 +36,10 @@ class ImageBase(Gtk.Image):
         self.pixbuf = resize_pixbuf(pix, self.size)
         super(ImageBase, self).set_from_pixbuf(self.pixbuf)
 
-    @idle_task
     def set_image_from_url(self, url):
         self.pixbuf = create_pixbuf_from_url(url, self.size)
         self.set_from_pixbuf(self.pixbuf)
 
-    @idle_task
     def set_image_from_path(self, path):
         if not os.path.isfile(path):
             return self.set_from_resource(path)

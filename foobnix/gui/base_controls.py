@@ -326,7 +326,8 @@ class BaseFoobnixControls():
 
     @idle_task
     def show_preferences(self):
-        self.preferences.show()
+        if not self.preferences.get_property("visible"):  # checking to avoid reset pref. window item to first
+            self.preferences.show()
 
     @idle_task
     def state_pause(self):
