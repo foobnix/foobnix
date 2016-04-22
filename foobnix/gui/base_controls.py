@@ -732,7 +732,7 @@ class BaseFoobnixControls():
             if isinstance(self.__dict__[element], LoadSave):
                 init = time.time()
                 self.__dict__[element].on_load()
-                logging.debug("%f LOAD ON START %s" % (time.time() - init, str(self.__dict__[element])))
+                logging.debug("%f LOAD ON START %s" % (time.time() - init, "Instance of " + self.__dict__[element].__class__.__name__))
 
         """load others"""
         #self.movie_window.hide_all()

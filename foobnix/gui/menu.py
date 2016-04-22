@@ -166,7 +166,7 @@ class MyMenu(Gtk.Menu):
         item.add(item_box)
         item.show_all()
 
-        logging.debug("Menu-Image-Activate" + title + str(icon_name) + str(func) + str(param))
+        logging.debug("Menu-Image-Activate | Title: " + title + " | Icon: " + str(icon_name) + " | Function: " + func.__name__ + " | Parameters: " + str(param))
         if func and param:
             item.connect("activate", lambda * a: func(param))
         elif func:

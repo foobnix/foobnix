@@ -41,6 +41,8 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
         try:
             """check keybinder installed, debian"""
+            import gi
+            gi.require_version('Keybinder', '3.0')
             from gi.repository import Keybinder #@UnresolvedImport @UnusedImport
             from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
             self.configs.append(HotKeysConfig(controls))
