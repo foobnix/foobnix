@@ -4306,11 +4306,36 @@ class _ScrobblerRequest(object):
             "HOST": self.hostname
         }
 
-        if self.type == "GET":
-            connection.request(
-                "GET", self.subdir + "?" + data, headers=headers)
+        """ --- Changed by zavlab1 BEGIN --- """
+        if self.network.is_proxy_enabled():
+            import base64, httplib, urllib2
+            from foobnix.fc.fc import FC
+            proxy_rul = FC().proxy_url
+            index = proxy_rul.find(":")
+            proxy = proxy_rul[:index]
+            port = proxy_rul[index + 1:]
+
+            if FC().proxy_user and FC().proxy_password:
+                user = urllib2.unquote(FC().proxy_user)
+                password = urllib2.unquote(FC().proxy_password)
+                auth = base64.b64encode(user + ":" + password).strip()
+                headers['Proxy-Authorization'] =  '''Basic %s''' % auth
+
+            connection = httplib.HTTPConnection(host=proxy, port=port)
+            if self.type == "GET":
+                connection.request(method="GET", url="http://" + self.hostname + self.subdir + "?" + data,
+                                   headers=headers)
+            else:
+                connection.request(method="POST", url="http://" + self.hostname + self.subdir,
+                                   body=data, headers=headers)
         else:
-            connection.request("POST", self.subdir, data, headers)
+            """ --- Changed by zavlab1 END --- """
+
+            if self.type == "GET":
+                connection.request("GET", self.subdir + "?" + data, headers=headers)
+            else:
+                connection.request("POST", self.subdir, data, headers)
+
         response = _unicode(connection.getresponse().read())
 
         self._check_response_for_errors(response)
