@@ -29,7 +29,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        thread.start_new_thread(self.lazy_init, (True,) )
+        thread.start_new_thread(GLib.idle_add, (self.lazy_init, True))
 
     def lazy_init(self, sleep=False):
         controls = self.controls
