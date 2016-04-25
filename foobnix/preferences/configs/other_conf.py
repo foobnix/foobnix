@@ -115,7 +115,7 @@ class OtherConfig(ConfigPlugin):
 
         o_r_label = Gtk.Label.new(_("Order-Repeat Switcher Style:"))
 
-        self.buttons = Gtk.RadioButton.new_with_label_from_widget(None, _("Toggle Buttons"))
+        self.buttons = Gtk.RadioButton.new_with_label(None, _("Toggle Buttons"))
 
         self.labels = Gtk.RadioButton.new_with_label_from_widget(self.buttons, _("Text Labels"))
 
