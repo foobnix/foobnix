@@ -29,7 +29,6 @@ from foobnix.gui.service.vk_service import VKService
 from foobnix.gui.state import LoadSave, Quitable
 from foobnix.helpers.dialog_entry import file_chooser_dialog, \
     directory_chooser_dialog, info_dialog_with_link_and_donate
-from foobnix.thirdparty import pyperclip
 from foobnix.util.bean_utils import get_bean_posible_paths
 from foobnix.util.const import STATE_PLAY, STATE_PAUSE, STATE_STOP, FTYPE_RADIO
 from foobnix.util.file_utils import get_file_extension
@@ -91,7 +90,8 @@ class BaseFoobnixControls():
          if not beans:
              return
          if hasattr(beans[0], 'path'):
-            pyperclip.copy(beans[0].path)
+            cb = Gtk.Clipboard().set_text(beans[0].path)
+            cb.store()
             if FC().notifier:
                 notification = Notify.Notification.new("In clipboard", beans[0].path, "")
                 notification.set_urgency(Notify.Urgency.LOW)
