@@ -29,9 +29,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        thread.start_new_thread(self.lazy_init, (True,) )
 
-    def lazy_init(self, sleep=False):
         controls = self.controls
         self.configs.append(MusicLibraryConfig(controls))
         self.configs.append(TabsConfig(controls))
