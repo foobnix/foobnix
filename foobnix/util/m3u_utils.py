@@ -41,7 +41,7 @@ def message_on_save(absolute=True):
     dialog.set_title(_("Choose window"))
     dialog.set_border_width(5)
     dialog.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
-    label = Gtk.Label()
+    label = Gtk.Label.new(None)
     label.set_markup(_("""<big><b>\t\t\t\t\t\t\t\tAttention!\n</b></big>\t\
 The relative location of the \
 playlist and music files allows you to save a relative

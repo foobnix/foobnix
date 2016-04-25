@@ -53,7 +53,7 @@ class PopupMenuWindow(PopupTrayWindow):
         playcontrols.pack_start(ImageButton("application-exit", controls.quit, _("Exit")), False, False, 0)
         playcontrols.pack_start(ImageButton("", self.hide, _("Close Popup")), False, False, 0)
 
-        self.poopup_text = Gtk.Label()
+        self.poopup_text = Gtk.Label.new(None)
         self.set_text("Foobnix")
         self.poopup_text.set_line_wrap(True)
 
@@ -65,7 +65,6 @@ class PopupMenuWindow(PopupTrayWindow):
 
     @idle_task
     def set_text(self, text):
-        text = unicode(text)
         self.poopup_text.set_text(text[:40])
 
         '''set colour of text'''
@@ -76,16 +75,13 @@ class PopupMenuWindow(PopupTrayWindow):
 class PopupVolumeWindow(PopupTrayWindow):
     def __init__(self, controls, popup_menu_window):
         PopupTrayWindow.__init__(self, controls)
-
         height = popup_menu_window.get_size()[1]
         width = height * 3
         self.set_size_request(width, height)
         self.avc = AlternateVolumeControl(levels=35, s_width=2, interval=1, v_step=1)
         #self.avc.modify_bg(Gtk.StateType.NORMAL, self.get_colormap().alloc_color("gray23"))
-        ebox = Gtk.EventBox()
-        ebox.add(self.avc)
-        ebox.connect("scroll-event", self.controls.volume.on_scroll_event)
-        self.add (ebox)
+        self.avc.connect("scroll-event", self.controls.volume.on_scroll_event)
+        self.add(self.avc)
         self.show_all()
         self.hide()
 
@@ -104,13 +100,12 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
 
         try:
             self.set_has_tooltip(True)
-            self.tooltip = Gtk.Tooltip()
-            self.set_tooltip("Foobnix music player")
+            #self.set_tooltip("Foobnix music player")
             self.connect("query-tooltip", self.on_query_tooltip)
             self.connect("button-press-event", self.on_button_press)
             self.connect("scroll-event", self.on_scroll)
         except Exception, e:
-            logging.warn("On debian it doesn't work" + str(e))
+            logging.warn("Tooltip doesn't work " + str(e))
 
         self.current_bean = FModel().add_artist("Artist").add_title("Title")
         self.tooltip_image = ImageBase(ICON_FOOBNIX, 75)
@@ -120,7 +115,7 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
     def on_save(self):
         pass
 
-    def on_scroll (self, button, event):
+    def on_scroll(self, button, event):
         self.controls.volume.on_scroll_event(button, event)
         self.popup_volume_contol.show()
 
@@ -180,21 +175,22 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
         if len(title) > max_str_len:
             title = split_string(title, max_str_len)
 
-        alabel = Gtk.Label()
+        alabel = Gtk.Label.new(None)
         alabel.set_markup("<b>%s</b>" % artist)
-        hbox1 = Gtk.HBox()
-        hbox1.pack_start(alabel, False, False)
-        hbox2 = Gtk.HBox()
-        hbox2.pack_start(Gtk.Label(title), False, False)
-        vbox = VBoxDecorator(Gtk.Label(), hbox1, Gtk.Label(), hbox2)
-        if self.tooltip_image.size == 150:
+        hbox1 = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        hbox1.pack_start(alabel, False, False, 0)
+        hbox2 = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        hbox2.pack_start(Gtk.Label.new(title), False, False, 0)
+        vbox = VBoxDecorator(Gtk.Label.new(None), hbox1, Gtk.Label.new(None), hbox2)
+        """if self.tooltip_image.size == 150:
             alignment = Gtk.Alignment(0, 0.4)
         else:
             alignment = Gtk.Alignment()
         alignment.set_padding(padding_top=0, padding_bottom=0, padding_left=10, padding_right=10)
-        alignment.add(vbox)
+        alignment.add(vbox)"""
+        vbox.set_halign(Gtk.Align.CENTER)
         tooltip.set_icon(self.tooltip_image.get_pixbuf())
-        tooltip.set_custom(alignment)
+        tooltip.set_custom(vbox)
         return True
 
     def on_activate(self, *a):

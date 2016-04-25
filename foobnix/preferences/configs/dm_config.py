@@ -20,23 +20,20 @@ class DMConfig(ConfigPlugin):
 
         hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
 
-        self.is_save = Gtk.CheckButton(label=_("Save online music"), use_underline=True)
+        self.is_save = Gtk.CheckButton.new_with_label(_("Save online music"))
         self.is_save.connect("clicked", self.on_save_online)
         self.is_save.show()
 
-        self.online_dir = Gtk.FileChooserButton("set place")
-        self.online_dir.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
+        self.online_dir = Gtk.FileChooserButton.new("set place", Gtk.FileChooserAction.SELECT_FOLDER)
         self.online_dir.connect("current-folder-changed", self.on_change_folder)
         self.online_dir.show()
 
         hbox.pack_start(self.is_save, False, True, 0)
         hbox.pack_start(self.online_dir, True, True, 0)
 
-
         box.pack_start(hbox, False, True, 0)
 
         self.widget = box
-
 
     def on_save_online(self, *a):
         value = self.is_save.get_active()
@@ -52,7 +49,6 @@ class DMConfig(ConfigPlugin):
         FC().online_save_to_folder = path
 
         logging.info("Change music online folder"+ path)
-
 
     def on_load(self):
         self.is_save.set_active(FC().is_save_online)

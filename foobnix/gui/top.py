@@ -15,13 +15,12 @@ from foobnix.helpers.menu import Popup
 from foobnix.fc.fc import FC
 from foobnix.util.widget_utils import MenuStyleDecorator
 
-class TopWidgets(FControl, LoadSave, Gtk.HBox):
+class TopWidgets(FControl, LoadSave, Gtk.Box):
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
 
         self.old_menu = MenuBarWidget(controls)
-
 
         self.pack_start(self.old_menu.widget, False, False, 0)
 

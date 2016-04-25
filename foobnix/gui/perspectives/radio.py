@@ -2,8 +2,9 @@
 __author__ = 'popsul'
 
 from gi.repository import Gtk
-from foobnix.gui.state import Filterable, Quitable
+
 from foobnix.gui.perspectives import BasePerspective, StackableWidget
+from foobnix.gui.state import Filterable, Quitable
 from foobnix.gui.treeview.radio_tree import RadioTreeControl, MyRadioTreeControl
 
 
@@ -15,7 +16,7 @@ class RadioPerspective(BasePerspective, Filterable, Quitable):
         self.auto_radio = RadioTreeControl(controls)
         self.my_radio = MyRadioTreeControl(controls)
 
-        self.switch_button = Gtk.Button()
+        self.switch_button = Gtk.Button.new()
         self.switch_button.connect("clicked", self.switch_radio)
 
         self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)

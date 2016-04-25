@@ -29,7 +29,7 @@ class NetworkConfig(ConfigPlugin):
         box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.hide()
 
-        self.enable_proxy = Gtk.CheckButton(label=_("Enable HTTP proxy"), use_underline=True)
+        self.enable_proxy = Gtk.CheckButton.new_with_label(_("Enable HTTP proxy"))
         self.enable_proxy.connect("clicked", self.on_enable_http_proxy)
         self.enable_proxy.show()
 
@@ -42,14 +42,14 @@ class NetworkConfig(ConfigPlugin):
         proxy_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         proxy_box.show()
 
-        proxy_lable = Gtk.Label(_("Server"))
+        proxy_lable = Gtk.Label.new(_("Server"))
         proxy_lable.set_size_request(150, -1)
         proxy_lable.show()
 
         self.proxy_server = Gtk.Entry()
         self.proxy_server.show()
 
-        require = Gtk.Label(_("example: 66.42.182.178:3128"))
+        require = Gtk.Label.new(_("example: 66.42.182.178:3128"))
         require.show()
 
         proxy_box.pack_start(proxy_lable, False, False, 0)
@@ -61,7 +61,7 @@ class NetworkConfig(ConfigPlugin):
         lbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         lbox.show()
 
-        login = Gtk.Label(_("Login"))
+        login = Gtk.Label.new(_("Login"))
         login.set_size_request(150, -1)
         login.show()
 
@@ -75,7 +75,7 @@ class NetworkConfig(ConfigPlugin):
         pbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         pbox.show()
 
-        password = Gtk.Label(_("Password"))
+        password = Gtk.Label.new(_("Password"))
         password.set_size_request(150, -1)
         password.show()
 
@@ -96,12 +96,12 @@ class NetworkConfig(ConfigPlugin):
         self.vk_test.set_text("http://vk.com")
         self.vk_test.show()
 
-        self.test_button = Gtk.Button(_("Check Connection"))
+        self.test_button = Gtk.Button.new_with_label(_("Check Connection"))
         self.test_button.set_size_request(150, -1)
         self.test_button.connect("clicked", self.text_connection)
         self.test_button.show()
 
-        self.result = Gtk.Label(_("Result:"))
+        self.result = Gtk.Label.new(_("Result:"))
         self.result.show()
 
         check.pack_start(self.test_button, False, True, 0)
@@ -119,7 +119,7 @@ class NetworkConfig(ConfigPlugin):
         frame_box.set_border_width(5)
         frame_box.show()
 
-        self.net_ping = Gtk.CheckButton(label=_("Show message on network disconnection"), use_underline=True)
+        self.net_ping = Gtk.CheckButton.new_with_label(_("Show message on network disconnection"))
 
         box.pack_start(self.buffer_size(), False, True, 0)
         box.pack_start(self.net_ping, False, True, 0)
@@ -160,11 +160,11 @@ class NetworkConfig(ConfigPlugin):
             return False
 
     def buffer_size(self):
-        label = Gtk.Label(_("Buffer size for network streams (KBytes)"))
+        label = Gtk.Label.new(_("Buffer size for network streams (KBytes)"))
 
         self.buffer_adjustment = Gtk.Adjustment.new(value=128, lower=16, upper=2048, step_increment=16, page_increment=0, page_size=0)
 
-        buff_size = Gtk.SpinButton(adjustment=self.buffer_adjustment, climb_rate=0, digits=0)
+        buff_size = Gtk.SpinButton.new(self.buffer_adjustment, 0.0, 0)
         buff_size.show()
 
         hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)

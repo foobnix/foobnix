@@ -300,10 +300,10 @@ class MyRadioTreeControl(RadioTreeControl):
             for treerow, ref in zip(treerows, ff_row_refs):
                 row = [col for col in treerow]
                 if drop_info:
-                    if position == Gtk.TREE_VIEW_DROP_BEFORE:
+                    if position == Gtk.TreeViewDropPosition.BEFORE:
                         new_iter = model.insert_before(None, iter, row)
-                    elif (position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE or
-                          position == Gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+                    elif (position == Gtk.TreeViewDropPosition.INTO_OR_BEFORE or
+                          position == Gtk.TreeViewDropPosition.INTO_OR_AFTER):
                         if model.get_value(iter, self.is_file[0]):
                             new_iter = model.insert_after(None, iter, row)
                             iter = model.iter_next(iter)

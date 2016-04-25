@@ -41,15 +41,15 @@ class Converter(ChildTopWindow):
         vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 10)
         vbox.pack_start(self.area.scroll)
         vbox.show()
-        format_label = Gtk.Label(_('Format'))
-        bitrate_label = Gtk.Label(_('Bitrate'))
-        channels_label = Gtk.Label(_('Channels'))
-        hertz_label = Gtk.Label(_('Frequency'))
+        format_label = Gtk.Label.new(_('Format'))
+        bitrate_label = Gtk.Label.new(_('Bitrate'))
+        channels_label = Gtk.Label.new(_('Channels'))
+        hertz_label = Gtk.Label.new(_('Frequency'))
 
-        format_box = Gtk.VBox()
-        bitrate_box = Gtk.VBox()
-        channels_box = Gtk.VBox()
-        hertz_box = Gtk.VBox()
+        format_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        bitrate_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        channels_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        hertz_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         self.format_list = ["Choose", "  mp3", "  ogg", "  mp2", "  ac3", "  m4a", "  wav"]
         self.bitrate_list = ["  64 kbps", "  96 kbps", "  128 kbps", "  160 kbps", "  192 kbps", "  224 kbps", "  256 kbps", "  320 kbps", "  384 kbps", "  448 kbps", "  640 kbps"]
@@ -83,23 +83,23 @@ class Converter(ChildTopWindow):
         vbox.pack_start(hbox, False)
 
         self.button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)
-        close_button = Gtk.Button(_("Close"))
+        close_button = Gtk.Button.new_with_label(_("Close"))
         close_button.set_size_request(150, 30)
         close_button.connect("clicked", lambda *a: self.hide())
-        self.convert_button = Gtk.Button(_("Convert"))
+        self.convert_button = Gtk.Button.new_with_label(_("Convert"))
         self.convert_button.set_size_request(150, 30)
         self.convert_button.connect("clicked", self.save)
 
         self.progressbar = Gtk.ProgressBar()
 
-        self.stop_button = Gtk.Button(_("Stop"))
+        self.stop_button = Gtk.Button.new_with_label(_("Stop"))
         self.stop_button.set_size_request(100, 30)
         self.stop_button.connect("clicked", self.on_stop)
 
-        self.open_folder_button = Gtk.Button(_("Show files"))
+        self.open_folder_button = Gtk.Button.new_with_label(_("Show files"))
         self.open_folder_button.connect('released', self.open_in_fm)
 
-        self.progress_box = Gtk.HBox()
+        self.progress_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.progress_box.pack_end(self.open_folder_button, False)
         self.progress_box.pack_end(self.stop_button, False)
         self.progress_box.pack_end(self.progressbar, True)
@@ -229,7 +229,7 @@ class Converter(ChildTopWindow):
         ok_button = dialog.add_button("dialog-ok", Gtk.ResponseType.OK) #@UnusedVariable
         cancel_button = dialog.add_button("dialog-cancel", Gtk.ResponseType.CANCEL)
         cancel_button.grab_default()
-        label = Gtk.Label(_("So file(s)  already exist(s) and will be overwritten.\nDo you wish to continue?"))
+        label = Gtk.Label.new(_("So file(s)  already exist(s) and will be overwritten.\nDo you wish to continue?"))
         image = Gtk.Image.new_from_icon_name("dialog-warning", Gtk.IconSize.LARGE_TOOLBAR)
         hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)
         hbox.pack_start(image)

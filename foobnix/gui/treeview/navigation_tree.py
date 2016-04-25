@@ -31,7 +31,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
         self.controls = controls
         self.full_name = ""
-        self.label = Gtk.Label()
+        self.label = Gtk.Label.new(None)
 
         self.tree_menu = Popup()
 
@@ -101,7 +101,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             self.add_to_tab(True)
             return
 
-
     def on_button_press(self, w, e):
         if is_empty_click(w, e):
             w.get_selection().unselect_all()
@@ -123,7 +122,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             # on right click, show pop-up menu
             self.tree_menu.clear()
             self.tree_menu.add_item(_("Append to playlist"), "list-add", lambda: self.add_to_tab(True), None)
-            self.tree_menu.add_item(_("Open in new playlist"), "media-playback-start", self.add_to_tab, None)
+            self.tree_menu.add_item(_("Open in new playlist"), "list-add", self.add_to_tab, None)
             self.tree_menu.add_separator()
             self.tree_menu.add_item(_("Add folder here"), "folder-open", self.add_folder, None)
             self.tree_menu.add_separator()
@@ -141,15 +140,15 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 paths = [model[t_path][self.path[0]] for t_path in t_paths]
                 row_refs = [Gtk.TreeRowReference.new(model, t_path) for t_path in t_paths]
                 self.tree_menu.add_separator()
-                self.tree_menu.add_item(_("Open in file manager"), None, open_in_filemanager, self.get_selected_bean().path)
-                self.tree_menu.add_item(_("Create folder"), None, self.create_folder, (model, f_t_paths[0], row))
-                self.tree_menu.add_item(_("Rename file (folder)"), None, self.rename_files, (row, self.path[0], self.text[0]))
-                self.tree_menu.add_item(_("Delete file(s) / folder(s)"), None, self.delete_files, (row_refs, paths, self.get_iter_from_row_reference))
+                self.tree_menu.add_item(_("Open in file manager"), "system-file-manager", open_in_filemanager, self.get_selected_bean().path)
+                self.tree_menu.add_item(_("Create folder"), "folder-new", self.create_folder, (model, f_t_paths[0], row))
+                self.tree_menu.add_item(_("Rename file (folder)"), "edit-find-replace", self.rename_files, (row, self.path[0], self.text[0]))
+                self.tree_menu.add_item(_("Delete file(s) / folder(s)"), "edit-delete", self.delete_files, (row_refs, paths, self.get_iter_from_row_reference))
 
             self.tree_menu.show(e)
 
     def _append_column(self, column, title):
-        column.label = Gtk.Label(title)
+        column.label = Gtk.Label.new(title)
         column.label.show()
         column.set_widget(column.label)
         column.set_clickable(True)
@@ -194,13 +193,15 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
         def task(to_tree, to_model):
             treerows = [from_model[path] for path in paths]
-            for  i, treerow in enumerate(treerows):
+            for i, treerow in enumerate(treerows):
                 for k, ch_row in enumerate(treerow.iterchildren()):
                     treerows.insert(i+k+1, ch_row)
 
             #treerows = self.playlist_filter(treerows)
             if not current:
                 name = treerows[0][0]
+                if isinstance(name, str):
+                    name = unicode(name, "utf-8")
                 self.controls.notetabs._append_tab(name)
                 to_tree = self.controls.notetabs.get_current_tree()     # because to_tree has changed
                 to_model = to_tree.get_model().get_model()
@@ -225,7 +226,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
     def add_folder(self, in_new_tab=False):
         chooser = Gtk.FileChooserDialog(title=_("Choose directory with music"),
                                         action=Gtk.FileChooserAction.SELECT_FOLDER,
-                                        buttons=("folder-open", Gtk.ResponseType.OK))
+                                        buttons=(_("Open"), Gtk.ResponseType.OK))
         chooser.set_default_response(Gtk.ResponseType.OK)
         chooser.set_select_multiple(True)
         if FCache().last_music_path:
@@ -244,23 +245,24 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 tree = self
                 number_of_tab = tabhelper.page_num(tree.scroll)
 
+                tab_name = path[path.rfind("/") + 1:]
+                if isinstance(tab_name, str):
+                    tab_name = unicode(tab_name, "utf-8")
+
                 if in_new_tab:
-                    tab_name = unicode(path[path.rfind("/") + 1:])
                     tabhelper._append_tab(tab_name)
                     tree = tabhelper.get_current_tree()
                     number_of_tab = tabhelper.get_current_page()
                     FCache().music_paths.insert(0, [])
                     FCache().tab_names.insert(0, tab_name)
                     FCache().cache_music_tree_beans.insert(0, {})
-
                 elif tree.is_empty():
-                    tab_name = unicode(path[path.rfind("/") + 1:])
-                    vbox = Gtk.VBox()
-                    label = Gtk.Label(tab_name + " ")
+                    vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+                    label = Gtk.Label.new(tab_name + " ")
                     label.set_angle(90)
                     if FC().tab_close_element:
-                        vbox.pack_start(tabhelper.button(tree.scroll), False, False)
-                    vbox.pack_end(label, False, False)
+                        vbox.pack_start(tabhelper.button(tree.scroll), False, False, 0)
+                    vbox.pack_end(label, False, False, 0)
                     event = self.controls.notetabs.to_eventbox(vbox, tree)
                     event = tabhelper.tab_menu_creator(event, tree.scroll)
                     event.connect("button-press-event", tabhelper.on_button_press)
@@ -279,7 +281,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
 
             #self.controls.in_thread.run_with_spinner(task, with_lock=False)
             self.controls.search_progress.background_spinner_wrapper(task)
-        elif response == Gtk.ResponseType.CANCEL:
+        else:
             logging.info('Closed, no files selected')
             chooser.destroy()
 

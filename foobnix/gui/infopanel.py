@@ -48,7 +48,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
         Gtk.Frame.__init__(self)
         FControl.__init__(self, controls)
 
-        self.album_label = Gtk.Label()
+        self.album_label = Gtk.Label.new(None)
         self.album_label.set_line_wrap(True)
         self.album_label.set_markup("<b></b>")
         self.set_label_widget(self.album_label)
@@ -78,21 +78,21 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
                                             arg=self.lyrics, func1=self.show_similar_lyrics)
 
         """wiki"""
-        wBox = Gtk.VBox()
+        wBox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         wiki_title = _("About Artist")
         self.wiki = TextArea()
 
         wBox.line_title = EventLabel(wiki_title, func=self.show_current, arg=wBox, func1=self.show_wiki_info)
 
         """info"""
-        self.last_fm_label = Gtk.LinkButton("http://www.last.fm", "Last.Fm")
-        self.wiki_label = Gtk.LinkButton("http://www.wikipedia.org", "Wikipedia")
+        self.last_fm_label = Gtk.LinkButton.new_with_label("http://www.last.fm", "Last.Fm")
+        self.wiki_label = Gtk.LinkButton.new_with_label("http://www.wikipedia.org", "Wikipedia")
         info_line = HBoxDecoratorTrue(self.last_fm_label, self.wiki_label)
         info_frame = FrameDecorator(_("Info"), info_line, 0.5, 0.5)
 
         """downloads"""
-        self.exua_label = Gtk.LinkButton("http://www.ex.ua", "EX.ua")
-        self.rutracker_label = Gtk.LinkButton("http://rutracker.org", "Rutracker")
+        self.exua_label = Gtk.LinkButton.new_with_label("http://www.ex.ua", "EX.ua")
+        self.rutracker_label = Gtk.LinkButton.new_with_label("http://rutracker.org", "Rutracker")
         dm_line = HBoxDecoratorTrue(self.exua_label, self.rutracker_label)
         dm_frame = FrameDecorator(_("Downloads"), dm_line, 0.5, 0.5)
 

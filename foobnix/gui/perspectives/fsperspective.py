@@ -5,7 +5,7 @@ from gi.repository import Gtk
 from foobnix.util import idle_task
 from foobnix.gui.state import Filterable
 from foobnix.gui.perspectives import BasePerspective
-from foobnix.helpers.my_widgets import ButtonStockText
+from foobnix.helpers.my_widgets import ButtonIconText
 from foobnix.gui.notetab.tab_library import TabHelperControl
 
 
@@ -16,7 +16,7 @@ class FSPerspective(BasePerspective, Filterable):
         self.tabhelper = TabHelperControl(controls)
         self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
-        self.add_button = ButtonStockText(_(" Add Folder(s) in tree"), "list-add")
+        self.add_button = ButtonIconText(_("Add Folder(s) in tree"), "list-add", spacing=10)
         self.add_button.connect("clicked", lambda * a: self.tabhelper.get_current_tree().add_folder())
 
         self.vbox.pack_start(self.add_button, False, False, 0)

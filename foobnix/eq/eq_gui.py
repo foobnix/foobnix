@@ -20,17 +20,17 @@ from foobnix.util.const import EQUALIZER_LABLES, STATE_PLAY
 
 
 def label():
-    label = Gtk.Label("–")
+    label = Gtk.Label.new("–")
     label.show()
     return label
 
 def empty():
-    label = Gtk.Label(" ")
+    label = Gtk.Label.new(" ")
     label.show()
     return label
 
 def text(text):
-    label = Gtk.Label(text)
+    label = Gtk.Label.new(text)
     label.show()
     return label
 
@@ -165,25 +165,20 @@ class EqWindow(ChildTopWindow, FControl):
         box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         box.show()
 
-        self.on = Gtk.ToggleButton(_("Enable EQ"))
+        self.on = Gtk.ToggleButton.new_with_label(_("Enable EQ"))
         self.on.set_tooltip_text(_("To enable EQ set ON"))
         self.on.connect("toggled", self.on_enable_eq)
-        #on.set_size_request(30,-1)
         self.on.show()
 
-        auto = Gtk.ToggleButton(_("Auto"))
-        #auto.set_size_request(50,-1)
+        auto = Gtk.ToggleButton.new_with_label(_("Auto"))
         auto.show()
 
         empt = empty()
         empt.set_size_request(65, -1)
-        #auto.set_size_request(50,-1)
         auto.show()
-        #combo = Gtk.ComboBoxEntry()
-        #self.combo.set_size_request(240, -1)
         self.combo.show()
 
-        save = Gtk.Button(_("Save"))
+        save = Gtk.Button.new_with_label(_("Save"))
         save.connect("clicked", self.on_save)
 
         save.show()
@@ -193,11 +188,10 @@ class EqWindow(ChildTopWindow, FControl):
         resButton.set_tooltip_text(_("Restore defaults presets"))
 
         box.pack_start(self.on, False, False, 0)
-        #box.pack_start(auto, False, True, 0)
         box.pack_start(empt, False, True, 0)
         box.pack_start(self.combo, False, True, 0)
         box.pack_start(save, False, True, 0)
-        box.pack_start(Gtk.Label(), True, True, 0)
+        box.pack_start(Gtk.Label.new(None), True, True, 0)
         box.pack_start(resButton, False, True, 0)
 
         return box
@@ -280,11 +274,11 @@ class EqWindow(ChildTopWindow, FControl):
         if FC().is_eq_enable:
             self.on.set_label(_("Disable EQ"))
 
-class EqLine(Gtk.VBox):
+class EqLine(Gtk.Box):
         def __init__(self, text, callback, def_value=0):
             self.callback = callback
             self.text = text
-            Gtk.VBox.__init__(self, False, 0)
+            Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=0)
             self.show()
 
             adjustment = Gtk.Adjustment(value=def_value, lower= -12, upper=12, step_incr=1, page_incr=2, page_size=0)
@@ -296,7 +290,7 @@ class EqLine(Gtk.VBox):
             self.scale.show()
 
             """text under"""
-            text = Gtk.Label(text)
+            text = Gtk.Label.new(text)
             text.show()
 
             self.pack_start(self.scale, False, False, 0)

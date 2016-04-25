@@ -35,7 +35,7 @@ def file_selection_dialog(title, current_folder=None):
     return paths
 
 def file_chooser_dialog(title, current_folder=None):
-    chooser = Gtk.FileChooserDialog(title, action=Gtk.FILE_CHOOSER_ACTION_OPEN, buttons=("folder-open", Gtk.ResponseType.OK))
+    chooser = Gtk.FileChooserDialog(title, action=Gtk.FileChooserAction.OPEN, buttons=(_("Open"), Gtk.ResponseType.OK))
     chooser.set_icon_from_file(get_foobnix_resourse_path_by_name(ICON_FOOBNIX))
     chooser.set_default_response(Gtk.ResponseType.OK)
     chooser.set_select_multiple(True)
@@ -51,7 +51,7 @@ def file_chooser_dialog(title, current_folder=None):
     return paths
 
 def directory_chooser_dialog(title, current_folder=None):
-    chooser = Gtk.FileChooserDialog(title, action=Gtk.FileChooserAction.SELECT_FOLDER, buttons=("folder-open", Gtk.ResponseType.OK))
+    chooser = Gtk.FileChooserDialog(title, action=Gtk.FileChooserAction.SELECT_FOLDER, buttons=(_("Choose"), Gtk.ResponseType.OK))
     chooser.set_default_response(Gtk.ResponseType.OK)
     chooser.set_select_multiple(True)
     paths = None
@@ -124,7 +124,7 @@ def two_line_dialog(dialog_title, parent=None, message_text1=None,
             password_entry.set_text(entry_text2)
         password_entry.show()
 
-        hbox = Gtk.VBox()
+        hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         hbox.pack_start(login_entry, False, False, 0)
         hbox.pack_start(password_entry, False, False, 0)
         dialog.vbox.pack_start(hbox, True, True, 0)
@@ -169,7 +169,7 @@ def info_dialog_with_link(title, version, link):
         dialog.set_title(title)
         dialog.set_markup(title)
         dialog.format_secondary_markup("<b>" + version + "</b>")
-        link = Gtk.LinkButton(link, link)
+        link = Gtk.LinkButton.new_with_label(link, link)
         link.show()
         dialog.vbox.pack_end(link, True, True, 0)
         dialog.show_all()
@@ -188,9 +188,7 @@ def info_dialog_with_link_and_donate(version):
         dialog.set_markup(_("New foobnix release avaliable"))
         dialog.format_secondary_markup("<b>" + version + "</b>")
 
-
-
-        card = Gtk.LinkButton("http://foobnix.com/%s/download.html"%SITE_LOCALE, _("Download and Donate"))
+        card = Gtk.LinkButton.new_with_label("http://foobnix.com/%s/download.html"%SITE_LOCALE, _("Download and Donate"))
         #terminal = Gtk.LinkButton("http://www.foobnix.com/donate/eng#terminal", _("Download and Donate by Webmoney or Payment Terminal"))
         # link = Gtk.LinkButton("http://www.foobnix.com/support?lang=%s"%SITE_LOCALE, _("Download"))
 
@@ -206,8 +204,8 @@ def info_dialog_with_link_and_donate(version):
 
         dialog.vbox.pack_start(image, True, True)
         dialog.vbox.pack_start(frame, True, True)
-        dialog.vbox.pack_start(Gtk.Label(_("We hope you like the player. We will make it even better.")), True, True)
-        version_check = Gtk.CheckButton(_("Check for new foobnix release on start"))
+        dialog.vbox.pack_start(Gtk.Label.new(_("We hope you like the player. We will make it even better.")), True, True)
+        version_check = Gtk.CheckButton.new_with_label(_("Check for new foobnix release on start"))
         version_check.set_active(FC().check_new_version)
         dialog.vbox.pack_start(version_check, True, True)
 
@@ -230,8 +228,8 @@ def show_entry_dialog(title, description):
         dialog.set_markup(title)
         entry = Gtk.Entry()
         entry.connect("activate", responseToDialog, dialog, Gtk.ResponseType.OK)
-        hbox = Gtk.HBox()
-        hbox.pack_start(Gtk.Label("Value:"), False, 5, 5)
+        hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        hbox.pack_start(Gtk.Label.new("Value:"), False, 5, 5)
         hbox.pack_end(entry)
         dialog.format_secondary_markup(description)
         dialog.vbox.pack_end(hbox, True, True, 0)
@@ -262,10 +260,10 @@ def show_login_password_error_dialog(title, description, login, password):
         password_entry.set_invisible_char("*")
         password_entry.show()
 
-        hbox = Gtk.VBox()
-        hbox.pack_start(login_entry, False, False, 0)
-        hbox.pack_start(password_entry, False, False, 0)
-        dialog.vbox.pack_start(hbox, True, True, 0)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        vbox.pack_start(login_entry, False, False, 0)
+        vbox.pack_start(password_entry, False, False, 0)
+        dialog.vbox.pack_start(vbox, True, True, 0)
         dialog.show_all()
         dialog.run()
         login_text = login_entry.get_text()

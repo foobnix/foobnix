@@ -9,11 +9,11 @@ from gi.repository import Gtk
 import logging
 
 from foobnix.fc.fc import FC
-from foobnix.util import const
 from foobnix.gui.model.signal import FControl
 from foobnix.gui.about.about import AboutWindow
-from foobnix.util.widget_utils import MenuStyleDecorator
 from foobnix.helpers.my_widgets import open_link_in_browser
+from foobnix.util import const
+from foobnix.util.widget_utils import MenuStyleDecorator
 
 
 class MenuBarWidget(FControl):
@@ -49,8 +49,8 @@ class MenuBarWidget(FControl):
         self.view_cover_lyrics.connect("activate", lambda w: controls.layout.set_visible_coverlyrics_panel(w.get_active()))
 
         separator1 = view.separator() #@UnusedVariable
-        view.add_image_item(_("Equalizer"), None, self.controls.eq.show)
-        view.add_image_item(_("Download Manager"), None, self.controls.dm.show)
+        view.add_image_item(_("Equalizer"), "view-media-equalizer", self.controls.eq.show)
+        view.add_image_item(_("Download Manager"), "go-down", self.controls.dm.show)
         separator2 = view.separator()
         preferences_item = view.add_image_item(_("Preferences"), "preferences-system", self.controls.show_preferences)
 
@@ -68,16 +68,16 @@ class MenuBarWidget(FControl):
             controls.os.on_load()
 
         """Playback - Order"""
-        order = playback.add_text_item(_("Order"))
+        order = playback.add_text_item(_("Order"), sub_menu=True)
         playback_radio_group = []
         self.playback_order_linear = order.add_radio_item(_("Linear"), playback_radio_group, not FC().is_order_random)
-        self.playback_order_linear.connect("activate", lambda w: set_random(False))
-
         self.playback_order_random = order.add_radio_item(_("Random"), playback_radio_group, FC().is_order_random)
+
+        self.playback_order_linear.connect("activate", lambda w: set_random(False))
         self.playback_order_random.connect("activate", lambda w: set_random(True))
 
         """Playback - Repeat"""
-        repeat = playback.add_text_item(_("Repeat"))
+        repeat = playback.add_text_item(_("Repeat"), sub_menu=True)
         repeat_radio_group = []
         self.lopping_all = repeat.add_radio_item(_("All"), repeat_radio_group, FC().repeat_state == const.REPEAT_ALL)
         self.lopping_single = repeat.add_radio_item(_("Single"), repeat_radio_group, FC().repeat_state == const.REPEAT_SINGLE)
@@ -88,10 +88,9 @@ class MenuBarWidget(FControl):
             logging.debug("set repeat_all")
             controls.os.on_load()
 
-
-        def repeat_sigle():
+        def repeat_single():
             FC().repeat_state = const.REPEAT_SINGLE
-            logging.debug("set repeat_sigle")
+            logging.debug("set repeat_single")
             controls.os.on_load()
 
         def repeat_no():
@@ -100,7 +99,7 @@ class MenuBarWidget(FControl):
             controls.os.on_load()
 
         self.lopping_all.connect("activate", lambda * a:repeat_all())
-        self.lopping_single.connect("activate", lambda * a:repeat_sigle())
+        self.lopping_single.connect("activate", lambda * a:repeat_single())
         self.lopping_disable.connect("activate", lambda * a:repeat_no())
 
         """Playlist View"""
@@ -115,10 +114,10 @@ class MenuBarWidget(FControl):
         help = top.add_submenu(_("Help"))
         help.add_image_item(_("About"), "help-about", self.show_about)
         help.separator()
-        help.add_text_item(_("Project page"), lambda * a:open_link_in_browser(_("http://www.foobnix.com/news/eng")), None, False)
+        help.add_image_item(_("Project page"), "applications-internet", lambda * a:open_link_in_browser(_("http://www.foobnix.com/news/eng")))
         help.add_image_item(_("Issue report"), "dialog-warning", lambda * a:open_link_in_browser("http://code.google.com/p/foobnix/issues/list"))
         help.separator()
-        help.add_image_item(_("Donate Participate"), "dialog-question", lambda * a:open_link_in_browser(_("http://www.foobnix.com/donate/eng")))
+        help.add_image_item(_("Donate Participate"), "help-donate", lambda * a:open_link_in_browser(_("http://www.foobnix.com/donate/eng")))
 
         #help.add_image_item("Help", "help-contents")
 
@@ -158,17 +157,16 @@ class MyMenu(Gtk.Menu):
 
     def add_image_item(self, title, icon_name, func=None, param=None):
         item = Gtk.MenuItem.new()
-        item_box = Gtk.HBox.new(False, 6)
+        item_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
 
-        if icon_name:
-            img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
-            item_box.pack_start(img, False, False, 0)
-        item_box.pack_start(Gtk.Label.new(title), False, False, 0)
+        img = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
+        item_box.add(img)
+        item_box.add(Gtk.Label.new(title))
 
         item.add(item_box)
         item.show_all()
 
-        logging.debug("Menu-Image-Activate" + title + str(icon_name) + str(func) + str(param))
+        logging.debug("Menu-Image-Activate | Title: " + title + " | Icon: " + str(icon_name) + " | Function: " + func.__name__ + " | Parameters: " + str(param))
         if func and param:
             item.connect("activate", lambda * a: func(param))
         elif func:
@@ -203,7 +201,7 @@ class MyMenu(Gtk.Menu):
         self.append(check)
         return check
 
-    def add_text_item(self, title, func=None, param=None, sub_menu=True):
+    def add_text_item(self, title, func=None, param=None, sub_menu=False):
         sub = Gtk.MenuItem(title)
         sub.show()
         self.append(sub)

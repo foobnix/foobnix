@@ -5,8 +5,8 @@ Created on 20 окт. 2010
 @author: ivan
 '''
 
-import sys
 import logging
+import sys
 
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -501,7 +501,8 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 artist = bean.artist if bean.artist else "Unknown artist"
                 title = bean.title if bean.title else "Unknown title"
                 album = bean.album if bean.album else "Unknown album"
-                tracks.append(artist + " - " + title + " (" + album + ")")
+                year = bean.year if bean.year else "Unknown year"
+                tracks.append(artist + " - " + title + " (" + album + ", " + year + ")")
 
         clb.set_text("\n".join(tracks), -1)
 

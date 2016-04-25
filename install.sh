@@ -4,4 +4,4 @@ if [ "$(whoami)" != "root" ]; then
 	exit 1
 fi
 
-sudo make install
+make install

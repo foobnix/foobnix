@@ -24,7 +24,7 @@ class LastFmConfig(ConfigPlugin):
     def __init__(self, controls):
         self.controls = controls
 
-        box = VBox(self, False, 0)
+        box = VBox(self, Gtk.Orientation.VERTICAL, 0)
         box.hide()
 
         """LAST.FM"""
@@ -35,7 +35,7 @@ class LastFmConfig(ConfigPlugin):
         lbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         lbox.show()
 
-        login = Gtk.Label(_("Login"))
+        login = Gtk.Label.new(_("Login"))
         login.set_size_request(150, -1)
         login.show()
 
@@ -49,7 +49,7 @@ class LastFmConfig(ConfigPlugin):
         pbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         pbox.show()
 
-        password = Gtk.Label(_("Password"))
+        password = Gtk.Label.new(_("Password"))
         password.set_size_request(150, -1)
         password.show()
 
@@ -58,21 +58,21 @@ class LastFmConfig(ConfigPlugin):
         self.password_text.set_invisible_char("*")
         self.password_text.show()
 
-        limit_text = Gtk.Label(_("Limit search results:  "))
+        limit_text = Gtk.Label.new(_("Limit search results:  "))
         limit_text.show()
 
         self.adjustment = Gtk.Adjustment(value=50, lower=10, upper=200, step_incr=10)
-        limit = Gtk.SpinButton(adjustment=self.adjustment, climb_rate=0.0, digits=0)
+        limit = Gtk.SpinButton.new(self.adjustment, 0.0, 0)
         limit.show()
 
         limitbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         limitbox.pack_start(limit_text, False, False, 0)
         limitbox.pack_start(limit, False, False, 0)
 
-        self.music_scrobbler = Gtk.CheckButton(label=_("Enable Music Scrobbler"), use_underline=True)
+        self.music_scrobbler = Gtk.CheckButton.new_with_label(_("Enable Music Scrobbler"))
         self.music_scrobbler.show()
 
-        self.radio_scrobbler = Gtk.CheckButton(label=_("Enable Radio Scrobbler"), use_underline=True)
+        self.radio_scrobbler = Gtk.CheckButton.new_with_label(_("Enable Radio Scrobbler"))
         self.radio_scrobbler.show()
 
         pbox.pack_start(password, False, False, 0)
@@ -91,10 +91,10 @@ class LastFmConfig(ConfigPlugin):
         self.default_label_value = _("Not connected")
 
         self.frase_begin = _("You vk account is:")
-        self.vk_account_label = Gtk.Label(self.frase_begin + " %s" % self.default_label_value)
-        self.reset_vk_auth_button = Gtk.Button(_("Reset vk authorization"))
+        self.vk_account_label = Gtk.Label.new(self.frase_begin + " %s" % self.default_label_value)
+        self.reset_vk_auth_button = Gtk.Button.new_with_label(_("Reset vk authorization"))
         self.reset_vk_auth_button.connect("button-release-event", self.on_reset_vk_click)
-        self.vk_autocomplete = Gtk.CheckButton(label=_("Enable VK autocomplete"), use_underline=True)
+        self.vk_autocomplete = Gtk.CheckButton.new_with_label(_("Enable VK autocomplete"))
         self.vk_autocomplete.show()
         vk_layout.pack_start(self.vk_account_label, False, False, 0)
         vk_layout.pack_start(self.reset_vk_auth_button, False, False, 0)
@@ -139,9 +139,9 @@ class LastFmConfig(ConfigPlugin):
         FC().enable_radio_scrobbler = self.radio_scrobbler.get_active()
         FC().enable_vk_autocomlete  = self.vk_autocomplete.get_active()
 
-class VBox(Gtk.VBox):
-    def __init__(self, config, *args):
-            Gtk.VBox.__init__(self, args)
+class VBox(Gtk.Box):
+    def __init__(self, config, orientation, spacing):
+            Gtk.Box.__init__(self, orientation=orientation, spacing=spacing)
             self.config = config
 
     def show(self):

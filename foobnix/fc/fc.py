@@ -74,9 +74,6 @@ class FC():
         self.nav_selected_tab = 0
         self.pl_selected_tab = 0
 
-        #"""selected perspective"""
-        #self.selected_perspective = None
-
         self.agent_line = get_ranmom_agent()
 
         """main window controls"""
@@ -173,7 +170,7 @@ class FC():
         '''columns configuration'''
         '''for playlists'''
         """translations of key words must match exactly with the translations of column.key names in PlaylistTreeControl"""
-        self.columns = {'*': [True, 0, 40], 'N': [True, 1, 35], 'Composer': [False, 2, 80], 'Artist': [False, 3, 90], 'Title': [False, 4, 70], 'Track': [True, 5, 450], 'Time': [True, 6, 50], "Album": [False, 7, 90]}
+        self.columns = {'*': [True, 0, 40], 'N': [True, 1, 35], 'Composer': [False, 2, 80], 'Artist': [False, 3, 90], 'Title': [False, 4, 70], 'Track': [True, 5, 450], 'Time': [True, 6, 50], "Album": [False, 7, 90], 'Year': [False, 8, 50]}
 
         '''for navigation tree'''
         self.show_full_filename = False

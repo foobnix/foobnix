@@ -5,22 +5,24 @@ Created on Nov 5, 2010
 '''
 
 import logging
+from gi._signalhelper import Signal
 
-from gi.repository import Gtk
 from gi.repository import GObject
+from gi.repository import Gtk
 
 from foobnix.fc.fc import FC
 from foobnix.helpers.dialog_entry import file_chooser_dialog
-from foobnix.util.pix_buffer import create_pixbuf_from_resource
+from foobnix.helpers.my_widgets import ButtonIconText
 from foobnix.helpers.window import ChildTopWindow
+from foobnix.util.pix_buffer import create_pixbuf_from_resource
 
 
-class IconBlock(Gtk.HBox):
+class IconBlock(Gtk.Box):
 
     temp_list = FC().all_icons[:]
 
     def __init__(self, text, controls, filename, all_icons=temp_list):
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
 
         self.controls = controls
 
@@ -50,15 +52,15 @@ class IconBlock(Gtk.HBox):
         self.combobox.pack_start(pix_render, 0)
         self.combobox.add_attribute(pix_render, 'pixbuf', 0)
 
-        button_1 = Gtk.Button("Choose", "folder-open")
+        button_1 = ButtonIconText(_("Choose"), "folder-open")
         button_1.set_property("always-show-image", True)
         button_1.connect("clicked", self.on_file_choose)
 
-        button_2 = Gtk.Button("Delete", "edit-delete")
+        button_2 = ButtonIconText(_("Delete"), "edit-delete")
         button_2.set_property("always-show-image", True)
         button_2.connect("clicked", self.on_delete)
 
-        label = Gtk.Label(text)
+        label = Gtk.Label.new(text)
         if text: # if iconblock without label
             label.set_size_request(80, -1)
 
@@ -101,7 +103,7 @@ class IconBlock(Gtk.HBox):
                 self.combobox.set_active(0)
             else:
                 error_window = ChildTopWindow("Error")
-                label = Gtk.Label("You can not remove a standard icon")
+                label = Gtk.Label.new("You can not remove a standard icon")
                 error_window.add(label)
                 error_window.show()
         except ValueError, e:
@@ -115,9 +117,9 @@ class FrameDecorator(Gtk.Frame):
         if not (border_width is None):
             self.set_border_width(border_width)
 
-class ChooseDecorator(Gtk.HBox):
+class ChooseDecorator(Gtk.Box):
     def __init__(self, parent, widget):
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         self._widget = widget
         self.button = Gtk.RadioButton.new_from_widget(parent)
 
@@ -135,31 +137,31 @@ class ChooseDecorator(Gtk.HBox):
     def get_radio_button(self):
         return self.button
 
-class VBoxDecorator(Gtk.VBox):
+class VBoxDecorator(Gtk.Box):
     def __init__(self, *args):
-        Gtk.VBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=0)
         for widget in args:
             self.pack_start(widget, False, False, 0)
         self.show_all()
 
-class HBoxDecorator(Gtk.HBox):
+class HBoxDecorator(Gtk.Box):
     def __init__(self, *args):
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         for widget in args:
             self.pack_start(widget, False, False, 0)
         self.show_all()
 
-class HBoxDecoratorTrue(Gtk.HBox):
+class HBoxDecoratorTrue(Gtk.Box):
     def __init__(self, *args):
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         for widget in args:
             self.pack_start(widget, True, True, 0)
         self.show_all()
 
-
-class HBoxLableEntry(Gtk.HBox):
+Signal
+class HBoxLableEntry(Gtk.Box):
     def __init__(self, text, entry):
-        Gtk.HBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         self.pack_start(text, False, False, 0)
         self.pack_start(entry, True, True, 0)
         self.show_all()

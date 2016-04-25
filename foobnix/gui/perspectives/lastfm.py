@@ -1,7 +1,6 @@
 
 __author__ = 'popsul'
 
-from gi.repository import Gtk
 from foobnix.fc.fc import FCBase
 from foobnix.gui.perspectives import BasePerspective
 from foobnix.gui.treeview.lastfm_integration_tree import LastFmIntegrationControls
@@ -17,7 +16,7 @@ class LastFMPerspective(BasePerspective):
         return "lastfm"
 
     def get_icon(self):
-        return "network-idle"
+        return "network-server"
 
     def get_name(self):
         return _("Last.FM")

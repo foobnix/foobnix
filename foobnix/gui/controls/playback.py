@@ -9,14 +9,13 @@ from gi.repository import Gtk
 from foobnix.util import const
 from foobnix.fc.fc import FC
 from foobnix.gui.state import LoadSave
-from foobnix.helpers.toolbar import MyToolbar
 from foobnix.gui.model.signal import FControl
 from foobnix.helpers.my_widgets import ImageButton, EventLabel, ToggleImageButton
 
 
-class OrderShuffleControls(FControl, Gtk.HBox, LoadSave):
+class OrderShuffleControls(FControl, Gtk.Box, LoadSave):
     def __init__(self, controls):
-        Gtk.HBox.__init__(self, False)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
 
         self.toggle_buttons = OrderShuffleControls_ZAVLAB(controls)
 
@@ -24,7 +23,7 @@ class OrderShuffleControls(FControl, Gtk.HBox, LoadSave):
         self.olabel = EventLabel(text="R", func=lambda * a: self.on_order())
 
         self.pack_start(self.rlabel, False, False, 0)
-        self.pack_start(Gtk.Label(" "), False, False, 0)
+        self.pack_start(Gtk.Label.new(" "), False, False, 0)
         self.pack_start(self.olabel, False, False, 0)
         self.pack_start(self.toggle_buttons, False, False, 0)
 
@@ -77,9 +76,9 @@ class OrderShuffleControls(FControl, Gtk.HBox, LoadSave):
     def on_save(self): pass
 
 
-class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
+class OrderShuffleControls_ZAVLAB(FControl, Gtk.Box, LoadSave):
     def __init__(self, controls):
-        Gtk.HBox.__init__(self, False)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
 
         self.order = ToggleImageButton("edit-redo", size=Gtk.IconSize.BUTTON)
         self.order.connect("button-press-event", self.on_order)
@@ -163,9 +162,9 @@ class OrderShuffleControls_ZAVLAB(FControl, Gtk.HBox, LoadSave):
         pass
 
 
-class PlaybackControls(FControl, Gtk.HBox, LoadSave):
+class PlaybackControls(FControl, Gtk.Box, LoadSave):
     def __init__(self, controls):
-        Gtk.HBox.__init__(self, False)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         self.pack_start(Gtk.SeparatorToolItem.new(), False, False, 0)
         self.pack_start(ImageButton("media-playback-stop", controls.state_stop, _("Stop")), False, False, 0)
         self.pack_start(ImageButton("media-playback-start", controls.state_play, _("Play")), False, False, 0)

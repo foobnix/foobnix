@@ -123,7 +123,7 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
         if drop_info:
             path, position = drop_info
             iter = model.get_iter(path)
-            if position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE or position == Gtk.TREE_VIEW_DROP_INTO_OR_AFTER:
+            if position == Gtk.TreeViewDropPosition.INTO_OR_BEFORE or position == Gtk.TreeViewDropPosition.INTO_OR_AFTER:
                 self.model[path][self.font[0]] = 'bold'
 
         if self == ff_tree:
@@ -136,10 +136,10 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
             for treerow, ref in zip(treerows, ff_row_refs):
                 row = [col for col in treerow]
                 if drop_info:
-                    if position == Gtk.TREE_VIEW_DROP_BEFORE:
+                    if position == Gtk.TreeViewDropPosition.BEFORE:
                         new_iter = model.insert_before(None, iter, row)
-                    elif (position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE or
-                          position == Gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+                    elif (position == Gtk.TreeViewDropPosition.INTO_OR_BEFORE or
+                          position == Gtk.TreeViewDropPosition.INTO_OR_AFTER):
                         new_iter = model.append(iter, row)
                     else:
                         new_iter = model.insert_after(None, iter, row)
@@ -153,10 +153,10 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
             for treerow in treerows:
                 row = [col for col in treerow]
                 if drop_info:
-                    if position == Gtk.TREE_VIEW_DROP_BEFORE:
+                    if position == Gtk.TreeViewDropPosition.BEFORE:
                         new_iter = model.insert_before(None, iter, row)
-                    elif (position == Gtk.TREE_VIEW_DROP_INTO_OR_BEFORE or
-                          position == Gtk.TREE_VIEW_DROP_INTO_OR_AFTER):
+                    elif (position == Gtk.TreeViewDropPosition.INTO_OR_BEFORE or
+                          position == Gtk.TreeViewDropPosition.INTO_OR_AFTER):
                         new_iter = model.append(iter, row)
                     else:
                         new_iter = model.insert_after(None, iter, row)
@@ -169,6 +169,6 @@ class VirtualTreeControl(CommonTreeControl, LoadSave):
                         treerows.append(treerow)
                         drop_info = True
                         iter = new_iter
-                        position = Gtk.TREE_VIEW_DROP_INTO_OR_AFTER
+                        position = Gtk.TreeViewDropPosition.INTO_OR_AFTER
 
         self.stop_emission('drag-data-received')

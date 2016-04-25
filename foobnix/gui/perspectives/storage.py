@@ -17,7 +17,7 @@ class StoragePerspective(BasePerspective, Quitable, Filterable):
         return "storage"
 
     def get_icon(self):
-        return "emblem-system"
+        return "drive-harddisk"
 
     def get_name(self):
         return _("Storage")

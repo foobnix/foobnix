@@ -29,9 +29,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
     def __init__(self, controls):
         FControl.__init__(self, controls)
-        thread.start_new_thread(self.lazy_init, (True,) )
 
-    def lazy_init(self, sleep=False):
         controls = self.controls
         self.configs.append(MusicLibraryConfig(controls))
         self.configs.append(TabsConfig(controls))
@@ -41,6 +39,8 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
 
         try:
             """check keybinder installed, debian"""
+            import gi
+            gi.require_version('Keybinder', '3.0')
             from gi.repository import Keybinder #@UnresolvedImport @UnusedImport
             from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
             self.configs.append(HotKeysConfig(controls))
@@ -127,21 +127,21 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         box.show()
 
-        button_restore = Gtk.Button(_("Restore Defaults Settings"))
+        button_restore = Gtk.Button.new_with_label(_("Restore Defaults Settings"))
         button_restore.connect("clicked", lambda * a: self.restore_defaults())
         button_restore.show()
 
-        button_apply = Gtk.Button(_("Apply"))
+        button_apply = Gtk.Button.new_with_label(_("Apply"))
         button_apply.set_size_request(100, -1)
         button_apply.connect("clicked", lambda * a: self.on_save())
         button_apply.show()
 
-        button_close = Gtk.Button(_("Close"))
+        button_close = Gtk.Button.new_with_label(_("Close"))
         button_close.set_size_request(100, -1)
         button_close.connect("clicked", self.hide_window)
         button_close.show()
 
-        empty = Gtk.Label("")
+        empty = Gtk.Label.new("")
         empty.show()
 
         box.pack_start(button_restore, False, True, 0)
@@ -165,7 +165,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         box.show()
 
-        self.label = Gtk.Label()
+        self.label = Gtk.Label.new(None)
         self.label.show()
 
         separator = Gtk.HSeparator.new()

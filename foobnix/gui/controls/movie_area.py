@@ -74,8 +74,8 @@ class FullScreanArea(ChildTopWindow):
 
             self.layout.pack_start(self.draw, True, False, 0)
 
-            self.text_label = Gtk.Label("foobnix")
-            self.volume_button = Gtk.VolumeButton()
+            self.text_label = Gtk.Label.new("foobnix")
+            self.volume_button = Gtk.VolumeButton.new()
             self.volume_button.connect("value-changed", self.volume_changed)
 
             line = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)

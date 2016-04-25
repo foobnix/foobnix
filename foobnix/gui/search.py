@@ -8,13 +8,13 @@ from foobnix.util.text_utils import capitalize_query
 from foobnix.helpers.toggled import OneActiveToggledButton
 
 
-class SearchControls(FControl, Gtk.VBox):
+class SearchControls(FControl, Gtk.Box):
     def __init__(self, controls):
-        Gtk.VBox.__init__(self, False, 0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=0)
         FControl.__init__(self, controls)
         self.controls = controls
 
-        label = Gtk.Label()
+        label = Gtk.Label.new(None)
         label.set_markup("<b>%s:</b>" % _("Search music online"))
 
         """default search function"""
@@ -65,11 +65,11 @@ class SearchControls(FControl, Gtk.VBox):
 
         combobox = self.combobox_creator()
 
-        search_button = Gtk.Button(_("Search"))
+        search_button = Gtk.Button.new_with_label(_("Search"))
         search_button.connect("clicked", self.on_search)
 
         hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
-        searchLable = Gtk.Label()
+        searchLable = Gtk.Label.new(None)
         searchLable.set_markup("<b>%s</b>" % _("Online Search"))
 
         ##if Gtk.pygtk_version < (2, 22, 0):

@@ -1,15 +1,16 @@
+# coding: utf-8
+
 '''
 Created on 7  2010
 
 @author: ivan
 '''
 
-from __future__ import with_statement
-
+import chardet
+import logging
 import os
 import re
-import logging
-import chardet
+
 import foobnix.util.id3_util
 
 from foobnix.fc.fc import FC
@@ -19,7 +20,7 @@ from foobnix.util.audio import get_mutagen_audio
 from foobnix.util.image_util import get_image_by_path
 from foobnix.util.time_utils import convert_seconds_to_text
 from foobnix.util.file_utils import get_any_supported_audio_file
-from foobnix.util.id3_util import update_id3, correct_encoding
+from foobnix.util.id3_util import correct_encoding, update_id3
 
 TITLE = "TITLE"
 PERFORMER = "PERFORMER"
@@ -75,6 +76,7 @@ class CueFile():
 
         return "CUEFILE: " + self.title + " " + self.performer + " " + self.file
 
+
 class CueReader():
 
     def __init__(self, cue_path, embedded_cue=None):
@@ -82,7 +84,6 @@ class CueReader():
         self.embedded_cue = embedded_cue
         self.is_valid = True
         self.cue_file = CueFile()
-
 
     def get_line_value(self, str):
         first = str.find('"') or str.find("'")
@@ -101,6 +102,7 @@ class CueReader():
     def normalize(self):
         duration_tracks = []
         tracks = self.cue_file.tracks
+
         for i in xrange(len(tracks)):
             track = tracks[i]
             full_duration = self.get_full_duration(track.path)
@@ -114,7 +116,6 @@ class CueReader():
                         duration = next_track.get_start_time_sec() - track.get_start_time_sec()
                     else: #for cue  "several files - each file involve several tracks"
                         duration = self.get_full_duration(track.path) - track.get_start_time_sec()
-
                 track.duration = duration
             else:
                 track.duration = None
@@ -122,7 +123,6 @@ class CueReader():
                 track.path = self.cue_file.file
 
             track.path = get_any_supported_audio_file(track.path)
-
             duration_tracks.append(track)
 
         self.cue_file.tracks = duration_tracks
@@ -131,9 +131,10 @@ class CueReader():
     def get_common_beans(self):
         beans = []
         cue = self.parse()
+
         if not self.is_cue_valid():
             return []
-        for i, track  in enumerate(cue.tracks):
+        for i, track in enumerate(cue.tracks):
             bean = FModel(text=track.performer + " - " + track.title, path=track.path)
             bean.artist = track.performer
             bean.tracknumber = i + 1
@@ -151,7 +152,7 @@ class CueReader():
                 bean.info = ""
 
             if not bean.title or not bean.artist:
-                bean = udpate_id3(bean)
+                bean = update_id3(bean)
 
             beans.append(bean)
 
@@ -174,9 +175,9 @@ class CueReader():
         else:
             file = open(self.cue_path, "r")
             data = file.read()
+
         code = self.code_detecter(correct_encoding(data))
         data = data.replace('\r\n', '\n').split('\n')
-
         title = ""
         performer = ""
         index = "00:00:00"
@@ -187,24 +188,27 @@ class CueReader():
         self.files_count = 0
 
         for line in data:
-            if not self.is_valid and not line.startswith(FILE):
-                continue
-            else: self.is_valid = True
 
-            try:
-                line = unicode(line, code)
-            except:
-                logging.error("There is some problems while converting in unicode")
-
-            line = str(line).strip()
             if not line:
                 continue
+
+            if isinstance(line, str):
+                try:
+                    line = unicode(line, code)
+                except:
+                    logging.error("There is some problems while converting in unicode")
+
+            line = line.strip().encode('utf-8')
+
+            if not self.is_valid and not line.startswith(FILE):
+                continue
+            else:
+                self.is_valid = True
 
             if line.startswith(TITLE):
                 title = self.get_line_value(line)
                 if self.files_count == 0:
                     self.cue_file.title = title
-
 
             if line.startswith(PERFORMER):
                 performer = self.get_line_value(line)
@@ -240,7 +244,7 @@ class CueReader():
                             full_file = try_name
                             logging.debug("Found source for cue file name" + try_name)
                             find_source = True
-                            break
+                            break;
 
                     if not find_source:
                         self.is_valid = False
@@ -264,12 +268,13 @@ class CueReader():
 def update_id3_for_cue(beans):
     result = []
     for bean in beans:
-        if (bean.path and bean.path.lower().endswith(".cue")) or bean.cue:
-            reader = CueReader(bean.path, bean.cue)
-            cue_beans = reader.get_common_beans()
-            for cue in cue_beans:
-                result.append(cue)
+        if bean.path and bean.path.lower().endswith(".cue"):
+                reader = CueReader(bean.path)
+                cue_beans = reader.get_common_beans()
+                for cue in cue_beans:
+                    result.append(cue)
         else:
             result.append(bean)
+
     return result
 

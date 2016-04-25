@@ -39,7 +39,7 @@ def rename_file_on_disk(row, index_path, index_text):
     name = os.path.basename(path)
     entry = Gtk.Entry()
     entry.set_width_chars(64)
-    hbox = Gtk.HBox()
+    hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
     if os.path.isdir(path):
         entry.set_text(name)
         hbox.pack_start(entry)
@@ -74,7 +74,7 @@ def rename_file_on_disk(row, index_path, index_text):
 
 def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
     title = _('Delete file(s) / folder(s)')
-    label = Gtk.Label(_('Do you really want to delete item(s) from disk?'))
+    label = Gtk.Label.new(_('Do you really want to delete item(s) from disk?'))
     dialog = Gtk.Dialog(title, buttons=("Delete", Gtk.ResponseType.ACCEPT, "Cancel", Gtk.ResponseType.REJECT))
     dialog.set_default_size(500, 200)
     dialog.set_border_width(5)
@@ -131,7 +131,7 @@ def copy_move_files_dialog(files, dest_folder, copy=None):
     cancel_button = dialog.add_button("dialog-cancel", Gtk.ResponseType.CANCEL) #@UnusedVariable
 
     ok_button.grab_default()
-    label = Gtk.Label('\n' + _("Are you really want to %s this item(s) to %s ?") % (action, dest_folder))
+    label = Gtk.Label.new('\n' + _("Are you really want to %s this item(s) to %s ?") % (action, dest_folder))
     area = ScrolledText()
     area.text.set_editable(False)
     area.text.set_cursor_visible(False)
@@ -152,8 +152,8 @@ def create_folder_dialog(path):
     dirname = path if os.path.isdir(path) else os.path.dirname(path)
     dialog = Gtk.Dialog(_("Make folder dialog"))
     ok_button = dialog.add_button(_("Create folder"), Gtk.ResponseType.OK)
-    label1 = Gtk.Label(_("You want to create subfolder in folder") + " " + os.path.basename(dirname))
-    label2 = Gtk.Label(_("Enter new folder's name:"))
+    label1 = Gtk.Label.new(_("You want to create subfolder in folder") + " " + os.path.basename(dirname))
+    label2 = Gtk.Label.new(_("Enter new folder's name:"))
     entry = Gtk.Entry()
     dialog.set_border_width(5)
     dialog.vbox.pack_start(label1)

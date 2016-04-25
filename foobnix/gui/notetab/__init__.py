@@ -360,7 +360,7 @@ class NoteTabControl(TabGeneral):
         self.set_show_tabs(True)
         for page in xrange(self.get_n_pages() - 1, -1, -1):
             tab = self.get_nth_page(page)
-            vbox = Gtk.VBox()
+            vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
             label = tab.get_child().label
             label.set_angle(self.default_angle)
 
@@ -382,7 +382,7 @@ class NoteTabControl(TabGeneral):
         self.set_show_tabs(True)
         for page in xrange(self.get_n_pages() - 1, -1, -1):
             tab = self.get_nth_page(page)
-            hbox = Gtk.HBox()
+            hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
             label = tab.get_child().label
             label.set_angle(self.default_angle)
 

@@ -24,12 +24,12 @@ class TabsConfig(ConfigPlugin):
         cbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         cbox.show()
 
-        tab_label = Gtk.Label(_("Count of tabs:"))
+        tab_label = Gtk.Label.new(_("Count of tabs:"))
         tab_label.set_size_request(150, -1)
         tab_label.set_alignment(0, .5)
 
         adjustment = Gtk.Adjustment(value=1, lower=1, upper=20, step_incr=1, page_incr=10, page_size=0)
-        self.tabs_count = Gtk.SpinButton(adjustment=adjustment)
+        self.tabs_count = Gtk.SpinButton.new(adjustment, 0.0, 0)
 
         cbox.pack_start(tab_label, False, False, 0)
         cbox.pack_start(self.tabs_count, False, True, 0)
@@ -38,7 +38,7 @@ class TabsConfig(ConfigPlugin):
         lbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         lbox.show()
 
-        tab_label = Gtk.Label(_("Max length of tab:"))
+        tab_label = Gtk.Label.new(_("Max length of tab:"))
         tab_label.set_size_request(150, -1)
         tab_label.set_alignment(0, .5)
 
@@ -51,11 +51,11 @@ class TabsConfig(ConfigPlugin):
         """position"""
         pbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)
 
-        label = Gtk.Label(_("Tab position:"))
+        label = Gtk.Label.new(_("Tab position:"))
         label.set_size_request(150, -1)
         label.set_alignment(0, .5)
 
-        self.radio_tab_left = Gtk.RadioButton(None, _("Left"))
+        self.radio_tab_left = Gtk.RadioButton.new_with_label(None, _("Left"))
         self.radio_tab_left.set_size_request(55, -1)
 
         self.radio_tab_top = Gtk.RadioButton.new_with_label_from_widget(self.radio_tab_left, _("Top"))
@@ -72,16 +72,16 @@ class TabsConfig(ConfigPlugin):
         """closed type """
         close_label_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)
 
-        close_label = Gtk.Label(_("Close tab sign:"))
+        close_label = Gtk.Label.new(_("Close tab sign:"))
         close_label.set_size_request(150, -1)
         close_label.set_alignment(0, .5)
 
-        self.radio_tab_label = Gtk.RadioButton(None, "x")
+        self.radio_tab_label = Gtk.RadioButton.new_with_label(None, "x")
         self.radio_tab_label.set_size_request(55, -1)
 
         self.radio_tab_button = Gtk.RadioButton.new_from_widget(self.radio_tab_label)
 
-        self.tab_close_box = Gtk.HBox()
+        self.tab_close_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.tab_close_box.pack_start(self.radio_tab_button, False, True, 0)
         self.tab_close_box.pack_start(tab_close_button(), False, False, 0)
         self.tab_close_box.set_size_request(55, -1)
