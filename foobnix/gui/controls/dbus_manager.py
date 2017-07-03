@@ -217,7 +217,7 @@ class MprisPlayer(dbus.service.Object):
 class MprisSoundMenu(SoundMenuControls):
     def __init__(self, controls):
         self.controls = controls
-        SoundMenuControls.__init__(self, "foobnix")
+        SoundMenuControls.__init__(self, "foobnix %s" % FOOBNIX_VERSION, "foobnix")
 
 
     def _sound_menu_next(self):
@@ -234,18 +234,17 @@ class MprisSoundMenu(SoundMenuControls):
 
     def _sound_menu_pause(self):
         self.controls.state_pause()
+    
+    def _sound_menu_stop(self):
+        self.controls.state_stop()
 
     @idle_task
     def _sound_menu_raise(self):
         self.controls.main_window.show()
-
-    @dbus.service.method('org.mpris.MediaPlayer2.Player')
-    def Stop(self):
-        self.controls.state_stop()
-
-    @dbus.service.method('org.mpris.MediaPlayer2.Player')
-    def Play(self):
-        self.controls.state_play()
+    
+    @idle_task
+    def _sound_menu_quit(self):
+        self.controls.quit()
 
 
 def foobnix_dbus_interface():
