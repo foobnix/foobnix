@@ -125,11 +125,25 @@ class SoundMenuControls(dbus.service.Object):
             "CanRaise": True,
             "HasTrackList": False,
             "Identity": identity,
-            "DesktopEntry": desktop_name
+            "DesktopEntry": desktop_name,
+            "Rate": 1.0,
+            "MinimumRate": 1.0,
+            "MaximumRate": 1.0,
+            "CanGoNext": True,
+            "CanGoPrevious": True,
+            "CanPlay": True,
+            "CanPause": True,
+            "CanSeek": True,
+            "CanControl": True,
             }
         
         self._volatile_properties = {
-            "Position": lambda: dbus.Int64(self.position_microseconds)
+            "Position": lambda: dbus.Int64(self.position_microseconds),
+            "Volume": self._sound_menu_get_volume
+            }
+
+        self._properties_setters = {
+            "Volume": self._sound_menu_set_volume
             }
 
         self.song_changed()
@@ -264,7 +278,8 @@ class SoundMenuControls(dbus.service.Object):
         be overriden or called directly.
 
         """
-        self.set_property(prop, value)
+        if prop in self._properties_setters:
+            self._properties_setters[prop](value)
 
     @dbus.service.method(dbus.PROPERTIES_IFACE, in_signature='s', out_signature='a{sv}')
     def GetAll(self, interface):
@@ -477,6 +492,32 @@ class SoundMenuControls(dbus.service.Object):
 
         """
         
+        pass
+
+    @dbus.service.method('org.mpris.MediaPlayer2.Player', signature='x')
+    def Seek(self, offset):
+        self._sound_menu_seek(offset)
+
+    def _sound_menu_seek(self, offset):
+        pass
+
+    @dbus.service.method('org.mpris.MediaPlayer2.Player', signature='ox')
+    def SetPosition(self, track_id, position):
+        self._sound_menu_set_position(position)
+
+    def _sound_menu_set_position(self, position):
+        pass
+
+    def _sound_menu_get_volume(self):
+        """Implementations should override this function
+        to return the correct value
+        """
+        return 1.0
+
+    def _sound_menu_set_volume(value):
+        """Implementations should override this function
+        to set the volume level to _value_
+        """
         pass
 
     @dbus.service.signal(dbus.PROPERTIES_IFACE, signature='sa{sv}as')

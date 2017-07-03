@@ -247,6 +247,23 @@ class MprisSoundMenu(SoundMenuControls):
     def _sound_menu_quit(self):
         self.controls.quit()
 
+    def _sound_menu_seek(self, offset):
+        self.controls.player_seek_microseconds_relative(offset)
+
+    def _sound_menu_set_position(self, position):
+        self.controls.player_seek_microseconds(position)
+
+    def _sound_menu_get_volume(self):
+        return self.controls.get_player_volume() / 100.0
+
+    def _sound_menu_set_volume(self, value):
+        if value > 1.0:
+            value = 1.0
+        elif value < 0.0:
+            value = 0.0
+
+        return self.controls.player_volume(100.0*value)
+
     @property
     def position_microseconds(self):
         return self.controls.position_microseconds
