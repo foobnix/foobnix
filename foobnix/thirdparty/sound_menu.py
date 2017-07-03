@@ -174,7 +174,7 @@ class SoundMenuControls(dbus.service.Object):
             duration_microsec = 0
 
         data = {
-            "mpris:trackid": "/Player/TrackList/" + "_".join(title.strip().split()).replace("/", "_"),
+            "mpris:trackid": "/Player/TrackList/" + self._get_track_id(title),
             "mpris:length": duration_microsec,
             "xesam:album": album,
             "xesam:title": title,
@@ -186,6 +186,9 @@ class SoundMenuControls(dbus.service.Object):
 
         self.set_property("Metadata", dbus.Dictionary(data, "sv", variant_level=1))
 
+    @staticmethod
+    def _get_track_id(title):
+        return "".join(filter(str.isalnum, title))
 
     @dbus.service.method('org.mpris.MediaPlayer2')
     def Raise(self):
