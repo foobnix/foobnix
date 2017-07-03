@@ -76,7 +76,8 @@ class DBusManager():
         self.sound_menu.song_changed(artists=artists,
                                      title=bean.title or bean.text,
                                      album=bean.album,
-                                     cover=image)
+                                     cover=image,
+                                     duration_microsec=self.sound_menu.duration_microseconds)
 
     def on_mediakey(self, comes_from, what):
         if not FC().media_keys_enabled:
@@ -245,6 +246,14 @@ class MprisSoundMenu(SoundMenuControls):
     @idle_task
     def _sound_menu_quit(self):
         self.controls.quit()
+
+    @property
+    def position_microseconds(self):
+        return self.controls.position_microseconds
+
+    @property
+    def duration_microseconds(self):
+        return self.controls.duration_microseconds
 
 
 def foobnix_dbus_interface():

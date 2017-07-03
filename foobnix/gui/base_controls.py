@@ -784,3 +784,11 @@ class BaseFoobnixControls():
 
     def download(self):
         self.dm.append_task(bean=self.notetabs.get_current_tree().get_current_bean_by_UUID())
+
+    @property
+    def position_microseconds(self):
+        return self.media_engine.position_sec * 1000000
+
+    @property
+    def duration_microseconds(self):
+        return self.media_engine.duration_sec * 1000000

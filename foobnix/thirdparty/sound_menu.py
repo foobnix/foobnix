@@ -128,7 +128,9 @@ class SoundMenuControls(dbus.service.Object):
             "DesktopEntry": desktop_name
             }
         
-        self._volatile_properties = {}
+        self._volatile_properties = {
+            "Position": lambda: dbus.Int64(self.position_microseconds)
+            }
 
         self.song_changed()
     
