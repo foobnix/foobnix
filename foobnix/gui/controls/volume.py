@@ -45,7 +45,7 @@ class VolumeControls(LoadSave, Gtk.Box, FControl):
         self.on_save()
 
     def get_value(self):
-        self.volume_scale.get_value()
+        return self.volume_scale.get_value()
 
     def set_value(self, value):
         self.volume_scale.set_value(value)
