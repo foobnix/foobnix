@@ -190,7 +190,7 @@ class SoundMenuControls(dbus.service.Object):
         """Raise
 
         A dbus signal handler for the Raise signal. Do no override this
-        function directly. rather, overrise _sound_menu_raise. This
+        function directly. rather, override _sound_menu_raise. This
         function is typically only called by the Sound, not directly
         from code.
 
@@ -216,7 +216,7 @@ class SoundMenuControls(dbus.service.Object):
         """Quit
 
         A dbus signal handler for the Quit signal. Do no override this
-        function directly. rather, overrise _sound_menu_quit. This
+        function directly. rather, override _sound_menu_quit. This
         function is typically only called by the Sound, not directly
         from code.
 
@@ -279,7 +279,7 @@ class SoundMenuControls(dbus.service.Object):
         """Next
 
         A dbus signal handler for the Next signal. Do no override this
-        function directly. Rather, overide _sound_menu_next. This
+        function directly. Rather, override _sound_menu_next. This
         function is typically only called by the Sound, not directly
         from code.
 
@@ -292,7 +292,7 @@ class SoundMenuControls(dbus.service.Object):
 
         This function is called when the user has clicked
         the next button in the Sound Indicator. Implementations
-        should overrirde this function in order to a function to
+        should override this function in order to a function to
         advance to the next track. Implementations should call
         song_changed() and sound_menu.signal_playing() in order to
         keep the song information in the sound menu in sync.
@@ -307,7 +307,7 @@ class SoundMenuControls(dbus.service.Object):
         """Previous
 
         A dbus signal handler for the Previous signal. Do no override this
-        function directly. Rather, overide _sound_menu_previous. This
+        function directly. Rather, override _sound_menu_previous. This
         function is typically only called by the Sound Menu, not directly
         from code.
 
@@ -321,7 +321,7 @@ class SoundMenuControls(dbus.service.Object):
 
         This function is called when the user has clicked
         the previous button in the Sound Indicator. Implementations
-        should overrirde this function in order to a function to
+        should override this function in order to a function to
         advance to the next track. Implementations should call
         song_changed() and  sound_menu.signal_playing() in order to
         keep the song information in sync.
@@ -337,7 +337,7 @@ class SoundMenuControls(dbus.service.Object):
         """Next
 
         A dbus signal handler for the Next signal. Do no override this
-        function directly. Rather, overide _sound_menu_next. This
+        function directly. Rather, override _sound_menu_next. This
         function is typically only called by the Sound, not directly
         from code.
 
@@ -394,7 +394,7 @@ class SoundMenuControls(dbus.service.Object):
         """_sound_menu_is_playing
 
         Check if the the player is playing,.
-        Implementations should overrirde this function
+        Implementations should override this function
         so that the Sound Menu can check whether to display
         Play or Pause functionality.
 
@@ -414,10 +414,10 @@ class SoundMenuControls(dbus.service.Object):
     def _sound_menu_pause(self):
         """_sound_menu_pause
 
-        Reponds to the Sound Menu when the user has click the
+        Responds to the Sound Menu when the user has clicked the
         Pause button.
 
-        Implementations should overrirde this function
+        Implementations should override this function
         to pause playback when called.
 
         The default implementation of this function does nothing
@@ -428,17 +428,17 @@ class SoundMenuControls(dbus.service.Object):
         returns:
             None
 
-       """
+        """
 
         pass
 
     def _sound_menu_play(self):
         """_sound_menu_play
 
-        Reponds to the Sound Menu when the user has click the
+        Responds to the Sound Menu when the user has clicked the
         Play button.
 
-        Implementations should overrirde this function
+        Implementations should override this function
         to play playback when called.
 
         The default implementation of this function does nothing
@@ -449,14 +449,14 @@ class SoundMenuControls(dbus.service.Object):
         returns:
             None
 
-       """
+        """
 
         pass
     
     def _sound_menu_stop(self):
         """_sound_menu_play
 
-        Reponds to the Sound Menu when the user has clicked the
+        Responds to the Sound Menu when the user has clicked the
         Stop button.
 
         Implementations should override this function
