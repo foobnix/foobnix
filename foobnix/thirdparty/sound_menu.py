@@ -164,7 +164,10 @@ class SoundMenuControls(dbus.service.Object):
     def set_property(self, name, value):
         self._static_properties[name] = value
 
-    def song_changed(self, artists = None, album = None, title = None, cover = None, duration_microsec = None):
+    def set_properties(self, **kwargs):
+        self._static_properties.update(kwargs)
+
+    def song_changed(self, artists = None, album = None, title = None, cover = None, duration_microsec = 0, properties = {}):
         """song_changed - sets the info for the current song.
 
         This method is not typically overriden. It should be called
@@ -175,6 +178,11 @@ class SoundMenuControls(dbus.service.Object):
             artists - a list of strings representing the artists"
             album - a string for the name of the album
             title - a string for the title of the song
+            cover - a string for the location (URI) of the track image
+            duration_microsec - track duration in microseconds
+            properties - a dictionary of MediaPlayer2.Player properties
+                         that are specific to this track
+                         (e.g. {"CanSeek": False})
 
         """
 
@@ -184,8 +192,6 @@ class SoundMenuControls(dbus.service.Object):
             album = "Album Uknown"
         if title is None:
             title = "Title Uknown"
-        if duration_microsec is None:
-            duration_microsec = 0
 
         data = {
             "mpris:trackid": "/Player/TrackList/" + self._get_track_id(title),
@@ -199,6 +205,7 @@ class SoundMenuControls(dbus.service.Object):
             data["mpris:artUrl"] = cover
 
         self.set_property("Metadata", dbus.Dictionary(data, "sv", variant_level=1))
+        self.set_properties(**properties)
 
     @staticmethod
     def _get_track_id(title):
