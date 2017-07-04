@@ -202,7 +202,7 @@ class SoundMenuControls(dbus.service.Object):
 
     @staticmethod
     def _get_track_id(title):
-        return "".join(filter(str.isalnum, title))
+        return "".join(filter(str.isalnum, str(title)))
 
     @dbus.service.method('org.mpris.MediaPlayer2')
     def Raise(self):
