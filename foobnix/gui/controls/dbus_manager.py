@@ -14,7 +14,7 @@ from foobnix.version import FOOBNIX_VERSION
 from dbus.mainloop.glib import DBusGMainLoop
 from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.thirdparty.sound_menu import SoundMenuControls
-from foobnix.util.const import STATE_PLAY, ICON_FOOBNIX
+from foobnix.util.const import STATE_PLAY, ICON_FOOBNIX, FTYPE_RADIO
 
 DBusGMainLoop(set_as_default=True)
 
@@ -73,11 +73,16 @@ class DBusManager():
         artists = None
         if bean.artist:
             artists = [bean.artist]
+        properties = {
+            "CanPause": bean.type != FTYPE_RADIO,
+            "CanSeek": bean.type != FTYPE_RADIO
+            }
         self.sound_menu.song_changed(artists=artists,
                                      title=bean.title or bean.text,
                                      album=bean.album,
                                      cover=image,
-                                     duration_microsec=self.sound_menu.duration_microseconds)
+                                     duration_microsec=self.sound_menu.duration_microseconds,
+                                     properties=properties)
 
     def on_mediakey(self, comes_from, what):
         if not FC().media_keys_enabled:
