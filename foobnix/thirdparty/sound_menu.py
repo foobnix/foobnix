@@ -206,6 +206,7 @@ class SoundMenuControls(dbus.service.Object):
 
         self.set_property("Metadata", dbus.Dictionary(data, "sv", variant_level=1))
         self.set_properties(**properties)
+        self.properties_changed("Metadata", *properties.keys())
 
     @staticmethod
     def _get_track_id(title):
@@ -398,7 +399,7 @@ class SoundMenuControls(dbus.service.Object):
         """
 
         self.set_property("PlaybackStatus", "Playing")
-        self.properties_changed("Metadata", "PlaybackStatus")
+        self.properties_changed("PlaybackStatus")
 
     def signal_paused(self):
         """signal_paused - Tell the Sound Menu that the player has
