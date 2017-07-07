@@ -4,7 +4,7 @@
 #     A Python interface to Last.fm and Libre.fm
 #
 # Copyright 2008-2010 Amr Hassan
-# Copyright 2013-2016 hugovk
+# Copyright 2013-2017 hugovk
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,9 +32,9 @@ import warnings
 import re
 import six
 
-__version__ = '1.5.1'
+__version__ = '1.8.0'
 __author__ = 'Amr Hassan, hugovk'
-__copyright__ = "Copyright (C) 2008-2010 Amr Hassan, 2013-2016 hugovk"
+__copyright__ = "Copyright (C) 2008-2010 Amr Hassan, 2013-2017 hugovk"
 __license__ = "apache2"
 __email__ = 'amr.hassan@gmail.com'
 
@@ -42,8 +42,24 @@ __email__ = 'amr.hassan@gmail.com'
 def _deprecation_warning(message):
     warnings.warn(message, DeprecationWarning)
 
+
+def _can_use_ssl_securely():
+    # Python 3.3 doesn't support create_default_context() but can be made to
+    # work sanely.
+    # <2.7.9 and <3.2 never did any SSL verification so don't do SSL there.
+    # >3.4 and >2.7.9 has sane defaults so use SSL there.
+    v = sys.version_info
+    return v > (3, 3) or ((2, 7, 9) < v < (3, 0))
+
+
+if _can_use_ssl_securely():
+    import ssl
+
 if sys.version_info[0] == 3:
-    from http.client import HTTPConnection
+    if _can_use_ssl_securely():
+        from http.client import HTTPSConnection
+    else:
+        from http.client import HTTPConnection
     import html.entities as htmlentitydefs
     from urllib.parse import splithost as url_split_host
     from urllib.parse import quote_plus as url_quote_plus
@@ -51,7 +67,10 @@ if sys.version_info[0] == 3:
     unichr = chr
 
 elif sys.version_info[0] == 2:
-    from httplib import HTTPConnection
+    if _can_use_ssl_securely():
+        from httplib import HTTPSConnection
+    else:
+        from httplib import HTTPConnection
     import htmlentitydefs
     from urllib import splithost as url_split_host
     from urllib import quote_plus as url_quote_plus
@@ -131,6 +150,59 @@ RE_XML_ILLEGAL = (u'([\u0000-\u0008\u000b-\u000c\u000e-\u001f\ufffe-\uffff])' +
 
 XML_ILLEGAL = re.compile(RE_XML_ILLEGAL)
 
+# Python <=3.3 doesn't support create_default_context()
+# <2.7.9 and <3.2 never did any SSL verification
+# FIXME This can be removed after 2017-09 when 3.3 is no longer supported and
+# pypy3 uses 3.4 or later, see
+# https://en.wikipedia.org/wiki/CPython#Version_history
+if sys.version_info[0] == 3 and sys.version_info[1] == 3:
+    import certifi
+    SSL_CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+    SSL_CONTEXT.verify_mode = ssl.CERT_REQUIRED
+    SSL_CONTEXT.options |= ssl.OP_NO_COMPRESSION
+    # Intermediate from https://wiki.mozilla.org/Security/Server_Side_TLS
+    # Create the cipher string
+    cipher_string = """
+    ECDHE-ECDSA-CHACHA20-POLY1305
+    ECDHE-RSA-CHACHA20-POLY1305
+    ECDHE-ECDSA-AES128-GCM-SHA256
+    ECDHE-RSA-AES128-GCM-SHA256
+    ECDHE-ECDSA-AES256-GCM-SHA384
+    ECDHE-RSA-AES256-GCM-SHA384
+    DHE-RSA-AES128-GCM-SHA256
+    DHE-RSA-AES256-GCM-SHA384
+    ECDHE-ECDSA-AES128-SHA256
+    ECDHE-RSA-AES128-SHA256
+    ECDHE-ECDSA-AES128-SHA
+    ECDHE-RSA-AES256-SHA384
+    ECDHE-RSA-AES128-SHA
+    ECDHE-ECDSA-AES256-SHA384
+    ECDHE-ECDSA-AES256-SHA
+    ECDHE-RSA-AES256-SHA
+    DHE-RSA-AES128-SHA256
+    DHE-RSA-AES128-SHA
+    DHE-RSA-AES256-SHA256
+    DHE-RSA-AES256-SHA
+    ECDHE-ECDSA-DES-CBC3-SHA
+    ECDHE-RSA-DES-CBC3-SHA
+    EDH-RSA-DES-CBC3-SHA
+    AES128-GCM-SHA256
+    AES256-GCM-SHA384
+    AES128-SHA256
+    AES256-SHA256
+    AES128-SHA
+    AES256-SHA
+    DES-CBC3-SHA
+    !DSS
+    """
+    cipher_string = ' '.join(cipher_string.split())
+    SSL_CONTEXT.set_ciphers(cipher_string)
+    SSL_CONTEXT.load_verify_locations(certifi.where())
+
+# Python >3.4 and >2.7.9 has sane defaults
+elif sys.version_info > (3, 4) or ((2, 7, 9) < sys.version_info < (3, 0)):
+    SSL_CONTEXT = ssl.create_default_context()
+
 
 class _Network(object):
     """
@@ -140,7 +212,8 @@ class _Network(object):
 
     def __init__(
             self, name, homepage, ws_server, api_key, api_secret, session_key,
-            submission_server, username, password_hash, domain_names, urls):
+            submission_server, username, password_hash, domain_names, urls,
+            token=None):
         """
             name: the name of the network
             homepage: the homepage URL
@@ -156,6 +229,7 @@ class _Network(object):
             domain_names: a dict mapping each DOMAIN_* value to a string domain
                 name
             urls: a dict mapping types to URLs
+            token: an authentication token to retrieve a session
 
             if username and password_hash were provided and not session_key,
             session_key will be generated automatically when needed.
@@ -186,9 +260,15 @@ class _Network(object):
         self.last_call_time = 0
         self.limit_rate = False
 
+        # Load session_key from authentication token if provided
+        if token and not self.session_key:
+            sk_gen = SessionKeyGenerator(self)
+            self.session_key = sk_gen.get_web_auth_session_key(
+                url=None, token=token)
+
         # Generate a session_key if necessary
         if ((self.api_key and self.api_secret) and not self.session_key and
-                (self.username and self.password_hash)):
+           (self.username and self.password_hash)):
             sk_gen = SessionKeyGenerator(self)
             self.session_key = sk_gen.get_session_key(
                 self.username, self.password_hash)
@@ -709,10 +789,10 @@ class _Network(object):
         """
 
         return self.scrobble_many(({
-                                       "artist": artist, "title": title, "timestamp": timestamp,
-                                       "album": album, "album_artist": album_artist,
-                                       "track_number": track_number, "duration": duration,
-                                       "stream_id": stream_id, "context": context, "mbid": mbid},))
+            "artist": artist, "title": title, "timestamp": timestamp,
+            "album": album, "album_artist": album_artist,
+            "track_number": track_number, "duration": duration,
+            "stream_id": stream_id, "context": context, "mbid": mbid},))
 
     def scrobble_many(self, tracks):
         """
@@ -737,9 +817,9 @@ class _Network(object):
                 "timestamp", "album", "album_artist", "context",
                 "stream_id", "track_number", "mbid", "duration")
             args_map_to = {  # so friggin lazy
-                             "album_artist": "albumArtist",
-                             "track_number": "trackNumber",
-                             "stream_id": "streamID"}
+                "album_artist": "albumArtist",
+                "track_number": "trackNumber",
+                "stream_id": "streamID"}
 
             for arg in additional_args:
 
@@ -815,7 +895,7 @@ class LastFMNetwork(_Network):
 
     def __init__(
             self, api_key="", api_secret="", session_key="", username="",
-            password_hash=""):
+            password_hash="", token=""):
         _Network.__init__(
             self,
             name="Last.fm",
@@ -827,6 +907,7 @@ class LastFMNetwork(_Network):
             submission_server="http://post.audioscrobbler.com:80/",
             username=username,
             password_hash=password_hash,
+            token=token,
             domain_names={
                 DOMAIN_ENGLISH: 'www.last.fm',
                 DOMAIN_GERMAN: 'www.lastfm.de',
@@ -840,7 +921,7 @@ class LastFMNetwork(_Network):
                 DOMAIN_RUSSIAN: 'www.lastfm.ru',
                 DOMAIN_JAPANESE: 'www.lastfm.jp',
                 DOMAIN_CHINESE: 'cn.last.fm',
-                },
+            },
             urls={
                 "album": "music/%(artist)s/%(album)s",
                 "artist": "music/%(artist)s",
@@ -851,7 +932,7 @@ class LastFMNetwork(_Network):
                 "track": "music/%(artist)s/_/%(title)s",
                 "group": "group/%(name)s",
                 "user": "user/%(name)s",
-                }
+            }
         )
 
     def __repr__(self):
@@ -865,7 +946,7 @@ class LastFMNetwork(_Network):
 
 def get_lastfm_network(
         api_key="", api_secret="", session_key="", username="",
-        password_hash=""):
+        password_hash="", token=""):
     """
     Returns a preconfigured _Network object for Last.fm
 
@@ -875,12 +956,13 @@ def get_lastfm_network(
     username: a username of a valid user
     password_hash: the output of pylast.md5(password) where password is the
         user's password
+    token: an authentication token to retrieve a session
 
     if username and password_hash were provided and not session_key,
     session_key will be generated automatically when needed.
 
-    Either a valid session_key or a combination of username and password_hash
-    must be present for scrobbling.
+    Either a valid session_key, a combination of username and password_hash,
+    or token must be present for scrobbling.
 
     Most read-only webservices only require an api_key and an api_secret, see
     about obtaining them from:
@@ -890,7 +972,7 @@ def get_lastfm_network(
     _deprecation_warning("Create a LastFMNetwork object instead")
 
     return LastFMNetwork(
-        api_key, api_secret, session_key, username, password_hash)
+        api_key, api_secret, session_key, username, password_hash, token)
 
 
 class LibreFMNetwork(_Network):
@@ -915,8 +997,8 @@ class LibreFMNetwork(_Network):
         _Network.__init__(
             self,
             name="Libre.fm",
-            homepage="http://alpha.libre.fm",
-            ws_server=("alpha.libre.fm", "/2.0/"),
+            homepage="http://libre.fm",
+            ws_server=("libre.fm", "/2.0/"),
             api_key=api_key,
             api_secret=api_secret,
             session_key=session_key,
@@ -924,19 +1006,19 @@ class LibreFMNetwork(_Network):
             username=username,
             password_hash=password_hash,
             domain_names={
-                DOMAIN_ENGLISH: "alpha.libre.fm",
-                DOMAIN_GERMAN: "alpha.libre.fm",
-                DOMAIN_SPANISH: "alpha.libre.fm",
-                DOMAIN_FRENCH: "alpha.libre.fm",
-                DOMAIN_ITALIAN: "alpha.libre.fm",
-                DOMAIN_POLISH: "alpha.libre.fm",
-                DOMAIN_PORTUGUESE: "alpha.libre.fm",
-                DOMAIN_SWEDISH: "alpha.libre.fm",
-                DOMAIN_TURKISH: "alpha.libre.fm",
-                DOMAIN_RUSSIAN: "alpha.libre.fm",
-                DOMAIN_JAPANESE: "alpha.libre.fm",
-                DOMAIN_CHINESE: "alpha.libre.fm",
-                },
+                DOMAIN_ENGLISH: "libre.fm",
+                DOMAIN_GERMAN: "libre.fm",
+                DOMAIN_SPANISH: "libre.fm",
+                DOMAIN_FRENCH: "libre.fm",
+                DOMAIN_ITALIAN: "libre.fm",
+                DOMAIN_POLISH: "libre.fm",
+                DOMAIN_PORTUGUESE: "libre.fm",
+                DOMAIN_SWEDISH: "libre.fm",
+                DOMAIN_TURKISH: "libre.fm",
+                DOMAIN_RUSSIAN: "libre.fm",
+                DOMAIN_JAPANESE: "libre.fm",
+                DOMAIN_CHINESE: "libre.fm",
+            },
             urls={
                 "album": "artist/%(artist)s/album/%(album)s",
                 "artist": "artist/%(artist)s",
@@ -947,7 +1029,7 @@ class LibreFMNetwork(_Network):
                 "track": "music/%(artist)s/_/%(title)s",
                 "group": "group/%(name)s",
                 "user": "user/%(name)s",
-                }
+            }
         )
 
     def __repr__(self):
@@ -1098,9 +1180,15 @@ class _Request(object):
         (HOST_NAME, HOST_SUBDIR) = self.network.ws_server
 
         if self.network.is_proxy_enabled():
-            conn = HTTPConnection(
-                host=self.network._get_proxy()[0],
-                port=self.network._get_proxy()[1])
+            if _can_use_ssl_securely():
+                conn = HTTPSConnection(
+                    context=SSL_CONTEXT,
+                    host=self.network._get_proxy()[0],
+                    port=self.network._get_proxy()[1])
+            else:
+                conn = HTTPConnection(
+                    host=self.network._get_proxy()[0],
+                    port=self.network._get_proxy()[1])
 
             try:
                 conn.request(
@@ -1110,7 +1198,15 @@ class _Request(object):
                 raise NetworkError(self.network, e)
 
         else:
-            conn = HTTPConnection(host=HOST_NAME)
+            if _can_use_ssl_securely():
+                conn = HTTPSConnection(
+                    context=SSL_CONTEXT,
+                    host=HOST_NAME
+                )
+            else:
+                conn = HTTPConnection(
+                    host=HOST_NAME
+                )
 
             try:
                 conn.request(
@@ -1212,14 +1308,14 @@ class SessionKeyGenerator(object):
         token = self._get_web_auth_token()
 
         url = '%(homepage)s/api/auth/?api_key=%(api)s&token=%(token)s' % \
-              {"homepage": self.network.homepage,
-               "api": self.network.api_key, "token": token}
+            {"homepage": self.network.homepage,
+             "api": self.network.api_key, "token": token}
 
         self.web_auth_tokens[url] = token
 
         return url
 
-    def get_web_auth_session_key(self, url):
+    def get_web_auth_session_key(self, url, token=""):
         """
         Retrieves the session key of a web authorization process by its url.
         """
@@ -1227,9 +1323,8 @@ class SessionKeyGenerator(object):
         if url in self.web_auth_tokens.keys():
             token = self.web_auth_tokens[url]
         else:
-            # That's going to raise a WSError of an unauthorized token when the
-            # request is executed.
-            token = ""
+            # This will raise a WSError if token is blank or unauthorized
+            token = token
 
         request = _Request(self.network, 'auth.getSession', {'token': token})
 
@@ -1258,6 +1353,7 @@ class SessionKeyGenerator(object):
         doc = request.execute()
 
         return _extract(doc, "key")
+
 
 TopItem = collections.namedtuple("TopItem", ["item", "weight"])
 SimilarItem = collections.namedtuple("SimilarItem", ["item", "match"])
@@ -1681,15 +1777,15 @@ class WSError(Exception):
 
 
 class MalformedResponseError(Exception):
-    """Exception conveying a malformed response from Last.fm."""
+    """Exception conveying a malformed response from the music network."""
 
     def __init__(self, network, underlying_error):
         self.network = network
         self.underlying_error = underlying_error
 
     def __str__(self):
-        return "Malformed response from Last.fm. Underlying error: %s" % str(
-            self.underlying_error)
+        return "Malformed response from {}. Underlying error: {}".format(
+            self.network.name, str(self.underlying_error))
 
 
 class NetworkError(Exception):
@@ -1825,7 +1921,7 @@ class _Opus(_BaseObject, _Taggable):
     def _get_children_by_tag_name(self, node, tag_name):
         for child in node.childNodes:
             if (child.nodeType == child.ELEMENT_NODE and
-                    (tag_name == '*' or child.tagName == tag_name)):
+               (tag_name == '*' or child.tagName == tag_name)):
                 yield child
 
 
@@ -1887,7 +1983,7 @@ class Album(_Opus):
 
         return self.network._get_url(
             domain_name, self.ws_prefix) % {
-                   'artist': artist, 'album': title}
+            'artist': artist, 'album': title}
 
 
 class Artist(_BaseObject, _Taggable):
@@ -3078,7 +3174,7 @@ class Track(_Opus):
 
         return self.network._get_url(
             domain_name, self.ws_prefix) % {
-                   'artist': artist, 'title': title}
+            'artist': artist, 'title': title}
 
 
 class Group(_BaseObject, _Chartable):
@@ -4071,7 +4167,7 @@ def _collect_nodes(limit, sender, method_name, cacheable, params=None):
 
         for node in main.childNodes:
             if not node.nodeType == xml.dom.Node.TEXT_NODE and (
-                        not limit or (len(nodes) < limit)):
+                    not limit or (len(nodes) < limit)):
                 nodes.append(node)
 
         if page >= total_pages:
@@ -4291,7 +4387,15 @@ class _ScrobblerRequest(object):
     def execute(self):
         """Returns a string response of this request."""
 
-        connection = HTTPConnection(self.hostname)
+        if _can_use_ssl_securely():
+            connection = HTTPSConnection(
+                context=SSL_CONTEXT,
+                host=self.hostname
+            )
+        else:
+            connection = HTTPConnection(
+                host=self.hostname
+            )
 
         data = []
         for name in self.params.keys():
@@ -4332,10 +4436,11 @@ class _ScrobblerRequest(object):
             """ --- Changed by zavlab1 END --- """
 
             if self.type == "GET":
-                connection.request("GET", self.subdir + "?" + data, headers=headers)
+                connection.request(
+                    "GET", self.subdir + "?" + data, headers=headers)
             else:
                 connection.request("POST", self.subdir, data, headers)
-
+            
         response = _unicode(connection.getresponse().read())
 
         self._check_response_for_errors(response)
@@ -4390,7 +4495,7 @@ class Scrobbler(object):
         elif self.network.api_key and self.network.api_secret and \
                 self.network.session_key:
             if not self.username:
-                self.username = self.network.get_authenticated_user() \
+                self.username = self.network.get_authenticated_user()\
                     .get_name()
             token = md5(self.network.api_secret + timestamp)
 
