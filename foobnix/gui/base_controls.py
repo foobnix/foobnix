@@ -510,8 +510,25 @@ class BaseFoobnixControls():
         self.media_engine.seek(percent)
 
     @idle_task
+    def player_seek_microseconds(self, time_us, offset=0.0):
+        percent = 100.0 * (offset + time_us) / self.duration_microseconds
+        if percent > 100.0:
+            percent = 100.0
+        elif percent < 0.0:
+            percent = 0.0
+        self.player_seek(percent)
+
+    @idle_task
+    def player_seek_microseconds_relative(self, time_us):
+        self.player_seek_microseconds(time_us, offset=self.position_microseconds)
+
+    @idle_task
     def player_volume(self, percent):
         self.media_engine.volume(percent)
+        self.volume.set_value(percent)
+
+    def get_player_volume(self):
+        return self.volume.get_value()
 
     def search_vk_page_tracks(self, vk_ulr):
         logging.debug("Search vk_service page tracks")
@@ -784,3 +801,11 @@ class BaseFoobnixControls():
 
     def download(self):
         self.dm.append_task(bean=self.notetabs.get_current_tree().get_current_bean_by_UUID())
+
+    @property
+    def position_microseconds(self):
+        return self.media_engine.position_sec * 1000000
+
+    @property
+    def duration_microseconds(self):
+        return self.media_engine.duration_sec * 1000000

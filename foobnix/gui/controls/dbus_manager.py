@@ -14,7 +14,7 @@ from foobnix.version import FOOBNIX_VERSION
 from dbus.mainloop.glib import DBusGMainLoop
 from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
 from foobnix.thirdparty.sound_menu import SoundMenuControls
-from foobnix.util.const import STATE_PLAY, ICON_FOOBNIX
+from foobnix.util.const import STATE_PLAY, ICON_FOOBNIX, FTYPE_RADIO
 
 DBusGMainLoop(set_as_default=True)
 
@@ -73,10 +73,16 @@ class DBusManager():
         artists = None
         if bean.artist:
             artists = [bean.artist]
+        properties = {
+            "CanPause": bean.type != FTYPE_RADIO,
+            "CanSeek": bean.type != FTYPE_RADIO
+            }
         self.sound_menu.song_changed(artists=artists,
                                      title=bean.title or bean.text,
                                      album=bean.album,
-                                     cover=image)
+                                     cover=image,
+                                     duration_microsec=self.sound_menu.duration_microseconds,
+                                     properties=properties)
 
     def on_mediakey(self, comes_from, what):
         if not FC().media_keys_enabled:
@@ -217,7 +223,7 @@ class MprisPlayer(dbus.service.Object):
 class MprisSoundMenu(SoundMenuControls):
     def __init__(self, controls):
         self.controls = controls
-        SoundMenuControls.__init__(self, "foobnix")
+        SoundMenuControls.__init__(self, "foobnix %s" % FOOBNIX_VERSION, "foobnix")
 
 
     def _sound_menu_next(self):
@@ -234,18 +240,42 @@ class MprisSoundMenu(SoundMenuControls):
 
     def _sound_menu_pause(self):
         self.controls.state_pause()
+    
+    def _sound_menu_stop(self):
+        self.controls.state_stop()
 
     @idle_task
     def _sound_menu_raise(self):
         self.controls.main_window.show()
+    
+    @idle_task
+    def _sound_menu_quit(self):
+        self.controls.quit()
 
-    @dbus.service.method('org.mpris.MediaPlayer2.Player')
-    def Stop(self):
-        self.controls.state_stop()
+    def _sound_menu_seek(self, offset):
+        self.controls.player_seek_microseconds_relative(offset)
 
-    @dbus.service.method('org.mpris.MediaPlayer2.Player')
-    def Play(self):
-        self.controls.state_play()
+    def _sound_menu_set_position(self, position):
+        self.controls.player_seek_microseconds(position)
+
+    def _sound_menu_get_volume(self):
+        return self.controls.get_player_volume() / 100.0
+
+    def _sound_menu_set_volume(self, value):
+        if value > 1.0:
+            value = 1.0
+        elif value < 0.0:
+            value = 0.0
+
+        return self.controls.player_volume(100.0*value)
+
+    @property
+    def position_microseconds(self):
+        return self.controls.position_microseconds
+
+    @property
+    def duration_microseconds(self):
+        return self.controls.duration_microseconds
 
 
 def foobnix_dbus_interface():

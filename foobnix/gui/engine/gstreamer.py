@@ -258,7 +258,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
             self.fsource.set_state(Gst.State.READY)
 
         self.realign_eq()
-        self.state_play()
+        self.state_play(notify=False) # player interface will be notified later by the playing thread
 
         if self.remembered_seek_position:
             self.wait_for_seek()
@@ -335,9 +335,12 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         if self.bean.duration_sec and self.bean.duration_sec > 0:
             duration_int = float(self.bean.duration_sec) * self.NANO_SECONDS
 
+        self.duration_sec = float(duration_int) / self.NANO_SECONDS
+
         logging.debug("current state before while " + str(self.get_state()))
 
         self.set_state(STATE_PLAY)
+        self.on_chage_state()
 
         while thread_id == self.play_thread_id:
             if self.pause_thread_id:
@@ -391,11 +394,12 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         except:
             self.player.get_by_name("volume").set_property('volume', value)
 
-    def state_play(self):
+    def state_play(self, notify=True):
         self.pause_thread_id = False
         self.player.set_state(Gst.State.PLAYING)
         self.current_state = STATE_PLAY
-        self.on_chage_state()
+        if notify:
+            self.on_chage_state()
 
     def get_current_percent(self):
         duration = self.get_duration_seek_ns()

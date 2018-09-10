@@ -102,7 +102,7 @@ class SoundMenuControls(dbus.service.Object):
 
     """
 
-    def __init__(self, desktop_name):
+    def __init__(self, identity, desktop_name):
         """
         Creates a SoundMenuControls object.
 
@@ -115,15 +115,59 @@ class SoundMenuControls(dbus.service.Object):
 
         """
 
-        self.desktop_name = desktop_name
         bus_str = """org.mpris.MediaPlayer2.%s""" % desktop_name
         bus_name = dbus.service.BusName(bus_str, bus=dbus.SessionBus())
         dbus.service.Object.__init__(self, bus_name, "/org/mpris/MediaPlayer2")
-        self.__playback_status = "Stopped"
+        
+        self._static_properties = {
+            "PlaybackStatus": "Stopped",
+            "CanQuit": True,
+            "CanRaise": True,
+            "HasTrackList": False,
+            "Identity": identity,
+            "DesktopEntry": desktop_name,
+            "Rate": 1.0,
+            "MinimumRate": 1.0,
+            "MaximumRate": 1.0,
+            "CanGoNext": True,
+            "CanGoPrevious": True,
+            "CanPlay": True,
+            "CanPause": True,
+            "CanSeek": True,
+            "CanControl": True,
+            }
+        
+        self._volatile_properties = {
+            "Position": lambda: dbus.Int64(self.position_microseconds),
+            "Volume": self._sound_menu_get_volume
+            }
+
+        self._properties_setters = {
+            "Volume": self._sound_menu_set_volume
+            }
 
         self.song_changed()
+    
+    def get_property(self, name):
+        if name in self._static_properties:
+            return self._static_properties[name]
+        elif name in self._volatile_properties:
+            return self._volatile_properties[name]()
+        
+        return None
+    
+    def get_all_properties(self):
+        properties = {key: prop_getter() for key, prop_getter in self._volatile_properties.items()}
+        properties.update(self._static_properties)
+        return properties
+    
+    def set_property(self, name, value):
+        self._static_properties[name] = value
 
-    def song_changed(self, artists = None, album = None, title = None, cover = None):
+    def set_properties(self, **kwargs):
+        self._static_properties.update(kwargs)
+
+    def song_changed(self, artists = None, album = None, title = None, cover = None, duration_microsec = 0, properties = {}):
         """song_changed - sets the info for the current song.
 
         This method is not typically overriden. It should be called
@@ -134,6 +178,11 @@ class SoundMenuControls(dbus.service.Object):
             artists - a list of strings representing the artists"
             album - a string for the name of the album
             title - a string for the title of the song
+            cover - a string for the location (URI) of the track image
+            duration_microsec - track duration in microseconds
+            properties - a dictionary of MediaPlayer2.Player properties
+                         that are specific to this track
+                         (e.g. {"CanSeek": False})
 
         """
 
@@ -143,21 +192,32 @@ class SoundMenuControls(dbus.service.Object):
             album = "Album Uknown"
         if title is None:
             title = "Title Uknown"
-        data = {"xesam:album": album,
-                "xesam:title": title,
-                "xesam:artist": artists
-                }
+
+        data = {
+            "mpris:trackid": "/Player/TrackList/" + self._get_track_id(title),
+            "mpris:length": duration_microsec,
+            "xesam:album": album,
+            "xesam:title": title,
+            "xesam:artist": artists
+            }
+
         if cover:
             data["mpris:artUrl"] = cover
-        self.__meta_data = dbus.Dictionary(data, "sv", variant_level=1)
 
+        self.set_property("Metadata", dbus.Dictionary(data, "sv", variant_level=1))
+        self.set_properties(**properties)
+        self.properties_changed("Metadata", *properties.keys())
+
+    @staticmethod
+    def _get_track_id(title):
+        return "".join(filter(str.isalnum, str(title)))
 
     @dbus.service.method('org.mpris.MediaPlayer2')
     def Raise(self):
         """Raise
 
         A dbus signal handler for the Raise signal. Do no override this
-        function directly. rather, overrise _sound_menu_raise. This
+        function directly. rather, override _sound_menu_raise. This
         function is typically only called by the Sound, not directly
         from code.
 
@@ -176,6 +236,31 @@ class SoundMenuControls(dbus.service.Object):
 
         raise NotImplementedError("""@dbus.service.method('org.mpris.MediaPlayer2') Raise
                                       is not implemented by this player.""")
+    
+    
+    @dbus.service.method('org.mpris.MediaPlayer2')
+    def Quit(self):
+        """Quit
+
+        A dbus signal handler for the Quit signal. Do no override this
+        function directly. rather, override _sound_menu_quit. This
+        function is typically only called by the Sound, not directly
+        from code.
+
+        """
+
+        self._sound_menu_quit()
+
+    def _sound_menu_quit(self):
+        """ _sound_menu_quit -
+
+        Override this function to quit the application when selected
+        by the sound menu.
+
+        """
+
+        raise NotImplementedError("""@dbus.service.method('org.mpris.MediaPlayer2') Quit
+                                      is not implemented by this player.""")
 
 
     @dbus.service.method(dbus.PROPERTIES_IFACE, in_signature='ss', out_signature='v')
@@ -189,8 +274,7 @@ class SoundMenuControls(dbus.service.Object):
 
         """
 
-        my_prop = self.__getattribute__(prop)
-        return my_prop
+        return self.get_property(prop)
 
     @dbus.service.method(dbus.PROPERTIES_IFACE, in_signature='ssv')
     def Set(self, interface, prop, value):
@@ -202,8 +286,8 @@ class SoundMenuControls(dbus.service.Object):
         be overriden or called directly.
 
         """
-        my_prop = self.__getattribute__(prop)
-        my_prop = value
+        if prop in self._properties_setters:
+            self._properties_setters[prop](value)
 
     @dbus.service.method(dbus.PROPERTIES_IFACE, in_signature='s', out_signature='a{sv}')
     def GetAll(self, interface):
@@ -216,53 +300,14 @@ class SoundMenuControls(dbus.service.Object):
 
         """
 
-        return [DesktopEntry, PlaybackStatus, MetaData]
-
-    @property
-    def DesktopEntry(self):
-        """DesktopEntry
-
-        The name of the desktop file.
-
-        This propert is only used by the Sound Menu, and should not
-        be overriden or called directly.
-
-        """
-
-        return self.desktop_name
-
-    @property
-    def PlaybackStatus(self):
-        """PlaybackStatus
-
-        Current status "Playing", "Paused", or "Stopped"
-
-        This property is only used by the Sound Menu, and should not
-        be overriden or called directly.
-
-        """
-
-        return self.__playback_status
-
-    @property
-    def MetaData(self):
-        """MetaData
-
-        The info for the current song.
-
-        This property is only used by the Sound Menu, and should not
-        be overriden or called directly.
-
-        """
-
-        return self.__meta_data
+        return dbus.Dictionary(self.get_all_properties(), "sv", variant_level=1)
 
     @dbus.service.method('org.mpris.MediaPlayer2.Player')
     def Next(self):
         """Next
 
         A dbus signal handler for the Next signal. Do no override this
-        function directly. Rather, overide _sound_menu_next. This
+        function directly. Rather, override _sound_menu_next. This
         function is typically only called by the Sound, not directly
         from code.
 
@@ -275,7 +320,7 @@ class SoundMenuControls(dbus.service.Object):
 
         This function is called when the user has clicked
         the next button in the Sound Indicator. Implementations
-        should overrirde this function in order to a function to
+        should override this function in order to a function to
         advance to the next track. Implementations should call
         song_changed() and sound_menu.signal_playing() in order to
         keep the song information in the sound menu in sync.
@@ -290,7 +335,7 @@ class SoundMenuControls(dbus.service.Object):
         """Previous
 
         A dbus signal handler for the Previous signal. Do no override this
-        function directly. Rather, overide _sound_menu_previous. This
+        function directly. Rather, override _sound_menu_previous. This
         function is typically only called by the Sound Menu, not directly
         from code.
 
@@ -304,7 +349,7 @@ class SoundMenuControls(dbus.service.Object):
 
         This function is called when the user has clicked
         the previous button in the Sound Indicator. Implementations
-        should overrirde this function in order to a function to
+        should override this function in order to a function to
         advance to the next track. Implementations should call
         song_changed() and  sound_menu.signal_playing() in order to
         keep the song information in sync.
@@ -320,7 +365,7 @@ class SoundMenuControls(dbus.service.Object):
         """Next
 
         A dbus signal handler for the Next signal. Do no override this
-        function directly. Rather, overide _sound_menu_next. This
+        function directly. Rather, override _sound_menu_next. This
         function is typically only called by the Sound, not directly
         from code.
 
@@ -332,6 +377,16 @@ class SoundMenuControls(dbus.service.Object):
         else:
             self._sound_menu_pause()
             self.signal_paused()
+    
+    @dbus.service.method('org.mpris.MediaPlayer2.Player')
+    def Play(self):
+        self._sound_menu_play()
+        self.signal_playing()
+        
+    @dbus.service.method('org.mpris.MediaPlayer2.Player')
+    def Stop(self):
+        self._sound_menu_stop()
+        self.signal_stopped()
 
     def signal_playing(self):
         """signal_playing - Tell the Sound Menu that the player has
@@ -342,10 +397,9 @@ class SoundMenuControls(dbus.service.Object):
             none
 
         """
-        self.__playback_status = "Playing"
-        d = dbus.Dictionary({"PlaybackStatus":self.__playback_status, "Metadata":self.__meta_data},
-                            "sv",variant_level=1)
-        self.PropertiesChanged("org.mpris.MediaPlayer2.Player",d,[])
+
+        self.set_property("PlaybackStatus", "Playing")
+        self.properties_changed("PlaybackStatus")
 
     def signal_paused(self):
         """signal_paused - Tell the Sound Menu that the player has
@@ -357,22 +411,18 @@ class SoundMenuControls(dbus.service.Object):
 
         """
 
-        self.__playback_status = "Paused"
-        d = dbus.Dictionary({"PlaybackStatus":self.__playback_status},
-                            "sv",variant_level=1)
-        self.PropertiesChanged("org.mpris.MediaPlayer2.Player",d,[])
+        self.set_property("PlaybackStatus", "Paused")
+        self.properties_changed("PlaybackStatus")
 
     def signal_stopped(self):
-        self.__playback_status = "Stopped"
-        d = dbus.Dictionary({"PlaybackStatus": self.__playback_status},
-                            "sv", variant_level=1)
-        self.PropertiesChanged("org.mpris.MediaPlayer2.Player", d, [])
+        self.set_property("PlaybackStatus", "Stopped")
+        self.properties_changed("PlaybackStatus")
 
     def _sound_menu_is_playing(self):
         """_sound_menu_is_playing
 
         Check if the the player is playing,.
-        Implementations should overrirde this function
+        Implementations should override this function
         so that the Sound Menu can check whether to display
         Play or Pause functionality.
 
@@ -392,10 +442,10 @@ class SoundMenuControls(dbus.service.Object):
     def _sound_menu_pause(self):
         """_sound_menu_pause
 
-        Reponds to the Sound Menu when the user has click the
+        Responds to the Sound Menu when the user has clicked the
         Pause button.
 
-        Implementations should overrirde this function
+        Implementations should override this function
         to pause playback when called.
 
         The default implementation of this function does nothing
@@ -406,17 +456,17 @@ class SoundMenuControls(dbus.service.Object):
         returns:
             None
 
-       """
+        """
 
         pass
 
     def _sound_menu_play(self):
         """_sound_menu_play
 
-        Reponds to the Sound Menu when the user has click the
+        Responds to the Sound Menu when the user has clicked the
         Play button.
 
-        Implementations should overrirde this function
+        Implementations should override this function
         to play playback when called.
 
         The default implementation of this function does nothing
@@ -427,8 +477,55 @@ class SoundMenuControls(dbus.service.Object):
         returns:
             None
 
-       """
+        """
 
+        pass
+    
+    def _sound_menu_stop(self):
+        """_sound_menu_play
+
+        Responds to the Sound Menu when the user has clicked the
+        Stop button.
+
+        Implementations should override this function
+        to stop playback when called.
+
+        The default implementation of this function does nothing
+
+        arguments:
+            none
+
+        returns:
+            None
+
+        """
+        
+        pass
+
+    @dbus.service.method('org.mpris.MediaPlayer2.Player', signature='x')
+    def Seek(self, offset):
+        self._sound_menu_seek(offset)
+
+    def _sound_menu_seek(self, offset):
+        pass
+
+    @dbus.service.method('org.mpris.MediaPlayer2.Player', signature='ox')
+    def SetPosition(self, track_id, position):
+        self._sound_menu_set_position(position)
+
+    def _sound_menu_set_position(self, position):
+        pass
+
+    def _sound_menu_get_volume(self):
+        """Implementations should override this function
+        to return the correct value
+        """
+        return 1.0
+
+    def _sound_menu_set_volume(value):
+        """Implementations should override this function
+        to set the volume level to _value_
+        """
         pass
 
     @dbus.service.signal(dbus.PROPERTIES_IFACE, signature='sa{sv}as')
@@ -443,3 +540,8 @@ class SoundMenuControls(dbus.service.Object):
         """
 
         pass
+    
+    def properties_changed(self, *args):
+        props = {prop: self.get_property(prop) for prop in args}
+        d = dbus.Dictionary(props, "sv", variant_level=1)
+        self.PropertiesChanged("org.mpris.MediaPlayer2.Player", d, [])
