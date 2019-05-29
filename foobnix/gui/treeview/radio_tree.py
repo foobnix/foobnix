@@ -135,8 +135,7 @@ class RadioTreeControl(CommonTreeControl):
             parent = FModel(fpl.name).add_is_file(False)
             self.append(parent)
             keys = fpl.urls_dict.keys()
-            keys.sort()
-            for radio in keys:
+            for radio in sorted(keys):
                 child = FModel(radio, fpl.urls_dict[radio][0]).parent(parent).add_type(FTYPE_RADIO).add_is_file(True)
                 self.append(child)
 
