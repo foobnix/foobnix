@@ -166,7 +166,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave, Quitable):
         number_of_tabs = self.get_n_pages()
         if number_of_tabs > 0:
             min = 1 if self.navig else 0
-            for page in xrange(number_of_tabs - 1, min, -1):
+            for page in range(number_of_tabs - 1, min, -1):
                 tab = self.get_nth_page(page)
                 self.rename_tab(tab, tab.get_child().full_name)
 
@@ -358,7 +358,7 @@ class NoteTabControl(TabGeneral):
         self.set_tab_pos(Gtk.POS_LEFT)
         self.default_angle = 90
         self.set_show_tabs(True)
-        for page in xrange(self.get_n_pages() - 1, -1, -1):
+        for page in range(self.get_n_pages() - 1, -1, -1):
             tab = self.get_nth_page(page)
             vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
             label = tab.get_child().label
@@ -380,7 +380,7 @@ class NoteTabControl(TabGeneral):
         self.set_tab_pos(Gtk.PositionType.TOP)
         self.default_angle = 0
         self.set_show_tabs(True)
-        for page in xrange(self.get_n_pages() - 1, -1, -1):
+        for page in range(self.get_n_pages() - 1, -1, -1):
             tab = self.get_nth_page(page)
             hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
             label = tab.get_child().label
@@ -431,7 +431,7 @@ class NoteTabControl(TabGeneral):
         else:
             self.set_tab_top()
 
-        for page in xrange(len(FCache().cache_pl_tab_contents)-1, -1, -1):
+        for page in range(len(FCache().cache_pl_tab_contents)-1, -1, -1):
             if not FCache().cache_pl_tab_contents[page]:
                 self._append_tab(FCache().tab_pl_names[page])
                 continue
@@ -441,10 +441,10 @@ class NoteTabControl(TabGeneral):
 
             for row in FCache().cache_pl_tab_contents[page]:
                 if model_len > cache_len:
-                    for i in xrange(abs(model_len - cache_len)):
+                    for i in range(abs(model_len - cache_len)):
                         row.append((None, None))
                 elif model_len < cache_len:
-                    for i in xrange(abs(model_len - cache_len)):
+                    for i in range(abs(model_len - cache_len)):
                         del row[-1]
 
                 self.get_current_tree().model.append(None, row)
@@ -460,7 +460,7 @@ class NoteTabControl(TabGeneral):
         FCache().cache_pl_tab_contents = []
         FCache().tab_pl_names = []
         if number_music_tabs > 0:
-            for tab_number in xrange(self.get_n_pages()):
+            for tab_number in range(self.get_n_pages()):
                 self.save_nth_tab(tab_number)
 
     def save_nth_tab(self, tab_number):

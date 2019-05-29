@@ -21,6 +21,6 @@ Mozilla/4.0 (compatible; MSIE 6.1; Windows XP)
 
 def get_ranmom_agent():
     agents = None
-    for i in xrange(10):
+    for i in range(10):
         agents = all_agents.replace(str(i), str(random.randint(0, 10)))
     return agents.splitlines()[random.randint(1, 10)]

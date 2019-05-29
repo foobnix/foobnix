@@ -141,7 +141,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def get_row_from_model_iter(self, model, iter):
         attributes = []
         size = len(FTreeModel().__dict__)
-        for i in xrange(size):
+        for i in range(size):
             value = model.get_value(iter, i)
             attributes.append(value)
         return attributes
@@ -170,7 +170,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 str_path = self.model.get_string_from_iter(iter)
                 row = self.get_row_from_iter(self.model, iter)
                 dict[tuple([int(i) for i in str_path.split(':')])] = row
-                for n in xrange(self.model.iter_n_children(iter)):
+                for n in range(self.model.iter_n_children(iter)):
                     child_iter = self.model.iter_nth_child(iter, n)
                     if child_iter:
                         task(child_iter)
@@ -411,7 +411,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
         results = []
 
-        for i in xrange(n):#@UnusedVariable
+        for i in range(n):#@UnusedVariable
             path = model.get_path(iterch)
             bean = self._get_bean_by_path(path)
             results.append(bean)

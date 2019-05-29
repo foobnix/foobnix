@@ -212,7 +212,7 @@ class BaseFoobnixControls():
     def load_music_tree(self):
         tabs = len(FCache().cache_music_tree_beans)
         tabhelper = self.perspectives.get_perspective('fs').get_tabhelper()
-        for tab in xrange(tabs - 1, -1, -1):
+        for tab in range(tabs - 1, -1, -1):
             tabhelper._append_tab(FCache().tab_names[tab], rows=FCache().cache_music_tree_beans[tab])
 
             if not FCache().cache_music_tree_beans[tab]:
@@ -224,7 +224,7 @@ class BaseFoobnixControls():
 
         if FC().update_tree_on_start:
             def cycle():
-                for n in xrange(len(FCache().music_paths)):
+                for n in range(len(FCache().music_paths)):
                     tab_child = tabhelper.get_nth_page(n)
                     tree = tab_child.get_child()
                     self.update_music_tree(tree, n)

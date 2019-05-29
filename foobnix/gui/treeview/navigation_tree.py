@@ -310,7 +310,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         if not on_start:
             FC().show_full_filename = not FC().show_full_filename
             tabhelper = self.controls.perspectives.get_perspective('fs').get_tabhelper()
-            for page in xrange(tabhelper.get_n_pages()):
+            for page in range(tabhelper.get_n_pages()):
                 tab_content = tabhelper.get_nth_page(page)
                 tree = tab_content.get_child()
                 task(tree)

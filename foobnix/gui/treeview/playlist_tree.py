@@ -297,7 +297,7 @@ class PlaylistTreeControl(CommonTreeControl):
     def on_toggled_num(self, *a):
         FC().numbering_by_order = not FC().numbering_by_order
         number_music_tabs = self.controls.notetabs.get_n_pages() - 1
-        for page in xrange(number_music_tabs, -1, -1):
+        for page in range(number_music_tabs, -1, -1):
             tab_content = self.controls.notetabs.get_nth_page(page)
             pl_tree = tab_content.get_child()
             if FC().numbering_by_order:
@@ -322,7 +322,7 @@ class PlaylistTreeControl(CommonTreeControl):
                 atr_name = key
                 break
 
-        for page in xrange(number_music_tabs, -1, -1):
+        for page in range(number_music_tabs, -1, -1):
             tab_content = self.controls.notetabs.get_nth_page(page)
             pl_tree = tab_content.get_child()
             ## TODO: check "local variable 'atr_name' might be referenced before assignment"
@@ -388,7 +388,7 @@ class PlaylistTreeControl(CommonTreeControl):
             if column.get_width() > 1:  # to avoid recording of zero width in config
                 FC().columns[column.key][2] = column.get_width()
 
-        for page in xrange(number_music_tabs, 0, -1):
+        for page in range(number_music_tabs, 0, -1):
             tab_content = self.controls.notetabs.get_nth_page(page)
             pl_tree = tab_content.get_child()
             col_list = pl_tree.get_columns()

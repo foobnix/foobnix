@@ -103,7 +103,7 @@ class CueReader():
         duration_tracks = []
         tracks = self.cue_file.tracks
 
-        for i in xrange(len(tracks)):
+        for i in range(len(tracks)):
             track = tracks[i]
             full_duration = self.get_full_duration(track.path)
             if full_duration:

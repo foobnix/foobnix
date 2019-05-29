@@ -320,7 +320,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         logging.debug("current state in thread: " + str(self.get_state()))
 
         attemps = 5
-        for i in xrange(attemps):
+        for i in range(attemps):
             if thread_id == self.play_thread_id and i < attemps:
                 time.sleep(0.2)
                 duration_int = self.get_duration_seek_ns()

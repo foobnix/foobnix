@@ -48,7 +48,7 @@ class FTreeModel(object):
 
     def types(self):
         types = []
-        for i in xrange(0, len(self.__dict__)):
+        for i in range(0, len(self.__dict__)):
             for j in self.__dict__:
                 id = self.__dict__[j][0]
                 type = self.__dict__[j][1]

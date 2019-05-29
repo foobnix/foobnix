@@ -40,7 +40,7 @@ def smart_splitter(input, max_len):
     separators = (" " , "-" , "," , "/" , "_", "\n")
     result = []
     buffer = ""
-    for i in xrange(len(input)):
+    for i in range(len(input)):
         char = input[i]
         buffer += char
 
