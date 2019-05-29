@@ -82,7 +82,7 @@ class Dowloader(threading.Thread):
             return None
         
         bean.save_to = to_file        
-        with file(to_file_tmp, "wb") as tmp_file:
+        with open(to_file_tmp, "wb") as tmp_file:
             data = True
             
             """begin download"""
