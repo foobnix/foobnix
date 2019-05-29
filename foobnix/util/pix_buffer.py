@@ -29,7 +29,7 @@ def create_pixbuf_from_path(path, size):
         return None
     try:
         pixbuf = GdkPixbuf.Pixbuf.new_from_file(path) #@UndefinedVariable
-    except Exception, e:
+    except Exception as e:
         logging.error(e)
         return None
 

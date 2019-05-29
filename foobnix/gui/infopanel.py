@@ -181,7 +181,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
                 if self.controls.coverlyrics.get_property("visible"):
                     try:
                         self.show_similar_lyrics(bean)
-                    except Exception, e:
+                    except Exception as e:
                         logging.error("Can't get lyrics. " + type(e).__name__ + ": " + e.message)
                 if self.info_cache.active_method:
                     self.info_cache.active_method()

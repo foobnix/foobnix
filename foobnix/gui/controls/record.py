@@ -48,7 +48,7 @@ class RadioRecord(Gtk.ToggleButton):
             def func(filename, folder):
                 try:
                     shutil.move(temp_file, os.path.join(folder, filename))
-                except IOError, e:
+                except IOError as e:
                     logging.error(e)
 
             FileSavingDialog(_("Save file as ..."), func, args=None,

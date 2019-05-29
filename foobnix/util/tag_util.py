@@ -175,7 +175,7 @@ class TagEditor(ChildTopWindow):
             if not audio:
                 try:
                     audio.add_tags(ID3=EasyID3)
-                except Exception, e:
+                except Exception as e:
                     logging.error(e)
 
             self.decoding_cp866(audio)
@@ -199,7 +199,7 @@ class TagEditor(ChildTopWindow):
                     tag_entry.set_text('')
             except AttributeError:
                 logging.warn('Can\'t get tags. This is not audio file')
-            except TypeError, e:
+            except TypeError as e:
                 if isinstance(self.audious[0][tag_name][0], tuple):
                     tag_entry.set_text(str(self.audious[0][tag_name][0]).strip('()'))
                 else:

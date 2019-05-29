@@ -29,7 +29,7 @@ class Dowloader(threading.Thread):
     def run(self):
         try:
             self.download()
-        except Exception, e:
+        except Exception as e:
             self.bean.status = DOWNLOAD_STATUS_INACTIVE
             self.update(self.bean)
             logging.error(e)

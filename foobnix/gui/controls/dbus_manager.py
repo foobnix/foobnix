@@ -30,7 +30,7 @@ class DBusManager():
         try:
             self.sound_menu = MprisSoundMenu(controls)
             self.player = MprisPlayer(controls)
-        except Exception, e:
+        except Exception as e:
             self.sound_menu = None
             logging.error("DBUS Initialization Error " + str(e))
 
@@ -288,6 +288,6 @@ def foobnix_dbus_interface():
             return None
         else:
             return dbus.Interface(bus.get_object(DBUS_NAME, MPRIS_PLAYER_PATH), DBUS_MEDIAPLAYER_INTERFACE)
-    except Exception, e:
+    except Exception as e:
         logging.error("Dbus error", e)
         return None

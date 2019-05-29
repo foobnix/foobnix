@@ -57,7 +57,7 @@ class NetWrapper():
             if FC().proxy_enable and FC().proxy_url:
                 try:
                     self.ping_with_proxy()
-                except Exception, e:
+                except Exception as e:
                     logging.error(str(e))
                 return
             s = socket.socket()
@@ -72,7 +72,7 @@ class NetWrapper():
                 if self.is_ping:
                     logging.info("Success Internet connection")
                 self.counter = 0
-            except Exception, e:
+            except Exception as e:
 
                 self.is_connected = False
                 if self.is_ping:
@@ -122,7 +122,7 @@ class NetWrapper():
                 if self.is_ping:
                     logging.info("Success Internet connection")
                 self.counter = 0
-            except Exception, e:
+            except Exception as e:
                 s.close()
                 self.is_connected = False
                 if self.is_ping:

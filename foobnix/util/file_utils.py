@@ -66,7 +66,7 @@ def rename_file_on_disk(row, index_path, index_text):
             os.rename(path, new_path)
             row[index_path] = new_path
             row[index_text] = os.path.basename(new_path)
-        except IOError, e:
+        except IOError as e:
             logging.error(e)
         dialog.destroy()
         return True
@@ -103,7 +103,7 @@ def delete_files_from_disk(row_refs, paths, get_iter_from_row_reference):
                 else:
                     del_dir(path)
                 model.remove(get_iter_from_row_reference(row_ref))
-            except Exception, e:
+            except Exception as e:
                 logging.error(str(e))
                 continue
         dialog.destroy()
@@ -168,7 +168,7 @@ def create_folder_dialog(path):
                 full_path = os.path.join(dirname, folder_name)
                 try:
                     os.mkdir(full_path)
-                except OSError, e:
+                except OSError as e:
                     logging.error(e)
                     if str(e).startswith("[Errno 17]"):
                         er_message = _("So folder already exists")
@@ -313,7 +313,7 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
     """
     try:
         names = os.listdir(src)
-    except OSError, why:
+    except OSError as why:
         logging.error(why)
     if ignore is not None:
         ignored_names = ignore(src, names)
@@ -341,7 +341,7 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
                 copy_move_one_file(srcname, subfolder)
 
                 # XXX What about devices, sockets etc.?
-        except (IOError, os.error), why:
+        except (IOError, os.error) as why:
             errors.append((srcname, dstname, str(why)))
         # catch the Error from the recursive copytree so that we can
         # continue with other files
@@ -350,7 +350,7 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
     else:
         try:
             shutil.copystat(src, dst_folder)
-        except OSError, why:
+        except OSError as why:
             errors.extend((src, dst_folder, str(why)))
 
 def copy_to(old_paths):

@@ -44,7 +44,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
             from gi.repository import Keybinder #@UnresolvedImport @UnusedImport
             from foobnix.preferences.configs.hotkey_conf import HotKeysConfig
             self.configs.append(HotKeysConfig(controls))
-        except Exception, e:
+        except Exception as e:
             logging.warn("Keybinder not installed" + str(e))
 
         self.configs.append(OtherConfig(controls))

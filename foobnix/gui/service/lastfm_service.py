@@ -185,7 +185,7 @@ class LastFmService():
                     bean.artist, bean.title = bean.artist, bean.title
                     self.get_scrobbler().report_now_playing(bean.artist, bean.title)
                     logging.debug("notify %s %s" % (bean.artist, bean.title))
-                except Exception, e:
+                except Exception as e:
                     logging.error(str(e) + "Error reporting now playing last.fm" + str(bean.artist) + str(bean.title))
             else:
                 logging.debug("Bean title or artist not defined")
@@ -208,7 +208,7 @@ class LastFmService():
                         bean.album = bean.album.encode("utf-8")
                     self.get_scrobbler().scrobble(bean.artist, bean.title, start_time, "P", "", int(duration_sec), bean.album or "")
                     logging.debug("Song Scrobbled " + str(bean.artist) + " " + str(bean.title) + " " + str(start_time) + " P: " + str(int(duration_sec)))
-                except Exception, e:
+                except Exception as e:
                     logging.error(str(e) + "Error reporting now playing last.fm " + str(bean.artist) + " " + str(bean.title) + " A: " + str(bean.album))
             else:
                 logging.debug("Bean title or artist not defined")

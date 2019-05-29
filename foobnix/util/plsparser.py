@@ -47,7 +47,7 @@ def getStationPath(url):
         connect = urllib2.urlopen(url, timeout=7)
         data = connect.read()
         urls = getStations(data, urls)
-    except Exception, e:
+    except Exception as e:
         logging.error("INCORRECT URL ERROR .... " + url + str(e))
     if urls:
         return urls[0]

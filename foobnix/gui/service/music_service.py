@@ -159,7 +159,7 @@ def is_dir_with_music(path):
     list = None
     try:
         list = os.listdir(path)
-    except OSError, e:
+    except OSError as e:
         logging.info("Can't get list of dir"+ str(e))
 
     if not list:

@@ -42,7 +42,7 @@ class SingleThread():
                 method(args)
             elif method:
                 method()
-        except Exception, e:
+        except Exception as e:
             logging.error(str(e))
             exc_type, exc_value, exc_traceback = sys.exc_info()
             traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stdout)

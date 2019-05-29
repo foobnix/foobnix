@@ -104,7 +104,7 @@ class TrayIconControls(Gtk.StatusIcon, ImageBase, FControl, LoadSave):
             self.connect("query-tooltip", self.on_query_tooltip)
             self.connect("button-press-event", self.on_button_press)
             self.connect("scroll-event", self.on_scroll)
-        except Exception, e:
+        except Exception as e:
             logging.warn("Tooltip doesn't work " + str(e))
 
         self.current_bean = FModel().add_artist("Artist").add_title("Title")

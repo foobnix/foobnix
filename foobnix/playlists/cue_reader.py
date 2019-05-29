@@ -93,7 +93,7 @@ class CueReader():
     def get_full_duration (self, file):
         try:
             audio = get_mutagen_audio(file)
-        except Exception, e:
+        except Exception as e:
             logging.warn(str(e) + " " + file)
             return
 
@@ -147,7 +147,7 @@ class CueReader():
             bean.is_file = True
             try:
                 bean.info = foobnix.util.id3_util.normalized_info(get_mutagen_audio(track.path).info, bean)
-            except Exception, e:
+            except Exception as e:
                 logging.warn(str(e) + " " + bean.path)
                 bean.info = ""
 

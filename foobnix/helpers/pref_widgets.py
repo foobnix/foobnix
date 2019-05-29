@@ -106,7 +106,7 @@ class IconBlock(Gtk.Box):
                 label = Gtk.Label.new("You can not remove a standard icon")
                 error_window.add(label)
                 error_window.show()
-        except ValueError, e:
+        except ValueError as e:
             logging.error("There is not such icon in the list" + str(e))
 
 class FrameDecorator(Gtk.Frame):

@@ -42,7 +42,7 @@ def update_id3_for_beans(beans):
         if get_file_extension(bean.text) in FC().audio_formats:
             try:
                 update_id3(bean)
-            except Exception, e:
+            except Exception as e:
                 logging.warn("update id3 error - % s" % e)
         if bean.text:
             if (bean.text[0] == "/") or (len(bean.text)>1 and bean.text[1] == ":"):
@@ -54,7 +54,7 @@ def update_id3(bean):
     if bean and bean.path and os.path.isfile(bean.path):
         try:
             audio = get_mutagen_audio(bean.path)
-        except Exception, e:
+        except Exception as e:
             logging.warn("ID3 NOT FOUND IN " + str(e) + " " + bean.path)
             return bean
         if audio:
@@ -199,7 +199,7 @@ def set_cover_from_tags(bean):
                 cache_dict[basename] = [bean.text]
             return filename
 
-    except Exception, e:
+    except Exception as e:
         pass
     return None
 

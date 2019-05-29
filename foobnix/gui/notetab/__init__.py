@@ -258,7 +258,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave, Quitable):
                     self.save_lock.release()
         try:
             threading.Thread(target=task, args=()).start()
-        except Exception, e:
+        except Exception as e:
             logging.error("Exception: "  + str(e))
 
 TARGET_TYPE_URI_LIST = 80
@@ -493,7 +493,7 @@ class NoteTabControl(TabGeneral):
                     self.save_lock.release()
         try:
             threading.Thread(target=task, args=()).start()
-        except Exception, e:
+        except Exception as e:
             logging.error("Exception: "  + str(e))
 
     def on_quit(self):

@@ -299,7 +299,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         try:
             position = self.player.query_position(Gst.Format(Gst.Format.TIME))
             return position[1]
-        except Exception, e:
+        except Exception as e:
             logging.warn("GET query_position: " + str(e))
             return - 1
 
@@ -307,7 +307,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         try:
             position = self.player.query_duration(Gst.Format(Gst.Format.TIME))
             return position[1]
-        except Exception, e:
+        except Exception as e:
             logging.warn("GET query_duration: " + str(e))
             return - 1
 
@@ -358,7 +358,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
                     self.notify_playing(position_int, duration_int)
 
                 time.sleep(0.1)
-            except Exception, e:
+            except Exception as e:
                 logging.info("Playing thread error... " + str(e))
 
             time.sleep(0.05)

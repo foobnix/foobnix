@@ -150,7 +150,7 @@ class RadioTreeControl(CommonTreeControl):
                     depth = self.simbol_counter(line, '-')
                     try:
                         name = line[depth : line.index('#')]
-                    except ValueError, e:
+                    except ValueError as e:
                         logging.warning('\'#\' ' + str(e) + ' in line \"' + line + '\"')
                         continue
                     url = line[line.index('#') + 1 : -1]

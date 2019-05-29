@@ -139,7 +139,7 @@ class NetworkConfig(ConfigPlugin):
             f = urllib2.urlopen(self.vk_test.get_text())
             f.read()
             f.close()
-        except Exception, e:
+        except Exception as e:
             logging.error(e)
             self.result.set_text(str(e))
             return None

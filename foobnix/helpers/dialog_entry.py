@@ -305,7 +305,7 @@ class FileSavingDialog(Gtk.FileChooserDialog):
                 try:
                     if args: func(filename, folder, args)
                     else: func(filename, folder)
-                except IOError, e:
+                except IOError as e:
                         logging.error(e)
         elif response == Gtk.ResponseType.CANCEL:
             logging.info('Closed, no files selected')
