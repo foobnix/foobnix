@@ -7,7 +7,7 @@ Created on 27 сент. 2010
 
 import sys
 import time
-import thread
+import threading
 import logging
 import traceback
 
@@ -32,7 +32,7 @@ class SingleThread():
         if self.lock.acquire(False):
             if self.spinner:
                 self.spinner.start(text)
-            thread.start_new_thread(self._thread_task, (method, args,))
+            threading.Thread(target = self._thread_task, args = (method, args,)).start()
         else:
             logging.warning("Previous thread not finished " + str(method) + " " + str(args))
 

@@ -9,7 +9,7 @@ Created on 25 сент. 2010
 import logging
 import os
 import re
-import thread
+import threading
 
 from gi.repository import GLib
 from gi.repository import Gtk
@@ -221,7 +221,7 @@ class PlaylistTreeControl(CommonTreeControl):
         #rows = self.playlist_filter(rows)
         for row in rows:
             self.model.append(None, row)
-        thread.start_new_thread(self.safe_fill_treerows, ())
+        threading.Thread(target = self.safe_fill_treerows).start()
 
     def is_empty(self):
         return True if not self.model.get_iter_first() else False
@@ -572,7 +572,7 @@ class PlaylistTreeControl(CommonTreeControl):
                         model.append(None, row)
 
 
-        thread.start_new_thread(self.safe_fill_treerows, ())
+        threading.Thread(target = self.safe_fill_treerows).start()
 
         context.finish(True, False, timestamp)
         self.stop_emission('drag-data-received')

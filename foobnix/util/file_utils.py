@@ -9,7 +9,6 @@ from gi.repository import Gtk
 import sys
 import urllib
 import shutil
-import thread
 import logging
 import threading
 
@@ -277,7 +276,7 @@ def copy_move_with_progressbar(pr_window, src, dst_folder, move=False, symlinks=
             except threading.ThreadError:
                 m.terminate()
                 os.remove(os.path.join(dst_folder, os.path.basename(src)))
-        thread.start_new_thread(task, ())
+        threading.Thread(target = task, args = ()).start()
         if m.is_alive():
             m.join()
         return

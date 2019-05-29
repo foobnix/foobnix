@@ -1,5 +1,5 @@
 from gi.repository import Gtk
-import thread
+import threading
 import logging
 
 from foobnix.util.key_utils import is_key_enter
@@ -38,7 +38,7 @@ class SearchControls(FControl, Gtk.Box):
         self.search_function = search_function
 
     def on_search(self, *w):
-        thread.start_new_thread(self._on_search, ())
+        threading.Thread(target = self._on_search, args = ()).start()
         #Otherwise you can't call authorization window,
         #it can be called only from not main loop
 

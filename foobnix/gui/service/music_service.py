@@ -26,7 +26,7 @@ def get_all_music_by_paths(paths, controls):
             time.sleep(0.5)
             GObject.idle_add(pr_window.update_window)
 
-    thread.start_new_thread(task, ())'''
+    threading.Thread(target = task, args = ()).start()'''
     result = []
     for path in paths:
         if path == "/":

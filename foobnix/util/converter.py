@@ -9,7 +9,7 @@ from __future__ import with_statement
 
 import os
 import re
-import thread
+import threading
 import logging
 
 from gi.repository import Gtk
@@ -163,7 +163,7 @@ class Converter(ChildTopWindow):
                 self.stop_button.hide()
                 self.open_folder_button.show()
                 self.button_box.show_all()
-            thread.start_new_thread(task, ())
+            threading.Thread(target = task, args = ()).start()
         chooser.destroy()
 
     def convert(self, path, new_path, format):
@@ -393,6 +393,6 @@ def convert_files(paths):
                 GLib.idle_add(convert_files, paths)
                 dialog.destroy()
 
-            thread.start_new_thread(task, ())
+            threading.Thread(target = task, args =  ()).start()
         else:
             dialog.destroy()

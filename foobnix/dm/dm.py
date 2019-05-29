@@ -7,7 +7,6 @@ Created on Oct 26, 2010
 from gi.repository import Gtk
 from gi.repository import Notify
 import time
-import thread
 import logging
 import threading
 
@@ -76,7 +75,7 @@ class DM(ChildTopWindow):
         vbox.pack_start(self.dm_list.scroll, True, True, 0)
 
         self.add(vbox)
-        thread.start_new_thread(self.dowloader, (self.dm_list,))
+        threading.Thread(target = self.dowloader, args = (self.dm_list,)).start()
 
     def demo_tasks(self):
         self.append_task(FModel("Madonna - Sorry"))

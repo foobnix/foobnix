@@ -22,7 +22,7 @@ if not os.path.exists(CACHE_DIR):
 class FCStates:
     def save(self, fc, file):
         #if in_thread:
-        #    thread.start_new_thread(FCHelper().save, (fc,))
+        #    threading.Thread(target = FCHelper().save, args = (fc,)).start()
         #else:
         FCHelper().save(fc, file)
 

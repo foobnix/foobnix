@@ -8,7 +8,6 @@ Created on Jan 25, 2011
 from gi.repository import Gtk
 import logging
 import os.path
-import thread
 
 from foobnix.util.id3_util import correct_encoding
 from foobnix.util.audio import get_mutagen_audio

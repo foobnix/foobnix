@@ -7,7 +7,7 @@ Created on 28 сент. 2010
 
 import os
 import time
-import thread
+import threading
 import logging
 
 import gi
@@ -272,7 +272,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
 
         logging.debug(
             "current state before thread " + str(self.get_state()) + " thread_id: " + str(self.play_thread_id))
-        self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
+        self.play_thread_id = threading.Thread(target = self.playing_thread, args = ()).start()
         self.pause_thread_id = False
 
     def wait_for_seek(self):

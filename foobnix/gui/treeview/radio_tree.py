@@ -8,7 +8,7 @@ from __future__ import with_statement
 
 import logging
 import os.path
-import thread
+import threading
 
 from gi.repository import Gtk
 
@@ -186,7 +186,7 @@ class RadioTreeControl(CommonTreeControl):
             else:
                 self.update_radio_tree()
             self.is_radio_populated = True
-        thread.start_new_thread(task, ())
+        threading.Thread(target = task, args = ()).start()
 
     def on_quit(self):
         self.save_rows_from_tree(FCache().cache_radio_tree_beans)

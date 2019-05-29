@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-import thread
+import threading
 import logging
 from gi.repository import Gtk
 from gi.repository import GLib
@@ -155,7 +155,7 @@ class PreferencesWindow(ChildTopWindow, FControl, LoadSave):
         logging.debug("restore defaults settings")
         Gtk.main_quit()
         FC().delete()
-        thread.start_new_thread(os.system, ("foobnix",))
+        threading.Thread(target = os.system, args = ("foobnix",)).start()
 
 
     def update_label(self, title):

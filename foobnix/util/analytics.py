@@ -8,7 +8,7 @@ import urllib
 import urllib2
 import logging
 import platform
-import thread
+import threading
 
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.fc.fc_base import FCBase
@@ -40,8 +40,7 @@ def send(d={"t":"appview"}):
 
     #logging.debug("analytics params: "+str(params));
     enq = urllib.urlencode(params)
-    thread.start_new_thread(urllib2.urlopen, (api_url, enq))
-    #threading.Thread(target=urllib2.urlopen, args=(api_url, enq))
+    threading.Thread(target=urllib2.urlopen, args=(api_url, enq)).start()
     
 
 """ User Open or user Some Feature"""

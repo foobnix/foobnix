@@ -1,7 +1,7 @@
 
 __author__ = 'popsul'
 
-import thread
+import threading
 from gi.repository import Gtk
 from foobnix.gui.state import Filterable
 from foobnix.gui.perspectives import BasePerspective
@@ -17,7 +17,7 @@ class VKPerspective(BasePerspective, Filterable):
         self.connect("activated", self.on_activated)
 
     def on_activated(self, perspective):
-        thread.start_new_thread(self.widget.lazy_load, ())
+        threading.Thread(target = self.widget.lazy_load, args = ()).start()
 
     def get_id(self):
         return "vk"

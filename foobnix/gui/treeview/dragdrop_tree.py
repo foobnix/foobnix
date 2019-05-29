@@ -9,7 +9,6 @@ from gi.repository import GLib
 from gi.repository import Gtk
 
 import copy
-import thread
 import logging
 import os.path
 import threading
@@ -99,7 +98,7 @@ class DragDropTree(Gtk.TreeView):
                 row = self.get_row_from_bean(bean)
                 self.model.append(None, row)
             if "PlaylistTreeControl" in str(self):
-                thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
+                threading.Thread(target = self.controls.notetabs.on_save_tabs, args = ()).start()
         else:
             self.tree_append_all(beans)
 
@@ -249,7 +248,7 @@ class DragDropTree(Gtk.TreeView):
             self._plain_append_all(beans, parent)
         finally:
             if "PlaylistTreeControl" in str(self):
-                thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
+                threading.Thread(target = self.controls.notetabs.on_save_tabs, args = ()).start()
 
     def _plain_append_all(self, beans, parent=None):
         logging.debug("begin plain append all")

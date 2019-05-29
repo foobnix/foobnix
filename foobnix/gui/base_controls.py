@@ -9,7 +9,7 @@ import copy
 import gi
 import os
 import logging
-import thread
+import threading
 import time
 
 gi.require_version('Notify', '0.7')
@@ -399,7 +399,7 @@ class BaseFoobnixControls():
 
         self.main_window.set_title(bean.text)
 
-        thread.start_new_thread(self._one_thread_play, (bean,))
+        threading.Thread(target = self._one_thread_play, args = (bean,)).start()
 
     def _one_thread_play(self, bean):
         try:

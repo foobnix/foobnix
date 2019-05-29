@@ -6,7 +6,7 @@ Created on 27 сент. 2010
 '''
 
 import time
-import thread
+import threading
 import logging
 import datetime
 
@@ -78,7 +78,7 @@ class LastFmService():
         self.scrobbler = None
         self.preferences_window = None
         self.controls = controls
-        thread.start_new_thread(self.init_thread, ())
+        threading.Thread(target = self.init_thread).start()
 
     def connect(self):
         if self.network and self.scrobbler:
@@ -190,7 +190,7 @@ class LastFmService():
             else:
                 logging.debug("Bean title or artist not defined")
 
-        thread.start_new_thread(task, (bean,))
+        threading.Thread(target = task, args = (bean,)).start()
 
     def report_scrobbled(self, bean, start_time, duration_sec):
         if not FC().enable_music_scrobbler:
@@ -213,7 +213,7 @@ class LastFmService():
             else:
                 logging.debug("Bean title or artist not defined")
 
-        thread.start_new_thread(task, (bean,))
+        threading.Thread(target = task, args = (bean,)).start()
 
     def connected(self):
         return self.network is not None
