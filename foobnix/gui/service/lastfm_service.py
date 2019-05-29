@@ -13,8 +13,8 @@ import datetime
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
 from foobnix.gui.model import FModel
-from foobnix.thirdparty.pylast import WSError, Tag
-from foobnix.thirdparty import pylast
+from pylast import WSError, Tag
+import pylast
 
 API_KEY = FCBase().API_KEY
 API_SECRET = FCBase().API_SECRET
