@@ -17,5 +17,5 @@ def compare_versions(v1, v2):
     
     
 if __name__ == '__main__':
-    print compare_versions("2.6.0","2.5.3")
+    print(compare_versions("2.6.0","2.5.3"))
     

@@ -29,4 +29,4 @@ def set_proxy_settings():
 if __name__ == '__main__':
     set_proxy_settings()
     res = urllib2.urlopen('https://mail.ru')
-    print res.read()
+    print(res.read())

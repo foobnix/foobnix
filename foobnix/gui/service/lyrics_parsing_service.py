@@ -100,4 +100,4 @@ def get_lyrics_by_parsing(artist, title):
 
 
 if __name__ == '__main__':
-    print get_lyrics_by_parsing("aBBA", " honey, Honey ")
+    print(get_lyrics_by_parsing("aBBA", " honey, Honey "))

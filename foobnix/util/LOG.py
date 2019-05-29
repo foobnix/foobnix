@@ -17,7 +17,7 @@ levels = {
 
 def fprint(msg):
     if with_print:
-        print msg
+        print(msg)
     else:
         logging.info(msg)
 
