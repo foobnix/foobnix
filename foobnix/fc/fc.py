@@ -11,7 +11,7 @@ from foobnix.util import const
 from foobnix.fc.fc_base import FCBase
 from foobnix.fc.fc_cache import FCache
 from foobnix.util.singleton import Singleton
-from foobnix.util.agent import get_ranmom_agent
+from foobnix.util.agent import get_random_agent
 from foobnix.fc.fc_helper import FCStates, CONFIG_DIR
 from foobnix.util.const import ICON_FOOBNIX, ICON_FOOBNIX_PLAY, \
     ICON_FOOBNIX_PAUSE, ICON_FOOBNIX_STOP, ICON_FOOBNIX_RADIO
@@ -74,7 +74,7 @@ class FC():
         self.nav_selected_tab = 0
         self.pl_selected_tab = 0
 
-        self.agent_line = get_ranmom_agent()
+        self.agent_line = get_random_agent()
 
         """main window controls"""
         self.main_window_size = [119, 154, 1024, 479]

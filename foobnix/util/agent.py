@@ -19,7 +19,7 @@ Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; SV1; .NET CLR 2.
 Mozilla/4.0 (compatible; MSIE 6.1; Windows XP)
 """
 
-def get_ranmom_agent():
+def get_random_agent():
     agents = None
     for i in range(10):
         agents = all_agents.replace(str(i), str(random.randint(0, 10)))
