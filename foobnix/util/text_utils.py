@@ -1,6 +1,6 @@
 import re
 import string
-import urllib
+import urllib.parse
 
 from foobnix.fc.fc import FC
 from foobnix.util.file_utils import get_file_extension
@@ -91,7 +91,7 @@ def split_string(str, length):
 def normalize_text(line):
     if not line:
         return ""
-    line = urllib.unquote(line)
+    line = urllib.parse.unquote(line)
     """find in extension"""
     for element in ("[", "(", "*","#"):
         index = line.find(element)

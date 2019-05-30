@@ -7,7 +7,7 @@ Created on Feb 26, 2010
 import os
 from gi.repository import Gtk
 import sys
-import urllib
+import urllib.request
 import shutil
 import logging
 import threading
@@ -225,7 +225,7 @@ def get_file_path_from_dnd_dropped_uri(uri):
         path = uri[7:]  # 7 is len('file://')
     elif uri.startswith('file:'):   # xffm
         path = uri[5:]  # 5 is len('file:')
-    path = urllib.url2pathname(path)    # escape special chars
+    path = urllib.request.url2pathname(path)    # escape special chars
     path = path.strip('\r\n\x00')   # remove \r\n and NULL
 
     return path

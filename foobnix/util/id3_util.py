@@ -7,7 +7,7 @@ Created on 24 нояб. 2010
 
 import os
 import logging
-import urllib
+import urllib.request
 
 from mutagen.id3 import ID3
 from mutagen.flac import FLAC
@@ -225,7 +225,7 @@ def get_image_for_bean(bean, controls):
             cache_name = "%s%s.%s" % (COVERS_DIR, crc32(image), ext)
             if os.path.exists(cache_name):
                 return cache_name
-            urllib.urlretrieve(image, cache_name)
+            urllib.request.urlretrieve(image, cache_name)
             return cache_name
         except:
             pass

@@ -11,7 +11,7 @@ import time
 import logging
 import threading
 from foobnix.fc.fc import FC
-from urllib import FancyURLopener
+from urllib.request import FancyURLopener
 from foobnix.util.time_utils import size2text
 from foobnix.util.file_utils import get_file_extension
 from foobnix.util.bean_utils import get_bean_download_path

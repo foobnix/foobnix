@@ -5,7 +5,8 @@ Created on Nov 27, 2012
 '''
 
 import urllib
-import urllib2
+import urllib.parse
+import urllib.request
 import logging
 import platform
 import threading
@@ -39,8 +40,8 @@ def send(d={"t":"appview"}):
     params.update(d)
 
     #logging.debug("analytics params: "+str(params));
-    enq = urllib.urlencode(params)
-    threading.Thread(target=urllib2.urlopen, args=(api_url, enq)).start()
+    enq = urllib.parse.urlencode(params).encode("utf-8")
+    threading.Thread(target=urllib.request.urlopen, args=(api_url, enq)).start()
     
 
 """ User Open or user Some Feature"""

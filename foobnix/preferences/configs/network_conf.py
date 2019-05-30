@@ -7,7 +7,7 @@ Created on 1 сент. 2010
 
 import time
 import logging
-import urllib2
+import urllib.request
 
 from gi.repository import Gtk
 
@@ -136,7 +136,7 @@ class NetworkConfig(ConfigPlugin):
         set_proxy_settings()
         init = time.time()
         try:
-            f = urllib2.urlopen(self.vk_test.get_text())
+            f = urllib.request.urlopen(self.vk_test.get_text())
             f.read()
             f.close()
         except Exception as e:

@@ -13,9 +13,9 @@ gi.require_version("WebKit", "3.0")
 
 import threading
 import time
-import urllib
+import urllib.parse
+import urllib.request
 import logging
-import urllib2
 import simplejson
 
 from gi.repository import Gtk
@@ -23,8 +23,7 @@ from gi.repository import GLib
 from gi.repository import WebKit
 from gi.repository import Soup
 
-from HTMLParser import HTMLParser
-from urlparse import urlparse
+import html
 from foobnix.fc.fc import FC, FCBase
 from foobnix.gui.model import FModel
 from foobnix.fc.fc_helper import CONFIG_DIR
@@ -96,7 +95,7 @@ class VKWebkitAuth(Gtk.Dialog, ChildTopWindow):
         return dict(split_key_value(kv_pair) for kv_pair in url.fragment.split("&"))
 
     def on_load(self, webview, frm, res):
-        url = urlparse(webview.get_property("uri"))
+        url = urllib.parse.urlparse(webview.get_property("uri"))
         if url.path == "/blank.html":
             answer = self.extract_answer(url)
             if "access_token" in answer and "user_id" in answer:
@@ -187,7 +186,7 @@ class VKService:
 
         logging.debug("Try to get response from vkontakte")
         try:
-            response = urllib2.urlopen(url, timeout=7)
+            response = urllib.request.urlopen(url, timeout=7)
             if "response" not in vars():
                 logging.error("Can't get response from vkontakte")
                 return
@@ -198,8 +197,7 @@ class VKService:
         return result
 
     def to_json(self, json):
-        p = HTMLParser()
-        json = p.unescape(json)
+        json = html.unescape(str(json))
         return simplejson.loads(json)
 
     def get_profile(self, without_auth=False):
@@ -207,7 +205,7 @@ class VKService:
 
     def find_tracks_by_query(self, query):
         logging.info("start search songs " + query)
-        query = urllib.quote(query.encode("utf-8"))
+        query = urllib.parse.quote(query.encode("utf-8"))
 
         list = self.get_result("audio.search", "q=" + query)
         childs = []
@@ -311,7 +309,7 @@ class VKService:
              #logging.debug("GET " + url)
              logging.debug("Try add audio to vkontakte")
              try:
-                 response = urllib2.urlopen(url, timeout=7)
+                 response = urllib.request.urlopen(url, timeout=7)
                  if "response" not in vars():
                      logging.error("Can't get response from vkontakte")
                      return

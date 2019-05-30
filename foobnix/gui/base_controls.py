@@ -18,7 +18,7 @@ from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import Notify
 from threading import Lock
-from urllib2 import urlopen
+from urllib.request import urlopen
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
@@ -728,9 +728,9 @@ class BaseFoobnixControls():
 
         try:
             from socket import gethostname
-            f = urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname()
-                        + "&version=" + current_version + "&platform=" + system, timeout=7)
-            #f = urllib2.urlopen("http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version)
+            url = "http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname() + "&version=" + current_version + "&platform=" + system
+            #url = "http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version
+            f = urlopen(url, timeout=7)
         except Exception as e:
             logging.error("Check version error: " + str(e))
             return None

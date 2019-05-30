@@ -11,6 +11,7 @@ import os
 import re
 import threading
 import logging
+import urllib.request
 
 from gi.repository import Gtk
 from gi.repository import GLib
@@ -357,8 +358,7 @@ def convert_files(paths):
         canceled = False
         if dialog.run() == Gtk.ResponseType.OK:
             prog_bar.show()
-            import urllib2
-            remote_file = urllib2.urlopen(url)
+            remote_file = urllib.request.urlopen(url)
             size = float(remote_file.info()['Content-Length'])
             ffmpeg_path = os.path.join(CONFIG_DIR, FFMPEG_NAME)
 

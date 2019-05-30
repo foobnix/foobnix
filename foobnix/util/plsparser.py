@@ -3,7 +3,7 @@ Created on Mar 3, 2010
 
 @author: ivan
 '''
-import urllib2
+import urllib.request
 import logging
 from foobnix.util import LOG
 
@@ -14,7 +14,7 @@ def get_content(url):
         return None
 
     try:       
-        connect = urllib2.urlopen(url, timeout=7)
+        connect = urllib.request.urlopen(url, timeout=7)
         data = connect.read()
         return data
     except:
@@ -26,7 +26,7 @@ def is_valid_station(url):
         return None
 
     try:       
-        connect = urllib2.urlopen(url, timeout=10)
+        connect = urllib.request.urlopen(url, timeout=10)
         if connect.getcode() == 200:
             return True
         else:
@@ -44,7 +44,7 @@ def getStationPath(url):
     _file_url = url
     urls = [] 
     try:       
-        connect = urllib2.urlopen(url, timeout=7)
+        connect = urllib.request.urlopen(url, timeout=7)
         data = connect.read()
         urls = getStations(data, urls)
     except Exception as e:
