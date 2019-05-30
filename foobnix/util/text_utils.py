@@ -27,7 +27,7 @@ def capitalize_string(src):
     if isinstance(src, str):
         src = unicode(src, "utf-8")
     line = src.strip()
-    word_capitalized = map(string.capitalize, line.split())
+    word_capitalized = map(str.capitalize, line.split())
     return ' '.join(word_capitalized)
 
 def smart_splitter(input, max_len):
