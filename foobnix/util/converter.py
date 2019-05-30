@@ -389,7 +389,7 @@ def convert_files(paths):
                             if os.path.isfile(ffmpeg_path) and os.path.getsize(ffmpeg_path) < size:
                                 os.remove(ffmpeg_path)
 
-                os.chmod(ffmpeg_path, 0777)
+                os.chmod(ffmpeg_path, 0o755)
                 GLib.idle_add(convert_files, paths)
                 dialog.destroy()
 
