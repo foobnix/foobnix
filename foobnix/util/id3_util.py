@@ -76,10 +76,8 @@ def update_id3(bean):
                     #if not FC().numbering_by_order:
                     bean.tracknumber = audio["tracknumber"][0]
 
-        duration_sec = bean.duration_sec
-
         if not bean.duration_sec and audio.info.length:
-            duration_sec = int(audio.info.length)
+            bean.duration_sec = int(audio.info.length)
 
         if audio.info.__dict__:
             bean.info = normalized_info(audio.info, bean)
@@ -100,7 +98,7 @@ def update_id3(bean):
                 bean.tracknumber = ""
         '''
         bean = update_bean_from_normalized_text(bean)
-        bean.time = convert_seconds_to_text(duration_sec)
+        bean.time = convert_seconds_to_text(bean.duration_sec)
 
     return bean
 
