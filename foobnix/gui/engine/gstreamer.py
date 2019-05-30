@@ -335,7 +335,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         if self.bean.duration_sec and self.bean.duration_sec > 0:
             duration_int = float(self.bean.duration_sec) * self.NANO_SECONDS
 
-        self.duration_sec = float(duration_int) / self.NANO_SECONDS
+            self.duration_sec = float(duration_int) / self.NANO_SECONDS
 
         logging.debug("current state before while " + str(self.get_state()))
 
