@@ -9,7 +9,7 @@ from foobnix.helpers.window import ChildTopWindow
 
 import os
 import gi
-gi.require_version("WebKit", "3.0")
+gi.require_version("WebKit2", "4.0")
 
 import threading
 import time
@@ -20,7 +20,7 @@ import simplejson
 
 from gi.repository import Gtk
 from gi.repository import GLib
-from gi.repository import WebKit
+from gi.repository import WebKit2
 from gi.repository import Soup
 
 import html
@@ -44,12 +44,12 @@ class VKWebkitAuth(Gtk.Dialog, ChildTopWindow):
         self.auth_url = "http://oauth.vk.com/oauth/authorize?" + \
                         "redirect_uri=http://oauth.vk.com/blank.html&response_type=token&" + \
                         "client_id=%s&scope=%s" % (self.CLIENT_ID, ",".join(self.SCOPE))
-        self.web_view = WebKit.WebView()
+        self.web_view = WebKit2.WebView()
 
         self.vbox.pack_start(self.web_view, False, False, 0)
 
         self.web_view.connect('resource-load-finished', self.on_load)
-        session = WebKit.get_default_session()
+        session = WebKit2.get_default_session()
         if FC().proxy_enable and FC().proxy_url:
             if FC().proxy_user and FC().proxy_password:
                 proxy_url = "http://%s:%s@%s" % (FC().proxy_user, FC().proxy_password, FC().proxy_url)
