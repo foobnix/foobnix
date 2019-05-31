@@ -73,7 +73,7 @@ class SearchControls(FControl, Gtk.Box):
         searchLable.set_markup("<b>%s</b>" % _("Online Search"))
 
         ##if Gtk.pygtk_version < (2, 22, 0):
-        ##    hbox.pack_start(self.controls.search_progress, False, False)
+        ##    hbox.pack_start(self.controls.search_progress, False, False, 0)
 
         hbox.pack_start(combobox, False, False, 0)
         hbox.pack_start(self.entry, True, True, 0)

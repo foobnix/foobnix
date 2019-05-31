@@ -67,8 +67,8 @@ class TagEditor(ChildTopWindow):
             vars()[tag_name + "_hbox"] = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
             self.hboxes.append(vars()[tag_name + "_hbox"])
 
-            self.hboxes[-1].pack_end(check_button, False, False)
-            self.hboxes[-1].pack_end(self.tag_entries[-1], True, True)
+            self.hboxes[-1].pack_end(check_button, False, False, 0)
+            self.hboxes[-1].pack_end(self.tag_entries[-1], True, True, 0)
 
 
         lvbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 7)
@@ -79,8 +79,8 @@ class TagEditor(ChildTopWindow):
         hpan = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL)
 
         for label, hbox in zip(self.labels, self.hboxes):
-            lvbox.pack_start(label)
-            rvbox.pack_start(hbox)
+            lvbox.pack_start(label, False, False, 0)
+            rvbox.pack_start(hbox, False, False, 0)
 
         hpan.pack1(lvbox)
         hpan.pack2(rvbox)
@@ -90,11 +90,11 @@ class TagEditor(ChildTopWindow):
 
         buttons_hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 10)
         buttons_hbox.set_homogeneous(True)
-        buttons_hbox.pack_start(apply_button)
-        buttons_hbox.pack_start(close_button)
+        buttons_hbox.pack_start(apply_button, False, False, 0)
+        buttons_hbox.pack_start(close_button, False, False, 0)
 
         vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 15)
-        vbox.pack_start(hpan)
+        vbox.pack_start(hpan, False, False, 0)
         vbox.pack_start(buttons_hbox, True, True, 10)
 
         apply_button.connect("clicked", self.save_audio_tags, self.paths)

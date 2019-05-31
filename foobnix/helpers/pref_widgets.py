@@ -49,7 +49,7 @@ class IconBlock(Gtk.Box):
             logging.warning("Icon " + filename + " is absent in list of icons")
 
         pix_render = Gtk.CellRendererPixbuf()
-        self.combobox.pack_start(pix_render, 0)
+        self.combobox.pack_start(pix_render, False)
         self.combobox.add_attribute(pix_render, 'pixbuf', 0)
 
         button_1 = ButtonIconText(_("Choose"), "folder-open")

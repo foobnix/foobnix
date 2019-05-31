@@ -71,7 +71,7 @@ class DM(ChildTopWindow):
         playback = DMControls(self.controls, self.dm_list)
 
         vbox.pack_start(playback, False, True, 0)
-        #vbox.pack_start(paned, True, True)
+        #vbox.pack_start(paned, True, True, 0)
         vbox.pack_start(self.dm_list.scroll, True, True, 0)
 
         self.add(vbox)
