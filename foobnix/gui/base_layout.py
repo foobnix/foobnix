@@ -43,7 +43,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         """ set application stylesheet"""
         self.style_provider = Gtk.CssProvider()
         ## TODO: after moving style to resource - replace to load_from_file
-        self.style_provider.load_from_data(foobnix_style)
+        self.style_provider.load_from_data(foobnix_style.encode("utf-8"))
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(),
             self.style_provider,
