@@ -7,7 +7,7 @@ Created on Sep 1, 2012
 import urllib.parse
 import urllib.request
 import logging
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 
 
 class LyricsFinder(HTMLParser):
