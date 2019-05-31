@@ -8,7 +8,7 @@ Created on 31 may 2011
 import time
 import base64
 import socket
-import thread
+import threading
 import logging
 
 from gi.repository import Gtk
@@ -47,7 +47,7 @@ class NetWrapper():
             logging.warning("You may not have more one ping process simultaneously")
             return
         self.flag = True
-        thread.start_new_thread(self.ping, ())
+        threading.Thread(target=self.ping).start()
 
     def stop_ping(self):
         self.flag = False
@@ -57,7 +57,7 @@ class NetWrapper():
             if FC().proxy_enable and FC().proxy_url:
                 try:
                     self.ping_with_proxy()
-                except Exception, e:
+                except Exception as e:
                     logging.error(str(e))
                 return
             s = socket.socket()
@@ -72,7 +72,7 @@ class NetWrapper():
                 if self.is_ping:
                     logging.info("Success Internet connection")
                 self.counter = 0
-            except Exception, e:
+            except Exception as e:
 
                 self.is_connected = False
                 if self.is_ping:
@@ -122,7 +122,7 @@ class NetWrapper():
                 if self.is_ping:
                     logging.info("Success Internet connection")
                 self.counter = 0
-            except Exception, e:
+            except Exception as e:
                 s.close()
                 self.is_connected = False
                 if self.is_ping:
@@ -169,7 +169,7 @@ class NetWrapper():
             #self.controls.vk_service = VKService(FC().access_token, FC().user_id)
             logging.info("Try to restore lastfm_service")
             self.controls.lastfm_service = LastFmService(self.controls)
-        thread.start_new_thread(task_restore_connection, ())
+        threading.Thread(target = task_restore_connection, args = ()).start()
 
 
     "wrapper for Internet function"

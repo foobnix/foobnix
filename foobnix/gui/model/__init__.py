@@ -23,8 +23,8 @@ class FTreeModel(object):
         self.year = 14 , str
         self.info = 15 , str
 
-        self.start_sec = 16 , str
-        self.duration_sec = 17 , str
+        self.start_sec = 16 , int
+        self.duration_sec = 17 , int
 
         self.UUID = 18 , str
         self.parent_level = 19 , str
@@ -48,7 +48,7 @@ class FTreeModel(object):
 
     def types(self):
         types = []
-        for i in xrange(0, len(self.__dict__)):
+        for i in range(0, len(self.__dict__)):
             for j in self.__dict__:
                 id = self.__dict__[j][0]
                 type = self.__dict__[j][1]

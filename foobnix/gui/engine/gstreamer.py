@@ -7,7 +7,7 @@ Created on 28 сент. 2010
 
 import os
 import time
-import thread
+import threading
 import logging
 
 import gi
@@ -272,7 +272,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
 
         logging.debug(
             "current state before thread " + str(self.get_state()) + " thread_id: " + str(self.play_thread_id))
-        self.play_thread_id = thread.start_new_thread(self.playing_thread, ())
+        self.play_thread_id = threading.Thread(target = self.playing_thread, args = ()).start()
         self.pause_thread_id = False
 
     def wait_for_seek(self):
@@ -299,7 +299,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         try:
             position = self.player.query_position(Gst.Format(Gst.Format.TIME))
             return position[1]
-        except Exception, e:
+        except Exception as e:
             logging.warn("GET query_position: " + str(e))
             return - 1
 
@@ -307,7 +307,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         try:
             position = self.player.query_duration(Gst.Format(Gst.Format.TIME))
             return position[1]
-        except Exception, e:
+        except Exception as e:
             logging.warn("GET query_duration: " + str(e))
             return - 1
 
@@ -320,7 +320,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         logging.debug("current state in thread: " + str(self.get_state()))
 
         attemps = 5
-        for i in xrange(attemps):
+        for i in range(attemps):
             if thread_id == self.play_thread_id and i < attemps:
                 time.sleep(0.2)
                 duration_int = self.get_duration_seek_ns()
@@ -335,7 +335,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         if self.bean.duration_sec and self.bean.duration_sec > 0:
             duration_int = float(self.bean.duration_sec) * self.NANO_SECONDS
 
-        self.duration_sec = float(duration_int) / self.NANO_SECONDS
+            self.duration_sec = float(duration_int) / self.NANO_SECONDS
 
         logging.debug("current state before while " + str(self.get_state()))
 
@@ -358,7 +358,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
                     self.notify_playing(position_int, duration_int)
 
                 time.sleep(0.1)
-            except Exception, e:
+            except Exception as e:
                 logging.info("Playing thread error... " + str(e))
 
             time.sleep(0.05)

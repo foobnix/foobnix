@@ -131,7 +131,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 setattr(bean, key, None)
 
             value = getattr(bean, key)
-            if type(value) in [int, float, long]:
+            if type(value) in [int, float]:
                 value = str(value)
             attributes.append(value)
 
@@ -141,7 +141,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def get_row_from_model_iter(self, model, iter):
         attributes = []
         size = len(FTreeModel().__dict__)
-        for i in xrange(size):
+        for i in range(size):
             value = model.get_value(iter, i)
             attributes.append(value)
         return attributes
@@ -170,7 +170,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
                 str_path = self.model.get_string_from_iter(iter)
                 row = self.get_row_from_iter(self.model, iter)
                 dict[tuple([int(i) for i in str_path.split(':')])] = row
-                for n in xrange(self.model.iter_n_children(iter)):
+                for n in range(self.model.iter_n_children(iter)):
                     child_iter = self.model.iter_nth_child(iter, n)
                     if child_iter:
                         task(child_iter)
@@ -411,7 +411,7 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
 
         results = []
 
-        for i in xrange(n):#@UnusedVariable
+        for i in range(n):#@UnusedVariable
             path = model.get_path(iterch)
             bean = self._get_bean_by_path(path)
             results.append(bean)
@@ -544,8 +544,8 @@ class MyTreeStore(Gtk.TreeStore):
             if isinstance(value, str):
                 value = str(value)
             elif sys.version_info < (3, 0):
-                if isinstance(value, unicode):
-                    value = value.encode('UTF-8')
+                if isinstance(value, str):
+                    value = value.encode('utf-8')
                 else:
                     raise ValueError('Expected string or unicode for column %i but got %s%s' % (column, value, type(value)))
             else:
@@ -558,23 +558,17 @@ class MyTreeStore(Gtk.TreeStore):
         elif type_ == GObject.TYPE_LONG or type_ == GObject.TYPE_INT:
             if isinstance(value, int):
                 value = int(value)
-            elif sys.version_info < (3, 0):
-                if isinstance(value, long):
-                    value = long(value)
-                else:
-                    try:
-                        value = long(value)
-                    except ValueError:
-                        raise ValueError('Expected an long for column %i but got %s' % (column, type(value)))
             else:
+                # FIXME FIXME FIXME
+                #logging.debug("Unexpected type %s when expecting %s for column %i" % (type(value), str(type_), column))
                 try:
-                    value = long(value)
+                    value = int(value)
                 except ValueError:
-                    raise ValueError('Expected an integer for column %i but got %s' % (column, type(value)))
+                    raise ValueError('Expected an int for column %i but got %s' % (column, type(value)))
         elif type_ == GObject.TYPE_BOOLEAN:
             cmp_classes = [int]
             if sys.version_info < (3, 0):
-                cmp_classes.append(long)
+                cmp_classes.append(int)
 
             if isinstance(value, tuple(cmp_classes)):
                 value = bool(value)
@@ -606,7 +600,7 @@ class MyTreeStore(Gtk.TreeStore):
                 value_container.set_uint(value)
                 value = value_container
             elif type_ == GObject.TYPE_ULONG:
-                value_container.set_ulong(value)
+                value_container.set_uint(value)
                 value = value_container
             elif type_ == GObject.TYPE_INT64:
                 value_container.set_int64(value)

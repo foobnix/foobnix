@@ -15,7 +15,7 @@ class PLSReader:
     def __init__(self, path):
         self.path = path
         try:
-            self.pls = open(unicode(path))
+            self.pls = open(path)
         except Exception as e:
             logging.error(str(e))
             self.pls = None

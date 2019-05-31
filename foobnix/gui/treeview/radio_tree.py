@@ -8,7 +8,7 @@ from __future__ import with_statement
 
 import logging
 import os.path
-import thread
+import threading
 
 from gi.repository import Gtk
 
@@ -135,8 +135,7 @@ class RadioTreeControl(CommonTreeControl):
             parent = FModel(fpl.name).add_is_file(False)
             self.append(parent)
             keys = fpl.urls_dict.keys()
-            keys.sort()
-            for radio in keys:
+            for radio in sorted(keys):
                 child = FModel(radio, fpl.urls_dict[radio][0]).parent(parent).add_type(FTYPE_RADIO).add_is_file(True)
                 self.append(child)
 
@@ -150,7 +149,7 @@ class RadioTreeControl(CommonTreeControl):
                     depth = self.simbol_counter(line, '-')
                     try:
                         name = line[depth : line.index('#')]
-                    except ValueError, e:
+                    except ValueError as e:
                         logging.warning('\'#\' ' + str(e) + ' in line \"' + line + '\"')
                         continue
                     url = line[line.index('#') + 1 : -1]
@@ -186,7 +185,7 @@ class RadioTreeControl(CommonTreeControl):
             else:
                 self.update_radio_tree()
             self.is_radio_populated = True
-        thread.start_new_thread(task, ())
+        threading.Thread(target = task, args = ()).start()
 
     def on_quit(self):
         self.save_rows_from_tree(FCache().cache_radio_tree_beans)

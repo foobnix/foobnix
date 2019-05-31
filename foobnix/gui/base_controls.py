@@ -9,7 +9,7 @@ import copy
 import gi
 import os
 import logging
-import thread
+import threading
 import time
 
 gi.require_version('Notify', '0.7')
@@ -18,7 +18,7 @@ from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import Notify
 from threading import Lock
-from urllib2 import urlopen
+from urllib.request import urlopen
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
@@ -212,7 +212,7 @@ class BaseFoobnixControls():
     def load_music_tree(self):
         tabs = len(FCache().cache_music_tree_beans)
         tabhelper = self.perspectives.get_perspective('fs').get_tabhelper()
-        for tab in xrange(tabs - 1, -1, -1):
+        for tab in range(tabs - 1, -1, -1):
             tabhelper._append_tab(FCache().tab_names[tab], rows=FCache().cache_music_tree_beans[tab])
 
             if not FCache().cache_music_tree_beans[tab]:
@@ -224,7 +224,7 @@ class BaseFoobnixControls():
 
         if FC().update_tree_on_start:
             def cycle():
-                for n in xrange(len(FCache().music_paths)):
+                for n in range(len(FCache().music_paths)):
                     tab_child = tabhelper.get_nth_page(n)
                     tree = tab_child.get_child()
                     self.update_music_tree(tree, n)
@@ -399,7 +399,7 @@ class BaseFoobnixControls():
 
         self.main_window.set_title(bean.text)
 
-        thread.start_new_thread(self._one_thread_play, (bean,))
+        threading.Thread(target = self._one_thread_play, args = (bean,)).start()
 
     def _one_thread_play(self, bean):
         try:
@@ -728,9 +728,9 @@ class BaseFoobnixControls():
 
         try:
             from socket import gethostname
-            f = urlopen("http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname()
-                        + "&version=" + current_version + "&platform=" + system, timeout=7)
-            #f = urllib2.urlopen("http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version)
+            url = "http://www.foobnix.com/version?uuid=" + uuid + "&host=" + gethostname() + "&version=" + current_version + "&platform=" + system
+            #url = "http://localhost:8080/version?uuid=" + uuid + "&host=" + gethostname() + "&v=" + current_version
+            f = urlopen(url, timeout=7)
         except Exception as e:
             logging.error("Check version error: " + str(e))
             return None

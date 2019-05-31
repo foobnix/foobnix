@@ -200,8 +200,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             #treerows = self.playlist_filter(treerows)
             if not current:
                 name = treerows[0][0]
-                if isinstance(name, str):
-                    name = unicode(name, "utf-8")
                 self.controls.notetabs._append_tab(name)
                 to_tree = self.controls.notetabs.get_current_tree()     # because to_tree has changed
                 to_model = to_tree.get_model().get_model()
@@ -246,8 +244,6 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
                 number_of_tab = tabhelper.page_num(tree.scroll)
 
                 tab_name = path[path.rfind("/") + 1:]
-                if isinstance(tab_name, str):
-                    tab_name = unicode(tab_name, "utf-8")
 
                 if in_new_tab:
                     tabhelper._append_tab(tab_name)
@@ -310,7 +306,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
         if not on_start:
             FC().show_full_filename = not FC().show_full_filename
             tabhelper = self.controls.perspectives.get_perspective('fs').get_tabhelper()
-            for page in xrange(tabhelper.get_n_pages()):
+            for page in range(tabhelper.get_n_pages()):
                 tab_content = tabhelper.get_nth_page(page)
                 tree = tab_content.get_child()
                 task(tree)

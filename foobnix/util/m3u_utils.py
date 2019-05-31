@@ -54,7 +54,7 @@ or use it in OS Windows, but it will put the library anywhere in the file system
 rate from the music files (the library will be working).\n
 \tDo you want to save the playlist with relative paths?\n"""))
     label.show()
-    dialog.vbox.pack_start(label, False, False)
+    dialog.vbox.pack_start(label, False, False, 0)
     dialog.vbox.show()
     dialog.show_all()
     response = dialog.run()

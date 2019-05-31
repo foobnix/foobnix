@@ -5,10 +5,11 @@ Created on Nov 27, 2012
 '''
 
 import urllib
-import urllib2
+import urllib.parse
+import urllib.request
 import logging
 import platform
-import thread
+import threading
 
 from foobnix.version import FOOBNIX_VERSION
 from foobnix.fc.fc_base import FCBase
@@ -39,9 +40,8 @@ def send(d={"t":"appview"}):
     params.update(d)
 
     #logging.debug("analytics params: "+str(params));
-    enq = urllib.urlencode(params)
-    thread.start_new_thread(urllib2.urlopen, (api_url, enq))
-    #threading.Thread(target=urllib2.urlopen, args=(api_url, enq))
+    enq = urllib.parse.urlencode(params).encode("utf-8")
+    threading.Thread(target=urllib.request.urlopen, args=(api_url, enq)).start()
     
 
 """ User Open or user Some Feature"""

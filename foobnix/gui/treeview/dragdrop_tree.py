@@ -9,7 +9,6 @@ from gi.repository import GLib
 from gi.repository import Gtk
 
 import copy
-import thread
 import logging
 import os.path
 import threading
@@ -99,7 +98,7 @@ class DragDropTree(Gtk.TreeView):
                 row = self.get_row_from_bean(bean)
                 self.model.append(None, row)
             if "PlaylistTreeControl" in str(self):
-                thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
+                threading.Thread(target = self.controls.notetabs.on_save_tabs, args = ()).start()
         else:
             self.tree_append_all(beans)
 
@@ -208,7 +207,7 @@ class DragDropTree(Gtk.TreeView):
     def get_child_iters_by_parent(self, model, iter):
         list = []
         if model.iter_has_child(iter):
-            for i in xrange(model.iter_n_children(iter)):
+            for i in range(model.iter_n_children(iter)):
                 next_iter = model.iter_nth_child(iter, i)
 
                 list.append(next_iter)
@@ -232,7 +231,7 @@ class DragDropTree(Gtk.TreeView):
                     list.append(bean)
 
         if model.iter_has_child(iter):
-            for i in xrange(model.iter_n_children(iter)):
+            for i in range(model.iter_n_children(iter)):
                 next_iter = model.iter_nth_child(iter, i)
 
                 parent = self.get_bean_from_model_iter(model, next_iter)
@@ -249,7 +248,7 @@ class DragDropTree(Gtk.TreeView):
             self._plain_append_all(beans, parent)
         finally:
             if "PlaylistTreeControl" in str(self):
-                thread.start_new_thread(self.controls.notetabs.on_save_tabs, ())
+                threading.Thread(target = self.controls.notetabs.on_save_tabs, args = ()).start()
 
     def _plain_append_all(self, beans, parent=None):
         logging.debug("begin plain append all")
@@ -322,10 +321,10 @@ class DragDropTree(Gtk.TreeView):
 
         row = self.get_row_from_bean(bean)
 
-        if self.hash.has_key(bean.get_parent()):
+        if bean.get_parent() in self.hash:
             parent_iter_exists = self.hash[bean.get_parent()]
             if not bean.is_file:
-                for i in xrange(self.model.iter_n_children(parent_iter_exists)):
+                for i in range(self.model.iter_n_children(parent_iter_exists)):
                     iter = self.model.iter_nth_child(parent_iter_exists, i)
                     if not self.model.get_value(iter, self.is_file[0]):
                         last_folder_iter = iter
@@ -346,10 +345,10 @@ class DragDropTree(Gtk.TreeView):
     def tree_insert_row(self, row):
         last_folder_iter = None
 
-        if self.hash.has_key(row[self.parent_level[0]]):
+        if row[self.parent_level[0]] in self.hash:
             parent_iter_exists = self.hash[row[self.parent_level[0]]]
             if not row[self.is_file[0]]:
-                for i in xrange(self.model.iter_n_children(parent_iter_exists)):
+                for i in range(self.model.iter_n_children(parent_iter_exists)):
                     iter = self.model.iter_nth_child(parent_iter_exists, i)
                     if not self.model.get_value(iter, self.is_file[0]):
                         last_folder_iter = iter
@@ -372,7 +371,7 @@ class DragDropTree(Gtk.TreeView):
 
     def get_row_from_iter(self, model, iter):
         row = []
-        for num in xrange(model.get_n_columns()):
+        for num in range(model.get_n_columns()):
             try:
                 val = model.get_value(iter, num)
             except GError:
@@ -384,7 +383,7 @@ class DragDropTree(Gtk.TreeView):
         all_iters = []
         def task(iter):
             all_iters.append(iter)
-            for n in xrange(model.iter_n_children(iter)):
+            for n in range(model.iter_n_children(iter)):
                 child_iter = model.iter_nth_child(iter, n)
                 if child_iter:
                     task(child_iter)
@@ -396,7 +395,7 @@ class DragDropTree(Gtk.TreeView):
         def task(iter):
             path = model.get_path(iter)
             all_paths.append(path)
-            for n in xrange(model.iter_n_children(iter)):
+            for n in range(model.iter_n_children(iter)):
                 child_iter = model.iter_nth_child(iter, n)
                 if child_iter:
                     task(child_iter)
@@ -419,7 +418,7 @@ class DragDropTree(Gtk.TreeView):
                         value = getattr(full_bean, key)
                         if value is None:
                             value = ''
-                        elif type(value) in [int, float, long]:
+                        elif type(value) in [int, float]:
                             value = str(value)
                         treerow[i] = value
                 else:
@@ -476,7 +475,7 @@ class DragDropTree(Gtk.TreeView):
                     value = getattr(bean, key)
                     if value is None:
                         value = ''
-                    elif type(value) in [int, float, long]:
+                    elif type(value) in [int, float]:
                         value = str(value)
                     if i != self.play_icon[0]:
                         treerow[i] = value

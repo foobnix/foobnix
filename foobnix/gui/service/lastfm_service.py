@@ -6,15 +6,15 @@ Created on 27 сент. 2010
 '''
 
 import time
-import thread
+import threading
 import logging
 import datetime
 
 from foobnix.fc.fc import FC
 from foobnix.fc.fc_base import FCBase
 from foobnix.gui.model import FModel
-from foobnix.thirdparty.pylast import WSError, Tag
-from foobnix.thirdparty import pylast
+from pylast import WSError, Tag
+import pylast
 
 API_KEY = FCBase().API_KEY
 API_SECRET = FCBase().API_SECRET
@@ -78,7 +78,7 @@ class LastFmService():
         self.scrobbler = None
         self.preferences_window = None
         self.controls = controls
-        thread.start_new_thread(self.init_thread, ())
+        threading.Thread(target = self.init_thread).start()
 
     def connect(self):
         if self.network and self.scrobbler:
@@ -185,12 +185,12 @@ class LastFmService():
                     bean.artist, bean.title = bean.artist, bean.title
                     self.get_scrobbler().report_now_playing(bean.artist, bean.title)
                     logging.debug("notify %s %s" % (bean.artist, bean.title))
-                except Exception, e:
+                except Exception as e:
                     logging.error(str(e) + "Error reporting now playing last.fm" + str(bean.artist) + str(bean.title))
             else:
                 logging.debug("Bean title or artist not defined")
 
-        thread.start_new_thread(task, (bean,))
+        threading.Thread(target = task, args = (bean,)).start()
 
     def report_scrobbled(self, bean, start_time, duration_sec):
         if not FC().enable_music_scrobbler:
@@ -208,12 +208,12 @@ class LastFmService():
                         bean.album = bean.album.encode("utf-8")
                     self.get_scrobbler().scrobble(bean.artist, bean.title, start_time, "P", "", int(duration_sec), bean.album or "")
                     logging.debug("Song Scrobbled " + str(bean.artist) + " " + str(bean.title) + " " + str(start_time) + " P: " + str(int(duration_sec)))
-                except Exception, e:
+                except Exception as e:
                     logging.error(str(e) + "Error reporting now playing last.fm " + str(bean.artist) + " " + str(bean.title) + " A: " + str(bean.album))
             else:
                 logging.debug("Bean title or artist not defined")
 
-        thread.start_new_thread(task, (bean,))
+        threading.Thread(target = task, args = (bean,)).start()
 
     def connected(self):
         return self.network is not None

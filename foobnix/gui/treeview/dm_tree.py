@@ -110,7 +110,7 @@ class DownloadManagerTreeControl(CommonTreeControl):
                 else:
                     self.tree_menu.add_item(_("Open in file manager"), None, open_in_filemanager, FC().online_save_to_folder)
                 self.tree_menu.show(e)
-            except Exception, e:
+            except Exception as e:
                 logging.error(e)
 
     def get_status_statisctics(self):

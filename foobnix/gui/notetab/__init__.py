@@ -115,12 +115,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave, Quitable):
         else: return text_of_label
 
     def rename_tab(self, tab, new_full_name, name_list=None):
-        try:
-            logging.info("encoding of tab name is " + new_full_name)
-            new_full_name = unicode(new_full_name) #convert from any encoding in ascii
-            logging.info("encoding finished " + new_full_name)
-        except:
-            logging.warn("problem of encoding definition for tab name is occured")
+        logging.info("encoding finished " + new_full_name)
         self.set_full_tab_name(tab, new_full_name)
         new_label_text = crop_string(new_full_name, FC().len_of_tab)
         self.get_tab_label(tab).activate()
@@ -166,7 +161,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave, Quitable):
         number_of_tabs = self.get_n_pages()
         if number_of_tabs > 0:
             min = 1 if self.navig else 0
-            for page in xrange(number_of_tabs - 1, min, -1):
+            for page in range(number_of_tabs - 1, min, -1):
                 tab = self.get_nth_page(page)
                 self.rename_tab(tab, tab.get_child().full_name)
 
@@ -178,12 +173,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave, Quitable):
     def _append_tab(self, full_name=_("Empty tab"), beans=None, rows=None, optimization=False):
         logging.info("append new tab")
         self.last_notebook_page = full_name
-        try:
-            logging.info("encoding of tab name is " + full_name)
-            full_name = unicode(full_name) #convert from any encoding in ascii
-            logging.info("encoding finished " + full_name)
-        except:
-            logging.warn("problem of encoding definition for tab name is occured")
+        logging.info("encoding of tab name is " + full_name)
 
         visible_name = crop_string(full_name, FC().len_of_tab)
 
@@ -258,7 +248,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave, Quitable):
                     self.save_lock.release()
         try:
             threading.Thread(target=task, args=()).start()
-        except Exception, e:
+        except Exception as e:
             logging.error("Exception: "  + str(e))
 
 TARGET_TYPE_URI_LIST = 80
@@ -358,7 +348,7 @@ class NoteTabControl(TabGeneral):
         self.set_tab_pos(Gtk.POS_LEFT)
         self.default_angle = 90
         self.set_show_tabs(True)
-        for page in xrange(self.get_n_pages() - 1, -1, -1):
+        for page in range(self.get_n_pages() - 1, -1, -1):
             tab = self.get_nth_page(page)
             vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
             label = tab.get_child().label
@@ -380,7 +370,7 @@ class NoteTabControl(TabGeneral):
         self.set_tab_pos(Gtk.PositionType.TOP)
         self.default_angle = 0
         self.set_show_tabs(True)
-        for page in xrange(self.get_n_pages() - 1, -1, -1):
+        for page in range(self.get_n_pages() - 1, -1, -1):
             tab = self.get_nth_page(page)
             hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
             label = tab.get_child().label
@@ -431,7 +421,7 @@ class NoteTabControl(TabGeneral):
         else:
             self.set_tab_top()
 
-        for page in xrange(len(FCache().cache_pl_tab_contents)-1, -1, -1):
+        for page in range(len(FCache().cache_pl_tab_contents)-1, -1, -1):
             if not FCache().cache_pl_tab_contents[page]:
                 self._append_tab(FCache().tab_pl_names[page])
                 continue
@@ -441,10 +431,10 @@ class NoteTabControl(TabGeneral):
 
             for row in FCache().cache_pl_tab_contents[page]:
                 if model_len > cache_len:
-                    for i in xrange(abs(model_len - cache_len)):
+                    for i in range(abs(model_len - cache_len)):
                         row.append((None, None))
                 elif model_len < cache_len:
-                    for i in xrange(abs(model_len - cache_len)):
+                    for i in range(abs(model_len - cache_len)):
                         del row[-1]
 
                 self.get_current_tree().model.append(None, row)
@@ -460,7 +450,7 @@ class NoteTabControl(TabGeneral):
         FCache().cache_pl_tab_contents = []
         FCache().tab_pl_names = []
         if number_music_tabs > 0:
-            for tab_number in xrange(self.get_n_pages()):
+            for tab_number in range(self.get_n_pages()):
                 self.save_nth_tab(tab_number)
 
     def save_nth_tab(self, tab_number):
@@ -493,7 +483,7 @@ class NoteTabControl(TabGeneral):
                     self.save_lock.release()
         try:
             threading.Thread(target=task, args=()).start()
-        except Exception, e:
+        except Exception as e:
             logging.error("Exception: "  + str(e))
 
     def on_quit(self):

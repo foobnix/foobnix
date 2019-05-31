@@ -43,7 +43,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
         """ set application stylesheet"""
         self.style_provider = Gtk.CssProvider()
         ## TODO: after moving style to resource - replace to load_from_file
-        self.style_provider.load_from_data(foobnix_style)
+        self.style_provider.load_from_data(foobnix_style.encode("utf-8"))
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(),
             self.style_provider,
@@ -133,7 +133,7 @@ class BaseFoobnixLayout(FControl, LoadSave):
 
     def normalize_columns(self):
         tabhelper = self.controls.perspectives.get_perspective('fs').get_tabhelper()
-        for page in xrange(tabhelper.get_n_pages()):
+        for page in range(tabhelper.get_n_pages()):
             tab_content = tabhelper.get_nth_page(page)
             tree = tab_content.get_child()
             tree.normalize_columns_width()

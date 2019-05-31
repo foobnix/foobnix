@@ -93,7 +93,7 @@ class CueReader():
     def get_full_duration (self, file):
         try:
             audio = get_mutagen_audio(file)
-        except Exception, e:
+        except Exception as e:
             logging.warn(str(e) + " " + file)
             return
 
@@ -103,7 +103,7 @@ class CueReader():
         duration_tracks = []
         tracks = self.cue_file.tracks
 
-        for i in xrange(len(tracks)):
+        for i in range(len(tracks)):
             track = tracks[i]
             full_duration = self.get_full_duration(track.path)
             if full_duration:
@@ -147,7 +147,7 @@ class CueReader():
             bean.is_file = True
             try:
                 bean.info = foobnix.util.id3_util.normalized_info(get_mutagen_audio(track.path).info, bean)
-            except Exception, e:
+            except Exception as e:
                 logging.warn(str(e) + " " + bean.path)
                 bean.info = ""
 
@@ -191,12 +191,6 @@ class CueReader():
 
             if not line:
                 continue
-
-            if isinstance(line, str):
-                try:
-                    line = unicode(line, code)
-                except:
-                    logging.error("There is some problems while converting in unicode")
 
             line = line.strip().encode('utf-8')
 

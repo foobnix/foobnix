@@ -36,7 +36,7 @@ def add_key_binder(command, hotkey):
     try:
         logging.debug("binding a key %s with command %s" % (hotkey, command))
         Keybinder.bind(hotkey, activate_hot_key, command)
-    except Exception, e:
+    except Exception as e:
         logging.warn("add_key_binder exception: %s %s" % (str(hotkey), str(e)))
 
 

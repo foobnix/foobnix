@@ -1,6 +1,6 @@
 import re
 import string
-import urllib
+import urllib.parse
 
 from foobnix.fc.fc import FC
 from foobnix.util.file_utils import get_file_extension
@@ -13,8 +13,6 @@ def capitalize_query(line):
     if line.startswith("http://"):
         return line
 
-    if isinstance(line, str):
-        line = unicode(line, "utf-8")
     line = line.strip()
     result = ""
     for word in line.split():
@@ -24,10 +22,8 @@ def capitalize_query(line):
 def capitalize_string(src):
     if not src:
         return src
-    if isinstance(src, str):
-        src = unicode(src, "utf-8")
     line = src.strip()
-    word_capitalized = map(string.capitalize, line.split())
+    word_capitalized = map(str.capitalize, line.split())
     return ' '.join(word_capitalized)
 
 def smart_splitter(input, max_len):
@@ -40,7 +36,7 @@ def smart_splitter(input, max_len):
     separators = (" " , "-" , "," , "/" , "_", "\n")
     result = []
     buffer = ""
-    for i in xrange(len(input)):
+    for i in range(len(input)):
         char = input[i]
         buffer += char
 
@@ -91,7 +87,7 @@ def split_string(str, length):
 def normalize_text(line):
     if not line:
         return ""
-    line = urllib.unquote(line)
+    line = urllib.parse.unquote(line)
     """find in extension"""
     for element in ("[", "(", "*","#"):
         index = line.find(element)

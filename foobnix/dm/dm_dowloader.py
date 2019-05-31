@@ -11,7 +11,7 @@ import time
 import logging
 import threading
 from foobnix.fc.fc import FC
-from urllib import FancyURLopener
+from urllib.request import FancyURLopener
 from foobnix.util.time_utils import size2text
 from foobnix.util.file_utils import get_file_extension
 from foobnix.util.bean_utils import get_bean_download_path
@@ -29,7 +29,7 @@ class Dowloader(threading.Thread):
     def run(self):
         try:
             self.download()
-        except Exception, e:
+        except Exception as e:
             self.bean.status = DOWNLOAD_STATUS_INACTIVE
             self.update(self.bean)
             logging.error(e)
@@ -82,7 +82,7 @@ class Dowloader(threading.Thread):
             return None
         
         bean.save_to = to_file        
-        with file(to_file_tmp, "wb") as tmp_file:
+        with open(to_file_tmp, "wb") as tmp_file:
             data = True
             
             """begin download"""

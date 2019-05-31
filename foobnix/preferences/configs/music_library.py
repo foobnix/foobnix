@@ -112,7 +112,7 @@ class MusicLibraryConfig(ConfigPlugin, FControl):
         FC().gap_secs = self.adjustment.get_value()
 
         if self.singletab_button.get_active():
-            '''for i in xrange(len(FCache().music_paths) - 1, 0, -1):
+            '''for i in range(len(FCache().music_paths) - 1, 0, -1):
                 del FCache().music_paths[i]
                 del FCache().cache_music_tree_beans[i]
                 del FCache().tab_names[i]

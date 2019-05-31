@@ -3,7 +3,7 @@ Created on Nov 4, 2010
 
 @author: ivan
 '''
-import urllib
+import urllib.request
 from foobnix.gui.service.path_service import get_foobnix_resourse_path_by_name
 from gi.repository import Gtk
 from gi.repository import GdkPixbuf
@@ -29,7 +29,7 @@ def create_pixbuf_from_path(path, size):
         return None
     try:
         pixbuf = GdkPixbuf.Pixbuf.new_from_file(path) #@UndefinedVariable
-    except Exception, e:
+    except Exception as e:
         logging.error(e)
         return None
 
@@ -43,7 +43,7 @@ def create_pixbuf_from_resource(name, size=None):
     return create_pixbuf_from_path(path, size)
 
 def create_origin_pixbuf_from_url(url):
-    f = urllib.urlopen(url)
+    f = urllib.request.urlopen(url)
     data = f.read()
     pbl = GdkPixbuf.PixbufLoader() #@UndefinedVariable
     pbl.write(data)

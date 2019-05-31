@@ -4,9 +4,9 @@ Created on 1 дек. 2010
 
 @author: ivan
 '''
-import urllib
+import urllib.parse
+import urllib.request
 import httplib
-import urlparse
 
 
 """"
@@ -18,16 +18,16 @@ Connection: close
 """
 
 def get_url_length(path):
-    open = urllib.urlopen(path)
+    open = urllib.request.urlopen(path)
     return open.info().getheaders("Content-Length")[0]
 
 def get_url_type(path):
-    open = urllib.urlopen(path)
+    open = urllib.request.urlopen(path)
     return open.info().getheaders("Content-Type")[0]
 
 """method is not reliable. too dependent on the server configuration"""
 def is_exists(url):
-    p = urlparse.urlparse(url)
+    p = urllib.parse.urlparse(url)
     h = httplib.HTTP(p[1])
     h.putrequest('HEAD', p[2])
     h.endheaders()

@@ -58,7 +58,6 @@ def foobnix():
     init_time = time.time()
 
     if "--nt" in sys.argv or os.name == 'nt':
-        GLib.threads_init() #@UndefinedVariable
         core = FoobnixCore(False)
         core.run()
         analytics.begin_session()
@@ -70,7 +69,6 @@ def foobnix():
         iface = foobnix_dbus_interface()
         if "--debug" in sys.argv or not iface:
             print("start program")
-            GLib.threads_init()    #@UndefinedVariable
             core = FoobnixCore(True)
             core.run()
             analytics.begin_session()
@@ -91,7 +89,7 @@ else:
     try:
         foobnix()
         analytics.end_session()
-    except Exception, e:
+    except Exception as e:
         analytics.end_session()
         analytics.error("Main Exception"+str(e))
         exc_type, exc_value, exc_traceback = sys.exc_info()

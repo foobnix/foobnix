@@ -181,7 +181,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
                 if self.controls.coverlyrics.get_property("visible"):
                     try:
                         self.show_similar_lyrics(bean)
-                    except Exception, e:
+                    except Exception as e:
                         logging.error("Can't get lyrics. " + type(e).__name__ + ": " + e.message)
                 if self.info_cache.active_method:
                     self.info_cache.active_method()
@@ -236,7 +236,7 @@ class InfoPanelWidget(Gtk.Frame, LoadSave, FControl):
             if album_name and album_year:
                 info_line = album_name + " (" + album_year + ")"
 
-            if isinstance(info_line, unicode) or isinstance(info_line, str):
+            if isinstance(info_line, str):
                 FCache().album_titles[bean.text] = info_line
         if info_line and bean.UUID == self.bean.UUID:
             info_line = info_line.replace('&', '&amp;')

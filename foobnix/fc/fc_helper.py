@@ -8,7 +8,7 @@ Created on 21 февр. 2011
 from __future__ import with_statement
 import os
 import logging
-import cPickle
+import pickle
 import threading
 
 CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "foobnix-3", "")
@@ -22,7 +22,7 @@ if not os.path.exists(CACHE_DIR):
 class FCStates:
     def save(self, fc, file):
         #if in_thread:
-        #    thread.start_new_thread(FCHelper().save, (fc,))
+        #    threading.Thread(target = FCHelper().save, args = (fc,)).start()
         #else:
         FCHelper().save(fc, file)
 
@@ -56,9 +56,9 @@ class FCHelper():
     def save(self, object, file_path):
         self.save_lock.acquire()
         try:
-            save_file = open(file_path, 'w')
+            save_file = open(file_path, 'wb')
             try:
-                cPickle.dump(object, save_file)
+                pickle.dump(object, save_file)
             except Exception as e:
                 logging.error("Error dumping pickle conf " + str(e))
             save_file.close()
@@ -76,14 +76,16 @@ class FCHelper():
                 return self.load(file_path + "_backup")
             return None
 
-        with open(file_path, 'r') as load_file:
-                load_file = open(file_path, 'r')
+        with open(file_path, 'rb') as load_file:
                 pickled = load_file.read()
 
-                object = cPickle.loads(pickled)
-                logging.debug("Config loaded")
-                self.print_info(object)
-                return object
+                try:
+                   object = pickle.loads(pickled)
+                   logging.debug("Config loaded")
+                   self.print_info(object)
+                   return object
+                except:
+                   return None
 
         return None
 
@@ -95,5 +97,5 @@ class FCHelper():
         dict = object.__dict__
         for i in object.__dict__:
             if i not in ["user_id", "access_token", "vk_user", "vk_pass", "lfm_login", "lfm_password", "uuid"]:
-                value = dict[i] if isinstance(dict[i], unicode) else str(dict[i])
+                value = dict[i]
                 logging.debug(i + " " + value[:500])

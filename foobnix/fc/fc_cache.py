@@ -55,32 +55,30 @@ class FCache:
     def on_load(self):
         if os.path.isfile(CACHE_COVERS_FILE):
             '''reading cover cache file in dictionary'''
-            with file(CACHE_COVERS_FILE, 'r') as cov_conf:
+            with open(CACHE_COVERS_FILE, 'r') as cov_conf:
                 for line in cov_conf:
-                    if line.startswith('#') and not FCache().covers.has_key(line[1:-1]):
+                    if line.startswith('#') and not line[1:-1] in FCache().covers:
                         FCache().covers[line[1:-1]] = cov_conf.next()[:-1].split(", ")
 
         if os.path.isfile(CACHE_ALBUM_FILE):
             '''reading cover cache file in dictionary'''
-            with file(CACHE_ALBUM_FILE, 'r') as albums_cache:
+            with open(CACHE_ALBUM_FILE, 'r') as albums_cache:
                 for line in albums_cache:
-                    if line.startswith('#') and not FCache().album_titles.has_key(line[1:-1]):
+                    if line.startswith('#') and not line[1:-1] in FCache().album_titles:
                         FCache().album_titles[line[1:-1]] = albums_cache.next()[:-1]
 
     def on_quit(self):
 
         def write_string(file, string):
-            if isinstance(string, str):
-                string = unicode(string, "utf-8")
             file.write((u'#' + u'#' + u'\n' + string + u'\n').encode('utf-8'))
 
         if not os.path.isdir(COVERS_DIR):
             os.mkdir(COVERS_DIR)
 
-        with file(CACHE_COVERS_FILE, 'w') as f:
+        with open(CACHE_COVERS_FILE, 'w') as f:
             for key, value in zip(FCache().covers.keys(), FCache().covers.values()):
                 write_string(f, ','.join(value))
 
-        with file(CACHE_ALBUM_FILE, 'w') as f:
+        with open(CACHE_ALBUM_FILE, 'w') as f:
             for key, value in zip(FCache().album_titles.keys(), FCache().album_titles.values()):
                 write_string(f, value)

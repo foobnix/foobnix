@@ -5,7 +5,7 @@ Created on 24 авг. 2010
 @author: ivan
 '''
 
-import thread
+import threading
 
 from gi.repository import Gtk
 from gi.repository import GLib
@@ -118,7 +118,7 @@ class LastFmConfig(ConfigPlugin):
                 fname = profile[0]["first_name"]
                 sname = profile[0]["last_name"]
                 GLib.idle_add(self.vk_account_label.set_text, self.frase_begin + " %s %s" % (fname, sname))
-        thread.start_new_thread(task_get_and_set_profile, () )
+        threading.Thread(target = task_get_and_set_profile).start()
 
     def on_load(self):
         self.login_text.set_text(FCBase().lfm_login)

@@ -54,14 +54,14 @@ class TextArea(Gtk.ScrolledWindow):
         if text:
             self.clear_tags(full_text)
         start = self.buffer.get_iter_at_offset(0)
-        if isinstance(bold_text, str):
-            bold_text = unicode(bold_text, "utf-8")
+        if isinstance(bold_text, bytes):
+            bold_text = str(bold_text, "utf-8")
         end = self.buffer.get_iter_at_offset(len(bold_text))
         self.buffer.apply_tag(self.tag_bold, start, end)
 
     def clear_tags(self, text):
         start_index = 0
-        if isinstance(text, unicode):
+        if isinstance(text, str):
             text = text.encode('utf-8')
         text_length = len(text)
         while start_index != -1:
