@@ -308,9 +308,9 @@ class PlaylistTreeControl(CommonTreeControl):
             for row in pl_tree.model:
                 if row[pl_tree.is_file[0]]:
                     audio = get_mutagen_audio(row[pl_tree.path[0]])
-                    if audio and audio.has_key('tracknumber'):
+                    if audio and 'tracknumber' in audio:
                         row[pl_tree.tracknumber[0]] = re.search('\d*', audio['tracknumber'][0]).group()
-                    if audio and audio.has_key('trkn'):
+                    if audio and 'trkn' in audio:
                         row[pl_tree.tracknumber[0]] = re.search('\d*', audio["trkn"][0]).group()
 
     def on_toggle(self, w, e, column):

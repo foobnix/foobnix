@@ -321,7 +321,7 @@ class DragDropTree(Gtk.TreeView):
 
         row = self.get_row_from_bean(bean)
 
-        if self.hash.has_key(bean.get_parent()):
+        if bean.get_parent() in self.hash:
             parent_iter_exists = self.hash[bean.get_parent()]
             if not bean.is_file:
                 for i in range(self.model.iter_n_children(parent_iter_exists)):
@@ -345,7 +345,7 @@ class DragDropTree(Gtk.TreeView):
     def tree_insert_row(self, row):
         last_folder_iter = None
 
-        if self.hash.has_key(row[self.parent_level[0]]):
+        if row[self.parent_level[0]] in self.hash:
             parent_iter_exists = self.hash[row[self.parent_level[0]]]
             if not row[self.is_file[0]]:
                 for i in range(self.model.iter_n_children(parent_iter_exists)):

@@ -329,7 +329,7 @@ def combobox_constr(list=None):
 
 def convert_files(paths):
     if FFMPEG_NAME in os.listdir(CONFIG_DIR):
-        if not globals().has_key("converter"):
+        if not "converter" in globals:
             global converter
             converter = Converter()
         converter.show_all()

@@ -59,20 +59,20 @@ def update_id3(bean):
             return bean
         if audio:
             if isinstance(audio, MP4):
-                if audio.has_key('\xa9ART'): bean.artist = audio["\xa9ART"][0]
-                if audio.has_key('\xa9nam'): bean.title = audio["\xa9nam"][0]
-                if audio.has_key('\xa9alb'): bean.album = audio["\xa9alb"][0]
-                if audio.has_key('\xa9wrt'): bean.composer = audio["\xa9wrt"][0]
-                if audio.has_key('trkn'):
+                if '\xa9ART' in audio: bean.artist = audio["\xa9ART"][0]
+                if '\xa9nam' in audio: bean.title = audio["\xa9nam"][0]
+                if '\xa9alb' in audio: bean.album = audio["\xa9alb"][0]
+                if '\xa9wrt' in audio: bean.composer = audio["\xa9wrt"][0]
+                if 'trkn' in audio:
                     #if not FC().numbering_by_order:
                     bean.tracknumber = audio['trkn'][0]
             else:
-                if audio.has_key('artist'): bean.artist = correct_encoding(audio["artist"][0])
-                if audio.has_key('title'): bean.title = correct_encoding(audio["title"][0])
-                if audio.has_key('album'): bean.album = correct_encoding(audio["album"][0])
-                if audio.has_key('composer'): bean.composer = correct_encoding(audio['composer'][0])
-                if audio.has_key('cuesheet'): bean.cue = audio['cuesheet'][0] # correct_encoding is in cue parser
-                if audio.has_key('tracknumber'):
+                if 'artist' in audio: bean.artist = correct_encoding(audio["artist"][0])
+                if 'title' in audio: bean.title = correct_encoding(audio["title"][0])
+                if 'album' in audio: bean.album = correct_encoding(audio["album"][0])
+                if 'composer' in audio: bean.composer = correct_encoding(audio['composer'][0])
+                if 'cuesheet' in audio: bean.cue = audio['cuesheet'][0] # correct_encoding is in cue parser
+                if 'tracknumber' in audio:
                     #if not FC().numbering_by_order:
                     bean.tracknumber = audio["tracknumber"][0]
 
@@ -108,18 +108,18 @@ def normalized_info(info, bean):
     new_list = []
     bean.size = os.path.getsize(bean.path)
     new_list.append(list[0])
-    if info.__dict__.has_key('channels'):
+    if 'channels' in info.__dict__:
         new_list.append('Ch: ' + str(info.channels))
-    if info.__dict__.has_key('bits_per_sample'):
+    if 'bits_per_sample' in info.__dict__:
         new_list.append(str(info.bits_per_sample) + ' bit')
-    if info.__dict__.has_key('sample_rate'):
+    if 'sample_rate' in info.__dict__:
         new_list.append(str(info.sample_rate) + 'Hz')
-    if info.__dict__.has_key('bitrate'):
+    if 'bitrate' in info.__dict__:
         new_list.append(str(info.bitrate / 1000) + ' kbps')
     else:
         kbps = int(round(bean.size * 8 / info.length / 1000))
         new_list.append(str(kbps + 1 if kbps % 2 else kbps) + ' kbps')
-    if info.__dict__.has_key('length'):
+    if 'length' in info.__dict__:
         new_list.append(convert_seconds_to_text(int(info.length)))
     size = '%.2f MB' % (float(bean.size) / 1024 / 1024)
     new_list.append(size)

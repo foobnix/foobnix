@@ -124,7 +124,7 @@ class TagEditor(ChildTopWindow):
                 artists[path] = _('Unknown artist')
                 titles[path] = self.store[path][1]
 
-            if artists.has_key(path):
+            if path in artists:
                 texts[path] = artists[path] + ' - ' + titles[path]
             else:
                 texts[path] = os.path.basename(path)
@@ -192,7 +192,7 @@ class TagEditor(ChildTopWindow):
         for tag_name, tag_entry in zip(tag_names, self.tag_entries):
             tag_entry.delete_text(0, -1)
             try:
-                if self.audious[0].has_key(tag_name):
+                if tag_name in self.audious[0]:
                     tag_entry.set_text(self.audious[0][tag_name][0])
                 else:
                     tag_entry.set_text('')
@@ -208,12 +208,12 @@ class TagEditor(ChildTopWindow):
     def save_audio_tags(self, button, paths):
 
         def set_tags(audio, path, tag_name):
-            if not self.store.has_key(path):
+            if not path in self.store:
                 self.store[path] = ["", "", "", ""]
             if isinstance(audio, MP4):
                 tag_name = tag_mp4_name
             try:
-                if audio.has_key(tag_name):
+                if tag_name in audio:
                     if not tag_value:
                         del audio[tag_name]
                         audio.save()
@@ -237,18 +237,18 @@ class TagEditor(ChildTopWindow):
             if (tag_name == "artist" or tag_name == '\xa9ART') and tag_value:
                 self.store[path][0] = tag_value
                 try:
-                    if audio.has_key("title"):
+                    if "title" in audio:
                         self.store[path][1] = audio["title"][0]
-                    elif audio.has_key('\xa9nam'):
+                    elif '\xa9nam' in audio:
                         self.store[path][1] = audio['\xa9nam'][0]
                 except UnicodeDecodeError:
                     pass
             elif (tag_name == "title" or tag_name == '\xa9nam') and tag_value:
                 self.store[path][1] = tag_value
                 try:
-                    if audio.has_key("artist"):
+                    if "artist" in audio:
                         self.store[path][0] = audio["artist"][0]
-                    elif audio.has_key('\xa9ART'):
+                    elif '\xa9ART' in audio:
                         self.store[path][0] = audio['\xa9ART']
                 except UnicodeDecodeError:
                     pass
@@ -285,7 +285,7 @@ class TagEditor(ChildTopWindow):
 
 def edit_tags(a):
     controls, paths = a
-    if not globals().has_key("tag_editor"):
+    if not "tag_editor" in globals():
         global tag_editor
         tag_editor = TagEditor(controls)
     tag_editor.get_audio_tags(paths)
