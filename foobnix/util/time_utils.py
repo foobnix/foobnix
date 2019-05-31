@@ -4,7 +4,6 @@ Created on Feb 26, 2010
 @author: ivan
 '''
 
-
 def size2text(size):
     if size > 1024 * 1024 * 1024:
         return "%.2f Gb" % (size / (1024 * 1024 * 1024.0))
