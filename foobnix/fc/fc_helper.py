@@ -8,7 +8,7 @@ Created on 21 февр. 2011
 from __future__ import with_statement
 import os
 import logging
-import cPickle
+import pickle
 import threading
 
 CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "foobnix-3", "")
@@ -56,9 +56,9 @@ class FCHelper():
     def save(self, object, file_path):
         self.save_lock.acquire()
         try:
-            save_file = open(file_path, 'w')
+            save_file = open(file_path, 'wb')
             try:
-                cPickle.dump(object, save_file)
+                pickle.dump(object, save_file)
             except Exception as e:
                 logging.error("Error dumping pickle conf " + str(e))
             save_file.close()
@@ -76,14 +76,16 @@ class FCHelper():
                 return self.load(file_path + "_backup")
             return None
 
-        with open(file_path, 'r') as load_file:
-                load_file = open(file_path, 'r')
+        with open(file_path, 'rb') as load_file:
                 pickled = load_file.read()
 
-                object = cPickle.loads(pickled)
-                logging.debug("Config loaded")
-                self.print_info(object)
-                return object
+                try:
+                   object = pickle.loads(pickled)
+                   logging.debug("Config loaded")
+                   self.print_info(object)
+                   return object
+                except:
+                   return None
 
         return None
 
