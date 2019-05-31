@@ -143,7 +143,7 @@ class VKService:
         result = self.get(method, data)
         if not result:
             return
-        logging.debug("result " + result)
+        logging.debug("result %s" % str(result))
         try:
             object = self.to_json(result)
         except simplejson.JSONDecodeError as e:
@@ -204,7 +204,7 @@ class VKService:
         return self.get_result("getProfiles", "uid=" + str(self.user_id), 1 if without_auth else 0)
 
     def find_tracks_by_query(self, query):
-        logging.info("start search songs " + query)
+        logging.info("start search songs %s" % str(query))
         query = urllib.parse.quote(query.encode("utf-8"))
 
         list = self.get_result("audio.search", "q=" + query)

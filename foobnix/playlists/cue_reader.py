@@ -192,12 +192,6 @@ class CueReader():
             if not line:
                 continue
 
-            if isinstance(line, str):
-                try:
-                    line = unicode(line, code)
-                except:
-                    logging.error("There is some problems while converting in unicode")
-
             line = line.strip().encode('utf-8')
 
             if not self.is_valid and not line.startswith(FILE):

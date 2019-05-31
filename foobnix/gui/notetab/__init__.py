@@ -115,12 +115,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave, Quitable):
         else: return text_of_label
 
     def rename_tab(self, tab, new_full_name, name_list=None):
-        try:
-            logging.info("encoding of tab name is " + new_full_name)
-            new_full_name = unicode(new_full_name) #convert from any encoding in ascii
-            logging.info("encoding finished " + new_full_name)
-        except:
-            logging.warn("problem of encoding definition for tab name is occured")
+        logging.info("encoding finished " + new_full_name)
         self.set_full_tab_name(tab, new_full_name)
         new_label_text = crop_string(new_full_name, FC().len_of_tab)
         self.get_tab_label(tab).activate()
@@ -178,12 +173,7 @@ class TabGeneral(Gtk.Notebook, FControl, LoadSave, Quitable):
     def _append_tab(self, full_name=_("Empty tab"), beans=None, rows=None, optimization=False):
         logging.info("append new tab")
         self.last_notebook_page = full_name
-        try:
-            logging.info("encoding of tab name is " + full_name)
-            full_name = unicode(full_name) #convert from any encoding in ascii
-            logging.info("encoding finished " + full_name)
-        except:
-            logging.warn("problem of encoding definition for tab name is occured")
+        logging.info("encoding of tab name is " + full_name)
 
         visible_name = crop_string(full_name, FC().len_of_tab)
 

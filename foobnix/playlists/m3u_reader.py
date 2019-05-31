@@ -15,7 +15,7 @@ class M3UReader:
     def __init__(self, path):
         self.path = path
         try:
-            self.m3u = open(unicode(path))
+            self.m3u = open(path)
         except Exception as e:
             logging.error(str(e))
             self.m3u = None

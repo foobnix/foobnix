@@ -70,8 +70,6 @@ class FCache:
     def on_quit(self):
 
         def write_string(file, string):
-            if isinstance(string, str):
-                string = unicode(string, "utf-8")
             file.write((u'#' + u'#' + u'\n' + string + u'\n').encode('utf-8'))
 
         if not os.path.isdir(COVERS_DIR):

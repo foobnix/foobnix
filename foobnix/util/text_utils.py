@@ -13,8 +13,6 @@ def capitalize_query(line):
     if line.startswith("http://"):
         return line
 
-    if isinstance(line, str):
-        line = unicode(line, "utf-8")
     line = line.strip()
     result = ""
     for word in line.split():
@@ -24,8 +22,6 @@ def capitalize_query(line):
 def capitalize_string(src):
     if not src:
         return src
-    if isinstance(src, str):
-        src = unicode(src, "utf-8")
     line = src.strip()
     word_capitalized = map(str.capitalize, line.split())
     return ' '.join(word_capitalized)

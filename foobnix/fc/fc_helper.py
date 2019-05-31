@@ -97,5 +97,5 @@ class FCHelper():
         dict = object.__dict__
         for i in object.__dict__:
             if i not in ["user_id", "access_token", "vk_user", "vk_pass", "lfm_login", "lfm_password", "uuid"]:
-                value = dict[i] if isinstance(dict[i], unicode) else str(dict[i])
+                value = dict[i]
                 logging.debug(i + " " + value[:500])

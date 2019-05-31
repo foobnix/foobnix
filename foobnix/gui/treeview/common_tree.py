@@ -544,8 +544,8 @@ class MyTreeStore(Gtk.TreeStore):
             if isinstance(value, str):
                 value = str(value)
             elif sys.version_info < (3, 0):
-                if isinstance(value, unicode):
-                    value = value.encode('UTF-8')
+                if isinstance(value, str):
+                    value = value.encode('utf-8')
                 else:
                     raise ValueError('Expected string or unicode for column %i but got %s%s' % (column, value, type(value)))
             else:
