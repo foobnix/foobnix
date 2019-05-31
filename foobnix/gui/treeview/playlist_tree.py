@@ -392,20 +392,18 @@ class PlaylistTreeControl(CommonTreeControl):
             tab_content = self.controls.notetabs.get_nth_page(page)
             pl_tree = tab_content.get_child()
             col_list = pl_tree.get_columns()
-            col_list.sort(self.to_order_columns, reverse=True)
+            col_list.sort(key = self.to_order_columns, reverse = True)
             for column in col_list:
                 pl_tree.move_column_after(column, None)
         FLAG = False
 
-    def to_order_columns(self, x, y):
-        try:
-            return cmp(FC().columns[x.key][1], FC().columns[y.key][1])
-        except KeyError:
-            return -1
+    def to_order_columns(self, x):
+        return FC().columns[x.key][1]
 
     def on_load(self):
         col_list = self.get_columns()
-        col_list.sort(self.to_order_columns, reverse=True)
+        # FIXME FIXME FIXME
+        col_list.sort(key = self.to_order_columns, reverse = True)
         visible_columns = []
         for column in col_list:
             column.label.show()
