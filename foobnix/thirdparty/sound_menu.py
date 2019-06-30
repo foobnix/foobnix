@@ -382,6 +382,11 @@ class SoundMenuControls(dbus.service.Object):
     def Play(self):
         self._sound_menu_play()
         self.signal_playing()
+
+    @dbus.service.method('org.mpris.MediaPlayer2.Player')
+    def Pause(self):
+        self._sound_menu_pause()
+        self.signal_paused()
         
     @dbus.service.method('org.mpris.MediaPlayer2.Player')
     def Stop(self):
