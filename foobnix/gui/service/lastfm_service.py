@@ -86,13 +86,21 @@ class LastFmService():
         return self.init_thread()
 
     def init_thread(self):
-        time.sleep(5)
-        if not self.controls.net_wrapper.is_internet():
+        username = FCBase().lfm_login
+        password = FCBase().lfm_password
+
+        if not username or username == "l_user_" or not password:
+            logging.debug("No last.fm account provided")
             return None
 
+        if not self.controls.net_wrapper.is_internet():
+            # try again...
+            time.sleep(5)
+            if not self.controls.net_wrapper.is_internet():
+                return None
+
         logging.debug("RUN INIT LAST.FM")
-        username = FCBase().lfm_login
-        password_hash = pylast.md5(FCBase().lfm_password)
+        password_hash = pylast.md5(password)
         self.cache = None
         try:
             self.network = pylast.get_lastfm_network(api_key=API_KEY,
