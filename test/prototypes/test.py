@@ -1,5 +1,5 @@
-import pygtk
-pyGtk.require('2.0')
+import gi
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 class Winder( Gtk.Window):

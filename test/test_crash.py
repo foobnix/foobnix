@@ -6,27 +6,27 @@ Created on 5 дек. 2010
 '''
 def chardecode_crash():
     s = u'\x00Q\x00u\x00i\x00c\x00k'
-    print s
-    print s == 'Quick'
+    print(s)
+    print(s == 'Quick')
     import re
     re.search('Quick', s)
     import chardet
-    print chardet.detect(s)
-    print s.decode('utf_16')
+    print(chardet.detect(s))
+    print(s.decode('utf_16'))
     
-    print "Success"
+    print("Success")
 
 class A():
     def __init__(self):
-        print "a"
+        print("a")
     
     def go(self):
-        print self.param
+        print(self.param)
     
 class B(A):
     def __init__(self):
         A.__init__(self)
-        print "b"
+        print("b")
         self.param = "hi"
 
 b = B()

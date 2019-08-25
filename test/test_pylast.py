@@ -22,6 +22,6 @@ class Test(unittest.TestCase):
                                                      password_hash=password_hash)
         artist = network.get_artist("Madonna");
         summary = artist.get_bio_summary()
-        print "========="
-        print summary
+        print("=========")
+        print(summary)
 
