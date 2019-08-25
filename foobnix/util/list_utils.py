@@ -25,14 +25,16 @@ def get_song_number(text):
     if res:
         return int(res.group())
 
-def comparator(x, y):
-    value_x = get_song_number(x)
-    value_y = get_song_number(y)
-    if value_x and value_y and value_x != value_y:
-        return value_x - value_y
-    else:
-        return cmp(x, y)
+def get_song_key(song_name):
+    # sort by song number if possible, alphabetically otherwise
+    num = get_song_number(song_name)
+    if num is None:
+        if song_name and ord(song_name[0]) < ord('0'):
+            num = -10000
+        else:
+            num = 10000
+    return (num, song_name)
 
 def sort_by_song_name(list):
-    list.sort(comparator)
+    list.sort(key=get_song_key)
     return list

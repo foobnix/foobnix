@@ -98,4 +98,4 @@ class FCHelper():
         for i in object.__dict__:
             if i not in ["user_id", "access_token", "vk_user", "vk_pass", "lfm_login", "lfm_password", "uuid"]:
                 value = dict[i]
-                logging.debug(i + " " + value[:500])
+                logging.debug(i + " " + str(value)[:500])
