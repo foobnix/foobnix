@@ -71,6 +71,8 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         self.buffering = False
         self.player = self.gstreamer_player()
 
+        self.play_thread_id_assigned = threading.Event()
+
     def get_state(self):
         return self.current_state
 
@@ -272,8 +274,12 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
 
         logging.debug(
             "current state before thread " + str(self.get_state()) + " thread_id: " + str(self.play_thread_id))
-        self.play_thread_id = threading.Thread(target = self.playing_thread, args = ()).start()
+        self.play_thread_id_assigned.clear()
+        t = threading.Thread(target = self.playing_thread, args = ())
+        t.start()
+        self.play_thread_id = t.ident
         self.pause_thread_id = False
+        self.play_thread_id_assigned.set()
 
     def wait_for_seek(self):
         while True:
@@ -312,9 +318,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
             return - 1
 
     def playing_thread(self):
-        if not self.play_thread_id:
-            self.play_thread_id = 1
-        thread_id = self.play_thread_id
+        thread_id = threading.get_ident()
         previous_position = -1
 
         logging.debug("current state in thread: " + str(self.get_state()))
@@ -342,6 +346,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
         self.set_state(STATE_PLAY)
         self.on_chage_state()
 
+        self.play_thread_id_assigned.wait()
         while thread_id == self.play_thread_id:
             if self.pause_thread_id:
                 time.sleep(0.05)
