@@ -23,8 +23,7 @@ CACHE_RADIO_FILE = os.path.join(CACHE_DIR, 'radio_cache')
 fcache_save_lock = threading.Lock()
 
 """Foobnix cache"""
-class FCache:
-    __metaclass__ = Singleton
+class FCache(metaclass=Singleton):
     def __init__(self):
         self.covers = {}
         self.album_titles = {}

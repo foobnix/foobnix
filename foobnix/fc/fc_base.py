@@ -17,9 +17,7 @@ from foobnix.util.singleton import Singleton
 CONFIG_BASE_FILE = os.path.join(CONFIG_DIR, "foobnix_base.pkl") 
 
 """Foobnix base configuration, not change after installation, stable"""
-class FCBase():
-    __metaclass__ = Singleton
-
+class FCBase(metaclass=Singleton):
     API_KEY = "bca6866edc9bdcec8d5e8c32f709bea1"
     API_SECRET = "800adaf46e237805a4ec2a81404b3ff2"
     LASTFM_USER = "l_user_"
