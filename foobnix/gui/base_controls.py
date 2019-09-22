@@ -447,6 +447,7 @@ class BaseFoobnixControls():
         if bean.type != FTYPE_RADIO:
             self.update_info_panel(bean)
         self.set_visible_video_panel(False)
+        self.trayicon.update_info_from(bean)
 
     @idle_task
     def notify_playing(self, pos_sec, dur_sec, bean):
