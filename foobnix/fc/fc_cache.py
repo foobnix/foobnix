@@ -69,7 +69,7 @@ class FCache(metaclass=Singleton):
     def on_quit(self):
 
         def write_string(file, string):
-            file.write((u'#' + u'#' + u'\n' + string + u'\n').encode('utf-8'))
+            file.write(u'#' + u'#' + u'\n' + string + u'\n')
 
         if not os.path.isdir(COVERS_DIR):
             os.mkdir(COVERS_DIR)
