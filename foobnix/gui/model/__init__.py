@@ -40,6 +40,8 @@ class FTreeModel(object):
 
         self.vk_audio_id = 29, str
 
+        self.is_cue_track = 30, bool
+
     def cut(self):
 
         for i in self.__dict__:

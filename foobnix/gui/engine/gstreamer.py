@@ -266,7 +266,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
             self.wait_for_seek()
             self.player.seek_simple(Gst.Format.TIME, Gst.SeekFlags.FLUSH, self.remembered_seek_position)
         else:
-            if bean.start_sec and bean.start_sec != '0':
+            if bean.start_sec != 0:
                 self.wait_for_seek()
                 self.seek_seconds(bean.start_sec)
 
@@ -336,7 +336,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
             else:
                 break
 
-        if self.bean.duration_sec and self.bean.duration_sec > 0:
+        if self.bean.duration_sec > 0:
             duration_int = float(self.bean.duration_sec) * self.NANO_SECONDS
 
             self.duration_sec = float(duration_int) / self.NANO_SECONDS
@@ -353,7 +353,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
                 continue
             try:
                 position_int = self.get_position_seek_ns()
-                if position_int > 0 and self.bean.start_sec and self.bean.start_sec > 0:
+                if position_int > 0 and (self.bean.is_cue_track or self.bean.start_sec > 0):
                     position_int -= float(self.bean.start_sec) * self.NANO_SECONDS
                     if (position_int + self.NANO_SECONDS) > duration_int:
                         self.notify_eos()
@@ -373,7 +373,7 @@ class GStreamerEngine(MediaPlayerEngine, GObject.GObject):
             return None
         seek_ns = self.duration_sec * (percent + offset) / 100 * self.NANO_SECONDS
 
-        if self.bean.start_sec and self.bean.start_sec > 0:
+        if self.bean.start_sec > 0:
             seek_ns += float(self.bean.start_sec) * self.NANO_SECONDS
 
         self.player.seek_simple(Gst.Format(Gst.Format.TIME), Gst.SeekFlags.FLUSH, seek_ns)

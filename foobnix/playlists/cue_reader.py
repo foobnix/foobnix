@@ -145,6 +145,7 @@ class CueReader():
             bean.duration_sec = track.duration
             bean.time = convert_seconds_to_text(track.duration)
             bean.is_file = True
+            bean.is_cue_track = True
             try:
                 bean.info = foobnix.util.id3_util.normalized_info(get_mutagen_audio(track.path).info, bean)
             except Exception as e:
