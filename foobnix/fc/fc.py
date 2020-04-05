@@ -21,9 +21,7 @@ CONFIG_FILE = os.path.join(CONFIG_DIR , "foobnix.pkl")
 #CONFIG_FILE = os.path.join(CONFIG_DIR , "foobnix_winter.pkl")
 
 """Foobnix player configuration"""
-class FC():
-    __metaclass__ = Singleton
-
+class FC(metaclass=Singleton):
     def __init__(self):
 
         """init default values"""

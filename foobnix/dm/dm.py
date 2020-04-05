@@ -17,6 +17,7 @@ from foobnix.gui.model import FDModel, FModel
 from foobnix.helpers.window import ChildTopWindow
 from foobnix.preferences.configs import CONFIG_OTHER
 from foobnix.helpers.dialog_entry import directory_chooser_dialog
+from foobnix.gui.state import Quitable
 from foobnix.gui.treeview.dm_tree import DownloadManagerTreeControl
 from foobnix.gui.treeview.dm_nav_tree import DMNavigationTreeControl
 from foobnix.util.const import DOWNLOAD_STATUS_INACTIVE, DOWNLOAD_STATUS_ACTIVE, \
@@ -45,7 +46,7 @@ class DMControls(MyToolbar):
     def on_save(self): pass
 
 
-class DM(ChildTopWindow):
+class DM(ChildTopWindow, Quitable):
     def __init__(self, controls):
         self.controls = controls
         ChildTopWindow.__init__(self, _("Download Manager"))
@@ -75,6 +76,7 @@ class DM(ChildTopWindow):
         vbox.pack_start(self.dm_list.scroll, True, True, 0)
 
         self.add(vbox)
+        self.stopped_flag = threading.Event()
         threading.Thread(target = self.dowloader, args = (self.dm_list,)).start()
 
     def demo_tasks(self):
@@ -131,9 +133,13 @@ class DM(ChildTopWindow):
         for bean in beans:
             self.append_task(bean, save_to)
 
+    def on_quit(self):
+        # TODO: terminate Downloader (here - Dowloader) threads too
+        self.stopped_flag.set()
+
     def dowloader(self, dm_list):
         semaphore = threading.Semaphore(FC().amount_dm_threads)
-        while True:
+        while not self.stopped_flag.is_set():
             #self.navigation.use_filter()
             semaphore.acquire()
             bean = dm_list.get_next_bean_to_dowload()

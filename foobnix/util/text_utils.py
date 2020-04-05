@@ -29,6 +29,8 @@ def capitalize_string(src):
 def smart_splitter(input, max_len):
     if not input:
         return input
+    if max_len is None:
+        max_len = 0
 
     if max_len > len(input):
         return input

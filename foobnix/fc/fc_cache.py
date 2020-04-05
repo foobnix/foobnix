@@ -23,8 +23,7 @@ CACHE_RADIO_FILE = os.path.join(CACHE_DIR, 'radio_cache')
 fcache_save_lock = threading.Lock()
 
 """Foobnix cache"""
-class FCache:
-    __metaclass__ = Singleton
+class FCache(metaclass=Singleton):
     def __init__(self):
         self.covers = {}
         self.album_titles = {}
@@ -58,19 +57,19 @@ class FCache:
             with open(CACHE_COVERS_FILE, 'r') as cov_conf:
                 for line in cov_conf:
                     if line.startswith('#') and not line[1:-1] in FCache().covers:
-                        FCache().covers[line[1:-1]] = cov_conf.next()[:-1].split(", ")
+                        FCache().covers[line[1:-1]] = next(cov_conf)[:-1].split(", ")
 
         if os.path.isfile(CACHE_ALBUM_FILE):
             '''reading cover cache file in dictionary'''
             with open(CACHE_ALBUM_FILE, 'r') as albums_cache:
                 for line in albums_cache:
                     if line.startswith('#') and not line[1:-1] in FCache().album_titles:
-                        FCache().album_titles[line[1:-1]] = albums_cache.next()[:-1]
+                        FCache().album_titles[line[1:-1]] = next(albums_cache)[:-1]
 
     def on_quit(self):
 
         def write_string(file, string):
-            file.write((u'#' + u'#' + u'\n' + string + u'\n').encode('utf-8'))
+            file.write(u'#' + u'#' + u'\n' + string + u'\n')
 
         if not os.path.isdir(COVERS_DIR):
             os.mkdir(COVERS_DIR)

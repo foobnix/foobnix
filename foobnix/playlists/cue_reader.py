@@ -145,6 +145,7 @@ class CueReader():
             bean.duration_sec = track.duration
             bean.time = convert_seconds_to_text(track.duration)
             bean.is_file = True
+            bean.is_cue_track = True
             try:
                 bean.info = foobnix.util.id3_util.normalized_info(get_mutagen_audio(track.path).info, bean)
             except Exception as e:
@@ -173,10 +174,11 @@ class CueReader():
         if self.embedded_cue:
             data = self.embedded_cue
         else:
-            file = open(self.cue_path, "r")
-            data = file.read()
+            with open(self.cue_path, "rb") as f:
+                raw_data = f.read()
+                encoding = self.code_detecter(raw_data)
+                data = raw_data.decode(encoding)
 
-        code = self.code_detecter(correct_encoding(data))
         data = data.replace('\r\n', '\n').split('\n')
         title = ""
         performer = ""
@@ -192,7 +194,7 @@ class CueReader():
             if not line:
                 continue
 
-            line = line.strip().encode('utf-8')
+            line = line.strip()
 
             if not self.is_valid and not line.startswith(FILE):
                 continue

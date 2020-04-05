@@ -40,6 +40,8 @@ class FTreeModel(object):
 
         self.vk_audio_id = 29, str
 
+        self.is_cue_track = 30, bool
+
     def cut(self):
 
         for i in self.__dict__:
@@ -56,6 +58,32 @@ class FTreeModel(object):
                     types.append(type)
                     break
         return types
+
+    @staticmethod
+    def normalize_row(row):
+        ref_model = FTreeModel()
+
+        model_len = len(ref_model.__dict__)
+        row_len = len(row)
+
+        if model_len > row_len:
+            # Some values are missing, fill them with
+            # (preferably meaningful) default values
+            default_values = {
+                ref_model.is_cue_track[0]: False
+                }
+
+            for idx in range(row_len, model_len):
+                if idx in default_values:
+                    row.append(default_values[idx])
+                else:
+                    row.append((None, None))
+
+        elif model_len < row_len:
+            for i in range(row_len - model_len):
+                del row[-1]
+
+        return row
 
 class FModel(FTreeModel):
     def __init__(self, text=None, path=None):

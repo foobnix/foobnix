@@ -6,7 +6,7 @@ Created on 1 дек. 2010
 '''
 import urllib.parse
 import urllib.request
-import httplib
+import http.client
 
 
 """"
@@ -28,7 +28,7 @@ def get_url_type(path):
 """method is not reliable. too dependent on the server configuration"""
 def is_exists(url):
     p = urllib.parse.urlparse(url)
-    h = httplib.HTTP(p[1])
+    h = http.client.HTTP(p[1])
     h.putrequest('HEAD', p[2])
     h.endheaders()
     if h.getreply()[0] == 200:

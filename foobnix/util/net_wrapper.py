@@ -5,7 +5,6 @@ Created on 31 may 2011
 @author: zavlab1
 '''
 
-import time
 import base64
 import socket
 import threading
@@ -16,13 +15,15 @@ from gi.repository import Gtk
 from foobnix.fc.fc import FC
 from foobnix.helpers.window import MessageWindow
 from foobnix.gui.service.lastfm_service import LastFmService
+from foobnix.gui.state import Quitable
 from foobnix.util import idle_task
 
 
-class NetWrapper():
+class NetWrapper(Quitable):
     def __init__(self, contorls, is_ping=True):
         self.controls = contorls
-        self.flag = False
+        self.stopped_flag = threading.Event()
+        self.stopped_flag.set()
         self.counter = 0 #to count how many times in row was disconnect
         self.dd_count = 0
         self.is_ping = None
@@ -43,17 +44,20 @@ class NetWrapper():
         self.is_ping = is_ping
 
     def start_ping(self):
-        if self.flag: #means there is already one active ping process
+        if not self.stopped_flag.is_set(): #means there is already one active ping process
             logging.warning("You may not have more one ping process simultaneously")
             return
-        self.flag = True
+        self.stopped_flag.clear()
         threading.Thread(target=self.ping).start()
 
     def stop_ping(self):
-        self.flag = False
+        self.stopped_flag.set()
+
+    def on_quit(self):
+        self.stop_ping()
 
     def ping(self):
-        while self.flag:
+        while not self.stopped_flag.is_set():
             if FC().proxy_enable and FC().proxy_url:
                 try:
                     self.ping_with_proxy()
@@ -87,10 +91,10 @@ class NetWrapper():
             finally:
                 s.close()
 
-            time.sleep(self.pause)
+            self.stopped_flag.wait(self.pause)
 
     def ping_with_proxy(self):
-        while self.flag:
+        while not self.stopped_flag.is_set():
             if not FC().proxy_enable:
                 self.ping()
                 return
@@ -137,7 +141,7 @@ class NetWrapper():
             finally:
                 s.close()
 
-            time.sleep(self.pause)
+            self.stopped_flag.wait(self.pause)
 
     @idle_task
     def disconnect_dialog(self):

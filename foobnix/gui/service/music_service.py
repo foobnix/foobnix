@@ -49,11 +49,6 @@ def get_all_music_with_id3_by_path(path, with_cue_filter=None):
     return update_id3_wind_filtering(beans)
 
 def _scanner(path, level):
-    try:
-        path = path.encode("utf-8")
-    except:
-        pass
-
     results = []
     if not os.path.exists(path):
         return
