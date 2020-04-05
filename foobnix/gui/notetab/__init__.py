@@ -426,18 +426,9 @@ class NoteTabControl(TabGeneral):
                 self._append_tab(FCache().tab_pl_names[page])
                 continue
             self._append_tab(FCache().tab_pl_names[page])
-            model_len = len(FTreeModel().__dict__)
-            cache_len = len(FCache().cache_pl_tab_contents[page][0])
 
             for row in FCache().cache_pl_tab_contents[page]:
-                if model_len > cache_len:
-                    for i in range(abs(model_len - cache_len)):
-                        row.append((None, None))
-                elif model_len < cache_len:
-                    for i in range(abs(model_len - cache_len)):
-                        del row[-1]
-
-                self.get_current_tree().model.append(None, row)
+                self.get_current_tree().model.append(None, FTreeModel.normalize_row(row))
 
         self.set_current_page(FC().pl_selected_tab)
         self.loaded = True

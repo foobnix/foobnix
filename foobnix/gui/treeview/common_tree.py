@@ -185,12 +185,12 @@ class CommonTreeControl(FTreeModel, FControl, FilterTreeControls):
     def restore_rows(self, rows):
         for key in sorted(rows.keys()):
             if len(key) == 1:
-                self.model.append(None, rows[key])
+                self.model.append(None, FTreeModel.normalize_row(rows[key]))
             else:
                 str_path = str(key).replace(', ',':')
                 parent_path = str_path[1:str_path.rfind(':')]
                 parent_iter = self.model.get_iter_from_string(parent_path)
-                self.model.append(parent_iter, rows[key])
+                self.model.append(parent_iter, FTreeModel.normalize_row(rows[key]))
 
 
     def find_rows_by_element(self, element, value):
