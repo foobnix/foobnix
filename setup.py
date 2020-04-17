@@ -40,7 +40,6 @@ if os.name != 'nt':
         mofile = MO_DIR + 'share/locale/%s/LC_MESSAGES/foobnix.mo' % lang
         pofile = "po/" + lang + ".po"
 
-        print "generating", mofile
         os.system("msgfmt %s -o %s" % (pofile, mofile))
         data_files.append(('share/locale/%s/LC_MESSAGES' % lang, [mofile]))
 
