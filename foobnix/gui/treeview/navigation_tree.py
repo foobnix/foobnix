@@ -341,7 +341,7 @@ class NavigationTreeControl(CommonTreeControl, LoadSave):
             file_paths = ','.join([ff_model.get_value(iter, self.path[0]) for iter in all_iters])
             all_file_paths += file_paths
 
-        selection.set(selection.get_target(), 0, all_file_paths)
+        #selection.set(selection.get_target(), 0, all_file_paths)
         self.stop_emission('drag-data-get')
 
     def save_tree(self):

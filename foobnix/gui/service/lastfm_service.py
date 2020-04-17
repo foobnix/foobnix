@@ -57,7 +57,7 @@ class Cache():
                     return album
         return None
 
-    def get_album_image_url(self, artist, title, size=pylast.COVER_LARGE):
+    def get_album_image_url(self, artist, title, size):
         if not artist or not title:
             return None
         if self.get_key(artist, title) in self.cache_images:
@@ -517,7 +517,7 @@ class LastFmService():
                     return st_date
             return str(dt.year)
 
-    def get_album_image_url(self, artist, title, size=pylast.COVER_LARGE):
+    def get_album_image_url(self, artist, title, size):
         if not self.connect():
             return None
         return self.cache.get_album_image_url(artist, title)
