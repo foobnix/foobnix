@@ -1,7 +1,7 @@
 #
 # Makefile for Foobnix
 #
-PYVER=`python -c "import sys; print sys.version[:3]"`
+PYVER=`python -c "import sys; print(sys.version[:3])"`
 PREFIX ?= /usr/local
 DESTDIR ?= ./
 
@@ -25,8 +25,8 @@ clean:
 
 uninstall:
 	-rm $(PREFIX)/bin/foobnix
-	-rm -r $(PREFIX)/lib/python${PYVER}/dist-packages/foobnix
-	-rm -r $(PREFIX)/lib/python${PYVER}/dist-packages/foobnix-*.egg-info
+	-rm -r $(PREFIX)/lib/python${PYVER}/site-packages/foobnix
+	-rm -r $(PREFIX)/lib/python${PYVER}/site-packages/foobnix-*.egg-info
 	-rm -r $(PREFIX)/share/foobnix
 	-find ${PREFIX}/share/locale -name foobnix.mo -exec rm {} \;
 	-rm $(PREFIX)/share/applications/foobnix.desktop

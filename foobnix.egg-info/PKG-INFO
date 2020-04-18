@@ -1,0 +1,17 @@
+Metadata-Version: 1.1
+Name: foobnix
+Version: 3.2
+Summary: Foobnix GTK+ music player
+Home-page: www.foobnix.com
+Author: Ivan Ivanenko
+Author-email: ivan.ivanenko@gmail.com
+License: GNU GPLv3
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status ::  Beta
+Classifier: Environment :: X11 Applications
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: GNU General Public License (GPL)
+Classifier: Operating System :: Linux
+Classifier: Programming Language :: Python
+Classifier: Topic :: Multimedia :: Sound :: Players
